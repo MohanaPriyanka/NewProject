@@ -56,12 +56,42 @@ public with sharing class SharedSolarSystemHandlerTest {
         Account clientAccount = new Account(name = 'Test Client');
         insert clientAccount;
 
+        Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Days_in_Bill_Period__c = 20,
+            Customer_Subscription_Type__c = 'kWh',
+            Monthly_Late_Fee__c = 1);
+
+        Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - Bluewave - Public CS - 20%',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 20,
+            Annual_kWh_Maximum__c = 63000,
+            NM_Rate_Floor__c = 0.09,
+            Days_in_Bill_Period__c = 20,
+            Monthly_Late_Fee__c = 0.8333);
+        insert new List<Product2>{normalCSProduct, publicCSProduct};
+
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'SSS 1',
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
             Open__c = true,
             Stage__c = 'Onboarding',
             Client_Account__c = clientAccount.Id,
+            Product__c = normalCSProduct.Id,
+            Utility_NMC_Tariff__c = everbillNMC.Id,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 48,
@@ -241,33 +271,6 @@ public with sharing class SharedSolarSystemHandlerTest {
 
         insert new List<Utility_Account_Log__c>{ualog1, ualog2, ualog3};
 
-        Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Days_in_Bill_Period__c = 20,
-            Customer_Subscription_Type__c = 'kWH',
-            Monthly_Late_Fee__c = 1);
-
-        Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - Bluewave - Public CS - 20%',
-            IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 20,
-            Annual_kWh_Maximum__c = 63000,
-            NM_Rate_Floor__c = 0.09,
-            Days_in_Bill_Period__c = 20,
-            Monthly_Late_Fee__c = 0.8333);
-        insert new List<Product2>{normalCSProduct, publicCSProduct};
 
         Opportunity opportunityone =
             new Opportunity(Name = 'Alyssa Testcase1 0000234',
@@ -320,26 +323,32 @@ public with sharing class SharedSolarSystemHandlerTest {
             new Utility_Account_Subscription__c(Name = '0000236',
                 Utility_Account_Log__c = ualog2.Id,
                 Opportunity__c = opportunitytwo.Id,
+                Shared_Solar_System__c = sss2.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 8000,
-                Calculated_Annual_Cost_of_Electricity__c = 8000,
-                Subscribed_Annual_Cost_of_Electricity__c = 8000);
+                Annual_kwh_subscription_future__c = 8000
+//                Calculated_Annual_Cost_of_Electricity__c = 8000,
+//                Subscribed_Annual_Cost_of_Electricity__c = 8000
+            );
         Utility_Account_Subscription__c uasThree =
             new Utility_Account_Subscription__c(Name = '0000238',
                 Utility_Account_Log__c = ualog3.Id,
                 Opportunity__c = opportunitythree.Id,
+                Shared_Solar_System__c = sss2.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 300,
-                Calculated_Annual_Cost_of_Electricity__c = 300,
-                Subscribed_Annual_Cost_of_Electricity__c = 300);
+                Annual_kwh_subscription_future__c = 300
+//                Calculated_Annual_Cost_of_Electricity__c = 300,
+//                Subscribed_Annual_Cost_of_Electricity__c = 300
+            );
         Utility_Account_Subscription__c uasFour =
             new Utility_Account_Subscription__c(Name = '0000239',
                 Utility_Account_Log__c = ualog3.Id,
                 Opportunity__c = opportunityFour.Id,
+                Shared_Solar_System__c = sss2.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 30000,
-                Calculated_Annual_Cost_of_Electricity__c = 30000,
-                Subscribed_Annual_Cost_of_Electricity__c = 30000);
+                Annual_kwh_subscription_future__c = 30000
+//                Calculated_Annual_Cost_of_Electricity__c = 30000,
+//                Subscribed_Annual_Cost_of_Electricity__c = 30000
+            );
 
         insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree, uasFour};
 
@@ -366,6 +375,71 @@ public with sharing class SharedSolarSystemHandlerTest {
 
         insert new List<Schedule_Z__c>{scheduleZ1, scheduleZ2, scheduleZ3};
         Test.stopTest();
+    }
+
+    @IsTest
+    public static void testApexContext() {
+        Shared_Solar_System__c sss = [
+            SELECT Id, Apex_Context__c, Stage__c, Estimated_COD_Date__c, Estimated_PTO_Date__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'SSS 1'
+            LIMIT 1
+        ];
+
+        //Change SSS Stage to Acquisition so Validation Rule is active
+        sss.Estimated_COD_Date_Manual__c = System.today();
+        sss.Estimated_PTO_Date_MANUAL__c = System.today();
+        sss.Stage__c = 'Acquisition';
+        update sss;
+
+        sss = [
+            SELECT Id, Apex_Context__c, Total_System_Size_kWh_DC__c, Stage__c
+            FROM Shared_Solar_System__c
+            WHERE Id = :sss.Id
+            LIMIT 1
+        ];
+
+        //Before setting Apex Context - should not be able to update system size due to Validation Rule
+        sss.Total_System_Size_kWh_DC__c = 80;
+
+        try {
+            update sss;
+        } catch (Exception e) {
+            System.assertNotEquals(null, e.getMessage(), 'Update of SSS should fail due to Validation Rule');
+        }
+
+        sss = [
+            SELECT Id, Apex_Context__c, Total_System_Size_kWh_DC__c
+            FROM Shared_Solar_System__c
+            WHERE Id = :sss.Id
+            LIMIT 1
+        ];
+
+        //Feature flag is used in validation rule
+        FeatureService featureService = new FeatureService();
+        Boolean featureOn = featureService.isEnabled('Subscription_Orders');
+        if (featureOn) {
+            System.assertEquals(48, sss.Total_System_Size_kWh_DC__c);
+        } else {
+            System.assertEquals(80, sss.Total_System_Size_kWh_DC__c);
+        }
+
+
+        //Set Apex_Context to true to bypass validation rule
+        sss.Apex_Context__c = true;
+        sss.Total_System_Size_kWh_DC__c = 80;
+        update sss;
+
+        sss = [
+            SELECT Id, Apex_Context__c, Total_System_Size_kWh_DC__c
+            FROM Shared_Solar_System__c
+            WHERE Id = :sss.Id
+            LIMIT 1
+        ];
+
+        //Apex Context is automatically set back to false after updating SSS
+        System.assertEquals(false, sss.Apex_Context__c);
+        System.assertEquals(80, sss.Total_System_Size_kWh_DC__c);
     }
 
     @IsTest
@@ -424,8 +498,21 @@ public with sharing class SharedSolarSystemHandlerTest {
         ];
 
         // Increase one subscription:
-        selectedUAS.Annual_kwh_subscription_future__c = 12000;
-        update selectedUAS;
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Subscription_Orders')) {
+            Subscription_Order__c resize = new Subscription_Order__c(
+                Utility_Account_Subscription__c = selectedUAS.Id,
+                Change_in_Annual_kWh__c = 4000,
+                Type__c = 'Resize',
+                Approval_Status__c = 'Approved',
+                Effective_Date__c = System.today()
+            );
+            insert resize;
+        } else {
+            selectedUAS.Annual_kwh_subscription_future__c = 12000;
+            update selectedUAS;
+        }
+
 
         Test.startTest();
         SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
@@ -439,9 +526,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             LIMIT 1
         ];
 
-        // 2 UASes:  6.1538 , 0.2308 = 6.3846
-        // 1 Anchor: 23.0769
-        System.assertEquals(9.4616,sssUpdated.Capacity_Committed_kW_DC__c);
+        System.assertEquals(9.4615,sssUpdated.Capacity_Committed_kW_DC__c);
         System.assertEquals(23.0769,sssUpdated.Anchor_capacity_reserved__c);
     }
 

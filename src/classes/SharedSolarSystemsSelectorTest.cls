@@ -168,42 +168,4 @@ public with sharing class SharedSolarSystemsSelectorTest {
         Shared_Solar_System__c checkProject = SharedSolarSystemsSelector.getMyProject(myProject.Id);
         System.assertNotEquals(null, checkProject);
     }
-    //TODO: These are Test methods for queries required to go into Production BEFORE Production/Transfer Logic has been released
-    // WILL BE DEPRECATED AFTER RELEASE
-    
-    @IsTest
-    static void testGetSSSWithoutProdUpdates(){
-        Date todaysDate = Date.today();
-        List<Id> prodIdList;
-        List<Energy_Usage_Update__c> prodList;
-        prodList = ProductionUpdateSelector.getProductionUpdatesByMonth(todaysDate.month(),String.valueOf(todaysDate.year()));
-        for (Energy_Usage_Update__c prod : prodList){
-            prodIdList.add(prod.Id);
-        }
-        List<Shared_Solar_System__c> sssList;
-        List<Shared_Solar_System__c> sss2List;
-        sssList = SharedSolarSystemsSelector.getAllSSSWithProductionUpdates();
-        sss2List = SharedSolarSystemsSelector.getAllSSSWithProdUpdatesNotInList(prodIdList);
-        System.assertEquals(0,sssList.size());
-        System.assertEquals(0,sss2List.size());
-    }
-
-    @IsTest public static void testGetSSSByUniqueId() {
-        Shared_Solar_System__c sssOne = new Shared_Solar_System__c(
-            Name = 'Test SSS'
-        );
-        insert sssOne;
-
-        Shared_Solar_System__c sss = [
-            SELECT Id, Unique_Id__c
-            FROM Shared_Solar_System__c
-            WHERE Id = : sssOne.Id
-            LIMIT 1
-        ];
-
-        SharedSolarSystemsSelector selector = new SharedSolarSystemsSelector();
-        Map<String,Shared_Solar_System__c> sssMap = selector.getSSSByUniqueId(new Set<String>{sss.Unique_Id__c});
-
-        System.assertEquals(sssOne.Id,sssMap.get(sss.Unique_Id__c).Id);
-    }
 }

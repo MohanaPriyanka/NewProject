@@ -19,6 +19,16 @@ public inherited sharing class SharedSolarSystemsSelector {
             WHERE Id IN :sssIds
         ];
     }
+
+    public List<Shared_Solar_System__c> getAllSharedSolarSystems() {
+        return [
+            SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
+                Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c,
+                Total_Capacity_Committed_Reserved__c, Maximum_Subscription_Capacity_kW_DC__c,
+                Reserved_Anchor_Capacity__c, Name
+            FROM Shared_Solar_System__c
+        ];
+    }
     public Map<Id, Shared_Solar_System__c> getSSSMap(Set<Id> sssIds) {
         Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>([
             SELECT Id, Client_Account__c
@@ -77,39 +87,5 @@ public inherited sharing class SharedSolarSystemsSelector {
         ];
         return myProject;
     }
-    //TODO: These are the queries required to go into Production BEFORE Production/Transfer Logic has been released
-    // WILL BE DEPRECATED AFTER RELEASE
-    // Gets all SSS that have at least 1 production update
-    public static List<Shared_Solar_System__c> getAllSSSWithProductionUpdates() {
-        return getAllSSSWithProdUpdatesNotInList(null);
-    }
-    // Gets all SSS that have at least 1 production update, but that production update is not in list
-    public static List<Shared_Solar_System__c> getAllSSSWithProdUpdatesNotInList(List<Id> prodUpdatesToIgnore) {
-        List<Shared_Solar_System__c> sssList;
-        if(prodUpdatesToIgnore != null) {
-            sssList = [
-                SELECT Id, Name
-                FROM Shared_Solar_System__c
-                WHERE Id NOT IN (SELECT Shared_Solar_System__c FROM Energy_Usage_Update__c WHERE Id IN :prodUpdatesToIgnore)
-                AND Id IN (SELECT Shared_Solar_System__c FROM Energy_Usage_Update__c)
-            ];
-        } else {
-            sssList = [
-                SELECT Id, Name
-                FROM Shared_Solar_System__c
-                WHERE Id IN (SELECT Shared_Solar_System__c FROM Energy_Usage_Update__c)
-            ];
-        }
-        return sssList;
-    }
 
-    public Map<String,Shared_Solar_System__c> getSSSByUniqueId(Set<String> blueWaveIds){
-        Map<String,Shared_Solar_System__c> bwIdToSSSMap = new Map<String,Shared_Solar_System__c>();
-        for (Shared_Solar_System__c sss : [ SELECT Id, Unique_ID__c
-                                            FROM Shared_Solar_System__c
-                                            WHERE Unique_ID__c IN : blueWaveIds]){
-            bwIdToSSSMap.put(sss.Unique_ID__c, sss);
-        }
-        return bwIdToSSSMap;
-    }
 }

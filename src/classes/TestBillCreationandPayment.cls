@@ -211,6 +211,7 @@ public class TestBillCreationandPayment {
                 StageName = 'Complete',
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 CloseDate = System.today());
 
         Opportunity opportunitytwo =
@@ -220,6 +221,7 @@ public class TestBillCreationandPayment {
                 StageName = 'Complete',
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 CloseDate = System.today());
 
         Opportunity opportunitythree =
@@ -229,6 +231,7 @@ public class TestBillCreationandPayment {
                 StageName = 'Complete',
                 Customer_Group__c = 'Non-Residential',
                 Product__c = normalCSProduct.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 CloseDate = System.today());
         Opportunity opportunityFour;
 
@@ -240,6 +243,7 @@ public class TestBillCreationandPayment {
                     StageName = 'Complete',
                     Customer_Group__c = 'Non-Residential',
                     Product__c = normalCSProduct.Id,
+                    NMC_Tariff__c = eversizeNMC.Id,
                     CloseDate = System.today());
             insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree, opportunityFour};
         } else {
@@ -251,9 +255,9 @@ public class TestBillCreationandPayment {
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunityone.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 4000,
-                Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                Annual_kwh_subscription_future__c = 6006,
+                Calculated_Annual_Cost_of_Electricity__c = 6006,
+                Subscribed_Annual_Cost_of_Electricity__c = 6006);
 
         Utility_Account_Subscription__c uastwo =
             new Utility_Account_Subscription__c(Name = '000-0234',

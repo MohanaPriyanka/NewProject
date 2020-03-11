@@ -39,18 +39,48 @@ public without sharing class UASSelector {
         ];
     }
 
+    public List<Utility_Account_Subscription__c> selectByOpp(Set<Id> oppIds) {
+        return [
+            SELECT Id,
+                Shared_Solar_System__c,
+                Annual_Cost_Future_Rollup__c,
+                Annual_kWh_Subscription_Future_Rollup__c,
+                Future_Customer_Subscription_KWDC_Rollup__c,
+                Future_Share_of_System_Rollup__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__c IN :oppIds
+            AND (Future_Customer_Subscription_KWDC_Rollup__c != 0
+            OR Customer_Subscription_KW_DC__c != 0)
+        ];
+    }
+
     public static List<Utility_Account_Subscription__c> selectByIds(Set<Id> uasIds) {
         return [
             SELECT Id,
                 Name,
                 Opportunity__c,
                 Opportunity__r.Id,
-                Opportunity__r.Shared_Solar_System__r.Id
+                Opportunity__r.Shared_Solar_System__r.Id,
+                Shared_Solar_System__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN :uasIds
         ];
     }
-
+    public Map<Id, Utility_Account_Subscription__c> getUASMap(Set<Id> uasIds) {
+        Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>( [
+            SELECT Id,
+                Shared_Solar_System__r.Client_Account__c,
+                Shared_Solar_System__r.Expected_Yield_kWh_kW__c,
+                Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
+                Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
+                Opportunity__r.NMC_Tariff__c,
+                Opportunity__r.NMC_Tariff__r.Value_of_NMC__c,
+                Opportunity__r.Product__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id IN :uasIds
+        ]);
+        return uasMap;
+	}
     public static Map<Id, Utility_Account_Subscription__c> selectByIdsAsMap(Set<Id> uasIds){
         Map<Id, Utility_Account_Subscription__c> uasWithClientMap = new Map<Id, Utility_Account_Subscription__c>([
             SELECT Id,
@@ -60,5 +90,44 @@ public without sharing class UASSelector {
             WHERE Id IN : uasIds
         ]);
         return uasWithClientMap;
+    }
+
+
+    public List<AggregateResult> getBrandKeySummary(Set<Id> parentAccountIds) {
+        List<AggregateResult> uasSummary = [
+            SELECT COUNT(Id) numberOfRecords,
+                Opportunity__r.AccountId propertyAccount,
+                Opportunity__r.Account.Parent_Account__c parentAccount,
+                Opportunity__r.Shared_Solar_System__r.Client_Brand_Key__c sssBrandKey,
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c entityBrandKey
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Account.Parent_Account__c IN : parentAccountIds
+            GROUP BY Opportunity__r.AccountId,
+                Opportunity__r.Account.Parent_Account__c,
+                Opportunity__r.Shared_Solar_System__r.Client_Brand_Key__c,
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c
+        ];
+        return uasSummary;
+    }
+    public List<Utility_Account_Subscription__c> selectBySharedSolarSystem(Set<Id> sssIds) {
+        return [
+            SELECT
+                Id,
+                Name,
+                Annual_Cost_Future_Rollup__c,
+                Annual_kWh_Subscription_Future_Rollup__c,
+                Customer_Group__c,
+                Customer_Subscription_KW_DC__c,
+                Future_Customer_Subscription_KWDC_Rollup__c,
+                Future_Share_of_System_Rollup__c,
+                Next_Schedule_Z_Status__c,
+                Opportunity__c,
+                Opportunity_Stage__c,
+                Shared_Solar_System__c,
+                SSS_Id__c
+            FROM Utility_Account_Subscription__c
+            WHERE (Shared_Solar_System__c = :sssIds)
+            AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0)
+        ];
     }
 }

@@ -170,6 +170,7 @@ public class ScheduleZTriggerHandlerTest {
             new Opportunity(Name = 'AOpp One',
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss1.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
@@ -177,6 +178,7 @@ public class ScheduleZTriggerHandlerTest {
             new Opportunity(Name = 'BOpp One',
                 AccountId = accountB.Id,
                 Shared_Solar_System__c = sss1.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
@@ -185,6 +187,7 @@ public class ScheduleZTriggerHandlerTest {
             new Opportunity(Name = 'BOpp Two',
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss2.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
@@ -193,6 +196,7 @@ public class ScheduleZTriggerHandlerTest {
             new Opportunity(Name = 'BOpp Two',
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss2.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 StageName = 'New',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
@@ -206,7 +210,9 @@ public class ScheduleZTriggerHandlerTest {
                 Customer_Subscription_KW_DC_STATIC__c = 20.2312,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 calculated_annual_cost_of_electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                Subscribed_Annual_Cost_of_Electricity__c = 4000,
+                Annual_kwh_subscription_future__c = 26300.5
+            );
 
         Utility_Account_Subscription__c uasoneB =
             new Utility_Account_Subscription__c(Name = '0000235',
@@ -215,7 +221,9 @@ public class ScheduleZTriggerHandlerTest {
                 Customer_Subscription_KW_DC_STATIC__c = 20.2312,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 calculated_annual_cost_of_electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                Subscribed_Annual_Cost_of_Electricity__c = 4000,
+                Annual_kwh_subscription_future__c = 26300.5
+            );
 
         Utility_Account_Subscription__c uastwo =
             new Utility_Account_Subscription__c(Name = '000-0234',
@@ -225,7 +233,7 @@ public class ScheduleZTriggerHandlerTest {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 6000,
                 calculated_annual_cost_of_electricity__c = 6000,
-                Subscribed_Annual_Cost_of_Electricity__c = 6000);
+                Subscribed_Annual_Cost_of_Electricity__c = 26300.5);
 
         // Test for only active subscriptions have Sched Z Subs created
         Utility_Account_Subscription__c uasthree =
@@ -235,7 +243,10 @@ public class ScheduleZTriggerHandlerTest {
                 Customer_Subscription_KW_DC_STATIC__c = 1000,
                 Next_Schedule_Z_Status__c = 'Inactive Subscription',
                 calculated_annual_cost_of_electricity__c = 8000,
-                Subscribed_Annual_Cost_of_Electricity__c = 8000);
+                Subscribed_Annual_Cost_of_Electricity__c = 8000,
+                Annual_kwh_subscription_future__c = 1300009.8
+
+            );
 
         // Test only completed opportunities have Sched Z Subs created
         Utility_Account_Subscription__c uasfour =
@@ -245,7 +256,9 @@ public class ScheduleZTriggerHandlerTest {
                 Customer_Subscription_KW_DC_STATIC__c = 1000,
                 Next_Schedule_Z_Status__c = 'Inactive Subscription',
                 calculated_annual_cost_of_electricity__c = 8000,
-                Subscribed_Annual_Cost_of_Electricity__c = 8000);
+                Subscribed_Annual_Cost_of_Electricity__c = 8000,
+                Annual_kwh_subscription_future__c = 1300009.8
+            );
 
         insert new List<Utility_Account_Subscription__c>{uasone, uasoneB, uastwo, uasthree, uasfour};
 
