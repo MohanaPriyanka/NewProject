@@ -643,7 +643,7 @@ public class TestBillCreationandPayment {
         Test.startTest();
 
         Shared_Solar_System__c sssRadianGen = [
-            SELECT Id, Name
+            SELECT Id, Name, Utility_NMC_Tariff__r.Id
             FROM Shared_Solar_System__c
             WHERE Name =  'Oxford Barrett Street. Part1 With Long Name To Test Unique Id Lengths'
         ];
@@ -683,6 +683,7 @@ public class TestBillCreationandPayment {
             Shared_Solar_System__c = sssRadianGen.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Anchor',
+            NMC_Tariff__c = sssRadianGen.Utility_NMC_Tariff__r.Id,
             Product__c = opp1.Product__c,
             CloseDate = System.today());
 
@@ -690,6 +691,7 @@ public class TestBillCreationandPayment {
             Name = 'Opp Five',
             AccountId = accountC.Id,
             Shared_Solar_System__c = sssRadianGen.Id,
+            NMC_Tariff__c = sssRadianGen.Utility_NMC_Tariff__r.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Public Offtake',
             Product__c = opp1.Product__c,
@@ -699,6 +701,7 @@ public class TestBillCreationandPayment {
             Name = 'Opp Six',
             AccountId = accountC.Id,
             Shared_Solar_System__c = sssRadianGen.Id,
+            NMC_Tariff__c = sssRadianGen.Utility_NMC_Tariff__r.Id,
             StageName = 'PPA/NMCPA Signed',
             Customer_Group__c = 'Residential',
             Product__c = opp1.Product__c,

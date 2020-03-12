@@ -509,10 +509,9 @@ public with sharing class SharedSolarSystemHandlerTest {
             );
             insert resize;
         } else {
-            selectedUAS.Annual_kwh_subscription_future__c = 12000;
+            selectedUAS.Annual_kwh_subscription_future__c = 11999.9;
             update selectedUAS;
         }
-
 
         Test.startTest();
         SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
@@ -525,7 +524,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
-
+        //used to be .4616 (passes with .15 when SO flag is on)
         System.assertEquals(9.4615,sssUpdated.Capacity_Committed_kW_DC__c);
         System.assertEquals(23.0769,sssUpdated.Anchor_capacity_reserved__c);
     }

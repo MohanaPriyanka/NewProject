@@ -88,4 +88,14 @@ public inherited sharing class SharedSolarSystemsSelector {
         return myProject;
     }
 
+    public Map<String,Shared_Solar_System__c> getSSSByUniqueId(Set<String> blueWaveIds){
+        Map<String,Shared_Solar_System__c> bwIdToSSSMap = new Map<String,Shared_Solar_System__c>();
+        for (Shared_Solar_System__c sss : [ SELECT Id, Unique_ID__c
+        FROM Shared_Solar_System__c
+        WHERE Unique_ID__c IN : blueWaveIds]){
+            bwIdToSSSMap.put(sss.Unique_ID__c, sss);
+        }
+        return bwIdToSSSMap;
+    }
+
 }
