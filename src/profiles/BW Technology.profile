@@ -46719,6 +46719,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility__c.Credits_Allocated_Rounding_Method__c</field>
         <readable>true</readable>
     </fieldPermissions>
