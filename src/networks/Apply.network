@@ -11,6 +11,7 @@
     <enableDirectMessages>true</enableDirectMessages>
     <enableGuestChatter>false</enableGuestChatter>
     <enableGuestFileAccess>true</enableGuestFileAccess>
+    <enableGuestMemberVisibility>true</enableGuestMemberVisibility>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
     <enableMemberVisibility>true</enableMemberVisibility>
@@ -26,7 +27,9 @@
     <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <networkMemberGroups>
+        <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
+        <profile>api only</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>

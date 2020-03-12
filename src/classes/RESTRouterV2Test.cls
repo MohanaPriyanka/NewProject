@@ -4,7 +4,7 @@
 
 @IsTest
 public with sharing class RESTRouterV2Test {
-
+    @TestVisible
     private static String validLead =
         '"firstName": "System"' +
             ',"lastName": "Testcase"' +
@@ -20,20 +20,24 @@ public with sharing class RESTRouterV2Test {
             ',"referralName": "RefFirst RefLast"' +
             ',"referralEmail": "refemail@invalid.bluewavesolar.com"';
 
+    @TestVisible
     private static String validResiLead = validLead + ',"applicationType": "Residential"';
 
+    @TestVisible
     private static String validNonResiLead = validLead +
         ',"applicationType": "Non-Residential"' +
         ',"businessName": "My Cool Company"' +
         ',"businessTitle": "Janitor"' +
         ',"businessPhone": "5551239876"';
 
+    @TestVisible
     private static String validPropertyAccount =
         '   "billingStreet": "Test billing street"' +
         ',  "billingCity": "Test billing city"' +
         ',  "billingState": "NY"' +
         ',  "billingPostalCode": "14472"';
 
+    @TestVisible
     private static String validUtilityAccountLog =
         '       "nameOnAccount": "Test Accounts Payable"' +
         ',      "serviceStreet": "Test service street"' +
@@ -42,6 +46,7 @@ public with sharing class RESTRouterV2Test {
         ',      "servicePostalCode": "14472"' +
         ',      "utilityAccountNumber": "555555"';
 
+    @TestVisible
     private static String validResiJsonRequest = '{' +
         validResiLead + ',' +
         '"propertyAccounts": [{' +
@@ -50,6 +55,7 @@ public with sharing class RESTRouterV2Test {
         validUtilityAccountLog +
         '}]}]}';
 
+    @TestVisible
     private static String validNonResiJsonRequest = '{' +
         validNonResiLead + ',' +
         '"propertyAccounts": [{' +

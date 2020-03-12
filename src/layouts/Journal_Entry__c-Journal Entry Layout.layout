@@ -138,6 +138,13 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Production__c</fields>
+        <fields>Amount__c</fields>
+        <fields>Type__c</fields>
+        <relatedList>Transfer_Part__c.Journal_Entry__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>

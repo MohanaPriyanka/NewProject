@@ -23,6 +23,7 @@
     renderPaymentFrame: function(component, event, helper) {
         var paymentPageMetadata = component.get('v.paymentPageMetadata');
         var paymentType = component.get('v.paymentType');
+        var accountId = component.get('v.zuoraAccountId');
         var paymentPageId, rsaSignature;
         if (paymentType === 'Credit Card') {
             paymentPageId = paymentPageMetadata.ccPaymentPageId;
@@ -43,6 +44,9 @@
             submitEnabled:"true",
             url:paymentPageMetadata.zuoraSetting.Hosted_Payment_Page_URI__c
         };
+        if (accountId) {
+            params.field_accountId = accountId;
+        }
         var prepopulatedFields = {};
         Z.render(params,prepopulatedFields,$A.getCallback(function(response) {
             // If successful, get the payment method and return it too

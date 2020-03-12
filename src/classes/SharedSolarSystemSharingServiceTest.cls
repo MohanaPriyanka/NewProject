@@ -192,4 +192,35 @@ private class SharedSolarSystemSharingServiceTest {
         System.assertEquals(customerUser.Id, sssShares[0].UserOrGroupId, 'User Id should match');
         System.assertEquals('Read', sssShares[0].AccessLevel, 'Only read access should be added');
     }
+
+    @IsTest
+    private static void testTriggerAndEvent(){
+        Account acct = [
+            SELECT Id
+            FROM Account
+            WHERE Parent_Account__c != null
+            LIMIT 1
+        ];
+
+        List<Shared_Solar_System__Share> beforeShares  = [
+            SELECT Id, UserOrGroupId, ParentId, AccessLevel
+            FROM Shared_Solar_System__Share
+            WHERE RowCause = 'Customer_Portal_Access__c'
+        ];
+        System.assertEquals(0, beforeShares.size());
+
+        Test.startTest();
+            Subscription_Change_Event__e newEvent = new Subscription_Change_Event__e(
+                Property_Account_Id__c = acct.Id
+            );
+            EventBus.publish(newEvent);
+        Test.stopTest();
+
+        List<Shared_Solar_System__Share> afterShares  = [
+            SELECT Id, UserOrGroupId, ParentId, AccessLevel
+            FROM Shared_Solar_System__Share
+            WHERE RowCause = 'Customer_Portal_Access__c'
+        ];
+        System.assertEquals(2,afterShares.size());
+    }
 }

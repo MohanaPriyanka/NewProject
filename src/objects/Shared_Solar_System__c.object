@@ -931,15 +931,15 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
     </fields>
     <fields>
         <fullName>Estimated_Credit_Flow_Date__c</fullName>
-        <description>Adds 14 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
+        <description>Adds 30 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 30 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
         <externalId>false</externalId>
         <formula>BLANKVALUE(Est_Utility_NMC_to_Customer_Override__c,
 IF(
 ISBLANK(Actual_PTO_Date__c),
 Estimated_PTO_Date__c + 90,
-BLANKVALUE(Last_Sch_Z_Enacted_Date__c+14,
-Actual_PTO_Date__c +14)))</formula>
-        <inlineHelpText>Adds 14 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</inlineHelpText>
+BLANKVALUE(Last_Sch_Z_Enacted_Date__c+30,
+Actual_PTO_Date__c +30)))</formula>
+        <inlineHelpText>Adds 30 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 30 days to Actual PTO Date or 3 months to the Estimated PTO Date.</inlineHelpText>
         <label>Est Utility NMC to Customer Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -1736,6 +1736,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>All</label>
                 </value>
                 <value>
+                    <fullName>All Care Energy Inc.</fullName>
+                    <default>false</default>
+                    <label>All Care Energy Inc.</label>
+                </value>
+                <value>
                     <fullName>Arcadia Power</fullName>
                     <default>false</default>
                     <label>Arcadia Power</label>
@@ -1801,6 +1806,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Energy Consulting Associates</label>
                 </value>
                 <value>
+                    <fullName>Energy Partner Consultants</fullName>
+                    <default>false</default>
+                    <label>Energy Partner Consultants</label>
+                </value>
+                <value>
                     <fullName>EnergySage</fullName>
                     <default>false</default>
                     <label>EnergySage</label>
@@ -1809,6 +1819,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>First Parish in Wayland</fullName>
                     <default>false</default>
                     <label>First Parish in Wayland</label>
+                </value>
+                <value>
+                    <fullName>Global Energy Development LLC</fullName>
+                    <default>false</default>
+                    <label>Global Energy Development LLC</label>
                 </value>
                 <value>
                     <fullName>Grace Episcopal Church</fullName>
@@ -1849,6 +1864,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Next Step Living</fullName>
                     <default>false</default>
                     <label>Next Step Living</label>
+                </value>
+                <value>
+                    <fullName>Other Test Partner</fullName>
+                    <default>false</default>
+                    <label>Other Test Partner</label>
                 </value>
                 <value>
                     <fullName>Palmetto Solar</fullName>
@@ -1979,22 +1999,6 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Yeloha</fullName>
                     <default>false</default>
                     <label>Yeloha</label>
-                </value>
-                <value>
-                    <fullName>Global Energy Development LLC</fullName>
-                    <default>false</default>
-                    <label>Global Energy Development LLC</label>
-                </value>
-                <value>
-                    <fullName>Energy Partner Consultants</fullName>
-                    <default>false</default>
-                    <label>Energy Partner Consultants</label>
-                </value>
-                <value>
-                    <fullName>Other Test Partner</fullName>
-                    <default>false</default>
-                    <isActive>false</isActive>
-                    <label>Other Test Partner</label>
                 </value>
                 <value>
                     <fullName>Oxford100</fullName>
