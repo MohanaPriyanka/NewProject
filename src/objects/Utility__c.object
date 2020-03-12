@@ -59,9 +59,10 @@
         <externalId>false</externalId>
         <inlineHelpText>Information that is specific to this Utility.</inlineHelpText>
         <label>Comments</label>
-        <required>false</required>
+        <length>32768</length>
         <trackTrending>false</trackTrending>
-        <type>TextArea</type>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
     </fields>
     <fields>
         <fullName>Credits_Allocated_Rounding_Method__c</fullName>
