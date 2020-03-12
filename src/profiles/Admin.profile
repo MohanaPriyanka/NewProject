@@ -33979,7 +33979,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility__c.Credits_Allocated_Rounding_Method__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -33989,7 +33989,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility__c.Number_of_Decimal_Places__c</field>
         <readable>true</readable>
     </fieldPermissions>
