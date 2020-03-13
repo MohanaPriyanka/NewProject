@@ -36,7 +36,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         List<Shared_Solar_System__c> newSSSList = sssSelector.getAllSSSes();
         List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
 
-        for (Shared_Solar_System__c oldSSS : newSSSList){
+        for (Shared_Solar_System__c oldSSS : sssSelector.getAllSSSes()){
             oldSSSMap.put(oldSSS.Id, oldSSS);
         }
         summarizeCapacity(newSSSList);
