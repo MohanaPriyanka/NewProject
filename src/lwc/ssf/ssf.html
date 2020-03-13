@@ -9,15 +9,26 @@
       <template if:true={getZip}>
         <div class="slds-grid slds-wrap">
           <div class="slds-size--1-of-1">
-            <div onkeyup={checkForSubmit}>
-              <lightning-input name="zipCodeInput" class="slds-m-around--small" label="Zip Code" value={zipCodeInput} onchange={genericOnChange} type="text" pattern="[0-9]{5}"></lightning-input>
+            <div class="slds-text-align--center">
+              <p class="slds-p-around--medium" style="font-size: 54px">
+                Find a solar farm near you.
+              </p>
+              <p class="slds-p-bottom--medium slds-text-heading--medium" style="font-size: 26px">
+                Locate savings in your ZIP Code:
+              </p>
+              <p>
+                ZIP code
+              </p>
+              <div class="slds-align--absolute-center" onkeyup={checkForSubmit}>
+                <lightning-input name="zipCodeInput" class="slds-m-around--small" label="Zip Code" variant="label-hidden" value={zipCodeInput} onchange={genericOnChange} type="text" pattern="[0-9]{5}" style="max-width: 200px"></lightning-input>
+              </div>
+              <lightning-button label="Get Started" class="slds-m-left--small slds-m-right--small" onclick={submitZip}></lightning-button>
             </div>
-            <lightning-button label="Submit" class="slds-m-left--small slds-m-right--small" onclick={submitZip}></lightning-button>
           </div>
         </div>
       </template>
       <template if:true={getBasicInfo}>
-        <c-ssf-basic-info utility-options={utilityOptions} zipinput={zipCodeInput} zip-code-response={zipCodeResponse} selected-product={selectedProduct} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
+        <c-ssf-basic-info utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
       </template>
       <template if:true={getAgreements}>
         <c-ssf-agreements lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements>

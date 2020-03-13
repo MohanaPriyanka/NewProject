@@ -21,7 +21,7 @@ public inherited sharing class RestZipCode {
     private Set<Utility> getUtilities(Set<Utility__c> utilitySobjs) {
         Set<Utility> utilities = new Set<Utility>();
         for (Utility__c utility : utilitySobjs) {
-            utilities.add(new Utility(utility.Id, utility.Name, utility.EIA_ID__c));
+            utilities.add(new Utility(utility.Id, utility.Name));
         }
         return utilities;
     }
@@ -37,12 +37,10 @@ public inherited sharing class RestZipCode {
     public class Utility {
         public String utilityId;
         public String name;
-        public String eiaId;
 
-        public Utility(String id, String name, String eiaId) {
+        public Utility(String id, String name) {
             this.utilityId = id;
             this.name = name;
-            this.eiaId = eiaId;
         }
     }
 }

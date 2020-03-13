@@ -60,8 +60,8 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                 this.zipCodeResponse = resolveResult;
                 if (this.zipCodeResponse.hasCapacity && this.zipCodeResponse.products.length >= 1) {
                     this.utilityOptions = this.zipCodeResponse.utilities.map(
-                        ({name, eiaId}) => {
-                            return {value: eiaId, label: name};
+                        ({name}) => {
+                            return {value: name, label: name};
                         }
                     );
                     // Just picking the first one - could be a picklist if we found multiple products (SREC/SMART)

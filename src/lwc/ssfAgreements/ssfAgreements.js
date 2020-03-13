@@ -7,6 +7,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 import getContentDocumentsById from '@salesforce/apex/SimpleSignupFormController.getContentDocumentDataById';
 import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormController.getContentDocumentLinksByLead'
+import {makeRequest} from 'c/httpRequestService';
 
 export default class SsfAgreements extends LightningElement {
     @api leadJson;
@@ -139,27 +140,12 @@ export default class SsfAgreements extends LightningElement {
     }
 
     consentToDocs(restLead) {
-        return new Promise(function(resolve, reject) {
-            let calloutURI = '/apply/services/apexrest/v3/leads';
-            const xmlHttpRequest = new XMLHttpRequest();
-            xmlHttpRequest.onreadystatechange = function() {
-                if (this.readyState === 4) {
-                    const response = JSON.parse(this.responseText);
-                    if (this.status === 200 || this.status === 201) {
-                        if (response.data) {
-                            resolve(response.data);
-                        } else {
-                            reject(this.responseText);
-                        }
-                    } else {
-                        reject(this.responseText);
-                    }
-                }
-            };
-            xmlHttpRequest.open('PATCH', calloutURI, true);
-            xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-            xmlHttpRequest.send(JSON.stringify(restLead));
-        });
+        let calloutURI = '/apply/services/apexrest/v3/leads';
+        let options = {
+            headers: {name: 'Content-Type', value:'application/json'},
+            body: JSON.stringify(restLead)
+        };
+        return makeRequest(calloutURI, 'PATCH', options);
     }
 
     showDisclosureApproval() {
