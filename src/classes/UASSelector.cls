@@ -74,7 +74,6 @@ public without sharing class UASSelector {
         ]);
         return uasWithClientMap;
     }
-    
     public List<AggregateResult> getBrandKeySummary(Set<Id> parentAccountIds) {
         List<AggregateResult> uasSummary = [
             SELECT COUNT(Id) numberOfRecords,
@@ -91,7 +90,6 @@ public without sharing class UASSelector {
         ];
         return uasSummary;
     }
-      
     public List<Utility_Account_Subscription__c> selectBySharedSolarSystem(Id sssId) {
         return [
             SELECT Id, Name, Annual_Cost_Future_Rollup__c, Annual_kWh_Subscription_Future_Rollup__c,
@@ -99,6 +97,16 @@ public without sharing class UASSelector {
             FROM Utility_Account_Subscription__c
             WHERE Shared_Solar_System__c = :sssId
             AND Future_Customer_Subscription_KWDC_Rollup__c != 0
+        ];
+    }
+    public List<Utility_Account_Subscription__c> selectActiveUASBySSS(Set<Id> sssIdList) {
+        return [
+            SELECT Id, Opportunity_Stage__c, Customer_Group__c,
+                Opportunity__c, Next_Schedule_Z_Status__c, Opportunity__r.Shared_Solar_System__c,
+                Customer_Subscription_KW_DC__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Shared_Solar_System__c IN : sssIdList
+            AND Next_Schedule_Z_Status__c = 'Active Subscription'
         ];
     }
 }
