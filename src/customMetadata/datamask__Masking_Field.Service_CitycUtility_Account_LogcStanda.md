@@ -40,7 +40,7 @@
     </values>
     <values>
         <field>datamask__Masking_Type__c</field>
-        <value xsi:type="xsd:string">Pseudonymize</value>
+        <value xsi:type="xsd:string">Anonymize</value>
     </values>
     <values>
         <field>datamask__Range_Max__c</field>

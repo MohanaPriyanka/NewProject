@@ -27,16 +27,26 @@ public inherited sharing class SharedSolarSystemsSelector {
         ]);
         return sssMap;
     }
+    @SuppressWarnings('PMD.ApexSOQLInjection')
     public static List<Shared_Solar_System__c> selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
         Set<Id> utilityIds,
         Set<String> loadZones) {
+
+        String loadZoneString = '';
+        for (String loadZone : loadZones) {
+            loadZoneString += '\'' + String.escapeSingleQuotes(loadZone) +  '\',';
+        }
+        loadZoneString = loadZoneString.left(loadZoneString.length() - 1); // strip off extra comma
+
         String query = 'SELECT Id, Name, Capacity_Available_to_be_Reserved__c, Product__r.Id, ' +
-            'Product__r.Name, Product__r.Customer_Subscription_Type__c ' +
+            'Product__r.Name, Product__r.Customer_Subscription_Type__c, Sales_Partners__c ' +
             'FROM Shared_Solar_System__c ' +
             'WHERE Capacity_Available_to_be_Reserved__c > 0 ' +
             'AND Utility__c IN : utilityIds ';
-        String loadZoneString = '\'' + String.join(new List<String>(loadZones),'\',\'') + '\'';
-        query += 'AND Service_Territories__c INCLUDES (' + loadZoneString + ')';
+        if (loadZoneString != '') {
+            query +=
+                'AND Service_Territories__c INCLUDES (' + loadZoneString + ')';
+        }
         return Database.query(query);
     }
     // Gets all SSS that have at least 1 transfer, but that transfer is not in list
@@ -91,5 +101,15 @@ public inherited sharing class SharedSolarSystemsSelector {
             ];
         }
         return sssList;
+    }
+
+    public Map<String,Shared_Solar_System__c> getSSSByUniqueId(Set<String> blueWaveIds){
+        Map<String,Shared_Solar_System__c> bwIdToSSSMap = new Map<String,Shared_Solar_System__c>();
+        for (Shared_Solar_System__c sss : [ SELECT Id, Unique_ID__c
+                                            FROM Shared_Solar_System__c
+                                            WHERE Unique_ID__c IN : blueWaveIds]){
+            bwIdToSSSMap.put(sss.Unique_ID__c, sss);
+        }
+        return bwIdToSSSMap;
     }
 }

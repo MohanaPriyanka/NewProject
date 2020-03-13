@@ -257,7 +257,8 @@ public class TransferSelectorTest {
         transferList = TransferSelector.getTransfersByMonth(todaysDate.month(), todaysDate.year());
         System.assertEquals(3, transferList.size());
         List<Transfer__c> transfersById;
-        transfersById = TransferSelector.getAllTransfersById(new List<Id>{transferList[0].Id, transferList[1].Id });
+        TransferSelector selector = new TransferSelector();
+        transfersById = selector.getAllTransfersById(new List<Id>{transferList[0].Id, transferList[1].Id });
         System.assertEquals(2, transfersById.size());
     }
     @IsTest

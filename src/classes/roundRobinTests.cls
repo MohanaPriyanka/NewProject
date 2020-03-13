@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 @IsTest
 public with sharing class roundRobinTests {
 

@@ -10,7 +10,8 @@
         helper.handlePaymentAmountChange(component, event, helper);
     },
 
-    onPaymentMethodChange : function(component, event, helper){
+    onPaymentMethodChange : function(component, event, helper) {
+        event.stopPropagation();
         var response = event.getParam('response');
         var paymentMethod = event.getParam('paymentMethod');
         if (response.success) {
@@ -21,7 +22,6 @@
             }
             component.set("v.newPaymentMethodId",paymentMethod.Id);
             component.set("v.showCardPaymentMethod", false);
-            helper.linkPayMethodToAccount(component, event, helper);
             helper.checkAllRequiredFields(component, event, helper);
         } else {
             var errorMessage = 'A system error occurred while submitting your payment method. We have been notified and will contact you with further instructions.';

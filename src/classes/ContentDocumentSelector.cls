@@ -1,6 +1,6 @@
 /*************************************************************************************
  * Created By: peteryao on 9/12/19  
- * Test: ContentDocumentSelectorTest
+ * Test: ContentDocumentSelectorTest,SimpleSignupFormControllerTest
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class ContentDocumentSelector {
@@ -10,6 +10,16 @@ public inherited sharing class ContentDocumentSelector {
             FROM ContentDocument
             WHERE Id IN :documentIds
             ORDER BY ContentSize DESC
+        ];
+    }
+
+    public List<ContentDocumentLink> selectByLinkedEntity(Id entityId) {
+        return [
+            SELECT Id, ContentDocumentId, ContentDocument.LatestPublishedVersion.Title,
+                ContentDocument.LatestPublishedVersion.VersionData
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = :entityId
+            ORDER BY ContentDocument.ContentSize DESC
         ];
     }
 
@@ -32,5 +42,15 @@ public inherited sharing class ContentDocumentSelector {
             LIMIT 1
         ];
         return latestTransferSheet;
+    }
+
+    public Id getDocumentIdFromVersionId(Id versionId) {
+        List<ContentVersion> versionList = [
+            SELECT ContentDocumentId
+            FROM ContentVersion
+            WHERE Id = : versionId
+            LIMIT 1
+        ];
+        return versionList[0].ContentDocumentId;
     }
 }

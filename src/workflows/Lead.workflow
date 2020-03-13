@@ -786,6 +786,19 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
         <operation>Formula</operation>
         <protected>false</protected>
     </fieldUpdates>
+    <outboundMessages>
+        <fullName>Conga_Trigger_Review_Contract_Generae</fullName>
+        <apiVersion>48.0</apiVersion>
+        <description>Generates the Review version of the contract and attaches it to the lead.</description>
+        <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
+        <fields>Conga_Contract__c</fields>
+        <fields>Id</fields>
+        <includeSessionId>true</includeSessionId>
+        <integrationUser>api@bluewavesolar.com</integrationUser>
+        <name>Conga Trigger_Review Contract_Generae</name>
+        <protected>false</protected>
+        <useDeadLetterQueue>false</useDeadLetterQueue>
+    </outboundMessages>
     <rules>
         <fullName>Additional File Upload Form Email</fullName>
         <actions>
@@ -830,7 +843,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <name>BWOC_Alert_non_partner_preapproval_lead</name>
             <type>Alert</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Lead.Custom_ID__c</field>
             <operation>equals</operation>
@@ -1268,6 +1281,26 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
+        <fullName>Generate SSF Documents %28Review Version%29</fullName>
+        <actions>
+            <name>Conga_Trigger_Review_Contract_Generae</name>
+            <type>OutboundMessage</type>
+        </actions>
+        <active>true</active>
+        <formula>AND( Product_line__c=&quot;Community Solar&quot;, ISPICKVAL(LeadSource,&quot;Switch&quot;), ISBLANK(Customer_Signed_Date__c), NOT(ISBLANK(Product__c)), $User.LastName!=&quot;Originations&quot; )</formula>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Generate and Send SSF Documents %28Signed Version%29</fullName>
+        <actions>
+            <name>Conga_Trigger_Review_Contract_Generae</name>
+            <type>OutboundMessage</type>
+        </actions>
+        <active>true</active>
+        <formula>AND(  Product_line__c=&quot;Community Solar&quot;,   ISPICKVAL(LeadSource,&quot;Switch&quot;),  ISBLANK(PRIORVALUE(Customer_Signed_Date__c)),   NOT(ISBLANK(Customer_Signed_Date__c)),  NOT(ISBLANK(Product__c)),   $User.LastName!=&quot;Originations&quot; )</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
         <fullName>Internal Notification%3A CS%2FCL Duplicate Account</fullName>
         <active>false</active>
         <criteriaItems>
@@ -1420,7 +1453,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <name>EMAIL_LOG_RL_Email_Application_Receipt_W_Avidia_Bank_Account</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND 3</booleanFilter>
         <criteriaItems>
             <field>Lead.Unfinished_Lead__c</field>
@@ -1450,7 +1483,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <name>EMAIL_LOG_RL_Email_Application_Receipt_W_O_Avidia_Bank_Account</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND 3</booleanFilter>
         <criteriaItems>
             <field>Lead.Unfinished_Lead__c</field>

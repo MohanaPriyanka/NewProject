@@ -173,7 +173,7 @@
     <fields>
         <fullName>Actual_Credits_Flowing_Date__c</fullName>
         <externalId>false</externalId>
-        <label>XXXActual Utility NMC to Customer Date</label>
+        <label>Actual Utility NMC to Customer Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -248,7 +248,7 @@
         <formula>Project_Management__r.Actual_PTO_date__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Formula field that is populated for SSS that have a relationship with a project. NOT visible on SSS Layout</inlineHelpText>
-        <label>XXXActual PTO Date Pull from Project</label>
+        <label>Actual PTO Date Pull from Project</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -261,7 +261,7 @@
         <formula>BLANKVALUE(Actual_PTO_Date_MANUAL__c,Actual_PTO_Date_Pull_from_Project__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Field populated by either Actual PTO Date Pull from Project from SSS with relationships to PM or Actual PTO Date (MANUAL) if it is filled in. If the Actual PTO Date (MANUAL) is not filled in, the field is populated by the Actual PTO Date Pull from Project</inlineHelpText>
-        <label>XXXActual PTO Date</label>
+        <label>Actual PTO Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -320,20 +320,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Anchor_Tenant__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>XXXAnchor Tenant</label>
-        <referenceTo>Opportunity</referenceTo>
-        <relationshipLabel>Shared Solar Systems</relationshipLabel>
-        <relationshipName>Shared_Solar_Systems</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Apex_Context__c</fullName>
         <defaultValue>false</defaultValue>
         <description>No profiles or permission sets should grant users edit access to this field. It is used to make sure record updates made in Apex aren&apos;t prevented by validation rules.</description>
@@ -360,7 +346,7 @@
         <fullName>Assemblage_Count__c</fullName>
         <defaultValue>1</defaultValue>
         <externalId>false</externalId>
-        <label>XXXAssemblage Count</label>
+        <label>Assemblage Count</label>
         <precision>2</precision>
         <required>false</required>
         <scale>0</scale>
@@ -375,7 +361,7 @@
         <externalId>false</externalId>
         <formula>RIGHT(Name,4)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXAssemblage</label>
+        <label>Assemblage</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -454,7 +440,7 @@
         <description>This field determines whether or not the customer&apos;s portal will show the Chargent connected payment button/form or if it will show the form that simply collects payment information up front. True is the latter, false is the former.</description>
         <externalId>false</externalId>
         <inlineHelpText>This field determines whether or not the customer&apos;s portal will show the Chargent connected payment button/form or if it will show the form that simply collects payment information up front. True is the latter, false is the former.</inlineHelpText>
-        <label>XXXAuto-Payment Form</label>
+        <label>Auto-Payment Form</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -732,6 +718,21 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         </valueSet>
     </fields>
     <fields>
+        <fullName>Client_Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Client Opportunity that is responsible for this Shared Solar System. Note that this is applicable to the sales process, not post-sale.</inlineHelpText>
+        <label>Client Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
@@ -911,7 +912,7 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <externalId>false</externalId>
         <formula>IF(ISBLANK( Project_Management__c ),  Estimated_COD_Date_Manual__c,Estimated_COD_Date__c  )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXEstimated COD Date</label>
+        <label>Estimated COD Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -930,15 +931,15 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
     </fields>
     <fields>
         <fullName>Estimated_Credit_Flow_Date__c</fullName>
-        <description>Adds 14 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
+        <description>Adds 30 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 30 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
         <externalId>false</externalId>
         <formula>BLANKVALUE(Est_Utility_NMC_to_Customer_Override__c,
 IF(
 ISBLANK(Actual_PTO_Date__c),
 Estimated_PTO_Date__c + 90,
-BLANKVALUE(Last_Sch_Z_Enacted_Date__c+14,
-Actual_PTO_Date__c +14)))</formula>
-        <inlineHelpText>Adds 14 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</inlineHelpText>
+BLANKVALUE(Last_Sch_Z_Enacted_Date__c+30,
+Actual_PTO_Date__c +30)))</formula>
+        <inlineHelpText>Adds 30 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 30 days to Actual PTO Date or 3 months to the Estimated PTO Date.</inlineHelpText>
         <label>Est Utility NMC to Customer Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -1216,7 +1217,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <externalId>false</externalId>
         <formula>Assemblage_Count__c *  Maximum_Subscription_Assemblage__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Policy Dependent: Small Community Solar customer kW limit per project; Required for MA SMART and SREC</inlineHelpText>
         <label>Maximum Subscription Capacity (kW DC)</label>
         <precision>18</precision>
         <required>false</required>
@@ -1453,7 +1453,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <description>This is the name of the entity that we are servicing a shared solar system on behalf of.</description>
         <externalId>false</externalId>
         <inlineHelpText>This is the name of the entity that we are servicing a shared solar system on behalf of.</inlineHelpText>
-        <label>XXXServicing on behalf of</label>
+        <label>Servicing on behalf of</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1654,7 +1654,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <fullName>SSS_Update__c</fullName>
         <description>Triggers workflows</description>
         <externalId>false</externalId>
-        <label>XXXSSS Update</label>
+        <label>SSS Update</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1736,6 +1736,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>All</label>
                 </value>
                 <value>
+                    <fullName>All Care Energy Inc.</fullName>
+                    <default>false</default>
+                    <label>All Care Energy Inc.</label>
+                </value>
+                <value>
                     <fullName>Arcadia Power</fullName>
                     <default>false</default>
                     <label>Arcadia Power</label>
@@ -1801,6 +1806,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Energy Consulting Associates</label>
                 </value>
                 <value>
+                    <fullName>Energy Partner Consultants</fullName>
+                    <default>false</default>
+                    <label>Energy Partner Consultants</label>
+                </value>
+                <value>
                     <fullName>EnergySage</fullName>
                     <default>false</default>
                     <label>EnergySage</label>
@@ -1809,6 +1819,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>First Parish in Wayland</fullName>
                     <default>false</default>
                     <label>First Parish in Wayland</label>
+                </value>
+                <value>
+                    <fullName>Global Energy Development LLC</fullName>
+                    <default>false</default>
+                    <label>Global Energy Development LLC</label>
                 </value>
                 <value>
                     <fullName>Grace Episcopal Church</fullName>
@@ -1849,6 +1864,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Next Step Living</fullName>
                     <default>false</default>
                     <label>Next Step Living</label>
+                </value>
+                <value>
+                    <fullName>Other Test Partner</fullName>
+                    <default>false</default>
+                    <label>Other Test Partner</label>
                 </value>
                 <value>
                     <fullName>Palmetto Solar</fullName>
@@ -1981,22 +2001,6 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Yeloha</label>
                 </value>
                 <value>
-                    <fullName>Global Energy Development LLC</fullName>
-                    <default>false</default>
-                    <label>Global Energy Development LLC</label>
-                </value>
-                <value>
-                    <fullName>Energy Partner Consultants</fullName>
-                    <default>false</default>
-                    <label>Energy Partner Consultants</label>
-                </value>
-                <value>
-                    <fullName>Other Test Partner</fullName>
-                    <default>false</default>
-                    <isActive>false</isActive>
-                    <label>Other Test Partner</label>
-                </value>
-                <value>
                     <fullName>Oxford100</fullName>
                     <default>false</default>
                     <isActive>false</isActive>
@@ -2030,7 +2034,6 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Service_Territories__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Policy Dependent: Required for MA SREC and NY NEM</inlineHelpText>
         <label>Service Territories</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -2395,7 +2398,7 @@ null)</formula>
         <fullName>Update_Dummy__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>XXXUpdate Dummy</label>
+        <label>Update Dummy</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -2461,7 +2464,7 @@ null)</formula>
         <fullName>Waitlist__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>If checked, this project is a waitlist</inlineHelpText>
+        <inlineHelpText>If checked, this project is a waitlist. This will cause &quot;More info to come soon!&quot; to display in the Customer Portal.</inlineHelpText>
         <label>Waitlist</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -3551,25 +3554,13 @@ Client_Account__c != BWC_Project_Entity_Manual__r.Client_Account__c
         <errorMessage>The Client Account on the Shared Solar System and the Client Account on the Entity are not the same. If the Client Account on the Entity is not filled in, make sure that it is.</errorMessage>
     </validationRules>
     <validationRules>
-        <fullName>Client_Account_Validation</fullName>
-        <active>true</active>
-        <description>Checks to make sure that the Client Account on the SSS is the same as the Client Account on the Entity.</description>
-        <errorConditionFormula>(
-Client_Account__c != BWC_Project_Entity_Manual__r.Client_Account__c
-&amp;&amp;
- ISBLANK(BWC_Project_Entity_Manual__r.Client_Account__c
-)=false
-
-)</errorConditionFormula>
-        <errorMessage>The Client Account on the Shared Solar System and the Client Account on the Entity are not the same. If the Client Account on the Entity is not filled in, make sure that it is.</errorMessage>
-    </validationRules>
-    <validationRules>
         <fullName>Lock_Utility</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
 
-ISCHANGED( Utility__c ),/*utility is being changed*/
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
 
+ISCHANGED( Utility__c ),/*utility is being changed*/
 
 OR(
 ISPICKVAL(Stage__c,&quot;Management&quot;),
@@ -3664,15 +3655,15 @@ Credit_Score_Requirement__c = 0
         <active>true</active>
         <description>Prevents users who do not have the &quot;Allow Edit of SSS Address&quot; permission from changing the SSS address.</description>
         <errorConditionFormula>NOT($Permission.Allow_Edit_of_SSS_Address) &amp;&amp;
-    OR(
-    ISCHANGED(Address__c),
-    ISCHANGED(City__c),
-    ISCHANGED(State__c),
-    ISCHANGED(Zip_Code__c),
-    ISCHANGED(Meter__c),
-    ISCHANGED(Host_Utility_Account_Number__c),
-    ISCHANGED(App_ID_WO_Manual__c)
-    )</errorConditionFormula>
+OR(
+ISCHANGED(Address__c),
+ISCHANGED(City__c),
+ISCHANGED(State__c),
+ISCHANGED(Zip_Code__c),
+ISCHANGED(Meter__c),
+ISCHANGED(Host_Utility_Account_Number__c),
+ISCHANGED(App_ID_WO_Manual__c)
+)</errorConditionFormula>
         <errorMessage>Due to their importance, certain fields on the Shared Solar System page are restricted so that only certain people can edit them. Please contact your System Administrator to edit.</errorMessage>
     </validationRules>
     <validationRules>
@@ -3680,6 +3671,8 @@ Credit_Score_Requirement__c = 0
         <active>true</active>
         <description>Prevents updates to yield or system size once project is in acq or management. Update should go through the SSSO approval process.</description>
         <errorConditionFormula>AND(
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+
 OR(
 ISCHANGED( Expected_Yield_kWh_kW__c ),
 ISCHANGED( Total_System_Size_kWh_DC__c)
@@ -3698,6 +3691,8 @@ ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
         <fullName>Utility_Decimals_Requirement</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+
 ISCHANGED( Stage__c),/*if the stage is changed*/
 
 OR(

@@ -5,12 +5,13 @@
     <changePasswordTemplate>CS_Application_Email_Notifications/CommunityChangePasswordEmailTemplate</changePasswordTemplate>
     <communityRoles/>
     <disableReputationRecordConversations>true</disableReputationRecordConversations>
-    <emailSenderAddress>rwilliams@bluewavesolar.com</emailSenderAddress>
-    <emailSenderName>FAQ</emailSenderName>
+    <emailSenderAddress>customercare@bluewavesolar.com</emailSenderAddress>
+    <emailSenderName>BlueWave</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>true</enableDirectMessages>
     <enableGuestChatter>true</enableGuestChatter>
     <enableGuestFileAccess>true</enableGuestFileAccess>
+    <enableGuestMemberVisibility>true</enableGuestMemberVisibility>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
     <enableMemberVisibility>true</enableMemberVisibility>
@@ -25,169 +26,8 @@
     <enableUpDownVote>false</enableUpDownVote>
     <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
-    <navigationLinkSet>
-        <navigationMenuItem>
-            <label>SOLUTIONS</label>
-            <position>1</position>
-            <publiclyAvailable>true</publiclyAvailable>
-            <subMenu>
-                <navigationMenuItem>
-                    <label>Home Solar Loans</label>
-                    <position>0</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/home-solar-loans</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>For Installers</label>
-                    <position>1</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/home-solar-loans/for-installers</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>All Blue</label>
-                    <position>2</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/allblue</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Community Solar</label>
-                    <position>3</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/community-solar</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>CS Sales Partner</label>
-                    <position>4</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/community-solar/cs-sales-partners</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>CS Clients</label>
-                    <position>5</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/community-solar/cs-service-clients</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Solar Development</label>
-                    <position>6</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/solar-development</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Land Owners</label>
-                    <position>7</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/solar-development/land-owners</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Our Projects</label>
-                    <position>8</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/solar-development/our-projects</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-            </subMenu>
-            <type>MenuLabel</type>
-        </navigationMenuItem>
-        <navigationMenuItem>
-            <label>COMPANY</label>
-            <position>2</position>
-            <publiclyAvailable>true</publiclyAvailable>
-            <subMenu>
-                <navigationMenuItem>
-                    <label>Our Values</label>
-                    <position>0</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>https://bluewavesolar.com/about/our-values</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Our Team</label>
-                    <position>1</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>https://bluewavesolar.com/about/our-team</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Contact Us</label>
-                    <position>2</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>https://bluewavesolar.com/contact</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-            </subMenu>
-            <type>MenuLabel</type>
-        </navigationMenuItem>
-        <navigationMenuItem>
-            <label>RESOURCES</label>
-            <position>3</position>
-            <publiclyAvailable>true</publiclyAvailable>
-            <subMenu>
-                <navigationMenuItem>
-                    <label>Success Stories</label>
-                    <position>0</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>https://bluewavesolar.com/bw-resources/success-stories</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>News</label>
-                    <position>1</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>https://bluewavesolar.com/bw-resources/news</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Events</label>
-                    <position>2</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>https://bluewavesolar.com/bw-resources/events</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Blog</label>
-                    <position>3</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>https://bluewavesolar.com/bw-resources/blog</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Education</label>
-                    <position>4</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>https://bluewavesolar.com/bw-resources/education</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-            </subMenu>
-            <type>MenuLabel</type>
-        </navigationMenuItem>
-    </navigationLinkSet>
     <networkMemberGroups>
+        <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
         <profile>api only</profile>
     </networkMemberGroups>

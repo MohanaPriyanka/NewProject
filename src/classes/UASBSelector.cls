@@ -1,4 +1,4 @@
-/* Tested by: ZuoraUsageServiceTest
+/* Tested by: ZuoraUsageServiceTest, UASBSelectorTest
  */
 
 public without sharing class UASBSelector {
@@ -21,5 +21,13 @@ public without sharing class UASBSelector {
             'AND Externally_Serviced__c = FALSE ' +
             'ORDER BY Utility_Account_Subscription__r.Opportunity__r.AccountId, Date__c';
         return Database.getQueryLocator(query);
+    }
+
+    public Map<Id, UASB__c> getUASBsFromIds(Set<Id> uasbIds){
+        return new Map<Id, UASB__c>([
+            SELECT Id, Transfer__c, Savings__c
+            FROM UASB__c
+            WHERE Id IN : uasbIds
+        ]);
     }
 }

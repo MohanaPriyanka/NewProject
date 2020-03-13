@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>datamask__Active__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>datamask__Custom__c</field>
@@ -40,7 +40,7 @@
     </values>
     <values>
         <field>datamask__Masking_Type__c</field>
-        <value xsi:type="xsd:string">Delete</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>datamask__Range_Max__c</field>

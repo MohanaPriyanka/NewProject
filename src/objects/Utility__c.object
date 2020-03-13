@@ -47,11 +47,23 @@
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>false</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <description>Information that is specific to this Utility.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Information that is specific to this Utility.</inlineHelpText>
+        <label>Comments</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
     <fields>
         <fullName>Credits_Allocated_Rounding_Method__c</fullName>
         <externalId>false</externalId>
@@ -134,6 +146,7 @@
         <active>true</active>
         <description>This prevents changes to the # of decimals field. It&apos;s needed because if the # of decimals changes, we&apos;d need to log subscription orders for all UASs under that utility.</description>
         <errorConditionFormula>AND(
+$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
 ISCHANGED(Number_of_Decimal_Places__c)=true,
 ISNULL(PRIORVALUE(Number_of_Decimal_Places__c))=false
 )</errorConditionFormula>

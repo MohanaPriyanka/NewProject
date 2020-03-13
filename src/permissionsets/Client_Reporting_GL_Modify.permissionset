@@ -12,8 +12,18 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Journal_Entry__c.Applied_Record_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Journal_Entry__c.Billing_Or_Collection__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Journal_Entry__c.Client_Lookup__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -24,6 +34,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Journal_Entry__c.Customer_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Journal_Entry__c.Customer_Lookup__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -59,6 +74,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Journal_Entry__c.Payment_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Journal_Entry__c.Project_Lookup__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

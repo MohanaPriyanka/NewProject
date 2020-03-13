@@ -1353,7 +1353,7 @@ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_En
     </validationRules>
     <validationRules>
         <fullName>Opportunity_and_SSS_Lock</fullName>
-        <active>true</active>
+        <active>false</active>
         <errorConditionFormula>AND(
 
  $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,

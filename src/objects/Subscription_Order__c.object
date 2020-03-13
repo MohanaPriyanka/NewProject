@@ -1,11 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Subscription_Order_Default</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
     <allowInChatterGroups>true</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -34,33 +177,6 @@
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Approved_Change_in_Percent_Share__c</fullName>
-        <description>Stamped with &apos;Calculated Change in % Share&apos; when Approved. If type = &apos;SSS Update,&apos; stamped with value of &apos;System Change Percent Share&apos; - &apos;Previous % Share.&apos; We need a static field for tracking purposes and to use in Rollup summary fields .</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Stamped with &apos;Calculated Change in % Share&apos; when Approved. If type = &apos;SSS Update,&apos; stamped with value of &apos;System Change Percent Share&apos; - &apos;Previous % Share.&apos; We need a static field for tracking purposes and to use in Rollup summary fields .</inlineHelpText>
-        <label>Approved Change in Percent Share</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>5</scale>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>Approved_Change_in_Subscription__c</fullName>
-        <description>This is the net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription. It&apos;s important to have a static value for tracking purposes, and to use in rollup summary fields.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This is the net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription. It&apos;s important to</inlineHelpText>
-        <label>Approved Change in Subscription (KW DC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Calculated_Change_in_Percent_Share_of_Sy__c</fullName>
@@ -231,6 +347,15 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Effective_Date__c</fullName>
         <description>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved.</description>
         <externalId>false</externalId>
@@ -336,30 +461,18 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>System_Change_Percent_Share_of_System__c</fullName>
+        <fullName>Total_System_Size_kW_DC__c</fullName>
+        <description>This is the Total System Size kW DC on the related shared solar system at the time the subscription order was created.</description>
         <externalId>false</externalId>
-        <formula>ROUND( Previous_kw_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>System Change Percent Share of System</label>
-        <precision>18</precision>
+        <inlineHelpText>This is the Total System Size kW DC on the related shared solar system at the time the subscription order was created.</inlineHelpText>
+        <label>Total System Size kW DC</label>
+        <precision>8</precision>
         <required>false</required>
-        <scale>5</scale>
-        <trackHistory>false</trackHistory>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>System_Change_kW_DC_Subscription__c</fullName>
-        <externalId>false</externalId>
-        <formula>ROUND(  Previous_kw_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>System Change kW DC Subscription</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>5</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Type__c</fullName>
@@ -392,11 +505,6 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
                     <fullName>Resize</fullName>
                     <default>false</default>
                     <label>Resize</label>
-                </value>
-                <value>
-                    <fullName>Initial</fullName>
-                    <default>false</default>
-                    <label>Initial</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -461,22 +569,28 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
     <nameField>
         <displayFormat>SO-{00000}</displayFormat>
         <label>Subscription Order Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Subscription Orders</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
     <recordTypes>
         <fullName>Subscription_Orders</fullName>
         <active>true</active>
         <label>Subscription Orders</label>
         <picklistValues>
+            <picklist>Approval_Status__c</picklist>
+            <values>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Type__c</picklist>
             <values>
                 <fullName>Cancellation</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Initial</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -489,13 +603,6 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
             </values>
             <values>
                 <fullName>Transfer</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -505,13 +612,16 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <active>true</active>
         <label>System Change Order</label>
         <picklistValues>
+            <picklist>Approval_Status__c</picklist>
+            <values>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Type__c</picklist>
             <values>
                 <fullName>Cancellation</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Initial</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -527,19 +637,12 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Lock_Approved_SOs</fullName>
-        <active>false</active>
+        <active>true</active>
         <errorConditionFormula>AND(
 OR(
 ISPICKVAL(Approval_Status__c,&quot;Approved&quot;),

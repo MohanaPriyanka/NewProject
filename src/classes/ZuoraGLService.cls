@@ -45,6 +45,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         String Lockbox;
         String PaymentMethod;
         String ArchivedChargentData;
+        String AppliedRecordId;
     }
 
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
@@ -53,6 +54,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             when 'AccountingPeriod' {
                 response = response.substring(1,response.length()-1); // Removes Brackets since only returning 1, not a list:
                 ZuoraAPI.AccountingPeriod lastAccountingPeriod = (ZuoraAPI.AccountingPeriod) System.JSON.deserialize(response, ZuoraAPI.AccountingPeriod.class);
+                saveAccountingPeriodCloseDate(lastAccountingPeriod.EndDate);
                 String queryString = ZuoraGLSelector.getInvoiceItems(method.startDate, method.endDate);
                 method.methodName = 'InvoiceItem';
                 Map<String,Date> optionalDates = new Map<String,Date>();
@@ -90,6 +92,21 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         }
     }
 
+    @TestVisible
+    public void saveAccountingPeriodCloseDate(Date periodCloseDate) {
+        try {
+            Zuora_Custom_Setting__c zuoraSetting = Zuora_Custom_Setting__c.getOrgDefaults();
+            zuoraSetting.Last_Accounting_Period_Close_Date__c = periodCloseDate;
+            if (zuoraSetting == null || zuoraSetting.Id == null){
+                insert zuoraSetting;
+            } else {
+                update zuoraSetting;
+            }
+        } catch (Exception excep){
+            Logger.logNow('ZuoraGLService','saveAccountingPeriodCloseDate',excep.getMessage() + excep.getStackTraceString());
+        }
+    }
+
     public void generalGLRecordInsert(String response, ZuoraDataQueryService.ProcessingParameter method){
         List<GeneralLedgerItem> ledgerItems = new List<GeneralLedgerItem>();
         Map<String, Journal_Entry__c> zuoraJournalEntries = new Map<String, Journal_Entry__c>();
@@ -97,7 +114,8 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         ledgerItems = (List<GeneralLedgerItem>)JSON.deserialize(response, List<GeneralLedgerItem>.class);
         zuoraJournalEntries = convertGeneralLedgerToJournalEntry(ledgerItems, method.methodName);
 
-        List<Journal_Entry__c> sfEntries = ZuoraGLSelector.getSFJournalEntries(method.startDate,method.endDate,method.methodName);
+        JournalEntrySelector selector = new JournalEntrySelector();
+        List<Journal_Entry__c> sfEntries = selector.getSFJournalEntries(method.startDate,method.endDate,method.methodName);
         // Sets entriesSafeToDelete, reconciliationItems and entriesToUpsert:
         Date periodCloseDate = method.optionalDates.get('PeriodCloseDate');
         checkForClosedPeriodUpdates(zuoraJournalEntries,sfEntries,periodCloseDate);
@@ -108,7 +126,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         if (reconciliationItems.size() > 0){
             insert reconciliationItems;
         }
-        if (entriesToUpsert.size() > 10000){
+        if (entriesToUpsert.size() > 200){
             Database.executeBatch(new GenericBatchDMLOperation(entriesToUpsert, 'Upsert'));
         } else {
             upsert entriesToUpsert External_Id__c;
@@ -182,6 +200,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             entry.Reason_Code__c = ledger.reasonCode;
             entry.External_Id__c = ledger.ExternalId;
             entry.Customer_Account__c = ledger.CustomerAccount;
+            entry.Applied_Record_Id__c = ledger.AppliedRecordId;
 
             // Use CRMId as a switch for historical data v. new data in Zuora
             if (objectType == 'PaymentPart' && ledger.CRMId == null) {
@@ -284,7 +303,6 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             message += '_Paid to Client:' +  String.valueOf(sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c);
             message += '_DepositAccount:' +  String.valueOf(sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c);
             message += '_Date Debugging: ' +  String.valueOf(sfEntry.Date__c) + String.valueOf(zuoraEntry.Date__c);
-            Logger.LogLater('ZuoraGLService', 'entriesMatch', message + ' __ ' + JSON.serialize(sfEntry) + ' __ ' + JSON.serialize(zuoraEntry));
         }
         return isMatch;
     }

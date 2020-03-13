@@ -101,24 +101,6 @@ public with sharing class ZuoraPaymentPageControllerTest {
     }
 
     @IsTest
-    public static void testLinkPayMethod() {
-        Zuora__CustomerAccount__c sfAccount = testSetupCreateAccount();
-
-        ZuoraAccountSelector.AccountWithPaymentMethod acctWithPay;
-        acctWithPay = ZuoraPaymentPageController.getAccountAndPayMethodFromZuora(sfAccount.Id);
-
-        System.assertEquals('2c92c0f86b78f56c016b7b00480c2e24', acctWithPay.account.Id);
-        System.assertEquals('2c92c0f86a0c41a5016a1f41d63a2f96', acctWithPay.paymentMethod.Id);
-
-        Boolean isSuccess = ZuoraPaymentPageController.linkPaymentMethodToAccount(
-            acctWithPay.account.Id,
-            acctWithPay.paymentMethod.Id
-        );
-
-        System.assertEquals(true, isSuccess);
-    }
-
-    @IsTest
     public static void testPaymentApplicationCall() {
         ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
         payment.amount = 200;

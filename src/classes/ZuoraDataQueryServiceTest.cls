@@ -92,7 +92,10 @@ public class ZuoraDataQueryServiceTest {
         dataResult.Id = 'queryCompleted';
         result.data = dataResult;
 
+        Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c();
+        insert zuoraDataQuery;
         ZuoraDataQueryService.DataQueryRequest request = new ZuoraDataQueryService.DataQueryRequest();
+        request.recordId = zuoraDataQuery.Id;
 
         Test.startTest();
         ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, request);
@@ -101,6 +104,7 @@ public class ZuoraDataQueryServiceTest {
         List<Zuora_Data_Query__c> updatedQueries = [
             SELECT Id, Query__c, Status__c, Zuora_Id__c, Data_From_Zuora__c
             FROM Zuora_Data_Query__c
+            WHERE Id = :zuoraDataQuery.Id
         ];
 
         System.assertEquals(1,updatedQueries.size());
@@ -162,5 +166,12 @@ public class ZuoraDataQueryServiceTest {
         ZuoraDataQueryService.handlePostQueryJob('',new ZuoraDataQueryService.ProcessingParameter());
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size(), 'Expected no errors from a zero result query');
+    }
+
+    @IsTest
+    private static void testHandleNoProcessingParameter() {
+        ZuoraDataQueryService.handlePostQueryJob('',null);
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(0, errorLogs.size(), 'Expected no errors from a zero result query with no processing parameter');
     }
 }
