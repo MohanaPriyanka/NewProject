@@ -7,6 +7,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 import getContentDocumentsById from '@salesforce/apex/SimpleSignupFormController.getContentDocumentDataById';
 import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormController.getContentDocumentLinksByLead'
+import {makeRequest} from 'c/httpRequestService';
 
 export default class SsfAgreements extends LightningElement {
     @api leadJson;
@@ -112,14 +113,17 @@ export default class SsfAgreements extends LightningElement {
             let restLead = {
                 id: this.lead.id,
                 email: this.lead.email,
-                applicationCompleteDate: new Date()
+                customerSignedDate: new Date()
             };
             this.showSpinner = true;
-            this.spinnerMessage = 'Completing your application';
-            this.finishApplication(restLead).then(
+            this.spinnerMessage = 'Saving your consents';
+            this.consentToDocs(restLead).then(
                 (resolveResult) => {
                     this.showSpinner = false;
-                    this.showWarningToast('Success', resolveResult);
+                    const consentsCompleteEvent = new CustomEvent('consentscomplete', {
+                        detail: this.lead,
+                    });
+                    this.dispatchEvent(consentsCompleteEvent);
                 },
                 (rejectResult) => {
                     this.showSpinner = false;
@@ -129,34 +133,19 @@ export default class SsfAgreements extends LightningElement {
                         message: JSON.stringify(rejectResult),
                         severity: 'Error'
                     });
-                    this.showWarningToast('Failed', rejectResult);
+                    this.showWarningToast('Oops', 'We ran into a technical issue, please contact customer care\n' + rejectResult);
                 }
             );
         }
     }
 
-    finishApplication(restLead) {
-        return new Promise(function(resolve, reject) {
-            let calloutURI = '/apply/services/apexrest/v3/leads';
-            const xmlHttpRequest = new XMLHttpRequest();
-            xmlHttpRequest.onreadystatechange = function() {
-                if (this.readyState === 4) {
-                    const response = JSON.parse(this.responseText);
-                    if (this.status === 200 || this.status === 201) {
-                        if (response.data) {
-                            resolve(response.data);
-                        } else {
-                            reject(this.responseText);
-                        }
-                    } else {
-                        reject(this.responseText);
-                    }
-                }
-            };
-            xmlHttpRequest.open('PATCH', calloutURI, true);
-            xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-            xmlHttpRequest.send(JSON.stringify(restLead));
-        });
+    consentToDocs(restLead) {
+        let calloutURI = '/apply/services/apexrest/v3/leads';
+        let options = {
+            headers: {name: 'Content-Type', value:'application/json'},
+            body: JSON.stringify(restLead)
+        };
+        return makeRequest(calloutURI, 'PATCH', options);
     }
 
     showDisclosureApproval() {
