@@ -1885,6 +1885,16 @@ This field can be changed to a formula consistent with the other factors if LASE
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Customer_Signed_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The date that the customer provided consents in the Simple Signup Form</inlineHelpText>
+        <label>Customer Signed Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
         <fullName>Customer_Type_Formula__c</fullName>
         <description>Used to map into Opportunity to trigger workflow that set record type to business/residential. Picklist Customer Group will not fire workflow.</description>
         <externalId>false</externalId>

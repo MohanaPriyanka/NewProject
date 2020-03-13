@@ -74,7 +74,7 @@ public without sharing class LeadSelector {
                 Product__r.Id, Phone, Business_Title__c, Utility_relationship__r.Name, Product__r.Name,
                 Application_Complete_Date__c, Status, Utility_relationship__r.EIA_ID__c, Continue_Application_Link__c,
                 Product_line__c, Manual_Campaign_ID__c, Utility_relationship__r.Id, Referral_Name__c, Referral_Email__c,
-                Business_Phone__c, Customer_type__c
+                Business_Phone__c, Customer_type__c, Customer_Signed_Date__c
             FROM Lead
             WHERE Id = :leadIds
         ];
@@ -83,7 +83,7 @@ public without sharing class LeadSelector {
     public List<Lead> selectForMerge(Set<Id> leadIds) {
         String fields = String.join(apiLeadFields, ', ');
         String query = 'SELECT ' + fields + ' FROM Lead ' + ' WHERE Id IN :leadIds ORDER BY CreatedDate ASC';
-        List<Lead> leadList = Database.query(query);
+        List<Lead> leadList = Database.query(String.escapeSingleQuotes(query));
         return leadList;
     }
 }
