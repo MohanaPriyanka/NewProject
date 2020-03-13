@@ -3423,6 +3423,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>RestZipCode</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>RoundRobinDistribution</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -26105,6 +26109,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Customer_Referral__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Customer_Signed_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

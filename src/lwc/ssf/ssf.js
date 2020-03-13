@@ -15,10 +15,12 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track getBasicInfo;
     @track getAgreements;
     @track hasCapacity;
+    @track utilities;
     @track utilityOptions;
     @track zipCodeInput;
     @track leadJSON;
     @track selectedProduct;
+    @track zipCodeResponse;
     @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {
@@ -103,5 +105,12 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         this.leadJSON = JSON.stringify(event.detail);
         this.getAgreements = true;
         this.getBasicInfo = false;
+    }
+
+    handleConsentsComplete(event) {
+        const consentsCompleteEvent = new CustomEvent('consentscomplete', {
+            detail: event.detail
+        });
+        this.dispatchEvent(consentsCompleteEvent);
     }
 }

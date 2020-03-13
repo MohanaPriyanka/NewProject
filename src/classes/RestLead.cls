@@ -21,6 +21,7 @@ public without sharing class RestLead {
     public String productName;
     public Id partnerId;
     public Id salesRepId;
+    public Datetime customerSignedDate;
     public Datetime applicationCompleteDate;
     public String eiaId;
     public String continueApplicationLink;
@@ -50,12 +51,14 @@ public without sharing class RestLead {
         this.productName = lead.Product__r.Name;
         this.businessPhone = lead.Business_Phone__c;
         this.businessTitle = lead.Business_Title__c;
+        this.customerSignedDate = lead.Customer_Signed_Date__c;
         this.applicationCompleteDate = lead.Application_Complete_Date__c;
         this.eiaId = lead.Utility_relationship__r.EIA_ID__c;
         this.continueApplicationLink = lead.Continue_Application_Link__c;
         this.campaignId = lead.Manual_Campaign_ID__c;
         this.referralName = lead.Referral_Name__c;
         this.referralEmail = lead.Referral_Email__c;
+
     }
 
     public void validateCreateFields() {
@@ -132,6 +135,7 @@ public without sharing class RestLead {
         if (fieldNames.contains('loadZone')) baseLead.LoadZone__c = this.loadZone;
         if (fieldNames.contains('businessPhone')) baseLead.Business_Phone__c = this.businessPhone;
         if (fieldNames.contains('businessTitle')) baseLead.Business_Title__c = this.businessTitle;
+        if (fieldNames.contains('customerSignedDate')) baseLead.Customer_Signed_Date__c = this.customerSignedDate;
         if (fieldNames.contains('applicationCompleteDate')) baseLead.Application_Complete_Date__c = this.applicationCompleteDate;
         if (fieldNames.contains('campaignId')) baseLead.Manual_Campaign_ID__c = this.campaignId;
         if (fieldNames.contains('referralName')) baseLead.Referral_Name__c = this.referralName;
@@ -172,6 +176,7 @@ public without sharing class RestLead {
             Business_Phone__c = this.businessPhone,
             Business_Title__c = this.businessTitle,
             Customer_type__c = this.applicationType,
+            Customer_Signed_Date__c = this.customerSignedDate,
             Application_Complete_Date__c = this.applicationCompleteDate,
             Status = 'Sales Qualified',
             Manual_Campaign_ID__c = this.campaignId,

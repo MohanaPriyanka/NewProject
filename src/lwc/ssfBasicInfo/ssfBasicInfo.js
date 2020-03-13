@@ -2,11 +2,13 @@
  * Created by PeterYao on 2/24/2020.
  */
 
-import {LightningElement, track, api} from 'lwc';
+import {LightningElement, track, api, wire} from 'lwc';
+import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
 import { getUSStateOptions } from 'c/util';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import {makeRequest} from 'c/httpRequestService';
 
-export default class SsfBasicInfo extends LightningElement {
+export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api zipinput;
     @track showSpinner;
     @track spinnerMessage;
@@ -18,7 +20,6 @@ export default class SsfBasicInfo extends LightningElement {
     @track billingCity;
     @track billingState;
     @track billingZip;
-    @track zipCodeResponse = false;
     @track selectedUtility;
     @api utilityOptions;
     @track utilityAccounts;
@@ -28,6 +29,7 @@ export default class SsfBasicInfo extends LightningElement {
     @track applicationType;
     utilityAccountCount = 1;
     @api selectedProduct;
+    @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {
         if (!this.utilityAccounts) {
@@ -55,6 +57,9 @@ export default class SsfBasicInfo extends LightningElement {
         if (!this.applicationType) {
             this.applicationType = 'Residential';
         }
+        if (this.pageRef && this.pageRef.state && this.pageRef.state.mock) {
+            this.mockData();
+        }
     }
 
     mockData() {
@@ -65,13 +70,13 @@ export default class SsfBasicInfo extends LightningElement {
         this.billingStreet = '1 Main';
         this.billingCity = 'Boston';
         this.billingState = 'MA';
-        this.billingZip = '02144';
+        this.billingZip = this.zipinput;
         this.utilityAccounts[0].utilityAccountNumber = '123';
         this.utilityAccounts[0].nameOnAccount = 'Peter testcase';
         this.utilityAccounts[0].street = '123 Main';
         this.utilityAccounts[0].state = 'MA';
         this.utilityAccounts[0].city = 'Boston';
-        this.utilityAccounts[0].zip = '02144';
+        this.utilityAccounts[0].zip = this.zipinput;
     }
 
     genericOnChange(event) {
@@ -152,6 +157,12 @@ export default class SsfBasicInfo extends LightningElement {
         if (!this.applicationValid()) {
             return;
         }
+        if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
+            this.partnerId = this.pageRef.state.partnerId;
+        }
+        if (this.pageRef && this.pageRef.state && this.pageRef.state.salesRepId) {
+            this.salesRepId = this.pageRef.state.salesRepId;
+        }
         let restLead = {
             applicationType: this.applicationType,
             firstName: this.firstName,
@@ -164,6 +175,8 @@ export default class SsfBasicInfo extends LightningElement {
             zipCode: this.billingZip,
             productName: this.selectedProduct,
             referralName: this.referralName,
+            partnerId: this.partnerId?this.partnerId:'',
+            salesRepId: this.salesRepId?this.salesRepId:'',
             propertyAccounts: [
                 {
                     name: `${this.firstName} ${this.lastName}`,
@@ -213,27 +226,12 @@ export default class SsfBasicInfo extends LightningElement {
     }
 
     createLead = (restLead) => {
-        return new Promise(function(resolve, reject) {
-            let calloutURI = '/apply/services/apexrest/v3/leads';
-            const xmlHttpRequest = new XMLHttpRequest();
-            xmlHttpRequest.onreadystatechange = function() {
-                if (this.readyState === 4) {
-                    const response = JSON.parse(this.responseText);
-                    if (this.status === 200 || this.status === 201) {
-                        if (response.data) {
-                            resolve(response.data);
-                        } else {
-                            reject(this.responseText);
-                        }
-                    } else {
-                        reject(this.responseText);
-                    }
-                }
-            };
-            xmlHttpRequest.open('POST', calloutURI, true);
-            xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-            xmlHttpRequest.send(JSON.stringify(restLead));
-        });
+        let calloutURI = '/apply/services/apexrest/v3/leads';
+        let options = {
+            headers: {name: 'Content-Type', value:'application/json'},
+            body: JSON.stringify(restLead)
+        };
+        return makeRequest(calloutURI, 'POST', options);
     };
 
     showWarningToast(title, message) {
