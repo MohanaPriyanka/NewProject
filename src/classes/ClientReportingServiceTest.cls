@@ -300,20 +300,23 @@ public with sharing class ClientReportingServiceTest {
 
 
         //Test an update to parent UAS
+        FeatureService featureService = new FeatureService();
 
-        //SUBSCRIPTION ORDER FEATURE OFF
-        uas.Subscribed_Annual_Cost_of_Electricity__c = 500;
-        update uas;
-
-        //SUBSCRIPTION ORDER FEATURE ON
-        Subscription_Order__c soResize = new Subscription_Order__c(
-            Utility_Account_Subscription__c = uas.Id,
-            Type__c = 'Resize',
-            Change_in_Annual_Cost__c = 200,
-            Approval_Status__c = 'Approved',
-            Effective_Date__c = System.today()
-        );
-        insert soResize;
+        if (featureService.isEnabled('Subscription_Orders')) {
+            //SUBSCRIPTION ORDER FEATURE ON
+            Subscription_Order__c soResize = new Subscription_Order__c(
+                Utility_Account_Subscription__c = uas.Id,
+                Type__c = 'Resize',
+                Change_in_Annual_Cost__c = 200,
+                Approval_Status__c = 'Approved',
+                Effective_Date__c = System.today()
+            );
+            insert soResize;
+        } else {
+            //SUBSCRIPTION ORDER FEATURE OFF
+            uas.Subscribed_Annual_Cost_of_Electricity__c = 500;
+            update uas;
+        }
 
         List<Client_Utility_Account_Subscription__c> clientUASUpdate = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
 

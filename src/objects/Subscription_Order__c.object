@@ -481,6 +481,7 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <externalId>false</externalId>
         <label>Type</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -507,6 +508,11 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
                     <fullName>Resize</fullName>
                     <default>false</default>
                     <label>Resize</label>
+                </value>
+                <value>
+                    <fullName>Initial</fullName>
+                    <default>false</default>
+                    <label>Initial</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -583,16 +589,13 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <active>true</active>
         <label>Subscription Orders</label>
         <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Type__c</picklist>
             <values>
                 <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Initial</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -605,6 +608,13 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
             </values>
             <values>
                 <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Approval_Status__c</picklist>
+            <values>
+                <fullName>Approved</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
