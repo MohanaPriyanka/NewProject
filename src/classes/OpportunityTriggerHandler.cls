@@ -5,16 +5,15 @@
 public without sharing class OpportunityTriggerHandler {
     private Boolean m_isExecuting = false;
     private Integer batchSize = 0;
-    @TestVisible private static FeatureService featureService = new FeatureService();
 
-    public void OnBeforeInsert(List<Opportunity> newOppList){
+    public void onBeforeInsert(List<Opportunity> newOppList){
         customIdSwapOpp(newOppList, null);
         mapDocuSignRS(newOppList, null);
         setLeadLookup(newOppList);
         eventHandling(newOppList, null);
     }
 
-    public void OnBeforeUpdate(List<Opportunity> oldOppList, List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
+    public void onBeforeUpdate(List<Opportunity> oldOppList, List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
         customIdSwapOpp(updatedOppList, oldOppMap);
         mapDocuSignRS(updatedOppList, oldOppMap);
         updateInvoicedSubscription(oldOppMap, newOppMap);
@@ -28,6 +27,20 @@ public without sharing class OpportunityTriggerHandler {
         }
 
         ClientReportingService.updateClientUAS(newMap, oldMap);
+    }
+
+    public void queueNMCTariffChange(List<Opportunity> oppList, Map<Id, Opportunity> oldMap) {
+        Set<Id> oppsWithNMCTariffChange = new Set<Id>();
+        for (Opportunity opp : oppList) {
+            if (opp.NMC_Tariff__c != oldMap.get(opp.Id).NMC_Tariff__c) {
+                oppsWithNMCTariffChange.add(opp.Id);
+            }
+        }
+        if (oppsWithNMCTariffChange.size() > 0 ) {
+            SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
+            subscriptionService.oppIdsWithChangedNMCTariff = oppsWithNMCTariffChange;
+            System.enqueueJob(subscriptionService);
+        }
     }
 
     public void customIdSwapOpp(List<Opportunity> oppList, Map<ID, Opportunity> oldOppMap){
@@ -119,13 +132,9 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-   @InvocableMethod public static void activatePortalUser(List<Id> oppIdList) {
-
-       List<Opportunity> updatedOpps = [
-           SELECT Id, Contract_Status__c, Product_Line__c, Parent_Account_ID__c,
-           BlueWave_Signature_Status__c
-           FROM Opportunity
-           WHERE Id IN: oppIdList];
+   @InvocableMethod
+   public static void activatePortalUser(List<Id> oppIdList) {
+       List<Opportunity> updatedOpps = OpportunitiesSelector.selectByIds(oppIdList);
 
        List<Id> parentAccountIdList = new List<Id>();
 
@@ -136,10 +145,7 @@ public without sharing class OpportunityTriggerHandler {
        }
 
        if (parentAccountIdList.size() > 0){
-            List<Contact> contactList = [
-                SELECT Id, FirstName, LastName, Email, AccountId
-                FROM Contact
-                WHERE AccountId IN : parentAccountIdList];
+            List<Contact> contactList = ContactSelector.selectByParentAccountIds(parentAccountIdList);
             UserHandler userInsertJob = new UserHandler(contactList);
             System.enqueueJob(userInsertJob);
         }
@@ -156,21 +162,19 @@ public without sharing class OpportunityTriggerHandler {
                 && newOpp.Subscription_Size_for_Invoicing__c == null){
                     opportunityList.add(newOpp);
             }
-        }
 
-        Boolean soFeatureEnabled = featureService.isEnabled('Subscription_Orders');
+            //if sss changes
+
+            // query for client uas where Opportunity ID = opp
+            // update client uas
+        }
         if (opportunityList.size() > 0){
             for (AggregateResult uasSUM : [SELECT Opportunity__r.Id oppId,
-                                                SUM(Customer_Subscription_KW_DC__c) subscriptionSum,
-                                                SUM(Future_Customer_Subscription_KWDC_Rollup__c) subscriptionTotal
+                                                SUM(Customer_Subscription_KW_DC__c) subscriptionSum
                                             FROM Utility_Account_Subscription__c
                                             WHERE Opportunity__r.Id IN : opportunityList
                                             GROUP BY Opportunity__r.Id]){
-                if (soFeatureEnabled) {
-                    oppUASTotalMap.put((Id)uasSUM.get('oppId'), (Decimal)uasSUM.get('subscriptionTotal'));
-                } else {
-                    oppUASTotalMap.put((Id)uasSUM.get('oppId'), (Decimal)uasSUM.get('subscriptionSum'));
-                }
+                oppUASTotalMap.put((Id)uasSUM.get('oppId'), (Decimal)uasSUM.get('subscriptionSum'));
             }
             for (Opportunity oppToUpdate : opportunityList){
                 if (oppUASTotalMap.containsKey(oppToUpdate.Id)){

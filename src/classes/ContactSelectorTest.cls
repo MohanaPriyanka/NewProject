@@ -27,4 +27,33 @@ public with sharing class ContactSelectorTest {
         System.assertEquals(1, contactsWithZuoraContacts.size());
         System.assertEquals(contactTwo.Id, contactsWithZuoraContacts[0].Id);
     }
+
+    @IsTest
+    private static void testSelectByParentAccountIds() {
+        Account parent = new Account(
+            Name = 'Parent Testcase'
+        );
+        insert parent;
+
+        Contact contactOne = new Contact(
+            FirstName = 'Foo',
+            LastName = 'Test',
+            AccountId = parent.Id
+        );
+        Contact contactTwo = new Contact(
+            FirstName = 'Bar',
+            LastName = 'Test',
+            AccountId = parent.Id
+        );
+
+        Contact contactThree = new Contact(
+            FirstName = 'NoParent',
+            LastName = 'Testcase'
+        );
+        insert new List<Contact>{contactOne, contactTwo, contactThree};
+
+        List<Contact> checkContacts = ContactSelector.selectByParentAccountIds(new List<Id>{parent.Id});
+        System.assertEquals(2, checkContacts.size());
+        System.assertEquals(parent.Id, checkContacts[0].AccountId);
+    }
 }

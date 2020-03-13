@@ -441,8 +441,7 @@ IF( Utility_Account_Subscription__r.UAS_Number__c &gt; 1 ,
 IF(
 
 OR( Utility_Account_Subscription__r.Auto_Unround__c = TRUE , Utility_Account_Subscription__r.UAS_Number__c = 1),
-
-Utility_Account_Subscription__r.UAS_Number__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
+  Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
 
 
 IF(

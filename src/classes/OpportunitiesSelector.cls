@@ -6,7 +6,6 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class OpportunitiesSelector {
     // To be used when cancelling opportunities, so we also exclude Anchors and Public Offtake
-    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static List<Opportunity> selectAllCompleteCSWithUASesAndSystemBills() {
         return [
             SELECT Id, Name,
@@ -20,7 +19,18 @@ public without sharing class OpportunitiesSelector {
         ];
     }
 
-    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public static List<Opportunity> selectByIds(List<Id> oppIds) {
+        return [
+            SELECT Id,
+                Contract_Status__c,
+                Product_Line__c,
+                Parent_Account_ID__c,
+                BlueWave_Signature_Status__c
+            FROM Opportunity
+            WHERE Id IN: oppIds
+        ];
+    }
+
     public static List<Opportunity> selectAllCompleteCSWithUASes(Set<Id> oppIds) {
         return [
             SELECT Id, Name, Date_Removed_from_Project__c,
@@ -37,7 +47,7 @@ public without sharing class OpportunitiesSelector {
         ];
     }
 
-    @SuppressWarnings('PMD.ApexCRUDViolation')
+
     public static Opportunity selectForContractSend(Id opportunityId) {
         return [
             SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
@@ -57,7 +67,6 @@ public without sharing class OpportunitiesSelector {
         return oppMap;
     }
 
-    @SuppressWarnings('PMD.ApexCRUDViolation')
     public List<Opportunity> selectWithoutFirstInvoiceCommission(Set<Id> accountIds){
         return [
             SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
@@ -73,7 +82,6 @@ public without sharing class OpportunitiesSelector {
             AND AccountId IN : accountIds
         ];
     }
-    @SuppressWarnings('PMD.ApexCRUDViolation')
     public List<Opportunity> selectWithoutFirstPaymentCommission(Set<Id> accountIds){
         return [
             SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,

@@ -60,6 +60,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         List<Subscription_Order__c> stampSOs = soSelector.selectByIds(soIds);
 
         for (Subscription_Order__c so : stampSOs ) {
+            so.Effective_Date__c = System.today();
             if (so.RecordTypeId == systemChangeOrderRecordTypeId) {
                 so.Approved_Change_in_Percent_Share__c = so.System_Change_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
                 so.Approved_Change_in_Subscription__c = so.System_Change_kW_DC_Subscription__c - so.Previous_kw_DC_Subscription__c;
