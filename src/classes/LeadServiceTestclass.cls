@@ -299,7 +299,8 @@ public class LeadServiceTestclass {
         lc.setDoNotCreateOpportunity(true);
 
         Database.LeadConvertResult lcr = Database.convertLead(lc, false);
-        System.assert(lcr.isSuccess());
+        System.assert(lcr.isSuccess(), lcr.getErrors());
+
 
         Lead convertedLead = [
             SELECT Id, ConvertedAccountId, ConvertedContactId, IsConverted, Personal_Credit_Report__c

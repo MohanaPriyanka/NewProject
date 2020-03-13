@@ -43,9 +43,9 @@ public with sharing class OpportunityTriggerTest {
             System.assertEquals(7.6923, uasList[3].Future_Customer_Subscription_KWDC_Rollup__c);
         } else {
             System.assertEquals(3.8462, uasList[0].Customer_Subscription_KW_DC__c);
-            System.assertEquals(2.3077, uasList[1].Customer_Subscription_KW_DC__c);
-            System.assertEquals(6.9231, uasList[2].Customer_Subscription_KW_DC__c);
-            System.assertEquals(7.6923, uasList[3].Customer_Subscription_KW_DC__c);
+        System.assertEquals(2.3077, uasList[1].Customer_Subscription_KW_DC__c);
+        System.assertEquals(6.9231, uasList[2].Customer_Subscription_KW_DC__c);
+        System.assertEquals(7.6923, uasList[3].Customer_Subscription_KW_DC__c);
         }
 
 
