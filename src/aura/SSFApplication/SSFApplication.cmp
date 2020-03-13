@@ -23,10 +23,10 @@
           <p class="slds-p-around--medium slds-text-align--center slds-text-heading--large">
             Subscribe Now, Pay Later!
           </p>
-          <p class="slds-p-around--medium slds-text-align--center">
+          <p class="slds-p-around--medium">
             <span style="font-weight: bold; font-family: sans-serif">You will not be charged anything now.</span> We will send you a statement before we charge your card.
           </p>
-          <p class="slds-text-align--center">
+          <p class="slds-p-left--medium slds-p-right--medium">
             <span style="font-size: smaller">If you use a card for payment, a $1 temporary hold may show up on your card statement and will disappear within a few days.</span>
           </p>
           <div class="slds-p-around--medium">
