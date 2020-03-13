@@ -44107,17 +44107,17 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Subscription_Transfer__c.Effective_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Subscription_Transfer__c.Sum_of_New_Subscriptions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Subscription_Transfer__c.Sum_of_Old_Subscriptions__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46347,12 +46347,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_Account_Subscription__c.Transferred_From__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_Account_Subscription__c.Transferred_To__c</field>
         <readable>true</readable>
     </fieldPermissions>
