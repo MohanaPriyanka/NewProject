@@ -1,5 +1,12 @@
+// Tested By : ClientBrandingServiceTest, SharedSolarSystemHandlerTest
+
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemHandler implements Schedulable {
+    private UASSelector uasSelector = new UASSelector();
+    private SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+    private List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
+    private List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
+    private List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
 
     public void execute(SchedulableContext sch) {
         updateSSS();
@@ -26,10 +33,10 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
 
     public void updateSSS() {
         Map<Id, Shared_Solar_System__c> oldSSSMap = new Map<Id, Shared_Solar_System__c>();
-        List<Shared_Solar_System__c> newSSSList = getSSSList();
+        List<Shared_Solar_System__c> newSSSList = sssSelector.getAllSSSes();
         List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
 
-        for (Shared_Solar_System__c oldSSS : getSSSList()){
+        for (Shared_Solar_System__c oldSSS : sssSelector.getAllSSSes()){
             oldSSSMap.put(oldSSS.Id, oldSSS);
         }
         summarizeCapacity(newSSSList);
@@ -38,102 +45,92 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             if (newSSS.Reserved_capacity_kW_DC__c != oldSSSMap.get(newSSS.Id).Reserved_capacity_kW_DC__c ||
                 newSSS.Capacity_committed_kW_DC__c != oldSSSMap.get(newSSS.Id).Capacity_committed_kW_DC__c ||
                 newSSS.Anchor_capacity_reserved__c != oldSSSMap.get(newSSS.Id).Anchor_capacity_reserved__c){
-                    sssToUpdateList.add(newSSS);
+                sssToUpdateList.add(newSSS);
             }
         }
         update sssToUpdateList;
     }
 
-    public List<Shared_Solar_System__c> getSSSList() {
-        return [
-            SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
-                Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c,
-                Total_Capacity_Committed_Reserved__c, Maximum_Subscription_Capacity_kW_DC__c,
-                Reserved_Anchor_Capacity__c, Name
-            FROM Shared_Solar_System__c
-        ];
-    }
-
     public void summarizeCapacity(List<Shared_Solar_System__c> sssList){
-        List <String> sssIdList = new List <String> ();
-        List<Utility_Account_Subscription__c> reservedCapacityList = new List <Utility_Account_Subscription__c>();
-        List<Utility_Account_Subscription__c> committedCapacityList = new List <Utility_Account_Subscription__c>();
-        List<Utility_Account_Subscription__c> anchorCapacityList = new List <Utility_Account_Subscription__c>();
-        Decimal summarizedReservedCapacity = 0;
-        Decimal summarizedCommittedCapacity = 0;
-        Decimal summarizedAnchorCapacity = 0;
+        Set<Id> sssIds = new Set<Id>();
+        Decimal reservedCapacity = 0;
+        Decimal committedCapacity = 0;
+        Decimal anchorCapacity = 0;
 
-        for (Shared_Solar_System__c sss: sssList){
-                String sssId = sss.Id;
-                String subID = sssId.substring(0,15);
-                sssIdList.add(subID);
+        for (Shared_Solar_System__c sss : sssList){
+            sssIds.add(sss.Id);
         }
 
-        List <Utility_Account_Subscription__c> relatedUAS = [ SELECT Id, Opportunity_Stage__c, Customer_Group__c,
-                                                                Opportunity__c, Next_Schedule_Z_Status__c, SSS_Id__c,
-                                                                Customer_Subscription_KW_DC__c
-                                                                FROM Utility_Account_Subscription__c
-                                                                WHERE SSS_Id__c IN :sssIdList
-        ];
+        List<Utility_Account_Subscription__c> relatedUAS = uasSelector.selectActiveUASBySSS(sssIds);
 
-        for (Utility_Account_Subscription__c uas: relatedUAS) {
-            if ((uas.Customer_Group__c != 'Anchor' &&
-                uas.Customer_Group__c != 'Public Offtake')
-                && uas.Next_Schedule_Z_Status__c == 'Active Subscription'
-                && (uas.Opportunity_Stage__c == 'Pending BlueWave Signature'
-                || uas.Opportunity_Stage__c == 'QC in Process'
-                || uas.Opportunity_Stage__c == 'Pending Quality Control Signature')) {
-                reservedCapacityList.add(uas);
-            }
-
-            if ((uas.Customer_Group__c != 'Anchor' &&
-                uas.Customer_Group__c != 'Public Offtake')
-                && uas.Opportunity_Stage__c == 'Complete'
-                && uas.Next_Schedule_Z_Status__c == 'Active Subscription') {
+        for (Utility_Account_Subscription__c uas : relatedUAS) {
+            if (!isAnchor(uas) && uas.Opportunity_Stage__c == 'Complete'){
                 committedCapacityList.add(uas);
-            }
-
-            if ((uas.Customer_Group__c == 'Anchor' ||
-                uas.Customer_Group__c == 'Public Offtake')
-                && uas.Next_Schedule_Z_Status__c == 'Active Subscription') {
+            } else if (!isAnchor(uas) && !isCancelledStatus(uas)){
+                reservedCapacityList.add(uas);
+            } else if (isAnchor(uas) && !isCancelledStatus(uas)) {
                 anchorCapacityList.add(uas);
             }
         }
 
-        for (Shared_Solar_System__c sssSummary : sssList) {
-            summarizedReservedCapacity = 0;
-            summarizedCommittedCapacity = 0;
-            summarizedAnchorCapacity = 0;
-            if (reservedCapacityList.size() > 0){
-                for (Utility_Account_Subscription__c res: reservedCapacityList){
-                    if (res.SSS_Id__c == sssSummary.Id
-                        && res.Customer_Subscription_KW_DC__c  != null){
-                            summarizedReservedCapacity = res.Customer_Subscription_KW_DC__c + summarizedReservedCapacity;
-                    }
-                }
-            }
-            if (committedCapacityList.size() > 0){
-                for (Utility_Account_Subscription__c comm: committedCapacityList){
-                    if (comm.SSS_Id__c == sssSummary.Id
-                        && comm.Customer_Subscription_KW_DC__c != null){
-                            summarizedCommittedCapacity = comm.Customer_Subscription_KW_DC__c + summarizedCommittedCapacity;
-                    }
-                }
-            }
-           if (anchorCapacityList.size() > 0) {
-                for (Utility_Account_Subscription__c anchor : anchorCapacityList){
-                    if (anchor.SSS_Id__c == sssSummary.Id
-                        && anchor.Customer_Subscription_KW_DC__c != null){
-                        summarizedAnchorCapacity = anchor.Customer_Subscription_KW_DC__c + summarizedAnchorCapacity;
-                    }
-                }
-           } else if (sssSummary.Stage__c != 'Management') {
-               summarizedAnchorCapacity = sssSummary.Reserved_Anchor_Capacity__c;
-           }
+        for (Shared_Solar_System__c sss : sssList) {
+            reservedCapacity = getCapacitySumOfUASList(reservedCapacityList,sss.Id);
+            committedCapacity = getCapacitySumOfUASList(committedCapacityList,sss.Id);
+            anchorCapacity = getCapacitySumOfUASList(anchorCapacityList,sss.Id);
 
-            sssSummary.Reserved_capacity_kW_DC__c = String.valueOf(summarizedReservedCapacity);
-            sssSummary.Capacity_committed_kW_DC__c = summarizedCommittedCapacity;
-            sssSummary.Anchor_capacity_reserved__c = summarizedAnchorCapacity;
+            sss.Reserved_capacity_kW_DC__c = String.valueOf(reservedCapacity);
+            sss.Capacity_committed_kW_DC__c = committedCapacity;
+            if (anchorCapacity == 0 && sss.Stage__c != 'Management') {
+                sss.Anchor_capacity_reserved__c = sss.Reserved_Anchor_Capacity__c;
+            } else {
+                sss.Anchor_capacity_reserved__c = anchorCapacity;
+            }
+        }
+    }
+
+    private Decimal getCapacitySumOfUASList(List<Utility_Account_Subscription__c> uasList, Id sssId){
+        Decimal summarizedCapacity = 0;
+        if (uasList.size() > 0) {
+            for (Utility_Account_Subscription__c uas : uasList) {
+                if (uas.Opportunity__r.Shared_Solar_System__c == sssId
+                    && uas.Customer_Subscription_KW_DC__c != null) {
+                    summarizedCapacity += uas.Customer_Subscription_KW_DC__c;
+                }
+            }
+        }
+        return summarizedCapacity;
+    }
+
+    private Boolean isAnchor(Utility_Account_Subscription__c uas){
+        return (uas.Customer_Group__c == 'Anchor' ||
+            uas.Customer_Group__c == 'Public Offtake'
+        );
+    }
+
+    private Boolean isCancelledStatus(Utility_Account_Subscription__c uas){
+        return (uas.Opportunity_Stage__c == 'Expired'
+            || uas.Opportunity_Stage__c == 'Cancelled'
+            || uas.Opportunity_Stage__c == 'DUPLICATE'
+            || uas.Opportunity_Stage__c == 'Unqualified'
+            || uas.Opportunity_Stage__c == 'Rejected Contract'
+            || uas.Opportunity_Stage__c == 'Dead'
+            || uas.Opportunity_Stage__c == 'Lost'
+        );
+    }
+
+    public void queueClientBrandKeyUpdate(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes){
+        Set<Id> sssWithChangedBrandKey = new Set<Id>();
+        for (Shared_Solar_System__c newSSS : newSSSes){
+            Shared_Solar_System__c oldSSS = oldSSSMap.get(newSSS.Id);
+            if (newSSS.Client_Brand_Key__c != oldSSS.Client_Brand_Key__c
+                || newSSS.BWC_Project_Entity__c != oldSSS.BWC_Project_Entity__c){
+                sssWithChangedBrandKey.add(newSSS.Id);
+            }
+        }
+        if (sssWithChangedBrandKey.size() > 0){
+            ClientBrandingService brandService = new ClientBrandingService();
+            brandService.sssIdWithChangedClientBrandKey = sssWithChangedBrandKey;
+            System.enqueueJob(brandService);
         }
     }
 }
