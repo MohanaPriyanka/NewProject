@@ -1287,13 +1287,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <type>OutboundMessage</type>
         </actions>
         <active>true</active>
-        <formula>AND(
-Product_line__c=&quot;Community Solar&quot;,
-ISPICKVAL(LeadSource,&quot;Switch&quot;),
-ISBLANK(Application_Complete_Date__c),
-NOT(ISBLANK(Product__c)),
-$User.LastName!=&quot;Originations&quot;
-)</formula>
+        <formula>AND( Product_line__c=&quot;Community Solar&quot;, ISPICKVAL(LeadSource,&quot;Switch&quot;), ISBLANK(Customer_Signed_Date__c), NOT(ISBLANK(Product__c)), $User.LastName!=&quot;Originations&quot; )</formula>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
@@ -1303,14 +1297,7 @@ $User.LastName!=&quot;Originations&quot;
             <type>OutboundMessage</type>
         </actions>
         <active>true</active>
-        <formula>AND(
- Product_line__c=&quot;Community Solar&quot;, 
- ISPICKVAL(LeadSource,&quot;Switch&quot;),
- ISBLANK(PRIORVALUE(Application_Complete_Date__c)), 
- NOT(ISBLANK(Application_Complete_Date__c)),
- NOT(ISBLANK(Product__c)), 
- $User.LastName!=&quot;Originations&quot;
-)</formula>
+        <formula>AND(  Product_line__c=&quot;Community Solar&quot;,   ISPICKVAL(LeadSource,&quot;Switch&quot;),  ISBLANK(PRIORVALUE(Customer_Signed_Date__c)),   NOT(ISBLANK(Customer_Signed_Date__c)),  NOT(ISBLANK(Product__c)),   $User.LastName!=&quot;Originations&quot; )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
