@@ -117,23 +117,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             || uas.Opportunity_Stage__c == 'Lost'
         );
            }
-
-    public void queueClientBrandKeyUpdate(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes){
-        Set<Id> sssWithChangedBrandKey = new Set<Id>();
-        for (Shared_Solar_System__c newSSS : newSSSes){
-            Shared_Solar_System__c oldSSS = oldSSSMap.get(newSSS.Id);
-            if (newSSS.Client_Brand_Key__c != oldSSS.Client_Brand_Key__c
-                || newSSS.BWC_Project_Entity__c != oldSSS.BWC_Project_Entity__c){
-                sssWithChangedBrandKey.add(newSSS.Id);
-            }
-        }
-        if (sssWithChangedBrandKey.size() > 0){
-            ClientBrandingService brandService = new ClientBrandingService();
-            brandService.sssIdWithChangedClientBrandKey = sssWithChangedBrandKey;
-            System.enqueueJob(brandService);
-        }
-    }
-
+    
     public void queueClientBrandKeyUpdate(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes){
         Set<Id> sssWithChangedBrandKey = new Set<Id>();
         for (Shared_Solar_System__c newSSS : newSSSes){
