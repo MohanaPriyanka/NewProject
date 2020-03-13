@@ -82,10 +82,10 @@ public without sharing class UASSelector {
     public List<Utility_Account_Subscription__c> selectActiveUASBySSS(Set<Id> sssIdList) {
         return [
             SELECT Id, Opportunity_Stage__c, Customer_Group__c,
-                Opportunity__c, Next_Schedule_Z_Status__c, Shared_Solar_System__c,
+                Opportunity__c, Next_Schedule_Z_Status__c, Opportunity__r.Shared_Solar_System__c,
                 Customer_Subscription_KW_DC__c
             FROM Utility_Account_Subscription__c
-            WHERE Shared_Solar_System__c IN : sssIdList
+            WHERE Opportunity__r.Shared_Solar_System__c IN : sssIdList
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
         ];
     }
