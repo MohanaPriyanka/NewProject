@@ -88,14 +88,12 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                 || uas.Opportunity_Stage__c == 'Pending Quality Control Signature')) {
                 reservedCapacityList.add(uas);
             }
-
             if ((uas.Customer_Group__c != 'Anchor' &&
                 uas.Customer_Group__c != 'Public Offtake')
                 && uas.Opportunity_Stage__c == 'Complete'
                 && uas.Next_Schedule_Z_Status__c == 'Active Subscription') {
                 committedCapacityList.add(uas);
             }
-
             if ((uas.Customer_Group__c == 'Anchor' ||
                 uas.Customer_Group__c == 'Public Offtake')
                 && uas.Next_Schedule_Z_Status__c == 'Active Subscription') {
@@ -114,11 +112,9 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                 if (reservedCapacityList.size() > 0 ) {
                     summarizedReservedCapacity = summarizeReservedCapacity(reservedCapacityList, sssSummary);
                 }
-
                 if (committedCapacityList.size() > 0 ) {
                     summarizedCommittedCapacity = summarizeCommittedCapacity(committedCapacityList, sssSummary);
                 }
-
                 if (anchorCapacityList.size() > 0) {
                     summarizedAnchorCapacity = summarizeAnchorCapacity(anchorCapacityList, sssSummary);
                 } else if (sssSummary.Stage__c != 'Management') {
@@ -152,7 +148,6 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                     summarizedAnchorCapacity = sssSummary.Reserved_Anchor_Capacity__c;
                 }
             }
-
 
             sssSummary.Reserved_capacity_kW_DC__c = String.valueOf(summarizedReservedCapacity);
             sssSummary.Capacity_committed_kW_DC__c = summarizedCommittedCapacity;

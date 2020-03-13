@@ -67,11 +67,11 @@ public class LeadTriggerHandlerTest {
         sss1.Sales_Partners__c = 'Barbara Cerullo; Boston Solar'; 
         insert sss1;
         
-        Partner__c Partner = new Partner__c(Name = 'Boston Solar');
-        insert Partner;
+        Partner__c partner = new Partner__c(Name = 'Boston Solar');
+        insert partner;
         
         BSST__c newSalesTeam = new BSST__c (Name = 'Partner',
-                                            Partner__c = Partner.Id,
+                                            Partner__c = partner.Id,
                                             Custom_ID__c = 'partner');
                                             
         insert newSalesTeam;
@@ -85,7 +85,7 @@ public class LeadTriggerHandlerTest {
                                                              LeadSource = 'CSAP',
                                                              Company = 'Cloud Jedi',
                                                              Status = 'Qualified',
-                                                             Partner_Lookup__c = Partner.Id,
+                                                             Partner_Lookup__c = partner.Id,
                                                              Product_Line__c = 'Community Solar',
                                                              Product__c = csProduct.Id,
                                                              Custom_ID__c = 'partner',
@@ -101,7 +101,7 @@ public class LeadTriggerHandlerTest {
                                      LeadSource = 'CSAP',
                                      Company = 'Cloud Jedi',
                                      Status = 'Qualified',
-                                     Partner_Lookup__c = Partner.Id,
+                                     Partner_Lookup__c = partner.Id,
                                      Product_Line__c = 'Community Solar',
                                      Product__c = csProduct.Id,
                                      System_Assignment__c = 'Automatic - Assignment Order');
