@@ -1443,6 +1443,6 @@ ISBLANK(Annual_kwh_subscription_future__c)=false)
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>/flow/User_Subscription_Order_Creation?var_UASID={!Utility_Account_Subscription__c.Id}&amp;retURL=home/home.jsp</url>
+        <url>/flow/User_Subscription_Order_Creation?var_UASID={!Utility_Account_Subscription__c.Id}&amp;retURL={!Utility_Account_Subscription__c.Id}</url>
     </webLinks>
 </CustomObject>
