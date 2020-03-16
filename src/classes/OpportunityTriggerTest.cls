@@ -253,4 +253,71 @@ public with sharing class OpportunityTriggerTest {
         System.assert(eventMap.containsKey(newAccount.Id));
     }
 
+    @IsTest
+    public static void testNMCTariffChange() {
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
+
+        Opportunity opp = [
+            SELECT Id, Name
+            FROM Opportunity
+            WHERE Name = 'RecalcUALOpp8A'
+            ORDER BY Name
+            LIMIT 1
+        ];
+
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Opportunity__c, Name, Annual_kWh_Subscription_Future_Rollup__c, Future_Customer_Subscription_KWDC_Rollup__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Name = :opp.Name
+            ORDER BY Name
+        ];
+
+        System.assertEquals(3, uasList.size());
+        System.assertEquals(2.3077, uasList[0].Future_Customer_Subscription_KWDC_Rollup__c);
+        System.assertEquals(6.9231, uasList[1].Future_Customer_Subscription_KWDC_Rollup__c);
+        System.assertEquals(7.6923, uasList[2].Future_Customer_Subscription_KWDC_Rollup__c);
+
+        Set<Id> uasIds = new Set<Id>();
+        for (Utility_Account_Subscription__c uas : uasList){
+            uasIds.add(uas.Id);
+        }
+
+        List<Subscription_Order__c> soList = [
+            SELECT Id, Approval_Status__c,
+                Approved_Change_in_Subscription__c, Calculated_Change_in_Subscription_KW_DC__c, Name,
+                Change_in_Annual_kWh__c, Utility_Account_Subscription__r.Name, Change_in_Annual_Cost__c, Type__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c IN :uasIds
+        ];
+
+        //Initial Subscription Orders
+        System.assertEquals(3, soList.size());
+
+        //Change NMC Tariff for Opportunity to create Resize Subscription Orders
+        Utility_NMC_Tariff__c nmcRate = (Utility_NMC_Tariff__c) TestFactory.createSObject(new Utility_NMC_Tariff__c(Value_of_Net_Metering_Credit__c = .1567,
+            Name = 'Nation Grid WCMA Class 2 - S/F 2016',
+            Sizing_Rate__c = true,
+            Date__c = Date.today()));
+        insert nmcRate;
+
+        Test.startTest();
+        opp.NMC_Tariff__c = nmcRate.Id;
+        update opp;
+        Test.stopTest();
+
+        List<Subscription_Order__c> resizeSOs = [
+            SELECT Id, Utility_NMC_Tariff__c, Approval_Status__c, Approved_Change_in_Subscription__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c IN :uasIds
+            AND Type__c = 'Resize'
+        ];
+
+        System.assertEquals(3, resizeSOs.size());
+        for (Subscription_Order__c so : resizeSOs) {
+            System.assertEquals(nmcRate.Id, so.Utility_NMC_Tariff__c);
+            System.assertEquals('Approved', so.Approval_Status__c);
+            System.assertNotEquals(null, so.Approved_Change_in_Subscription__c);
+        }
+    }
+
 }

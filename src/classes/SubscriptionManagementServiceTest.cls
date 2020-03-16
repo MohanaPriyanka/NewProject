@@ -300,6 +300,7 @@ private class SubscriptionManagementServiceTest {
                 '"Annual_kWh_Subscription_Future_Rollup__c" : 16240.38,' +
                 '"Future_Share_of_System_Rollup__c" : 1.14,' +
                 '"Annual_Cost_Future_Rollup__c" : 2420.00,' +
+                '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
                 '"Shared_Solar_System__c" : "' + sssId + '"' +
                 '},' +
                 '{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
@@ -309,11 +310,13 @@ private class SubscriptionManagementServiceTest {
                 '"Annual_kWh_Subscription_Future_Rollup__c" : 16240.38,' +
                 '"Future_Share_of_System_Rollup__c" : 1.14,' +
                 '"Annual_Cost_Future_Rollup__c" : 2420.00,' +
+                '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
                 '"Shared_Solar_System__c" : "' + sssId + '"' +
                 '}]';
 
             String uasByMap = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d29000001C3xuAAC",' +
+                '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
                 '"Opportunity__c" : "00629000008boK7AAI",' +
                 '"Opportunity__r":{"attributes" : {"type" : "Opportunity","url" : "/services/data/v47.0/sobjects/Opportunity/00629000009SnvfAAC"},' +
                 '"Id" : "00629000008boK7AAI",' +
@@ -337,6 +340,7 @@ private class SubscriptionManagementServiceTest {
                 '}, ' +
                 '{ "attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d2900000222xuAAC",' +
+                '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
                 '"Opportunity__c" : "00629000008boJ7AAI",' +
                 '"Opportunity__r":{"attributes" : {"type" : "Opportunity","url" : "/services/data/v47.0/sobjects/Opportunity/00629000009SnvfAAC"},' +
                 '"Id" : "00629000008boJ7AAI",' +
@@ -380,7 +384,7 @@ private class SubscriptionManagementServiceTest {
                     '}]';
 
             switch on methodCall.stubbedMethodName {
-                when 'selectBySharedSolarSystem' {
+                when 'selectActiveUASBySSS' {
                     return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasBySSS, List<Utility_Account_Subscription__c>.class);
                 } when 'getUASMap' {
                     Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>();
