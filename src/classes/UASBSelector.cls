@@ -2,7 +2,7 @@
  */
 
 public without sharing class UASBSelector {
-    public static Database.QueryLocator uasbsNotYetInZuora() {
+    public static Database.QueryLocator uasbsNotYetInZuora(Date invoiceDate) {
         String query =
             'SELECT Id, Name, Date__c, System_Bill__c,' +
             '    Net_Metering_Credits_Allocated__c, Savings__c,' +
@@ -18,6 +18,7 @@ public without sharing class UASBSelector {
             '    Client_Account_Number__c ' +
             'FROM UASB__c ' +
             'WHERE Zuora_Id__c = NULL ' +
+            'AND Date__c <= ' + String.valueOf(invoiceDate) + ' ' +
             'AND Externally_Serviced__c = FALSE ' +
             'ORDER BY Utility_Account_Subscription__r.Opportunity__r.AccountId, Date__c';
         return Database.getQueryLocator(query);
