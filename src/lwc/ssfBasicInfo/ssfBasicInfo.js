@@ -9,7 +9,6 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import {makeRequest} from 'c/httpRequestService';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
-    static delegatesFocus = true;
     @api zipinput;
     @track showSpinner;
     @track spinnerMessage;
