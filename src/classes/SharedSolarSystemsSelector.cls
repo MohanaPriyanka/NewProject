@@ -20,15 +20,6 @@ public inherited sharing class SharedSolarSystemsSelector {
         ];
     }
 
-    public List<Shared_Solar_System__c> getAllSharedSolarSystems() {
-        return [
-            SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
-                Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c,
-                Total_Capacity_Committed_Reserved__c, Maximum_Subscription_Capacity_kW_DC__c,
-                Reserved_Anchor_Capacity__c, Name
-            FROM Shared_Solar_System__c
-        ];
-    }
     public Map<Id, Shared_Solar_System__c> getSSSMap(Set<Id> sssIds) {
         Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>([
             SELECT Id, Client_Account__c
@@ -41,13 +32,11 @@ public inherited sharing class SharedSolarSystemsSelector {
     public static List<Shared_Solar_System__c> selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
         Set<Id> utilityIds,
         Set<String> loadZones) {
-
         String loadZoneString = '';
         for (String loadZone : loadZones) {
             loadZoneString += '\'' + String.escapeSingleQuotes(loadZone) +  '\',';
         }
         loadZoneString = loadZoneString.left(loadZoneString.length() - 1); // strip off extra comma
-
         String query = 'SELECT Id, Name, Capacity_Available_to_be_Reserved__c, Product__r.Id, ' +
             'Product__r.Name, Product__r.Customer_Subscription_Type__c, Sales_Partners__c ' +
             'FROM Shared_Solar_System__c ' +
@@ -87,15 +76,23 @@ public inherited sharing class SharedSolarSystemsSelector {
         ];
         return myProject;
     }
-
+   
     public Map<String,Shared_Solar_System__c> getSSSByUniqueId(Set<String> blueWaveIds){
         Map<String,Shared_Solar_System__c> bwIdToSSSMap = new Map<String,Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : [ SELECT Id, Unique_ID__c
-        FROM Shared_Solar_System__c
-        WHERE Unique_ID__c IN : blueWaveIds]){
+                                            FROM Shared_Solar_System__c
+                                            WHERE Unique_ID__c IN : blueWaveIds]){
             bwIdToSSSMap.put(sss.Unique_ID__c, sss);
         }
         return bwIdToSSSMap;
     }
-
+    public List<Shared_Solar_System__c> getAllSSSes() {
+        return [
+            SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
+                Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c,
+                Total_Capacity_Committed_Reserved__c, Maximum_Subscription_Capacity_kW_DC__c,
+                Reserved_Anchor_Capacity__c, Name, Stage__c
+            FROM Shared_Solar_System__c
+        ];
+    }
 }

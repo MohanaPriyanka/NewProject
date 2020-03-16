@@ -192,7 +192,7 @@ private class SubscriptionManagementServiceTest {
         ];
 
         UASSelector uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
-        List<Utility_Account_Subscription__c> uasList = uasSelector.selectBySharedSolarSystem(new Set<Id>{ssso.Shared_Solar_System__c});
+        List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{ssso.Shared_Solar_System__c});
 
         SubscriptionManagementService service = new SubscriptionManagementService();
         List<Subscription_Order__c> soToInsert = service.createSystemChangeOrders(uasList, ssso);

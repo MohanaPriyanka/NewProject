@@ -89,7 +89,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         for(Shared_Solar_System_Order__c ssso : approvedSSSOs) {
             Shared_Solar_System__c sss = updateSSSFromSSSO(ssso);
             sssToUpdate.add(sss);
-            List<Utility_Account_Subscription__c> uasList = uasSelector.selectBySharedSolarSystem(new Set<Id>{ssso.Shared_Solar_System__c});
+            List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{ssso.Shared_Solar_System__c});
             List<Subscription_Order__c> soList = createSystemChangeOrders(uasList, ssso);
             soListToInsert.addAll(soList);
         }

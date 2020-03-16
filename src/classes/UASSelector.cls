@@ -4,7 +4,8 @@
  * Tested By: UASSelectorTest
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class UASSelector {
+public without sharing class
+UASSelector {
     public static List<Utility_Account_Subscription__c> selectByAccounts(Set<Id> accounts) {
         return [
             SELECT Id,
@@ -23,7 +24,6 @@ public without sharing class UASSelector {
             WHERE Utility_Account_Log__r.Account__c = :accounts
         ];
     }
-
     public static List<Utility_Account_Subscription__c> selectByUAL(Set<Id> ualIds) {
         return [
             SELECT Id,
@@ -38,7 +38,6 @@ public without sharing class UASSelector {
             WHERE Utility_Account_Log__c IN :ualIds
         ];
     }
-
     public List<Utility_Account_Subscription__c> selectByOpp(Set<Id> oppIds) {
         return [
             SELECT Id,
@@ -53,7 +52,6 @@ public without sharing class UASSelector {
             OR Customer_Subscription_KW_DC__c != 0)
         ];
     }
-
     public static List<Utility_Account_Subscription__c> selectByIds(Set<Id> uasIds) {
         return [
             SELECT Id,
@@ -91,8 +89,6 @@ public without sharing class UASSelector {
         ]);
         return uasWithClientMap;
     }
-
-
     public List<AggregateResult> getBrandKeySummary(Set<Id> parentAccountIds) {
         List<AggregateResult> uasSummary = [
             SELECT COUNT(Id) numberOfRecords,
@@ -109,24 +105,26 @@ public without sharing class UASSelector {
         ];
         return uasSummary;
     }
-    public List<Utility_Account_Subscription__c> selectBySharedSolarSystem(Set<Id> sssIds) {
+    
+    public List<Utility_Account_Subscription__c> selectActiveUASBySSS(Set<Id> sssIdList) {
         return [
-            SELECT
-                Id,
+            SELECT Id,
                 Name,
                 Annual_Cost_Future_Rollup__c,
                 Annual_kWh_Subscription_Future_Rollup__c,
-                Customer_Group__c,
                 Customer_Subscription_KW_DC__c,
                 Future_Customer_Subscription_KWDC_Rollup__c,
                 Future_Share_of_System_Rollup__c,
                 Next_Schedule_Z_Status__c,
                 Opportunity__c,
                 Opportunity_Stage__c,
+                Customer_Group__c,
+                Opportunity__r.Shared_Solar_System__c,
                 Shared_Solar_System__c,
                 SSS_Id__c
             FROM Utility_Account_Subscription__c
-            WHERE (Shared_Solar_System__c = :sssIds)
+            WHERE (Opportunity__r.Shared_Solar_System__c IN : sssIdList OR Shared_Solar_System__c IN :sssIdList)
+            AND Next_Schedule_Z_Status__c = 'Active Subscription'
             AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0)
         ];
     }
