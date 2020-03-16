@@ -152,6 +152,7 @@ public without sharing class AccountsSelector {
             SELECT COUNT(Id) uasb, Utility_Account_Subscription__r.Opportunity__r.AccountId acctId
             FROM UASB__c
             WHERE Date__c > : cutoffDate
+            AND Externally_Serviced__c = false
             GROUP BY Utility_Account_Subscription__r.Opportunity__r.AccountId
         ];
         for (AggregateResult result : accountsWithUsage){
