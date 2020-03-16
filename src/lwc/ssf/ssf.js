@@ -21,6 +21,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track leadJSON;
     @track selectedProduct;
     @track zipCodeResponse;
+    @track resiApplicationType = true;
     @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {
@@ -28,6 +29,9 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             this.utilityOptions = [];
         }
         this.getZip = true;
+        if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
+            this.resiApplicationType = false;
+        }
     }
 
     renderedCallback() {
@@ -39,6 +43,10 @@ export default class Ssf extends NavigationMixin(LightningElement) {
 
     genericOnChange(event) {
         this[event.target.name] = event.target.value;
+    }
+
+    applicationTypeOnChange(event) {
+        this.resiApplicationType = event.target.checked;
     }
 
     checkForSubmit(event) {
