@@ -255,7 +255,6 @@ public with sharing class OpportunityTriggerTest {
 
     @IsTest
     public static void testNMCTariffChange() {
-        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
 
         Opportunity opp = [
             SELECT Id, Name
@@ -266,11 +265,26 @@ public with sharing class OpportunityTriggerTest {
         ];
 
         List<Utility_Account_Subscription__c> uasList = [
-            SELECT Id, Opportunity__c, Name, Annual_kWh_Subscription_Future_Rollup__c, Future_Customer_Subscription_KWDC_Rollup__c
+            SELECT Id, Opportunity__c, Name, Annual_kWh_Subscription_Future_Rollup__c, Future_Customer_Subscription_KWDC_Rollup__c,
+                Subscription_Type__c, Annual_kwh_subscription_future__c, Subscribed_Annual_Cost_of_Electricity__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Name = :opp.Name
             ORDER BY Name
         ];
+
+        FeatureService checkFeature = new FeatureService();
+        if (!checkFeature.isEnabled('Subscription_Orders')) {
+            SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
+            subscriptionService.createSubscriptionOrdersForTests(uasList);
+            uasList = [
+                SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c
+                FROM Utility_Account_Subscription__c
+                WHERE Opportunity__r.Name = :opp.Name
+            ];
+
+        }
+
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
 
         System.assertEquals(3, uasList.size());
         System.assertEquals(2.3077, uasList[0].Future_Customer_Subscription_KWDC_Rollup__c);
