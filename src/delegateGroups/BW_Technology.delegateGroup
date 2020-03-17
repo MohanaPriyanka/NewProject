@@ -190,6 +190,7 @@
     <permissionSets>Manage Entities (Legal)</permissionSets>
     <permissionSets>Update ALSS Date Enacted</permissionSets>
     <permissionSets>Einstein Search</permissionSets>
+    <permissionSets>CS Customer Data Import</permissionSets>
     <permissionSets>Portfolio Management</permissionSets>
     <permissionSets>Data Mask</permissionSets>
     <permissionSets>FP&amp;A Shared Solar System Management</permissionSets>
