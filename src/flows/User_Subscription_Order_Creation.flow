@@ -1,30 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <assignments>
+        <name>aassgnSet_New_Resize_Subscriptions</name>
+        <label>Set New Resize Subscriptions</label>
+        <locationX>764</locationX>
+        <locationY>376</locationY>
+        <assignmentItems>
+            <assignToReference>var_newAnnualCost</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>scrvarNew_Annual_Cost</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_newAnnualkWh</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>scrvarNew_Annual_kWh</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>AssgnResizing_Variables_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Assign inputs to sov for subscription orders.</description>
-        <name>Assign_SO</name>
-        <label>Assign SO</label>
-        <locationX>678</locationX>
-        <locationY>13</locationY>
+        <name>Add_SOs_to_List</name>
+        <label>Add SOs to List</label>
+        <locationX>319</locationX>
+        <locationY>573</locationY>
+        <assignmentItems>
+            <assignToReference>socv_SO</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sov_SubscriptionOrder</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>socv_SO</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sov_SOTransferTo</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>SO_Creation</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assgn_Transfer_Variable_Assignment</name>
+        <label>Transfer Variable Assignment</label>
+        <locationX>50</locationX>
+        <locationY>418</locationY>
+        <assignmentItems>
+            <assignToReference>sov_Transfer.Sum_of_Old_Subscriptions__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sovUAS.Future_Customer_Subscription_KWDC_Rollup__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_TransferredNewAnnualCost</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>scrvar_transferredAnnual_Cost_Subscription_0</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_transferredNewAnnualkWh</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>scrvar_transferredkWh_Subscription_0</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>assgnAdd_Transfer_to_List</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign inputs to sov for subscription orders.</description>
+        <name>AssgnAdd_Resize_SO_to_List</name>
+        <label>Add Resize SO to List</label>
+        <locationX>769</locationX>
+        <locationY>693</locationY>
+        <assignmentItems>
+            <assignToReference>socv_SO</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sov_SubscriptionOrder</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>scrSO_Review</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assgnAdd_Transfer_to_List</name>
+        <label>Add Transfer to List</label>
+        <locationX>176</locationX>
+        <locationY>420</locationY>
+        <assignmentItems>
+            <assignToReference>socv_Transfer</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sov_Transfer</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Transfer</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assgnAdd_UAS_and_SO_to_List</name>
+        <label>Add UAS and SO to List</label>
+        <locationX>1025</locationX>
+        <locationY>578</locationY>
+        <assignmentItems>
+            <assignToReference>socv_UAS</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sovUAS</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>socv_SO</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sov_SubscriptionOrder</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>scrSO_Review</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assgnAdd_UAS_to_List</name>
+        <label>Add UASs to List</label>
+        <locationX>569</locationX>
+        <locationY>423</locationY>
+        <assignmentItems>
+            <assignToReference>socv_UAS</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sov_UASTransferTo</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>socv_UAS</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sovUAS</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>assgnTransfer_To_SO_Variable_Assignment</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assgnCancellation_Variables_0_0</name>
+        <label>Cancellation Variable Assigment</label>
+        <locationX>1026</locationX>
+        <locationY>428</locationY>
+        <assignmentItems>
+            <assignToReference>sovUAS.Next_Schedule_Z_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Inactive Subscription</stringValue>
+            </value>
+        </assignmentItems>
         <assignmentItems>
             <assignToReference>sov_SubscriptionOrder.Utility_Account_Subscription__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>sovUAS.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sov_SubscriptionOrder.Change_in_Annual_Cost__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>var_AnnualCostChange</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sov_SubscriptionOrder.Change_in_Annual_kWh__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>var_AnnualkWhChange</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -48,10 +196,378 @@
                 <elementReference>pcklst_Subscription_Order_Type</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Change_in_Annual_Cost__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_AnnualCostChange</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Change_in_Annual_kWh__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_AnnualkWhChange</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>SO_Creation</targetReference>
+            <targetReference>assgnAdd_UAS_and_SO_to_List</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>AssgnResizing_Variables_0</name>
+        <label>Resizing Variables Assignment</label>
+        <locationX>767</locationX>
+        <locationY>529</locationY>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Utility_Account_Subscription__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sovUAS.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Approval_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Approved</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Comments__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_SOComments</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>pcklst_Subscription_Order_Type</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Change_in_Annual_Cost__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_AnnualCostChange</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Change_in_Annual_kWh__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_AnnualkWhChange</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>AssgnAdd_Resize_SO_to_List</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assgnSet_New_Cancellation_Subscription</name>
+        <label>Set New Cancellation Subscription</label>
+        <locationX>1032</locationX>
+        <locationY>248</locationY>
+        <assignmentItems>
+            <assignToReference>var_newAnnualCost</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_newAnnualkWh</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>assgnCancellation_Variables_0_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assgnSet_New_Transfer_Subscriptions</name>
+        <label>Set New Transfer Subscriptions</label>
+        <locationX>180</locationX>
+        <locationY>245</locationY>
+        <assignmentItems>
+            <assignToReference>var_newAnnualCost</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_newAnnualkWh</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_TransferredNewAnnualCost</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>scrvar_transferredAnnual_Cost_Subscription_0</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_transferredNewAnnualkWh</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>scrvar_transferredkWh_Subscription_0</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>scrSO_Review_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assgnSO_Variables_Assignment</name>
+        <label>SO Variables Assignment</label>
+        <locationX>457</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>var_newAnnualCost</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>scrvarNew_Annual_Cost</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_newAnnualkWh</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>scrvarNew_Annual_kWh</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Utility_Account_Subscription__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sovUAS.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Approval_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Approved</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Comments__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_SOComments</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>pcklst_Subscription_Order_Type</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Change_in_Annual_Cost__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_AnnualCostChange</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SubscriptionOrder.Change_in_Annual_kWh__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_AnnualkWhChange</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_SOs_to_List</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assgnTransfer_To_SO_Variable_Assignment</name>
+        <label>Transfer To SO Variable Assignment</label>
+        <locationX>569</locationX>
+        <locationY>571</locationY>
+        <assignmentItems>
+            <assignToReference>sov_SOTransferTo.Utility_Account_Subscription__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sov_UASTransferTo.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SOTransferTo.Approval_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Approved</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SOTransferTo.Comments__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_SOComments</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SOTransferTo.Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>pcklst_Subscription_Order_Type</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SOTransferTo.Change_in_Annual_Cost__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_TransferredAnnualCostChange</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_SOTransferTo.Change_in_Annual_kWh__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_TransferredAnnualkWhChange</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>assgnSO_Variables_Assignment</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assgnUAS_Variable_Assignment</name>
+        <label>UAS Variable Assignment</label>
+        <locationX>442</locationX>
+        <locationY>418</locationY>
+        <assignmentItems>
+            <assignToReference>sovUAS.Transferred_To__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sov_Transfer.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_UASTransferTo.Transferred_From__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sov_Transfer.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>assgnAdd_UAS_to_List</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>dec_Type</name>
+        <label>Type Decision</label>
+        <locationX>674</locationX>
+        <locationY>15</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Cancellation</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>pcklst_Subscription_Order_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancellation</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>assgnSet_New_Cancellation_Subscription</targetReference>
+            </connector>
+            <label>Cancellation</label>
+        </rules>
+        <rules>
+            <name>Resizing</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>pcklst_Subscription_Order_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Resize</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scrResize_Inputs</targetReference>
+            </connector>
+            <label>Resizing</label>
+        </rules>
+        <rules>
+            <name>Transfer</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>pcklst_Subscription_Order_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Transfer</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scrTransfer_Inputs</targetReference>
+            </connector>
+            <label>Transfer</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>dec_Type_0</name>
+        <label>Type Decision</label>
+        <locationX>752</locationX>
+        <locationY>1210</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Cancellation_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>pcklst_Subscription_Order_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancellation</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_UAS</targetReference>
+            </connector>
+            <label>Cancellation</label>
+        </rules>
+        <rules>
+            <name>Resizing_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>pcklst_Subscription_Order_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Resize</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Success_0</targetReference>
+            </connector>
+            <label>Resizing</label>
+        </rules>
+        <rules>
+            <name>Transfer_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>pcklst_Subscription_Order_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Transfer</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_UAS</targetReference>
+            </connector>
+            <label>Transfer</label>
+        </rules>
+    </decisions>
     <description>Flow that is launched from UASs that allows a user to input an annual cost or kwh value, and have a subscription order created.</description>
     <dynamicChoiceSets>
         <name>pcs_SO_Type_Picklist</name>
@@ -63,15 +579,75 @@
     </dynamicChoiceSets>
     <formulas>
         <description>Calculates the difference between the current annual cost on the UAS, and the new annual cost inserted by the user.</description>
-        <name>var_AnnualCostChange</name>
+        <name>formula_AnnualCostChange</name>
         <dataType>Currency</dataType>
-        <expression>{!varNew_Annual_Cost}-{!sovUAS.Annual_Cost_Future_Rollup__c}</expression>
+        <expression>{!var_newAnnualCost}-{!sovUAS.Annual_Cost_Future_Rollup__c}</expression>
         <scale>2</scale>
     </formulas>
     <formulas>
-        <name>var_AnnualkWhChange</name>
+        <name>formula_AnnualkWhChange</name>
         <dataType>Number</dataType>
-        <expression>{!varNew_Annual_kWh}-{!sovUAS.Annual_kWh_Subscription_Future_Rollup__c}</expression>
+        <expression>{!var_newAnnualkWh}-{!sovUAS.Annual_kWh_Subscription_Future_Rollup__c}</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>formula_TextnewAnnualSubscription</name>
+        <dataType>String</dataType>
+        <expression>CASE(
+{!sovUAS.Subscription_Type__c},
+&apos;kWh&apos;,
+TEXT({!var_newAnnualkWh}),
+&apos;Electricity Cost ($)&apos;,
+TEXT({!var_newAnnualCost}),
+&apos;null&apos;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>formula_TextnewChangeinSubscription</name>
+        <dataType>String</dataType>
+        <expression>CASE(
+{!sovUAS.Subscription_Type__c},
+&apos;kWh&apos;,
+TEXT({!formula_AnnualkWhChange})&amp;&apos; kWh&apos;,
+&apos;Electricity Cost ($)&apos;,
+&apos;$&apos;&amp;TEXT({!formula_AnnualCostChange}),
+&apos;null&apos;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>formula_textTransferredToChangeinSubscription</name>
+        <dataType>String</dataType>
+        <expression>CASE(
+{!sov_UASTransferTo.Subscription_Type__c},
+&apos;kWh&apos;,
+TEXT({!formula_TransferredAnnualkWhChange})&amp;&apos; kWh&apos;,
+&apos;Electricity Cost ($)&apos;,
+&apos;$&apos;&amp;TEXT({!formula_TransferredAnnualCostChange}),
+&apos;null&apos;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>formula_TextTransferredToNewSubscription</name>
+        <dataType>String</dataType>
+        <expression>CASE(
+{!sov_UASTransferTo.Subscription_Type__c},
+&apos;kWh&apos;,
+TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
+&apos;Electricity Cost ($)&apos;,
+&apos;$&apos;&amp;TEXT({!var_TransferredNewAnnualCost}),
+&apos;null&apos;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>formula_TransferredAnnualCostChange</name>
+        <dataType>Currency</dataType>
+        <expression>{!var_TransferredNewAnnualCost}-{!sov_UASTransferTo.Annual_Cost_Future_Rollup__c}</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>formula_TransferredAnnualkWhChange</name>
+        <dataType>Number</dataType>
+        <expression>{!var_transferredNewAnnualkWh}-{!sov_UASTransferTo.Annual_kWh_Subscription_Future_Rollup__c}</expression>
         <scale>2</scale>
     </formulas>
     <interviewLabel>User Subscription Order Creation {!$Flow.CurrentDateTime}</interviewLabel>
@@ -90,26 +666,61 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
+        <name>Create_Transfer</name>
+        <label>Create Transfer</label>
+        <locationX>327</locationX>
+        <locationY>418</locationY>
+        <connector>
+            <targetReference>assgnUAS_Variable_Assignment</targetReference>
+        </connector>
+        <inputReference>sov_Transfer</inputReference>
+    </recordCreates>
+    <recordCreates>
         <name>SO_Creation</name>
         <label>SO Creation</label>
-        <locationX>826</locationX>
-        <locationY>21</locationY>
+        <locationX>759</locationX>
+        <locationY>1085</locationY>
         <connector>
-            <targetReference>Success</targetReference>
+            <targetReference>dec_Type_0</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Error</targetReference>
         </faultConnector>
-        <inputReference>sov_SubscriptionOrder</inputReference>
+        <inputReference>socv_SO</inputReference>
     </recordCreates>
+    <recordLookups>
+        <name>Get_Transferred_To_UAS</name>
+        <label>Get Transferred To UAS</label>
+        <locationX>455</locationX>
+        <locationY>246</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>scrTransfer_Inputs_0</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sov_SOTransferTo.Utility_Account_Subscription__c</elementReference>
+            </value>
+        </filters>
+        <object>Utility_Account_Subscription__c</object>
+        <outputReference>sov_UASTransferTo</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Annual_kWh_Subscription_Future_Rollup__c</queriedFields>
+        <queriedFields>Annual_Cost_Future_Rollup__c</queriedFields>
+        <queriedFields>Transferred_To__c</queriedFields>
+        <queriedFields>Transferred_From__c</queriedFields>
+        <queriedFields>Subscription_Type__c</queriedFields>
+    </recordLookups>
     <recordLookups>
         <name>Get_UAS</name>
         <label>Get_UAS</label>
-        <locationX>201</locationX>
-        <locationY>12</locationY>
+        <locationX>361</locationX>
+        <locationY>13</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>SO_Input</targetReference>
+            <targetReference>SO_Input_0</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -124,12 +735,25 @@
         <queriedFields>Subscription_Type__c</queriedFields>
         <queriedFields>Annual_Cost_Future_Rollup__c</queriedFields>
         <queriedFields>Annual_kWh_Subscription_Future_Rollup__c</queriedFields>
+        <queriedFields>Transferred_From__c</queriedFields>
+        <queriedFields>Transferred_To__c</queriedFields>
+        <queriedFields>Future_Customer_Subscription_KWDC_Rollup__c</queriedFields>
     </recordLookups>
+    <recordUpdates>
+        <name>Update_UAS</name>
+        <label>Update UAS</label>
+        <locationX>1134</locationX>
+        <locationY>1210</locationY>
+        <connector>
+            <targetReference>Success_0</targetReference>
+        </connector>
+        <inputReference>socv_UAS</inputReference>
+    </recordUpdates>
     <screens>
         <name>Error</name>
         <label>Error</label>
-        <locationX>826</locationX>
-        <locationY>223</locationY>
+        <locationX>1127</locationX>
+        <locationY>1085</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -142,63 +766,19 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>scrSO_Review</name>
-        <label>SO Review</label>
-        <locationX>529</locationX>
-        <locationY>12</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Assign_SO</targetReference>
-        </connector>
-        <fields>
-            <name>scrReviewDisplay</name>
-            <fieldText>&lt;p&gt;You selected &lt;b style=&quot;font-size: 14px;&quot;&gt;{!varNew_Annual_Cost}{!varNew_Annual_kWh}&lt;/b&gt;&lt;b&gt; &lt;/b&gt;as the new subscription amount for this UAS.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;To do that, we&apos;ll create a new Subscription Order for this amount:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;{!var_AnnualCostChange}{!var_AnnualkWhChange} &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;and&lt;/span&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt; &lt;/b&gt;with the type:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;{!pcklst_Subscription_Order_Type}&lt;/b&gt;.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If these values look correct to you, click &lt;b style=&quot;font-size: 14px;&quot;&gt;&quot;Next&quot;&lt;/b&gt; and the Subscription Order will be automatically created an applied to the customer&apos;s UAS. If you would like to make changes, click &lt;b style=&quot;font-size: 14px;&quot;&gt;&quot;Previous&quot;&lt;/b&gt;.&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>SO_Input</name>
-        <label>Subscription Order Input</label>
-        <locationX>360</locationX>
-        <locationY>18</locationY>
+        <name>scrResize_Inputs</name>
+        <label>Resize Inputs</label>
+        <locationX>764</locationX>
+        <locationY>244</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>scrSO_Review</targetReference>
+            <targetReference>aassgnSet_New_Resize_Subscriptions</targetReference>
         </connector>
         <fields>
-            <name>txtTypeSelection</name>
-            <fieldText>&lt;p&gt;Choose the Type of Subscription Order you&apos;d like to create. Most of the time, the type will be Resizing. &lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>pcklst_Subscription_Order_Type</name>
-            <choiceReferences>pcs_SO_Type_Picklist</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Subscription Order Type</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>txt_Commentsinfo</name>
-            <fieldText>&lt;p&gt;If you would like to leave any comments about this Subscription Order, you can put them here:&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>var_SOComments</name>
-            <dataType>String</dataType>
-            <fieldText>Comments</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
-        </fields>
-        <fields>
             <name>txtAnnual_Cost_Sizing</name>
-            <fieldText>&lt;p&gt;Enter the new Annual Cost ($) that you would like this subscription to have. For example, if the current Annual Cost is $1,000, and they are being resized to $800, enter $800. &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For reference, the Utility Account Subscription currently as a Future Annual Cost of {!sovUAS.Annual_Cost_Future_Rollup__c}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Enter the new Annual Cost ($) that you would like this subscription to have. For example, if the current Annual Cost is $1,000, and they are being resized to $800, enter $800.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For reference, the Utility Account Subscription currently has a Future Annual Cost of {!sovUAS.Annual_Cost_Future_Rollup__c}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -212,7 +792,7 @@
             </visibilityRule>
         </fields>
         <fields>
-            <name>varNew_Annual_Cost</name>
+            <name>scrvarNew_Annual_Cost</name>
             <dataType>Currency</dataType>
             <fieldText>New Annual Cost ($)</fieldText>
             <fieldType>InputField</fieldType>
@@ -245,7 +825,7 @@
             </visibilityRule>
         </fields>
         <fields>
-            <name>varNew_Annual_kWh</name>
+            <name>scrvarNew_Annual_kWh</name>
             <dataType>Number</dataType>
             <fieldText>New Annual kWh</fieldText>
             <fieldType>InputField</fieldType>
@@ -266,27 +846,268 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Success</name>
-        <label>Success</label>
-        <locationX>967</locationX>
-        <locationY>15</locationY>
+        <name>scrSO_Review</name>
+        <label>SO Review</label>
+        <locationX>944</locationX>
+        <locationY>801</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>SO_Creation</targetReference>
+        </connector>
+        <fields>
+            <name>scrReviewDisplay</name>
+            <fieldText>&lt;p&gt;You selected &lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!formula_TextnewAnnualSubscription}&lt;/b&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt; &lt;/b&gt;as the new subscription amount for this UAS.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;To do that, we&apos;ll create a new Subscription Order for this amount:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;{!formula_TextnewChangeinSubscription}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;and&lt;/span&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt; &lt;/b&gt;with the type:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;{!pcklst_Subscription_Order_Type}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>txt_CancellationWarning</name>
+            <fieldText>&lt;p&gt;This will also set the &lt;b&gt;Next Allocation Schedule Status&lt;/b&gt; on the related UAS to &lt;b&gt;Inactive.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>pcklst_Subscription_Order_Type</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Cancellation</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>txt_ConfirmationFooter</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;If these values look correct to you, click &lt;/span&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60); font-size: 14px;&quot;&gt;&quot;Next&quot;&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; and the Subscription Order will be automatically created an applied to the customer&apos;s UAS. If you would like to make changes, click &lt;/span&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60); font-size: 14px;&quot;&gt;&quot;Previous&quot;&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>scrSO_Review_0</name>
+        <label>SO Review</label>
+        <locationX>55</locationX>
+        <locationY>251</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>assgn_Transfer_Variable_Assignment</targetReference>
+        </connector>
+        <fields>
+            <name>scrReviewDisplay_0</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;For the UAS being transferred away from:&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Because this is a transfer, the new subscription amount will be set to &lt;b style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; color: rgb(47, 84, 186);&quot;&gt;{!formula_TextnewAnnualSubscription}&lt;/b&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt; &lt;/b&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;for this UAS.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;To do that, we&apos;ll create a new Subscription Order for this amount:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(47, 84, 186);&quot;&gt;{!formula_TextnewChangeinSubscription}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;and&lt;/span&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt; &lt;/b&gt;with the type:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(47, 84, 186);&quot;&gt;{!pcklst_Subscription_Order_Type}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; color: rgb(0, 0, 0);&quot;&gt;In addition, the Next Allocation Schedule Status will be set to &lt;/span&gt;&lt;b style=&quot;font-size: 14px; color: rgb(47, 84, 186);&quot;&gt;Inactive.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;For the UAS being transferred to:&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You selected &lt;b style=&quot;color: rgb(47, 84, 186); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;{!formula_TextTransferredToNewSubscription} &lt;/b&gt;as the new subscription amount for the UAS that is being transferred to.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;To do that, we&apos;ll create a new Subscription Order for this amount:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(47, 84, 186);&quot;&gt;{!formula_textTransferredToChangeinSubscription}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;and&lt;/span&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt; &lt;/b&gt;with the type:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(47, 84, 186);&quot;&gt;{!pcklst_Subscription_Order_Type}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>txt_ConfirmationFooter_0</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;If these values look correct to you, click &lt;/span&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;&quot;Next&quot;&lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; and the subscription updates will be done automatically. To make changes, use the &lt;/span&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;&quot;Previous&quot;&lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; button.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>scrTransfer_Inputs</name>
+        <label>Transfer Inputs</label>
+        <locationX>615</locationX>
+        <locationY>246</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_Transferred_To_UAS</targetReference>
+        </connector>
         <fields>
-            <name>txt_Success</name>
-            <fieldText>&lt;p&gt;The Subscription Order was created successfully, &lt;a href=&quot;/{!sov_SubscriptionOrder.Id}&quot; target=&quot;_blank&quot;&gt;click here to view the record! &lt;/a&gt;&lt;/p&gt;</fieldText>
+            <name>lookup_TransferredToUAS</name>
+            <extensionName>flowruntime:lookup</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>fieldApiName</name>
+                <value>
+                    <stringValue>Utility_Account_Subscription__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>UAS</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectApiName</name>
+                <value>
+                    <stringValue>Subscription_Order__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>sov_SOTransferTo.Utility_Account_Subscription__c</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>sov_SOTransferTo.Utility_Account_Subscription__c</assignToReference>
+                <name>recordId</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>scrTransfer_Inputs_0</name>
+        <label>Transfer Inputs</label>
+        <locationX>320</locationX>
+        <locationY>246</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>assgnSet_New_Transfer_Subscriptions</targetReference>
+        </connector>
+        <fields>
+            <name>txt_TransferredSubscriptionAmount</name>
+            <fieldText>&lt;p&gt;Below, enter in the subscription amount for the UAS that is being transferred to:&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
-        <showFooter>false</showFooter>
+        <fields>
+            <name>scrvar_transferredkWh_Subscription_0</name>
+            <dataType>Number</dataType>
+            <fieldText>kWh Subscription</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+            <scale>2</scale>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>sov_UASTransferTo.Subscription_Type__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>kWh</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>scrvar_transferredAnnual_Cost_Subscription_0</name>
+            <dataType>Currency</dataType>
+            <fieldText>Annual Cost Subscription</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+            <scale>0</scale>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>sov_UASTransferTo.Subscription_Type__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Electricity Cost ($)</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>SO_Input_0</name>
+        <label>Subscription Order Input</label>
+        <locationX>520</locationX>
+        <locationY>13</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>dec_Type</targetReference>
+        </connector>
+        <fields>
+            <name>txtTypeSelection_0</name>
+            <fieldText>&lt;p&gt;Choose the Type of Subscription Order you&apos;d like to create.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>pcklst_Subscription_Order_Type</name>
+            <choiceReferences>pcs_SO_Type_Picklist</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Subscription Order Type</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>txt_Commentsinfo_0</name>
+            <fieldText>&lt;p&gt;If you would like to leave any comments about this Subscription Order, you can put them here:&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>var_SOComments</name>
+            <dataType>String</dataType>
+            <fieldText>Comments</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <startElementReference>Get_UAS</startElementReference>
-    <status>Active</status>
+    <screens>
+        <name>Success_0</name>
+        <label>Success</label>
+        <locationX>762</locationX>
+        <locationY>1401</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>txt_End</name>
+            <fieldText>&lt;p&gt;The subscription(s) have been updated, click Finish to exit.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>246</locationX>
+        <locationY>13</locationY>
+        <connector>
+            <targetReference>Get_UAS</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
     <textTemplates>
         <name>varErrorMessage</name>
         <text>&lt;p&gt;An Error Occurred in the User Subscription Order Creation Flow:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
     </textTemplates>
+    <variables>
+        <name>socv_SO</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Subscription_Order__c</objectType>
+    </variables>
+    <variables>
+        <name>socv_Transfer</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Subscription_Transfer__c</objectType>
+    </variables>
+    <variables>
+        <name>socv_UAS</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Utility_Account_Subscription__c</objectType>
+    </variables>
     <variables>
         <name>sov_ErrorLog</name>
         <dataType>SObject</dataType>
@@ -294,6 +1115,14 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Error_Log__c</objectType>
+    </variables>
+    <variables>
+        <name>sov_SOTransferTo</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Subscription_Order__c</objectType>
     </variables>
     <variables>
         <description>New SO that is created in the flow.</description>
@@ -305,6 +1134,22 @@
         <objectType>Subscription_Order__c</objectType>
     </variables>
     <variables>
+        <name>sov_Transfer</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Subscription_Transfer__c</objectType>
+    </variables>
+    <variables>
+        <name>sov_UASTransferTo</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Utility_Account_Subscription__c</objectType>
+    </variables>
+    <variables>
         <description>This is the s object variable for the UAS that launches the flow.</description>
         <name>sovUAS</name>
         <dataType>SObject</dataType>
@@ -312,6 +1157,38 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Utility_Account_Subscription__c</objectType>
+    </variables>
+    <variables>
+        <name>var_newAnnualCost</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>var_newAnnualkWh</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>var_TransferredNewAnnualCost</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>var_transferredNewAnnualkWh</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <scale>2</scale>
     </variables>
     <variables>
         <description>UAS ID that is passed through the URL of the flow when it is launched.</description>
