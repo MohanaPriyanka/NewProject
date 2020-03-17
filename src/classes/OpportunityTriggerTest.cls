@@ -4,24 +4,24 @@ public with sharing class OpportunityTriggerTest {
         RecalculateUALCostControllerTest.setupTestData();
     }
 
-    @isTest static void testRollup() {        
+    @isTest static void testRollup() {
         Map<String, Opportunity> oppMap = new Map<String, Opportunity>();
-       
+
         Utility_NMC_Tariff__c tariff = [
             SELECT Id FROM Utility_NMC_Tariff__c
             WHERE Name = 'National Grid WCMA Class 2' AND Value_of_Net_Metering_Credit__c = 1
         ];
 
-        for(Opportunity opp : [SELECT Id, Name, 
-                                Subscription_Size_for_Invoicing__c 
-                                FROM Opportunity 
+        for(Opportunity opp : [SELECT Id, Name,
+                                Subscription_Size_for_Invoicing__c
+                                FROM Opportunity
                                 ORDER BY Name]){
             opp.NMC_Tariff__c = tariff.Id;
             opp.StageName = 'New';
             oppMap.put(opp.Name, opp);
         }
         update oppMap.values();
-        List<Utility_Account_Subscription__c> uasList = [SELECT Id, Name, 
+        List<Utility_Account_Subscription__c> uasList = [SELECT Id, Name,
                                                         Customer_Subscription_KW_DC__c, Opportunity__r.Name, Opportunity__c,
                                                         Future_Customer_Subscription_KWDC_Rollup__c
                                                         FROM Utility_Account_Subscription__c
@@ -43,9 +43,9 @@ public with sharing class OpportunityTriggerTest {
             System.assertEquals(7.6923, uasList[3].Future_Customer_Subscription_KWDC_Rollup__c);
         } else {
             System.assertEquals(3.8462, uasList[0].Customer_Subscription_KW_DC__c);
-        System.assertEquals(2.3077, uasList[1].Customer_Subscription_KW_DC__c);
-        System.assertEquals(6.9231, uasList[2].Customer_Subscription_KW_DC__c);
-        System.assertEquals(7.6923, uasList[3].Customer_Subscription_KW_DC__c);
+            System.assertEquals(2.3077, uasList[1].Customer_Subscription_KW_DC__c);
+            System.assertEquals(6.9231, uasList[2].Customer_Subscription_KW_DC__c);
+            System.assertEquals(7.6923, uasList[3].Customer_Subscription_KW_DC__c);
         }
 
 
@@ -64,9 +64,9 @@ public with sharing class OpportunityTriggerTest {
 
         Test.StopTest();
 
-        List<Opportunity> updatedOpp = [SELECT Id, Name, 
-                                        Subscription_Size_for_Invoicing__c 
-                                        FROM Opportunity 
+        List<Opportunity> updatedOpp = [SELECT Id, Name,
+                                        Subscription_Size_for_Invoicing__c
+                                        FROM Opportunity
                                         WHERE (Name = 'RecalcUALOpp1A' OR Name = 'RecalcUALOpp8A')
                                         ORDER BY Name];
 

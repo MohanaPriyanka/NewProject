@@ -4,8 +4,7 @@
  * Tested By: UASSelectorTest
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class
-UASSelector {
+public without sharing class UASSelector {
     public static List<Utility_Account_Subscription__c> selectByAccounts(Set<Id> accounts) {
         return [
             SELECT Id,

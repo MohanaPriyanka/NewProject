@@ -180,17 +180,21 @@ public without sharing class SubscriptionManagementService implements Queueable{
             oppIds.add(uas.Opportunity__c);
         }
 
-        Map<Id, Opportunity> oppToSOMap = new Map<Id, Opportunity>([SELECT Id, Lead__r.IsConverted, Lead__c FROM Opportunity WHERE Id IN :oppIds]);
+        Map<Id, Opportunity> oppToSOMap = new Map<Id, Opportunity>([
+            SELECT Id, Lead__r.IsConverted, Lead__c
+            FROM Opportunity
+            WHERE Id IN :oppIds
+            AND Lead__r.IsConverted = FALSE
+        ]);
 
         for (Utility_Account_Subscription__c uas : uasList) {
-            if (oppToSOMap.get(uas.Opportunity__c) != null && !oppToSOMap.get(uas.Opportunity__c).Lead__r.IsConverted) {
+            if (oppToSOMap.get(uas.Opportunity__c) != null) {
                 Subscription_Order__c so = new Subscription_Order__c(
                     Utility_Account_Subscription__c = uas.Id,
                     Type__c = 'Initial',
                     Effective_Date__c = System.today(),
                     Approval_Status__c = 'Approved'
                 );
-
                 if (uas.Subscription_Type__c == 'kWh') {
                     so.Change_in_Annual_kWh__c = uas.Annual_kwh_subscription_future__c;
                 } else {

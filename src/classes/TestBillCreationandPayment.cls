@@ -321,17 +321,6 @@ public class TestBillCreationandPayment {
 
         insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo};
 
-        uasone.Customer_Subscription_KW_DC_STATIC__c = 25;
-        uastwo.Customer_Subscription_KW_DC_STATIC__c = 20;
-        uasthree.Customer_Subscription_KW_DC_STATIC__c = 15;
-        uasfour.Customer_Subscription_KW_DC_STATIC__c = 10;
-        if (multipleOppsForSingleSystem) {
-            uasFive.Customer_Subscription_KW_DC_STATIC__c = 25;
-            update new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour, uasFive};
-        } else {
-        update new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
-        }
-
         // We want to make these dates current, so that generated bills are current
         Date myDateApr = Date.newInstance(Date.today().year(), Date.today().month(), 15);
         Date myDateMar = myDateApr.addMonths(-1);
@@ -716,7 +705,6 @@ public class TestBillCreationandPayment {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
                 Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Customer_Subscription_KW_DC_STATIC__c = 25,
                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
 
         Utility_Account_Subscription__c uas5 =
@@ -726,7 +714,6 @@ public class TestBillCreationandPayment {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
                 Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Customer_Subscription_KW_DC_STATIC__c = 25,
                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
 
         Utility_Account_Subscription__c uas6 =
@@ -736,7 +723,6 @@ public class TestBillCreationandPayment {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
                 Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Customer_Subscription_KW_DC_STATIC__c = 25,
                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
 
         insert new List<Utility_Account_Subscription__c> {uas4, uas5, uas6};

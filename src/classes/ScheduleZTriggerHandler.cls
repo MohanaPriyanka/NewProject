@@ -130,7 +130,7 @@ public without sharing class ScheduleZTriggerHandler {
 
         List<Utility_Account_Subscription__c> accountSubscriptions = [
             SELECT Id, Customer_Subscription_KW_DC__c, Opportunity__r.Shared_Solar_System__c,
-                Customer_Subscription_KW_DC_STATIC__c, Future_Customer_Subscription_KWDC_Rollup__c
+                Future_Customer_Subscription_KWDC_Rollup__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Shared_Solar_System__c IN : sssList
             AND Next_Schedule_Z_Status__c = 'Active Subscription'

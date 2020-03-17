@@ -283,8 +283,6 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Shared_Solar_System__c = sss2.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 8000
-//                Calculated_Annual_Cost_of_Electricity__c = 8000,
-//                Subscribed_Annual_Cost_of_Electricity__c = 8000
             );
         Utility_Account_Subscription__c uasThree =
             new Utility_Account_Subscription__c(Name = '0000238',
@@ -293,8 +291,6 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Shared_Solar_System__c = sss2.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 300
-//                Calculated_Annual_Cost_of_Electricity__c = 300,
-//                Subscribed_Annual_Cost_of_Electricity__c = 300
             );
         Utility_Account_Subscription__c uasFour =
             new Utility_Account_Subscription__c(Name = '0000239',
@@ -303,8 +299,6 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Shared_Solar_System__c = sss2.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 30000
-//                Calculated_Annual_Cost_of_Electricity__c = 30000,
-//                Subscribed_Annual_Cost_of_Electricity__c = 30000
             );
         insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree, uasFour};
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
@@ -536,14 +530,14 @@ public with sharing class SharedSolarSystemHandlerTest {
         if (featureService.isEnabled('Subscription_Orders')) {
             Subscription_Order__c resize = new Subscription_Order__c(
                 Utility_Account_Subscription__c = selectedUAS.Id,
-                Change_in_Annual_kWh__c = 4000,
+                Change_in_Annual_kWh__c = 4000.1,
                 Type__c = 'Resize',
                 Approval_Status__c = 'Approved',
                 Effective_Date__c = System.today()
             );
             insert resize;
         } else {
-            selectedUAS.Annual_kwh_subscription_future__c = 11999.9;
+            selectedUAS.Annual_kwh_subscription_future__c = 12000;
             update selectedUAS;
         }
         Test.startTest();
@@ -556,8 +550,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
-        //used to be .4616 (passes with .15 when SO flag is on)
-        System.assertEquals(9.4615,sssUpdated.Capacity_Committed_kW_DC__c);
+
+        System.assertEquals(9.4616,sssUpdated.Capacity_Committed_kW_DC__c);
         System.assertEquals(23.0769,sssUpdated.Anchor_capacity_reserved__c);
     }
     @IsTest

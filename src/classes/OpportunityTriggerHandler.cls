@@ -91,9 +91,8 @@ public without sharing class OpportunityTriggerHandler {
                 subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
             }
         }
-        if (subscriptionEventMap.values().size() > 0){
-            EventBus.publish(subscriptionEventMap.values());
-        }
+
+        EventBus.publish(subscriptionEventMap.values());
         return subscriptionEventMap;
     }
 

@@ -9,6 +9,8 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CSSubscriptionEnroller {
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
     private List<Utility_Account_Log__c> ualList;
     private List<Account> propAccountList;
     private Map<Id, List<Utility_Account_Log__c>> ualsByLeadId;
@@ -136,12 +138,8 @@ public without sharing class CSSubscriptionEnroller {
             }
         }
 
-        insertUASes();
-
-        if(uasOrders.size() > 0) {
-            insertSubscriptionOrders();
-        }
-
+        insert uasList;
+        insertSubscriptionOrders();
         updateChargentOrders();
     }
 
@@ -284,7 +282,6 @@ public without sharing class CSSubscriptionEnroller {
         List<Opportunity> opportunities = leadOppsMap.get(lead.Id);
         List<Utility_Account_Log__c> uals = ualsByLeadId.get(lead.Id);
 
-        FeatureService featureService = new FeatureService();
         if(featureService.isEnabled('Subscription_Orders')) {
             uasList.addAll(CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities, uasOrders));
         } else {
@@ -301,10 +298,6 @@ public without sharing class CSSubscriptionEnroller {
         }
 
         insert soList;
-    }
-
-    private void insertUASes() {
-        insert uasList;
     }
 
     //Link the chargent order to the property account, not the converted account

@@ -252,11 +252,7 @@ public class CustomerCommunicationHandlerTest{
                                                     Calculated_Annual_Cost_of_Electricity__c = 300,
                                                     Subscribed_Annual_Cost_of_Electricity__c = 300);
 
-            insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
-            uasOne.Customer_Subscription_KW_DC_STATIC__c = 25;
-            uasTwo.Customer_Subscription_KW_DC_STATIC__c = 10;
-            uasThree.Customer_Subscription_KW_DC_STATIC__c = 10;
-            update new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
+        insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
 
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',

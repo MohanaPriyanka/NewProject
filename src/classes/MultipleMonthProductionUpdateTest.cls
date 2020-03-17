@@ -171,9 +171,6 @@ public class MultipleMonthProductionUpdateTest {
 
         insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo};
 
-        uasOne.Customer_Subscription_KW_DC_STATIC__c = 20;
-        uasTwo.Customer_Subscription_KW_DC_STATIC__c = 14;
-
         update new List<Utility_Account_Subscription__c>{uasOne, uasTwo};
 
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(

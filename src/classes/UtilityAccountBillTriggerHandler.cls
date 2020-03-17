@@ -36,7 +36,6 @@ public without sharing class UtilityAccountBillTriggerHandler {
                 Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Id,
                 Utility_Account_Subscription__r.Opportunity__r.AccountId,
-                Utility_Account_Subscription__r.Customer_Subscription_KW_DC_STATIC__c,
                 Utility_Account_Subscription__r.Customer_Subscription_KW_DC__c,
                 Utility_Account_Subscription__r.Future_Customer_Subscription_KWDC_Rollup__c,
                 Utility_Account_Subscription__r.Opportunity__c,
