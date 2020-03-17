@@ -2,8 +2,6 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemHandler implements Schedulable {
-    private UASSelector uasSelector = new UASSelector();
-    private SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     private List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
     private List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
     private List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();

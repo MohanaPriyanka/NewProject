@@ -540,10 +540,11 @@ public class MultipleMonthProductionUpdateTest {
             SELECT Id, Billing_Method__c
             FROM Shared_Solar_System__c];
 
-        Schedule_Z_Subscription__c szs = [SELECT Id, Name, Customer_Subscription_kW_DC__c,
-                                            Number_of_Decimal_Places__c
-                                            FROM Schedule_Z_Subscription__c
-                                            WHERE Customer_Subscription_kW_DC__c = 14];
+        Schedule_Z_Subscription__c szs = [
+            SELECT Id, Name, Customer_Subscription_kW_DC__c, Number_of_Decimal_Places__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Customer_Subscription_kW_DC__c = 14
+        ];
 
         szs.Customer_Subscription_kW_DC__c = 25.59;
         szs.Number_of_Decimal_Places__c = 2;
