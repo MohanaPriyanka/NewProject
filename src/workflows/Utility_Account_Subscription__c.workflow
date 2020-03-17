@@ -50,7 +50,7 @@
     <fieldUpdates>
         <fullName>UAS_Update_Maximum_Cost</fullName>
         <field>calculated_annual_cost_of_electricity__c</field>
-        <formula>MIN(Maximum_Annual_Cost__c, Annual_Cost_of_Electricity__c)</formula>
+        <formula>Annual_Cost_of_Electricity__c</formula>
         <name>UAS - Update Maximum Cost</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
@@ -75,7 +75,7 @@
             <name>UAS_Update_Maximum_Cost</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Utility_Account_Subscription__c.UAS_Number__c</field>
             <operation>equals</operation>
