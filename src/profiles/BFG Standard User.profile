@@ -16003,6 +16003,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Anchor_Acquisition_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Anchor_Management_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.BW_Company_Entity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.BillingAddress</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -16158,6 +16173,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Management_Fee_Escalator_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Management_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -16249,6 +16269,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract.ShippingAddress</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Small_Offtake_Reacquisition_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37458,6 +37483,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Estimated_Contracted_Revenue__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Estimated_Credit_Flow_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -37554,6 +37584,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Latitude_and_Longitude__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Management_Fee_Escalator_Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Management_Revenue_Start_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -55476,11 +55516,7 @@
         <recordType>Contract.Client_Contract</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contract-Contract Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Contract-General Contract Layout</layout>
-        <recordType>Contract.General_Contract</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Daily_Production_Update__c-Daily Production Update Layout</layout>
@@ -64867,10 +64903,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ActivateContract</name>
-    </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>ActivitiesAccess</name>

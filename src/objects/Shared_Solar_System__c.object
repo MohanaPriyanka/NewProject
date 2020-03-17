@@ -930,6 +930,19 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Estimated_Contracted_Revenue__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Accounting managed field for estimating project revenue. Manually entered/updated by Accounting.</inlineHelpText>
+        <label>Estimated Contracted Revenue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Estimated_Credit_Flow_Date__c</fullName>
         <description>Adds 30 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 30 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
         <externalId>false</externalId>
@@ -1197,6 +1210,28 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Location</type>
+    </fields>
+    <fields>
+        <fullName>Management_Fee_Escalator_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date escalation percentage applies to management fee as specified in contract. Entered by Operations as part of project onboarding process.</inlineHelpText>
+        <label>Management Fee Escalator Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Management_Revenue_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Accounting managed field for estimating project revenue. Manually entered/updated by Accounting.</inlineHelpText>
+        <label>Management Revenue Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Maximum_Subscription_Assemblage__c</fullName>

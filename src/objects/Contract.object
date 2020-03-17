@@ -93,6 +93,44 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Anchor_Acquisition_Fee__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Contracted $ / W for Anchor customers. Entered manually by CSBD.</inlineHelpText>
+        <label>Anchor Acquisition Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Anchor_Management_Fee__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Annual management fee ($/MW DC) for Anchor customers. Manually entered by CSBD at contract execution. If blended rate, include blended rate in both Anchor and Small Offtake fields.</inlineHelpText>
+        <label>Anchor Management Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>BW_Company_Entity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>BlueWave entity named and executed in contract (BWC, BFG, BCS Customer Mgmt, or BCS Customer Acq). Manually entered by CSBD at contract execution.</inlineHelpText>
+        <label>BlueWave Entity</label>
+        <referenceTo>Entity__c</referenceTo>
+        <relationshipLabel>Contracts (BW Company Entity)</relationshipLabel>
+        <relationshipName>BW_Company_Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>BillingAddress</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -112,7 +150,8 @@
         <fullName>BlueWave_Entity__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>BlueWave Entity</label>
+        <inlineHelpText>Client entity named and executed in contract. Manually entered by CDBD at contract execution.</inlineHelpText>
+        <label>Client Entity</label>
         <referenceTo>Entity__c</referenceTo>
         <relationshipLabel>Contracts</relationshipLabel>
         <relationshipName>Contracts</relationshipName>
@@ -309,11 +348,11 @@
     <fields>
         <fullName>Customer_Acquisition_Fee__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>$ / kW</inlineHelpText>
-        <label>Customer Acquisition Fee</label>
+        <inlineHelpText>Contracted $ / W for Small Offtake customers. Manually entered by CSBD at contract execution.</inlineHelpText>
+        <label>Small Offtake Acquisition Fee</label>
         <precision>18</precision>
         <required>false</required>
-        <scale>2</scale>
+        <scale>6</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -610,10 +649,22 @@
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
+        <fullName>Management_Fee_Escalator_Percent__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Escalator percentage for management fees. Manually entered by CSBD at contract execution.</inlineHelpText>
+        <label>Management Fee Escalator</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
         <fullName>Management_Fee__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>$ / MW DC</inlineHelpText>
-        <label>Management Fee</label>
+        <inlineHelpText>Annual management fee ($/MW DC) for Small Offtake customers. Manually entered by CSBD at contract execution. If blended rate, include blended rate in both Anchor and Small Offtake fields.</inlineHelpText>
+        <label>Small Offtake Management Fee</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -898,6 +949,18 @@
         <fullName>ShippingAddress</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Small_Offtake_Reacquisition_Fee__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Contracted $ / W for Small Offtake customers. Manually entered by CSBD at contract execution.</inlineHelpText>
+        <label>Small Offtake Reacquisition Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>SpecialTerms</fullName>
