@@ -3,6 +3,21 @@
     <description>Provides CRUD access on the Contract object (includes both record types). Also includes activate contract permission</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Anchor_Acquisition_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Anchor_Management_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.BW_Company_Entity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.BillingAddress</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -148,6 +163,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Management_Fee_Escalator_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Management_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -224,6 +244,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract.ShippingAddress</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Small_Offtake_Reacquisition_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
