@@ -2,8 +2,8 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemHandler implements Schedulable {
-    private UASSelector uasSelector = new UASSelector();
-    private SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+    private static UASSelector uasSelector;
+    private static SharedSolarSystemsSelector sssSelector;
     private List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
     private List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
     private List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
@@ -34,6 +34,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     }
 
     public void updateSSS() {
+        sssSelector = new SharedSolarSystemsSelector();
         Map<Id, Shared_Solar_System__c> oldSSSMap = new Map<Id, Shared_Solar_System__c>();
         List<Shared_Solar_System__c> newSSSList = sssSelector.getAllSSSes();
         List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
@@ -54,6 +55,8 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     }
 
     public void summarizeCapacity(List<Shared_Solar_System__c> sssList){
+        uasSelector = new UASSelector();
+
         Set<Id> sssIds = new Set<Id>();
         Decimal reservedCapacity = 0;
         Decimal committedCapacity = 0;
