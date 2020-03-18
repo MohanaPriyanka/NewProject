@@ -90,8 +90,8 @@
     </div>
   </div>
 
-  <p class="slds-m-around--small">
-    <lightning-input name="consentEmail" value={consentEmail} type="email" label="Confirm Email to Sign:" onchange={genericOnChange}></lightning-input>
+  <p class="slds-m-around--small" onkeyup={checkForSubmit}>
+    <lightning-input data-id="consentEmail" name="consentEmail" value={consentEmail} type="email" label="Confirm Email to Sign:" onchange={genericOnChange}></lightning-input>
   </p>
   <p class="slds-m-around--small">
     <lightning-button label="Continue" onclick={continueAgreement}></lightning-button>

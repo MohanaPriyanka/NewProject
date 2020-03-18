@@ -131,7 +131,6 @@ public without sharing class RestLead {
         if (fieldNames.contains('state')) baseLead.State = BlueWaveParent.convertAbbreviationToState(this.state);
         if (fieldNames.contains('zipCode')) baseLead.LASERCA__Home_Zip__c = this.zipCode;
         if (fieldNames.contains('zipCode')) baseLead.PostalCode = this.zipCode;
-        if (fieldNames.contains('zipCode')) baseLead.Parcel_Zip__c = this.zipCode; // TODO: remove once qualification goes off of UAL's zip, instead of the Lead's parcel zip
         if (fieldNames.contains('loadZone')) baseLead.LoadZone__c = this.loadZone;
         if (fieldNames.contains('businessPhone')) baseLead.Business_Phone__c = this.businessPhone;
         if (fieldNames.contains('businessTitle')) baseLead.Business_Title__c = this.businessTitle;
@@ -169,7 +168,6 @@ public without sharing class RestLead {
             City = this.city,
             State = BlueWaveParent.convertAbbreviationToState(this.state),
             PostalCode = this.zipCode,
-            Parcel_Zip__c = this.zipCode, // TODO: remove once qualification goes off of UAL's zip, instead of the Lead's parcel zip
             LeadSource = 'Switch',
             LoadZone__c = this.loadZone,
             Product_line__c = 'Community Solar',
@@ -184,6 +182,17 @@ public without sharing class RestLead {
             Referral_Email__c = this.referralEmail,
             Continue_Application_Link__c = this.continueApplicationLink
         );
+        // Since:
+        // - all UALs should have the same zip code under a property account (enforced by the UI and business logic),
+        // - the consumer of this method, CSLeadsRESTControllerV2, only supports a single property account, and
+        // - downstream code, UtilityLoadZoneService.updateLZUL, depends on Parcel_Zip__c,
+        // we set the lead's Parcel Zip to the first UAL's zip.
+        if (this.propertyAccounts != null && this.propertyAccounts.size() > 0 &&
+            this.propertyAccounts[0].utilityAccountLogs != null && this.propertyAccounts[0].utilityAccountLogs.size() > 0) {
+            newLead.Parcel_Zip__c = this.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
+        } else {
+            newLead.Parcel_Zip__c = this.zipCode;
+        }
 
         updateDerivedFields(this, newLead);
         if (this.eiaId != null) {

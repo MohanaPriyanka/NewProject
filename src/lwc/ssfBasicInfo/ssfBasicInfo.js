@@ -16,17 +16,27 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track lastName;
     @track email;
     @track phone;
+    @track sameBillingAddress = true;
     @track billingStreet;
     @track billingCity;
     @track billingState;
     @track billingZip;
+    @track sameHomeAddress = true;
+    @track homeStreet;
+    @track homeCity;
+    @track homeState;
+    @track homeZip;
     @track selectedUtility;
     @api utilityOptions;
     @track utilityAccounts;
     @track utilityAccountSection;
     @track stateOptions;
     @track referralName;
-    @track applicationType;
+    @api resiApplicationType;
+    @track businessName;
+    @track businessTitle;
+    @track businessPhone;
+    applicationType;
     utilityAccountCount = 1;
     @api selectedProduct;
     @wire(CurrentPageReference) pageRef;
@@ -35,6 +45,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if (!this.utilityAccounts) {
             this.utilityAccounts = [{
                 id: 1,
+                name: `Utility Account 1`,
                 utilityAccountNumber: '',
                 street: '',
                 state: '',
@@ -54,8 +65,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         } else if (this.utilityOptions.length === 1) {
             this.selectedUtility = this.utilityOptions[0].value;
         }
-        if (!this.applicationType) {
+        if (this.resiApplicationType) {
             this.applicationType = 'Residential';
+        } else {
+            this.applicationType = 'Non-Residential';
         }
         if (this.pageRef && this.pageRef.state && this.pageRef.state.mock) {
             this.mockData();
@@ -67,10 +80,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.lastName = 'Testcase';
         this.email = 'pyao@bluewavesolar.com';
         this.phone = 1231231234;
-        this.billingStreet = '1 Main';
-        this.billingCity = 'Boston';
-        this.billingState = 'MA';
-        this.billingZip = this.zipinput;
         this.utilityAccounts[0].utilityAccountNumber = '123';
         this.utilityAccounts[0].nameOnAccount = 'Peter testcase';
         this.utilityAccounts[0].street = '123 Main';
@@ -83,24 +92,16 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this[event.target.name] = event.target.value;
     }
 
+    billingAddressToggle(event) {
+        this.sameBillingAddress = event.target.checked;
+    }
+
+    homeAddressToggle(event) {
+        this.sameHomeAddress = event.target.checked;
+    }
+
     utilityAccountOnChange(event) {
         this.utilityAccounts[event.target.dataset.rowIndex][event.target.name] = event.target.value;
-        if (event.target.dataset.rowIndex === '0') {
-            switch(event.target.name) {
-                case 'street':
-                    this['billingStreet'] = event.target.value;
-                    break;
-                case 'city':
-                    this['billingCity'] = event.target.value;
-                    break;
-                case 'state':
-                    this['billingState'] = event.target.value;
-                    break;
-                case 'zip':
-                    this['billingZip'] = event.target.value;
-                    break;
-            }
-        }
     }
     addAnotherUtilityAccount() {
         if (!this.lastUtilityAccountValid()) {
@@ -109,6 +110,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.utilityAccountCount++;
         this.utilityAccounts.push({
             id:this.utilityAccountCount,
+            name: `Utility Account ${this.utilityAccountCount}`,
             utilityAccountNumber: '',
             street: '',
             state: '',
@@ -163,20 +165,32 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if (this.pageRef && this.pageRef.state && this.pageRef.state.salesRepId) {
             this.salesRepId = this.pageRef.state.salesRepId;
         }
+        if (this.sameBillingAddress) {
+            this.billingStreet = this.utilityAccounts[0].street;
+            this.billingCity = this.utilityAccounts[0].city;
+            this.billingState = this.utilityAccounts[0].state;
+            this.billingZip = this.utilityAccounts[0].zip;
+        }
+        if (this.sameHomeAddress) {
+            this.homeStreet = this.utilityAccounts[0].street;
+            this.homeCity = this.utilityAccounts[0].city;
+            this.homeState = this.utilityAccounts[0].state;
+            this.homeZip = this.utilityAccounts[0].zip;
+        }
         let restLead = {
             applicationType: this.applicationType,
             firstName: this.firstName,
             lastName: this.lastName,
             email : this.email,
             mobilePhone : this.phone,
-            streetAddress: this.billingStreet,
-            city: this.billingCity,
-            state: this.billingState,
-            zipCode: this.billingZip,
+            streetAddress: this.homeStreet,
+            city: this.homeCity,
+            state: this.homeState,
+            zipCode: this.homeZip,
             productName: this.selectedProduct,
             referralName: this.referralName,
-            partnerId: this.partnerId?this.partnerId:'',
-            salesRepId: this.salesRepId?this.salesRepId:'',
+            partnerId: this.partnerId?this.partnerId:null,
+            salesRepId: this.salesRepId?this.salesRepId:null,
             propertyAccounts: [
                 {
                     name: `${this.firstName} ${this.lastName}`,
@@ -187,6 +201,11 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 }
             ]
         };
+        if (!this.resiApplicationType) {
+            restLead.businessName = this.businessName;
+            restLead.businessTitle = this.businessTitle;
+            restLead.businessPhone = this.businessPhone;
+        }
         restLead.propertyAccounts[0].utilityAccountLogs = this.utilityAccounts.map(
             ({utilityAccountNumber, nameOnAccount, street, city, state, zip}) => {
                 return {
