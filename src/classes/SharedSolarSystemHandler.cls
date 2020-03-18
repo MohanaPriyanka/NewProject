@@ -1,17 +1,18 @@
 // Tested By : ClientBrandingServiceTest, SharedSolarSystemHandlerTest
-
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemHandler implements Schedulable {
-    private UASSelector uasSelector = new UASSelector();
-    private SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     private List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
     private List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
     private List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
-
+    @TestVisible
+    private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+    @TestVisible
+    private static UASSelector uasSelector = new UASSelector();
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
     public void execute(SchedulableContext sch) {
         updateSSS();
     }
-
     @AuraEnabled
     public static String updateStage(String sssToUpdate, String newStage) {
         Shared_Solar_System__c sss = new Shared_Solar_System__c();
@@ -30,17 +31,14 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             return customMessage;
         }
     }
-
     public void updateSSS() {
         Map<Id, Shared_Solar_System__c> oldSSSMap = new Map<Id, Shared_Solar_System__c>();
         List<Shared_Solar_System__c> newSSSList = sssSelector.getAllSSSes();
         List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
-
         for (Shared_Solar_System__c oldSSS : sssSelector.getAllSSSes()){
             oldSSSMap.put(oldSSS.Id, oldSSS);
         }
         summarizeCapacity(newSSSList);
-
         for (Shared_Solar_System__c newSSS : newSSSList){
             if (newSSS.Reserved_capacity_kW_DC__c != oldSSSMap.get(newSSS.Id).Reserved_capacity_kW_DC__c ||
                 newSSS.Capacity_committed_kW_DC__c != oldSSSMap.get(newSSS.Id).Capacity_committed_kW_DC__c ||
@@ -50,19 +48,27 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         }
         update sssToUpdateList;
     }
-
+    public void uncheckApexContext(List<Shared_Solar_System__c> sssList) {
+        List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
+        for (Shared_Solar_System__c sss : sssList) {
+            if (sss.Apex_Context__c) {
+                Shared_Solar_System__c sssToUpdate = new Shared_Solar_System__c();
+                sssToUpdate.Id = sss.Id;
+                sssToUpdate.Apex_Context__c = false;
+                sssToUpdateList.add(sssToUpdate);
+            }
+        }
+        update sssToUpdateList;
+    }
     public void summarizeCapacity(List<Shared_Solar_System__c> sssList){
         Set<Id> sssIds = new Set<Id>();
         Decimal reservedCapacity = 0;
         Decimal committedCapacity = 0;
         Decimal anchorCapacity = 0;
-
         for (Shared_Solar_System__c sss: sssList){
             sssIds.add(sss.Id);
         }
-
         List<Utility_Account_Subscription__c> relatedUAS = uasSelector.selectActiveUASBySSS(sssIds);
-
         for (Utility_Account_Subscription__c uas: relatedUAS) {
             if (!isAnchor(uas) && uas.Opportunity_Stage__c == 'Complete'){
                 committedCapacityList.add(uas);
@@ -72,41 +78,43 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                 anchorCapacityList.add(uas);
             }
         }
-
         for (Shared_Solar_System__c sss : sssList) {
             reservedCapacity = getCapacitySumOfUASList(reservedCapacityList,sss.Id);
             committedCapacity = getCapacitySumOfUASList(committedCapacityList,sss.Id);
             anchorCapacity = getCapacitySumOfUASList(anchorCapacityList,sss.Id);
-
             sss.Reserved_capacity_kW_DC__c = String.valueOf(reservedCapacity);
             sss.Capacity_committed_kW_DC__c = committedCapacity;
             if (anchorCapacity == 0 && sss.Stage__c != 'Management') {
                 sss.Anchor_capacity_reserved__c = sss.Reserved_Anchor_Capacity__c;
             } else {
                 sss.Anchor_capacity_reserved__c = anchorCapacity;
-                    }
-                }
             }
-
+        }
+    }
     private Decimal getCapacitySumOfUASList(List<Utility_Account_Subscription__c> uasList, Id sssId){
         Decimal summarizedCapacity = 0;
+        Boolean subscriptionOrderFeature = featureService.isEnabled('Subscription_Orders');
         if (uasList.size() > 0) {
             for (Utility_Account_Subscription__c uas : uasList) {
-                if (uas.Opportunity__r.Shared_Solar_System__c == sssId
-                    && uas.Customer_Subscription_KW_DC__c != null) {
-                    summarizedCapacity += uas.Customer_Subscription_KW_DC__c;
+                if (subscriptionOrderFeature) {
+                    if (uas.Opportunity__r.Shared_Solar_System__c == sssId && uas.Future_Customer_Subscription_KWDC_Rollup__c != 0) {
+                        summarizedCapacity += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+                }
+                } else {
+                    if (uas.Opportunity__r.Shared_Solar_System__c == sssId
+                        && uas.Customer_Subscription_KW_DC__c != null) {
+                        summarizedCapacity += uas.Customer_Subscription_KW_DC__c;
+            }
                     }
                 }
             }
         return summarizedCapacity;
                     }
-
     private Boolean isAnchor(Utility_Account_Subscription__c uas){
         return (uas.Customer_Group__c == 'Anchor' ||
             uas.Customer_Group__c == 'Public Offtake'
         );
                 }
-
     private Boolean isCancelledStatus(Utility_Account_Subscription__c uas){
         return (uas.Opportunity_Stage__c == 'Expired'
             || uas.Opportunity_Stage__c == 'Cancelled'
@@ -117,7 +125,6 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             || uas.Opportunity_Stage__c == 'Lost'
         );
            }
-    
     public void queueClientBrandKeyUpdate(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes){
         Set<Id> sssWithChangedBrandKey = new Set<Id>();
         for (Shared_Solar_System__c newSSS : newSSSes){

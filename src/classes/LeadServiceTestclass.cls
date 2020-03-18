@@ -269,6 +269,7 @@ public class LeadServiceTestclass {
 
     @IsTest
     static void testCompleteLeadConversion() {
+        useMocks(false);
         Lead switchLead = [
             SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
                 LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c
@@ -298,7 +299,8 @@ public class LeadServiceTestclass {
         lc.setDoNotCreateOpportunity(true);
 
         Database.LeadConvertResult lcr = Database.convertLead(lc, false);
-        System.assert(lcr.isSuccess());
+        System.assert(lcr.isSuccess(), lcr.getErrors());
+
 
         Lead convertedLead = [
             SELECT Id, ConvertedAccountId, ConvertedContactId, IsConverted, Personal_Credit_Report__c
@@ -341,7 +343,111 @@ public class LeadServiceTestclass {
             SELECT Id, Utility_Account_Log__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c IN :oppList
+        ];
+
+        //test converted account = parent account
+        System.assertEquals('Parent Account', convertedAccount.RecordType.Name);
+        System.assertEquals('API', convertedAccount.Owner.Name);
+
+        //Test property's parent account
+        System.assertEquals(convertedAccount.Id, propAcct.Parent_Account__c);
+        System.assertEquals(contact.Id, propAcct.Send_Bills_Contact__c);
+        System.assertEquals('Community Solar', contact.Product_Line__c);
+
+        System.assertEquals(1, oppList.size());
+        System.assertEquals('Albany Post Rd Solar Farm', oppList[0].Shared_Solar_System__r.Name);
+        System.assertEquals(convertedLead.Personal_Credit_Report__c, oppList[0].Personal_Credit_Report2__c);
+        System.assert(oppList[0].OpportunityContactRoles.size() > 0, 'Verify if the Opportunity Contact Roles got created.');
+        System.assertEquals('QC In Process', oppList[0].StageName);
+
+        //test uas creation
+        System.assertNotEquals(null, uasList);
+        System.assertEquals(1, uasList.size());
+        System.assertEquals(ual.Id, uasList[0].Utility_Account_Log__c);
+    }
+
+    @IsTest
+    static void testCompleteLeadConversionWithSubscriptionOrders() {
+       useMocks(true);
+        Lead switchLead = [
+            SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
+                LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c
+            FROM Lead
+            WHERE FirstName = 'Switch'
             LIMIT 1
+        ];
+        LeadService leadService = new LeadService();
+
+        Account propertyAccount = leadService.buildPropertyAccountFromLegacyLead(switchLead);
+        insert propertyAccount;
+
+        Utility_Account_Log__c ual = leadService.buildUtilityAccountLogFromLegacyLead(switchLead, propertyAccount);
+        ual.Annual_kWh__c = 9000;
+        insert ual;
+
+        switchLead.Status = 'Qualified';
+        update switchLead;
+
+
+        pullCreditForLead(switchLead.Id);
+
+
+        Database.LeadConvert lc = new Database.LeadConvert();
+        lc.setLeadId(switchLead.Id);
+        lc.setConvertedStatus('Qualified');
+        lc.setDoNotCreateOpportunity(true);
+
+        Database.LeadConvertResult lcr = Database.convertLead(lc, false);
+        System.assert(lcr.isSuccess(), lcr.getErrors());
+
+
+        Lead convertedLead = [
+            SELECT Id, ConvertedAccountId, ConvertedContactId, IsConverted, Personal_Credit_Report__c
+            FROM Lead
+            WHERE IsConverted = TRUE
+            LIMIT 1
+        ];
+
+        System.assertNotEquals(null, convertedLead);
+        System.assertNotEquals(null, convertedLead.ConvertedAccountId);
+
+        Account convertedAccount = [
+            SELECT Id, Owner.Name, RecordType.Name
+            FROM Account
+            WHERE Id = :convertedLead.ConvertedAccountId
+            LIMIT 1
+        ];
+
+        Account propAcct = [
+            SELECT Id, Send_Bills_Contact__c, RecordType.Name, Parent_Account__c
+            FROM Account
+            WHERE Lead__c = :convertedLead.Id AND RecordType.Name = 'Property'
+            LIMIT 1
+        ];
+
+        Contact contact = [
+            SELECT Id, Product_Line__c
+            FROM Contact
+            WHERE Id = :convertedLead.ConvertedContactId
+            LIMIT 1
+        ];
+
+        List<Opportunity> oppList = [
+            SELECT Id, Shared_Solar_System__r.Name, StageName, Personal_Credit_Report2__c, (SELECT Id FROM OpportunityContactRoles)
+            FROM Opportunity
+            WHERE Lead__c = :convertedLead.Id
+        ];
+
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Utility_Account_Log__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__c IN :oppList
+        ];
+
+        List<Subscription_Order__c> subscriptionOrders = [
+            SELECT Id, Utility_Account_Subscription__c, Approved_Change_in_Subscription__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c IN :uasList
         ];
 
 
@@ -365,6 +471,12 @@ public class LeadServiceTestclass {
         System.assertNotEquals(null, uasList);
         System.assertEquals(1, uasList.size());
         System.assertEquals(ual.Id, uasList[0].Utility_Account_Log__c);
+
+        //test susbscription order creation
+        System.assertNotEquals(null, subscriptionOrders);
+        System.assertEquals(1, subscriptionOrders.size());
+        System.assertEquals(uasList[0].Id, subscriptionOrders[0].Utility_Account_Subscription__c);
+        System.assertNotEquals(null, subscriptionOrders[0].Approved_Change_in_Subscription__c);
 
     }
 
@@ -453,4 +565,10 @@ public class LeadServiceTestclass {
         );
         insert crLog;
     }
+
+    private static void useMocks(Boolean featureOn) {
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
+    }
+
+
 }

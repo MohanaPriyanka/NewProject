@@ -83,7 +83,6 @@ private class TestSSSAddReservations {
             Utility_Account_Log__c = ual.Id,
             Name = '102342340',
             Opportunity__c = newOpportunity.Id,
-            Customer_Subscription_KW_DC_STATIC__c = 24,
             Subscribed_Annual_Cost_of_Electricity__c = 5765.76,
             Annual_Cost_of_Electricity__c = 1300
         );
@@ -117,7 +116,6 @@ private class TestSSSAddReservations {
             Utility_Account_Log__c = ual2.Id,
             Name = '102342340',
             Opportunity__c = newOpportunity3.Id,
-            Customer_Subscription_KW_DC_STATIC__c = 22,
             Subscribed_Annual_Cost_of_Electricity__c = 5285.28,
             Annual_Cost_of_Electricity__c = 500000
         );

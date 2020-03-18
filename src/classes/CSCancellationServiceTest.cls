@@ -882,8 +882,6 @@ public with sharing class CSCancellationServiceTest {
                 calculated_annual_cost_of_electricity__c = 4000,
                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
         insert uasFour;
-        uasFour.Customer_Subscription_KW_DC_STATIC__c = 25;
-        update uasFour;
 
         Schedule_Z_Subscription__c newSubscription = new Schedule_Z_Subscription__c(
             Customer_Subscription_kW_DC__c = 25,

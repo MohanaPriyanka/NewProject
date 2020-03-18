@@ -4,11 +4,13 @@
  * Dependencies: Leads, SharedSolarSystems, ChargentOrders (on leads)
  *
  * Outputs: Opportunities for leads, Utility Account Subscriptions for leads
- * Test: LeadTriggerHandlerTest
+ * Test: LeadTriggerHandlerTest, LeadServiceTestclass
  */
 
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CSSubscriptionEnroller {
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
     private List<Utility_Account_Log__c> ualList;
     private List<Account> propAccountList;
     private Map<Id, List<Utility_Account_Log__c>> ualsByLeadId;
@@ -18,6 +20,7 @@ public without sharing class CSSubscriptionEnroller {
     private Map<Id, Shared_Solar_System__c> sssByIds;
     private Map<Id, List<Opportunity>> leadOppsMap;
     private List<Utility_Account_Subscription__c> uasList;
+    private List<CSUtilityAccountSubscriptionFactory.UASOrder> uasOrders;
     private List<ChargentOrders__ChargentOrder__c> chargentOrdersToUpdate;
     private Map<Id, ChargentOrders__ChargentOrder__c> chOrdersByLeadId;
     private List<Id> oppIdList;
@@ -102,6 +105,7 @@ public without sharing class CSSubscriptionEnroller {
 
         leadOppsMap = new Map<Id, List<Opportunity>>();
         uasList = new List<Utility_Account_Subscription__c>();
+        uasOrders = new List<CSUtilityAccountSubscriptionFactory.UASOrder>();
         oppIdList = new List<Id>();
         chargentOrdersToUpdate = new List<ChargentOrders__ChargentOrder__c>();
         ualsToUpdateMap = new Map<Id, Utility_Account_Log__c>();
@@ -133,7 +137,9 @@ public without sharing class CSSubscriptionEnroller {
                 System.enqueueJob(new ZuoraAccountAsyncService(lead.Id));
             }
         }
-        insertUASes();
+
+        insert uasList;
+        insertSubscriptionOrders();
         updateChargentOrders();
     }
 
@@ -276,11 +282,22 @@ public without sharing class CSSubscriptionEnroller {
         List<Opportunity> opportunities = leadOppsMap.get(lead.Id);
         List<Utility_Account_Log__c> uals = ualsByLeadId.get(lead.Id);
 
-        uasList.addAll(CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities));
+        if(featureService.isEnabled('Subscription_Orders')) {
+            uasList.addAll(CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities, uasOrders));
+        } else {
+            uasList.addAll(CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities));
+        }
+
     }
 
-    public void insertUASes() {
-        insert uasList;
+    private void insertSubscriptionOrders() {
+        List<Subscription_Order__c> soList = new List<Subscription_Order__c>();
+        for (CSUtilityAccountSubscriptionFactory.UASOrder uasOrder : uasOrders){
+            uasOrder.sOrder.Utility_Account_Subscription__c = uasOrder.uas.Id;
+            soList.add(uasOrder.sOrder);
+        }
+
+        insert soList;
     }
 
     //Link the chargent order to the property account, not the converted account
