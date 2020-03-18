@@ -88,6 +88,10 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
                 processingParameter.creditMemo.CreditMemo.ClientOwner_Zcustom
             );
         CreditMemoApplication creditMemoApplication = groupByInvoiceAndDebitMemo(processingParameter.creditMemo, itemsWithApplication);
+        if (creditMemoApplication.invoices.size() == 0 && creditMemoApplication.debitMemos.size() == 0) {
+            return;
+        }
+
         String urlString = '/v1/creditmemos/' + processingParameter.creditMemo.CreditMemo.id +'/apply';
         Logger.logLater('ZuoraCreditMemoAllocationService', 'processOutstandingItems',
             'Request Endpoint: ' + urlString + '\n' +
@@ -142,10 +146,6 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
             application.debitMemos.add(debitToApply);
         }
 
-        if (application.invoices.size() == 0 && application.debitMemos.size() == 0) {
-            throw new Util.FatalBWException('Could not find anything to apply this credit memo to. Credit Memo\n' + creditMemo + '\n' +
-                'Outstanding items:\n' + JSON.serializePretty(outstandingBillItems));
-        }
         return application;
     }
 
