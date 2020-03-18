@@ -77,4 +77,18 @@ public with sharing class OpportunitiesSelectorTest {
         System.assertEquals(0, selector.selectWithoutFirstInvoiceCommission(accountIdSet).size());
         System.assertEquals(0, selector.selectWithoutFirstPaymentCommission(accountIdSet).size());
     }
+
+    @IsTest
+    public static void testSelectBySSSId() {
+        Opportunity opp = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Opportunity
+            WHERE Shared_Solar_System__c != null
+            LIMIT 1
+        ];
+        Set<Id> sssIds = new Set<Id>();
+        sssIds.add(opp.Shared_Solar_System__c);
+        OpportunitiesSelector selector = new OpportunitiesSelector();
+        System.assert(selector.getOppsFromSSS(sssIds).size() > 0);
+    }
 }

@@ -1,21 +1,23 @@
 /*************************************************************************************
- * Test: OpportunityTriggerTest,LeadTriggerHandlerTest,CSCancellationServiceTest
+ * Test: OpportunityTriggerTest,LeadTriggerHandlerTest,CSCancellationServiceTest, ClientBrandingServiceTest
  *************************************************************************************/
 
 public without sharing class OpportunityTriggerHandler {
     private Boolean m_isExecuting = false;
     private Integer batchSize = 0;
 
-    public void OnBeforeInsert(List<Opportunity> newOppList){
+    public void onBeforeInsert(List<Opportunity> newOppList){
         customIdSwapOpp(newOppList, null);
         mapDocuSignRS(newOppList, null);
         setLeadLookup(newOppList);
+        eventHandling(newOppList, null);
     }
 
-    public void OnBeforeUpdate(List<Opportunity> oldOppList, List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
+    public void onBeforeUpdate(List<Opportunity> oldOppList, List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
         customIdSwapOpp(updatedOppList, oldOppMap);
         mapDocuSignRS(updatedOppList, oldOppMap);
         updateInvoicedSubscription(oldOppMap, newOppMap);
+        eventHandling(updatedOppList, oldOppMap);
     }
 
     public void onAfterUpdate(Map<Id, Opportunity> oldMap, Map<Id, Opportunity> newMap) {
@@ -25,6 +27,20 @@ public without sharing class OpportunityTriggerHandler {
         }
 
         ClientReportingService.updateClientUAS(newMap, oldMap);
+    }
+
+    public void queueNMCTariffChange(List<Opportunity> oppList, Map<Id, Opportunity> oldMap) {
+        Set<Id> oppsWithNMCTariffChange = new Set<Id>();
+        for (Opportunity opp : oppList) {
+            if (opp.NMC_Tariff__c != oldMap.get(opp.Id).NMC_Tariff__c) {
+                oppsWithNMCTariffChange.add(opp.Id);
+            }
+        }
+        if (oppsWithNMCTariffChange.size() > 0 ) {
+            SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
+            subscriptionService.oppIdsWithChangedNMCTariff = oppsWithNMCTariffChange;
+            System.enqueueJob(subscriptionService);
+        }
     }
 
     public void customIdSwapOpp(List<Opportunity> oppList, Map<ID, Opportunity> oldOppMap){
@@ -51,6 +67,43 @@ public without sharing class OpportunityTriggerHandler {
             }
         }
     }
+
+    public Map<Id,Subscription_Change_Event__e> eventHandling(List<Opportunity> newOpps, Map<Id, Opportunity> oldOpps){
+        Map<Id,Subscription_Change_Event__e> subscriptionEventMap = new Map<Id,Subscription_Change_Event__e>();
+        for (Opportunity newOpp : newOpps){
+            Opportunity oldOpp;
+            if (oldOpps != null && oldOpps.containsKey(newOpp.Id)){
+                oldOpp = oldOpps.get(newOpp.Id);
+            }
+            // Fire Subscription Change Event on insert, or on update if the Account, SSS or Stage change:
+            if (oldOpp == null){
+                subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
+            } else if (newOpp.AccountId != oldOpp.AccountId){
+                subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
+                subscriptionEventMap = createSubscriptionChangeEvent(oldOpp.AccountId, subscriptionEventMap);
+            } else if (newOpp.Shared_Solar_System__c != oldOpp.Shared_Solar_System__c){
+                subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
+            } else if ((newOpp.StageName == 'Cancelled' && oldOpp.StageName != 'Cancelled') ||
+                (newOpp.StageName == 'DUPLICATE' && oldOpp.StageName != 'DUPLICATE') ||
+                (newOpp.StageName == 'Expired' && oldOpp.StageName != 'Expired') ||
+                (newOpp.StageName == 'Dead' && oldOpp.StageName != 'Dead') ||
+                (newOpp.StageName == 'Complete' && oldOpp.StageName != 'Complete')){
+                subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
+            }
+        }
+
+        EventBus.publish(subscriptionEventMap.values());
+        return subscriptionEventMap;
+    }
+
+    private static Map<Id,Subscription_Change_Event__e> createSubscriptionChangeEvent(Id accountId, Map<Id,Subscription_Change_Event__e> eventMap){
+        Subscription_Change_Event__e stageChange = new Subscription_Change_Event__e(
+            Property_Account_Id__c = accountId
+        );
+        eventMap.put(accountId,stageChange);
+        return eventMap;
+    }
+
     public void mapDocuSignRS(List<Opportunity> oppList, Map<ID, Opportunity> oldOppMap){
         Set<String> oppIdSet = new Set<String>();
         for (Opportunity opp : oppList) {
@@ -78,13 +131,9 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-   @InvocableMethod public static void activatePortalUser(List<Id> oppIdList) {
-
-       List<Opportunity> updatedOpps = [
-           SELECT Id, Contract_Status__c, Product_Line__c, Parent_Account_ID__c,
-           BlueWave_Signature_Status__c
-           FROM Opportunity
-           WHERE Id IN: oppIdList];
+   @InvocableMethod
+   public static void activatePortalUser(List<Id> oppIdList) {
+       List<Opportunity> updatedOpps = OpportunitiesSelector.selectByIds(oppIdList);
 
        List<Id> parentAccountIdList = new List<Id>();
 
@@ -95,10 +144,7 @@ public without sharing class OpportunityTriggerHandler {
        }
 
        if (parentAccountIdList.size() > 0){
-            List<Contact> contactList = [
-                SELECT Id, FirstName, LastName, Email, AccountId
-                FROM Contact
-                WHERE AccountId IN : parentAccountIdList];
+            List<Contact> contactList = ContactSelector.selectByParentAccountIds(parentAccountIdList);
             UserHandler userInsertJob = new UserHandler(contactList);
             System.enqueueJob(userInsertJob);
         }

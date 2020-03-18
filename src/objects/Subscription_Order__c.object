@@ -179,6 +179,35 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Approved_Change_in_Percent_Share__c</fullName>
+        <description>Stamped with &apos;Calculated Change in % Share&apos; when Approved. If type = &apos;SSS Update,&apos; stamped with value of &apos;System Change Percent Share&apos; - &apos;Previous % Share.&apos; We need a static field for tracking purposes and to use in Rollup summary fields.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped with &apos;Calculated Change in % Share&apos; when Approved. If type = &apos;SSS Update,&apos; stamped with value of &apos;System Change Percent Share&apos; - &apos;Previous % Share.&apos; We need a static field for tracking purposes and to use in Rollup summary fields.</inlineHelpText>
+        <label>Approved Change in Percent Share</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Approved_Change_in_Subscription__c</fullName>
+        <description>This is the net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription. It&apos;s important to have a static value for tracking purposes, and to use in rollup summary fields.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription. It&apos;s important to</inlineHelpText>
+        <label>Approved Change in Subscription (KW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Calculated_Change_in_Percent_Share_of_Sy__c</fullName>
         <externalId>false</externalId>
         <formula>ROUND( Calculated_Change_in_Subscription_KW_DC__c / Total_System_Size_kW_DC__c ,  Utility_Number_of_Decimal_Places__c  + 2)</formula>
@@ -208,7 +237,7 @@ IF(
 
 OR( Utility_Account_Subscription__r.Auto_Unround__c = TRUE , Utility_Account_Subscription__r.UAS_Number__c = 1),
 
-Utility_Account_Subscription__r.UAS_Number__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
+Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
 
 
 IF(
@@ -219,56 +248,6 @@ Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara 
 
 Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
         <label>Calculated Change in Subscription KW DC</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Calculated_Percent_Share_of_System__c</fullName>
-        <externalId>false</externalId>
-        <formula>ROUND(  Previous_kw_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Calculated Percent Share of System</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>5</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>Calculated_kW_DC_Subscription__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
-
-AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,  Previous_kw_DC_Subscription__c &gt;0),
-
- Previous_Annual_kwh__c / Expected_Yield_kWh_kW__c ,
-
-IF( Utility_Account_Subscription__r.UAS_Number__c &gt; 1 ,
-
- Previous_Annual_Cost__c  / Value_of_NMC__c / Expected_Yield_kWh_kW__c,
-
-IF(
-
-OR( Utility_Account_Subscription__r.Auto_Unround__c = TRUE , Utility_Account_Subscription__r.UAS_Number__c = 1),
-
-Utility_Account_Subscription__r.UAS_Number__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
-
-
-IF(
-
-OR(Utility_Account_Subscription__r.UAS_Number__c=1, Utility_Account_Subscription__r.Shared_Solar_System__r.Name = &apos;Fairhaven Mill Rd&apos;,
-
-Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara Barton&apos;),
-
-Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Calculated kW DC Subscription</label>
         <precision>18</precision>
         <required>false</required>
         <scale>4</scale>
@@ -299,33 +278,6 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Change_in_Percent_Share_of_System__c</fullName>
-        <description>This field is stamped with the value of the calculated Change in Percent Share of System field on subscription order automatically when it is approved. We need a static field for tracking purposes and to use in rollup summary fields .</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This field is stamped with the value of the calculated Change in Percent Share of System field on subscription order automatically when it is approved. We need a static field for tracking purposes and to use in rollup summary fields .</inlineHelpText>
-        <label>Approved Change in Percent Share</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>5</scale>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>Change_in_Subscription_KW_DC__c</fullName>
-        <description>This is the net change in kW DC. This field is blank until the subscription order gets approved, at which point it is automatically populated with the value in the calculated Change in Subscription (KW DC) field on subscription order. It&apos;s important to have a static value for tracking purposes, and to use in rollup summary fields.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This is the net change in kW DC. This field is blank until the subscription order gets approved, at which point it is automatically populated with the value in the calculated Change in Subscription (KW DC) field on subscription order.</inlineHelpText>
-        <label>Approved Change in Subscription (KW DC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -461,6 +413,55 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>System_Change_Percent_Share_of_System__c</fullName>
+        <externalId>false</externalId>
+        <formula>ROUND(  Previous_kw_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>System Change Percent Share of System</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>System_Change_kW_DC_Subscription__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+
+AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,  Previous_kw_DC_Subscription__c &gt;0),
+
+ Previous_Annual_kwh__c / Expected_Yield_kWh_kW__c ,
+
+IF( Utility_Account_Subscription__r.UAS_Number__c &gt; 1 ,
+
+ Previous_Annual_Cost__c  / Value_of_NMC__c / Expected_Yield_kWh_kW__c,
+
+IF(
+
+OR( Utility_Account_Subscription__r.Auto_Unround__c = TRUE , Utility_Account_Subscription__r.UAS_Number__c = 1),
+  Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
+
+
+IF(
+
+OR(Utility_Account_Subscription__r.UAS_Number__c=1, Utility_Account_Subscription__r.Shared_Solar_System__r.Name = &apos;Fairhaven Mill Rd&apos;,
+
+Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara Barton&apos;),
+
+Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>System Change kW DC Subscription</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Total_System_Size_kW_DC__c</fullName>
         <description>This is the Total System Size kW DC on the related shared solar system at the time the subscription order was created.</description>
         <externalId>false</externalId>
@@ -479,6 +480,7 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <externalId>false</externalId>
         <label>Type</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -505,6 +507,11 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
                     <fullName>Resize</fullName>
                     <default>false</default>
                     <label>Resize</label>
+                </value>
+                <value>
+                    <fullName>Initial</fullName>
+                    <default>false</default>
+                    <label>Initial</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -581,16 +588,13 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <active>true</active>
         <label>Subscription Orders</label>
         <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Type__c</picklist>
             <values>
                 <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Initial</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -603,6 +607,13 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
             </values>
             <values>
                 <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Approval_Status__c</picklist>
+            <values>
+                <fullName>Approved</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -645,14 +656,14 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <active>true</active>
         <errorConditionFormula>AND(
 OR(
-ISPICKVAL(Approval_Status__c,&quot;Approved&quot;),
-ISPICKVAL(Approval_Status__c,&quot;&quot;)
+ISPICKVAL(Approval_Status__c,&apos;Approved&apos;),
+ISPICKVAL(Approval_Status__c,&apos;&apos;)
 )
-/* Prevents changing the approval status once it&apos;s been set to approved, but still allowing it to be set to approved.*/
+/* Prevents changing the approval status once it&amp;amp;apos;s been set to approved, but still allowing it to be set to approved.*/
 ,
-PRIORVALUE(Approval_Status__c)!=&quot;&quot;,
-ISNEW()=false
-/* Prevents changing the approval status once it&apos;s been set to approved.*/
+PRIORVALUE(Approval_Status__c)!=&apos;&apos;,
+NOT(ISBLANK( Approved_Change_in_Subscription__c)),
+NOT(ISCHANGED( Approved_Change_in_Subscription__c))
 )</errorConditionFormula>
         <errorDisplayField>Approval_Status__c</errorDisplayField>
         <errorMessage>Once a Subscription Order is Approved, it cannot be edited. To update a customers subscription, please log a new Subscription Order.</errorMessage>

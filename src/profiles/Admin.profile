@@ -31321,16 +31321,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Subscription_Order__c.Calculated_Percent_Share_of_System__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Subscription_Order__c.Calculated_kW_DC_Subscription__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Subscription_Order__c.Change_in_Annual_Cost__c</field>
         <readable>true</readable>
@@ -31338,16 +31328,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Subscription_Order__c.Change_in_Annual_kWh__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Subscription_Order__c.Change_in_Percent_Share_of_System__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Subscription_Order__c.Change_in_Subscription_KW_DC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
