@@ -9,7 +9,9 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     private List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
 
     public void execute(SchedulableContext sch) {
+        Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
         updateSSS();
+        Util.enableTrigger('Disable_SharedSolarSystemTrigger__c');
     }
 
     @AuraEnabled
