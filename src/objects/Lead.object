@@ -1590,7 +1590,7 @@ This field can be changed to a formula consistent with the other factors if LASE
 &quot;&amp;contentsharetype=V&quot; + 
 &quot;&amp;contentvisibility=AllUsers&quot; +
 &quot;&amp;defaultpdf=1&quot; +
-IF(ISBLANK(Application_Complete_Date__c),&quot;&amp;qmode=SalesforceFile&quot;,
+IF(ISBLANK(Customer_Signed_Date__c),&quot;&amp;qmode=SalesforceFile&quot;,
 &quot;&amp;EmailTemplateId={!Environment.VAR_Conga_SSF_SignedEmailTemplateID}&quot; + 
 &quot;&amp;EmailToId=&quot; +  Id +
 &quot;&amp;EmailFromId=0D20a0000004K0P&quot; + 
