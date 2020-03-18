@@ -4,41 +4,51 @@ public with sharing class OpportunityTriggerTest {
         RecalculateUALCostControllerTest.setupTestData();
     }
 
-    @isTest static void testRollup() {        
+    @isTest static void testRollup() {
         Map<String, Opportunity> oppMap = new Map<String, Opportunity>();
-       
+
         Utility_NMC_Tariff__c tariff = [
             SELECT Id FROM Utility_NMC_Tariff__c
             WHERE Name = 'National Grid WCMA Class 2' AND Value_of_Net_Metering_Credit__c = 1
         ];
 
-        for(Opportunity opp : [SELECT Id, Name, 
-                                Subscription_Size_for_Invoicing__c 
-                                FROM Opportunity 
+        for(Opportunity opp : [SELECT Id, Name,
+                                Subscription_Size_for_Invoicing__c
+                                FROM Opportunity
                                 ORDER BY Name]){
             opp.NMC_Tariff__c = tariff.Id;
             opp.StageName = 'New';
             oppMap.put(opp.Name, opp);
         }
         update oppMap.values();
-        List<Utility_Account_Subscription__c> uasList = [SELECT Id, Name, 
-                                                        Customer_Subscription_KW_DC__c, Opportunity__r.Name, Opportunity__c 
+        List<Utility_Account_Subscription__c> uasList = [SELECT Id, Name,
+                                                        Customer_Subscription_KW_DC__c, Opportunity__r.Name, Opportunity__c,
+                                                        Future_Customer_Subscription_KWDC_Rollup__c
                                                         FROM Utility_Account_Subscription__c
                                                         WHERE (Opportunity__r.Name = 'RecalcUALOpp1A'
                                                         OR Opportunity__r.Name = 'RecalcUALOpp8A')
                                                         ORDER BY Name];
 
         System.assertEquals(4,uasList.size());
-       
-        System.assertEquals(3.8462, uasList[0].Customer_Subscription_KW_DC__c);
         System.assertEquals('RecalcUALOpp1A', uasList[0].Opportunity__r.Name);
-
-        System.assertEquals(2.3077, uasList[1].Customer_Subscription_KW_DC__c);
-        System.assertEquals(6.9231, uasList[2].Customer_Subscription_KW_DC__c);
-        System.assertEquals(7.6923, uasList[3].Customer_Subscription_KW_DC__c);
         System.assertEquals('RecalcUALOpp8A', uasList[1].Opportunity__r.Name);
         System.assertEquals('RecalcUALOpp8A', uasList[2].Opportunity__r.Name);
         System.assertEquals('RecalcUALOpp8A', uasList[3].Opportunity__r.Name);
+
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(3.8462, uasList[0].Future_Customer_Subscription_KWDC_Rollup__c);
+            System.assertEquals(2.3077, uasList[1].Future_Customer_Subscription_KWDC_Rollup__c);
+            System.assertEquals(6.9231, uasList[2].Future_Customer_Subscription_KWDC_Rollup__c);
+            System.assertEquals(7.6923, uasList[3].Future_Customer_Subscription_KWDC_Rollup__c);
+        } else {
+            System.assertEquals(3.8462, uasList[0].Customer_Subscription_KW_DC__c);
+            System.assertEquals(2.3077, uasList[1].Customer_Subscription_KW_DC__c);
+            System.assertEquals(6.9231, uasList[2].Customer_Subscription_KW_DC__c);
+            System.assertEquals(7.6923, uasList[3].Customer_Subscription_KW_DC__c);
+        }
+
+
 
         Opportunity one = oppMap.get('RecalcUALOpp1A');
         Opportunity eight = oppMap.get('RecalcUALOpp8A');
@@ -54,9 +64,9 @@ public with sharing class OpportunityTriggerTest {
 
         Test.StopTest();
 
-        List<Opportunity> updatedOpp = [SELECT Id, Name, 
-                                        Subscription_Size_for_Invoicing__c 
-                                        FROM Opportunity 
+        List<Opportunity> updatedOpp = [SELECT Id, Name,
+                                        Subscription_Size_for_Invoicing__c
+                                        FROM Opportunity
                                         WHERE (Name = 'RecalcUALOpp1A' OR Name = 'RecalcUALOpp8A')
                                         ORDER BY Name];
 
@@ -142,6 +152,7 @@ public with sharing class OpportunityTriggerTest {
 
     @IsTest
     public static void testRLOpportunityStageUpdates() {
+        Test.startTest();
         Opportunity opportunityToTest = new Opportunity(
             Name = 'Test Opp',
             Product_Line__c = 'Residential Loan',
@@ -189,9 +200,138 @@ public with sharing class OpportunityTriggerTest {
             FROM Opportunity
             WHERE Id = :opportunityToTest.Id
         ];
+        Test.stopTest();
 
         System.assertNotEquals(null, opps[0].Contract_Status__c);
         System.assertNotEquals('New', opps[0].StageName);
     }
 
+    @IsTest
+    public static void testEventHandling(){
+        Account newAccount = new Account(
+            Name = 'newAccount'
+        );
+        insert newAccount;
+        List<Opportunity> oppList = [
+            SELECT Id, AccountId, StageName, Shared_Solar_System__c
+            FROM Opportunity
+            WHERE StageName != 'Cancelled'
+        ];
+        Map<Id, Opportunity> oldOppMap = new Map<Id, Opportunity>();
+        for (Opportunity opp : oppList){
+            oldOppMap.put(opp.Id, opp);
+        }
+        Opportunity newOpp1 = new Opportunity(
+            Id = oppList[0].Id,
+            Shared_Solar_System__c = oppList[0].Shared_Solar_System__c,
+            AccountId = oppList[0].AccountId,
+            StageName = 'Cancelled'
+        );
+        Opportunity newOpp2 = new Opportunity(
+            Id = oppList[1].Id,
+            Shared_Solar_System__c = oppList[1].Shared_Solar_System__c,
+            AccountId = oppList[1].AccountId,
+            StageName = 'Cancelled'
+        );
+        Opportunity newOpp3 = new Opportunity(
+            Id = oppList[2].Id,
+            Shared_Solar_System__c = oppList[2].Shared_Solar_System__c,
+            StageName = oppList[2].StageName,
+            AccountId = newAccount.Id
+        );
+        List<Opportunity> newOppList = new List<Opportunity>{newOpp1, newOpp2, newOpp3};
+
+        Test.startTest();
+            Map<Id,Subscription_Change_Event__e> eventMap = new Map<Id,Subscription_Change_Event__e>();
+            OpportunityTriggerHandler handler = new OpportunityTriggerHandler();
+            eventMap = handler.eventHandling(newOppList, oldOppMap);
+        Test.stopTest();
+
+        System.assert(eventMap.containsKey(oppList[0].AccountId));
+        System.assert(eventMap.containsKey(oppList[1].AccountId));
+        System.assert(eventMap.containsKey(oppList[2].AccountId));
+        System.assert(eventMap.containsKey(newAccount.Id));
     }
+
+    @IsTest
+    public static void testNMCTariffChange() {
+
+        Opportunity opp = [
+            SELECT Id, Name
+            FROM Opportunity
+            WHERE Name = 'RecalcUALOpp8A'
+            ORDER BY Name
+            LIMIT 1
+        ];
+
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Opportunity__c, Name, Annual_kWh_Subscription_Future_Rollup__c, Future_Customer_Subscription_KWDC_Rollup__c,
+                Subscription_Type__c, Annual_kwh_subscription_future__c, Subscribed_Annual_Cost_of_Electricity__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Name = :opp.Name
+            ORDER BY Name
+        ];
+
+        FeatureService checkFeature = new FeatureService();
+        if (!checkFeature.isEnabled('Subscription_Orders')) {
+            SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
+            subscriptionService.createSubscriptionOrdersForTests(uasList);
+            uasList = [
+                SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c
+                FROM Utility_Account_Subscription__c
+                WHERE Opportunity__r.Name = :opp.Name
+            ];
+
+        }
+
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
+
+        System.assertEquals(3, uasList.size());
+        System.assertEquals(2.3077, uasList[0].Future_Customer_Subscription_KWDC_Rollup__c);
+        System.assertEquals(6.9231, uasList[1].Future_Customer_Subscription_KWDC_Rollup__c);
+        System.assertEquals(7.6923, uasList[2].Future_Customer_Subscription_KWDC_Rollup__c);
+
+        Set<Id> uasIds = new Set<Id>();
+        for (Utility_Account_Subscription__c uas : uasList){
+            uasIds.add(uas.Id);
+        }
+
+        List<Subscription_Order__c> soList = [
+            SELECT Id, Approval_Status__c,
+                Approved_Change_in_Subscription__c, Calculated_Change_in_Subscription_KW_DC__c, Name,
+                Change_in_Annual_kWh__c, Utility_Account_Subscription__r.Name, Change_in_Annual_Cost__c, Type__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c IN :uasIds
+        ];
+
+        //Initial Subscription Orders
+        System.assertEquals(3, soList.size());
+
+        //Change NMC Tariff for Opportunity to create Resize Subscription Orders
+        Utility_NMC_Tariff__c nmcRate = (Utility_NMC_Tariff__c) TestFactory.createSObject(new Utility_NMC_Tariff__c(Value_of_Net_Metering_Credit__c = .1567,
+            Name = 'Nation Grid WCMA Class 2 - S/F 2016',
+            Sizing_Rate__c = true,
+            Date__c = Date.today()));
+        insert nmcRate;
+
+        Test.startTest();
+        opp.NMC_Tariff__c = nmcRate.Id;
+        update opp;
+        Test.stopTest();
+
+        List<Subscription_Order__c> resizeSOs = [
+            SELECT Id, Utility_NMC_Tariff__c, Approval_Status__c, Approved_Change_in_Subscription__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c IN :uasIds
+            AND Type__c = 'Resize'
+        ];
+
+        System.assertEquals(3, resizeSOs.size());
+        for (Subscription_Order__c so : resizeSOs) {
+            System.assertEquals(nmcRate.Id, so.Utility_NMC_Tariff__c);
+            System.assertEquals('Approved', so.Approval_Status__c);
+            System.assertNotEquals(null, so.Approved_Change_in_Subscription__c);
+        }
+    }
+
+}

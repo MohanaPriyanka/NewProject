@@ -358,80 +358,80 @@ public class BillGenerationAndDeliveryServiceTest {
             Opportunity__c = opportunity1.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 25);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
         Utility_Account_Subscription__c uas2 = new Utility_Account_Subscription__c(
             Name = '0000235',
             Utility_Account_Log__c = ualog2.Id,
             Opportunity__c = opportunity2.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 10);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
         Utility_Account_Subscription__c uas3 = new Utility_Account_Subscription__c(
             Name = '0000236',
             Utility_Account_Log__c = ualog3.Id,
             Opportunity__c = opportunity3.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 20);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
         Utility_Account_Subscription__c uas4 = new Utility_Account_Subscription__c(
             Name = '0000237',
             Utility_Account_Log__c = ualog4.Id,
             Opportunity__c = opportunity4.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 19);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
         Utility_Account_Subscription__c uas5 = new Utility_Account_Subscription__c(
             Name = '0000238',
             Utility_Account_Log__c = ualog5.Id,
             Opportunity__c = opportunity5.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 17);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
         Utility_Account_Subscription__c uas6 = new Utility_Account_Subscription__c(
             Name = '00002341',
             Utility_Account_Log__c = ualog1.Id,
             Opportunity__c = opportunity6.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 14);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
         Utility_Account_Subscription__c uas7 = new Utility_Account_Subscription__c(
             Name = '00002351',
             Utility_Account_Log__c = ualog2.Id,
             Opportunity__c = opportunity7.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 11);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
         Utility_Account_Subscription__c uas8 = new Utility_Account_Subscription__c(
             Name = '00002361',
             Utility_Account_Log__c = ualog3.Id,
             Opportunity__c = opportunity8.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 5);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
         Utility_Account_Subscription__c uas9 = new Utility_Account_Subscription__c(
             Name = '0000242',
             Utility_Account_Log__c = ualog9.Id,
             Opportunity__c = opportunity9.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 24);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
         Utility_Account_Subscription__c uas10 = new Utility_Account_Subscription__c(
             Name = '0000243',
             Utility_Account_Log__c = ualog10.Id,
             Opportunity__c = opportunity10.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 23);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
 
         insert new List<Utility_Account_Subscription__c>{
             uas1, uas2, uas3, uas4, uas5, uas6, uas7, uas8, uas9, uas10

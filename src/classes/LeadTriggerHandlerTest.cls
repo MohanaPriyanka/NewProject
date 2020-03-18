@@ -67,11 +67,11 @@ public class LeadTriggerHandlerTest {
         sss1.Sales_Partners__c = 'Barbara Cerullo; Boston Solar'; 
         insert sss1;
         
-        Partner__c Partner = new Partner__c(Name = 'Boston Solar');
-        insert Partner;
+        Partner__c partner = new Partner__c(Name = 'Boston Solar');
+        insert partner;
         
         BSST__c newSalesTeam = new BSST__c (Name = 'Partner',
-                                            Partner__c = Partner.Id,
+                                            Partner__c = partner.Id,
                                             Custom_ID__c = 'partner');
                                             
         insert newSalesTeam;
@@ -85,7 +85,7 @@ public class LeadTriggerHandlerTest {
                                                              LeadSource = 'CSAP',
                                                              Company = 'Cloud Jedi',
                                                              Status = 'Qualified',
-                                                             Partner_Lookup__c = Partner.Id,
+                                                             Partner_Lookup__c = partner.Id,
                                                              Product_Line__c = 'Community Solar',
                                                              Product__c = csProduct.Id,
                                                              Custom_ID__c = 'partner',
@@ -101,7 +101,7 @@ public class LeadTriggerHandlerTest {
                                      LeadSource = 'CSAP',
                                      Company = 'Cloud Jedi',
                                      Status = 'Qualified',
-                                     Partner_Lookup__c = Partner.Id,
+                                     Partner_Lookup__c = partner.Id,
                                      Product_Line__c = 'Community Solar',
                                      Product__c = csProduct.Id,
                                      System_Assignment__c = 'Automatic - Assignment Order');
@@ -647,16 +647,28 @@ public class LeadTriggerHandlerTest {
 
         List<AggregateResult> uasAggregate = [
             SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
-                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum
+                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum,
+                SUM(Future_Customer_Subscription_KWDC_Rollup__c) kwTotal,
+                MIN(Future_Customer_Subscription_KWDC_Rollup__c) kwMinimum,
+                MAX(Future_Customer_Subscription_KWDC_Rollup__c) kwMaximum
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.AccountId =: eversourceLeads[0].ConvertedAccountId
             GROUP BY Opportunity__r.AccountId
         ];
+
         // Should be a 25kW, 10kW and 5kW UAS, for a total of 35
         System.assertEquals(3, uasAggregate[0].get('num'));
-        System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0));
-        System.assertEquals(25, uasAggregate[0].get('maximum'));
-        System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(35, ((Decimal) uasAggregate[0].get('kwTotal')).setScale(0));
+            System.assertEquals(25, uasAggregate[0].get('kwMaximum'));
+            System.assertEquals(5, ((Decimal) uasAggregate[0].get('kwMinimum')).setScale(0));
+        } else {
+            System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0));
+            System.assertEquals(25, uasAggregate[0].get('maximum'));
+            System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+        }
 
         List<ChargentOrders__ChargentOrder__c> primaryPropOrders = [
             SELECT Id, ChargentOrders__Billing_Email__c, ChargentOrders__Bank_Name__c,
@@ -685,16 +697,25 @@ public class LeadTriggerHandlerTest {
 
         uasAggregate = [
             SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
-                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum
+                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum,
+                SUM(Future_Customer_Subscription_KWDC_Rollup__c) kwTotal,
+                MIN(Future_Customer_Subscription_KWDC_Rollup__c) kwMinimum,
+                MAX(Future_Customer_Subscription_KWDC_Rollup__c) kwMaximum
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.AccountId =: ngridLeads[0].ConvertedAccountId
             GROUP BY Opportunity__r.AccountId
         ];
         // Just one 25kW UAS
         System.assertEquals(1, uasAggregate[0].get('num'));
-        System.assertEquals(25, ((Decimal) uasAggregate[0].get('total')).setScale(0));
-        System.assertEquals(25, uasAggregate[0].get('maximum'));
-        System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('kwTotal')).setScale(0));
+            System.assertEquals(25, uasAggregate[0].get('kwMaximum'));
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('kwMinimum')).setScale(0));
+        } else {
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('total')).setScale(0));
+            System.assertEquals(25, uasAggregate[0].get('maximum'));
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+        }
 
         List<ChargentOrders__ChargentOrder__c> additionalPropOrders = [
             SELECT Id, ChargentOrders__Billing_Email__c, ChargentOrders__Bank_Name__c,
@@ -859,7 +880,10 @@ public class LeadTriggerHandlerTest {
         System.assertEquals(2, opps.size());
         List<AggregateResult> uasAggregate = [
             SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
-                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum
+                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum,
+                SUM(Future_Customer_Subscription_KWDC_Rollup__c) kwTotal,
+                MIN(Future_Customer_Subscription_KWDC_Rollup__c) kwMinimum,
+                MAX(Future_Customer_Subscription_KWDC_Rollup__c) kwMaximum
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.AccountId =: eversourceLeads[0].ConvertedAccountId
             GROUP BY Opportunity__r.AccountId
@@ -869,6 +893,19 @@ public class LeadTriggerHandlerTest {
         System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0));
         System.assertEquals(25, uasAggregate[0].get('maximum'));
         System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(35, ((Decimal) uasAggregate[0].get('kwTotal')).setScale(0));
+            System.assertEquals(25, uasAggregate[0].get('kwMaximum'));
+            System.assertEquals(5, ((Decimal) uasAggregate[0].get('kwMinimum')).setScale(0));
+        } else {
+            System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0));
+            System.assertEquals(25, uasAggregate[0].get('maximum'));
+            System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+        }
+
+
         List<Lead> ngridLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_Relationship__r.Name  = 'National Grid'];
         System.assertEquals(1, ngridLeads.size());
         // Just 1 opp for NGrid since there's only one system
@@ -881,16 +918,25 @@ public class LeadTriggerHandlerTest {
         System.assertEquals(1, opps.size());
         uasAggregate = [
             SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
-                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum
+                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum,
+                SUM(Future_Customer_Subscription_KWDC_Rollup__c) kwTotal,
+                MIN(Future_Customer_Subscription_KWDC_Rollup__c) kwMinimum,
+                MAX(Future_Customer_Subscription_KWDC_Rollup__c) kwMaximum
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.AccountId =: ngridLeads[0].ConvertedAccountId
             GROUP BY Opportunity__r.AccountId
         ];
         // Just one 25kW UAS
         System.assertEquals(1, uasAggregate[0].get('num'));
-        System.assertEquals(25, ((Decimal) uasAggregate[0].get('total')).setScale(0));
-        System.assertEquals(25, uasAggregate[0].get('maximum'));
-        System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('kwTotal')).setScale(0));
+            System.assertEquals(25, uasAggregate[0].get('kwMaximum'));
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('kwMinimum')).setScale(0));
+        } else {
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('total')).setScale(0));
+            System.assertEquals(25, uasAggregate[0].get('maximum'));
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+        }
     }
 
     public static Shared_Solar_System__c getSharedSolarSystem(Utility_NMC_Tariff__c nmcRate, Product2 csProduct,

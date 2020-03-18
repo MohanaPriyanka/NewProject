@@ -15,11 +15,12 @@ trigger OpportunityTrigger on Opportunity (before insert, after insert, before u
         disbursalHandler.createDisbursalsFromOpportunity(Trigger.newMap, Trigger.oldMap);
         disbursalHandler.setContractDisbursalToReady(Trigger.new, Trigger.newMap, Trigger.oldMap);
         opportunityTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap);
+        opportunityTriggerHandler.queueNMCTariffChange(Trigger.new, Trigger.oldMap);
     }
     
     if (Trigger.isInsert && Trigger.isBefore) {
-        opportunityTriggerHandler.OnBeforeInsert(Trigger.new);
+        opportunityTriggerHandler.onBeforeInsert(Trigger.new);
     } else if(Trigger.isUpdate && Trigger.isBefore) {
-        opportunityTriggerHandler.OnBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
+        opportunityTriggerHandler.onBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
     }
 }
