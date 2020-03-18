@@ -54,6 +54,12 @@ export default class SsfAgreements extends LightningElement {
         this[event.target.name] = event.target.checked;
     }
 
+    checkForSubmit(event) {
+        if (event.which === 13) {
+            this.continueAgreement(event);
+        }
+    }
+
     disclosureChecked(event) {
         this.disclosures = event.target.checked;
         if (event.target.checked) {
@@ -70,6 +76,12 @@ export default class SsfAgreements extends LightningElement {
 
     csAgreementChecked(event) {
         this.csAgreement = event.target.checked;
+        if (this.csAgreement) {
+            const inputBox = this.template.querySelector('[data-id="consentEmail"]');
+            if (inputBox) {
+                inputBox.focus();
+            }
+        }
     }
 
     validDisclosureConsent() {

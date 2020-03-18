@@ -5,12 +5,12 @@
 <!-- SimpleSignupForm -->
 <template>
   <div style="width:100%;justify-content: center;display:flex;align-self:center">
-    <div style="max-width:788px">
+    <div style="max-width:640px">
       <template if:true={getZip}>
         <div class="slds-grid slds-wrap">
           <div class="slds-size--1-of-1">
             <div class="slds-text-align--center">
-              <p class="slds-p-around--medium" style="font-size: 54px">
+              <p class="slds-p-around--medium" style="font-size: 50px">
                 Find a solar farm near you.
               </p>
               <p class="slds-p-bottom--medium slds-text-heading--medium" style="font-size: 26px">
@@ -20,7 +20,27 @@
                 ZIP code
               </p>
               <div class="slds-align--absolute-center" onkeyup={checkForSubmit}>
-                <lightning-input name="zipCodeInput" class="slds-m-around--small" label="Zip Code" variant="label-hidden" value={zipCodeInput} onchange={genericOnChange} type="text" pattern="[0-9]{5}" style="max-width: 200px"></lightning-input>
+                <div>
+                  <lightning-input name="zipCodeInput"
+                                   label="Zip Code"
+                                   variant="label-hidden"
+                                   value={zipCodeInput}
+                                   onchange={genericOnChange}
+                                   type="text"
+                                   pattern="[0-9]{5}"
+                                   message-when-pattern-mismatch="Please enter your 5 digit ZIP code"
+                  ></lightning-input>
+                  <lightning-input type="toggle"
+                                   name="applicationType"
+                                   label="This is a residence"
+                                   checked={resiApplicationType}
+                                   message-toggle-active="Yes"
+                                   message-toggle-inactive="No"
+                                   onchange={applicationTypeOnChange}
+                                   class="slds-p-top--small slds-p-bottom--small">
+
+                  </lightning-input>
+                </div>
               </div>
               <lightning-button label="Get Started" class="slds-m-left--small slds-m-right--small" onclick={submitZip}></lightning-button>
             </div>
@@ -28,7 +48,7 @@
         </div>
       </template>
       <template if:true={getBasicInfo}>
-        <c-ssf-basic-info utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
+        <c-ssf-basic-info utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} resi-application-type={resiApplicationType} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
       </template>
       <template if:true={getAgreements}>
         <c-ssf-agreements lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements>

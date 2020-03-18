@@ -48,16 +48,18 @@
         </div>
       </aura:if>
       <aura:if isTrue="{!v.showComplete}">
-        <p class="slds-p-around--medium slds-text-align--center slds-text-heading--large">
-          Application Complete!
-        </p>
-        <p class="slds-p-around--medium">
-          Your Community Solar application is now complete and under final review!
-        </p>
-        <p class="slds-p-around--medium">
-          We sent a copy of your agreement(s) to the email address provided in the application. If your application is approved based on our eligibility requirements, we will email you the final signed agreement along with other important information about your subscription.
-          Stay tuned, and thank you for choosing BlueWave Community Solar!
-        </p>
+        <div style="max-width: 640px">
+          <p class="slds-p-around--medium slds-text-align--center slds-text-heading--large">
+            Application Complete!
+          </p>
+          <p class="slds-p-around--medium">
+            Your Community Solar application is now complete and under final review!
+          </p>
+          <p class="slds-p-around--medium">
+            We sent a copy of your agreement(s) to the email address provided in the application. If your application is approved based on our eligibility requirements, we will email you the final signed agreement along with other important information about your subscription.
+            Stay tuned, and thank you for choosing BlueWave Community Solar!
+          </p>
+        </div>
       </aura:if>
       <c:bluewaveSpinner spinnerMessage="{!v.spinnerMessage}" show="{!v.showSpinner}"/>
     </div>
