@@ -18,8 +18,8 @@ public with sharing class UASSelectorTest {
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
-        Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
         Util.enableAllTriggers();
+        Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
     }
     @IsTest public static void testSelectByAccounts() {
         Set<Id> accountIds = (new Map<Id, Account>([SELECT Id FROM Account])).keySet();
@@ -28,6 +28,11 @@ public with sharing class UASSelectorTest {
     @IsTest public static void testSelectByUAL() {
         Set<Id> ualIds = (new Map<Id, Utility_Account_Log__c>([SELECT Id FROM Utility_Account_Log__c])).keySet();
         System.assert(UASSelector.selectByUAL(ualIds).size() > 0, 'Expected UALs for accounts');
+    }
+    @IsTest public static void testSelectByOpp() {
+        Set<Id> oppIds = (new Map<Id, Opportunity>([SELECT Id FROM Opportunity])).keySet();
+        UASSelector uasSelector = new UASSelector();
+        System.assert(uasSelector.selectByOpp(oppIds).size() > 0, 'Expected Opps');
     }
     @IsTest public static void testSelectByIds() {
         Set<Id> uasIds = (new Map<Id, Utility_Account_Subscription__c>([SELECT Id FROM Utility_Account_Subscription__c])).keySet();

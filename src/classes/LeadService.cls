@@ -36,7 +36,7 @@ public without sharing class LeadService {
         }
     }
 
-
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public void setupSwitchLead(Lead lead){
         List<Account> propAcctsList = new List<Account>();
         List<Account> updateAccounts = new List<Account>();
@@ -93,6 +93,7 @@ public without sharing class LeadService {
 
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public void convertCasesToContact(List<Lead> convertedLeads) {
         List<Case> updateCases = new List<Case>();
         List<Case> casesList = [
@@ -173,6 +174,7 @@ public without sharing class LeadService {
         return lead;
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public Lead insertLead(Lead lead) {
         //Set DMLOptions to run Lead Assignment Rules on insert
         Database.DMLOptions dmo = new Database.DMLOptions();
@@ -184,6 +186,7 @@ public without sharing class LeadService {
         return lead;
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public Lead updateLead(Lead lead) {
         update lead;
         lead = leadSelector.selectOne(lead.Id);

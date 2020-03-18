@@ -84,6 +84,7 @@ public class ScheduleZTriggerHandlerTest {
                 Service_Territory__c = 'SEMA',
                 Service_Territories__c = 'SEMA',
                 Open__c = true,
+                Billing_Method__c = 'kWh',
                 Reserved_Capacity_kW_DC__c = '0',
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
@@ -104,6 +105,7 @@ public class ScheduleZTriggerHandlerTest {
                 Service_Territory__c = 'SEMA',
                 Service_Territories__c = 'SEMA',
                 Open__c = true,
+                Billing_Method__c = 'kWh',
                 Reserved_Capacity_kW_DC__c = '0',
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
@@ -170,6 +172,7 @@ public class ScheduleZTriggerHandlerTest {
             new Opportunity(Name = 'AOpp One',
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss1.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
@@ -177,6 +180,7 @@ public class ScheduleZTriggerHandlerTest {
             new Opportunity(Name = 'BOpp One',
                 AccountId = accountB.Id,
                 Shared_Solar_System__c = sss1.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
@@ -185,6 +189,7 @@ public class ScheduleZTriggerHandlerTest {
             new Opportunity(Name = 'BOpp Two',
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss2.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
@@ -193,6 +198,7 @@ public class ScheduleZTriggerHandlerTest {
             new Opportunity(Name = 'BOpp Two',
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss2.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 StageName = 'New',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
@@ -203,49 +209,43 @@ public class ScheduleZTriggerHandlerTest {
             new Utility_Account_Subscription__c(Name = '0000234',
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunityone.Id,
-                Customer_Subscription_KW_DC_STATIC__c = 20.2312,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                calculated_annual_cost_of_electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                Annual_kwh_subscription_future__c = 26300.5
+            );
 
         Utility_Account_Subscription__c uasoneB =
             new Utility_Account_Subscription__c(Name = '0000235',
                 Utility_Account_Log__c = ualogB.Id,
                 Opportunity__c = opportunityoneB.Id,
-                Customer_Subscription_KW_DC_STATIC__c = 20.2312,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                calculated_annual_cost_of_electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                Annual_kwh_subscription_future__c = 26300.5
+            );
 
         Utility_Account_Subscription__c uastwo =
             new Utility_Account_Subscription__c(Name = '000-0234',
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunitytwo.Id,
-                Customer_Subscription_KW_DC_STATIC__c = 20.2312,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 6000,
-                calculated_annual_cost_of_electricity__c = 6000,
-                Subscribed_Annual_Cost_of_Electricity__c = 6000);
+                Annual_kwh_subscription_future__c = 6000);
 
         // Test for only active subscriptions have Sched Z Subs created
         Utility_Account_Subscription__c uasthree =
             new Utility_Account_Subscription__c(Name = '0000237',
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunityone.Id,
-                Customer_Subscription_KW_DC_STATIC__c = 1000,
                 Next_Schedule_Z_Status__c = 'Inactive Subscription',
-                calculated_annual_cost_of_electricity__c = 8000,
-                Subscribed_Annual_Cost_of_Electricity__c = 8000);
+                Annual_kwh_subscription_future__c = 1300009.8
+
+            );
 
         // Test only completed opportunities have Sched Z Subs created
         Utility_Account_Subscription__c uasfour =
             new Utility_Account_Subscription__c(Name = '0000237',
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunitythree.Id,
-                Customer_Subscription_KW_DC_STATIC__c = 1000,
                 Next_Schedule_Z_Status__c = 'Inactive Subscription',
-                calculated_annual_cost_of_electricity__c = 8000,
-                Subscribed_Annual_Cost_of_Electricity__c = 8000);
+                Annual_kwh_subscription_future__c = 1300009.8
+            );
 
         insert new List<Utility_Account_Subscription__c>{uasone, uasoneB, uastwo, uasthree, uasfour};
 
@@ -328,11 +328,7 @@ public class ScheduleZTriggerHandlerTest {
         ];
 
         Test.startTest();
-        /*
-        Test subscription set by Customer_Subscription_KW_DC_STATIC__c (Current Subscription)
-        This is an edge case, most cases should be set by Customer_Subscription_KW_DC__c (Future Subscription)
-        unless the formula inputs are missing
-         */
+
         Schedule_Z__c sss1ScheduleZ = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
             Shared_Solar_System__c = sss1.Id
@@ -371,7 +367,7 @@ public class ScheduleZTriggerHandlerTest {
 
         List<Schedule_Z_Subscription__c> sss2ScheduleZs = [
             SELECT Id, Customer_Subscription_kW_DC__c, Number_of_Decimal_Places__c,
-                System_Size_kW_DC__c, Percent_Share__c
+                System_Size_kW_DC__c, Percent_Share__c, Utility_Account_Subscription__r.Name
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c = : sss2ScheduleZ.Id
         ];
