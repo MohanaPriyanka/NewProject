@@ -553,52 +553,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertEquals(9.4616,sssUpdated.Capacity_Committed_kW_DC__c);
         System.assertEquals(23.0769,sssUpdated.Anchor_capacity_reserved__c);
     }
-    @IsTest
-    public static void testDifferentStatuses() {
-        addMoreTestRecords();
-        List<Utility_Account_Subscription__c> uasList = [
-            SELECT Id, Customer_Subscription_KW_DC__c, Name, Opportunity__r.StageName, Next_Schedule_Z_Status__c
-            FROM Utility_Account_Subscription__c
-            WHERE Opportunity__r.Shared_Solar_System__r.Name = 'SSS 2'
-            AND Opportunity__r.Customer_Group__c != 'Anchor'
-            ORDER BY Name
-        ];
-        System.assertEquals(6,uasList.size());
-        Integer countComplete = 0;
-        Decimal sumComplete = 0;
-        Integer countReserved = 0;
-        Decimal sumReserved = 0;
-        Integer countOther = 0;
-        Decimal sumOther = 0;
-        for (Utility_Account_Subscription__c uas : uasList){
-            if (uas.Opportunity__r.StageName == 'Complete'){
-                countComplete += 1;
-                sumComplete += uas.Customer_Subscription_KW_DC__c;
-            } else if (uas.Opportunity__r.StageName != 'Expired' && uas.Opportunity__r.StageName != 'Cancelled'){
-                countReserved += 1;
-                sumReserved += uas.Customer_Subscription_KW_DC__c;
-            } else {
-                countOther += 1;
-                sumOther += uas.Customer_Subscription_KW_DC__c;
-            }
-        }
-        System.assertEquals(6.3846,sumComplete);
-        System.assertEquals(24.8616,sumReserved);
-        System.assertEquals(9.5385,sumOther);
-        System.assertEquals(4, countComplete + countReserved);
-        Test.startTest();
-            SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
-            handler.updateSSS();
-        Test.stopTest();
-        Shared_Solar_System__c sssUpdated = [
-            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c, Reserved_capacity_kW_DC__c
-            FROM Shared_Solar_System__c
-            WHERE Name = 'SSS 2'
-            LIMIT 1
-        ];
-        System.assertEquals(sumComplete,sssUpdated.Capacity_Committed_kW_DC__c);
-        System.assertEquals(String.valueOf(sumReserved),sssUpdated.Reserved_capacity_kW_DC__c);
-    }
+    
     @IsTest
     public static void testDifferentStatuses() {
         addMoreTestRecords();
