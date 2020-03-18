@@ -4,9 +4,6 @@
 public without sharing class SharedSolarSystemHandler implements Schedulable {
     private static UASSelector uasSelector;
     private static SharedSolarSystemsSelector sssSelector;
-    private List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
-    private List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
-    private List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
 
     public void execute(SchedulableContext sch) {
         Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
@@ -56,6 +53,9 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
 
     public void summarizeCapacity(List<Shared_Solar_System__c> sssList){
         uasSelector = new UASSelector();
+        List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
 
         Set<Id> sssIds = new Set<Id>();
         Decimal reservedCapacity = 0;
