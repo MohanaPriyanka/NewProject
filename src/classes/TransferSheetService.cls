@@ -231,7 +231,7 @@ public without sharing class TransferSheetService {
             postUASBInsertProcessing(uasbsToInsert[0].Transfer__c, overrideValues);
         } catch (Exception excep){
             Logger.logNow('TransferSheetService','handleTransferSheetResolutions',excep.getMessage() + '___' + excep.getStackTraceString());
-            Util.createAuraExceptionWithMessage(excep.getMessage());
+            throw Util.createAuraExceptionWithMessage(excep.getMessage());
         }
     }
 

@@ -107,7 +107,6 @@ public without sharing class BillGenerationService {
             Transfer__c = transfer.Id,
             Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
             PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
-            PreGen_Name_on_Account__c = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
             Account__c =  szs.Utility_Account_Subscription__r.Opportunity__r.AccountId,
             Opportunity__c = szs.Utility_Account_Subscription__r.Opportunity__c,
             Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
@@ -127,6 +126,11 @@ public without sharing class BillGenerationService {
             Subscription_Production_kWh_Static__c = subscriptionProduction,
             Schedule_Z_Subscription__c = szs.Id
         );
+
+        String customerName = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c;
+        if (customerName != null){
+            generatedUASB.PreGen_Name_on_Account__c = customerName.substring(0,Math.min(customerName.length(),49));
+        }
 
         if (billingMethod == 'NMC'){
             generatedUASB.Size_off_NMCs__c = true;
@@ -153,7 +157,6 @@ public without sharing class BillGenerationService {
             Schedule_Z_Subscription__c = szs.Id,
             Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
             PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
-            PreGen_Name_on_Account__c = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
             Account__c =  szs.Utility_Account_Subscription__r.Opportunity__r.AccountId,
             Opportunity__c = szs.Utility_Account_Subscription__r.Opportunity__c,
             Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
@@ -167,6 +170,12 @@ public without sharing class BillGenerationService {
             Share_of_System__c = 0,
             Credits_Allocated__c = 0
         );
+
+        String customerName = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c;
+        if (customerName != null){
+            zeroDollarUASB.PreGen_Name_on_Account__c = customerName.substring(0,Math.min(customerName.length(),49));
+        }
+
         if (szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c != null) {
             zeroDollarUASB.PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c;
         }
