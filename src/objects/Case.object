@@ -1037,6 +1037,19 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Error_Log__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Error Log</label>
+        <referenceTo>Error_Log__c</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Expand__c</fullName>
         <externalId>false</externalId>
         <formula>HyperLink(
