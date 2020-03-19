@@ -553,6 +553,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertEquals(9.4616,sssUpdated.Capacity_Committed_kW_DC__c);
         System.assertEquals(23.0769,sssUpdated.Anchor_capacity_reserved__c);
     }
+    
     @IsTest
     public static void testDifferentStatuses() {
         addMoreTestRecords();
