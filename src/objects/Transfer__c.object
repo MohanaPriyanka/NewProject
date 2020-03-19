@@ -455,7 +455,7 @@ OR(
 ISCHANGED(Allocation_Schedule__c), ISCHANGED(Attempted_Transfer__c),ISCHANGED(Attempted_kWh_Transfer__c), ISCHANGED(Bill_Period__c),ISCHANGED(Billing_Method__c),ISCHANGED(Date_of_Transfer__c),ISCHANGED(Default_Credit_Value__c),ISCHANGED(Shared_Solar_System__c),ISCHANGED(Total_Transferred__c),ISCHANGED(Total_kWh_Transferred__c),ISCHANGED(Transfer_Amount__c),ISCHANGED(Transfer_Type__c),ISCHANGED(Transfer_kWh__c),ISCHANGED(Transferred_To__c)
 )
 )</errorConditionFormula>
-        <errorMessage>Please contact the System Administrator to make changes to this field.</errorMessage>
+        <errorMessage>Transfer records may not be edited after bills have been generated.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Default_Credit_Value_for_kWh_Projects</fullName>
