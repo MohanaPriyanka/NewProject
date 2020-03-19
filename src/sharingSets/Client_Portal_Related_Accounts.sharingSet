@@ -8,6 +8,12 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
+        <object>Journal_Entry__c</object>
+        <objectField>Client_Lookup__c</objectField>
+        <userField>Contact.RelatedAccount</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
         <object>Opportunity</object>
         <objectField>Shared_Solar_System__c.Client_Account__c</objectField>
         <userField>Contact.RelatedAccount</userField>
@@ -27,5 +33,5 @@
     <description>Grants read access to SSS (and read access to detail objects in master details relationships where SSS is the master) and Opportunity based off of client lookup.
 Specifically for Client profile with Related Account access on Contact.</description>
     <name>Client Portal - Related Accounts</name>
-    <profiles>cs client partner login_related accounts</profiles>
+    <profiles>CS Client Partner Login_Related Accounts</profiles>
 </SharingSet>
