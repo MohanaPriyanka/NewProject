@@ -140,10 +140,11 @@ public class MultipleMonthProductionUpdateTest {
 
         insert new List<Utility_Account_Log__c>{ualogOne, ualogTwo};  
 
-        Opportunity opportunityOne = 
+        Opportunity opportunityOne =
             new Opportunity(Name = 'Building SSS1',
                             AccountId = propertyOne.Id,
                             Shared_Solar_System__c = sss1.Id,
+                            NMC_Tariff__c = eversizeNMC.Id,
                             StageName = 'Complete',
                             Product__c = normalCSProduct.Id,
                             CloseDate = System.today());
@@ -154,22 +155,21 @@ public class MultipleMonthProductionUpdateTest {
             new Utility_Account_Subscription__c(Name = '00088888',
                                                 Utility_Account_Log__c = ualogOne.Id,
                                                 Opportunity__c = opportunityOne.Id,
+                                                Shared_Solar_System__c = sss1.Id,
                                                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                                                Calculated_Annual_Cost_of_Electricity__c = 12000,
-                                                Subscribed_Annual_Cost_of_Electricity__c = 12000);
+                                                Calculated_Annual_Cost_of_Electricity__c = 4804.8,
+                                                Subscribed_Annual_Cost_of_Electricity__c = 4804.8);
 
         Utility_Account_Subscription__c uasTwo = 
             new Utility_Account_Subscription__c(Name = '000999999',
                                                 Utility_Account_Log__c = ualogTwo.Id,
                                                 Opportunity__c = opportunityOne.Id,
+                                                Shared_Solar_System__c = sss1.Id,
                                                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                                                Calculated_Annual_Cost_of_Electricity__c = 4000,
-                                                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                                                Calculated_Annual_Cost_of_Electricity__c = 3363.36,
+                                                Subscribed_Annual_Cost_of_Electricity__c = 3363.36);
 
         insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo};
-
-        uasOne.Customer_Subscription_KW_DC_STATIC__c = 20;
-        uasTwo.Customer_Subscription_KW_DC_STATIC__c = 14;
 
         update new List<Utility_Account_Subscription__c>{uasOne, uasTwo};
 
@@ -538,10 +538,10 @@ public class MultipleMonthProductionUpdateTest {
             FROM Shared_Solar_System__c];
 
         Schedule_Z_Subscription__c szs = [
-            SELECT Id, Name, Customer_Subscription_kW_DC__c,
-            Number_of_Decimal_Places__c
+            SELECT Id, Name, Customer_Subscription_kW_DC__c, Number_of_Decimal_Places__c
             FROM Schedule_Z_Subscription__c
-            WHERE Customer_Subscription_kW_DC__c = 14];
+            WHERE Customer_Subscription_kW_DC__c = 14
+        ];
 
         szs.Customer_Subscription_kW_DC__c = 25.59;
         szs.Number_of_Decimal_Places__c = 2;

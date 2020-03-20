@@ -94,4 +94,20 @@ public with sharing class ScheduleZSubscriptionSelectorTest {
         szsList = selector.getOnTimeListForBillingOffTransfer(schZMap.keySet());
         System.assertEquals(14,szsList.size());
     }
+    
+    @IsTest
+    public static void testGetALSSFromALS() {
+        Schedule_Z__c als = [SELECT Id FROM Schedule_Z__c WHERE Name = '18-0515 Oxford Barrett St. P1' LIMIT 1];
+        System.assertNotEquals(null, als);
+        List<Schedule_Z_Subscription__c> szsList = ScheduleZSubscriptionSelector.getALSSFromALS(new List<Id>{als.Id});
+        System.assertEquals(9, szsList.size());
+
+        Set<Id> szsIds = new Set<Id>();
+        for (Schedule_Z_Subscription__c szs : szsList) {
+            szsIds.add(szs.Id);
+        }
+
+        List<Schedule_Z_Subscription__c> testSZSList =  ScheduleZSubscriptionSelector.getScheduleZSubscriptionsList(szsIds);
+        System.assertEquals(9, testSZSList.size());
+    }
 }

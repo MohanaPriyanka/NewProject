@@ -53,7 +53,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                 Logger.logLater(
                     'ZuoraUsageService',
                     'convertSFUsageToZuoraUsage',
-                    'Conversion to usage failed for id: ' + sfUsage.Id,
+                    'Conversion to usage failed for id: ' + sfUsage.Id + bwException.getMessage(),
                     Logger.ERROR
                 );
             }

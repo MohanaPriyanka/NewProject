@@ -223,11 +223,16 @@ public without sharing class TransferSheetService {
 
     @AuraEnabled
     public static void handleTransferSheetResolutions(String pregenBills, List<String> overrideValues){
-        List<UASBWithStatus> uasbWithStatusList = (List<UASBWithStatus>) System.JSON.deserialize(pregenBills, List<UASBWithStatus>.class);
-        Map<Id,String> resolutionMap = readDataFromLWC(overrideValues);
-        List<UASB__c> uasbsToInsert = resolveUASBs(uasbWithStatusList, resolutionMap);
-        insert uasbsToInsert;
-        postUASBInsertProcessing(uasbsToInsert[0].Transfer__c,overrideValues);
+        try {
+            List<UASBWithStatus> uasbWithStatusList = (List<UASBWithStatus>) System.JSON.deserialize(pregenBills, List<UASBWithStatus>.class);
+            Map<Id, String> resolutionMap = readDataFromLWC(overrideValues);
+            List<UASB__c> uasbsToInsert = resolveUASBs(uasbWithStatusList, resolutionMap);
+            insert uasbsToInsert;
+            postUASBInsertProcessing(uasbsToInsert[0].Transfer__c, overrideValues);
+        } catch (Exception excep){
+            Logger.logNow('TransferSheetService','handleTransferSheetResolutions',excep.getMessage() + '___' + excep.getStackTraceString());
+            throw Util.createAuraExceptionWithMessage(excep.getMessage());
+        }
     }
 
     @TestVisible

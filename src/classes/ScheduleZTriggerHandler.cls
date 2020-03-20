@@ -8,6 +8,9 @@
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ScheduleZTriggerHandler {
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
+
     // For newly enacted Schedule Zs, we want to set the previous Schedule Z to retired, and update any UASes that
     // that aren't on the new Schedule Z.
     public static void handleNewlyEnactedScheduleZ(Map<Id, Schedule_Z__c> oldMap, List<Schedule_Z__c> newScheduleZS) {
@@ -127,7 +130,7 @@ public without sharing class ScheduleZTriggerHandler {
 
         List<Utility_Account_Subscription__c> accountSubscriptions = [
             SELECT Id, Customer_Subscription_KW_DC__c, Opportunity__r.Shared_Solar_System__c,
-                Customer_Subscription_KW_DC_STATIC__c
+                Future_Customer_Subscription_KWDC_Rollup__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Shared_Solar_System__c IN : sssList
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
@@ -142,13 +145,14 @@ public without sharing class ScheduleZTriggerHandler {
         ];
 
         List<Schedule_Z_Subscription__c> scheduleZSubscriptions = new List<Schedule_Z_Subscription__c>();
+        Boolean soFeatureEnabled = featureService.isEnabled('Subscription_Orders');
 
         for (Schedule_Z__c scheduleZ : scheduleZListWithSystemSize) {
             for (Utility_Account_Subscription__c uas : accountSubscriptions) {
                 if (scheduleZ.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c) {
                     Decimal customerSubscriptionkWh;
-                    if (uas.Customer_Subscription_KW_DC__c == null) {
-                        customerSubscriptionkWh = uas.Customer_Subscription_KW_DC_STATIC__c;
+                    if (soFeatureEnabled) {
+                        customerSubscriptionkWh = uas.Future_Customer_Subscription_KWDC_Rollup__c;
                     } else {
                         customerSubscriptionkWh = uas.Customer_Subscription_KW_DC__c;
                     }

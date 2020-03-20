@@ -98,7 +98,7 @@ public class ZuoraUsageServiceTest {
     private static void testQueries() {
         Test.startTest();
         finishTestSetup();
-        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora();
+        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora(Date.newInstance(2050,01,01));
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         Integer i = 0;
         while (iterator.hasNext()) {
@@ -153,7 +153,7 @@ public class ZuoraUsageServiceTest {
         );
         insert uasbAnchor;
 
-        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora();
+        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora(Date.newInstance(2050,01,01));
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         Integer i = 0;
         while (iterator.hasNext()) {
@@ -193,7 +193,7 @@ public class ZuoraUsageServiceTest {
         ];
         System.assertEquals(1, errors.size());
 
-        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora();
+        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora(Date.newInstance(2050,01,01));
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<UASB__c> failedUASB = new List<UASB__c>();
         while (iterator.hasNext()) {
@@ -243,7 +243,7 @@ public class ZuoraUsageServiceTest {
     private static void testCallWithoutUpdatingUASBs() {
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, null);
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, Date.newInstance(2018,04,20));
         zSend.executeBatch();
         Test.stopTest();
 

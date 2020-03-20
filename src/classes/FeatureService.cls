@@ -1,10 +1,11 @@
 /**
- * Created by SarahRenfro on 1/29/2020.
+ * Created by SarahRenfro on 3/5/2020.
  *
- * TestedBy: FeatureServiceTest
+ * Tested By: FeatureServiceTest
  */
 
-public with sharing class FeatureService {
+public without sharing class FeatureService {
+
     @TestVisible
     private static FeatureSelector featureSelector = new FeatureSelector();
 
@@ -16,5 +17,6 @@ public with sharing class FeatureService {
             return feature.Feature_is_Enabled__c;
         }
     }
+
 
 }

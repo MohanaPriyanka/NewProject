@@ -18,8 +18,8 @@ public with sharing class UASSelectorTest {
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
-        Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
         Util.enableAllTriggers();
+        Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
     }
     @IsTest public static void testSelectByAccounts() {
         Set<Id> accountIds = (new Map<Id, Account>([SELECT Id FROM Account])).keySet();
@@ -28,6 +28,11 @@ public with sharing class UASSelectorTest {
     @IsTest public static void testSelectByUAL() {
         Set<Id> ualIds = (new Map<Id, Utility_Account_Log__c>([SELECT Id FROM Utility_Account_Log__c])).keySet();
         System.assert(UASSelector.selectByUAL(ualIds).size() > 0, 'Expected UALs for accounts');
+    }
+    @IsTest public static void testSelectByOpp() {
+        Set<Id> oppIds = (new Map<Id, Opportunity>([SELECT Id FROM Opportunity])).keySet();
+        UASSelector uasSelector = new UASSelector();
+        System.assert(uasSelector.selectByOpp(oppIds).size() > 0, 'Expected Opps');
     }
     @IsTest public static void testSelectByIds() {
         Set<Id> uasIds = (new Map<Id, Utility_Account_Subscription__c>([SELECT Id FROM Utility_Account_Subscription__c])).keySet();
@@ -50,7 +55,6 @@ public with sharing class UASSelectorTest {
         }
         System.assertEquals(3,UASSelector.selectByIdsAsMap(idList).values().size());
     }
-
     @IsTest public static void testGetBrandKeySummary() {
         // Test setup: link properties to a parent account:
         Map<Id,Opportunity> oppsToUpdate = new Map<Id,Opportunity>();
@@ -63,7 +67,6 @@ public with sharing class UASSelectorTest {
             Parent_Account__c = parentAccount.Id
         );
         insert propertyAccount;
-
         List<Utility_Account_Subscription__c> uases = [
             SELECT Id, Opportunity__r.Id
             FROM Utility_Account_Subscription__c
@@ -78,5 +81,18 @@ public with sharing class UASSelectorTest {
         update oppsToUpdate.values();
         UASSelector selector = new UASSelector();
         System.assert(selector.getBrandKeySummary(new Set<Id>{parentAccount.Id}).size() > 0, 'Expected UAL Summary');
+    }
+    @IsTest public static void testSelectActiveUASBySSS(){
+        Set<Id> sssIdList = new Set<Id>();
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Opportunity__r.Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+        ];
+        System.assert(uasList.size() > 0);
+        for (Utility_Account_Subscription__c uas : uasList){
+            sssIdList.add(uas.Opportunity__r.Shared_Solar_System__c);
+        }
+        UASSelector selector = new UASSelector();
+        System.assertEquals(uasList.size(),selector.selectActiveUASBySSS(sssIdList).size());
     }
 }

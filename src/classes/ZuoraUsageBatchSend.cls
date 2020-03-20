@@ -20,7 +20,7 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
             return Database.getQueryLocator(queryString);
         } else {
             if (type == UsageType.UASBS) {
-                return UASBSelector.uasbsNotYetInZuora();
+                return UASBSelector.uasbsNotYetInZuora(invoiceDate);
             } else if (type == UsageType.ADJUSTMENTS) {
                 return AdjustmentSelector.getAdjustmentsNotYetInZuora(true, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
             } else {

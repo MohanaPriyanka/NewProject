@@ -17,8 +17,8 @@
         <namespace>LASERCA</namespace>
     </packageVersions>
     <packageVersions>
-        <majorNumber>6</majorNumber>
-        <minorNumber>9</minorNumber>
+        <majorNumber>7</majorNumber>
+        <minorNumber>4</minorNumber>
         <namespace>dsfs</namespace>
     </packageVersions>
     <status>Active</status>

@@ -88,6 +88,10 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
                 processingParameter.creditMemo.CreditMemo.ClientOwner_Zcustom
             );
         CreditMemoApplication creditMemoApplication = groupByInvoiceAndDebitMemo(processingParameter.creditMemo, itemsWithApplication);
+        if (creditMemoApplication.invoices.size() == 0 && creditMemoApplication.debitMemos.size() == 0) {
+            return;
+        }
+
         String urlString = '/v1/creditmemos/' + processingParameter.creditMemo.CreditMemo.id +'/apply';
         Logger.logLater('ZuoraCreditMemoAllocationService', 'processOutstandingItems',
             'Request Endpoint: ' + urlString + '\n' +
@@ -116,7 +120,7 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
         // The effectiveDate of the application must also be after the credit memo date and all of the applied items.
         Date effectiveDate =  DateUtil.max(Date.today(), creditMemo.CreditMemo.creditMemoDate);
 
-        for (ZuoraOutstandingItemsService.OutstandingItem billItem : outstandingBillItems){
+        for (ZuoraOutstandingItemsService.OutstandingItem billItem : outstandingBillItems) {
             if (billItem.EffectiveDate > effectiveDate) {
                 effectiveDate = DateUtil.convertGmtToDate(billItem.EffectiveDate);
             }
@@ -124,10 +128,10 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
             if (billItem.IsInvoiceItem){
                 CreditMemoApplicationInvoiceItem invoiceItem = new CreditMemoApplicationInvoiceItem(billItem, creditMemo);
                 addToInvoiceMaps(invoiceToItemMap, billItem, invoiceItem, invoiceToAmountMap);
-                } else {
+            } else {
                 CreditMemoApplicationDebitMemoItem debitMemoItem = new CreditMemoApplicationDebitMemoItem(billItem, creditMemo);
                 addToDebitMemoMaps(debitMemoToItemMap, billItem, debitMemoItem, debitMemoToAmountMap);
-                }
+            }
         }
 
         CreditMemoApplication application = new CreditMemoApplication(effectiveDate);
@@ -142,10 +146,6 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
             application.debitMemos.add(debitToApply);
         }
 
-        if (application.invoices.size() == 0 && application.debitMemos.size() == 0) {
-            throw new Util.FatalBWException('Could not find anything to apply this credit memo to. Credit Memo\n' + creditMemo + '\n' +
-                'Outstanding items:\n' + JSON.serializePretty(outstandingBillItems));
-        }
         return application;
     }
 
@@ -181,7 +181,7 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
         }
     }
 
-    public static QueryResultCreditMemo getCreditMemosByPage(String urlString){
+    public static QueryResultCreditMemo getCreditMemosByPage(String urlString) {
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint(
             'GET',
             urlString,

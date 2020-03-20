@@ -12,7 +12,7 @@ trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, after 
         when BEFORE_INSERT {
             subscriptionManagementService.populateSubscriptionOrder(Trigger.new);
         } when AFTER_INSERT {
-            subscriptionManagementService.checkSOApproval(Trigger.new, Trigger.oldMap);
+            subscriptionManagementService.checkSOApproval(Trigger.new, null);
         } when AFTER_UPDATE {
             subscriptionManagementService.checkSOApproval(Trigger.new, Trigger.oldMap);
         }

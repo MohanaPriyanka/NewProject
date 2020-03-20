@@ -34,8 +34,8 @@ public class UASBSelectorTest {
             Opportunity__c = opportunity1.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = 25);
+            Subscribed_Annual_Cost_of_Electricity__c = 1400
+        );
         insert uas1;
     }
 
