@@ -979,6 +979,7 @@ public class TestBillCreationandPayment {
 
 
         for (Transfer__c transfer : transfers) {
+            transfer.Bills_Generated__c = false;
             transfer.Allocation_Schedule__c = null;
         }
 
