@@ -211,6 +211,7 @@ public class TestBillCreationandPayment {
                 StageName = 'Complete',
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 CloseDate = System.today());
 
         Opportunity opportunitytwo =
@@ -220,6 +221,7 @@ public class TestBillCreationandPayment {
                 StageName = 'Complete',
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 CloseDate = System.today());
 
         Opportunity opportunitythree =
@@ -229,6 +231,7 @@ public class TestBillCreationandPayment {
                 StageName = 'Complete',
                 Customer_Group__c = 'Non-Residential',
                 Product__c = normalCSProduct.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
                 CloseDate = System.today());
         Opportunity opportunityFour;
 
@@ -240,6 +243,7 @@ public class TestBillCreationandPayment {
                     StageName = 'Complete',
                     Customer_Group__c = 'Non-Residential',
                     Product__c = normalCSProduct.Id,
+                    NMC_Tariff__c = eversizeNMC.Id,
                     CloseDate = System.today());
             insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree, opportunityFour};
         } else {
@@ -251,9 +255,9 @@ public class TestBillCreationandPayment {
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunityone.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 4000,
-                Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                Annual_kwh_subscription_future__c = 6006,
+                Calculated_Annual_Cost_of_Electricity__c = 6006,
+                Subscribed_Annual_Cost_of_Electricity__c = 6006);
 
         Utility_Account_Subscription__c uastwo =
             new Utility_Account_Subscription__c(Name = '000-0234',
@@ -316,17 +320,6 @@ public class TestBillCreationandPayment {
             Reason_For_Adjustment__c = 'Needs adjustment');
 
         insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo};
-
-        uasone.Customer_Subscription_KW_DC_STATIC__c = 25;
-        uastwo.Customer_Subscription_KW_DC_STATIC__c = 20;
-        uasthree.Customer_Subscription_KW_DC_STATIC__c = 15;
-        uasfour.Customer_Subscription_KW_DC_STATIC__c = 10;
-        if (multipleOppsForSingleSystem) {
-            uasFive.Customer_Subscription_KW_DC_STATIC__c = 25;
-            update new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour, uasFive};
-        } else {
-        update new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
-        }
 
         // We want to make these dates current, so that generated bills are current
         Date myDateApr = Date.newInstance(Date.today().year(), Date.today().month(), 15);
@@ -639,7 +632,7 @@ public class TestBillCreationandPayment {
         Test.startTest();
 
         Shared_Solar_System__c sssRadianGen = [
-            SELECT Id, Name
+            SELECT Id, Name, Utility_NMC_Tariff__r.Id
             FROM Shared_Solar_System__c
             WHERE Name =  'Oxford Barrett Street. Part1 With Long Name To Test Unique Id Lengths'
         ];
@@ -679,6 +672,7 @@ public class TestBillCreationandPayment {
             Shared_Solar_System__c = sssRadianGen.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Anchor',
+            NMC_Tariff__c = sssRadianGen.Utility_NMC_Tariff__r.Id,
             Product__c = opp1.Product__c,
             CloseDate = System.today());
 
@@ -686,6 +680,7 @@ public class TestBillCreationandPayment {
             Name = 'Opp Five',
             AccountId = accountC.Id,
             Shared_Solar_System__c = sssRadianGen.Id,
+            NMC_Tariff__c = sssRadianGen.Utility_NMC_Tariff__r.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Public Offtake',
             Product__c = opp1.Product__c,
@@ -695,6 +690,7 @@ public class TestBillCreationandPayment {
             Name = 'Opp Six',
             AccountId = accountC.Id,
             Shared_Solar_System__c = sssRadianGen.Id,
+            NMC_Tariff__c = sssRadianGen.Utility_NMC_Tariff__r.Id,
             StageName = 'PPA/NMCPA Signed',
             Customer_Group__c = 'Residential',
             Product__c = opp1.Product__c,
@@ -709,7 +705,6 @@ public class TestBillCreationandPayment {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
                 Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Customer_Subscription_KW_DC_STATIC__c = 25,
                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
 
         Utility_Account_Subscription__c uas5 =
@@ -719,7 +714,6 @@ public class TestBillCreationandPayment {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
                 Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Customer_Subscription_KW_DC_STATIC__c = 25,
                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
 
         Utility_Account_Subscription__c uas6 =
@@ -729,7 +723,6 @@ public class TestBillCreationandPayment {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
                 Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Customer_Subscription_KW_DC_STATIC__c = 25,
                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
 
         insert new List<Utility_Account_Subscription__c> {uas4, uas5, uas6};
@@ -986,6 +979,7 @@ public class TestBillCreationandPayment {
 
 
         for (Transfer__c transfer : transfers) {
+            transfer.Bills_Generated__c = false;
             transfer.Allocation_Schedule__c = null;
         }
 
