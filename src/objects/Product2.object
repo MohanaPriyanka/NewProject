@@ -1509,6 +1509,19 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
+        <fullName>Opp_Conga_Template_Id_s__c</fullName>
+        <description>These are the Conga Template record IDs that are used to generate docs in SSF. If there are multiple, they should be separate with a comma and no spaces</description>
+        <externalId>false</externalId>
+        <inlineHelpText>These are the Conga Template record IDs that are used to generate docs in SSF. If there are multiple, they should be separate with a comma and no spaces</inlineHelpText>
+        <label>Opp Conga Template Id(s)</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Percent_Share_Decimal_Places__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>For percent field, so 23.45% is 0.2345 (4 decimal places) and 23.4567 is 0.234567 (6 decimal places)</inlineHelpText>
