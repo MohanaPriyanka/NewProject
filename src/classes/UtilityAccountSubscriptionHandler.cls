@@ -5,18 +5,20 @@
  */
 
 public without sharing class UtilityAccountSubscriptionHandler {
+    @TestVisible
+    private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
 
-    public static void assignSSSOnInsert(List<Utility_Account_Subscription__c> uasList) {
+    public static void assignSSSBeforeInsert(List<Utility_Account_Subscription__c> uasList) {
         Set<Id> oppIds = new Set<Id>();
         for (Utility_Account_Subscription__c uas : uasList) {
             oppIds.add(uas.Opportunity__c);
         }
 
-        Map<Id, Opportunity> uasToOppMap = OpportunitiesSelector.selectOpportunityMap(oppIds);
+        Map<Id, Opportunity> uasToOppMap = oppSelector.selectOpportunityMap(oppIds);
 
         for (Utility_Account_Subscription__c uas : uasList) {
             Opportunity opp = uasToOppMap.get(uas.Opportunity__c);
-            if (opp != null) {
+            if (opp != null && uas.Shared_Solar_System__c == null) {
                 uas.Shared_Solar_System__c = opp.Shared_Solar_System__c;
             } else {
                 Logger.logNow('UtilityAccountSubscriptionHandler', 'onBeforeInsert', JSON.serialize(uas) + '\n' + 'Unable to populate SSS from Opp on UAS because no Opp found for UAS');
@@ -24,14 +26,13 @@ public without sharing class UtilityAccountSubscriptionHandler {
         }
     }
 
-
-    public static void assignSSSOnUpdate(List<Utility_Account_Subscription__c> uasList, Map<Id, Utility_Account_Subscription__c> oldMap) {
+    public static void assignSSSBeforeUpdate(List<Utility_Account_Subscription__c> uasList, Map<Id, Utility_Account_Subscription__c> oldMap) {
         Set<Id> oppIds = new Set<Id>();
         for (Utility_Account_Subscription__c uas : uasList) {
             oppIds.add(uas.Opportunity__c);
         }
 
-        Map<Id, Opportunity> uasToOppMap = OpportunitiesSelector.selectOpportunityMap(oppIds);
+        Map<Id, Opportunity> uasToOppMap = oppSelector.selectOpportunityMap(oppIds);
 
         for (Utility_Account_Subscription__c uas : uasList) {
             if (uas.Opportunity__c != null && oldMap.get(uas.Id).Opportunity__c == null && uas.Shared_Solar_System__c == null) {
@@ -39,8 +40,5 @@ public without sharing class UtilityAccountSubscriptionHandler {
                 uas.Shared_Solar_System__c = opp.Shared_Solar_System__c;
             }
         }
-
-
-
     }
 }

@@ -58,9 +58,9 @@ public without sharing class OpportunitiesSelector {
         ];
     }
 
-    public static Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
+    public  Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
         Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
-            SELECT Id, Shared_Solar_System__c
+            SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.Name
             FROM Opportunity
             WHERE Id IN :oppIds
         ]);
@@ -76,7 +76,7 @@ public without sharing class OpportunitiesSelector {
             FROM Opportunity
             WHERE Commission_Structure__r.Cents_kW_DC_First_Bill__c != null
             AND Commission_Structure__r.Cents_kW_DC_First_Bill__c != 0
-            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Type__c = 'First Bill Sent')
+            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = 'First Bill Sent')
             AND Account.Zuora_Id__c != null
             AND Shared_Solar_System__r.Count_of_Transfers__c > 0
             AND AccountId IN : accountIds
@@ -91,7 +91,7 @@ public without sharing class OpportunitiesSelector {
             FROM Opportunity
             WHERE Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != null
             AND Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != 0
-            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Type__c = 'First Bill Paid')
+            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = 'First Bill Paid')
             AND Account.Zuora_Id__c != null
             AND Shared_Solar_System__r.Count_of_Transfers__c > 0
             AND AccountId IN : accountIds

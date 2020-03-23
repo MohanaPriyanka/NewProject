@@ -41,6 +41,7 @@ public without sharing class UASSelector {
         return [
             SELECT Id,
                 Shared_Solar_System__c,
+                Next_Schedule_Z_Status__c,
                 Annual_Cost_Future_Rollup__c,
                 Annual_kWh_Subscription_Future_Rollup__c,
                 Future_Customer_Subscription_KWDC_Rollup__c,
@@ -125,5 +126,13 @@ public without sharing class UASSelector {
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
             AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0)
         ];
+    }
+
+    public List<Utility_Account_Subscription__c> getUASForCloneByOpp(Set<Id> oppIds) {
+        String soql = Util.getCreatableFieldsSOQL('Utility_Account_Subscription__c');
+        soql = 'SELECT Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c, Subscription_Type__c, Shared_Solar_System__r.Name,' + soql;
+        soql = soql + ' WHERE Opportunity__c IN :oppIds AND Next_Schedule_Z_Status__c = \'Active Subscription\'';
+
+        return Database.query(soql);
     }
 }
