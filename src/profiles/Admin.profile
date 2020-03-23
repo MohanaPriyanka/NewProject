@@ -47,6 +47,11 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>MyApp</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>NM_Extension_for_a_Fee_Deadline</application>
         <default>false</default>
         <visible>false</visible>
@@ -7148,6 +7153,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Commission_Payment__c.Commission_Structure__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Commission_Payment__c.Commission_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

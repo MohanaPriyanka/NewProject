@@ -1,9 +1,6 @@
 // Tested By : ClientBrandingServiceTest, SharedSolarSystemHandlerTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemHandler implements Schedulable {
-    private List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
-    private List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
-    private List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
     @TestVisible
     private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     @TestVisible
@@ -11,7 +8,9 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     @TestVisible
     private static FeatureService featureService = new FeatureService();
     public void execute(SchedulableContext sch) {
+        Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
         updateSSS();
+        Util.enableTrigger('Disable_SharedSolarSystemTrigger__c');
     }
     @AuraEnabled
     public static String updateStage(String sssToUpdate, String newStage) {
@@ -32,6 +31,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         }
     }
     public void updateSSS() {
+        sssSelector = new SharedSolarSystemsSelector();
         Map<Id, Shared_Solar_System__c> oldSSSMap = new Map<Id, Shared_Solar_System__c>();
         List<Shared_Solar_System__c> newSSSList = sssSelector.getAllSSSes();
         List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
@@ -61,6 +61,10 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         update sssToUpdateList;
     }
     public void summarizeCapacity(List<Shared_Solar_System__c> sssList){
+        uasSelector = new UASSelector();
+        List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
         Set<Id> sssIds = new Set<Id>();
         Decimal reservedCapacity = 0;
         Decimal committedCapacity = 0;
