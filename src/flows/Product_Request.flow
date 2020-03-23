@@ -1567,6 +1567,10 @@ P4 = Lowest Priority → P0 = Highest Priority</fieldText>
             <fieldText>What is driving this delivery date?</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;This field is limited to 255 characters.&lt;/p&gt;</errorMessage>
+                <formulaExpression>len({!inp_Date_Reason_Legal})&lt;255</formulaExpression>
+            </validationRule>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
@@ -2065,7 +2069,13 @@ P4 = This would be nice to have</helpText>
         <label>Select Team</label>
         <stageOrder>5</stageOrder>
     </stages>
-    <startElementReference>rlFind_Contact_Id_for_User</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>rlFind_Contact_Id_for_User</targetReference>
+        </connector>
+    </start>
     <status>Active</status>
     <textTemplates>
         <name>ttLegalDescription</name>
