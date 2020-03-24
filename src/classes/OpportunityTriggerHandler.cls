@@ -94,11 +94,11 @@ public without sharing class OpportunityTriggerHandler {
             }
         }
 
-//        if (oppIdsWithChangedSSS.size() > 0) {
-//            SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
-//            subscriptionService.oppIdsWithChangedSSS = oppIdsWithChangedSSS;
-//            System.enqueueJob(subscriptionService);
-//        }
+        if (oppIdsWithChangedSSS.size() > 0) {
+            SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
+            subscriptionService.oppIdsWithChangedSSS = oppIdsWithChangedSSS;
+            System.enqueueJob(subscriptionService);
+        }
 
         EventBus.publish(subscriptionEventMap.values());
         return subscriptionEventMap;
