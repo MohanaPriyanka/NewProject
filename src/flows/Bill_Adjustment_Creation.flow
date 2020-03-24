@@ -231,6 +231,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Transfer__c</field>
+            <value>
+                <elementReference>transfer</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Utility_Account_Subscription__c</field>
             <value>
                 <elementReference>drcUAS</elementReference>
@@ -381,8 +387,42 @@
         </fields>
         <fields>
             <name>scrCreditExplanation</name>
-            <fieldText>Because you selected the Bill Adjustment Type &quot;Production&quot;, you must enter the value of the Credits Allocated related to the Bill Adjustment.</fieldText>
+            <fieldText>&lt;p&gt;Because you selected the Bill Adjustment Type &quot;Production&quot;, you must enter the value of the Credits Allocated related to the Bill Adjustment as well as link the Adjustment to an existing Transfer record.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>LookupToTransfer</name>
+            <extensionName>flowruntime:lookup</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>fieldApiName</name>
+                <value>
+                    <stringValue>Transfer__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Transfer</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectApiName</name>
+                <value>
+                    <stringValue>Bill_Adjustment__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>transfer</assignToReference>
+                <name>recordId</name>
+            </outputParameters>
         </fields>
         <fields>
             <name>scrrCredits_Allocated</name>
@@ -685,6 +725,14 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <description>Transfer selected by User for Production Adjustmet</description>
+        <name>transfer</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>varPropertyAccountID</name>
