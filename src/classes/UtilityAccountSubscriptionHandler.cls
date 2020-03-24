@@ -20,9 +20,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
             Opportunity opp = uasToOppMap.get(uas.Opportunity__c);
             if (opp != null && uas.Shared_Solar_System__c == null) {
                 uas.Shared_Solar_System__c = opp.Shared_Solar_System__c;
-            } else {
-                Logger.logNow('UtilityAccountSubscriptionHandler', 'onBeforeInsert', JSON.serialize(uas) + '\n' + 'Unable to populate SSS from Opp on UAS because no Opp found for UAS');
-            }
+            } 
         }
     }
 
