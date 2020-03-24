@@ -200,6 +200,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         for (Utility_Account_Subscription__c uas : uasList) {
             Utility_Account_Subscription__c cloneUAS = uas.clone(false, true, false, false );
             cloneUAS.Shared_Solar_System__c = oppMap.get(uas.Opportunity__c).Shared_Solar_System__c;
+            cloneUAS.Subscription_Comment_c__c = 'UAS created after SSS was changed on Opportunity; ' + cloneUAS.Subscription_Comment_c__c;
             upsertUASes.add(cloneUAS);
             CSUtilityAccountSubscriptionFactory.UASOrder uasOrder = new CSUtilityAccountSubscriptionFactory.UASOrder();
             uasOrder.uas = cloneUAS;
@@ -209,8 +210,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 Change_in_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
                 Change_in_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
                 Approval_Status__c = 'Approved',
-                Effective_Date__c = System.today(),
-                Comments__c = 'CLONED SO'
+                Effective_Date__c = System.today()
             );
             uasOrder.sOrder = so;
             uasOrders.add(uasOrder);
@@ -264,7 +264,8 @@ public without sharing class SubscriptionManagementService implements Queueable{
         ]);
 
         for (Utility_Account_Subscription__c uas : uasList) {
-            if (oppToSOMap.get(uas.Opportunity__c) != null) {
+            //Do not want to create "Initial" subscription orders for uases inserted as a result of SSS change on Opp
+            if (oppToSOMap.get(uas.Opportunity__c) != null && uas.Subscription_Comment_c__c == null) {
                 Subscription_Order__c so = new Subscription_Order__c(
                     Utility_Account_Subscription__c = uas.Id,
                     Type__c = 'Initial',
