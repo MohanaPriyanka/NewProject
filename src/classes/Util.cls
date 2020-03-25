@@ -358,6 +358,35 @@ public without sharing class Util {
         return excep;
     }
 
+    public static String getCreatableFieldsSOQL(String objectName) {
+        String selects = '';
+
+        //Get a map of field name and field token
+        Map<String, Schema.SObjectField> fieldMap = Schema.getGlobalDescribe().get(objectName.toLowerCase()).getDescribe().Fields.getMap();
+        List<String> selectFields = new List<String>();
+
+        //Loop through fields and store only Creatable fields
+        if (fieldMap != null) {
+            for (Schema.SObjectField field : fieldMap.values()) {
+                Schema.DescribeFieldResult fd = field.getDescribe();
+                if (fd.isCreateable()) {
+                    selectFields.add(fd.getName());
+                }
+            }
+        }
+
+        //Build the Select query string
+        if (!selectFields.isEmpty()) {
+            for (String s : selectFields) {
+                selects += s + ',';
+            }
+            //Remove the last comma
+            selects = selects.removeEnd(',');
+        }
+
+        return selects + ' FROM ' + objectName;
+    }
+
     @TestVisible
     /**
      * Method to generate a fake Id based on the SObject Type

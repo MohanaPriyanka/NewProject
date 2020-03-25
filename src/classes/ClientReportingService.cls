@@ -6,6 +6,9 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ClientReportingService {
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
+
     public static void stampClient(List<Bill_Adjustment__c> adjustments) {
         // Called from before insert trigger:
 
@@ -156,15 +159,15 @@ public without sharing class ClientReportingService {
     public static void updateClientUAS(Map<Id, Opportunity> oppMap, Map<Id, Opportunity> oldOppMap) {
         Set<Id> oppsToUpdate = new Set<Id>();
         for (Opportunity opp : oppMap.values()) {
-            if (opp.Shared_Solar_System__c != oldOppMap.get(opp.Id).Shared_Solar_System__c) {
+            //A new UAS is inserted when SSS changes on Opportunity when Subscription Order Feature flag is turned on,
+            // therefore automatically inserting a new Client UAS
+            if (opp.Shared_Solar_System__c != oldOppMap.get(opp.Id).Shared_Solar_System__c && !featureService.isEnabled('Subscription_Orders')) {
                 oppsToUpdate.add(opp.Id);
             }
         }
 
         if (oppsToUpdate.size() > 0 ) {
-
             List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByOppIds(oppsToUpdate);
-
             if (clientUASList.size() > 0 ){
                 for (Client_Utility_Account_Subscription__c cUAS : clientUASList) {
                     cUAS.Shared_Solar_System__c = oppMap.get(cUAS.Utility_Account_Subscription__r.Opportunity__c).Shared_Solar_System__c;

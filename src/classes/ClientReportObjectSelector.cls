@@ -9,7 +9,9 @@ public with sharing class ClientReportObjectSelector {
     public static List<Client_Utility_Account_Subscription__c> getClientUASesByUASIds(Set<Id> uasIds) {
         return [
             SELECT Id, Customer__c, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c,
-                Shared_Solar_System__c, Utility_Account_Subscription__c
+               Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+                Utility_Account_Subscription__r.Shared_Solar_System_Name__c, Shared_Solar_System__c,
+                Shared_Solar_System__r.Name
             FROM Client_Utility_Account_Subscription__c
             WHERE Utility_Account_Subscription__c IN :uasIds
         ];
