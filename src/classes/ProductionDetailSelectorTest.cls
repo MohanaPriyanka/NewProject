@@ -252,8 +252,8 @@ public class ProductionDetailSelectorTest {
         Map<String, List<Transfer_Part__c>> partsMap = selector.getInvoicePartMap(entryExternalIds);
 
         System.assertEquals(2,partsMap.keySet().size());
-        System.assertEquals(4,partsMap.get('2c92c0fa6e3a9391016e3e30d48066d2').size());
-        System.assertEquals(2,partsMap.get('2c92c0fa6e3a9391016e3df87b1f687a').size());
+        System.assertEquals(2,partsMap.get('2c92c0fa6e3a9391016e3e30d48066d2').size());
+        System.assertEquals(4,partsMap.get('2c92c0fa6e3a9391016e3df87b1f687a').size());
     }
 
     @isTest
