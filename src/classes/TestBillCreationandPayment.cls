@@ -301,25 +301,7 @@ public class TestBillCreationandPayment {
         insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
         }
 
-        //Changed something (not sure if it was billing number fix) and it now applies this Bill adjustment to every system bill
-        Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(  Name = 'UASoneAdjustment',
-            Account__c = accountA.Id,
-            Utility_Account_Subscription__c = uasOne.Id,
-            Adjustment_Type__c = 'Production',
-            Adjustment_Amount__c = 24,
-            Credits_Allocated__c = 24,
-            Approval_Status__c = 'Approved',
-            Reason_For_Adjustment__c = 'Needs adjustment');
 
-        //Equivalent adjustment as adjustOne, but with an unnaproved status. This should be ignored by all system bills.
-        Bill_Adjustment__c adjustTwo = new Bill_Adjustment__c(  Name = 'UASoneAdjustment2',
-            Account__c = accountA.Id,
-            Utility_Account_Subscription__c = uasOne.Id,
-            Adjustment_Amount__c = 30,
-            Approval_Status__c = 'Unapproved',
-            Reason_For_Adjustment__c = 'Needs adjustment');
-
-        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo};
 
         // We want to make these dates current, so that generated bills are current
         Date myDateApr = Date.newInstance(Date.today().year(), Date.today().month(), 15);
@@ -520,6 +502,27 @@ public class TestBillCreationandPayment {
 
         TransferPartService transferPartService = new TransferPartService();
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferA2, transferA3, transferB1, transferB2, transferB3});
+
+        //Changed something (not sure if it was billing number fix) and it now applies this Bill adjustment to every system bill
+        Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(  Name = 'UASoneAdjustment',
+            Account__c = accountA.Id,
+            Utility_Account_Subscription__c = uasOne.Id,
+            Adjustment_Type__c = 'Production',
+            Transfer__c = transferA2.Id,
+            Adjustment_Amount__c = 24,
+            Credits_Allocated__c = 24,
+            Approval_Status__c = 'Approved',
+            Reason_For_Adjustment__c = 'Needs adjustment');
+
+        //Equivalent adjustment as adjustOne, but with an unnaproved status. This should be ignored by all system bills.
+        Bill_Adjustment__c adjustTwo = new Bill_Adjustment__c(  Name = 'UASoneAdjustment2',
+            Account__c = accountA.Id,
+            Utility_Account_Subscription__c = uasOne.Id,
+            Adjustment_Amount__c = 30,
+            Approval_Status__c = 'Unapproved',
+            Reason_For_Adjustment__c = 'Needs adjustment');
+
+        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo};
 
         runBillPeriod(new List<Id>{bpA1.Id});
 

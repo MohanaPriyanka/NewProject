@@ -27,6 +27,13 @@ public class ZuoraUsageServiceTest {
             LIMIT 1
         ];
 
+        Transfer__c transfer = [
+            SELECT Id
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA October'
+            LIMIT 1
+        ];
+
         Account clientAccount = [
             SELECT Id, Name, Account_Number__c
             FROM Account
@@ -62,6 +69,7 @@ public class ZuoraUsageServiceTest {
             Account__c = uasbList[0].Utility_Account_Subscription__r.Opportunity__r.AccountId,
             UASB__c = uasbList[0].Id,
             Adjustment_Type__c = 'Production',
+            Transfer__c = transfer.Id,
             Adjustment_Amount__c = 90,
             Credits_Allocated__c = 100,
             Approval_Status__c = 'Approved',
@@ -74,6 +82,7 @@ public class ZuoraUsageServiceTest {
             Account__c = uasbList[0].Utility_Account_Subscription__r.Opportunity__r.AccountId,
             UASB__c = uasbList[0].Id,
             Adjustment_Type__c = 'Production',
+            Transfer__c = transfer.Id,
             Adjustment_Amount__c = 45,
             Credits_Allocated__c = 50,
             Approval_Status__c = 'Approved',
