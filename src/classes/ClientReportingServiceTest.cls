@@ -37,17 +37,6 @@ public with sharing class ClientReportingServiceTest {
             WHERE Name = '0000239'
         ];
 
-        Bill_Adjustment__c adjustment = new Bill_Adjustment__c(
-            Name = 'UASoneAdjustment',
-            Utility_Account_Subscription__c = uas.Id,
-            Account__c = uas.Opportunity__r.AccountId,
-            Adjustment_Type__c = 'Production',
-            Adjustment_Amount__c = 24,
-            Credits_Allocated__c = 24,
-            Approval_Status__c = 'Approved',
-            Reason_For_Adjustment__c = 'Client Owner Test'
-        );
-        insert adjustment;
 
         Bill_Period__c billPeriod = [
             SELECT Id, Shared_Solar_System__c, Bill_Date__c, Bill_Status__c
@@ -63,6 +52,19 @@ public with sharing class ClientReportingServiceTest {
             WHERE Bill_Period__c = :billPeriod.Id
             LIMIT 1
         ];
+
+        Bill_Adjustment__c adjustment = new Bill_Adjustment__c(
+            Name = 'UASoneAdjustment',
+            Utility_Account_Subscription__c = uas.Id,
+            Account__c = uas.Opportunity__r.AccountId,
+            Adjustment_Type__c = 'Production',
+            Adjustment_Amount__c = 24,
+            Credits_Allocated__c = 24,
+            Approval_Status__c = 'Approved',
+            Reason_For_Adjustment__c = 'Client Owner Test',
+            Transfer__c = transfer.Id
+        );
+        insert adjustment;
 
         TransferPartService transferPartService = new TransferPartService();
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{transfer});
