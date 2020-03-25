@@ -40,7 +40,8 @@ public with sharing class OpportunitiesSelectorTest {
         for (Opportunity opp : opps) {
             oppIds.add(opp.Id);
         }
-        System.assertNotEquals(null, OpportunitiesSelector.selectOpportunityMap(oppIds));
+        OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
+        System.assertNotEquals(null, opportunitiesSelector.selectOpportunityMap(oppIds));
     }
 
     @IsTest public static void testCommissionQueries() {

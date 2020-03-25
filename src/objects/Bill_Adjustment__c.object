@@ -652,6 +652,14 @@ UASB__r.Adjustment_Amount__c != Adjustment_Amount__c)</errorConditionFormula>
         <errorMessage>Bill Adjustments from Production Errors must have Credits Allocated filled in</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Transfer_for_Production_Adjustment</fullName>
+        <active>true</active>
+        <description>When Bill Adjustment has the type &apos;Production,&apos; the Transfer lookup must be populated</description>
+        <errorConditionFormula>AND ( ISPICKVAL( Adjustment_Type__c, &quot;Production&quot;), ISBLANK( Transfer__c ))</errorConditionFormula>
+        <errorDisplayField>Transfer__c</errorDisplayField>
+        <errorMessage>When Bill Adjustment has the type &apos;Production,&apos; the Transfer lookup must be populated</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Usage_Must_Be_Posted_on_Next_Bill</fullName>
         <active>true</active>
         <errorConditionFormula>AND(

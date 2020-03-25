@@ -58,7 +58,7 @@ public without sharing class OpportunityTriggerHandler {
             for (Opportunity opp : oppList){
                 if (( Trigger.isInsert || oldOppMap.get(opp.Id).Custom_Id__c != opp.Custom_Id__c) && salesIdMap.containsKey(opp.Custom_Id__c)){
                     opp.BS_Sales_Id__c = salesIdMap.get(opp.Custom_Id__c).id;
-                }else if (
+                } else if (
                     Trigger.isUpdate &&
                     oldOppMap.get(opp.Id).Custom_Id__c != opp.Custom_Id__c &&
                     !salesIdMap.containsKey(opp.Custom_Id__c)){
@@ -70,6 +70,7 @@ public without sharing class OpportunityTriggerHandler {
 
     public Map<Id,Subscription_Change_Event__e> eventHandling(List<Opportunity> newOpps, Map<Id, Opportunity> oldOpps){
         Map<Id,Subscription_Change_Event__e> subscriptionEventMap = new Map<Id,Subscription_Change_Event__e>();
+        Set<Id> oppIdsWithChangedSSS = new Set<Id>();
         for (Opportunity newOpp : newOpps){
             Opportunity oldOpp;
             if (oldOpps != null && oldOpps.containsKey(newOpp.Id)){
@@ -82,6 +83,7 @@ public without sharing class OpportunityTriggerHandler {
                 subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
                 subscriptionEventMap = createSubscriptionChangeEvent(oldOpp.AccountId, subscriptionEventMap);
             } else if (newOpp.Shared_Solar_System__c != oldOpp.Shared_Solar_System__c){
+                oppIdsWithChangedSSS.add(newOpp.Id);
                 subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
             } else if ((newOpp.StageName == 'Cancelled' && oldOpp.StageName != 'Cancelled') ||
                 (newOpp.StageName == 'DUPLICATE' && oldOpp.StageName != 'DUPLICATE') ||
@@ -90,6 +92,12 @@ public without sharing class OpportunityTriggerHandler {
                 (newOpp.StageName == 'Complete' && oldOpp.StageName != 'Complete')){
                 subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
             }
+        }
+
+        if (oppIdsWithChangedSSS.size() > 0) {
+            SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
+            subscriptionService.oppIdsWithChangedSSS = oppIdsWithChangedSSS;
+            System.enqueueJob(subscriptionService);
         }
 
         EventBus.publish(subscriptionEventMap.values());
