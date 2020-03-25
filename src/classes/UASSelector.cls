@@ -41,6 +41,7 @@ public without sharing class UASSelector {
         return [
             SELECT Id,
                 Shared_Solar_System__c,
+                Next_Schedule_Z_Status__c,
                 Annual_Cost_Future_Rollup__c,
                 Annual_kWh_Subscription_Future_Rollup__c,
                 Future_Customer_Subscription_KWDC_Rollup__c,
@@ -63,7 +64,7 @@ public without sharing class UASSelector {
             WHERE Id IN :uasIds
         ];
     }
-    public  Map<Id, Utility_Account_Subscription__c> getUASMap(Set<Id> uasIds) {
+    public Map<Id, Utility_Account_Subscription__c> getUASMap(Set<Id> uasIds) {
         Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>( [
             SELECT Id,
                 Shared_Solar_System__r.Client_Account__c,
@@ -125,5 +126,13 @@ public without sharing class UASSelector {
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
             AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0)
         ];
+    }
+
+    public List<Utility_Account_Subscription__c> getUASForCloneByOpp(Set<Id> oppIds) {
+        String fields = Util.getCreatableFieldsSOQL('Utility_Account_Subscription__c');
+        String szStatus = 'Active Subscription';
+        String soql = 'SELECT Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c, Subscription_Type__c, ' +
+            'Shared_Solar_System__r.Name,' + fields + ' WHERE Opportunity__c IN :oppIds AND Next_Schedule_Z_Status__c = :szStatus';
+        return Database.query(String.escapeSingleQuotes(soql));
     }
 }

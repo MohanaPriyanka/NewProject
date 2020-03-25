@@ -18,7 +18,6 @@ public without sharing class OpportunitiesSelector {
             ORDER BY Name
         ];
     }
-
     public static List<Opportunity> selectByIds(List<Id> oppIds) {
         return [
             SELECT Id,
@@ -30,7 +29,6 @@ public without sharing class OpportunitiesSelector {
             WHERE Id IN: oppIds
         ];
     }
-
     public static List<Opportunity> selectAllCompleteCSWithUASes(Set<Id> oppIds) {
         return [
             SELECT Id, Name, Date_Removed_from_Project__c,
@@ -46,8 +44,6 @@ public without sharing class OpportunitiesSelector {
             AND Id = :oppIds
         ];
     }
-
-
     public static Opportunity selectForContractSend(Id opportunityId) {
         return [
             SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
@@ -57,15 +53,14 @@ public without sharing class OpportunitiesSelector {
             LIMIT 1
         ];
     }
-    public static Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
+    public Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
         Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
-            SELECT Id, Shared_Solar_System__c
+            SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.Name
             FROM Opportunity
             WHERE Id IN :oppIds
         ]);
         return oppMap;
     }
-
     public List<Opportunity> selectWithoutFirstInvoiceCommission(Set<Id> accountIds){
         return [
             SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
@@ -96,7 +91,6 @@ public without sharing class OpportunitiesSelector {
             AND AccountId IN : accountIds
         ];
     }
-
     public List<Opportunity> getOppsFromSSS(Set<Id> sssIds) {
         return [
             SELECT Id, Name,
