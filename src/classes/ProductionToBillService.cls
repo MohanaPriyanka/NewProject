@@ -143,7 +143,6 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
                 insert partsToInsert;
                 markJournalEntriesAsComplete(collectionItems);
             }
-            Logger.logNow('batchsize','batchsize',String.valueOf(collectionItems.size()) + String.valueOf(batchSize));
             if (collectionItems.size() == batchSize){
                 queueJob(OperationType.COLLECTION);
             }

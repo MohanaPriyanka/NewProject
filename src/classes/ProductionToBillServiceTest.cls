@@ -696,8 +696,7 @@ public with sharing class ProductionToBillServiceTest {
             Project__c = 'SSS-000001',
             Client__c = 'BW-0009470',
             Amount__c = 121.87,
-            External_Id__c = '2dd2c0fa6e3a9391016e3df87b1f687a',
-            Applied_Record_Id__c = 'a920a000000HSfsAAG',
+            Applied_Record_Id__c = '2dd2c0fa6e3a9391016e3df87b1f687a',
             Customer_Account__c = 'bw-00524',
             Date__c = mayBillDate
         );
@@ -708,8 +707,7 @@ public with sharing class ProductionToBillServiceTest {
             Project__c = 'SSS-000001',
             Client__c = 'BW-0009470',
             Amount__c = 31.72,
-            External_Id__c = '2dd2c0fa6e3a9391016e3df87b1f687a',
-            Applied_Record_Id__c = 'a920a000000HSfsAAH',
+            Applied_Record_Id__c = '2dd2c0fa6e3a9391016e3df87b1f687b',
             Customer_Account__c = 'bw-00524',
             Date__c = mayBillDate
         );
@@ -720,8 +718,7 @@ public with sharing class ProductionToBillServiceTest {
             Project__c = 'SSS-000022',
             Client__c = 'BW-0009470',
             Amount__c = 60.00,
-            External_Id__c = '2dd2c0fb6e3aa321016e3df574337a9b',
-            Applied_Record_Id__c = 'a920a000000HSfsAAH',
+            Applied_Record_Id__c = '2dd2c0fa6e3a9391016e3df87b1f687b',
             Customer_Account__c = 'bw-05268',
             Date__c = mayBillDate
         );
@@ -732,8 +729,7 @@ public with sharing class ProductionToBillServiceTest {
             Project__c = 'SSS-000002',
             Client__c = 'BW-0009470',
             Amount__c = 37.23,
-            External_Id__c = '2dd2c0fb6e3aa322016e3df698ff7e9f',
-            Applied_Record_Id__c = 'a920a000000HSfsAAI',
+            Applied_Record_Id__c = '2dd2c0fb6e3aa322016e3df698ff7e9f',
             Customer_Account__c = 'bw-04202',
             Date__c = mayBillDate
         );
@@ -744,8 +740,7 @@ public with sharing class ProductionToBillServiceTest {
             Project__c = 'SSS-000002',
             Client__c = 'BW-0009470',
             Amount__c = 62.55,
-            External_Id__c = '2dd2c0fa6e3a938d016e3e2ed1f832aa',
-            Applied_Record_Id__c = 'a920a000000HSfsAAI',
+            Applied_Record_Id__c = '2dd2c0fb6e3aa322016e3df698ff7e9f',
             Customer_Account__c = 'bw-04202',
             Date__c = juneBillDate
         );
@@ -755,8 +750,8 @@ public with sharing class ProductionToBillServiceTest {
         return entries;
     }
 
-    private static Map<Id,List<Transfer_Part__c>> getBillPartByInvoice(){
-        Map<Id,List<Transfer_Part__c>> mapParts = new Map<Id,List<Transfer_Part__c>>();
+    private static Map<String,List<Transfer_Part__c>> getBillPartByInvoice(){
+        Map<String,List<Transfer_Part__c>> mapParts = new Map<String,List<Transfer_Part__c>>();
         // Three invoiceItems, first two are distributed among 3 production periods
         // last one is distributed among 1 production period
         Transfer_Part__c partOne = new Transfer_Part__c(
@@ -822,9 +817,9 @@ public with sharing class ProductionToBillServiceTest {
             Amount__c = 123.34,
             Type__c = 'Bill'
         );
-        mapParts.put(partOne.Journal_Entry__c, new List<Transfer_Part__c>{partOne, partTwo, partThree});
-        mapParts.put(partFour.Journal_Entry__c,new List<Transfer_Part__c>{partFour, partFive, partSix});
-        mapParts.put(partSeven.Journal_Entry__c,new List<Transfer_Part__c>{partSeven});
+        mapParts.put('2dd2c0fa6e3a9391016e3df87b1f687a', new List<Transfer_Part__c>{partOne, partTwo, partThree});
+        mapParts.put('2dd2c0fa6e3a9391016e3df87b1f687b',new List<Transfer_Part__c>{partFour, partFive, partSix});
+        mapParts.put('2dd2c0fb6e3aa322016e3df698ff7e9f',new List<Transfer_Part__c>{partSeven});
         return mapParts;
     }
 
