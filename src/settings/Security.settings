@@ -80,10 +80,6 @@
             <start>162.248.184.1</start>
         </ipRanges>
         <ipRanges>
-            <end>162.248.187.255</end>
-            <start>162.248.184.1</start>
-        </ipRanges>
-        <ipRanges>
             <end>136.147.131.18</end>
             <start>136.147.131.11</start>
         </ipRanges>
