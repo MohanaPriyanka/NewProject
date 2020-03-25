@@ -128,12 +128,11 @@ public without sharing class UASSelector {
         ];
     }
 
-    @SuppressWarnings('PMD.ApexSOQLInjection')
     public List<Utility_Account_Subscription__c> getUASForCloneByOpp(Set<Id> oppIds) {
-        String soql = Util.getCreatableFieldsSOQL('Utility_Account_Subscription__c');
-        soql = 'SELECT Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c, Subscription_Type__c, Shared_Solar_System__r.Name,' + soql;
-        soql = soql + ' WHERE Opportunity__c IN :oppIds AND Next_Schedule_Z_Status__c = \'Active Subscription\'';
-
-        return Database.query(soql);
+        String fields = Util.getCreatableFieldsSOQL('Utility_Account_Subscription__c');
+        String szStatus = 'Active Subscription';
+        String soql = 'SELECT Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c, Subscription_Type__c, ' +
+            'Shared_Solar_System__r.Name,' + fields + ' WHERE Opportunity__c IN :oppIds AND Next_Schedule_Z_Status__c = :szStatus';
+        return Database.query(String.escapeSingleQuotes(soql));
     }
 }
