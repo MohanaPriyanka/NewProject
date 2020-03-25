@@ -6,6 +6,9 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ClientReportingService {
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
+
     public static void stampClient(List<Bill_Adjustment__c> adjustments) {
         // Called from before insert trigger:
 
@@ -144,7 +147,7 @@ public without sharing class ClientReportingService {
                 Client_Utility_Account_Subscription__c child = new Client_Utility_Account_Subscription__c(
                     Name = 'C' + parent.Name,
                     Utility_Account_Subscription__c = parent.Id,
-                    Shared_Solar_System__c = parent.Opportunity__r.Shared_Solar_System__r.Id
+                    Shared_Solar_System__c = parent.Shared_Solar_System__c
                 );
                 clientUASList.add(child);
             }
@@ -153,18 +156,19 @@ public without sharing class ClientReportingService {
 
     }
 
+    //TODO: This method will be deprecated when the Subscription Order flag is turned on
+    // When a SSS changes on an Opportunity, a new UAS will be created along with a new CUAS
+    // therefore there is no need to update the SSS on the existing SSS
     public static void updateClientUAS(Map<Id, Opportunity> oppMap, Map<Id, Opportunity> oldOppMap) {
         Set<Id> oppsToUpdate = new Set<Id>();
         for (Opportunity opp : oppMap.values()) {
-            if (opp.Shared_Solar_System__c != oldOppMap.get(opp.Id).Shared_Solar_System__c) {
+            if (opp.Shared_Solar_System__c != oldOppMap.get(opp.Id).Shared_Solar_System__c && !featureService.isEnabled('Subscription_Orders')) {
                 oppsToUpdate.add(opp.Id);
             }
         }
 
         if (oppsToUpdate.size() > 0 ) {
-
             List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByOppIds(oppsToUpdate);
-
             if (clientUASList.size() > 0 ){
                 for (Client_Utility_Account_Subscription__c cUAS : clientUASList) {
                     cUAS.Shared_Solar_System__c = oppMap.get(cUAS.Utility_Account_Subscription__r.Opportunity__c).Shared_Solar_System__c;
