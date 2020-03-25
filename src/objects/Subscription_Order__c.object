@@ -225,7 +225,7 @@
         <externalId>false</externalId>
         <formula>IF(
 
-AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;, Change_in_Annual_kWh__c&gt;0),
+AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;, Change_in_Annual_kWh__c!=0),
 
 Change_in_Annual_kWh__c/ Expected_Yield_kWh_kW__c ,
 
@@ -430,7 +430,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <externalId>false</externalId>
         <formula>IF(
 
-AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,  Previous_kw_DC_Subscription__c &gt;0),
+AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,  Previous_kw_DC_Subscription__c !=0),
 
  Previous_Annual_kwh__c / Expected_Yield_kWh_kW__c ,
 

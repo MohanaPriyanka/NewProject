@@ -14,7 +14,7 @@ private class SubscriptionManagementServiceTest {
         );
         insert eversource;
 
-        Shared_Solar_System__c sss = new Shared_Solar_System__c(   Name = 'SSS Test',
+        Shared_Solar_System__c sss = new Shared_Solar_System__c(   Name = 'Shared Solar System Test',
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
             Open__c = true,
@@ -44,8 +44,43 @@ private class SubscriptionManagementServiceTest {
         );
 
         insert new List<Shared_Solar_System_Order__c>{sssoSize, sssoUpdate};
+
     }
 
+    @IsTest
+    static void testHandleSSSChange() {
+        useMocks(true);
+        SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
+        subscriptionManagementService.transferSubscriptionsOnSSSChange();
+
+        System.assertEquals(2, subscriptionManagementService.uasOrders.size());
+        System.assertEquals(4, subscriptionManagementService.upsertUASes.size());
+        //Only going to have the zeroed subscription orders - cloned ones are added in execute method
+        System.assertEquals(2, subscriptionManagementService.soInsertList.size());
+
+        // loop through the 4, should have 2 inactive for one sss and 2 active for other sss
+        for (Utility_Account_Subscription__c uas : subscriptionManagementService.upsertUASes) {
+            if (uas.Shared_Solar_System__c != sssId) {
+                System.assertEquals('Active Subscription', uas.Next_Schedule_Z_Status__c);
+            } else {
+                System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
+            }
+        }
+
+        //Check Zeroed Subscription Orders
+        System.assertEquals(-2420, subscriptionManagementService.soInsertList[0].Change_in_Annual_Cost__c);
+        System.assertEquals('a1d29000001C3xuAAC', subscriptionManagementService.soInsertList[0].Utility_Account_Subscription__c);
+        System.assertEquals(-3000, subscriptionManagementService.soInsertList[1].Change_in_Annual_Cost__c);
+        System.assertEquals('a1d2900000222xuAAC', subscriptionManagementService.soInsertList[1].Utility_Account_Subscription__c);
+
+        //Check cloned Subscription Orders and UASes
+        System.assertEquals(2420, subscriptionManagementService.uasOrders[0].sOrder.Change_in_Annual_Cost__c);
+        System.assertEquals('Active Subscription', subscriptionManagementService.uasOrders[0].uas.Next_Schedule_Z_Status__c);
+        System.assertNotEquals(sssId, subscriptionManagementService.uasOrders[0].uas.Shared_Solar_System__c);
+        System.assertEquals(3000, subscriptionManagementService.uasOrders[1].sOrder.Change_in_Annual_Cost__c);
+        System.assertEquals('Active Subscription', subscriptionManagementService.uasOrders[1].uas.Next_Schedule_Z_Status__c);
+        System.assertNotEquals(sssId, subscriptionManagementService.uasOrders[1].uas.Shared_Solar_System__c);
+    }
 
     @IsTest
     static void testSubscriptionOrderInsert() {
@@ -242,6 +277,8 @@ private class SubscriptionManagementServiceTest {
         SubscriptionManagementService.uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         SubscriptionManagementService.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockSSSSelector());
         SubscriptionManagementService.soSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSOSelector());
+        SubscriptionManagementService.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
+
     }
 
     public class MockSSSSelector extends MockProvider {
@@ -367,6 +404,7 @@ private class SubscriptionManagementServiceTest {
                 '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                     '"Id" : "a1d29000001C3xuAAC",' +
                     '"Opportunity__c" : "00629000008boK7AAI",' +
+                    '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
                     '"Shared_Solar_System__c" : "' + sssId + '",' +
                     '"Future_Customer_Subscription_KWDC_Rollup__c" : 12.5,' +
                     '"Annual_kWh_Subscription_Future_Rollup__c" : 16240.38,' +
@@ -376,11 +414,12 @@ private class SubscriptionManagementServiceTest {
                     '{ "attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                     '"Id" : "a1d2900000222xuAAC",' +
                     '"Opportunity__c" : "00629000008boK7AAI",' +
+                    '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
                     '"Shared_Solar_System__c" : "' + sssId + '",' +
                     '"Future_Customer_Subscription_KWDC_Rollup__c" : 12.5,' +
                     '"Annual_kWh_Subscription_Future_Rollup__c" : 16240.38,' +
                     '"Future_Share_of_System_Rollup__c" : 1.14,' +
-                    '"Annual_Cost_Future_Rollup__c" : 2420.00' +
+                    '"Annual_Cost_Future_Rollup__c" : 3000.00' +
                     '}]';
 
             switch on methodCall.stubbedMethodName {
@@ -393,11 +432,25 @@ private class SubscriptionManagementServiceTest {
                         uasMap.put(uas.Id, uas);
                     }
                     return uasMap;
-                } when 'selectByOpp' {
+                } when 'selectByOpp', 'getUASForCloneByOpp' {
                     return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasByOpp, List<Utility_Account_Subscription__c>.class);
                 }
             }
             return null;
+        }
+    }
+
+    public class MockOppSelector extends MockProvider {
+        public MockOppSelector() {
+        }
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            Opportunity opp = new Opportunity(
+                Name = 'Test Opp',
+                Shared_Solar_System__c = 'a1J29000000tjKKeee',
+                Id = '00629000008boK7AAI'
+            );
+            return new Map<Id, Opportunity>{'00629000008boK7AAI' => opp};
         }
     }
 
