@@ -135,7 +135,7 @@ public without sharing class ReportFolderAuditor implements Schedulable {
         queries.add(queryReport);
         List<MetadataService.FileProperties> fpList = service.listMetadata(queries, 40);
         if (fpList == null) {
-            reportFoldersToReports.putValue(reportFolder.fullName, null);
+            reportFoldersToReports.putValues(reportFolder.fullName, new List<String>());
             return;
         }
         for (MetadataService.FileProperties fileProperties : fpList) {
