@@ -162,12 +162,27 @@
             <start>54.69.114.54</start>
         </ipRanges>
         <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>52.41.95.219</end>
+            <start>52.41.95.219</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>52.34.155.26</end>
+            <start>52.34.155.26</start>
+        </ipRanges>
+        <ipRanges>
             <end>52.28.168.105</end>
             <start>52.28.168.105</start>
         </ipRanges>
         <ipRanges>
             <end>52.27.126.9</end>
             <start>52.27.126.9</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>52.27.85.20</end>
+            <start>52.27.85.20</start>
         </ipRanges>
         <ipRanges>
             <end>52.26.192.160</end>
@@ -190,6 +205,16 @@
             <start>52.11.152.229</start>
         </ipRanges>
         <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>35.167.67.7</end>
+            <start>35.167.67.7</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>35.164.40.59</end>
+            <start>35.164.40.59</start>
+        </ipRanges>
+        <ipRanges>
             <description>FormAssembly</description>
             <end>34.231.230.11</end>
             <start>34.231.230.11</start>
@@ -198,6 +223,36 @@
             <description>FormAssembly</description>
             <end>34.230.105.243</end>
             <start>34.230.105.243</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>34.215.203.190</end>
+            <start>34.215.203.190</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>34.215.142.185</end>
+            <start>34.215.142.185</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>34.215.124.54</end>
+            <start>34.215.124.54</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>34.213.254.17</end>
+            <start>34.213.254.17</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>34.213.201.254</end>
+            <start>34.213.201.254</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production NA and Demo</description>
+            <end>34.212.7.28</end>
+            <start>34.212.7.28</start>
         </ipRanges>
         <ipRanges>
             <description>Bill Gaudet</description>
@@ -220,6 +275,26 @@
         <ipRanges>
             <end>13.111.17.17</end>
             <start>13.111.17.0</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production AU</description>
+            <end>13.72.249.142</end>
+            <start>13.72.249.142</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production AU</description>
+            <end>13.72.248.93</end>
+            <start>13.72.248.93</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production AU</description>
+            <end>13.70.141.103</end>
+            <start>13.70.141.103</start>
+        </ipRanges>
+        <ipRanges>
+            <description>DocuSign Production AU</description>
+            <end>13.70.136.159</end>
+            <start>13.70.136.159</start>
         </ipRanges>
         <ipRanges>
             <description>Chase Lindsley</description>
