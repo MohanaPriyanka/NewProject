@@ -128,6 +128,7 @@ public without sharing class UASSelector {
         ];
     }
 
+    @SuppressWarnings('PMD.ApexSOQLInjection')
     public List<Utility_Account_Subscription__c> getUASForCloneByOpp(Set<Id> oppIds) {
         String soql = Util.getCreatableFieldsSOQL('Utility_Account_Subscription__c');
         soql = 'SELECT Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c, Subscription_Type__c, Shared_Solar_System__r.Name,' + soql;
