@@ -59,6 +59,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public Set<Id> recordIds;
         public Map<String, Integer> optionalIntegers;
         public Set<String> optionalStrings;
+        public Boolean optionalBoolean;
     }
 
     public interface Processor {
@@ -91,8 +92,8 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
 
     public static void callFromApex(String queryString, ProcessingParameter processingParameter) {
         Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
-            Query__c = queryString,
-            Processing_Parameter__c = JSON.serialize(processingParameter),
+            Query__c = queryString.left(32760),
+            Processing_Parameter__c = JSON.serialize(processingParameter).left(131070),
             Number_of_Retries__c = 2
         );
         insert zuoraDataQuery;

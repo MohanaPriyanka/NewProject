@@ -1,6 +1,81 @@
 @IsTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class ProductionToBillServiceTest {
+    @isTest
+    public static void testScheduleJob(){
+        useMocks();
+        List<Error_Log__c> beforeLogs = [
+            SELECT Class__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+        ];
+        System.assertEquals(0,beforeLogs.size());
+
+        Test.startTest();
+            ProductionToBillScheduler prodService = new ProductionToBillScheduler();
+            Datetime dt = Datetime.now().addMinutes(2);
+            String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+            System.schedule('P2B',cronExpress,prodService);
+        Test.stopTest();
+
+        List<Error_Log__c> afterLogs = [
+            SELECT Class__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+        ];
+        System.assert(afterLogs.size() > 0);
+    }
+
+    @isTest
+    public static void testQueueBillJob(){
+        useMocks();
+        List<Error_Log__c> beforeLogs = [
+            SELECT Class__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeBillJob'
+        ];
+        System.assertEquals(0,beforeLogs.size());
+
+        Test.startTest();
+        ProductionToBillService prodService = new ProductionToBillService();
+        prodService.queueJob(ProductionToBillService.OperationType.BILL);
+        Test.stopTest();
+
+        List<Error_Log__c> afterLogs = [
+            SELECT Class__c, Method__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeBillJob'
+        ];
+        System.assert(afterLogs.size() > 0);
+    }
+
+    @isTest
+    public static void testQueueCollectionsJob(){
+        useMocks();
+        List<Error_Log__c> beforeLogs = [
+            SELECT Class__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeCollectionsJob'
+        ];
+        System.assertEquals(0,beforeLogs.size());
+
+        Test.startTest();
+            ProductionToBillService prodService = new ProductionToBillService();
+            prodService.queueJob(ProductionToBillService.OperationType.COLLECTION);
+        Test.stopTest();
+
+        List<Error_Log__c> afterLogs = [
+            SELECT Class__c, Message__c, Method__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeCollectionsJob'
+        ];
+        System.assert(afterLogs.size() > 0);
+    }
+
     @IsTest
     public static void testFromInvoicesGetUsage(){
         /* 4 Customer Accounts, Across 2 Months:
@@ -217,8 +292,67 @@ public with sharing class ProductionToBillServiceTest {
     }
 
     @IsTest
-    public static void testQueueJob(){
-        List<Journal_Entry__c> entries = getJournalEntries();
+    public static void testCreateProductionDetailFromCollectionItem(){
+        useMocks();
+        List<Transfer_Part__c> beforeBillParts = [
+            SELECT Id
+            FROM Transfer_Part__c
+            WHERE Type__c = 'Payment'
+        ];
+
+        System.assertEquals(0,beforeBillParts.size());
+
+        List<Journal_Entry__c> collectionEntries = getCollectionJournalEntries();
+        ProductionToBillService service = new ProductionToBillService();
+        service.createProductionDetailFromCollectionItem(collectionEntries);
+
+        List<Transfer_Part__c> paymentParts = service.partsToInsert;
+
+        System.assertEquals(8,paymentParts.size());
+
+        for (Transfer_Part__c part : paymentParts){
+            switch on String.valueOf(part.Bill_Part__c) {
+                when 'a8y0a000000Gu3rAAA' {
+                    // Balance is zero, no part should be made:
+                    System.assert(false);
+                }
+                when 'a8y0a000000Gu3rBBB' {
+                    System.assertEquals(120,part.Amount__c);
+                }
+                when 'a8y0a000000Gu3rCCC' {
+                    System.assertEquals(1.87,part.Amount__c);
+                }
+                when 'a8y0a000000Gu3rDDD' {
+                    System.assertEquals(29,part.Amount__c);
+                }
+                when 'a8y0a000000Gu3rEEE' {
+                    if (part.Journal_Entry__c == 'a920a000000HuJoAAC'){
+                        System.assertEquals(30.61,part.Amount__c);
+                    } else {
+                        System.assertEquals(2.72,part.Amount__c);
+                    }
+                }
+                when 'a8y0a000000Gu3rFFF' {
+                    System.assertEquals(29.39,part.Amount__c);
+                }
+                when 'a8y0a000000Gu3rGGG' {
+                    if (part.Journal_Entry__c == 'a920a000000HuJoAAD'){
+                        System.assertEquals(37.23,part.Amount__c);
+                    } else {
+                        System.assertEquals(62.55,part.Amount__c);
+                    }
+                }
+                when else {
+                    System.assert(false);
+                }
+            }
+        }
+
+    }
+
+    @IsTest
+    public static void testCreateProductionDetailFromInvoiceItems(){
+        List<Journal_Entry__c> entries = getInvoiceItemJournalEntries();
 
         List<Zuora_Data_Query__c> beforeQueries = [
             SELECT Id FROM Zuora_Data_Query__c
@@ -253,7 +387,7 @@ public with sharing class ProductionToBillServiceTest {
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
-            List<Journal_Entry__c> entries = getJournalEntries();
+            List<Journal_Entry__c> entries = getInvoiceItemJournalEntries();
             switch on methodCall.stubbedMethodName {
                 when 'getSFJournalEntriesFromExternalId' {
                     if (returnEntryNumber != null){
@@ -262,7 +396,7 @@ public with sharing class ProductionToBillServiceTest {
                         return entries;
                     }
                 }
-                when 'getInvoiceItemWithoutProductionDetail' {
+                when 'getEntriesWithoutProductionDetail' {
                     return entries;
                 }
             }
@@ -354,6 +488,12 @@ public with sharing class ProductionToBillServiceTest {
             switch on methodCall.stubbedMethodName {
                 when 'getTransferPartMap' {
                     return partToTransferMap;
+                }
+                when 'getInvoicePartMap' {
+                    return getBillPartByInvoice();
+                }
+                when 'getPaymentSum' {
+                    return getPaymentsMap();
                 }
             }
             return null;
@@ -475,7 +615,7 @@ public with sharing class ProductionToBillServiceTest {
         return dataAsString;
     }
 
-    private static List<Journal_Entry__c> getJournalEntries(){
+    private static List<Journal_Entry__c> getInvoiceItemJournalEntries(){
         Date mayBillDate = Date.newInstance(2019,05,20);
         Date juneBillDate = Date.newInstance(2019,06,20);
 
@@ -543,5 +683,155 @@ public with sharing class ProductionToBillServiceTest {
             entryOne, entryTwo, entryThree, entryFour, entryFive, entrySix
         };
         return entries;
+    }
+
+    private static List<Journal_Entry__c> getCollectionJournalEntries(){
+        Date mayBillDate = Date.newInstance(2019,05,20);
+        Date juneBillDate = Date.newInstance(2019,06,20);
+
+        Journal_Entry__c entryOne = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAA',
+            Object_Type__c = 'PaymentPart',
+            Query_Type__c = 'PaymentPart_IV',
+            Project__c = 'SSS-000001',
+            Client__c = 'BW-0009470',
+            Amount__c = 121.87,
+            External_Id__c = '2dd2c0fa6e3a9391016e3df87b1f687a',
+            Applied_Record_Id__c = 'a920a000000HSfsAAG',
+            Customer_Account__c = 'bw-00524',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entryTwo = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAB',
+            Object_Type__c = 'PaymentPart',
+            Query_Type__c = 'PaymentPart_IV',
+            Project__c = 'SSS-000001',
+            Client__c = 'BW-0009470',
+            Amount__c = 31.72,
+            External_Id__c = '2dd2c0fa6e3a9391016e3df87b1f687a',
+            Applied_Record_Id__c = 'a920a000000HSfsAAH',
+            Customer_Account__c = 'bw-00524',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entryThree = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAC',
+            Object_Type__c = 'PaymentPart',
+            Query_Type__c = 'PaymentPart_IV',
+            Project__c = 'SSS-000022',
+            Client__c = 'BW-0009470',
+            Amount__c = 60.00,
+            External_Id__c = '2dd2c0fb6e3aa321016e3df574337a9b',
+            Applied_Record_Id__c = 'a920a000000HSfsAAH',
+            Customer_Account__c = 'bw-05268',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entryFive = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAD',
+            Object_Type__c = 'PaymentPart',
+            Query_Type__c = 'PaymentPart_IV',
+            Project__c = 'SSS-000002',
+            Client__c = 'BW-0009470',
+            Amount__c = 37.23,
+            External_Id__c = '2dd2c0fb6e3aa322016e3df698ff7e9f',
+            Applied_Record_Id__c = 'a920a000000HSfsAAI',
+            Customer_Account__c = 'bw-04202',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entrySix = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAE',
+            Object_Type__c = 'CreditMemo',
+            Query_Type__c = 'CreditMemo',
+            Project__c = 'SSS-000002',
+            Client__c = 'BW-0009470',
+            Amount__c = 62.55,
+            External_Id__c = '2dd2c0fa6e3a938d016e3e2ed1f832aa',
+            Applied_Record_Id__c = 'a920a000000HSfsAAI',
+            Customer_Account__c = 'bw-04202',
+            Date__c = juneBillDate
+        );
+        List<Journal_Entry__c> entries = new List<Journal_Entry__c>{
+            entryOne, entryTwo, entryThree, entryFive, entrySix
+        };
+        return entries;
+    }
+
+    private static Map<Id,List<Transfer_Part__c>> getBillPartByInvoice(){
+        Map<Id,List<Transfer_Part__c>> mapParts = new Map<Id,List<Transfer_Part__c>>();
+        // Three invoiceItems, first two are distributed among 3 production periods
+        // last one is distributed among 1 production period
+        Transfer_Part__c partOne = new Transfer_Part__c(
+            Id = 'a8y0a000000Gu3rAAA',
+            Name = 'InvoiceOne_ProductionOne',
+            Production__c = 'a8u0a000000I4ETAA0',
+            Transfer__c = 'a900a000000GsOyAAK',
+            Journal_Entry__c = 'a920a000000HSfsAAG',
+            Amount__c = 100,
+            Type__c = 'Bill'
+        );
+        Transfer_Part__c partTwo = new Transfer_Part__c(
+            Id = 'a8y0a000000Gu3rBBB',
+            Name = 'InvoiceOne_ProductionTwo',
+            Production__c = 'a8u0a000000I4ETAA1',
+            Transfer__c = 'a900a000000GsOyAAK',
+            Journal_Entry__c = 'a920a000000HSfsAAG',
+            Amount__c = 120,
+            Type__c = 'Bill'
+        );
+        Transfer_Part__c partThree = new Transfer_Part__c(
+            Id = 'a8y0a000000Gu3rCCC',
+            Name = 'InvoiceOne_ProductionThree',
+            Production__c = 'a8u0a000000I4ETAA2',
+            Transfer__c = 'a900a000000GsOyAAK',
+            Journal_Entry__c = 'a920a000000HSfsAAG',
+            Amount__c = 1.87,
+            Type__c = 'Bill'
+        );
+        Transfer_Part__c partFour = new Transfer_Part__c(
+            Id = 'a8y0a000000Gu3rDDD',
+            Name = 'InvoiceTwo_ProductionOne',
+            Production__c = 'a8u0a000000I4ETAA0',
+            Transfer__c = 'a900a000000GsOyAAK',
+            Journal_Entry__c = 'a920a000000HSfsAAH',
+            Amount__c = 33.33,
+            Type__c = 'Bill'
+        );
+        Transfer_Part__c partFive = new Transfer_Part__c(
+            Id = 'a8y0a000000Gu3rEEE',
+            Name = 'InvoiceTwo_ProductionTwo',
+            Production__c = 'a8u0a000000I4ETAA1',
+            Transfer__c = 'a900a000000GsOyAAK',
+            Journal_Entry__c = 'a920a000000HSfsAAH',
+            Amount__c = 33.33,
+            Type__c = 'Bill'
+        );
+        Transfer_Part__c partSix = new Transfer_Part__c(
+            Id = 'a8y0a000000Gu3rFFF',
+            Name = 'InvoiceTwo_ProductionThree',
+            Production__c = 'a8u0a000000I4ETAA2',
+            Transfer__c = 'a900a000000GsOyAAK',
+            Journal_Entry__c = 'a920a000000HSfsAAH',
+            Amount__c = 33.34,
+            Type__c = 'Bill'
+        );
+        Transfer_Part__c partSeven = new Transfer_Part__c(
+            Id = 'a8y0a000000Gu3rGGG',
+            Name = 'InvoiceThree_ProductionTwo',
+            Production__c = 'a8u0a000000I4ETAA1',
+            Transfer__c = 'a900a000000GsOyAAK',
+            Journal_Entry__c = 'a920a000000HSfsAAI',
+            Amount__c = 123.34,
+            Type__c = 'Bill'
+        );
+        mapParts.put(partOne.Journal_Entry__c, new List<Transfer_Part__c>{partOne, partTwo, partThree});
+        mapParts.put(partFour.Journal_Entry__c,new List<Transfer_Part__c>{partFour, partFive, partSix});
+        mapParts.put(partSeven.Journal_Entry__c,new List<Transfer_Part__c>{partSeven});
+        return mapParts;
+    }
+
+    private static Map<Id,Decimal> getPaymentsMap(){
+        Map<Id,Decimal> paymentMap = new Map<Id,Decimal>();
+        paymentMap.put('a8y0a000000Gu3rAAA', 100.00);
+        paymentMap.put('a8y0a000000Gu3rDDD', 4.33);
+        return paymentMap;
     }
 }

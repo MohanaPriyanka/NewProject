@@ -164,6 +164,17 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Bill_Part__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Bill Part</label>
+        <referenceTo>Transfer_Part__c</referenceTo>
+        <relationshipName>Bill_Parts</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Credits_Billed__c</fullName>
         <externalId>false</externalId>
         <label>Credits Billed</label>
