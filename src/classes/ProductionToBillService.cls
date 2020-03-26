@@ -92,10 +92,11 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
 
         1.) All GL records are marked as "Ready_for_Production_Detail__c" when they are inserted
         2.) This class is kicked off by scheduled job to get invoice GL records marked as "Ready_for_Production_Detail__c"
-        3.) Queues a Data Query for usage related to those invoices
+        3.) Queues a Data Query for usage related to those invoices and unchecks "Ready_for_Production_Detail__c"
         4.) After Data Query finishes, creates bill production detail records
         5.) After bill Production detail records are inserted, queues payment production detail job
-        6.) Unchecks "Ready_for_Production_Detail__c" on processed records
+        6.) Production detail payment records are inserted and "Ready_for_Production_Detail__c" is unchecked
+
     */
 
     public void execute(QueueableContext context) {
@@ -174,9 +175,10 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
 
         ZuoraDataQueryService.ProcessingParameter param = new ZuoraDataQueryService.ProcessingParameter();
         param.className = 'ProductionToBillService';
-        param.methodName = 'postUsageQueryProcessing';
         param.optionalStrings = invoiceItemIds;
-        param.optionalBoolean = invoiceItems.size() == batchSize;
+        Map<String,Boolean> booleanMap = new Map<String,Boolean>();
+        booleanMap.put('MoreBillsToProcess',invoiceItems.size() == batchSize);
+        param.optionalBooleans = booleanMap;
 
         String queryString = usageSelector.getUsageQueryStringFilterByAccountAndDate(accountNumbers,minDate,maxDate);
         ZuoraDataQueryService.callFromApex(queryString,param);
@@ -189,8 +191,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
             distributeInvoiceItemAmongTransferParts();
             insert partsToInsert;
 
-            // If there are more bills to process, re-queue bill job, otherwise move on to payments:
-            if (method.optionalBoolean){
+            if (method.optionalBooleans.get('MoreBillsToProcess')){
                 queueJob(OperationType.BILL);
             } else {
                 queueJob(OperationType.COLLECTION);

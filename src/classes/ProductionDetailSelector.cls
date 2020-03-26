@@ -15,7 +15,6 @@ public inherited sharing class ProductionDetailSelector {
             if (partsMap.containsKey(keyValue)){
                 List<Transfer_Part__c> partsList = partsMap.get(keyValue);
                 partsList.add(part);
-                partsMap.put(keyValue, partsList);
             } else {
                 partsMap.put(keyValue, new List<Transfer_Part__c>{part});
             }
