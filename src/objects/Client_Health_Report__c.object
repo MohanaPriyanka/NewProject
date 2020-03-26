@@ -310,7 +310,7 @@ TEXT(Year(End_Date__c))</formula>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Client Health Reports</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
