@@ -203,14 +203,14 @@
     </fields>
     <fields>
         <fullName>Credits_Billed__c</fullName>
-        <description>Rollup of Transfer Parts Credits Billed field with Type = Transfer</description>
+        <description>Rollup of Transfer Parts with Type = Bill</description>
         <externalId>false</externalId>
         <label>Credits Billed</label>
-        <summarizedField>Transfer_Part__c.Credits_Billed__c</summarizedField>
+        <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
         <summaryFilterItems>
             <field>Transfer_Part__c.Type__c</field>
             <operation>equals</operation>
-            <value>Transfer</value>
+            <value>Bill</value>
         </summaryFilterItems>
         <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
@@ -228,16 +228,53 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Credits_Transferred__c</fullName>
-        <description>Rollup of Transfer Parts Amount field with &quot;Reduce for Allocation&quot; checkbox = false</description>
+        <fullName>Credits_Paid__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Rollup of Transfer Parts Amount field with &quot;Reduce for Allocation&quot; checkbox = false</inlineHelpText>
+        <inlineHelpText>Rollup of parts with Type = Payment</inlineHelpText>
+        <label>Credits Paid</label>
+        <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Payment</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Credits_Transferred__c</fullName>
+        <description>Rollup of parts with Type = Transfer and &quot;Reduce for Allocation&quot; checkbox = false</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of parts with Type = Transfer and &quot;Reduce for Allocation&quot; checkbox = false</inlineHelpText>
         <label>Credits Transferred</label>
         <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
         <summaryFilterItems>
             <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
             <operation>equals</operation>
             <value>False</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Transfer</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Savings__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of parts with Type = Customer Savings</inlineHelpText>
+        <label>Customer Savings</label>
+        <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Customer Savings</value>
         </summaryFilterItems>
         <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
@@ -314,11 +351,38 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Unbilled_Credits__c</fullName>
+        <externalId>false</externalId>
+        <formula>Credits_Transferred__c - Customer_Savings__c - Credits_Billed__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Unbilled credits. Credits Transferred - Credits Billed. If transferred credits have not yet been billed, this value will be positive</inlineHelpText>
+        <label>Pending Billing</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Unpaid_Credits__c</fullName>
+        <externalId>false</externalId>
+        <formula>Credits_Billed__c - Credits_Paid__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Unpaid Credits. Credits Billed - Credits Paid. Billed amounts that have not yet been paid</inlineHelpText>
+        <label>Uncollected</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Untransferred_Credits__c</fullName>
         <externalId>false</externalId>
         <formula>Credits_Available_for_Allocation__c  -  Credits_Transferred__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Untransferred Credits</label>
+        <inlineHelpText>Untransferred credits. If the project isn’t fully subscribed, non-transferred credits remain on the host account. Credits Generated - Credits Transferred</inlineHelpText>
+        <label>Unallocated ($)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -330,7 +394,8 @@
         <externalId>false</externalId>
         <formula>Production_kWh__c -  kWh_Transferred__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Untransferred kWh</label>
+        <inlineHelpText>Untransferred credits. If the project isn’t fully subscribed, non-transferred credits remain on the host account. Credits Generated - Credits Transferred</inlineHelpText>
+        <label>Unallocated (kWh)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>4</scale>
