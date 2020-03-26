@@ -192,6 +192,7 @@
     <permissionSets>Manage Users</permissionSets>
     <permissionSets>Do Not Send Bills Permission</permissionSets>
     <permissionSets>Client Health Report Management</permissionSets>
+    <permissionSets>FP&amp;A Shared Solar System Management</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Shared Solar System Permission</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
@@ -223,6 +224,7 @@
     <profiles>PM Standard User</profiles>
     <profiles>HR Admin</profiles>
     <profiles>BFG Standard User</profiles>
+    <profiles>External BFG User</profiles>
     <profiles>Community Solar Community User</profiles>
     <roles>Founders</roles>
 </DelegateGroup>
