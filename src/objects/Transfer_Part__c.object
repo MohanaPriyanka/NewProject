@@ -156,7 +156,7 @@
     <fields>
         <fullName>Amount__c</fullName>
         <externalId>false</externalId>
-        <label>Credit Amount</label>
+        <label>Amount</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -301,7 +301,7 @@ FALSE)</formula>
         <type>Number</type>
         <unique>false</unique>
     </fields>
-    <label>Transfer Part</label>
+    <label>Production Detail</label>
     <listViews>
         <fullName>All</fullName>
         <filterScope>Everything</filterScope>
@@ -311,7 +311,7 @@ FALSE)</formula>
         <label>Transfer Parts Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Transfer Parts</pluralLabel>
+    <pluralLabel>Production Detail</pluralLabel>
     <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
