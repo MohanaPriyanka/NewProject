@@ -163,6 +163,39 @@ public class PartnerCommissionServiceTest {
         System.assertEquals(0,logs.size());
     }
 
+    @IsTest
+    private static void testRecalculatePartnerCommission(){
+        Partner__c partner = new Partner__c(Name = 'Some Partner');
+        insert partner;
+
+        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = True);
+        insert normalCSProduct;
+
+        Account accountA = new Account(name = 'Account A');
+        insert accountA;
+
+        Opportunity opportunityone =
+            new Opportunity(Name = 'AOpp',
+                AccountId = accountA.Id,
+                StageName = 'Complete',
+                Partner_tag_lookup__c = partner.Id,
+                Customer_Group__c = 'Residential',
+                Product__c = normalCSProduct.Id,
+                CloseDate = System.today());
+        insert opportunityone;
+
+        PartnerCommissionService service = new PartnerCommissionService();
+        Map<String, Object> params = service.getFlowParams(opportunityone, 'Contract Execution');
+        System.assertEquals(normalCSProduct.Id,params.get('ProductID'));
+
+        PartnerCommissionService.recalculatePartnerCommission(new Set<Id>{opportunityone.Id});
+    }
+
     private static void useMocks() {
         PartnerCommissionService.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
     }
