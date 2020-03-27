@@ -42,14 +42,11 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
     public static void recalculateCommissionOnUpdate(List<Utility_Account_Subscription__c> uasList, Map<Id, Utility_Account_Subscription__c> oldMap){
         Set<Id> oppIds = new Set<Id>();
-        String type = 'type';
         for (Utility_Account_Subscription__c newUAS : uasList) {
             Utility_Account_Subscription__c oldUAS = oldMap.get(newUAS.Id);
             oppIds = checkForOppChange(oldUAS.Opportunity__c, newUAS.Opportunity__c, oppIds);
-            type += 'oppChange';
             if (hasSubscriptionChange(oldUAS,newUAS)){
                 oppIds.add(newUAS.Opportunity__c);
-                type += 'subscriptionChange';
             }
         }
         PartnerCommissionService.recalculatePartnerCommission(oppIds);
