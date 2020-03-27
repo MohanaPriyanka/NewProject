@@ -268,7 +268,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         for (Transfer_Part__c transferPart : transferParts){
             loopCount += 1;
             Transfer_Part__c part = new Transfer_Part__c(
-                Name = type + '_' + transferPart.Production__r.Name,
+                Name = type,
                 Production__c = transferPart.Production__c,
                 Transfer__c = transferId,
                 Journal_Entry__c = journalRecordId,

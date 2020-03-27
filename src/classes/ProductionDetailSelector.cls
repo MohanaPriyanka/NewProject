@@ -4,7 +4,9 @@ public inherited sharing class ProductionDetailSelector {
     public Map<Id, List<Transfer_Part__c>> getTransferPartMap(Set<Id> transferIds) {
         Map<Id, List<Transfer_Part__c>> partsMap = new Map<Id, List<Transfer_Part__c>>();
         List<Transfer_Part__c> parts = [
-            SELECT Id, Transfer__c, Amount__c, Transfer__r.Transfer_Amount__c, Production__c, Production__r.Name
+            SELECT Id, Transfer__c, Amount__c, Transfer__r.Transfer_Amount__c,
+                Production__c, Production__r.Name, Transfer__r.Billing_Method__c,
+                kWh_Amount__c, Transfer__r.Transfer_kWh__c
             FROM Transfer_Part__c
             WHERE Transfer__c IN : transferIds
             AND Type__c = 'Transfer'
@@ -25,7 +27,7 @@ public inherited sharing class ProductionDetailSelector {
     public Map<String, List<Transfer_Part__c>> getInvoicePartMap(Set<String> invoiceEntries) {
         Map<String, List<Transfer_Part__c>> partsMap = new Map<String, List<Transfer_Part__c>>();
         List<Transfer_Part__c> parts = [
-            SELECT Id, Transfer__c, Amount__c, Transfer__r.Transfer_Amount__c,
+            SELECT Id, Transfer__c, Amount__c, Transfer__r.Transfer_Amount__c, Transfer__r.Billing_Method__c,
                 Production__c, Production__r.Name, Journal_Entry__c, Journal_Entry__r.External_Id__c
             FROM Transfer_Part__c
             WHERE Journal_Entry__r.External_Id__c IN : invoiceEntries
