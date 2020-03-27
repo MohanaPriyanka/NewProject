@@ -5,6 +5,9 @@
 <!-- Simple Signup Form Basic Info -->
 <template>
   <div class="slds-grid slds-wrap">
+    <div class="slds-size--1-of-1 slds-p-around--medium slds-text-align--center slds-text-heading--large">
+      Contact Information
+    </div>
     <template if:false={resiApplicationType}>
       <div class="slds-size--1-of-1 slds-small-size--1-of-1 slds-p-left--medium slds-p-right--medium">
         Personal Info
@@ -21,7 +24,7 @@
     </div>
     <template if:true={resiApplicationType}>
       <div class="slds-size--1-of-1">
-        <lightning-input name="phone" value={phone} class="slds-m-left--small slds-m-right--small"  label="Phone" onchange={genericOnChange} type="tel" required></lightning-input>
+        <lightning-input name="phone" value={phone} class="slds-m-left--small slds-m-right--small"  label="Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
       </div>
     </template>
     <template if:false={resiApplicationType}>
@@ -35,7 +38,7 @@
         <lightning-input name="businessTitle" value={businessTitle} class="slds-m-left--small slds-m-right--small"  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
       </div>
       <div class="slds-size--1-of-1">
-        <lightning-input name="businessPhone" value={businessPhone} class="slds-m-left--small slds-m-right--small"  label="Business Phone" onchange={genericOnChange} type="tel" required></lightning-input>
+        <lightning-input name="businessPhone" value={businessPhone} class="slds-m-left--small slds-m-right--small"  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
       </div>
     </template>
   </div>
@@ -167,7 +170,7 @@
   <template if:false={sameBillingAddress}>
     <div class="slds-grid slds-wrap slds-p-left--small slds-p-right--small">
       <div class="slds-size--1-of-1">
-        <lightning-input name="billingStreet" class="slds-m-bottom--small" label="Street" onchange={genericOnChange} value={billingStreet} required></lightning-input>
+        <lightning-input name="billingStreet" class="slds-m-bottom--small" label="Billing Street" onchange={genericOnChange} value={billingStreet} required></lightning-input>
       </div>
       <div class="slds-size--1-of-1 slds-small-size--6-of-12">
         <lightning-input name="billingCity" class="slds-m-bottom--small" label="City" onchange={genericOnChange} value={billingCity} required></lightning-input>
@@ -221,7 +224,7 @@
     <lightning-input name="referralName" label="Referral Code" onchange={genericOnChange}></lightning-input>
   </p>
   <p class="slds-m-around--small">
-    We take privacy and security seriously. Check out our <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b> for more details.
+    We take privacy and security seriously. Check out our <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b> for more details. By clicking continue, you understand and agree that someone from BlueWave may contact you using the email and phone number provided.
   </p>
   <lightning-button label="Continue" onclick={submitApplication} class="slds-m-around--small"></lightning-button>
 

@@ -51,7 +51,11 @@ export default class Ssf extends NavigationMixin(LightningElement) {
 
     checkForSubmit(event) {
         if (event.which === 13) {
-            this.submitZip();
+            const inputBox = this.template.querySelector('lightning-input');
+            inputBox.reportValidity();
+            if(inputBox.checkValidity()) {
+                this.submitZip();
+            }
         }
     }
 

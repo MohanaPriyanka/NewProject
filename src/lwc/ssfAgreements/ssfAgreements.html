@@ -4,9 +4,12 @@
 
 <!-- Simple Signup Form Agreements -->
 <template>
+    <div class="slds-p-around--medium slds-text-align--center slds-text-heading--large">
+      Agree
+    </div>
   <h1 class="slds-text-align--center"><b>The subscriber must complete this page themselves.</b></h1>
   <div class="slds-m-around--small">
-    Click to view documents:
+    Click to view your community solar agreements:
   </div>
   <div class="slds-m-around--medium">
     <template iterator:it={contractDocuments}>
@@ -20,6 +23,9 @@
   <template if:true={showContractDocument}>
     <div style="position:fixed;width:100%;height:100%;z-index: 2;top:0;left:0;background-color: rgba(0,0,0,0.5)">
       <div>
+        <p class="slds-text-color_inverse">
+            FOR PREVIEW ONLY<br/>Click "Close" to return to the agree page for signature.
+        </p>
         <lightning-button label="Close" onclick={hideContractDocument}></lightning-button>
       </div>
       <div style="height: 100%">
@@ -28,6 +34,9 @@
     </div>
   </template>
 
+  <div class="slds-m-around--small">
+    Click the checkboxes below to sign your agreements:
+  </div>
   <div style="background-color:#f3f3f3" class="slds-p-around--small">
     <template if:true={showDisclosures}>
       <p class="slds-m-around--small">

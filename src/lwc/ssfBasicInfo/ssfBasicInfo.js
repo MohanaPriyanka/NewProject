@@ -92,6 +92,17 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this[event.target.name] = event.target.value;
     }
 
+    phoneOnChange(event) {
+        const strippedPhone = event.target.value.replace(/\D/g,'');
+        event.target.setCustomValidity("");
+        if(strippedPhone.length === 10) {
+            this[event.target.name] = strippedPhone.substr(0,3) + '-' + strippedPhone.substr(3,3) + '-' + strippedPhone.substr(6,4);
+        } else {
+            this[event.target.name] = strippedPhone;
+            event.target.setCustomValidity("Please enter a 10-digit phone number");
+        }
+    }
+
     billingAddressToggle(event) {
         this.sameBillingAddress = event.target.checked;
     }
@@ -223,7 +234,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.spinnerMessage = 'Saving your application';
         }, 3000);
         window.setTimeout(() => {
-            this.spinnerMessage = 'We\'ll generate documents next';
+            this.spinnerMessage = 'We\'ll generate documents next.\r\nThis may take a minute, please stand by.';
         }, 6000);
         this.createLead(restLead).then(
             (resolveResult) => {
