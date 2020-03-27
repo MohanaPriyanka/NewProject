@@ -24,6 +24,7 @@ public inherited sharing class UserAndGroupSelector {
             SELECT Id, UserRoleId
             FROM User
             WHERE IsPortalEnabled = TRUE
+            AND IsActive = TRUE
         ]);
     }
 

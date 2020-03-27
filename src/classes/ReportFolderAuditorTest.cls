@@ -50,10 +50,11 @@ public with sharing class ReportFolderAuditorTest {
         mockImpl.setReportFolderResponse(reportFolders);
         Test.setMock(WebServiceMock.class, mockImpl);
 
-        ReportFolderAuditor.alertReportShareChangesFuture();
+        ReportFolderAuditor.alertReportAndDashboardShareChangesFuture();
 
         Test.stopTest();
         List<Error_Log__c> errorLogs = [SELECT Message__c FROM Error_Log__c];
+        System.debug(LoggingLevel.ERROR, errorLogs);
         System.assertEquals(1, errorLogs.size());
         System.assert(errorLogs[0].Message__c.contains('Accounting shared'));
         systemSettings = new SystemSettingsSelector().getSystemSettings();
@@ -81,10 +82,10 @@ public with sharing class ReportFolderAuditorTest {
         Test.setMock(WebServiceMock.class, mockImpl);
 
         auditor.createMetadataService();
-        List<MetadataService.ReportFolder> reportFoldersResult = auditor.getReportFolderMetadata();
+        List<MetadataService.Folder> reportFoldersResult = auditor.getFolderMetadata();
         System.assertEquals(reportFolders.size(), reportFoldersResult.size());
-        System.assertEquals(reportFolders[0].folderShares.size(), reportFoldersResult[0].folderShares.size());
-        System.assertEquals(reportFolders[0].folderShares[0].sharedTo, reportFoldersResult[0].folderShares[0].sharedTo);
+        System.assertEquals(reportFolders[0].folderShares.size(), ((MetadataService.ReportFolder) reportFoldersResult[0]).folderShares.size());
+        System.assertEquals(reportFolders[0].folderShares[0].sharedTo, ((MetadataService.ReportFolder) reportFoldersResult[0]).folderShares[0].sharedTo);
         Test.stopTest();
     }
 
@@ -105,7 +106,29 @@ public with sharing class ReportFolderAuditorTest {
         Test.setMock(WebServiceMock.class, mockImpl);
 
         auditor.createMetadataService();
-        MultiMap reportFoldersToReports = auditor.getCurrentReportFoldersShared();
+        MultiMap reportFoldersToReports = auditor.getCurrentFoldersShared();
+        System.assert(reportFoldersToReports.containsKey('Accounting'));
+        Test.stopTest();
+    }
+
+    @IsTest
+    private static void testCurrentDashboardFolderSharedToAllPrmUsers() {
+        Test.startTest();
+        WebServiceMockImpl mockImpl = new WebServiceMockImpl();
+        List<MetadataService.DashboardFolder> dashboardFolders = new List<MetadataService.DashboardFolder>();
+        MetadataService.DashboardFolder dashboardFolder = new MetadataService.DashboardFolder();
+        dashboardFolder.fullName = 'Accounting';
+        dashboardFolder.folderShares = new List<MetadataService.FolderShare>();
+        MetadataService.FolderShare folderShare = new MetadataService.FolderShare();
+        folderShare.sharedTo = 'AllPartnerUsers';
+        folderShare.sharedToType = 'AllPrmUsers';
+        dashboardFolder.folderShares.add(folderShare);
+        dashboardFolders.add(dashboardFolder);
+        mockImpl.setDashboardFolderResponse(dashboardFolders);
+        Test.setMock(WebServiceMock.class, mockImpl);
+
+        auditor.createMetadataService();
+        MultiMap reportFoldersToReports = auditor.getCurrentFoldersShared();
         System.assert(reportFoldersToReports.containsKey('Accounting'));
         Test.stopTest();
     }
@@ -127,7 +150,7 @@ public with sharing class ReportFolderAuditorTest {
         Test.setMock(WebServiceMock.class, mockImpl);
 
         auditor.createMetadataService();
-        MultiMap reportFoldersToReports = auditor.getCurrentReportFoldersShared();
+        MultiMap reportFoldersToReports = auditor.getCurrentFoldersShared();
         System.assertEquals(0, reportFoldersToReports.size());
         Test.stopTest();
     }
@@ -159,12 +182,12 @@ public with sharing class ReportFolderAuditorTest {
         previous.put('Folder C', null);
         previous.put('Folder D', new List<String>{'Report 6'});
 
-        String result = auditor.compareCurrentToPreviousReportFolders(current, previous);
-        System.assert(result.contains('Report 3 shared'));
+        String result = auditor.compareCurrentToPreviousFolders(current, previous);
+        System.assert(result.contains('Report or dashboard shared: Report 3'));
         System.assert(result.contains('Folder B shared'));
-        System.assert(result.contains('Report 5 shared'));
+        System.assert(result.contains('Report or dashboard shared: Report 5'));
         System.assert(result.contains('Folder C removed'));
-        System.assert(result.contains('Report 6 removed'));
+        System.assert(result.contains('Report or dashboard removed: Report 6'));
     }
 
     /*************
@@ -245,9 +268,13 @@ public with sharing class ReportFolderAuditorTest {
 
     private class WebServiceMockImpl implements WebServiceMock
     {
-        private List<MetadataService.ReportFolder> reportFolderResult;
+        private List<MetadataService.ReportFolder> reportFolderResult = new List<MetadataService.ReportFolder>();
+        private List<MetadataService.DashboardFolder> dashboardFolderResult = new List<MetadataService.DashboardFolder>();
         public void setReportFolderResponse(List<MetadataService.ReportFolder> reportFolderResult) {
             this.reportFolderResult = reportFolderResult;
+        }
+        public void setDashboardFolderResponse(List<MetadataService.DashboardFolder> dashboardFolderResult) {
+            this.dashboardFolderResult = dashboardFolderResult;
         }
 
         public void doInvoke(
@@ -256,11 +283,20 @@ public with sharing class ReportFolderAuditorTest {
             String responseNS, String responseName, String responseType)
         {
              if (request instanceof MetadataService.readMetadata_element) {
-                 MetadataService.readReportFolderResponse_element reportFolderResponse =
-                     new MetadataService.readReportFolderResponse_element();
-                 reportFolderResponse.result = new MetadataService.ReadReportFolderResult();
-                 reportFolderResponse.result.records = reportFolderResult;
-                 response.put('response_x', reportFolderResponse);
+                 MetadataService.readMetadata_element readMetadataRequest = (MetadataService.readMetadata_element) request;
+                 if (readMetadataRequest.type_x == 'ReportFolder') {
+                     MetadataService.readReportFolderResponse_element reportFolderResponse =
+                         new MetadataService.readReportFolderResponse_element();
+                     reportFolderResponse.result = new MetadataService.ReadReportFolderResult();
+                     reportFolderResponse.result.records = reportFolderResult;
+                     response.put('response_x', reportFolderResponse);
+                 } else if (readMetadataRequest.type_x == 'DashboardFolder') {
+                     MetadataService.readDashboardFolderResponse_element dashboardFolderResponse =
+                         new MetadataService.readDashboardFolderResponse_element();
+                     dashboardFolderResponse.result = new MetadataService.ReadDashboardFolderResult();
+                     dashboardFolderResponse.result.records = dashboardFolderResult;
+                     response.put('response_x', dashboardFolderResponse);
+                 }
              } else if (request instanceof MetadataService.listMetadata_element) {
                  MetadataService.listMetadata_element listMetadataRequest =
                      (MetadataService.listMetadata_element) request;
@@ -272,9 +308,18 @@ public with sharing class ReportFolderAuditorTest {
                      fileProperties.fullName = 'Accounting';
                      fileProperties.fileName = 'reports/Accounting';
                      listMetadataResponse.result.add(fileProperties);
+                 } else if (listMetadataRequest.queries[0].type_x == 'DashboardFolder') {
+                     MetadataService.FileProperties fileProperties = new MetadataService.FileProperties();
+                     fileProperties.fullName = 'Client_Dashboard';
+                     fileProperties.fileName = 'dashboards/Client_Dashboard';
+                     listMetadataResponse.result.add(fileProperties);
                  } else if (listMetadataRequest.queries[0].type_x == 'Report') {
                      MetadataService.FileProperties fileProperties = new MetadataService.FileProperties();
                      fileProperties.fullName = 'Accounting/2020_Invoices';
+                     listMetadataResponse.result.add(fileProperties);
+                 } else if (listMetadataRequest.queries[0].type_x == 'Dashboard') {
+                     MetadataService.FileProperties fileProperties = new MetadataService.FileProperties();
+                     fileProperties.fullName = 'Client_Dashboard/Health';
                      listMetadataResponse.result.add(fileProperties);
                  }
                  response.put('response_x', listMetadataResponse);

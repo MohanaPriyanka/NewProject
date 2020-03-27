@@ -20,20 +20,25 @@ public without sharing class ReportFolderAuditor implements Schedulable {
     private MultiMap groupMembersByGroupId;
     private Map<Id, UserRole> userRolesByRoleId;
     private Map<Id, User> portalUsersByUserId;
-    private List<String> reportFoldersSharedToExternalUsers;
+    private List<String> foldersSharedToExternalUsers;
 
     public void execute(SchedulableContext context) {
-        alertReportShareChangesFuture();
+        alertReportAndDashboardShareChangesFuture();
     }
 
     @Future(Callout=true)
-    public static void alertReportShareChangesFuture() {
+    public static void alertReportAndDashboardShareChangesFuture() {
         try {
             ReportFolderAuditor auditor = new ReportFolderAuditor();
             auditor.init();
-            auditor.alertReportShareChanges();
+            auditor.alertReportAndDashboardShareChanges();
         } catch (Exception e) {
-            Logger.logLater('ReportFolderAuditor', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+            Logger.logLater(
+                'ReportFolderAuditor',
+                'alertReportAndDashboardShareChangesFuture',
+                e.getMessage() + '\n' + e.getStackTraceString(),
+                Logger.ERROR
+            );
         } finally {
             Logger.flushLogs();
         }
@@ -54,20 +59,20 @@ public without sharing class ReportFolderAuditor implements Schedulable {
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    public void alertReportShareChanges() {
-        MultiMap currentReportFoldersToReports = getCurrentReportFoldersShared();
-        Map<String, List<String>> previousReportFoldersToReports =
+    public void alertReportAndDashboardShareChanges() {
+        MultiMap currentFoldersToItems = getCurrentFoldersShared();
+        Map<String, List<String>> previousFoldersToItems =
             (Map<String, List<String>>) JSON.deserialize(systemSettings.Reports_Shared_to_Portal__c, Map<String, List<String>>.class);
-        String resultString = compareCurrentToPreviousReportFolders(currentReportFoldersToReports, previousReportFoldersToReports);
+        String resultString = compareCurrentToPreviousFolders(currentFoldersToItems, previousFoldersToItems);
         if (resultString != '') {
             Logger.logLater(
                 'ReportFolderAuditor',
-                'alertReportShareChanges',
+                'alertReportAndDashboardShareChanges',
                 'Email client ops (at this time, Cara and Walt) that we found these report folder and/or report differences ' +
                     'from the last time we checked:\n' + resultString,
                 Logger.ERROR
             );
-            systemSettings.Reports_Shared_to_Portal__c = currentReportFoldersToReports.toJSON();
+            systemSettings.Reports_Shared_to_Portal__c = currentFoldersToItems.toJSON();
             update systemSettings;
         }
     }
@@ -75,43 +80,44 @@ public without sharing class ReportFolderAuditor implements Schedulable {
     // Unfortunately, a MultiMap can't be deserialized because we can't easily deserialize Object. So we need to treat
     // the current shares (a MultiMap) and the previous shares (deserialized Map<String, List<String>>) differently.
     @TestVisible
-    private String compareCurrentToPreviousReportFolders(MultiMap currentShares, Map<String, List<String>> previousShares) {
+    private String compareCurrentToPreviousFolders(MultiMap currentShares, Map<String, List<String>> previousShares) {
         String result = '';
-        for (Object currentReportFolder : currentShares.keySet()) {
-            if (previousShares.containsKey((String) currentReportFolder)) {
-                List<String> previousReports = previousShares.get((String) currentReportFolder);
-                for (Object currentReport : currentShares.getValues(currentReportFolder)) {
-                    if (!previousReports.contains((String) currentReport)) {
-                        result += 'Report ' + currentReport + ' shared\n';
+        for (Object currentFolder : currentShares.keySet()) {
+            if (previousShares.containsKey((String) currentFolder)) {
+                List<String> previousItems = previousShares.get((String) currentFolder);
+                for (Object currentItem : currentShares.getValues(currentFolder)) {
+                    if (!previousItems.contains((String) currentItem)) {
+                        result += 'Report or dashboard shared: ' + currentItem + '\n';
                     }
                 }
             } else {
-                result += 'Folder ' + currentReportFolder + ' shared with all of the reports in it\n';
+                result += 'Folder ' + currentFolder + ' shared with all of the reports/dashboards in it\n';
             }
         }
-        for (String previousReportFolder : previousShares.keySet()) {
-            if (currentShares.containsKey(previousReportFolder)) {
-                List<Object> currentReports = currentShares.getValues(previousReportFolder);
-                for (String previousReport : previousShares.get(previousReportFolder)) {
-                    if (!currentReports.contains(previousReport)) {
-                        result += 'Report ' + previousReport + ' removed\n';
+        for (String previousFolder : previousShares.keySet()) {
+            if (currentShares.containsKey(previousFolder)) {
+                List<Object> currentItem = currentShares.getValues(previousFolder);
+                for (String previousItem : previousShares.get(previousFolder)) {
+                    if (!currentItem.contains(previousItem)) {
+                        result += 'Report or dashboard removed: ' + previousItem + '\n';
                     }
                 }
             } else {
-                result += 'Folder ' + previousReportFolder + ' removed\n';
+                result += 'Folder ' + previousFolder + ' removed\n';
             }
         }
         return result;
     }
 
-    public MultiMap getCurrentReportFoldersShared() {
-        MultiMap reportFoldersToReports = MultiMap.newListInstance();
+    public MultiMap getCurrentFoldersShared() {
+        MultiMap foldersToItems = MultiMap.newListInstance();
 
-        for (MetadataService.ReportFolder reportFolder : getReportFolderMetadata()) {
-            if (reportFolder.folderShares == null) {
+        for (MetadataService.Folder folder : getFolderMetadata()) {
+            List<MetadataService.FolderShare> folderShares = getFolderShares(folder);
+            if (folderShares == null) {
                 continue;
             }
-            for (MetadataService.FolderShare folderShare : reportFolder.folderShares) {
+            for (MetadataService.FolderShare folderShare : folderShares) {
                 if (folderShare.sharedToType == 'AllPrmUsers' ||
                     folderShare.sharedToType == 'AllCspUsers' ||
                     folderShare.sharedToType == 'PartnerUser' ||
@@ -119,80 +125,111 @@ public without sharing class ReportFolderAuditor implements Schedulable {
                     folderShare.sharedToType == 'PortalRole' ||
                     folderShare.sharedToType == 'PortalRoleAndSubordinates' ||
                     (folderShare.sharedToType == 'Group' && groupsWithExternalUsers.contains(folderShare.sharedTo))) {
-                    getReportsInFolder(reportFolder.fullName, reportFoldersToReports, reportFolder);
+                    getItemsInFolder(foldersToItems, folder);
                     break;
                 }
             }
         }
-        return reportFoldersToReports;
+        return foldersToItems;
     }
 
-    private void getReportsInFolder(String folderName, MultiMap reportFoldersToReports, MetadataService.ReportFolder reportFolder) {
+    private List<MetadataService.FolderShare> getFolderShares(MetadataService.Folder folder) {
+        try {
+            MetadataService.ReportFolder reportFolder = (MetadataService.ReportFolder) folder;
+            return reportFolder.folderShares;
+        } catch (TypeException te) {
+            MetadataService.DashboardFolder dashboardFolder = (MetadataService.DashboardFolder) folder;
+            return dashboardFolder.folderShares;
+        }
+    }
+
+    private String getFolderFullName(MetadataService.Folder folder) {
+        try {
+            MetadataService.ReportFolder reportFolder = (MetadataService.ReportFolder) folder;
+            return reportFolder.fullName;
+        } catch (TypeException te) {
+            MetadataService.DashboardFolder dashboardFolder = (MetadataService.DashboardFolder) folder;
+            return dashboardFolder.fullName;
+        }
+    }
+
+    private void getItemsInFolder(MultiMap foldersToReportsAndDashboards, MetadataService.Folder folder) {
         List<MetadataService.ListMetadataQuery> queries = new List<MetadataService.ListMetadataQuery>();
         MetadataService.ListMetadataQuery queryReport = new MetadataService.ListMetadataQuery();
-        queryReport.type_x = 'Report';
-        queryReport.folder = folderName;
+        try {
+            MetadataService.ReportFolder reportFolder = (MetadataService.ReportFolder) folder;
+            queryReport.type_x = 'Report';
+        } catch (TypeException te) {
+            queryReport.type_x = 'Dashboard';
+        }
+        queryReport.folder = getFolderFullName(folder);
         queries.add(queryReport);
         List<MetadataService.FileProperties> fpList = service.listMetadata(queries, 40);
         if (fpList == null) {
-            reportFoldersToReports.putValues(reportFolder.fullName, new List<String>());
+            foldersToReportsAndDashboards.putValues(getFolderFullName(folder), new List<String>());
             return;
         }
         for (MetadataService.FileProperties fileProperties : fpList) {
-            reportFoldersToReports.putValue(reportFolder.fullName, fileProperties.fullName);
+            foldersToReportsAndDashboards.putValue(getFolderFullName(folder), fileProperties.fullName);
         }
     }
 
     @TestVisible
-    private List<MetadataService.ReportFolder> getReportFolderMetadata() {
+    private List<MetadataService.Folder> getFolderMetadata() {
         MetadataService.FileProperties[] fileProperties;
-        List<MetadataService.ReportFolder> reportFolders;
-        fileProperties = getAllReportFolderNames();
-        reportFolders = getAllReportFolderMetadata(fileProperties);
+        List<MetadataService.Folder> reportFolders;
+        fileProperties = getAllFolderNames('ReportFolder');
+        reportFolders = getAllFolderMetadata(fileProperties, 'ReportFolder');
+        fileProperties = getAllFolderNames('DashboardFolder');
+        reportFolders.addAll(getAllFolderMetadata(fileProperties, 'DashboardFolder'));
         return reportFolders;
     }
 
-    private MetadataService.FileProperties[] getAllReportFolderNames() {
+    private MetadataService.FileProperties[] getAllFolderNames(String type_x) {
         List<MetadataService.ListMetadataQuery> queries = new List<MetadataService.ListMetadataQuery>();
-        MetadataService.ListMetadataQuery queryReportFolder = new MetadataService.ListMetadataQuery();
-        queryReportFolder.type_x = 'ReportFolder';
-        queries.add(queryReportFolder);
+        MetadataService.ListMetadataQuery queryFolder = new MetadataService.ListMetadataQuery();
+        queryFolder.type_x = type_x;
+        queries.add(queryFolder);
         MetadataService.FileProperties[] fileProperties = service.listMetadata(queries, 42);
         return fileProperties;
     }
 
-    private List<MetadataService.ReportFolder> getAllReportFolderMetadata(MetadataService.FileProperties[] fileProperties) {
-        List<MetadataService.ReportFolder> reportFolders = new List<MetadataService.ReportFolder>();
+    private List<MetadataService.Folder> getAllFolderMetadata(MetadataService.FileProperties[] fileProperties, String type_x) {
+        List<MetadataService.Folder> folders = new List<MetadataService.Folder>();
         List<String> folderNames = new List<String>();
         for (MetadataService.FileProperties fileProperty : fileProperties) {
             // Since unfiled$public results in a SOAP exception, and we can't change sharing for it anyways
             if (fileProperty.fileName.contains('unfiled$public')) {
                 continue;
             }
-            folderNames.add(fileProperty.fileName.replace('reports/', ''));
+            folderNames.add(fileProperty.fileName.replace('reports/', '').replace('dashboards/', ''));
             // Since the SOAP API only allows querying 10 folders at a time
             if (folderNames.size() == 10) {
-                getReportFolderMetadata(reportFolders, folderNames);
+                getFolderMetadata(folders, folderNames, type_x);
             }
         }
         if (!folderNames.isEmpty()) {
-            getReportFolderMetadata(reportFolders, folderNames);
+            getFolderMetadata(folders, folderNames, type_x);
         }
-        return reportFolders;
+        return folders;
     }
 
-    private void getReportFolderMetadata(List<MetadataService.ReportFolder> reportFolders, List<String> folderNames) {
+    private void getFolderMetadata(List<MetadataService.Folder> folders, List<String> folderNames, String type_x) {
         try {
-            reportFolders.addAll((List<MetadataService.ReportFolder>) service.readMetadata('ReportFolder', folderNames).getRecords());
+            folders.addAll((List<MetadataService.Folder>) service.readMetadata(type_x, folderNames).getRecords());
         } catch (Exception e) {
-            System.debug(LoggingLevel.ERROR, e.getMessage());
-            Logger.logLater('ReportFolderAuditor', 'getReportFolderMetadata', 'Could not query ' + folderNames, Logger.ERROR);
+            Logger.logLater(
+                'ReportFolderAuditor',
+                'getFolderMetadata',
+                'Could not query ' + folderNames + '\n' + e.getMessage() + '\n' + e.getStackTraceString(),
+                Logger.ERROR
+            );
         }
         folderNames.clear();
     }
 
     private void getAllGroupsUsersAndRoles() {
-        reportFoldersSharedToExternalUsers = new List<String>();
+        foldersSharedToExternalUsers = new List<String>();
         groupsByGroupId = userAndGroupSelector.getAllGroupMap();
         allGroupMembers = userAndGroupSelector.getAllGroupMembers();
         groupMembersByGroupId = MultiMap.newListInstance();
