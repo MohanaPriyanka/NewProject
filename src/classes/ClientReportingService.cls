@@ -3,15 +3,12 @@
  * Description: Methods to aid with CS Client Reporting, e.g. client owner stamping
  * Test: ClientReportingServiceTest
  *************************************************************************************/
-
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ClientReportingService {
     @TestVisible
     private static FeatureService featureService = new FeatureService();
-
     public static void stampClient(List<Bill_Adjustment__c> adjustments) {
         // Called from before insert trigger:
-
         Set<Id> uasIds = new Set<Id>();
         for (Bill_Adjustment__c billAdjustment : adjustments) {
             if (billAdjustment.Client__c == null &&
@@ -19,9 +16,7 @@ public without sharing class ClientReportingService {
                 uasIds.add(billAdjustment.Utility_Account_Subscription__c);
             }
         }
-
         Map<Id, Utility_Account_Subscription__c> uasWithClientMap = UASSelector.selectByIdsAsMap(uasIds);
-
         for (Bill_Adjustment__c billAdjustment : adjustments) {
             Utility_Account_Subscription__c uasWithClient = uasWithClientMap.get(billAdjustment.Utility_Account_Subscription__c);
             if (uasWithClient != null) {
@@ -36,7 +31,6 @@ public without sharing class ClientReportingService {
             }
         }
     }
-
     public static void stampClient(List<UASB__c> uasbs) {
         // Called from before insert trigger:
         Set<Id> uasIds = new Set<Id>();
@@ -46,9 +40,7 @@ public without sharing class ClientReportingService {
                 uasIds.add(uasb.Utility_Account_Subscription__c);
             }
         }
-
         Map<Id, Utility_Account_Subscription__c> uasWithClientMap = UASSelector.selectByIdsAsMap(uasIds);
-
         for (UASB__c uasb : uasbs) {
             Utility_Account_Subscription__c uasWithClient = uasWithClientMap.get(uasb.Utility_Account_Subscription__c);
             if (uasb.Client__c == null &&
@@ -59,13 +51,11 @@ public without sharing class ClientReportingService {
             }
         }
     }
-
     public void stampClient(List<Production__c> productions) {
         Set<Id> sssIds = new Set<Id>();
         for (Production__c prod : productions) {
             sssIds.add(prod.Shared_Solar_System__c);
         }
-
         SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
         Map<Id, Shared_Solar_System__c> sssMap  = sssSelector.getSSSMap(sssIds);
         for (Production__c prod : productions) {
@@ -73,7 +63,6 @@ public without sharing class ClientReportingService {
             prod.Client_Account__c = sss.Client_Account__c;
         }
     }
-
     public static void updateClientReports( Map<ID, Client_Health_Report__c> oldReportMap,
                                             Map<ID, Client_Health_Report__c> newReportMap) {
         for (Client_Health_Report__c newReport : newReportMap.values()) {
@@ -82,7 +71,6 @@ public without sharing class ClientReportingService {
             }
         }
     }
-
     public static Decimal calculateClientHealthScore(Client_Health_Report__c clientReport) {
         Decimal countOfVariables = 0;
         Decimal customerDSO = 0;
@@ -91,7 +79,6 @@ public without sharing class ClientReportingService {
         Decimal bluewaveRating = 0;
         Decimal openCases = 0;
         Decimal utilization = 0;
-
         if (Util.nullToZero(clientReport.Customer_DSO__c) > 0){
             countOfVariables += 1;
             // For every 30 days late (after 30 days), take away a point
@@ -127,75 +114,60 @@ public without sharing class ClientReportingService {
             (customerDSO*(1/countOfVariables)) + (clientDSO*(1/countOfVariables)) + (nps*(1/countOfVariables)) +
             (bluewaveRating*(3/(countOfVariables*4))) + (openCases*(1/(countOfVariables*4))) +
             (utilization*(1/countOfVariables)));
-
         return healthScore;
     }
-
     public static void insertClientUAS(List<Utility_Account_Subscription__c> uasList) {
         List<Client_Utility_Account_Subscription__c> clientUASList = new List<Client_Utility_Account_Subscription__c> ();
-
         Set<Id> parentIds = new Set<Id>();
         for (Utility_Account_Subscription__c uas : uasList) {
             parentIds.add(uas.Id);
         }
-
         //Have to query for parent records again because Triggers do not maintain relationships
         List<Utility_Account_Subscription__c> parentUASList = UASSelector.selectByIds(parentIds);
-
         for (Utility_Account_Subscription__c parent : parentUASList) {
             if (parent.Opportunity__c != null) {
                 Client_Utility_Account_Subscription__c child = new Client_Utility_Account_Subscription__c(
                     Name = 'C' + parent.Name,
                     Utility_Account_Subscription__c = parent.Id,
-                    Shared_Solar_System__c = parent.Opportunity__r.Shared_Solar_System__r.Id
+                    Shared_Solar_System__c = parent.Shared_Solar_System__c
                 );
                 clientUASList.add(child);
             }
         }
         insert clientUASList;
-
     }
-
+    //TODO: This method will be deprecated when the Subscription Order flag is turned on
+    // When a SSS changes on an Opportunity, a new UAS will be created along with a new CUAS
+    // therefore there is no need to update the SSS on the existing SSS
     public static void updateClientUAS(Map<Id, Opportunity> oppMap, Map<Id, Opportunity> oldOppMap) {
         Set<Id> oppsToUpdate = new Set<Id>();
         for (Opportunity opp : oppMap.values()) {
-            //A new UAS is inserted when SSS changes on Opportunity when Subscription Order Feature flag is turned on,
-            // therefore automatically inserting a new Client UAS
             if (opp.Shared_Solar_System__c != oldOppMap.get(opp.Id).Shared_Solar_System__c && !featureService.isEnabled('Subscription_Orders')) {
                 oppsToUpdate.add(opp.Id);
             }
         }
-
         if (oppsToUpdate.size() > 0 ) {
             List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByOppIds(oppsToUpdate);
             if (clientUASList.size() > 0 ){
                 for (Client_Utility_Account_Subscription__c cUAS : clientUASList) {
                     cUAS.Shared_Solar_System__c = oppMap.get(cUAS.Utility_Account_Subscription__r.Opportunity__c).Shared_Solar_System__c;
                 }
-
                 update clientUASList;
             }
         }
     }
-
-
     public static void insertClientALSS(List<Schedule_Z_Subscription__c> szsList) {
         List<Client_Allocation_Schedule_Subscription__c> clientALSSList = new List<Client_Allocation_Schedule_Subscription__c>();
         Set<Id> parentIds = new Set<Id>();
-
         for (Schedule_Z_Subscription__c szs : szsList) {
             parentIds.add(szs.Id);
         }
         //Have to query for parent records again because Triggers do not maintain relationships
         List<Schedule_Z_Subscription__c> parentList = ScheduleZSubscriptionSelector.getScheduleZSubscriptionsList(parentIds);
-
-
         //Need to get the Child Client UAS object of the ALSS's UAS
         //Map --> key = ALSS ID, value = Client UAS
         Map<Id, Client_Utility_Account_Subscription__c> alssToClientUASMap = new Map<Id, Client_Utility_Account_Subscription__c>();
         alssToClientUASMap = getClientUtilityAccountSubscriptionsByIds(parentList);
-
-
         for (Schedule_Z_Subscription__c parent : parentList) {
             Client_Allocation_Schedule_Subscription__c child = new Client_Allocation_Schedule_Subscription__c(
                 Name = 'C' + parent.Name,
@@ -206,55 +178,37 @@ public without sharing class ClientReportingService {
             clientALSSList.add(child);
         }
         insert clientALSSList;
-
     }
-
     public static void deleteClientUAS(List<Utility_Account_Subscription__c> uasList) {
         Set<Id> uasIds = new Set<Id>();
-
         for (Utility_Account_Subscription__c uas : uasList) {
             uasIds.add(uas.Id);
         }
-
         List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByUASIds(uasIds);
-
         delete clientUASList;
     }
-
     public static void deleteClientALSS(List<Schedule_Z_Subscription__c> szsList) {
         Set<Id> szsIds = new Set<Id>();
-
         for (Schedule_Z_Subscription__c szs : szsList) {
             szsIds.add(szs.Id);
         }
-
-
         List<Client_Allocation_Schedule_Subscription__c> clientALSSList = ClientReportObjectSelector.getClientALSSBySZSIds(szsIds);
-
         delete clientALSSList;
     }
-
-
     private static  Map<Id, Client_Utility_Account_Subscription__c> getClientUtilityAccountSubscriptionsByIds(List<Schedule_Z_Subscription__c> parentSZSs) {
         Set<Id> uasIds = new Set<Id>();
         Map<Id, Id> uasToALSSMap = new Map<Id, Id>();
         Map<Id, Client_Utility_Account_Subscription__c> alssToClientUASMap = new Map<Id, Client_Utility_Account_Subscription__c>();
-
-
         //Map --> key: UAS Id, value: ALSS Id
         for (Schedule_Z_Subscription__c alss : parentSZSs) {
             uasIds.add(alss.Utility_Account_Subscription__c);
             uasToALSSMap.put(alss.Utility_Account_Subscription__c, alss.Id);
         }
-
         List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByUASIds(uasIds);
-
         for (Client_Utility_Account_Subscription__c clientUAS : clientUASList) {
                 // Map --> key = ALSS Id, value = client UAS
                 alssToClientUASMap.put(uasToALSSMap.get(clientUAS.Utility_Account_Subscription__c), clientUAS);
         }
-
         return alssToClientUASMap;
-
     }
 }
