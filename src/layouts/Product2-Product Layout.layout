@@ -146,6 +146,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Opp_Conga_Template_Id_s__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Docusign_Template_Joint__c</field>
             </layoutItems>
             <layoutItems>
