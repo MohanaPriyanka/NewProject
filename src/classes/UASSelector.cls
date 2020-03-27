@@ -58,7 +58,6 @@ public without sharing class UASSelector {
                 Name,
                 Opportunity__c,
                 Opportunity__r.Id,
-                Opportunity__r.Shared_Solar_System__r.Id,
                 Shared_Solar_System__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN :uasIds
