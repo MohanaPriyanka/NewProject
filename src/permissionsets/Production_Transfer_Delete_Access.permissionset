@@ -22227,11 +22227,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Days_in_Waitlist__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Days_since_Contract_Close_to_UCC__c</field>
         <readable>false</readable>
     </fieldPermissions>
