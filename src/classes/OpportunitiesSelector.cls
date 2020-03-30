@@ -70,7 +70,7 @@ public without sharing class OpportunitiesSelector {
             FROM Opportunity
             WHERE Commission_Structure__r.Cents_kW_DC_First_Bill__c != null
             AND Commission_Structure__r.Cents_kW_DC_First_Bill__c != 0
-            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Type__c = 'First Bill Sent')
+            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = 'First Bill Sent')
             AND Account.Zuora_Id__c != null
             AND Shared_Solar_System__r.Count_of_Transfers__c > 0
             AND AccountId IN : accountIds
@@ -85,7 +85,7 @@ public without sharing class OpportunitiesSelector {
             FROM Opportunity
             WHERE Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != null
             AND Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != 0
-            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Type__c = 'First Bill Paid')
+            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = 'First Bill Paid')
             AND Account.Zuora_Id__c != null
             AND Shared_Solar_System__r.Count_of_Transfers__c > 0
             AND AccountId IN : accountIds
@@ -100,4 +100,15 @@ public without sharing class OpportunitiesSelector {
             WHERE Shared_Solar_System__r.Id IN : sssIds
         ];
     }
+
+    public List<Opportunity> selectByIdSet(Set<Id> oppIds) {
+        return [
+            SELECT Id, StageName, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
+                CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_Up_Front__c, Product__c,
+                Commission_Structure__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name
+            FROM Opportunity
+            WHERE Id IN : oppIds
+        ];
+    }
+
 }
