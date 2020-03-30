@@ -452,6 +452,15 @@ Text(Object_Type__c),
         </valueSet>
     </fields>
     <fields>
+        <fullName>Ready_for_Production_Detail__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Marked as true on insert, marked as false once production detail records are created</inlineHelpText>
+        <label>Ready for Production Detail</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Reason_Code__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Debit and Credit Memos Only, Equivalent to Adjustment Type in SF</inlineHelpText>

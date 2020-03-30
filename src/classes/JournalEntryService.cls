@@ -7,6 +7,14 @@ public with sharing class JournalEntryService {
     private Map<String, Shared_Solar_System__c> uniqueIdToSSSMap = new Map<String, Shared_Solar_System__c>();
     private Map<String, Account> bwNumberToAccountMap = new Map<String, Account>();
 
+    public void markReadyForProductionDetail(List<Journal_Entry__c> entries) {
+        for (Journal_Entry__c entry : entries) {
+            if (entry.Query_Type__c != 'PaymentPart_DM' && entry.Query_Type__c != 'DebitMemo'){
+                entry.Ready_for_Production_Detail__c = true;
+            }
+        }
+    }
+
     public List<Journal_Entry__c> populateLookups(List<Journal_Entry__c> entries){
         setAccountAndSSSMaps(entries);
         for (Journal_Entry__c entry : entries){
