@@ -12,6 +12,7 @@ public with sharing class ScheduleZSubscriptionSelector {
         'Utility_Account_Subscription__c, ' +
         'Utility_Account_Subscription__r.Id,' +
         'Utility_Account_Subscription__r.Name,' +
+        'Utility_Account_Subscription__r.Finaled__c,' +
         'Utility_Account_Subscription__r.Next_Schedule_Z_Status__c, ' +
         'Utility_Account_Subscription__r.Name_on_Account_From_Log__c, ' +
         'Utility_Account_Subscription__r.Utility_Account_Log__c,' +
@@ -155,6 +156,7 @@ public with sharing class ScheduleZSubscriptionSelector {
                     Utility_Account_Subscription__r.Customer_Subscription_KW_DC__c,
                     Utility_Account_Subscription__r.Future_Customer_Subscription_KWDC_Rollup__c,
                     Utility_Account_Subscription__r.Name,
+                    Utility_Account_Subscription__r.Finaled__c,
                     Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                     Utility_Account_Subscription__r.Utility_Account_Log__c,
                     Utility_Account_Subscription__r.UAS_Number__c,
