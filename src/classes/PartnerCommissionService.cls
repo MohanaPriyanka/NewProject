@@ -1,5 +1,5 @@
 /**
- * Test: PartnerCommissionServiceTest
+ * Test: PartnerCommissionServiceTest, UtilityAccountSubscriptionHandlerTest
  */
 
 public class PartnerCommissionService{
@@ -73,11 +73,14 @@ public class PartnerCommissionService{
         if (type == 'First Bill Paid'){
             commissionAmount = opp.CS_Capacity_Allocated__c*opp.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c *1000;
             params.put('FirstBillPaidCommission',commissionAmount);
+            params.put('ActiveCommissionStructure',opp.Commission_Structure__c);
         } else if (type == 'First Bill Sent') {
             commissionAmount = opp.CS_Capacity_Allocated__c *opp.Commission_Structure__r.Cents_kW_DC_First_Bill__c*1000;
             params.put('FirstBillCommission',commissionAmount);
+            params.put('ActiveCommissionStructure',opp.Commission_Structure__c);
+        } else if (type == 'Contract Execution'){
+            params.put('ProductID',opp.Product__c);
         }
-        params.put('ActiveCommissionStructure',opp.Commission_Structure__c);
         params.put('OpportunityID',opp.Id);
         params.put('OpportunityName',opp.Name);
         params.put('PartnerID',opp.Partner_tag_lookup__r.Id);
@@ -148,6 +151,25 @@ public class PartnerCommissionService{
             } else {
                 acctToJournalEntryMap.put(accountAndProjectKey, objectType);
             }
+        }
+    }
+
+    public static void recalculatePartnerCommission(Set<Id> opportunityIds){
+        try {
+            PartnerCommissionService service = new PartnerCommissionService();
+            List<Opportunity> opportunitiesWithChanges = oppSelector.selectByIdSet(opportunityIds);
+            for (Opportunity opp : opportunitiesWithChanges) {
+                if (opp.StageName == 'Complete'){
+                    service.launchFlowForOpp(service.getFlowParams(opp, 'Contract Execution'));
+                }
+            }
+        } catch (Exception excep){
+            Logger.LogNow(
+                'PartnerCommissionService',
+                'recalculatePartnerCommission',
+                excep.getMessage() + '\n' + excep.getStackTraceString() + '\n' + 'OppIds: ' + JSON.serialize(opportunityIds),
+                Logger.ERROR
+            );
         }
     }
 }
