@@ -66,6 +66,10 @@ export default class BasicDatatable extends LightningElement {
                         uasbData.customername = dataFromApex[i].SfUASB.PreGen_Name_on_Account__c.substring(0, cutoff) + '**EXTERNAL';
                     }
                 }
+                let final = dataFromApex[i].SfUASB.PreGen_IsPreGen__c;
+                if (final) {
+                    uasbData.finaled = 'FINALED_';
+                }
                 uasbData.Uniqueid = dataFromApex[i].SfUASB.Schedule_Z_Subscription__c;
                 uasbData.sfutilityaccount = dataFromApex[i].SfUASB.PreGen_Utility_Acct__c;
                 uasbData.sfproduction = dataFromApex[i].SfUASB.Subscription_Production_kWh_Static__c;
