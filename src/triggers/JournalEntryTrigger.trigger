@@ -6,4 +6,7 @@ trigger JournalEntryTrigger on Journal_Entry__c (before insert, before update) {
     }
     JournalEntryService service = new JournalEntryService();
     service.populateLookups(Trigger.new);
+    if (Trigger.isInsert){
+        service.markReadyForProductionDetail(Trigger.new);
+    }
 }
