@@ -8,6 +8,9 @@ public without sharing class UASSelector {
     public static List<Utility_Account_Subscription__c> selectByAccounts(Set<Id> accounts) {
         return [
             SELECT Id,
+                Subscription_Type__c,
+                Annual_kWh_Subscription_Future_Rollup__c,
+                Annual_Cost_Future_Rollup__c,
                 Utility_Account_Log__r.Account__c,
                 Utility_Account_Log__r.Account__r.Id,
                 Utility_Account_Log__r.Account__r.Name,

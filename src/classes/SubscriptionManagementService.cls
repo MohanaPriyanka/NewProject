@@ -219,15 +219,15 @@ public without sharing class SubscriptionManagementService implements Queueable{
             upsertUASes.add(uas);
         }
 
-        soInsertList.addAll(zeroSubscriptions(uasList));
+        soInsertList.addAll(zeroSubscriptions(uasList, 'Transfer'));
     }
 
-    private List<Subscription_Order__c> zeroSubscriptions(List<Utility_Account_Subscription__c> uasList) {
+    public List<Subscription_Order__c> zeroSubscriptions(List<Utility_Account_Subscription__c> uasList, String zeroType) {
         List<Subscription_Order__c> zeroedSOs = new List<Subscription_Order__c>();
 
         for (Utility_Account_Subscription__c uas : uasList) {
             Subscription_Order__c zeroedSO = new Subscription_Order__c(
-                Type__c = 'Transfer',
+                Type__c = zeroType,
                 Approval_Status__c = 'Approved',
                 Effective_Date__c = System.today(),
                 Utility_Account_Subscription__c = uas.Id,

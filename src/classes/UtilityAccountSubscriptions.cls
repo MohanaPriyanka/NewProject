@@ -7,6 +7,10 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class UtilityAccountSubscriptions {
     public List<Utility_Account_Subscription__c> records;
+    @TestVisible
+    private static SubscriptionManagementService subscriptionSerivce = new SubscriptionManagementService();
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
 
     public UtilityAccountSubscriptions(List<Utility_Account_Subscription__c> sObjectList) {
         records = sObjectList;
@@ -17,6 +21,13 @@ public inherited sharing class UtilityAccountSubscriptions {
             uas.Next_Schedule_Z_Status__c = 'Inactive Subscription';
         }
         update records;
+    }
+
+    public void zeroInactiveSubscriptions() {
+        if (featureService.isEnabled('Subscription_Orders')) {
+            List<Subscription_Order__c> zeroOrders = subscriptionSerivce.zeroSubscriptions(records, 'Cancellation');
+            insert zeroOrders;
+        }
     }
 
     public void handleFinaledAccounts() {
