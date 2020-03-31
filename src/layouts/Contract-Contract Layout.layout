@@ -39,10 +39,6 @@
                 <behavior>Edit</behavior>
                 <field>BW_Company_Entity__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Management_Fee_Trigger__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
