@@ -159,6 +159,7 @@ public with sharing class CSCancellationServiceTest {
         List<Case> caseList = [
             SELECT Id
             FROM Case
+            WHERE Subject LIKE '%finaled UAL%'
         ];
 
         System.assertEquals(0, caseList.size());
@@ -202,6 +203,7 @@ public with sharing class CSCancellationServiceTest {
         List<Case> caseList = [
             SELECT Id
             FROM Case
+            WHERE Subject LIKE '%finaled UAL%'
         ];
 
         System.assertEquals(0, caseList.size());
@@ -265,6 +267,7 @@ public with sharing class CSCancellationServiceTest {
         List<Case> caseList = [
             SELECT Id
             FROM Case
+            WHERE Subject LIKE '%finaled UAL%'
         ];
 
         System.assertEquals(1, caseList.size());
@@ -313,10 +316,10 @@ public with sharing class CSCancellationServiceTest {
         //There should be a Partner Support case created for each corresponding account
 
         List<Case> caseList = [
-            SELECT Id
+            SELECT Id, Subject, Description
             FROM Case
+            WHERE Subject LIKE '%finaled UAL%'
         ];
-
         System.assertEquals(3, caseList.size());
     }
 
