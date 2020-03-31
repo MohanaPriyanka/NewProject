@@ -37,17 +37,6 @@ public with sharing class ClientReportingServiceTest {
             WHERE Name = '0000239'
         ];
 
-        Bill_Adjustment__c adjustment = new Bill_Adjustment__c(
-            Name = 'UASoneAdjustment',
-            Utility_Account_Subscription__c = uas.Id,
-            Account__c = uas.Opportunity__r.AccountId,
-            Adjustment_Type__c = 'Production',
-            Adjustment_Amount__c = 24,
-            Credits_Allocated__c = 24,
-            Approval_Status__c = 'Approved',
-            Reason_For_Adjustment__c = 'Client Owner Test'
-        );
-        insert adjustment;
 
         Bill_Period__c billPeriod = [
             SELECT Id, Shared_Solar_System__c, Bill_Date__c, Bill_Status__c
@@ -63,6 +52,19 @@ public with sharing class ClientReportingServiceTest {
             WHERE Bill_Period__c = :billPeriod.Id
             LIMIT 1
         ];
+
+        Bill_Adjustment__c adjustment = new Bill_Adjustment__c(
+            Name = 'UASoneAdjustment',
+            Utility_Account_Subscription__c = uas.Id,
+            Account__c = uas.Opportunity__r.AccountId,
+            Adjustment_Type__c = 'Production',
+            Adjustment_Amount__c = 24,
+            Credits_Allocated__c = 24,
+            Approval_Status__c = 'Approved',
+            Reason_For_Adjustment__c = 'Client Owner Test',
+            Transfer__c = transfer.Id
+        );
+        insert adjustment;
 
         TransferPartService transferPartService = new TransferPartService();
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{transfer});
@@ -285,6 +287,7 @@ public with sharing class ClientReportingServiceTest {
         Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
             Name = '123456',
             Utility_Account_Log__c = ual.Id,
+            Next_Schedule_Z_Status__c = 'Active Subscription',
             Opportunity__c = opp.Id,
             Subscribed_Annual_Cost_of_Electricity__c = 300,
             calculated_annual_cost_of_electricity__c = 300);
@@ -333,20 +336,32 @@ public with sharing class ClientReportingServiceTest {
         opp.Shared_Solar_System__c = sss2.Id;
         update opp;
 
+        Test.stopTest();
 
-        Utility_Account_Subscription__c uasUpdate = [
-            SELECT Id, Shared_Solar_System_Name__c
+       List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Shared_Solar_System_Name__c, Shared_Solar_System__r.Name, Next_Schedule_Z_Status__c, Subscription_Comment_c__c
             FROM Utility_Account_Subscription__c
-            WHERE Id = :uas.Id
-            LIMIT 1
+            WHERE Name = :uas.Name
         ];
 
-        List<Client_Utility_Account_Subscription__c> clientUASUpdate2 = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
+        Set<Id> uasIds = new Set<Id>();
+        for (Utility_Account_Subscription__c uasUpdate : uasList) {
+           uasIds.add(uasUpdate.Id);
+        }
 
-        System.assertEquals(sss2.Name, uasUpdate.Shared_Solar_System_Name__c);
-        System.assertEquals(sss2.Id, clientUASUpdate2[0].Shared_Solar_System__c);
+        List<Client_Utility_Account_Subscription__c> clientUASUpdate2 = ClientReportObjectSelector.getClientUASesByUASIds(uasIds);
 
-        System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
+        for (Client_Utility_Account_Subscription__c cuas : clientUASUpdate2) {
+            System.assertEquals(cuas.Utility_Account_Subscription__r.Shared_Solar_System_Name__c, cuas.Shared_Solar_System__r.Name);
+            if (cuas.Utility_Account_Subscription__r.Next_Schedule_Z_Status__c == 'Active Subscription') {
+                System.assertEquals(sss2.Id, cuas.Shared_Solar_System__c);
+                System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
+            } else {
+                //When Subscription Order Feature flag is ON, original UAS is marked as "Inactive" and zeroed out
+                System.assertNotEquals(sss2.Id, cuas.Shared_Solar_System__c);
+                System.assertEquals(0, cuas.Annual_Cost_of_Electricity_Future__c);
+            }
+        }
 
         //Test deletion of parent UAS
         delete uas;
@@ -354,9 +369,6 @@ public with sharing class ClientReportingServiceTest {
         List<Client_Utility_Account_Subscription__c> clientUASDelete = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
 
         System.assertEquals(0, clientUASDelete.size());
-
-        Test.stopTest();
-
     }
 
     @IsTest

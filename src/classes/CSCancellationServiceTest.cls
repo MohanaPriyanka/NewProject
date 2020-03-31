@@ -316,10 +316,11 @@ public with sharing class CSCancellationServiceTest {
         //There should be a Partner Support case created for each corresponding account
 
         List<Case> caseList = [
-            SELECT Id, Subject, Description
+            SELECT Id
             FROM Case
             WHERE Subject LIKE '%finaled UAL%'
         ];
+
         System.assertEquals(3, caseList.size());
     }
 
