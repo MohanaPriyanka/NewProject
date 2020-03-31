@@ -2791,11 +2791,19 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>All Care Energy Inc%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Arcadia Power</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Barbara Cerullo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Beacon Energy Solutions LLC</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2903,6 +2911,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Power Play Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Quest Energy Solutions</fullName>
                 <default>false</default>
             </values>
@@ -2992,6 +3004,103 @@ null)</formula>
             </values>
             <values>
                 <fullName>Yeloha</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Partner__c</picklist>
+            <values>
+                <fullName>BlueWave Incentive Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Boston Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Service_Territories__c</picklist>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dunwoodie</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hudson Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Millwood</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>N%2EY%2EC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Stage__c</picklist>
+            <values>
+                <fullName>Acquisition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3164,11 +3273,19 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>All Care Energy Inc%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Arcadia Power</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Barbara Cerullo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Beacon Energy Solutions LLC</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -3272,6 +3389,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Power Play Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Quest Energy Solutions</fullName>
                 <default>false</default>
             </values>
@@ -3361,6 +3482,103 @@ null)</formula>
             </values>
             <values>
                 <fullName>Yeloha</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Partner__c</picklist>
+            <values>
+                <fullName>BlueWave Incentive Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Boston Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Service_Territories__c</picklist>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dunwoodie</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hudson Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Millwood</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>N%2EY%2EC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Stage__c</picklist>
+            <values>
+                <fullName>Acquisition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
