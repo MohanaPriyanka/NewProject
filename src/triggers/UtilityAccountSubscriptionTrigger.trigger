@@ -19,13 +19,16 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
             UtilityAccountSubscriptionHandler.assignSSSBeforeUpdate(Trigger.new, Trigger.oldMap);
         } when BEFORE_DELETE {
             ClientReportingService.deleteClientUAS(Trigger.old);
+            UtilityAccountSubscriptionHandler.recalculateCommissionOnInsertOrDelete(Trigger.old);
         } when AFTER_INSERT {
             ClientReportingService.insertClientUAS(Trigger.new);
+            UtilityAccountSubscriptionHandler.recalculateCommissionOnInsertOrDelete(Trigger.new);
             if (Test.isRunningTest() && featureService.isEnabled('Subscription_Orders')) {
                 subscriptionManagementService.createSubscriptionOrdersForTests(Trigger.new);
             }
         } when AFTER_UPDATE {
             CSCancellationService.handleOpportunitiesRemovedFromProject(Trigger.oldMap, Trigger.newMap);
+            UtilityAccountSubscriptionHandler.recalculateCommissionOnUpdate(Trigger.new, Trigger.oldMap);
         }
     }
 }

@@ -92,4 +92,16 @@ public with sharing class OpportunitiesSelectorTest {
         OpportunitiesSelector selector = new OpportunitiesSelector();
         System.assert(selector.getOppsFromSSS(sssIds).size() > 0);
     }
+
+    @IsTest
+    public static void testSelectByIdSet(){
+        Opportunity opp = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Opportunity
+            LIMIT 1
+        ];
+        Set<Id> oppIds = new Set<Id>{opp.Id};
+        OpportunitiesSelector selector = new OpportunitiesSelector();
+        System.assert(selector.selectByIdSet(oppIds).size() > 0);
+    }
 }

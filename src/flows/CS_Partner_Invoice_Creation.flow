@@ -106,15 +106,22 @@
                 <elementReference>varCommissionPaymentType</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sovaComPayments.Commission_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varCommissionPaymentType</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>assign_CPs_to_list</targetReference>
+            <targetReference>Insert_Or_Update</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>assign_CPs_to_list</name>
-        <label>assign CPs to list</label>
-        <locationX>181</locationX>
-        <locationY>1279</locationY>
+        <label>assign CPs to Insert List</label>
+        <locationX>379</locationX>
+        <locationY>1313</locationY>
         <assignmentItems>
             <assignToReference>updatelistCPs</assignToReference>
             <operator>Add</operator>
@@ -124,6 +131,22 @@
         </assignmentItems>
         <connector>
             <targetReference>createCPs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_CPs_to_Update_List</name>
+        <label>Assign CPs to Update List</label>
+        <locationX>371</locationX>
+        <locationY>1485</locationY>
+        <assignmentItems>
+            <assignToReference>UpdateList_CP</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sovaComPayments</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_CP_Records</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -179,6 +202,22 @@
         </assignmentItems>
         <connector>
             <targetReference>assign_total_kw_dc_variable</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_ID</name>
+        <label>Update ID</label>
+        <locationX>186</locationX>
+        <locationY>1485</locationY>
+        <assignmentItems>
+            <assignToReference>sovaComPayments.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>UnapprovedDuplicate.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_CPs_to_Update_List</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -343,6 +382,43 @@
                 </rightValue>
             </conditions>
             <label>First Bill Sent or Paid without Commission Structure</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Insert_Or_Update</name>
+        <label>Insert Or Update</label>
+        <locationX>175</locationX>
+        <locationY>1312</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>InsertRecordOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>UnapprovedDuplicate</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>assign_CPs_to_list</targetReference>
+            </connector>
+            <label>Insert Record</label>
+        </rules>
+        <rules>
+            <name>UpdateRecordOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>UnapprovedDuplicate</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_ID</targetReference>
+            </connector>
+            <label>Update Record</label>
         </rules>
     </decisions>
     <decisions>
@@ -548,24 +624,31 @@ MONTH(TODAY())+1),
     <recordCreates>
         <name>createCPs</name>
         <label>createCPs</label>
-        <locationX>178</locationX>
-        <locationY>1426</locationY>
+        <locationX>544</locationX>
+        <locationY>1313</locationY>
         <inputReference>updatelistCPs</inputReference>
     </recordCreates>
     <recordLookups>
         <name>Duplicate_Commission_Payment_Check</name>
-        <label>Duplicate Commission Payment Check</label>
-        <locationX>178</locationX>
-        <locationY>50</locationY>
+        <label>Approved Duplicates</label>
+        <locationX>140</locationX>
+        <locationY>51</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Commission_Payment_Type</targetReference>
+            <targetReference>Get_Unapproved_Duplicate</targetReference>
         </connector>
         <filters>
             <field>Opportunity__c</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>OpportunityID</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Approved</stringValue>
             </value>
         </filters>
         <filters>
@@ -602,6 +685,41 @@ MONTH(TODAY())+1),
         <queriedFields>Id</queriedFields>
         <queriedFields>Feature_is_Enabled__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>If there is a pending record (ie, one that is not yet approved) for the same opportunity and commission type, update its values instead of inserting a new one</description>
+        <name>Get_Unapproved_Duplicate</name>
+        <label>Unapproved Duplicates</label>
+        <locationX>281</locationX>
+        <locationY>51</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Commission_Payment_Type</targetReference>
+        </connector>
+        <filters>
+            <field>Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>OpportunityID</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Approved</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varCommissionPaymentType</elementReference>
+            </value>
+        </filters>
+        <object>Commission_Payment__c</object>
+        <outputReference>UnapprovedDuplicate</outputReference>
+        <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Invoice_Lookup</name>
@@ -706,7 +824,7 @@ MONTH(TODAY())+1),
     <recordLookups>
         <name>UASLookup</name>
         <label>UASLookup</label>
-        <locationX>498</locationX>
+        <locationX>497</locationX>
         <locationY>234</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -725,6 +843,13 @@ MONTH(TODAY())+1),
         <queriedFields>Opportunity__c</queriedFields>
         <queriedFields>Future_Customer_Subscription_KWDC_Rollup__c</queriedFields>
     </recordLookups>
+    <recordUpdates>
+        <name>Update_CP_Records</name>
+        <label>Update CP Records</label>
+        <locationX>543</locationX>
+        <locationY>1484</locationY>
+        <inputReference>UpdateList_CP</inputReference>
+    </recordUpdates>
     <recordUpdates>
         <description>Updates Opportunity with total future kw dc subscribed from UAS and with the active commission structure</description>
         <name>Update_opp</name>
@@ -757,7 +882,7 @@ MONTH(TODAY())+1),
     </recordUpdates>
     <start>
         <locationX>20</locationX>
-        <locationY>53</locationY>
+        <locationY>51</locationY>
         <connector>
             <targetReference>Duplicate_Commission_Payment_Check</targetReference>
         </connector>
@@ -899,6 +1024,32 @@ If this is a Contract Execution commission payment, then there was no active com
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Utility_Account_Subscription__c</objectType>
+    </variables>
+    <variables>
+        <name>UnapprovedDuplicate</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Commission_Payment__c</objectType>
+    </variables>
+    <variables>
+        <name>UpdateList</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>test</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>UpdateList_CP</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Commission_Payment__c</objectType>
     </variables>
     <variables>
         <name>updatelistCPs</name>
