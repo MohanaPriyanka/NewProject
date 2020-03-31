@@ -165,6 +165,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         List<Case> beforeCases = [
             SELECT Id, Zuora_Payment_Method__c, AccountId
             FROM Case
+            WHERE Zuora_Payment_Method__c != null
         ];
         System.assertEquals(0,beforeCases.size());
 
@@ -181,6 +182,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         List<Case> afterCases = [
             SELECT Id, Zuora_Payment_Method__r.Zuora__External_Id__c, AccountId
             FROM Case
+            WHERE Zuora_Payment_Method__c != null
         ];
 
         System.assertEquals(1, afterCases.size());
