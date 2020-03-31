@@ -100,10 +100,19 @@ public class JournalEntrySelectorTest {
         insert entries;
     }
 
-    @isTest public static void testGetSFJournalEntriesFromExternalId() {
+    @isTest
+    public static void testGetSFJournalEntriesFromExternalId() {
         JournalEntrySelector selector = new JournalEntrySelector();
         Set<String> externalIds = new Set<String>{'2c92c0fa6e3a9391016e3df87b1f687a', '2c92c0fb6e3aa322016e3df698ff7e9f'};
         List<Journal_Entry__c> entries = selector.getSFJournalEntriesFromExternalId(externalIds);
         System.assertEquals(2,entries.size());
+    }
+
+    @isTest
+    public static void testGetEntriesWithoutProductionDetail(){
+        List<String> objectTypes = new List<String>{'InvoiceItem'};
+        JournalEntrySelector selector = new JournalEntrySelector();
+        List<Journal_Entry__c> entries = selector.getEntriesWithoutProductionDetail(objectTypes, 100);
+        System.assertEquals(6,entries.size());
     }
 }

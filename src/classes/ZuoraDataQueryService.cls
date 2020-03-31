@@ -59,6 +59,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public Set<Id> recordIds;
         public Map<String, Integer> optionalIntegers;
         public Set<String> optionalStrings;
+        public Map<String, Boolean> optionalBooleans;
     }
 
     public interface Processor {
