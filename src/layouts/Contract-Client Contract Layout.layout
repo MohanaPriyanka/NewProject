@@ -275,6 +275,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Management_Fee_Trigger__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Management_Fee_Escalator_Percent__c</field>
             </layoutItems>
             <layoutItems>
