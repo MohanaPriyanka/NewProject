@@ -32,7 +32,7 @@
     </values>
     <values>
         <field>datamask__Masking_Category__c</field>
-        <value xsi:type="xsd:string">State</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>datamask__Masking_Object__c</field>
@@ -40,7 +40,7 @@
     </values>
     <values>
         <field>datamask__Masking_Type__c</field>
-        <value xsi:type="xsd:string">Pseudonymize</value>
+        <value xsi:type="xsd:string">Anonymize</value>
     </values>
     <values>
         <field>datamask__Range_Max__c</field>
