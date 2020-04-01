@@ -102,8 +102,8 @@ public with sharing class ZuoraGLSelector {
         if (startDate != null && endDate != null){
             Datetime startTime = DateTime.newInstance(startDate.year(),startDate.month(),startDate.day());
             Datetime endTime = DateTime.newInstance(endDate.year(),endDate.month(),endDate.day());
-            payPartDebitMemoQuery += ' WHERE py.effectiveDate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
-            payPartDebitMemoQuery += ' AND py.effectiveDate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            payPartDebitMemoQuery += ' WHERE p.createddate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
+            payPartDebitMemoQuery += ' AND p.createddate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
             payPartDebitMemoQuery += ' AND py.Status = \'Processed\' ';
         } else {
             payPartDebitMemoQuery += ' WHERE py.Status = \'Processed\' ';
@@ -138,8 +138,8 @@ public with sharing class ZuoraGLSelector {
         if (startDate != null && endDate != null){
             Datetime startTime = DateTime.newInstance(startDate.year(),startDate.month(),startDate.day());
             Datetime endTime = DateTime.newInstance(endDate.year(),endDate.month(),endDate.day());
-            payPartInvoiceQuery += ' WHERE py.effectiveDate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
-            payPartInvoiceQuery += ' AND py.effectiveDate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            payPartInvoiceQuery += ' WHERE p.createddate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
+            payPartInvoiceQuery += ' AND p.createddate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
             payPartInvoiceQuery += ' AND py.Status = \'Processed\' ';
         } else {
             payPartInvoiceQuery += ' WHERE py.Status = \'Processed\' ';
