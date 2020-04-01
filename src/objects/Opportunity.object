@@ -2702,20 +2702,6 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Days_in_Waitlist__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(Waitlist__c == true, today() - datevalue( Date_of_Application__c) , 0)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Days on Waitlist</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Days_since_Contract_Close_to_UCC__c</fullName>
         <externalId>false</externalId>
         <formula>UCC_Filing_Submission_Date__c - Contract_Close_Date__c</formula>
@@ -8436,26 +8422,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>Waitlist_Project__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(Contains(Shared_Solar_System__r.Name, &quot;Waitlist&quot;), TRUE, FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Waitlist Project</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Waitlist__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Waitlist</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Webform_2_Submittal_Date__c</fullName>

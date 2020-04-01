@@ -811,14 +811,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>TestSSSAddReservations</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestSharedSolarSystemAddReservations</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>TestcaseRecordDeleter</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -23457,11 +23449,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Days_in_Waitlist__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Days_since_Contract_Close_to_UCC__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -25178,16 +25165,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.WSJ_Prime_2_75__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Waitlist_Project__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Waitlist__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29303,11 +29280,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Waitlist_Yes_No__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
