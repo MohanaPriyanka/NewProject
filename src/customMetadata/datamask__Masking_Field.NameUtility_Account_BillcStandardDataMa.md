@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Comunity_solar_city__c</label>
+    <label>Name</label>
     <protected>false</protected>
     <values>
         <field>datamask__API_Name__c</field>
-        <value xsi:type="xsd:string">Comunity_solar_city__c</value>
+        <value xsi:type="xsd:string">Name</value>
     </values>
     <values>
         <field>datamask__Active__c</field>
@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>datamask__Custom__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>datamask__Date_Max__c</field>
@@ -24,7 +24,7 @@
     </values>
     <values>
         <field>datamask__Field_Length__c</field>
-        <value xsi:type="xsd:double">20.0</value>
+        <value xsi:type="xsd:double">80.0</value>
     </values>
     <values>
         <field>datamask__Field_Type__c</field>
@@ -36,7 +36,7 @@
     </values>
     <values>
         <field>datamask__Masking_Object__c</field>
-        <value xsi:type="xsd:string">LeadStandardDataMask</value>
+        <value xsi:type="xsd:string">Utility_Account_BillcStandardDataMask</value>
     </values>
     <values>
         <field>datamask__Masking_Type__c</field>
