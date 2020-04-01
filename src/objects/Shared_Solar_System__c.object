@@ -2495,22 +2495,6 @@ null)</formula>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Waitlist_Yes_No__c</fullName>
-        <description>This was made to be used in DocuSign.</description>
-        <externalId>false</externalId>
-        <formula>IF(CONTAINS( Name , &quot;Waitlist&quot;)=true,
-&quot;Yes&quot;,
-&quot;No&quot;)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This was made to be used in DocuSign.</inlineHelpText>
-        <label>XXXWaitlist Yes/No</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Waitlist__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -3954,6 +3938,16 @@ ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
  Apex_Context__c=false /*and the update is not being done in apex*/
 )</errorConditionFormula>
         <errorMessage>To change the system Yield or Size (kW DC), please submit a Shared Solar System Order with the &quot;New Shared Solar System Order&quot; button.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Require_Waitlist_Checkbox</fullName>
+        <active>true</active>
+        <description>If the shared solar system&apos;s name contains Waitlist, you must also check the &quot;Waitlist&quot; checkbox</description>
+        <errorConditionFormula>AND(
+CONTAINS(Name, &quot;Waitlist&quot;),
+NOT(Waitlist__c)
+)</errorConditionFormula>
+        <errorMessage>If the shared solar system&apos;s name contains Waitlist, you must also check the &quot;Waitlist&quot; checkbox</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Utility_Decimals_Requirement</fullName>
