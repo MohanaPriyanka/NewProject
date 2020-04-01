@@ -79,7 +79,7 @@ public class UserHandlerTest {
 			new Shared_Solar_System__c(Name = 'Shared Solar System');
 
 		Shared_Solar_System__c waitlistSSS =
-			new Shared_Solar_System__c(Name = 'Waitlist Project');
+			new Shared_Solar_System__c(Name = 'Waitlist Project', Waitlist__c = true);
 
 		insert new List<Shared_Solar_System__c>{nonWaitlistSSS, waitlistSSS};
 
