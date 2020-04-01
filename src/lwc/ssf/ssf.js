@@ -2,13 +2,16 @@
  * Created by PeterYao on 2/24/2020.
  */
 
-import { LightningElement, track, wire} from 'lwc';
+import { LightningElement, api, track, wire} from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
+import {makeRequest} from 'c/httpRequestService';
 import { getZipCodeCapacity } from 'c/zipCodeService';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 
 export default class Ssf extends NavigationMixin(LightningElement) {
+    @api leadId;
+    @api email;
     @track showSpinner = false;
     @track spinnerMessage;
     @track getZip;
@@ -28,10 +31,33 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         if (!this.utilityOptions) {
             this.utilityOptions = [];
         }
-        this.getZip = true;
+
+        if(this.leadId && this.email) {
+            this.getBasicInfo = true;
+            if(!this.leadJSON) {
+                this.getLead();
+            }
+        } else {
+            this.getZip = true;
+        }
+        
         if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
             this.resiApplicationType = false;
         }
+    }
+
+    getLead() {
+        this.showSpinner = true;
+        this.spinnerMessage = 'Retrieving your application...';
+        let calloutURI = '/apply/services/apexrest/v3/leads?leadId=' + this.leadId + '&email=' + this.email;
+        let options = {
+            headers: {name: 'Content-Type', value:'application/json'}
+        };
+        makeRequest(calloutURI, 'GET', options)
+            .then(resolveResult => {
+                this.showSpinner = false;
+                this.leadJSON = JSON.stringify(resolveResult);
+            })
     }
 
     renderedCallback() {
@@ -79,8 +105,8 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     // Just picking the first one - could be a picklist if we found multiple products (SREC/SMART)
                     this.selectedProduct = this.zipCodeResponse.products[0];
                     const evt = new ShowToastEvent({
-                        title: 'We have capacity for you!',
-                        message: 'Please provide your information to apply',
+                        title: 'Success!',
+                        message: 'Your ZIP Code is eligible.',
                         variant: 'success'
                     });
                     this.dispatchEvent(evt);
@@ -88,7 +114,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     this.getBasicInfo = true;
                 } else {
                     const evt = new ShowToastEvent({
-                        title: 'Sorry, no capacity at this time',
+                        title: 'Sorry, your zip code is not eligible for service at this time',
                         message: 'Please check later',
                         variant: 'warning'
                     });

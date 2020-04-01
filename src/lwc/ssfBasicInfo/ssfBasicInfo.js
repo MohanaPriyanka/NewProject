@@ -150,6 +150,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         const utilityAccountIndex = event.target.name;
         if (selectedItemValue === 'remove') {
             this.utilityAccounts.splice(utilityAccountIndex, 1);
+            this.utilityAccountCount -= 1;
+            setTimeout(() => this.utilityAccountSection = this.utilityAccountCount);
         }
     }
 
