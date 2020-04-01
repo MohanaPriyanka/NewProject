@@ -3724,7 +3724,7 @@ null)</formula>
         </picklistValues>
     </recordTypes>
     <searchLayouts />
-    <sharingModel>Private</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
     <sharingReasons>
         <fullName>Customer_Portal_Access__c</fullName>
         <label>Customer Portal Access</label>
