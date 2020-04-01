@@ -7,6 +7,14 @@
         <value xsi:nil="true"/>
     </values>
     <values>
+        <field>datamask__Feed_History_Deactivated__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>datamask__Field_History_Deactivated__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
         <field>datamask__Id__c</field>
         <value xsi:type="xsd:string">Contact.Email</value>
     </values>
