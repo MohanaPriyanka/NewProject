@@ -21,7 +21,7 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
             ClientReportingService.insertClientUAS(Trigger.new);
             UtilityAccountSubscriptionHandler.recalculateCommissionOnInsertOrDelete(Trigger.new);
             if (Test.isRunningTest() && featureService.isEnabled('Subscription_Orders')) {
-                subscriptionManagementService.createSubscriptionOrdersForTests(Trigger.new);
+                subscriptionManagementService.insertSubscriptionOrdersForTests(Trigger.new);
             }
         } when AFTER_UPDATE {
             CSCancellationService.handleOpportunitiesRemovedFromProject(Trigger.oldMap, Trigger.newMap);
