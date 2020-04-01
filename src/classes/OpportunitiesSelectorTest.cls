@@ -39,6 +39,17 @@ public with sharing class OpportunitiesSelectorTest {
         System.assertNotEquals(null, opportunitiesSelector.selectOpportunityMap(oppIds));
     }
 
+    @IsTest
+    public static void testGetOppsForTestMethods() {
+        List<Opportunity> opps = [SELECT Id FROM Opportunity LIMIT 3];
+        Set<Id> oppIds = new Set<Id>();
+        for (Opportunity opp : opps) {
+            oppIds.add(opp.Id);
+        }
+        OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
+        System.assertNotEquals(null, opportunitiesSelector.getOppsForTestMethods(oppIds));
+    }
+
     @IsTest public static void testCommissionQueries() {
         List<Opportunity> oppList = [
             SELECT Id, AccountId

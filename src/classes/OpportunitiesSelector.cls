@@ -100,7 +100,6 @@ public without sharing class OpportunitiesSelector {
             WHERE Shared_Solar_System__r.Id IN : sssIds
         ];
     }
-
     public List<Opportunity> selectByIdSet(Set<Id> oppIds) {
         return [
             SELECT Id, StageName, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
@@ -110,5 +109,13 @@ public without sharing class OpportunitiesSelector {
             WHERE Id IN : oppIds
         ];
     }
-
+    public Map<Id, Opportunity> getOppsForTestMethods(Set<Id> oppIds) {
+        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
+            SELECT Id, Lead__r.IsConverted, Lead__c
+            FROM Opportunity
+            WHERE Id IN :oppIds
+            AND Lead__r.IsConverted = FALSE
+        ]);
+        return oppMap;
+    }
 }

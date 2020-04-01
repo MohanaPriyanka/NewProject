@@ -58,6 +58,7 @@ public without sharing class CSCancellationService {
     public static void processSubscriptionCancellations(List<Utility_Account_Subscription__c> uasesToMarkInactive) {
         UtilityAccountSubscriptions subscriptions = new UtilityAccountSubscriptions(uasesToMarkInactive);
         subscriptions.removeFromNextScheduleZ();
+        subscriptions.zeroInactiveSubscriptions();
         sendCancellationConfirmationEmails(uasesToMarkInactive);
     }
 
