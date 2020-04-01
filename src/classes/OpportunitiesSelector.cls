@@ -107,4 +107,15 @@ public without sharing class OpportunitiesSelector {
             WHERE Shared_Solar_System__r.Id IN : sssIds
         ];
     }
+
+    public Map<Id, Opportunity> getOppsForTestMethods(Set<Id> oppIds) {
+        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
+            SELECT Id, Lead__r.IsConverted, Lead__c
+            FROM Opportunity
+            WHERE Id IN :oppIds
+            AND Lead__r.IsConverted = FALSE
+        ]);
+        
+        return oppMap;
+    }
 }

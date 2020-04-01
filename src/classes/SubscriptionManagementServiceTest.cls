@@ -271,6 +271,21 @@ private class SubscriptionManagementServiceTest {
 
     }
 
+    @IsTest
+    static void testSubscriptionOrdersForTestSetup() {
+        useMocks(true);
+        UASSelector uasSelector  = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
+        List<Utility_Account_Subscription__c> uasList = uasSelector.selectByOpp(new Set<Id>{'00629000008boJ7AAI'});
+
+        System.assertEquals(2, uasList.size());
+
+        SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
+
+        List<Subscription_Order__c> soList = subscriptionService.createSubscriptionOrdersForTests(uasList);
+
+        System.assertEquals(2, soList.size());
+    }
+
 
     private static void useMocks(Boolean featureOn) {
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
@@ -302,15 +317,15 @@ private class SubscriptionManagementServiceTest {
 
         public override Object handleMethodCall(MethodCall methodCall){
             String systemChangeOrderRecordTypeId = Schema.SObjectType.Subscription_Order__c.getRecordTypeInfosByName().get('System Change Order').getRecordTypeId();
-            String soList ='[{"attributes" : {"type" : "Subscription_Order__c","url" : "/services/data/v47.0/sobjects/Subscription_Order__c/a9S54000003MRquEAG"},' +
-                '"Id" : "a9S54000003MRquEAG",' +
+            String soList ='[{"attributes" : {"type" : "Subscription_Order__c","url" : "/services/data/v47.0/sobjects/Subscription_Order__c/a9W8A0000000xL4UAI"},' +
+                '"Id" : "a9W8A0000000xL4UAI",' +
                 '"Name" : "0001234",' +
                 '"Approval_Status__c" : "Approved",' +
                 '"Calculated_Change_in_Percent_Share_of_Sy__c" : 1.73000,' +
                 '"Calculated_Change_in_Subscription_KW_DC__c" : 25.0000' +
                 '},' +
-                '{"attributes" : {"type" : "Subscription_Order__c","url" : "/services/data/v47.0/sobjects/Subscription_Order__c/a9S54000003MRquEBH"},' +
-                '"Id" : "a9S54000003MRquEBH",' +
+                '{"attributes" : {"type" : "Subscription_Order__c","url" : "/services/data/v47.0/sobjects/Subscription_Order__c/a9W8A0000000xL5UAI"},' +
+                '"Id" : "a9W8A0000000xL5UAI",' +
                 '"Name" : "0005678",' +
                 '"Approval_Status__c" : "Approved",' +
                 '"RecordTypeId" : "' + systemChangeOrderRecordTypeId + '",' +
