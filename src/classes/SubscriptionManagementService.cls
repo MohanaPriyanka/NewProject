@@ -246,6 +246,11 @@ public without sharing class SubscriptionManagementService implements Queueable{
 /*****************************************************************************************************
  * TEST ONLY METHOD TO CREATE SUBSCRIPTION ORDERS EVERY TIME A UAS IS INSERTED IN A TEST SETUP METHOD
  *****************************************************************************************************/
+    public void insertSubscriptionOrdersForTests(List<Utility_Account_Subscription__c> uasList) {
+        List<Subscription_Order__c> soList = createSubscriptionOrdersForTests(uasList);
+        insert soList;
+    }
+
     public List<Subscription_Order__c> createSubscriptionOrdersForTests(List<Utility_Account_Subscription__c> uasList) {
 
         List<Subscription_Order__c> soInserts = new List<Subscription_Order__c>();
@@ -259,7 +264,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
         Map<Id, Opportunity> oppToSOMap = oppSelector.getOppsForTestMethods(oppIds);
 
         for (Utility_Account_Subscription__c uas : uasList) {
-            System.debug('Do we try to get a subscription order? ');
             //Do not want to create "Initial" subscription orders for uases inserted as a result of SSS change on Opp
             if (oppToSOMap.get(uas.Opportunity__c) != null && uas.Subscription_Comment_c__c == null) {
                 Subscription_Order__c so = new Subscription_Order__c(
@@ -277,10 +281,5 @@ public without sharing class SubscriptionManagementService implements Queueable{
             }
         }
         return soInserts;
-    }
-
-    public void insertSubscriptionOrdersForTests(List<Utility_Account_Subscription__c> uasList) {
-        List<Subscription_Order__c> soList = createSubscriptionOrdersForTests(uasList);
-        insert soList;
     }
 }

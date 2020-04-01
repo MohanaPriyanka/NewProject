@@ -18,7 +18,6 @@ public without sharing class OpportunitiesSelector {
             ORDER BY Name
         ];
     }
-
     public static List<Opportunity> selectByIds(List<Id> oppIds) {
         return [
             SELECT Id,
@@ -30,7 +29,6 @@ public without sharing class OpportunitiesSelector {
             WHERE Id IN: oppIds
         ];
     }
-
     public static List<Opportunity> selectAllCompleteCSWithUASes(Set<Id> oppIds) {
         return [
             SELECT Id, Name, Date_Removed_from_Project__c,
@@ -46,8 +44,6 @@ public without sharing class OpportunitiesSelector {
             AND Id = :oppIds
         ];
     }
-
-
     public static Opportunity selectForContractSend(Id opportunityId) {
         return [
             SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
@@ -57,7 +53,6 @@ public without sharing class OpportunitiesSelector {
             LIMIT 1
         ];
     }
-
     public  Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
         Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
             SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.Name
@@ -66,7 +61,6 @@ public without sharing class OpportunitiesSelector {
         ]);
         return oppMap;
     }
-
     public List<Opportunity> selectWithoutFirstInvoiceCommission(Set<Id> accountIds){
         return [
             SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
@@ -76,7 +70,7 @@ public without sharing class OpportunitiesSelector {
             FROM Opportunity
             WHERE Commission_Structure__r.Cents_kW_DC_First_Bill__c != null
             AND Commission_Structure__r.Cents_kW_DC_First_Bill__c != 0
-            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Type__c = 'First Bill Sent')
+            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = 'First Bill Sent')
             AND Account.Zuora_Id__c != null
             AND Shared_Solar_System__r.Count_of_Transfers__c > 0
             AND AccountId IN : accountIds
@@ -91,13 +85,12 @@ public without sharing class OpportunitiesSelector {
             FROM Opportunity
             WHERE Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != null
             AND Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != 0
-            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Type__c = 'First Bill Paid')
+            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = 'First Bill Paid')
             AND Account.Zuora_Id__c != null
             AND Shared_Solar_System__r.Count_of_Transfers__c > 0
             AND AccountId IN : accountIds
         ];
     }
-
     public List<Opportunity> getOppsFromSSS(Set<Id> sssIds) {
         return [
             SELECT Id, Name,
@@ -107,7 +100,16 @@ public without sharing class OpportunitiesSelector {
             WHERE Shared_Solar_System__r.Id IN : sssIds
         ];
     }
-
+    public List<Opportunity> selectByIdSet(Set<Id> oppIds) {
+        return [
+            SELECT Id, StageName, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
+                CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_Up_Front__c, Product__c,
+                Commission_Structure__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name
+            FROM Opportunity
+            WHERE Id IN : oppIds
+        ];
+    }
+      
     public Map<Id, Opportunity> getOppsForTestMethods(Set<Id> oppIds) {
         Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
             SELECT Id, Lead__r.IsConverted, Lead__c
@@ -115,7 +117,6 @@ public without sharing class OpportunitiesSelector {
             WHERE Id IN :oppIds
             AND Lead__r.IsConverted = FALSE
         ]);
-        
         return oppMap;
     }
 }
