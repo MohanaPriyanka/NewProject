@@ -2056,6 +2056,19 @@ TEXT(DAY(Commencement_Date__c))
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Conga_Contract_Id__c</fullName>
+        <description>Pulls in the Conga template IDs used to generate the countersigned version of SSF contracts. Needed because lookupfields can&apos;t be referenced in buttons.</description>
+        <externalId>false</externalId>
+        <formula>Product__r.Opp_Conga_Template_Id_s__c</formula>
+        <inlineHelpText>Pulls in the Conga template IDs used to generate the countersigned version of SSF contracts. Needed because lookupfields can&apos;t be referenced in buttons.</inlineHelpText>
+        <label>Conga Contract Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Conga_Letter_Send__c</fullName>
         <externalId>false</externalId>
         <formula>&quot;&amp;solmgr=1&quot; + 
@@ -10064,6 +10077,37 @@ OppId={!Opportunity.Id}
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
         <url>https://www.timevalue.com/tcalc-financial-calculators/overview?LOANAMOUNT={!Opportunity.Loan_Principle__c}&amp;DOWNPAYMENT=0.00&amp;PAYMENTAMOUNT={!Opportunity.Monthly_Payment__c}&amp;TERM={!Opportunity.Number_of_Periods_Months__c}&amp;TERM_UNITS=Months&amp;SHOWAMORTIZATIONSCHEDULE=on&amp;COMPUTE=COMPUTE&amp;CALCULATORID=PC07&amp;TEMPLATE_ID=www.timevalue.com_29&amp;PostBack=true#results</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Countersign_and_Send_SSF</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Countersign and Send SSF</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>https://composer.congamerge.com
+?SessionId={!API.Session_ID}
+&amp;ServerUrl={!API.Partner_Server_URL_210}
+&amp;Id={!Opportunity.Id}
+&amp;TemplateId={!Opportunity.Conga_Contract_Id__c}
+&amp;QueryId=[UAS]{!Environment.conga_query_ssf_countersignUAS},[Biz]{!Environment.Conga_Query_SSF_CountersignGuarantor},[SSS]{!Environment.conga_query_ssf_countersignSSS},[Lead]{!Environment.Conga_query_SSF_CountersignLead}
+&amp;SC1=SalesforceFile
+&amp;DefaultPDF=1
+&amp;SC0=1
+&amp;APDF=0
+&amp;EmailTemplateId={!Environment.Conga_emailtemplate_SSFCountersigned}
+&amp;EmailRelatedToId={!Opportunity.Id}
+&amp;EmailFromId=0D20a0000004K0P
+&amp;qmode=SendEmail
+&amp;UF0=1
+&amp;MFTS0=StageName
+&amp;MFTSValue0=Complete
+&amp;MFTS1=Contract_Close_Date__c
+&amp;MFTSValue1=TODAY
+&amp;EC={!IF($Permission.CS_BW_CounterSignature,1,0)}
+&amp;ECL=You+do+not+have+permission+to+countersign+for+BlueWave</url>
     </webLinks>
     <webLinks>
         <fullName>Create_Loan_Button</fullName>

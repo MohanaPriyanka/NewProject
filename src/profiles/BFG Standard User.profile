@@ -16180,6 +16180,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Management_Fee_Trigger__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Management_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31755,6 +31760,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.Conga_Contract_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.Conga_Letter_Send__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -35161,6 +35171,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.NM_Rate_Floor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.Opp_Conga_Template_Id_s__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -63027,7 +63042,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Contract.General_Contract</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -65094,10 +65108,6 @@
         <name>ManageCustomReportTypes</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageDashbdsInPubFolders</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManageDynamicDashboards</name>
     </userPermissions>
@@ -65108,10 +65118,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageLeads</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageReportsInPubFolders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -65216,14 +65222,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewMyTeamsDashboards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewPublicDashboards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewPublicReports</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

@@ -219,15 +219,15 @@ public without sharing class SubscriptionManagementService implements Queueable{
             upsertUASes.add(uas);
         }
 
-        soInsertList.addAll(zeroSubscriptions(uasList));
+        soInsertList.addAll(zeroSubscriptions(uasList, 'Transfer'));
     }
 
-    private List<Subscription_Order__c> zeroSubscriptions(List<Utility_Account_Subscription__c> uasList) {
+    public List<Subscription_Order__c> zeroSubscriptions(List<Utility_Account_Subscription__c> uasList, String zeroType) {
         List<Subscription_Order__c> zeroedSOs = new List<Subscription_Order__c>();
 
         for (Utility_Account_Subscription__c uas : uasList) {
             Subscription_Order__c zeroedSO = new Subscription_Order__c(
-                Type__c = 'Transfer',
+                Type__c = zeroType,
                 Approval_Status__c = 'Approved',
                 Effective_Date__c = System.today(),
                 Utility_Account_Subscription__c = uas.Id,
@@ -246,7 +246,12 @@ public without sharing class SubscriptionManagementService implements Queueable{
 /*****************************************************************************************************
  * TEST ONLY METHOD TO CREATE SUBSCRIPTION ORDERS EVERY TIME A UAS IS INSERTED IN A TEST SETUP METHOD
  *****************************************************************************************************/
-    public void createSubscriptionOrdersForTests(List<Utility_Account_Subscription__c> uasList) {
+    public void insertSubscriptionOrdersForTests(List<Utility_Account_Subscription__c> uasList) {
+        List<Subscription_Order__c> soList = createSubscriptionOrdersForTests(uasList);
+        insert soList;
+    }
+
+    public List<Subscription_Order__c> createSubscriptionOrdersForTests(List<Utility_Account_Subscription__c> uasList) {
 
         List<Subscription_Order__c> soInserts = new List<Subscription_Order__c>();
         Set<Id> oppIds = new Set<Id>();
@@ -256,12 +261,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
             oppIds.add(uas.Opportunity__c);
         }
 
-        Map<Id, Opportunity> oppToSOMap = new Map<Id, Opportunity>([
-            SELECT Id, Lead__r.IsConverted, Lead__c
-            FROM Opportunity
-            WHERE Id IN :oppIds
-            AND Lead__r.IsConverted = FALSE
-        ]);
+        Map<Id, Opportunity> oppToSOMap = oppSelector.getOppsForTestMethods(oppIds);
 
         for (Utility_Account_Subscription__c uas : uasList) {
             //Do not want to create "Initial" subscription orders for uases inserted as a result of SSS change on Opp
@@ -280,7 +280,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 soInserts.add(so);
             }
         }
-
-        insert soInserts;
+        return soInserts;
     }
 }
