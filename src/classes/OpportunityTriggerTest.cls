@@ -275,7 +275,7 @@ public with sharing class OpportunityTriggerTest {
         FeatureService checkFeature = new FeatureService();
         if (!checkFeature.isEnabled('Subscription_Orders')) {
             SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
-            subscriptionService.createSubscriptionOrdersForTests(uasList);
+            subscriptionService.insertSubscriptionOrdersForTests(uasList);
             uasList = [
                 SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c
                 FROM Utility_Account_Subscription__c
