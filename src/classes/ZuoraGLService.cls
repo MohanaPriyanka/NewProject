@@ -13,7 +13,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
     public void execute(SchedulableContext ctx){
         Date today = System.today();
         if (daysToLookBack == null){
-            daysToLookBack = 30;
+            daysToLookBack = 60;
         }
         getAllDataFromZuora(today.addDays(-1*daysToLookBack), today);
     }
