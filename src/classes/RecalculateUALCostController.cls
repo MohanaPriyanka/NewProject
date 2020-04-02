@@ -50,7 +50,7 @@ public without sharing class RecalculateUALCostController {
         //If ScheduleZ_Filed__c == true
         //    - Checkbox to mark (Confirm deduction to Schedule Z Filed System)
 
-
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public RecalculateUALCostController(){
         uasActionList = new List<UASAction>();
         this.ualId = ApexPages.currentPage().getParameters().get('id');
@@ -62,7 +62,6 @@ public without sharing class RecalculateUALCostController {
         }
 
         //Query data and check the total Annual Cost of Electricity
-        //TODO: need to change field based on SO Flag
         Utility_Account_Log__c ual = [
             SELECT Id, Name, Annual_Cost_of_Electricity__c, Cost_not_yet_Allocated__c, Annual_kWh__c,
                 Subscribed_Annual_kWhs__c, Lead__r.Product__r.Customer_Subscription_Type__c, Proposed_kWh__c,
@@ -108,6 +107,7 @@ public without sharing class RecalculateUALCostController {
         getSubscriptionLists(true);
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public PageReference updateCustomDeductionOrder() {
         List<Utility_Account_Subscription__c> customDeductionUASList = new List<Utility_Account_Subscription__c>();
         for (UASAction uasAction : uasActionList) {
@@ -132,7 +132,8 @@ public without sharing class RecalculateUALCostController {
     // If system is Closed, Order By Subscription size (Smallest First), then randomize for equal subscriptions.
     // 
     // If not sorting by the default sort order, sort by Custom Deduction Order
-    
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     private List<Utility_Account_Subscription__c> getUASList(boolean defaultSortOrder){
         String query = 
             'SELECT Id, Name, ' +
@@ -229,6 +230,7 @@ public without sharing class RecalculateUALCostController {
         return availableCapacity;
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public PageReference processDeduction(){
         Decimal remainingBalance = adjustmentAmount;
         List<Utility_Account_Subscription__c> uasToUpdate = new List<Utility_Account_Subscription__c>();

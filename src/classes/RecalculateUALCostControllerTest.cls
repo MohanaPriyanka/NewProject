@@ -49,6 +49,7 @@ public class RecalculateUALCostControllerTest {
         update accounts;
     }
 
+    @SuppressWarnings('PMD.AvoidSoqlInLoops')
     @isTest static void testMethodOne() {
         Utility_Account_Log__c ual = [SELECT Id
                                       FROM Utility_Account_Log__c
