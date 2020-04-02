@@ -186,15 +186,6 @@ public class RecalculateUALCostControllerTest {
                              WHERE Id = :sssToKeepAsClosedId];
         System.assertEquals(false, sssToKeepAsClosed.Open__c);
 
-        // Check that Subscription Annual Cost is updated for everything
-        // except the one Schedule Z Filed subscription for which we 
-        // didn't update the action
-        List<Utility_Account_Subscription__c> ualList = 
-            [SELECT Id, Name, Subscribed_Annual_Cost_of_Electricity__c,
-             Custom_Deduction_Order__c
-             FROM Utility_Account_Subscription__c
-             WHERE Utility_Account_Log__c = :ual.Id
-             AND Subscribed_Annual_Cost_of_Electricity__c > 0];
     }
 
     @isTest static void testCustomDeductionOrderByCost() {
@@ -368,12 +359,19 @@ public class RecalculateUALCostControllerTest {
 
     @isTest static void testCustomDeductionOrderBykWH() {
         Utility_Account_Log__c ual = [
-            SELECT Id, Subscribed_Annual_kWhs__c, Proposed_kWh__c
+            SELECT Id, Subscribed_Annual_kWhs__c, Proposed_kWh__c,
+                Subscribed_Annual_kWhs_Rollup__c
             FROM Utility_Account_Log__c
             WHERE Name_on_Account__c = 'Johnny Bravo'
         ];
 
-        System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs__c);
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs_Rollup__c);
+        } else {
+            System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs__c);
+        }
+
         System.assertEquals(00, ual.Proposed_kWh__c);
 
         Test.startTest();
@@ -455,11 +453,17 @@ public class RecalculateUALCostControllerTest {
     }
 
     @isTest static void testCustomIncreaseOrderBykWh() {
-        Utility_Account_Log__c ual = [SELECT Id, Subscribed_Annual_kWhs__c
+        Utility_Account_Log__c ual = [SELECT Id, Subscribed_Annual_kWhs__c, Subscribed_Annual_kWhs_Rollup__c
                                       FROM Utility_Account_Log__c
                                       WHERE Name_on_Account__c = 'Johnny Bravo'];
 
-        System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs__c);
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs_Rollup__c);
+        } else {
+            System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs__c);
+        }
+
         ual.Proposed_kWh__c = 320000; // 320000 - 283000 = 37000
         update ual;
 
@@ -543,7 +547,7 @@ public class RecalculateUALCostControllerTest {
 
     @isTest static void testSubscriptionErrors() {
         // get a UAL that doesn't have a product
-        Utility_Account_Log__c ual = [SELECT Id, Subscribed_Annual_kWhs__c
+        Utility_Account_Log__c ual = [SELECT Id, Subscribed_Annual_kWhs__c, Subscribed_Annual_kWhs_Rollup__c
                                       FROM Utility_Account_Log__c
                                       WHERE Name_on_Account__c = 'Anchor UAL'];
 
@@ -563,7 +567,7 @@ public class RecalculateUALCostControllerTest {
 
 
         ual = [
-            SELECT Id, Subscribed_Annual_kWhs__c,
+            SELECT Id, Subscribed_Annual_kWhs__c, Subscribed_Annual_kWhs_Rollup__c,
                 (SELECT Id, Opportunity__r.Product__c
                 FROM Utility_Account_Subscriptions__r
                 ORDER BY Opportunity__r.Name ASC)
