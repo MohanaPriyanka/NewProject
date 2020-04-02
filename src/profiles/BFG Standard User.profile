@@ -1363,14 +1363,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LeaseDimensionsImportController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LeaseDimensionsImportControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LetterStreamAPIMock</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3240,14 +3232,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TestRESTController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestSSSAddReservations</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestSharedSolarSystemAddReservations</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -16180,6 +16164,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract.Management_Fee_Escalator_Percent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Management_Fee_Trigger__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31759,6 +31748,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.Conga_Contract_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.Conga_Letter_Send__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31960,11 +31954,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Days_Since_Application_Receipt__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Days_in_Waitlist__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -33693,16 +33682,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Waitlist_Project__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Waitlist__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Webform_2_Submittal_Date__c</field>
         <readable>true</readable>
@@ -35165,6 +35144,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.NM_Rate_Floor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.Opp_Conga_Template_Id_s__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37905,11 +37889,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Waitlist_Yes_No__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -56662,6 +56641,15 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Client_Health_Report__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
@@ -63022,7 +63010,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Contract.General_Contract</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -64914,6 +64901,10 @@
     <userLicense>Salesforce</userLicense>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ActivateContract</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>ActivitiesAccess</name>
     </userPermissions>
     <userPermissions>
@@ -65086,10 +65077,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ManageDashbdsInPubFolders</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ManageDynamicDashboards</name>
     </userPermissions>
     <userPermissions>
@@ -65099,10 +65086,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageLeads</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ManageReportsInPubFolders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -65207,14 +65190,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewMyTeamsDashboards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ViewPublicDashboards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ViewPublicReports</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

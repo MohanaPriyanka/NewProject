@@ -35,7 +35,19 @@ public with sharing class OpportunitiesSelectorTest {
         for (Opportunity opp : opps) {
             oppIds.add(opp.Id);
         }
-        System.assertNotEquals(null, OpportunitiesSelector.selectOpportunityMap(oppIds));
+        OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
+        System.assertNotEquals(null, opportunitiesSelector.selectOpportunityMap(oppIds));
+    }
+
+    @IsTest
+    public static void testGetOppsForTestMethods() {
+        List<Opportunity> opps = [SELECT Id FROM Opportunity LIMIT 3];
+        Set<Id> oppIds = new Set<Id>();
+        for (Opportunity opp : opps) {
+            oppIds.add(opp.Id);
+        }
+        OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
+        System.assertNotEquals(null, opportunitiesSelector.getOppsForTestMethods(oppIds));
     }
 
     @IsTest public static void testCommissionQueries() {
@@ -82,5 +94,17 @@ public with sharing class OpportunitiesSelectorTest {
         sssIds.add(opp.Shared_Solar_System__c);
         OpportunitiesSelector selector = new OpportunitiesSelector();
         System.assert(selector.getOppsFromSSS(sssIds).size() > 0);
+    }
+
+    @IsTest
+    public static void testSelectByIdSet(){
+        Opportunity opp = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Opportunity
+            LIMIT 1
+        ];
+        Set<Id> oppIds = new Set<Id>{opp.Id};
+        OpportunitiesSelector selector = new OpportunitiesSelector();
+        System.assert(selector.selectByIdSet(oppIds).size() > 0);
     }
 }

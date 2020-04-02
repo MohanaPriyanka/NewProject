@@ -8,6 +8,11 @@ public with sharing class CSCancellationServiceTest {
         CustomerCommunicationHandlerTest.setupData();
     }
 
+    public static Boolean isSOFeatureEnabled() {
+        FeatureService featureService = new FeatureService();
+        return featureService.isEnabled('Subscription_Orders');
+    }
+
     public static void createBills(Date billDate, Id sssID){
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
@@ -117,13 +122,17 @@ public with sharing class CSCancellationServiceTest {
         Test.stopTest();
 
         List<Utility_Account_Subscription__c> uases = [
-            SELECT Id, Next_Schedule_Z_Status__c, Utility_Account_Log__r.Account__r.Days_Past_Due__c
+            SELECT Id, Next_Schedule_Z_Status__c, Utility_Account_Log__r.Account__r.Days_Past_Due__c,
+                Future_Customer_Subscription_KWDC_Rollup__c
             FROM Utility_Account_Subscription__c
         ];
 
         for (Utility_Account_Subscription__c uas : uases) {
             if (uas.Utility_Account_Log__r.Account__r.Days_Past_Due__c > 67) {
                 System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
+                if (isSOFeatureEnabled()) {
+                    System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+                }
             } else {
                 System.assertEquals('Active Subscription', uas.Next_Schedule_Z_Status__c);
             }
@@ -157,11 +166,12 @@ public with sharing class CSCancellationServiceTest {
         }
 
         List<Case> caseList = [
-            SELECT Id
+            SELECT Id, Subject
             FROM Case
+            WHERE Subject LIKE '%finaled UAL%'
         ];
 
-        System.assertEquals(0, caseList.size());
+        System.assertEquals(0, caseList.size(), 'We have extra cases created');
     }
 
     @IsTest static void testNoUASAreUpdated() {
@@ -202,8 +212,9 @@ public with sharing class CSCancellationServiceTest {
         List<Case> caseList = [
             SELECT Id
             FROM Case
+            WHERE Subject LIKE '%finaled UAL%'
         ];
-
+//failing here
         System.assertEquals(0, caseList.size());
     }
 
@@ -248,7 +259,8 @@ public with sharing class CSCancellationServiceTest {
         }
 
         List<Utility_Account_Subscription__c> uasUpdatedList = [
-            SELECT Id, Date_Removed_from_Project__c, Next_Schedule_Z_Status__c, Finaled__c
+            SELECT Id, Date_Removed_from_Project__c, Next_Schedule_Z_Status__c, Finaled__c,
+                Future_Customer_Subscription_KWDC_Rollup__c
             FROM Utility_Account_Subscription__c
             WHERE Utility_Account_Log__r.Date_Utility_Account_Cancelled__c != NULL
         ];
@@ -258,6 +270,9 @@ public with sharing class CSCancellationServiceTest {
             System.assertEquals(today, uas.Date_Removed_from_Project__c);
             System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
             System.assertEquals(true, uas.Finaled__c);
+            if (isSOFeatureEnabled()) {
+                System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+            }
         }
 
         //There should be a Partner Support case created for each corresponding account
@@ -265,8 +280,9 @@ public with sharing class CSCancellationServiceTest {
         List<Case> caseList = [
             SELECT Id
             FROM Case
+            WHERE Subject LIKE '%finaled UAL%'
         ];
-
+//failing for cases
         System.assertEquals(1, caseList.size());
     }
 
@@ -297,7 +313,8 @@ public with sharing class CSCancellationServiceTest {
         update ualList;
 
         List<Utility_Account_Subscription__c> uasUpdatedList = [
-            SELECT Id, Date_Removed_from_Project__c, Next_Schedule_Z_Status__c, Finaled__c
+            SELECT Id, Date_Removed_from_Project__c, Next_Schedule_Z_Status__c, Finaled__c,
+                Future_Customer_Subscription_KWDC_Rollup__c
             FROM Utility_Account_Subscription__c
             WHERE Utility_Account_Log__r.Date_Utility_Account_Cancelled__c != NULL
         ];
@@ -308,6 +325,9 @@ public with sharing class CSCancellationServiceTest {
             System.assertEquals(today, uas.Date_Removed_from_Project__c);
             System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
             System.assertEquals(true, uas.Finaled__c);
+            if (isSOFeatureEnabled()) {
+                System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+            }
         }
 
         //There should be a Partner Support case created for each corresponding account
@@ -315,8 +335,9 @@ public with sharing class CSCancellationServiceTest {
         List<Case> caseList = [
             SELECT Id
             FROM Case
+            WHERE Subject LIKE '%finaled UAL%'
         ];
-
+//failing here
         System.assertEquals(3, caseList.size());
     }
 

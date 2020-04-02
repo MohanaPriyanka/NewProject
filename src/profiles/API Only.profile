@@ -415,6 +415,22 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>JournalEntrySelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>JournalEntrySelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>JournalEntryService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>JournalEntryServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>LREngine</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -432,14 +448,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LeadsLZUTriggerTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LeaseDimensionsImportController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LeaseDimensionsImportControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -619,6 +627,26 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProductionDetailSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionDetailSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionToBillScheduler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionToBillService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionToBillServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>QueueableApplicationReview</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -783,14 +811,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>TestSSSAddReservations</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestSharedSolarSystemAddReservations</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>TestcaseRecordDeleter</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -880,6 +900,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraAPIMock</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraDataQueryService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -9791,6 +9815,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Invoice__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Journal_Entry__c.Ready_for_Production_Detail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23215,6 +23244,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.Conga_Contract_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.Conga_Letter_Send__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -23411,11 +23445,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Days_Since_Application_Receipt__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Days_in_Waitlist__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -25139,16 +25168,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Waitlist_Project__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Waitlist__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Webform_2_Submittal_Date__c</field>
         <readable>true</readable>
@@ -26576,6 +26595,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.NM_Rate_Floor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Opp_Conga_Template_Id_s__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29260,11 +29284,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Waitlist_Yes_No__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Waitlist__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -31086,6 +31105,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Transaction_Application__c.Transaction__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer_Part__c.Bill_Part__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -48110,6 +48134,15 @@
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Client_Health_Report__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
@@ -53606,10 +53639,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ModerateChatter</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ModifyAllData</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

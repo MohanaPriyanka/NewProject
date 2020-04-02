@@ -220,7 +220,7 @@ public with sharing class OpportunityTriggerTest {
         ];
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Opportunity__c, Name, Annual_kWh_Subscription_Future_Rollup__c, Future_Customer_Subscription_KWDC_Rollup__c,
-                Subscription_Type__c, Annual_kwh_subscription_future__c, Subscribed_Annual_Cost_of_Electricity__c
+                Subscription_Type__c, Annual_kwh_subscription_future__c, Subscribed_Annual_Cost_of_Electricity__c, Subscription_Comment_c__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Name = :opp.Name
             ORDER BY Name
@@ -228,7 +228,7 @@ public with sharing class OpportunityTriggerTest {
         FeatureService checkFeature = new FeatureService();
         if (!checkFeature.isEnabled('Subscription_Orders')) {
             SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
-            subscriptionService.createSubscriptionOrdersForTests(uasList);
+            subscriptionService.insertSubscriptionOrdersForTests(uasList);
             uasList = [
                 SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c
                 FROM Utility_Account_Subscription__c

@@ -1467,6 +1467,22 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>JournalEntrySelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>JournalEntrySelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>JournalEntryService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>JournalEntryServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>LASERCA__CBCUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1636,14 +1652,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LeadsLZUTriggerTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LeaseDimensionsImportController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LeaseDimensionsImportControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -3195,8 +3203,24 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MetadataService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MetadataServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>MockProvider</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MultiMap</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MultiMapTest</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>MultipleMonthProductionUpdateTest</apexClass>
@@ -3355,6 +3379,26 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProductionDetailSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionDetailSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionToBillScheduler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionToBillService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionToBillServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProductionUpdateSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3405,6 +3449,14 @@
     <classAccesses>
         <apexClass>ReferralCodeHandlerTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ReportFolderAuditor</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ReportFolderAuditorTest</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ReportSender</apexClass>
@@ -3555,6 +3607,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SystemSettingsSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SystemSettingsSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>TaskHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3584,14 +3644,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TestRESTController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestSSSAddReservations</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestSharedSolarSystemAddReservations</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -3645,6 +3697,14 @@
     <classAccesses>
         <apexClass>UASTestClass</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UserAndGroupSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UserAndGroupSelectorTest</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>UserHandler</apexClass>
@@ -21053,6 +21113,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Management_Fee_Trigger__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Management_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -23564,6 +23629,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Journal_Entry__c.Project__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Journal_Entry__c.Ready_for_Production_Detail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36923,6 +36993,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.Conga_Contract_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.Conga_Letter_Send__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -37114,11 +37189,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Days_Since_Application_Receipt__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Days_in_Waitlist__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38767,16 +38837,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Waitlist_Project__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Waitlist__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Webform_2_Submittal_Date__c</field>
         <readable>true</readable>
@@ -40273,6 +40333,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Opp_Conga_Template_Id_s__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.Percent_Share_Decimal_Places__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -40753,7 +40818,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Production__c.Credits_Paid__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Production__c.Credits_Transferred__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Production__c.Customer_Savings__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -40779,6 +40854,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Production__c.Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Production__c.Unbilled_Credits__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Production__c.Unpaid_Credits__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -43177,11 +43262,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Waitlist_Yes_No__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Waitlist__c</field>
         <readable>true</readable>
@@ -44532,6 +44612,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Settings__c.Reports_Shared_to_Portal__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Task.ActivityDate</field>
         <readable>true</readable>
@@ -45004,6 +45089,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Transfer_Part__c.Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer_Part__c.Bill_Part__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -65829,6 +65919,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>System_Bill__c-System Bill Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>System_Settings__c-System Settings Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Customer Care Task</layout>

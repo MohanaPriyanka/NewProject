@@ -29,10 +29,11 @@ public class JournalEntryServiceTest {
 
         // Even if it hits failure, entries should still be inserted:
         List<Journal_Entry__c> afterEntries = [
-            SELECT Id
+            SELECT Id, Ready_for_Production_Detail__c
             FROM Journal_Entry__c
         ];
         System.assertEquals(6, afterEntries.size());
+        System.assert(afterEntries[3].Ready_for_Production_Detail__c);
     }
 
     @isTest
@@ -65,10 +66,11 @@ public class JournalEntryServiceTest {
 
         // Even if it hits failure, entries should still be inserted:
         List<Journal_Entry__c> afterEntries = [
-            SELECT Id
+            SELECT Id, Ready_for_Production_Detail__c
             FROM Journal_Entry__c
         ];
         System.assertEquals(6, afterEntries.size());
+        System.assert(!afterEntries[3].Ready_for_Production_Detail__c);
     }
 
     @isTest

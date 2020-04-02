@@ -56,7 +56,7 @@
                 <template if:true={item.isMatch}>
                     <tr key={item.Uniqueid} class="slds-theme_shade">
                         <td class="slds-p-around--xx-small">{item.customername}</td>
-                        <td class="slds-p-around--xx-small">{item.sfutilityaccount}</td>
+                        <td class="slds-p-around--xx-small">{item.finaled}{item.sfutilityaccount}</td>
                         <td class="slds-p-around--xx-small">{item.sfproduction}</td>
                         <td class="slds-p-around--xx-small">{item.sfcredits}</td>
                         <td class="slds-p-around--xx-small">{item.sfcreditvalue}</td>
@@ -73,7 +73,7 @@
                 <template if:true={item.isCreditMismatch}>
                     <tr key={item.Uniqueid} class="slds-theme_shade slds-theme_warning">
                         <td class="slds-p-around--xx-small">{item.customername}</td>
-                        <td class="slds-p-around--xx-small">{item.sfutilityaccount}</td>
+                        <td class="slds-p-around--xx-small">{item.finaled}{item.sfutilityaccount}</td>
                         <td class="slds-p-around--xx-small">{item.sfproduction}</td>
                         <td class="slds-p-around--xx-small">{item.sfcredits}</td>
                         <td class="slds-p-around--xx-small">{item.sfcreditvalue}</td>
@@ -94,7 +94,7 @@
                 <template if:true={item.isMissingBill}>
                     <tr key={item.Uniqueid} class="slds-theme_shade">
                         <td class="slds-p-around--xx-small slds-theme_error">{item.customername}</td>
-                        <td class="slds-p-around--xx-small slds-theme_error">{item.sfutilityaccount}</td>
+                        <td class="slds-p-around--xx-small slds-theme_error">{item.finaled}{item.sfutilityaccount}</td>
                         <td class="slds-p-around--xx-small slds-theme_error">{item.sfproduction}</td>
                         <td class="slds-p-around--xx-small slds-theme_error">{item.sfcredits}</td>
                         <td class="slds-p-around--xx-small slds-theme_error">{item.sfcreditvalue}</td>
@@ -114,7 +114,7 @@
                 <template if:true={item.isMissingTransfer}>
                     <tr key={item.Uniqueid} class="slds-theme_shade">
                         <td class="slds-p-around--xx-small">{item.customername}</td>
-                        <td class="slds-p-around--xx-small">{item.sfutilityaccount}</td>
+                        <td class="slds-p-around--xx-small">{item.finaled}{item.sfutilityaccount}</td>
                         <td class="slds-p-around--xx-small">{item.sfproduction}</td>
                         <td class="slds-p-around--xx-small">{item.sfcredits}</td>
                         <td class="slds-p-around--xx-small">{item.sfcreditvalue}</td>

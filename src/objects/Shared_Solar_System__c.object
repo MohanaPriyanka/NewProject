@@ -129,11 +129,14 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <type>Default</type>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Shared_Solar_System_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <formFactor>Large</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -154,6 +157,7 @@
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
@@ -1841,11 +1845,6 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Energy Consulting Associates</label>
                 </value>
                 <value>
-                    <fullName>Energy Partner Consultants</fullName>
-                    <default>false</default>
-                    <label>Energy Partner Consultants</label>
-                </value>
-                <value>
                     <fullName>EnergySage</fullName>
                     <default>false</default>
                     <label>EnergySage</label>
@@ -1854,11 +1853,6 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>First Parish in Wayland</fullName>
                     <default>false</default>
                     <label>First Parish in Wayland</label>
-                </value>
-                <value>
-                    <fullName>Global Energy Development LLC</fullName>
-                    <default>false</default>
-                    <label>Global Energy Development LLC</label>
                 </value>
                 <value>
                     <fullName>Grace Episcopal Church</fullName>
@@ -1899,11 +1893,6 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Next Step Living</fullName>
                     <default>false</default>
                     <label>Next Step Living</label>
-                </value>
-                <value>
-                    <fullName>Other Test Partner</fullName>
-                    <default>false</default>
-                    <label>Other Test Partner</label>
                 </value>
                 <value>
                     <fullName>Palmetto Solar</fullName>
@@ -2034,6 +2023,32 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Yeloha</fullName>
                     <default>false</default>
                     <label>Yeloha</label>
+                </value>
+                <value>
+                    <fullName>Global Energy Development LLC</fullName>
+                    <default>false</default>
+                    <label>Global Energy Development LLC</label>
+                </value>
+                <value>
+                    <fullName>Energy Partner Consultants</fullName>
+                    <default>false</default>
+                    <label>Energy Partner Consultants</label>
+                </value>
+                <value>
+                    <fullName>Power Play Energy</fullName>
+                    <default>false</default>
+                    <label>Power Play Energy</label>
+                </value>
+                <value>
+                    <fullName>Beacon Energy Solutions LLC</fullName>
+                    <default>false</default>
+                    <label>Beacon Energy Solutions LLC</label>
+                </value>
+                <value>
+                    <fullName>Other Test Partner</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Other Test Partner</label>
                 </value>
                 <value>
                     <fullName>Oxford100</fullName>
@@ -2480,22 +2495,6 @@ null)</formula>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Waitlist_Yes_No__c</fullName>
-        <description>This was made to be used in DocuSign.</description>
-        <externalId>false</externalId>
-        <formula>IF(CONTAINS( Name , &quot;Waitlist&quot;)=true,
-&quot;Yes&quot;,
-&quot;No&quot;)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This was made to be used in DocuSign.</inlineHelpText>
-        <label>XXXWaitlist Yes/No</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Waitlist__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -2779,11 +2778,19 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>All Care Energy Inc%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Arcadia Power</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Barbara Cerullo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Beacon Energy Solutions LLC</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2891,6 +2898,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Power Play Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Quest Energy Solutions</fullName>
                 <default>false</default>
             </values>
@@ -2980,6 +2991,103 @@ null)</formula>
             </values>
             <values>
                 <fullName>Yeloha</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Partner__c</picklist>
+            <values>
+                <fullName>BlueWave Incentive Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Boston Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Service_Territories__c</picklist>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dunwoodie</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hudson Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Millwood</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>N%2EY%2EC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Stage__c</picklist>
+            <values>
+                <fullName>Acquisition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3152,11 +3260,19 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>All Care Energy Inc%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Arcadia Power</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Barbara Cerullo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Beacon Energy Solutions LLC</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -3260,6 +3376,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Power Play Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Quest Energy Solutions</fullName>
                 <default>false</default>
             </values>
@@ -3349,6 +3469,103 @@ null)</formula>
             </values>
             <values>
                 <fullName>Yeloha</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Partner__c</picklist>
+            <values>
+                <fullName>BlueWave Incentive Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Boston Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Service_Territories__c</picklist>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dunwoodie</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hudson Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Millwood</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>N%2EY%2EC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Stage__c</picklist>
+            <values>
+                <fullName>Acquisition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3491,7 +3708,7 @@ null)</formula>
         </picklistValues>
     </recordTypes>
     <searchLayouts />
-    <sharingModel>Private</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
     <sharingReasons>
         <fullName>Customer_Portal_Access__c</fullName>
         <label>Customer Portal Access</label>
@@ -3721,6 +3938,16 @@ ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
  Apex_Context__c=false /*and the update is not being done in apex*/
 )</errorConditionFormula>
         <errorMessage>To change the system Yield or Size (kW DC), please submit a Shared Solar System Order with the &quot;New Shared Solar System Order&quot; button.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Require_Waitlist_Checkbox</fullName>
+        <active>true</active>
+        <description>If the shared solar system&apos;s name contains Waitlist, you must also check the &quot;Waitlist&quot; checkbox</description>
+        <errorConditionFormula>AND(
+CONTAINS(Name, &quot;Waitlist&quot;),
+NOT(Waitlist__c)
+)</errorConditionFormula>
+        <errorMessage>If the shared solar system&apos;s name contains Waitlist, you must also check the &quot;Waitlist&quot; checkbox</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Utility_Decimals_Requirement</fullName>
