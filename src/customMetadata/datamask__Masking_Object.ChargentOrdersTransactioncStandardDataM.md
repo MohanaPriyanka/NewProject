@@ -27,7 +27,23 @@
         <value xsi:type="xsd:date">2020-02-04</value>
     </values>
     <values>
+        <field>datamask__Master_Object__c</field>
+        <value xsi:type="xsd:string">ChargentOrders__Order__c</value>
+    </values>
+    <values>
+        <field>datamask__Number_of_Fields__c</field>
+        <value xsi:type="xsd:double">13.0</value>
+    </values>
+    <values>
         <field>datamask__Record_Count__c</field>
         <value xsi:type="xsd:double">0.0</value>
+    </values>
+    <values>
+        <field>datamask__Run_In_Poly__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>datamask__Run_In_Serial__c</field>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
 </CustomMetadata>

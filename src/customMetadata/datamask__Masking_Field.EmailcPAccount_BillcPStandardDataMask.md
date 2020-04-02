@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Comunity_solar_city__c</label>
+    <label>Email__c</label>
     <protected>false</protected>
     <values>
         <field>datamask__API_Name__c</field>
-        <value xsi:type="xsd:string">Comunity_solar_city__c</value>
+        <value xsi:type="xsd:string">Email__c</value>
     </values>
     <values>
         <field>datamask__Active__c</field>
@@ -24,23 +24,23 @@
     </values>
     <values>
         <field>datamask__Field_Length__c</field>
-        <value xsi:type="xsd:double">20.0</value>
+        <value xsi:type="xsd:double">80.0</value>
     </values>
     <values>
         <field>datamask__Field_Type__c</field>
-        <value xsi:type="xsd:string">Text</value>
+        <value xsi:type="xsd:string">Email</value>
     </values>
     <values>
         <field>datamask__Masking_Category__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Email</value>
     </values>
     <values>
         <field>datamask__Masking_Object__c</field>
-        <value xsi:type="xsd:string">LeadStandardDataMask</value>
+        <value xsi:type="xsd:string">Account_BillcPStandardDataMask</value>
     </values>
     <values>
         <field>datamask__Masking_Type__c</field>
-        <value xsi:type="xsd:string">Anonymize</value>
+        <value xsi:type="xsd:string">Pseudonymize</value>
     </values>
     <values>
         <field>datamask__Range_Max__c</field>
