@@ -366,6 +366,9 @@
         <locationY>400</locationY>
         <actionName>Opportunity.CS_Partner_Notification_Application_Approval</actionName>
         <actionType>emailAlert</actionType>
+        <connector>
+            <targetReference>myWait_myRule_5</targetReference>
+        </connector>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -373,6 +376,38 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <assignments>
+        <name>myWaitAssignment_myWait_myRule_5</name>
+        <label>myWaitAssignment_myWait_myRule_5</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>cancelWaits</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>myWait_myRule_5</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>myWaitEvent_myWait_myRule_5_event_0_postWaitExecutionAssignment</name>
+        <label>myWaitEvent_myWait_myRule_5_event_0_postWaitExecutionAssignment</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myWaitEvent_myWait_myRule_5_event_0_postActionExecutionVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myWait_myRule_5</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <processMetadataValues>
             <name>index</name>
@@ -827,6 +862,117 @@
         </rules>
     </decisions>
     <decisions>
+        <name>myPreWaitDecision_myWait_myRule_5</name>
+        <label>myPreWaitDecision_myWait_myRule_5</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myWaitAssignment_myWait_myRule_5</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myPreWaitRule_myWait_myRule_5</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Product_Line__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Community Solar</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Contract_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.BlueWave_Signature_Status__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myDecision</targetReference>
+            </connector>
+            <label>myPreWaitRule_myWait_myRule_5</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>myRule_1_pmetdec</name>
         <label>Previously Met Decision</label>
         <locationX>100</locationX>
@@ -1175,7 +1321,7 @@
         </rules>
     </decisions>
     <description>This is a second Opportunity Create/Edit PB that should eventually be consolidated into a single Opp Create/Edit</description>
-    <interviewLabel>Create_Case_for_Closed_CS_Customer_Follow_Up-37_InterviewLabel</interviewLabel>
+    <interviewLabel>Create_Case_for_Closed_CS_Customer_Follow_Up-34_InterviewLabel</interviewLabel>
     <label>Opportunity Create/Edit 2</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -1809,8 +1955,15 @@
         </inputAssignments>
         <object>Opportunity</object>
     </recordUpdates>
-    <startElementReference>myDecision</startElementReference>
-    <status>Active</status>
+    <startElementReference>myPreWaitDecision_myWait_myRule_5</startElementReference>
+    <status>Draft</status>
+    <variables>
+        <name>cancelWaits</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>
@@ -1827,4 +1980,61 @@
         <isOutput>false</isOutput>
         <objectType>Opportunity</objectType>
     </variables>
+    <variables>
+        <name>myWaitEvent_myWait_myRule_5_event_0_postActionExecutionVariable</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <waits>
+        <name>myWait_myRule_5</name>
+        <label>myWait_myRule_5</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>defaultLabel</defaultConnectorLabel>
+        <waitEvents>
+            <processMetadataValues>
+                <name>inputParameterType</name>
+                <value>
+                    <stringValue>now</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>myWaitEvent_myWait_myRule_5_event_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>myWaitEvent_myWait_myRule_5_event_0_postActionExecutionVariable</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myWaitEvent_myWait_myRule_5_event_0_postWaitExecutionAssignment</targetReference>
+            </connector>
+            <eventType>AlarmEvent</eventType>
+            <inputParameters>
+                <name>AlarmTime</name>
+                <value>
+                    <elementReference>$Flow.InterviewStartTime</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffsetUnit</name>
+                <value>
+                    <stringValue>Hours</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffset</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <label>myWaitEvent_myWait_myRule_5_event_0</label>
+        </waitEvents>
+    </waits>
 </Flow>
