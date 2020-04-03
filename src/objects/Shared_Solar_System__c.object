@@ -630,6 +630,33 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>CS_Services_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Differentiates between projects where BlueWave is contracted to acquire customers and projects where customers are acquired by another party.</inlineHelpText>
+        <label>CS Services Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Acquisition &amp; Management</fullName>
+                    <default>false</default>
+                    <label>Acquisition &amp; Management</label>
+                </value>
+                <value>
+                    <fullName>Management Only</fullName>
+                    <default>false</default>
+                    <label>Management Only</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Capacity_Available_to_be_Reserved__c</fullName>
         <externalId>false</externalId>
         <formula>if( Anchor_Capacity_Reserved__c &gt;0,  Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Total_Capacity_Committed_Reserved__c, Total_CS_Capacity_kW_DC_Formula__c -  Total_Capacity_Committed_Reserved__c)</formula>
@@ -3864,9 +3891,9 @@ ISCHANGED(Utility_NMC_Tariff__c)
         <errorConditionFormula>AND(
 ISCHANGED(Stage__c),
 ISPICKVAL(Stage__c,&quot;Onboarding&quot;),
-ISBLANK(Client_Account__c)
+OR(ISBLANK(Client_Account__c),ISPICKVAL(CS_Services_Type__c,&quot;&quot;))
 )</errorConditionFormula>
-        <errorMessage>Cannot change status to onboarding without linking an SSS to a client account</errorMessage>
+        <errorMessage>Cannot change status to onboarding without linking an SSS to a client account and setting the CS Services Type field</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Open_SSS</fullName>
