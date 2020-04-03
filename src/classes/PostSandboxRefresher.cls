@@ -5,7 +5,7 @@
                2. Deletes the Recurring Billing scheduled job
   Tested By: PostSandboxRefresherTest
  */
-@SuppressWarnings('PMD.ApexCRUDViolation,PMD.XSExcessiveParameterList')
+@SuppressWarnings('PMD.ApexCRUDViolation,PMD.XSExcessiveParameterList,PMD.ExcessiveClassLength,PMD.ExcessivePublicCount')
 public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     public static Date csDataDate = Date.newInstance(2000,1,1);
     public void runApexClass(SandboxContext context) {
@@ -714,6 +714,13 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             this.csDataSetting = csDataSetting;
         }
         public void execute(QueueableContext context) {
+            try {
+                execute();
+            } catch (Exception e) {
+                Logger.logLater('TransferHelper', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+            }
+        }
+        private void execute() {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
                 FROM Shared_Solar_System__c
@@ -802,17 +809,30 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             ee.finish(null);
             setBillsToPublished();
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.TransferHelper2(csDataSetting));
+                PostSandboxRefresher.callTransferHelper2Future(JSON.serialize(csDataSetting));
             }
         }
     }
-
+    // Because the AllocationScheduleService is queued to run, we can't also directly queue the TransferHelper2 class,
+    // so we'll use a future method to queue it.
+    @Future
+    public static void callTransferHelper2Future(String csDataSettingJSON) {
+        CSDataSetting csDataSetting = (CSDataSetting) JSON.deserialize(csDataSettingJSON, CSDataSetting.class);
+        System.enqueueJob(new PostSandboxRefresher.TransferHelper2(csDataSetting));
+    }
     public class TransferHelper2 implements Queueable {
         public CSDataSetting csDataSetting;
         public TransferHelper2(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
         public void execute(QueueableContext context) {
+            try {
+                execute();
+            } catch (Exception e) {
+                Logger.logLater('TransferHelper2', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+            }
+        }
+        private void execute() {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
                 FROM Shared_Solar_System__c
@@ -885,17 +905,28 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             ee.finish(null);
             setBillsToPublished();
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.TransferHelper3(csDataSetting));
+                PostSandboxRefresher.callTransferHelper3Future(JSON.serialize(csDataSetting));
             }
         }
     }
-
+    @Future
+    public static void callTransferHelper3Future(String csDataSettingJSON) {
+        CSDataSetting csDataSetting = (CSDataSetting) JSON.deserialize(csDataSettingJSON, CSDataSetting.class);
+        System.enqueueJob(new PostSandboxRefresher.TransferHelper3(csDataSetting));
+    }
     public class TransferHelper3 implements Queueable {
         public CSDataSetting csDataSetting;
         public TransferHelper3(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
         public void execute(QueueableContext context) {
+            try {
+                execute();
+            } catch (Exception e) {
+                Logger.logLater('TransferHelper3', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+            }
+        }
+        private void execute() {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
                 FROM Shared_Solar_System__c
@@ -1111,7 +1142,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     private static List<Opportunity> insertOpportunities(List<Name> names, List<Account> propertyAccounts, List<Shared_Solar_System__c> sssList, Integer sssIndex) {
         List<Opportunity> opportunities = new List<Opportunity>();
         for (Integer i = 0; i < names.size(); i++) {
-            if (i == names.size() - 1) {
+            if (i == 0) {
                 opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
                 opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex == 0 ? 1 : 0]));
             } else {
@@ -1124,7 +1155,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     private static void insertSubscriptions(List<Name> names, List<Utility_Account_Log__c> uals, List<Opportunity> opportunities) {
         List<Utility_Account_Subscription__c> subscriptions = new List<Utility_Account_Subscription__c>();
         for (Integer i = 0; i < names.size(); i++) {
-            if (i == names.size() - 1) {
+            if (i == 0) {
                 subscriptions.add(getUtilityAccountSubscription('000234' + i, getRandom(10, 20), uals[i], opportunities[i]));
                 subscriptions.add(getUtilityAccountSubscription('000234' + i, getRandom(10, 20), uals[i + 1], opportunities[i + 1]));
             } else {
@@ -1150,17 +1181,18 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             delete [SELECT Id FROM CS_Bill_Setting__c];
             delete [SELECT Id FROM ChargentOrders__Transaction__c];
             delete [SELECT Id FROM ChargentOrders__ChargentOrder__c];
+            delete [SELECT Id FROM Transfer_Part__c];
+            delete [SELECT Id FROM Transfer__c];
             delete [SELECT Id FROM Utility_Account_Bill__c];
             delete [SELECT Id FROM Account_Bill__c];
             delete [SELECT Id FROM System_Bill__c];
             delete [SELECT Id FROM UASB__c];
             delete [SELECT Id FROM Bill_Period__c];
             delete [SELECT Id FROM Production__c];
-            delete [SELECT Id FROM Transfer__c];
-            delete [SELECT Id FROM Schedule_Z__c];
             delete [SELECT Id FROM Client_Allocation_Schedule_Subscription__c];
-            delete [SELECT Id FROM Schedule_Z_Subscription__c];
             delete [SELECT Id FROM Client_Utility_Account_Subscription__c];
+            delete [SELECT Id FROM Schedule_Z_Subscription__c];
+            delete [SELECT Id FROM Schedule_Z__c];
             delete [SELECT Id FROM Utility_Account_Subscription__c];
             delete [SELECT Id FROM Utility_Account_Log__c];
             delete [SELECT Id FROM Opportunity];
