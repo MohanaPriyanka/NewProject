@@ -1211,7 +1211,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Require_Entity_to_Create_Prod_update</fullName>

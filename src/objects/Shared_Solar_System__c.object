@@ -3864,9 +3864,9 @@ ISCHANGED(Utility_NMC_Tariff__c)
         <errorConditionFormula>AND(
 ISCHANGED(Stage__c),
 ISPICKVAL(Stage__c,&quot;Onboarding&quot;),
-ISBLANK(Client_Account__c)
+OR(ISBLANK(Client_Account__c),ISPICKVAL(CS_Services_Type__c,&quot;&quot;))
 )</errorConditionFormula>
-        <errorMessage>Cannot change status to onboarding without linking an SSS to a client account</errorMessage>
+        <errorMessage>Cannot change status to onboarding without linking an SSS to a client account and setting the CS Services Type field</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Open_SSS</fullName>
