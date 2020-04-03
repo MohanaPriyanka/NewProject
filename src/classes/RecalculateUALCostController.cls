@@ -50,7 +50,7 @@ public without sharing class RecalculateUALCostController {
         //If ScheduleZ_Filed__c == true
         //    - Checkbox to mark (Confirm deduction to Schedule Z Filed System)
 
-    @SuppressWarnings('PMD.ApexCRUDViolation')
+
     public RecalculateUALCostController(){
         uasActionList = new List<UASAction>();
         this.ualId = ApexPages.currentPage().getParameters().get('id');
@@ -107,7 +107,6 @@ public without sharing class RecalculateUALCostController {
         getSubscriptionLists(true);
     }
 
-    @SuppressWarnings('PMD.ApexCRUDViolation')
     public PageReference updateCustomDeductionOrder() {
         List<Utility_Account_Subscription__c> customDeductionUASList = new List<Utility_Account_Subscription__c>();
         for (UASAction uasAction : uasActionList) {
@@ -133,7 +132,6 @@ public without sharing class RecalculateUALCostController {
     // 
     // If not sorting by the default sort order, sort by Custom Deduction Order
 
-    @SuppressWarnings('PMD.ApexCRUDViolation')
     private List<Utility_Account_Subscription__c> getUASList(boolean defaultSortOrder){
         String query = 
             'SELECT Id, Name, ' +
@@ -230,7 +228,6 @@ public without sharing class RecalculateUALCostController {
         return availableCapacity;
     }
 
-    @SuppressWarnings('PMD.ApexCRUDViolation')
     public PageReference processDeduction(){
         Decimal remainingBalance = adjustmentAmount;
         List<Utility_Account_Subscription__c> uasToUpdate = new List<Utility_Account_Subscription__c>();
