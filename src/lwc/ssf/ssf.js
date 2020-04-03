@@ -2,16 +2,13 @@
  * Created by PeterYao on 2/24/2020.
  */
 
-import { LightningElement, api, track, wire} from 'lwc';
+import { LightningElement, track, wire} from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
-import {makeRequest} from 'c/httpRequestService';
 import { getZipCodeCapacity } from 'c/zipCodeService';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 
 export default class Ssf extends NavigationMixin(LightningElement) {
-    @api leadId;
-    @api email;
     @track showSpinner = false;
     @track spinnerMessage;
     @track getZip;
@@ -31,33 +28,10 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         if (!this.utilityOptions) {
             this.utilityOptions = [];
         }
-
-        if(this.leadId && this.email) {
-            this.getBasicInfo = true;
-            if(!this.leadJSON) {
-                this.getLead();
-            }
-        } else {
-            this.getZip = true;
-        }
-        
+        this.getZip = true;
         if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
             this.resiApplicationType = false;
         }
-    }
-
-    getLead() {
-        this.showSpinner = true;
-        this.spinnerMessage = 'Retrieving your application...';
-        let calloutURI = '/apply/services/apexrest/v3/leads?leadId=' + this.leadId + '&email=' + this.email;
-        let options = {
-            headers: {name: 'Content-Type', value:'application/json'}
-        };
-        makeRequest(calloutURI, 'GET', options)
-            .then(resolveResult => {
-                this.showSpinner = false;
-                this.leadJSON = JSON.stringify(resolveResult);
-            })
     }
 
     renderedCallback() {
