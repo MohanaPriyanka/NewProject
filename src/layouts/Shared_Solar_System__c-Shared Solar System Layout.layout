@@ -286,6 +286,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
+                <field>Conversion_Rate__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
                 <field>Serviced_Capacity__c</field>
             </layoutItems>
         </layoutColumns>
