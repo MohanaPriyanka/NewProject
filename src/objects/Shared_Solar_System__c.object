@@ -1100,10 +1100,15 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>First_Bill_Date__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>First bill date from related Production Updates</inlineHelpText>
+        <inlineHelpText>First Bill Date from related Bill Periods where &quot;Bill Run Complete&quot;</inlineHelpText>
         <label>First Bill Date</label>
-        <summarizedField>Energy_Usage_Update__c.Date__c</summarizedField>
-        <summaryForeignKey>Energy_Usage_Update__c.Shared_Solar_System__c</summaryForeignKey>
+        <summarizedField>Bill_Period__c.Bill_Date__c</summarizedField>
+        <summaryFilterItems>
+            <field>Bill_Period__c.Bill_Status__c</field>
+            <operation>equals</operation>
+            <value>Bill Run Complete</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Bill_Period__c.Shared_Solar_System__c</summaryForeignKey>
         <summaryOperation>min</summaryOperation>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
