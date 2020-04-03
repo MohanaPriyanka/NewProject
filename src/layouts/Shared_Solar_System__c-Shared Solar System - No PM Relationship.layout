@@ -123,10 +123,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>System_Utility__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Utility__c</field>
             </layoutItems>
             <layoutItems>
