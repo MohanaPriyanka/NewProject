@@ -283,70 +283,84 @@ src/package.xml
 #It is recommended that you ignore managed components that cannot be 
 #modified since there is no need to track them in Git, 
 #like for example:
-src/classes/copado__*
-src/triggers/copado__*
-src/pages/copado__*
-src/classes/APXTConga4__*
-src/triggers/APXTConga4__*
-src/pages/APXTConga4__*
-src/classes/ChargentBase__*
-src/triggers/ChargentBase__*
-src/pages/ChargentBase__*
-src/classes/ChargentOrders__*
-src/triggers/ChargentOrders__*
-src/pages/ChargentOrders__*
-src/classes/Field_Trip__*
-src/triggers/Field_Trip__*
-src/pages/Field_Trip__*
-src/classes/LASERCA__*
-src/triggers/LASERCA__*
-src/pages/LASERCA__*
-src/classes/LiveText__*
-src/triggers/LiveText__*
-src/pages/LiveText__*
-src/classes/MC4SF__*
-src/triggers/MC4SF__*
-src/pages/MC4SF__*
-src/classes/MPM4_BASE__*
-src/triggers/MPM4_BASE__*
-src/pages/MPM4_BASE__*
-src/classes/dsfs__*
-src/triggers/dsfs__*
-src/pages/dsfs__*
-src/classes/agf__*
-src/triggers/agf__*
-src/pages/agf__*
-src/classes/MetaDataSearch__*
-src/triggers/MetaDataSearch__*
-src/pages/MetaDataSearch__*
-src/classes/APXT_BPM__*
-src/triggers/APXT_BPM__*
-src/pages/APXT_BPM__*
-src/classes/et4ae5__*
-src/triggers/et4ae5__*
-src/pages/et4ae5__*
-src/classes/rcsfl__*
-src/triggers/rcsfl__*
-src/pages/rcsfl__*
-src/classes/trailheadapp__*
-src/triggers/trailheadapp__*
-src/pages/trailheadapp__*
-src/components/agf__*
-src/components/APXT_BPM__*
-src/components/APXTConga4__*
-src/components/ChargentBase__*
-src/components/ChargentOrders__*
-src/components/copado__*
-src/components/dsfs__*
-src/components/et4ae5__*
-src/components/Field_Trip__*
-src/components/LASERCA__*
-src/components/LiveText__*
-src/components/MC4SF__*
-src/components/MetaDataSearch__*
-src/components/MPM4_BASE__*
-src/components/rcsfl__*
-src/components/trailheadapp__*
+*copado__*
+!src/objects/copado__*
+
+# Conga
+*APXTConga4__*
+*APXT_BPM__*
+*CongaWorkflow__*
+!src/objects/APXTConga4__*
+!src/objects/APXT_BPM__*
+!src/objects/CongaWorkflow__*
+
+# Chargent
+*ChargentBase__*
+*ChargentOrders__*
+
+# Field Trip
+*Field_Trip__*
+!src/objects/Field_Trip__*
+
+# LASERCA
+*LASERCA__*
+!src/objects/LASERCA__*
+
+# LiveText
+*LiveText__*
+!src/objects/LiveText__*
+
+# Milestones PM
+*MPM4_BASE__*
+!src/objects/MPM4_BASE__*
+
+# Docusign
+*dsfs__*
+!src/objects/dsfs__*
+
+# Agile Accelerator
+*agf__*
+/src/aura/ADM_*
+/src/lwc/adm*
+!src/objects/agf__*
+
+# Metadata search
+*MetaDataSearch__*
+!src/objects/MetaDataSearch__*
+
+# Exact Target
+*et4ae5__*
+!src/objects/et4ae5__*
+
+# Trailhead tracker
+*trailheadapp__*
+!src/objects/trailheadapp__*
+
+# Zuora
+*zqu__*
+*Zuora__*
+!src/objects/zqu__*
+!src/objects/Zuora__*
+
+#Datamask
+*datamask__*
+!src/objects/datamask__*
+
+*flowmagic__*
+!src/objects/flowmagic__*
+
+*HubSpot_Inc__*
+!src/objects/HubSpot_Inc__*
+
+*printsf__*
+!src/objects/printsf__*
+
+*standard__*
+!src/objects/standard__*
+
+# Form Assembly
+*tfa__*
+!src/objects/tfa__*
 
 
 #profiles and permission sets are complex Files. If your Org's 

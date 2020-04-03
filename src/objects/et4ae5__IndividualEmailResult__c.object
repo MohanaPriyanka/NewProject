@@ -46,7 +46,6 @@
     <deprecated>false</deprecated>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
@@ -368,7 +367,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Individual Email Results</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <startsWith>Vowel</startsWith>
     <validationRules>
