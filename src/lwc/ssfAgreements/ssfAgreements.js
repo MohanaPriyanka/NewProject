@@ -252,6 +252,7 @@ export default class SsfAgreements extends LightningElement {
         window.clearTimeout(this.documentPollerTimeoutId);
         this.showSpinner = false;
         this.contractDocuments = contracts;
+        var disclosurePosition;
         for (let c in contracts) {
             if (contracts[c].ContentDocument.LatestPublishedVersion.Title === 'Community Solar Agreement.pdf' ) {
                 this.csAgreementDocumentId = contracts[c].ContentDocumentId;
@@ -260,7 +261,12 @@ export default class SsfAgreements extends LightningElement {
             if (contracts[c].ContentDocument.LatestPublishedVersion.Title === 'Solar Disclosure Form.pdf') {
                 this.disclosureDocumentId = contracts[c].ContentDocumentId;
                 contracts[c].ContentDocument.LatestPublishedVersion.Title = 'Solar Disclosure Form';
+                disclosurePosition = c;
             }
+        }
+
+        if(disclosurePosition) {
+            contracts = contracts.splice(0, 0, contracts.splice(disclosurePosition, 1)[0]);
         }
     }
 
