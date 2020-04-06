@@ -93,4 +93,44 @@ public with sharing class ContentDocumentSelectorTest {
 
         System.assertEquals(cvList[0].ContentDocumentId, doc.Id);
     }
+
+    @IsTest
+    private static void testGetDocsCreatedWithinRange() {
+        Lead l1 = new Lead(
+            FirstName = 'test',
+            LastName = 'testerson',
+            Company = 'test',
+            Email = 'ttesterson@email.com'
+        );
+        Lead l2 = new Lead(
+            FirstName = 'test2',
+            LastName = 'testerson2',
+            Company = 'test2',
+            Email = 'ttesterson2@email.com'
+        );
+        insert new List<Lead>{l1, l2};
+
+        Id cdId = [SELECT Id, ContentDocumentId FROM ContentVersion LIMIT 1].ContentDocumentId;
+
+        ContentDocumentLink cdl1 = new ContentDocumentLink(
+            ContentDocumentId = cdId,
+            LinkedEntityId = l1.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        ContentDocumentLink cdl2 = new ContentDocumentLink(
+            ContentDocumentId = cdId,
+            LinkedEntityId = l2.Id,
+            ShareType = 'V',
+            Visibility = 'InternalUsers'
+        );
+        insert new List<ContentDocumentLink>{cdl1, cdl2};
+
+        ContentDocumentSelector selector = new ContentDocumentSelector();
+        Test.startTest();
+            List<ContentDocumentLink> linkList = selector.getDocsCreatedWithinRange(Datetime.now().addDays(-1), Datetime.now().addDays(1));
+        Test.stopTest();
+
+        System.assertEquals(1, linkList.size(), 'Selector should have returned one Content Document');
+    }
 }

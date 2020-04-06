@@ -61,4 +61,47 @@ public with sharing class ContentServiceTest {
 
         System.assertEquals(accountOne.Id,docLink.LinkedEntityId);
     }
+
+    @IsTest
+    public static void testMakeContentDocLinksPrivate() {
+        ContentVersion cv = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('invoice body'),
+            Title = 'test1.pdf',
+            PathOnClient = '/test1.pdf'
+        );
+        insert cv;
+
+        Lead l = new Lead(
+            FirstName = 'test',
+            LastName = 'testerson',
+            Company = 'test',
+            Email = 'ttesterson@email.com'
+        );
+        insert l;
+
+        ContentDocumentSelector selector = new ContentDocumentSelector();
+        Id cdId = selector.getDocumentIdFromVersionId(cv.Id);
+
+        ContentDocumentLink cdl = new ContentDocumentLink(
+            ContentDocumentId = cdId,
+            LinkedEntityId = l.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        insert cdl;
+
+        List<ContentDocumentLink> linkList = [SELECT Id, Visibility FROM ContentDocumentLink WHERE LinkedEntityId = :l.Id];
+        System.assertEquals(1, linkList.size(), 'There should be only one Content Document Link');
+        System.assertEquals('AllUsers', linkList[0].Visibility, 'The visibility of the Content Document Link should be AllUsers');
+
+        ContentService service = new ContentService();
+        Test.startTest();
+            service.makeContentDocLinksPrivate(linkList);
+        Test.stopTest();
+
+        linkList = [SELECT Id, Visibility FROM ContentDocumentLink WHERE LinkedEntityId = :l.Id];
+        System.assertEquals(1, linkList.size(), 'There should be only one Content Document Link');
+        System.assertEquals('InternalUsers', linkList[0].Visibility, 'The visibility of the CD Link should be InternalUsers');
+    }
 }
