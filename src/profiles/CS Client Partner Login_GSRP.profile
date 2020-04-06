@@ -3318,10 +3318,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PreviewProductionUpdateResults</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProductEscalationTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3551,10 +3547,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TestBillCreationForCancelledCustomers</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestBillCreationandPayment</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
