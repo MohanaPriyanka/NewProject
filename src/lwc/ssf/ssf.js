@@ -51,7 +51,11 @@ export default class Ssf extends NavigationMixin(LightningElement) {
 
     checkForSubmit(event) {
         if (event.which === 13) {
-            this.submitZip();
+            const inputBox = this.template.querySelector('lightning-input');
+            inputBox.reportValidity();
+            if(inputBox.checkValidity()) {
+                this.submitZip();
+            }
         }
     }
 
@@ -75,8 +79,8 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     // Just picking the first one - could be a picklist if we found multiple products (SREC/SMART)
                     this.selectedProduct = this.zipCodeResponse.products[0];
                     const evt = new ShowToastEvent({
-                        title: 'We have capacity for you!',
-                        message: 'Please provide your information to apply',
+                        title: 'Success!',
+                        message: 'Your ZIP Code is eligible.',
                         variant: 'success'
                     });
                     this.dispatchEvent(evt);
@@ -84,7 +88,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     this.getBasicInfo = true;
                 } else {
                     const evt = new ShowToastEvent({
-                        title: 'Sorry, no capacity at this time',
+                        title: 'Sorry, your zip code is not eligible for service at this time',
                         message: 'Please check later',
                         variant: 'warning'
                     });

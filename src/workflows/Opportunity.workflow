@@ -809,7 +809,7 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <name>EMAIL_LOG_CS_Application_Approval</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND( OR( Annual_Electricity_Cost2__c &gt; 0, Annual_Electricity_Cost__c &gt; 0),   Disable_Emails__c == FALSE, NOT(ISPICKVAL(StageName,&quot;Complete&quot;)),  !CS_Application_Approval_Email_Sent__c,  Product_Line__c =&quot;Community Solar&quot;)</formula>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>

@@ -40417,7 +40417,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Log__c.Subsc_Annual_Cost_of_Electricity_Rollup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Log__c.Subscribed_Annual_Cost_of_Electricity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Subscribed_Annual_kWhs_Rollup__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
