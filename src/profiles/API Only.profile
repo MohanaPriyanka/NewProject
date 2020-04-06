@@ -31118,6 +31118,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer_Part__c.Externally_Serviced_UASB__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Above_NM_Rate_Floor__c</field>
         <readable>false</readable>
@@ -31305,6 +31310,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>UASB__c.Production_Update__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Ready_For_Production_Detail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -53654,10 +53664,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ModerateChatter</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ModifyAllData</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

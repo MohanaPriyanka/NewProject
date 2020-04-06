@@ -30116,6 +30116,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UASB__c.Ready_For_Production_Detail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UASB__c.Savings__c</field>
         <readable>true</readable>
     </fieldPermissions>
