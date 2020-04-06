@@ -65,6 +65,7 @@ public without sharing class RecalculateUALCostController {
         Utility_Account_Log__c ual = [
             SELECT Id, Name, Annual_Cost_of_Electricity__c, Cost_not_yet_Allocated__c, Annual_kWh__c,
                 Subscribed_Annual_kWhs__c, Lead__r.Product__r.Customer_Subscription_Type__c, Proposed_kWh__c,
+                Subscribed_Annual_kWhs_Rollup__c,
                 (SELECT Id, Subscribed_Annual_Cost_of_Electricity__c, Annual_kwh_subscription_future__c,
                     Opportunity__r.Product__r.Customer_Subscription_Type__c
                 FROM Utility_Account_Subscriptions__r
@@ -130,7 +131,7 @@ public without sharing class RecalculateUALCostController {
     // If system is Closed, Order By Subscription size (Smallest First), then randomize for equal subscriptions.
     // 
     // If not sorting by the default sort order, sort by Custom Deduction Order
-    
+
     private List<Utility_Account_Subscription__c> getUASList(boolean defaultSortOrder){
         String query = 
             'SELECT Id, Name, ' +
