@@ -71,6 +71,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
                 MIN(Schedule_Z__r.Date_Enacted_by_Utility__c) billDate
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c IN :scheduleZs
+            AND Utility_Account_Subscription__r.Externally_Serviced__c = FALSE
             GROUP BY Utility_Account_Subscription__r.Opportunity__r.Account.Id,
                 Schedule_Z__r.Shared_Solar_System__r.Id,
                 Schedule_Z__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Id
