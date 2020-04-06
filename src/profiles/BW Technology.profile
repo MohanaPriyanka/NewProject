@@ -42748,6 +42748,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.CS_Services_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c</field>
         <readable>true</readable>
     </fieldPermissions>
