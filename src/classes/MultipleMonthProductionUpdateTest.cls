@@ -383,8 +383,6 @@ public class MultipleMonthProductionUpdateTest {
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferA2, transferA3, transferA4, transferA5, transferA6, transferA7});
         Test.stopTest();
 
-        System.assertEquals( 2, (PreviewProductionUpdateResults.getUASes(transferA1.Id, true, scheduleZ1.Id)).size());
-
         TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id});
         TestBillCreationandPayment.setBillsToPublished();
         TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA2.Id});
@@ -424,42 +422,6 @@ public class MultipleMonthProductionUpdateTest {
         System.assertEquals(uasblist[8].System_Bill__c, uasblist[11].System_Bill__c);
         System.assertEquals(0.1234, uasblist[9].NMC_Rate__c);
         System.assertEquals(0.1619, uasblist[10].NMC_Rate__c);
-    }
-
-    @isTest public static void testSizeOffkWH() {
-        Test.startTest();
-
-        Transfer__c transfer = [
-            SELECT Id, Name, Allocation_Schedule__c, Bill_Period__r.Id
-            FROM Transfer__c
-            WHERE Name = 'Main Transfer - sssA March'
-            LIMIT 1
-        ];
-
-
-        List<UASB__c> previewedUASBs = PreviewProductionUpdateResults.getUASes(transfer.Id, true, transfer.Allocation_Schedule__c);
-
-        System.assertEquals( 2, previewedUASBs.size());
-
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{transfer.Bill_Period__r.Id});
-
-        Test.stopTest();
-
-        UASB__c generatedBill = 
-            [SELECT Id, Name, Utility_Account_Subscription__r.Name,
-            Credits_Allocated__c, Share_of_System__c, Subscription_Production_kWh_Static__c
-            FROM UASB__c
-            WHERE Utility_Account_Subscription__r.Name = : previewedUASBs[1].PreGen_Utility_Acct__c 
-            AND Transfer__c = : transfer.Id];
-
-        System.assertEquals(126.10, generatedBill.Credits_Allocated__c);
-        System.assertEquals(126.10, previewedUASBs[1].PreGen_NMCs_Allocated__c);
-
-        System.assertEquals(0.97, generatedBill.Share_of_System__c);
-        System.assertEquals(0.97, previewedUASBs[1].PreGen_System_Share__c);
-
-        System.assertEquals(778.87, generatedBill.Subscription_Production_kWh_Static__c);
-        System.assertEquals(778.87, previewedUASBs[1].PreGen_Subscription_Production__c);
     }
 
     @isTest public static void testMNRounding() {
