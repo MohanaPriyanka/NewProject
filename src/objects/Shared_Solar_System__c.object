@@ -2067,9 +2067,9 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Energy Partner Consultants</label>
                 </value>
                 <value>
-                    <fullName>Power Play Energy</fullName>
+                    <fullName>PowerPlay Energy Group</fullName>
                     <default>false</default>
-                    <label>Power Play Energy</label>
+                    <label>PowerPlay Energy Group</label>
                 </value>
                 <value>
                     <fullName>Beacon Energy Solutions LLC</fullName>
@@ -2930,7 +2930,7 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Power Play Energy</fullName>
+                <fullName>PowerPlay Energy Group</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -3408,7 +3408,7 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Power Play Energy</fullName>
+                <fullName>PowerPlay Energy Group</fullName>
                 <default>false</default>
             </values>
             <values>
