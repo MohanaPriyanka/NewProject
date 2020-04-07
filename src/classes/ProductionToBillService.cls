@@ -148,11 +148,11 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
                 createProductionDetailFromCollectionItem(collectionItems);
                 insert partsToInsert;
                 markJournalEntriesAsComplete(collectionItems);
-            } else {
-                queueJob(OperationType.UNSERVICED);
             }
             if (collectionItems.size() == batchSize){
                 queueJob(OperationType.COLLECTION);
+            } else {
+                queueJob(OperationType.UNSERVICED);
             }
         } catch (Exception excep) {
             String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(collectionItems);
