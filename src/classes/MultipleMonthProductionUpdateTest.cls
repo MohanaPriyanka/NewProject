@@ -383,9 +383,8 @@ public class MultipleMonthProductionUpdateTest {
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferA2, transferA3, transferA4, transferA5, transferA6, transferA7});
         Test.stopTest();
 
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id});
-        TestBillCreationandPayment.setBillsToPublished();
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA2.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{bpA1.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{bpA2.Id});
     }
 
     @isTest public static void testBillCreation() {
@@ -463,7 +462,7 @@ public class MultipleMonthProductionUpdateTest {
         szs.Number_of_Decimal_Places__c = 4;
         update szs;
 
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{transfer.Bill_Period__r.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{transfer.Bill_Period__r.Id});
 
         Test.stopTest();
 
@@ -520,7 +519,7 @@ public class MultipleMonthProductionUpdateTest {
         sss1.Billing_Method__c = 'NMC';
         update sss1;
 
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{transfer.Bill_Period__r.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{transfer.Bill_Period__r.Id});
         Test.stopTest();
 
         UASB__c generatedBill =

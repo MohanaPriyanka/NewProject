@@ -457,7 +457,7 @@ public class TestBillCreationForCancelledCustomers {
         List<Transfer_Part__c > parts = [SELECT Id, Name, Amount__c, Production__r.Name FROM Transfer_Part__c ];
         System.assertEquals(3, parts.size());
 
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id, bpB1.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{bpA1.Id, bpB1.Id});
 
         List<UASB__c> uasbList = [SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
             Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
@@ -578,7 +578,7 @@ public class TestBillCreationForCancelledCustomers {
         List<Transfer_Part__c > parts = [SELECT Id, Name, Amount__c, Production__r.Name FROM Transfer_Part__c ];
         System.assertEquals(5, parts.size());
 
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpB2.Id, bpA2.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{bpB2.Id, bpA2.Id});
     }
 
     public static Map<String, List<UASB__c>> queryForBills() {
