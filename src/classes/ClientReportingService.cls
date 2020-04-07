@@ -84,12 +84,6 @@ public without sharing class ClientReportingService {
             // For every 30 days late (after 30 days), take away a point
             customerDSO = (((clientReport.Customer_DSO__c-30)/30)*-1);
         }
-//        if (Util.nullToZero(clientReport.Client_DSO__c) > 0){
-//            countOfVariables += 1;
-//            // For every 30 days late (after 30 days), take away a point
-//            clientDSO = (((clientReport.Client_DSO__c-30)/30)*-1);
-//            System.debug('Actual DSO: ' + clientDSO);
-//        }
         if (Util.nullToZero(clientReport.Accounting_Score__c) > 0){
             countOfVariables += 1;
             // For every point below 10 take away a point
