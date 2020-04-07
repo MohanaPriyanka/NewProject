@@ -268,16 +268,17 @@
     </fields>
     <fields>
         <fullName>Shared_Solar_System__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
         <description>The Bill Period object is looking up to the SSS object.</description>
         <externalId>false</externalId>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
         <relationshipLabel>Bill Periods</relationshipLabel>
         <relationshipName>Bill_Periods</relationshipName>
-        <required>true</required>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Total_Billed_STAMPED__c</fullName>
