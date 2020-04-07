@@ -1125,18 +1125,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>First_Bill_Date__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>First bill date from related Production Updates</inlineHelpText>
-        <label>First Bill Date</label>
-        <summarizedField>Energy_Usage_Update__c.Date__c</summarizedField>
-        <summaryForeignKey>Energy_Usage_Update__c.Shared_Solar_System__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Graph_Box__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -2062,9 +2050,9 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Energy Partner Consultants</label>
                 </value>
                 <value>
-                    <fullName>Power Play Energy</fullName>
+                    <fullName>PowerPlay Energy Group</fullName>
                     <default>false</default>
-                    <label>Power Play Energy</label>
+                    <label>PowerPlay Energy Group</label>
                 </value>
                 <value>
                     <fullName>Beacon Energy Solutions LLC</fullName>
@@ -2925,7 +2913,7 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Power Play Energy</fullName>
+                <fullName>PowerPlay Energy Group</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -3403,7 +3391,7 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Power Play Energy</fullName>
+                <fullName>PowerPlay Energy Group</fullName>
                 <default>false</default>
             </values>
             <values>

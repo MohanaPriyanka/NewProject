@@ -213,20 +213,23 @@ public with sharing class ZuoraAPIHelper {
         if (saveResults.size() != recordCount) {
             throw new Util.BWException('Received ' + saveResults.size() + ' when updating ' + recordCount + ' objects: ' + jsonForDebug);
         }
-        Boolean errorFound = false;
+        Boolean errorFound = false, invalidValue = false;
         for (Integer i = 0; i < saveResults.size(); i++) {
             if (!saveResults[i].Success) {
                 errorFound = true;
-                Logger.logLater(
-                    'ZuoraAPIHelper',
-                    'containsErrors',
-                    JSON.serialize(saveResults[i].Errors),
-                    Logger.ERROR
-                );
+                String saveResultErrors = JSON.serialize(saveResults[i].Errors);
+                if (saveResultErrors.contains('"Code":"INVALID_VALUE"')) {
+                    invalidValue = true;
+                }
+                Logger.logLater('ZuoraAPIHelper','containsErrors',saveResultErrors,Logger.ERROR);
             }
         }
         if (errorFound) {
-            throw new Util.BWException('/v1/action did not save one or more records: ' + jsonForDebug);
+            if (invalidValue) {
+                throw new Util.FatalBWException('/v1/action did not save one or more records: ' + jsonForDebug);
+            } else {
+                throw new Util.BWException('/v1/action did not save one or more records: ' + jsonForDebug);
+            }
         }
         return saveResults;
     }

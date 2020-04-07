@@ -29,6 +29,7 @@ public with sharing class ZuoraPaymentService {
 
         Decimal paymentAmount = payment.amount;
         Decimal applicationAmount;
+        Datetime effectiveDate = System.now();
         for (ZuoraOutstandingItemsService.OutstandingItem item : outstandingItems){
             if (paymentAmount == 0){
                 break;
@@ -50,10 +51,14 @@ public with sharing class ZuoraPaymentService {
                 debitMemo.amount = applicationAmount;
                 application.debitMemos.add(debitMemo);
             }
+            if (item.EffectiveDate > effectiveDate) {
+                effectiveDate = item.EffectiveDate;
+            }
         }
         if (paymentAmount > 0){
             Logger.logLater('ZuoraPaymentPageController','applyPaymentToOutstandingItems','Payment was not completely applied: ' + String.valueOf(payment));
         }
+        application.effectiveDate = DateUtil.convertGmtToDate(effectiveDate);
         return application;
     }
 

@@ -451,10 +451,6 @@
                 <field>Meter_Reading_Schedule__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>First_Bill_Date__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Billing_Method__c</field>
             </layoutItems>
