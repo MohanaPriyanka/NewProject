@@ -3,19 +3,20 @@
     <available>true</available>
     <description>Notice to customer that CS bill will be due in 3 days</description>
     <encodingKey>ISO-8859-1</encodingKey>
-    <name>Branded AmpRed 3 Days Before Due</name>
+    <name>Branded BluewaveLogo 3 Days Before Due</name>
     <style>none</style>
     <subject>Your Community Solar Bill Is Almost Due</subject>
-    <textOnly>Hello {!AccountName},
+    <textOnly>Hello {!Account.Name},
 
-Just a heads up, your community solar statement is due in a couple of days.
+Just a heads up, your community solar bill is due in a couple days.
 
-To pay your bill, please log into your community solar portal.
+To pay your bill, please login to your BlueWave Portal.
 
 Log Into Your Portal Here
 
+Thanks for being part of the Wave, we&apos;re happy you&apos;re here.
 
-- All of us here at AMP and BlueWave
+- All of us here at BlueWave
 
 BlueWave Customer Care
 844.786.4100 | customercare@bluewavesolar.com</textOnly>

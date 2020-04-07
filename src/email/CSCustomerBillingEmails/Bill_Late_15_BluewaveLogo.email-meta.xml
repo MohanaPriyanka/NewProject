@@ -10,7 +10,7 @@
 
 Your BlueWave account is 15 days past due.
 
-Your outstanding account balance is {!Account.Total_Outstanding_Balance__c}.
+Your outstanding account balance is {!Account.Total_Outstanding_Balance_Merge__c}.
 
 Please make a payment as soon as possible so your account does not incur late fees.
 

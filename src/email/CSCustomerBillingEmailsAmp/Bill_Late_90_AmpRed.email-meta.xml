@@ -10,7 +10,7 @@
 
 Your community solar account is 90 days past due.
 
-Your outstanding balance is  {!Account.Total_Outstanding_Balance__c}.
+Your outstanding balance is  {!Account.Total_Outstanding_Balance_Merge__c}.
 
 Please make a payment as soon as possible to avoid incurring late fees. To check the status the of your account or make a payment online, please log into your community solar portal.
 
