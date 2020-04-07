@@ -53,7 +53,13 @@ public with sharing class CSCancellationServiceTest {
         );
         insert transferA1;
 
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id});
+        List<Bill_Period__c> billPeriods = [
+            SELECT Id, Name, Bill_Date__c, Shared_Solar_System__c
+            FROM Bill_Period__c
+            WHERE Id = : bpA1.Id
+        ];
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(billPeriods);
+        ee.runBills();
     }
 
     @IsTest static void testOverdueAccounts() {
