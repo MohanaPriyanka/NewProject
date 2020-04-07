@@ -54,17 +54,24 @@ public inherited sharing class ContentDocumentSelector {
         return versionList[0].ContentDocumentId;
     }
 
-    public List<ContentDocumentLink> getDocsCreatedWithinRange(Datetime dt1, Datetime dt2) {
-        String queryStr = 'SELECT Id, Visibility FROM ContentDocumentLink';
-        queryStr += ' WHERE Visibility = \'AllUsers\' AND LinkedEntityId IN (SELECT Id FROM Lead)';
-
-        Datetime minDate = dt2 == null ? dt1 : (dt1 < dt2 ? dt1 : dt2);
-        System.debug('mindate: ' + minDate);
-        Datetime maxDate = dt1 == null ? dt2 : (dt1 < dt2 ? dt2 : dt1);
-        System.debug('maxdate: ' + maxDate);
-        queryStr += minDate == null ? '' : ' AND ContentDocument.CreatedDate >= :minDate';
-        queryStr += maxDate == null ? '' : ' AND ContentDocument.CreatedDate <= :maxDate';
-        System.debug(queryStr);
-        return Database.query(queryStr);
+    public List<ContentDocument> getLeadDocsCreatedWithinRange(Datetime startDate, Datetime endDate) {
+        return [
+            SELECT
+                Id,
+                (SELECT
+                    Id,
+                    Visibility
+                FROM
+                    ContentDocumentLinks
+                WHERE
+                    Visibility = 'AllUsers'
+                    AND LinkedEntity.Type = 'Lead'
+                )
+            FROM
+                ContentDocument
+            WHERE
+                CreatedDate >= :startDate
+                AND CreatedDate <= :endDate
+        ];
     }
 }

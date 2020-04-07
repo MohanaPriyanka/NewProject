@@ -42,19 +42,17 @@ public with sharing class ContentService {
         return cdl;
     }
 
-    public void makeContentDocLinksPrivate(List<ContentDocumentLink> linkList) {
-        if(!linkList.isEmpty()) {
-            for(ContentDocumentLink link : linkList) {
-                link.Visibility = 'InternalUsers';
-            }
-
-            List<Database.SaveResult> srList = database.update(linkList);
-            for(Database.SaveResult sr : srList) {
-                if(!sr.isSuccess()) {
-                    Logger.logLater('ContentService', 'makeContentDocLinksPrivate', 'Error updating ContentDocumentLink ' + sr.getId() + '. Errors: ' + sr.getErrors());
+    public void makeContentDocLinksPrivate(List<ContentDocument> cdList) {
+        List<ContentDocumentLink> linkList = new List<ContentDocumentLink>();
+        if(!cdList.isEmpty()) {
+            for(ContentDocument cd : cdList) {
+                for(ContentDocumentLink link : cd.ContentDocumentLinks) {
+                    link.Visibility = 'InternalUsers';
+                    linkList.add(link);
                 }
             }
-            Logger.flushLogs();
+
+            Util.updateAndLog(linkList, 'ContentService', 'makeContentDocLinksPrivate');
         }
     }
 }

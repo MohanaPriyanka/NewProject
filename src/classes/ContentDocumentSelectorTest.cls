@@ -95,18 +95,20 @@ public with sharing class ContentDocumentSelectorTest {
     }
 
     @IsTest
-    private static void testGetDocsCreatedWithinRange() {
+    private static void testGetLeadDocsCreatedWithinRange() {
         Lead l1 = new Lead(
             FirstName = 'test',
             LastName = 'testerson',
             Company = 'test',
-            Email = 'ttesterson@email.com'
+            Email = 'ttesterson@email.com',
+            LeadSource = 'Switch'
         );
         Lead l2 = new Lead(
             FirstName = 'test2',
             LastName = 'testerson2',
             Company = 'test2',
-            Email = 'ttesterson2@email.com'
+            Email = 'ttesterson2@email.com',
+            LeadSource = 'Switch'
         );
         insert new List<Lead>{l1, l2};
 
@@ -128,9 +130,12 @@ public with sharing class ContentDocumentSelectorTest {
 
         ContentDocumentSelector selector = new ContentDocumentSelector();
         Test.startTest();
-            List<ContentDocumentLink> linkList = selector.getDocsCreatedWithinRange(Datetime.now().addDays(-1), Datetime.now().addDays(1));
+            List<ContentDocument> cdList = selector.getLeadDocsCreatedWithinRange(Datetime.now().addDays(-1), Datetime.now().addDays(1));
         Test.stopTest();
-
-        System.assertEquals(1, linkList.size(), 'Selector should have returned one Content Document');
+        
+        List<Error_Log__c> errList = [SELECT Id, Message__c FROM Error_Log__c];
+        System.assert(errList.isEmpty(), 'There should be no errors');
+        System.assertEquals(2, cdList.size(), 'Selector should have returned one Content Document');
+        System.assertEquals(1, cdList[0].ContentDocumentLinks.size(), 'Selector should have returned one Content Document Link');
     }
 }
