@@ -22,7 +22,7 @@ public without sharing class TransferSelector {
         ];
     }
 
-    public static Transfer__c getTransferById(String transferId) {
+    public Transfer__c getTransferById(String transferId) {
         TransferSelector selector = new TransferSelector();
         List<Transfer__c> transfers = selector.getAllTransfersById(new List<Id>{transferId});
         if (transfers.isEmpty()) {

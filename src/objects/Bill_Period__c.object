@@ -174,17 +174,12 @@
                 <value>
                     <fullName>Host Account Bill Uploaded</fullName>
                     <default>false</default>
-                    <label>Host Account Bill Uploaded</label>
+                    <label>Production Uploaded</label>
                 </value>
                 <value>
                     <fullName>Host Account Bill QCed</fullName>
                     <default>false</default>
-                    <label>Host Account Bill QCed</label>
-                </value>
-                <value>
-                    <fullName>Bill Period QCed</fullName>
-                    <default>false</default>
-                    <label>Bill Period QCed</label>
+                    <label>Production QCed</label>
                 </value>
                 <value>
                     <fullName>Credit Transfers QCed</fullName>
@@ -195,6 +190,11 @@
                     <fullName>Ready to Generate</fullName>
                     <default>false</default>
                     <label>Ready to Generate</label>
+                </value>
+                <value>
+                    <fullName>Generated</fullName>
+                    <default>false</default>
+                    <label>Generated</label>
                 </value>
                 <value>
                     <fullName>Bill Run Complete</fullName>
@@ -226,6 +226,14 @@
         <fullName>Date_Credit_Transfers_QCed__c</fullName>
         <externalId>false</externalId>
         <label>Date: Credit Transfers QCed</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Generated__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Generated</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
