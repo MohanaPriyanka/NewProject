@@ -60,7 +60,8 @@ public inherited sharing class ContentDocumentSelector {
                 Id,
                 (SELECT
                     Id,
-                    Visibility
+                    Visibility,
+                    LinkedEntityId
                 FROM
                     ContentDocumentLinks
                 WHERE

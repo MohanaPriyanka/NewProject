@@ -112,21 +112,32 @@ public with sharing class ContentDocumentSelectorTest {
         );
         insert new List<Lead>{l1, l2};
 
-        Id cdId = [SELECT Id, ContentDocumentId FROM ContentVersion LIMIT 1].ContentDocumentId;
+        List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
+        System.assertEquals(2, cvList.size());
+        Test.setCreatedDate(cvList[1].ContentDocumentId, Datetime.now().addDays(-70));
 
+        // this CDL should be returned by the selector
         ContentDocumentLink cdl1 = new ContentDocumentLink(
-            ContentDocumentId = cdId,
+            ContentDocumentId = cvList[0].ContentDocumentId,
             LinkedEntityId = l1.Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
+        // this CDL should NOT be returned by the selector due to visibility
         ContentDocumentLink cdl2 = new ContentDocumentLink(
-            ContentDocumentId = cdId,
+            ContentDocumentId = cvList[0].ContentDocumentId,
             LinkedEntityId = l2.Id,
             ShareType = 'V',
             Visibility = 'InternalUsers'
         );
-        insert new List<ContentDocumentLink>{cdl1, cdl2};
+        // this CDL should NOT be returned by the selector due to parent CD created date
+        ContentDocumentLink cdl3 = new ContentDocumentLink(
+            ContentDocumentId = cvList[1].ContentDocumentId,
+            LinkedEntityId = l2.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        insert new List<ContentDocumentLink>{cdl1, cdl2, cdl3};
 
         ContentDocumentSelector selector = new ContentDocumentSelector();
         Test.startTest();
@@ -135,7 +146,8 @@ public with sharing class ContentDocumentSelectorTest {
         
         List<Error_Log__c> errList = [SELECT Id, Message__c FROM Error_Log__c];
         System.assert(errList.isEmpty(), 'There should be no errors');
-        System.assertEquals(2, cdList.size(), 'Selector should have returned one Content Document');
+        System.assertEquals(2, cdList.size(), 'Selector should have returned two Content Documents');
         System.assertEquals(1, cdList[0].ContentDocumentLinks.size(), 'Selector should have returned one Content Document Link');
+        System.assertEquals(l1.Id, cdList[0].ContentDocumentLinks[0].LinkedEntityId, 'Selector should have returned the Content Document Link associated with Lead l1');
     }
 }
