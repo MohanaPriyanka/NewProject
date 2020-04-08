@@ -445,6 +445,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
+                <field>First_Bill_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
                 <field>Count_of_Transfers__c</field>
             </layoutItems>
             <layoutItems>
