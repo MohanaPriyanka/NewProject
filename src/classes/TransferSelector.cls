@@ -63,8 +63,7 @@ public without sharing class TransferSelector {
         ];
 
     }
-
-    //TODO: This is used to assign transfers to Bill Periods - is this still being used?
+    
     public static List<Transfer__c> getTransfersForBillPeriods(Set<Id> sssIds) {
         return [
             SELECT Id, Bills_Generated__c, Bill_Period__c, Shared_Solar_System__c, Date_of_Transfer__c
@@ -75,8 +74,6 @@ public without sharing class TransferSelector {
         ];
     }
 
-    //TODO: This one is being used by the EEUTH - generating bills (previewing bills?)
-    // This is the query that needs to be updated to only grab Transfers with Bill By = UASB
     public static List<Transfer__c> getAllTransfersByBillPeriod(Set<Id> billPeriodIds) {
         return [
             SELECT Id, Name, Shared_Solar_System__c, Allocation_Schedule__c, Attempted_Transfer__c, Bill_Period__c,
