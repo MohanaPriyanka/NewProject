@@ -13,18 +13,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dsfs__BaseController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__ConfigurationService</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__CustomButtonController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dsfs__DSAPI</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -81,10 +69,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dsfs__DnbController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dsfs__DocuSignAccountCreateRequest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -113,10 +97,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dsfs__DocuSignAdvCorrectController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dsfs__DocuSignApiConnection</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -141,10 +121,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dsfs__DocuSignConsoleController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dsfs__DocuSignConstants</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -153,23 +129,7 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dsfs__DocuSignCustomButtonParser</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__DocuSignCustomRelatedContact</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__DocuSignCustomRelatedContactBuilder</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dsfs__DocuSignDocument</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__DocuSignEnvelopeController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -178,10 +138,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>dsfs__DocuSignEnvelopeRecipientController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__DocuSignEnvelopeRecipientUtils</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -237,10 +193,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dsfs__DocuSignResendEnvelopeController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dsfs__DocuSignSendTokenRequest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -265,23 +217,11 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dsfs__DocuSignUtils</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__DocuSignVoidEnvelopeController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dsfs__DocumentManager</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>dsfs__EnvelopeController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__EnvelopeDto</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -297,14 +237,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dsfs__PermissionSetService</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__PlatformPermissionSetService</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dsfs__RecipientManager</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -314,14 +246,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>dsfs__UIResponseDto</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__m_EditDocuSignEnvelopeController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dsfs__m_LandingComponentController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <description>Provides access to the DocuSign for Salesforce application, pages and objects.</description>

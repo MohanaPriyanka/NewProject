@@ -16,10 +16,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>SalesAnalyticsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>UseTemplatedApp</name>
     </userPermissions>
 </PermissionSet>
