@@ -54,6 +54,18 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
+        <fullName>Accounting_Score__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Scale 1-10, 10 is ideal and 1 is the worst</inlineHelpText>
+        <label>Accounting Score</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>BlueWave_Rating__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Scale 1-10, BlueWave&apos;s perception of the current client relationship</inlineHelpText>
