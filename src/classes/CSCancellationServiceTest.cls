@@ -45,6 +45,8 @@ public with sharing class CSCancellationServiceTest {
             Date_of_Transfer__c = billDate,
             Shared_Solar_System__c = sssID,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = scheduleZ1.Id,
             Attempted_Transfer__c = 36000,
             Attempted_kWh_Transfer__c = 160000,
