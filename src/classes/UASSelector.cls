@@ -66,7 +66,7 @@ public without sharing class UASSelector {
             WHERE Id IN :uasIds
         ];
     }
-    public  Map<Id, Utility_Account_Subscription__c> getUASMap(Set<Id> uasIds) {
+    public Map<Id, Utility_Account_Subscription__c> getUASMap(Set<Id> uasIds) {
         Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>( [
             SELECT Id,
                 Shared_Solar_System__r.Client_Account__c,

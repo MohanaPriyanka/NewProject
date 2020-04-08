@@ -70,7 +70,7 @@ public with sharing class ClientReportingServiceTest {
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{transfer});
 
         System.assertEquals(uas.Opportunity__r.Shared_Solar_System__c, billPeriod.Shared_Solar_System__c);
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{billPeriod.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{billPeriod.Id});
 
         Bill_Adjustment__c billAdjustment = [
             SELECT Id, Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c, Client__c
@@ -207,10 +207,7 @@ public with sharing class ClientReportingServiceTest {
         System.assertEquals(true, billAdjustment.Externally_Serviced__c);
     }
 
-
-
-
-        @isTest
+    @IsTest
     public static void testClientHealthScore(){
         Account acct = [SELECT Id FROM Account LIMIT 1];
 

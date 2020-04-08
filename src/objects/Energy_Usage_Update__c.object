@@ -1211,7 +1211,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Require_Entity_to_Create_Prod_update</fullName>
@@ -1348,19 +1348,5 @@ if({!
         alert(&apos;Bills are being generated, this may take a few minutes&apos;);
     }
 }</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Preview_Bills</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <linkType>url</linkType>
-        <masterLabel>Preview Bills</masterLabel>
-        <openType>replace</openType>
-        <protected>false</protected>
-        <url>/apex/ShowUASes?
-prodUpdate={!Energy_Usage_Update__c.Id}
-&amp;prodName={!Energy_Usage_Update__c.Name}
-&amp;totalNMCs={!TEXT(Energy_Usage_Update__c.Total_System_NMCs__c)}</url>
     </webLinks>
 </CustomObject>

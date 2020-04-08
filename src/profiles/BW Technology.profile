@@ -3351,10 +3351,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PreviewProductionUpdateResults</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProductEscalationTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3624,10 +3620,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TestBillCreationForCancelledCustomers</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestBillCreationandPayment</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -42728,6 +42720,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.CS_Services_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -42899,11 +42896,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Expected_Yield_kWh_kW__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.First_Bill_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46098,7 +46090,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Log__c.Subsc_Annual_Cost_of_Electricity_Rollup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Log__c.Subscribed_Annual_Cost_of_Electricity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Subscribed_Annual_kWhs_Rollup__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -210,10 +210,18 @@ public without sharing class CSSubscriptionEnroller {
             if (ual.Annual_Cost_of_Electricity__c == null && ual.Annual_kWh__c == null) {
                 throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
             }
-            totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-            totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subscribed_Annual_Cost_of_Electricity__c);
-            totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
-            totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs__c);
+            if (featureService.isEnabled('Subscription_Orders')) {
+                totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
+                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
+                totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
+                totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
+            } else {
+                totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
+                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subscribed_Annual_Cost_of_Electricity__c);
+                totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
+                totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs__c);
+            }
+
         }
         return new AnnualEnergyTotal(totalAnnualCostOfElectricity, totalAnnualkWhElectricity);
     }

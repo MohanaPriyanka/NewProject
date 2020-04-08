@@ -460,17 +460,17 @@ Conga_Letter_Stream_Merge__c (Print)</inlineHelpText>
     <fields>
         <fullName>Link_to_Window__c</fullName>
         <externalId>false</externalId>
-        <formula>&quot;https://conductor.congamerge.com?SessionId=&quot;
+        <formula>&quot;https://conductor.congamerge.com/Conductor8/index.html?SessionId=&quot;
 &amp;$Api.Session_ID
-&amp;&quot;ServerUrl=&quot;
+&amp;&quot;&amp;ServerUrl=&quot;
 &amp;$Api.Partner_Server_URL_290
-&amp;&quot;Id=&quot;
+&amp;&quot;&amp;Id=&quot;
 &amp;Id
-&amp;&quot;ReportId=&quot;
+&amp;&quot;&amp;ReportId=&quot;
 &amp;APXT_BPM__Report_Id__c
-&amp;&quot;RecordId=&quot;
+&amp;&quot;&amp;RecordId=&quot;
 &amp;APXT_BPM__Record_Id__c 
-&amp;&quot;UrlFieldName=Send_Bill_Conga_Calc__c&quot;</formula>
+&amp;&quot;&amp;UrlFieldName=Send_Bill_Conga_Calc__c&quot;</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Link to Window</label>
         <required>false</required>

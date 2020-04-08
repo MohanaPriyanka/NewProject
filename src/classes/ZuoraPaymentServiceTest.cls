@@ -63,6 +63,57 @@ public with sharing class ZuoraPaymentServiceTest {
     }
 
     @IsTest
+    public static void testPaymentApplicationInFuture(){
+        Datetime futureDate = System.now() + 3;
+        ZuoraOutstandingItemsService.OutstandingItem itemOne = new ZuoraOutstandingItemsService.OutstandingItem();
+        itemOne.AmountOutstanding = 5;
+        itemOne.AmountToApply = 0;
+        itemOne.EffectiveDate = Datetime.newInstance(2019,01,20,0,0,0);
+        itemOne.IsInvoiceItem = true;
+
+        ZuoraOutstandingItemsService.OutstandingItem itemTwo = new ZuoraOutstandingItemsService.OutstandingItem();
+        itemTwo.AmountOutstanding = 50;
+        itemTwo.AmountToApply = 0;
+        itemTwo.EffectiveDate = futureDate;
+        itemTwo.IsInvoiceItem = false;
+
+        ZuoraOutstandingItemsService.OutstandingItem itemThree = new ZuoraOutstandingItemsService.OutstandingItem();
+        itemThree.AmountOutstanding = 40;
+        itemThree.AmountToApply = 0;
+        itemThree.EffectiveDate = futureDate + 3;
+        itemThree.IsInvoiceItem = false;
+
+        List<ZuoraOutstandingItemsService.OutstandingItem> itemList = new List<ZuoraOutstandingItemsService.OutstandingItem>{itemOne};
+
+        ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
+        payment.amount = 55;
+
+        ZuoraAPI.ZuoraPaymentApplication application;
+        ZuoraPaymentService paymentService = new ZuoraPaymentService();
+        application = paymentService.applyPaymentToOutstandingItems(itemList, payment);
+        System.assertEquals(1,application.invoices.size());
+        System.assertEquals(0,application.debitMemos.size());
+        System.assertEquals(DateUtil.convertGmtToDate(System.now()), application.effectiveDate,
+            'Expected effective date to be today since outstanding items are effective in the past');
+
+        itemList.add(itemTwo);
+        itemList.sort();
+        application = paymentService.applyPaymentToOutstandingItems(itemList, payment);
+        System.assertEquals(1,application.invoices.size());
+        System.assertEquals(1,application.debitMemos.size());
+        System.assertEquals(DateUtil.convertGmtToDate(futureDate), application.effectiveDate,
+            'Expected effective date to be the latest outstanding item\'s effective date');
+
+        itemList.add(itemThree);
+        itemList.sort();
+        application = paymentService.applyPaymentToOutstandingItems(itemList, payment);
+        System.assertEquals(1,application.invoices.size());
+        System.assertEquals(1,application.debitMemos.size());
+        System.assertEquals(DateUtil.convertGmtToDate(futureDate), application.effectiveDate,
+            'Expected effective date to be the the effective date of the latest outstanding item that is getting applied');
+    }
+
+    @IsTest
     public static void testPaymentApplication(){
         // Don't expect this to have more than 2 decimals,
         // but just to double check that rounding issues won't be duplicated in Zuora:

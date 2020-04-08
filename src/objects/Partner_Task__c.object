@@ -46,7 +46,6 @@
     <description>The Partner Task object is used to highlight exactly what it is the partner has to do next in order to correctly process a customer. They are used specifically in the partner portal, but also internally in the Salesforce UI.</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -542,7 +541,7 @@ IF(ISPICKVAL(Loan__r.Lead__r.Status, &quot;Not Interested&quot;), &quot; (Not In
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Interconnected_Validation</fullName>

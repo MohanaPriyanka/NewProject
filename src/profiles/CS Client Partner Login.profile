@@ -3158,10 +3158,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PreviewProductionUpdateResults</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProductEscalationTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3383,10 +3379,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TestBillCreationForCancelledCustomers</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestBillCreationandPayment</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -41157,11 +41149,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Expected_Yield_kWh_kW__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.First_Bill_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

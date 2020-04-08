@@ -55,6 +55,9 @@ public with sharing class ZuoraSubscriptionService {
             if (newSubscription.orderDate < existingContractEffectiveDate) {
                 newSubscription.orderDate = existingContractEffectiveDate;
             }
+            if (newSubscription.contractEffectiveDate < existingContractEffectiveDate) {
+                newSubscription.contractEffectiveDate = existingContractEffectiveDate;
+            }
             ClientProject newSubClientProject = new ClientProject(newSubscription.clientName, newSubscription.projectName);
             Set<ClientProject> existingClientProjects = obso.getClientProjectsFromOrders();
             // Since we don't want to add any client/projects that already exist, we'll remove them

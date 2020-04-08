@@ -51,49 +51,6 @@ public with sharing class ZuoraPaymentSelectorTest {
     }
 
     @IsTest
-    public static void testGetTransactions(){
-        Account accountTwo = new Account(
-            Name = 'TestTwo'
-        );
-        insert accountTwo;
-
-        Zuora__CustomerAccount__c billingAccountTwo = new Zuora__CustomerAccount__c(
-            Name = 'Test Two',
-            Zuora__Account__c = accountTwo.Id
-        );
-        insert billingAccountTwo;
-
-        Zuora__Payment__c paymentOne = new Zuora__Payment__c(
-            Zuora__BillingAccount__c = billingAccountTwo.Id,
-            Zuora__Amount__c = 123.45,
-            Zuora__Effective_Date__c = Date.newInstance(2017,03,20)
-        );
-        Zuora__Payment__c paymentTwo = new Zuora__Payment__c(
-            Zuora__BillingAccount__c = billingAccountTwo.Id,
-            Zuora__Amount__c = 222.45,
-            Zuora__Effective_Date__c = Date.newInstance(2016,03,20)
-        );
-        Zuora__Payment__c paymentThree = new Zuora__Payment__c(
-            Zuora__BillingAccount__c = billingAccountTwo.Id,
-            Zuora__Amount__c = 444.45,
-            Zuora__Effective_Date__c = Date.newInstance(2017,03,22)
-        );
-        insert new List<Zuora__Payment__c>{paymentOne,paymentTwo,paymentThree};
-
-        List<Account> accountList = new List<Account>{accountTwo};
-        List<Id> accountIdList = new List<Id>{accountTwo.Id};
-
-        System.assertEquals( 3, (ZuoraPaymentSelector.selectByAccount(accountIdList).size()));
-
-        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
-        if (zuoraSetting.Zuora_Is_Live__c){
-            System.assertEquals( 3, (PreviewProductionUpdateResults.getTransactions(accountList)).size());
-        } else {
-            System.assertEquals( 0, (PreviewProductionUpdateResults.getTransactions(accountList)).size());
-        }
-    }
-
-    @IsTest
     private static void testSelectElectronicPaymentsFromDate() {
         System.assertNotEquals(null, ZuoraPaymentSelector.selectElectronicPaymentsFromDate(System.now()));
 
