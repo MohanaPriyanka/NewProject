@@ -8,6 +8,8 @@
     <subject>Your Community Solar Bill Is Almost Due</subject>
     <textOnly>Hello {!Account.Name},
 
+COVID-19 Information: We recognize that the unprecedented COVID-19 situation may be causing financial difficulty. Please contact our Customer Care team if you have concerns about making payments for your BlueWave Community Solar subscription.
+
 Just a heads up, your community solar bill is due in a couple days.
 
 To pay your bill, please login to your BlueWave Portal.

@@ -8,15 +8,17 @@
     <subject>Your BlueWave Account is 74 Days Past Due</subject>
     <textOnly>Hello {!Account.Name},
 
+COVID-19 Information: We recognize that the unprecedented COVID-19 situation may be causing financial difficulty. Please contact our Customer Care team if you have concerns about making payments for your BlueWave Community Solar subscription.
+
 Your BlueWave account is 74 days past due.
 
 Your outstanding account balance is {!Account.Total_Outstanding_Balance_Merge__c}.
 
-To check the status of your account and make a payment online, please login to your BlueWave Portal. You can also access your portal at bluewavesolar.com.
-
-Your community solar agreement will officially be terminated when you are removed from the project. Till then, your account remains due.
+Please make a payment as soon as possible. To check the status of your account and make a payment online, please login to your BlueWave Portal. You can also access your portal at bluewavesolar.com.
 
 Log Into Your Portal Here
+
+Your community solar agreement will officially be terminated when you are removed from the project. Till then, your account remains due.
 
 - All of us here at BlueWave
 

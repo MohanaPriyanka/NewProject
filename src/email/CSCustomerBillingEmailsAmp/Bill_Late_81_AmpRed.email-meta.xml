@@ -6,13 +6,15 @@
     <name>Branded AmpRed 81 Days</name>
     <style>none</style>
     <subject>Your Community Solar Account is 81 Days Past Due</subject>
-    <textOnly>Dear {!AccountName},
+    <textOnly>Dear {!Account.Name},
+
+COVID-19 Information: We recognize that the unprecedented COVID-19 situation may be causing financial difficulty. Please contact our Customer Care team if you have concerns about making payments for your Amp Community Solar subscription.
 
 Your community solar account is 81 days past due.
 
 Your outstanding balance is  {!Account.Total_Outstanding_Balance_Merge__c}.
 
-Please make a payment as soon as possible to avoid incurring late fees. To check the status the of your account or make a payment online, please log into your community solar portal.
+Please make a payment as soon as possible. To check the status the of your account or make a payment online, please log into your community solar portal.
 
 Log Into Your Portal Here
 
