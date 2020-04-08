@@ -8,11 +8,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Loan__c.Loan_Portfolio__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Loan__c.Loan_Purchase_Price__c</field>
         <readable>true</readable>
     </fieldPermissions>
