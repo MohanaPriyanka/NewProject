@@ -483,8 +483,16 @@ public class TransferSheetBillingTest {
         );
         insert sss1;
 
+        Bill_Period__c billPeriod = new Bill_Period__c(
+            Shared_Solar_System__c = sss1.Id,
+            Name = 'Bill Period One',
+            Bill_Status__c = 'Ready To Generate'
+        );
+        insert billPeriod;
+
         Transfer__c transferOne = new Transfer__c(
             Name = 'TransferA',
+            Bill_Period__c = billPeriod.Id,
             Transfer_Type__c = 'Main',
             Bills_Generated__c = false,
             Shared_Solar_System__c = sss1.Id,
@@ -507,12 +515,20 @@ public class TransferSheetBillingTest {
         TransferSheetService.postUASBInsertProcessing(transferOne.Id, mockTransferSheetScreenData);
 
         Transfer__c transfer = [
-            SELECT Id, Bills_Generated__c
+            SELECT Id, Bills_Generated__c, Bill_Period__c
             FROM Transfer__c
             WHERE Id = : transferOne.Id
             LIMIT 1
         ];
         System.assert(transfer.Bills_Generated__c);
+
+        Bill_Period__c bp = [
+            SELECT Id, Bill_Status__c
+            FROM Bill_Period__c
+            WHERE Id = : transferOne.Bill_Period__c
+            LIMIT 1
+        ];
+        System.assertEquals('Generated',bp.Bill_Status__c);
 
         List<ContentDocumentLink> filesUploaded = [
             SELECT Id

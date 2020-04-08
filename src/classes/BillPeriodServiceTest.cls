@@ -160,27 +160,68 @@ private class BillPeriodServiceTest {
         List<Bill_Period__c> bpList = new List<Bill_Period__c> {bp1, bp2, bp3, bp4};
         insert bpList;
 
-        bp1.Bill_Status__c = 'Host Account Bill Uploaded';
-        bp2.Bill_Status__c = 'Host Account Bill QCed';
-        bp3.Bill_Status__c = 'Bill Period QCed';
+        bp1.Bill_Status__c = 'Production Uploaded';
+        bp2.Bill_Status__c = 'Production QCed';
+        bp3.Bill_Status__c = 'Generated';
         bp4.Bill_Status__c = 'Credit Transfers QCed';
 
         update bpList;
 
         List<Bill_Period__c> bpStatuses = [
             SELECT Id, Bill_Status__c, Date_Host_Bill_Uploaded__c, Date_Host_Account_Bill_QCed__c,
-                Date_Credit_Transfers_QCed__c, Date_Bill_Period_QCed__c
+                Date_Credit_Transfers_QCed__c, Date_Generated__c
             FROM Bill_Period__c
             ORDER BY Bill_Date__c ASC
         ];
 
         System.assertEquals(today, bpStatuses[0].Date_Host_Bill_Uploaded__c);
         System.assertEquals(today, bpStatuses[1].Date_Host_Account_Bill_QCed__c);
-        System.assertEquals(today, bpStatuses[2].Date_Bill_Period_QCed__c);
+        System.assertEquals(today, bpStatuses[2].Date_Generated__c);
         System.assertEquals(today, bpStatuses[3].Date_Credit_Transfers_QCed__c);
 
         Test.stopTest();
     }
 
+    @IsTest
+    static void testMarkBillPeriodsAsBillRunComplete(){
+        Shared_Solar_System__c sss = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            LIMIT 1
+        ];
 
+        Bill_Period__c bp1 = new Bill_Period__c(
+            Name = 'sssA - July Bill Period 2016',
+            Shared_Solar_System__c = sss.Id,
+            Bill_Status__c = 'Ready to Generate',
+            Bill_Date__c = Date.newInstance(2019, 6, 15)
+        );
+        insert bp1;
+
+        Bill_Period__c bp2 = new Bill_Period__c(
+            Name = 'sssA - July Bill Period 2016',
+            Shared_Solar_System__c = sss.Id,
+            Bill_Status__c = 'Ready to Generate',
+            Bill_Date__c = Date.newInstance(2019, 7, 15)
+        );
+        insert bp2;
+
+        Bill_Period__c bp3 = new Bill_Period__c(
+            Name = 'sssA - July Bill Period 2016',
+            Shared_Solar_System__c = sss.Id,
+            Bill_Status__c = 'Ready to Generate',
+            Bill_Date__c = Date.newInstance(2020, 7, 15)
+        );
+        insert bp3;
+
+        BillPeriodService.markBillPeriodsAsBillRunComplete(Date.newInstance(2019, 7, 20));
+
+        List<Bill_Period__c> billPeriods = [
+            SELECT Id
+            FROM Bill_Period__c
+            WHERE Bill_Status__c = 'Bill Run Complete'
+        ];
+
+        System.assertEquals(1,billPeriods.size());
+    }
 }

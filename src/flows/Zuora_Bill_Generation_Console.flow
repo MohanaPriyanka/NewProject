@@ -60,7 +60,7 @@
         <actionName>InvocableZuoraPaperMailSend</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Done_SCreen</targetReference>
+            <targetReference>Update_Bill_Period_Status</targetReference>
         </connector>
     </actionCalls>
     <actionCalls>
@@ -74,6 +74,24 @@
         <connector>
             <targetReference>Execute_Bill_Run_Screen</targetReference>
         </connector>
+    </actionCalls>
+    <actionCalls>
+        <name>Update_Bill_Period_Status</name>
+        <label>Update Bill Period Status</label>
+        <locationX>2127</locationX>
+        <locationY>573</locationY>
+        <actionName>InvocableZuoraBillPeriodStatus</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Done_SCreen</targetReference>
+        </connector>
+        <inputParameters>
+            <name>invoiceDates</name>
+            <value>
+                <elementReference>Invoice_Date</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
         <description>Gets all UASBs and Bill Adjustments that have not been uploaded to Zuora yet and uploads them</description>
@@ -288,8 +306,8 @@
     <decisions>
         <name>Skip_Paper_Mail_Decision</name>
         <label>Skip Paper Mail Decision</label>
-        <locationX>1934</locationX>
-        <locationY>211</locationY>
+        <locationX>1949</locationX>
+        <locationY>271</locationY>
         <defaultConnector>
             <targetReference>PaperMailSend</targetReference>
         </defaultConnector>
@@ -305,7 +323,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Done_SCreen</targetReference>
+                <targetReference>Update_Bill_Period_Status</targetReference>
             </connector>
             <label>Skip Paper Mail Outcome</label>
         </rules>
@@ -414,7 +432,7 @@
     <screens>
         <name>Done_SCreen</name>
         <label>Done</label>
-        <locationX>2115</locationX>
+        <locationX>2274</locationX>
         <locationY>573</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -760,7 +778,13 @@
         <showFooter>false</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <startElementReference>GenerateUASBs</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>GenerateUASBs</targetReference>
+        </connector>
+    </start>
     <status>Active</status>
     <variables>
         <description>Response from the API after we try to execute a bill Run</description>

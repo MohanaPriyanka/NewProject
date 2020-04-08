@@ -220,4 +220,10 @@ public with sharing class InvocableZuoraActionsTest {
         List<String> response = InvocableZuoraBillingBatchUpdate.billingBatchUpdate(new List<Date>{invoiceDate});
         System.assertEquals(1,response.size());
     }
+
+    @IsTest public static void testBillPeriodStatus() {
+        Date invoiceDate = Date.newInstance(2019,02,15);
+        List<Integer> recordCount = InvocableZuoraBillPeriodStatus.billStatusUpdate(New List<Date>{invoiceDate});
+        System.assertEquals(0,recordCount[0]);
+    }
 }
