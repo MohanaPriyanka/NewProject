@@ -3318,10 +3318,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PreviewProductionUpdateResults</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProductEscalationTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3551,10 +3547,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TestBillCreationForCancelledCustomers</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TestBillCreationandPayment</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -41970,7 +41962,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Actual_PTO_Date_MANUAL__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -42190,7 +42182,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Estimated_COD_Date_Manual__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -42240,7 +42232,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Estimated_PTO_Date_MANUAL__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>

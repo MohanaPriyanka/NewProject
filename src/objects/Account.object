@@ -15568,34 +15568,6 @@ COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. 
         <width>900</width>
     </webLinks>
     <webLinks>
-        <fullName>Account_Info_Page_PARENT</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <height>600</height>
-        <linkType>url</linkType>
-        <masterLabel>Account Info Page</masterLabel>
-        <openType>sidebar</openType>
-        <protected>false</protected>
-        <url>/apex/accountinfo?accountID={!Account.Id}&amp;acctName={!Account.Name}&amp;totalBalance={!TEXT(Account.Total_Outstanding_Balance_Merge__c)}&amp;isParentAcct=TRUE</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Account_info_Page</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <height>600</height>
-        <linkType>url</linkType>
-        <masterLabel>Account info Page</masterLabel>
-        <openType>noSidebar</openType>
-        <protected>false</protected>
-        <url>/apex/accountinfo?
-accountID={!Account.Id}
-&amp;acctName={!Account.Name}
-&amp;totalBalance={!TEXT(Account.Total_Outstanding_Balance_Merge__c)}
-&amp;isParentAcct</url>
-    </webLinks>
-    <webLinks>
         <fullName>Billing_Info</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
