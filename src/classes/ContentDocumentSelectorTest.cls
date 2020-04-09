@@ -146,7 +146,7 @@ public with sharing class ContentDocumentSelectorTest {
         
         List<Error_Log__c> errList = [SELECT Id, Message__c FROM Error_Log__c];
         System.assert(errList.isEmpty(), 'There should be no errors');
-        System.assertEquals(2, cdList.size(), 'Selector should have returned two Content Documents');
+        System.assertEquals(1, cdList.size(), 'Selector should have returned one Content Document');
         System.assertEquals(1, cdList[0].ContentDocumentLinks.size(), 'Selector should have returned one Content Document Link');
         System.assertEquals(l1.Id, cdList[0].ContentDocumentLinks[0].LinkedEntityId, 'Selector should have returned the Content Document Link associated with Lead l1');
     }
