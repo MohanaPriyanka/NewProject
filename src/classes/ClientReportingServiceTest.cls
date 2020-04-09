@@ -210,7 +210,7 @@ public with sharing class ClientReportingServiceTest {
 
 
 
-        @isTest
+    @IsTest
     public static void testClientHealthScore(){
         Account acct = [SELECT Id FROM Account LIMIT 1];
 
@@ -222,6 +222,7 @@ public with sharing class ClientReportingServiceTest {
             Clients_Beginning_Balance__c  = 1200,
             Clients_Invoiced__c = 1200,
             Clients_Payments__c = 2400,
+            Accounting_Score__c = 10,
             NPS__c = 10,
             BlueWave_Rating__c = 10,
             Open_Cases__c = 0,
@@ -240,6 +241,7 @@ public with sharing class ClientReportingServiceTest {
             Clients_Beginning_Balance__c  = 1200,
             Clients_Invoiced__c = 1000,
             Clients_Payments__c = 100,
+            Accounting_Score__c = 8,
             NPS__c = 5,
             BlueWave_Rating__c = 4,
             Open_Cases__c = 18,
@@ -255,7 +257,9 @@ public with sharing class ClientReportingServiceTest {
         update new List<Client_Health_Report__c>{perfectScore, emptyData, badScore};
 
         List<Client_Health_Report__c> reportList = [
-            SELECT Id, Name, Customer_DSO__c,
+            SELECT Id, Name,
+                Accounting_Score__c,
+                Customer_DSO__c,
                 Client_DSO__c,
                 Client_Account__c,
                 Client_Health_Score__c,
@@ -275,7 +279,7 @@ public with sharing class ClientReportingServiceTest {
 
         System.assertEquals(10, reportList[0].Client_Health_Score__c);
         System.assertEquals(6.38, reportList[1].Client_Health_Score__c);
-        System.assertEquals(5.34, reportList[2].Client_Health_Score__c);
+        System.assertEquals(5.16, reportList[2].Client_Health_Score__c);
     }
 
     @IsTest
