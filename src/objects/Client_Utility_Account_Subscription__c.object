@@ -53,6 +53,20 @@ Utility_Account_Subscription__r.Annual_kwh_subscription_future__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Annual_kWh__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Utility_Account_Log__r.Annual_kWh__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Annual kWh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Autopay__c</fullName>
         <externalId>false</externalId>
         <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Recurring_Billing__c</formula>
@@ -133,6 +147,18 @@ Utility_Account_Subscription__r.Annual_kwh_subscription_future__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Customer_Utility_Company__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Utility_Account_Log__r.Utility_lookup__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Customer Utility Company</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Customer__c</fullName>
         <description>Opportunity Name</description>
         <externalId>false</externalId>
@@ -142,6 +168,20 @@ Utility_Account_Subscription__r.Annual_kwh_subscription_future__c
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Discount__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Discount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -186,6 +226,46 @@ Utility_Account_Subscription__r.Annual_kwh_subscription_future__c
         <type>Percent</type>
     </fields>
     <fields>
+        <fullName>Load_Zone__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;NEMA&quot;), &quot;NEMA; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;SEMA&quot;), &quot;SEMA; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;WCMA&quot;), &quot;WCMA; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;MN&quot;), &quot;MN; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Capital&quot;), &quot;Capital; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Hudson Valley&quot;), &quot;Hudson Valley; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Mohawk Valley&quot;), &quot;Mohawk Valley; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Central&quot;), &quot;Central; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Genesee&quot;), &quot;Genesee; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Dunwoodie&quot;), &quot;Dunwoodie; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;N.Y.C&quot;), &quot;N.Y.C; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Millwood&quot;), &quot;Millwood; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Long Island&quot;), &quot;Long Island; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;North&quot;), &quot;North; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;West&quot;), &quot;West; &quot;,&quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Load Zone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Most_Recent_Enacted_Percent_Share__c</fullName>
         <description>This percentage formula field pulls Percent Share data from the UAS&apos;s most recently enacted ALSS.</description>
         <externalId>false</externalId>
@@ -220,6 +300,54 @@ Utility_Account_Subscription__r.Annual_kwh_subscription_future__c
         <formula>text(Utility_Account_Subscription__r.Opportunity__r.StageName )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Opportunity Stage</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_Address__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Utility_Account_Log__r.Service_Address__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Service Address</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_City__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Utility_Account_Log__r.Service_City__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Service City</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_State__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Utility_Account_Log__r.Service_State__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Service State</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_Zip_Code__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Utility_Account_Log__r.Service_Zip_Code__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Service Zip Code</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
