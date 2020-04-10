@@ -2785,6 +2785,11 @@ null)</formula>
         <active>true</active>
         <label>SSS - No PM Relationship</label>
     </recordTypes>
+    <recordTypes>
+        <fullName>SSS_PM_Relationship</fullName>
+        <active>false</active>
+        <label>SSS PM Relationship</label>
+    </recordTypes>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <sharingReasons>
