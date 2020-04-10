@@ -2172,7 +2172,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <fullName>Serviced_Capacity__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
-OR (ISPICKVAL(Billing_Anchors__c,&quot;RadianGen&quot;), ISPICKVAL(Billing_Anchors__c, &quot;Client&quot;)),
+NOT (ISPICKVAL(Billing_Anchors__c,&quot;Bluewave&quot;)),
 Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c,
 Total_System_Size_kWh_DC__c 
 )</formula>
