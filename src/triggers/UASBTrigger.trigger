@@ -1,5 +1,5 @@
 /**
- * Tested by: ClientReportingServiceTest
+ * Tested by: ClientReportingServiceTest, UASBSelectorTest
  */
 
 trigger UASBTrigger on UASB__c (before insert) {
@@ -8,5 +8,6 @@ trigger UASBTrigger on UASB__c (before insert) {
     }
     if (Trigger.isInsert && Trigger.isBefore) {
         ClientReportingService.stampClient(Trigger.new);
+        ProductionToBillService.setUnservicedUASBReadyForProdDetail(Trigger.new);
     }
 }

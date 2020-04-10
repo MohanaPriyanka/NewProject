@@ -12,7 +12,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     @TestVisible
     private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
 
-    public enum OperationType {BILL, COLLECTION}
+    public enum OperationType {BILL, COLLECTION, UNSERVICED}
     public OperationType opType;
     public Integer batchSize;
 
@@ -105,6 +105,8 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
 
     public void genericExecute(){
         partsToInsert = new List<Transfer_Part__c>();
+        transferIds = new Set<Id>();
+        transferToPartsMap = new Map<Id, List<Transfer_Part__c>>();
         if (batchSize == null){
             batchSize = 1000;
         }
@@ -112,7 +114,10 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
             executeBillJob();
         } else if (opType == OperationType.COLLECTION){
             executeCollectionsJob();
+        } else if (opType == OperationType.UNSERVICED){
+            executeUnservicedJob();
         }
+
     }
 
     private void executeBillJob(){
@@ -146,10 +151,30 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
             }
             if (collectionItems.size() == batchSize){
                 queueJob(OperationType.COLLECTION);
+            } else {
+                queueJob(OperationType.UNSERVICED);
             }
         } catch (Exception excep) {
             String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(collectionItems);
             Logger.logNow('ProductionToBillService', 'executeCollectionsJob', message);
+        }
+    }
+
+    private void executeUnservicedJob(){
+        List<UASB__c> externallyServicedUASBs = new List<UASB__c>();
+        try {
+            externallyServicedUASBs = uasbSelector.getUnservicedWithoutProductionDetail(batchSize);
+            if (externallyServicedUASBs.size() > 0){
+                createProductionDetailFromUnservicedUASB(externallyServicedUASBs);
+                insert partsToInsert;
+                markUASBsAsComplete(externallyServicedUASBs);
+            }
+            if (externallyServicedUASBs.size() == batchSize){
+                queueJob(OperationType.UNSERVICED);
+            }
+        } catch (Exception excep){
+            String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(externallyServicedUASBs);
+            Logger.logNow('ProductionToBillService', 'executeUnservicedJob', message);
         }
     }
 
@@ -257,7 +282,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         }
     }
 
-    private void createBillProductionDetail(Id transferId, Decimal billAmount, String type, Id journalRecordId){
+    private void createBillProductionDetail(Id transferId, Decimal billAmount, String type, Id relatedRecordId){
         billAmount = Util.roundValue(billAmount,2, 'HALF_UP');
         Decimal staticBillAmount = billAmount;
         Decimal decliningBillAmount = billAmount;
@@ -271,10 +296,9 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
                 Name = type,
                 Production__c = transferPart.Production__c,
                 Transfer__c = transferId,
-                Journal_Entry__c = journalRecordId,
                 Type__c = type
             );
-
+            part = setRelatedRecordId(part, type, relatedRecordId);
             Decimal applicationAmount = getWeightedApplicationAmount(transferPart, staticBillAmount);
 
             if (applicationAmount <= decliningBillAmount){
@@ -290,6 +314,15 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
             }
             partsToInsert.add(part);
         }
+    }
+
+    private Transfer_Part__c setRelatedRecordId(Transfer_Part__c part, String type, Id relatedRecordId){
+        if (type == 'Unserviced'){
+            part.Externally_Serviced_UASB__c = relatedRecordId;
+        } else {
+            part.Journal_Entry__c = relatedRecordId;
+        }
+        return part;
     }
 
     private Decimal getWeightedApplicationAmount(Transfer_Part__c transferPart, Decimal staticBillAmount){
@@ -406,9 +439,37 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     }
 
     private void markJournalEntriesAsComplete(List<Journal_Entry__c> entries){
-        for (Journal_Entry__c  entry : entries){
+        for (Journal_Entry__c entry : entries){
             entry.Ready_for_Production_Detail__c = false;
         }
         update entries;
+    }
+
+    private void markUASBsAsComplete(List<UASB__c> unservicedBills){
+        for (UASB__c uasb : unservicedBills){
+            uasb.Ready_for_Production_Detail__c = false;
+        }
+        update unservicedBills;
+    }
+
+    @TestVisible
+    private void createProductionDetailFromUnservicedUASB(List<UASB__c> unservicedUASBs){
+        for (UASB__c exBill : unservicedUASBs){
+            transferIds.add(exBill.Transfer__c);
+        }
+
+        transferToPartsMap = transferPartsSelector.getTransferPartMap(transferIds);
+
+        for (UASB__c externalBill : unservicedUASBs){
+            createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Unserviced', externalBill.Id);
+        }
+    }
+
+    public static void setUnservicedUASBReadyForProdDetail(List<UASB__c> uasbs){
+        for (UASB__c uasb : uasbs) {
+            if (uasb.Externally_Serviced__c){
+                uasb.Ready_For_Production_Detail__c = true;
+            }
+        }
     }
 }
