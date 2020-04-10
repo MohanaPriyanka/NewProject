@@ -45144,6 +45144,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer_Part__c.Externally_Serviced_UASB__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Transfer_Part__c.Journal_Entry__c</field>
         <readable>true</readable>
@@ -45451,6 +45456,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>UASB__c.Production_Update__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Ready_For_Production_Detail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
