@@ -74,7 +74,6 @@ public without sharing class TransferSelector {
         ];
     }
 
-
     public static List<Transfer__c> getAllTransfersByBillPeriod(Set<Id> billPeriodIds) {
         return [
             SELECT Id, Name, Shared_Solar_System__c, Allocation_Schedule__c, Attempted_Transfer__c, Bill_Period__c,
@@ -83,8 +82,8 @@ public without sharing class TransferSelector {
                 Bill_Period__r.Bill_Status__c, Allocation_Schedule__r.Id, Allocation_Schedule__r.Name
             FROM Transfer__c
             WHERE Bill_Period__c IN : billPeriodIds
-            AND Transfer_Type__c != 'One-Off'
-            AND Transfer_Type__c !='Error'
+            AND Bill_By__c = 'UASB'
+            AND Transferred_To__c = 'Customer'
         ];
     }
 
