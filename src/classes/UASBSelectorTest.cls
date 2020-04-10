@@ -71,6 +71,8 @@ public class UASBSelectorTest {
         ];
 
         // On insert, Ready_for_Production_Detail__c is set to true if Externally Serviced = true
+        Util.enableTrigger('Disable_UASBTrigger__c');
+
         UASB__c billOne = new UASB__c(
             Account__c = uasList[0].Opportunity__r.AccountId,
             Externally_Serviced__c = true,
