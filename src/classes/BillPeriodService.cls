@@ -4,6 +4,7 @@
  * Tested By: BillPeriodServiceTest
  */
 
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class BillPeriodService {
 
     public void onAfterInsert(List<Bill_Period__c> bpList) {
@@ -21,14 +22,14 @@ public with sharing class BillPeriodService {
         for (Bill_Period__c bp : bpList) {
             if (bp.Bill_Status__c != oldMap.get(bp.Id).Bill_Status__c) {
                 switch on bp.Bill_Status__c {
-                    when 'Host Account Bill Uploaded' {
+                    when 'Production Uploaded' {
                         bp.Date_Host_Bill_Uploaded__c = Date.today();
-                    } when 'Host Account Bill QCed' {
+                    } when 'Production QCed' {
                         bp.Date_Host_Account_Bill_QCed__c = Date.today();
-                    } when 'Bill Period QCed' {
-                        bp.Date_Bill_Period_QCed__c = Date.today();
                     } when 'Credit Transfers QCed' {
                         bp.Date_Credit_Transfers_QCed__c = Date.today();
+                    } when 'Generated' {
+                        bp.Date_Generated__c = Date.Today();
                     }
                 }
                 updatedBPs.add(bp);
@@ -67,6 +68,22 @@ public with sharing class BillPeriodService {
         } catch (Exception e ) {
             Logger.logNow('BillPeriodService', 'updateRecords',
                 'Unable to update records: ' + JSON.serialize(records) + '\n'+  e.getMessage() + '\n' + e.getStackTraceString());
+        }
+    }
+
+    public static Integer markBillPeriodsAsBillRunComplete(Date invoiceDate){
+        try {
+            List<Bill_Period__c> billPeriodsToUpdate;
+            billPeriodsToUpdate = BillPeriodSelector.getBillPeriodsByMonth(invoiceDate.Month(), invoiceDate.Year());
+
+            for (Bill_Period__c billPeriod : billPeriodsToUpdate){
+                billPeriod.Bill_Status__c = 'Bill Run Complete';
+            }
+            update billPeriodsToUpdate;
+            return billPeriodsToUpdate.size();
+        } catch (Exception excep){
+            Logger.logNow('BillPeriodService','markBillPeriodsAsBillRunComplete',excep.getMessage() + '__' + excep.getStackTraceString());
+            return 0;
         }
     }
 }

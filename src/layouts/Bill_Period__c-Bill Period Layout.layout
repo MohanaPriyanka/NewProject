@@ -60,11 +60,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Date_Bill_Period_QCed__c</field>
+                <field>Date_Credit_Transfers_QCed__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Date_Credit_Transfers_QCed__c</field>
+                <field>Date_Generated__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns/>
