@@ -241,7 +241,7 @@
     <fields>
         <fullName>Date_Host_Account_Bill_QCed__c</fullName>
         <externalId>false</externalId>
-        <label>Date: Host Account Bill QCed</label>
+        <label>Date: Production QCed</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -249,7 +249,7 @@
     <fields>
         <fullName>Date_Host_Bill_Uploaded__c</fullName>
         <externalId>false</externalId>
-        <label>Date: Host Bill Uploaded</label>
+        <label>Date: Production Uploaded</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
