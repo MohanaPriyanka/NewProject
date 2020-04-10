@@ -61,4 +61,64 @@ public with sharing class ContentServiceTest {
 
         System.assertEquals(accountOne.Id,docLink.LinkedEntityId);
     }
+
+    @IsTest
+    public static void testMakeContentDocLinksPrivate() {
+        ContentVersion cv = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('invoice body'),
+            Title = 'test1.pdf',
+            PathOnClient = '/test1.pdf'
+        );
+        insert cv;
+
+        Lead l = new Lead(
+            FirstName = 'test',
+            LastName = 'testerson',
+            Company = 'test',
+            Email = 'ttesterson@email.com',
+            LeadSource = 'Switch'
+        );
+        insert l;
+
+        ContentDocumentSelector selector = new ContentDocumentSelector();
+        Id cdId = selector.getDocumentIdFromVersionId(cv.Id);
+
+        ContentDocumentLink cdl = new ContentDocumentLink(
+            ContentDocumentId = cdId,
+            LinkedEntityId = l.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        insert cdl;
+
+        List<ContentDocument> cdList = [
+            SELECT
+                Id,
+                (SELECT
+                    Id,
+                    Visibility
+                FROM
+                    ContentDocumentLinks
+                WHERE
+                    LinkedEntityId = :l.Id
+                )
+            FROM
+                ContentDocument
+        ];
+        System.assertEquals(1, cdList.size(), 'There should be only one Content Document');
+        System.assertEquals(1, cdList[0].ContentDocumentLinks.size(), 'There should be only one Content Document Link');
+        System.assertEquals('AllUsers', cdList[0].ContentDocumentLinks[0].Visibility, 'The visibility of the Content Document Link should be AllUsers');
+
+        ContentService service = new ContentService();
+        Test.startTest();
+            service.makeContentDocLinksPrivate(cdList);
+        Test.stopTest();
+
+        List<Error_Log__c> errList = [SELECT Id, Message__c FROM Error_Log__c];
+        System.assert(errList.isEmpty(), 'There should be no errors');
+        List<ContentDocumentLink> linkList = [SELECT Id, Visibility FROM ContentDocumentLink WHERE LinkedEntityId = :l.Id];
+        System.assertEquals(1, linkList.size(), 'There should be only one Content Document Link');
+        System.assertEquals('InternalUsers', linkList[0].Visibility, 'The visibility of the Content Document Link should be InternalUsers');
+    }
 }

@@ -93,4 +93,61 @@ public with sharing class ContentDocumentSelectorTest {
 
         System.assertEquals(cvList[0].ContentDocumentId, doc.Id);
     }
+
+    @IsTest
+    private static void testGetLeadDocsCreatedWithinRange() {
+        Lead l1 = new Lead(
+            FirstName = 'test',
+            LastName = 'testerson',
+            Company = 'test',
+            Email = 'ttesterson@email.com',
+            LeadSource = 'Switch'
+        );
+        Lead l2 = new Lead(
+            FirstName = 'test2',
+            LastName = 'testerson2',
+            Company = 'test2',
+            Email = 'ttesterson2@email.com',
+            LeadSource = 'Switch'
+        );
+        insert new List<Lead>{l1, l2};
+
+        List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
+        System.assertEquals(2, cvList.size());
+        Test.setCreatedDate(cvList[1].ContentDocumentId, Datetime.now().addDays(-70));
+
+        // this CDL should be returned by the selector
+        ContentDocumentLink cdl1 = new ContentDocumentLink(
+            ContentDocumentId = cvList[0].ContentDocumentId,
+            LinkedEntityId = l1.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        // this CDL should NOT be returned by the selector due to visibility
+        ContentDocumentLink cdl2 = new ContentDocumentLink(
+            ContentDocumentId = cvList[0].ContentDocumentId,
+            LinkedEntityId = l2.Id,
+            ShareType = 'V',
+            Visibility = 'InternalUsers'
+        );
+        // this CDL should NOT be returned by the selector due to parent CD created date
+        ContentDocumentLink cdl3 = new ContentDocumentLink(
+            ContentDocumentId = cvList[1].ContentDocumentId,
+            LinkedEntityId = l2.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        insert new List<ContentDocumentLink>{cdl1, cdl2, cdl3};
+
+        ContentDocumentSelector selector = new ContentDocumentSelector();
+        Test.startTest();
+            List<ContentDocument> cdList = selector.getLeadDocsCreatedWithinRange(Datetime.now().addDays(-1), Datetime.now().addDays(1));
+        Test.stopTest();
+        
+        List<Error_Log__c> errList = [SELECT Id, Message__c FROM Error_Log__c];
+        System.assert(errList.isEmpty(), 'There should be no errors');
+        System.assertEquals(1, cdList.size(), 'Selector should have returned one Content Document');
+        System.assertEquals(1, cdList[0].ContentDocumentLinks.size(), 'Selector should have returned one Content Document Link');
+        System.assertEquals(l1.Id, cdList[0].ContentDocumentLinks[0].LinkedEntityId, 'Selector should have returned the Content Document Link associated with Lead l1');
+    }
 }
