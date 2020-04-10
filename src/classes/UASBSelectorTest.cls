@@ -63,4 +63,36 @@ public class UASBSelectorTest {
         Map<Id, UASB__c> billMap = selector.getUASBsFromIds(new Set<Id>{billTwo.Id, billThree.Id});
         System.assertEquals(2,billMap.values().size());
     }
+
+    @isTest public static void testGetUnservicedWithoutProductionDetail(){
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Opportunity__r.AccountId
+            FROM Utility_Account_Subscription__c
+        ];
+
+        // On insert, Ready_for_Production_Detail__c is set to true if Externally Serviced = true
+        Util.enableTrigger('Disable_UASBTrigger__c');
+
+        UASB__c billOne = new UASB__c(
+            Account__c = uasList[0].Opportunity__r.AccountId,
+            Externally_Serviced__c = true,
+            Utility_Account_Subscription__c = uasList[0].Id
+        );
+        UASB__c billTwo = new UASB__c(
+            Account__c = uasList[0].Opportunity__r.AccountId,
+            Externally_Serviced__c = true,
+            Utility_Account_Subscription__c = uasList[0].Id
+        );
+        UASB__c billThree = new UASB__c(
+            Account__c = uasList[0].Opportunity__r.AccountId,
+            Externally_Serviced__c = false,
+            Utility_Account_Subscription__c = uasList[0].Id
+        );
+        insert new List<UASB__c>{billOne, billTwo, billThree};
+
+        UASBSelector selector = new UASBSelector();
+        List<UASB__c> uasbList = selector.getUnservicedWithoutProductionDetail(5);
+
+        System.assertEquals(2,uasbList.size());
+    }
 }

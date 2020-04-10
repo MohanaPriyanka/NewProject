@@ -370,6 +370,39 @@ public with sharing class ProductionToBillServiceTest {
         System.assert(afterQueries.size() > 0);
     }
 
+    @IsTest
+    public static void testUnservicedUASBs(){
+        useMocks();
+        List<UASB__c> externalUASBs = getExternallyServicedUASBs();
+
+        Test.startTest();
+            ProductionToBillService service = new ProductionToBillService();
+            service.createProductionDetailFromUnservicedUASB(externalUASBs);
+        Test.stopTest();
+
+        List<Transfer_Part__c> unservicedParts = service.partsToInsert;
+        System.assertEquals(7,unservicedParts.size());
+
+        Decimal uasbOneSum = 0;
+        Decimal uasbTwoSum = 0;
+        Decimal uasbThreeSum = 0;
+
+        for (Transfer_Part__c part : unservicedParts){
+            System.assertEquals('Unserviced',part.Type__c);
+            if (part.Externally_Serviced_UASB__c == 'a1i0a000009PwUaAAK'){
+                uasbOneSum += part.Amount__c;
+            } else if (part.Externally_Serviced_UASB__c == 'a1i0a000009PwUbAAK'){
+                uasbTwoSum += part.Amount__c;
+            } else {
+                uasbThreeSum += part.Amount__c;
+            }
+        }
+
+        System.assertEquals(133.34,uasbOneSum);
+        System.assertEquals(80,uasbTwoSum);
+        System.assertEquals(30.34,uasbThreeSum);
+    }
+
 
     /* ********* MOCKS ************ */
 
@@ -533,6 +566,9 @@ public with sharing class ProductionToBillServiceTest {
             switch on methodCall.stubbedMethodName {
                 when 'getUASBsFromIds' {
                     return (Map<Id, UASB__c>)JSON.deserialize(uasbMapAsString, Map<Id, UASB__c>.class);
+                }
+                when 'getUnservicedWithoutProductionDetail' {
+                    return getExternallyServicedUASBs();
                 }
             }
             return null;
@@ -828,5 +864,27 @@ public with sharing class ProductionToBillServiceTest {
         paymentMap.put('a8y0a000000Gu3rAAA', 100.00);
         paymentMap.put('a8y0a000000Gu3rDDD', 4.33);
         return paymentMap;
+    }
+
+    private static List<UASB__c> getExternallyServicedUASBs(){
+        UASB__c uasbOne = new UASB__c(
+            Id = 'a1i0a000009PwUaAAK',
+            Externally_Serviced__c = true,
+            Transfer__c = 'a900a000000GpNBAA0',
+            Credits_Allocated__c = 133.34
+        );
+        UASB__c uasbTwo = new UASB__c(
+            Id = 'a1i0a000009PwUbAAK',
+            Externally_Serviced__c = true,
+            Transfer__c = 'a900a000000GqNBAA0',
+            Credits_Allocated__c = 80
+        );
+        UASB__c uasbThree = new UASB__c(
+            Id = 'a1i0a000009PwUcAAK',
+            Externally_Serviced__c = true,
+            Transfer__c = 'a900a000000GqNBAA0',
+            Credits_Allocated__c = 30.34
+        );
+        return new List<UASB__c>{uasbOne, uasbTwo, uasbThree};
     }
 }

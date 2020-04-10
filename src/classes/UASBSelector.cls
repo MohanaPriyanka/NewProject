@@ -31,4 +31,14 @@ public without sharing class UASBSelector {
             WHERE Id IN : uasbIds
         ]);
     }
+
+    public List<UASB__c> getUnservicedWithoutProductionDetail(Integer batchSize){
+        return new List<UASB__c>([
+            SELECT Id, Externally_Serviced__c, Transfer__c, Credits_Allocated__c
+            FROM UASB__c
+            WHERE Externally_Serviced__c = true
+            AND Ready_for_Production_Detail__c = true
+            LIMIT : batchSize
+        ]);
+    }
 }
