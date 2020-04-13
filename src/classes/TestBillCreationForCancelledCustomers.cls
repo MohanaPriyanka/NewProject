@@ -413,6 +413,8 @@ public class TestBillCreationForCancelledCustomers {
             Date_of_Transfer__c = oneMonthInFuture,
             Shared_Solar_System__c = sss1.Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZOne.Id,
             Attempted_Transfer__c = 13483.66,
             Attempted_kWh_Transfer__c = 81869,
@@ -426,6 +428,8 @@ public class TestBillCreationForCancelledCustomers {
             Date_of_Transfer__c = oneMonthAgo,
             Shared_Solar_System__c = sss2.Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZTwo.Id,
             Attempted_Transfer__c =  40983.43,
             Attempted_kWh_Transfer__c = 367918,
@@ -440,6 +444,8 @@ public class TestBillCreationForCancelledCustomers {
             Date_of_Transfer__c = oneMonthInFuture,
             Shared_Solar_System__c = sss2.Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZTwo.Id,
             Attempted_Transfer__c =  20000,
             Attempted_kWh_Transfer__c = 153846,
@@ -457,7 +463,7 @@ public class TestBillCreationForCancelledCustomers {
         List<Transfer_Part__c > parts = [SELECT Id, Name, Amount__c, Production__r.Name FROM Transfer_Part__c ];
         System.assertEquals(3, parts.size());
 
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id, bpB1.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{bpA1.Id, bpB1.Id});
 
         List<UASB__c> uasbList = [SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
             Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
@@ -549,6 +555,8 @@ public class TestBillCreationForCancelledCustomers {
             Date_of_Transfer__c = todaysDate,
             Shared_Solar_System__c = sssList[0].Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZOne.Id,
             Attempted_Transfer__c =  12033.73,
             Attempted_kWh_Transfer__c = 73072,
@@ -563,6 +571,8 @@ public class TestBillCreationForCancelledCustomers {
             Date_of_Transfer__c = todaysDate,
             Shared_Solar_System__c = sssList[1].Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZTwo.Id,
             Attempted_Transfer__c =  12033.73,
             Attempted_kWh_Transfer__c = 73072,
@@ -578,7 +588,7 @@ public class TestBillCreationForCancelledCustomers {
         List<Transfer_Part__c > parts = [SELECT Id, Name, Amount__c, Production__r.Name FROM Transfer_Part__c ];
         System.assertEquals(5, parts.size());
 
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpB2.Id, bpA2.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{bpB2.Id, bpA2.Id});
     }
 
     public static Map<String, List<UASB__c>> queryForBills() {

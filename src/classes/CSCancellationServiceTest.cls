@@ -45,6 +45,8 @@ public with sharing class CSCancellationServiceTest {
             Date_of_Transfer__c = billDate,
             Shared_Solar_System__c = sssID,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = scheduleZ1.Id,
             Attempted_Transfer__c = 36000,
             Attempted_kWh_Transfer__c = 160000,
@@ -53,7 +55,13 @@ public with sharing class CSCancellationServiceTest {
         );
         insert transferA1;
 
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id});
+        List<Bill_Period__c> billPeriods = [
+            SELECT Id, Name, Bill_Date__c, Shared_Solar_System__c
+            FROM Bill_Period__c
+            WHERE Id = : bpA1.Id
+        ];
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(billPeriods);
+        ee.runBills();
     }
 
     @IsTest static void testOverdueAccounts() {

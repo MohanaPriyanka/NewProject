@@ -206,6 +206,8 @@ public class TransferSelectorTest {
             Date_of_Transfer__c = lastMonth,
             Shared_Solar_System__c = sss1.Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = scheduleZ1.Id,
             Attempted_kWh_Transfer__c = 90000,
             Attempted_Transfer__c = 16632,

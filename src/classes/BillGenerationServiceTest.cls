@@ -11,7 +11,12 @@ public class BillGenerationServiceTest {
     }
 
     public static void generateBills(List<Id> billPeriodIdList) {
-
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        Decimal csBillBatchSize = sysProp.CS_Bill_Batch_Size__c;
+        if (csBillBatchSize == null || csBillBatchSize < 1){
+            sysProp.CS_Bill_Batch_Size__c = 20;
+            update sysProp;
+        }
         List<Bill_Period__c> billPeriods = [
             SELECT Id, Shared_Solar_System__c, Bill_Date__c
             FROM Bill_Period__c
@@ -85,6 +90,8 @@ public class BillGenerationServiceTest {
             Date_of_Transfer__c = oneMonthAgo,
             Shared_Solar_System__c = sssList[0].Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZOne.Id,
             Attempted_kWh_Transfer__c = 73072.00,
             Attempted_Transfer__c =  12033.73,
@@ -99,6 +106,8 @@ public class BillGenerationServiceTest {
             Date_of_Transfer__c = oneMonthAgo,
             Shared_Solar_System__c = sssList[1].Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZTwo.Id,
             Attempted_kWh_Transfer__c = 73072.00,
             Attempted_Transfer__c =  12033.73,
