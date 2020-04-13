@@ -9,7 +9,7 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     public AdjustmentType mode = AdjustmentType.PostNextBill;
 
     public void executeBatch(){
-        Database.executeBatch(this, 33);
+        Database.executeBatch(this, 20);
     }
 
     public Database.QueryLocator start(Database.BatchableContext bc){
@@ -24,7 +24,7 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
         try {
             for (SObject scopeLine : scope){
                 if (effectiveDate == null){
-                    effectiveDate = System.Today();
+                    effectiveDate = System.today();
                 }
                 Bill_Adjustment__c adjust = ZuoraCreditDebitMemoService.createCreditOrDebitMemo((Bill_Adjustment__c) scopeLine, effectiveDate);
                 if (adjust != null && adjust.Id != null) {

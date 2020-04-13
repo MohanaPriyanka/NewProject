@@ -155,6 +155,19 @@ public with sharing class ZuoraAPIHelper {
         return response.getBody();
     }
 
+    public static Set<String> queryIds(String queryString) {
+        String resultJSON = query(queryString, false);
+        ZuoraAPI.ZuoraQueryResult result = (ZuoraAPI.ZuoraQueryResult) JSON.deserialize(resultJSON, ZuoraAPI.ZuoraQueryResult.class);
+        if (result.records == null) {
+            throw new Util.FatalBWException('Expected records from this query: ' + queryString + '\nGot this instead: ' + resultJSON);
+        }
+        Set<String> ids = new Set<String>();
+        for (ZuoraAPI.ZuoraQueryResultRecord record : result.records) {
+            ids.add(record.Id);
+        }
+        return ids;
+    }
+
     public static String deleteObjects(List<String> objectIds, String objectType) {
         ZuoraAPI.ActionItems item = new ZuoraAPI.ActionItems();
         item.type = objectType;

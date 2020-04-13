@@ -8,16 +8,20 @@
 public with sharing class ZuoraInvoiceService {
     private CaseFactory caseFactory = new CaseFactory();
     private ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
+    private static ZuoraInvoiceSelector invoiceSelector = new ZuoraInvoiceSelector();
     public List<Zuora__ZInvoice__c> sfdcZuoraInvoices;
     public Map<Id, Zuora__ZInvoice__c> invoiceMap;
     @TestVisible
     private static LetterStreamInsertSelector insertSelector = new LetterStreamInsertSelector();
 
+    public ZuoraInvoiceService() {
+    }
+
     public ZuoraInvoiceService(List<Zuora__ZInvoice__c> sfdcZuoraInvoices) {
         this.sfdcZuoraInvoices = sfdcZuoraInvoices;
         Map<Id, Zuora__ZInvoice__c> invoiceMap = new Map<Id, Zuora__ZInvoice__c>();
-        if (sfdcZuoraInvoices != null){
-            for (Zuora__ZInvoice__c invoice : sfdcZuoraInvoices){
+        if (sfdcZuoraInvoices != null) {
+            for (Zuora__ZInvoice__c invoice : sfdcZuoraInvoices) {
                 invoiceMap.put(invoice.Id, invoice);
             }
         }
@@ -71,7 +75,7 @@ public with sharing class ZuoraInvoiceService {
     @TestVisible
     // Since this should run as system to mark invoices as downloaded
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    private void updateZuoraInvoicesAsDownloaded(List<ContentDocumentLink> contentDocumentLinks, Map<String, ContentVersion> invoiceToVersion,  Map<Id, Zuora__ZInvoice__c> zInvoices) {
+    private void updateZuoraInvoicesAsDownloaded(List<ContentDocumentLink> contentDocumentLinks, Map<String, ContentVersion> invoiceToVersion, Map<Id, Zuora__ZInvoice__c> zInvoices) {
         List<Zuora__ZInvoice__c> zuoraInvoicesToUpdate = new List<Zuora__ZInvoice__c>();
         for (ContentDocumentLink contentDocumentLink : contentDocumentLinks) {
             Zuora__ZInvoice__c zuoraInvoice = zInvoices.get(contentDocumentLink.LinkedEntityId);
@@ -81,10 +85,10 @@ public with sharing class ZuoraInvoiceService {
                 Content_Document_Id__c = contentDocumentLink.ContentDocumentId,
                 Bill_Document_Content_Version_ID__c = invoiceToVersion.get(zuoraInvoice.Zuora__Zuora_Id__c).Id
             );
-            if (zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c == 'Email Only'){
+            if (zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c == 'Email Only') {
                 zuoraInvoiceToUpdate.Ready_for_Email_Send__c = true;
                 zuoraInvoiceToUpdate.Ready_for_Paper_Bill_Queue__c = false;
-            } else if (zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c == 'Paper Only'){
+            } else if (zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c == 'Paper Only') {
                 zuoraInvoiceToUpdate.Ready_for_Email_Send__c = false;
                 zuoraInvoiceToUpdate.Ready_for_Paper_Bill_Queue__c = true;
             } else {
@@ -231,7 +235,6 @@ public with sharing class ZuoraInvoiceService {
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    @TestVisible
     public List<Account> setFirstBillDateOnAccount(List<ZuoraInvoiceAsyncService.DecoratedInvoice> decoratedFirstInvoices) {
         List<Account> accountsWithFirstBillDate = new List<Account>();
         for (ZuoraInvoiceAsyncService.DecoratedInvoice decoratedInvoice : decoratedFirstInvoices) {
@@ -265,5 +268,22 @@ public with sharing class ZuoraInvoiceService {
             }
         }
         update invoicesToUpdate;
+    }
+
+    public List<ZuoraAPI.InvoiceItem> getRecentItems(String zuoraAcctId) {
+        Datetime startDate = Datetime.now() - 365;
+        String queryString = invoiceSelector.getByAccountId(zuoraAcctId) + 'AND InvoiceDate > \'' + startDate.format('yyyy-MM-dd') + '\'';
+        Set<String> invoiceIds = ZuoraAPIHelper.queryIds(queryString);
+
+        String invoiceItemFilter = '';
+        for (String invoiceId : invoiceIds) {
+            invoiceItemFilter += 'InvoiceId = \'' + invoiceId + '\' OR ';
+        }
+        invoiceItemFilter = invoiceItemFilter.left(invoiceItemFilter.length() - 4);
+        queryString = invoiceSelector.getInvoiceItems(invoiceItemFilter);
+        String response = ZuoraAPIHelper.query(queryString, false);
+        ZuoraOutstandingItemsService.QueryResultInvoiceItems queriedInvoiceItems =
+            (ZuoraOutstandingItemsService.QueryResultInvoiceItems) JSON.deserialize(response, ZuoraOutstandingItemsService.QueryResultInvoiceItems.class);
+        return queriedInvoiceItems.records;
     }
 }

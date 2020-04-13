@@ -74,7 +74,7 @@ public with sharing class ZuoraSubscriptionService {
                 (ZuoraAPI.OrderActionResult) JSON.deserialize(response.getBody(), ZuoraAPI.OrderActionResult.class);
             if (!newSubscriptionResult.success || newSubscriptionResult.subscriptions.size() != 1) {
                 Logger.logLater('ZuoraSubscriptionService', 'createSubscriptionInternal', JSON.serializePretty(newSubscriptionResult));
-                throw new Util.BWException('Unexpected result creating a new subscription');
+                throw new Util.BWException('Unexpected result creating a new subscription:\n' + JSON.serializePretty(newSubscriptionResult));
             }
 
             newSubscription.subscriptionNumber = newSubscriptionResult.subscriptions[0].subscriptionNumber;
@@ -147,6 +147,44 @@ public with sharing class ZuoraSubscriptionService {
         } else {
             return obso;
         }
+    }
+
+    public static Map<String, ZuoraOutstandingItemsService.RatePlanCharge> getActiveRatePlanChargesByAccountId(String zuoraAcctId) {
+        Set<String> subscriptionIds =
+            ZuoraAPIHelper.queryIds('SELECT Id FROM Subscription WHERE AccountId = \''+zuoraAcctId+'\' AND Status = \'Active\'');
+        Set<String> ratePlanIds = getRatePlansBySubscriptionIds(subscriptionIds);
+        List<ZuoraOutstandingItemsService.RatePlanCharge> ratePlanCharges = getRatePlanChargesByRatePlanId(ratePlanIds);
+
+        Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
+            new Map<String, ZuoraOutstandingItemsService.RatePlanCharge>();
+        for (ZuoraOutstandingItemsService.RatePlanCharge ratePlanCharge : ratePlanCharges) {
+            ratePlanChargesByChargeId.put(ratePlanCharge.Id, ratePlanCharge);
+        }
+        return ratePlanChargesByChargeId;
+    }
+
+    private static Set<String> getRatePlansBySubscriptionIds(Set<String> subscriptionIds) {
+        String subscriptionFilter = 'WHERE ';
+        for (String subscriptionId : subscriptionIds) {
+            subscriptionFilter += 'SubscriptionId = \'' + subscriptionId + '\' OR ';
+        }
+        subscriptionFilter = subscriptionFilter.left(subscriptionFilter.length()-4);
+
+        return ZuoraAPIHelper.queryIds('SELECT Id FROM RatePlan ' + subscriptionFilter);
+    }
+
+    private static List<ZuoraOutstandingItemsService.RatePlanCharge> getRatePlanChargesByRatePlanId(Set<String> ratePlanIds) {
+        String ratePlanFilter = 'WHERE ';
+        for (String ratePlanId : ratePlanIds) {
+            ratePlanFilter += 'RatePlanId = \'' + ratePlanId + '\' OR ';
+        }
+        ratePlanFilter = ratePlanFilter.left(ratePlanFilter.length() - 4);
+        String ratePlanChargeJSON =
+            ZuoraAPIHelper.query('SELECT Id, Name, ChargeNumber, ClientOwner__c, Project__c FROM RatePlanCharge ' + ratePlanFilter, false);
+        ratePlanChargeJSON = ratePlanChargeJSON.replace('__c', '_Zcustom');
+        ZuoraOutstandingItemsService.QueryResultRatePlanCharge queryResult =
+            (ZuoraOutstandingItemsService.QueryResultRatePlanCharge)JSON.deserialize(ratePlanChargeJSON, ZuoraOutstandingItemsService.QueryResultRatePlanCharge.class);
+        return queryResult.Records;
     }
 
     // The OrderActionParam represents the subscription that we'll create. We always need to create a Subscription Rate

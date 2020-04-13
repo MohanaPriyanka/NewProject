@@ -8,7 +8,9 @@ Can't use generic create/edit/delete actions
     Tested by: ZuoraCreditDebitMemoServiceTest
 */
 
-public class ZuoraCreditDebitMemoService{
+public class ZuoraCreditDebitMemoService {
+    private static ZuoraInvoiceService invoiceService = new ZuoraInvoiceService();
+    private static FeatureService featureService = new FeatureService();
 
     public static Bill_Adjustment__c createCreditOrDebitMemo(Bill_Adjustment__c adjustment, Date effectiveDate){
         if (adjustment.Adjustment_Amount__c < 0){
@@ -23,9 +25,17 @@ public class ZuoraCreditDebitMemoService{
             );
         } else {
             ZuoraAPI.DebitMemo debitMemo;
-            debitMemo = convertSFAdjustToDebitMemo(adjustment);
-            debitMemo.effectiveDate = effectiveDate;
-            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/debitmemos',debitMemo,false);
+            HttpResponse response;
+            if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
+                debitMemo = convertSFAdjustToDebitMemoFromInvoice(adjustment);
+                debitMemo.effectiveDate = effectiveDate;
+                response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/invoices/'+debitMemo.invoiceId+'/debitmemos',debitMemo,false);
+            } else {
+                debitMemo = convertSFAdjustToDebitMemo(adjustment);
+                debitMemo.effectiveDate = effectiveDate;
+                response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/debitmemos',debitMemo,false);
+            }
+
             adjustment = handleAPIResponse(
                 debitMemo.CRM_ID_Zcustom,
                 response,
@@ -42,7 +52,7 @@ public class ZuoraCreditDebitMemoService{
         }
     }
 
-    public static ZuoraAPI.DebitMemo convertSFAdjustToDebitMemo(Bill_Adjustment__c adjust) {
+    private static ZuoraAPI.DebitMemo convertSFAdjustToDebitMemo(Bill_Adjustment__c adjust) {
         ZuoraAPI.DebitMemoCharge debitCharge = new ZuoraAPI.DebitMemoCharge();
         debitCharge.amount = adjust.Adjustment_Amount__c;
         debitCharge.chargeId = getChargeFromAdjustment(adjust);
@@ -54,6 +64,48 @@ public class ZuoraCreditDebitMemoService{
         debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>{debitCharge};
         debitMemo.CRM_ID_Zcustom = adjust.Id;
         debitMemo.reasonCode = adjust.Adjustment_Type__c;
+        return debitMemo;
+    }
+
+    // Uses 5 callouts:
+    // 3 queries to get the active rate plan charges for this account
+    // 1 query to get invoices from the past year
+    // 1 query to get invoice items for invoices
+    private static ZuoraAPI.DebitMemo convertSFAdjustToDebitMemoFromInvoice(Bill_Adjustment__c adjust) {
+        String accountId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
+        String client = adjust.Client__r.Account_Number__c;
+        String project = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
+
+        ZuoraAPI.DebitMemo debitMemo = new ZuoraAPI.DebitMemo();
+        ZuoraAPI.DebitMemoItem debitMemoItem = new ZuoraAPI.DebitMemoItem();
+        debitMemoItem.amount = adjust.Adjustment_Amount__c;
+        debitMemoItem.skuName = 'Utility Credit';
+        debitMemo.items = new List<ZuoraAPI.DebitMemoItem>{debitMemoItem};
+        debitMemo.effectiveDate = System.today();
+        debitMemo.reasonCode = adjust.Adjustment_Type__c;
+        debitMemo.Project_Zcustom = project;
+        debitMemo.ClientOwner_Zcustom = client;
+        debitMemo.CRM_ID_Zcustom = adjust.Id;
+
+        Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
+            ZuoraSubscriptionService.getActiveRatePlanChargesByAccountId(accountId);
+        List<ZuoraAPI.InvoiceItem> invoiceItems = invoiceService.getRecentItems(accountId);
+        invoiceItems.sort();
+        for (ZuoraAPI.InvoiceItem invoiceItem : invoiceItems) {
+            ZuoraOutstandingItemsService.RatePlanCharge ratePlanCharge = ratePlanChargesByChargeId.get(invoiceItem.chargeId);
+            if (ratePlanCharge != null && ratePlanCharge.matches(client, project)) {
+                debitMemo.invoiceId = invoiceItem.invoiceId;
+                debitMemoItem.invoiceItemId = invoiceItem.id;
+                break;
+            }
+        }
+
+        if (debitMemo.invoiceId == null || debitMemoItem.invoiceItemId == null) {
+            throw new Util.BWException('Could not relate adjustment ' + adjust.Id +
+                ' with client: ' + client + ' and project: ' + project + ' to an invoice.\n' +
+                'RatePlanCharges: ' + JSON.serialize(ratePlanChargesByChargeId) + '\n' +
+                'InvoiceItems: ' + JSON.serialize(invoiceItems));
+        }
         return debitMemo;
     }
 
@@ -73,7 +125,7 @@ public class ZuoraCreditDebitMemoService{
         return creditMemo;
     }
 
-    public static String getChargeFromAdjustment(Bill_Adjustment__c adjust){
+    private static String getChargeFromAdjustment(Bill_Adjustment__c adjust){
         String zuoraAcctId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
 
         ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);

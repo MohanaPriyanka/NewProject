@@ -149,4 +149,15 @@ public with sharing class ZuoraInvoiceSelector {
         'AND a.autopay = TRUE ' +
         'AND inv.DueDate > DATE \''+ lastMonth + '\'';
     }
+
+    public String getByAccountId(String zuoraAcctId) {
+        return 'SELECT ' +
+            'id, accountId, amount, invoiceDate, balance ' +
+            'FROM Invoice ' +
+            'WHERE accountId = \'' + zuoraAcctId + '\' ';
+    }
+
+    public String getInvoiceItems(String filter) {
+        return 'SELECT Id, InvoiceId, ChargeId, ChargeDate FROM InvoiceItem WHERE ' + filter;
+    }
 }

@@ -5,7 +5,9 @@
  * Test: ZuoraCreditMemoAllocationTest
  *************************************************************************************/
 @SuppressWarnings('PMD.VariableNamingConventions')
-public class ZuoraOutstandingItemsService{
+public class ZuoraOutstandingItemsService {
+    private static ZuoraInvoiceSelector invoiceSelector = new ZuoraInvoiceSelector();
+
     public class QueryResultInvoice {
         public List<ZuoraAPI.Invoice> Records;
     }
@@ -14,8 +16,10 @@ public class ZuoraOutstandingItemsService{
         public List<RatePlanCharge> Records;
     }
 
+    // To be used with either ZOQL or /v1/invoices/{invoiceId}/items'
     public class QueryResultInvoiceItems {
         public List<ZuoraAPI.InvoiceItem> InvoiceItems;
+        public List<ZuoraAPI.InvoiceItem> records;
         String nextPage;
         Boolean success;
     }
@@ -67,6 +71,10 @@ public class ZuoraOutstandingItemsService{
         public String ChargeNumber;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
+
+        public Boolean matches(String client, String project) {
+            return (Project_Zcustom == project && ClientOwner_Zcustom == client);
+        }
     }
     
     // Can be used for payments or credit memos. Sets the amountToApply field on outstanding items:
@@ -184,11 +192,7 @@ public class ZuoraOutstandingItemsService{
     }
 
     public static List<ZuoraAPI.Invoice> getOutstandingInvoices(String zuoraAcctId) {
-        String queryString = 'SELECT ' +
-            'id, accountId, amount, invoiceDate, balance ' +
-            'FROM Invoice ' +
-            'WHERE accountId = \'' + zuoraAcctId + '\' ' +
-            'AND balance > 0';
+        String queryString = invoiceSelector.getByAccountId(zuoraAcctId) + 'AND balance > 0';
         String response = ZuoraAPIHelper.query(queryString,false);
         QueryResultInvoice queriedInvoices = (QueryResultInvoice)JSON.deserialize(response, QueryResultInvoice.class);
         return queriedInvoices.Records;
@@ -201,7 +205,7 @@ public class ZuoraOutstandingItemsService{
         return invoiceRecord;
     }
 
-    public static List<ZuoraAPI.InvoiceItem> getAllInvoiceItems(String invoiceItemId) {
+    private static List<ZuoraAPI.InvoiceItem> getAllInvoiceItems(String invoiceItemId) {
         return getAllInvoiceItems('/v1/invoices/' + invoiceItemId +'/items', new List<ZuoraAPI.InvoiceItem>());
     }
 
