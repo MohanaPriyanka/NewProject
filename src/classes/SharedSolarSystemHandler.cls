@@ -43,7 +43,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             if (newSSS.Reserved_capacity_kW_DC__c != oldSSSMap.get(newSSS.Id).Reserved_capacity_kW_DC__c ||
                 newSSS.Capacity_committed_kW_DC__c != oldSSSMap.get(newSSS.Id).Capacity_committed_kW_DC__c ||
                 newSSS.Anchor_capacity_reserved__c != oldSSSMap.get(newSSS.Id).Anchor_capacity_reserved__c){
-                    sssToUpdateList.add(newSSS);
+                sssToUpdateList.add(newSSS);
             }
         }
         update sssToUpdateList;
@@ -69,11 +69,11 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         Decimal reservedCapacity = 0;
         Decimal committedCapacity = 0;
         Decimal anchorCapacity = 0;
-        for (Shared_Solar_System__c sss: sssList){
+        for (Shared_Solar_System__c sss : sssList){
             sssIds.add(sss.Id);
         }
         List<Utility_Account_Subscription__c> relatedUAS = uasSelector.selectActiveUASBySSS(sssIds);
-        for (Utility_Account_Subscription__c uas: relatedUAS) {
+        for (Utility_Account_Subscription__c uas : relatedUAS) {
             if (!isAnchor(uas) && uas.Opportunity_Stage__c == 'Complete'){
                 committedCapacityList.add(uas);
             } else if (!isAnchor(uas) && !isCancelledStatus(uas)){
@@ -103,22 +103,22 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                 if (subscriptionOrderFeature) {
                     if (uas.Opportunity__r.Shared_Solar_System__c == sssId && uas.Future_Customer_Subscription_KWDC_Rollup__c != 0) {
                         summarizedCapacity += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                }
+        }
                 } else {
                     if (uas.Opportunity__r.Shared_Solar_System__c == sssId
                         && uas.Customer_Subscription_KW_DC__c != null) {
                         summarizedCapacity += uas.Customer_Subscription_KW_DC__c;
-            }
-                    }
+    }
                 }
             }
+        }
         return summarizedCapacity;
-                    }
+    }
     private Boolean isAnchor(Utility_Account_Subscription__c uas){
         return (uas.Customer_Group__c == 'Anchor' ||
             uas.Customer_Group__c == 'Public Offtake'
         );
-                }
+    }
     private Boolean isCancelledStatus(Utility_Account_Subscription__c uas){
         return (uas.Opportunity_Stage__c == 'Expired'
             || uas.Opportunity_Stage__c == 'Cancelled'
@@ -128,13 +128,13 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             || uas.Opportunity_Stage__c == 'Dead'
             || uas.Opportunity_Stage__c == 'Lost'
         );
-           }
+    }
     public void queueClientBrandKeyUpdate(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes){
         Set<Id> sssWithChangedBrandKey = new Set<Id>();
         for (Shared_Solar_System__c newSSS : newSSSes){
             Shared_Solar_System__c oldSSS = oldSSSMap.get(newSSS.Id);
             if (newSSS.Client_Brand_Key__c != oldSSS.Client_Brand_Key__c
-                || newSSS.BWC_Project_Entity__c != oldSSS.BWC_Project_Entity__c){
+                || newSSS.BWC_Project_Entity_Manual__c != oldSSS.BWC_Project_Entity_Manual__c){
                 sssWithChangedBrandKey.add(newSSS.Id);
             }
         }

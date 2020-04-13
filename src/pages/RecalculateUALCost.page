@@ -132,7 +132,7 @@
                                     <td><apex:inputCheckbox value="{!uasAction.sss.Open__c}" disabled="true"/></td>
                                     <td><apex:inputCheckbox value="{!uasAction.sss.ScheduleZ_Filed__c}" disabled="true"/></td>
                                     <td>{!uasAction.sss.Capacity_Available_to_be_Reserved__c}</td>
-                                    <td>{!uasAction.sss.Estimated_COD_Date_QC__c}</td>
+                                    <td>{!uasAction.sss.Estimated_COD_Date_Manual__c}</td>
                                     <apex:outputPanel rendered="{!sizeBy=='Electricity Cost ($)'}">
                                         <td>
 

@@ -131,7 +131,7 @@ public without sharing class RecalculateUALCostController {
     // If system is Closed, Order By Subscription size (Smallest First), then randomize for equal subscriptions.
     // 
     // If not sorting by the default sort order, sort by Custom Deduction Order
-
+    
     private List<Utility_Account_Subscription__c> getUASList(boolean defaultSortOrder){
         String query = 
             'SELECT Id, Name, ' +
@@ -148,7 +148,7 @@ public without sharing class RecalculateUALCostController {
             'Opportunity__r.Shared_Solar_System__r.Open__c, ' +
             'Opportunity__r.Shared_Solar_System__r.ScheduleZ_Filed__c, ' +
             'Opportunity__r.Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c, ' +
-            'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c, ' +
+            'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_Manual__c, ' +
             'Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Cost__c, ' +
             'Opportunity__r.Shared_Solar_System__r.NMC_Value__c, ' +
             'Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c ' +
@@ -159,7 +159,7 @@ public without sharing class RecalculateUALCostController {
                 'ORDER BY Opportunity__r.Shared_Solar_System__r.Open__c DESC, ' +
                 'Opportunity__r.Shared_Solar_System__r.ScheduleZ_Filed__c ASC, ' +
                 'Subscribed_Annual_Cost_of_Electricity__c ASC, ' +
-                'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_QC__c DESC NULLS LAST,' +
+                'Opportunity__r.Shared_Solar_System__r.Estimated_COD_Date_Manual__c DESC NULLS LAST,' +
                 'Opportunity__r.Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c DESC ';
         } else {
             query += 
