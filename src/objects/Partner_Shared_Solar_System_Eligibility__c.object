@@ -160,6 +160,72 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the partner can actively sell to the related Shared Solar System</inlineHelpText>
+        <label>Active</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Commission_Structure__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Commission Structure that applies when a partner acquires customers for this Shared Solar System</inlineHelpText>
+        <label>Commission Structure</label>
+        <referenceTo>Commission_Structure__c</referenceTo>
+        <relationshipLabel>Partner Shared Solar System</relationshipLabel>
+        <relationshipName>Partner_Shared_Solar_System_Accesses</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Compound_Key__c</fullName>
+        <description>Set via  before save flow and used in a duplicate matching rule
+
+https://goravseth.com/preventing-duplicate-junction-object-records</description>
+        <externalId>false</externalId>
+        <label>Compound Key</label>
+        <length>200</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Partner__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Partner who has access to the related Shared Solar System</inlineHelpText>
+        <label>Partner</label>
+        <referenceTo>Partner__c</referenceTo>
+        <relationshipLabel>Shared Solar System Access</relationshipLabel>
+        <relationshipName>Partner_Shared_Solar_System_Accesses</relationshipName>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Shared Solar System that the partner is eligible to sell</inlineHelpText>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Eligible Partners</relationshipLabel>
+        <relationshipName>Partner_Shared_Solar_System_Accesses</relationshipName>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
     <label>Partner Shared Solar System Access</label>
     <nameField>
         <displayFormat>PSSA-{0000}</displayFormat>
