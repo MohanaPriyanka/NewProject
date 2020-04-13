@@ -41,4 +41,16 @@ public with sharing class ContentService {
 
         return cdl;
     }
+
+    public void makeContentDocLinksPrivate(List<ContentDocument> cdList) {
+        List<ContentDocumentLink> linkList = new List<ContentDocumentLink>();
+        for(ContentDocument cd : cdList) {
+            for(ContentDocumentLink link : cd.ContentDocumentLinks) {
+                link.Visibility = 'InternalUsers';
+                linkList.add(link);
+            }
+        }
+
+        Util.updateAndLog(linkList, 'ContentService', 'makeContentDocLinksPrivate');
+    }
 }

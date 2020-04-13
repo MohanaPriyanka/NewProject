@@ -5,7 +5,7 @@
  *************************************************************************************/
 
 @SuppressWarnings('PMD.ApexCRUDViolation,PMD.ExcessivePublicCount')
-public without sharing class Util {
+public without sharing class Util { 
     // We're starting to get this error in Apex tests in Sept 2017:
     // System.DmlException: Insert failed. First exception on row 0; first error:
     // UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record

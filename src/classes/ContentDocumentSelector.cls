@@ -53,4 +53,26 @@ public inherited sharing class ContentDocumentSelector {
         ];
         return versionList[0].ContentDocumentId;
     }
+
+    public List<ContentDocument> getLeadDocsCreatedWithinRange(Datetime startDate, Datetime endDate) {
+        return [
+            SELECT
+                Id,
+                (SELECT
+                    Id,
+                    Visibility,
+                    LinkedEntityId
+                FROM
+                    ContentDocumentLinks
+                WHERE
+                    Visibility = 'AllUsers'
+                    AND LinkedEntity.Type = 'Lead'
+                )
+            FROM
+                ContentDocument
+            WHERE
+                CreatedDate >= :startDate
+                AND CreatedDate <= :endDate
+        ];
+    }
 }
