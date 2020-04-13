@@ -221,19 +221,6 @@
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Actual_Mechanical_Completion__c</fullName>
-        <description>Field populated by either &quot;Actual Mechanical Completion Pull&quot; or by &apos;Actual Mechanical Completion Override&apos; if it has been manually populated.</description>
-        <externalId>false</externalId>
-        <formula>BLANKVALUE(Actual_Mechanical_Completion_Override__c, Actual_Mechanical_Completion_Pull__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Field populated by either &quot;Actual Mechanical Completion Pull&quot; or by &apos;Actual Mechanical Completion Override&apos; if it has been manually populated.</inlineHelpText>
-        <label>XXActual Mechanical Completion</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Actual_PTO_Date_MANUAL__c</fullName>
         <description>Date the project reached PTO.</description>
         <externalId>false</externalId>
@@ -253,19 +240,6 @@
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Formula field that is populated for SSS that have a relationship with a project. NOT visible on SSS Layout</inlineHelpText>
         <label>XXActual PTO Date Pull from Project</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Actual_PTO_Date__c</fullName>
-        <description>Field populated by either &quot;Actual PTO Date Pull from Project&quot; from SSS with relationships to PM or &quot;Actual PTO Date (MANUAL)&quot; if it is filled in. if the &quot;Actual PTO Date (MANUAL) is not filled in, the field is populated by the Actual PTO Date Pull from Project&quot;.</description>
-        <externalId>false</externalId>
-        <formula>BLANKVALUE(Actual_PTO_Date_MANUAL__c,Actual_PTO_Date_Pull_from_Project__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Field populated by either Actual PTO Date Pull from Project from SSS with relationships to PM or Actual PTO Date (MANUAL) if it is filled in. If the Actual PTO Date (MANUAL) is not filled in, the field is populated by the Actual PTO Date Pull from Project</inlineHelpText>
-        <label>XXActual PTO Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -488,18 +462,6 @@
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>BWC_Project_Entity__c</fullName>
-        <externalId>false</externalId>
-        <formula>Project_Management__r.BWC_Project_Entity__r.Name</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXBWC Project Entity</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Bill_Due_Date__c</fullName>
@@ -939,17 +901,6 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Estimated_COD_Date_QC__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(ISBLANK( Project_Management__c ),  Estimated_COD_Date_Manual__c,Estimated_COD_Date__c  )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXEstimated COD Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Estimated_COD_Date__c</fullName>
         <externalId>false</externalId>
         <formula>Project_Management__r.Estimated_COD_date__c</formula>
@@ -1060,19 +1011,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Estimated_Mechanical_Completion__c</fullName>
-        <description>Field populated by either &quot;Estimated Mechanical Completion Pull&quot; or by &apos;Estimated Mechanical Completion Override&apos; if it has been manually populated.</description>
-        <externalId>false</externalId>
-        <formula>BLANKVALUE(Estimated_Mechanical_Completion_Override__c, Estimated_Mechanical_Completion_Pull__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Field populated by either &quot;Estimated Mechanical Completion Pull&quot; or by &apos;Estimated Mechanical Completion Override&apos; if it has been manually populated.</inlineHelpText>
-        <label>XXEstimated Mechanical Completion</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Estimated_PTO_Date_MANUAL__c</fullName>
         <description>Date the project is estimated to reach PTO.</description>
         <externalId>false</externalId>
@@ -1092,19 +1030,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Estimated PTO date pulled from the Project; Field will be hidden on SSS layout</inlineHelpText>
         <label>XXEstimated PTO Date Pull from Project</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Estimated_PTO_Date__c</fullName>
-        <description>Field populated by either &quot;Estimated PTO Date Pull from Project&quot; from SSS with relationships to PM or &quot;Estimated PTO Date (MANUAL)&quot; if it is filled in. if the &quot;Estimated PTO Date (MANUAL) is not filled in, the field is populated by the Estimated PTO Date Pull from Project&quot;.</description>
-        <externalId>false</externalId>
-        <formula>BLANKVALUE(Estimated_PTO_Date_MANUAL__c,Estimated_PTO_Date_Pull_from_Project__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Field populated by either &quot;Estimated PTO Date Pull from Project&quot; from SSS with relationships to PM or &quot;Estimated PTO Date (MANUAL)&quot; if it is filled in. if the &quot;Estimated PTO Date (MANUAL) is not filled in, the field is populated by the Estimated PTO Date</inlineHelpText>
-        <label>XXEstimated PTO Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -2363,20 +2288,6 @@ Total_System_Size_kWh_DC__c
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Total_System_Size_kW_AC_QC__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( ISBLANK(  Project_Management__c ),  Total_System_Size_kW_AC__c , Total_System_Size_kW_AC_Project__c )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXTotal System Size (kW AC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Total_System_Size_kW_AC__c</fullName>
         <externalId>false</externalId>
         <label>Total System Size (kW AC)</label>
@@ -2385,20 +2296,6 @@ Total_System_Size_kWh_DC__c
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Total_System_Size_kW_DC_QC__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( ISBLANK( Project_Management__c ),  Total_System_Size_kWh_DC__c , Total_System_Size_kW_DC__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXTotal System Size (kW DC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -2536,18 +2433,6 @@ null)</formula>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>XXX_App_ID_WO__c</fullName>
-        <externalId>false</externalId>
-        <formula>Project_Management__r.Uility_WR__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXX_App ID#/ WO #</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Zip_Code__c</fullName>
@@ -2760,7 +2645,6 @@ null)</formula>
         <columns>Product__c</columns>
         <columns>Credit_Score_Requirement__c</columns>
         <columns>Total_System_Size_kWh_DC__c</columns>
-        <columns>Total_System_Size_kW_DC_QC__c</columns>
         <columns>Total_System_Size_kW_DC__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
