@@ -8427,6 +8427,7 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <externalId>false</externalId>
         <formula>Shared_Solar_System__r.Waitlist__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Formula to the Shared Solar System&apos;s Waitlist checkbox field</inlineHelpText>
         <label>Waitlist</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
