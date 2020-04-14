@@ -114,36 +114,19 @@ public without sharing class UserHandler implements Queueable{
     public void createPortalActivationEmailLog(Set<Id> userIdSet){
         try {
             List<Task> tasksToInsert = new List<Task>();
-
-            if (Test.isRunningTest() || isCommunityWelcomeLetterEnabled()) {
-                List<User> communityUsers = userSelector.getUsersFromId(userIdSet);
-                for (User communityUser : communityUsers) {
-                    Task taskToInsert = new Task(
-                        Subject = 'EMAIL LOG: Portal Activation Welcome Email Sent',
-                        Description = 'Email body is variable, see community settings for detail',
-                        Status = 'Closed',
-                        WhoId = communityUser.ContactId
-                    );
-                    tasksToInsert.add(taskToInsert);
-                }
+            List<User> communityUsers = userSelector.getUsersFromId(userIdSet);
+            for (User communityUser : communityUsers) {
+                Task taskToInsert = new Task(
+                    Subject = 'EMAIL LOG: Portal Activation Welcome Email Sent',
+                    Description = 'Email body is variable, see community settings for detail',
+                    Status = 'Closed',
+                    WhoId = communityUser.ContactId
+                );
+                tasksToInsert.add(taskToInsert);
             }
             insert tasksToInsert;
         } catch(Exception excep){
             Logger.logNow('UserHandler','createPortalActivationEmailLog',excep.getMessage() + '_' + excep.getStackTraceString());
         }
-    }
-
-    private static Boolean isCommunityWelcomeLetterEnabled(){
-        Boolean enabled;
-        ConnectApi.CommunityPage meta = ConnectApi.Communities.getCommunities();
-        List<ConnectApi.Community> communities = new List<ConnectApi.Community>();
-        communities = meta.communities;
-
-        for (ConnectApi.Community community : communities){
-            if (community.Name == 'BlueWave Member Portal'){
-                enabled = community.sendWelcomeEmail;
-            }
-        }
-        return enabled;
     }
 }
