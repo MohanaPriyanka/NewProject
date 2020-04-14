@@ -9,7 +9,8 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     public AdjustmentType mode = AdjustmentType.PostNextBill;
 
     public void executeBatch(){
-        Database.executeBatch(this, 20);
+        // 7 callouts to create a debit memo from an invoice, so a max of 14 memos per transaction to stay under 100 callouts
+        Database.executeBatch(this, 14);
     }
 
     public Database.QueryLocator start(Database.BatchableContext bc){

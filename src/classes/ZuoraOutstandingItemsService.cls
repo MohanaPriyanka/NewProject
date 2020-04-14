@@ -4,7 +4,7 @@
  *              sorts by date and returns list of items with balance
  * Test: ZuoraCreditMemoAllocationTest
  *************************************************************************************/
-@SuppressWarnings('PMD.VariableNamingConventions')
+@SuppressWarnings('PMD.VariableNamingConventions,PMD.ExcessivePublicCount')
 public class ZuoraOutstandingItemsService {
     private static ZuoraInvoiceSelector invoiceSelector = new ZuoraInvoiceSelector();
 

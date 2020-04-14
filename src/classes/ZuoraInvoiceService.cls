@@ -284,6 +284,6 @@ public with sharing class ZuoraInvoiceService {
         String response = ZuoraAPIHelper.query(queryString, false);
         ZuoraOutstandingItemsService.QueryResultInvoiceItems queriedInvoiceItems =
             (ZuoraOutstandingItemsService.QueryResultInvoiceItems) JSON.deserialize(response, ZuoraOutstandingItemsService.QueryResultInvoiceItems.class);
-        return queriedInvoiceItems.records;
+        return (queriedInvoiceItems.records==null?new List<ZuoraAPI.InvoiceItem>():queriedInvoiceItems.records);
     }
 }

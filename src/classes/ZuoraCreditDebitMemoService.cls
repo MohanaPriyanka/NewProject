@@ -27,9 +27,19 @@ public class ZuoraCreditDebitMemoService {
             ZuoraAPI.DebitMemo debitMemo;
             HttpResponse response;
             if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
-                debitMemo = convertSFAdjustToDebitMemoFromInvoice(adjustment);
-                debitMemo.effectiveDate = effectiveDate;
-                response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/invoices/'+debitMemo.invoiceId+'/debitmemos',debitMemo,false);
+                try {
+                    debitMemo = convertSFAdjustToDebitMemoFromInvoice(adjustment);
+                    debitMemo.effectiveDate = effectiveDate;
+                    response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/invoices/'+debitMemo.invoiceId+'/debitmemos',debitMemo,false);
+                } catch (Util.BWException bwe) {
+                    Logger.logLater(
+                        'ZuoraCreditDebitMemoService',
+                        'createCreditOrDebitMemo',
+                        'Handle this adjustment manually: ' + bwe.getMessage() + '\n' + bwe.getStackTraceString(),
+                        Logger.ERROR
+                    );
+                    return null;
+                }
             } else {
                 debitMemo = convertSFAdjustToDebitMemo(adjustment);
                 debitMemo.effectiveDate = effectiveDate;
@@ -70,7 +80,8 @@ public class ZuoraCreditDebitMemoService {
     // Uses 5 callouts:
     // 3 queries to get the active rate plan charges for this account
     // 1 query to get invoices from the past year
-    // 1 query to get invoice items for invoices
+    // 1 query to get invoice items from invoices
+    // Plus a callout to create the debit memo and a callout to post it
     private static ZuoraAPI.DebitMemo convertSFAdjustToDebitMemoFromInvoice(Bill_Adjustment__c adjust) {
         String accountId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         String client = adjust.Client__r.Account_Number__c;
