@@ -397,8 +397,11 @@ public class MultipleMonthProductionUpdateTest {
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferA2, transferA3, transferA4, transferA5, transferA6, transferA7});
         Test.stopTest();
 
-        BillGenerationServiceTest.generateBills(new List<Id>{bpA1.Id});
-        BillGenerationServiceTest.generateBills(new List<Id>{bpA2.Id});
+
+        EnergyUsageUpdateTriggerHandler ee1 = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{bpA1});
+        ee1.runBills();
+        EnergyUsageUpdateTriggerHandler ee2 = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{bpA2});
+        ee2.runBills();
     }
 
     @isTest public static void testBillCreation() {
