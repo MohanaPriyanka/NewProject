@@ -1,7 +1,7 @@
 /**
  * Created by SarahRenfro on 4/13/2020.
  *
- * Tested By: BillPeriodServiceTest
+ * Tested By: ProductionSelectorTest, BillPeriodServiceTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class ProductionSelector {
