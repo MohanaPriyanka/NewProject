@@ -769,7 +769,6 @@ public class ProductEscalationTest {
 
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(billPeriods);
         ee.runBills();
-        TestBillCreationandPayment.setBillsToPublished();
     }
 
     @IsTest public static void percentDiscountNoEscalator() {

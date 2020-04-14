@@ -84,13 +84,6 @@ public with sharing class ZuoraPaymentSelectorTest {
         List<Id> accountIdList = new List<Id>{accountTwo.Id};
 
         System.assertEquals( 3, (ZuoraPaymentSelector.selectByAccount(accountIdList).size()));
-
-        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
-        if (zuoraSetting.Zuora_Is_Live__c){
-            System.assertEquals( 3, (PreviewProductionUpdateResults.getTransactions(accountList)).size());
-        } else {
-            System.assertEquals( 0, (PreviewProductionUpdateResults.getTransactions(accountList)).size());
-        }
     }
 
     @IsTest

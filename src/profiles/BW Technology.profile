@@ -19675,6 +19675,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Client_Health_Report__c.Accounting_Score__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Client_Health_Report__c.BlueWave_Rating__c</field>
         <readable>true</readable>
     </fieldPermissions>
