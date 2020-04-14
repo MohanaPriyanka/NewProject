@@ -6,7 +6,9 @@
     <name>Branded AmpRed 3 Days Before Due</name>
     <style>none</style>
     <subject>Your Community Solar Bill Is Almost Due</subject>
-    <textOnly>Hello {!AccountName},
+    <textOnly>Hello {!Account.Name},
+
+COVID-19 Information: We recognize that the unprecedented COVID-19 situation may be causing financial difficulty. Please contact our Customer Care team if you have concerns about making payments for your Amp Community Solar subscription.
 
 Just a heads up, your community solar statement is due in a couple of days.
 
