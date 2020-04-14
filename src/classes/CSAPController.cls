@@ -304,7 +304,7 @@ public without sharing class CSAPController {
             sssQuery +=       'AND Public__c = true ';
         }
         if (lead.System_Assignment__c == 'Automatic - COD Date/Available Capacity' || lead.System_Assignment__c == null){
-            sssQuery += 'ORDER BY Estimated_COD_Date_QC__c ASC, Project_Capacity_Available_kW_DC__c ASC';
+            sssQuery += 'ORDER BY Estimated_COD_Date_Manual__c ASC, Project_Capacity_Available_kW_DC__c ASC';
         } else if (lead.System_Assignment__c == 'Automatic - Assignment Order'){
             sssQuery += 'ORDER BY Assignment_order__c ASC';
         }
@@ -365,7 +365,7 @@ public without sharing class CSAPController {
     public static Product2 getProduct (String productId) {
         return [
                 SELECT Id, Name, Program__c, Customer_Subscription_Type__c, Default_Residential_Usage__c,
-                    Default_Business_Usage__c, Disable_Multiple_UAL_CSAP__c
+                        Default_Business_Usage__c, Disable_Multiple_UAL_CSAP__c
                 FROM Product2
                 WHERE Id = :productId
         ];
