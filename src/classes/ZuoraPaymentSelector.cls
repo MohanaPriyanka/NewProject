@@ -21,6 +21,26 @@ public with sharing class ZuoraPaymentSelector {
         ];
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public static List<Zuora__Payment__c> selectByAccount(List<Id> propertyAccountIds) {
+        List<Zuora__Payment__c> zuoraPayments = [
+            SELECT Id, Name,
+                Zuora__Amount__c,
+                Zuora__BillingAccount__r.Zuora__Account__r.Id,
+                Zuora__GatewayResponse__c,
+                Zuora__PaymentMethod__c,
+                Zuora__Status__c,
+                Zuora__Type__c,
+                Zuora__Effective_Date__c,
+                Zuora__BillingAccount__r.Zuora__PaymentGateway__r.Name,
+                Zuora__BillingAccount__r.Zuora__AutoPay__c
+            FROM Zuora__Payment__c
+            WHERE Zuora__BillingAccount__r.Zuora__Account__r.Id IN :propertyAccountIds
+            ORDER BY Zuora__Effective_Date__c DESC
+        ];
+        return zuoraPayments;
+    }
+
     public static String getFailedPaymentRunPaymentsFromLastDay(Datetime endDatetime) {
         Datetime startDatetime = endDatetime - 1;
         return 'SELECT p.Id, p.Status, p.AccountId, p.PaymentMethodId, p.GatewayResponse, a.CrmId, pr.ExecutedDate ' +
