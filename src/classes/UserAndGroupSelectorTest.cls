@@ -28,4 +28,15 @@ public with sharing class UserAndGroupSelectorTest {
         Map<Id, UserRole> userRoleMap = selector.getUserRoleMap();
         System.assertNotEquals(null, userRoleMap);
     }
+
+    @IsTest
+    private static void testGetUserFromId() {
+        User oneUser = [
+            SELECT Id
+            FROM User
+            LIMIT 1
+        ];
+        List<User> users = selector.getUsersFromId(new Set<Id>{oneUser.Id});
+        System.assertNotEquals(null, users);
+    }
 }
