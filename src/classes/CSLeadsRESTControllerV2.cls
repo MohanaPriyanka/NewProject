@@ -32,7 +32,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                     //pull credit, only once; on first time the app complete date is set
                     leadToUpdate.Soft_Pull_Credit_Report__c = true;
                     List<Account> propertyAccounts =  accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id> {requestLead.Id});
-                    ZuoraAccountService.createAccounts(propertyAccounts);
+                    try {
+                        ZuoraAccountService.createAccounts(propertyAccounts);
+                    } catch (Util.BWException bwe) {
+                        Logger.logLater('CSLeadsRESTControllerV2', 'patchLead', bwe.getMessage() + '\n' + bwe.getStackTraceString(), Logger.ERROR);
+                        Logger.flushLogs();
+                    }
+                    
                 }
                 requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
 
