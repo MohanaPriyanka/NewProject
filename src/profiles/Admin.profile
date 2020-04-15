@@ -28138,6 +28138,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Production__c.Credits_Externally_Serviced__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Production__c.Credits_Generated__c</field>
         <readable>true</readable>
