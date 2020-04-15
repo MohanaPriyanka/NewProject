@@ -123,6 +123,8 @@ public with sharing class InvocableZuoraActionsTest {
     }
 
     @IsTest public static void testMemoUpload() {
+        ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
+
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
         Date invoiceDate = Date.newInstance(2019,02,15);
@@ -130,7 +132,7 @@ public with sharing class InvocableZuoraActionsTest {
         List<Bill_Adjustment__c> adjustmentsBefore = [
             SELECT Id, Zuora_Id__c
             FROM Bill_Adjustment__c
-            WHERE Zuora_Id__c = null
+            WHERE Zuora_Id__c = NULL
             AND Approval_Status__c = 'Approved'
         ];
         System.assertEquals(5,adjustmentsBefore.size());
@@ -142,7 +144,7 @@ public with sharing class InvocableZuoraActionsTest {
         List<Bill_Adjustment__c> adjustmentsAfter = [
             SELECT Id, Zuora_Id__c
             FROM Bill_Adjustment__c
-            WHERE Zuora_Id__c = null
+            WHERE Zuora_Id__c = NULL
             AND Approval_Status__c = 'Approved'
         ];
         System.assertEquals(0,adjustmentsAfter.size());

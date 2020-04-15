@@ -34,12 +34,18 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getDataQuery(endpoint);
         } else if (endpoint.contains('owl-auw2-sbx01-query-result')){
             return getDataQueryData(endpoint);
+        } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM InvoiceItem')) {
+            return getInvoiceItems();
         } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM Invoice')) {
             return getInvoices();
         } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM RatePlanCharge')) {
             return getRatePlanCharge(req.getBody());
         } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM Account')) {
             return getAccount();
+        } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM Subscription')) {
+            return getSubscription();
+        } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM RatePlan')) {
+            return getRatePlan();
         } else if (endpoint.contains('v1/action/query') && req.getBody().contains(' FROM PaymentMethod')) {
             return getActionQueryPayMethod(req.getBody());
         } else if (endpoint.contains('v1/action/query')) {
@@ -175,6 +181,26 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"size":1,' +
             '"done":true}'
         );
+        return res;
+    }
+
+    public static HttpResponse getSubscription() {
+        HttpResponse res = getJSON();
+        res.setBody('{"records":[' +
+            '{"Id":"2c92c0fa6e3a9391016e3cb3d7bf795d"},' +
+            '{"Id":"2c92c0fb713ac83a017142e066b47d71"},' +
+            '{"Id":"2c92c0fb713ac83a017142e0af007e1c"}],' +
+            '"done":true,"size":3}');
+        return res;
+    }
+
+    public static HttpResponse getRatePlan() {
+        HttpResponse res = getJSON();
+        res.setBody('{"records":[' +
+            '{"Id":"2c92c0f96ae3b195016ae5e3665e0c08"},' +
+            '{"Id":"2c92c0fb713ac83a017142e066c87d75"},' +
+            '{"Id":"2c92c0fb713ac83a017142e0af227e20"}],' +
+            '"done":true,"size":3}');
         return res;
     }
 
@@ -734,6 +760,15 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '{"Amount":810,"Balance":810,"InvoiceDate":"2019-06-13","Id":"2c92c0856b4f7c5e016b53bc25b43a8d",' +
             '"AccountId":"2c92c0f86ae3a4ad016ae5e247886605"}],' +
             '"size":2,"done":true}');
+        return res;
+    }
+
+    private static HttpResponse getInvoiceItems() {
+        HttpResponse res = getJSON();
+        res.setBody('{"records":[' +
+            '{"InvoiceId":"2c92c094713a9cad01714d1bb4b26b4d","ChargeDate":"2020-04-05T21:29:53.000-04:00","ChargeId":"2c92c0f96ae3b195016ae5e3665e0c08","Id":"2c92c094713a9cad01714d1bb4de6b4e"},' +
+            '{"InvoiceId":"2c92c094713a9cad01714d1bb4b26b4d","ChargeDate":"2020-04-05T21:29:53.000-04:00","ChargeId":"2c92c0fa6e3a9391016e3cb3d7eb7962","Id":"2c92c094713a9cad01714d1bb4de6b4f"}],' +
+            '"done":true,"size":2}');
         return res;
     }
 

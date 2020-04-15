@@ -651,8 +651,9 @@ public with sharing class ZuoraAPI {
         public Decimal CustomTemplateMerge_2_Zcustom;
     }
 
-    public class InvoiceItem {
+    public class InvoiceItem implements Comparable {
         public String id;
+        public String invoiceId;
         public Decimal amount;
         public Decimal balance;
         public Decimal paymentAmount;
@@ -660,6 +661,17 @@ public with sharing class ZuoraAPI {
         public String chargeDate;
         public String chargeId;
         public String RatePlanChargeId;
+
+        public Integer compareTo(Object compareTo) {
+            InvoiceItem compareToItem = (InvoiceItem) compareTo;
+            Integer returnValue = 0;
+            if (chargeDate < compareToItem.chargeDate) {
+                returnValue = 1;
+            } else if (chargeDate > compareToItem.chargeDate) {
+                returnValue = -1;
+            }
+            return returnValue;
+        }
     }
 
     public class RatePlanCharge {
@@ -685,12 +697,21 @@ public with sharing class ZuoraAPI {
         public String Lockbox_Zcustom;
         public String PaymentMethod_Zcustom;
         public String ArchivedChargentData_Zcustom;
+        // For creating debit memos by invoice
+        public List<DebitMemoItem> items;
+        public String invoiceId;
     }
 
     public class DebitMemoCharge {
         @AuraEnabled
         public Decimal amount;
         public String chargeId;
+    }
+
+    public class DebitMemoItem {
+        public Decimal amount;
+        public String invoiceItemId;
+        public String skuName;
     }
 
     // Used to query, but not to create debit memos:
