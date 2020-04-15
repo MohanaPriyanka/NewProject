@@ -18,5 +18,23 @@ public without sharing class FeatureService {
         }
     }
 
+    /*************
+      *** MOCKS ***
+      *************/
+    @TestVisible
+    private class Mock extends MockProvider {
+        private Boolean enabled;
+        public Mock(Boolean enabled) {
+            this.enabled = enabled;
+        }
 
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'isEnabled' {
+                    return enabled;
+                }
+            }
+            return null;
+        }
+    }
 }
