@@ -409,6 +409,8 @@ public class ProductEscalationTest {
             Date_of_Transfer__c = oneMonthAgo,
             Shared_Solar_System__c = sss1.Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZOne.Id,
             Attempted_kWh_Transfer__c = 81869,
             Attempted_Transfer__c = 13483.66,
@@ -422,6 +424,8 @@ public class ProductEscalationTest {
             Date_of_Transfer__c = oneMonthAgo,
             Shared_Solar_System__c = sss2.Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZTwo.Id,
             Attempted_kWh_Transfer__c = 367918,
             Attempted_Transfer__c = 40983.43,
@@ -435,6 +439,8 @@ public class ProductEscalationTest {
             Date_of_Transfer__c = oneMonthAgo.addMonths(1),
             Shared_Solar_System__c = sss2.Id,
             Transfer_Type__c = 'Main',
+            Transferred_To__c = 'Customer',
+            Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZTwo.Id,
             Attempted_kWh_Transfer__c = 153846,
             Attempted_Transfer__c = 20000,
@@ -904,7 +910,6 @@ public class ProductEscalationTest {
 
         Product_Escalation_Schedule__c newSchedule = ProductService.createEscalationSchedule(0.03, 0.14, 20, 2);
 
-
         System.assertEquals(4,newSchedule.Product_Escalators__r[2].Starting_Credit_Transfer__c);
         System.assertEquals(6,newSchedule.Product_Escalators__r[3].Starting_Credit_Transfer__c);
         System.assertEquals(8,newSchedule.Product_Escalators__r[4].Starting_Credit_Transfer__c);
@@ -923,7 +928,6 @@ public class ProductEscalationTest {
             (sss2) Kwh = 2544.63, SEE = 0.1530 Bill = 389.33 (transfer #7)
             (sss2 2nd transfer) Kwh = 1064.05, SEE = 0.1576, Bill = 167.69 (transfer #8)
         */
-
         for (UASB__c uasb : [
             SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Name_on_Account_From_Log__c,

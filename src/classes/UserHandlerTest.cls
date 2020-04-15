@@ -229,7 +229,6 @@ public class UserHandlerTest {
 		System.assertEquals(previousNumberUsers + 1, userListUpdated.size());
 	}
 
-
 	@IsTest public static void testLoanOpp() {
 		Opportunity loanOpp = [SELECT Id FROM Opportunity WHERE Name = 'Loan'];
 		loanOpp.Contract_Status__c = 'Completed';
@@ -244,5 +243,66 @@ public class UserHandlerTest {
 		System.assertEquals(0, errors.size());
 	}
 
+	@IsTest
+	public static void testPortalActivationEmail(){
+		Account parentAccount = new Account(
+			Name = 'Parent Account 1'
+		);
+		insert parentAccount;
+		Contact newContact = new Contact(
+			FirstName = 'Customer',
+			LastName = 'Contact3',
+			AccountId = parentAccount.Id,
+			Email = 'someContactTest@email.com'
+		);
+		insert newContact;
 
+		List<Task> beforeTasks = [
+			SELECT Id
+			FROM Task
+			WHERE WhoId = : newContact.Id
+			AND Subject LIKE '%Portal Activation%'
+		];
+		System.assertEquals(0,beforeTasks.size());
+
+		Test.startTest();
+			User newUser = insertUser(newContact);
+			Portal_User_Activated__e portalUserActivatedEvent = new Portal_User_Activated__e(
+				User_Id__c = newUser.Id
+			);
+			EventBus.publish(portalUserActivatedEvent);
+		Test.stopTest();
+
+		List<Task> afterTasks = [
+			SELECT Id
+			FROM Task
+			WHERE WhoId = : newContact.Id
+			AND Subject LIKE '%Portal Activation%'
+		];
+		System.assertEquals(1,afterTasks.size());
+	}
+
+	private static User insertUser(Contact contact) {
+		Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Community Solar Community User'];
+
+		User userToInsert = new User(
+			FirstName = contact.FirstName,
+			LastName = contact.LastName,
+			Alias = contact.FirstName.left(2) + contact.LastName.right(6),
+			Email = contact.Email,
+			EmailEncodingKey = 'UTF-8',
+			LanguageLocaleKey = 'en_US',
+			LocaleSidKey = 'en_US',
+			Country = 'United States',
+			IsActive = true,
+			ContactId = contact.Id,
+			ProfileId = profileRecord.Id,
+			TimeZoneSidKey = 'America/New_York',
+			Username = contact.Email,
+			CommunityNickname = contact.FirstName.left(10) + contact.LastName.left(30)
+		);
+
+		Util.insertSObj(userToInsert);
+		return userToInsert;
+	}
 }

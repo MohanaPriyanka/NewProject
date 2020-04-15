@@ -1,5 +1,12 @@
+// Tested by: UserHandlerTest
+
 public without sharing class UserHandler implements Queueable{
     private List<Contact> contactsToCreateUsers;
+    @TestVisible
+    private UserAndGroupSelector userSelector = new UserAndGroupSelector();
+
+    public UserHandler() {
+    }
 
     public UserHandler(List<Contact> userContacts) {
         this.contactsToCreateUsers = userContacts;
@@ -102,5 +109,24 @@ public without sharing class UserHandler implements Queueable{
         userWithError.CommunityNickname = userWithError.LastName.left(5) + userWithError.FirstName.left(25);
         usersToInsertMap.put(userWithError.ContactId, userWithError);
         return usersToInsertMap;
+    }
+
+    public void createPortalActivationEmailLog(Set<Id> userIdSet){
+        try {
+            List<Task> tasksToInsert = new List<Task>();
+            List<User> communityUsers = userSelector.getUsersFromId(userIdSet);
+            for (User communityUser : communityUsers) {
+                Task taskToInsert = new Task(
+                    Subject = 'EMAIL LOG: Portal Activation Welcome Email Sent',
+                    Description = 'Email body is variable, see community settings for detail',
+                    Status = 'Closed',
+                    WhoId = communityUser.ContactId
+                );
+                tasksToInsert.add(taskToInsert);
+            }
+            insert tasksToInsert;
+        } catch(Exception excep){
+            Logger.logNow('UserHandler','createPortalActivationEmailLog',excep.getMessage() + '_' + excep.getStackTraceString());
+        }
     }
 }
