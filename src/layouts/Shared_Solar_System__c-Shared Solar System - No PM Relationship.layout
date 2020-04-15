@@ -356,11 +356,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Actual_COD_Date__c</field>
+                <field>Estimated_COD_Date_Manual__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Estimated_COD_Date_Manual__c</field>
+                <field>Actual_COD_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -401,12 +401,12 @@
                 <field>Actual_Credits_Flowing_Date__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Estimated_First_Bill_Date__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Estimated_First_BW_Bill_Override__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Estimated_First_Bill_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>

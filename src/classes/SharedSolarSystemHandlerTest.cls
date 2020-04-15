@@ -427,7 +427,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     @IsTest
     public static void testApexContext() {
         Shared_Solar_System__c sss = [
-            SELECT Id, Apex_Context__c, Stage__c, Estimated_COD_Date__c, Estimated_PTO_Date__c
+            SELECT Id, Apex_Context__c, Stage__c, Estimated_COD_Date_Manual__c, Estimated_PTO_Date_MANUAL__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 1'
             LIMIT 1
@@ -537,8 +537,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             );
             insert resize;
         } else {
-        selectedUAS.Annual_kwh_subscription_future__c = 12000;
-        update selectedUAS;
+            selectedUAS.Annual_kwh_subscription_future__c = 12000;
+            update selectedUAS;
         }
         Test.startTest();
         SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
@@ -550,10 +550,10 @@ public with sharing class SharedSolarSystemHandlerTest {
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
+
         System.assertEquals(9.4616,sssUpdated.Capacity_Committed_kW_DC__c);
         System.assertEquals(23.0769,sssUpdated.Anchor_capacity_reserved__c);
     }
-    
     @IsTest
     public static void testDifferentStatuses() {
         addMoreTestRecords();

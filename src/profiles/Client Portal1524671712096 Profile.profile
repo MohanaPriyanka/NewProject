@@ -690,6 +690,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SharedSolarSystemHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SiteLoginController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -20798,11 +20802,6 @@
         <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Hours_Balance__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__ImportID__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
