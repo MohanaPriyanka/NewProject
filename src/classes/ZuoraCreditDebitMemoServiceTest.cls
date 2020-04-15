@@ -348,7 +348,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             '"Account":{"Id":"0013I00000I77l8QAB","Zuora_Id__c":"2c92c0f96e3aa331016e3ca8eb2c48b7"}}},' +
             '"Client__r":{"Id":"0013I00000I77klQAB","Account_Number__c":"BW-00000385"}}';
         Bill_Adjustment__c adjust = (Bill_Adjustment__c) JSON.deserialize(adjustJSON, Bill_Adjustment__c.class);
-        ZuoraAPI.DebitMemo debitMemo = ZuoraCreditDebitMemoService.convertSFAdjustToDebitMemoFromInvoice(adjust);
+        ZuoraAPI.DebitMemo debitMemo = ZuoraCreditDebitMemoService.convertSFAdjustToDebitMemoFromInvoice(adjust, System.today());
         System.assertEquals('SSS-000099', debitMemo.Project_Zcustom);
         System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
         System.assertEquals('2c92c094713a9cad01714d1bb4b26b4d', debitMemo.invoiceId);
@@ -377,7 +377,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             '"Client__r":{"Id":"0013I00000I77klQAB","Account_Number__c":"BW-0000000"}}';
         Bill_Adjustment__c adjust = (Bill_Adjustment__c) JSON.deserialize(adjustJSON, Bill_Adjustment__c.class);
         try {
-            ZuoraCreditDebitMemoService.convertSFAdjustToDebitMemoFromInvoice(adjust);
+            ZuoraCreditDebitMemoService.convertSFAdjustToDebitMemoFromInvoice(adjust, System.today());
             System.assert(false, 'Should have thrown an exception since there is no invoice line for client BW-0000000');
         } catch (Util.BWException bwe) {
             System.assert(bwe.getMessage().contains('Could not relate adjustment'));

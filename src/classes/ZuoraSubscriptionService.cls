@@ -3,7 +3,7 @@
  * Description: 
  * Tested By: ZuoraSubscriptionServiceTest
  *************************************************************************************/
-@SuppressWarnings('PMD.ExcessivePublicCount')
+
 public with sharing class ZuoraSubscriptionService {
     @TestVisible
     private static Map<String, ZuoraAPI.OrderBySubscriptionOwner> ordersBySubscriptionOwnerCache = new Map<String, ZuoraAPI.OrderBySubscriptionOwner>();

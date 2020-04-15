@@ -29,7 +29,7 @@ public class ZuoraCreditDebitMemoService {
             HttpResponse response;
             if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
                 try {
-                    debitMemo = convertSFAdjustToDebitMemoFromInvoice(adjustment);
+                    debitMemo = convertSFAdjustToDebitMemoFromInvoice(adjustment, effectiveDate);
                     debitMemo.effectiveDate = effectiveDate;
                     response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/invoices/'+debitMemo.invoiceId+'/debitmemos',debitMemo,false);
                 } catch (Util.BWException bwe) {
@@ -84,7 +84,7 @@ public class ZuoraCreditDebitMemoService {
     // 1 query to get invoice items from invoices
     // Plus a callout to create the debit memo and a callout to post it
     @TestVisible
-    private static ZuoraAPI.DebitMemo convertSFAdjustToDebitMemoFromInvoice(Bill_Adjustment__c adjust) {
+    private static ZuoraAPI.DebitMemo convertSFAdjustToDebitMemoFromInvoice(Bill_Adjustment__c adjust, Date effectiveDate) {
         String accountId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         String client = adjust.Client__r.Account_Number__c;
         String project = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
@@ -94,7 +94,7 @@ public class ZuoraCreditDebitMemoService {
         debitMemoItem.amount = adjust.Adjustment_Amount__c;
         debitMemoItem.skuName = 'Utility Credit';
         debitMemo.items = new List<ZuoraAPI.DebitMemoItem>{debitMemoItem};
-        debitMemo.effectiveDate = System.today();
+        debitMemo.effectiveDate = effectiveDate;
         debitMemo.reasonCode = adjust.Adjustment_Type__c;
         debitMemo.Project_Zcustom = project;
         debitMemo.ClientOwner_Zcustom = client;
