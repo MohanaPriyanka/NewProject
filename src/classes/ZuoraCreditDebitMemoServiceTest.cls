@@ -139,6 +139,7 @@ public class ZuoraCreditDebitMemoServiceTest {
     private static void testBatch() {
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
+        ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
 
         // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
         Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
@@ -178,6 +179,7 @@ public class ZuoraCreditDebitMemoServiceTest {
     private static void testBatchWithNoIds() {
         ZuoraAPIMock.createCMWithNoId = true;
         ZuoraAPIMock.createDMWithNoId = true;
+        ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
 
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
@@ -210,6 +212,7 @@ public class ZuoraCreditDebitMemoServiceTest {
     private static void testAPICallWithMock() {
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
+        ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
 
         // 8 adjustments exist, but one should be excluded, because already has a zuora ID and 2 should be
         // excluded because they are not approved:
@@ -266,6 +269,7 @@ public class ZuoraCreditDebitMemoServiceTest {
     private static void testOnApprovalSend(){
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
+        ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
 
         List<Bill_Adjustment__c> beforeAdjustments = [
             SELECT Id
@@ -296,5 +300,87 @@ public class ZuoraCreditDebitMemoServiceTest {
             WHERE Zuora_Id__c != null
         ];
         system.assertEquals(3,afterAdjustments.size());
+    }
+
+    @IsTest
+    private static void testInvoiceItemSortNewestToOldest() {
+        List<ZuoraAPI.InvoiceItem> invoiceItems = new List<ZuoraAPI.InvoiceItem>();
+        ZuoraAPI.InvoiceItem invoiceItem = new ZuoraAPI.InvoiceItem();
+        invoiceItem.id = 'C';
+        invoiceItem.chargeDate = '2019-11-05T19:18:19.000-05:00';
+        invoiceItems.add(invoiceItem);
+        invoiceItem = new ZuoraAPI.InvoiceItem();
+        invoiceItem.id = 'A';
+        invoiceItem.chargeDate = '2020-03-31T14:53:39.000-04:00';
+        invoiceItems.add(invoiceItem);
+        invoiceItem = new ZuoraAPI.InvoiceItem();
+        invoiceItem.id = 'A';
+        invoiceItem.chargeDate = '2020-03-31T14:53:39.000-04:00';
+        invoiceItems.add(invoiceItem);
+        invoiceItem = new ZuoraAPI.InvoiceItem();
+        invoiceItem.id = 'B';
+        invoiceItem.chargeDate = '2020-02-28T14:53:39.000-04:00';
+        invoiceItems.add(invoiceItem);
+        invoiceItems.sort();
+        System.assertEquals('A', invoiceItems[0].id);
+        System.assertEquals('A', invoiceItems[1].id);
+        System.assertEquals('B', invoiceItems[2].id);
+        System.assertEquals('C', invoiceItems[3].id);
+    }
+
+    @IsTest
+    private static void testConvertSFAdjustToDebitMemoFromInvoiceMatch() {
+        String adjustJSON = '{' +
+            '"Id":"a0p3I000002ziZoQAI",' +
+            '"Name":"Test",' +
+            '"Utility_Account_Subscription__c":"a1d3I000000HP97QAG",' +
+            '"Client__c":"0013I00000I77klQAB",' +
+            '"Adjustment_Amount__c":100.00,' +
+            '"Adjustment_Type__c":"Client Credit",' +
+            '"Credits_Allocated__c":100.00,' +
+            '"Utility_Account_Subscription__r":{' +
+            '"Id":"a1d3I000000HP97QAG",' +
+            '"Opportunity__c":"0063I000002Y9OuQAK",' +
+            '"Utility_Account_Log__c":"a1b3I000000Hk6fQAC",' +
+            '"Opportunity__r":{"Id":"0063I000002Y9OuQAK","Shared_Solar_System__c":"a1J3I0000003QoOUAU","AccountId":"0013I00000I77l8QAB",' +
+            '"Shared_Solar_System__r":{"Id":"a1J3I0000003QoOUAU","Utility__c":"a1M3I0000009HazUAE","Name":"Project E Dog St","Unique_ID__c":"SSS-000099",' +
+            '"Utility__r":{"Id":"a1M3I0000009HazUAE","Name":"National Grid"}},' +
+            '"Account":{"Id":"0013I00000I77l8QAB","Zuora_Id__c":"2c92c0f96e3aa331016e3ca8eb2c48b7"}}},' +
+            '"Client__r":{"Id":"0013I00000I77klQAB","Account_Number__c":"BW-00000385"}}';
+        Bill_Adjustment__c adjust = (Bill_Adjustment__c) JSON.deserialize(adjustJSON, Bill_Adjustment__c.class);
+        ZuoraAPI.DebitMemo debitMemo = ZuoraCreditDebitMemoService.convertSFAdjustToDebitMemoFromInvoice(adjust);
+        System.assertEquals('SSS-000099', debitMemo.Project_Zcustom);
+        System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
+        System.assertEquals('2c92c094713a9cad01714d1bb4b26b4d', debitMemo.invoiceId);
+        System.assertEquals(1, debitMemo.items.size());
+        System.assertEquals('2c92c094713a9cad01714d1bb4de6b4e', debitMemo.items[0].invoiceItemId);
+    }
+
+    @IsTest
+    private static void testConvertSFAdjustToDebitMemoFromInvoiceNoMatch() {
+        String adjustJSON = '{' +
+            '"Id":"a0p3I000002ziZoQAI",' +
+            '"Name":"Test",' +
+            '"Utility_Account_Subscription__c":"a1d3I000000HP97QAG",' +
+            '"Client__c":"0013I00000I77klQAB",' +
+            '"Adjustment_Amount__c":100.00,' +
+            '"Adjustment_Type__c":"Client Credit",' +
+            '"Credits_Allocated__c":100.00,' +
+            '"Utility_Account_Subscription__r":{' +
+            '"Id":"a1d3I000000HP97QAG",' +
+            '"Opportunity__c":"0063I000002Y9OuQAK",' +
+            '"Utility_Account_Log__c":"a1b3I000000Hk6fQAC",' +
+            '"Opportunity__r":{"Id":"0063I000002Y9OuQAK","Shared_Solar_System__c":"a1J3I0000003QoOUAU","AccountId":"0013I00000I77l8QAB",' +
+            '"Shared_Solar_System__r":{"Id":"a1J3I0000003QoOUAU","Utility__c":"a1M3I0000009HazUAE","Name":"Project E Dog St","Unique_ID__c":"SSS-000099",' +
+            '"Utility__r":{"Id":"a1M3I0000009HazUAE","Name":"National Grid"}},' +
+            '"Account":{"Id":"0013I00000I77l8QAB","Zuora_Id__c":"2c92c0f96e3aa331016e3ca8eb2c48b7"}}},' +
+            '"Client__r":{"Id":"0013I00000I77klQAB","Account_Number__c":"BW-0000000"}}';
+        Bill_Adjustment__c adjust = (Bill_Adjustment__c) JSON.deserialize(adjustJSON, Bill_Adjustment__c.class);
+        try {
+            ZuoraCreditDebitMemoService.convertSFAdjustToDebitMemoFromInvoice(adjust);
+            System.assert(false, 'Should have thrown an exception since there is no invoice line for client BW-0000000');
+        } catch (Util.BWException bwe) {
+            System.assert(bwe.getMessage().contains('Could not relate adjustment'));
+        }
     }
 }

@@ -79,6 +79,14 @@ public with sharing class ZuoraAPIHelperTest {
     }
 
     @IsTest
+    public static void testQueryIds() {
+        String query = 'SELECT Id FROM Account';
+        Set<String> ids = ZuoraAPIHelper.queryIds(query);
+        System.assertEquals(1, ids.size(), 'Expected one id from the mock response');
+        System.assert(ids.contains('2c92c0f86b78f56c016b7b00480c2e24'));
+    }
+
+    @IsTest
     public static void testDelete() {
         String result = ZuoraAPIHelper.deleteObjects(new List<String>{'12345'}, 'Account');
         System.assert(result.contains('"Success":true'));

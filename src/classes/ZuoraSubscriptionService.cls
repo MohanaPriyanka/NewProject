@@ -161,9 +161,13 @@ public with sharing class ZuoraSubscriptionService {
         }
     }
 
-    public static Map<String, ZuoraOutstandingItemsService.RatePlanCharge> getActiveRatePlanChargesByAccountId(String zuoraAcctId) {
+    public static Map<String, ZuoraOutstandingItemsService.RatePlanCharge> getAllRatePlanChargesByAccountId(String zuoraAcctId) {
+        // When a subscription is changed through an Order, for instance to add another Rate Plan Charge, the previous
+        // subscription is expired and another one created with copies of the previous Rate Plan Charges. So even though
+        // an account may only have one active subscription, we should get all subscriptions and their corresponding RPCs
+        // in case an invoice line item is referencing the expired RPC.
         Set<String> subscriptionIds =
-            ZuoraAPIHelper.queryIds('SELECT Id FROM Subscription WHERE AccountId = \''+zuoraAcctId+'\' AND Status = \'Active\'');
+            ZuoraAPIHelper.queryIds('SELECT Id FROM Subscription WHERE AccountId = \''+zuoraAcctId+'\'');
         if (subscriptionIds.isEmpty()) {
             throw new Util.BWException('Did not find any subscriptions for Account: ' + zuoraAcctId);
         }

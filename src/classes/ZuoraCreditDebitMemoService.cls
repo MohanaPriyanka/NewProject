@@ -10,6 +10,7 @@ Can't use generic create/edit/delete actions
 
 public class ZuoraCreditDebitMemoService {
     private static ZuoraInvoiceService invoiceService = new ZuoraInvoiceService();
+    @TestVisible
     private static FeatureService featureService = new FeatureService();
 
     public static Bill_Adjustment__c createCreditOrDebitMemo(Bill_Adjustment__c adjustment, Date effectiveDate){
@@ -82,6 +83,7 @@ public class ZuoraCreditDebitMemoService {
     // 1 query to get invoices from the past year
     // 1 query to get invoice items from invoices
     // Plus a callout to create the debit memo and a callout to post it
+    @TestVisible
     private static ZuoraAPI.DebitMemo convertSFAdjustToDebitMemoFromInvoice(Bill_Adjustment__c adjust) {
         String accountId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         String client = adjust.Client__r.Account_Number__c;
@@ -99,7 +101,7 @@ public class ZuoraCreditDebitMemoService {
         debitMemo.CRM_ID_Zcustom = adjust.Id;
 
         Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
-            ZuoraSubscriptionService.getActiveRatePlanChargesByAccountId(accountId);
+            ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(accountId);
         List<ZuoraAPI.InvoiceItem> invoiceItems = invoiceService.getRecentItems(accountId);
         invoiceItems.sort();
         for (ZuoraAPI.InvoiceItem invoiceItem : invoiceItems) {
