@@ -420,6 +420,32 @@
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Verification_Status__c</fullName>
+        <description>Production records set to verified when Bill Period and its Main Transfer have been QCed</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Production records set to verified when Bill Period and its Main Transfer have been QCed</inlineHelpText>
+        <label>Verification Status</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pending Verification</fullName>
+                    <default>true</default>
+                    <label>Pending Verification</label>
+                </value>
+                <value>
+                    <fullName>Verified</fullName>
+                    <default>false</default>
+                    <label>Verified</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>kWh_Transferred__c</fullName>
         <externalId>false</externalId>
         <label>kWh Transferred</label>

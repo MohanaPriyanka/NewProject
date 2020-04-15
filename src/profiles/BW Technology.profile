@@ -611,6 +611,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>BillPeriodService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>BillPeriodServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BlueWaveParent</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3380,6 +3388,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProductionDetailSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -40921,6 +40933,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Production__c.Utility_Fees__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Production__c.Verification_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
