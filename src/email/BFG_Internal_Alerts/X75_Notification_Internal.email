@@ -1,0 +1,5 @@
+Community Solar Subscriptions for {!Shared_Solar_System__c.Name} are now 75% full. See detail below:
+
+Total System Size (DC): {!Shared_Solar_System__c.Total_System_Size_kWh_DC__c}
+Anchor Capacity Committed: {!Shared_Solar_System__c.Anchor_Capacity_Reserved__c}
+CS Capacity Committed: {!Shared_Solar_System__c.Capacity_Committed_kW_DC__c}
