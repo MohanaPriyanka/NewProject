@@ -34,4 +34,12 @@ public inherited sharing class UserAndGroupSelector {
            FROM UserRole
         ]);
     }
+
+    public List<User> getUsersFromId(Set<Id> userIds){
+        return new List<User>([
+            SELECT Id, ContactId
+            FROM User
+            WHERE Id IN : userIds
+        ]);
+    }
 }
