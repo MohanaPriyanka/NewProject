@@ -542,45 +542,45 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when no patchable fields are provided');
     }
 
-    // @IsTest
-    // private static void testPatchApplicationSuccess() {
-    //     useMocks();
-    //     String jsonRequest = '{' +
-    //         '"id": "00Q000000000888",' +
-    //         '"firstName": "Unit",' +
-    //         '"lastName": "Testcase",' +
-    //         '"email": "test@invalid.bluewavesolar.com",' +
-    //         '"mobilePhone": "555-555-5555",' +
-    //         '"applicationType": "Residential",' +
-    //         '"streetAddress": "1 Test Street",' +
-    //         '"city": "Suffern",' +
-    //         '"state": "NY",' +
-    //         '"zipCode": "10901",' +
-    //         '"productName": "CS Product",' +
-    //         '"propertyAccounts": [{' +
-    //         '   "id": "001000000000999",' +
-    //         '   "leadId": "00Q000000000888", ' +
-    //         '   "billingStreet": "Test billing street",' +
-    //         '   "billingCity": "Test billing city",' +
-    //         '   "billingState": "NY",' +
-    //         '   "billingPostalCode": "14472",' +
-    //         '   "utilityAccountLogs": [{' +
-    //         '       "id": "a1b000000000999",' +
-    //         '       "leadId": "00Q000000000888", ' +
-    //         '       "propertyAccountId": "001000000000999",' +
-    //         '       "nameOnAccount": "Test Accounts Payable",' +
-    //         '       "serviceStreet": "Test service street",' +
-    //         '       "serviceCity": "Test service city",' +
-    //         '       "serviceState": "NY",' +
-    //         '       "servicePostalCode": "14472",' +
-    //         '       "utilityAccountNumber": "555555"' +
-    //         '   }]' +
-    //         '}]}';
+    @IsTest
+    private static void testPatchApplicationSuccess() {
+        useMocks();
+        String jsonRequest = '{' +
+            '"id": "00Q000000000888",' +
+            '"firstName": "Unit",' +
+            '"lastName": "Testcase",' +
+            '"email": "test@invalid.bluewavesolar.com",' +
+            '"mobilePhone": "555-555-5555",' +
+            '"applicationType": "Residential",' +
+            '"streetAddress": "1 Test Street",' +
+            '"city": "Suffern",' +
+            '"state": "NY",' +
+            '"zipCode": "10901",' +
+            '"productName": "CS Product",' +
+            '"propertyAccounts": [{' +
+            '   "id": "001000000000999",' +
+            '   "leadId": "00Q000000000888", ' +
+            '   "billingStreet": "Test billing street",' +
+            '   "billingCity": "Test billing city",' +
+            '   "billingState": "NY",' +
+            '   "billingPostalCode": "14472",' +
+            '   "utilityAccountLogs": [{' +
+            '       "id": "a1b000000000999",' +
+            '       "leadId": "00Q000000000888", ' +
+            '       "propertyAccountId": "001000000000999",' +
+            '       "nameOnAccount": "Test Accounts Payable",' +
+            '       "serviceStreet": "Test service street",' +
+            '       "serviceCity": "Test service city",' +
+            '       "serviceState": "NY",' +
+            '       "servicePostalCode": "14472",' +
+            '       "utilityAccountNumber": "555555"' +
+            '   }]' +
+            '}]}';
 
-    //     controller.patchApplication(jsonRequest);
+        controller.patchApplication(jsonRequest);
 
-    //     System.assertEquals(201, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-    // }
+        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
+    }
 
     /********************
      *** SYSTEM TESTS ***
@@ -770,7 +770,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
                         '           ]' +
                         '   }' + 
                         '}';
-                    Lead l = (Lead)JSON.deserialize(leadMapJson, Lead.class);
+                    return (Lead)JSON.deserialize(leadMapJson, Lead.class);
                 }
 
                 return newLead;
