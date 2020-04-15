@@ -14,7 +14,41 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible protected LeadSelector leadSelector = new LeadSelector();
     @TestVisible private AccountsSelector accountsSelector = new AccountsSelector();
     @TestVisible private UALSelector ualSelector = new UALSelector();
+    @TestVisible private String baseUrl = Url.getOrgDomainUrl().toExternalForm() + '/apply/s/switch';
 
+    
+    public virtual void getLead(String leadId, String email) {
+        RestResponse response = RestContext.response;
+        if(leadId == null || email == null) {
+            envelope.addError('Request did not include correct fields to retrieve lead');
+            response.statusCode = statusCode.badRequest;
+        } else {
+            Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
+            if (leadToReturn == null || leadToReturn.Email != email) {
+                throw new Util.AuthorizationBWException('Invalid authorization, the leadId (' + leadId + ') does not match the email (' + email + ')');
+            }
+            if(leadToReturn.Accounts__r.size() > 1) {
+                envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
+                response.statusCode = statusCode.badRequest;
+                envelope.setJSONResponse(response);
+            }
+            
+            RestLead responseLead = new RestLead(leadToReturn);
+            List<RestLead.RestUtilityAccountLog> ualList = new List<RestLead.RestUtilityAccountLog>();
+            for(Utility_Account_Log__c ual : leadToReturn.Utility_Account_Logs__r) {
+                ualList.add(new RestLead.RestUtilityAccountLog(ual));
+            }
+            RestLead.RestPropertyAccount propAcct = new RestLead.RestPropertyAccount(leadToReturn.Accounts__r[0]);
+            propAcct.utilityAccountLogs = ualList;
+            responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{propAcct};
+            
+            envelope.setData(responseLead);
+            response.statusCode = statusCode.ok;
+        }
+
+        envelope.setJSONResponse(response);
+    }
+    
     public virtual void patchLead(String jsonRequest) {
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         RestResponse response = RestContext.response;
@@ -32,13 +66,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                     //pull credit, only once; on first time the app complete date is set
                     leadToUpdate.Soft_Pull_Credit_Report__c = true;
                     List<Account> propertyAccounts =  accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id> {requestLead.Id});
-                    try {
-                        ZuoraAccountService.createAccounts(propertyAccounts);
-                    } catch (Util.BWException bwe) {
-                        Logger.logLater('CSLeadsRESTControllerV2', 'patchLead', bwe.getMessage() + '\n' + bwe.getStackTraceString(), Logger.ERROR);
-                        Logger.flushLogs();
-                    }
-                    
+                    ZuoraAccountService.createAccounts(propertyAccounts);
                 }
                 requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
 
@@ -103,6 +131,165 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         envelope.setJSONResponse(response);
     }
 
+    public virtual void patchApplication(String jsonRequest) {
+        RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
+        RestResponse response = RestContext.response;
+        Savepoint sp = Database.setSavepoint();
+        
+        Lead leadToUpdate = leadSelector.selectOneWithPropertiesAndUtilities(requestLead.id);
+        Map<String, Object> requestMap = (Map<String, Object>)JSON.deserializeUntyped(jsonRequest);
+        List<Object> propFieldList = new List<Object>();
+        Map<String, Object> propFieldMap = new Map<String, Object>();
+        List<Object> ualFieldList = new List<Object>();
+        Map<String, Object> ualFieldMap = new Map<String, Object>();
+        Map<Id, Utility_Account_Log__c> queryUalMap = new Map<Id, Utility_Account_Log__c>();
+
+
+        // validation checks
+        Boolean updateLead = checkRecordFound(response, leadToUpdate) && checkNumberOfFields(response, requestMap) && checkNumberOfPropertyAccounts(response, requestLead);
+        Boolean upsertPropertyAccount = false;
+        Boolean upsertUALs = true;
+        if(updateLead && requestLead.propertyAccounts != null && !requestLead.propertyAccounts.isEmpty()) {
+            propFieldList = (List<Object>)requestMap.get('propertyAccounts');
+            propFieldMap = (Map<String, Object>)propFieldList[0];
+            upsertPropertyAccount = checkNumberOfFields(response, propFieldMap);
+            if(upsertPropertyAccount) {
+                Boolean checkValid = true; // if no existing property accounts, check create fields
+                if(leadToUpdate.Accounts__r != null && !leadToUpdate.Accounts__r.isEmpty()) {
+                    checkValid = false; // in this case it will be an update and the create fields don't need to be checked
+                    if(requestLead.propertyAccounts[0].id != leadToUpdate.Accounts__r[0].Id || leadToUpdate.Accounts__r.size() > 1) {
+                        envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
+                        response.statusCode = statusCode.badRequest;
+                        upsertPropertyAccount = false;
+                        updateLead = false;
+                    }
+                }
+                if(checkValid) {
+                    try {
+                        requestLead.propertyAccounts[0].validateCreateFields();
+                    }  catch (Util.BWException e) {
+                        envelope.addError(e.getMessage());
+                        response.statusCode = statusCode.badRequest;
+                        upsertPropertyAccount = false;
+                        updateLead = false;
+                    }
+                }
+            } else {
+                updateLead = false;
+            }
+
+            if(upsertPropertyAccount && requestLead.propertyAccounts[0].utilityAccountLogs != null && !requestLead.propertyAccounts[0].utilityAccountLogs.isEmpty()) {
+                ualFieldList = (List<Object>)propFieldMap.get('utilityAccountLogs');
+                ualFieldMap = (Map<String, Object>)ualFieldList[0];
+                for(Utility_Account_Log__c ual : leadToUpdate.Utility_Account_Logs__r) {
+                    queryUalMap.put(ual.Id, ual);
+                }
+                for(RestLead.RestUtilityAccountLog requestUal : requestLead.propertyAccounts[0].utilityAccountLogs) {
+                    if(checkNumberOfFields(response, ualFieldMap)) {
+                        // if any of these are true, then the property account will be inserted, not updated
+                        if((queryUalMap.isEmpty() || !queryUalMap.containsKey(requestUal.id))) {
+                            try {
+                                requestUal.validateCreateFields();
+                            }  catch (Util.BWException e) {
+                                envelope.addError(e.getMessage());
+                                response.statusCode = statusCode.badRequest;
+                                updateLead = false;
+                                upsertPropertyAccount = false;
+                                upsertUALs = false;
+                                break;
+                            }
+                        }
+                    } else {
+                        updateLead = false;
+                        upsertPropertyAccount = false;
+                        upsertUALs = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        try {
+            // update lead fields
+            if(updateLead) {
+                requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
+                Lead lead = leadService.updateLead(leadToUpdate);
+                // update property account fields
+                if(upsertPropertyAccount) {
+                    if(leadToUpdate.Accounts__r != null && !leadToUpdate.Accounts__r.isEmpty() && 
+                        requestLead.propertyAccounts[0].id == leadToUpdate.Accounts__r[0].Id) {
+                        Account accountToUpdate = leadToUpdate.Accounts__r[0];
+                        requestLead.propertyAccounts[0].mergeFields(propFieldMap.keySet(), accountToUpdate);
+                        Account a = accountService.updateAccount(accountToUpdate);
+                    } else {
+                        Account accountToUpdate = requestLead.propertyAccounts[0].asAccount(leadToUpdate);
+                        Account a = accountService.insertAccount(accountToUpdate);
+                    }
+                }
+
+                // update utility account logs
+                if(upsertUALs) {
+                    List<Utility_Account_Log__c> ualsForUpsert = new List<Utility_Account_Log__c>();
+                    for(RestLead.RestUtilityAccountLog requestUal : requestLead.propertyAccounts[0].utilityAccountLogs) {
+                        if(queryUalMap.containsKey(requestUal.id)) {
+                            Utility_Account_Log__c ualToUpdate = queryUalMap.get(requestUal.id);
+                            requestUal.mergeFields(ualFieldMap.keySet(), ualToUpdate);
+                            ualsForUpsert.add(ualToUpdate);
+                        } else {
+                            Utility_Account_Log__c ualToUpdate = requestUal.asUAL(leadToUpdate.Accounts__r[0]);
+                            ualsForUpsert.add(ualToUpdate);
+                        }
+                    }
+                    List<Utility_Account_Log__c> ualList = ualService.upsertUALs(ualsForUpsert);
+                }
+
+                Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadToUpdate.Id);
+                RestLead responseLead = new RestLead(leadToReturn);
+                responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{new RestLead.RestPropertyAccount(leadToReturn.Accounts__r[0])};
+                List<RestLead.RestUtilityAccountLog> ualForReturn = new List<RestLead.RestUtilityAccountLog>();
+                for(Utility_Account_Log__c ual : leadToReturn.Utility_Account_Logs__r) {
+                    ualForReturn.add(new RestLead.RestUtilityAccountLog(ual));
+                }
+                responseLead.propertyAccounts[0].utilityAccountLogs = ualForReturn;
+                envelope.setData(responseLead);
+                response.statusCode = statusCode.ok;
+            }
+        } catch(Exception ex) {
+            System.debug(ex.getCause() + '\n' +  ex.getLineNumber() + '\n' +  ex.getMessage() + '\n' +  ex.getStackTraceString());
+            envelope.addError(ex.getMessage());
+            response.statusCode = statusCode.internalServerError;
+            Database.rollback(sp);
+        }
+
+        envelope.setJSONResponse(response);
+    }
+
+    private Boolean checkNumberOfFields(RestResponse response, Map<String, Object> fieldMap) {
+        if(fieldMap.size() <= 1) { // if == 1, then only has "id", which is not enough fields for a PATCH
+            envelope.addError('Request did not include correct fields to update');
+            response.statusCode = statusCode.badRequest;
+            return false;
+        }
+        return true;
+    }
+
+    private Boolean checkRecordFound(RestResponse response, SObject targetRecord) {
+        if(targetRecord == null) {
+            response.statusCode = statusCode.notFound;
+            return false;
+        }
+        return true;
+    }
+
+    private Boolean checkNumberOfPropertyAccounts(RestResponse response, RestLead requestLead) {
+        if(requestLead.propertyAccounts.size() > 1) {
+            envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
+            response.statusCode = statusCode.badRequest;
+            return false;
+        }
+        return true;
+    }
+
     public virtual void postLead(String jsonRequest) {
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         RestResponse response = RestContext.response;
@@ -125,7 +312,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
         if (validRequest) {
             insertLeadAccountAndUALs(requestLead, response);
-
         }
         envelope.setJSONResponse(response);
 
@@ -135,6 +321,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Lead newLead = requestLead.asLead();
         newLead = leadService.insertLead(newLead);
         newLead = duplicateService.checkLeadDuplicates(newLead);
+        if(String.isBlank(newLead.Continue_Application_Link__c)) {
+            newLead.Continue_Application_Link__c = baseUrl + '?leadid=' + newLead.Id + '&email=' + newLead.Email;
+        }
+        newLead = leadService.updateLead(newLead);
         RestLead responseLead = new RestLead(newLead);
 
         if (requestLead.propertyAccounts != null && !requestLead.propertyAccounts.isEmpty()) {

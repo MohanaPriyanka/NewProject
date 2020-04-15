@@ -24,6 +24,9 @@ global without sharing class RESTRouterV2 {
                 when '/utility-account-logs' {
                     controller.patchUtilityAccountLog(jsonRequest);
                 }
+                when '/application' {
+                    controller.patchApplication(jsonRequest);
+                }
                 when else {
                     envelope.addError('Path not found');
                     RestContext.response.statusCode = 404;
@@ -73,6 +76,10 @@ global without sharing class RESTRouterV2 {
                     String zipCode = req.params.get('zipCode');
                     String partnerId = req.params.get('partnerId');
                     controller.performZipCheck(zipCode, (partnerId==null?'':partnerId));
+                } when '/leads' {
+                    String leadId = req.params.get('leadId');
+                    String email = req.params.get('email');
+                    controller.getLead(leadId, email);
                 } when else {
                     envelope.addError('Path not found');
                     RestContext.response.statusCode = 404;

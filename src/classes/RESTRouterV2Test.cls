@@ -491,6 +491,111 @@ public with sharing class RESTRouterV2Test {
 
     }
 
+
+    /** Application **/
+
+    @IsTest
+    public static void testPatchApplicationSuccess() {
+        // <setup>
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(validResiJsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        RestResponse response = RestContext.response;
+        String jsonResponse = response.responseBody.toString();
+
+        Map<String, Object> postResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> postResponseLead = (Map<String,Object>) postResponseEnvelope.get('data');
+        
+        List<Object> postResponsePropertyAccounts = (List<Object>) postResponseLead.get('propertyAccounts');
+        Map<String, Object> postResponsePropertyAccount = (Map<String,Object>) postResponsePropertyAccounts[0];
+        
+        List<Object> postResponseUALs = (List<Object>) postResponsePropertyAccount.get('utilityAccountLogs');
+        Map<String, Object> postResponseUAL = (Map<String,Object>) postResponseUALs[0];
+        
+        // </setup>
+
+
+        req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/application';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+
+        String applicationJson = '{' +
+            '"id": "' + postResponseLead.get('id') + '",' +
+            '"streetAddress": "9 Test Avenue",' +
+            '"propertyAccounts": [' +
+            '   { ' +
+            '       "id": "' + postResponsePropertyAccount.get('id') + '",' +
+            '       "leadId": "' + postResponseLead.get('id') + '",' +
+            '       "name": "99999",' +
+            '       "billingStreet": "99 Test St",' +
+            '       "billingCity": "Ninenine",' +
+            '       "billingState": "MA",' +
+            '       "billingPostalCode": "99999",' +
+            '       "zuoraPaymentRefId": "mock-zuoraId",' +
+            '       "zuoraPaymentRefIdExpirationDate": "2040-02-15T12:00:00Z",' +
+            '       "utilityAccountLogs": [' +
+            '           { ' +
+            '               "id": "' + postResponseUAL.get('id') + '",' +
+            '               "leadId": "' + postResponseLead.get('id') + '",' +
+            '               "propertyAccountId": "' + postResponsePropertyAccount.get('id') + '",' +
+            '               "utilityAccountNumber": "999999",' +
+            '               "nameOnAccount": "Test Name",' +
+            '               "serviceStreet": "999 Test Blvd",' +
+            '               "serviceCity": "Nineninenine",' +
+            '               "serviceState": "MA",' +
+            '               "servicePostalCode": "99999",' +
+            '               "annualKWh": 9000,' +
+            '               "annualCostOfElectricity": 90000' +
+            '           } ' +
+            '       ] ' +
+            '   }' +
+            '] ' +
+            '}';
+
+        req.requestBody = Blob.valueOf(applicationJson);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.patchRequest();
+        
+        response = RestContext.response;
+        jsonResponse = response.responseBody.toString();
+        Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> patchResponseLead = (Map<String,Object>) patchResponseEnvelope.get('data');
+
+        List<Object> patchResponsePropertyAccounts = (List<Object>) patchResponseLead.get('propertyAccounts');
+        Map<String, Object> patchResponsePropertyAccount = (Map<String,Object>) patchResponsePropertyAccounts[0];
+
+        List<Object> patchResponseUALs = (List<Object>) patchResponsePropertyAccount.get('utilityAccountLogs');
+        Map<String, Object> patchResponseUAL = (Map<String,Object>) patchResponseUALs[0];
+
+
+        System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
+        System.assertNotEquals(postResponseLead.get('streetAddress'), patchResponseLead.get('streetAddress'), 'The updated lead streetAddress field value should not match the original field value');
+        for(String key : patchResponsePropertyAccount.keySet()) {
+            Boolean isId = patchResponsePropertyAccount.get(key) instanceOf Id;
+            if(!isId && !key.contains('email')) {
+                System.assertNotEquals(postResponsePropertyAccount.containsKey(key) ? postResponsePropertyAccount.get(key) : null, patchResponsePropertyAccount.get(key), 'The updated property account ' + key + ' field value should not match the original field value');
+            }
+        }
+        for(String key : patchResponseUAL.keySet()) {
+            Boolean isId = patchResponseUAL.get(key) instanceOf Id;
+            if(!isId && !key.contains('email') && key != 'leadId') {
+                System.assertNotEquals(postResponseUAL.containsKey(key) ? postResponseUAL.get(key) : null, patchResponseUAL.get(key), 'The updated utility account log ' + key + ' field value should not match the original field value');
+            }
+        }
+    }
+
     @IsTest
     public static void testZipCheck() {
         RESTRouterV2.controller = (CSLeadsRESTControllerV2) Test.createStub(CSLeadsRESTControllerV2.class, new MockCSLeadsRESTControllerV2());
