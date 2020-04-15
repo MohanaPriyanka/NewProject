@@ -33,10 +33,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>BlueWave_Entity__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>BW_Company_Entity__c</field>
             </layoutItems>
         </layoutColumns>
