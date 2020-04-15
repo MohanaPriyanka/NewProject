@@ -271,6 +271,7 @@ public with sharing class ZuoraInvoiceService {
     }
 
     public List<ZuoraAPI.InvoiceItem> getRecentItems(String zuoraAcctId) {
+        // Just getting a year's worth of invoices to constrain the query
         Datetime startDate = Datetime.now() - 365;
         String queryString = invoiceSelector.getByAccountId(zuoraAcctId) + 'AND InvoiceDate > \'' + startDate.format('yyyy-MM-dd') + '\'';
         Set<String> invoiceIds = ZuoraAPIHelper.queryIds(queryString);
