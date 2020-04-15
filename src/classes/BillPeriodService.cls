@@ -7,18 +7,24 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class BillPeriodService {
 
+    private Set<Id> verifiedBillPeriods = new Set<Id>();
+    @TestVisible
+    private static ProductionSelector productionSelector = new ProductionSelector();
+
     public void onAfterInsert(List<Bill_Period__c> bpList) {
         List<Transfer__c> transfers = assignTransfers(bpList);
         updateRecords(transfers);
     }
 
     public void onBeforeUpdate(List<Bill_Period__c> bpList, Map<Id, Bill_Period__c> oldMap) {
-        List<Bill_Period__c> billPeriods = evaluateStatus(bpList, oldMap);
+        evaluateStatus(bpList, oldMap);
+        if (verifiedBillPeriods.size() > 0 ) {
+            List<Production__c> verifiedProductions = verifyProductions();
+            updateRecords(verifiedProductions);
+        }
     }
 
-    private List<Bill_Period__c> evaluateStatus(List<Bill_Period__c> bpList, Map<Id, Bill_Period__c> oldMap) {
-        List<Bill_Period__c> updatedBPs = new List<Bill_Period__c>();
-
+    private void evaluateStatus(List<Bill_Period__c> bpList, Map<Id, Bill_Period__c> oldMap) {
         for (Bill_Period__c bp : bpList) {
             if (bp.Bill_Status__c != oldMap.get(bp.Id).Bill_Status__c) {
                 switch on bp.Bill_Status__c {
@@ -32,11 +38,31 @@ public with sharing class BillPeriodService {
                         bp.Date_Generated__c = Date.Today();
                     }
                 }
-                updatedBPs.add(bp);
+
+                if (checkIfVerified(bp) && !checkIfVerified(oldMap.get(bp.Id))) {
+                    verifiedBillPeriods.add(bp.Id);
+                }
             }
         }
+    }
 
-        return updatedBPs;
+    public Boolean checkIfVerified(Bill_Period__c billPeriod) {
+        String status = billPeriod.Bill_Status__c;
+        if (status == null || status == 'Host Account Bill Uploaded') {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public List<Production__c> verifyProductions() {
+        //Get all the transfer parts that are related to Main Transfers related to the Bill Periods
+        List<Production__c> verifiedProductions = productionSelector.selectPendingVerificationProductions(verifiedBillPeriods);
+        for (Production__c production : verifiedProductions) {
+            production.Verification_Status__c = 'Verified';
+        }
+
+        return verifiedProductions;
     }
 
 

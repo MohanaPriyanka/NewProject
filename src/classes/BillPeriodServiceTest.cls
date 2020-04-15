@@ -42,9 +42,21 @@ private class BillPeriodServiceTest {
 
         insert scheduleZ1;
 
+        Production__c prod1 = new Production__c(
+            Name = 'SSS 1 Production - May 2019',
+            Shared_Solar_System__c = sss1.Id,
+            Production_kWh__c = 20000,
+            Credits_Generated__c = 10000,
+            Start_Date__c = Date.newInstance(2019, 5, 1),
+            End_Date__c = Date.newInstance(2019, 5, 29)
+        );
+
+       insert prod1;
+
         //May Transfer has Date of Transfer in June - to be placed on July Bill Period
         Transfer__c onTime1 = new Transfer__c(
             Name = 'Main May Transfer',
+            Transfer_Type__c = 'Main',
             Allocation_Schedule__c = scheduleZ1.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 10000,
@@ -56,6 +68,7 @@ private class BillPeriodServiceTest {
 
         Transfer__c onTime2 = new Transfer__c(
             Name = 'Main June Transfer',
+            Transfer_Type__c = 'Main',
             Allocation_Schedule__c = scheduleZ1.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 8000,
@@ -66,6 +79,7 @@ private class BillPeriodServiceTest {
 
         Transfer__c onTime3 = new Transfer__c(
             Name = 'Main July Transfer',
+            Transfer_Type__c = 'Main',
             Allocation_Schedule__c = scheduleZ1.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 4980,
@@ -75,6 +89,48 @@ private class BillPeriodServiceTest {
         );
 
         insert new List<Transfer__c> {onTime1, onTime2, onTime3};
+    }
+
+    @IsTest
+    static void testVerifyProductions() {
+        Shared_Solar_System__c sss = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            LIMIT 1
+        ];
+
+        Bill_Period__c bp = new Bill_Period__c(
+            Name = 'sssA - July Bill Period 2016',
+            Shared_Solar_System__c = sss.Id,
+            Bill_Date__c = Date.newInstance(2019, 7, 15)
+        );
+
+        insert bp;
+
+        List<Transfer_Part__c> parts = [SELECT Id, Production__r.Name FROM Transfer_Part__c];
+        System.assertEquals(1, parts.size());
+
+        bp.Bill_Status__c = 'Host Account Bill Uploaded';
+        update bp;
+
+        Production__c production = [
+            SELECT Id, Verification_Status__c
+            FROM Production__c
+            LIMIT 1
+        ];
+
+        System.assertEquals('Pending Verification', production.Verification_Status__c);
+
+        bp.Bill_Status__c = 'Host Account Bill QCed';
+        update bp;
+
+        production = [
+            SELECT Id, Verification_Status__c
+            FROM Production__c
+            LIMIT 1
+        ];
+
+        System.assertEquals('Verified', production.Verification_Status__c);
     }
 
     @IsTest
