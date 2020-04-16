@@ -32,11 +32,15 @@
         <allowDelegate>false</allowDelegate>
         <assignedApprover>
             <approver>
+                <name>cmadden@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <approver>
                 <name>lfreshman@bluewavesolar.com</name>
                 <type>user</type>
             </approver>
             <approver>
-                <name>plyons@bluewavesolar.com</name>
+                <name>mfish@bluewavesolar.com</name>
                 <type>user</type>
             </approver>
             <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
