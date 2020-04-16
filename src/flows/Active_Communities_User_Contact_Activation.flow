@@ -435,7 +435,7 @@
 &amp;&amp;
 {!myVariable_current.Profile.Name} == &apos;Community Solar Community User&apos;</expression>
     </formulas>
-    <interviewLabel>Active_Communities_User_Contact_Activation-7_InterviewLabel</interviewLabel>
+    <interviewLabel>Active_Communities_User_Contact_Activation-6_InterviewLabel</interviewLabel>
     <label>Active Communities User - Contact Activation</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -557,7 +557,7 @@
             <processMetadataValues>
                 <name>dataType</name>
                 <value>
-                    <stringValue>ID</stringValue>
+                    <stringValue>Boolean</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -569,24 +569,24 @@
             <processMetadataValues>
                 <name>leftHandSideLabel</name>
                 <value>
-                    <stringValue>User</stringValue>
+                    <stringValue>Active Communities User</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
                 <name>leftHandSideReferenceTo</name>
                 <value>
-                    <stringValue>User</stringValue>
+                    <stringValue></stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>Reference</stringValue>
+                    <stringValue>Boolean</stringValue>
                 </value>
             </processMetadataValues>
-            <field>User__c</field>
+            <field>Active_Communities_User__c</field>
             <value>
-                <elementReference>myVariable_current.ContactId</elementReference>
+                <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <object>Contact</object>
@@ -667,7 +667,7 @@
             <inputParameters>
                 <name>TimeOffset</name>
                 <value>
-                    <numberValue>0.0</numberValue>
+                    <numberValue>1.0</numberValue>
                 </value>
             </inputParameters>
             <label>myWaitEvent_myWait_myRule_3_event_0</label>
