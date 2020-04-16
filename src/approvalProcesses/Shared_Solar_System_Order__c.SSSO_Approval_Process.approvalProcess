@@ -63,6 +63,10 @@
             <type>Alert</type>
         </action>
         <action>
+            <name>Populate_Approval_Date</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
             <name>Set_Status_to_Approved</name>
             <type>FieldUpdate</type>
         </action>
