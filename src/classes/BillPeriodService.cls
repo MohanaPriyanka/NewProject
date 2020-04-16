@@ -28,9 +28,9 @@ public with sharing class BillPeriodService {
         for (Bill_Period__c bp : bpList) {
             if (bp.Bill_Status__c != oldMap.get(bp.Id).Bill_Status__c) {
                 switch on bp.Bill_Status__c {
-                    when 'Production Uploaded' {
+                    when 'Host Account Bill Uploaded' {
                         bp.Date_Host_Bill_Uploaded__c = Date.today();
-                    } when 'Production QCed' {
+                    } when 'Host Account Bill QCed' {
                         bp.Date_Host_Account_Bill_QCed__c = Date.today();
                     } when 'Credit Transfers QCed' {
                         bp.Date_Credit_Transfers_QCed__c = Date.today();

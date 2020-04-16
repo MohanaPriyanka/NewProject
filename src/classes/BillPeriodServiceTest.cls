@@ -216,8 +216,8 @@ private class BillPeriodServiceTest {
         List<Bill_Period__c> bpList = new List<Bill_Period__c> {bp1, bp2, bp3, bp4};
         insert bpList;
 
-        bp1.Bill_Status__c = 'Production Uploaded';
-        bp2.Bill_Status__c = 'Production QCed';
+        bp1.Bill_Status__c = 'Host Account Bill Uploaded';
+        bp2.Bill_Status__c = 'Host Account Bill QCed';
         bp3.Bill_Status__c = 'Generated';
         bp4.Bill_Status__c = 'Credit Transfers QCed';
 
