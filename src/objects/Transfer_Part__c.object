@@ -298,9 +298,9 @@ FALSE)</formula>
                     <label>Payment</label>
                 </value>
                 <value>
-                    <fullName>Unserviced</fullName>
+                    <fullName>Externally Serviced</fullName>
                     <default>false</default>
-                    <label>Unserviced</label>
+                    <label>Externally Serviced</label>
                 </value>
                 <value>
                     <fullName>Bill</fullName>
