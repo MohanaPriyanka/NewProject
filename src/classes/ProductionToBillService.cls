@@ -317,7 +317,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     }
 
     private Transfer_Part__c setRelatedRecordId(Transfer_Part__c part, String type, Id relatedRecordId){
-        if (type == 'Unserviced'){
+        if (type == 'Externally Serviced'){
             part.Externally_Serviced_UASB__c = relatedRecordId;
         } else {
             part.Journal_Entry__c = relatedRecordId;
@@ -461,7 +461,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         transferToPartsMap = transferPartsSelector.getTransferPartMap(transferIds);
 
         for (UASB__c externalBill : unservicedUASBs){
-            createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Unserviced', externalBill.Id);
+            createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
         }
     }
 

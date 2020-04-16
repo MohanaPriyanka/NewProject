@@ -388,7 +388,7 @@ public with sharing class ProductionToBillServiceTest {
         Decimal uasbThreeSum = 0;
 
         for (Transfer_Part__c part : unservicedParts){
-            System.assertEquals('Unserviced',part.Type__c);
+            System.assertEquals('Externally Serviced',part.Type__c);
             if (part.Externally_Serviced_UASB__c == 'a1i0a000009PwUaAAK'){
                 uasbOneSum += part.Amount__c;
             } else if (part.Externally_Serviced_UASB__c == 'a1i0a000009PwUbAAK'){
