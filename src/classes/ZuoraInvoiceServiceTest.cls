@@ -501,6 +501,13 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assertEquals(firstBillInvoices[0].invoice.Zuora__InvoiceDate__c, updatedAccounts[0].First_CS_Bill_Date__c);
     }
 
+    @IsTest
+    private static void testGetRecentItems() {
+        ZuoraInvoiceService invoiceService = new ZuoraInvoiceService();
+        List<ZuoraAPI.InvoiceItem> invoiceItems = invoiceService.getRecentItems('');
+        System.assertEquals(2, invoiceItems.size());
+    }
+
     /*************
       *** MOCKS ***
       *************/

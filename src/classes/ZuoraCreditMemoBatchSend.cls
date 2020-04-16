@@ -9,7 +9,8 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     public AdjustmentType mode = AdjustmentType.PostNextBill;
 
     public void executeBatch(){
-        Database.executeBatch(this, 33);
+        // 7 callouts to create a debit memo from an invoice, so a max of 14 memos per transaction to stay under 100 callouts
+        Database.executeBatch(this, 14);
     }
 
     public Database.QueryLocator start(Database.BatchableContext bc){
@@ -24,7 +25,7 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
         try {
             for (SObject scopeLine : scope){
                 if (effectiveDate == null){
-                    effectiveDate = System.Today();
+                    effectiveDate = System.today();
                 }
                 Bill_Adjustment__c adjust = ZuoraCreditDebitMemoService.createCreditOrDebitMemo((Bill_Adjustment__c) scopeLine, effectiveDate);
                 if (adjust != null && adjust.Id != null) {

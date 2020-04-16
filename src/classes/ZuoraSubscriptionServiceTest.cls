@@ -384,4 +384,12 @@ public with sharing class ZuoraSubscriptionServiceTest {
             transactionSelector.selectTransactionsNotMarkedReturned(transactionIds);
         System.assertEquals(approvedTransactions.size(), returnedTransactionsFromSelector.size());
     }
+
+    @IsTest
+    private static void testGetAllRatePlanChargesByAcpcountId() {
+        Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
+            ZuoraSubscriptionService.getAllRatePlanChargesByAccountId('');
+        System.assertEquals(1, ratePlanChargesByChargeId.size(), 'Mock just returns a single rate plan charge');
+        System.assertEquals('SSS-000099', ratePlanChargesByChargeId.get('2c92c0f96ae3b195016ae5e3665e0c08').Project_Zcustom);
+    }
 }
