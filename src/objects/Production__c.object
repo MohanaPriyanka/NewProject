@@ -218,6 +218,22 @@
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Credits_Externally_Serviced__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Portions of the project that are billed by a party other than BlueWave</inlineHelpText>
+        <label>Credits Externally Serviced</label>
+        <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Externally Serviced</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Credits_Generated__c</fullName>
         <externalId>false</externalId>
         <label>Credits Generated</label>
@@ -258,7 +274,7 @@
         <summaryFilterItems>
             <field>Transfer_Part__c.Type__c</field>
             <operation>equals</operation>
-            <value>Transfer</value>
+            <value>Transfer, Unsubscribed Credits</value>
         </summaryFilterItems>
         <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
@@ -450,6 +466,16 @@
         <externalId>false</externalId>
         <label>kWh Transferred</label>
         <summarizedField>Transfer_Part__c.kWh_Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Transfer, Unsubscribed Credits</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </summaryFilterItems>
         <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackTrending>false</trackTrending>
