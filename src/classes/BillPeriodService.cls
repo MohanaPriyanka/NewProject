@@ -48,7 +48,7 @@ public with sharing class BillPeriodService {
 
     public Boolean checkIfVerified(Bill_Period__c billPeriod) {
         String status = billPeriod.Bill_Status__c;
-        if (status == null || status == 'Host Account Bill Uploaded') {
+        if (status == null || status == 'Production Uploaded') {
             return false;
         } else {
             return true;
