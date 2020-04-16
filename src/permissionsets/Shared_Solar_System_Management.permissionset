@@ -120,11 +120,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Actual_PTO_Date_Pull_from_Project__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Actual_Utility_NMC_Transfer_to_Host_Date__c</field>
         <readable>true</readable>
