@@ -110,7 +110,7 @@ private class BillPeriodServiceTest {
         List<Transfer_Part__c> parts = [SELECT Id, Production__r.Name FROM Transfer_Part__c];
         System.assertEquals(1, parts.size());
 
-        bp.Bill_Status__c = 'Host Account Bill Uploaded';
+        bp.Bill_Status__c = 'Production Uploaded';
         update bp;
 
         Production__c production = [
@@ -121,7 +121,7 @@ private class BillPeriodServiceTest {
 
         System.assertEquals('Pending Verification', production.Verification_Status__c);
 
-        bp.Bill_Status__c = 'Host Account Bill QCed';
+        bp.Bill_Status__c = 'Production QCed';
         update bp;
 
         production = [
