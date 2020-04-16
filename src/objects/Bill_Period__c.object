@@ -172,12 +172,12 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Host Account Bill Uploaded</fullName>
+                    <fullName>Production Uploaded</fullName>
                     <default>false</default>
                     <label>Production Uploaded</label>
                 </value>
                 <value>
-                    <fullName>Host Account Bill QCed</fullName>
+                    <fullName>Production QCed</fullName>
                     <default>false</default>
                     <label>Production QCed</label>
                 </value>

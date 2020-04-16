@@ -28,9 +28,9 @@ public with sharing class BillPeriodService {
         for (Bill_Period__c bp : bpList) {
             if (bp.Bill_Status__c != oldMap.get(bp.Id).Bill_Status__c) {
                 switch on bp.Bill_Status__c {
-                    when 'Host Account Bill Uploaded' {
+                    when 'Production Uploaded' {
                         bp.Date_Host_Bill_Uploaded__c = Date.today();
-                    } when 'Host Account Bill QCed' {
+                    } when 'Production QCed' {
                         bp.Date_Host_Account_Bill_QCed__c = Date.today();
                     } when 'Credit Transfers QCed' {
                         bp.Date_Credit_Transfers_QCed__c = Date.today();
@@ -48,7 +48,7 @@ public with sharing class BillPeriodService {
 
     public Boolean checkIfVerified(Bill_Period__c billPeriod) {
         String status = billPeriod.Bill_Status__c;
-        if (status == null || status == 'Host Account Bill Uploaded') {
+        if (status == null || status == 'Production Uploaded') {
             return false;
         } else {
             return true;
