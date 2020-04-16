@@ -10,6 +10,13 @@
             var response = resp.getReturnValue();
             if(resp.getState() === "SUCCESS") {
                 component.set("v.hasCapacity", response);
+
+                if (component.get("v.hasCapacity")) {
+                    helper.sendCSApplication(component, helper);
+                } else {
+                    console.log('We know there are no projects');
+                    component.set("v.page", "NoProject");
+                }
             }
             else {
                 helper.logError("CSAPZipcodeCapacityController", "hasCapacity",

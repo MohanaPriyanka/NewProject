@@ -8,7 +8,6 @@ trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, after 
         return;
     }
     SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
-
     switch on Trigger.operationType {
         when BEFORE_INSERT {
             subscriptionManagementService.populateSubscriptionOrder(Trigger.new);

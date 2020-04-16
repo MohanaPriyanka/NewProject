@@ -74,6 +74,39 @@
     </actionOverrides>
     <businessProcesses>
         <fullName>C %26 I</fullName>
+        <description>This is for the C and I solar development business line</description>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Negotiating</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Pending Information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Qualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reviewed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Under Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unqualified</fullName>
+            <default>false</default>
+        </values>
+    </businessProcesses>
+    <businessProcesses>
+        <fullName>C and I</fullName>
         <isActive>true</isActive>
         <values>
             <fullName>Negotiating</fullName>
@@ -565,7 +598,7 @@
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>Date</type>
+        <type>DateTime</type>
     </fields>
     <fields>
         <fullName>Application_Source_Phase_1__c</fullName>
@@ -1415,7 +1448,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
-        <length>350</length>
+        <length>130000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>LongTextArea</type>

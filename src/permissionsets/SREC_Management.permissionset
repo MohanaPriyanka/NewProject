@@ -2,6 +2,11 @@
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Ability to edit SRECs</description>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>APXT_BPM__Conductor__c.APXT_BPM__Report_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>SREC__c.Acct_Id__c</field>
         <readable>true</readable>

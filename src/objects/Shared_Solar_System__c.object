@@ -2186,8 +2186,8 @@ Total_System_Size_kWh_DC__c
         <externalId>false</externalId>
         <formula>Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Capacity Available for small off-take subscriptions (Total System Size - Anchor Capacity)</inlineHelpText>
-        <label>Total CS Capacity (kW DC)</label>
+        <inlineHelpText>Calculated field; formula = Total System Size (kW DC) - Anchor Capacity</inlineHelpText>
+        <label>CS Small Offtake Capacity (kW DC)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>

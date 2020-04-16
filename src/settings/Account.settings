@@ -3,6 +3,6 @@
     <enableAccountHistoryTracking>true</enableAccountHistoryTracking>
     <enableAccountTeams>false</enableAccountTeams>
     <enableContactHistoryTracking>true</enableContactHistoryTracking>
-    <enableRelateContactToMultipleAccounts>true</enableRelateContactToMultipleAccounts>
+    <enableRelateContactToMultipleAccounts>false</enableRelateContactToMultipleAccounts>
     <showViewHierarchyLink>true</showViewHierarchyLink>
 </AccountSettings>

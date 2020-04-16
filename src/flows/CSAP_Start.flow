@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Flow that contains start of CSAP - if zipcode passes check, sends user to application</description>
+    <interviewLabel>CSAP Start {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>CSAP Start</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <description>Contains CSAPZipcodeCapacity lightning component</description>
+        <name>CSAP_Start</name>
+        <label>CSAP Start</label>
+        <locationX>248</locationX>
+        <locationY>143</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>CSAPZipcodeCapacity</name>
+            <extensionName>c:CSAPZipcodeCapacity</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <startElementReference>CSAP_Start</startElementReference>
+    <status>Active</status>
+</Flow>
