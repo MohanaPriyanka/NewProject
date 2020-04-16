@@ -23,6 +23,15 @@
         <template>Product_Team/Final_Rejection_SSSO</template>
     </alerts>
     <fieldUpdates>
+        <fullName>Populate_Approval_Date</fullName>
+        <field>Date_Approved__c</field>
+        <formula>TODAY()</formula>
+        <name>Populate Approval Date</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Reset_Status</fullName>
         <field>Approval_Status__c</field>
         <literalValue>New</literalValue>
