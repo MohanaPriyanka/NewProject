@@ -201,6 +201,16 @@
                     <default>false</default>
                     <label>Bill Run Complete</label>
                 </value>
+                <value>
+                    <fullName>Host Account Bill Uploaded</fullName>
+                    <default>false</default>
+                    <label>Production Uploaded1</label>
+                </value>
+                <value>
+                    <fullName>Host Account Bill QCed</fullName>
+                    <default>false</default>
+                    <label>Production QCed1</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
