@@ -201,14 +201,14 @@ public with sharing class ZuoraPaymentServiceTest {
             FROM Error_Log__c
             WHERE Method__c = 'callJsonEndpoint'
         ];
+        system.debug(afterLogs);
 
         Boolean paymentApp = false;
         for (Error_Log__c log : afterLogs){
-            if (log.Message__c != null && log.Message__c.contains('/payment/') && log.Message__c.contains('/apply')){
+            if (log.Message__c != null && log.Message__c.contains('/payments/') && log.Message__c.contains('/apply')){
                 paymentApp = true;
             }
         }
-
         System.assert(paymentApp);
     }
 }
