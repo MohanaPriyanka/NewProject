@@ -1,14 +1,21 @@
-<aura:component controller="CSAPController" access="global" extends="c:CSAPParent" implements="forceCommunity:availableForAllPageTypes">
-  <aura:attribute name="hasCapacity" type="boolean" default="false" />
-  <aura:attribute name="zipcode" type="string"/>
-  <div aria-labelledby="zipForm">
+<aura:component controller="CSAPController" access="global" extends="c:CSAPParent" implements="lightning:availableForFlowScreens">
+
+  <!--forceCommunity:availableForAllPageTypes">-->
+
+  <!--forceCommunity:availableForAllPageTypes-->
+  <aura:attribute name="hasCapacity" type="boolean" default="null"/>
+  <aura:attribute name="zipcode" type="String"/>
+  <aura:attribute name="page" type="String" default="CheckZip"/>
+
+  <aura:if isTrue="{!v.page == 'CheckZip'}">
+    <div aria-labelledby="zipForm">
       <form class="slds-form--stacked">
         <lightning:layout horizontalAlign="center" multipleRows="true">
           <lightning:layoutItem  size= "8" mediumDeviceSize="4" largeDeviceSize="2">
             <!--pressing enter inside an aura input refreshes the page!-->
             <span onkeypress="{!c.keyCheck}">
             <lightning:input aura:id="field" name="zip"
-                             label="ZIP Code:"
+                             label="Service ZIP Code:"
                              class="slds-align_absolute-center"
                              value="{!v.zipcode}"
                              required="true"
@@ -18,14 +25,34 @@
             </span>
           </lightning:layoutItem>
         </lightning:layout>
-        <lightning:layout horizontalAlign="end"  multipleRows="true">
-          <lightning:layoutItem padding="medium" size="6" >
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem padding="medium" size="6" class="slds-align--absolute-center">
             <lightning:button label="Submit"
                               variant="neutral"
-                              class="slds-float_right slds-m-top--medium"
+                              class="slds-align--absolute-center slds-m-top--medium"
                               onclick="{!c.onSubmit}"/>
           </lightning:layoutItem>
         </lightning:layout>
       </form>
-  </div>
+    </div>
+  </aura:if>
+
+
+  <aura:if isTrue="{!v.page == 'NoProject'}">
+    <lightning:layout horizontalAlign="center" multipleRows="true">
+    <lightning:layoutItem size="8">
+      <legend id="aboutYourselfForm" class="slds-text-heading--small slds-align_absolute-center">
+        <b class="slds-section__title--large slds-p-top--large">We're Sorry</b>
+      </legend>
+
+    </lightning:layoutItem>
+      <lightning:layoutItem size="10">
+        <div class="slds-align--absolute-center slds-p-vertical--small slds-text-align--center">
+          It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.
+        </div>
+      </lightning:layoutItem>
+    </lightning:layout>
+
+  </aura:if>
+
 </aura:component>

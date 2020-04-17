@@ -242,6 +242,7 @@ build.properties
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
+.idea/codeStyles/Project.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/

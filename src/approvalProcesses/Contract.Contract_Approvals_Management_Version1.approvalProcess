@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>creator</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Account</field>
+        <field>Name</field>
+        <field>ContractNumber</field>
+        <field>Date_Submitted__c</field>
+        <field>Contract_Type__c</field>
+        <field>Owner</field>
+        <field>BlueWave_Entity_Involved__c</field>
+        <field>Other_Party__c</field>
+        <field>State_Applications__c</field>
+        <field>Project_Description__c</field>
+        <field>Project_Value__c</field>
+        <field>Risk__c</field>
+        <field>StartDate</field>
+        <field>EndDate</field>
+        <field>ContractTerm</field>
+        <field>Link_to_Box_Drive__c</field>
+        <field>Submitted_By__c</field>
+        <field>Team_Submitted_By__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>lfreshman@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>plyons@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <description>This is the approval step through which all contract records of the 4 specified contract types go to Customer Product and Legal approvers for unanimous decision making. 
+This step comes before the signatory step.</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Contract.Contract_Type__c</field>
+                <operation>equals</operation>
+                <value>Customer Contract Template,Consumer Disclosure Form,Sales Partner Agreement,Small-Offtake Customer Contract</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Customer Product and Legal Approval Step</label>
+        <name>Customer_Product_and_Legal_Approval_Step</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>wcowie@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>This is the approval step through which all contract records of the 1 specified contract type go to BPD approvers for decision making. 
+This step comes before the signatory step.</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Contract.Contract_Type__c</field>
+                <operation>equals</operation>
+                <value>Membership Interest Purchase Agreement (MIPA) and Ancillary Documents</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Approval Step_BPD</label>
+        <name>Approval_Step_BPD</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>wgaudet@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>This is the approval step through which all contract records of the 1 specified contract type go to Construction approvers for decision making. 
+This step comes before the signatory step.</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Contract.Contract_Type__c</field>
+                <operation>equals</operation>
+                <value>&quot;Engineering, Procurement and Construction Contract (EPC)&quot;</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Approval Step_Construction</label>
+        <name>Approval_Step_Construction</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>gmyrus@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>This is the approval step through which all contract records of the 1 specified contract type go to Accounting approvers for decision making. 
+This step comes before the signatory step.</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Contract.Contract_Type__c</field>
+                <operation>equals</operation>
+                <value>Financing Agreement</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Approval Step_Accounting</label>
+        <name>Approval_Step_Accounting</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>gmyrus@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>sedmond@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <description>This is the approval step through which all contract records of the 1 specified contract type go to Accounting and Client Product approvers for unanimous decision making. 
+This step comes before the signatory step.</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Contract.Contract_Type__c</field>
+                <operation>equals</operation>
+                <value>Client Service Agreement</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Approval Step_Accounting and Client Product</label>
+        <name>Approval_Step_Accounting_and_Client_Product</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>mmarsch@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>This is the signatory step through which all contract records of the 7 specified contract types go to BCS Signatories for decision making.</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Contract.Contract_Type__c</field>
+                <operation>equals</operation>
+                <value>Anchor Customer Contract,Client Service Agreement,Consumer Disclosure Form,Customer Contract Template,Sales Partner Agreement,Small-Offtake Customer Contract,NDA</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Signatory Step_BCS</label>
+        <name>Signatory_Step_BCS</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>jmancini@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>This is the signatory step through which all contract records of the 5 specified contract types go to BPD Signatories for decision making.</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Contract.Contract_Type__c</field>
+                <operation>equals</operation>
+                <value>BPD Scout Agreement,&quot;Engineering, Procurement and Construction Contract (EPC)&quot;,Lease Option Agreement,Membership Interest Purchase Agreement (MIPA) and Ancillary Documents,NDA</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Signatory Step_BPD</label>
+        <name>Signatory_Step_BPD</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>egraberlopez@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>nisaacson@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>thardy@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>This is the signatory step through which all contract records of the 2 specified contract types go to BWC Executive Signatories for decision making.</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Contract.Contract_Type__c</field>
+                <operation>equals</operation>
+                <value>Financing Agreement,NDA</value>
+            </criteriaItems>
+        </entryCriteria>
+        <label>Signatory Step_BWC Exec</label>
+        <name>Signatory_Step_BWC_Exec</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <description>This is the automated approvals process for Contract Management.</description>
+    <emailTemplate>Product_Team/Contract_Approval_Request</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <field>Contract.Ready_for_Approval__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Contract.Status</field>
+            <operation>equals</operation>
+            <value>Draft</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Contract_Approvals_Final_Approval</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Set_Status_to_Activated</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>true</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Contract_Approvals_Final_Rejection</name>
+            <type>Alert</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>true</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Set_Status_to_In_Approval_Process</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>Contract Approvals Management Version 1</label>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>
