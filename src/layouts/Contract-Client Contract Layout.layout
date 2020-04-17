@@ -391,14 +391,18 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Entity_Contract_Junction__c.Contract__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <relatedList>Related_Contract_Parties__c.Contract__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedFileList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Shared_Solar_System__c.Client_Acquisition_Contract__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Shared_Solar_System__c.Client_Management_Contract__c</relatedList>
     </relatedLists>
     <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
