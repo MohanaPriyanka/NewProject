@@ -142,5 +142,73 @@ public with sharing class ZuoraPaymentServiceTest {
         System.assertEquals(75.56,application.invoices[1].amount);
     }
 
+    @IsTest
+    public static void testDataQueryForUnappliedPayments(){
+        List<Zuora_Data_Query__c> beforeQueries = [
+            SELECT Id
+            FROM Zuora_Data_Query__c
+        ];
+        System.assertEquals(0,beforeQueries.size());
 
+        Test.startTest();
+        ZuoraPaymentService.getPaymentsWithUnappliedBalance();
+        Test.stopTest();
+
+        List<Zuora_Data_Query__c> afterQueries = [
+            SELECT Id
+            FROM Zuora_Data_Query__c
+        ];
+        System.assertEquals(1,afterQueries.size());
+    }
+
+    @IsTest
+    public static void testPostQueryExecution(){
+        String response = '' +
+            '[{"Id":"2c92c0fa6e3a9395016e3ea23a912962","accountid":"2c92c0f86e3a939f016e3c9d350e3c6b",' +
+            '"unappliedamount":311.930000000,"paymentmethodid":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+            '"status":"Processed"},' +
+            '{"Id":"2c92c0fb6e3aa322016e3e9c15022235","accountid":"2c92c0f86e3a939f016e3c9d34e33c6a",' +
+            '"unappliedamount":152.150000000,"paymentmethodid":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+            '"status":"Processed"},' +
+            '{"Id":"2c92c0fa6e3a9391016e3e7c5b082795","accountid":"2c92c0f86e3a939c016e3caa3bfc3533",' +
+            '"unappliedamount":229.020000000,"paymentmethodid":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+            '"status":"Processed"},' +
+            '{"Id":"2c92c0fa6e3a9395016e3e802d7b2752","accountid":"2c92c0f86e3a939c016e3ca94c8f2cec",' +
+            '"unappliedamount":109.700000000,"paymentmethodid":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+            '"status":"Processed"},' +
+            '{"Id":"2c92c0fb6e3aa321016e3ea07bfb4d64","accountid":"2c92c0f86e3a939f016e3ca9d2ab17ff",' +
+            '"unappliedamount":211.800000000,"paymentmethodid":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+            '"status":"Processed"},' +
+            '{"Id":"2c92c0fb6e3aa322016e3ea4ab237244","accountid":"2c92c0f96e3aa333016e3ca1efa01cd3",' +
+            '"unappliedamount":128.590000000,"paymentmethodid":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+            '"status":"Processed"}]';
+
+        List<Error_Log__c> beforeLogs = [
+            SELECT Id, Class__c, Method__c, Message__c
+            FROM Error_Log__c
+            WHERE Method__c = 'callJsonEndpoint'
+        ];
+
+        System.assertEquals(0,beforeLogs.size());
+
+        Test.startTest();
+            ZuoraPaymentService service = new ZuoraPaymentService();
+            service.executePostQueryJob(null, response);
+        Test.stopTest();
+
+        List<Error_Log__c> afterLogs = [
+            SELECT Id, Class__c, Method__c, Message__c
+            FROM Error_Log__c
+            WHERE Method__c = 'callJsonEndpoint'
+        ];
+
+        Boolean paymentApp = false;
+        for (Error_Log__c log : afterLogs){
+            if (log.Message__c != null && log.Message__c.contains('/payment/') && log.Message__c.contains('/apply')){
+                paymentApp = true;
+            }
+        }
+
+        System.assert(paymentApp);
+    }
 }

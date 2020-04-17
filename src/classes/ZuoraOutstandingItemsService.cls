@@ -5,14 +5,17 @@
  * Test: ZuoraCreditMemoAllocationTest
  *************************************************************************************/
 @SuppressWarnings('PMD.VariableNamingConventions,PMD.ExcessivePublicCount')
-public class ZuoraOutstandingItemsService{
+public class ZuoraOutstandingItemsService {
     private static ZuoraInvoiceSelector invoiceSelector = new ZuoraInvoiceSelector();
+
     public class QueryResultInvoice {
         public List<ZuoraAPI.Invoice> Records;
     }
+
     public class QueryResultRatePlanCharge {
         public List<RatePlanCharge> Records;
     }
+
     // To be used with either ZOQL or /v1/invoices/{invoiceId}/items'
     public class QueryResultInvoiceItems {
         public List<ZuoraAPI.InvoiceItem> InvoiceItems;
@@ -20,14 +23,17 @@ public class ZuoraOutstandingItemsService{
         String nextPage;
         Boolean success;
     }
+
     public class QueryResultDebitMemo {
         public List<ZuoraAPI.ZuoraDebitMemo> DebitMemos;
         String nextPage;
         Boolean success;
     }
+
     public class QueryResultDebitMemoItem {
         public List<ZuoraAPI.ZuoraDebitMemoItem> Items;
     }
+
     public class OutstandingItem implements Comparable {
         public Decimal AmountOutstanding;
         public Datetime EffectiveDate;
@@ -37,6 +43,7 @@ public class ZuoraOutstandingItemsService{
         public String ParentId;
         public Boolean IsInvoiceItem; // Only DebitMemo or InvoiceItem
         public Decimal AmountToApply;
+
         // Compares by effective date first. If dates are the same between invoice items, sorts by project. If projects
         // are the same, then sorts by client.
         public Integer compareTo(Object compareTo) {
@@ -58,15 +65,18 @@ public class ZuoraOutstandingItemsService{
             return returnValue;
         }
     }
+
     public class RatePlanCharge{
         public String Id;
         public String ChargeNumber;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
+
         public Boolean matches(String client, String project) {
             return (Project_Zcustom == project && ClientOwner_Zcustom == client);
         }
     }
+    
     // Can be used for payments or credit memos. Sets the amountToApply field on outstanding items:
     public static List<OutstandingItem> applyToOutstandingItems (   List<OutstandingItem> outstandingItems,
                                                                     Decimal amountToApply,
@@ -74,14 +84,17 @@ public class ZuoraOutstandingItemsService{
                                                                     String client) {
         return applyToOutstandingItems(outstandingItems, amountToApply, project, client, null, null, null);
     }
+
     // Use this if we just have entity and not project (for instance, when importing historical payments)
     public static List<OutstandingItem> applyToOutstandingItems (List<OutstandingItem> outstandingItems, Decimal amountToApply,
         String entity, String client, Map<String, Id> projectToEntityMap, Date effectiveDate) {
         return applyToOutstandingItems(outstandingItems, amountToApply, null, client, entity, projectToEntityMap, effectiveDate);
     }
+
     private static List<OutstandingItem> applyToOutstandingItems (List<OutstandingItem> outstandingItems, Decimal amountToApply,
         String project, String client, String entity, Map<String, Id> projectToEntityMap, Date effectiveDate) {
         List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply = new List<ZuoraOutstandingItemsService.OutstandingItem>();
+
         for (ZuoraOutstandingItemsService.OutstandingItem billItem : outstandingItems) {
             if (billItem.AmountOutstanding <= 0) {
                 // Not really outstanding, check the next billItem
@@ -118,6 +131,7 @@ public class ZuoraOutstandingItemsService{
         }
         return itemsToApply;
     }
+
     @TestVisible
     private static Boolean appliesTo(OutstandingItem outstandingItem, String project, String client, String entity,
         Map<String, Id> projectUniqueIdToEntityMap, Date effectiveDate) {
@@ -134,9 +148,11 @@ public class ZuoraOutstandingItemsService{
         }
         throw new Util.BWException('Check an Outstanding Item against a Project and Client, or Entity and ProjectEntityMap');
     }
+
     public static ZuoraOutstandingItemsAsyncService processOutstandingItemsByDate(String zuoraAcctId, ProcessingParameter processingParameter) {
         List<ZuoraAPI.Invoice> invoices = getOutstandingInvoices(zuoraAcctId);
         List<ZuoraAPI.ZuoraDebitMemo> debitMemos = getOutstandingDebitMemos(zuoraAcctId);
+
         ZuoraOutstandingItemsAsyncService asyncService =
             new ZuoraOutstandingItemsAsyncService(invoices, debitMemos, processingParameter);
         if (!Test.isRunningTest()) {
@@ -144,11 +160,13 @@ public class ZuoraOutstandingItemsService{
         }
         return asyncService;
     }
+
     // Use this if you don't need Invoice or Debit Memo Items, ie, if you are project & client agnostic:
     public static List<OutstandingItem> getOutstandingItemParentsByDate(String zuoraAccountId){
         List<OutstandingItem> outstandingParentRecords = new List<OutstandingItem>();
         List<ZuoraAPI.Invoice> invoices = getOutstandingInvoices(zuoraAccountId);
         List<ZuoraAPI.ZuoraDebitMemo> debitMemos = getOutstandingDebitMemos(zuoraAccountId);
+
         if (invoices.size() > 0) {
             for (ZuoraAPI.Invoice invoice : invoices) {
                 OutstandingItem invItem = new OutstandingItem();
@@ -172,21 +190,25 @@ public class ZuoraOutstandingItemsService{
         outstandingParentRecords.sort();
         return outstandingParentRecords;
     }
+
     public static List<ZuoraAPI.Invoice> getOutstandingInvoices(String zuoraAcctId) {
-        String queryString = invoiceSelector.getByAccountId(zuoraAcctId) + 'AND balance > 0';
+        String queryString = invoiceSelector.getByAccountId(zuoraAcctId) + 'AND Status = \'Posted\' AND balance > 0';
         String response = ZuoraAPIHelper.query(queryString,false);
         QueryResultInvoice queriedInvoices = (QueryResultInvoice)JSON.deserialize(response, QueryResultInvoice.class);
         return queriedInvoices.Records;
     }
+
     public static ZuoraAPI.InvoiceWithItems getInvoiceItems(ZuoraAPI.Invoice invoice) {
         ZuoraAPI.InvoiceWithItems invoiceRecord = new ZuoraAPI.InvoiceWithItems();
         invoiceRecord.invoice = invoice;
         invoiceRecord.items = getAllInvoiceItems(invoice.id);
         return invoiceRecord;
     }
+
     private static List<ZuoraAPI.InvoiceItem> getAllInvoiceItems(String invoiceItemId) {
         return getAllInvoiceItems('/v1/invoices/' + invoiceItemId +'/items', new List<ZuoraAPI.InvoiceItem>());
     }
+
     private static List<ZuoraAPI.InvoiceItem> getAllInvoiceItems(String url, List<ZuoraAPI.InvoiceItem> invoiceItems) {
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET',url,null,false);
         QueryResultInvoiceItems itemsQuery =
@@ -200,6 +222,7 @@ public class ZuoraOutstandingItemsService{
         }
         return invoiceItems;
     }
+
     public static List<OutstandingItem> convertInvoiceItems(ZuoraAPI.InvoiceWithItems invoiceWithBalance){
         List<OutstandingItem> itemsWithBalance = new List<OutstandingItem>();
         for (ZuoraAPI.InvoiceItem invItem : invoiceWithBalance.items){
@@ -227,8 +250,10 @@ public class ZuoraOutstandingItemsService{
         }
         return itemsWithBalance;
     }
+
     public static List<ZuoraAPI.ZuoraDebitMemo> getOutstandingDebitMemos(String zAcctId) {
         List<ZuoraAPI.ZuoraDebitMemo> debitMemos = getAllOutstandingDebitMemos(zAcctId, null, null);
+
         List<ZuoraAPI.ZuoraDebitMemo> debitMemosWithBalance = new List<ZuoraAPI.ZuoraDebitMemo>();
         for (ZuoraAPI.ZuoraDebitMemo debitMemo : debitMemos){
             if (debitMemo.balance > 0 && debitMemo.accountId == zAcctId){
@@ -237,6 +262,7 @@ public class ZuoraOutstandingItemsService{
         }
         return debitMemosWithBalance;
     }
+
     private static List<ZuoraAPI.ZuoraDebitMemo> getAllOutstandingDebitMemos(String zAcctId, List<ZuoraAPI.ZuoraDebitMemo> debitMemos, String url) {
         if (debitMemos == null) {
             debitMemos = new List<ZuoraAPI.ZuoraDebitMemo>();
@@ -252,12 +278,14 @@ public class ZuoraOutstandingItemsService{
         } else {
             throw new Util.BWException('Debit Memo query failed for account: ' + zAcctId);
         }
+
         if (result.nextPage != null) {
             return getAllOutstandingDebitMemos(zAcctId, debitMemos, result.nextPage);
         } else {
             return debitMemos;
         }
     }
+
     public static ZuoraAPI.DebitMemoWithItems getDebitMemoItems(ZuoraAPI.ZuoraDebitMemo debitMemo) {
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET','/v1/debitmemos/' + debitMemo.id +'/items',null,false);
         String responseBody = ZuoraAPIHelper.cleanJSON(response.getBody());
@@ -268,6 +296,7 @@ public class ZuoraOutstandingItemsService{
         debitMemoRecord.items = itemsQuery.Items;
         return debitMemoRecord;
     }
+
     public static List<OutstandingItem> convertDebitMemoItems(ZuoraAPI.DebitMemoWithItems debitMemoWithBalance){
         List<OutstandingItem> itemsWithBalance = new List<OutstandingItem>();
         for (ZuoraAPI.ZuoraDebitMemoItem debitItem : debitMemoWithBalance.items){
@@ -285,22 +314,27 @@ public class ZuoraOutstandingItemsService{
         }
         return itemsWithBalance;
     }
+
     public interface Processor {
         void processOutstandingItems(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems, ProcessingParameter option);
     }
+
     public class ProcessingParameter {
         public String processorClassName;
         public ZuoraAPI.CreditMemoWithItem creditMemo;
         public List<ZuoraHistoricalApplicationService.Payable> payables; // To be removed with Zuora Historical classes
         public List<OutstandingItem> allOutstandingItems;
+
         public ProcessingParameter() {
             this.allOutstandingItems = new List<OutstandingItem>();
         }
+
         public ProcessingParameter(String processorClassName, ZuoraAPI.CreditMemoWithItem creditMemo) {
             this.processorClassName = processorClassName;
             this.creditMemo = creditMemo;
             this.allOutstandingItems = new List<OutstandingItem>();
         }
+
         public ProcessingParameter(String processorClassName, List<ZuoraHistoricalApplicationService.Payable> payables) {
             // To be removed with Zuora Historical classes
             this.processorClassName = processorClassName;
