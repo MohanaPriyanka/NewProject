@@ -108,7 +108,7 @@ private class SubscriptionManagementServiceTest {
         ];
         System.assertNotEquals(null, so2.Id);
         System.assertNotEquals('Approved', so2.Approval_Status__c);
-        so.Effective_Date__c = System.today();
+        so.Effective_Date__c = System.now();
         update so;
         Subscription_Order__c checkSO = [
             SELECT Id, Approved_Change_in_Subscription__c, Effective_Date__c

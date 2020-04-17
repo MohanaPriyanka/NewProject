@@ -74,7 +74,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         Id systemChangeOrderRecordTypeId = Schema.SObjectType.Subscription_Order__c.getRecordTypeInfosByName().get('System Change Order').getRecordTypeId();
         List<Subscription_Order__c> stampSOs = soSelector.selectByIds(soIds);
         for (Subscription_Order__c so : stampSOs ) {
-            so.Effective_Date__c = System.today();
+            so.Effective_Date__c = System.now();
             if (so.RecordTypeId == systemChangeOrderRecordTypeId) {
                 so.Approved_Change_in_Percent_Share__c = so.System_Change_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
                 so.Approved_Change_in_Subscription__c = so.System_Change_kW_DC_Subscription__c - so.Previous_kw_DC_Subscription__c;
@@ -176,7 +176,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 Change_in_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
                 Change_in_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
                 Approval_Status__c = 'Approved',
-                Effective_Date__c = System.today()
+                Effective_Date__c = System.now()
             );
             uasOrder.sOrder = so;
             uasOrders.add(uasOrder);
@@ -191,7 +191,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
             Subscription_Order__c zeroedSO = new Subscription_Order__c(
                 Type__c = zeroType,
                 Approval_Status__c = 'Approved',
-                Effective_Date__c = System.today(),
+                Effective_Date__c = System.now(),
                 Utility_Account_Subscription__c = uas.Id,
                 Comments__c = 'ZEROED'
             );
@@ -225,7 +225,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 Subscription_Order__c so = new Subscription_Order__c(
                     Utility_Account_Subscription__c = uas.Id,
                     Type__c = 'Initial',
-                    Effective_Date__c = System.today(),
+                    Effective_Date__c = System.now(),
                     Approval_Status__c = 'Approved'
                 );
                 if (uas.Subscription_Type__c == 'kWh') {

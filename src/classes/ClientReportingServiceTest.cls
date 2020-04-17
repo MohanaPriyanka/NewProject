@@ -273,7 +273,7 @@ public with sharing class ClientReportingServiceTest {
                 Type__c = 'Resize',
                 Change_in_Annual_Cost__c = 200,
                 Approval_Status__c = 'Approved',
-                Effective_Date__c = System.today()
+                Effective_Date__c = System.now()
             );
             insert soResize;
         } else {
