@@ -136,8 +136,8 @@
     <assignments>
         <name>assgnAdd_UAS_to_List</name>
         <label>Add UASs to List</label>
-        <locationX>569</locationX>
-        <locationY>423</locationY>
+        <locationX>566</locationX>
+        <locationY>418</locationY>
         <assignmentItems>
             <assignToReference>socv_UAS</assignToReference>
             <operator>Add</operator>
@@ -444,8 +444,8 @@
     <assignments>
         <name>assgnUAS_Variable_Assignment</name>
         <label>UAS Variable Assignment</label>
-        <locationX>442</locationX>
-        <locationY>418</locationY>
+        <locationX>443</locationX>
+        <locationY>419</locationY>
         <assignmentItems>
             <assignToReference>sovUAS.Transferred_To__c</assignToReference>
             <operator>Assign</operator>
@@ -460,6 +460,20 @@
                 <elementReference>sov_Transfer.Id</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sovUAS.Transferring_Subsc_to_Another_UAS__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sovUAS.Next_Schedule_Z_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Inactive Subscription</stringValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>assgnAdd_UAS_to_List</targetReference>
         </connector>
@@ -469,6 +483,9 @@
         <label>Type Decision</label>
         <locationX>674</locationX>
         <locationY>15</locationY>
+        <defaultConnector>
+            <targetReference>scr_UnsupportedType</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Cancellation</name>
@@ -486,8 +503,8 @@
             <label>Cancellation</label>
         </rules>
         <rules>
-            <name>Resizing</name>
-            <conditionLogic>and</conditionLogic>
+            <name>Resizing_or_Intitial</name>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>pcklst_Subscription_Order_Type</leftValueReference>
                 <operator>EqualTo</operator>
@@ -495,10 +512,17 @@
                     <stringValue>Resize</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>pcklst_Subscription_Order_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Initial</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>scrResize_Inputs</targetReference>
             </connector>
-            <label>Resizing</label>
+            <label>Resizing or Initial</label>
         </rules>
         <rules>
             <name>Transfer</name>
@@ -766,6 +790,22 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>scr_UnsupportedType</name>
+        <label>Unsupported Type</label>
+        <locationX>1039</locationX>
+        <locationY>8</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>txt_Unsupported</name>
+            <fieldText>&lt;p&gt;The type of subscription order you selected cannot be logged using this screen. If you&apos;re trying to log a System Change subscription order, please go to the related Shared Solar System and log a Shared Solar System Order.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Click the Previous button to choose a different Type, or Finish to exit this screen.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>scrResize_Inputs</name>
         <label>Resize Inputs</label>
         <locationX>764</locationX>
@@ -919,6 +959,11 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <connector>
             <targetReference>Get_Transferred_To_UAS</targetReference>
         </connector>
+        <fields>
+            <name>txt_TransferUASSelection</name>
+            <fieldText>&lt;p&gt;Below, select to Utility Account Subscription that you are transferring the subscription to:&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>lookup_TransferredToUAS</name>
             <extensionName>flowruntime:lookup</extensionName>
@@ -1079,7 +1124,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
             <targetReference>Get_UAS</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>varErrorMessage</name>
         <text>&lt;p&gt;An Error Occurred in the User Subscription Order Creation Flow:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
