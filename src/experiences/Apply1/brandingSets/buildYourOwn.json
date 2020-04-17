@@ -1,0 +1,33 @@
+{
+  "definitionName" : "starter:branding-starter",
+  "id" : "89b8b5e9-0ec5-4385-8c47-b21ce33a205e",
+  "label" : "Build Your Own",
+  "type" : "brandingSet",
+  "values" : {
+    "ActionColor" : "rgb(56, 125, 222)",
+    "BorderColor" : "rgb(20, 28, 51)",
+    "CardBackgroundColor" : "rgb(235, 235, 235)",
+    "CompanyLogo" : "",
+    "DetailTextColor" : "rgb(20, 28, 51)",
+    "ErrorFontColor" : "#ff9e9e",
+    "HeaderFonts" : "proximaNovaFont",
+    "LinkColor" : "rgb(20, 28, 51)",
+    "LoginBackgroundColor" : "rgb(177, 186, 193)",
+    "LoginBackgroundImage" : "../../../../sfsites/picasso/core/external/salesforceIdentity/images/background.jpg?v=1",
+    "OverlayTextColor" : "rgb(237, 237, 237)",
+    "PrimaryFont" : "proximaNovaFont",
+    "TextColor" : "rgb(51, 52, 52)",
+    "TextTransformStyle" : "uppercase",
+    "_ActionColorDarker" : "#2064c3",
+    "_ActionColorTrans" : "rgba(56, 125, 222, 0.9)",
+    "_HoverColor" : "rgba(56, 125, 222, 0.05)",
+    "_LinkColorDarker" : "#090c16",
+    "_OverlayTextColorShadow" : "#000",
+    "_brandNavigationBarBackgroundColor" : "rgba(128, 128, 128, 0.75)",
+    "_brandNavigationItemBackgroundColorHover" : "rgba(0,0,0,.2)",
+    "_brandNavigationItemDividerColor" : "rgba(255, 255, 255, 0.2)",
+    "brandNavigationBackgroundColor" : "rgb(177, 186, 193)",
+    "brandNavigationBarBackgroundColor" : "rgba(128, 128, 128, 0.75)",
+    "brandNavigationColorText" : "rgb(255, 255, 255)"
+  }
+}

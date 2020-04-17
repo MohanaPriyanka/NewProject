@@ -1,0 +1,28 @@
+{
+  "definitionName" : "jepson:branding-jepson",
+  "id" : "3dc2d6f5-a577-4fd2-a6a7-a6571e5e43cc",
+  "label" : "AMP",
+  "type" : "brandingSet",
+  "values" : {
+    "ActionColor" : "rgb(242, 42, 42)",
+    "BorderColor" : "rgb(212, 212, 212)",
+    "CardBackgroundColor" : "rgb(255, 255, 255)",
+    "CompanyLogo" : "/file-asset/AmpRed?v=1",
+    "DetailTextColor" : "rgb(105, 105, 105)",
+    "ErrorFontColor" : "rgb(255, 158, 158)",
+    "HeaderFonts" : "Montserrat",
+    "LinkColor" : "rgb(203, 198, 178)",
+    "LoginBackgroundColor" : "rgb(177, 186, 193)",
+    "LoginBackgroundImage" : "../../../../sfsites/picasso/core/external/salesforceIdentity/images/background.jpg?v=1",
+    "OverlayTextColor" : "rgb(255, 255, 255)",
+    "PageBackgroundColor" : "rgb(255, 255, 255)",
+    "PrimaryFont" : "Lato",
+    "TextColor" : "rgb(51, 51, 51)",
+    "TextTransformStyle" : "none",
+    "_ActionColorDarker" : "#dc0d0d",
+    "_ActionColorTrans" : "rgba(242, 42, 42, 0.9)",
+    "_HoverColor" : "rgba(242, 42, 42, 0.05)",
+    "_LinkColorDarker" : "#bbb49a",
+    "_OverlayTextColorShadow" : "#000"
+  }
+}

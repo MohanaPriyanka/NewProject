@@ -1,0 +1,22 @@
+{
+  "definitionName" : "napili:branding-napili",
+  "id" : "0f5a65f0-ea88-426c-8ecc-84a8ca7acfbc",
+  "label" : null,
+  "type" : "brandingSet",
+  "values" : {
+    "ActionColor" : "#00b0aa",
+    "BorderColor" : "#1c5a7d",
+    "CompanyLogo" : "/BlueWaveLogo_BlueRender3-688290.png?v=1",
+    "DetailTextColor" : "#1c5a7d",
+    "HeaderFonts" : "Montserrat",
+    "HeaderImage" : "/FarmPano-999514.jpg?v=1",
+    "LinkColor" : "#00b0aa",
+    "OverlayTextColor" : "#f7fcff",
+    "PrimaryFont" : "Lato",
+    "TextColor" : "#1c5a7d",
+    "_ActionColorDarker" : "#007d79",
+    "_ActionColorTrans" : "rgba(0, 176, 170, 0.9)",
+    "_HoverColor" : "rgba(0, 176, 170, 0.1)",
+    "_LinkColorDarker" : "#008783"
+  }
+}

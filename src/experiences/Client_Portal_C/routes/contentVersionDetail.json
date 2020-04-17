@@ -1,0 +1,9 @@
+{
+  "activeViewId" : "a2542d2b-d905-44b7-9315-4bc671653b8a",
+  "appPageId" : "ccc1c0c4-65cf-4753-831e-812cc65bf47c",
+  "id" : "2f46c271-88b8-4a2d-a328-8d051b91d5ac",
+  "label" : "Content Version Detail",
+  "routeType" : "detail-068",
+  "type" : "route",
+  "urlPrefix" : "contentversion"
+}

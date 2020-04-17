@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "8eabd1f7-6868-42ca-a7b4-390a833c48ba",
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "id" : "cc39d070-b636-4969-84e2-7802c84b7011",
+  "label" : "Utility Account Subscription Related List",
+  "objectApiName" : "Utility_Account_Subscription__c",
+  "routeType" : "relatedlist-a1d",
+  "type" : "route",
+  "urlPrefix" : "utility-account-subscription"
+}

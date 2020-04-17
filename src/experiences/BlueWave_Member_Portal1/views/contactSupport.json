@@ -1,0 +1,64 @@
+{
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "81c46d04-026d-44d7-ba45-5f34c827c89b",
+  "label" : "Contact Support",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "showTitle" : false,
+        "title" : "Featured Topics"
+      },
+      "componentName" : "forceTopic:featuredTopics",
+      "id" : "e16fee31-4348-49b7-ad89-61b647e90a15",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "attachFiles" : true,
+        "authenticatedActionName" : "NewCommunityCase",
+        "confirmationMessageDescription" : "You'll hear back from us soon.",
+        "confirmationMessageTitle" : "Your request was submitted successfully.",
+        "deflectionCategoryGroupName" : "{!DataCategoryGroupName}",
+        "deflectionNotHelpful" : "Didn't find what you're looking for?",
+        "deflectionNumberOfArticles" : 6,
+        "deflectionParentCategory" : "{!TopLevelCategory}",
+        "deflectionSubHeader" : "Check out these Support Topics...",
+        "deflectionTitle" : "Need Answers Fast?",
+        "hasDeflection" : true,
+        "headerTitle" : "Submit a Support Case",
+        "isReCaptchaEnabled" : false,
+        "reCaptchaPrivateKey" : "",
+        "reCaptchaPublicKey" : "",
+        "unauthenticatedActionName" : "NewCommunityCase"
+      },
+      "componentName" : "selfService:caseCreate",
+      "id" : "25be618d-15d7-4387-80a9-3eb0784959b5",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "390d4b11-9f75-4ec1-984d-78f24e157ea3",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Contact Support"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "cef99107-acae-4e26-b9c6-7165a5a71dce",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "d857ad61-99a1-4b87-b8e6-bd6ee17c6fe9",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "contactsupport"
+}

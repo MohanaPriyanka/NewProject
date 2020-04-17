@@ -1,0 +1,67 @@
+{
+  "appPageId" : "ccc1c0c4-65cf-4753-831e-812cc65bf47c",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "f00b4a80-88ab-4941-9674-13ecfd4fe522",
+  "label" : "projectreports",
+  "regions" : [ {
+    "id" : "34b78d93-7d9f-4010-9775-8cb459aaff8b",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "forceCommunity:dashboardList",
+      "id" : "1f69fdfe-db59-4c0f-ac41-8a57619b46f5",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "2709f2a1-b7cd-495f-8062-a699ceb2c497",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "f4a0cada-e314-43bd-8bbe-3e8f5da4d6a5",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "cacheAge" : 1440,
+        "filterName" : "",
+        "reportId" : "00OW0000000i0dI",
+        "showRefreshButton" : true,
+        "showTitle" : true
+      },
+      "componentName" : "forceCommunity:reportChart",
+      "id" : "00882889-83e7-48df-aeea-596e484fa497",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "5313d6cf-c16b-49d0-b21b-3f2175e4671e",
+    "regionName" : "sidebarAlt",
+    "type" : "region"
+  }, {
+    "id" : "21e60bc2-8310-4a41-962e-fd39d4148316",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Dashboard"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "9d11079e-caa3-4b46-9330-a80ed69a8de8",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "a39d7e94-8595-4b15-a39b-c79c9a48cc92",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-projectreports"
+}

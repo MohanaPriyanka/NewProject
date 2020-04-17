@@ -1,0 +1,9 @@
+{
+  "activeViewId" : "fdff3519-de12-464a-9aea-10b8c34de8e7",
+  "appPageId" : "ccc1c0c4-65cf-4753-831e-812cc65bf47c",
+  "id" : "3033ebe2-925c-4292-b97b-d186c167b32c",
+  "label" : "File Detail",
+  "routeType" : "detail-069",
+  "type" : "route",
+  "urlPrefix" : "contentdocument"
+}

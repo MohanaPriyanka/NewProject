@@ -1,0 +1,45 @@
+{
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "53cd1085-c095-407e-b681-c96a291b7e12",
+  "label" : "Contract Show",
+  "regions" : [ {
+    "id" : "dab46f37-e494-4180-b458-39c30d8b1fdf",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:CSAPShowContract",
+      "id" : "a58dd9c7-b2ee-4c40-9a78-16ac3eddabac",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "8b8e4bb7-1ed8-4232-a44b-607fc1f02a91",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "9c67821c-e072-4b4f-bc08-639635dce94f",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Contract Show"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "cf376671-80ee-4ee0-ad55-2d65fd9c47ec",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "4bc025b5-f951-41d2-a328-675094a4f7b9",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "NmE1gktamttI3bNW2rZP16mWWNlHaf",
+  "type" : "view",
+  "viewType" : "custom-contract-show"
+}

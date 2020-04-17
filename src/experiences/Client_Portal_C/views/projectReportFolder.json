@@ -1,0 +1,45 @@
+{
+  "appPageId" : "ccc1c0c4-65cf-4753-831e-812cc65bf47c",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "c1b947b9-d333-4b69-aa0a-4073c930c394",
+  "label" : "Project Report Folder",
+  "regions" : [ {
+    "id" : "d0e451b5-6138-42fe-9628-bf9b41c7584b",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "forceCommunity:reportList",
+      "id" : "e083365e-da76-4808-9441-3fe19b1983e3",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "a2f14369-c740-4bd2-bb87-e547ce4423f4",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "1070ead2-5c43-4e9d-b592-9cc37d00f0a0",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Project Report Folder"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "59a33f7b-7ad1-463e-9c2a-abc91e6d4c7e",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "b3cb116e-2f00-4964-bf3f-61083ca8baed",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-project-report-folder"
+}

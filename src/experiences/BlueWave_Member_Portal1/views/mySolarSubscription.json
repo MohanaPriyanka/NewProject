@@ -1,0 +1,147 @@
+{
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "componentName" : "siteforce:sldsTwoCol84SidebarFeaturedLayout",
+  "id" : "3b42f0ea-d458-4e39-a60a-32db0803c3d2",
+  "label" : "My Solar Subscription",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "config" : {
+          "dataProviderDefinition" : {
+            "componentName" : "forceCommunity:managedContentCollectionDataProvider",
+            "attributes" : {
+              "dataProviderType" : "NamedCollection",
+              "dataProviderInfo" : {
+                "apiName" : "Shared_Solar_Systems_All"
+              }
+            }
+          },
+          "schemaVersion" : "V1.0",
+          "collectionLayoutDefinition" : {
+            "componentName" : "forceCommunity:dynamicCollectionCarousel",
+            "attributes" : {
+              "limitItems" : 20,
+              "showProgressIndicator" : false,
+              "contentIndicatorSpacing" : "none",
+              "showProgressArrows" : true,
+              "transitionType" : "slide",
+              "transitionSpeed" : 500
+            }
+          },
+          "itemLayoutDefinition" : {
+            "componentName" : "forceCommunity:bannerImageLayout",
+            "attributes" : {
+              "showCaption" : true,
+              "showButton" : true,
+              "backgroundSize" : "cover",
+              "backgroundPosition" : "center center",
+              "bannerHeight" : "298",
+              "contentWidth" : "100",
+              "textAlignment" : "center center",
+              "overlayBackgroundColor" : "rgba(0, 0, 0, 0.25)",
+              "bannerTitleTextColor" : "#ffffff",
+              "titleFontSize" : "large",
+              "bannerSubTitleTextColor" : "#ffffff",
+              "subTitleFontSize" : "regular",
+              "callToActionLabel" : "Learn More",
+              "callToActionButtonRadius" : "4",
+              "callToActionButtonBackgroundColor" : "",
+              "callToActionButtonBackgroundColorHover" : "",
+              "callToActionButtonTextColor" : "",
+              "callToActionButtonTextColorHover" : "",
+              "callToActionButtonBorderColor" : "",
+              "callToActionButtonBorderColorHover" : "",
+              "titleHeadingTag" : "p",
+              "title" : "@Name",
+              "subTitle" : "@Project_Information_short__c",
+              "imageUrl" : "@Project_Image__c",
+              "imageAltText" : "@Name"
+            }
+          }
+        }
+      },
+      "componentName" : "forceCommunity:dynamicCollection",
+      "id" : "e44f3f60-948b-42f0-a0a3-e4f110af71bc",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "5348deca-8f1e-4952-a512-2932f58db0c3",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "id" : "1d664028-028c-4451-96ce-6e505a5a6aed",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "enableInlineEdit" : false,
+        "filterName" : "00B0a00000552yIEAQ",
+        "layout" : "STANDARD",
+        "pageSize" : 8,
+        "scope" : "Utility_Account_Subscription__c",
+        "showActionBar" : false,
+        "showDisplay" : "grid",
+        "showPinnedList" : false,
+        "showSearchBar" : false
+      },
+      "componentName" : "forceCommunity:objectHome",
+      "id" : "2b11262a-4027-4cd8-ae7e-93551d6e831f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "802c7ec7-9310-4266-9e72-cfa297d2637c",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "cfc2f8a7-0f75-46b6-8a5f-b78572781410",
+    "regionName" : "sidebarAlt",
+    "type" : "region"
+  }, {
+    "id" : "c15a6167-278d-485b-8237-0b90e2ad175b",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "My Solar Subscription"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "876f629f-8154-4763-8df0-103429217687",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "8fee0d75-bded-4710-b3f8-ec6baa5459c0",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "buttonAlignment" : "center",
+        "buttonBgColor" : "",
+        "buttonBgHoverColor" : "",
+        "buttonBorderColor" : "",
+        "buttonMaxWidth" : 100,
+        "buttonRadius" : 0,
+        "buttonTextColor" : "",
+        "buttonTextHoverColor" : "",
+        "label" : "Contact Support"
+      },
+      "componentName" : "forceCommunity:contactSupportButton",
+      "id" : "6dd303fd-f1c2-4720-9d72-b33ab7d7072f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "68a73c88-39f5-4634-b543-3f48d658ed55",
+    "regionName" : "featured",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-my-solar-subscription"
+}

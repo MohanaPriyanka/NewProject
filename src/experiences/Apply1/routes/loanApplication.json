@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "545406ab-276c-440a-a89f-227adc724475",
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "id" : "36f76268-1b7f-4f16-9cef-5dbbac8d4a37",
+  "label" : "Loan Application",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-loan-application",
+  "type" : "route",
+  "urlPrefix" : "loan-application"
+}

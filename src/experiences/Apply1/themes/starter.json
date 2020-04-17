@@ -1,0 +1,252 @@
+{
+  "activeBrandingSetId" : "89b8b5e9-0ec5-4385-8c47-b21ce33a205e",
+  "customCSS" : "@font-face {\n    font-family: proximaNovaFont;\n    src: url('/sfsites/c/resource/ProximaNova');\n}\ndiv {\n\tfont-size: 1rem;\n}\n.slds-form-element__label {\n    font-size: 1rem;\n}",
+  "developerName" : "starter",
+  "id" : "3c4c3602-b097-4a7e-bda6-c16f0b400cf7",
+  "label" : "Starter",
+  "layouts" : {
+    "Inner" : "aad4aeb1-11be-47ee-84d1-013acd87f504",
+    "Login" : "a04c7176-db92-4675-a2a8-f0a308f45266",
+    "NmE1gktamttI3bNW2rZP16mWWNlHaf" : "14877d9d-7792-4aca-b427-f6072b0ed7b2"
+  },
+  "type" : "theme",
+  "views" : [ {
+    "componentName" : "salesforceIdentity:loginBody2",
+    "id" : "a04c7176-db92-4675-a2a8-f0a308f45266",
+    "label" : "Login",
+    "regions" : [ {
+      "id" : "167bfa5a-1966-46e8-a846-50ff77c0d32f",
+      "regionName" : "header",
+      "type" : "region"
+    }, {
+      "id" : "62b06780-bc2a-4f48-9ff9-dca2dce42705",
+      "regionName" : "content",
+      "type" : "region"
+    }, {
+      "id" : "b9373eec-84d1-4429-ae28-a550eba13fc5",
+      "regionName" : "footer",
+      "type" : "region"
+    } ],
+    "type" : "view"
+  }, {
+    "componentName" : "siteforce:starterBody",
+    "id" : "41eb1423-8bc5-4f22-97d6-3cd02c537698",
+    "label" : "Default",
+    "regions" : [ {
+      "components" : [ {
+        "componentAttributes" : {
+          "maxAutoCompleteResults" : 5,
+          "searchLabel" : "Search...",
+          "searchObjects" : [ {
+            "name" : "Account",
+            "isPublic" : true
+          } ]
+        },
+        "componentName" : "forceCommunity:globalSearchInput",
+        "id" : "61c3245b-b266-4ec7-9338-7753a4c6d3b0",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "0494a132-134f-4270-8e87-e831e4f40169",
+      "regionName" : "search",
+      "type" : "region"
+    }, {
+      "components" : [ {
+        "componentAttributes" : {
+          "communityBuilderLabel" : "Community Builder",
+          "communitySetupLabel" : "Community Setup",
+          "contactSupportLabel" : "Contact Support",
+          "filterName" : "MyCases",
+          "homeLabel" : "Home",
+          "includeContactSupport" : true,
+          "includeMessages" : false,
+          "loginLabel" : "Login",
+          "logoutLabel" : "Logout",
+          "myAccountLabel" : "My Account",
+          "showUserSettings" : true,
+          "userSettingsLabel" : "My Settings",
+          "viewProfileLabel" : "My Profile"
+        },
+        "componentName" : "selfService:userProfileMenu",
+        "id" : "5c7067eb-7cd9-4f37-ae4b-793dee38b0fb",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "bca814c2-b109-4762-bfdc-f55c165cc05f",
+      "regionName" : "profileMenu",
+      "type" : "region"
+    }, {
+      "components" : [ {
+        "componentAttributes" : {
+          "NavigationMenuEditorRefresh" : "",
+          "hideAppLauncher" : true,
+          "hideHomeText" : true
+        },
+        "componentName" : "forceCommunity:globalNavigation",
+        "id" : "9e2e7b73-5e93-43d0-aeb5-d2392a5e1cf2",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "fcaea95a-c937-4e57-b020-42bc0162a293",
+      "regionName" : "navBar",
+      "type" : "region"
+    } ],
+    "type" : "view"
+  }, {
+    "componentName" : "c:CAPTheme",
+    "id" : "aad4aeb1-11be-47ee-84d1-013acd87f504",
+    "label" : "Default",
+    "regions" : [ {
+      "components" : [ {
+        "componentAttributes" : {
+          "maxAutoCompleteResults" : 5,
+          "searchLabel" : "Search...",
+          "searchObjects" : [ {
+            "name" : "Account",
+            "isPublic" : true
+          } ]
+        },
+        "componentName" : "forceCommunity:globalSearchInput",
+        "id" : "d43b5807-bd8e-44f8-b87b-1359a1a57c84",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "30734e09-1f0f-4da8-b460-177560999c4f",
+      "regionName" : "search",
+      "type" : "region"
+    }, {
+      "components" : [ {
+        "componentAttributes" : {
+          "communityBuilderLabel" : "Community Builder",
+          "communitySetupLabel" : "Community Setup",
+          "contactSupportLabel" : "Contact Support",
+          "filterName" : "MyCases",
+          "homeLabel" : "Home",
+          "includeContactSupport" : true,
+          "includeMessages" : false,
+          "loginLabel" : "Login",
+          "logoutLabel" : "Logout",
+          "myAccountLabel" : "My Account",
+          "showUserSettings" : true,
+          "userSettingsLabel" : "My Settings",
+          "viewProfileLabel" : "My Profile"
+        },
+        "componentName" : "selfService:userProfileMenu",
+        "id" : "a5c4e7d7-e652-4bd7-af32-49a50f0f1237",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "d435de7a-e596-4247-9098-5007ab8f56cd",
+      "regionName" : "profileMenu",
+      "type" : "region"
+    }, {
+      "components" : [ {
+        "componentAttributes" : {
+          "NavigationMenuEditorRefresh" : "",
+          "hideAppLauncher" : true,
+          "hideHomeText" : true
+        },
+        "componentName" : "forceCommunity:globalNavigation",
+        "id" : "c197300f-671b-42d2-89fb-c97a65758488",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "e7b0f9bf-cea3-4ebb-b407-26bdcf2d8c2f",
+      "regionName" : "navBar",
+      "type" : "region"
+    }, {
+      "components" : [ {
+        "componentAttributes" : {
+          "link" : "http://www.bluewavesolar.com",
+          "showLogout" : false
+        },
+        "componentName" : "c:SLPHeader",
+        "id" : "21a526e0-5cee-46a3-8582-876bf3f57178",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "2e3a5b86-557b-41a5-95e8-0f5c302b4e1d",
+      "regionName" : "header",
+      "type" : "region"
+    } ],
+    "type" : "view"
+  }, {
+    "componentName" : "siteforce:starterBody",
+    "id" : "14877d9d-7792-4aca-b427-f6072b0ed7b2",
+    "label" : "Blank",
+    "regions" : [ {
+      "components" : [ {
+        "componentAttributes" : {
+          "maxAutoCompleteResults" : 5,
+          "searchLabel" : "Search...",
+          "searchObjects" : [ {
+            "name" : "Account",
+            "isPublic" : true
+          } ]
+        },
+        "componentName" : "forceCommunity:globalSearchInput",
+        "id" : "514fd954-3aa6-44a6-bbcd-c290bab8da59",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "aa46f248-5d8f-4094-9d11-b335e0e538b1",
+      "regionName" : "search",
+      "type" : "region"
+    }, {
+      "components" : [ {
+        "componentAttributes" : {
+          "communityBuilderLabel" : "Community Builder",
+          "communitySetupLabel" : "Community Setup",
+          "contactSupportLabel" : "Contact Support",
+          "filterName" : "MyCases",
+          "homeLabel" : "Home",
+          "includeContactSupport" : true,
+          "includeMessages" : false,
+          "loginLabel" : "Login",
+          "logoutLabel" : "Logout",
+          "myAccountLabel" : "My Account",
+          "showUserSettings" : true,
+          "userSettingsLabel" : "My Settings",
+          "viewProfileLabel" : "My Profile"
+        },
+        "componentName" : "selfService:userProfileMenu",
+        "id" : "b590d63a-f19b-4537-a1f7-e26da60d16d7",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "bed7dc89-4cf9-449d-b1ff-8453e6a7f9a0",
+      "regionName" : "profileMenu",
+      "type" : "region"
+    }, {
+      "components" : [ {
+        "componentAttributes" : {
+          "NavigationMenuEditorRefresh" : "",
+          "hideAppLauncher" : true,
+          "hideHomeText" : true
+        },
+        "componentName" : "forceCommunity:globalNavigation",
+        "id" : "bf0837be-651b-4bee-9a5a-ede41a3b2eec",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "5ee5ecfc-dba6-43c1-a13f-5c6483be46c5",
+      "regionName" : "navBar",
+      "type" : "region"
+    }, {
+      "components" : [ {
+        "componentAttributes" : {
+          "link" : "http://www.bluewavesolar.com",
+          "showLogout" : false
+        },
+        "componentName" : "c:SLPHeader",
+        "id" : "938c4dee-ce4c-4f81-aa35-e54fd270fffd",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
+      "id" : "417e8446-4a38-46cb-80f4-7f538bcec074",
+      "regionName" : "header",
+      "type" : "region"
+    } ],
+    "type" : "view"
+  } ]
+}

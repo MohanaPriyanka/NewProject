@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "d295b219-3e47-4d54-94e9-16387c5a3f49",
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "id" : "af69a2ee-64d3-4dfb-b3d5-1d9fa29ace38",
+  "label" : "Switch",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-switch",
+  "type" : "route",
+  "urlPrefix" : "switch"
+}

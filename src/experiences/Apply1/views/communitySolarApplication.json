@@ -1,0 +1,72 @@
+{
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "f7633674-dc79-4465-be9b-761bbe70e90a",
+  "label" : "Community Solar Application",
+  "regions" : [ {
+    "id" : "20c76954-5625-4688-8f5d-df0f2bfcfbe2",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "leadId" : "{!leadId}",
+        "partnerId" : "{!partnerId}"
+      },
+      "componentName" : "c:CSAPNavigationBar",
+      "id" : "1920b223-64f3-443d-9cbd-c98bdd2d520c",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "email" : "{!email}",
+        "leadId" : "{!leadId}",
+        "partnerId" : "{!partnerId}",
+        "referralCode" : "{!referralCode}",
+        "salesRepId" : "{!salesRepId}"
+      },
+      "componentName" : "c:CSAPApplication",
+      "id" : "31c9eb6c-08ab-4cd4-969a-3eb252820e0c",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "228d7a32-feaf-482f-b5cb-470311319629",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "csap" : true,
+        "partnerFooter" : false
+      },
+      "componentName" : "c:SLPFooter",
+      "id" : "ead5d3e0-6472-4465-bbf3-b0655bff0fca",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "a0b77ed9-8a8d-401d-8b5c-5cdc703e9339",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Community Solar Application"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "054777a8-9df8-482e-bf45-d6c716dc09ec",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "450bd3d9-0b22-4fda-8f66-72c5ce160008",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-csap"
+}

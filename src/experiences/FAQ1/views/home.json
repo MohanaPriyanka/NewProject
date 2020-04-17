@@ -1,0 +1,120 @@
+{
+  "appPageId" : "1b9abdd2-5750-400b-8800-d60142274ae4",
+  "componentName" : "siteforce:sldsThreeCol444Layout",
+  "id" : "e91053a9-ca48-40a3-8767-aa23db80095d",
+  "label" : "Home",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "bannerText" : "Customercare@bluewavesolar.com",
+        "bannerTextWithKnowledge" : "",
+        "bannerTextWithoutKnowledge" : "",
+        "pageType" : "",
+        "showSubTopics" : false,
+        "title" : "Support Center",
+        "uniqueNameOrId" : ""
+      },
+      "componentName" : "forceCommunity:headline",
+      "id" : "f3bd7618-8112-4577-9d1b-0fef762143cf",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "radius" : 2,
+        "showTitle" : false,
+        "title" : "Featured Topics"
+      },
+      "componentName" : "forceTopic:featuredTopics",
+      "id" : "3eff140e-a207-4f22-978e-20888a9da285",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "996e5bd6-f390-4ba9-86d7-8e6c10daac41",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "numberOfArticles" : 3,
+        "showTitle" : false,
+        "title" : "Top Articles",
+        "topicList" : [ {
+          "name" : "0TO0a000000DpniGAC",
+          "isPublic" : true
+        } ]
+      },
+      "componentName" : "forceCommunity:topArticleList",
+      "id" : "b8dc6ac2-f037-4cfb-bc2f-8b3c1efc0360",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "43e170a9-0871-4da4-b381-6aed214605a8",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "numberOfArticles" : 3,
+        "showTitle" : false,
+        "title" : "Top Articles",
+        "topicList" : [ {
+          "name" : "0TO0a000000DpnxGAC",
+          "isPublic" : true
+        } ]
+      },
+      "componentName" : "forceCommunity:topArticleList",
+      "id" : "8be7d053-0125-4352-87d2-fb8f65b66529",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "023c3310-1d53-426c-a512-0e513853191a",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "numberOfArticles" : 3,
+        "showTitle" : false,
+        "title" : "Top Articles",
+        "topicList" : [ {
+          "name" : "0TO0a000000DqXlGAK",
+          "isPublic" : true
+        } ]
+      },
+      "componentName" : "forceCommunity:topArticleList",
+      "id" : "689c0659-1312-45df-b3a3-6f4d41349524",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "ed9042b4-ab48-41fa-a051-f6d00573e9f3",
+    "regionName" : "sidebarAlt",
+    "type" : "region"
+  }, {
+    "id" : "5c9f228e-969d-4929-a122-1c6a17debb16",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Home"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "3c17c854-0586-489a-8161-0c7bc12fd961",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "e1f270cb-9f02-4a0c-a486-8ec4efbf85f9",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Home",
+  "type" : "view",
+  "viewType" : "home"
+}

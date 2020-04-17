@@ -1,0 +1,36 @@
+{
+  "activeBrandingSetId" : null,
+  "customCSS" : "",
+  "developerName" : "login",
+  "id" : "76af035a-403f-4c1e-a397-f67c0437bcbe",
+  "label" : "Login Template",
+  "layouts" : {
+    "Inner" : "e2e2be86-e66d-43fc-bfd3-518deceb961b",
+    "Login" : "e1683942-51d6-4e4e-86e9-76378a648026"
+  },
+  "type" : "theme",
+  "views" : [ {
+    "componentName" : "salesforceIdentity:loginBody",
+    "id" : "e1683942-51d6-4e4e-86e9-76378a648026",
+    "label" : "login:themeLayout-home",
+    "regions" : [ {
+      "id" : "75bff167-dcc4-4248-8d8e-27604c6f6f66",
+      "regionName" : "header",
+      "type" : "region"
+    }, {
+      "id" : "8a4d4235-8b0f-42dd-8fc2-74940d5c2933",
+      "regionName" : "content",
+      "type" : "region"
+    }, {
+      "id" : "d15deac9-7416-4312-9a6b-c67dfc1d2566",
+      "regionName" : "footer",
+      "type" : "region"
+    } ],
+    "type" : "view"
+  }, {
+    "componentName" : "salesforceIdentity:loginBody",
+    "id" : "e2e2be86-e66d-43fc-bfd3-518deceb961b",
+    "label" : "login:themeLayout-home",
+    "type" : "view"
+  } ]
+}

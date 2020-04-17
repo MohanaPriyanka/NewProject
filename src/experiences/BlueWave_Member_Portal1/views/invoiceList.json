@@ -1,0 +1,45 @@
+{
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "00b05313-ea4b-4c57-b2bf-5fe9c4d8c081",
+  "label" : "Invoice List",
+  "regions" : [ {
+    "id" : "4969cfa2-6aaf-4f3c-ab04-5826d9bd86d1",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "enableInlineEdit" : true,
+        "filterName" : "{!filterId}",
+        "layout" : "FULL",
+        "pageSize" : 25,
+        "scope" : "{!objectName}",
+        "showActionBar" : true,
+        "showChartsPanel" : true,
+        "showDisplay" : "showall",
+        "showFilterPanel" : true,
+        "showImageIcon" : true,
+        "showManualRefreshButton" : true,
+        "showObjectName" : true,
+        "showPinnedList" : true,
+        "showSearchBar" : true
+      },
+      "componentName" : "forceCommunity:objectHome",
+      "id" : "5b9bbc41-06d0-4a68-a0f4-21b6118dc730",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "3688abab-5861-429b-aa4f-e69624d57f6a",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "b572986d-737a-4f2e-9c1d-38130ad272d0",
+    "regionName" : "footer",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "list-a7T"
+}

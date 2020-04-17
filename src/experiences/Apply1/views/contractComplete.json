@@ -1,0 +1,45 @@
+{
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "7bce178d-fde4-49c2-8966-0047a23ee317",
+  "label" : "Contract Complete",
+  "regions" : [ {
+    "id" : "1856d2b3-06ea-4dae-988b-3ba43ab659fd",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:DocuSignOutcomePresentation",
+      "id" : "bfb5dd6a-0d86-4897-9273-6128e70038b6",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "00d9740d-243c-45b1-875d-856ff58156b0",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "6c0b666f-51c1-434d-8b75-af536e1468e6",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Contract Complete"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "949d4f9e-527d-4b32-b42c-6e1b4c97bdbd",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "e1408446-943e-4095-bce6-cbe47d6a5eaf",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "NmE1gktamttI3bNW2rZP16mWWNlHaf",
+  "type" : "view",
+  "viewType" : "custom-contract-complete"
+}

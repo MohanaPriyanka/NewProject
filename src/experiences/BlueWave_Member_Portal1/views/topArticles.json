@@ -1,0 +1,59 @@
+{
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "30cadcc7-3864-4625-8e55-4e2bc69e56dc",
+  "label" : "Top Articles",
+  "regions" : [ {
+    "id" : "5bf80071-1fd1-4199-97dc-f526aebf8d12",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "numberOfArticles" : 5,
+        "showTitle" : true,
+        "title" : "Top Help Articles",
+        "topicList" : [ {
+          "name" : "0TOj0000000L0vBGAS",
+          "isPublic" : true
+        }, {
+          "name" : "0TOj0000000L0v5GAC",
+          "isPublic" : true
+        }, {
+          "name" : "0TOj0000000L3IAGA0",
+          "isPublic" : true
+        } ]
+      },
+      "componentName" : "forceCommunity:topArticleList",
+      "id" : "f51c1a4b-b529-4a58-83d0-daf87188128a",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "f255e140-f281-496e-ae86-5bb5bf259e8c",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "5fb24351-0e9e-4923-ac19-d54cdc945e7c",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Top Articles"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "333d0d2d-9767-4961-9e6c-69b6245d96e4",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "a29dfbb0-1de6-409e-bbe7-f788c1092ddb",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "top-articles"
+}
