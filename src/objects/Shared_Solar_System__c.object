@@ -670,6 +670,22 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Client_Acquisition_Contract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>The field points to the same contract even if there is only one.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The field points to the same contract even if there is only one.</inlineHelpText>
+        <label>Client Acquisition Contract</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Client Acquisition Contract</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Client_Brand_Key__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>&quot;Client Brand Key&quot; set on the client account linked to the entity. Use this field to override that value for a specific SSS</inlineHelpText>
@@ -683,6 +699,22 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
             <restricted>true</restricted>
             <valueSetName>Client_Logo_Filenames</valueSetName>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Client_Management_Contract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>The field points to the same contract even if there is only one.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The field points to the same contract even if there is only one.</inlineHelpText>
+        <label>Client Management Contract</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Client Management Contract</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Client_Opportunity__c</fullName>
