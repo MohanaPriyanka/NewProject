@@ -1,0 +1,90 @@
+{
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "4b07b72a-0488-4202-baa5-fcfd52dc13aa",
+  "label" : "Home",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "richTextValue" : "<h2>&nbsp;</h2>\n<h1 style=\"text-align: center;\"><strong>Hello, {!CurrentUser.name} </strong></h1>\n<p style=\"text-align: center;\">&nbsp;</p>"
+      },
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "51207b90-3ddd-4488-be70-ef14f919fee4",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "ac6ca89d-0ace-4b59-9d8b-f2848f2e1ead",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "enableInlineEdit" : true,
+        "filterName" : "00B0a0000054wCCEAY",
+        "layout" : "STANDARD",
+        "pageSize" : 10,
+        "scope" : "Zuora__CustomerAccount__c",
+        "showActionBar" : true,
+        "showChartsPanel" : true,
+        "showDisplay" : "showall",
+        "showFilterPanel" : true,
+        "showImageIcon" : true,
+        "showManualRefreshButton" : true,
+        "showObjectName" : true,
+        "showPinnedList" : true,
+        "showSearchBar" : true
+      },
+      "componentName" : "forceCommunity:objectHome",
+      "id" : "3718af0e-3ccd-4cae-931b-e87f02810b92",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "050e2fea-8bdf-4206-a880-bbf3d9f92899",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "dc8d8381-eb17-4e17-9517-7eaaa033c9c2",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Home"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "fdf4e2d5-4d72-4316-99e6-561c8220bd8e",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "06868c47-f286-4c5c-8bd9-aab8e8e38917",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "forceCommunity:quipCard",
+      "id" : "1095bd8f-1681-48b0-9f6e-0a9b5cc4981a",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "bd32824b-8999-486b-84eb-ecc11fd6e035",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "41322f4b-b0d7-42a1-b172-e2a65fa492dd",
+    "regionName" : "featured",
+    "type" : "region"
+  }, {
+    "id" : "b4bf9386-4c23-45c7-8cf0-c59959c072e5",
+    "regionName" : "sidebarAlt",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Home",
+  "type" : "view",
+  "viewType" : "home"
+}

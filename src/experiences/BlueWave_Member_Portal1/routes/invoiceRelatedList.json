@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "775143e2-8570-4a10-8f6b-02f7c4c08598",
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "id" : "45c16bb5-4974-437b-9747-2f36f40450f4",
+  "label" : "Invoice Related List",
+  "objectApiName" : "Zuora__ZInvoice__c",
+  "routeType" : "relatedlist-a7T",
+  "type" : "route",
+  "urlPrefix" : "zinvoice"
+}

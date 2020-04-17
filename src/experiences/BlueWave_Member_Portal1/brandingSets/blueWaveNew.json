@@ -1,0 +1,28 @@
+{
+  "definitionName" : "jepson:branding-jepson",
+  "id" : "1d81b32a-a20d-4bf4-afc8-41b74a332d03",
+  "label" : "BlueWave New",
+  "type" : "brandingSet",
+  "values" : {
+    "ActionColor" : "rgb(56, 125, 222)",
+    "BorderColor" : "rgb(20, 28, 51)",
+    "CardBackgroundColor" : "rgb(235, 235, 235)",
+    "CompanyLogo" : "/file-asset/BlueLogo?v=1",
+    "DetailTextColor" : "rgb(20, 28, 51)",
+    "ErrorFontColor" : "rgb(255, 158, 158)",
+    "HeaderFonts" : "Arial",
+    "LinkColor" : "rgb(20, 28, 51)",
+    "LoginBackgroundColor" : "rgb(177, 186, 193)",
+    "LoginBackgroundImage" : "../../../../sfsites/picasso/core/external/salesforceIdentity/images/background.jpg?v=1",
+    "OverlayTextColor" : "rgb(237, 237, 237)",
+    "PageBackgroundColor" : "rgb(237, 237, 237)",
+    "PrimaryFont" : "Arial",
+    "TextColor" : "rgb(51, 52, 52)",
+    "TextTransformStyle" : "capitalize",
+    "_ActionColorDarker" : "#2064c3",
+    "_ActionColorTrans" : "rgba(56, 125, 222, 0.9)",
+    "_HoverColor" : "rgba(56, 125, 222, 0.05)",
+    "_LinkColorDarker" : "#090c16",
+    "_OverlayTextColorShadow" : "#000"
+  }
+}

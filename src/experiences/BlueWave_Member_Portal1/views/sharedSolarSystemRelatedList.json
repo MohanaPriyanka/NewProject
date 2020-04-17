@@ -1,0 +1,38 @@
+{
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "7f5d44d7-8cd6-4425-90bb-7e01dc7f9912",
+  "label" : "Shared Solar System Related List",
+  "regions" : [ {
+    "id" : "7509a970-d9c4-4c0b-bf06-fe0cf468a8c4",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customTitle" : "",
+        "parentRecordId" : "{!recordId}",
+        "relatedListName" : "{!relationshipApiName}",
+        "showBreadCrumbs" : true,
+        "showCustomTitle" : false,
+        "showManualRefreshButton" : true,
+        "showRowNumbers" : true
+      },
+      "componentName" : "forceCommunity:relatedList",
+      "id" : "f7d6f106-6fa6-4ffe-85f4-021633d15cec",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "587e30c9-1b26-48a8-be03-0275c1377558",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "92bc52ba-58ce-4031-80ff-5e3101399253",
+    "regionName" : "footer",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "relatedlist-a1J"
+}

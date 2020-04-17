@@ -1,0 +1,71 @@
+{
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "componentName" : "siteforce:sldsThreeCol363Layout",
+  "id" : "62f3e829-e110-4fc2-bd1d-58c40929efc0",
+  "label" : "Shared Solar System Detail",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:ProjectHeader",
+      "id" : "c94ff590-1641-4ac9-a665-67ac8d8ce628",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "cccf9dd7-64da-46cb-bdaa-5743787b02ea",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "forceCommunity:recordDetail",
+      "id" : "d9e1958f-d10e-4f17-b73c-9b7708e05d1c",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "63c496bc-fe6f-4bc4-adff-0915649d7b39",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:ProjectFooter",
+      "id" : "5215f223-9f30-4420-9651-9612d8e7da47",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "ea7ee4ce-982d-4cb0-9fa5-75be3ab23402",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "{!Record._Object}: {!Record._Title}"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "586d067f-f322-4f8e-9c3a-025c7d2e1dcb",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "dc26747a-35f1-46ab-b345-ebed9137a81a",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  }, {
+    "id" : "ca91a811-22f9-47bf-8739-d0721ac993c9",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "dcef9dff-9713-4b75-b503-1901720dbc39",
+    "regionName" : "sidebarAlt",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "detail-a1J"
+}

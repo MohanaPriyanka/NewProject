@@ -1,0 +1,109 @@
+{
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "componentName" : "siteforce:sldsTwoCol84SidebarFeaturedLayout",
+  "id" : "8f64b29e-e815-484a-907c-ba43d8ac45c9",
+  "label" : "Manage Cases",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "bannerText" : "Find information on all your cases, new and old!",
+        "bannerTextWithKnowledge" : "Explore other <a href=\"javascript:void(0)\" class=\"headlineArticles\">articles</a> and <a href=\"javascript:void(0)\" class=\"headlineDiscussions\">discussions</a> on this topic.",
+        "bannerTextWithoutKnowledge" : "Explore other <a href=\"javascript:void(0)\" class=\"headlineDiscussions\">discussions</a> on this topic.",
+        "pageType" : "",
+        "showSubTopics" : true,
+        "title" : "Support Cases",
+        "uniqueNameOrId" : ""
+      },
+      "componentName" : "forceCommunity:headline",
+      "id" : "9852e025-ab84-4fd1-bf36-fe3b7c0a7d0b",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "b191d21f-e893-47af-b0f5-3ab5d262b01a",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "askConfirmationQuestion" : true,
+        "confirmationMessageLabel" : "Got it!",
+        "deflectionSubtitle" : "Find what you need here.",
+        "deflectionTitle" : "Need Answers Fast?",
+        "firstQuestion" : "Did this content solve your issue?",
+        "maxResults" : 6,
+        "measureDeflection" : true,
+        "redirectUrl" : "",
+        "secondQuestion" : "Stop creating your case?",
+        "showArticles" : true,
+        "showDiscussions" : false,
+        "topicId" : ""
+      },
+      "componentName" : "forceCommunity:caseDeflection",
+      "id" : "eb1d0ccb-03d2-400f-9b6d-d404ade1bf5e",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "60689271-f024-4c47-af53-765e986e0469",
+    "regionName" : "featured",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "filterName" : "00B0a00000152UwEAI",
+        "layout" : "COMPACT",
+        "pageSize" : 10,
+        "scope" : "Case",
+        "showDisplay" : "showall"
+      },
+      "componentName" : "forceCommunity:objectHome",
+      "id" : "d9f1fcf6-839d-4ea5-9be9-bfbf284e696e",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "filterName" : "00B0a00000152UvEAI",
+        "layout" : "COMPACT",
+        "pageSize" : 10,
+        "scope" : "Case",
+        "showDisplay" : "showall"
+      },
+      "componentName" : "forceCommunity:objectHome",
+      "id" : "8eb6bcd8-9ac1-4f05-9b44-6e9fa293b824",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "df911528-7e86-43b3-a53f-96c71de35bfb",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "d7befa8d-513f-488d-aa34-e64283cdd125",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "c8f790a5-3223-4cd6-86be-e6b16cd689bb",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Manage Cases"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "ef8e8382-3698-401a-ac62-54fece6db024",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "ffe90af2-e24a-4350-9167-61c4c5075fcd",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-manage-cases"
+}

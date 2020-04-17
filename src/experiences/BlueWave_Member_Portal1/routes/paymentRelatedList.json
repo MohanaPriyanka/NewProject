@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "c950ee51-d329-45ae-a87a-3040010b6af5",
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "id" : "67e4b709-ec11-4d55-ae2b-33bc7f412750",
+  "label" : "Payment Related List",
+  "objectApiName" : "Zuora__Payment__c",
+  "routeType" : "relatedlist-a7C",
+  "type" : "route",
+  "urlPrefix" : "payment"
+}

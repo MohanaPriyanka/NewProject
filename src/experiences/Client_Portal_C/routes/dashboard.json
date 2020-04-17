@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "f00b4a80-88ab-4941-9674-13ecfd4fe522",
+  "appPageId" : "ccc1c0c4-65cf-4753-831e-812cc65bf47c",
+  "id" : "bf59e9dd-d36e-46b2-a4f2-8fc076a4ad78",
+  "label" : "Dashboard",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-projectreports",
+  "type" : "route",
+  "urlPrefix" : "Dashboard"
+}

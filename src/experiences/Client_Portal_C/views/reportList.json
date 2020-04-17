@@ -1,0 +1,40 @@
+{
+  "appPageId" : "ccc1c0c4-65cf-4753-831e-812cc65bf47c",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "28dcf90a-1d1c-4819-a6f2-c96abfd019bf",
+  "label" : "Report List",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "richTextValue" : "<h3 style=\"padding-left: 5px; padding-top: 10px;\"><img style=\"vertical-align: middle;\" src=\"https://bluewavesolar.com/resources/img/icons/resources.min.svg\" width=\"40\" height=\"40\" />&nbsp; &nbsp;Reports</h3>\n<p>&nbsp;</p>"
+      },
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "5b0ca6a4-cd0a-422e-8311-1996919376ec",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "8e9172b0-e973-4f9c-9135-dc85d290c8fa",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "forceCommunity:reportList",
+      "id" : "f8a89e01-7277-43fa-8432-36fc7669f5cc",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "54d0e72b-6a1e-49de-af45-28575f466b5d",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "06bb3119-6fc2-4c77-9a5d-c62460923b29",
+    "regionName" : "footer",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "list-00O"
+}

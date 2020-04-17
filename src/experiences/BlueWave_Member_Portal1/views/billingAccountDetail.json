@@ -1,0 +1,76 @@
+{
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "componentName" : "siteforce:sldsTwoCol84SidebarFeaturedLayout",
+  "id" : "9bd71f19-5504-499c-80ce-398f506eb0f9",
+  "label" : "Billing Account Detail",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:CSPZuoraBalance",
+      "id" : "cd2e3d3a-30d5-4abb-ba6d-0bd8823e96e9",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "8c0ac4f8-1d7e-4da6-8362-f6e36871154c",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "id" : "4fa0e695-ae07-40c6-b83a-ef55db376542",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "relatedListApiName" : "Zuora__ZInvoices__r",
+        "relatedListComponentOverride" : "GRID",
+        "width" : "MEDIUM"
+      },
+      "componentName" : "forceCommunity:relatedListSingle",
+      "id" : "f1311988-8c99-49c5-928c-cdbcd2670617",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "relatedListApiName" : "Zuora__Payments__r",
+        "relatedListComponentOverride" : "GRID",
+        "width" : "MEDIUM"
+      },
+      "componentName" : "forceCommunity:relatedListSingle",
+      "id" : "53e9b2bf-aa02-4773-b8e7-24bb6137551f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "57d2dc11-afbf-456a-b301-e786886edc99",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "{!Record._Object}: {!Record._Title}"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "b5b9b058-24ee-4f1c-8e47-e3a792227657",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "c1aac976-205b-4ea1-b0f3-b4982e5ffbbe",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  }, {
+    "id" : "1a13e9fd-a2fb-41ee-af13-89ddf8087492",
+    "regionName" : "featured",
+    "type" : "region"
+  }, {
+    "id" : "3fbf18cb-a3c0-4c92-b25b-0c2ccd48b32c",
+    "regionName" : "sidebar",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "detail-a71"
+}

@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "032f934b-9577-4d31-b28a-7993b21b6ff8",
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "id" : "35b0d8cd-7379-4b9b-b078-cf2bdfc526ba",
+  "label" : "Billing Account Related List",
+  "objectApiName" : "Zuora__CustomerAccount__c",
+  "routeType" : "relatedlist-a71",
+  "type" : "route",
+  "urlPrefix" : "customeraccount"
+}

@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "fa1c160d-0016-4140-b4b5-96d769d6dc3c",
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "id" : "dc5e0c78-877e-46b0-b5fa-a4803fdf6619",
+  "label" : "Billing Account List",
+  "objectApiName" : "Zuora__CustomerAccount__c",
+  "routeType" : "list-a71",
+  "type" : "route",
+  "urlPrefix" : "customeraccount"
+}

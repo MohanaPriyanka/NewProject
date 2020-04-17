@@ -1,0 +1,45 @@
+{
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "componentName" : "siteforce:sldsTwoCol84SidebarFeaturedLayout",
+  "id" : "3bbf7c3f-b69e-4283-ab3c-7bd46c851275",
+  "label" : "ProductProfile",
+  "regions" : [ {
+    "id" : "aaeb10b1-13eb-4da2-87d2-6a97430cc3cb",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "id" : "6de07d37-3f0e-45a3-aaf1-88f76d461024",
+    "regionName" : "featured",
+    "type" : "region"
+  }, {
+    "id" : "75b2be1c-0b64-453f-ac08-f2fec7b3ebdf",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "75853b94-f474-44fd-bf6f-879bae9a486c",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "ab31edcb-cfc4-41de-b920-8e80a64eaa62",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "ProductProfile"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "78e705c4-cda7-4ab6-927e-70380b2222b2",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "d1d52730-5e9f-4e7e-b4b5-d6984e4b3f95",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-productprofile"
+}

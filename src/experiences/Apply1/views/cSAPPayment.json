@@ -1,0 +1,73 @@
+{
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "7304fd7a-8e5a-43e5-b444-339eb97b915a",
+  "label" : "CSAP Payment",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "leadId" : "{!leadId}",
+        "partnerId" : "{!partnerId}"
+      },
+      "componentName" : "c:CSAPNavigationBar",
+      "id" : "ffb0cb4c-06a0-4790-8cc2-1e9cee22340f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "f9529fec-5946-4276-ba1c-28ea9661dd1a",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "email" : "{!email}",
+        "leadId" : "{!leadId}",
+        "partnerId" : "{!partnerId}",
+        "referralCode" : "{!referralCode}",
+        "salesRepId" : "{!salesRepId}"
+      },
+      "componentName" : "c:CSAPApplication",
+      "id" : "99e9a120-f49c-42d9-a723-6e2de9055a08",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "ee9471ae-ff23-497f-843f-0a9199bae4ab",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "csap" : true,
+        "partnerFooter" : false
+      },
+      "componentName" : "c:SLPFooter",
+      "id" : "b5f0a75a-9aec-4b46-a7f4-e2a4807bf68f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "314f9196-6b1b-4e92-b689-a7783d989f63",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "CSAP Payment"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "42ef339a-bc91-4038-b272-002bb55cab7b",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "d5c0aaf8-d06e-4736-99d3-83437ffc99d8",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-csap-payment"
+}

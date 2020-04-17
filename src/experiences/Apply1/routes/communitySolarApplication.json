@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "f7633674-dc79-4465-be9b-761bbe70e90a",
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "id" : "876d635a-870d-478f-8bb9-0655b683a8df",
+  "label" : "Community Solar Application",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-csap",
+  "type" : "route",
+  "urlPrefix" : "csap"
+}

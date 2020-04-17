@@ -1,0 +1,64 @@
+{
+  "appPageId" : "a89c8e97-1ee4-425d-9e61-1663c6338742",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "63a067b7-7f31-4a9b-825a-7dd20f471c92",
+  "label" : "Login",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "bk" : "{!bk}"
+      },
+      "componentName" : "c:CSPDynamicLogo",
+      "id" : "c9994971-42c5-465d-bccd-44f09f4e824b",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "forgotPasswordLabel" : "",
+        "forgotPasswordUrl" : "",
+        "loginButtonLabel" : "Log in",
+        "passwordLabel" : "Password",
+        "selfRegisterLabel" : "Not a member?",
+        "selfRegisterUrl" : "/SelfRegister",
+        "startUrl" : "",
+        "usernameLabel" : "Email"
+      },
+      "componentName" : "salesforceIdentity:loginForm2",
+      "id" : "afbb8b5b-43f1-492b-991f-0b0332a29ca7",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<p><a href=\"/ForgotPassword\" target=\"_self\" style=\"color: rgb(68, 68, 68);\">Click here to set up your Account or reset your password.</a></p><p><br></p><p style=\"text-align: center;\"><span style=\"color: rgb(68, 68, 68);\">Are you a Solar Installer?</span></p><p style=\"text-align: center;\"><span style=\"color: rgb(68, 68, 68);\">Click </span><a href=\"https://bluewavememberportal.force.com/slportal/s/login/\" target=\"_self\" style=\"color: rgb(68, 68, 68);\"><u>here</u></a><span style=\"color: rgb(68, 68, 68);\"> to log into the Solar Loan Portal.</span></p>"
+      },
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "1abc17c9-8245-413d-9ba7-7513afd96695",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "379377eb-7822-49cc-b566-61c5676b2b65",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Login"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "6413069f-abc3-4b3e-be8f-aac0f63ff417",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "607f8c8d-e1dd-4a42-a69c-6c85abbf8016",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Login",
+  "type" : "view",
+  "viewType" : "login-home"
+}

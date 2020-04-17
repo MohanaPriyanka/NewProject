@@ -1,0 +1,56 @@
+{
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "d295b219-3e47-4d54-94e9-16387c5a3f49",
+  "label" : "Switch",
+  "regions" : [ {
+    "id" : "31dc819a-9a83-4165-ae32-d472f181c55b",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:SSFApplication",
+      "id" : "e676b6e6-4829-47d3-82ed-af654cb6edd1",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "304095c1-7401-4601-82a0-16a10893f29a",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "csap" : true,
+        "partnerFooter" : false
+      },
+      "componentName" : "c:SLPFooter",
+      "id" : "8615d420-8d7c-4377-a8c4-12c9d7caac2c",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "2526a90f-6318-4f64-96df-fc12a116b76a",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "description" : "",
+        "metaTags" : "",
+        "title" : "Switch"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "7fca7c62-84af-455b-bfba-ce644c305468",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "e113ee51-1605-4d6e-8f29-5e2d7ee68882",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-switch"
+}

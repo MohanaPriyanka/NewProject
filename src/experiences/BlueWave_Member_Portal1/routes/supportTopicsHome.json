@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "794ae7fd-0fda-4cfa-ba42-6681e4c12768",
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "id" : "207a605c-3131-4540-981e-e47318e614c9",
+  "label" : "SupportTopicsHome",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-knowledge",
+  "type" : "route",
+  "urlPrefix" : "SupportTopicsHome"
+}

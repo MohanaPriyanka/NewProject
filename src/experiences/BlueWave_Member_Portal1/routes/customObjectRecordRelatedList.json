@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "d8dc5298-32c3-4cc0-a6aa-e2dd6da25b57",
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "id" : "187bec8b-2879-4586-ac88-d0b1c9b85971",
+  "label" : "Custom Object Record Related List",
+  "objectApiName" : "Product_Profile__c",
+  "routeType" : "relatedlist-a1X",
+  "type" : "route",
+  "urlPrefix" : "product-profile"
+}

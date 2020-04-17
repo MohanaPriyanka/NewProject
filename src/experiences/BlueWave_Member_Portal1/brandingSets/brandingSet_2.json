@@ -1,0 +1,23 @@
+{
+  "definitionName" : "login:branding-login",
+  "id" : "68175b92-1d98-47b9-9007-b32af6950046",
+  "label" : null,
+  "type" : "brandingSet",
+  "values" : {
+    "CardBackgroundColor" : "#F0F0F0",
+    "CardBorderColor" : "#777777",
+    "CardTransparency" : "0",
+    "ErrorFontColor" : "#FF9E9E",
+    "LoginBackgroundColor" : "#B1BAC1",
+    "LoginBackgroundImage" : "/sfsites/picasso/core/external/salesforceIdentity/images/background.jpg?v=1",
+    "LoginButtonBorderColor" : "#357ebd",
+    "LoginButtonColor" : "#0070d2",
+    "LoginButtonHoverBorderColor" : "#285e8e",
+    "LoginButtonHoverColor" : "#3276b1",
+    "LoginFontColor" : "#FFFFFF",
+    "LoginFontFamily" : "Open Sans",
+    "LoginLargeFontSize" : "22px",
+    "LoginMediumFontSize" : "14px",
+    "LoginSmallFontSize" : "12px"
+  }
+}

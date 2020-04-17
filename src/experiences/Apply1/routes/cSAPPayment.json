@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "7304fd7a-8e5a-43e5-b444-339eb97b915a",
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "id" : "2a49f48a-c852-4748-b263-b3baafe9be67",
+  "label" : "CSAP Payment",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-csap-payment",
+  "type" : "route",
+  "urlPrefix" : "csap-payment"
+}

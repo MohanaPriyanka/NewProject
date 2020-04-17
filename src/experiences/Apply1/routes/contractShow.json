@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "53cd1085-c095-407e-b681-c96a291b7e12",
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "id" : "2682a4fb-67cc-4b4b-9847-450df1350d30",
+  "label" : "Contract Show",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-contract-show",
+  "type" : "route",
+  "urlPrefix" : "contract-show"
+}

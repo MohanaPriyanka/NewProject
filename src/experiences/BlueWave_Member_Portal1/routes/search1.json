@@ -1,0 +1,9 @@
+{
+  "activeViewId" : null,
+  "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "id" : "aceb0533-a1cc-472a-9035-d41538483e69",
+  "label" : "Search (1)",
+  "routeType" : "search-topic",
+  "type" : "route",
+  "urlPrefix" : "search"
+}
