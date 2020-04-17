@@ -16,7 +16,6 @@
             $A.enqueueAction(a);
 
 
-
             if (!component.get('v.creditStatusTimeout')) {
                 var actionGetTimeout = component.get("c.getCreditCheckTimeout");
                 actionGetTimeout.setCallback(this,function(resp) {

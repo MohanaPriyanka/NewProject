@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prompt xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Change to Parent Account field</masterLabel>
+    <promptVersions>
+        <body>&lt;p&gt;&lt;b&gt;Hey Waver - we made a change to the parent account fields:&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;The &quot;CS Parent Account&quot; field is used to track the relationship between Parent and Property accounts for Community Solar. You&apos;ll only see this on &quot;Property Account&quot; record types.&lt;/li&gt;&lt;li&gt;The &quot;Parent Account&quot; field is used to track the relationship between all other account record types. This field takes advantage of the account hierarchy feature in Lightning. To view the account hierarchy screen, click the hierarchy icon to the right of the Account Name on the top of the screen.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;As always, contact BizApps if you have any questions!&lt;/p&gt;</body>
+        <customApplication>02uj0000000FZGm</customApplication>
+        <delayDays>1</delayDays>
+        <description>Informs users about the change to the parent account and CS parent account field</description>
+        <displayType>DockedComposer</displayType>
+        <endDate>2020-03-01</endDate>
+        <header>Change to Parent Account Fields</header>
+        <isPublished>true</isPublished>
+        <masterLabel>Change to Parent Account field</masterLabel>
+        <publishedByUser>0050a00000KinNm</publishedByUser>
+        <publishedDate>2019-12-20</publishedDate>
+        <shouldDisplayActionButton>false</shouldDisplayActionButton>
+        <startDate>2019-12-20</startDate>
+        <targetAppDeveloperName>Bluewave</targetAppDeveloperName>
+        <targetPageKey1>Account</targetPageKey1>
+        <targetPageKey2>view</targetPageKey2>
+        <targetPageType>standard__recordPage</targetPageType>
+        <timesToDisplay>2</timesToDisplay>
+        <title>Change to Parent Account Fields</title>
+        <userAccess>Everyone</userAccess>
+        <versionNumber>1</versionNumber>
+    </promptVersions>
+</Prompt>

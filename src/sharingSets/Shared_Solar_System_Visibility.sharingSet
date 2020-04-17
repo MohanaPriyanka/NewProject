@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Account</object>
+        <objectField>Id</objectField>
+        <userField>Contact.Account</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Opportunity</object>
+        <objectField>Shared_Solar_System__c.Client_Account__c</objectField>
+        <userField>Contact.Account</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Shared_Solar_System__c</object>
+        <objectField>Client_Account__c</objectField>
+        <userField>Contact.Account</userField>
+    </accessMappings>
+    <description>Grants read access to SSS (and read access to detail objects in master details relationships where SSS is the master) based off of client lookup.</description>
+    <name>Shared Solar System Visibility</name>
+    <profiles>cs client partner login</profiles>
+    <profiles>cs client portal user</profiles>
+</SharingSet>
