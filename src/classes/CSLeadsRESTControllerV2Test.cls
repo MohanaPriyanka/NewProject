@@ -500,49 +500,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    private static void testPatchApplicationMultiplePropertyAccounts2() {
-        useMocks();
-        String jsonRequest = '{ ' +
-            '"id": "00Q000000000999",' +
-            '"propertyAccounts": [{ "leadId": "00Q000000000999", "billingStreet": "Test billing street" }] ' +
-            ' }';
-        controller.patchApplication(jsonRequest);
-
-        System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when more than one property account is provided');
-    }
-
-    @IsTest
-    private static void testPatchApplicationNoPropertyAccountFields() {
-        useMocks();
-        String jsonRequest = '{ ' +
-            '"id": "00Q000000000999",' +
-            '"propertyAccounts": [{ ' +
-            '   "leadId": "00Q000000000999" ' +
-            ' }] ' +
-            '}';
-        controller.patchApplication(jsonRequest);
-
-        System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when no utility account logs are provided');
-    }
-
-    @IsTest
-    private static void testPatchApplicationNoUALFields() {
-        useMocks();
-        String jsonRequest = '{ ' +
-            '"id": "00Q000000000999",' +
-            '"propertyAccounts": [{ ' +
-                '"leadId": "00Q000000000999", ' +
-                '"id": "' + Util.getFakeId(Schema.Account.SObjectType) + '", ' +
-                '"utilityAccountLogs": [' +
-                    '{ "id": "' + Util.getFakeId(Schema.Utility_Account_Log__c.SObjectType) + '" }' +
-                ' ]}] ' +
-            ' }';
-        controller.patchApplication(jsonRequest);
-
-        System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when no patchable fields are provided');
-    }
-
-    @IsTest
     private static void testPatchApplicationSuccess() {
         useMocks();
         String jsonRequest = '{' +
@@ -723,12 +680,14 @@ public with sharing class CSLeadsRESTControllerV2Test {
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
                 Lead newLead = new Lead();
                 newLead.Email = SAMPLE_EMAIL;
-                if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000111') {
-                    return null;
-                } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000999') {
-                    newLead.Application_Complete_Date__c = Datetime.newInstance(2017, 1, 1);
-                } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000888') {
-                    newLead.Id = '00Q000000000888';
+                if(!listOfArgs.isEmpty() && listOfArgs.get(0) != null) {
+                    if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000111') {
+                        return null;
+                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000999') {
+                        newLead.Application_Complete_Date__c = Datetime.newInstance(2017, 1, 1);
+                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000888') {
+                        newLead.Id = '00Q000000000888';
+                    }
                 }
                 if(stubbedMethodName == 'selectOneWithPropertiesAndUtilities') {
                     String leadMapJson = '{ ' +
@@ -802,19 +761,23 @@ public with sharing class CSLeadsRESTControllerV2Test {
             switch on stubbedMethodName {
                 when 'selectOne' {
                     Account newAccount = new Account();
-                    if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000111') {
-                        return null;
-                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000888') {
-                        newAccount.Id = '001000000000888';
-                        newAccount.Lead__c = Util.getFakeId(Schema.Lead.SObjectType);
+                    if(!listOfArgs.isEmpty() && listOfArgs.get(0) != null) {
+                        if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000111') {
+                            return null;
+                        } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000888') {
+                            newAccount.Id = '001000000000888';
+                            newAccount.Lead__c = Util.getFakeId(Schema.Lead.SObjectType);
+                        }
                     }
                     return newAccount;
 
                 }
                 when 'selectPropertyAccountsByLeadIds' {
                     for (Id leadId : (Set<Id>) listOfArgs.get(0)) {
-                        if (String.valueOf(leadId).substring(0,15) == '00Q000000000999') {
-                            return new List<Account>{new Account()};
+                        if(!listOfArgs.isEmpty() && listOfArgs.get(0) != null) {
+                            if (String.valueOf(leadId).substring(0,15) == '00Q000000000999') {
+                                return new List<Account>{new Account()};
+                            }
                         }
                     }
                 }
@@ -851,6 +814,19 @@ public with sharing class CSLeadsRESTControllerV2Test {
             if (String.valueOf(listOfArgs.get(0)).substring(0,15) == 'a1b000000000111') {
                 return null;
             }
+
+            switch on stubbedMethodName {
+                when 'selectOne' {
+                    return new Utility_Account_Log__c();
+                }
+                when 'selectAll' {
+                    return new List<Utility_Account_Log__c>{new Utility_Account_Log__c()};
+                } 
+                when 'selectAllMap'{
+                    return new Map<Id, Utility_Account_Log__c>{Util.getFakeId(Schema.Utility_Account_Log__c.SObjectType) => new Utility_Account_Log__c()};
+                }
+            }
+            
             return new Utility_Account_Log__c();
         }
     }
