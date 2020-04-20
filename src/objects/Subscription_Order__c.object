@@ -415,7 +415,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
     <fields>
         <fullName>System_Change_Percent_Share_of_System__c</fullName>
         <externalId>false</externalId>
-        <formula>ROUND(  Previous_kw_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
+        <formula>ROUND(   System_Change_kW_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>System Change Percent Share of System</label>
         <precision>18</precision>
