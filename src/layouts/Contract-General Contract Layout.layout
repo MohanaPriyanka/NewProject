@@ -305,10 +305,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Entity_Contract_Junction__c.Contract__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <relatedList>Related_Contract_Parties__c.Contract__c</relatedList>
     </relatedLists>
     <relatedLists>
