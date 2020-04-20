@@ -79,7 +79,7 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
             // be used for small data sets or as a preview:
             dataQueryToUpdate.Data_From_Zuora__c = dataAsString.substring(0, Math.min(dataAsString.length(), 131000));
             dataQueryToUpdate.Output_Rows__c = zuoraQueryResult.data.outputRows;
-            if (dataAsString != '{}') {
+            if (dataAsString != '{}' && dataQueryToUpdate.Processing_Parameter__c != null) {
                 ZuoraDataQueryService.ProcessingParameter processingParameter =
                     (ZuoraDataQueryService.ProcessingParameter) JSON.deserialize(dataQueryToUpdate.Processing_Parameter__c, ZuoraDataQueryService.ProcessingParameter.class);
                 ZuoraDataQueryService.handlePostQueryJob(dataAsString, processingParameter);

@@ -192,7 +192,7 @@ public class ZuoraOutstandingItemsService {
     }
 
     public static List<ZuoraAPI.Invoice> getOutstandingInvoices(String zuoraAcctId) {
-        String queryString = invoiceSelector.getByAccountId(zuoraAcctId) + 'AND balance > 0';
+        String queryString = invoiceSelector.getByAccountId(zuoraAcctId) + 'AND Status = \'Posted\' AND balance > 0';
         String response = ZuoraAPIHelper.query(queryString,false);
         QueryResultInvoice queriedInvoices = (QueryResultInvoice)JSON.deserialize(response, QueryResultInvoice.class);
         return queriedInvoices.Records;
