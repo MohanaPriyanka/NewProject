@@ -274,7 +274,7 @@
         <summaryFilterItems>
             <field>Transfer_Part__c.Type__c</field>
             <operation>equals</operation>
-            <value>Transfer, Unsubscribed Credits</value>
+            <value>Transfer</value>
         </summaryFilterItems>
         <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
@@ -466,16 +466,6 @@
         <externalId>false</externalId>
         <label>kWh Transferred</label>
         <summarizedField>Transfer_Part__c.kWh_Amount__c</summarizedField>
-        <summaryFilterItems>
-            <field>Transfer_Part__c.Type__c</field>
-            <operation>equals</operation>
-            <value>Transfer, Unsubscribed Credits</value>
-        </summaryFilterItems>
-        <summaryFilterItems>
-            <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </summaryFilterItems>
         <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackTrending>false</trackTrending>

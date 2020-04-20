@@ -212,7 +212,6 @@
         <externalId>false</externalId>
         <label>Journal Entry</label>
         <referenceTo>Journal_Entry__c</referenceTo>
-        <relationshipLabel>Transfer Parts</relationshipLabel>
         <relationshipName>Transfer_Parts</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -298,9 +297,9 @@ FALSE)</formula>
                     <label>Payment</label>
                 </value>
                 <value>
-                    <fullName>Externally Serviced</fullName>
+                    <fullName>Unserviced</fullName>
                     <default>false</default>
-                    <label>Externally Serviced</label>
+                    <label>Unserviced</label>
                 </value>
                 <value>
                     <fullName>Bill</fullName>
@@ -317,7 +316,6 @@ FALSE)</formula>
         <inlineHelpText>Utility Bill Line Item that created Transfer Part for historical data</inlineHelpText>
         <label>Utility Bill Line Item (TEMP)</label>
         <referenceTo>Utility_Bill_Line_Item__c</referenceTo>
-        <relationshipLabel>Transfer Parts</relationshipLabel>
         <relationshipName>Transfer_Parts</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
