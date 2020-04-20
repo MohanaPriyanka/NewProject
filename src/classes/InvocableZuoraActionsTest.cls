@@ -218,8 +218,7 @@ public with sharing class InvocableZuoraActionsTest {
     }
 
     @IsTest public static void testBillingBatch() {
-        Date invoiceDate = Date.newInstance(2019,02,15);
-        List<String> response = InvocableZuoraBillingBatchUpdate.billingBatchUpdate(new List<Date>{invoiceDate});
+        List<String> response = InvocableZuoraBillingBatchUpdate.billingBatchUpdate();
         System.assertEquals(1,response.size());
     }
 
@@ -227,5 +226,23 @@ public with sharing class InvocableZuoraActionsTest {
         Date invoiceDate = Date.newInstance(2019,02,15);
         List<Integer> recordCount = InvocableZuoraBillPeriodStatus.billStatusUpdate(New List<Date>{invoiceDate});
         System.assertEquals(0,recordCount[0]);
+    }
+
+    @IsTest public static void testApplyPayments() {
+        List<Zuora_Data_Query__c> beforeQueries = [
+            SELECT Id
+            FROM Zuora_Data_Query__c
+        ];
+        System.assertEquals(0,beforeQueries.size());
+
+        Test.startTest();
+            InvocableZuoraPaymentApplication.paymentApplication();
+        Test.stopTest();
+
+        List<Zuora_Data_Query__c> afterQueries = [
+            SELECT Id
+            FROM Zuora_Data_Query__c
+        ];
+        System.assertEquals(1,afterQueries.size());
     }
 }

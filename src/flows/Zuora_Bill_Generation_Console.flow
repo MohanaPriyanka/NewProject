@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>ApplyPaymentsAction</name>
+        <label>ApplyPaymentsAction</label>
+        <locationX>2250</locationX>
+        <locationY>69</locationY>
+        <actionName>InvocableZuoraPaymentApplication</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Update_Bill_Period_Status</targetReference>
+        </connector>
+    </actionCalls>
+    <actionCalls>
         <name>BillingBatchUpdate</name>
         <label>BillingBatchUpdate</label>
         <locationX>760</locationX>
@@ -10,12 +21,6 @@
         <connector>
             <targetReference>Template_Assigner_Screen</targetReference>
         </connector>
-        <inputParameters>
-            <name>invoiceDates</name>
-            <value>
-                <elementReference>Invoice_Date</elementReference>
-            </value>
-        </inputParameters>
     </actionCalls>
     <actionCalls>
         <description>Makes API call to Zuora to execute a bill run, which gets outstanding usage and creates invoices.</description>
@@ -60,7 +65,7 @@
         <actionName>InvocableZuoraPaperMailSend</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Update_Bill_Period_Status</targetReference>
+            <targetReference>Apply_Unapplied_Payments_Screen</targetReference>
         </connector>
     </actionCalls>
     <actionCalls>
@@ -78,8 +83,8 @@
     <actionCalls>
         <name>Update_Bill_Period_Status</name>
         <label>Update Bill Period Status</label>
-        <locationX>2127</locationX>
-        <locationY>573</locationY>
+        <locationX>2251</locationX>
+        <locationY>572</locationY>
         <actionName>InvocableZuoraBillPeriodStatus</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -323,9 +328,46 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_Bill_Period_Status</targetReference>
+                <targetReference>Apply_Unapplied_Payments_Screen</targetReference>
             </connector>
             <label>Skip Paper Mail Outcome</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Skip_Payment_Apply</name>
+        <label>Skip Payment Apply</label>
+        <locationX>2158</locationX>
+        <locationY>291</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Skip_Payment_Apply_TRUE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Unapplied_Payments</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Bill_Period_Status</targetReference>
+            </connector>
+            <label>Skip Payment Apply</label>
+        </rules>
+        <rules>
+            <name>Don_t_Skip_Payment_Apply</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Unapplied_Payments</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ApplyPaymentsAction</targetReference>
+            </connector>
+            <label>Don&apos;t Skip Payment Apply</label>
         </rules>
     </decisions>
     <decisions>
@@ -430,10 +472,42 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>Apply_Unapplied_Payments_Screen</name>
+        <label>Apply Unapplied Payments</label>
+        <locationX>2047</locationX>
+        <locationY>585</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Skip_Payment_Apply</targetReference>
+        </connector>
+        <fields>
+            <name>Apply_Unapplied_Payments</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Apply Unapplied Payments&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Sometimes we see paper check overpayments that should be applied among newly created invoices and debit memos.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skip_Unapplied_Payments</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Skip Unapplied Payments</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>UnappliedCMp</name>
+            <extensionName>c:BillStatusComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Done_SCreen</name>
         <label>Done</label>
-        <locationX>2274</locationX>
-        <locationY>573</locationY>
+        <locationX>2414</locationX>
+        <locationY>571</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>

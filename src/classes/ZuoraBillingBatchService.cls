@@ -2,29 +2,21 @@
 
 public with sharing class ZuoraBillingBatchService {
     @TestVisible
-    private AccountsSelector accountsSelector = new AccountsSelector();
-    @TestVisible
     private ZuoraAccountSelector zuoraAcctSelector = new ZuoraAccountSelector();
 
     public static final String PRE_BILLING_BATCH = 'Batch1';
     public static final String BILLING_BATCH = 'Batch2';
     public static final String FINISHED_BILLING_BATCH = 'Batch3';
 
-    public ZuoraAPI.ActionItems updateAccountBatches(Date invoiceDate) {
+    public ZuoraAPI.ActionItems updateAccountBatches() {
         ZuoraAPI.ActionItems actionItem = new ZuoraAPI.ActionItems();
         actionItem.type = 'Account';
-
         try {
-            // We only want to get customers who have UASBs from the current period
-            // We expect usage to be uploaded in the past few days, but we set to be 15 just to be safe.
-            // Don't want to set to be > 30, because then may pick up usage from a previous period
-            Date cutoffDate = invoiceDate.addDays(-15);
-            Map<Id, Integer> accountsWithUsage = accountsSelector.selectAccountsWithUASBs(cutoffDate);
+            Set<String> accountsWithUsage = getAccountsWithPendingUsage();
             List<Zuora__CustomerAccount__c> allAccounts = zuoraAcctSelector.getAllBillingAccounts();
-
             for (Zuora__CustomerAccount__c account : allAccounts){
                 ZuoraAPI.ZuoraAccount zAccount = new ZuoraAPI.ZuoraAccount();
-                Boolean hasUsage = accountsWithUsage.containsKey(account.Zuora__Account__c);
+                Boolean hasUsage = accountsWithUsage.contains(account.Zuora__Zuora_Id__c);
                 if (account.Zuora__Batch__c != BILLING_BATCH && hasUsage){
                     zAccount.Id = account.Zuora__Zuora_Id__c;
                     zAccount.Batch = BILLING_BATCH;
@@ -46,5 +38,19 @@ public with sharing class ZuoraBillingBatchService {
                 Logger.ERROR);
         }
         return actionItem;
+    }
+
+    private class UsageQuery{
+        public List<ZuoraUsageService.ZuoraUsage> records;
+    }
+
+    private static Set<String> getAccountsWithPendingUsage(){
+        Set<String> accountsWithUsage = new Set<String>();
+        String response = ZuoraAPIHelper.query('SELECT AccountId FROM Usage WHERE rbeStatus = \'Pending\'',false);
+        UsageQuery queryResult = (UsageQuery) JSON.deserialize(response, UsageQuery.class);
+        for (ZuoraUsageService.ZuoraUsage usage : queryResult.records){
+            accountsWithUsage.add(usage.AccountId);
+        }
+        return accountsWithUsage;
     }
 }
