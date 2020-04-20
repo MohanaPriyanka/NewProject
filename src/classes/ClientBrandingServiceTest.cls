@@ -1,6 +1,7 @@
 /**
  * Created by JordanPentaleri on 1/30/2020.
  */
+
 @IsTest
 public with sharing class ClientBrandingServiceTest {
     @TestSetup
@@ -10,22 +11,28 @@ public with sharing class ClientBrandingServiceTest {
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
         );
+
         Utility__c nationalGrid = new Utility__c(
             Name = 'National Grid',
             Number_of_Decimal_Places__c = 2
         );
+
         insert new List<Utility__c>{eversource, nationalGrid};
+
         Load_U__c everLZU = new Load_U__c(
             Name = '02633',
             LZ__c = 'SEMA',
             Town__c = 'Medfield');
+
         Load_U__c ngridLZU = new Load_U__c(
             Name = '01570',
             LZ__c = 'WCMA',
             Town__c = 'Westtown');
+
         insert new List<Load_U__c>{
             everLZU, ngridLZU
         };
+
         ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
             Load_Zone_Utility__c = everLZU.Id,
             Utility__c = eversource.Id
@@ -35,27 +42,32 @@ public with sharing class ClientBrandingServiceTest {
             Utility__c = nationalGrid.Id
         );
         insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo};
+
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(
             Name = 'Eversource SEMA Class 2',
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1848,
             Current_Billing_Rate__c = TRUE);
+
         Utility_NMC_Tariff__c ngridbillNMC = new Utility_NMC_Tariff__c(
             Name = 'National Grid WCMA Class 2 Billing Rate',
             Utility__c = 'National Grid',
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1848,
             Current_Billing_Rate__c = TRUE);
+
         Utility_NMC_Tariff__c ngridsizeNMC = new Utility_NMC_Tariff__c(
             Name = 'National Grid WCMA Class 2 Sizing Rate',
             Utility__c = 'National Grid',
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1848,
             Sizing_Rate__c = TRUE);
+
         insert new List<Utility_NMC_Tariff__c>{
             everbillNMC, ngridsizeNMC, ngridbillNMC
         };
+
         Product2 normalCSProduct = new Product2(
             Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
@@ -84,6 +96,7 @@ public with sharing class ClientBrandingServiceTest {
             Client_Brand_Key__c = 'BluewaveLogo'
         );
         insert new List<Account>{clientAccount1, clientAccount2, clientAccount3};
+
         ChargentBase__Gateway__c chGateway =
             new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
                 ChargentBase__Merchant_ID__c = '235986',
@@ -93,16 +106,19 @@ public with sharing class ClientBrandingServiceTest {
                 ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
                 ChargentBase__Active__c = TRUE);
         insert chGateway;
+
         Entity__c entity1 = new Entity__c(
             Name = 'Project A Oak Road',
             Client_Account__c = clientAccount1.Id,
             Gateway__c = chGateway.Id);
         insert entity1;
+
         Entity__c entity2 = new Entity__c(
             Name = 'Project B Main St',
             Client_Account__c = clientAccount2.Id,
             Gateway__c = chGateway.Id);
         insert entity2;
+
         Shared_Solar_System__c sss1 =
             new Shared_Solar_System__c(Name = 'Project A Oak Road',
                 Service_Territory__c = 'SEMA',
@@ -124,6 +140,7 @@ public with sharing class ClientBrandingServiceTest {
                 BWC_Project_Entity_Manual__c = entity1.Id,
                 Maximum_Subscription_Assemblage__c = 25,
                 Utility__c = eversource.Id);
+
         Shared_Solar_System__c sss2 =
             new Shared_Solar_System__c(Name = 'Project B Main St',
                 Service_Territory__c = 'SEMA',
@@ -144,16 +161,21 @@ public with sharing class ClientBrandingServiceTest {
                 BWC_Project_Entity_Manual__c = entity2.Id,
                 Maximum_Subscription_Assemblage__c = 25,
                 Utility__c = eversource.Id);
+
         insert new List<Shared_Solar_System__c>{sss1, sss2};
+
         String firstName1 = 'acA';
         String firstName2 = 'acB';
         String firstName3 = 'acC';
+
         String lastName1 = 'A';
         String lastName2 = 'B';
         String lastName3 = 'C';
+
         String accountName1 = firstName1 + ' ' + lastname1;
         String accountName2 = firstName2 + ' ' + lastname2;
         String accountName3 = firstName3 + ' ' + lastname3;
+
         Account accountParent1 = new Account(
             Name = accountName1,
             Client_Brand_Key__c = 'AmpBlack'
@@ -162,9 +184,11 @@ public with sharing class ClientBrandingServiceTest {
             Name = accountName2,
             Client_Brand_Key__c = 'BlueWaveLogo'
         );
+
         insert new List<Account>{
             accountParent1, accountParent2
         };
+
         Account propAccount1 = new Account(
             name = accountName1,
             Client_Brand_Key__c = 'BluewaveLogo',
@@ -180,9 +204,11 @@ public with sharing class ClientBrandingServiceTest {
             Client_Brand_Key__c = 'AmpBlack',
             Parent_Account__c = accountParent2.Id
         );
+
         insert new List<Account>{
             propAccount1, propAccount2, propAccount3
         };
+
         Utility_Account_Log__c ualog1 = new Utility_Account_Log__c(
             Name = '0000234',
             Account__c = propAccount1.Id,
@@ -203,9 +229,11 @@ public with sharing class ClientBrandingServiceTest {
             Account__c = propAccount3.Id,
             Annual_Cost_of_Electricity__c = 10000,
             Name_on_Account__c = accountName3);
+
         insert new List<Utility_Account_Log__c>{
             ualog1, ualog2, ualog3, ualog4
         };
+
         Opportunity opportunity1 = new Opportunity(
             Name = accountName1 + '_SSS1',
             AccountId = propAccount1.Id,
@@ -254,9 +282,11 @@ public with sharing class ClientBrandingServiceTest {
             Customer_Group__c = 'Residential',
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
+
         insert new List<Opportunity>{
             opportunity1, opportunity2, opportunity3, opportunity4, opportunity5, opportunity6
         };
+
         Utility_Account_Subscription__c uas1 = new Utility_Account_Subscription__c(
             Name = '0000234',
             Utility_Account_Log__c = ualog1.Id,
@@ -305,10 +335,12 @@ public with sharing class ClientBrandingServiceTest {
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400
         );
+
         insert new List<Utility_Account_Subscription__c>{
             uas1, uas2, uas3, uas4, uas5, uas6
         };
     }
+
     @IsTest
     private static void testGetBrandKeysByAccount() {
         Set<Id> parentAcctIds = new Set<Id>();
@@ -323,25 +355,31 @@ public with sharing class ClientBrandingServiceTest {
         }
         System.assertEquals(2,parentAcctIds.size());
         System.assertEquals(3,propertyAccounts.size());
+
         UASSelector uasSelector = new UASSelector();
         List<AggregateResult> uasSummary = uasSelector.getBrandKeySummary(parentAcctIds);
         System.assertEquals(5,uasSummary.size());
+
         ClientBrandingService brandingService = new ClientBrandingService();
+
         // Even though an entity is set to AmpRed, the SSS override field makes it AmpBlack:
         Map<Id, Account> acctMap = brandingService.getPropertyAccountBrandKey(uasSummary);
         System.assertEquals('AmpBlack', acctMap.get(propertyAccounts[0].Id).Client_Brand_Key__c);
         System.assertEquals('AmpBlack', acctMap.get(propertyAccounts[1].Id).Client_Brand_Key__c);
         System.assertEquals('AmpBlack', acctMap.get(propertyAccounts[2].Id).Client_Brand_Key__c);
+
         Map<Id, Account> newAcctMap = brandingService.getParentAccountBrandKey(acctMap);
         System.assertEquals('AmpBlack', newAcctMap.get(propertyAccounts[0].Id).Client_Brand_Key__c);
         System.assertEquals('AmpBlack', newAcctMap.get(propertyAccounts[1].Id).Client_Brand_Key__c);
         System.assertEquals('AmpBlack', newAcctMap.get(propertyAccounts[2].Id).Client_Brand_Key__c);
         System.assertEquals('AmpBlack', newAcctMap.get(propertyAccounts[0].Parent_Account__c).Client_Brand_Key__c);
         System.assertEquals('AmpBlack', newAcctMap.get(propertyAccounts[2].Parent_Account__c).Client_Brand_Key__c);
+
         List<Account> acctsToUpdate = brandingService.checkForDifferences(newAcctMap);
         // 2 of the 5 accounts already have Client_Brand_Key = AmpBlack
         System.assertEquals(3, acctsToUpdate.size());
     }
+
     @IsTest
     private static void testHandleEvent() {
         List<Shared_Solar_System__c> sss = [
@@ -353,6 +391,7 @@ public with sharing class ClientBrandingServiceTest {
         Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
         sss[0].Client_Brand_Key__c = null;
         update sss[0];
+
         List<Account> oldPropertyAccounts = [
             SELECT Id, Name, Parent_Account__c, Client_Brand_Key__c
             FROM Account
@@ -363,6 +402,7 @@ public with sharing class ClientBrandingServiceTest {
         System.assertEquals('BluewaveLogo',oldPropertyAccounts[0].Client_Brand_Key__c);
         System.assertEquals('BluewaveLogo',oldPropertyAccounts[1].Client_Brand_Key__c);
         System.assertEquals('AmpBlack',oldPropertyAccounts[2].Client_Brand_Key__c);
+
         List<Subscription_Change_Event__e> eventList = new List<Subscription_Change_Event__e>();
         for (Account acct : oldPropertyAccounts){
             Subscription_Change_Event__e eventOne = new Subscription_Change_Event__e(
@@ -373,6 +413,7 @@ public with sharing class ClientBrandingServiceTest {
         Test.startTest();
         EventBus.publish(eventList);
         Test.stopTest();
+
         List<Account> updatedPropertyAccounts = [
             SELECT Id, Name, Parent_Account__c, Client_Brand_Key__c
             FROM Account
@@ -382,6 +423,7 @@ public with sharing class ClientBrandingServiceTest {
         System.assertEquals('AmpRed',updatedPropertyAccounts[0].Client_Brand_Key__c);
         System.assertEquals('BluewaveLogo',updatedPropertyAccounts[1].Client_Brand_Key__c);
         System.assertEquals('BluewaveLogo',updatedPropertyAccounts[2].Client_Brand_Key__c);
+
         List<Account> updatedParentAccounts = [
             SELECT Id, Name, Parent_Account__c, Client_Brand_Key__c
             FROM Account
@@ -394,6 +436,7 @@ public with sharing class ClientBrandingServiceTest {
         System.assertEquals('BluewaveLogo',updatedParentAccounts[0].Client_Brand_Key__c);
         System.assertEquals('BluewaveLogo',updatedParentAccounts[1].Client_Brand_Key__c);
     }
+
     @IsTest
     private static void testOpportunityTrigger() {
         Shared_Solar_System__c sss1 = [
@@ -407,6 +450,7 @@ public with sharing class ClientBrandingServiceTest {
         sss1.Client_Brand_Key__c = null;
         update sss1;
         System.assertEquals('AmpRed',sss1.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c);
+
         Shared_Solar_System__c sss2 = [
             SELECT Id, Client_Brand_Key__c, BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c
             FROM Shared_Solar_System__c
@@ -426,13 +470,16 @@ public with sharing class ClientBrandingServiceTest {
         System.assertEquals('BluewaveLogo',opportunities[1].Account.Client_Brand_Key__c);
         System.assertEquals('AmpBlack',opportunities[2].Account.Client_Brand_Key__c);
         System.assertEquals('AmpBlack',opportunities[3].Account.Client_Brand_Key__c);
+
         for (Opportunity opptny : opportunities){
             opptny.Shared_Solar_System__c = sss2.Id;
             oppIdList.add(opptny.Id);
         }
+
         Test.startTest();
             update opportunities;
         Test.stopTest();
+
         List<Opportunity> updatedOpps = [
             SELECT Id, Account.Client_Brand_Key__c
             FROM Opportunity
@@ -445,6 +492,7 @@ public with sharing class ClientBrandingServiceTest {
         System.assertEquals('AmpBlack',updatedOpps[2].Account.Client_Brand_Key__c);
         System.assertEquals('AmpBlack',updatedOpps[3].Account.Client_Brand_Key__c);
     }
+
     @IsTest
     private static void testSSSTrigger() {
         List<Account> oldPropertyAccounts = [
@@ -456,6 +504,7 @@ public with sharing class ClientBrandingServiceTest {
         System.assertEquals('BluewaveLogo',oldPropertyAccounts[0].Client_Brand_Key__c);
         System.assertEquals('BluewaveLogo',oldPropertyAccounts[1].Client_Brand_Key__c);
         System.assertEquals('AmpBlack',oldPropertyAccounts[2].Client_Brand_Key__c);
+
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Client_Brand_Key__c
             FROM Shared_Solar_System__c
@@ -463,9 +512,11 @@ public with sharing class ClientBrandingServiceTest {
         for (Shared_Solar_System__c sss : sssList){
             sss.Client_Brand_Key__c = 'AmpRed';
         }
+
         Test.startTest();
             update sssList;
         Test.stopTest();
+
         List<Account> updatedPropertyAccounts = [
             SELECT Id, Name, Parent_Account__c, Client_Brand_Key__c
             FROM Account
