@@ -104,14 +104,14 @@
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
+            <componentName>forceChatter:recordFeedContainer</componentName>
+        </componentInstances>
+        <componentInstances>
             <componentInstanceProperties>
                 <name>hideHeader</name>
                 <value>false</value>
             </componentInstanceProperties>
             <componentName>force:relatedListQuickLinksContainer</componentName>
-        </componentInstances>
-        <componentInstances>
-            <componentName>forceChatter:recordFeedContainer</componentName>
         </componentInstances>
         <mode>Replace</mode>
         <name>sidebar</name>
