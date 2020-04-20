@@ -684,18 +684,6 @@
         <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
-        <excludeButtons>MassChangeOwner</excludeButtons>
-        <excludeButtons>New</excludeButtons>
-        <fields>NAME</fields>
-        <fields>Date_Approved__c</fields>
-        <fields>Approval_Status__c</fields>
-        <fields>Total_System_Size_kW_DC__c</fields>
-        <fields>Yield__c</fields>
-        <relatedList>Shared_Solar_System_Order__c.Shared_Solar_System__c</relatedList>
-        <sortField>Date_Approved__c</sortField>
-        <sortOrder>Asc</sortOrder>
-    </relatedLists>
-    <relatedLists>
         <fields>NAME</fields>
         <fields>Bill_Number__c</fields>
         <fields>Opportunity_Id__c</fields>
@@ -737,6 +725,18 @@
         <fields>Percentage__c</fields>
         <relatedList>Milestone__c.Shared_Solar_System__c</relatedList>
         <sortField>Milestone_Date__c</sortField>
+        <sortOrder>Asc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>New</excludeButtons>
+        <fields>NAME</fields>
+        <fields>Date_Approved__c</fields>
+        <fields>Approval_Status__c</fields>
+        <fields>Total_System_Size_kW_DC__c</fields>
+        <fields>Yield__c</fields>
+        <relatedList>Shared_Solar_System_Order__c.Shared_Solar_System__c</relatedList>
+        <sortField>Date_Approved__c</sortField>
         <sortOrder>Asc</sortOrder>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
