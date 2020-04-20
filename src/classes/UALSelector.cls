@@ -2,7 +2,7 @@
  * Created by jlugo on 2019-07-10.
  * Tested by system tests in RESTRouterV2Test.
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UALSelector {
     public Utility_Account_Log__c selectOne(Id utilityAccountLogId) {
         List<Utility_Account_Log__c> uals = this.selectAll(new Set<Id>{utilityAccountLogId});

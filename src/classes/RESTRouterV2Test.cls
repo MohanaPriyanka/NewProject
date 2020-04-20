@@ -528,38 +528,11 @@ public with sharing class RESTRouterV2Test {
         req.httpMethod = 'PATCH';
         req.addHeader('Content-Type', 'application/json');
 
-        String applicationJson = '{' +
-            '"id": "' + postResponseLead.get('id') + '",' +
-            '"streetAddress": "9 Test Avenue",' +
-            '"propertyAccounts": [' +
-            '   { ' +
-            '       "id": "' + postResponsePropertyAccount.get('id') + '",' +
-            '       "leadId": "' + postResponseLead.get('id') + '",' +
-            '       "name": "99999",' +
-            '       "billingStreet": "99 Test St",' +
-            '       "billingCity": "Ninenine",' +
-            '       "billingState": "MA",' +
-            '       "billingPostalCode": "99999",' +
-            '       "zuoraPaymentRefId": "mock-zuoraId",' +
-            '       "zuoraPaymentRefIdExpirationDate": "2040-02-15T12:00:00Z",' +
-            '       "utilityAccountLogs": [' +
-            '           { ' +
-            '               "id": "' + postResponseUAL.get('id') + '",' +
-            '               "leadId": "' + postResponseLead.get('id') + '",' +
-            '               "propertyAccountId": "' + postResponsePropertyAccount.get('id') + '",' +
-            '               "utilityAccountNumber": "999999",' +
-            '               "nameOnAccount": "Test Name",' +
-            '               "serviceStreet": "999 Test Blvd",' +
-            '               "serviceCity": "Nineninenine",' +
-            '               "serviceState": "MA",' +
-            '               "servicePostalCode": "99999",' +
-            '               "annualKWh": 9000,' +
-            '               "annualCostOfElectricity": 90000' +
-            '           } ' +
-            '       ] ' +
-            '   }' +
-            '] ' +
-            '}';
+        String applicationJson = getApplicationJson(
+            (Id)postResponseLead.get('id'), 
+            (Id)postResponsePropertyAccount.get('id'), 
+            (Id)postResponseUAL.get('id')
+        );
 
         req.requestBody = Blob.valueOf(applicationJson);
 
@@ -594,6 +567,41 @@ public with sharing class RESTRouterV2Test {
                 System.assertNotEquals(postResponseUAL.containsKey(key) ? postResponseUAL.get(key) : null, patchResponseUAL.get(key), 'The updated utility account log ' + key + ' field value should not match the original field value');
             }
         }
+    }
+
+    private static String getApplicationJson(Id leadId, Id acctId, Id ualId) {
+        return '{' +
+        '"id": "' + leadId + '",' +
+        '"streetAddress": "9 Test Avenue",' +
+        '"propertyAccounts": [' +
+        '   { ' +
+        '       "id": "' + acctId + '",' +
+        '       "leadId": "' + leadId + '",' +
+        '       "name": "99999",' +
+        '       "billingStreet": "99 Test St",' +
+        '       "billingCity": "Ninenine",' +
+        '       "billingState": "MA",' +
+        '       "billingPostalCode": "99999",' +
+        '       "zuoraPaymentRefId": "mock-zuoraId",' +
+        '       "zuoraPaymentRefIdExpirationDate": "2040-02-15T12:00:00Z",' +
+        '       "utilityAccountLogs": [' +
+        '           { ' +
+        '               "id": "' + ualId + '",' +
+        '               "leadId": "' + leadId + '",' +
+        '               "propertyAccountId": "' + acctId + '",' +
+        '               "utilityAccountNumber": "999999",' +
+        '               "nameOnAccount": "Test Name",' +
+        '               "serviceStreet": "999 Test Blvd",' +
+        '               "serviceCity": "Nineninenine",' +
+        '               "serviceState": "MA",' +
+        '               "servicePostalCode": "99999",' +
+        '               "annualKWh": 9000,' +
+        '               "annualCostOfElectricity": 90000' +
+        '           } ' +
+        '       ] ' +
+        '   }' +
+        '] ' +
+        '}';
     }
 
     @IsTest
