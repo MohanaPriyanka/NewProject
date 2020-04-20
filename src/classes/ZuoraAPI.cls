@@ -762,6 +762,7 @@ public with sharing class ZuoraAPI {
         // Populated by a DataQuery result
         public String CrmId;
         public String GatewayResponse;
+        public Decimal unappliedAmount;
     }
 
     public class ArchivedChargentData {
