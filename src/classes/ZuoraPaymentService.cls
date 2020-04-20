@@ -64,7 +64,7 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
         return application;
     }
 
-    public static void getPaymentsWithUnappliedBalance(){
+    public static void getAndApplyPaymentsWithUnappliedBalance(){
         ZuoraDataQueryService.ProcessingParameter parameter = new ZuoraDataQueryService.ProcessingParameter();
         parameter.className = 'ZuoraPaymentService';
         String queryString = 'SELECT p.Id, p.accountid, p.unappliedamount, p.paymentmethodid, p.status ' +
@@ -108,6 +108,7 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
             }
         } catch (Exception excep){
             Logger.logNow('ZuoraPaymentService','executeApplyJob',excep.getMessage()+ '_' + excep.getStackTraceString()+ '_' + JSON.serialize(paymentsToApply));
+
         }
     }
 
