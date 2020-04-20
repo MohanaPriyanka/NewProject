@@ -56,7 +56,6 @@
         component.set('v.getInfo', false);
         component.set('v.getPayment', false);
         component.set('v.showComplete', true);
-        console.log('all complete code run');
     }
 
 });
