@@ -3,7 +3,9 @@
  * Tested By: ZuoraPaymentServiceTest, ZuoraPaymentPageControllerTest
  */
 
-public with sharing class ZuoraPaymentService {
+public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.Processor, Queueable, Database.AllowsCallouts {
+    public List<ZuoraAPI.Payment> paymentsToApply;
+
     public void applyPaymentToBalance(ZuoraAPI.Payment successfulPayment){
         List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
         outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemParentsByDate(successfulPayment.accountId);
@@ -62,4 +64,56 @@ public with sharing class ZuoraPaymentService {
         return application;
     }
 
+    public static void getPaymentsWithUnappliedBalance(){
+        ZuoraDataQueryService.ProcessingParameter parameter = new ZuoraDataQueryService.ProcessingParameter();
+        parameter.className = 'ZuoraPaymentService';
+        String queryString = 'SELECT p.Id, p.accountid, p.unappliedamount, p.paymentmethodid, p.status ' +
+            'FROM Payment p ' +
+            'INNER JOIN Account a ON p.accountid = a.Id ' +
+            'WHERE (p.unappliedamount > 0 AND p.status = \'Processed\') ' +
+            'AND (a.totalinvoicebalance > 0 OR a.totaldebitmemobalance > 0 )';
+        ZuoraDataQueryService.callFromApex(queryString, parameter);
+    }
+
+    public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
+        paymentsToApply = (List<ZuoraAPI.Payment>)JSON.deserialize(response, List<ZuoraAPI.Payment>.class);
+        for (ZuoraAPI.Payment payment : paymentsToApply){
+            // We only want to distribute the unapplied amount, not the full amount in this case
+            // Payment.Amount in Zuora will not and can not be updated by this change:
+            payment.amount = payment.unappliedamount;
+        }
+        queueApplyJob(paymentsToApply);
+    }
+
+    public void execute(QueueableContext context) {
+        executeApplyJob();
+    }
+
+    private void executeApplyJob() {
+        try {
+            Integer recordCount = 0;
+            Integer batchSize = 10;
+            List<ZuoraAPI.Payment> nextJobQueue = new List<ZuoraAPI.Payment>();
+
+            for (ZuoraAPI.Payment payment : paymentsToApply) {
+                if (recordCount >= batchSize) {
+                    nextJobQueue.add(payment);
+                } else {
+                    applyPaymentToBalance(payment);
+                }
+                recordCount += 1;
+            }
+            if (recordCount >= batchSize) {
+                queueApplyJob(nextJobQueue);
+            }
+        } catch (Exception excep){
+            Logger.logNow('ZuoraPaymentService','executeApplyJob',excep.getMessage()+ '_' + excep.getStackTraceString()+ '_' + JSON.serialize(paymentsToApply));
+        }
+    }
+
+    private static void queueApplyJob(List<ZuoraAPI.Payment> paymentsToQueue){
+        ZuoraPaymentService applyJob = new ZuoraPaymentService();
+        applyJob.paymentsToApply = paymentsToQueue;
+        System.enqueueJob(applyJob);
+    }
 }
