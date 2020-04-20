@@ -14,7 +14,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible protected LeadSelector leadSelector = new LeadSelector();
     @TestVisible private AccountsSelector accountsSelector = new AccountsSelector();
     @TestVisible private UALSelector ualSelector = new UALSelector();
-    @TestVisible private String baseUrl = Url.getOrgDomainUrl().toExternalForm() + '/apply/s/switch';
+    @TestVisible private String baseUrl = Util.getCommunitySiteURL('Apply') + '/s/switch';
 
     
     public virtual void getLead(String leadId, String email) {
