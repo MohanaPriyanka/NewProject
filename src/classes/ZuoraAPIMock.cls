@@ -48,6 +48,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getRatePlan();
         } else if (endpoint.contains('v1/action/query') && req.getBody().contains(' FROM PaymentMethod')) {
             return getActionQueryPayMethod(req.getBody());
+        } else if (endpoint.contains('v1/action/query') && req.getBody().contains(' FROM Usage')) {
+            return getActionQueryUsage(req.getBody());
         } else if (endpoint.contains('v1/action/query')) {
             return getActionQuery(req.getBody());
         } else if (endpoint.contains('v1/action/delete')) {
@@ -404,6 +406,15 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         res.setBody('{"records":[{"Id":"2c92c0f869330b78016949ef5a7517ab","Name":"Cash"},' +
             '{"Id":"2c92c0f869330b78016949ef5a7517cc","Name":"Credit Card"},' +
             '{"Id":"2c92c0f869330b78016949ef5a7517dd","Name":"Check"}],"size":3,"done":true}');
+        return res;
+    }
+
+    public static HttpResponse getActionQueryUsage(String body){
+        HttpResponse res = getJSON();
+        res.setBody('{"records":[' +
+            '{"AccountId":"xxxxxxxxxx123"},' +
+            '{"AccountId":"xxxxxxxxxx456"},' +
+            '{"AccountId":"xxxxxxxxxx789"}],"done":true,"size":3}');
         return res;
     }
 
