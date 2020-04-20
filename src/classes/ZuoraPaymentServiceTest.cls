@@ -151,7 +151,7 @@ public with sharing class ZuoraPaymentServiceTest {
         System.assertEquals(0,beforeQueries.size());
 
         Test.startTest();
-        ZuoraPaymentService.getPaymentsWithUnappliedBalance();
+        ZuoraPaymentService.getAndApplyPaymentsWithUnappliedBalance();
         Test.stopTest();
 
         List<Zuora_Data_Query__c> afterQueries = [
@@ -188,7 +188,6 @@ public with sharing class ZuoraPaymentServiceTest {
             FROM Error_Log__c
             WHERE Method__c = 'callJsonEndpoint'
         ];
-
         System.assertEquals(0,beforeLogs.size());
 
         Test.startTest();
@@ -201,7 +200,6 @@ public with sharing class ZuoraPaymentServiceTest {
             FROM Error_Log__c
             WHERE Method__c = 'callJsonEndpoint'
         ];
-        system.debug(afterLogs);
 
         Boolean paymentApp = false;
         for (Error_Log__c log : afterLogs){
