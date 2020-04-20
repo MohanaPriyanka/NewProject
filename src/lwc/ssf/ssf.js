@@ -16,6 +16,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track showSpinner = false;
     @track spinnerMessage;
     @track getZip;
+    @track enterEmail;
     @track getBasicInfo;
     @track getAgreements;
     @track hasCapacity;
@@ -33,14 +34,18 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             this.utilityOptions = [];
         }
 
-        if(this.pageRef && this.pageRef.state && this.pageRef.state.leadid && this.pageRef.state.email) {
+        if(this.pageRef && this.pageRef.state && this.pageRef.state.leadid) {
             this.getZip = false;
             this.leadId = this.pageRef.state.leadid;
-            this.email = this.pageRef.state.email;
-            if(!this.leadJSON) {
-                this.getLead();
+            if(this.pageRef.state.email) {
+                this.email = this.pageRef.state.email;
+                if(!this.leadJSON) {
+                    this.getLead();
+                } else {
+                    this.getBasicInfo = true;
+                }
             } else {
-                this.getBasicInfo = true;
+                this.enterEmail = true;
             }
         } else {
             this.getZip = true;
@@ -78,24 +83,41 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                             }
                         );
                     }
-                    this.getBasicInfo = true;
+                    
+                    let resolveResult = JSON.parse(this.leadJSON);
+                    this.enterEmail = false;
+                    if(!resolveResult.customerSignedDate) {
+                        this.getBasicInfo = true;
+                    } else if(!resolveResult.applicationCompleteDate) {
+                        this.dispatchEvent(new CustomEvent('consentscomplete', { detail: resolveResult }));
+                    } else {
+                        this.dispatchEvent(new CustomEvent('allcomplete', { detail: resolveResult }));
+                    }
                 }
             )
             .catch(
                 (rejectResult) => {
                     this.showSpinner = false;
-                    insertLog({
-                        className: 'ssf',
-                        methodName: 'getLead',
-                        message: JSON.stringify(rejectResult),
-                        severity: 'Error'
-                    });
-                    const evt = new ShowToastEvent({
-                        title: 'Sorry, we ran into a technical problem',
-                        message: 'Please contact Customer Care for help',
-                        variant: 'warning'
-                    });
-                    this.dispatchEvent(evt);
+                    let fail = JSON.parse(rejectResult);
+                    if(fail.errors && fail.errors[0].substr(0,21) === 'Invalid authorization') {
+                        this.dispatchEvent(new ShowToastEvent({
+                            title: 'Authentication Failure',
+                            message: 'The email address you provided does not match the application on file.',
+                            variant: 'warning'
+                        }));
+                    } else {
+                        insertLog({
+                            className: 'ssf',
+                            methodName: 'getLead',
+                            message: rejectResult,
+                            severity: 'Error'
+                        });
+                        this.dispatchEvent(new ShowToastEvent({
+                            title: 'Sorry, we ran into a technical problem',
+                            message: 'Please contact Customer Care for help',
+                            variant: 'warning'
+                        }));
+                    }
                 }
             );
     }
@@ -120,7 +142,11 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             const inputBox = this.template.querySelector('lightning-input');
             inputBox.reportValidity();
             if(inputBox.checkValidity()) {
-                this.submitZip();
+                if(this.getZip) {
+                    this.submitZip();
+                } else if(this.enterEmail) {
+                    this.getLead();
+                }
             }
         }
     }
@@ -183,6 +209,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         this.leadJSON = JSON.stringify(event.detail);
         this.getAgreements = true;
         this.getBasicInfo = false;
+        this.enterEmail = false;
     }
 
     handleConsentsComplete(event) {

@@ -63,5 +63,10 @@
             }
         );
 
+    },
+
+    showComplete: function(component, event, helper) {
+        console.log('all complete event received');
+        helper.showFinalPage(component);
     }
 });

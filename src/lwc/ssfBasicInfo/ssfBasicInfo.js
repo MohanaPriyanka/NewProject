@@ -192,17 +192,12 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             return;
         }
 
-        console.log('same billing? ' + this.sameBillingAddress);
         if (this.sameBillingAddress) {
-            console.log('original billing: ' + this.propertyAccount.billingStreet + ', ' + this.propertyAccount.billingCity + ', ' + this.propertyAccount.billingState + ' ' + this.propertyAccount.billingPostalCode);
-            console.log('first service: ' + this.propertyAccount.utilityAccountLogs[0].serviceStreet + ', ' + this.propertyAccount.utilityAccountLogs[0].serviceCity + ', ' + this.propertyAccount.utilityAccountLogs[0].serviceState + ' ' + this.propertyAccount.utilityAccountLogs[0].servicePostalCode);
             this.propertyAccount.billingStreet = this.propertyAccount.utilityAccountLogs[0].serviceStreet;
             this.propertyAccount.billingCity = this.propertyAccount.utilityAccountLogs[0].serviceCity;
             this.propertyAccount.billingState = this.propertyAccount.utilityAccountLogs[0].serviceState;
             this.propertyAccount.billingPostalCode = this.propertyAccount.utilityAccountLogs[0].servicePostalCode;
-            console.log('new billing: ' + this.propertyAccount.billingStreet + ', ' + this.propertyAccount.billingCity + ', ' + this.propertyAccount.billingState + ' ' + this.propertyAccount.billingPostalCode);
         }
-        console.log('same home? ' + this.sameHomeAddress);
         if (this.sameHomeAddress) {
             this.restLead.streetAddress = this.propertyAccount.utilityAccountLogs[0].serviceStreet;
             this.restLead.city = this.propertyAccount.utilityAccountLogs[0].serviceCity;
@@ -223,7 +218,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if(!this.leadJson) {
             this.createLead(this.restLead).then(
                 (resolveResult) => {
-                    console.log(resolveResult);
                     this.dispatchEvent(new CustomEvent('leadcreated', {detail: resolveResult}));
                     this.showSpinner = false;
                 },
