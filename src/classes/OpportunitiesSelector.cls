@@ -53,7 +53,7 @@ public without sharing class OpportunitiesSelector {
             LIMIT 1
         ];
     }
-    public Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
+    public  Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
         Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
             SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.Name
             FROM Opportunity
