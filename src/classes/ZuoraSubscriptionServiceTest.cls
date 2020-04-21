@@ -95,6 +95,8 @@ public with sharing class ZuoraSubscriptionServiceTest {
 
     @IsTest
     public static void testDataLoad() {
+        ZuoraSubscriptionAsyncService.featureService =
+            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
         asyncService.initForDataLoad();
         // There should be enough subscriptions to require queueable invocation
@@ -119,6 +121,8 @@ public with sharing class ZuoraSubscriptionServiceTest {
 
     @IsTest
     public static void testTimeout() {
+        ZuoraSubscriptionAsyncService.featureService =
+            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
         asyncService.initForDataLoad();
         // There should be enough subscriptions to require queueable invocation
@@ -386,10 +390,17 @@ public with sharing class ZuoraSubscriptionServiceTest {
     }
 
     @IsTest
-    private static void testGetAllRatePlanChargesByAcpcountId() {
+    private static void testGetAllRatePlanChargesByAccountId() {
         Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
             ZuoraSubscriptionService.getAllRatePlanChargesByAccountId('');
         System.assertEquals(1, ratePlanChargesByChargeId.size(), 'Mock just returns a single rate plan charge');
         System.assertEquals('SSS-000099', ratePlanChargesByChargeId.get('2c92c0f96ae3b195016ae5e3665e0c08').Project_Zcustom);
+    }
+
+    @IsTest
+    private static void testGetSubscriptionsByAccount() {
+        ZuoraAPI.SubscriptionsByAccount sba = new ZuoraSubscriptionService().getSubscriptionsByAccount('');
+        System.assertEquals(3, sba.subscriptions.size(), 'Mock should have 3 subscriptions, 2 active and one cancelled');
+        System.assertEquals(2, sba.getClientProjects().size(), 'Mock should have 2 client projects, one for each of the active subscriptions');
     }
 }
