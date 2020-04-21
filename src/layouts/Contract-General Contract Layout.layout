@@ -58,10 +58,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Payment_Methods__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Pricebook2Id</field>
             </layoutItems>
         </layoutColumns>
@@ -306,10 +302,6 @@
         <fields>Actor</fields>
         <fields>Comments</fields>
         <relatedList>RelatedProcessHistoryList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>Entity_Contract_Junction__c.Contract__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
