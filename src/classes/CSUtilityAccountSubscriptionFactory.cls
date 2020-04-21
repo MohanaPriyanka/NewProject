@@ -156,7 +156,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
             Subscription_Order__c so = new Subscription_Order__c(
                 Type__c = 'Initial',
                 Change_in_Annual_kWh__c = annualElectricityCapacityAssigned,
-                Effective_Date__c = Date.today(),
+                Effective_Date__c = System.now(),
                 Approval_Status__c = 'Approved'
             );
             order.sOrder = so;
@@ -170,7 +170,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
             Subscription_Order__c so = new Subscription_Order__c(
                 Type__c = 'Initial',
                 Change_in_Annual_Cost__c = annualElectricityCostAssigned,
-                Effective_Date__c = Date.today(),
+                Effective_Date__c = System.now(),
                 Approval_Status__c = 'Approved'
             );
             order.sOrder = so;
