@@ -306,8 +306,12 @@ public with sharing class ZuoraAPI {
     public class Subscription {
         public List<OrderAction> orderActions;
         public String subscriptionNumber;
-        public Integer baseVersion;
-        public Integer newVersion;
+        public String id;
+        public String accountId;
+        public String status;
+        public String PaymentGateway_Zcustom;
+        public List<RatePlan> ratePlans;
+
         public Subscription() {
             orderActions = new List<OrderAction>();
         }
@@ -326,6 +330,16 @@ public with sharing class ZuoraAPI {
             }
             return orderActions[0].getClientProject();
         }
+        public Set<ZuoraSubscriptionService.ClientProject> getClientProjectsFromRatePlans() {
+            if (ratePlans == null || ratePlans.isEmpty()) {
+                throw new Util.BWException('Did not expect a Subscription without a rate plan: ' + JSON.serialize(this));
+            }
+            Set<ZuoraSubscriptionService.ClientProject> clientProjects = new Set<ZuoraSubscriptionService.ClientProject>();
+            for (RatePlan ratePlan : ratePlans) {
+                clientProjects.addAll(ratePlan.getClientProjects());
+            }
+            return clientProjects;
+        }
         public OrderAction getCreateSubscription() {
             for (OrderAction orderAction : orderActions) {
                 if (orderAction.type_Zreserved == 'CreateSubscription') {
@@ -333,6 +347,42 @@ public with sharing class ZuoraAPI {
                 }
             }
             return null;
+        }
+    }
+
+    public class RatePlan {
+        public String id;
+        public List<RatePlanCharge> ratePlanCharges;
+
+        public Set<ZuoraSubscriptionService.ClientProject> getClientProjects() {
+            if (ratePlanCharges == null || ratePlanCharges.isEmpty()) {
+                throw new Util.BWException('Did not expect a Rate Plan with no changes: ' + id);
+            }
+            Set<ZuoraSubscriptionService.ClientProject> clientProjects = new Set<ZuoraSubscriptionService.ClientProject>();
+            for (RatePlanCharge ratePlanCharge : ratePlanCharges) {
+                clientProjects.add(ratePlanCharge.getClientProject());
+            }
+            return clientProjects;
+        }
+    }
+
+    // https://www.zuora.com/developer/api-reference/#operation/GET_SubscriptionsByAccount
+    public class SubscriptionsByAccount {
+        public List<Subscription> subscriptions;
+        public Boolean success;
+        public String nextPage;
+
+        public Set<ZuoraSubscriptionService.ClientProject> getClientProjects() {
+            Set<ZuoraSubscriptionService.ClientProject> clientProjects = new Set<ZuoraSubscriptionService.ClientProject>();
+            if (subscriptions == null || subscriptions.isEmpty()) {
+                return clientProjects;
+            }
+            for (Subscription subscr : subscriptions) {
+                if (subscr.status == 'Active') {
+                    clientProjects.addAll(subscr.getClientProjectsFromRatePlans());
+                }
+            }
+            return clientProjects;
         }
     }
 
@@ -346,6 +396,7 @@ public with sharing class ZuoraAPI {
     public class OrderAction {
         public CreateSubscription createSubscription;
         public AddProduct addProduct;
+        public CancelSubscription cancelSubscription;
         public List<TriggerDate> triggerDates;
         public String type_Zreserved;
         public Integer sequence;
@@ -373,6 +424,15 @@ public with sharing class ZuoraAPI {
             AddProduct addProduct = new AddProduct(productRatePlanId);
             this.addProduct = addProduct;
             return addProduct;
+        }
+        public CancelSubscription addCancelSubscription(Date cancellationDate) {
+            if (this.cancelSubscription != null) {
+                throw new Util.BWException('Tried to add a CancelSubscription object to an OrderAction with an existing CancelSubscription object');
+            }
+            CancelSubscription cancelSubscription = new CancelSubscription();
+            cancelSubscription.cancellationEffectiveDate = cancellationDate;
+            this.cancelSubscription = cancelSubscription;
+            return cancelSubscription;
         }
         public ZuoraSubscriptionService.ClientProject getClientProject() {
             ZuoraSubscriptionService.ClientProject clientProject;
@@ -493,6 +553,11 @@ public with sharing class ZuoraAPI {
             }
             return subscribeToRatePlans[0].getClientProject();
         }
+    }
+
+    public class CancelSubscription {
+        public String cancellationPolicy = 'SpecificDate';
+        public Date cancellationEffectiveDate;
     }
 
     public class InitialTerm {
@@ -678,6 +743,10 @@ public with sharing class ZuoraAPI {
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
         public String id;
+
+        public ZuoraSubscriptionService.ClientProject getClientProject() {
+            return new ZuoraSubscriptionService.ClientProject(this.ClientOwner_Zcustom, this.Project_Zcustom);
+        }
     }
 
     // Used to create, but not to query for debit memos:
