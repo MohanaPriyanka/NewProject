@@ -134,152 +134,36 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     public virtual void patchApplication(String jsonRequest) {
         RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
         RestResponse response = RestContext.response;
-        Savepoint sp = Database.setSavepoint();
-        
-        RestLead lead = updateLead(jsonRequest, response);
-        Account propertyAccount = new Account();
 
-        if(lead != null && requestLead.propertyAccounts != null) {
-            if(requestLead.propertyAccounts.size() > 1) {
-                envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
+        if (applicationValid(jsonRequest, response)) { // check for null, propertyAccount.size(), etc. 
+            Savepoint sp = Database.setSavepoint();
+            try {
+                updateLead(jsonRequest);
+                updateAccount(jsonRequest);
+                updateUtilityAccountLogs(jsonRequest);
+
+                Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(requestLead.id);
+                RestLead responseLead = new RestLead(leadToReturn);
+                responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{new RestLead.RestPropertyAccount(leadToReturn.Accounts__r[0])};
+                List<RestLead.RestUtilityAccountLog> ualForReturn = new List<RestLead.RestUtilityAccountLog>();
+                for(Utility_Account_Log__c ual : leadToReturn.Utility_Account_Logs__r) {
+                    ualForReturn.add(new RestLead.RestUtilityAccountLog(ual));
+                }
+                responseLead.propertyAccounts.get(0).utilityAccountLogs = ualForReturn;
+                envelope.setData(responseLead);
+                response.statusCode = statusCode.ok;
+            } catch (Util.BWException bwe) {
+                envelope.addError(bwe.getMessage());
                 response.statusCode = statusCode.badRequest;
-            } else {
-                propertyAccount = updateAccount(JSON.serialize(requestLead.propertyAccounts.get(0)), response);
+                Database.rollback(sp);
+            } catch (Exception e) {
+                envelope.addError(e.getMessage());
+                response.statusCode = statusCode.internalServerError;
+                Database.rollback(sp);
             }
-
-            if(response.statusCode == null && propertyAccount != null && requestLead.propertyAccounts.get(0).utilityAccountLogs != null) {
-                updateUtilityAccountLogs(JSON.serialize(requestLead.propertyAccounts.get(0)), response);
-            }
-        }
-
-        if(response.statusCode != null) {
-            Database.rollback(sp);
-        } else {
-            Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(lead.id);
-            RestLead responseLead = new RestLead(leadToReturn);
-            responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{new RestLead.RestPropertyAccount(leadToReturn.Accounts__r[0])};
-            List<RestLead.RestUtilityAccountLog> ualForReturn = new List<RestLead.RestUtilityAccountLog>();
-            for(Utility_Account_Log__c ual : leadToReturn.Utility_Account_Logs__r) {
-                ualForReturn.add(new RestLead.RestUtilityAccountLog(ual));
-            }
-            responseLead.propertyAccounts.get(0).utilityAccountLogs = ualForReturn;
-            envelope.setData(responseLead);
-            response.statusCode = statusCode.ok;
         }
         
         envelope.setJSONResponse(response);
-    }
-
-    private RestLead updateLead(String jsonRequest, RestResponse response) {
-        RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
-        Lead leadToUpdate = leadSelector.selectOne(requestLead.id);
-        Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
-        
-        if(leadToUpdate == null) {
-            response.statusCode = statusCode.notFound;
-        } else if(requestMap.size() <= 1) { // if == 1, then only has "id", which is not enough fields for a PATCH
-            envelope.addError('Request did not include correct fields to update');
-            response.statusCode = statusCode.badRequest;
-        } else {
-            try {
-                requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
-                Lead lead = leadService.updateLead(leadToUpdate);
-                RestLead responseLead = new RestLead(lead);
-                return responseLead;
-            } catch(Exception ex) {
-                envelope.addError(ex.getMessage());
-                response.statusCode = statusCode.internalServerError;
-            }
-        }
-        return null;
-    }
-
-    private Account updateAccount(String jsonRequest, RestResponse response) {
-        RestLead.RestPropertyAccount requestPropertyAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
-        Account requestAccount = accountsSelector.selectOne(requestPropertyAccount.id);
-        Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
-
-        try {
-            if(requestMap.size() <= 1) { // if == 1, then only has "id", which is not enough fields for a PATCH
-                envelope.addError('Request did not include correct fields to update');
-                response.statusCode = statusCode.badRequest;
-            } else if(requestAccount != null) {
-                requestPropertyAccount.mergeFields(requestMap.keySet(), requestAccount);
-                return accountService.updateAccount(requestAccount);
-            } else if(checkFieldValidity(response, requestPropertyAccount, 'RestLead.RestPropertyAccount')){
-                Lead parentLead = leadSelector.selectOne(requestPropertyAccount.leadId);
-                requestAccount = requestPropertyAccount.asAccount(parentLead);
-                return accountService.insertAccount(requestAccount);
-            }
-        } catch(Exception ex) {
-            envelope.addError(ex.getMessage());
-            response.statusCode = statusCode.internalServerError;
-        }
-        return null;
-    }
-
-    private void updateUtilityAccountLogs(String jsonRequest, RestResponse response) {
-        RestLead.RestPropertyAccount requestPropertyAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
-        Account parentPropertyAccount = accountsSelector.selectOne(requestPropertyAccount.id);
-        List<RestLead.RestUtilityAccountLog> requestUALs = requestPropertyAccount.utilityAccountLogs;
-        Set<Id> ualIdSet = new Set<Id>();
-        for(RestLead.RestUtilityAccountLog ual : requestUALs) {
-            ualIdSet.add(ual.id);
-        }
-        Map<Id, Utility_Account_Log__c> requestUalMap = ualSelector.selectAllMap(ualIdSet);
-        List<Utility_Account_Log__c> ualForUpsert = new List<Utility_Account_Log__c>();
-        
-        try {
-            for(RestLead.RestUtilityAccountLog ual : requestUALs) {
-                Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(ual));
-                if(requestMap.size() <= 1) { // if == 1, then only has "id", which is not enough fields for a PATCH
-                    continue;
-                } else if(requestUalMap.containsKey(ual.id)) {
-                    Utility_Account_Log__c ualToUpdate = requestUalMap.get(ual.id);
-                    ual.mergeFields(requestMap.keySet(), ualToUpdate);
-                    ualForUpsert.add(ualToUpdate);
-                } else if(checkFieldValidity(response, ual, 'RestLead.RestUtilityAccountLog')) {
-                    Utility_Account_Log__c ualToInsert = ual.asUAL(parentPropertyAccount);
-                    ualForUpsert.add(ualToInsert);
-                }
-            }
-            ualService.upsertUALs(ualForUpsert);
-        } catch(Exception ex) {
-            envelope.addError(ex.getMessage());
-            response.statusCode = statusCode.internalServerError;
-        }
-    }
-
-    private Boolean checkFieldValidity(RestResponse response, Object inputRecord, String type) {
-        switch on type {
-            when 'RestLead.RestPropertyAccount' {
-                RestLead.RestPropertyAccount rpa = (RestLead.RestPropertyAccount)inputRecord;
-                try {
-                    rpa.validateCreateFields();
-                }  catch (Util.BWException e) {
-                    envelope.addError(e.getMessage());
-                    response.statusCode = statusCode.badRequest;
-                    return false;
-                }
-            }
-            when 'RestLead.RestUtilityAccountLog' {
-                RestLead.RestUtilityAccountLog rual = (RestLead.RestUtilityAccountLog)inputRecord;
-                try {
-                    rual.validateCreateFields();
-                }  catch (Util.BWException e) {
-                    envelope.addError(e.getMessage());
-                    response.statusCode = statusCode.badRequest;
-                    return false;
-                }
-            }
-            when else {
-                envelope.addError('Unable to validate fields for ' + type);
-                response.statusCode = statusCode.badRequest;
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public virtual void postLead(String jsonRequest) {
@@ -307,46 +191,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
 
-    }
-
-    private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
-        Lead newLead = requestLead.asLead();
-        newLead = leadService.insertLead(newLead);
-        newLead = duplicateService.checkLeadDuplicates(newLead);
-        if(String.isBlank(newLead.Continue_Application_Link__c)) {
-            newLead.Continue_Application_Link__c = baseUrl + '?leadid=' + newLead.Id + '&email=' + newLead.Email;
-        }
-        newLead = leadService.updateLead(newLead);
-        RestLead responseLead = new RestLead(newLead);
-
-        if (requestLead.propertyAccounts != null && !requestLead.propertyAccounts.isEmpty()) {
-            responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>();
-
-            // TODO: the following logic only handles (1) propertyAccount [e.g. 1:(1):many], until we incorporate
-            // unit-of-work (uow) approach.
-            // The commented code after this block is the "loop" logic that salesforce/pyao advises against using, but is a
-            // reference implementation (that we could verify against) for when we use the uow approach
-            // to support more than one propertyAccount.
-            Account newAccount = requestLead.propertyAccounts.get(0).asAccount(newLead);
-            newAccount = accountService.insertAccount(newAccount);
-            RestLead.RestPropertyAccount responsePropertyAccount = new RestLead.RestPropertyAccount(newAccount);
-            responseLead.propertyAccounts.add(responsePropertyAccount);
-
-            if (requestLead.propertyAccounts.get(0).utilityAccountLogs != null && !requestLead.propertyAccounts.get(0).utilityAccountLogs.isEmpty()) {
-                List<Utility_Account_Log__c> ualsToInsert = new List<Utility_Account_Log__c>();
-                for (RestLead.RestUtilityAccountLog requestUtilityAccountLog : requestLead.propertyAccounts.get(0).utilityAccountLogs) {
-                    ualsToInsert.add(requestUtilityAccountLog.asUAL(newAccount));
-                }
-
-                List<Utility_Account_Log__c> newUALs = ualService.insertUALs(ualsToInsert);
-                responsePropertyAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>();
-                for (Utility_Account_Log__c newUAL : newUALs) {
-                    responsePropertyAccount.utilityAccountLogs.add(new RestLead.RestUtilityAccountLog(newUAL));
-                }
-            }
-        }
-        envelope.setData(responseLead);
-        response.statusCode = statusCode.created;
     }
 
     public virtual void postPropertyAccount(String jsonRequest) {
@@ -446,4 +290,148 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         envelope.setData(zipCodeResponse);
         envelope.setJSONResponse(response);
     }
+
+
+    /********************   HELPER CLASSES  ********************/
+    private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
+        Lead newLead = requestLead.asLead();
+        newLead = leadService.insertLead(newLead);
+        newLead = duplicateService.checkLeadDuplicates(newLead);
+        if(String.isBlank(newLead.Continue_Application_Link__c)) {
+            newLead.Continue_Application_Link__c = baseUrl + '?leadid=' + newLead.Id + '&email=' + newLead.Email;
+        }
+        newLead = leadService.updateLead(newLead);
+        RestLead responseLead = new RestLead(newLead);
+
+        if (requestLead.propertyAccounts != null && !requestLead.propertyAccounts.isEmpty()) {
+            responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>();
+
+            // TODO: the following logic only handles (1) propertyAccount [e.g. 1:(1):many], until we incorporate
+            // unit-of-work (uow) approach.
+            // The commented code after this block is the "loop" logic that salesforce/pyao advises against using, but is a
+            // reference implementation (that we could verify against) for when we use the uow approach
+            // to support more than one propertyAccount.
+            Account newAccount = requestLead.propertyAccounts.get(0).asAccount(newLead);
+            newAccount = accountService.insertAccount(newAccount);
+            RestLead.RestPropertyAccount responsePropertyAccount = new RestLead.RestPropertyAccount(newAccount);
+            responseLead.propertyAccounts.add(responsePropertyAccount);
+
+            if (requestLead.propertyAccounts.get(0).utilityAccountLogs != null && !requestLead.propertyAccounts.get(0).utilityAccountLogs.isEmpty()) {
+                List<Utility_Account_Log__c> ualsToInsert = new List<Utility_Account_Log__c>();
+                for (RestLead.RestUtilityAccountLog requestUtilityAccountLog : requestLead.propertyAccounts.get(0).utilityAccountLogs) {
+                    ualsToInsert.add(requestUtilityAccountLog.asUAL(newAccount));
+                }
+
+                List<Utility_Account_Log__c> newUALs = ualService.insertUALs(ualsToInsert);
+                responsePropertyAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>();
+                for (Utility_Account_Log__c newUAL : newUALs) {
+                    responsePropertyAccount.utilityAccountLogs.add(new RestLead.RestUtilityAccountLog(newUAL));
+                }
+            }
+        }
+        envelope.setData(responseLead);
+        response.statusCode = statusCode.created;
+    }
+
+    private Boolean applicationValid(String jsonRequest, RestResponse response) {
+        RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
+        Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
+        Lead lead = leadSelector.selectOneWithPropertiesAndUtilities(requestLead.id);
+        if(lead == null) {
+            response.statusCode = statusCode.notFound;
+            return false;
+        }
+        
+        if(requestMap.size() <= 1 || !requestMap.containsKey('propertyAccounts') || requestLead.propertyAccounts.isEmpty()) {
+            envelope.addError('Request did not include correct objects/fields to update');
+            response.statusCode = statusCode.badRequest;
+            return false;
+        }
+        
+        RestLead.RestPropertyAccount requestAccount = requestLead.propertyAccounts.get(0);
+        Map<String, Object> accountMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(requestAccount));
+        if(accountMap.size() <= 1 || !accountMap.containsKey('utilityAccountLogs') || requestAccount.utilityAccountLogs == null || requestAccount.utilityAccountLogs.isEmpty()) {
+            envelope.addError('Request did not include correct objects/fields to update');
+            response.statusCode = statusCode.badRequest;
+            return false;
+        }
+
+        if(requestLead.propertyAccounts.size() > 1 || lead.Accounts__r.size() > 1 ||
+            (!lead.Accounts__r.isEmpty() && lead.Accounts__r[0].Id != requestAccount.id)
+        ) {
+            envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
+            response.statusCode = statusCode.badRequest;
+            return false;
+        }
+
+        return true;
+    }
+
+    private void updateLead(String jsonRequest) {
+        RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
+        Map<String, Object> requestMap = (Map<String, Object>)JSON.deserializeUntyped(jsonRequest);
+        Lead leadToUpdate = leadSelector.selectOne(requestLead.id);
+        requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
+        Lead lead = leadService.updateLead(leadToUpdate);
+    }
+
+    private void updateAccount(String jsonRequest) {
+        RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
+        RestLead.RestPropertyAccount requestPropertyAccount = requestLead.propertyAccounts.get(0);
+
+        Map<String, Object> requestMap = (Map<String, Object>)JSON.deserializeUntyped(jsonRequest);
+        List<Object> accountList = (List<Object>)requestMap.get('propertyAccounts');
+        Map<String, Object> accountMap = (Map<String, Object>)accountList.get(0);
+
+        Account requestAccount = accountsSelector.selectOne(requestPropertyAccount.id);
+
+        if(requestAccount != null) {
+            requestAccount = requestPropertyAccount.mergeFields(accountMap.keySet(), requestAccount);
+            Account a = accountService.updateAccount(requestAccount);
+        } else {
+            requestPropertyAccount.validateCreateFields();
+            Lead parentLead = leadSelector.selectOne(requestLead.id);
+            requestAccount = requestPropertyAccount.asAccount(parentLead);
+            Account a = accountService.insertAccount(requestAccount);
+        }
+    }
+
+    private void updateUtilityAccountLogs(String jsonRequest) {
+        RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
+        RestLead.RestPropertyAccount requestPropertyAccount = requestLead.propertyAccounts.get(0);
+        List<RestLead.RestUtilityAccountLog> requestUALs = requestPropertyAccount.utilityAccountLogs;
+
+        Map<String, Object> requestMap = (Map<String, Object>)JSON.deserializeUntyped(jsonRequest);
+        List<Object> accountList = (List<Object>)requestMap.get('propertyAccounts');
+        Map<String, Object> accountMap = (Map<String, Object>)accountList.get(0);
+        List<Object> ualList = (List<Object>)accountMap.get('utilityAccountLogs');
+
+        Account parentPropertyAccount = accountsSelector.selectOne(requestPropertyAccount.id);
+        Set<Id> ualIdSet = new Set<Id>();
+        for(RestLead.RestUtilityAccountLog ual : requestUALs) {
+            ualIdSet.add(ual.id);
+        }
+        Map<Id, Utility_Account_Log__c> requestUalMap = ualSelector.selectAllMap(ualIdSet);
+        List<Utility_Account_Log__c> ualForUpsert = new List<Utility_Account_Log__c>();
+        
+        for(Integer i=0; i<requestUALs.size(); i++) {
+            RestLead.RestUtilityAccountLog ual = requestUALs.get(i);
+            Map<String, Object> ualMap = (Map<String, Object>)ualList.get(i);
+            if(ualMap.size() <= 1) { // if == 1, then only has "id", which is not enough fields for a PATCH
+                continue;
+            } else if(requestUalMap.containsKey(ual.id)) {
+                Utility_Account_Log__c ualToUpdate = requestUalMap.get(ual.id);
+                ual.mergeFields(ualMap.keySet(), ualToUpdate);
+                ualForUpsert.add(ualToUpdate);
+            } else {
+                ual.validateCreateFields();
+                Utility_Account_Log__c ualToInsert = ual.asUAL(parentPropertyAccount);
+                ualForUpsert.add(ualToInsert);
+            }
+        }
+        ualService.upsertUALs(ualForUpsert);
+    }
+
+    
+
 }

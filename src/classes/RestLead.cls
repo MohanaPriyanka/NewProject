@@ -334,21 +334,21 @@ public without sharing class RestLead {
          * This is used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
          *
          * @param fieldNames Set of field names to PATCH
-         * @param baseLead Original Lead from the DB that this Lead's values with be patched on top of.
+         * @param baseAccount Original Property Account from the DB that this Account's values with be patched on top of.
          *
          * @return
          */
         @SuppressWarnings('PMD')
-        public Account mergeFields(Set<String> fieldNames, Account baseProperty) {
-            if (fieldNames.contains('name')) baseProperty.Name = this.name;
-            if (fieldNames.contains('billingStreet')) baseProperty.BillingStreet = this.billingStreet;
-            if (fieldNames.contains('billingCity')) baseProperty.BillingCity = this.billingCity;
-            if (fieldNames.contains('billingState')) baseProperty.BillingStateCode = this.billingState;
-            if (fieldNames.contains('billingPostalCode')) baseProperty.BillingPostalCode = this.billingPostalCode;
-            if (fieldNames.contains('zuoraPaymentRefId')) baseProperty.Zuora_Payment_Ref_Id__c = this.zuoraPaymentRefId;
-            if (fieldNames.contains('zuoraPaymentRefIdExpirationDate')) baseProperty.Zuora_Payment_Ref_Id_Expiration_Date__c = this.zuoraPaymentRefIdExpirationDate;
-    
-            return baseProperty;
+        public Account mergeFields(Set<String> fieldNames, Account baseAccount) {
+            if (fieldNames.contains('name')) baseAccount.Name = this.name;
+            if (fieldNames.contains('billingStreet')) baseAccount.BillingStreet = this.billingStreet;
+            if (fieldNames.contains('billingCity')) baseAccount.BillingCity = this.billingCity;
+            if (fieldNames.contains('billingState')) baseAccount.BillingStateCode = this.billingState;
+            if (fieldNames.contains('billingPostalCode')) baseAccount.BillingPostalCode = this.billingPostalCode;
+            if (fieldNames.contains('zuoraPaymentRefId')) baseAccount.Zuora_Payment_Ref_Id__c = this.zuoraPaymentRefId;
+            if (fieldNames.contains('zuoraPaymentRefIdExpirationDate')) baseAccount.Zuora_Payment_Ref_Id_Expiration_Date__c = this.zuoraPaymentRefIdExpirationDate;
+            
+            return baseAccount;
         }
 
     }
@@ -411,7 +411,7 @@ public without sharing class RestLead {
          * This is used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
          *
          * @param fieldNames Set of field names to PATCH
-         * @param baseLead Original Lead from the DB that this Lead's values with be patched on top of.
+         * @param baseUAL Original Utility Account Log from the DB that this UAL's values with be patched on top of.
          *
          * @return
          */

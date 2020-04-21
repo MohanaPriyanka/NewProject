@@ -544,8 +544,9 @@ public with sharing class RESTRouterV2Test {
         response = RestContext.response;
         jsonResponse = response.responseBody.toString();
         Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
         Map<String, Object> patchResponseLead = (Map<String,Object>) patchResponseEnvelope.get('data');
-
+        
         List<Object> patchResponsePropertyAccounts = (List<Object>) patchResponseLead.get('propertyAccounts');
         Map<String, Object> patchResponsePropertyAccount = (Map<String,Object>) patchResponsePropertyAccounts[0];
 
@@ -553,20 +554,33 @@ public with sharing class RESTRouterV2Test {
         Map<String, Object> patchResponseUAL = (Map<String,Object>) patchResponseUALs[0];
 
 
-        System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
         System.assertNotEquals(postResponseLead.get('streetAddress'), patchResponseLead.get('streetAddress'), 'The updated lead streetAddress field value should not match the original field value');
-        for(String key : patchResponsePropertyAccount.keySet()) {
-            Boolean isId = patchResponsePropertyAccount.get(key) instanceOf Id;
-            if(!isId && !key.contains('email')) {
-                System.assertNotEquals(postResponsePropertyAccount.containsKey(key) ? postResponsePropertyAccount.get(key) : null, patchResponsePropertyAccount.get(key), 'The updated property account ' + key + ' field value should not match the original field value');
-            }
+        for(String fieldName : updatedAccountFields()) {
+            System.assertNotEquals(postResponsePropertyAccount.get(fieldName), patchResponsePropertyAccount.get(fieldName), 'The updated property account ' + fieldName + ' field value should not match the original field value');
         }
-        for(String key : patchResponseUAL.keySet()) {
-            Boolean isId = patchResponseUAL.get(key) instanceOf Id;
-            if(!isId && !key.contains('email') && key != 'leadId') {
-                System.assertNotEquals(postResponseUAL.containsKey(key) ? postResponseUAL.get(key) : null, patchResponseUAL.get(key), 'The updated utility account log ' + key + ' field value should not match the original field value');
-            }
+        for(String fieldName : updatedUALFields()) {
+            System.assertNotEquals(postResponseUAL.get(fieldName), patchResponseUAL.get(fieldName), 'The updated utility account log ' + fieldName + ' field value should not match the original field value');
         }
+    }
+
+    private static List<String> updatedAccountFields() {
+        return new List<String>{
+            'billingStreet',
+            'billingCity',
+            'billingState',
+            'billingPostalCode'
+        };
+    }
+
+    private static List<String> updatedUALFields() {
+        return new List<String>{
+            'utilityAccountNumber',
+            'nameOnAccount',
+            'serviceStreet',
+            'serviceCity',
+            'serviceState',
+            'servicePostalCode'
+        };
     }
 
     private static String getApplicationJson(Id leadId, Id acctId, Id ualId) {
@@ -582,8 +596,6 @@ public with sharing class RESTRouterV2Test {
         '       "billingCity": "Ninenine",' +
         '       "billingState": "MA",' +
         '       "billingPostalCode": "99999",' +
-        '       "zuoraPaymentRefId": "mock-zuoraId",' +
-        '       "zuoraPaymentRefIdExpirationDate": "2040-02-15T12:00:00Z",' +
         '       "utilityAccountLogs": [' +
         '           { ' +
         '               "id": "' + ualId + '",' +
@@ -594,9 +606,7 @@ public with sharing class RESTRouterV2Test {
         '               "serviceStreet": "999 Test Blvd",' +
         '               "serviceCity": "Nineninenine",' +
         '               "serviceState": "MA",' +
-        '               "servicePostalCode": "99999",' +
-        '               "annualKWh": 9000,' +
-        '               "annualCostOfElectricity": 90000' +
+        '               "servicePostalCode": "99999"' +
         '           } ' +
         '       ] ' +
         '   }' +

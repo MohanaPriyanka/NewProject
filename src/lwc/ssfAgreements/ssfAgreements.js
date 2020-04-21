@@ -234,7 +234,6 @@ export default class SsfAgreements extends LightningElement {
                 }
             })
             .catch(error => {
-                console.log(error);
                 this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
                 window.clearInterval(this.documentPollerId);
                 window.clearTimeout(this.documentPollerTimeoutId);
