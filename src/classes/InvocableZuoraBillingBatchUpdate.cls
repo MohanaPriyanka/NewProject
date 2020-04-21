@@ -9,10 +9,7 @@ Limitations:
 
 public class InvocableZuoraBillingBatchUpdate {
     @InvocableMethod(label='BillingBatchUpdate')
-    public static List<String> billingBatchUpdate(){
-        ZuoraBillingBatchService service = new ZuoraBillingBatchService();
-        ZuoraAPI.ActionItems item = service.updateAccountBatches();
-        List<String> returnString = new List<String>{JSON.serialize(item.objects)};
-        return returnString;
+    public static void billingBatchUpdate(){
+        ZuoraBillingBatchService.queueDataQuery();
     }
 }

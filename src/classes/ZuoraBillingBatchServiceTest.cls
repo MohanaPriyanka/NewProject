@@ -7,9 +7,29 @@ public with sharing class ZuoraBillingBatchServiceTest {
     }
 
     @IsTest
+    public static void testQueueDataQuery() {
+        List<Zuora_Data_Query__c> beforeQueries = [
+            SELECT Id
+            FROM Zuora_Data_Query__c
+        ];
+        System.assertEquals(0,beforeQueries.size());
+
+        Test.startTest();
+            ZuoraBillingBatchService.queueDataQuery();
+        Test.stopTest();
+
+        List<Zuora_Data_Query__c> afterQueries = [
+            SELECT Id
+            FROM Zuora_Data_Query__c
+        ];
+        System.assertEquals(1,afterQueries.size());
+    }
+
+    @IsTest
     public static void testBatchUpdate() {
         useMocks();
-        ZuoraAPI.ActionItems actionItem = billBatchService.updateAccountBatches();
+        String mockDataQueryResult = '[{"AccountId":"xxxxxxxxxx123"},{"AccountId":"xxxxxxxxxx456"},{"AccountId":"xxxxxxxxxx789"}]';
+        ZuoraAPI.ActionItems actionItem = billBatchService.updateAccountBatches(mockDataQueryResult);
         System.assertEquals(3,actionItem.objects.size());
         for (Object obj : actionItem.objects){
             ZuoraAPI.ZuoraAccount account = (ZuoraAPI.ZuoraAccount) obj;

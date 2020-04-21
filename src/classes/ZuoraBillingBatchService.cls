@@ -1,6 +1,6 @@
 // Tested by ZuoraBillingBatchServiceTest
 
-public with sharing class ZuoraBillingBatchService {
+public with sharing class ZuoraBillingBatchService implements ZuoraDataQueryService.Processor {
     @TestVisible
     private ZuoraAccountSelector zuoraAcctSelector = new ZuoraAccountSelector();
 
@@ -8,11 +8,23 @@ public with sharing class ZuoraBillingBatchService {
     public static final String BILLING_BATCH = 'Batch2';
     public static final String FINISHED_BILLING_BATCH = 'Batch3';
 
-    public ZuoraAPI.ActionItems updateAccountBatches() {
+    public static void queueDataQuery(){
+        String queryString = 'SELECT us.AccountId FROM Usage us WHERE us.rbeStatus = \'Pending\' GROUP BY us.AccountId';
+        ZuoraDataQueryService.ProcessingParameter param = new ZuoraDataQueryService.ProcessingParameter();
+        param.className = 'ZuoraBillingBatchService';
+        ZuoraDataQueryService.callFromApex(queryString,param);
+    }
+
+    public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
+        updateAccountBatches(response);
+    }
+
+    @TestVisible
+    private ZuoraAPI.ActionItems updateAccountBatches(String dataQueryResponse) {
         ZuoraAPI.ActionItems actionItem = new ZuoraAPI.ActionItems();
         actionItem.type = 'Account';
         try {
-            Set<String> accountsWithUsage = getAccountsWithPendingUsage();
+            Set<String> accountsWithUsage = getAccountsWithPendingUsage(dataQueryResponse);
             List<Zuora__CustomerAccount__c> allAccounts = zuoraAcctSelector.getAllBillingAccounts();
             for (Zuora__CustomerAccount__c account : allAccounts){
                 ZuoraAPI.ZuoraAccount zAccount = new ZuoraAPI.ZuoraAccount();
@@ -40,15 +52,11 @@ public with sharing class ZuoraBillingBatchService {
         return actionItem;
     }
 
-    private class UsageQuery{
-        public List<ZuoraUsageService.ZuoraUsage> records;
-    }
-
-    private static Set<String> getAccountsWithPendingUsage(){
+    private Set<String> getAccountsWithPendingUsage(String response){
+        List<ZuoraUsageService.ZuoraUsage> usageList;
+        usageList = (List<ZuoraUsageService.ZuoraUsage>) System.JSON.deserialize(response, List<ZuoraUsageService.ZuoraUsage>.class);
         Set<String> accountsWithUsage = new Set<String>();
-        String response = ZuoraAPIHelper.query('SELECT AccountId FROM Usage WHERE rbeStatus = \'Pending\'',false);
-        UsageQuery queryResult = (UsageQuery) JSON.deserialize(response, UsageQuery.class);
-        for (ZuoraUsageService.ZuoraUsage usage : queryResult.records){
+        for (ZuoraUsageService.ZuoraUsage usage : usageList){
             accountsWithUsage.add(usage.AccountId);
         }
         return accountsWithUsage;
