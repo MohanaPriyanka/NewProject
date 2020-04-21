@@ -533,7 +533,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Change_in_Annual_kWh__c = 4000.1,
                 Type__c = 'Resize',
                 Approval_Status__c = 'Approved',
-                Effective_Date__c = System.today()
+                Effective_Date__c = System.now()
             );
             insert resize;
         } else {
