@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fieldOverrides>
-        <field>OwnerId</field>
-        <formula>$User.Id</formula>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>Priority</field>
-        <literalValue>Normal</literalValue>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>Status</field>
-        <literalValue>Completed</literalValue>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>Subject</field>
-        <formula>&quot;Call&quot;</formula>
-    </fieldOverrides>
-    <label>Log a Call</label>
+    <description>Used on Lightning layouts</description>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
         <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
@@ -28,7 +12,7 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>Description</field>
+                <field>ActivityDate</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
@@ -38,14 +22,7 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>WhatId</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-        </quickActionLayoutColumns>
-        <quickActionLayoutColumns>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>OwnerId</field>
+                <field>Status</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
@@ -54,7 +31,25 @@
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>true</emptySpace>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>OwnerId</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>WhatId</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
     </quickActionLayout>
+    <standardLabel>New</standardLabel>
+    <successMessage>Task Created!</successMessage>
     <targetObject>Task</targetObject>
     <targetParentField>What</targetParentField>
     <targetRecordType>Task.Standard_Tasks</targetRecordType>
