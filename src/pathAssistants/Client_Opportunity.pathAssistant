@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>Opportunity</entityName>
+    <fieldName>StageName</fieldName>
+    <masterLabel>Client Opportunity</masterLabel>
+    <pathAssistantSteps>
+        <info>&lt;ul&gt;&lt;li&gt;Determine why this opportunity is cancelled, if it was lost to a competitor, find out who and why they were chosen.  &lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-family: Calibri, sans-serif; font-size: 11pt;&quot;&gt;Present feedback internally as appropriate&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;</info>
+        <picklistValueName>Cancelled</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;ul&gt;&lt;li&gt;Host internal and external client onboarding meeting.  &lt;/li&gt;&lt;li&gt;Hand off projects to Data Operations Team for customer acquisition and management work to begin. &lt;/li&gt;&lt;/ul&gt;</info>
+        <picklistValueName>Complete</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;ul&gt;&lt;li&gt;Keep BCS Deal Team in the loop on contracting status. &lt;/li&gt;&lt;li&gt;Comment on Client&amp;#39;s redlines and present comments to legal for appropriate updates.  &lt;/li&gt;&lt;li&gt;Prepare SSSs as deal moves closer to finish line. &lt;/li&gt;&lt;/ul&gt;</info>
+        <picklistValueName>Contract Pending</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;ul&gt;&lt;li&gt;Keep BCS Deal Team in the loop on questions. &lt;/li&gt;&lt;li&gt;Prepare and send state specific customer acquisition and management agreements with pricing agreed upon at the time.  &lt;/li&gt;&lt;li&gt;Respond promptly to follow up communications. &lt;/li&gt;&lt;li&gt;Set up a face to face meeting, consider visiting their office. &lt;/li&gt;&lt;/ul&gt;</info>
+        <picklistValueName>Engaged in Proposal Details</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;ul&gt;&lt;li&gt;Get project/ portfolio details including utilities and timelines. &lt;/li&gt;&lt;li&gt;Get a sense of the financing behind the project and what their flexibility is for underwriting criteria around FICO on small CS and ratings for anchors. &lt;/li&gt;&lt;li&gt;Set up a portal demo if they are new to CS and need additional background on the servicing product. &lt;/li&gt;&lt;li&gt;Once project info is received, send a proposal within one week.&lt;/li&gt;&lt;/ul&gt;</info>
+        <picklistValueName>NDA Executed</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;ul&gt;&lt;li&gt;Present BlueWave&amp;#39;s background if client is unfamiliar with BlueWave. &lt;/li&gt;&lt;li&gt;Gather background information such as point of contact, company history, development experience, how many assets to they own and in which markets.  &lt;/li&gt;&lt;li&gt;Do they develop, buy projects or both?&lt;/li&gt;&lt;li&gt;Are they new to community solar? &lt;/li&gt;&lt;li&gt;What is their appetite for CS and what is their prospective pipeline?  &lt;/li&gt;&lt;li&gt;Look at upcoming industry events and find a place to meet face to face.&lt;/li&gt;&lt;/ul&gt;</info>
+        <picklistValueName>New</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;&lt;span style=&quot;font-family: Symbol; font-size: 10pt;&quot;&gt;·&lt;/span&gt;&lt;span style=&quot;font-size: 7pt;&quot;&gt;       &lt;/span&gt;Continue to check on portfolio status as appropriate.&lt;/p&gt;</info>
+        <picklistValueName>On Hold</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;ul&gt;&lt;li&gt;Send a dated proposal for a specific project, portfolio, or pipeline in mind. &lt;/li&gt;&lt;li&gt;Ask to setup a meeting for proposal feedback, follow up within one week if there is no response.  &lt;/li&gt;&lt;li&gt;Get a sense of the client&amp;#39;s decision making timeline, at what date do they expect to pick a servicer by.&lt;/li&gt;&lt;/ul&gt;</info>
+        <picklistValueName>Proposal</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>BW_Community_Solar_BCS</recordTypeName>
+</PathAssistant>

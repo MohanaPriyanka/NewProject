@@ -343,6 +343,16 @@
         </values>
     </businessProcesses>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>BW_Community_Solar_BCS</fullName>
+        <fields>Name</fields>
+        <fields>AccountId</fields>
+        <fields>System_Size__c</fields>
+        <fields>UtilityMapper__c</fields>
+        <fields>Community_Solar_State__c</fields>
+        <fields>NextStep</fields>
+        <label>BW Community Solar (BCS)</label>
+    </compactLayouts>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <externalSharingModel>Private</externalSharingModel>
@@ -9707,6 +9717,68 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <active>true</active>
         <businessProcess>BlueWave Capital</businessProcess>
         <label>BFG</label>
+        <picklistValues>
+            <picklist>ForecastCategoryName</picklist>
+            <values>
+                <fullName>Best Case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Closed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Commit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Omitted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pipeline</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>CS Acquisition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CS Acquisition%2FManagement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CS Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Existing Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Loan Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Loan Sales%2FWarehouse</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Warehouse</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
