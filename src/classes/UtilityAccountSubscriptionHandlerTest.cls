@@ -308,7 +308,7 @@ private class UtilityAccountSubscriptionHandlerTest {
                 Subscription_Order__c so = new Subscription_Order__c(
                     Utility_Account_Subscription__c = uasToUpdate.Id,
                     Type__c = 'Initial',
-                    Effective_Date__c = System.today(),
+                    Effective_Date__c = System.now(),
                     Approval_Status__c = 'Approved',
                     Change_in_Annual_kWh__c = 2000
                 );
