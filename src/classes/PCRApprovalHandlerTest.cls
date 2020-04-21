@@ -783,54 +783,6 @@ private class PCRApprovalHandlerTest {
             lead.Personal_Credit_Report__r.DTI_After__c);
     }
 
-    static testMethod void testJointApplication() {
-        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
-        Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
-
-        Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
-        mslp1.Program__c = 'MSLP';
-        mslp1.IBLS_Category__c = 'Category 1';
-
-        Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
-        mslp2.Program__c = 'MSLP';
-        mslp2.IBLS_Category__c = 'Category 2';
-        insert new List<Product2>{bwsl1, mslp1, mslp2};
-
-        // should add tests that go off lead debt fields...
-        String applicationJSON =
-            '{"application":[ ' +
-                '  {"key":1, "income":200001, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":401, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
-                '  {"key":2, "income":2, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":420, "coAppFico":401, "debt":500, "balance":10000, "expectedStatus":"Unqualified"}, ' +
-                '  {"key":3, "income":200002, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
-                '  {"key":4, "income":1, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "balance":10000, "expectedStatus":"Pre-Qualified"}, ' +
-                '  {"key":5, "income":10, "coAppIncome":200002, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":699, "coAppFico":699, "debt":500, "coAppDebt":10000, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"key":6, "income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"key":7, "income":200004, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"key":8, "income":6, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                '  {"key":9, "income":5, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
-                ']}';
-
-        ApplicationSet applicationSet = parse(applicationJSON);
-        applicationSet.insertLeads(partner.Id);
-        applicationSet.insertPCRs();
-        Test.startTest();
-        applicationSet.connectJointPCRs();
-        applicationSet.insertTradeAccounts();
-        applicationSet.insertCreditReportLogs();
-
-        Test.stopTest();
-
-        Map<Id, LASERCA__Personal_Credit_Report__c> pcrMap = new Map<Id, LASERCA__Personal_Credit_Report__c>([
-            SELECT Id, Name, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c, DTI_After__c,
-                LASERCA__Lead__r.Status, Credit_Denial_Email_Sent__c
-            FROM LASERCA__Personal_Credit_Report__c
-        ]);
-
-        for (Application app : ApplicationSet.application) {
-            app.assert(pcrMap.get(app.pcrId));
-        }
-    }
-
     private static Lead newLead(Integer annualIncome, Integer loanAmount, Id productId, Boolean doerLoan, Id partnerId) {
         RecordType solarLoanType = [
             SELECT Id
