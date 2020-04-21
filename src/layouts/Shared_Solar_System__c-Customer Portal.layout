@@ -10,9 +10,9 @@
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Information</label>
+        <detailHeading>false</detailHeading>
+        <editHeading>false</editHeading>
+        <label>Project Information</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -23,8 +23,7 @@
                 <field>Information__c</field>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns/>
-        <style>TwoColumnsLeftToRight</style>
+        <style>OneColumn</style>
     </layoutSections>
     <layoutSections>
         <customLabel>false</customLabel>
