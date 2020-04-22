@@ -3,14 +3,33 @@ public with sharing class ZuoraBillingBatchServiceTest {
     private static ZuoraBillingBatchService billBatchService = new ZuoraBillingBatchService();
 
     private static void useMocks() {
-        billBatchService.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
         billBatchService.zuoraAcctSelector = (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector());
+    }
+
+    @IsTest
+    public static void testQueueDataQuery() {
+        List<Zuora_Data_Query__c> beforeQueries = [
+            SELECT Id
+            FROM Zuora_Data_Query__c
+        ];
+        System.assertEquals(0,beforeQueries.size());
+
+        Test.startTest();
+            ZuoraBillingBatchService.queueDataQuery();
+        Test.stopTest();
+
+        List<Zuora_Data_Query__c> afterQueries = [
+            SELECT Id
+            FROM Zuora_Data_Query__c
+        ];
+        System.assertEquals(1,afterQueries.size());
     }
 
     @IsTest
     public static void testBatchUpdate() {
         useMocks();
-        ZuoraAPI.ActionItems actionItem = billBatchService.updateAccountBatches(Date.Today());
+        String mockDataQueryResult = '[{"AccountId":"xxxxxxxxxx123"},{"AccountId":"xxxxxxxxxx456"},{"AccountId":"xxxxxxxxxx789"}]';
+        ZuoraAPI.ActionItems actionItem = billBatchService.updateAccountBatches(mockDataQueryResult);
         System.assertEquals(3,actionItem.objects.size());
         for (Object obj : actionItem.objects){
             ZuoraAPI.ZuoraAccount account = (ZuoraAPI.ZuoraAccount) obj;
@@ -30,26 +49,6 @@ public with sharing class ZuoraBillingBatchServiceTest {
     /*************
     *** MOCKS ***
     *************/
-    public class MockAccountsSelector implements StubProvider {
-        public MockAccountsSelector() {
-        }
-        // StubProvider requires the excessive parameters
-        @SuppressWarnings('PMD.ExcessiveParameterList')
-        public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
-            List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
-            switch on stubbedMethodName {
-                when 'selectAccountsWithUASBs' {
-                    Map<Id, Integer> accountIdsWithUASBs = new Map<Id, Integer>();
-                    accountIdsWithUASBs.put('001j0000013wv8i', 3);
-                    accountIdsWithUASBs.put('001j0000013wv8j', 1);
-                    accountIdsWithUASBs.put('001j0000013wv8k', 2);
-                    return accountIdsWithUASBs;
-                }
-            }
-            return null;
-        }
-    }
-
     public class MockZuoraAccountSelector implements StubProvider {
         public MockZuoraAccountSelector() {}
         @SuppressWarnings('PMD.ExcessiveParameterList')

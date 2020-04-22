@@ -31,11 +31,9 @@ public with sharing class AccountsSelectorTest {
         Test.stopTest();
         Util.enableAllTriggers();
     }
-
     @IsTest public static void testSelectCS67() {
         System.assert(AccountsSelector.selectCS67DaysPastDueWithAnchorOpps() != null, 'Expected a list of accounts');
     }
-
     @IsTest public static void testSelectCSNotRemoved() {
         System.assert(AccountsSelector.selectCSNotRemoved() != null, 'Expected a list of accounts');
     }
@@ -51,7 +49,6 @@ public with sharing class AccountsSelectorTest {
             'Expected to find an account with send bills contact'
         );
     }
-
     @IsTest public static void testSelectOne() {
         List<Account> accountIds = (new List<Account>([SELECT Id FROM Account]));
         AccountsSelector accountsSelector = new AccountsSelector();
@@ -62,13 +59,11 @@ public with sharing class AccountsSelectorTest {
         AccountsSelector accountsSelector = new AccountsSelector();
         System.assert(accountsSelector.selectAll(accountIds) != null, 'Expected a list of accounts');
     }
-
     @IsTest public static void testSelectByIds() {
         Set<Id> accountIds = (new Map<Id, Account>([SELECT Id FROM Account])).keySet();
         AccountsSelector accountsSelector = new AccountsSelector();
         System.assert(accountsSelector.selectAll(accountIds) != null, 'Expected a list of accounts');
     }
-
     @IsTest public static void testSelectPropertyAccountsByLeadIds() {
         Lead newLead = new Lead(
             FirstName = 'test',
@@ -76,7 +71,6 @@ public with sharing class AccountsSelectorTest {
             Company = 'Test Company'
         );
         insert newLead;
-
         Id propertyRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
         Account propertyAccount = new Account(
             RecordTypeId = propertyRecordTypeId,
@@ -84,11 +78,9 @@ public with sharing class AccountsSelectorTest {
             Name = 'Test Account'
         );
         insert propertyAccount;
-
         AccountsSelector accountsSelector = new AccountsSelector();
         System.assertEquals(accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{newLead.Id}).size(), 1, 'Expected only one property account to be returned');
     }
-
     @IsTest public static void testselectAccountsWithBillMessages() {
         Id propertyRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
         Account propertyAccount = new Account(
@@ -98,68 +90,43 @@ public with sharing class AccountsSelectorTest {
             Zuora_Invoice_Message_1_of_2__c = 'xxx'
         );
         insert propertyAccount;
-
         System.assertEquals(1,AccountsSelector.selectAccountsWithBillMessages().size());
     }
-
     @IsTest
     public static void testSelectForReconciliation() {
         List<String> zuoraAccountIds = new List<String>{'2c92c0f86ab120de016ab427c9032366', '2c92c0f86ab120de016ab427c9032362'};
         AccountsSelector accountSelector = new AccountsSelector();
         List<Map<String, Object>> accounts = accountSelector.selectForReconciliation(zuoraAccountIds);
         System.assertEquals(2, accounts.size());
-
         zuoraAccountIds = new List<String>{'foo', 'bar'};
         accounts = accountSelector.selectForReconciliation(zuoraAccountIds);
         System.assertEquals(0, accounts.size());
     }
-
     @IsTest
-    public static void testSelectAccountsWithUASBs() {
-        Map<Id,Opportunity> oppsToUpdate = new Map<Id,Opportunity>();
-        Account newAccount = new Account(Name = 'Test Account');
-        insert newAccount;
-
-        List<UASB__c> uasbList = [
-            SELECT Id, Opportunity__c, Utility_Account_Subscription__c,
-                Utility_Account_Subscription__r.Opportunity__r.AccountId,
-                Bill_Date__c
-            FROM UASB__c
-            LIMIT 12
+    public static void testSelectById() {
+        List<Account> accounts = [
+            SELECT Id
+            FROM Account
+            LIMIT 2
         ];
-        system.assertEquals(12,uasbList.size());
-
-        for (UASB__c uasb : uasbList){
-            uasb.Bill_Date__c = Date.newInstance(2018,04,15);
-            Opportunity opp = new Opportunity();
-            opp.Id = uasb.Opportunity__c;
-            opp.AccountId = newAccount.Id;
-            oppsToUpdate.put(opp.Id,opp);
-        }
-        update oppsToUpdate.values();
-        update uasbList;
-
         AccountsSelector selector = new AccountsSelector();
-        Map<Id,Integer> acctIdToUASBMap = selector.selectAccountsWithUASBs(Date.newInstance(2016,01,01));
-        System.assertEquals(12,acctIdToUASBMap.get(newAccount.Id));
+        List<Account> queriedAccounts = selector.getAccountsById(new Set<Id>{accounts[0].Id, accounts[1].Id});
+        System.assertEquals(2,queriedAccounts.size());
     }
-
+    
     @IsTest public static void testSelectByBlueWaveId() {
         Account accountOne = new Account(
             Name = 'Test Account'
         );
         insert accountOne;
-
         Account acct = [
             SELECT Id, Account_Number__c
             FROM Account
             WHERE Id = : accountOne.Id
             LIMIT 1
         ];
-
         AccountsSelector selector = new AccountsSelector();
         Map<String,Account> acctMap = selector.selectByBlueWaveId(new Set<String>{acct.Account_Number__c});
-
         System.assertEquals(accountOne.Id,acctMap.get(acct.Account_Number__c).Id);
     }
 }
