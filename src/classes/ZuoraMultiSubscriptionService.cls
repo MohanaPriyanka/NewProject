@@ -66,7 +66,7 @@ public with sharing class ZuoraMultiSubscriptionService {
         ZuoraAPI.OrderActionResult newSubscriptionResult =
             (ZuoraAPI.OrderActionResult) JSON.deserialize(response.getBody(), ZuoraAPI.OrderActionResult.class);
         if (!newSubscriptionResult.success || newSubscriptionResult.subscriptions.size() != 1) {
-            Logger.logLater('ZuoraSubscriptionService', 'createSubscriptionInternal', JSON.serializePretty(newSubscriptionResult));
+            Logger.logLater('ZuoraMultipleSubscriptionService', 'createNewSubscription', JSON.serializePretty(newSubscriptionResult));
             throw new Util.BWException('Unexpected result creating a new subscription:\n' + JSON.serializePretty(newSubscriptionResult));
         }
 
