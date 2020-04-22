@@ -1042,6 +1042,11 @@
                     <default>false</default>
                     <label>Ground Mount</label>
                 </value>
+                <value>
+                    <fullName>Storage Facility</fullName>
+                    <default>false</default>
+                    <label>Storage Facility</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
