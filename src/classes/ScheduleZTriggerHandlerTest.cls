@@ -6,12 +6,12 @@ public class ScheduleZTriggerHandlerTest {
             Number_of_Decimal_Places__c = 4
         );
 
-        Utility__c national_grid = new Utility__c(
+        Utility__c nationalGrid = new Utility__c(
             Name = 'National Grid',
             Number_of_Decimal_Places__c = 4
         );
 
-        insert new List<Utility__c>{eversource, national_grid};
+        insert new List<Utility__c>{eversource, nationalGrid};
 
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
             Utility__c = 'Eversource',
@@ -43,7 +43,7 @@ public class ScheduleZTriggerHandlerTest {
         );
         ZipCode_Utility_Junction__c junctionTwo = new ZipCode_Utility_Junction__c(
             Load_Zone_Utility__c = ngridLZU.Id,
-            Utility__c = national_grid.Id
+            Utility__c = nationalGrid.Id
         );
         insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo};
 
@@ -418,6 +418,8 @@ public class ScheduleZTriggerHandlerTest {
     }
 
     @IsTest static void testZuoraSubscription() {
+        ZuoraSubscriptionAsyncService.featureService =
+            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         Shared_Solar_System__c sss1 = [
             SELECT Id
             FROM Shared_Solar_System__c
@@ -456,6 +458,8 @@ public class ScheduleZTriggerHandlerTest {
     }
 
     @IsTest static void testZuoraSubscriptionsWarnWhenAccountMissingIdFound() {
+        ZuoraSubscriptionAsyncService.featureService =
+            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         Shared_Solar_System__c sss1 = [
             SELECT Id
             FROM Shared_Solar_System__c

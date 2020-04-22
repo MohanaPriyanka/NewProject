@@ -7,6 +7,7 @@
 public with sharing class ZuoraSubscriptionService {
     @TestVisible
     private static Map<String, ZuoraAPI.OrderBySubscriptionOwner> ordersBySubscriptionOwnerCache = new Map<String, ZuoraAPI.OrderBySubscriptionOwner>();
+    private static Map<String, ZuoraAPI.SubscriptionsByAccount> subscriptionsByAccountCache = new Map<String, ZuoraAPI.SubscriptionsByAccount>();
 
     public static List<String> createSubscriptions(List<SubscriptionParam> subscriptionParams) {
         List<String> subscriptionsCreated = new List<String>();
@@ -123,7 +124,7 @@ public with sharing class ZuoraSubscriptionService {
     }
 
     // Used to create a JSON body to add a Subscription Rate Plan Charge to an existing subscription
-    public static ZuoraAPI.Order getAddProductRequest(OrderActionParam param) {
+    private static ZuoraAPI.Order getAddProductRequest(OrderActionParam param) {
         ZuoraAPI.Order order = new ZuoraAPI.Order(param.accountNumber, param.orderDate);
         ZuoraAPI.Subscription subscription = order.addSubscription(param.subscriptionNumber);
         ZuoraAPI.OrderAction orderAction = subscription.addOrderAction('AddProduct', param.contractEffectiveDate);
@@ -158,6 +159,34 @@ public with sharing class ZuoraSubscriptionService {
             return getOrderBySubscriptionOwnerPage(obso.nextPage, ordersAlreadyRetrieved);
         } else {
             return obso;
+        }
+    }
+
+    public ZuoraAPI.SubscriptionsByAccount getSubscriptionsByAccount(String accountNumber) {
+        if (subscriptionsByAccountCache.containsKey(accountNumber)) {
+            return subscriptionsByAccountCache.get(accountNumber);
+        }
+        ZuoraAPI.SubscriptionsByAccount sba =
+            getSubscriptionsByAccountPage('/v1/subscriptions/accounts/' + accountNumber + '?pageSize=40', null);
+        subscriptionsByAccountCache.put(accountNumber, sba);
+        return sba;
+    }
+
+    private ZuoraAPI.SubscriptionsByAccount getSubscriptionsByAccountPage(String url, List<ZuoraAPI.Subscription> subscriptionsAlreadyRetrieved) {
+        HttpResponse response =
+            ZuoraAPIHelper.callJsonEndpoint('GET', url, null, false);
+        String cleanJSON = ZuoraAPIHelper.cleanJSON(response.getBody());
+        ZuoraAPI.SubscriptionsByAccount sba =
+            (ZuoraAPI.SubscriptionsByAccount) JSON.deserialize(cleanJSON, ZuoraAPI.SubscriptionsByAccount.class);
+        if (subscriptionsAlreadyRetrieved != null) {
+            sba.subscriptions.addAll(subscriptionsAlreadyRetrieved);
+        }
+        subscriptionsAlreadyRetrieved = sba.subscriptions;
+
+        if (sba.nextPage != null) {
+            return getSubscriptionsByAccountPage(sba.nextPage, subscriptionsAlreadyRetrieved);
+        } else {
+            return sba;
         }
     }
 
@@ -227,6 +256,12 @@ public with sharing class ZuoraSubscriptionService {
         public String projectName;
         public String chargeNumber;
         public String productRatePlanChargeId;
+        public OrderActionParam orderActionParam;
+        public ClientProject(OrderActionParam orderActionParam) {
+            this.clientName = orderActionParam.clientName;
+            this.projectName = orderActionParam.projectName;
+            this.orderActionParam = orderActionParam;
+        }
         public ClientProject(String clientName, String projectName) {
             this.clientName = clientName;
             this.projectName = projectName;
