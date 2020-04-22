@@ -32,6 +32,8 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
     private static List<ZuoraSubscriptionService.SubscriptionParam> batchedSubscriptionsToCreate;
     @TestVisible
     private static List<String> subscriptionsCreated;
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
 
     public ZuoraSubscriptionAsyncService() {
         allSubscriptionsToCreate = new List<ZuoraSubscriptionService.SubscriptionParam>();
@@ -196,7 +198,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
                 return;
             }
             ZuoraSubscriptionService.ClientProject clientProject =
-                new ZuoraSubscriptionService.ClientProject(orderActionParam.clientName, orderActionParam.projectName);
+                new ZuoraSubscriptionService.ClientProject(orderActionParam);
             // This client/project combination might already exist, but since additionalClientProjects is a set, it's
             // safe to just add it
             subscriptionParam.additionalClientProjects.add(clientProject);
@@ -227,28 +229,11 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
     }
 
     public void createSubscriptions(List<ZuoraSubscriptionService.SubscriptionParam> allSubscriptionParams) {
-        Integer callouts = 0;
-        Integer calloutLimit = Limits.getLimitCallouts();
-        Integer allSubscriptionParamsSize = allSubscriptionParams.size();
-        // So that we don't need to load as much data for tests...
-        if (Test.isRunningTest()) {
-            calloutLimit = 5;
-        }
+        initBatchedSubscriptionsToCreate(allSubscriptionParams);
 
-        batchedSubscriptionsToCreate = new List<ZuoraSubscriptionService.SubscriptionParam>();
-        // We only want to try to create as many subscription params as we have callouts to do
-        for (Integer i = allSubscriptionParams.size()-1; i >= 0; i--) {
-            if (callouts + allSubscriptionParams[i].estimateCallouts() < calloutLimit) {
-                batchedSubscriptionsToCreate.add(allSubscriptionParams[i]);
-                callouts += allSubscriptionParams[i].estimateCallouts();
-                zuoraAccountIdsForCreatedSubscriptions.add(allSubscriptionParams[i].param.zuoraAccountId);
-                allSubscriptionParams.remove(i);
-            } else {
-                break;
-            }
-        }
-
-        if (batchedSubscriptionsToCreate.size() > 0) {
+        if (featureService.isEnabled('Multiple_Subscriptions')) {
+            subscriptionsCreated = ZuoraMultiSubscriptionService.createSubscriptions(batchedSubscriptionsToCreate);
+        } else {
             subscriptionsCreated = ZuoraSubscriptionService.createSubscriptions(batchedSubscriptionsToCreate);
         }
 
@@ -260,6 +245,10 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
             allSubscriptionParams.addAll(batchedSubscriptionsToCreate);
         }
 
+        queueNextSubscriptionsOrFinish(allSubscriptionParams);
+    }
+
+    private void queueNextSubscriptionsOrFinish(List<ZuoraSubscriptionService.SubscriptionParam> allSubscriptionParams) {
         if (allSubscriptionParams.size() > 0) {
             nextAsyncService = new ZuoraSubscriptionAsyncService();
             nextAsyncService.initForChainedContinuation(allSubscriptionParams, zuoraAccountIdsForCreatedSubscriptions);
@@ -272,6 +261,28 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
             ZuoraAccountAsyncService accountAsyncService = new ZuoraAccountAsyncService(zuoraAccountIdsForCreatedSubscriptions);
             if (!Test.isRunningTest()) {
                 System.enqueueJob(accountAsyncService);
+            }
+        }
+    }
+
+    private void initBatchedSubscriptionsToCreate(List<ZuoraSubscriptionService.SubscriptionParam> allSubscriptionParams) {
+        Integer calloutLimit = Limits.getLimitCallouts();
+        // So that we don't need to load as much data for tests...
+        if (Test.isRunningTest()) {
+            calloutLimit = 5;
+        }
+
+        batchedSubscriptionsToCreate = new List<ZuoraSubscriptionService.SubscriptionParam>();
+        // We only want to try to create as many subscription params as we have callouts to do
+        Integer callouts = 0;
+        for (Integer i = allSubscriptionParams.size() - 1; i >= 0; i--) {
+            if (callouts + allSubscriptionParams[i].estimateCallouts() < calloutLimit) {
+                batchedSubscriptionsToCreate.add(allSubscriptionParams[i]);
+                callouts += allSubscriptionParams[i].estimateCallouts();
+                zuoraAccountIdsForCreatedSubscriptions.add(allSubscriptionParams[i].param.zuoraAccountId);
+                allSubscriptionParams.remove(i);
+            } else {
+                break;
             }
         }
     }

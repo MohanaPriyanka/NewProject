@@ -16,7 +16,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         // Create a fake response
         if (endpoint.contains('rsa-signatures')) {
             return getRSASignatures();
-        }  else if (endpoint.contains('/oauth/token')) {
+        } else if (endpoint.contains('/oauth/token')) {
             return getOAuthToken();
         } else if (endpoint.contains('payment-method')) {
             return getPaymentMethod();
@@ -32,7 +32,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getActionUpdate(req.getBody());
         } else if (endpoint.contains('query/jobs')) {
             return getDataQuery(endpoint);
-        } else if (endpoint.contains('owl-auw2-sbx01-query-result')){
+        } else if (endpoint.contains('owl-auw2-sbx01-query-result')) {
             return getDataQueryData(endpoint);
         } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM InvoiceItem')) {
             return getInvoiceItems();
@@ -76,11 +76,11 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getDebitMemos(endpoint);
         } else if (endpoint.contains('/v1/payments') && req.getBody().contains('Electronic') && method == 'POST') {
             return createElectronicPayment();
-        }  else if (endpoint.contains('/v1/payments') && method == 'POST') {
+        } else if (endpoint.contains('/v1/payments') && method == 'POST') {
             return createPayment(endpoint);
-        }  else if (endpoint.contains('/v1/payments') && method == 'GET') {
+        } else if (endpoint.contains('/v1/payments') && method == 'GET') {
             return getPayment(endpoint);
-        }  else if (endpoint.contains('/v1/payments') && method == 'PUT') {
+        } else if (endpoint.contains('/v1/payments') && method == 'PUT') {
             return getPayment(endpoint);
         } else if (endpoint.contains('/v1/paymentgateways')) {
             return getGateways();
@@ -90,6 +90,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getRatePlanCharge(endpoint);
         } else if (endpoint.contains('/v1/payment-runs')) {
             return getPaymentRun();
+        } else if (endpoint.contains('/v1/subscriptions/accounts')) {
+            return getSubscriptionsByAccount();
         } else {
             return null;
         }
@@ -111,7 +113,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
     private static HttpResponse getRSASignatures() {
         HttpResponse res = getJSON();
         res.setBody('{' +
-            '"signature" : "VL7d7uWfqAltF6XdBRIcjzq9PsK0I8ujn8o+lJzYoNYK+12oRa+MqG3+PvY/GAMluJCYQEgKXYNc0M0qTBJbgfIwC/EGYHzejKdZ2xtdOVGYkChJePRCpxG+YC7xgJI0oiKxRJmCWU/rYAYjaasVvhfJfG0H4a8Ay3t3NIXWFZQGxi7Rvz2EzVOuU0mYPUFIpyAe+yP3yHdv9v96fJMmGdxyf3HRvhw9+7bh1KlDWSsN9gjaV37cUBpUhJoCnHCGEwZyywcXSNlBIilXF+nE6zSHq2flNaUS2zWmFnNGpNvLMkA3FJ6rLpXkNN3DEt4/gbU3Jz5Sh++zGoBYVhV28A==",'+
+            '"signature" : "VL7d7uWfqAltF6XdBRIcjzq9PsK0I8ujn8o+lJzYoNYK+12oRa+MqG3+PvY/GAMluJCYQEgKXYNc0M0qTBJbgfIwC/EGYHzejKdZ2xtdOVGYkChJePRCpxG+YC7xgJI0oiKxRJmCWU/rYAYjaasVvhfJfG0H4a8Ay3t3NIXWFZQGxi7Rvz2EzVOuU0mYPUFIpyAe+yP3yHdv9v96fJMmGdxyf3HRvhw9+7bh1KlDWSsN9gjaV37cUBpUhJoCnHCGEwZyywcXSNlBIilXF+nE6zSHq2flNaUS2zWmFnNGpNvLMkA3FJ6rLpXkNN3DEt4/gbU3Jz5Sh++zGoBYVhV28A==",' +
             '"token" : "gIZRABPzLJjsxk5BEAhgrdJe7pjVM7cP",' +
             '"tenantId" : "30689",' +
             '"key" : "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnUbOqAz8j7zKK3dYwdUw/8RJjx6NA5kkQSwCjutHaKpkLsi2bxRRiZfjKiaivXbDWmqSI+n6wxW7b+4tq8IT6h6ot7QknSsTxXBNTfQ74L4S/AOKb3O2QDZgw9BMN7jPd+HbFvJRYPney87Vze5n43u4ZHzoYKrbIuaOk6LHGfQmo5YeBLA69S1Uha8DS+5eiS7UQv5I1ZwRUw/C71ZP4xE0Sn+fjKwgoABrVnU2y/bBwJc3SWGQdoLbJyi6NEQSzExisIuafcA9LL4lPaaA9L76zhBz+3xyQGc6MxNHQT7th+Q+negZBsM2VVTPPrvCsdX+gxL19yBjleuA6mtQbQIDAQAB",' +
@@ -162,7 +164,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
-    public static HttpResponse getAccount(){
+    public static HttpResponse getAccount() {
         HttpResponse res = getJSON();
         res.setBody('{"records":' +
             '[{"AccountNumber":"BWC-000024383",' +
@@ -371,10 +373,10 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 saveResults.add(saveResult);
             }
             res.setBody(JSON.serialize(saveResults));
-        } else if (body.contains('"type":"PaymentMethod"')){
+        } else if (body.contains('"type":"PaymentMethod"')) {
             String responseBody = '[{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2f96"}]';
             res.setBody(responseBody);
-        } else if (body.contains('"type":"Invoice"')){
+        } else if (body.contains('"type":"Invoice"')) {
             String responseBody = '[{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2f96"},' +
                 '{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2123"},' +
                 '{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2456"}]';
@@ -446,17 +448,17 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         }
         if (endpoint.contains('ExistingAccount') || endpoint.contains('CID')) {
             String response = '{"orders" : [' +
-                '{"orderNumber" : "O-00002360","existingAccountNumber" : "ExistingAccount",'+
-                '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : ['+
-                '{"type" : "AddProduct","addProduct" :'+
-                '{"chargeOverrides" : [{"chargeNumber" : "C-00003075", "customFields" : {"Project__c" : "Dudley","ClientOwner__c" : "Goldman"}}]}} ]} ]},'+
-                '{'+
-                '"orderNumber" : "O-00002359","existingAccountNumber" : "ExistingAccount",'+
-                '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : ['+
+                '{"orderNumber" : "O-00002360","existingAccountNumber" : "ExistingAccount",' +
+                '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : [' +
+                '{"type" : "AddProduct","addProduct" :' +
+                '{"chargeOverrides" : [{"chargeNumber" : "C-00003075", "customFields" : {"Project__c" : "Dudley","ClientOwner__c" : "Goldman"}}]}} ]} ]},' +
+                '{' +
+                '"orderNumber" : "O-00002359","existingAccountNumber" : "ExistingAccount",' +
+                '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : [' +
                 '{"type" : "CreateSubscription","triggerDates" : [ {"triggerDate" : "2017-01-01","name" : "ContractEffective"}, ' +
                 '{"triggerDate" : "2017-01-01","name" : "ServiceActivation"}, {"triggerDate" : "2017-01-01","name" : "CustomerAcceptance"} ], ' +
-                '"createSubscription" : {"subscribeToRatePlans" : ['+
-                '{"chargeOverrides" : [{"chargeNumber" : "C-00003076", "customFields" : {"Project__c" : "Barrett","ClientOwner__c" : "Goldman"}} ]} ]}} ]} ]} ],'+
+                '"createSubscription" : {"subscribeToRatePlans" : [' +
+                '{"chargeOverrides" : [{"chargeNumber" : "C-00003076", "customFields" : {"Project__c" : "Barrett","ClientOwner__c" : "Goldman"}} ]} ]}} ]} ]} ],' +
                 '"success" : true';
             if (endpoint.contains('ExistingAccountPage') && !endpoint.contains('page=2')) {
                 response += ', "nextPage" : "https://rest.apisandbox.zuora.com/v1/orders/subscriptionOwner/ExistingAccount?page=2&pageSize=20"}';
@@ -523,7 +525,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '"RatePlanChargeId":"2c92c0f96ae3b195016ae5e3668e0c15"' +
                 '}'
             );
-        } else if (endpoint.contains('zzz123_')){
+        } else if (endpoint.contains('zzz123_')) {
             res.setBody('{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2f96"}');
         } else {
             ZuoraAPI.Invoice result = new ZuoraAPI.Invoice();
@@ -724,7 +726,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
-    private static HttpResponse getRatePlanCharge(String reqBody){
+    private static HttpResponse getRatePlanCharge(String reqBody) {
         HttpResponse res = getJSON();
         if (reqBody.contains('2c92c0f96ae3b195016ae5e3665e0c08')) {
             String ratePlan = '{"ClientOwner__c":"BW-00000385",' +
@@ -737,7 +739,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             } else {
                 res.setBody(ratePlan);
             }
-        } else if (reqBody.contains('2c92c0f96ae3b195016ae5e3668e0c15')){
+        } else if (reqBody.contains('2c92c0f96ae3b195016ae5e3668e0c15')) {
             String ratePlan = '{"ClientOwner__c":"BW-00000385",' +
                 '"Id":"2c92c0f96ae3b195016ae5e3668e0c15",' +
                 '"ChargeNumber":"C-00003171",' +
@@ -775,7 +777,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
     private static HttpResponse getInvoiceItem(String endpoint) {
         HttpResponse res = getJSON();
 
-        if (endpoint.contains('2c92c0856ae3a471016ae5ebd8fa5444')){
+        if (endpoint.contains('2c92c0856ae3a471016ae5ebd8fa5444')) {
             res.setBody('{ "invoiceItems" : [ ' +
                 '{ "id" : "2c92c0856ae3a471016ae5ebd90e5445", ' +
                 '"subscriptionName" : "A-S00000152", ' +
@@ -820,7 +822,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '{ "data" : [ ] }, ' +
                 '"availableToCreditAmount" : 180.000000000 } ], ' +
                 '"success" : true }');
-        } else if (endpoint.contains('2c92c0856b4f7c5e016b53bc25b43a8d')){
+        } else if (endpoint.contains('2c92c0856b4f7c5e016b53bc25b43a8d')) {
             res.setBody('{ "invoiceItems" : [ ' +
                 '{ "id" : "2c92c0856ae3a471016ae5ebd90e5445", ' +
                 '"subscriptionName" : "A-S00000152", ' +
@@ -873,7 +875,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
     }
 
     public static Boolean createDMWithNoId = false;
-    private static HttpResponse createDebitMemo(){
+    private static HttpResponse createDebitMemo() {
         HttpResponse res = getJSON();
         if (createDMWithNoId) {
             res.setBody(
@@ -984,38 +986,38 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         if (endpoint.contains('ThrowException')) {
             throw new Util.BWException('Callout exception');
         } else {
-        res.setBody('{ "items" : [ ' +
-            '{ "id" : "2c92c0f96b695c76016b6c860fcf77f5", ' +
-            '"amount" : 20.000000000, ' +
-            '"amountWithoutTax" : 20.000000000, ' +
-            '"beAppliedAmount" : 0E-9, ' +
-            '"balance" : 20.000000000, ' +
-            '"sku" : "SKU-00000002", ' +
-            '"skuName" : "Utility Credit", ' +
-            '"serviceStartDate" : "2017-06-01", ' +
-            '"serviceEndDate" : "2017-06-30", ' +
-            '"sourceItemType" : "InvoiceDetail", ' +
-            '"sourceItemId" : "2c92c0856ae3a471016ae5ebd90e5445", ' +
-            '"createdDate" : "2019-06-18 17:37:33", ' +
-            '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
-            '"updatedDate" : "2019-06-18 17:37:33", ' +
-            '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
-            '"comment" : "", ' +
-            '"subscriptionId" : "2c92c0f96ae3b195016ae5e366470bff",' +
-            ' "financeInformation" : { ' +
-            '"deferredRevenueAccountingCode" : "Usage Revenue", ' +
-            '"deferredRevenueAccountingCodeType" : "SalesRevenue", ' +
-            '"recognizedRevenueAccountingCode" : "Usage Revenue", ' +
-            '"recognizedRevenueAccountingCodeType" : "SalesRevenue", ' +
-            '"revenueScheduleNumber" : null, ' +
-            '"revenueRecognitionRuleName" : "Recognize upon invoicing" ' +
-            '} }' +
-            '] }');
+            res.setBody('{ "items" : [ ' +
+                '{ "id" : "2c92c0f96b695c76016b6c860fcf77f5", ' +
+                '"amount" : 20.000000000, ' +
+                '"amountWithoutTax" : 20.000000000, ' +
+                '"beAppliedAmount" : 0E-9, ' +
+                '"balance" : 20.000000000, ' +
+                '"sku" : "SKU-00000002", ' +
+                '"skuName" : "Utility Credit", ' +
+                '"serviceStartDate" : "2017-06-01", ' +
+                '"serviceEndDate" : "2017-06-30", ' +
+                '"sourceItemType" : "InvoiceDetail", ' +
+                '"sourceItemId" : "2c92c0856ae3a471016ae5ebd90e5445", ' +
+                '"createdDate" : "2019-06-18 17:37:33", ' +
+                '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+                '"updatedDate" : "2019-06-18 17:37:33", ' +
+                '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+                '"comment" : "", ' +
+                '"subscriptionId" : "2c92c0f96ae3b195016ae5e366470bff",' +
+                ' "financeInformation" : { ' +
+                '"deferredRevenueAccountingCode" : "Usage Revenue", ' +
+                '"deferredRevenueAccountingCodeType" : "SalesRevenue", ' +
+                '"recognizedRevenueAccountingCode" : "Usage Revenue", ' +
+                '"recognizedRevenueAccountingCodeType" : "SalesRevenue", ' +
+                '"revenueScheduleNumber" : null, ' +
+                '"revenueRecognitionRuleName" : "Recognize upon invoicing" ' +
+                '} }' +
+                '] }');
         }
         return res;
     }
 
-    private static HttpResponse createElectronicPayment(){
+    private static HttpResponse createElectronicPayment() {
         HttpResponse res = getJSON();
         res.setBody(
             '{ "id" : "2c92c0fa6c2d46c2016c5271d6004086", ' +
@@ -1061,9 +1063,9 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
-    private static HttpResponse getDataQuery(String endpoint){
+    private static HttpResponse getDataQuery(String endpoint) {
         HttpResponse res = getJSON();
-        if (endpoint.contains('queryStillInProcess')){
+        if (endpoint.contains('queryStillInProcess')) {
             // Check on query, but its still in process:
             res.setBody(
                 '{"data":{"id":"7742a20c-18ea-4fde-b185-4aed364ce22c",' +
@@ -1072,7 +1074,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                     '"remainingRetries":3,"retries":3,' +
                     '"updatedOn":"2019-08-19T17:48:41.837Z"}}'
             );
-        } else if (endpoint.contains('queryFailed')){
+        } else if (endpoint.contains('queryFailed')) {
             // Check on query, but its still in process:
             res.setBody(
                 '{"data":{' +
@@ -1082,7 +1084,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                     '"errorMessage" : "Query failed (#20190816_130023_10875_snsq9): line 1:"' +
                     '}}'
             );
-        } else if (endpoint.contains('queryCompleted')){
+        } else if (endpoint.contains('queryCompleted')) {
             // Check on query, and its complete:
             res.setBody(
                 '{"data":{"id":"7742a20c-18ea-4fde-b185-4aed364ce22c",' +
@@ -1112,7 +1114,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                     '"retries":3,' +
                     '"updatedOn":"2019-08-19T17:52:44.504Z"}}'
             );
-        } else if (endpoint.contains('7742a20c-18ea-4fde-b185-4aed364ce22c')){
+        } else if (endpoint.contains('7742a20c-18ea-4fde-b185-4aed364ce22c')) {
             // Check on query, and its complete:
             res.setBody(
                 '{"data":{"id":"7742a20c-18ea-4fde-b185-4aed364ce22c",' +
@@ -1157,108 +1159,108 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
-    private static HttpResponse getDataQueryData(String endpoint){
+    private static HttpResponse getDataQueryData(String endpoint) {
         HttpResponse res = getJSON();
-        if (endpoint.contains('LINK_CONTAINS_RETURN_GL_OBJECT')){
+        if (endpoint.contains('LINK_CONTAINS_RETURN_GL_OBJECT')) {
             res.setBody(
                 '' +
                     '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-03-01",' +
-                    '"GLDatetime":"2019-03-01T20:49:26-04:00",'+
+                    '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013285","Amount":19.690000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f96c8596ce016c8718b27c3c3c",' +
                     '"ExternalId":"2c92c0fa6c8aee2e016c926763d231d0"} ' +
                     '{"Project":"SSS-000019","Client":"BW-0009470","GLDate":"2019-05-01",' +
                     '"GLDatetime":"2019-08-01T20:49:26-04:00",' +
                     '"CRMId":"a00001231242as",' +
                     '"CustomerAccount":"bw-04639","Amount":328.330000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"ArchivedChargentData":"{\\"PaymentMethod\\":\\"ACH\\",\\"GatewayRefId\\":\\"xxxxxx123\\",\\"GatewayName\\":\\"Lake Waconia\\",\\"ClientNumber\\":\\"BW-00222\\"}",' +
                     '"AccountId":"2c92c0f96c8596ce016c87202b9d2a80",' +
                     '"ExternalId":"2c92c0fa6c8aee37016c928a815955c0"} ' +
                     '{"Project":"SSS-000087","Client":"BW-0011514","GLDate":"2019-07-01",' +
-                    '"GLDatetime":"2019-10-01T20:49:26-04:00",'+
+                    '"GLDatetime":"2019-10-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"bw-00803","Amount":19.100000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f86c858923016c872551192523",' +
                     '"ExternalId":"2c92c0fb6c8afb33016c928738435224"} ' +
                     '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-01-01",' +
                     '"GLDatetime":"2019-10-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013262","Amount":34.000000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f86c858922016c871893cd7504",' +
                     '"ExternalId":"2c92c0fb6c8afb4e016c926615190872"} ' +
                     '{"Project":"SSS-000071","Client":"BW-0011514","GLDate":"2019-03-01",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0012690","Amount":33.890000,' +
-                    '"Lockbox":"AMPLockbox_BW-0000333",'+
+                    '"Lockbox":"AMPLockbox_BW-0000333",' +
                     '"AccountId":"2c92c0f96c8596ce016c8717ebc26323",' +
                     '"ExternalId":"2c92c0fb6c8afb4e016c926615190873"} ' +
                     '{"Project":"SSS-000068","Client":"BW-0011514","GLDate":"2019-06-01",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013802","Amount":22.470000,' +
-                    '"Lockbox":"BWTrust_BW-0000111",'+
+                    '"Lockbox":"BWTrust_BW-0000111",' +
                     '"AccountId":"2c92c0f96c8596ce016c87194923685d",' +
                     '"ExternalId":"2c92c0fb6c8afb4e016c926615190874"} ' +
                     '{"Project":"SSS-000071","Client":"BW-0011514","GLDate":"2019-07-08",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0012618","Amount":112.980000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f86c858923016c8717c67d1209",' +
                     '"ExternalId":"2c92c0fb6c8afb4e016c9262b7c86b11"} ' +
                     '{"Project":"SSS-000087","Client":"BW-0011514","GLDate":"2019-06-01",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013995","Amount":74.290000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f86c85891e016c871a28a541ad",' +
                     '"ExternalId":"2c92c0fb6c8afb49016c926205805ebf"} ' +
                     '{"Project":"SSS-000019","Client":"BW-0009470","GLDate":"2019-01-07",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"bw-04803","Amount":301.920000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f96c8596ce016c87208eb10692",' +
                     '"ExternalId":"2c92c0fa6c8aee24016c928961437a75"} ' +
                     '{"Project":"SSS-000016","Client":"BW-0009470","GLDate":"2019-03-29",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0007283","Amount":173.960000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f86c858922016c87172a376e9d",' +
                     '"ExternalId":"2c92c0fa6c8aee24016c929406a2570f"} ' +
                     '{"Project":"SSS-000069","Client":"BW-0011514","GLDate":"2019-06-01",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0012937","Amount":86.920000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f86c858923016c871832b214cb",' +
                     '"ExternalId":"2c92c0fa6c8aee2e016c925f61d86a9b"} ' +
                     '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-04-01",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013318","Amount":26.440000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f96c8596ce016c8718b5383c60",' +
                     '"ExternalId":"2c92c0fa6c8aee37016c926a024f5f0e"} ' +
                     '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2018-12-01",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013262","Amount":117.780000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f86c858922016c871893cd7504",' +
                     '"ExternalId":"2c92c0fb6c8afb49016c92661341028a"} ' +
                     '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-04-01",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",' +
                     '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013274","Amount":14.400000,' +
-                    '"Gateway":"BCS Single Gateway",'+
+                    '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f86c858922016c8718952b7510",' +
                     '"ExternalId":"2c92c0fa6c8aee2e016c92668a082a3f"}'
             );
@@ -1440,6 +1442,15 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"updatedById" : "2c92c0f96a01b91f016a050fad50160a",' +
             '"success" : true' +
             '}');
+        return res;
+    }
+
+    private static HttpResponse getSubscriptionsByAccount() {
+        HttpResponse res = getJSON();
+        res.setBody('{"subscriptions":[' +
+            '{"id":"2c92c0fa712985fa017131da4d6e4c90","accountId":"2c92c0f96e3aa331016e3ca8eb2c48b7","accountNumber":"bw-05413","accountName":"APM Test 5","subscriptionNumber":"A-S00029335","status":"Active","PaymentGateway__c":"CS Receivables Co TEST","ratePlans":[{"id":"2c92c0fa712985fa017131da4d8f4c94","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fa712985fa017131da4d8f4c95","originalChargeId":"2c92c0fa712985fa017131da4d8f4c95","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","number":"C-00048346","name":"Utility Credit","Project__c":"SSS-000009","ClientOwner__c":"BW-0021776"}]}],"orderNumber":"O-00219507"},' +
+            '{"id":"2c92c0fb7129989d017131da263137da","accountId":"2c92c0f96e3aa331016e3ca8eb2c48b7","accountNumber":"bw-05413","accountName":"APM Test 5","subscriptionNumber":"A-S00029334","status":"Active","PaymentGateway__c":"Joe Jenny","ratePlans":[{"id":"2c92c0fb7129989d017131da265137de","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fb7129989d017131da265137df","originalChargeId":"2c92c0fb7129989d017131da265137df","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","number":"C-00048345","name":"Utility Credit","Project__c":"SSS-000009","ClientOwner__c":"BW-0009470"}]}],"orderNumber":"O-00219506"},' +
+            '{"id":"2c92c0fa71298610017131d9b2f44802","accountId":"2c92c0f96e3aa331016e3ca8eb2c48b7","accountNumber":"bw-05413","accountName":"APM Test 5","subscriptionNumber":"A-S00027513","status":"Cancelled","ratePlans":[{"id":"2c92c0fa71298610017131d9b3094806","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fa71298610017131d9b3094807","originalChargeId":"2c92c0fb6e3aa322016e3cb07221208b","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","number":"C-00045456","name":"Utility Credit","Project__c":"SSS-00009","ClientOwner__c":"BW-0021776"}]},{"id":"2c92c0fa71298610017131d9b31a480b","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fa71298610017131d9b31a480c","originalChargeId":"2c92c0fb6e3aa322016e3cb075dd20b3","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","number":"C-00045458","name":"Utility Credit","Project__c":"SSS-00009","ClientOwner__c":"BW-0009470"}]}],"orderNumber":"O-00219505"}],"success":true}');
         return res;
     }
 }
