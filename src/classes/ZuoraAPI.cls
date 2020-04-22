@@ -396,6 +396,7 @@ public with sharing class ZuoraAPI {
     public class OrderAction {
         public CreateSubscription createSubscription;
         public AddProduct addProduct;
+        public CancelSubscription cancelSubscription;
         public List<TriggerDate> triggerDates;
         public String type_Zreserved;
         public Integer sequence;
@@ -423,6 +424,15 @@ public with sharing class ZuoraAPI {
             AddProduct addProduct = new AddProduct(productRatePlanId);
             this.addProduct = addProduct;
             return addProduct;
+        }
+        public CancelSubscription addCancelSubscription(Date cancellationDate) {
+            if (this.cancelSubscription != null) {
+                throw new Util.BWException('Tried to add a CancelSubscription object to an OrderAction with an existing CancelSubscription object');
+            }
+            CancelSubscription cancelSubscription = new CancelSubscription();
+            cancelSubscription.cancellationEffectiveDate = cancellationDate;
+            this.cancelSubscription = cancelSubscription;
+            return cancelSubscription;
         }
         public ZuoraSubscriptionService.ClientProject getClientProject() {
             ZuoraSubscriptionService.ClientProject clientProject;
@@ -543,6 +553,11 @@ public with sharing class ZuoraAPI {
             }
             return subscribeToRatePlans[0].getClientProject();
         }
+    }
+
+    public class CancelSubscription {
+        public String cancellationPolicy = 'SpecificDate';
+        public Date cancellationEffectiveDate;
     }
 
     public class InitialTerm {
