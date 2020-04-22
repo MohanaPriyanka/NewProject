@@ -9,11 +9,7 @@ Limitations:
 
 public class InvocableZuoraBillingBatchUpdate {
     @InvocableMethod(label='BillingBatchUpdate')
-    public static List<String> billingBatchUpdate(List<Date> invoiceDates){
-        // Assuming only 1 Invoice Date is passed through, only make a list because of invocable limitations:
-        ZuoraBillingBatchService service = new ZuoraBillingBatchService();
-        ZuoraAPI.ActionItems item = service.updateAccountBatches(invoiceDates[0]);
-        List<String> returnString = new List<String>{JSON.serialize(item.objects)};
-        return returnString;
+    public static void billingBatchUpdate(){
+        ZuoraBillingBatchService.queueDataQuery();
     }
 }
