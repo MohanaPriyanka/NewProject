@@ -179,6 +179,88 @@ private class BatchAuthNetReturnedTransactionsTest {
     }
 
     @IsTest
+    private static void testMarkTransactionsAsReturned(){
+        insertTestBillingAccountRecords();
+
+        List<Error_Log__c> beforeLogs = [
+            SELECT Class__c, Method__c, Message__c
+            FROM Error_Log__c
+            WHERE Method__c = 'callJsonEndpoint'
+        ];
+        System.assertEquals(0,beforeLogs.size());
+
+        Test.startTest();
+            String response = '[' +
+                '{"Id":"2c92a0aa6eb68ebb016ec19ef9c56e3e","AccountId":"XXXXXXXXXX123",' +
+                '"PaymentMethodId":"2c92c0f86a0c41a5016a1f41d63a2f96",' +
+                '"Amount":23.00000,"EffectiveDate":"2019-12-01","ReferenceId":"41714238397"},' +
+                '{"Id":"2c92a0aa6eb68ebb016ec19fed2d73f2","AccountId":"XXXXXXXXXX123",' +
+                '"PaymentMethodId":"2c92c0f86a0c41a5016a1f41d63a2f96",' +
+                '"Amount":23.00000,"EffectiveDate":"2019-12-01","ReferenceId":"41714239217"}]';
+            BatchAuthNetReturnedTransactions batchService = new BatchAuthNetReturnedTransactions();
+            List<Case> cases = batchService.markTransactionsAsReturned(response);
+            Logger.flushLogs();
+        Test.stopTest();
+
+        System.assert(cases.size() > 0);
+
+        List<Error_Log__c> afterLogs = [
+            SELECT Class__c, Method__c, Message__c
+            FROM Error_Log__c
+            WHERE Method__c = 'callJsonEndpoint'
+        ];
+        System.assert(afterLogs.size() > 0);
+        System.assert(afterLogs[0].Message__c.contains('/v1/debitmemos/'));
+        System.assert(afterLogs[0].Message__c.contains('/v1/payments/'));
+    }
+
+    public static void insertTestBillingAccountRecords(){
+        Account property = new Account(name = 'Account Property');
+        insert property;
+
+        Zuora__CustomerAccount__c billingAccount = new Zuora__CustomerAccount__c(
+            Name = 'Test BillingAccount',
+            Zuora__Zuora_Id__c = 'XXXXXXXXXX123',
+            Zuora__Account__c = property.Id
+        );
+        insert billingAccount;
+
+        Zuora__PaymentMethod__c payMethod = new Zuora__PaymentMethod__c(
+            Name = 'XX',
+            Zuora__BillingAccount__c = billingAccount.Id,
+            Zuora__External_Id__c = '2c92c0f86a0c41a5016a1f41d63a2f96'
+        );
+        insert payMethod;
+
+        Zuora__Payment__c paymentToReturn1 = new Zuora__Payment__c(
+            Zuora__PaymentMethodId__c = '2c92c0f86a0c41a5016a1f41d63a2f96',
+            Zuora__EXT_ID__c = '2c92a0aa6eb68ebb016ec19ef9c56e3e',
+            Name = 'PY1234',
+            Zuora__BillingAccount__c = billingAccount.Id,
+            Zuora__Amount__c = 23
+        );
+        insert paymentToReturn1;
+
+        Zuora__Payment__c paymentToReturn2 = new Zuora__Payment__c(
+            Zuora__PaymentMethodId__c = '2c92c0f86a0c41a5016a1f41d63a2f96',
+            Zuora__EXT_ID__c = '2c92a0aa6eb68ebb016ec19fed2d73f2',
+            Name = 'PY1234',
+            Zuora__BillingAccount__c = billingAccount.Id,
+            Zuora__Amount__c = 23
+        );
+        insert paymentToReturn2;
+
+        Zuora__Payment__c otherPayment = new Zuora__Payment__c(
+            Zuora__PaymentMethodId__c = '2c92c0f86a0c41a5016a1f41d63a2f96',
+            Zuora__EXT_ID__c = '2c92aaaa6eb68ebb016ec19faaaa73f2',
+            Name = 'PY1234',
+            Zuora__BillingAccount__c = billingAccount.Id,
+            Zuora__Amount__c = 23
+        );
+        insert otherPayment;
+    }
+
+    @IsTest
     private static void testPostQueryJobNoReturns() {
         String returnedPaymentsJson = '[]';
         ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter();

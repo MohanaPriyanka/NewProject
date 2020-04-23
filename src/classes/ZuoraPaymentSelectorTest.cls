@@ -100,4 +100,11 @@ public with sharing class ZuoraPaymentSelectorTest {
         Datetime parsedDatetime = Datetime.valueOfGmt(endDatetime);
         System.assertEquals(dt, parsedDatetime, 'Expected to get find the end date');
     }
+
+    @isTest
+    private static void testSelectByExternalId(){
+        ZuoraPaymentSelector selector = new ZuoraPaymentSelector();
+        Map<String,Zuora__Payment__c> paymentMap = selector.selectByExternalId(new Set<String>{'1234'});
+        System.assert(paymentMap.containsKey('1234'));
+    }
 }
