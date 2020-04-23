@@ -290,7 +290,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
 
-    /********************   HELPER CLASSES  ********************/
+    /********************   HELPER METHODS  ********************/
     private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
         Lead newLead = requestLead.asLead();
         newLead = leadService.insertLead(newLead);
