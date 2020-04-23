@@ -1042,6 +1042,11 @@
                     <default>false</default>
                     <label>Ground Mount</label>
                 </value>
+                <value>
+                    <fullName>Storage Facility</fullName>
+                    <default>false</default>
+                    <label>Storage Facility</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -1094,6 +1099,10 @@
             </values>
             <values>
                 <fullName>Ground Mount</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Storage Facility</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1300,6 +1309,10 @@
             </values>
             <values>
                 <fullName>Ground Mount</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Storage Facility</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
