@@ -7,6 +7,7 @@
 public with sharing class ScheduleZSubscriptionSelector {
 
     private static String fields = 'Id, Customer_Subscription_kW_DC__c, Percent_Share__c, System_Size_kW_DC__c,' +
+        'Stop_Credit_Transfer__c,' +
         'Utility_Account_Subscription__r.Customer_Subscription_KW_DC__c,' +
         'Utility_Account_Subscription__r.Future_Customer_Subscription_KWDC_Rollup__c,' +
         'Utility_Account_Subscription__c, ' +
@@ -153,6 +154,7 @@ public with sharing class ScheduleZSubscriptionSelector {
                     Customer_Subscription_kW_DC__c,
                     Percent_Share__c,
                     System_Size_kW_DC__c,
+                    Stop_Credit_Transfer__c,
                     Utility_Account_Subscription__r.Customer_Subscription_KW_DC__c,
                     Utility_Account_Subscription__r.Future_Customer_Subscription_KWDC_Rollup__c,
                     Utility_Account_Subscription__r.Name,
