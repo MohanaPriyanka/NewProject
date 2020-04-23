@@ -99,7 +99,10 @@ public with sharing class ClientBrandingService implements Queueable {
         List<Account> accountsBeforeUpdate = acctSelector.getAccountsById(accountMap.keySet());
 
         for (Account oldValue : accountsBeforeUpdate){
-            if(oldValue.Client_Brand_Key__c != accountMap.get(oldValue.Id).Client_Brand_Key__c){
+            if (oldValue.RecordType.Name == 'Client Account'){
+                continue;
+            }
+            if (oldValue.Client_Brand_Key__c != accountMap.get(oldValue.Id).Client_Brand_Key__c){
                 accountsWithChangedValues.add(accountMap.get(oldValue.Id));
             }
         }
