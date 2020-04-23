@@ -2,9 +2,8 @@
  * Created by PeterYao on 8/27/2019.
  * Tested By: ZuoraPaymentSelectorTest
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class ZuoraPaymentSelector {
-    @SuppressWarnings('PMD.ApexCRUDViolation')
     public List<Zuora__Payment__c> selectById(Set<Id> ids) {
         if (!Schema.SObjectType.Zuora__Payment__c.isQueryable() ||
             !Schema.SObjectType.Zuora__Payment__c.fields.Zuora__EXT_ID__c.isAccessible()) {
@@ -39,7 +38,6 @@ public with sharing class ZuoraPaymentSelector {
         return paymentMap;
     }
 
-    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static List<Zuora__Payment__c> selectByAccount(List<Id> propertyAccountIds) {
         List<Zuora__Payment__c> zuoraPayments = [
             SELECT Id, Name,
