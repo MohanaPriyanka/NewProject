@@ -249,6 +249,48 @@ public with sharing class RESTRouterV2Test {
 
     }
 
+    @IsTest
+    public static void testGetLeadSuccess() {
+        // <setup>
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(validResiJsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        RestResponse response = RestContext.response;
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+
+        Map<String, Object> postResponseLead = (Map<String, Object>) responseEnvelope.get('data');
+        // </setup>
+
+        req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.addParameter('leadId', (String)postResponseLead.get('id'));
+        req.addParameter('email', (String)postResponseLead.get('email'));
+        req.httpMethod = 'GET';
+        req.addHeader('Content-Type', 'application/json');
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.getRequest();
+
+        response = RestContext.response;
+        System.assertEquals(200, response.statusCode, 'Properly formed GET request should succeed');
+        jsonResponse = response.responseBody.toString();
+        responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
+
+
+    }
+
     /** Property Accounts **/
 
     @IsTest
@@ -687,6 +729,7 @@ public with sharing class RESTRouterV2Test {
         }
         System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
     }
+
 
     /** General Verb **/
 

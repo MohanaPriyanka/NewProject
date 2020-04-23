@@ -26,24 +26,22 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
             if (leadToReturn == null || leadToReturn.Email != email) {
                 throw new Util.AuthorizationBWException('Invalid authorization, the leadId (' + leadId + ') does not match the email (' + email + ')');
-            }
-            if(leadToReturn.Accounts__r.size() > 1) {
+            } else if(leadToReturn.Accounts__r.size() > 1) {
                 envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
                 response.statusCode = statusCode.badRequest;
-                envelope.setJSONResponse(response);
+            } else {
+                RestLead responseLead = new RestLead(leadToReturn);
+                List<RestLead.RestUtilityAccountLog> ualList = new List<RestLead.RestUtilityAccountLog>();
+                for(Utility_Account_Log__c ual : leadToReturn.Utility_Account_Logs__r) {
+                    ualList.add(new RestLead.RestUtilityAccountLog(ual));
+                }
+                RestLead.RestPropertyAccount propAcct = new RestLead.RestPropertyAccount(leadToReturn.Accounts__r[0]);
+                propAcct.utilityAccountLogs = ualList;
+                responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{propAcct};
+                
+                envelope.setData(responseLead);
+                response.statusCode = statusCode.ok;
             }
-            
-            RestLead responseLead = new RestLead(leadToReturn);
-            List<RestLead.RestUtilityAccountLog> ualList = new List<RestLead.RestUtilityAccountLog>();
-            for(Utility_Account_Log__c ual : leadToReturn.Utility_Account_Logs__r) {
-                ualList.add(new RestLead.RestUtilityAccountLog(ual));
-            }
-            RestLead.RestPropertyAccount propAcct = new RestLead.RestPropertyAccount(leadToReturn.Accounts__r[0]);
-            propAcct.utilityAccountLogs = ualList;
-            responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{propAcct};
-            
-            envelope.setData(responseLead);
-            response.statusCode = statusCode.ok;
         }
 
         envelope.setJSONResponse(response);
