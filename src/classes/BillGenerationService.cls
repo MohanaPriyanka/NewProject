@@ -4,6 +4,8 @@ public without sharing class BillGenerationService {
     public static ScheduleZSubscriptionSelector szsSelector = new ScheduleZSubscriptionSelector();
     public static ProductEscalatorSelector escalatorSelector = new ProductEscalatorSelector();
 
+    public enum BillType {ONTIME, OVERDUE, BOTH}
+
     // Archive once we are creating only UASBs:
     public static List<Schedule_Z_Subscription__c> getScheduleZSubscriptionList(Set<Id> scheduleZIds){
         List<Schedule_Z_Subscription__c> onTimeSZSes;
@@ -28,26 +30,41 @@ public without sharing class BillGenerationService {
 
     // Called from Preview Bills Screen on Transfer:
     @AuraEnabled
-    public static List<UASB__c> calculateUASBsFromTransfer(Transfer__c transfer) {
+    public static List<UASB__c> calculateUASBsFromTransfer(Transfer__c transfer, BillType operationType) {
         BillGenerationService billGenService = new BillGenerationService();
         billGenService.checkRequiredTransferFields(transfer);
-        List<UASB__c> uasbs = billGenService.calculateUASBesFromSZSes(billGenService.getScheduleZSubscriptionList(transfer), transfer);
+        List<UASB__c> uasbs = billGenService.calculateUASBesFromSZSes(billGenService.getScheduleZSubscriptionList(transfer, operationType), transfer);
         return uasbs;
     }
 
     @TestVisible
-    private List<Schedule_Z_Subscription__c> getScheduleZSubscriptionList(Transfer__c transfer) {
+    private List<Schedule_Z_Subscription__c> getScheduleZSubscriptionList(Transfer__c transfer, BillType operationType) {
         List<Schedule_Z_Subscription__c> onTimeSZSes;
         List<Schedule_Z_Subscription__c> overdueSZSes;
-        Set<Id> uasIdsAlreadyBilling = new Set<Id>();
 
         onTimeSZSes = szsSelector.getOnTimeListForBillingOffTransfer(new Set<Id>{transfer.Allocation_Schedule__c});
+        overdueSZSes = getOverdueSZSList(transfer,onTimeSZSes);
+
+        switch on operationType {
+            when ONTIME {
+                return onTimeSZSes;
+            }
+            when OVERDUE {
+                return overdueSZSes;
+            }
+            when else {
+                onTimeSZSes.addAll(overdueSZSes);
+                return onTimeSZSes;
+            }
+        }
+    }
+
+    private List<Schedule_Z_Subscription__c> getOverdueSZSList(Transfer__c transfer, List<Schedule_Z_Subscription__c> onTimeSZSes) {
+        Set<Id> uasIdsAlreadyBilling = new Set<Id>();
         for (Schedule_Z_Subscription__c szs : onTimeSZSes) {
             uasIdsAlreadyBilling.add(szs.Utility_Account_Subscription__c);
         }
-        overdueSZSes = szsSelector.getOverdueSZSForBillingOffTransfer(new Set<Id>{transfer.Shared_Solar_System__c}, uasIdsAlreadyBilling);
-        onTimeSZSes.addAll(overdueSZSes);
-        return onTimeSZSes;
+        return szsSelector.getOverdueSZSForBillingOffTransfer(new Set<Id>{transfer.Shared_Solar_System__c}, uasIdsAlreadyBilling);
     }
 
     @TestVisible
@@ -55,7 +72,7 @@ public without sharing class BillGenerationService {
         checkRequiredTransferFields(transfer);
         List<UASB__c> uasbsToInsert = new List<UASB__c>();
         for (Schedule_Z_Subscription__c szs : szsList){
-            if (szs.Schedule_Z__c == transfer.Allocation_Schedule__c){
+            if (szs.Schedule_Z__c == transfer.Allocation_Schedule__c && !szs.Stop_Credit_Transfer__c){
                 uasbsToInsert.add(setUASBFields(szs, transfer));
             } else {
                 uasbsToInsert.add(setZeroDollarUASBFields(szs, transfer));

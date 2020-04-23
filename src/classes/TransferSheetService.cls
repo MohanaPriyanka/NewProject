@@ -39,7 +39,10 @@ public without sharing class TransferSheetService {
         try {
             Map<Integer, List<String>> csvData = getDataFromMostRecentDocumentUpload(transfer);
             Map<String, UASB__c> transferUASBs = convertTransferSheetToUASBs(csvData);
-            List<UASB__c> pregeneratedSFBills = BillGenerationService.calculateUASBsFromTransfer(transfer);
+            List<UASB__c> pregeneratedSFBills = BillGenerationService.calculateUASBsFromTransfer(
+                transfer,
+                BillGenerationService.BillType.ONTIME
+            );
             return compareSFBillsToTransferSheet(pregeneratedSFBills, transferUASBs);
         } catch (Exception excep) {
             throw Util.createAuraExceptionWithMessage(String.valueOf(excep.getMessage()) + String.valueOf(excep.getStackTraceString()));
@@ -229,13 +232,23 @@ public without sharing class TransferSheetService {
         try {
             List<UASBWithStatus> uasbWithStatusList = (List<UASBWithStatus>) System.JSON.deserialize(pregenBills, List<UASBWithStatus>.class);
             Map<Id, String> resolutionMap = readDataFromLWC(overrideValues);
-            List<UASB__c> uasbsToInsert = resolveUASBs(uasbWithStatusList, resolutionMap);
-            insert uasbsToInsert;
-            postUASBInsertProcessing(uasbsToInsert[0].Transfer__c, overrideValues);
+            List<UASB__c> onTimeUASBs = resolveUASBs(uasbWithStatusList, resolutionMap);
+            insert onTimeUASBs;
+            Transfer__c transfer = transferSelector.getTransferById(onTimeUASBs[0].Transfer__c);
+            insertZeroDollarBills(transfer);
+            postUASBInsertProcessing(transfer, overrideValues);
         } catch (Exception excep) {
             Logger.logNow('TransferSheetService', 'handleTransferSheetResolutions', excep.getMessage() + '___' + excep.getStackTraceString());
             throw Util.createAuraExceptionWithMessage(excep.getMessage());
         }
+    }
+
+    private static void insertZeroDollarBills(Transfer__c transfer){
+        List<UASB__c> overdueUASBs = BillGenerationService.calculateUASBsFromTransfer(
+            transfer,
+            BillGenerationService.BillType.OVERDUE
+        );
+        insert overdueUASBs;
     }
 
     @TestVisible
@@ -310,9 +323,8 @@ public without sharing class TransferSheetService {
     }
 
     @TestVisible
-    private static void postUASBInsertProcessing(Id transferId, List<String> overrideValues) {
+    private static void postUASBInsertProcessing(Transfer__c transfer, List<String> overrideValues) {
         try {
-            Transfer__c transfer = transferSelector.getTransferById(transferId);
             transfer.Bills_Generated__c = true;
             update transfer;
 
@@ -322,7 +334,7 @@ public without sharing class TransferSheetService {
             );
             update billPeriodToUpdate;
 
-            saveResultsAsCSVToRecord(transferId, overrideValues);
+            saveResultsAsCSVToRecord(transfer.Id, overrideValues);
         } catch (Exception excep) {
             Logger.logNow('TransferSheetService', 'PostUASBInsertProcessing', excep.getMessage() + '_' + excep.getStackTraceString());
         }
