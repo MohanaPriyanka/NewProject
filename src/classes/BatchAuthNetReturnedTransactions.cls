@@ -144,8 +144,9 @@ public without sharing virtual class BatchAuthNetReturnedTransactions implements
 
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter processingParameter, String response) {
         try {
-            logReturnedTransactionsNotRecorded(response);
+            List<Case> casesToInsert = markTransactionsAsReturned(response);
             checkTransactionCounts(processingParameter);
+            insert casesToInsert;
         } catch (Exception e) {
             Logger.logLater('BatchAuthNetReturnedTransactions', 'executePostQueryJob', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         } finally {
@@ -153,20 +154,56 @@ public without sharing virtual class BatchAuthNetReturnedTransactions implements
         }
     }
 
-    private void logReturnedTransactionsNotRecorded(String response) {
+    @TestVisible
+    private List<Case> markTransactionsAsReturned(String response) {
         List<ZuoraAPI.Payment> returnedPayments = (List<ZuoraAPI.Payment>) JSON.deserialize(response, List<ZuoraAPI.Payment>.class);
         String returnedTransactionsNotRecorded = '';
+        Set<String> externalZuoraIds = new Set<String>();
+        List<String> paymentMethodIds = new List<String>();
+        List<Case> casesToInsert = new List<Case>();
+
         for (ZuoraAPI.Payment returnedPayment : returnedPayments) {
+            externalZuoraIds.add(returnedPayment.Id);
+            paymentMethodIds.add(returnedPayment.paymentMethodId);
             returnedTransactionsNotRecorded +=
-                returnedPayment.referenceId + ', ' + returnedPayment.id + ', ' + returnedPayment.amount + ', ' + returnedPayment.effectiveDate + '\n';
+                returnedPayment.referenceId + ', ' +
+                returnedPayment.id + ', ' +
+                returnedPayment.amount + ', ' +
+                returnedPayment.effectiveDate + '\n';
         }
+
+        ZuoraPaymentSelector paymentSelector = new ZuoraPaymentSelector();
+        Map<String,Zuora__Payment__c> externalIdToPaymentMap = paymentSelector.selectByExternalId(externalZuoraIds);
+
+        // As of April 2020, Zuora__PaymentMethod__c's are not linked directly to Zuora__Payment__c via z360,
+        // you have to query to find the related record:
+        List<Zuora__PaymentMethod__c> sfPaymentMethods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(paymentMethodIds);
+        Map<String,Zuora__PaymentMethod__c> externalIdToMethodMap = new Map<String,Zuora__PaymentMethod__c>();
+        for (Zuora__PaymentMethod__c payMethod : sfPaymentMethods){
+            externalIdToMethodMap.put(payMethod.Zuora__External_Id__c, payMethod);
+        }
+
         if (returnedTransactionsNotRecorded != '') {
             Logger.logLater(
                 'BatchAuthNetReturnedTransactions',
                 'Returned Transaction Results',
                 'These transactions were found to be returned but not marked as such:\n' + returnedTransactionsNotRecorded,
-                Logger.ERROR);
+                Logger.INFO);
         }
+
+        for (ZuoraAPI.Payment zuoraPayment : returnedPayments) {
+            Zuora__Payment__c sfPayment = externalIdToPaymentMap.get(zuoraPayment.Id);
+            Zuora__PaymentMethod__c sfPaymentMethod = externalIdToMethodMap.get(zuoraPayment.paymentMethodId);
+            if (sfPayment == null || sfPaymentMethod == null){
+                throw new Util.BWException('Could not find SF Payment or Payment Method for' + JSON.serialize(zuoraPayment));
+            }
+            ZuoraController.executeMarkPaymentAsReturned(zuoraPayment,sfPayment);
+            ZuoraReturnedPaymentService returnService = new ZuoraReturnedPaymentService();
+            returnService.payMethod = sfPaymentMethod;
+            Case newCase = returnService.createCaseForReturns(sfPayment);
+            casesToInsert.add(newCase);
+        }
+        return casesToInsert;
     }
 
     private void checkTransactionCounts(ZuoraDataQueryService.ProcessingParameter param) {
