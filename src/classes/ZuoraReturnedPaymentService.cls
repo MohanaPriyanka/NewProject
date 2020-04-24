@@ -8,7 +8,8 @@ public with sharing class ZuoraReturnedPaymentService {
 
     // Used to reverse payments that are found to be returned by leaving the payment as applied, but creating a new
     // debit memo with the current effective date. Will affect aging, since the original payment is left applied.
-    public List<ZuoraAPI.DebitMemo> convertPaymentToDebitMemos(String paymentId) {
+
+    public ZuoraAPI.Payment checkIfPaymentIsAlreadyReturned(String paymentId) {
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/payments/' + paymentId, null, false);
         ZuoraAPI.Payment payment = (ZuoraAPI.Payment) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.Payment.class);
         // Response status can be Approved, Declined, Error, RETURNED, Voided for history, or blank for payments just coming from Zuora
@@ -16,11 +17,15 @@ public with sharing class ZuoraReturnedPaymentService {
         if (!String.isBlank(payment.ResponseStatus_Zcustom) && !(payment.ResponseStatus_Zcustom == 'Approved')) {
             throw new Util.FatalBWException('This payment is already marked as returned: ' + payment);
         }
+        return payment;
+    }
 
+    public List<ZuoraAPI.DebitMemo> convertPaymentToDebitMemos(ZuoraAPI.Payment payment) {
+        HttpResponse response;
         ZuoraAPI.OrderBySubscriptionOwner subscription =
             ZuoraSubscriptionService.getOrderBySubscriptionOwner(payment.accountId);
 
-        response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/payments/'+ paymentId +'/parts', null, false);
+        response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/payments/'+ payment.Id +'/parts', null, false);
         ZuoraAPI.PaymentParts paymentParts =
             (ZuoraAPI.PaymentParts) JSON.deserialize(response.getBody(), ZuoraAPI.PaymentParts.class);
 
@@ -28,7 +33,7 @@ public with sharing class ZuoraReturnedPaymentService {
         for (ZuoraAPI.PaymentPart paymentPart : paymentParts.parts) {
             response = ZuoraAPIHelper.callJsonEndpoint(
                 'GET',
-                '/v1/payments/' + paymentId + '/parts/' + paymentPart.id + '/itemparts',
+                '/v1/payments/' + payment.Id + '/parts/' + paymentPart.id + '/itemparts',
                 null,
                 false
             );
@@ -150,7 +155,7 @@ public with sharing class ZuoraReturnedPaymentService {
         if (payMethod != null){
             newCase.Zuora_Payment_Method__c = payMethod.Id;
         } else {
-            Logger.logNow('ZuoraReturnedPaymentService','getPaymentMethod',String.valueOf(zuoraPayment));
+            Logger.logLater('ZuoraReturnedPaymentService','getPaymentMethod',String.valueOf(zuoraPayment));
         }
 
         return newCase;
