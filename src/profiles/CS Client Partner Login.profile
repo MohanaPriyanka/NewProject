@@ -19765,11 +19765,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Contact.Delete_This_Checkbox__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Contact.Department</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -37410,11 +37405,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.delete_TEST__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.dummy_2__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -42441,11 +42431,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>System_Bill__c.Days_in_Bill_Period__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Delete_this_del__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
