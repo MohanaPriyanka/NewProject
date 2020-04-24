@@ -249,6 +249,48 @@ public with sharing class RESTRouterV2Test {
 
     }
 
+    @IsTest
+    public static void testGetLeadSuccess() {
+        // <setup>
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(validResiJsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        RestResponse response = RestContext.response;
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+
+        Map<String, Object> postResponseLead = (Map<String, Object>) responseEnvelope.get('data');
+        // </setup>
+
+        req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.addParameter('leadId', (String)postResponseLead.get('id'));
+        req.addParameter('email', (String)postResponseLead.get('email'));
+        req.httpMethod = 'GET';
+        req.addHeader('Content-Type', 'application/json');
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.getRequest();
+
+        response = RestContext.response;
+        System.assertEquals(200, response.statusCode, 'Properly formed GET request should succeed');
+        jsonResponse = response.responseBody.toString();
+        responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
+
+
+    }
+
     /** Property Accounts **/
 
     @IsTest
@@ -491,6 +533,129 @@ public with sharing class RESTRouterV2Test {
 
     }
 
+
+    /** Application **/
+
+    @IsTest
+    public static void testPatchApplicationSuccess() {
+        // <setup>
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(validResiJsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        RestResponse response = RestContext.response;
+        String jsonResponse = response.responseBody.toString();
+
+        Map<String, Object> postResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> postResponseLead = (Map<String,Object>) postResponseEnvelope.get('data');
+        
+        List<Object> postResponsePropertyAccounts = (List<Object>) postResponseLead.get('propertyAccounts');
+        Map<String, Object> postResponsePropertyAccount = (Map<String,Object>) postResponsePropertyAccounts[0];
+        
+        List<Object> postResponseUALs = (List<Object>) postResponsePropertyAccount.get('utilityAccountLogs');
+        Map<String, Object> postResponseUAL = (Map<String,Object>) postResponseUALs[0];
+        
+        // </setup>
+
+
+        req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/application';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+
+        String applicationJson = getApplicationJson(
+            (Id)postResponseLead.get('id'), 
+            (Id)postResponsePropertyAccount.get('id'), 
+            (Id)postResponseUAL.get('id')
+        );
+
+        req.requestBody = Blob.valueOf(applicationJson);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.patchRequest();
+        
+        response = RestContext.response;
+        jsonResponse = response.responseBody.toString();
+        Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
+        Map<String, Object> patchResponseLead = (Map<String,Object>) patchResponseEnvelope.get('data');
+        
+        List<Object> patchResponsePropertyAccounts = (List<Object>) patchResponseLead.get('propertyAccounts');
+        Map<String, Object> patchResponsePropertyAccount = (Map<String,Object>) patchResponsePropertyAccounts[0];
+
+        List<Object> patchResponseUALs = (List<Object>) patchResponsePropertyAccount.get('utilityAccountLogs');
+        Map<String, Object> patchResponseUAL = (Map<String,Object>) patchResponseUALs[0];
+
+
+        System.assertNotEquals(postResponseLead.get('streetAddress'), patchResponseLead.get('streetAddress'), 'The updated lead streetAddress field value should not match the original field value');
+        for(String fieldName : updatedAccountFields()) {
+            System.assertNotEquals(postResponsePropertyAccount.get(fieldName), patchResponsePropertyAccount.get(fieldName), 'The updated property account ' + fieldName + ' field value should not match the original field value');
+        }
+        for(String fieldName : updatedUALFields()) {
+            System.assertNotEquals(postResponseUAL.get(fieldName), patchResponseUAL.get(fieldName), 'The updated utility account log ' + fieldName + ' field value should not match the original field value');
+        }
+    }
+
+    private static List<String> updatedAccountFields() {
+        return new List<String>{
+            'billingStreet',
+            'billingCity',
+            'billingState',
+            'billingPostalCode'
+        };
+    }
+
+    private static List<String> updatedUALFields() {
+        return new List<String>{
+            'utilityAccountNumber',
+            'nameOnAccount',
+            'serviceStreet',
+            'serviceCity',
+            'serviceState',
+            'servicePostalCode'
+        };
+    }
+
+    private static String getApplicationJson(Id leadId, Id acctId, Id ualId) {
+        return '{' +
+        '"id": "' + leadId + '",' +
+        '"streetAddress": "9 Test Avenue",' +
+        '"propertyAccounts": [' +
+        '   { ' +
+        '       "id": "' + acctId + '",' +
+        '       "leadId": "' + leadId + '",' +
+        '       "name": "99999",' +
+        '       "billingStreet": "99 Test St",' +
+        '       "billingCity": "Ninenine",' +
+        '       "billingState": "MA",' +
+        '       "billingPostalCode": "99999",' +
+        '       "utilityAccountLogs": [' +
+        '           { ' +
+        '               "id": "' + ualId + '",' +
+        '               "leadId": "' + leadId + '",' +
+        '               "propertyAccountId": "' + acctId + '",' +
+        '               "utilityAccountNumber": "999999",' +
+        '               "nameOnAccount": "Test Name",' +
+        '               "serviceStreet": "999 Test Blvd",' +
+        '               "serviceCity": "Nineninenine",' +
+        '               "serviceState": "MA",' +
+        '               "servicePostalCode": "99999"' +
+        '           } ' +
+        '       ] ' +
+        '   }' +
+        '] ' +
+        '}';
+    }
+
     @IsTest
     public static void testZipCheck() {
         RESTRouterV2.controller = (CSLeadsRESTControllerV2) Test.createStub(CSLeadsRESTControllerV2.class, new MockCSLeadsRESTControllerV2());
@@ -564,6 +729,7 @@ public with sharing class RESTRouterV2Test {
         }
         System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
     }
+
 
     /** General Verb **/
 

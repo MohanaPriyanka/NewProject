@@ -330,6 +330,27 @@ public without sharing class RestLead {
             }
         }
 
+        /**
+         * This is used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
+         *
+         * @param fieldNames Set of field names to PATCH
+         * @param baseAccount Original Property Account from the DB that this Account's values with be patched on top of.
+         *
+         * @return
+         */
+        @SuppressWarnings('PMD')
+        public Account mergeFields(Set<String> fieldNames, Account baseAccount) {
+            if (fieldNames.contains('name')) baseAccount.Name = this.name;
+            if (fieldNames.contains('billingStreet')) baseAccount.BillingStreet = this.billingStreet;
+            if (fieldNames.contains('billingCity')) baseAccount.BillingCity = this.billingCity;
+            if (fieldNames.contains('billingState')) baseAccount.BillingStateCode = this.billingState;
+            if (fieldNames.contains('billingPostalCode')) baseAccount.BillingPostalCode = this.billingPostalCode;
+            if (fieldNames.contains('zuoraPaymentRefId')) baseAccount.Zuora_Payment_Ref_Id__c = this.zuoraPaymentRefId;
+            if (fieldNames.contains('zuoraPaymentRefIdExpirationDate')) baseAccount.Zuora_Payment_Ref_Id_Expiration_Date__c = this.zuoraPaymentRefIdExpirationDate;
+            
+            return baseAccount;
+        }
+
     }
 
     public class RestUtilityAccountLog {
@@ -384,6 +405,28 @@ public without sharing class RestLead {
                 Annual_kWh__c = annualKWh,
                 Annual_Cost_of_Electricity__c = annualCostOfElectricity
             );
+        }
+
+        /**
+         * This is used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
+         *
+         * @param fieldNames Set of field names to PATCH
+         * @param baseUAL Original Utility Account Log from the DB that this UAL's values with be patched on top of.
+         *
+         * @return
+         */
+        @SuppressWarnings('PMD')
+        public Utility_Account_Log__c mergeFields(Set<String> fieldNames, Utility_Account_Log__c baseUAL) {
+            if (fieldNames.contains('utilityAccountNumber')) baseUAL.Name = this.utilityAccountNumber;
+            if (fieldNames.contains('nameOnAccount')) baseUAL.Name_on_Account__c = this.nameOnAccount;
+            if (fieldNames.contains('serviceStreet')) baseUAL.Service_Address__c = this.serviceStreet;
+            if (fieldNames.contains('serviceCity')) baseUAL.Service_City__c = this.serviceCity;
+            if (fieldNames.contains('serviceState')) baseUAL.Service_State__c = this.serviceState;
+            if (fieldNames.contains('servicePostalCode')) baseUAL.Service_Zip_Code__c = this.servicePostalCode;
+            if (fieldNames.contains('annualKWh')) baseUAL.Annual_kWh__c = this.annualKWh;
+            if (fieldNames.contains('annualCostOfElectricity')) baseUAL.Annual_Cost_of_Electricity__c = this.annualCostOfElectricity;
+    
+            return baseUAL;
         }
     }
 }

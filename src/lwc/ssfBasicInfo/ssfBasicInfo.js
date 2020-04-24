@@ -10,53 +10,61 @@ import {makeRequest} from 'c/httpRequestService';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api zipinput;
+    @api leadJson;
+    @api utilityOptions;
+    @api resiApplicationType;
+    @api selectedProduct;
+
+    @track restLead;
+    @track propertyAccount;
     @track showSpinner;
     @track spinnerMessage;
-    @track firstName;
-    @track lastName;
-    @track email;
-    @track phone;
     @track sameBillingAddress = true;
-    @track billingStreet;
-    @track billingCity;
-    @track billingState;
-    @track billingZip;
     @track sameHomeAddress = true;
-    @track homeStreet;
-    @track homeCity;
-    @track homeState;
-    @track homeZip;
     @track selectedUtility;
-    @api utilityOptions;
-    @track utilityAccounts;
     @track utilityAccountSection;
     @track stateOptions;
-    @track referralName;
-    @api resiApplicationType;
-    @track businessName;
-    @track businessTitle;
-    @track businessPhone;
-    applicationType;
-    utilityAccountCount = 1;
-    @api selectedProduct;
+    utilityAccountCount = 0;
     @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {
-        if (!this.utilityAccounts) {
-            this.utilityAccounts = [{
-                id: 1,
-                name: `Utility Account 1`,
-                utilityAccountNumber: '',
-                street: '',
-                state: '',
-                city: '',
-                zip: this.zipinput
-            }];
-            this.utilityAccountSection = 1;
+        // if a lead has already been created, have the form show existing values
+        if(this.leadJson) {
+            this.restLead = JSON.parse(this.leadJson);
+            this.propertyAccount = this.restLead.propertyAccounts[0];
+            if(this.propertyAccount.utilityAccountLogs) {
+                for(let i=0; i < this.propertyAccount.utilityAccountLogs.length; i++) {
+                    this.propertyAccount.utilityAccountLogs[i].localid = i+1;
+                    this.propertyAccount.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
+                }
+            }
+            this.sameBillingAddress = this.propertyAccount.billingStreet == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
+            this.sameHomeAddress = this.restLead.streetAddress == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
+        } 
+        // if no lead exists, set default values for restLead and propertyAccount
+        else {
+            this.restLead = {
+                applicationType: this.resiApplicationType ? 'Residential' : 'Non-Residential',
+                zipCode: this.zipinput,
+                partnerId: this.pageRef && this.pageRef.state && this.pageRef.state.partnerId ? this.pageRef.state.partnerId : null,
+                salesRepId: this.pageRef && this.pageRef.state && this.pageRef.state.salesRepId ? this.pageRef.state.salesRepId : null,
+                productName: this.selectedProduct
+            }
+            this.propertyAccount = { 
+                billingPostalCode: this.zipinput, 
+                utilityAccountLogs: [] 
+            };
         }
-        if (!this.billingZip) {
-            this.billingZip = this.zipinput;
+
+        // if there are no utility accounts, add an empty one so the form will show fields to enter data
+        if(this.propertyAccount && this.propertyAccount.utilityAccountLogs && this.propertyAccount.utilityAccountLogs.length === 0) {
+            this.addUtilityAccount();
         }
+        // set the values to properly display the utility portion of the form
+        this.utilityAccountCount = this.propertyAccount.utilityAccountLogs.length;
+        this.utilityAccountSection = this.utilityAccountCount;
+        
+        // if certain property values didn't come in from the api, find their values
         if (!this.stateOptions) {
             this.stateOptions = getUSStateOptions();
         }
@@ -65,42 +73,51 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         } else if (this.utilityOptions.length === 1) {
             this.selectedUtility = this.utilityOptions[0].value;
         }
-        if (this.resiApplicationType) {
-            this.applicationType = 'Residential';
-        } else {
-            this.applicationType = 'Non-Residential';
-        }
         if (this.pageRef && this.pageRef.state && this.pageRef.state.mock) {
             this.mockData();
         }
     }
 
     mockData() {
-        this.firstName = 'Peter';
-        this.lastName = 'Testcase';
-        this.email = 'pyao@bluewavesolar.com';
-        this.phone = 1231231234;
-        this.utilityAccounts[0].utilityAccountNumber = '123';
-        this.utilityAccounts[0].nameOnAccount = 'Peter testcase';
-        this.utilityAccounts[0].street = '123 Main';
-        this.utilityAccounts[0].state = 'MA';
-        this.utilityAccounts[0].city = 'Boston';
-        this.utilityAccounts[0].zip = this.zipinput;
+        this.restLead.firstName = 'Peter';
+        this.restLead.lastName = 'Testcase';
+        this.restLead.email = 'pyao@bluewavesolar.com';
+        if(this.resiApplicationType) {
+            this.restLead.mobilePhone = 1231231234;
+        } else {
+            this.restLead.businessPhone = 1231231234;
+        }
+        this.propertyAccount.utilityAccountLogs[0].utilityAccountNumber = '123';
+        this.propertyAccount.utilityAccountLogs[0].nameOnAccount = 'Peter testcase';
+        this.propertyAccount.utilityAccountLogs[0].serviceStreet = '123 Main';
+        this.propertyAccount.utilityAccountLogs[0].serviceState = 'MA';
+        this.propertyAccount.utilityAccountLogs[0].serviceCity = 'Boston';
+        this.propertyAccount.utilityAccountLogs[0].servicePostalCode = this.zipinput;
     }
 
+
+    // handle changes in form entries
     genericOnChange(event) {
-        this[event.target.name] = event.target.value;
+        this.restLead[event.target.name] = event.target.value;
     }
 
     phoneOnChange(event) {
         const strippedPhone = event.target.value.replace(/\D/g,'');
         event.target.setCustomValidity("");
         if(strippedPhone.length === 10) {
-            this[event.target.name] = strippedPhone.substr(0,3) + '-' + strippedPhone.substr(3,3) + '-' + strippedPhone.substr(6,4);
+            this.restLead[event.target.name] = strippedPhone.substr(0,3) + '-' + strippedPhone.substr(3,3) + '-' + strippedPhone.substr(6,4);
         } else {
-            this[event.target.name] = strippedPhone;
+            this.restLead[event.target.name] = strippedPhone;
             event.target.setCustomValidity("Please enter a 10-digit phone number");
         }
+    }
+
+    utilityAccountOnChange(event) {
+        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][event.target.name] = event.target.value;
+    }
+
+    propertyAccountOnChange(event) {
+        this.propertyAccount[event.target.name] = event.target.value;
     }
 
     billingAddressToggle(event) {
@@ -111,48 +128,48 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.sameHomeAddress = event.target.checked;
     }
 
-    utilityAccountOnChange(event) {
-        this.utilityAccounts[event.target.dataset.rowIndex][event.target.name] = event.target.value;
-    }
     addAnotherUtilityAccount() {
         if (!this.lastUtilityAccountValid()) {
             return;
         }
-        this.utilityAccountCount++;
-        this.utilityAccounts.push({
-            id:this.utilityAccountCount,
-            name: `Utility Account ${this.utilityAccountCount}`,
-            utilityAccountNumber: '',
-            street: '',
-            state: '',
-            city: '',
-            zip: this.zipinput
-        });
-        setTimeout(() => this.utilityAccountSection = this.utilityAccountCount);
+        
+        this.addUtilityAccount();
     }
 
-    lastUtilityAccountValid() {
-        let index = this.utilityAccountCount - 1;
-        if (this.utilityAccounts[index] &&
-            this.utilityAccounts[index].utilityAccountNumber &&
-            this.utilityAccounts[index].street &&
-            this.utilityAccounts[index].state &&
-            this.utilityAccounts[index].city &&
-            this.utilityAccounts[index].zip) {
-            return true;
-        }
-        this.showWarningToast('Warning', 'Please complete this utility account before adding another');
-        return false;
+    addUtilityAccount() {
+        this.utilityAccountCount++;
+        this.propertyAccount.utilityAccountLogs.push({
+            localid:this.utilityAccountCount,
+            name: `Utility Account ${this.utilityAccountCount}`,
+            servicePostalCode: this.zipinput
+        });
+        setTimeout(() => this.utilityAccountSection = this.utilityAccountCount);
     }
 
     handleUtilityAccountMenu(event) {
         const selectedItemValue = event.detail.value;
         const utilityAccountIndex = event.target.name;
         if (selectedItemValue === 'remove') {
-            this.utilityAccounts.splice(utilityAccountIndex, 1);
+            this.propertyAccount.utilityAccountLogs.splice(utilityAccountIndex, 1);
             this.utilityAccountCount -= 1;
             setTimeout(() => this.utilityAccountSection = this.utilityAccountCount);
         }
+    }
+
+
+    // perform validations
+    lastUtilityAccountValid() {
+        let index = this.utilityAccountCount - 1;
+        if (this.propertyAccount.utilityAccountLogs[index] &&
+            this.propertyAccount.utilityAccountLogs[index].utilityAccountNumber &&
+            this.propertyAccount.utilityAccountLogs[index].serviceStreet &&
+            this.propertyAccount.utilityAccountLogs[index].serviceState &&
+            this.propertyAccount.utilityAccountLogs[index].serviceCity &&
+            this.propertyAccount.utilityAccountLogs[index].servicePostalCode) {
+            return true;
+        }
+        this.showWarningToast('Warning', 'Please complete this utility account before adding another');
+        return false;
     }
 
     applicationValid() {
@@ -168,69 +185,28 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         return true;
     }
 
+
+    // submit form
     submitApplication() {
         if (!this.applicationValid()) {
             return;
         }
-        if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
-            this.partnerId = this.pageRef.state.partnerId;
-        }
-        if (this.pageRef && this.pageRef.state && this.pageRef.state.salesRepId) {
-            this.salesRepId = this.pageRef.state.salesRepId;
-        }
+
         if (this.sameBillingAddress) {
-            this.billingStreet = this.utilityAccounts[0].street;
-            this.billingCity = this.utilityAccounts[0].city;
-            this.billingState = this.utilityAccounts[0].state;
-            this.billingZip = this.utilityAccounts[0].zip;
+            this.propertyAccount.billingStreet = this.propertyAccount.utilityAccountLogs[0].serviceStreet;
+            this.propertyAccount.billingCity = this.propertyAccount.utilityAccountLogs[0].serviceCity;
+            this.propertyAccount.billingState = this.propertyAccount.utilityAccountLogs[0].serviceState;
+            this.propertyAccount.billingPostalCode = this.propertyAccount.utilityAccountLogs[0].servicePostalCode;
         }
         if (this.sameHomeAddress) {
-            this.homeStreet = this.utilityAccounts[0].street;
-            this.homeCity = this.utilityAccounts[0].city;
-            this.homeState = this.utilityAccounts[0].state;
-            this.homeZip = this.utilityAccounts[0].zip;
+            this.restLead.streetAddress = this.propertyAccount.utilityAccountLogs[0].serviceStreet;
+            this.restLead.city = this.propertyAccount.utilityAccountLogs[0].serviceCity;
+            this.restLead.state = this.propertyAccount.utilityAccountLogs[0].serviceState;
+            this.restLead.zipCode = this.propertyAccount.utilityAccountLogs[0].servicePostalCode;
         }
-        let restLead = {
-            applicationType: this.applicationType,
-            firstName: this.firstName,
-            lastName: this.lastName,
-            email : this.email,
-            mobilePhone : this.phone,
-            streetAddress: this.homeStreet,
-            city: this.homeCity,
-            state: this.homeState,
-            zipCode: this.homeZip,
-            productName: this.selectedProduct,
-            referralName: this.referralName,
-            partnerId: this.partnerId?this.partnerId:null,
-            salesRepId: this.salesRepId?this.salesRepId:null,
-            propertyAccounts: [
-                {
-                    name: `${this.firstName} ${this.lastName}`,
-                    billingStreet: this.billingStreet,
-                    billingCity: this.billingCity,
-                    billingState: this.billingState,
-                    billingPostalCode: this.billingZip,
-                }
-            ]
-        };
-        if (!this.resiApplicationType) {
-            restLead.businessName = this.businessName;
-            restLead.businessTitle = this.businessTitle;
-            restLead.businessPhone = this.businessPhone;
-        }
-        restLead.propertyAccounts[0].utilityAccountLogs = this.utilityAccounts.map(
-            ({utilityAccountNumber, nameOnAccount, street, city, state, zip}) => {
-                return {
-                    utilityAccountNumber,
-                    nameOnAccount,
-                    serviceStreet: street,
-                    serviceCity: city,
-                    serviceState: state,
-                    servicePostalCode: zip
-                };
-            }
-        );
+        this.propertyAccount.name = this.resiApplicationType ? `${this.restLead.firstName} ${this.restLead.lastName}` : this.restLead.businessName;
+        this.restLead.propertyAccounts = [this.propertyAccount];
+
         this.showSpinner = true;
         window.setTimeout(() => {
             this.spinnerMessage = 'Saving your application';
@@ -238,23 +214,50 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         window.setTimeout(() => {
             this.spinnerMessage = 'We\'ll generate documents next.\r\nThis may take a minute, please stand by.';
         }, 6000);
-        this.createLead(restLead).then(
-            (resolveResult) => {
-                this.dispatchEvent(new CustomEvent('leadcreated', {detail: resolveResult}));
-                this.showSpinner = false;
-            },
-            (rejectResult) => {
-                this.showSpinner = false;
-                let errors = JSON.parse(rejectResult).errors;
-                let message = '';
-                if (errors && errors[0]) {
-                    message += errors[0];
-                } else {
-                    message += rejectResult;
+
+        if(!this.leadJson) {
+            this.createLead(this.restLead).then(
+                (resolveResult) => {
+                    this.dispatchEvent(new CustomEvent('leadcreated', {detail: resolveResult}));
+                    this.showSpinner = false;
+                },
+                (rejectResult) => {
+                    this.showSpinner = false;
+                    let errors = JSON.parse(rejectResult).errors;
+                    let message = '';
+                    if (errors && errors[0]) {
+                        message += errors[0];
+                    } else {
+                        message += rejectResult;
+                    }
+                    this.showWarningToast('Sorry, we ran into a technical problem!', message);
                 }
-                this.showWarningToast('Sorry, we ran into a technical problem!', message);
+            );
+        } else {
+            let origLead = JSON.parse(this.leadJson);
+            if(this.restLead == origLead) {
+                this.dispatchEvent(new CustomEvent('leadcreated', {detail: this.leadJson}));
+                this.showSpinner = false;
+            } else {
+                this.patchApplication(this.restLead).then(
+                    (resolveResult) => {
+                        this.dispatchEvent(new CustomEvent('leadcreated', {detail: resolveResult}));
+                        this.showSpinner = false;
+                    },
+                    (rejectResult) => {
+                        this.showSpinner = false;
+                        let errors = JSON.parse(rejectResult).errors;
+                        let message = '';
+                        if (errors && errors[0]) {
+                            message += errors[0];
+                        } else {
+                            message += rejectResult;
+                        }
+                        this.showWarningToast('Sorry, we ran into a technical problem!', message);
+                    }
+                );
             }
-        );
+        }
     }
 
     createLead = (restLead) => {
@@ -264,6 +267,15 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             body: JSON.stringify(restLead)
         };
         return makeRequest(calloutURI, 'POST', options);
+    };
+
+    patchApplication = (restLead) => {
+        let calloutURI = '/apply/services/apexrest/v3/application';
+        let options = {
+            headers: {name: 'Content-Type', value:'application/json'},
+            body: JSON.stringify(restLead)
+        };
+        return makeRequest(calloutURI, 'PATCH', options);
     };
 
     showWarningToast(title, message) {
