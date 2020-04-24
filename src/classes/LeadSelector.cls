@@ -46,6 +46,31 @@ public without sharing class LeadSelector {
         'Zuora_Payment_Ref_Id_Expiration_Date__c'
     };
 
+    public List<String> apiPropertyAccountFields = new List<String>{
+        'Id', 
+        'Lead__c', 
+        'Name', 
+        'BillingStreet', 
+        'BillingCity', 
+        'BillingStateCode', 
+        'BillingPostalCode', 
+        'Zuora_Payment_Ref_Id__c', 
+        'Zuora_Payment_Ref_Id_Expiration_Date__c'
+    };
+
+    public List<String> apiUtilityAccountFields = new List<String>{
+        'Id', 
+        'Account__c', 
+        'Name', 
+        'Name_on_Account__c', 
+        'Service_Address__c', 
+        'Service_City__c', 
+        'Service_State__c', 
+        'Service_Zip_Code__c', 
+        'Annual_kWh__c', 
+        'Annual_Cost_of_Electricity__c'
+    };
+
     public static List<Lead> selectConvertedByIds(List<Id> leadIds) {
         return [
             SELECT Id, ConvertedAccountId, Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c
@@ -78,6 +103,15 @@ public without sharing class LeadSelector {
             FROM Lead
             WHERE Id = :leadIds
         ];
+    }
+    
+
+    public Lead selectOneWithPropertiesAndUtilities(Id leadId) {
+        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', Product__r.Name, Customer_Signed_Date__c, Utility_relationship__r.EIA_ID__c';
+        query += ', (SELECT ' + String.join(apiPropertyAccountFields, ', ') + ' FROM Accounts__r)';
+        query += ', (SELECT ' + String.join(apiUtilityAccountFields, ', ') + ' FROM Utility_Account_Logs__r)';
+        query += ' FROM Lead WHERE Id = :leadId LIMIT 1';
+        return Database.query(String.escapeSingleQuotes(query));
     }
 
     public List<Lead> selectForMerge(Set<Id> leadIds) {

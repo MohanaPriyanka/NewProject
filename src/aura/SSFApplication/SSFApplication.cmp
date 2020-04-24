@@ -16,7 +16,7 @@
     <div >
       <c:LightningErrorHandler/>
       <aura:if isTrue="{!v.getInfo}">
-        <c:ssf onconsentscomplete="{!c.handleConsents}"/>
+        <c:ssf onconsentscomplete="{!c.handleConsents}" onallcomplete="{!c.showComplete}"/>
       </aura:if>
       <aura:if isTrue="{!v.getPayment}">
         <div>
