@@ -50,4 +50,13 @@ public without sharing class AdjustmentSelector {
             WHERE Id IN : adjustmentIds
         ]);
     }
+
+    public List<Bill_Adjustment__c> getAdjustmentsFromExternalIds(Set<String> zuoraIds){
+        List<Bill_Adjustment__c> adjustments = [
+            SELECT Id, Transfer__c, Discount__c, Zuora_Id__c
+            FROM Bill_Adjustment__c
+            WHERE Zuora_Id__c IN : zuoraIds
+        ];
+        return adjustments;
+    }
 }

@@ -221,6 +221,27 @@ public with sharing class ZuoraAPI {
         public String CRM_ID_Zcustom;
     }
 
+    public class CreditMemoWithParts {
+        public List<CreditMemoPart> parts;
+    }
+
+    public class CreditMemoWithItems {
+        public List<CreditMemoPartItem> itemParts;
+    }
+
+    public class CreditMemoPart {
+        public String Id;
+        public String DebitMemoId;
+        public String InvoiceId;
+        public Decimal Amount;
+    }
+
+    public class CreditMemoPartItem {
+        public String Id;
+        public String InvoiceItemId;
+        public Decimal Amount;
+    }
+
     // Used to query, but not to create credit memos:
     public class ZuoraCreditMemo {
         public String id;

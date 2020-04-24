@@ -52,26 +52,51 @@ public with sharing class ProductionToBillServiceTest {
     }
 
     @isTest
-    public static void testQueueCollectionsJob(){
+    public static void testQueuePaymentJob(){
         useMocks();
         List<Error_Log__c> beforeLogs = [
             SELECT Class__c, Message__c
             FROM Error_Log__c
             WHERE Class__c = 'ProductionToBillService'
-            AND Method__c = 'executeCollectionsJob'
+            AND Method__c = 'executePaymentJob'
         ];
         System.assertEquals(0,beforeLogs.size());
 
         Test.startTest();
             ProductionToBillService prodService = new ProductionToBillService();
-            prodService.queueJob(ProductionToBillService.OperationType.COLLECTION);
+            prodService.queueJob(ProductionToBillService.OperationType.PAYMENT);
         Test.stopTest();
 
         List<Error_Log__c> afterLogs = [
             SELECT Class__c, Message__c, Method__c
             FROM Error_Log__c
             WHERE Class__c = 'ProductionToBillService'
-            AND Method__c = 'executeCollectionsJob'
+            AND Method__c = 'executePaymentJob'
+        ];
+        System.assert(afterLogs.size() > 0);
+    }
+
+    @isTest
+    public static void testQueueCreditMemoJob(){
+        useMocks();
+        List<Error_Log__c> beforeLogs = [
+            SELECT Class__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeCreditMemoJob'
+        ];
+        System.assertEquals(0,beforeLogs.size());
+
+        Test.startTest();
+        ProductionToBillService prodService = new ProductionToBillService();
+        prodService.queueJob(ProductionToBillService.OperationType.CREDITMEMO);
+        Test.stopTest();
+
+        List<Error_Log__c> afterLogs = [
+            SELECT Class__c, Message__c, Method__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeCreditMemoJob'
         ];
         System.assert(afterLogs.size() > 0);
     }
@@ -302,7 +327,7 @@ public with sharing class ProductionToBillServiceTest {
 
         System.assertEquals(0,beforeBillParts.size());
 
-        List<Journal_Entry__c> collectionEntries = getCollectionJournalEntries();
+        List<Journal_Entry__c> collectionEntries = getPaymentJournalEntries();
         ProductionToBillService service = new ProductionToBillService();
         service.createProductionDetailFromCollectionItem(collectionEntries);
 
@@ -368,6 +393,40 @@ public with sharing class ProductionToBillServiceTest {
             SELECT Id FROM Zuora_Data_Query__c
         ];
         System.assert(afterQueries.size() > 0);
+    }
+
+    @IsTest
+    public static void testCreateProductionDetailFromCreditMemos(){
+        useMocks();
+        // 5 Credit Memos, 2 of which have Reason Code = 'Production' so should make 'Bill' Production Detail records
+        // the remaining 3 should create 'Collection' Production Detail records
+        List<Journal_Entry__c> creditMemoEntries = getCreditMemoJournalEntries();
+        System.assertEquals(5,creditMemoEntries.size());
+
+        ProductionToBillService service = new ProductionToBillService();
+        service.createProductionDetailFromCreditMemo(creditMemoEntries);
+
+        List<Transfer_Part__c> productionDetailList = service.partsToInsert;
+
+        Integer countOfBills = 0;
+        Integer countOfSavings = 0;
+        Integer countOfPayments = 0;
+        for (Transfer_Part__c prodDetail : productionDetailList){
+            if (prodDetail.Type__c == 'Bill') {
+                countOfBills += 1;
+            } else if (prodDetail.Type__c == 'Customer Savings'){
+                countOfSavings += 1;
+            } else if (prodDetail.Type__c == 'Payment'){
+                countOfPayments += 1;
+            }
+        }
+
+        // 2 'Bill' Credit Memos create both a bill production detail and savings production detail:
+        System.assertEquals(2,countOfBills);
+        System.assertEquals(2,countOfSavings);
+
+        // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records:
+        System.assertEquals(6,countOfPayments);
     }
 
     @IsTest
@@ -588,9 +647,24 @@ public with sharing class ProductionToBillServiceTest {
                 '"a0p0a000008BBBuAAO":{"Id":"a0p0a000008BBBuAAO", "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}' +
                 '}';
 
+            String adjustListAsString = '[' +
+                '{"attributes":{"type":"Bill_Adjustment__c"},' +
+                '"Id":"a0p0a000008ZZBuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0033"},' +
+                '{"attributes":{"type":"Bill_Adjustment__c"},' +
+                '"Id":"a0p0a000008YSBuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0032"},' +
+                '{"attributes":{"type":"Bill_Adjustment__c"},' +
+                '"Id":"a0p0a000008YSCuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0031"},' +
+                '{"attributes":{"type":"Bill_Adjustment__c"},' +
+                '"Id":"a0p0a000008AABuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0030"},' +
+                '{"attributes":{"type":"Bill_Adjustment__c"},' +
+                '"Id":"a0p0a000008BBBuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0029"}]';
+
             switch on methodCall.stubbedMethodName {
                 when 'getAdjustmentsFromIds' {
                     return (Map<Id, Bill_Adjustment__c>)JSON.deserialize(adjustMapAsString, Map<Id, Bill_Adjustment__c>.class);
+                }
+                when 'getAdjustmentsFromExternalIds' {
+                    return (List<Bill_Adjustment__c>)JSON.deserialize(adjustListAsString, List<Bill_Adjustment__c>.class);
                 }
             }
             return null;
@@ -721,7 +795,7 @@ public with sharing class ProductionToBillServiceTest {
         return entries;
     }
 
-    private static List<Journal_Entry__c> getCollectionJournalEntries(){
+    private static List<Journal_Entry__c> getPaymentJournalEntries(){
         Date mayBillDate = Date.newInstance(2019,05,20);
         Date juneBillDate = Date.newInstance(2019,06,20);
 
@@ -771,12 +845,87 @@ public with sharing class ProductionToBillServiceTest {
         );
         Journal_Entry__c entrySix = new Journal_Entry__c(
             Id = 'a920a000000HuJoAAE',
+            Object_Type__c = 'PaymentPart',
+            Query_Type__c = 'PaymentPart_IV',
+            Project__c = 'SSS-000002',
+            Client__c = 'BW-0009470',
+            Amount__c = 62.55,
+            Applied_Record_Id__c = '2dd2c0fb6e3aa322016e3df698ff7e9f',
+            Customer_Account__c = 'bw-04202',
+            Date__c = juneBillDate
+        );
+        List<Journal_Entry__c> entries = new List<Journal_Entry__c>{
+            entryOne, entryTwo, entryThree, entryFive, entrySix
+        };
+        return entries;
+    }
+
+    private static List<Journal_Entry__c> getCreditMemoJournalEntries(){
+        Date mayBillDate = Date.newInstance(2019,05,20);
+        Date juneBillDate = Date.newInstance(2019,06,20);
+
+        Journal_Entry__c entryOne = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAA',
+            Object_Type__c = 'CreditMemo',
+            Query_Type__c = 'CreditMemo',
+            Project__c = 'SSS-000001',
+            Client__c = 'BW-0009470',
+            Amount__c = 121.87,
+            Applied_Record_Id__c = null,
+            External_Id__c = '4028905f5a890526015a8d77adea0029',
+            Reason_Code__c = 'Production',
+            Customer_Account__c = 'bw-00524',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entryTwo = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAB',
+            Object_Type__c = 'CreditMemo',
+            Query_Type__c = 'CreditMemo',
+            Project__c = 'SSS-000001',
+            Client__c = 'BW-0009470',
+            Amount__c = 31.72,
+            Applied_Record_Id__c = null,
+            External_Id__c = '4028905f5a890526015a8d77adea0030',
+            Reason_Code__c = 'Client Credit',
+            Customer_Account__c = 'bw-00524',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entryThree = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAC',
+            Object_Type__c = 'CreditMemo',
+            Query_Type__c = 'CreditMemo',
+            Project__c = 'SSS-000022',
+            Client__c = 'BW-0009470',
+            Amount__c = 60.00,
+            Applied_Record_Id__c = null,
+            External_Id__c = '4028905f5a890526015a8d77adea0031',
+            Reason_Code__c = 'BW Credit',
+            Customer_Account__c = 'bw-05268',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entryFive = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAD',
+            Object_Type__c = 'CreditMemo',
+            Query_Type__c = 'CreditMemo',
+            Project__c = 'SSS-000002',
+            Client__c = 'BW-0009470',
+            Amount__c = 37.23,
+            Applied_Record_Id__c = null,
+            External_Id__c = '4028905f5a890526015a8d77adea0032',
+            Reason_Code__c = 'Production',
+            Customer_Account__c = 'bw-04202',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entrySix = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAE',
             Object_Type__c = 'CreditMemo',
             Query_Type__c = 'CreditMemo',
             Project__c = 'SSS-000002',
             Client__c = 'BW-0009470',
             Amount__c = 62.55,
-            Applied_Record_Id__c = '2dd2c0fb6e3aa322016e3df698ff7e9f',
+            Applied_Record_Id__c = null,
+            External_Id__c = '4028905f5a890526015a8d77adea0033',
+            Reason_Code__c = 'Client Credit',
             Customer_Account__c = 'bw-04202',
             Date__c = juneBillDate
         );

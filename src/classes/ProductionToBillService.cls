@@ -12,7 +12,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     @TestVisible
     private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
 
-    public enum OperationType {BILL, COLLECTION, UNSERVICED}
+    public enum OperationType {BILL, PAYMENT, CREDITMEMO, UNSERVICED}
     public OperationType opType;
     public Integer batchSize;
 
@@ -112,8 +112,10 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         }
         if (opType == OperationType.BILL){
             executeBillJob();
-        } else if (opType == OperationType.COLLECTION){
-            executeCollectionsJob();
+        } else if (opType == OperationType.PAYMENT){
+            executePaymentJob();
+        } else if (opType == OperationType.CREDITMEMO){
+            executeCreditMemoJob();
         } else if (opType == OperationType.UNSERVICED){
             executeUnservicedJob();
         }
@@ -130,7 +132,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
                 createProductionDetailFromInvoiceItems(invoiceItems);
                 markJournalEntriesAsComplete(invoiceItems);
             } else {
-                queueJob(OperationType.COLLECTION);
+                queueJob(OperationType.PAYMENT);
             }
         } catch (Exception excep) {
             String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(invoiceItems);
@@ -138,11 +140,11 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         }
     }
 
-    private void executeCollectionsJob(){
+    private void executePaymentJob(){
         List<Journal_Entry__c> collectionItems;
         try {
             collectionItems = glSelector.getEntriesWithoutProductionDetail(
-                new List<String>{'PaymentPart', 'CreditMemo'}, batchSize
+                new List<String>{'PaymentPart'}, batchSize
             );
             if (collectionItems.size() > 0){
                 createProductionDetailFromCollectionItem(collectionItems);
@@ -150,13 +152,35 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
                 markJournalEntriesAsComplete(collectionItems);
             }
             if (collectionItems.size() == batchSize){
-                queueJob(OperationType.COLLECTION);
+                queueJob(OperationType.PAYMENT);
+            } else {
+                queueJob(OperationType.CREDITMEMO);
+            }
+        } catch (Exception excep) {
+            String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(collectionItems);
+            Logger.logNow('ProductionToBillService', 'executePaymentJob', message);
+        }
+    }
+
+    private void executeCreditMemoJob(){
+        List<Journal_Entry__c> creditMemos;
+        try {
+            creditMemos = glSelector.getEntriesWithoutProductionDetail(
+                new List<String>{'CreditMemo'}, batchSize
+            );
+            if (creditMemos.size() > 0){
+                createProductionDetailFromCreditMemo(creditMemos);
+                insert partsToInsert;
+                markJournalEntriesAsComplete(creditMemos);
+            }
+            if (creditMemos.size() == batchSize){
+                queueJob(OperationType.CREDITMEMO);
             } else {
                 queueJob(OperationType.UNSERVICED);
             }
         } catch (Exception excep) {
-            String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(collectionItems);
-            Logger.logNow('ProductionToBillService', 'executeCollectionsJob', message);
+            String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(creditMemos);
+            Logger.logNow('ProductionToBillService', 'executeCreditMemoJob', message);
         }
     }
 
@@ -219,7 +243,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
             if (method.optionalBooleans.get('MoreBillsToProcess')){
                 queueJob(OperationType.BILL);
             } else {
-                queueJob(OperationType.COLLECTION);
+                queueJob(OperationType.PAYMENT);
             }
         } catch (Exception excep) {
             String message = JSON.serialize(method)+ '_'+ excep.getMessage() + '_' + excep.getStackTraceString();
@@ -436,6 +460,83 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
             Amount__c = applicationAmount
         );
         return payPart;
+    }
+
+    public void createProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
+        List<Journal_Entry__c> billItems = new List<Journal_Entry__c>();
+        List<Journal_Entry__c> collectionItems = new List<Journal_Entry__c>();
+
+        for (Journal_Entry__c creditMemo : creditMemoEntries) {
+            if (creditMemo.Reason_Code__c == 'Production'){
+                billItems.add(creditMemo);
+            } else {
+                // There is only 1 Journal Entry per credit memo, so we need to get the parts (ie, records it is
+                // applied to) before reusing the same method that is used for Payment Journal Entries
+                collectionItems.addAll(splitCreditMemoIntoParts(creditMemo));
+            }
+        }
+
+        System.debug('collectItems' + collectionItems.size());
+        System.debug('collectItems' + collectionItems);
+
+        createBillItemForCreditMemo(billItems);
+        createProductionDetailFromCollectionItem(collectionItems);
+    }
+
+    private void createBillItemForCreditMemo(List<Journal_Entry__c> billItems){
+        Set<String> adjustmentExternalIds = new Set<String>();
+        Set<Id> transferRecordIds = new Set<Id>();
+
+        for (Journal_Entry__c entry : billItems){
+            adjustmentExternalIds.add(entry.External_Id__c);
+        }
+
+        Map<String, Bill_Adjustment__c> zuoraIdToAdjustMap = new Map<String, Bill_Adjustment__c>();
+        List<Bill_Adjustment__c> adjustmentList = adjustmentSelector.getAdjustmentsFromExternalIds(adjustmentExternalIds);
+        transferToPartsMap = transferPartsSelector.getTransferPartMap(transferRecordIds);
+
+        for (Bill_Adjustment__c adjust : adjustmentList){
+            zuoraIdToAdjustMap.put(adjust.Zuora_Id__c, adjust);
+            transferRecordIds.add(adjust.Transfer__c);
+        }
+
+        for (Journal_Entry__c entry : billItems){
+            Bill_Adjustment__c sfAdjustment = zuoraIdToAdjustMap.get(entry.External_Id__c);
+            createBillProductionDetail(sfAdjustment.Transfer__c, -1 * entry.Amount__c, 'Bill', entry.Id);
+            createBillProductionDetail(sfAdjustment.Transfer__c, -1 * sfAdjustment.Discount__c, 'Customer Savings', entry.Id);
+        }
+    }
+
+    private List<Journal_Entry__c> splitCreditMemoIntoParts(Journal_Entry__c creditMemo){
+        HttpResponse response;
+        ZuoraAPI.CreditMemoWithParts memoParts;
+        ZuoraAPI.CreditMemoWithItems memoPartItems;
+        List<Journal_Entry__c> journalEntriesByPart = new List<Journal_Entry__c>();
+
+        response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/creditmemos/'+ creditMemo.External_Id__c +'/parts', null, false);
+        memoParts = (ZuoraAPI.CreditMemoWithParts) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithParts.class);
+
+        for (ZuoraAPI.CreditMemoPart memoPart : memoParts.parts){
+            if (memoPart.DebitMemoId != null){
+                continue;
+            }
+            if (memoPart.InvoiceId != null){
+                String urlString = '/v1/creditmemos/'+ creditMemo.External_Id__c +'/parts/';
+                urlString += memoPart.Id + '/itemparts';
+                response = ZuoraAPIHelper.callJsonEndpoint('GET', urlString, null, false);
+                memoPartItems = (ZuoraAPI.CreditMemoWithItems) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithItems.class);
+            }
+        }
+
+        for (ZuoraAPI.CreditMemoPartItem partItems : memoPartItems.itemParts){
+            Journal_Entry__c creditMemoPartEntry = new Journal_Entry__c(
+                Id = creditMemo.Id,
+                Applied_Record_Id__c = partItems.InvoiceItemId,
+                Amount__c = partItems.Amount
+            );
+            journalEntriesByPart.add(creditMemoPartEntry);
+        }
+        return journalEntriesByPart;
     }
 
     private void markJournalEntriesAsComplete(List<Journal_Entry__c> entries){

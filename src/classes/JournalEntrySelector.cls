@@ -40,7 +40,7 @@ public inherited sharing class JournalEntrySelector {
     public List<Journal_Entry__c> getEntriesWithoutProductionDetail(List<String> objectTypes, Integer batchSize){
         List<Journal_Entry__c> journalEntries = [
             SELECT Id, External_Id__c, Date__c, Amount__c, Project__c, Client__c, Customer_Account__c,
-                Paid_To_Client__c, Deposit_Account__c, Applied_Record_Id__c
+                Paid_To_Client__c, Deposit_Account__c, Applied_Record_Id__c, Reason_Code__c
             FROM Journal_Entry__c
             WHERE Object_Type__c IN : objectTypes
             AND Ready_for_Production_Detail__c = true
