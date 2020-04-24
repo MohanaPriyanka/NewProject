@@ -70,6 +70,46 @@ public with sharing class CSLeadsRESTControllerV3Test {
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
     }
 
+    @IsTest
+    private static void testPatchApplicationSuccess() {
+        useMocks();
+        String jsonRequest = '{' +
+            '"id": "00Q000000000888",' +
+            '"firstName": "Unit",' +
+            '"lastName": "Testcase",' +
+            '"email": "' + CSLeadsRESTControllerV2Test.SAMPLE_EMAIL + '",' +
+            '"mobilePhone": "555-555-5555",' +
+            '"applicationType": "Residential",' +
+            '"streetAddress": "1 Test Street",' +
+            '"city": "Suffern",' +
+            '"state": "NY",' +
+            '"zipCode": "10901",' +
+            '"productName": "CS Product",' +
+            '"propertyAccounts": [{' +
+            '   "id": "001000000000999",' +
+            '   "leadId": "00Q000000000888", ' +
+            '   "billingStreet": "Test billing street",' +
+            '   "billingCity": "Test billing city",' +
+            '   "billingState": "NY",' +
+            '   "billingPostalCode": "14472",' +
+            '   "utilityAccountLogs": [{' +
+            '       "id": "a1b000000000999",' +
+            '       "leadId": "00Q000000000888", ' +
+            '       "propertyAccountId": "001000000000999",' +
+            '       "nameOnAccount": "Test Accounts Payable",' +
+            '       "serviceStreet": "Test service street",' +
+            '       "serviceCity": "Test service city",' +
+            '       "serviceState": "NY",' +
+            '       "servicePostalCode": "14472",' +
+            '       "utilityAccountNumber": "555555"' +
+            '   }]' +
+            '}]}';
+
+        controller.patchApplication(jsonRequest);
+
+        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
+    }
+
     public static void useMocks () {
         mockLeadService =  new CSLeadsRESTControllerV2Test.MockLeadService();
         controller.leadService = (LeadService) Test.createStub(LeadService.class, mockLeadService);
