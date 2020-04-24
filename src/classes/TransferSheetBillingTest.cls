@@ -42,7 +42,7 @@ public class TransferSheetBillingTest {
         BillGenerationService billGenService = new BillGenerationService();
 
         // (Mocked) 6 Allocation Schedule Subscriptions to Generate Bills For:
-        List<Schedule_Z_Subscription__c> szsList = billGenService.getScheduleZSubscriptionList(transfer);
+        List<Schedule_Z_Subscription__c> szsList = billGenService.getScheduleZSubscriptionList(transfer,BillGenerationService.BillType.BOTH);
         System.assertEquals(6,szsList.size());
 
         // Should match Percent_Share__c on SZS in Mock:
@@ -57,7 +57,7 @@ public class TransferSheetBillingTest {
     public static void testUASBsWithDifferentProducts() {
         useMocks();
         Transfer__c transfer = getTestTransfer();
-        List<UASB__c> uasbs = BillGenerationService.calculateUASBsFromTransfer(transfer);
+        List<UASB__c> uasbs = BillGenerationService.calculateUASBsFromTransfer(transfer,BillGenerationService.BillType.BOTH);
 
         System.assertEquals(6,uasbs.size());
 
@@ -83,7 +83,7 @@ public class TransferSheetBillingTest {
         useMocks();
         Transfer__c transfer = getTestTransfer();
         BillGenerationService billGenService = new BillGenerationService();
-        List<Schedule_Z_Subscription__c> szsList = billGenService.getScheduleZSubscriptionList(transfer);
+        List<Schedule_Z_Subscription__c> szsList = billGenService.getScheduleZSubscriptionList(transfer, BillGenerationService.BillType.BOTH);
         System.assertEquals('a6o19000000CsuGAAS',szsList[1].Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c);
 
         // For different periods, use different solar electric rates:
@@ -97,7 +97,7 @@ public class TransferSheetBillingTest {
 
         // Mock sets count of transfer = 2, so should use 0.18 rate
         System.assertEquals(2,szsList[1].Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c);
-        List<UASB__c> uasbs = BillGenerationService.calculateUASBsFromTransfer(transfer);
+        List<UASB__c> uasbs = BillGenerationService.calculateUASBsFromTransfer(transfer, BillGenerationService.BillType.BOTH);
         System.assertEquals(0.18,uasbs[1].Solar_Electricity_Rate__c);
     }
 
@@ -108,7 +108,7 @@ public class TransferSheetBillingTest {
         transfer.Attempted_Transfer__c =  120000.25;
         transfer.Attempted_kWh_Transfer__c = 50000.00;
 
-        List<UASB__c> firstBillGroup = BillGenerationService.calculateUASBsFromTransfer(transfer);
+        List<UASB__c> firstBillGroup = BillGenerationService.calculateUASBsFromTransfer(transfer,BillGenerationService.BillType.BOTH);
 
         System.assertEquals(242.05,firstBillGroup[4].Subscription_Production_kWh_Static__c);
         System.assertEquals(580.92,firstBillGroup[4].Credits_Allocated__c);
@@ -117,7 +117,7 @@ public class TransferSheetBillingTest {
         transfer.Attempted_Transfer__c =  240000.50;
         transfer.Attempted_kWh_Transfer__c = 50000.00;
 
-        List<UASB__c> secondBillGroup = BillGenerationService.calculateUASBsFromTransfer(transfer);
+        List<UASB__c> secondBillGroup = BillGenerationService.calculateUASBsFromTransfer(transfer, BillGenerationService.BillType.BOTH);
 
         System.assertEquals(242.05,secondBillGroup[4].Subscription_Production_kWh_Static__c);
         System.assertEquals(1161.84,secondBillGroup[4].Credits_Allocated__c);
@@ -127,17 +127,50 @@ public class TransferSheetBillingTest {
     public static void testCancelledCustomer(){
         useMocks();
         Transfer__c transfer = getTestTransfer();
-        List<UASB__c> uasbs = BillGenerationService.calculateUASBsFromTransfer(transfer);
+        List<UASB__c> onTimeUASB = BillGenerationService.calculateUASBsFromTransfer(transfer, BillGenerationService.BillType.ONTIME);
+        List<UASB__c> overdueUASB = BillGenerationService.calculateUASBsFromTransfer(transfer, BillGenerationService.BillType.OVERDUE);
+
+        System.assertEquals(5,onTimeUASB.size());
+        System.assertEquals(1,overdueUASB.size());
 
         // Normal Bills:
-        System.assertEquals(859.18,uasbs[2].Subscription_Production_kWh_Static__c);
-        System.assertEquals(141.49,uasbs[2].Credits_Allocated__c);
-        System.assertEquals(859.18,uasbs[3].Subscription_Production_kWh_Static__c);
-        System.assertEquals(158.77,uasbs[3].Credits_Allocated__c);
+        System.assertEquals(859.18,onTimeUASB[2].Subscription_Production_kWh_Static__c);
+        System.assertEquals(141.49,onTimeUASB[2].Credits_Allocated__c);
+        System.assertEquals(859.18,onTimeUASB[3].Subscription_Production_kWh_Static__c);
+        System.assertEquals(158.77,onTimeUASB[3].Credits_Allocated__c);
 
         // Cancelled:
-        System.assertEquals(0,uasbs[5].Subscription_Production_kWh_Static__c);
-        System.assertEquals(0,uasbs[5].Credits_Allocated__c);
+        System.assertEquals(0,overdueUASB[0].Subscription_Production_kWh_Static__c);
+        System.assertEquals(0,overdueUASB[0].Credits_Allocated__c);
+    }
+
+    @isTest
+    public static void testStopCreditTransfer(){
+        useMocks();
+        Transfer__c transfer = getTestTransfer();
+        List<UASB__c> beforeUASBs;
+        List<UASB__c> afterUASBs;
+
+        BillGenerationService service = new BillGenerationService();
+        List<Schedule_Z_Subscription__c> szsList = service.getScheduleZSubscriptionList(transfer, BillGenerationService.BillType.ONTIME);
+
+        beforeUASBs = service.calculateUASBesFromSZSes(szsList,transfer);
+        System.assertEquals(5,beforeUASBs.size());
+        for (UASB__c uasb : beforeUASBs){
+            System.assertNotEquals(0,uasb.Credits_Allocated__c);
+        }
+
+        Test.startTest();
+            for (Schedule_Z_Subscription__c szs : szsList){
+                szs.Stop_Credit_Transfer__c = true;
+            }
+        Test.stopTest();
+
+        afterUASBs = service.calculateUASBesFromSZSes(szsList,transfer);
+        System.assertEquals(5,afterUasbs.size());
+        for (UASB__c uasb : afterUasbs){
+            System.assertEquals(0,uasb.Credits_Allocated__c);
+        }
     }
 
     @isTest
@@ -204,8 +237,8 @@ public class TransferSheetBillingTest {
 
         // First, Get SF Generated Bills:
         Transfer__c transfer = getTestTransfer();
-        List<UASB__c> sfUASBs = BillGenerationService.calculateUASBsFromTransfer(transfer);
-        System.assertEquals(6,sfUASBs.size());
+        List<UASB__c> sfUASBs = BillGenerationService.calculateUASBsFromTransfer(transfer, BillGenerationService.BillType.ONTIME);
+        System.assertEquals(5,sfUASBs.size());
 
         // Second, Get Transfer Sheet Bills:
         String transferSheetData = 'UtilityNumber,Credits,Production,CreditValue\n' +
@@ -223,7 +256,7 @@ public class TransferSheetBillingTest {
         // Third, Compare SF to Transfer:
         List<TransferSheetService.UASBWithStatus> matchList;
         matchList = TransferSheetService.compareSFBillsToTransferSheet(sfUASBs, transferUASBs);
-        System.assertEquals(7,matchList.size());
+        System.assertEquals(6,matchList.size());
         return matchList;
     }
 
@@ -237,7 +270,6 @@ public class TransferSheetBillingTest {
             2 missing transfers (record in SF is not on transfer sheet)
             1 missing bill (transfer record is not in SF)
         */
-
         for (TransferSheetService.UASBWithStatus lineItem : matchList){
             String utilityNumber = '';
             if (lineItem.SfUASB.PreGen_Utility_Acct__c != null){
@@ -262,9 +294,6 @@ public class TransferSheetBillingTest {
             } else if (utilityNumber == '777888'){
                 System.assertEquals('MISSING_TRANSFER',lineItem.Status);
                 System.assert(!lineItem.Overdue);
-            } else if (utilityNumber == '666333222'){
-                System.assertEquals('MISSING_TRANSFER',lineItem.Status);
-                System.assert(!lineItem.Overdue);
             } else {
                 countOfLineItemsWithoutSZS += 1;
                 System.assertEquals('MISSING_BILL',lineItem.Status);
@@ -281,8 +310,8 @@ public class TransferSheetBillingTest {
 
         // First, Get SF Generated Bills:
         Transfer__c transfer = getTestTransfer();
-        List<UASB__c> sfUASBs = BillGenerationService.calculateUASBsFromTransfer(transfer);
-        System.assertEquals(6,sfUASBs.size());
+        List<UASB__c> sfUASBs = BillGenerationService.calculateUASBsFromTransfer(transfer,BillGenerationService.BillType.ONTIME);
+        System.assertEquals(5,sfUASBs.size());
 
         // Second, Get Transfer Sheet Bills:
         String transferSheetData = 'UtilityNumber,Credits,Production,CreditValue\n' +
@@ -300,7 +329,7 @@ public class TransferSheetBillingTest {
         // Third, Compare SF to Transfer:
         List<TransferSheetService.UASBWithStatus> matchList;
         matchList = TransferSheetService.compareSFBillsToTransferSheet(sfUASBs, transferUASBs);
-        System.assertEquals(7,matchList.size());
+        System.assertEquals(6,matchList.size());
 
         Integer countOfLineItemsWithoutSZS = 0;
 
@@ -327,8 +356,6 @@ public class TransferSheetBillingTest {
             } else if (utilityNumber == ' 00 12 34 56789'){
                 System.assertEquals('MATCH',lineItem.Status);
             } else if (utilityNumber == '777888'){
-                System.assertEquals('MISSING_TRANSFER',lineItem.Status);
-            } else if (utilityNumber == '666333222'){
                 System.assertEquals('MISSING_TRANSFER',lineItem.Status);
             } else {
                 countOfLineItemsWithoutSZS += 1;
@@ -512,7 +539,7 @@ public class TransferSheetBillingTest {
             '"sfcredits":108.3,"sfcreditvalue":0.1848,"trutilityaccount":"00002346","trproduction":0,' +
             '"trcredits":116.73,"trcreditvalue":0,"isCreditMismatch":true,"Resolution":"UseSalesforce"}');
 
-        TransferSheetService.postUASBInsertProcessing(transferOne.Id, mockTransferSheetScreenData);
+        TransferSheetService.postUASBInsertProcessing(transferOne, mockTransferSheetScreenData);
 
         Transfer__c transfer = [
             SELECT Id, Bills_Generated__c, Bill_Period__c
