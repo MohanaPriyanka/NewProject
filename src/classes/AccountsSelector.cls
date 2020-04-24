@@ -148,7 +148,7 @@ public without sharing class AccountsSelector {
 
     public List<Account> getAccountsById(Set<Id> accountIds){
         return [
-            SELECT Id, Parent_Account__c, Client_Brand_Key__c
+            SELECT Id, Parent_Account__c, Client_Brand_Key__c, RecordType.Name
             FROM Account
             WHERE Id IN : accountIds
         ];
