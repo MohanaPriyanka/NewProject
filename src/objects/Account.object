@@ -16099,42 +16099,6 @@ if(sforce.console.isInConsole()){
         <url>/00Oj0000004Dl7H?pv0={!Account.Name}</url>
     </webLinks>
     <webLinks>
-        <fullName>delete_this</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>delete this</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>https://composer.congamerge.com?SolMgr=1
-&amp;sessionId={!API.Session_ID}
-&amp;serverUrl={!API.Partner_Server_URL_290}
-&amp;Id={!Account.Id}
-
-&amp;TemplateId=a2F0a000001V4km
-
-&amp;APDF=1
-&amp;QMode=Download
-&amp;DefaultPDF=1
-&amp;SC0=1
-&amp;SC1=Attachments
-&amp;AttachmentParentId={!Account.Send_Bills_Contact__c}
-&amp;AC0=1
-&amp;AC1={!Account.Days_Past_Due__c}+Days+Past+Due+Delinquency+Letter+Generated
-&amp;AC2=1
-&amp;LGParentId={!Account.Send_Bills_Contact__c}
-&amp;LGWhoId={!Account.Send_Bills_Contact__c}</url>
-    </webLinks>
-    <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>
         <availability>online</availability>
         <description>This button will initiate a DocuSign Envelope that will be linked to the Account.</description>

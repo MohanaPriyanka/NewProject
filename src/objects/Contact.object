@@ -533,15 +533,6 @@ Specify the global country code setting or record level country code to automati
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Delete_This_Checkbox__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Delete This Checkbox</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Department</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
