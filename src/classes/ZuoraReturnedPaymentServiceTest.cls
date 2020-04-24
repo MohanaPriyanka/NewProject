@@ -41,8 +41,9 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
     private static void testConvertPaymentToDebitMemos() {
         Test.startTest();
         ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService();
+        ZuoraAPI.Payment payment = returnedPaymentService.checkIfPaymentIsAlreadyReturned('2c92c0fb6cb90e36016cc137e05d46dc');
         List<ZuoraAPI.DebitMemo> debitMemos =
-            returnedPaymentService.convertPaymentToDebitMemos('2c92c0fb6cb90e36016cc137e05d46dc');
+            returnedPaymentService.convertPaymentToDebitMemos(payment);
         Test.stopTest();
         Integer itemPartCalls = 0, invoiceItemCalls = 0, debitMemoCalls = 0;
         for (ZuoraAPIHelper.EndpointCall endpointCall : ZuoraAPIHelper.endpointsCalled) {
@@ -81,7 +82,8 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService();
         Boolean exceptionCaught = false;
         try {
-            returnedPaymentService.convertPaymentToDebitMemos('ALREADYRETURNED');
+            ZuoraAPI.Payment payment = returnedPaymentService.checkIfPaymentIsAlreadyReturned('ALREADYRETURNED');
+            returnedPaymentService.convertPaymentToDebitMemos(payment);
         } catch (Exception e) {
             exceptionCaught = true;
             System.assert(e.getMessage().contains('This payment is already marked as returned'),

@@ -2,9 +2,8 @@
  * Created by PeterYao on 8/27/2019.
  * Tested By: ZuoraPaymentSelectorTest
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class ZuoraPaymentSelector {
-    @SuppressWarnings('PMD.ApexCRUDViolation')
     public List<Zuora__Payment__c> selectById(Set<Id> ids) {
         if (!Schema.SObjectType.Zuora__Payment__c.isQueryable() ||
             !Schema.SObjectType.Zuora__Payment__c.fields.Zuora__EXT_ID__c.isAccessible()) {
@@ -21,7 +20,24 @@ public with sharing class ZuoraPaymentSelector {
         ];
     }
 
-    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public Map<String,Zuora__Payment__c> selectByExternalId(Set<String> externalIds) {
+        Map<String,Zuora__Payment__c> paymentMap = new Map<String,Zuora__Payment__c>();
+        List<Zuora__Payment__c> payments = [
+            SELECT Id, Zuora__EXT_ID__c,
+                Zuora__BillingAccount__c,
+                Zuora__BillingAccount__r.Zuora__Zuora_Id__c,
+                Zuora__BillingAccount__r.Zuora__Account__c,
+                Zuora__PaymentMethodId__c
+            FROM Zuora__Payment__c
+            WHERE Zuora__EXT_ID__c IN : externalIds
+        ];
+
+        for (Zuora__Payment__c payment : payments){
+            paymentMap.put(payment.Zuora__EXT_ID__c, payment);
+        }
+        return paymentMap;
+    }
+
     public static List<Zuora__Payment__c> selectByAccount(List<Id> propertyAccountIds) {
         List<Zuora__Payment__c> zuoraPayments = [
             SELECT Id, Name,
@@ -54,7 +70,7 @@ public with sharing class ZuoraPaymentSelector {
     }
 
     public static String selectPaymentsNotMarkedAsReturned(List<String> gatewayIds) {
-        String fields = 'Id, Amount, ResponseStatus__c, ReferenceId, ArchivedChargentData__c';
+        String fields = 'Id, Amount, ResponseStatus__c, AccountId, PaymentMethodId, ReferenceId, ArchivedChargentData__c';
         String tables = 'Payment';
         String gatewayConditions = '';
         for (Integer i = 0; i < gatewayIds.size(); i++) {

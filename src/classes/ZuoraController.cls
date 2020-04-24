@@ -20,21 +20,30 @@ public with sharing class ZuoraController implements ZuoraDataQueryService.Proce
             paymentReturnResult.success = false;
             return paymentReturnResult;
         }
+        ZuoraAPI.Payment zuoraPayment = returnedPaymentService.checkIfPaymentIsAlreadyReturned(payments[0].Zuora__EXT_ID__c);
+        Zuora__Payment__c sfPayment = payments[0];
+        paymentReturnResult = executeMarkPaymentAsReturned(zuoraPayment,sfPayment);
+        Logger.flushLogs();
+        Case newCase = returnedPaymentService.createCaseForReturns(sfPayment);
+        insert newCase;
+        return paymentReturnResult;
+    }
+
+    public static PaymentReturnResult executeMarkPaymentAsReturned(ZuoraAPI.Payment zuoraPayment, Zuora__Payment__c sfPayment) {
+        PaymentReturnResult paymentReturnResult = new PaymentReturnResult();
         try {
-            List<ZuoraAPI.DebitMemo> debitMemos = returnedPaymentService.convertPaymentToDebitMemos(payments[0].Zuora__EXT_ID__c);
+            List<ZuoraAPI.DebitMemo> debitMemos = returnedPaymentService.convertPaymentToDebitMemos(zuoraPayment);
             if (ZuoraAPIHelper.getCalloutsRemaining() < 2*debitMemos.size() + 1) {
                 throw new Util.FatalBWException('Not enough callouts remaining to create and post debit memos and mark ' +
                     'the payment as returned: ' + JSON.serialize(debitMemos));
             }
             ZuoraCreditDebitMemoService.createAndPostDebitMemos(debitMemos);
-            returnedPaymentService.markPaymentReturned(payments[0].Zuora__EXT_ID__c);
+            returnedPaymentService.markPaymentReturned(sfPayment.Zuora__EXT_ID__c);
             paymentReturnResult.debitMemos = debitMemos;
             paymentReturnResult.success = true;
-            returnedPaymentService.removePaymentMethodFromAccount(payments[0]);
-            Case newCase = returnedPaymentService.createCaseForReturns(payments[0]);
-            insert newCase;
+            returnedPaymentService.removePaymentMethodFromAccount(sfPayment);
         } catch (Exception e) {
-            String message = 'Failed reversing payment ' + paymentId + ':\n' + e.getMessage() + '\n' + e.getStackTraceString();
+            String message = 'Failed reversing payment ' + sfPayment.Id + ':\n' + e.getMessage() + '\n' + e.getStackTraceString();
             Logger.logLater(
                 'ZuoraController',
                 'reverseReturnedPayment',
@@ -44,7 +53,6 @@ public with sharing class ZuoraController implements ZuoraDataQueryService.Proce
             paymentReturnResult.message = message;
             paymentReturnResult.success = false;
         }
-        Logger.flushLogs();
         return paymentReturnResult;
     }
 
