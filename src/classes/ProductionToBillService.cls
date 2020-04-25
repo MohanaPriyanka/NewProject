@@ -432,8 +432,8 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         }
     }
 
-    // Payment or Credit Memo:
-    public void createProductionDetailFromCollectionItem(List<Journal_Entry__c> paymentEntries) {
+    @TestVisible
+    private void createProductionDetailFromCollectionItem(List<Journal_Entry__c> paymentEntries) {
         Set<String> invoiceIds = new Set<String>();
         for (Journal_Entry__c entry : paymentEntries){
             invoiceIds.add(entry.Applied_Record_Id__c);
@@ -483,7 +483,8 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         return payPart;
     }
 
-    public List<Journal_Entry__c> createProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
+    @TestVisible
+    private List<Journal_Entry__c> createProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
         List<Journal_Entry__c> billItems = new List<Journal_Entry__c>();
         List<Journal_Entry__c> collectionItems = new List<Journal_Entry__c>();
         List<Journal_Entry__c> allItems = new List<Journal_Entry__c>();
@@ -604,7 +605,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         }
     }
 
-    public static void setUnservicedUASBReadyForProdDetail(List<UASB__c> uasbs){
+    private static void setUnservicedUASBReadyForProdDetail(List<UASB__c> uasbs){
         for (UASB__c uasb : uasbs) {
             if (uasb.Externally_Serviced__c){
                 uasb.Ready_For_Production_Detail__c = true;

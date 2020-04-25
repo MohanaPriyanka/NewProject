@@ -1,6 +1,6 @@
 /* Tested by ZuoraUsageServiceTest, ZuoraCreditDebitMemoServiceTest, AdjustmentSelectorTest
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class AdjustmentSelector {
     public static Database.QueryLocator getAdjustmentsNotYetInZuora(Boolean typeIsUsage, ZuoraCreditMemoBatchSend.AdjustmentType mode) {
         String queryString =
