@@ -404,6 +404,43 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(5,creditMemoEntries.size());
 
         ProductionToBillService service = new ProductionToBillService();
+        service.calloutCount = 0;
+        service.createProductionDetailFromCreditMemo(creditMemoEntries);
+
+        List<Transfer_Part__c> productionDetailList = service.partsToInsert;
+        System.assertEquals(0,service.partsToDelete.size());
+
+        Integer countOfBills = 0;
+        Integer countOfSavings = 0;
+        Integer countOfPayments = 0;
+        for (Transfer_Part__c prodDetail : productionDetailList){
+            if (prodDetail.Type__c == 'Bill') {
+                countOfBills += 1;
+            } else if (prodDetail.Type__c == 'Customer Savings'){
+                countOfSavings += 1;
+            } else if (prodDetail.Type__c == 'Payment'){
+                countOfPayments += 1;
+            }
+        }
+
+        // 2 'Bill' Credit Memos create both a bill production detail and savings production detail:
+        System.assertEquals(2,countOfBills);
+        System.assertEquals(2,countOfSavings);
+
+        // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records:
+        System.assertEquals(6,countOfPayments);
+    }
+
+    @IsTest
+    public static void testCreditMemoCalloutCount(){
+        useMocks();
+        // 5 Credit Memos, 2 of which have Reason Code = 'Production' so should make 'Bill' Production Detail records
+        // the remaining 3 should create 'Collection' Production Detail records
+        List<Journal_Entry__c> creditMemoEntries = getCreditMemoJournalEntries();
+        System.assertEquals(5,creditMemoEntries.size());
+
+        ProductionToBillService service = new ProductionToBillService();
+        service.calloutCount = 88;
         service.createProductionDetailFromCreditMemo(creditMemoEntries);
 
         List<Transfer_Part__c> productionDetailList = service.partsToInsert;
@@ -425,8 +462,38 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(2,countOfBills);
         System.assertEquals(2,countOfSavings);
 
-        // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records:
-        System.assertEquals(6,countOfPayments);
+        // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records,
+        // HOWEVER, because the callouts were already at 88, only 1 payment record will be made before re-queueing
+        System.assertEquals(2,countOfPayments);
+    }
+
+    @IsTest
+    public static void testCreditMemoPreexistingRecordDeletion(){
+        String jeListAsJSON = '[' +
+            '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAA", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo", ' +
+                '"Transfer_Parts__r":{"totalSize":1,"done":true,"records":[' +
+                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAA","Id":"a8y3K0000009ougQAA"}]}' +
+                '}, ' +
+            '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAB", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo", ' +
+                '"Transfer_Parts__r":{"totalSize":2,"done":true,"records":[' +
+                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAB","Id":"a8y3K0000009ougQCC"},' +
+                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAB","Id":"a8y3K0000009ougQDD"}]}' +
+                '}, ' +
+            '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAC", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo"}, ' +
+            '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAD", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo", ' +
+                '"Transfer_Parts__r":{"totalSize":1,"done":true,"records":[' +
+                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAD","Id":"a8y3K0000009ougQBB"}]}' +
+                '}, ' +
+            '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAE", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo"} ' +
+            ']';
+        List<Journal_Entry__c> entryList = (List<Journal_Entry__c>)JSON.deserialize(jeListAsJSON, List<Journal_Entry__c>.class);
+        System.assertEquals(5,entryList.size());
+
+        ProductionToBillService service = new ProductionToBillService();
+        service.calloutCount = 0;
+        service.createProductionDetailFromCreditMemo(entryList);
+
+        System.assertEquals(4,service.partsToDelete.size());
     }
 
     @IsTest
@@ -929,6 +996,7 @@ public with sharing class ProductionToBillServiceTest {
             Customer_Account__c = 'bw-04202',
             Date__c = juneBillDate
         );
+
         List<Journal_Entry__c> entries = new List<Journal_Entry__c>{
             entryOne, entryTwo, entryThree, entryFive, entrySix
         };

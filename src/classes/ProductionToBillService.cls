@@ -15,6 +15,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     public enum OperationType {BILL, PAYMENT, CREDITMEMO, UNSERVICED}
     public OperationType opType;
     public Integer batchSize;
+    public Integer calloutCount;
 
     private Set<Id> transferIds = new Set<Id>();
     private Set<Id> uasbIds = new Set<Id>();
@@ -27,7 +28,10 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     @TestVisible
     private List<Transfer_Part__c> partsToInsert = new List<Transfer_Part__c>();
     @TestVisible
+    private List<Transfer_Part__c> partsToDelete = new List<Transfer_Part__c>();
+    @TestVisible
     private Map<Id,Decimal> partToPaymentMap = new Map<Id,Decimal>();
+    private List<Journal_Entry__c> incompleteEntries;
 
     @TestVisible
     public class GLInvoiceItem {
@@ -104,11 +108,16 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     }
 
     public void genericExecute(){
+        calloutCount = 0;
         partsToInsert = new List<Transfer_Part__c>();
+        partsToDelete = new List<Transfer_Part__c>();
         transferIds = new Set<Id>();
         transferToPartsMap = new Map<Id, List<Transfer_Part__c>>();
         if (batchSize == null){
             batchSize = 1000;
+        }
+        if (incompleteEntries == null){
+            incompleteEntries = new List<Journal_Entry__c>();
         }
         if (opType == OperationType.BILL){
             executeBillJob();
@@ -163,23 +172,34 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     }
 
     private void executeCreditMemoJob(){
-        List<Journal_Entry__c> creditMemos;
+        List<Journal_Entry__c> creditMemosToAttempt;
+        List<Journal_Entry__c> creditMemosExecuted;
+
         try {
-            creditMemos = glSelector.getEntriesWithoutProductionDetail(
+            /*
+                We will use at least 2 callouts per credit memo, but since we don't know how many part items there
+                will be for any given CM, we can't know exactly how many callouts createProductionDetailFromCreditMemo
+                will use. If we come close to the callout limit, we will stop processing credit memos and requeue
+            */
+            batchSize = Math.min(batchSize, 50);
+            creditMemosToAttempt = glSelector.getEntriesWithoutProductionDetail(
                 new List<String>{'CreditMemo'}, batchSize
             );
-            if (creditMemos.size() > 0){
-                createProductionDetailFromCreditMemo(creditMemos);
+
+            if (creditMemosToAttempt.size() > 0){
+                creditMemosExecuted = createProductionDetailFromCreditMemo(creditMemosToAttempt);
+                delete partsToDelete;
                 insert partsToInsert;
-                markJournalEntriesAsComplete(creditMemos);
+                markJournalEntriesAsComplete(creditMemosExecuted);
             }
-            if (creditMemos.size() == batchSize){
+            if (creditMemosToAttempt.size() == batchSize || creditMemosExecuted.size() != creditMemosToAttempt.size()){
                 queueJob(OperationType.CREDITMEMO);
             } else {
+                updateJournalEntriesReadyStatus(incompleteEntries, true);
                 queueJob(OperationType.UNSERVICED);
             }
         } catch (Exception excep) {
-            String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(creditMemos);
+            String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(creditMemosToAttempt);
             Logger.logNow('ProductionToBillService', 'executeCreditMemoJob', message);
         }
     }
@@ -206,6 +226,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     private void queueJob(OperationType operation){
         ProductionToBillService billJob = new ProductionToBillService();
         billJob.opType = operation;
+        billJob.incompleteEntries = incompleteEntries;
         System.enqueueJob(billJob);
     }
 
@@ -462,25 +483,30 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         return payPart;
     }
 
-    public void createProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
+    public List<Journal_Entry__c> createProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
         List<Journal_Entry__c> billItems = new List<Journal_Entry__c>();
         List<Journal_Entry__c> collectionItems = new List<Journal_Entry__c>();
+        List<Journal_Entry__c> allItems = new List<Journal_Entry__c>();
 
         for (Journal_Entry__c creditMemo : creditMemoEntries) {
+            // If a Credit Memo Journal Entry is marked as "Ready_for_Production_Detail__c" but already
+            // has transfer parts, that means it could have been reallocated and we need to re-distribute:
+            if (creditMemo.Transfer_Parts__r.size() > 0){
+                partsToDelete.addAll(creditMemo.Transfer_Parts__r);
+            }
             if (creditMemo.Reason_Code__c == 'Production'){
                 billItems.add(creditMemo);
-            } else {
+            } else if (calloutCount < 90) {
                 // There is only 1 Journal Entry per credit memo, so we need to get the parts (ie, records it is
                 // applied to) before reusing the same method that is used for Payment Journal Entries
                 collectionItems.addAll(splitCreditMemoIntoParts(creditMemo));
             }
         }
-
-        System.debug('collectItems' + collectionItems.size());
-        System.debug('collectItems' + collectionItems);
-
         createBillItemForCreditMemo(billItems);
         createProductionDetailFromCollectionItem(collectionItems);
+        allItems.addAll(billItems);
+        allItems.addAll(collectionItems);
+        return allItems;
     }
 
     private void createBillItemForCreditMemo(List<Journal_Entry__c> billItems){
@@ -493,12 +519,13 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
 
         Map<String, Bill_Adjustment__c> zuoraIdToAdjustMap = new Map<String, Bill_Adjustment__c>();
         List<Bill_Adjustment__c> adjustmentList = adjustmentSelector.getAdjustmentsFromExternalIds(adjustmentExternalIds);
-        transferToPartsMap = transferPartsSelector.getTransferPartMap(transferRecordIds);
 
         for (Bill_Adjustment__c adjust : adjustmentList){
             zuoraIdToAdjustMap.put(adjust.Zuora_Id__c, adjust);
             transferRecordIds.add(adjust.Transfer__c);
         }
+
+        transferToPartsMap = transferPartsSelector.getTransferPartMap(transferRecordIds);
 
         for (Journal_Entry__c entry : billItems){
             Bill_Adjustment__c sfAdjustment = zuoraIdToAdjustMap.get(entry.External_Id__c);
@@ -515,6 +542,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
 
         response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/creditmemos/'+ creditMemo.External_Id__c +'/parts', null, false);
         memoParts = (ZuoraAPI.CreditMemoWithParts) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithParts.class);
+        calloutCount += 1;
 
         for (ZuoraAPI.CreditMemoPart memoPart : memoParts.parts){
             if (memoPart.DebitMemoId != null){
@@ -525,6 +553,12 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
                 urlString += memoPart.Id + '/itemparts';
                 response = ZuoraAPIHelper.callJsonEndpoint('GET', urlString, null, false);
                 memoPartItems = (ZuoraAPI.CreditMemoWithItems) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithItems.class);
+                calloutCount += 1;
+            } else {
+                // If credit memo part doesn't have InvoiceId or DebitMemoId, it has an unapplied amount that
+                // will need to be allocated to production later. Keep the credit memo marked with
+                // 'Ready For Production Detail' until everything has been allocated
+                incompleteEntries.add(creditMemo);
             }
         }
 
@@ -540,8 +574,12 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     }
 
     private void markJournalEntriesAsComplete(List<Journal_Entry__c> entries){
+        updateJournalEntriesReadyStatus(entries, false);
+    }
+
+    private void updateJournalEntriesReadyStatus(List<Journal_Entry__c> entries, Boolean readyForDetail){
         for (Journal_Entry__c entry : entries){
-            entry.Ready_for_Production_Detail__c = false;
+            entry.Ready_for_Production_Detail__c = readyForDetail;
         }
         update entries;
     }
