@@ -3027,6 +3027,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProductionSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProductionUpdateSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -35499,6 +35503,11 @@
         <editable>false</editable>
         <field>Production__c.Credits_Available_for_Allocation__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Production__c.First_Date_Production_Billed__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>

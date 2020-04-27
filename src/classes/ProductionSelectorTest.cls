@@ -91,4 +91,17 @@ private class ProductionSelectorTest {
         ProductionSelector selector = new ProductionSelector();
         System.assert(selector.selectPendingVerificationProductions(new Set<Id>{bp.Id}).size() == 1, 'Expected 1 Production');
     }
+
+    @IsTest
+    public static void testSelectProductionsByBillPeriod() {
+        Bill_Period__c bp = [
+            SELECT Id
+            FROM Bill_Period__c
+            LIMIT 1
+        ];
+
+        ProductionSelector selector = new ProductionSelector();
+        MultiMap productionsByBPMap = selector.selectProductionsByBillPeriod(new Set<Id>{bp.Id});
+        System.assertNotEquals(null, productionsByBPMap, 'Expected a Multi Map to be returned');
+    }
 }
