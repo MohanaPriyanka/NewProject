@@ -84,7 +84,6 @@ public with sharing class ZuoraBillingAccountServiceTest {
         Test.stopTest();
 
         List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c];
-        system.debug(errors);
 
         List<Account> updatedAutopayAccounts = [
             SELECT Id, Recurring_Billing__c, Autopay_Date_Last_Enrolled__c
@@ -154,7 +153,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
         System.assertEquals(dt.month(), ct.NextFireTime.month());
     }
 
-    @isTest public static void testSummarizeResult(){
+    @IsTest public static void testSummarizeResult(){
         List<Zuora__CustomerAccount__c> oldAccounts = [
             SELECT Id, Name,
                 Zuora__Zuora_Id__c,
@@ -244,7 +243,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
         System.assertEquals(Date.newInstance(2019,05,20), updatedAccounts[3].Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c);
     }
 
-    @isTest public static void testSummarizeResultWithNullValues(){
+    @IsTest public static void testSummarizeResultWithNullValues(){
         List<Zuora__CustomerAccount__c> oldAccounts = [
             SELECT Id, Name,
                 Zuora__Zuora_Id__c,
@@ -323,5 +322,16 @@ public with sharing class ZuoraBillingAccountServiceTest {
         System.assertEquals(Date.newInstance(2018,07,15), updatedAccounts[1].Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c);
         System.assertEquals(Date.newInstance(2018,06,15), updatedAccounts[2].Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c);
         System.assertEquals(null, updatedAccounts[3].Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c);
+    }
+
+    @IsTest public static void testSetBillingAccount() {
+        List<Account> accounts = [
+            SELECT Id, Billing_Account__c, (SELECT Id FROM Zuora__R00N40000001kyLcEAI__r) FROM Account
+        ];
+        System.assertEquals(10, accounts.size(), 'Expected 10 accounts inserted by test setup');
+        for (Account account : accounts) {
+            System.assertEquals(1, account.Zuora__R00N40000001kyLcEAI__r.size(), 'Expected one billing account for each account');
+            System.assertEquals(account.Zuora__R00N40000001kyLcEAI__r[0].Id, account.Billing_Account__c, 'Expected Billing Account on Account to be set');
+        }
     }
 }
