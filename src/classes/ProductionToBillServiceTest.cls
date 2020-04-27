@@ -1,5 +1,5 @@
 @IsTest
-@SuppressWarnings('PMD.ApexCRUDViolation')
+@SuppressWarnings('PMD.ApexCRUDViolation,PMD.ExcessivePublicCount')
 public with sharing class ProductionToBillServiceTest {
     @isTest
     public static void testScheduleJob(){

@@ -605,7 +605,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         }
     }
 
-    private static void setUnservicedUASBReadyForProdDetail(List<UASB__c> uasbs){
+    public static void setUnservicedUASBReadyForProdDetail(List<UASB__c> uasbs){
         for (UASB__c uasb : uasbs) {
             if (uasb.Externally_Serviced__c){
                 uasb.Ready_For_Production_Detail__c = true;
