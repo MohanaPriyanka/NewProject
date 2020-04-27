@@ -32,33 +32,38 @@ public with sharing class OpportunityTriggerTest {
         System.assertEquals('RecalcUALOpp8A', uasList[3].Opportunity__r.Name);
         FeatureService featureService = new FeatureService();
         if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(3.8462, uasList[0].Future_Customer_Subscription_KWDC_Rollup__c);
-            System.assertEquals(2.3077, uasList[1].Future_Customer_Subscription_KWDC_Rollup__c);
-            System.assertEquals(6.9231, uasList[2].Future_Customer_Subscription_KWDC_Rollup__c);
-            System.assertEquals(7.6923, uasList[3].Future_Customer_Subscription_KWDC_Rollup__c);
+            System.assertEquals(3.8400, uasList[0].Future_Customer_Subscription_KWDC_Rollup__c);
+            System.assertEquals(2.3200, uasList[1].Future_Customer_Subscription_KWDC_Rollup__c);
+            System.assertEquals(6.9600, uasList[2].Future_Customer_Subscription_KWDC_Rollup__c);
+            System.assertEquals(7.6800, uasList[3].Future_Customer_Subscription_KWDC_Rollup__c);
         } else {
             System.assertEquals(3.8462, uasList[0].Customer_Subscription_KW_DC__c);
-        System.assertEquals(2.3077, uasList[1].Customer_Subscription_KW_DC__c);
-        System.assertEquals(6.9231, uasList[2].Customer_Subscription_KW_DC__c);
-        System.assertEquals(7.6923, uasList[3].Customer_Subscription_KW_DC__c);
+            System.assertEquals(2.3077, uasList[1].Customer_Subscription_KW_DC__c);
+            System.assertEquals(6.9231, uasList[2].Customer_Subscription_KW_DC__c);
+            System.assertEquals(7.6923, uasList[3].Customer_Subscription_KW_DC__c);
         }
         Opportunity one = oppMap.get('RecalcUALOpp1A');
         Opportunity eight = oppMap.get('RecalcUALOpp8A');
         System.assertEquals(null, one.Subscription_Size_for_Invoicing__c);
         System.assertEquals(null, eight.Subscription_Size_for_Invoicing__c);
-        Test.StartTest();
+        Test.startTest();
         Util.enableTrigger('Disable_OpportunityTrigger__c');
         one.StageName = 'Complete';
         eight.StageName  = 'Complete';
         update new List<Opportunity> {one, eight};
-        Test.StopTest();
+        Test.stopTest();
         List<Opportunity> updatedOpp = [SELECT Id, Name, 
                                         Subscription_Size_for_Invoicing__c 
                                         FROM Opportunity 
                                         WHERE (Name = 'RecalcUALOpp1A' OR Name = 'RecalcUALOpp8A')
                                         ORDER BY Name];
-        System.assertEquals(3.8462, updatedOpp[0].Subscription_Size_for_Invoicing__c);
-        System.assertEquals(16.9231, updatedOpp[1].Subscription_Size_for_Invoicing__c);
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(3.8400, updatedOpp[0].Subscription_Size_for_Invoicing__c);
+            System.assertEquals(16.9600, updatedOpp[1].Subscription_Size_for_Invoicing__c);
+        } else {
+            System.assertEquals(3.8462, updatedOpp[0].Subscription_Size_for_Invoicing__c);
+            System.assertEquals(16.9231, updatedOpp[1].Subscription_Size_for_Invoicing__c);
+        }
     }
     @IsTest
     public static void testCSOpportunityStageUpdates() {
@@ -190,11 +195,12 @@ public with sharing class OpportunityTriggerTest {
                 WHERE Opportunity__r.Name = :opp.Name
             ];
         }
+        //TODO: Is this going to fail when the flag is off?
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
         System.assertEquals(3, uasList.size());
-        System.assertEquals(2.3077, uasList[0].Future_Customer_Subscription_KWDC_Rollup__c);
-        System.assertEquals(6.9231, uasList[1].Future_Customer_Subscription_KWDC_Rollup__c);
-        System.assertEquals(7.6923, uasList[2].Future_Customer_Subscription_KWDC_Rollup__c);
+        System.assertEquals(2.3200, uasList[0].Future_Customer_Subscription_KWDC_Rollup__c);
+        System.assertEquals(6.9600, uasList[1].Future_Customer_Subscription_KWDC_Rollup__c);
+        System.assertEquals(7.6800, uasList[2].Future_Customer_Subscription_KWDC_Rollup__c);
         Set<Id> uasIds = new Set<Id>();
         for (Utility_Account_Subscription__c uas : uasList){
             uasIds.add(uas.Id);
