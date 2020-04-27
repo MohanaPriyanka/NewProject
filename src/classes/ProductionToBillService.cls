@@ -537,7 +537,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         for (Journal_Entry__c entry : billItems){
             Bill_Adjustment__c sfAdjustment = zuoraIdToAdjustMap.get(entry.External_Id__c);
             createBillProductionDetail(sfAdjustment.Transfer__c, -1 * entry.Amount__c, 'Bill', entry.Id);
-            createBillProductionDetail(sfAdjustment.Transfer__c, -1 * sfAdjustment.Discount__c, 'Customer Savings', entry.Id);
+            createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Discount__c, 'Customer Savings', entry.Id);
         }
     }
 
