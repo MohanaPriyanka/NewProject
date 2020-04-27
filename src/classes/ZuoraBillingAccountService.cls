@@ -1,9 +1,12 @@
+/*
+   Tested By: ZuoraBillingAccountServiceTest
+ */
+
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ZuoraBillingAccountService implements Schedulable, ZuoraDataQueryService.Processor {
-    private ZuoraAccountSelector zuoraAcctSelector = new ZuoraAccountSelector();
-    public static void updatePropertyAccount(List<Zuora__CustomerAccount__c> billingAccounts) {
-        Set<Id> zAccountIds = (new Map<Id,Zuora__CustomerAccount__c>(billingAccounts)).keySet();
-        checkPropertyAccountDiscrepancy(zAccountIds);
+    private static ZuoraAccountSelector zuoraAcctSelector = new ZuoraAccountSelector();
+    public void checkPropertyAccountDiscrepancy(List<Zuora__CustomerAccount__c> billingAccounts) {
+        checkPropertyAccountDiscrepancyFuture(CollectionUtil.toIds(CollectionUtil.getIds(billingAccounts)));
     }
 
     public void execute(SchedulableContext ctx){
@@ -11,12 +14,11 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
     }
 
     @Future
-    // Future methods must be declared as static
-    public static void checkPropertyAccountDiscrepancy(Set<Id> accountsToCheck) {
+    // Future methods must be declared as static, and can't have sobject parameters (like List<Zuora__CustomerAccount__c>)
+    public static void checkPropertyAccountDiscrepancyFuture(Set<Id> accountsToCheck) {
         try {
             List<Account> propAccountsToUpdate = new List<Account>();
-            ZuoraAccountSelector selector = new ZuoraAccountSelector();
-            List<Zuora__CustomerAccount__c> zuoraAccounts = selector.getBillingAccountsById(accountsToCheck);
+            List<Zuora__CustomerAccount__c> zuoraAccounts = zuoraAcctSelector.getBillingAccountsById(accountsToCheck);
 
             for (Zuora__CustomerAccount__c zAccount : zuoraAccounts) {
                 if (zAccount.Zuora__AutoPay__c != zAccount.Zuora__Account__r.Recurring_Billing__c) {
@@ -31,14 +33,33 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
                 }
             }
 
-            if (propAccountsToUpdate.size() > 0) {
-                update propAccountsToUpdate;
-            }
-        } catch (Exception excep){
-            Logger.logNow('ZuoraBillingAccountService','checkPropertyAccountDiscrepancy',excep.getMessage() + excep.getStackTraceString());
+            update propAccountsToUpdate;
+        } catch (Exception excep) {
+            Logger.logNow('ZuoraBillingAccountService','checkPropertyAccountDiscrepancy',excep.getMessage() + '\n' + excep.getStackTraceString());
         }
     }
 
+    public void setBillingAccountOnPropertyAccount(List<Zuora__CustomerAccount__c> billingAccounts) {
+        setBillingAccountOnPropertyAccountFuture(CollectionUtil.toIds(CollectionUtil.getIds(billingAccounts)));
+    }
+
+    @Future
+    public static void setBillingAccountOnPropertyAccountFuture(Set<Id> billingAccountsInserted) {
+        try {
+            List<Account> propAccountsToUpdate = new List<Account>();
+            List<Zuora__CustomerAccount__c> zuoraAccounts = zuoraAcctSelector.getBillingAccountsById(billingAccountsInserted);
+
+            for (Zuora__CustomerAccount__c zAccount : zuoraAccounts) {
+                propAccountsToUpdate.add(new Account(
+                    Id = zAccount.Zuora__Account__r.Id,
+                    Billing_Account__c = zAccount.Id
+                ));
+            }
+            update propAccountsToUpdate;
+        } catch (Exception e) {
+            Logger.logNow('ZuoraBillingAccountService','setBillingAccountOnPropertyAccountFuture',e.getMessage() + '\n' + e.getStackTraceString());
+        }
+    }
     public void startDaysPastDueUpdate(Set<Id> accountsToCheck) {
         try {
             ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
@@ -62,7 +83,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
         updateDaysPastDue(response, parameter.recordIds);
     }
 
-    public void updateDaysPastDue(String queryResponse, Set<Id> recordIds) {
+    private void updateDaysPastDue(String queryResponse, Set<Id> recordIds) {
         try {
             List<Account> accountsToUpdate = new List<Account>();
             Map<String, AccountSummary> zuoraIdToAccountSummary = summarizeBalanceQueryResult(queryResponse);

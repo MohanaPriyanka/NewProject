@@ -2740,6 +2740,19 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Default_Payment_Method_Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Account.Billing_Account__r.Zuora__Default_Payment_Method__r.Zuora__Type__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Type (Credit Card or ACH) from the customer&apos;s default payment method</inlineHelpText>
+        <label>Default Payment Method Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Description</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -6360,9 +6373,10 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
     <fields>
         <fullName>Recipient_Status__c</fullName>
         <externalId>false</externalId>
-        <formula>DocuSign_Recipient__r.dsfs__Recipient_Status__c</formula>
+        <formula>&quot;See DocuSign_Recipient__r.dsfs__Recipient_Status__c&quot;</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Recipient Status</label>
+        <inlineHelpText>Retired to free up Salesforce limits</inlineHelpText>
+        <label>XXXRecipient Status</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
