@@ -274,7 +274,8 @@
         <label>Default Credit Value</label>
         <precision>18</precision>
         <required>false</required>
-        <scale>5</scale>
+        <scale>8</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
