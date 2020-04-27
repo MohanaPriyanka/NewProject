@@ -230,6 +230,7 @@ public with sharing class ZuoraAPI {
     }
 
     public class CreditMemoPart {
+        public String CreditMemoId;
         public String Id;
         public String DebitMemoId;
         public String InvoiceId;
@@ -237,6 +238,7 @@ public with sharing class ZuoraAPI {
     }
 
     public class CreditMemoPartItem {
+        public String PartId;
         public String Id;
         public String InvoiceItemId;
         public Decimal Amount;

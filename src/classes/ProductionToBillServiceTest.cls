@@ -535,10 +535,10 @@ public with sharing class ProductionToBillServiceTest {
     private static Integer returnEntryNumber;
 
     private static void useMocks() {
-        ProductionToBillService.glSelector = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
-        ProductionToBillService.transferPartsSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
-        ProductionToBillService.uasbSelector = (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector());
-        ProductionToBillService.adjustmentSelector = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
+        ProductionToBillService.selectors.journalEntry = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
+        ProductionToBillService.selectors.transferParts = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
+        ProductionToBillService.selectors.uasb = (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector());
+        ProductionToBillService.selectors.adjustment = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
     }
 
     public class MockGLSelector extends MockProvider {

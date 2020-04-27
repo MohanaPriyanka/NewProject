@@ -2,15 +2,21 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ProductionToBillService implements ZuoraDataQueryService.Processor, Queueable{
     @TestVisible
-    private static ZuoraUsageSelector usageSelector = new ZuoraUsageSelector();
+    private static ptbSelectors selectors = new ptbSelectors();
+
     @TestVisible
-    private static JournalEntrySelector glSelector = new JournalEntrySelector();
-    @TestVisible
-    private static ProductionDetailSelector transferPartsSelector = new ProductionDetailSelector();
-    @TestVisible
-    private static UASBSelector uasbSelector = new UASBSelector();
-    @TestVisible
-    private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
+    private class ptbSelectors {
+        @TestVisible
+        private ZuoraUsageSelector usage = new ZuoraUsageSelector();
+        @TestVisible
+        private JournalEntrySelector journalEntry = new JournalEntrySelector();
+        @TestVisible
+        private ProductionDetailSelector transferParts = new ProductionDetailSelector();
+        @TestVisible
+        private UASBSelector uasb = new UASBSelector();
+        @TestVisible
+        private AdjustmentSelector adjustment = new AdjustmentSelector();
+    }
 
     public enum OperationType {BILL, PAYMENT, CREDITMEMO, UNSERVICED}
     public OperationType opType;
@@ -134,7 +140,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     private void executeBillJob(){
         List<Journal_Entry__c> invoiceItems;
         try {
-            invoiceItems = glSelector.getEntriesWithoutProductionDetail(
+            invoiceItems = selectors.journalEntry.getEntriesWithoutProductionDetail(
                 new List<String>{'InvoiceItem'}, batchSize
             );
             if (invoiceItems.size() > 0){
@@ -152,7 +158,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     private void executePaymentJob(){
         List<Journal_Entry__c> collectionItems;
         try {
-            collectionItems = glSelector.getEntriesWithoutProductionDetail(
+            collectionItems = selectors.journalEntry.getEntriesWithoutProductionDetail(
                 new List<String>{'PaymentPart'}, batchSize
             );
             if (collectionItems.size() > 0){
@@ -182,7 +188,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
                 will use. If we come close to the callout limit, we will stop processing credit memos and requeue
             */
             batchSize = Math.min(batchSize, 50);
-            creditMemosToAttempt = glSelector.getEntriesWithoutProductionDetail(
+            creditMemosToAttempt = selectors.journalEntry.getEntriesWithoutProductionDetail(
                 new List<String>{'CreditMemo'}, batchSize
             );
 
@@ -207,7 +213,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     private void executeUnservicedJob(){
         List<UASB__c> externallyServicedUASBs = new List<UASB__c>();
         try {
-            externallyServicedUASBs = uasbSelector.getUnservicedWithoutProductionDetail(batchSize);
+            externallyServicedUASBs = selectors.uasb.getUnservicedWithoutProductionDetail(batchSize);
             if (externallyServicedUASBs.size() > 0){
                 createProductionDetailFromUnservicedUASB(externallyServicedUASBs);
                 insert partsToInsert;
@@ -250,7 +256,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         booleanMap.put('MoreBillsToProcess',invoiceItems.size() == batchSize);
         param.optionalBooleans = booleanMap;
 
-        String queryString = usageSelector.getUsageQueryStringFilterByAccountAndDate(accountNumbers,minDate,maxDate);
+        String queryString = selectors.usage.getUsageQueryStringFilterByAccountAndDate(accountNumbers,minDate,maxDate);
         ZuoraDataQueryService.callFromApex(queryString,param);
     }
 
@@ -275,14 +281,14 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     @TestVisible
     private void fromInvoicesGetUsage(Set<String> invoiceItemIds, String response) {
         List<UsageRecord> allUsage = (List<UsageRecord>)JSON.deserialize(response, List<UsageRecord>.class);
-        List<Journal_Entry__c> invoiceItems = glSelector.getSFJournalEntriesFromExternalId(invoiceItemIds);
+        List<Journal_Entry__c> invoiceItems = selectors.journalEntry.getSFJournalEntriesFromExternalId(invoiceItemIds);
         invoiceIdToUsageMap = groupUsageByInvoice(allUsage,invoiceItems);
     }
 
     @TestVisible
     private void fromUsageGetUASBsAndProductionAdjustments() {
-        Map<Id, UASB__c> uasbMap = uasbSelector.getUASBsFromIds(uasbIds);
-        Map<Id, Bill_Adjustment__c> adjustMap = adjustmentSelector.getAdjustmentsFromIds(adjustmentIds);
+        Map<Id, UASB__c> uasbMap = selectors.uasb.getUASBsFromIds(uasbIds);
+        Map<Id, Bill_Adjustment__c> adjustMap = selectors.adjustment.getAdjustmentsFromIds(adjustmentIds);
 
         for (String invoiceItemId : invoiceIdtoUsageMap.keySet()){
             List<UsageRecord> bills = invoiceIdToUsageMap.get(invoiceItemId).Bills;
@@ -306,7 +312,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
 
     @TestVisible
     private void distributeInvoiceItemAmongTransferParts() {
-        transferToPartsMap = transferPartsSelector.getTransferPartMap(transferIds);
+        transferToPartsMap = selectors.transferParts.getTransferPartMap(transferIds);
         for (String invoiceItemId : invoiceIdtoUsageMap.keySet()){
             GLInvoiceItem invItem = invoiceIdToUsageMap.get(invoiceItemId);
             for (UsageRecord bill : invItem.Bills){
@@ -439,8 +445,8 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
             invoiceIds.add(entry.Applied_Record_Id__c);
         }
 
-        Map<String, List<Transfer_Part__c>> billPartsMap = transferPartsSelector.getInvoicePartMap(invoiceIds);
-        partToPaymentMap = transferPartsSelector.getPaymentSum(invoiceIds);
+        Map<String, List<Transfer_Part__c>> billPartsMap = selectors.transferParts.getInvoicePartMap(invoiceIds);
+        partToPaymentMap =  selectors.transferParts.getPaymentSum(invoiceIds);
 
         for (Journal_Entry__c paymentEntry : paymentEntries){
             List<Transfer_Part__c> invoiceParts = billPartsMap.get(paymentEntry.Applied_Record_Id__c);
@@ -519,14 +525,14 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         }
 
         Map<String, Bill_Adjustment__c> zuoraIdToAdjustMap = new Map<String, Bill_Adjustment__c>();
-        List<Bill_Adjustment__c> adjustmentList = adjustmentSelector.getAdjustmentsFromExternalIds(adjustmentExternalIds);
+        List<Bill_Adjustment__c> adjustmentList = selectors.adjustment.getAdjustmentsFromExternalIds(adjustmentExternalIds);
 
         for (Bill_Adjustment__c adjust : adjustmentList){
             zuoraIdToAdjustMap.put(adjust.Zuora_Id__c, adjust);
             transferRecordIds.add(adjust.Transfer__c);
         }
 
-        transferToPartsMap = transferPartsSelector.getTransferPartMap(transferRecordIds);
+        transferToPartsMap =  selectors.transferParts.getTransferPartMap(transferRecordIds);
 
         for (Journal_Entry__c entry : billItems){
             Bill_Adjustment__c sfAdjustment = zuoraIdToAdjustMap.get(entry.External_Id__c);
@@ -598,7 +604,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
             transferIds.add(exBill.Transfer__c);
         }
 
-        transferToPartsMap = transferPartsSelector.getTransferPartMap(transferIds);
+        transferToPartsMap = selectors.transferParts.getTransferPartMap(transferIds);
 
         for (UASB__c externalBill : unservicedUASBs){
             createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
