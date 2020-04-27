@@ -194,9 +194,9 @@
     </fields>
     <fields>
         <fullName>Approved_Change_in_Subscription__c</fullName>
-        <description>This is the net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription. It&apos;s important to have a static value for tracking purposes, and to use in rollup summary fields.</description>
+        <description>This is the rounded net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription. It&apos;s important to have a static value for tracking purposes, and to use in rollup summary fields.</description>
         <externalId>false</externalId>
-        <inlineHelpText>This is the net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription. It&apos;s important to</inlineHelpText>
+        <inlineHelpText>This is the rounded net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription.</inlineHelpText>
         <label>Approved Change in Subscription (KW DC)</label>
         <precision>18</precision>
         <required>false</required>
@@ -247,6 +247,7 @@ OR(Utility_Account_Subscription__r.UAS_Number__c=1, Utility_Account_Subscription
 Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara Barton&apos;),
 
 Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
+        <inlineHelpText>Unrounded Subscription Calculation</inlineHelpText>
         <label>Calculated Change in Subscription KW DC</label>
         <precision>18</precision>
         <required>false</required>
