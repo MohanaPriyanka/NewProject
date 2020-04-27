@@ -2,10 +2,10 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ProductionToBillService implements ZuoraDataQueryService.Processor, Queueable{
     @TestVisible
-    private static ptbSelectors selectors = new ptbSelectors();
+    private static PtbSelectors selectors = new PtbSelectors();
 
     @TestVisible
-    private class ptbSelectors {
+    private class PtbSelectors {
         @TestVisible
         private ZuoraUsageSelector usage = new ZuoraUsageSelector();
         @TestVisible
