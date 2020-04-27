@@ -7,6 +7,7 @@
 public with sharing class ZuoraSubscriptionServiceTest {
     @TestSetup
     public static void testSetup() {
+        useMocks();
         Util.disableAllTriggers();
 
         TestFactory.insertBWAddress();
@@ -95,8 +96,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
 
     @IsTest
     public static void testDataLoad() {
-        ZuoraSubscriptionAsyncService.featureService =
-            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
         asyncService.initForDataLoad();
         // There should be enough subscriptions to require queueable invocation
@@ -402,5 +401,9 @@ public with sharing class ZuoraSubscriptionServiceTest {
         ZuoraAPI.SubscriptionsByAccount sba = new ZuoraSubscriptionService().getSubscriptionsByAccount('');
         System.assertEquals(3, sba.subscriptions.size(), 'Mock should have 3 subscriptions, 2 active and one cancelled');
         System.assertEquals(2, sba.getClientProjects().size(), 'Mock should have 2 client projects, one for each of the active subscriptions');
+    }
+
+    private static void useMocks() {
+        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
     }
 }

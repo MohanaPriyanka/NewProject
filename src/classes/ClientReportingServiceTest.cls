@@ -7,6 +7,7 @@
 public with sharing class ClientReportingServiceTest {
     @TestSetup
     public static void testSetup() {
+        useMocks();
         Test.startTest();
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
@@ -356,5 +357,9 @@ public with sharing class ClientReportingServiceTest {
         List<Client_Allocation_Schedule_Subscription__c> clientALSSDelete = ClientReportObjectSelector.getClientALSSBySZSIds(new Set<Id>{alss.Id});
         System.assertEquals(0, clientALSSDelete.size());
         Test.stopTest();
+    }
+
+    private static void useMocks() {
+        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
     }
 }

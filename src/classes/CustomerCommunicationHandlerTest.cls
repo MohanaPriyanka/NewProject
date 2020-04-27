@@ -205,6 +205,7 @@ public class CustomerCommunicationHandlerTest{
                                 Shared_Solar_System__c = sss1.Id,
                                 StageName = 'Complete',
                                 Product__c = normalCSProduct.Id,
+                                NMC_Tariff__c = everbillNMC.Id,
                                 Product_Line__c = 'Community Solar',
                                 CloseDate = System.today());
 
@@ -214,6 +215,7 @@ public class CustomerCommunicationHandlerTest{
                                 Shared_Solar_System__c = sss2.Id,
                                 StageName = 'Complete',
                                 Product__c = normalCSProduct.Id,
+                                NMC_Tariff__c = everbillNMC.Id,
                                 Product_Line__c = 'Community Solar',
                                 CloseDate = System.today());
 
@@ -223,6 +225,7 @@ public class CustomerCommunicationHandlerTest{
                                 Shared_Solar_System__c = sss3.Id,
                                 StageName = 'Complete',
                                 Product__c = normalCSProduct.Id,
+                                NMC_Tariff__c = everbillNMC.Id,
                                 Product_Line__c = 'Community Solar',
                                 CloseDate = System.today());
             insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};

@@ -2,6 +2,7 @@
 public class TestBillCreationForCancelledCustomers {
     @testSetup public static void testSetupBillRecords() {
         Test.startTest();
+        useMocks();
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -650,5 +651,9 @@ public class TestBillCreationForCancelledCustomers {
         System.assertEquals(37.91,uasbMapTwo.get('acC C_SSS1')[1].Discounted_Bill__c);
         System.assertEquals(149.46,uasbMapTwo.get('acC C_SSS2')[2].Discounted_Bill__c);
         System.assertEquals(172.21,uasbMapTwo.get('acC C_B_SSS1')[1].Discounted_Bill__c);
+    }
+
+    private static void useMocks() {
+        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
     }
 }
