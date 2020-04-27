@@ -1,6 +1,6 @@
 // Tested By: ProductionToBillServiceTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class ProductionToBillService implements ZuoraDataQueryService.Processor, Queueable{
+public without sharing class ProductionToBillService implements ZuoraDataQueryService.Processor, Queueable, Database.AllowsCallouts{
     @TestVisible
     private static PtbSelectors selectors = new PtbSelectors();
 
@@ -586,6 +586,9 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
 
     private void updateJournalEntriesReadyStatus(List<Journal_Entry__c> entries, Boolean readyForDetail){
         for (Journal_Entry__c entry : entries){
+            if (entry.Object_Type__c == 'CreditMemo'){
+                entry.Applied_Record_Id__c = null;
+            }
             entry.Ready_for_Production_Detail__c = readyForDetail;
         }
         update entries;
