@@ -66,7 +66,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 so.Utility_NMC_Tariff__c = uas.Opportunity__r.NMC_Tariff__c;
                 so.Value_of_NMC__c = uas.Opportunity__r.NMC_Tariff__r.Value_of_NMC__c;
                 so.Product__c = uas.Opportunity__r.Product__c;
-                System.debug('Formula fields: ' + so.Change_in_Annual_Cost__c + '; '  + so.Value_of_NMC__c + ';' + so.Expected_Yield_kWh_kW__c + '; ' + so.Change_in_Annual_kWh__c );
             }
         }
     }

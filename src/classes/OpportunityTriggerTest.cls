@@ -195,7 +195,7 @@ public with sharing class OpportunityTriggerTest {
                 WHERE Opportunity__r.Name = :opp.Name
             ];
         }
-        //TODO: Is this going to fail when the flag is off?
+
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
         System.assertEquals(3, uasList.size());
         System.assertEquals(2.3200, uasList[0].Future_Customer_Subscription_KWDC_Rollup__c);

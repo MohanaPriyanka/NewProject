@@ -155,7 +155,6 @@ public class PartnerCommissionService{
 
     public void recalculatePartnerCommission(Set<Id> opportunityIds){
         try {
-            System.debug('But we should NOT end up here');
             PartnerCommissionService service = new PartnerCommissionService();
             List<Opportunity> opportunitiesWithChanges = oppSelector.selectByIdSet(opportunityIds);
             for (Opportunity opp : opportunitiesWithChanges) {
