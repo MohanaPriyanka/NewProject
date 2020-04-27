@@ -6,6 +6,7 @@
 @IsTest
 public with sharing class UASSelectorTest {
     @TestSetup public static void testSetup() {
+        useMocks();
         Util.disableAllTriggers();
         TestFactory.insertBWAddress();
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
@@ -94,5 +95,9 @@ public with sharing class UASSelectorTest {
         }
         UASSelector selector = new UASSelector();
         System.assertEquals(uasList.size(),selector.selectActiveUASBySSS(sssIdList).size());
+    }
+
+    private static void useMocks() {
+        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
     }
 }

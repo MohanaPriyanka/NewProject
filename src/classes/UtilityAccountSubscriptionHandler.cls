@@ -7,6 +7,8 @@
 public without sharing class UtilityAccountSubscriptionHandler {
     @TestVisible
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+    @TestVisible
+    private static PartnerCommissionService partnerCommissionService = new PartnerCommissionService();
 
     public static void assignSSSBeforeInsert(List<Utility_Account_Subscription__c> uasList) {
         Set<Id> oppIds = new Set<Id>();
@@ -49,7 +51,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
                 oppIds.add(newUAS.Opportunity__c);
             }
         }
-        PartnerCommissionService.recalculatePartnerCommission(oppIds);
+        partnerCommissionService.recalculatePartnerCommission(oppIds);
     }
 
     private static Boolean hasSubscriptionChange(Utility_Account_Subscription__c oldUAS, Utility_Account_Subscription__c newUAS){
@@ -87,6 +89,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
                 oppIds.add(uas.Opportunity__c);
             }
         }
-        PartnerCommissionService.recalculatePartnerCommission(oppIds);
+
+        partnerCommissionService.recalculatePartnerCommission(oppIds);
     }
 }

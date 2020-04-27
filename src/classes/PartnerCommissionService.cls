@@ -12,8 +12,7 @@ public class PartnerCommissionService{
     @TestVisible
     private Map<String, String> acctToJournalEntryMap = new Map<String, String>();
 
-    @TestVisible
-    private class PendingCommission {
+    public class PendingCommission {
         @TestVisible
         private List<Opportunity> FirstBillOpps;
         @TestVisible
@@ -154,8 +153,9 @@ public class PartnerCommissionService{
         }
     }
 
-    public static void recalculatePartnerCommission(Set<Id> opportunityIds){
+    public void recalculatePartnerCommission(Set<Id> opportunityIds){
         try {
+            System.debug('But we should NOT end up here');
             PartnerCommissionService service = new PartnerCommissionService();
             List<Opportunity> opportunitiesWithChanges = oppSelector.selectByIdSet(opportunityIds);
             for (Opportunity opp : opportunitiesWithChanges) {
