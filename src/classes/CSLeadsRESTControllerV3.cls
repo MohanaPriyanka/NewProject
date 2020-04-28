@@ -28,4 +28,15 @@ public without sharing class CSLeadsRESTControllerV3 extends CSLeadsRESTControll
         validateAuthorization(requestUAL.leadId, requestUAL.email);
         super.patchUtilityAccountLog(jsonRequest);
     }
+
+    public override void patchApplication(String jsonRequest) {
+        RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
+        validateAuthorization(requestLead.id, requestLead.email);
+        super.patchApplication(jsonRequest);
+    }
+
+    public override void getLead(String leadId, String email) {
+        // validation performed in V2
+        super.getLead(leadId, email);
+    }
 }

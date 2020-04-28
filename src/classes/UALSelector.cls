@@ -2,7 +2,7 @@
  * Created by jlugo on 2019-07-10.
  * Tested by system tests in RESTRouterV2Test.
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UALSelector {
     public Utility_Account_Log__c selectOne(Id utilityAccountLogId) {
         List<Utility_Account_Log__c> uals = this.selectAll(new Set<Id>{utilityAccountLogId});
@@ -19,6 +19,15 @@ public without sharing class UALSelector {
             FROM Utility_Account_Log__c
             WHERE Id = :utilityAccountLogIds
         ];
+    }
+
+    public Map<Id, Utility_Account_Log__c> selectAllMap(Set<Id> utilityAccountLogIds) {
+        return new Map<Id, Utility_Account_Log__c>([
+            SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
+                Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c
+            FROM Utility_Account_Log__c
+            WHERE Id = :utilityAccountLogIds
+        ]);
     }
 
 }

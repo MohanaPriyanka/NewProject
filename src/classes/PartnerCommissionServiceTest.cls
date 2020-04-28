@@ -193,7 +193,8 @@ public class PartnerCommissionServiceTest {
         Map<String, Object> params = service.getFlowParams(opportunityone, 'Contract Execution');
         System.assertEquals(normalCSProduct.Id,params.get('ProductID'));
 
-        PartnerCommissionService.recalculatePartnerCommission(new Set<Id>{opportunityone.Id});
+        PartnerCommissionService partnerCommissionService = new PartnerCommissionService();
+        partnerCommissionService.recalculatePartnerCommission(new Set<Id>{opportunityone.Id});
     }
 
     private static void useMocks() {
@@ -287,5 +288,13 @@ public class PartnerCommissionServiceTest {
             }
             return null;
         }
+    }
+
+    public class MockPartnerCommissionService extends MockProvider {
+        public MockPartnerCommissionService() {}
+        public override Object handleMethodCall(MethodCall methodCall) {
+            return null;
+        }
+
     }
 }

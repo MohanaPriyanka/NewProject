@@ -2,16 +2,21 @@
  * Created by PeterYao on 2/24/2020.
  */
 
-import { LightningElement, track, wire} from 'lwc';
+import { LightningElement, api, track, wire} from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
+import {makeRequest} from 'c/httpRequestService';
 import { getZipCodeCapacity } from 'c/zipCodeService';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 
 export default class Ssf extends NavigationMixin(LightningElement) {
+    @api leadId;
+    @api email;
+
     @track showSpinner = false;
     @track spinnerMessage;
     @track getZip;
+    @track enterEmail;
     @track getBasicInfo;
     @track getAgreements;
     @track hasCapacity;
@@ -28,10 +33,93 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         if (!this.utilityOptions) {
             this.utilityOptions = [];
         }
-        this.getZip = true;
-        if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
-            this.resiApplicationType = false;
+
+        if(this.pageRef && this.pageRef.state && this.pageRef.state.leadid) {
+            this.getZip = false;
+            this.leadId = this.pageRef.state.leadid;
+            if(this.pageRef.state.email) {
+                this.email = this.pageRef.state.email;
+                if(!this.leadJSON) {
+                    this.getLead();
+                } else {
+                    this.getBasicInfo = true;
+                }
+            } else {
+                this.enterEmail = true;
+            }
+        } else {
+            this.getZip = true;
+            if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
+                this.resiApplicationType = false;
+            }
         }
+    }
+
+    getLead() {
+        this.showSpinner = true;
+        this.spinnerMessage = 'Retrieving your application...';
+        let calloutURI = '/apply/services/apexrest/v3/leads?leadId=' + this.leadId + '&email=' + this.email;
+        let options = {
+            headers: {name: 'Content-Type', value:'application/json'}
+        };
+        
+        makeRequest(calloutURI, 'GET', options)
+            .then(
+                (resolveResult) => {
+                    this.leadJSON = JSON.stringify(resolveResult);
+                    this.zipCodeInput = resolveResult.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
+                    this.resiApplicationType = resolveResult.applicationType === 'Residential';
+                    this.selectedProduct = resolveResult.productName;
+                    return getZipCodeCapacity(this.zipCodeInput, this.pageRef.state.partnerId);
+                }
+            )
+            .then(
+                (zipResolveResult) => {
+                    this.showSpinner = false;
+                    if(zipResolveResult.utilities && zipResolveResult.utilities.length >= 1) {
+                        this.utilityOptions = zipResolveResult.utilities.map(
+                            ({name}) => {
+                                return {value: name, label: name};
+                            }
+                        );
+                    }
+                    
+                    let resolveResult = JSON.parse(this.leadJSON);
+                    this.enterEmail = false;
+                    if(!resolveResult.customerSignedDate) {
+                        this.getBasicInfo = true;
+                    } else if(!resolveResult.applicationCompleteDate) {
+                        this.dispatchEvent(new CustomEvent('consentscomplete', { detail: resolveResult }));
+                    } else {
+                        this.dispatchEvent(new CustomEvent('allcomplete', { detail: resolveResult }));
+                    }
+                }
+            )
+            .catch(
+                (rejectResult) => {
+                    this.showSpinner = false;
+                    let fail = JSON.parse(rejectResult);
+                    if(fail.errors && fail.errors[0].substr(0,21) === 'Invalid authorization') {
+                        this.dispatchEvent(new ShowToastEvent({
+                            title: 'Authentication Failure',
+                            message: 'The email address you provided does not match the application on file.',
+                            variant: 'warning'
+                        }));
+                    } else {
+                        insertLog({
+                            className: 'ssf',
+                            methodName: 'getLead',
+                            message: rejectResult,
+                            severity: 'Error'
+                        });
+                        this.dispatchEvent(new ShowToastEvent({
+                            title: 'Sorry, we ran into a technical problem',
+                            message: 'Please contact Customer Care for help',
+                            variant: 'warning'
+                        }));
+                    }
+                }
+            );
     }
 
     renderedCallback() {
@@ -54,7 +142,11 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             const inputBox = this.template.querySelector('lightning-input');
             inputBox.reportValidity();
             if(inputBox.checkValidity()) {
-                this.submitZip();
+                if(this.getZip) {
+                    this.submitZip();
+                } else if(this.enterEmail) {
+                    this.getLead();
+                }
             }
         }
     }
@@ -117,6 +209,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         this.leadJSON = JSON.stringify(event.detail);
         this.getAgreements = true;
         this.getBasicInfo = false;
+        this.enterEmail = false;
     }
 
     handleConsentsComplete(event) {

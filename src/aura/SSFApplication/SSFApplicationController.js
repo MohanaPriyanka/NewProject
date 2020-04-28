@@ -63,5 +63,9 @@
             }
         );
 
+    },
+
+    showComplete: function(component, event, helper) {
+        helper.showFinalPage(component);
     }
 });

@@ -47,8 +47,33 @@
           </div>
         </div>
       </template>
+      <template if:true={enterEmail}>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size--1-of-1">
+                <div class="slds-text-align--center">
+                    <p class="slds-p-bottom--medium slds-text-heading--medium" style="font-size: 26px">
+                        Please enter your email address to retrieve your application:
+                    </p>
+                    <p>
+                        Email Address
+                    </p>
+                    <div class="slds-align--absolute-center" onkeyup={checkForSubmit}>
+                        <lightning-input name="email"
+                                label="Email Address"
+                                variant="label-hidden"
+                                value={email}
+                                onchange={genericOnChange}
+                                type="email"
+                                class="slds-p-bottom_small">
+                        </lightning-input>
+                    </div>
+                    <lightning-button label="Resume Application" class="slds-m-left--small slds-m-right--small" onclick={getLead}></lightning-button>
+                </div>
+            </div>
+        </div>
+      </template>
       <template if:true={getBasicInfo}>
-        <c-ssf-basic-info utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} resi-application-type={resiApplicationType} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
+        <c-ssf-basic-info lead-json={leadJSON} utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} resi-application-type={resiApplicationType} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
       </template>
       <template if:true={getAgreements}>
         <c-ssf-agreements lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements>

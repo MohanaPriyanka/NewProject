@@ -28,4 +28,13 @@ public without sharing class UALService {
         return utilityAccountLog;
     }
 
+    public List<Utility_Account_Log__c> upsertUALs(List<Utility_Account_Log__c> utilityAccountLogs) {
+        upsert utilityAccountLogs;
+        Set<Id> ualIds = new Set<Id>();
+        for (Utility_Account_Log__c ual : utilityAccountLogs) {
+            ualIds.add(ual.Id);
+        }
+        return ualSelector.selectAll(ualIds);
+    }
+
 }
