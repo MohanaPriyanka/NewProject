@@ -112,15 +112,15 @@ public with sharing class ProductionToBillServiceTest {
         useMocks();
 
         Test.startTest();
-            ProductionToBillService service = new ProductionToBillService();
+            ProductionDetailBillService service = new ProductionDetailBillService();
             service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
         Test.stopTest();
 
-        Map<String, ProductionToBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
-        ProductionToBillService.GLInvoiceItem acct04202 = invoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
-        ProductionToBillService.GLInvoiceItem acct00524 = invoiceMap.get('2c92c0fa6e3a9391016e3e30d48066d2');
-        ProductionToBillService.GLInvoiceItem acct05268 = invoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
-        ProductionToBillService.GLInvoiceItem acct05956 = invoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
+        Map<String, ProductionDetailBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
+        ProductionDetailBillService.GLInvoiceItem acct04202 = invoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
+        ProductionDetailBillService.GLInvoiceItem acct00524 = invoiceMap.get('2c92c0fa6e3a9391016e3e30d48066d2');
+        ProductionDetailBillService.GLInvoiceItem acct05268 = invoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
+        ProductionDetailBillService.GLInvoiceItem acct05956 = invoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
 
         System.assertEquals(1,acct04202.Bills.size());
         System.assertEquals(1,acct00524.Bills.size());
@@ -148,14 +148,14 @@ public with sharing class ProductionToBillServiceTest {
     @IsTest
     public static void testFromUsageGetUASBsandAdjust(){
         useMocks();
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailBillService service = new ProductionDetailBillService();
         service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
-        Map<String, ProductionToBillService.GLInvoiceItem> oldInvoiceMap = service.invoiceIdToUsageMap;
+        Map<String, ProductionDetailBillService.GLInvoiceItem> oldInvoiceMap = service.invoiceIdToUsageMap;
 
-        ProductionToBillService.GLInvoiceItem acct04202 = oldInvoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
-        ProductionToBillService.GLInvoiceItem acct00524 = oldInvoiceMap.get('2c92c0fa6e3a9391016e3e30d48066d2');
-        ProductionToBillService.GLInvoiceItem acct05268 = oldInvoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
-        ProductionToBillService.GLInvoiceItem acct05956 = oldInvoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
+        ProductionDetailBillService.GLInvoiceItem acct04202 = oldInvoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
+        ProductionDetailBillService.GLInvoiceItem acct00524 = oldInvoiceMap.get('2c92c0fa6e3a9391016e3e30d48066d2');
+        ProductionDetailBillService.GLInvoiceItem acct05268 = oldInvoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
+        ProductionDetailBillService.GLInvoiceItem acct05956 = oldInvoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
 
         System.assertEquals(null,acct04202.Bills[0].UASB);
         System.assertEquals(null,acct00524.Bills[0].UASB);
@@ -166,7 +166,7 @@ public with sharing class ProductionToBillServiceTest {
             service.fromUsageGetUASBsAndProductionAdjustments();
         Test.stopTest();
 
-        Map<String, ProductionToBillService.GLInvoiceItem> updatedInvoiceMap = service.invoiceIdToUsageMap;
+        Map<String, ProductionDetailBillService.GLInvoiceItem> updatedInvoiceMap = service.invoiceIdToUsageMap;
         acct04202 = updatedInvoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
         acct00524 = updatedInvoiceMap.get('2c92c0fa6e3a9391016e3e30d48066d2');
         acct05268 = updatedInvoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
@@ -181,9 +181,9 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(null,acct05268.Bills[0].UASB);
         System.assertEquals('a0p0a000008YSCuAAO',acct05268.Bills[0].Adjustment.Id);
 
-        List<ProductionToBillService.UsageRecord> usageList = acct05956.Bills;
+        List<ProductionDetailBillService.UsageRecord> usageList = acct05956.Bills;
         System.assertEquals(8,usageList.size());
-        for (ProductionToBillService.UsageRecord usage : usageList){
+        for (ProductionDetailBillService.UsageRecord usage : usageList){
             System.assertNotEquals(null,usage.UASB);
             if (usage.ExternalId == '2c92c0f96e3aa331016e3cc6717f2aaa'){
                 System.assertEquals('a1i0a000008yUM7AAM',usage.UASB.Id);
@@ -198,7 +198,7 @@ public with sharing class ProductionToBillServiceTest {
     @IsTest
     public static void testDistributeAmongTransferPartsAllTogether(){
         useMocks();
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailBillService service = new ProductionDetailBillService();
 
         Test.startTest();
             service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
@@ -239,7 +239,7 @@ public with sharing class ProductionToBillServiceTest {
     @IsTest
     public static void testDistributeAmongTransferWithThreeParts(){
         useMocks();
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailBillService service = new ProductionDetailBillService();
         returnEntryNumber = 4;
 
         Test.startTest();
@@ -249,8 +249,8 @@ public with sharing class ProductionToBillServiceTest {
             service.distributeInvoiceItemAmongTransferProductionDetail();
         Test.stopTest();
 
-        Map<String, ProductionToBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
-        ProductionToBillService.GLInvoiceItem acct04202 = invoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
+        Map<String, ProductionDetailBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
+        ProductionDetailBillService.GLInvoiceItem acct04202 = invoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
         System.assertEquals(37.23,acct04202.Amount);
         System.assertEquals(37.23,acct04202.SumOfAmount);
         System.assertEquals(10,acct04202.Bills[0].UASB.Savings__c);
@@ -279,7 +279,7 @@ public with sharing class ProductionToBillServiceTest {
     @IsTest
     public static void testDistributeAmongTransferWithTwoParts(){
         useMocks();
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailBillService service = new ProductionDetailBillService();
         returnEntryNumber = 3;
 
         Test.startTest();
@@ -289,8 +289,8 @@ public with sharing class ProductionToBillServiceTest {
         service.distributeInvoiceItemAmongTransferProductionDetail();
         Test.stopTest();
 
-        Map<String, ProductionToBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
-        ProductionToBillService.GLInvoiceItem acct05956 = invoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
+        Map<String, ProductionDetailBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
+        ProductionDetailBillService.GLInvoiceItem acct05956 = invoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
         System.assertEquals(1997.03,acct05956.Amount);
         System.assertEquals(1997.03,acct05956.SumOfAmount);
         System.assertEquals(8,acct05956.Bills.size());
@@ -328,7 +328,7 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(0,beforeBillParts.size());
 
         List<Journal_Entry__c> collectionEntries = getPaymentJournalEntries();
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailPaymentService service = new ProductionDetailPaymentService();
         service.calculateProductionDetailFromCollectionItem(collectionEntries);
 
         List<Transfer_Part__c> paymentParts = service.productionDetailToInsert;
@@ -385,8 +385,8 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(0,beforeQueries.size());
 
         Test.startTest();
-            ProductionToBillService service = new ProductionToBillService();
-            service.calculateProductionDetailFromInvoiceItems(entries);
+            ProductionDetailBillService service = new ProductionDetailBillService();
+            service.createProductionDetailFromInvoiceItems(entries, 10);
         Test.stopTest();
 
         List<Zuora_Data_Query__c> afterQueries = [
@@ -403,7 +403,7 @@ public with sharing class ProductionToBillServiceTest {
         List<Journal_Entry__c> creditMemoEntries = getCreditMemoJournalEntries();
         System.assertEquals(5,creditMemoEntries.size());
 
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailCreditMemoService service = new ProductionDetailCreditMemoService();
         service.calculateProductionDetailFromCreditMemo(creditMemoEntries);
 
         List<Transfer_Part__c> productionDetailList = service.productionDetailToInsert;
@@ -440,7 +440,7 @@ public with sharing class ProductionToBillServiceTest {
 
         ZuoraAPIHelper.numberCalloutsForZuoraNamespace = 88;
 
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailCreditMemoService service = new ProductionDetailCreditMemoService();
         service.calculateProductionDetailFromCreditMemo(creditMemoEntries);
 
         List<Transfer_Part__c> productionDetailList = service.productionDetailToInsert;
@@ -489,7 +489,7 @@ public with sharing class ProductionToBillServiceTest {
         List<Journal_Entry__c> entryList = (List<Journal_Entry__c>)JSON.deserialize(jeListAsJSON, List<Journal_Entry__c>.class);
         System.assertEquals(5,entryList.size());
 
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailCreditMemoService service = new ProductionDetailCreditMemoService();
         service.calculateProductionDetailFromCreditMemo(entryList);
 
         System.assertEquals(4,service.productionDetailToDelete.size());
@@ -501,7 +501,7 @@ public with sharing class ProductionToBillServiceTest {
         List<UASB__c> externalUASBs = getExternallyServicedUASBs();
 
         Test.startTest();
-            ProductionToBillService service = new ProductionToBillService();
+            ProductionDetailBillService service = new ProductionDetailBillService();
             service.calculateProductionDetailFromUnservicedUASB(externalUASBs);
         Test.stopTest();
 
@@ -534,10 +534,18 @@ public with sharing class ProductionToBillServiceTest {
     private static Integer returnEntryNumber;
 
     private static void useMocks() {
-        ProductionToBillService.selectors.journalEntry = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
-        ProductionToBillService.selectors.productionDetail = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
-        ProductionToBillService.selectors.uasb = (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector());
-        ProductionToBillService.selectors.adjustment = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
+        ProductionToBillService.journalEntrySelector = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
+        ProductionToBillService.uasbSelector = (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector());
+
+        ProductionDetailBillService.journalEntrySelector = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
+        ProductionDetailBillService.productionDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
+        ProductionDetailBillService.uasbSelector = (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector());
+        ProductionDetailBillService.adjustmentSelector = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
+
+        ProductionDetailPaymentService.productionDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
+
+        ProductionDetailCreditMemoService.productionDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
+        ProductionDetailCreditMemoService.adjustmentSelector = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
     }
 
     public class MockGLSelector extends MockProvider {
