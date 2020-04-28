@@ -203,7 +203,7 @@ public with sharing class ProductionToBillServiceTest {
         Test.startTest();
             service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
             service.fromUsageGetUASBsAndProductionAdjustments();
-            service.distributeInvoiceItemAmongTransferParts();
+            service.distributeInvoiceItemAmongTransferProductionDetail();
         Test.stopTest();
 
         System.assertEquals(6,getMockInvoiceItemIds().size());
@@ -216,7 +216,7 @@ public with sharing class ProductionToBillServiceTest {
           1 bill type and 1 savings type each = 50 Expected Transfer Parts
         */
 
-        List<Transfer_Part__c> parts = service.partsToInsert;
+        List<Transfer_Part__c> parts = service.productionDetailToInsert;
         System.assertEquals(50,parts.size());
 
         Decimal billSum = 0;
@@ -246,7 +246,7 @@ public with sharing class ProductionToBillServiceTest {
             // 1 Invoice with 1 Subscription on 1 Project, but bill is from a transfer with 3 parts:
             service.fromInvoicesGetUsage(new Set<String>{'2c92c0fb6e3aa322016e3df698ff7e9f'},getMockUsageDataQueryResult());
             service.fromUsageGetUASBsAndProductionAdjustments();
-            service.distributeInvoiceItemAmongTransferParts();
+            service.distributeInvoiceItemAmongTransferProductionDetail();
         Test.stopTest();
 
         Map<String, ProductionToBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
@@ -256,7 +256,7 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(10,acct04202.Bills[0].UASB.Savings__c);
         System.assertEquals('a900a000000GqNBAA0',acct04202.Bills[0].UASB.Transfer__c);
 
-        List<Transfer_Part__c> parts = service.partsToInsert;
+        List<Transfer_Part__c> parts = service.productionDetailToInsert;
         System.assertEquals(6,parts.size());
 
         Decimal billSum = 0;
@@ -286,7 +286,7 @@ public with sharing class ProductionToBillServiceTest {
         // 1 Invoice with 8 Subscriptions on 1 Project, but bill is from a transfer with 2 parts:
         service.fromInvoicesGetUsage(new Set<String>{'2c92c0fa6e3a938d016e3dfdc93450b2'},getMockUsageDataQueryResult());
         service.fromUsageGetUASBsAndProductionAdjustments();
-        service.distributeInvoiceItemAmongTransferParts();
+        service.distributeInvoiceItemAmongTransferProductionDetail();
         Test.stopTest();
 
         Map<String, ProductionToBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
@@ -298,7 +298,7 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals('a900a000000GrNBAA0',acct05956.Bills[7].UASB.Transfer__c);
 
         // 8 bills * 2 transfers, 1 for bill, 1 for savings:
-        List<Transfer_Part__c> parts = service.partsToInsert;
+        List<Transfer_Part__c> parts = service.productionDetailToInsert;
         System.assertEquals(32,parts.size());
 
         Decimal billSum = 0;
@@ -329,9 +329,9 @@ public with sharing class ProductionToBillServiceTest {
 
         List<Journal_Entry__c> collectionEntries = getPaymentJournalEntries();
         ProductionToBillService service = new ProductionToBillService();
-        service.createProductionDetailFromCollectionItem(collectionEntries);
+        service.calculateProductionDetailFromCollectionItem(collectionEntries);
 
-        List<Transfer_Part__c> paymentParts = service.partsToInsert;
+        List<Transfer_Part__c> paymentParts = service.productionDetailToInsert;
 
         System.assertEquals(8,paymentParts.size());
 
@@ -386,7 +386,7 @@ public with sharing class ProductionToBillServiceTest {
 
         Test.startTest();
             ProductionToBillService service = new ProductionToBillService();
-            service.createProductionDetailFromInvoiceItems(entries);
+            service.calculateProductionDetailFromInvoiceItems(entries);
         Test.stopTest();
 
         List<Zuora_Data_Query__c> afterQueries = [
@@ -404,11 +404,10 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(5,creditMemoEntries.size());
 
         ProductionToBillService service = new ProductionToBillService();
-        service.calloutCount = 0;
-        service.createProductionDetailFromCreditMemo(creditMemoEntries);
+        service.calculateProductionDetailFromCreditMemo(creditMemoEntries);
 
-        List<Transfer_Part__c> productionDetailList = service.partsToInsert;
-        System.assertEquals(0,service.partsToDelete.size());
+        List<Transfer_Part__c> productionDetailList = service.productionDetailToInsert;
+        System.assertEquals(0,service.productionDetailToDelete.size());
 
         Integer countOfBills = 0;
         Integer countOfSavings = 0;
@@ -439,11 +438,12 @@ public with sharing class ProductionToBillServiceTest {
         List<Journal_Entry__c> creditMemoEntries = getCreditMemoJournalEntries();
         System.assertEquals(5,creditMemoEntries.size());
 
-        ProductionToBillService service = new ProductionToBillService();
-        service.calloutCount = 88;
-        service.createProductionDetailFromCreditMemo(creditMemoEntries);
+        ZuoraAPIHelper.numberCalloutsForZuoraNamespace = 88;
 
-        List<Transfer_Part__c> productionDetailList = service.partsToInsert;
+        ProductionToBillService service = new ProductionToBillService();
+        service.calculateProductionDetailFromCreditMemo(creditMemoEntries);
+
+        List<Transfer_Part__c> productionDetailList = service.productionDetailToInsert;
 
         Integer countOfBills = 0;
         Integer countOfSavings = 0;
@@ -490,10 +490,9 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(5,entryList.size());
 
         ProductionToBillService service = new ProductionToBillService();
-        service.calloutCount = 0;
-        service.createProductionDetailFromCreditMemo(entryList);
+        service.calculateProductionDetailFromCreditMemo(entryList);
 
-        System.assertEquals(4,service.partsToDelete.size());
+        System.assertEquals(4,service.productionDetailToDelete.size());
     }
 
     @IsTest
@@ -503,10 +502,10 @@ public with sharing class ProductionToBillServiceTest {
 
         Test.startTest();
             ProductionToBillService service = new ProductionToBillService();
-            service.createProductionDetailFromUnservicedUASB(externalUASBs);
+            service.calculateProductionDetailFromUnservicedUASB(externalUASBs);
         Test.stopTest();
 
-        List<Transfer_Part__c> unservicedParts = service.partsToInsert;
+        List<Transfer_Part__c> unservicedParts = service.productionDetailToInsert;
         System.assertEquals(7,unservicedParts.size());
 
         Decimal uasbOneSum = 0;
@@ -536,7 +535,7 @@ public with sharing class ProductionToBillServiceTest {
 
     private static void useMocks() {
         ProductionToBillService.selectors.journalEntry = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
-        ProductionToBillService.selectors.transferParts = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
+        ProductionToBillService.selectors.productionDetail = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
         ProductionToBillService.selectors.uasb = (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector());
         ProductionToBillService.selectors.adjustment = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
     }
