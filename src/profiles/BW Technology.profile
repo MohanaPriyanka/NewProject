@@ -40895,7 +40895,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Production__c.First_Date_Production_Billed__c</field>
         <readable>true</readable>
     </fieldPermissions>
