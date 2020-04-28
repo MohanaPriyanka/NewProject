@@ -401,6 +401,13 @@ public with sharing class ZuoraSubscriptionServiceTest {
     private static void testGetSubscriptionsByAccount() {
         ZuoraAPI.SubscriptionsByAccount sba = new ZuoraSubscriptionService().getSubscriptionsByAccount('');
         System.assertEquals(3, sba.subscriptions.size(), 'Mock should have 3 subscriptions, 2 active and one cancelled');
-        System.assertEquals(2, sba.getClientProjects().size(), 'Mock should have 2 client projects, one for each of the active subscriptions');
+        List<ZuoraSubscriptionService.ClientProject> clientProjects = new List<ZuoraSubscriptionService.ClientProject>(sba.getClientProjects());
+        System.assertEquals(2, clientProjects.size(), 'Mock should have 2 client projects, one for each of the active subscriptions');
+        System.assert(clientProjects[0].equals(new ZuoraSubscriptionService.ClientProject('BW-0021776', 'SSS-000009')) ||
+            clientProjects[0].equals(new ZuoraSubscriptionService.ClientProject('BW-0009470', 'SSS-000009')),
+        'Expected client project to either be BW-9470 or BW-0021776 for SSS-9');
+        System.assertEquals('2c92c0fa712985fa017131da4d6e4c90', sba.getSubscriptionFor('BW-0021776', 'SSS-000009').id);
+        System.assertEquals('2c92c0fb7129989d017131da263137da', sba.getSubscriptionFor('BW-0009470', 'SSS-000009').id);
+        System.assertEquals(null, sba.getSubscriptionFor('SSS-00009', 'BW-0009470'));
     }
 }
