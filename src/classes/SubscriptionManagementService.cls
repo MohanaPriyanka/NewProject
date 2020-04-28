@@ -3,7 +3,7 @@
  *
  * Description: Used to create/update/insert Subscription Orders and Shared Solar System Orders
  *
- * Tested By: SubscriptionManagementServiceTest
+ * Tested By: SubscriptionManagementServiceTest, SubscriptionSizingTestclass
  */
 public without sharing class SubscriptionManagementService implements Queueable{
     @TestVisible
