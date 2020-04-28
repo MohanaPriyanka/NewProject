@@ -8,8 +8,8 @@
 public with sharing class BillPeriodService {
 
     private Set<Id> verifiedBillPeriods = new Set<Id>();
-    //Assume one bill period per shared solar system - doesnt work if trying to apply to historical data
-    private Map<Id, Bill_Period__c> completedBillPeriods = new Map<Id, Bill_Period__c>();
+    public Map<Id, Bill_Period__c> completedBillPeriods = new Map<Id, Bill_Period__c>();
+
     @TestVisible
     private static ProductionSelector productionSelector = new ProductionSelector();
 
@@ -25,7 +25,6 @@ public with sharing class BillPeriodService {
             productionsToUpdate = verifyProductions();
         }
 
-        System.debug('We have completed bill periods: ' + completedBillPeriods.size());
         if (completedBillPeriods.size() > 0) {
             productionsToUpdate = markFirstBillDate();
         }
@@ -77,10 +76,7 @@ public with sharing class BillPeriodService {
     }
 
     public List<Production__c> markFirstBillDate() {
-        //need to map the production to the appropriate bill period to get bill date
-        // what if we had a map of production --> transfer?
         MultiMap bpProductionMultiMap = productionSelector.selectProductionsByBillPeriod(completedBillPeriods.keySet());
-        System.debug('Do we have a multi map: ' + bpProductionMultiMap);
         List<Production__c> billedProductions = new List<Production__c>();
         for (Object key : bpProductionMultiMap.keySet()) {
             Bill_Period__c bp = completedBillPeriods.get((Id)key);
@@ -88,12 +84,10 @@ public with sharing class BillPeriodService {
                 Production__c production = (Production__c) value;
                 if (production.First_Date_Production_Billed__c == null) {
                     production.First_Date_Production_Billed__c = bp.Bill_Date__c;
-                    System.debug('Setting the production date; ' + bp.Bill_Date__c);
                     billedProductions.add(production);
                 }
             }
         }
-        System.debug('And here are our billed productions: ' + billedProductions.size());
         return billedProductions;
     }
 
@@ -140,7 +134,6 @@ public with sharing class BillPeriodService {
             update billPeriodsToUpdate;
             return billPeriodsToUpdate.size();
         } catch (Exception excep){
-            System.debug('Catch a problem: ' + excep.getMessage());
             Logger.logNow('BillPeriodService','markBillPeriodsAsBillRunComplete',excep.getMessage() + '__' + excep.getStackTraceString());
             return 0;
         }
