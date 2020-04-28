@@ -8,7 +8,8 @@ public class LeadServiceTestclass {
     public static void setupTestData() {
 
         Utility__c nyseg = new Utility__c(
-            Name = 'NYS Electric and Gas'
+            Name = 'NYS Electric and Gas',
+            Number_of_Decimal_Places__c = 2
         );
 
         Utility__c nationalGrid = new Utility__c(
@@ -96,7 +97,8 @@ public class LeadServiceTestclass {
             Product__c = csProduct.Id,
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'BlueWave Test Partner'
+            Sales_Partners__c = 'BlueWave Test Partner',
+            Billing_Method__c = 'kWh'
         );
 
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(
@@ -115,7 +117,8 @@ public class LeadServiceTestclass {
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
             Maximum_Subscription_Assemblage__c = 25,
-            Sales_Partners__c = 'All'
+            Sales_Partners__c = 'All',
+            Billing_Method__c = 'NMC'
         );
         insert new List<Shared_Solar_System__c>{
             sss1, sss2
