@@ -60,7 +60,8 @@ public without sharing class SLPQuickSalesSheetTest{
                                                   Credit_Minimum__c = '750',
                                                   Loan_Tranche_Type__c = 'Standard',
                                                   Program__c = 'BlueWave Solar Loan',
-                                                  isActive = TRUE);
+                                                  isActive = TRUE,
+                                                  zqu__SKU__c = '123456');
     insert productRecord;
                                    
     Test.startTest();          

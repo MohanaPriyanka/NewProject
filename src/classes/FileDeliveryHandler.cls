@@ -6,7 +6,7 @@
  + * ContentDistribution is child of ContentVersion and generates a public url (used in community)
  + * ContentDocumentLink is a child of ContentDocument and controls what records a doc is linked to (QSS Record)
  + * 
- + * Tested By: SLPQuickSalesSheetTest and BatchCSBillEmailHandlerTestclass
+ + * Tested By: SLPQuickSalesSheetTest and BatchCSBillEmailHandlerTestclass and SimpleSignupFormControllerTest (lines 51-64)
  + *************************************************************************************/
 
 
@@ -48,6 +48,20 @@ public without sharing class FileDeliveryHandler {
               cd.ExpiryDate = expyDate;
               cd.PreferencesExpires = true;
               distList.add(cd);
+          } else if(cont.Title == 'Community Solar Agreement.pdf' || cont.Title == 'Solar Disclosure Form.pdf') {
+            distList.add(new ContentDistribution(
+                Name = cont.Title,
+                ContentVersionId = cont.Id,
+                ExpiryDate = System.today().addDays(10),
+                PreferencesAllowOriginalDownload = false,
+                PreferencesAllowPDFDownload = false,
+                PreferencesAllowViewInBrowser = true,
+                PreferencesExpires = true,
+                PreferencesLinkLatestVersion = true,
+                PreferencesNotifyOnVisit = false,
+                PreferencesNotifyRndtnComplete = false,
+                PreferencesPasswordRequired = false
+            ));
           } else if (cont.Title.contains('Community Solar Bill')) {
               ContentDocumentLink cdl = new ContentDocumentLink();
               cdl.LinkedEntityId = communityID;

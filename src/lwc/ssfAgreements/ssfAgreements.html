@@ -14,9 +14,9 @@
   <div class="slds-m-around--medium">
     <template iterator:it={contractDocuments}>
       <p key={it.value.ContentDocumentId}>
-        <a key={it.value.ContentDocumentId} href="javascript:void(0);">
-          <span style="color:blue" key={it.value.ContentDocumentId} data-id={it.value.ContentDocumentId} onclick={filePreview}>{it.value.ContentDocument.LatestPublishedVersion.Title}</span>
-        </a>
+          <a key={it.value.ContentDocumentId} href="javascript:void(0);">
+            <span style="color:blue" key={it.value.ContentDocumentId} data-id={it.value.ContentDocumentId} onclick={filePreview}>{it.value.ContentDocument.LatestPublishedVersion.Title}</span>
+          </a>
       </p>
     </template>
   </div>
@@ -29,7 +29,7 @@
         <lightning-button label="Close" onclick={hideContractDocument}></lightning-button>
       </div>
       <div style="height: 100%">
-        <iframe style="width:100%;height:100%" title="Contract" src={documentUrl}></iframe>
+        <iframe style="width:100%;height:100%" title="Contract" id="contract_iframe" src={documentUrl}></iframe>
       </div>
     </div>
   </template>
