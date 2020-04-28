@@ -4,9 +4,6 @@
  * This testclass creates UASes that mimic the rounded and unrounded values in Production. It was made to fail until the
  * Subscription Orders subscription sizes that rolled up to the UAS matched the kW_Allocation__c on the UAS.
  *
- * In order to set up this test, you must first turn on the Subscription Order Feature flag in Setup.
- * The assertions for the UAS.Future_Customer_Subscription_KWDC_ROLLUP__c should fail (if the apex changes are not in your environment)
- *
  * To make the assertions pass, code was added to the SubscriptionManagementService.stampApprovedValues() to round the subscription size
  * and therefore match the kw Allocation.
  *
@@ -19,6 +16,8 @@ public with sharing class SubscriptionSizingTestclass {
 
     @IsTest
     public static void testSubscriptionSizing() {
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
+
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
