@@ -212,6 +212,25 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(201, RestContext.response.statusCode, 'A Lead POST with minimal fields should succeed');
     }
 
+
+    @IsTest
+    private static void testPostLeadWithMinimalFieldsReturnUrl() {
+        useMocks();
+
+        String jsonRequest = '{' +
+            '"firstName": "Unit",' +
+            '"lastName": "Testcase",' +
+            '"email": "test@invalid.bluewavesolar.com",' +
+            '"applicationType": "Residential",' +
+            '"productName": "CS Product"' +
+            '}';
+
+        controller.postLead(jsonRequest);
+
+        System.assertEquals(201, RestContext.response.statusCode, 'A Lead POST with minimal fields should succeed');
+        System.assertNotEquals(null, mockLeadService.getLastUpdatedLead().Continue_Application_Link__c, 'If a resume URL is not provided in a Lead POST call, one should be created automatically');
+    }
+
     @IsTest
     private static void testPostLeadWithTooManyAccounts() {
         useMocks();
@@ -443,6 +462,83 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
 
+    /**************************
+     *** patchApplication() ***
+     **************************/
+
+    @IsTest
+    private static void testPatchApplicationNoLeadFields() {
+        useMocks();
+        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '"}';
+        controller.patchApplication(jsonRequest);
+
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when no patchable fields are provided');
+    }
+
+    @IsTest
+    private static void testPatchApplicationInvalidLeadId() {
+        useMocks();
+        String jsonRequest = '{ "id": "00Q000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
+        controller.patchApplication(jsonRequest);
+
+        System.assertEquals(404, RestContext.response.statusCode, 'PATCH should throw an error if the ID provided is not valid');
+    }
+
+    @IsTest
+    private static void testPatchApplicationMultiplePropertyAccounts1() {
+        useMocks();
+        String jsonRequest = '{ ' +
+            '"id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '",' +
+            '"propertyAccounts": [ ' +
+                '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '" },' +
+                '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '" }' +
+            '] ' +
+            ' }';
+        controller.patchApplication(jsonRequest);
+
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when more than one property account is provided');
+    }
+
+    @IsTest
+    private static void testPatchApplicationSuccess() {
+        useMocks();
+        String jsonRequest = '{' +
+            '"id": "00Q000000000888",' +
+            '"firstName": "Unit",' +
+            '"lastName": "Testcase",' +
+            '"email": "test@invalid.bluewavesolar.com",' +
+            '"mobilePhone": "555-555-5555",' +
+            '"applicationType": "Residential",' +
+            '"streetAddress": "1 Test Street",' +
+            '"city": "Suffern",' +
+            '"state": "NY",' +
+            '"zipCode": "10901",' +
+            '"productName": "CS Product",' +
+            '"propertyAccounts": [{' +
+            '   "id": "001000000000999",' +
+            '   "leadId": "00Q000000000888", ' +
+            '   "billingStreet": "Test billing street",' +
+            '   "billingCity": "Test billing city",' +
+            '   "billingState": "NY",' +
+            '   "billingPostalCode": "14472",' +
+            '   "utilityAccountLogs": [{' +
+            '       "id": "a1b000000000999",' +
+            '       "leadId": "00Q000000000888", ' +
+            '       "propertyAccountId": "001000000000999",' +
+            '       "nameOnAccount": "Test Accounts Payable",' +
+            '       "serviceStreet": "Test service street",' +
+            '       "serviceCity": "Test service city",' +
+            '       "serviceState": "NY",' +
+            '       "servicePostalCode": "14472",' +
+            '       "utilityAccountNumber": "555555"' +
+            '   }]' +
+            '}]}';
+
+        controller.patchApplication(jsonRequest);
+
+        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
+    }
+
     /********************
      *** SYSTEM TESTS ***
      ********************/
@@ -582,16 +678,61 @@ public with sharing class CSLeadsRESTControllerV2Test {
         public MockLeadSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
-            Lead newLead = new Lead();
-            newLead.Email = SAMPLE_EMAIL;
-            if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000111') {
-                return null;
-            } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000999') {
-                newLead.Application_Complete_Date__c = Datetime.newInstance(2017, 1, 1);
-            } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000888') {
-                newLead.Id = '00Q000000000888';
-            }
-            return newLead;
+                Lead newLead = new Lead();
+                newLead.Email = SAMPLE_EMAIL;
+                if(!listOfArgs.isEmpty() && listOfArgs.get(0) != null) {
+                    if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000111') {
+                        return null;
+                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000999') {
+                        newLead.Application_Complete_Date__c = Datetime.newInstance(2017, 1, 1);
+                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000888') {
+                        newLead.Id = '00Q000000000888';
+                    }
+                }
+                if(stubbedMethodName == 'selectOneWithPropertiesAndUtilities') {
+                    String leadMapJson = '{ ' +
+                        '   "attributes": {' +
+                        '       "type": "Lead",' +
+                        '       "url": "/services/data/v48.0/sobjects/Lead/00Q000000000999"' +
+                        '   },' +
+                        '   "Email": "test@invalid.bluewavesolar.com",' +
+                        '   "Id": "00Q000000000999",' +
+                        '   "Accounts__r": {' +
+                        '       "totalSize": 1,' +
+                        '       "done": true,' +
+                        '       "records": ' +
+                        '           [' +
+                        '               {' +
+                        '                   "attributes": {' +
+                        '                       "type": "Account",' +
+                        '                       "url": "/services/data/v48.0/sobjects/Account/001000000000999"' +
+                        '                   },' +
+                        '                   "Lead__c": "00Q000000000999",' +
+                        '                   "Id": "001000000000999"' +
+                        '               }' +
+                        '           ]' +
+                        '   },' + 
+                        '   "Utility_Account_Logs__r": {' +
+                        '       "totalSize": 1,' +
+                        '       "done": true,' +
+                        '       "records": ' +
+                        '           [' +
+                        '               {' +
+                        '                   "attributes": {' +
+                        '                       "type": "Utility_Account_Log__c",' +
+                        '                       "url": "/services/data/v48.0/sobjects/Utility_Account_Log__c/a1b2C000000wv1JQAQ"' +
+                        '                   },' +
+                        '                   "Lead__c": "00Q000000000999",' +
+                        '                   "Id": "a1b000000000999",' +
+                        '                   "Account__c": "001000000000999"' +
+                        '               }' +
+                        '           ]' +
+                        '   }' + 
+                        '}';
+                    return (Lead)JSON.deserialize(leadMapJson, Lead.class);
+                }
+
+                return newLead;
         }
     }
 
@@ -605,7 +746,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
                     return new Account();
                 }
                 when 'insertAccount' {
-                    return new Account(Id = Util.getFakeId(Schema.Account.SObjectType));
+                    return new Account(Id = Util.getFakeId(Schema.Account.SObjectType), Lead__c = Util.getFakeId(Schema.Lead.SObjectType));
                 }
             }
             return null;
@@ -620,19 +761,23 @@ public with sharing class CSLeadsRESTControllerV2Test {
             switch on stubbedMethodName {
                 when 'selectOne' {
                     Account newAccount = new Account();
-                    if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000111') {
-                        return null;
-                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000888') {
-                        newAccount.Id = '001000000000888';
-                        newAccount.Lead__c = Util.getFakeId(Schema.Lead.SObjectType);
+                    if(!listOfArgs.isEmpty() && listOfArgs.get(0) != null) {
+                        if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000111') {
+                            return null;
+                        } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000888') {
+                            newAccount.Id = '001000000000888';
+                            newAccount.Lead__c = Util.getFakeId(Schema.Lead.SObjectType);
+                        }
                     }
                     return newAccount;
 
                 }
                 when 'selectPropertyAccountsByLeadIds' {
                     for (Id leadId : (Set<Id>) listOfArgs.get(0)) {
-                        if (String.valueOf(leadId).substring(0,15) == '00Q000000000999') {
-                            return new List<Account>{new Account()};
+                        if(!listOfArgs.isEmpty() && listOfArgs.get(0) != null) {
+                            if (String.valueOf(leadId).substring(0,15) == '00Q000000000999') {
+                                return new List<Account>{new Account()};
+                            }
                         }
                     }
                 }
@@ -669,6 +814,19 @@ public with sharing class CSLeadsRESTControllerV2Test {
             if (String.valueOf(listOfArgs.get(0)).substring(0,15) == 'a1b000000000111') {
                 return null;
             }
+
+            switch on stubbedMethodName {
+                when 'selectOne' {
+                    return new Utility_Account_Log__c();
+                }
+                when 'selectAll' {
+                    return new List<Utility_Account_Log__c>{new Utility_Account_Log__c()};
+                } 
+                when 'selectAllMap'{
+                    return new Map<Id, Utility_Account_Log__c>{Util.getFakeId(Schema.Utility_Account_Log__c.SObjectType) => new Utility_Account_Log__c()};
+                }
+            }
+            
             return new Utility_Account_Log__c();
         }
     }
