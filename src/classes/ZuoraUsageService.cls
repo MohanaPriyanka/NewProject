@@ -1,4 +1,7 @@
 public class ZuoraUsageService implements Database.AllowsCallouts{
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
+    private static ZuoraSubscriptionService subscriptionService = new ZuoraSubscriptionService();
     public class ZuoraUsageItems {
         public String type = 'Usage';
         public List<ZuoraUsage> objects;
@@ -62,16 +65,30 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return zuoraObject;
     }
 
+    @TestVisible
     private static ZuoraUsage convertUASBToUsage(UASB__c uasb){
         ZuoraUsage usage = new ZuoraUsage();
         String zuoraAcctId = uasb.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
-        ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+        String client = uasb.Client_Account_Number__c;
+        String project = uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
+        String subscriptionNumber;
+        String chargeNumber;
+        if (featureService.isEnabled('Multiple_Subscriptions')) {
+            ZuoraAPI.Subscription subscription = subscriptionService.getSubscriptionsByAccount(zuoraAcctId).getSubscriptionFor(client, project);
+            if (subscription == null) {
+                throw new Util.FatalBWException('Did not find a subscription with ' +
+                    'client ' + client + ' and project ' + project + ' to upload uasb: ' + uasb.Id);
+            }
+            subscriptionNumber = subscription.subscriptionNumber;
+            chargeNumber = subscription.getRatePlanChargeFor(client, project).number_Zreserved;
+        } else {
+            ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+            subscriptionNumber = subscription.getSubscriptionNumber();
+            chargeNumber = subscription.getChargeNumber(client, project);
+        }
         usage.AccountId = zuoraAcctId;
-        usage.SubscriptionNumber = subscription.getSubscriptionNumber();
-        usage.ChargeNumber = subscription.getChargeNumber(
-            uasb.Client_Account_Number__c,
-            uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
-        );
+        usage.SubscriptionNumber = subscriptionNumber;
+        usage.ChargeNumber = chargeNumber;
         usage.Quantity = uasb.Discounted_Bill__c;
         // UASB Date__c is the date of the production update, favored over using the Billing Period Start and End Date
         usage.StartDateTime = firstOfTheMonth(uasb.Date__c);
@@ -86,16 +103,29 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return usage;
     }
 
+    @TestVisible
     private static ZuoraUsage convertAdjustToUsage(Bill_Adjustment__c adjust, Date invoiceDate){
         ZuoraUsage usage = new ZuoraUsage();
         String zuoraAcctId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
-        ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+        String client = adjust.Client__r.Account_Number__c;
+        String project = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
+        String subscriptionNumber;
+        String chargeNumber;
+        if (featureService.isEnabled('Multiple_Subscriptions')) {
+            ZuoraAPI.Subscription subscription = subscriptionService.getSubscriptionsByAccount(zuoraAcctId).getSubscriptionFor(client, project);
+            if (subscription == null) {
+                throw new Util.FatalBWException('Did not find a subscription to upload adjustment: ' + adjust.Id);
+            }
+            subscriptionNumber = subscription.subscriptionNumber;
+            chargeNumber = subscription.getRatePlanChargeFor(client, project).number_Zreserved;
+        } else {
+            ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+            subscriptionNumber = subscription.getSubscriptionNumber();
+            chargeNumber = subscription.getChargeNumber(client, project);
+        }
         usage.AccountId = zuoraAcctId;
-        usage.SubscriptionNumber = subscription.getSubscriptionNumber();
-        usage.ChargeNumber = subscription.getChargeNumber(
-            adjust.Client__r.Account_Number__c,
-            adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
-        );
+        usage.SubscriptionNumber = subscriptionNumber;
+        usage.ChargeNumber = chargeNumber;
         usage.Quantity = adjust.Adjustment_Amount__c;
         usage.StartDateTime = firstOfTheMonth(invoiceDate);
         usage.EndDateTime = firstOfTheMonth(invoiceDate) + 1;

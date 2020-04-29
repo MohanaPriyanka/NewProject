@@ -348,6 +348,16 @@ public with sharing class ZuoraAPI {
             }
             return null;
         }
+
+        public RatePlanCharge getRatePlanChargeFor(String client, String project) {
+            RatePlanCharge rpc;
+            for (RatePlan ratePlan : ratePlans) {
+                if ((rpc = ratePlan.getRatePlanChargeFor(client, project)) != null) {
+                    return rpc;
+                }
+            }
+            return null;
+        }
     }
 
     public class RatePlan {
@@ -363,6 +373,15 @@ public with sharing class ZuoraAPI {
                 clientProjects.add(ratePlanCharge.getClientProject());
             }
             return clientProjects;
+        }
+
+        public RatePlanCharge getRatePlanChargeFor(String client, String project) {
+            for (RatePlanCharge ratePlanCharge : ratePlanCharges) {
+                if (ratePlanCharge.ClientOwner_Zcustom == client && ratePlanCharge.Project_Zcustom == project) {
+                    return ratePlanCharge;
+                }
+            }
+            return null;
         }
     }
 
@@ -383,6 +402,15 @@ public with sharing class ZuoraAPI {
                 }
             }
             return clientProjects;
+        }
+
+        public Subscription getSubscriptionFor(String client, String project) {
+            for (Subscription subscription : subscriptions) {
+                if (subscription.status == 'Active' && subscription.getRatePlanChargeFor(client, project) != null) {
+                    return subscription;
+                }
+            }
+            return null;
         }
     }
 
@@ -743,6 +771,7 @@ public with sharing class ZuoraAPI {
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
         public String id;
+        public String number_Zreserved;
 
         public ZuoraSubscriptionService.ClientProject getClientProject() {
             return new ZuoraSubscriptionService.ClientProject(this.ClientOwner_Zcustom, this.Project_Zcustom);
