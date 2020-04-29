@@ -51,7 +51,16 @@ private class BillPeriodServiceTest {
             End_Date__c = Date.newInstance(2019, 5, 29)
         );
 
-       insert prod1;
+        Production__c prod2 = new Production__c(
+            Name = 'SSS 1 Production - May 2020',
+            Shared_Solar_System__c = sss1.Id,
+            Production_kWh__c = 20000,
+            Credits_Generated__c = 10000,
+            Start_Date__c = Date.newInstance(2020, 5, 1),
+            End_Date__c = Date.newInstance(2020, 5, 29)
+        );
+
+       insert new List<Production__c>{prod1, prod2};
 
         //May Transfer has Date of Transfer in June - to be placed on July Bill Period
         Transfer__c onTime1 = new Transfer__c(
@@ -100,37 +109,36 @@ private class BillPeriodServiceTest {
         ];
 
         Bill_Period__c bp = new Bill_Period__c(
-            Name = 'sssA - July Bill Period 2016',
+            Name = 'sssA - July Bill Period 2019',
             Shared_Solar_System__c = sss.Id,
             Bill_Date__c = Date.newInstance(2019, 7, 15)
         );
 
         insert bp;
 
-        List<Transfer_Part__c> parts = [SELECT Id, Production__r.Name FROM Transfer_Part__c];
-        System.assertEquals(1, parts.size());
-
         bp.Bill_Status__c = 'Production Uploaded';
         update bp;
 
-        Production__c production = [
+        List<Production__c> productionList = [
             SELECT Id, Verification_Status__c
             FROM Production__c
-            LIMIT 1
+            ORDER BY Start_Date__c ASC
         ];
 
-        System.assertEquals('Pending Verification', production.Verification_Status__c);
+        System.assertEquals('Pending Verification', productionList[0].Verification_Status__c);
+        System.assertEquals('Pending Verification', productionList[1].Verification_Status__c);
 
         bp.Bill_Status__c = 'Production QCed';
         update bp;
 
-        production = [
-            SELECT Id, Verification_Status__c
+        productionList = [
+            SELECT Id, Verification_Status__c, Start_Date__c
             FROM Production__c
-            LIMIT 1
+            ORDER BY Start_Date__c ASC
         ];
 
-        System.assertEquals('Verified', production.Verification_Status__c);
+        System.assertEquals('Verified', productionList[0].Verification_Status__c);
+        System.assertEquals('Pending Verification', productionList[1].Verification_Status__c);
     }
 
     @IsTest
@@ -279,5 +287,41 @@ private class BillPeriodServiceTest {
         ];
 
         System.assertEquals(1,billPeriods.size());
+    }
+
+    @IsTest
+    static void testFirstDateProductionBilled(){
+        Shared_Solar_System__c sss = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            LIMIT 1
+        ];
+
+        Bill_Period__c bp = new Bill_Period__c(
+            Name = 'sssA - July Bill Period 2016',
+            Shared_Solar_System__c = sss.Id,
+            Bill_Status__c = 'Ready to Generate',
+            Bill_Date__c = Date.newInstance(2019, 7, 15)
+        );
+        insert bp;
+
+        BillPeriodService.markBillPeriodsAsBillRunComplete(Date.newInstance(2019, 7, 20));
+
+        List<Bill_Period__c> billPeriods = [
+            SELECT Id
+            FROM Bill_Period__c
+            WHERE Bill_Status__c = 'Bill Run Complete'
+        ];
+
+        System.assertEquals(1,billPeriods.size());
+
+        List<Production__c> productionList = [
+            SELECT Id, Credits_Transferred__c, First_Date_Production_Billed__c
+            FROM Production__c
+            ORDER BY Start_Date__c ASC
+        ];
+
+        System.assertEquals(bp.Bill_Date__c, productionList[0].First_Date_Production_Billed__c);
+        System.assertEquals(null, productionList[1].First_Date_Production_Billed__c);
     }
 }
