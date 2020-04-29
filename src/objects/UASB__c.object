@@ -623,7 +623,7 @@ MONTH(Billing_Period_End_Date__c),
     <fields>
         <fullName>Savings__c</fullName>
         <externalId>false</externalId>
-        <formula>Net_Metering_Credits_Allocated__c - Discounted_Bill__c</formula>
+        <formula>ROUND(Net_Metering_Credits_Allocated__c,2) - ROUND(Discounted_Bill__c,2)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Savings</label>
         <precision>18</precision>
