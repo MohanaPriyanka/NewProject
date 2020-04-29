@@ -44,8 +44,6 @@ export default class SsfAgreements extends LightningElement {
     renderedCallback() {
         if (!this.contractDocuments && !this.documentPollerId) {
             this.getContractDocuments();
-            console.log('contracts:');
-            console.log(this.contractDocuments);
         }
     }
 
@@ -220,8 +218,6 @@ export default class SsfAgreements extends LightningElement {
 
     getContractDocuments() {
         if (this.contractDocuments) {
-            console.log('contracts:');
-            console.log(this.contractDocuments);
             return this.contractDocuments;
         }
         this.showSpinner = true;
@@ -236,8 +232,6 @@ export default class SsfAgreements extends LightningElement {
             .then(result => {
                 if (result.length >= 2) {
                     this.postProcessContractDocs(result);
-                    console.log('contracts:');
-                    console.log(this.contractDocuments);
                 }
             })
             .catch(error => {
@@ -265,7 +259,6 @@ export default class SsfAgreements extends LightningElement {
                 contracts[c].downloadLink = 'data:application/pdf;base64, ' + btoa(contracts[c].ContentDocument.LatestPublishedVersion.VersionData);
                 contracts[c].downloadName = JSON.parse(JSON.stringify(contracts[c].ContentDocument.LatestPublishedVersion.Title));
             } catch(exp) {
-                console.log('Unable to add download link to contract; exception: ' + JSON.stringify(exp));
                 contracts[c].downloadLink = '';
                 contracts[c].downloadName = '';
             }
@@ -301,7 +294,6 @@ export default class SsfAgreements extends LightningElement {
                 this.showContractDocument = true;
                 this.documentUrl = result;
             }).catch(error => {
-                console.log(error);
                 this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
             });
         }
