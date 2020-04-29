@@ -24,9 +24,10 @@ public inherited sharing class ProductionSelector {
         List<Production__c> allProductions = [
             SELECT Id, Name, Verification_Status__c, First_Date_Production_Billed__c,
             (SELECT Id, Transfer__c, Transfer__r.Bill_Period__c
-            FROM Transfer_Parts__r
-            WHERE Transfer__r.Transfer_Type__c = 'Main'
-            AND Transfer__r.Bill_Period__c IN :bpMap.keySet()
+                FROM Transfer_Parts__r
+                WHERE Transfer__r.Transfer_Type__c = 'Main'
+                AND Transfer__r.Bill_Period__c IN :bpMap.keySet()
+                LIMIT 1
             )
             FROM Production__c
             WHERE Id IN (
