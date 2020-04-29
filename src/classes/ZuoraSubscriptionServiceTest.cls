@@ -7,7 +7,8 @@
 public with sharing class ZuoraSubscriptionServiceTest {
     @TestSetup
     public static void testSetup() {
-        useMocks();
+        UtilityAccountSubscriptionHandler.partnerCommissionService =
+            (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
         Util.disableAllTriggers();
 
         TestFactory.insertBWAddress();
@@ -410,9 +411,5 @@ public with sharing class ZuoraSubscriptionServiceTest {
         System.assertEquals('2c92c0fa712985fa017131da4d6e4c90', sba.getSubscriptionFor('BW-0021776', 'SSS-000009').id);
         System.assertEquals('2c92c0fb7129989d017131da263137da', sba.getSubscriptionFor('BW-0009470', 'SSS-000009').id);
         System.assertEquals(null, sba.getSubscriptionFor('SSS-00009', 'BW-0009470'));
-    }
-
-    private static void useMocks() {
-        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
     }
 }
