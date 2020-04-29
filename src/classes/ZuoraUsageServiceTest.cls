@@ -177,6 +177,7 @@ public class ZuoraUsageServiceTest {
 
     @IsTest
     private static void testAPIUASBCallsWithMock() {
+        ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
         Test.startTest();
@@ -192,7 +193,6 @@ public class ZuoraUsageServiceTest {
             FROM UASB__c
             WHERE Zuora_Id__c != null
         ];
-        System.debug(uasbList);
         System.assertEquals(10, uasbList.size());
 
         List<Error_Log__c> errors = [
@@ -214,6 +214,7 @@ public class ZuoraUsageServiceTest {
 
     @IsTest
     private static void testAPIAdjustmentCallsWithMock() {
+        ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
 
@@ -278,6 +279,7 @@ public class ZuoraUsageServiceTest {
 
     @IsTest
     private static void testIndividualAccountLoad() {
+        ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         Test.startTest();
         finishTestSetup();
         ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, null);
@@ -303,5 +305,43 @@ public class ZuoraUsageServiceTest {
         System.assertEquals(2, ZuoraAPIHelper.endpointsCalled.size());
         System.assert(ZuoraAPIHelper.endpointsCalled[0].endpoint.contains('subscriptionOwner'));
         System.assert(ZuoraAPIHelper.endpointsCalled[1].endpoint.contains('action/create'));
+    }
+
+    @IsTest
+    private static void testUasbUploadWithMultipleSubscriptions() {
+        ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(true));
+        String uasbJSON = '{"Id":"a1i3I000000AurPQAS","Name":"UASB-0030956","Date__c":"2020-03-02",' +
+            '"Net_Metering_Credits_Allocated__c":100.00000,"Savings__c":10.00,"Discounted_Bill__c":90.00,' +
+            '"Shared_Solar_System__c":"a1J3I0000003QoOUAU","Utility_Account_Subscription__c":"a1d3I000000HP94QAG","Client_Account_Number__c":"BW-0021776",' +
+            '"Shared_Solar_System__r":{"Id":"a1J3I0000003QoOUAU","Name":"Project E Dog St","Utility__c":"a1M3I0000009HazUAE",' +
+            '"Utility__r":{"Id":"a1M3I0000009HazUAE","Name":"National Grid"}},' +
+            '"Utility_Account_Subscription__r":{"Id":"a1d3I000000HP94QAG","Name":"0002340","Utility_Account_Log__c":"a1b3I000000Hk6dQAC","Opportunity__c":"0063I000002Y9OsQAK",' +
+            '"Utility_Account_Log__r":{"Id":"a1b3I000000Hk6dQAC","Name":"0000234"},' +
+            '"Opportunity__r":{"Id":"0063I000002Y9OsQAK","Shared_Solar_System__c":"a1J3I0000003QoOUAU","AccountId":"0013I00000I77l7QAB",' +
+            '"Shared_Solar_System__r":{"Id":"a1J3I0000003QoOUAU","BWC_Project_Entity_Manual__c":"a1I3I000000NPYbUAO","Unique_ID__c":"SSS-000009",' +
+            '"BWC_Project_Entity_Manual__r":{"Id":"a1I3I000000NPYbUAO","Client_Account__c":"0013I00000Lk8VZQAZ",' +
+            '"Client_Account__r":{"Id":"0013I00000Lk8VZQAZ","Account_Number__c":"BW-0021776"}}},' +
+            '"Account":{"Id":"0013I00000I77l7QAB","Zuora_Id__c":"2c92c0f871bae3ce0171bc5bc5634378"}}}}';
+        UASB__c uasb = (UASB__c) JSON.deserialize(uasbJSON, UASB__c.class);
+        ZuoraUsageService.ZuoraUsage zuoraUsage = ZuoraUsageService.convertUASBToUsage(uasb);
+        System.assertEquals('A-S00029335', zuoraUsage.SubscriptionNumber);
+        System.assertEquals('C-00048346', zuoraUsage.ChargeNumber);
+    }
+
+    @IsTest
+    private static void testAdjustmentUploadWithMultipleSubscriptions() {
+        ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(true));
+        String adjustmentJSON = '{"Id":"a0p3I000002ziVXQAY","Name":"Production Test Project D",' +
+            '"Utility_Account_Subscription__c":"a1d3I000000HP95QAG","Client__c":"0013I00000I77klQAB","Adjustment_Amount__c":120.00,' +
+            '"Adjustment_Type__c":"Production","Discount__c":-20.00,"Credits_Allocated__c":100.00,' +
+            '"Utility_Account_Subscription__r":{"Id":"a1d3I000000HP95QAG","Opportunity__c":"0063I000002Y9OtQAK","Utility_Account_Log__c":"a1b3I000000Hk6eQAC",' +
+            '"Opportunity__r":{"Id":"0063I000002Y9OtQAK","Shared_Solar_System__c":"a1J3I0000003QoNUAU","AccountId":"0013I00000I77l7QAB",' +
+            '"Shared_Solar_System__r":{"Id":"a1J3I0000003QoNUAU","Utility__c":"a1M3I0000009HazUAE","Name":"Project D Dee St","Unique_ID__c":"SSS-000009",' +
+            '"Utility__r":{"Id":"a1M3I0000009HazUAE","Name":"National Grid"}},"Account":{"Id":"0013I00000I77l7QAB","Zuora_Id__c":"2c92c0f871bae3ce0171bc5bc5634378"}},' +
+            '"Utility_Account_Log__r":{"Id":"a1b3I000000Hk6eQAC","Name":"0000235"}},"Client__r":{"Id":"0013I00000I77klQAB","Account_Number__c":"BW-0021776"}}';
+        Bill_Adjustment__c billAdjustment = (Bill_Adjustment__c) JSON.deserialize(adjustmentJSON, Bill_Adjustment__c.class);
+        ZuoraUsageService.ZuoraUsage zuoraUsage = ZuoraUsageService.convertAdjustToUsage(billAdjustment, System.today());
+        System.assertEquals('A-S00029335', zuoraUsage.SubscriptionNumber);
+        System.assertEquals('C-00048346', zuoraUsage.ChargeNumber);
     }
 }

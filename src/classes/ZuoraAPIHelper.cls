@@ -250,6 +250,7 @@ public with sharing class ZuoraAPIHelper {
     public static String cleanJSON(String json) {
         return json.replace('__c', '_Zcustom')
             .replace('"currency" :', '"currency_Zreserved" :')
+            .replace('"number" :', '"number_Zreserved" :')
             .replace('"type" :', '"type_Zreserved" :');
     }
 

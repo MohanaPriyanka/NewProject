@@ -196,6 +196,7 @@ public with sharing class InvocableZuoraActionsTest {
     }
 
     @IsTest public static void testUsageUpload() {
+        ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         Date invoiceDate = Date.newInstance(2019,02,15);
 
         List<Error_Log__c> beforeLogs = [
