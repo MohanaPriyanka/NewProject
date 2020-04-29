@@ -1,5 +1,5 @@
 @IsTest
-@SuppressWarnings('PMD.ApexCRUDViolation')
+@SuppressWarnings('PMD.ApexCRUDViolation,PMD.ExcessivePublicCount')
 public with sharing class ProductionToBillServiceTest {
     @isTest
     public static void testScheduleJob(){
@@ -52,26 +52,76 @@ public with sharing class ProductionToBillServiceTest {
     }
 
     @isTest
-    public static void testQueueCollectionsJob(){
+    public static void testQueuePaymentJob(){
         useMocks();
         List<Error_Log__c> beforeLogs = [
             SELECT Class__c, Message__c
             FROM Error_Log__c
             WHERE Class__c = 'ProductionToBillService'
-            AND Method__c = 'executeCollectionsJob'
+            AND Method__c = 'executePaymentJob'
         ];
         System.assertEquals(0,beforeLogs.size());
 
         Test.startTest();
             ProductionToBillService prodService = new ProductionToBillService();
-            prodService.queueJob(ProductionToBillService.OperationType.COLLECTION);
+            prodService.queueJob(ProductionToBillService.OperationType.PAYMENT);
         Test.stopTest();
 
         List<Error_Log__c> afterLogs = [
             SELECT Class__c, Message__c, Method__c
             FROM Error_Log__c
             WHERE Class__c = 'ProductionToBillService'
-            AND Method__c = 'executeCollectionsJob'
+            AND Method__c = 'executePaymentJob'
+        ];
+        System.assert(afterLogs.size() > 0);
+    }
+
+    @isTest
+    public static void testQueueCreditMemoJob(){
+        useMocks();
+        List<Error_Log__c> beforeLogs = [
+            SELECT Class__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeCreditMemoJob'
+        ];
+        System.assertEquals(0,beforeLogs.size());
+
+        Test.startTest();
+        ProductionToBillService prodService = new ProductionToBillService();
+        prodService.queueJob(ProductionToBillService.OperationType.CREDITMEMO);
+        Test.stopTest();
+
+        List<Error_Log__c> afterLogs = [
+            SELECT Class__c, Message__c, Method__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeCreditMemoJob'
+        ];
+        System.assert(afterLogs.size() > 0);
+    }
+
+    @isTest
+    public static void testQueueUnservicedJob(){
+        useMocks();
+        List<Error_Log__c> beforeLogs = [
+            SELECT Class__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeUnservicedJob'
+        ];
+        System.assertEquals(0,beforeLogs.size());
+
+        Test.startTest();
+        ProductionToBillService prodService = new ProductionToBillService();
+        prodService.queueJob(ProductionToBillService.OperationType.UNSERVICED);
+        Test.stopTest();
+
+        List<Error_Log__c> afterLogs = [
+            SELECT Class__c, Message__c, Method__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeUnservicedJob'
         ];
         System.assert(afterLogs.size() > 0);
     }
@@ -87,15 +137,15 @@ public with sharing class ProductionToBillServiceTest {
         useMocks();
 
         Test.startTest();
-            ProductionToBillService service = new ProductionToBillService();
+            ProductionDetailBillService service = new ProductionDetailBillService();
             service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
         Test.stopTest();
 
-        Map<String, ProductionToBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
-        ProductionToBillService.GLInvoiceItem acct04202 = invoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
-        ProductionToBillService.GLInvoiceItem acct00524 = invoiceMap.get('2c92c0fa6e3a9391016e3e30d48066d2');
-        ProductionToBillService.GLInvoiceItem acct05268 = invoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
-        ProductionToBillService.GLInvoiceItem acct05956 = invoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
+        Map<String, ProductionDetailBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
+        ProductionDetailBillService.GLInvoiceItem acct04202 = invoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
+        ProductionDetailBillService.GLInvoiceItem acct00524 = invoiceMap.get('2c92c0fa6e3a9391016e3e30d48066d2');
+        ProductionDetailBillService.GLInvoiceItem acct05268 = invoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
+        ProductionDetailBillService.GLInvoiceItem acct05956 = invoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
 
         System.assertEquals(1,acct04202.Bills.size());
         System.assertEquals(1,acct00524.Bills.size());
@@ -123,14 +173,14 @@ public with sharing class ProductionToBillServiceTest {
     @IsTest
     public static void testFromUsageGetUASBsandAdjust(){
         useMocks();
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailBillService service = new ProductionDetailBillService();
         service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
-        Map<String, ProductionToBillService.GLInvoiceItem> oldInvoiceMap = service.invoiceIdToUsageMap;
+        Map<String, ProductionDetailBillService.GLInvoiceItem> oldInvoiceMap = service.invoiceIdToUsageMap;
 
-        ProductionToBillService.GLInvoiceItem acct04202 = oldInvoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
-        ProductionToBillService.GLInvoiceItem acct00524 = oldInvoiceMap.get('2c92c0fa6e3a9391016e3e30d48066d2');
-        ProductionToBillService.GLInvoiceItem acct05268 = oldInvoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
-        ProductionToBillService.GLInvoiceItem acct05956 = oldInvoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
+        ProductionDetailBillService.GLInvoiceItem acct04202 = oldInvoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
+        ProductionDetailBillService.GLInvoiceItem acct00524 = oldInvoiceMap.get('2c92c0fa6e3a9391016e3e30d48066d2');
+        ProductionDetailBillService.GLInvoiceItem acct05268 = oldInvoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
+        ProductionDetailBillService.GLInvoiceItem acct05956 = oldInvoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
 
         System.assertEquals(null,acct04202.Bills[0].UASB);
         System.assertEquals(null,acct00524.Bills[0].UASB);
@@ -141,7 +191,7 @@ public with sharing class ProductionToBillServiceTest {
             service.fromUsageGetUASBsAndProductionAdjustments();
         Test.stopTest();
 
-        Map<String, ProductionToBillService.GLInvoiceItem> updatedInvoiceMap = service.invoiceIdToUsageMap;
+        Map<String, ProductionDetailBillService.GLInvoiceItem> updatedInvoiceMap = service.invoiceIdToUsageMap;
         acct04202 = updatedInvoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
         acct00524 = updatedInvoiceMap.get('2c92c0fa6e3a9391016e3e30d48066d2');
         acct05268 = updatedInvoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
@@ -156,9 +206,9 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(null,acct05268.Bills[0].UASB);
         System.assertEquals('a0p0a000008YSCuAAO',acct05268.Bills[0].Adjustment.Id);
 
-        List<ProductionToBillService.UsageRecord> usageList = acct05956.Bills;
+        List<ProductionDetailBillService.UsageRecord> usageList = acct05956.Bills;
         System.assertEquals(8,usageList.size());
-        for (ProductionToBillService.UsageRecord usage : usageList){
+        for (ProductionDetailBillService.UsageRecord usage : usageList){
             System.assertNotEquals(null,usage.UASB);
             if (usage.ExternalId == '2c92c0f96e3aa331016e3cc6717f2aaa'){
                 System.assertEquals('a1i0a000008yUM7AAM',usage.UASB.Id);
@@ -173,12 +223,12 @@ public with sharing class ProductionToBillServiceTest {
     @IsTest
     public static void testDistributeAmongTransferPartsAllTogether(){
         useMocks();
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailBillService service = new ProductionDetailBillService();
 
         Test.startTest();
             service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
             service.fromUsageGetUASBsAndProductionAdjustments();
-            service.distributeInvoiceItemAmongTransferParts();
+            service.distributeInvoiceItemAmongTransferProductionDetail();
         Test.stopTest();
 
         System.assertEquals(6,getMockInvoiceItemIds().size());
@@ -191,7 +241,7 @@ public with sharing class ProductionToBillServiceTest {
           1 bill type and 1 savings type each = 50 Expected Transfer Parts
         */
 
-        List<Transfer_Part__c> parts = service.partsToInsert;
+        List<Transfer_Part__c> parts = service.productionDetailToInsert;
         System.assertEquals(50,parts.size());
 
         Decimal billSum = 0;
@@ -214,24 +264,24 @@ public with sharing class ProductionToBillServiceTest {
     @IsTest
     public static void testDistributeAmongTransferWithThreeParts(){
         useMocks();
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailBillService service = new ProductionDetailBillService();
         returnEntryNumber = 4;
 
         Test.startTest();
             // 1 Invoice with 1 Subscription on 1 Project, but bill is from a transfer with 3 parts:
             service.fromInvoicesGetUsage(new Set<String>{'2c92c0fb6e3aa322016e3df698ff7e9f'},getMockUsageDataQueryResult());
             service.fromUsageGetUASBsAndProductionAdjustments();
-            service.distributeInvoiceItemAmongTransferParts();
+            service.distributeInvoiceItemAmongTransferProductionDetail();
         Test.stopTest();
 
-        Map<String, ProductionToBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
-        ProductionToBillService.GLInvoiceItem acct04202 = invoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
+        Map<String, ProductionDetailBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
+        ProductionDetailBillService.GLInvoiceItem acct04202 = invoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
         System.assertEquals(37.23,acct04202.Amount);
         System.assertEquals(37.23,acct04202.SumOfAmount);
         System.assertEquals(10,acct04202.Bills[0].UASB.Savings__c);
         System.assertEquals('a900a000000GqNBAA0',acct04202.Bills[0].UASB.Transfer__c);
 
-        List<Transfer_Part__c> parts = service.partsToInsert;
+        List<Transfer_Part__c> parts = service.productionDetailToInsert;
         System.assertEquals(6,parts.size());
 
         Decimal billSum = 0;
@@ -254,18 +304,18 @@ public with sharing class ProductionToBillServiceTest {
     @IsTest
     public static void testDistributeAmongTransferWithTwoParts(){
         useMocks();
-        ProductionToBillService service = new ProductionToBillService();
+        ProductionDetailBillService service = new ProductionDetailBillService();
         returnEntryNumber = 3;
 
         Test.startTest();
         // 1 Invoice with 8 Subscriptions on 1 Project, but bill is from a transfer with 2 parts:
         service.fromInvoicesGetUsage(new Set<String>{'2c92c0fa6e3a938d016e3dfdc93450b2'},getMockUsageDataQueryResult());
         service.fromUsageGetUASBsAndProductionAdjustments();
-        service.distributeInvoiceItemAmongTransferParts();
+        service.distributeInvoiceItemAmongTransferProductionDetail();
         Test.stopTest();
 
-        Map<String, ProductionToBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
-        ProductionToBillService.GLInvoiceItem acct05956 = invoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
+        Map<String, ProductionDetailBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
+        ProductionDetailBillService.GLInvoiceItem acct05956 = invoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
         System.assertEquals(1997.03,acct05956.Amount);
         System.assertEquals(1997.03,acct05956.SumOfAmount);
         System.assertEquals(8,acct05956.Bills.size());
@@ -273,7 +323,7 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals('a900a000000GrNBAA0',acct05956.Bills[7].UASB.Transfer__c);
 
         // 8 bills * 2 transfers, 1 for bill, 1 for savings:
-        List<Transfer_Part__c> parts = service.partsToInsert;
+        List<Transfer_Part__c> parts = service.productionDetailToInsert;
         System.assertEquals(32,parts.size());
 
         Decimal billSum = 0;
@@ -302,11 +352,11 @@ public with sharing class ProductionToBillServiceTest {
 
         System.assertEquals(0,beforeBillParts.size());
 
-        List<Journal_Entry__c> collectionEntries = getCollectionJournalEntries();
-        ProductionToBillService service = new ProductionToBillService();
-        service.createProductionDetailFromCollectionItem(collectionEntries);
+        List<Journal_Entry__c> collectionEntries = getPaymentJournalEntries();
+        ProductionDetailPaymentService service = new ProductionDetailPaymentService();
+        service.calculateProductionDetailFromCollectionItem(collectionEntries);
 
-        List<Transfer_Part__c> paymentParts = service.partsToInsert;
+        List<Transfer_Part__c> paymentParts = service.productionDetailToInsert;
 
         System.assertEquals(8,paymentParts.size());
 
@@ -360,8 +410,8 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(0,beforeQueries.size());
 
         Test.startTest();
-            ProductionToBillService service = new ProductionToBillService();
-            service.createProductionDetailFromInvoiceItems(entries);
+            ProductionDetailBillService service = new ProductionDetailBillService();
+            service.createProductionDetailFromInvoiceItems(entries, 10);
         Test.stopTest();
 
         List<Zuora_Data_Query__c> afterQueries = [
@@ -371,16 +421,116 @@ public with sharing class ProductionToBillServiceTest {
     }
 
     @IsTest
+    public static void testCreateProductionDetailFromCreditMemos(){
+        useMocks();
+        // 5 Credit Memos, 2 of which have Reason Code = 'Production' so should make 'Bill' Production Detail records
+        // the remaining 3 should create 'Collection' Production Detail records
+        List<Journal_Entry__c> creditMemoEntries = getCreditMemoJournalEntries();
+        System.assertEquals(5,creditMemoEntries.size());
+
+        ProductionDetailCreditMemoService service = new ProductionDetailCreditMemoService();
+        service.calculateProductionDetailFromCreditMemo(creditMemoEntries);
+
+        List<Transfer_Part__c> productionDetailList = service.productionDetailToInsert;
+        System.assertEquals(0,service.productionDetailToDelete.size());
+
+        Integer countOfBills = 0;
+        Integer countOfSavings = 0;
+        Integer countOfPayments = 0;
+        for (Transfer_Part__c prodDetail : productionDetailList){
+            if (prodDetail.Type__c == 'Bill') {
+                countOfBills += 1;
+            } else if (prodDetail.Type__c == 'Customer Savings'){
+                countOfSavings += 1;
+            } else if (prodDetail.Type__c == 'Payment'){
+                countOfPayments += 1;
+            }
+        }
+
+        // 2 'Bill' Credit Memos create both a bill production detail and savings production detail:
+        System.assertEquals(2,countOfBills);
+        System.assertEquals(2,countOfSavings);
+
+        // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records:
+        System.assertEquals(6,countOfPayments);
+    }
+
+    @IsTest
+    public static void testCreditMemoCalloutCount(){
+        useMocks();
+        // 5 Credit Memos, 2 of which have Reason Code = 'Production' so should make 'Bill' Production Detail records
+        // the remaining 3 should create 'Collection' Production Detail records
+        List<Journal_Entry__c> creditMemoEntries = getCreditMemoJournalEntries();
+        System.assertEquals(5,creditMemoEntries.size());
+
+        ZuoraAPIHelper.numberCalloutsForZuoraNamespace = 88;
+
+        ProductionDetailCreditMemoService service = new ProductionDetailCreditMemoService();
+        service.calculateProductionDetailFromCreditMemo(creditMemoEntries);
+
+        List<Transfer_Part__c> productionDetailList = service.productionDetailToInsert;
+
+        Integer countOfBills = 0;
+        Integer countOfSavings = 0;
+        Integer countOfPayments = 0;
+        for (Transfer_Part__c prodDetail : productionDetailList){
+            if (prodDetail.Type__c == 'Bill') {
+                countOfBills += 1;
+            } else if (prodDetail.Type__c == 'Customer Savings'){
+                countOfSavings += 1;
+            } else if (prodDetail.Type__c == 'Payment'){
+                countOfPayments += 1;
+            }
+        }
+
+        // 2 'Bill' Credit Memos create both a bill production detail and savings production detail:
+        System.assertEquals(2,countOfBills);
+        System.assertEquals(2,countOfSavings);
+
+        // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records,
+        // HOWEVER, because the callouts were already at 88, only 1 payment record will be made before re-queueing
+        System.assertEquals(2,countOfPayments);
+    }
+
+    @IsTest
+    public static void testCreditMemoPreexistingRecordDeletion(){
+        String jeListAsJSON = '[' +
+            '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAA", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo", ' +
+                '"Transfer_Parts__r":{"totalSize":1,"done":true,"records":[' +
+                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAA","Id":"a8y3K0000009ougQAA"}]}' +
+                '}, ' +
+            '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAB", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo", ' +
+                '"Transfer_Parts__r":{"totalSize":2,"done":true,"records":[' +
+                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAB","Id":"a8y3K0000009ougQCC"},' +
+                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAB","Id":"a8y3K0000009ougQDD"}]}' +
+                '}, ' +
+            '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAC", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo"}, ' +
+            '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAD", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo", ' +
+                '"Transfer_Parts__r":{"totalSize":1,"done":true,"records":[' +
+                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAD","Id":"a8y3K0000009ougQBB"}]}' +
+                '}, ' +
+            '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAE", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo"} ' +
+            ']';
+        List<Journal_Entry__c> entryList = (List<Journal_Entry__c>)JSON.deserialize(jeListAsJSON, List<Journal_Entry__c>.class);
+        System.assertEquals(5,entryList.size());
+
+        ProductionDetailCreditMemoService service = new ProductionDetailCreditMemoService();
+        service.calculateProductionDetailFromCreditMemo(entryList);
+
+        System.assertEquals(4,service.productionDetailToDelete.size());
+    }
+
+    @IsTest
     public static void testUnservicedUASBs(){
         useMocks();
         List<UASB__c> externalUASBs = getExternallyServicedUASBs();
 
         Test.startTest();
-            ProductionToBillService service = new ProductionToBillService();
-            service.createProductionDetailFromUnservicedUASB(externalUASBs);
+            ProductionDetailBillService service = new ProductionDetailBillService();
+            service.calculateProductionDetailFromUnservicedUASB(externalUASBs);
         Test.stopTest();
 
-        List<Transfer_Part__c> unservicedParts = service.partsToInsert;
+        List<Transfer_Part__c> unservicedParts = service.productionDetailToInsert;
         System.assertEquals(7,unservicedParts.size());
 
         Decimal uasbOneSum = 0;
@@ -409,10 +559,18 @@ public with sharing class ProductionToBillServiceTest {
     private static Integer returnEntryNumber;
 
     private static void useMocks() {
-        ProductionToBillService.glSelector = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
-        ProductionToBillService.transferPartsSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
+        ProductionToBillService.journalEntrySelector = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
         ProductionToBillService.uasbSelector = (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector());
-        ProductionToBillService.adjustmentSelector = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
+
+        ProductionDetailBillService.journalEntrySelector = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
+        ProductionDetailBillService.productionDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
+        ProductionDetailBillService.uasbSelector = (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector());
+        ProductionDetailBillService.adjustmentSelector = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
+
+        ProductionDetailPaymentService.productionDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
+
+        ProductionDetailCreditMemoService.productionDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
+        ProductionDetailCreditMemoService.adjustmentSelector = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
     }
 
     public class MockGLSelector extends MockProvider {
@@ -588,9 +746,24 @@ public with sharing class ProductionToBillServiceTest {
                 '"a0p0a000008BBBuAAO":{"Id":"a0p0a000008BBBuAAO", "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}' +
                 '}';
 
+            String adjustListAsString = '[' +
+                '{"attributes":{"type":"Bill_Adjustment__c"},' +
+                '"Id":"a0p0a000008ZZBuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0033"},' +
+                '{"attributes":{"type":"Bill_Adjustment__c"},' +
+                '"Id":"a0p0a000008YSBuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0032"},' +
+                '{"attributes":{"type":"Bill_Adjustment__c"},' +
+                '"Id":"a0p0a000008YSCuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0031"},' +
+                '{"attributes":{"type":"Bill_Adjustment__c"},' +
+                '"Id":"a0p0a000008AABuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0030"},' +
+                '{"attributes":{"type":"Bill_Adjustment__c"},' +
+                '"Id":"a0p0a000008BBBuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0029"}]';
+
             switch on methodCall.stubbedMethodName {
                 when 'getAdjustmentsFromIds' {
                     return (Map<Id, Bill_Adjustment__c>)JSON.deserialize(adjustMapAsString, Map<Id, Bill_Adjustment__c>.class);
+                }
+                when 'getAdjustmentsFromExternalIds' {
+                    return (List<Bill_Adjustment__c>)JSON.deserialize(adjustListAsString, List<Bill_Adjustment__c>.class);
                 }
             }
             return null;
@@ -721,7 +894,7 @@ public with sharing class ProductionToBillServiceTest {
         return entries;
     }
 
-    private static List<Journal_Entry__c> getCollectionJournalEntries(){
+    private static List<Journal_Entry__c> getPaymentJournalEntries(){
         Date mayBillDate = Date.newInstance(2019,05,20);
         Date juneBillDate = Date.newInstance(2019,06,20);
 
@@ -771,8 +944,8 @@ public with sharing class ProductionToBillServiceTest {
         );
         Journal_Entry__c entrySix = new Journal_Entry__c(
             Id = 'a920a000000HuJoAAE',
-            Object_Type__c = 'CreditMemo',
-            Query_Type__c = 'CreditMemo',
+            Object_Type__c = 'PaymentPart',
+            Query_Type__c = 'PaymentPart_IV',
             Project__c = 'SSS-000002',
             Client__c = 'BW-0009470',
             Amount__c = 62.55,
@@ -780,6 +953,82 @@ public with sharing class ProductionToBillServiceTest {
             Customer_Account__c = 'bw-04202',
             Date__c = juneBillDate
         );
+        List<Journal_Entry__c> entries = new List<Journal_Entry__c>{
+            entryOne, entryTwo, entryThree, entryFive, entrySix
+        };
+        return entries;
+    }
+
+    private static List<Journal_Entry__c> getCreditMemoJournalEntries(){
+        Date mayBillDate = Date.newInstance(2019,05,20);
+        Date juneBillDate = Date.newInstance(2019,06,20);
+
+        Journal_Entry__c entryOne = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAA',
+            Object_Type__c = 'CreditMemo',
+            Query_Type__c = 'CreditMemo',
+            Project__c = 'SSS-000001',
+            Client__c = 'BW-0009470',
+            Amount__c = 121.87,
+            Applied_Record_Id__c = null,
+            External_Id__c = '4028905f5a890526015a8d77adea0029',
+            Reason_Code__c = 'Production',
+            Customer_Account__c = 'bw-00524',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entryTwo = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAB',
+            Object_Type__c = 'CreditMemo',
+            Query_Type__c = 'CreditMemo',
+            Project__c = 'SSS-000001',
+            Client__c = 'BW-0009470',
+            Amount__c = 31.72,
+            Applied_Record_Id__c = null,
+            External_Id__c = '4028905f5a890526015a8d77adea0030',
+            Reason_Code__c = 'Client Credit',
+            Customer_Account__c = 'bw-00524',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entryThree = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAC',
+            Object_Type__c = 'CreditMemo',
+            Query_Type__c = 'CreditMemo',
+            Project__c = 'SSS-000022',
+            Client__c = 'BW-0009470',
+            Amount__c = 60.00,
+            Applied_Record_Id__c = null,
+            External_Id__c = '4028905f5a890526015a8d77adea0031',
+            Reason_Code__c = 'BW Credit',
+            Customer_Account__c = 'bw-05268',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entryFive = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAD',
+            Object_Type__c = 'CreditMemo',
+            Query_Type__c = 'CreditMemo',
+            Project__c = 'SSS-000002',
+            Client__c = 'BW-0009470',
+            Amount__c = 37.23,
+            Applied_Record_Id__c = null,
+            External_Id__c = '4028905f5a890526015a8d77adea0032',
+            Reason_Code__c = 'Production',
+            Customer_Account__c = 'bw-04202',
+            Date__c = mayBillDate
+        );
+        Journal_Entry__c entrySix = new Journal_Entry__c(
+            Id = 'a920a000000HuJoAAE',
+            Object_Type__c = 'CreditMemo',
+            Query_Type__c = 'CreditMemo',
+            Project__c = 'SSS-000002',
+            Client__c = 'BW-0009470',
+            Amount__c = 62.55,
+            Applied_Record_Id__c = null,
+            External_Id__c = '4028905f5a890526015a8d77adea0033',
+            Reason_Code__c = 'Client Credit',
+            Customer_Account__c = 'bw-04202',
+            Date__c = juneBillDate
+        );
+
         List<Journal_Entry__c> entries = new List<Journal_Entry__c>{
             entryOne, entryTwo, entryThree, entryFive, entrySix
         };

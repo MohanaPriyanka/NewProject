@@ -66,6 +66,10 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return createDebitMemo();
         } else if (endpoint.contains('/v1/creditmemos/') && endpoint.contains('/items')) {
             return getCreditMemoItems();
+        } else if (endpoint.contains('/v1/creditmemos/') && endpoint.contains('/itemparts')) {
+            return getCreditMemoPartItems();
+        } else if (endpoint.contains('/v1/creditmemos/') && endpoint.contains('/parts')) {
+            return getCreditMemoParts();
         } else if (endpoint.contains('/v1/invoices/') && endpoint.contains('/items')) {
             return getInvoiceItem(endpoint);
         } else if (endpoint.contains('/v1/debitmemos/') && endpoint.contains('/items')) {
@@ -723,6 +727,36 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"revenueScheduleNumber" : null, ' +
             '"revenueRecognitionRuleName" : "Recognize upon invoicing" }, ' +
             '"creditTaxItems" : [ ] } ], "success" : true}');
+        return res;
+    }
+
+    private static HttpResponse getCreditMemoParts(){
+        HttpResponse res = getJSON();
+        res.setBody('{"parts" : [ ' +
+            '{"id" : "2c92c0fb715ce76701717490112a5069",' +
+            '"invoiceId" : null,' +
+            '"debitMemoId" : "2c92c0fa715cd191017174812445242b",' +
+            '"amount" : 0.590000000}, ' +
+            '{"id" : "2c92c0fb715ce76701717490112a5069",' +
+            '"invoiceId" : "2c92c0fa6e3a9391016e3e30d48066d2",' +
+            '"debitMemoId" : null,' +
+            '"amount" : 0.590000000} ' +
+            '],"success" : true}');
+        return res;
+    }
+
+    private static HttpResponse getCreditMemoPartItems(){
+        HttpResponse res = getJSON();
+        res.setBody('{"itemParts" : [ ' +
+            '{"id" : "2c92c0fb715ce76701717490112a5068",' +
+            '"invoiceItemId" : "2dd2c0fb6e3aa322016e3df698ff7e9f",' +
+            '"debitMemoItemId" : null,' +
+            '"amount" : 4.00}, ' +
+            '{"id" : "2c92c0fb715ce76701717490112a5069",' +
+            '"invoiceItemId" : "2dd2c0fb6e3aa322016e3df698ff7e9f",' +
+            '"debitMemoItemId" : null,' +
+            '"amount" : 5.00} ' +
+            '],"success" : true}');
         return res;
     }
 

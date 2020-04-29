@@ -46,14 +46,24 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.restLead = {
                 applicationType: this.resiApplicationType ? 'Residential' : 'Non-Residential',
                 zipCode: this.zipinput,
-                partnerId: this.pageRef && this.pageRef.state && this.pageRef.state.partnerId ? this.pageRef.state.partnerId : null,
-                salesRepId: this.pageRef && this.pageRef.state && this.pageRef.state.salesRepId ? this.pageRef.state.salesRepId : null,
                 productName: this.selectedProduct
             }
             this.propertyAccount = { 
                 billingPostalCode: this.zipinput, 
                 utilityAccountLogs: [] 
             };
+        }
+
+        if(!this.restLead.partnerId) {
+            this.restLead.partnerId = this.pageRef && this.pageRef.state && this.pageRef.state.partnerId ? this.pageRef.state.partnerId : null;
+        }
+
+        if(!this.restLead.salesRepId) {
+            this.restLead.salesRepId = this.pageRef && this.pageRef.state && this.pageRef.state.salesRepId ? this.pageRef.state.salesRepId : null;
+        }
+
+        if(!this.restLead.campaignId) {
+            this.restLead.campaignId = this.pageRef && this.pageRef.state && this.pageRef.state.campaignId ? this.pageRef.state.campaignId : null;
         }
 
         // if there are no utility accounts, add an empty one so the form will show fields to enter data
