@@ -9994,7 +9994,7 @@ ISPICKVAL(Homeowner_s_Insurance_Status__c,&quot;Received: Approved&quot;)</error
 AND(
 RecordType.Name = &apos;BFG - Community Solar (Anchor)&apos;,
 ISPICKVAL(  StageName , &apos;Complete&apos; ), 
-NOT(ISPICKVAL(Shared_Solar_System__r.Stage__c, &apos;Management&apos; )),
+NOT(ISPICKVAL( Shared_Solar_System__r.CS_Services_Type__c, &apos;Management Only&apos; )),
 ISBLANK( Partner_tag_lookup__c )
 ), 
 true, false )</errorConditionFormula>
