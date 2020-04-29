@@ -101,6 +101,31 @@ public with sharing class ProductionToBillServiceTest {
         System.assert(afterLogs.size() > 0);
     }
 
+    @isTest
+    public static void testQueueUnservicedJob(){
+        useMocks();
+        List<Error_Log__c> beforeLogs = [
+            SELECT Class__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeUnservicedJob'
+        ];
+        System.assertEquals(0,beforeLogs.size());
+
+        Test.startTest();
+        ProductionToBillService prodService = new ProductionToBillService();
+        prodService.queueJob(ProductionToBillService.OperationType.UNSERVICED);
+        Test.stopTest();
+
+        List<Error_Log__c> afterLogs = [
+            SELECT Class__c, Message__c, Method__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ProductionToBillService'
+            AND Method__c = 'executeUnservicedJob'
+        ];
+        System.assert(afterLogs.size() > 0);
+    }
+
     @IsTest
     public static void testFromInvoicesGetUsage(){
         /* 4 Customer Accounts, Across 2 Months:
