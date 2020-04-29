@@ -1,6 +1,6 @@
 @isTest
 public without sharing class SLPQuickSalesSheetTest{
-    @IsTest(SeeAllData=true)
+    @IsTest
     static void createQssAndLink() {
         Util.enableTrigger('Disable_ContentDocumentLinkTrigger__c');
     Partner__c partnerOne = new Partner__c(Name = 'Account One',

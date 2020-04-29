@@ -9,7 +9,7 @@
  + * Tested By: SLPQuickSalesSheetTest and BatchCSBillEmailHandlerTestclass and SimpleSignupFormControllerTest (lines 51-64)
  + *************************************************************************************/
 
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class FileDeliveryHandler {
 
   public static void createDistribution (List<ContentVersion> newContent) {
@@ -18,25 +18,7 @@ public without sharing class FileDeliveryHandler {
 
       Date todaysDate = System.today();
       Date expyDate = todaysDate.addDays(15);
-      String communityID;
 
-      for (ContentVersion cont : newContent) {
-          if (cont.Title.contains('Community Solar Bill')) {
-              try {
-                  ConnectApi.CommunityPage comm = ConnectApi.Communities.getCommunities();
-                  for (ConnectApi.Community community : comm.communities) {
-                      if (community.name == 'BlueWave Member Portal') {
-                          communityID = community.id;
-                      }
-                  }
-              } catch (ConnectApi.ConnectApiException cae) {
-                  Logger.logNow('FileDeliveryHandler', 'createDistribution',
-                      cae.getMessage() + ' caught when inserting:' +
-                      'Title: ' + cont.Title + ' FileType: ' + cont.FileType + ' Description: ' + cont.Description);
-              }
-              break;
-          }
-      }
       for (ContentVersion cont : newContent){
           if (cont.Title == 'Loan Summary Sheet.pdf') {
               ContentDistribution cd = new ContentDistribution();
@@ -64,7 +46,7 @@ public without sharing class FileDeliveryHandler {
             ));
           } else if (cont.Title.contains('Community Solar Bill')) {
               ContentDocumentLink cdl = new ContentDocumentLink();
-              cdl.LinkedEntityId = communityID;
+              cdl.LinkedEntityId = getCommunityId(cont);
               cdl.Visibility = 'AllUsers';
               cdl.ShareType = 'V';
               cdl.ContentDocumentId = cont.ContentDocumentId;
@@ -77,6 +59,23 @@ public without sharing class FileDeliveryHandler {
       if (linkToCommList.size() > 0) {
           insert linkToCommList;
       }
+  }
+
+  private static Id getCommunityId(ContentVersion cont) {
+    try {
+        ConnectApi.CommunityPage comm = ConnectApi.Communities.getCommunities();
+        for (ConnectApi.Community community : comm.communities) {
+            if (community.name == 'BlueWave Member Portal') {
+                return community.id;
+                break;
+            }
+        }
+    } catch (ConnectApi.ConnectApiException cae) {
+        Logger.logNow('FileDeliveryHandler', 'createDistribution',
+            cae.getMessage() + ' caught when inserting:' +
+            'Title: ' + cont.Title + ' FileType: ' + cont.FileType + ' Description: ' + cont.Description);
+    }
+    return null;
   }
   
   public static void findRelatedObject (List<ContentDocumentLink> newShare) {
