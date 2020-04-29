@@ -34,18 +34,18 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Client_Account__c</field>
+                <field>Billing_Method__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Production_Update__c</field>
+                <behavior>Readonly</behavior>
+                <field>Client_Account__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Billing_Method__c</field>
+                <behavior>Edit</behavior>
+                <field>First_Date_Production_Billed__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
