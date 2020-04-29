@@ -306,6 +306,16 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>First_Date_Production_Billed__c</fullName>
+        <description>First date the production period is billed via a main transfer - from Bill Period Date</description>
+        <externalId>false</externalId>
+        <inlineHelpText>First date the production period is billed via a main transfer</inlineHelpText>
+        <label>First Date Production Billed</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Pre_Transfer_Reductions__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of Parts where &quot;Reduce Available for Allocation&quot; is TRUE (Incentive Payments and Fees)</inlineHelpText>
