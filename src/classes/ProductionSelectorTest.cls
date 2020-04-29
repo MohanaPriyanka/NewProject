@@ -94,14 +94,13 @@ private class ProductionSelectorTest {
 
     @IsTest
     public static void testSelectProductionsByBillPeriod() {
-        Bill_Period__c bp = [
+        Map<Id, Bill_Period__c> bpMap = new Map<Id, Bill_Period__c>([
             SELECT Id
             FROM Bill_Period__c
             LIMIT 1
-        ];
-
+        ]);
         ProductionSelector selector = new ProductionSelector();
-        MultiMap productionsByBPMap = selector.selectProductionsByBillPeriod(new Set<Id>{bp.Id});
-        System.assertNotEquals(null, productionsByBPMap, 'Expected a Multi Map to be returned');
+        Map<Production__c, Bill_Period__c> productionsByBPMap = selector.selectProductionByBillPeriod(bpMap);
+        System.assertNotEquals(null, productionsByBPMap, 'Expected a Map to be returned');
     }
 }

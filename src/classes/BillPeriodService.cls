@@ -76,18 +76,15 @@ public with sharing class BillPeriodService {
     }
 
     public List<Production__c> markFirstBillDate() {
-        MultiMap bpProductionMultiMap = productionSelector.selectProductionsByBillPeriod(completedBillPeriods.keySet());
+        Map<Production__c, Bill_Period__c> productionToBillPeriod = productionSelector.selectProductionByBillPeriod(completedBillPeriods);
         List<Production__c> billedProductions = new List<Production__c>();
-        for (Object key : bpProductionMultiMap.keySet()) {
-            Bill_Period__c bp = completedBillPeriods.get((Id)key);
-            for (Object value : bpProductionMultiMap.getValues(key)) {
-                Production__c production = (Production__c) value;
-                if (production.First_Date_Production_Billed__c == null) {
-                    production.First_Date_Production_Billed__c = bp.Bill_Date__c;
-                    billedProductions.add(production);
-                }
+        for (Production__c prod : productionToBillPeriod.keySet()) {
+            if (prod.First_Date_Production_Billed__c == null) {
+                prod.First_Date_Production_Billed__c = productionToBillPeriod.get(prod).Bill_Date__c;
+                billedProductions.add(prod);
             }
         }
+
         return billedProductions;
     }
 
