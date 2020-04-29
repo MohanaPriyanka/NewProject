@@ -3,14 +3,9 @@
     <label>BW Technology</label>
     <loginAccess>true</loginAccess>
     <permissionSets>PM BlueWave Surveys</permissionSets>
-    <permissionSets>Modify Partner Account Owner</permissionSets>
     <permissionSets>Manage Call Centers</permissionSets>
     <permissionSets>Loan Servicing</permissionSets>
     <permissionSets>UAL Recalculate</permissionSets>
-    <permissionSets>Edit Read Only Fields</permissionSets>
-    <permissionSets>Solar Loan Syndication</permissionSets>
-    <permissionSets>Manage Public Email Templates</permissionSets>
-    <permissionSets>Customize Application</permissionSets>
     <permissionSets>Trailhead Admin</permissionSets>
     <permissionSets>Trailhead Assigner</permissionSets>
     <permissionSets>Trailhead User</permissionSets>
@@ -29,7 +24,6 @@
     <permissionSets>Edit Related SREC Field on Transactions</permissionSets>
     <permissionSets>Edit Loan Disbursal Dates</permissionSets>
     <permissionSets>Edit Sales Agent field on Loan object</permissionSets>
-    <permissionSets>Edit Financing Loan Fields</permissionSets>
     <permissionSets>Branch Management Permissions Manage</permissionSets>
     <permissionSets>Branch Management Permissions View</permissionSets>
     <permissionSets>Commit Changes</permissionSets>
@@ -96,18 +90,16 @@
     <permissionSets>User Stories Read Only</permissionSets>
     <permissionSets>User Stories View All</permissionSets>
     <permissionSets>DMTracking</permissionSets>
-    <permissionSets>Read Error Logs</permissionSets>
     <permissionSets>CS Cancellation</permissionSets>
     <permissionSets>Chargent Admin (Base)</permissionSets>
     <permissionSets>Chargent User (Base)</permissionSets>
     <permissionSets>Chargent Admin (Orders)</permissionSets>
     <permissionSets>Chargent User (Orders)</permissionSets>
     <permissionSets>Bill Adjustment Creation</permissionSets>
-    <permissionSets>Partner Product Junction Management</permissionSets>
+    <permissionSets>Partner Product &amp; SSS Junction Management</permissionSets>
     <permissionSets>Managing Loan Portfolios</permissionSets>
     <permissionSets>Manage Gateways and Entites</permissionSets>
     <permissionSets>Underwriting Permission</permissionSets>
-    <permissionSets>Send Mass Emails</permissionSets>
     <permissionSets>Conga</permissionSets>
     <permissionSets>View and Edit Converted Leads</permissionSets>
     <permissionSets>SSN Field Access</permissionSets>
@@ -121,7 +113,6 @@
     <permissionSets>Marketing Cloud Connector Partner Community User</permissionSets>
     <permissionSets>Marketing Cloud System User</permissionSets>
     <permissionSets>Marketing Cloud Connected App</permissionSets>
-    <permissionSets>Marketing Inventory</permissionSets>
     <permissionSets>CRM User</permissionSets>
     <permissionSets>Modify Chargent Order Read Only Fields</permissionSets>
     <permissionSets>LiveMessage Admin</permissionSets>
@@ -133,7 +124,6 @@
     <permissionSets>LiveMessage Manager Standard Object Permissions</permissionSets>
     <permissionSets>LiveMessage Send Text to List Standard Object Permissions</permissionSets>
     <permissionSets>Edit UAS Schedule Z Status</permissionSets>
-    <permissionSets>Index Rate Update</permissionSets>
     <permissionSets>Milestones PM+ Time Tracking Admin</permissionSets>
     <permissionSets>Commission Structure Management</permissionSets>
     <permissionSets>Commission Payment Management</permissionSets>
@@ -147,11 +137,9 @@
     <permissionSets>Flow Magic Picklists User</permissionSets>
     <permissionSets>Legal Spend Fields on Work</permissionSets>
     <permissionSets>Create and Edit Campaigns</permissionSets>
-    <permissionSets>Case Feed User</permissionSets>
     <permissionSets>CS App Processing</permissionSets>
     <permissionSets>Product Escalation Management</permissionSets>
     <permissionSets>CS Lead Status Editing</permissionSets>
-    <permissionSets>LASERCA Lead field access for CS App Processing</permissionSets>
     <permissionSets>Personal Credit Report - full visibility</permissionSets>
     <permissionSets>Personal Credit Report visibility - CS</permissionSets>
     <permissionSets>Zuora Quotes End User</permissionSets>
@@ -163,7 +151,6 @@
     <permissionSets>Manage Contracts</permissionSets>
     <permissionSets>Work Request Change Management</permissionSets>
     <permissionSets>Lightning Email Template Report Folder Creation</permissionSets>
-    <permissionSets>Access Community 360 Data</permissionSets>
     <permissionSets>Full Macro Access</permissionSets>
     <permissionSets>Personal Credit Report visibility - Loan</permissionSets>
     <permissionSets>Loan Document Visibility</permissionSets>
@@ -173,7 +160,6 @@
     <permissionSets>Client Reporting General Ledger View</permissionSets>
     <permissionSets>Query Zuora Data</permissionSets>
     <permissionSets>SSS Customer Facing Info Management</permissionSets>
-    <permissionSets>View Contracts</permissionSets>
     <permissionSets>Production &amp; Transfer Delete Access</permissionSets>
     <permissionSets>HubSpot Integration Permissions</permissionSets>
     <permissionSets>Manage Entities (Legal)</permissionSets>
@@ -182,35 +168,29 @@
     <permissionSets>CS Customer Data Import</permissionSets>
     <permissionSets>Portfolio Management</permissionSets>
     <permissionSets>Data Mask</permissionSets>
+    <permissionSets>FP&amp;A Shared Solar System Management</permissionSets>
     <permissionSets>Edit Products</permissionSets>
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Underwriting Screen Access</permissionSets>
-    <permissionSets>Paper Check Creation and Editing</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
-    <permissionSets>Manage Users</permissionSets>
-    <permissionSets>Do Not Send Bills Permission</permissionSets>
+    <permissionSets>SSSO Creation</permissionSets>
+    <permissionSets>Subscription Order Mgmt</permissionSets>
+    <permissionSets>Subscription Order Visibility</permissionSets>
+    <permissionSets>Salesforce Survey Admin</permissionSets>
     <permissionSets>Client Health Report Management</permissionSets>
-    <permissionSets>FP&amp;A Shared Solar System Management</permissionSets>
+    <permissionSets>CS BW Countersignature</permissionSets>
     <permissionSets>Lightning</permissionSets>
-    <permissionSets>Shared Solar System Permission</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
     <permissionSets>Permission Set for Payment Request (Chargent Orders)</permissionSets>
-    <permissionSets>Milestones PM</permissionSets>
     <permissionSets>DocuSign Administrator</permissionSets>
     <permissionSets>DocuSign User</permissionSets>
     <permissionSets>Milestones PM+ Full Access</permissionSets>
-    <permissionSets>Standard User permission_Enhanced</permissionSets>
-    <permissionSets>Standard User permission_FeedersPlus</permissionSets>
     <permissionSets>DocuSign User (Partners)</permissionSets>
-    <permissionSets>radian_lens</permissionSets>
-    <permissionSets>Wave Analytics User 1</permissionSets>
     <permissionSets>Wave Analytics</permissionSets>
-    <permissionSets>Wave Analytics Permission</permissionSets>
     <permissionSets>Agile Accelerator Admin</permissionSets>
     <permissionSets>Agile Accelerator User</permissionSets>
-    <permissionSets>Finance Developer</permissionSets>
     <permissionSets>Salesforce Console User</permissionSets>
     <permissionSets>CS Servicing Visibility</permissionSets>
     <permissionSets>Report Access</permissionSets>

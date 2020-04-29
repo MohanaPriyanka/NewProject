@@ -64784,7 +64784,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Survey</tab>
-        <visibility>DefaultOff</visibility>
+        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-UserProfile</tab>
