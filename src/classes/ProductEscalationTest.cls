@@ -2,6 +2,7 @@
 public class ProductEscalationTest {
     @testSetup public static void testSetupBillRecords() {
         Test.startTest();
+        useMocks();
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 6
@@ -970,5 +971,9 @@ public class ProductEscalationTest {
         System.assertEquals(389.33,uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
         System.assertEquals(167.69,uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
         System.assertEquals(84.09,uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
+    }
+
+    private static void useMocks() {
+        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
     }
 }

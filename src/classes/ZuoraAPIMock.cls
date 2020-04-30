@@ -66,6 +66,10 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return createDebitMemo();
         } else if (endpoint.contains('/v1/creditmemos/') && endpoint.contains('/items')) {
             return getCreditMemoItems();
+        } else if (endpoint.contains('/v1/creditmemos/') && endpoint.contains('/itemparts')) {
+            return getCreditMemoPartItems();
+        } else if (endpoint.contains('/v1/creditmemos/') && endpoint.contains('/parts')) {
+            return getCreditMemoParts();
         } else if (endpoint.contains('/v1/invoices/') && endpoint.contains('/items')) {
             return getInvoiceItem(endpoint);
         } else if (endpoint.contains('/v1/debitmemos/') && endpoint.contains('/items')) {
@@ -723,6 +727,36 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"revenueScheduleNumber" : null, ' +
             '"revenueRecognitionRuleName" : "Recognize upon invoicing" }, ' +
             '"creditTaxItems" : [ ] } ], "success" : true}');
+        return res;
+    }
+
+    private static HttpResponse getCreditMemoParts(){
+        HttpResponse res = getJSON();
+        res.setBody('{"parts" : [ ' +
+            '{"id" : "2c92c0fb715ce76701717490112a5069",' +
+            '"invoiceId" : null,' +
+            '"debitMemoId" : "2c92c0fa715cd191017174812445242b",' +
+            '"amount" : 0.590000000}, ' +
+            '{"id" : "2c92c0fb715ce76701717490112a5069",' +
+            '"invoiceId" : "2c92c0fa6e3a9391016e3e30d48066d2",' +
+            '"debitMemoId" : null,' +
+            '"amount" : 0.590000000} ' +
+            '],"success" : true}');
+        return res;
+    }
+
+    private static HttpResponse getCreditMemoPartItems(){
+        HttpResponse res = getJSON();
+        res.setBody('{"itemParts" : [ ' +
+            '{"id" : "2c92c0fb715ce76701717490112a5068",' +
+            '"invoiceItemId" : "2dd2c0fb6e3aa322016e3df698ff7e9f",' +
+            '"debitMemoItemId" : null,' +
+            '"amount" : 4.00}, ' +
+            '{"id" : "2c92c0fb715ce76701717490112a5069",' +
+            '"invoiceItemId" : "2dd2c0fb6e3aa322016e3df698ff7e9f",' +
+            '"debitMemoItemId" : null,' +
+            '"amount" : 5.00} ' +
+            '],"success" : true}');
         return res;
     }
 
@@ -1448,9 +1482,9 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
     private static HttpResponse getSubscriptionsByAccount() {
         HttpResponse res = getJSON();
         res.setBody('{"subscriptions":[' +
-            '{"id":"2c92c0fa712985fa017131da4d6e4c90","accountId":"2c92c0f96e3aa331016e3ca8eb2c48b7","accountNumber":"bw-05413","accountName":"APM Test 5","subscriptionNumber":"A-S00029335","status":"Active","PaymentGateway__c":"CS Receivables Co TEST","ratePlans":[{"id":"2c92c0fa712985fa017131da4d8f4c94","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fa712985fa017131da4d8f4c95","originalChargeId":"2c92c0fa712985fa017131da4d8f4c95","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","number":"C-00048346","name":"Utility Credit","Project__c":"SSS-000009","ClientOwner__c":"BW-0021776"}]}],"orderNumber":"O-00219507"},' +
-            '{"id":"2c92c0fb7129989d017131da263137da","accountId":"2c92c0f96e3aa331016e3ca8eb2c48b7","accountNumber":"bw-05413","accountName":"APM Test 5","subscriptionNumber":"A-S00029334","status":"Active","PaymentGateway__c":"Joe Jenny","ratePlans":[{"id":"2c92c0fb7129989d017131da265137de","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fb7129989d017131da265137df","originalChargeId":"2c92c0fb7129989d017131da265137df","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","number":"C-00048345","name":"Utility Credit","Project__c":"SSS-000009","ClientOwner__c":"BW-0009470"}]}],"orderNumber":"O-00219506"},' +
-            '{"id":"2c92c0fa71298610017131d9b2f44802","accountId":"2c92c0f96e3aa331016e3ca8eb2c48b7","accountNumber":"bw-05413","accountName":"APM Test 5","subscriptionNumber":"A-S00027513","status":"Cancelled","ratePlans":[{"id":"2c92c0fa71298610017131d9b3094806","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fa71298610017131d9b3094807","originalChargeId":"2c92c0fb6e3aa322016e3cb07221208b","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","number":"C-00045456","name":"Utility Credit","Project__c":"SSS-00009","ClientOwner__c":"BW-0021776"}]},{"id":"2c92c0fa71298610017131d9b31a480b","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fa71298610017131d9b31a480c","originalChargeId":"2c92c0fb6e3aa322016e3cb075dd20b3","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","number":"C-00045458","name":"Utility Credit","Project__c":"SSS-00009","ClientOwner__c":"BW-0009470"}]}],"orderNumber":"O-00219505"}],"success":true}');
+            '{"id":"2c92c0fa712985fa017131da4d6e4c90","accountId":"2c92c0f96e3aa331016e3ca8eb2c48b7","accountNumber":"bw-05413","accountName":"APM Test 5","subscriptionNumber":"A-S00029335","status":"Active","PaymentGateway__c":"CS Receivables Co TEST","ratePlans":[{"id":"2c92c0fa712985fa017131da4d8f4c94","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fa712985fa017131da4d8f4c95","originalChargeId":"2c92c0fa712985fa017131da4d8f4c95","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","name":"Utility Credit","number" : "C-00048346","Project__c":"SSS-000009","ClientOwner__c":"BW-0021776"}]}],"orderNumber":"O-00219507"}, ' +
+            '{"id":"2c92c0fb7129989d017131da263137da","accountId":"2c92c0f96e3aa331016e3ca8eb2c48b7","accountNumber":"bw-05413","accountName":"APM Test 5","subscriptionNumber":"A-S00029334","status":"Active","PaymentGateway__c":"Joe Jenny","ratePlans":[{"id":"2c92c0fb7129989d017131da265137de","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fb7129989d017131da265137df","originalChargeId":"2c92c0fb7129989d017131da265137df","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","name":"Utility Credit","number" : "C-00048345","Project__c":"SSS-000009","ClientOwner__c":"BW-0009470"}]}],"orderNumber":"O-00219506"}, ' +
+            '{"id":"2c92c0fa71298610017131d9b2f44802","accountId":"2c92c0f96e3aa331016e3ca8eb2c48b7","accountNumber":"bw-05413","accountName":"APM Test 5","subscriptionNumber":"A-S00027513","status":"Cancelled","ratePlans":[{"id":"2c92c0fa71298610017131d9b3094806","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fa71298610017131d9b3094807","originalChargeId":"2c92c0fb6e3aa322016e3cb07221208b","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","name":"Utility Credit","number" : "C-00045456","Project__c":"SSS-00009","ClientOwner__c":"BW-0021776"}]},{"id":"2c92c0fa71298610017131d9b31a480b","productId":"2c92c0f969245fcc0169258e4e804261","productName":"Community Solar","productSku":"SKU-00000002","productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","ratePlanName":"Community Solar Subscriptions","ratePlanCharges":[{"id":"2c92c0fa71298610017131d9b31a480c","originalChargeId":"2c92c0fb6e3aa322016e3cb075dd20b3","productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","number":"C-00045458","name":"Utility Credit","Project__c":"SSS-00009","ClientOwner__c":"BW-0009470"}]}],"orderNumber":"O-00219505"}],"success":true}');
         return res;
     }
 }

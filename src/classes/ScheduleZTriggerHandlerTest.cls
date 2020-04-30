@@ -343,7 +343,14 @@ public class ScheduleZTriggerHandlerTest {
         ];
 
         System.assertEquals(2, sss1ScheduleZs.size());
-        System.assertEquals(20.2312 , sss1ScheduleZs[0].Customer_Subscription_kW_DC__c);
+
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(20.23191898, sss1ScheduleZs[0].Customer_Subscription_kW_DC__c);
+        } else {
+            System.assertEquals(20.2312, sss1ScheduleZs[0].Customer_Subscription_kW_DC__c);
+        }
+
 
         Test.stopTest();
     }
@@ -373,9 +380,16 @@ public class ScheduleZTriggerHandlerTest {
         ];
 
         System.assertEquals(1, sss2ScheduleZs.size());
-        System.assertEquals(4.6154 , sss2ScheduleZs[0].Customer_Subscription_kW_DC__c);
         System.assertEquals(4, sss2ScheduleZs[0].Number_of_Decimal_Places__c);
         System.assertEquals(1445.86, sss2ScheduleZs[0].System_Size_kW_DC__c);
+
+
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(4.61518512 , sss2ScheduleZs[0].Customer_Subscription_kW_DC__c);
+        } else {
+            System.assertEquals(4.6154 , sss2ScheduleZs[0].Customer_Subscription_kW_DC__c);
+        }
 
         Decimal customerSubscription = sss2ScheduleZs[0].Customer_Subscription_kW_DC__c;
         Decimal systemSize = sss2ScheduleZs[0].System_Size_kW_DC__c;

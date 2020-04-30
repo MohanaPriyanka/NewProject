@@ -211,11 +211,13 @@ private class SubscriptionManagementServiceTest {
         //SO 0005678 is a System Change Order - Approval fields are stamped with system change - previous
         for (Subscription_Order__c so : checkSOs) {
             if (so.Name == '0001234') {
+                System.assertEquals(25.0000, so.Calculated_Change_in_Subscription_KW_DC__c);
                 System.assertEquals(1.73000, so.Approved_Change_in_Percent_Share__c);
-                System.assertEquals(25.0000, so.Approved_Change_in_Subscription__c);
+                System.assertEquals(24.985152, so.Approved_Change_in_Subscription__c);
             } else {
+                System.assertEquals(25.0000, so.System_Change_kW_DC_Subscription__c);
                 System.assertEquals(1.00, so.Approved_Change_in_Percent_Share__c);
-                System.assertEquals(5.0000, so.Approved_Change_in_Subscription__c);
+                System.assertEquals(5.040864, so.Approved_Change_in_Subscription__c);
             }
         }
     }
@@ -240,13 +242,13 @@ private class SubscriptionManagementServiceTest {
         public MockSSSSelector() {
         }
         public override Object handleMethodCall(MethodCall methodCall) {
-            return new Shared_Solar_System__c(
-                Name = 'Test SSS',
-                Id = 'a1J29000000tjOkEAI',
-                Expected_Yield_kWh_kW__c = 1300.0000,
+           return new Shared_Solar_System__c(
+               Name = 'Test SSS',
+               Id = 'a1J29000000tjOkEAI',
+               Expected_Yield_kWh_kW__c = 1300.0000,
                 Total_System_Size_kWh_DC__c = 1095.84,
                 Stage__c = 'Acquisition'
-            );
+           );
         }
     }
     public class MockSOSelector extends MockProvider {
@@ -259,7 +261,9 @@ private class SubscriptionManagementServiceTest {
                 '"Name" : "0001234",' +
                 '"Approval_Status__c" : "Approved",' +
                 '"Calculated_Change_in_Percent_Share_of_Sy__c" : 1.73000,' +
-                '"Calculated_Change_in_Subscription_KW_DC__c" : 25.0000' +
+                '"Calculated_Change_in_Subscription_KW_DC__c" : 25.0000,' +
+                '"Utility_Number_of_Decimal_Places__c" : 2,' +
+                '"Total_System_Size_kW_DC__c" : 1095.84' +
                 '},' +
                 '{"attributes" : {"type" : "Subscription_Order__c","url" : "/services/data/v47.0/sobjects/Subscription_Order__c/a9W8A0000000xL5UAI"},' +
                 '"Id" : "a9W8A0000000xL5UAI",' +
@@ -269,7 +273,9 @@ private class SubscriptionManagementServiceTest {
                 '"Previous_Percent_Share_of_System__c" : 0.73000,' +
                 '"Previous_kw_DC_Subscription__c" : 20.0000,' +
                 '"System_Change_Percent_Share_of_System__c" : 1.73000,' +
-                '"System_Change_kW_DC_Subscription__c" : 25.0000' +
+                '"System_Change_kW_DC_Subscription__c" : 25.0000,' +
+                '"Utility_Number_of_Decimal_Places__c" : 2,' +
+                '"Total_System_Size_kW_DC__c" : 1095.84' +
                 '}]';
             return (List<Subscription_Order__c>) JSON.deserialize(soList, List<Subscription_Order__c>.class);
         }
@@ -298,7 +304,7 @@ private class SubscriptionManagementServiceTest {
                 '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
                 '"Shared_Solar_System__c" : "' + sssId + '"' +
                 '}]';
-            String uasByMap = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
+                String uasByMap = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d29000001C3xuAAC",' +
                 '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
                 '"Opportunity__c" : "00629000008boK7AAI",' +

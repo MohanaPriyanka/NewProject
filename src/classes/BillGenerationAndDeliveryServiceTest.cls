@@ -1,8 +1,9 @@
-@isTest
+@IsTest
 public class BillGenerationAndDeliveryServiceTest {
-    @testSetup public static void setupTestData(){
+    @TestSetup public static void setupTestData(){
         TestFactory.insertBWAddress();
         TestFactory.setCSBillSettings();
+        useMocks();
 
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
@@ -272,6 +273,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Shared_Solar_System__c = sss1.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
+            NMC_Tariff__c = everbillNMC.Id,
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
         Opportunity opportunity2 = new Opportunity(
@@ -280,6 +282,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Shared_Solar_System__c = sss1.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
+            NMC_Tariff__c = everbillNMC.Id,
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
         Opportunity opportunity3 = new Opportunity(
@@ -287,6 +290,7 @@ public class BillGenerationAndDeliveryServiceTest {
             AccountId = propAccount3.Id,
             Shared_Solar_System__c = sss1.Id,
             StageName = 'Complete',
+            NMC_Tariff__c = everbillNMC.Id,
             Customer_Group__c = 'Residential',
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
@@ -295,6 +299,7 @@ public class BillGenerationAndDeliveryServiceTest {
             AccountId = propAccount4.Id,
             Shared_Solar_System__c = sss1.Id,
             StageName = 'Complete',
+            NMC_Tariff__c = everbillNMC.Id,
             Customer_Group__c = 'Residential',
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
@@ -304,6 +309,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Shared_Solar_System__c = sss2.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
+            NMC_Tariff__c = everbillNMC.Id,
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
         Opportunity opportunity6 = new Opportunity(
@@ -312,6 +318,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Shared_Solar_System__c = sss2.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
+            NMC_Tariff__c = everbillNMC.Id,
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
         Opportunity opportunity7 = new Opportunity(
@@ -320,6 +327,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Shared_Solar_System__c = sss2.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
+            NMC_Tariff__c = everbillNMC.Id,
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
         Opportunity opportunity8 = new Opportunity(
@@ -327,6 +335,7 @@ public class BillGenerationAndDeliveryServiceTest {
             AccountId = propAccount3.Id,
             Shared_Solar_System__c = sss3.Id,
             StageName = 'Complete',
+            NMC_Tariff__c = everbillNMC.Id,
             Customer_Group__c = 'Residential',
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
@@ -335,6 +344,7 @@ public class BillGenerationAndDeliveryServiceTest {
             AccountId = propAccount4.Id,
             Shared_Solar_System__c = sss3.Id,
             StageName = 'Complete',
+            NMC_Tariff__c = everbillNMC.Id,
             Customer_Group__c = 'Residential',
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
@@ -343,6 +353,7 @@ public class BillGenerationAndDeliveryServiceTest {
             AccountId = propAccount5.Id,
             Shared_Solar_System__c = sss3.Id,
             StageName = 'Complete',
+            NMC_Tariff__c = everbillNMC.Id,
             Customer_Group__c = 'Residential',
             Product__c = normalCSProduct.Id,
             CloseDate = System.today());
@@ -436,7 +447,6 @@ public class BillGenerationAndDeliveryServiceTest {
         insert new List<Utility_Account_Subscription__c>{
             uas1, uas2, uas3, uas4, uas5, uas6, uas7, uas8, uas9, uas10
         };
-
 
         Date thisMonth = Date.today();
         Date lastMonth = thisMonth.addMonths(-1);
@@ -627,7 +637,6 @@ public class BillGenerationAndDeliveryServiceTest {
         List<Transfer__c> transferList = BillGenerationConsoleController.getThisMonthsTransfers();
         List<Shared_Solar_System__c> sssList = BillGenerationConsoleController.getSSSWithoutTransfer(transferList);
 
-
         System.assertEquals(3, transferList.size());
         System.assertEquals(0, sssList.size());
     }
@@ -639,5 +648,9 @@ public class BillGenerationAndDeliveryServiceTest {
         System.assert(billSummary.contains('Ready for Paper Send: 1'));
         System.assert(billSummary.contains('Sent via Email: 1'));
         System.assert(billSummary.contains('Sent via Paper: 2'));
+    }
+
+    private static void useMocks() {
+        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
     }
 }

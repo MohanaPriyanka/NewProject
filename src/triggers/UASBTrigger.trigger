@@ -8,6 +8,6 @@ trigger UASBTrigger on UASB__c (before insert) {
     }
     if (Trigger.isInsert && Trigger.isBefore) {
         ClientReportingService.stampClient(Trigger.new);
-        ProductionToBillService.setUnservicedUASBReadyForProdDetail(Trigger.new);
+        ProductionDetailBillService.setUnservicedUASBReadyForProdDetail(Trigger.new);
     }
 }

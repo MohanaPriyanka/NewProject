@@ -19,4 +19,4 @@ RecalcOpp7B,TestRecalcUALPropB,productTwo,012j0000000tL1yAAE,RecalcUALOpp7B,Clos
 RecalcOpp8B,TestRecalcUALPropB,productTwo,012j0000000tL1yAAE,RecalcUALOpp8B,Closed won,2018-08-20 00:00:00,TestRecalcUAL-sss9,,Community Solar,RecalcUALTest
 RecalcOpp9B,TestRecalcUALPropB,productTwo,012j0000000tL1yAAE,RecalcUALOpp9B,Closed won,2018-08-20 00:00:00,TestRecalcUAL-sss9,,Community Solar,RecalcUALTest
 RecalcOpp10B,TestRecalcUALPropB,productTwo,012j0000000tL1yAAE,RecalcUALOpp10B,Closed won,2018-08-20 00:00:00,TestRecalcUAL-sss10,,Community Solar,RecalcUALTest
-RecalcAnchorOpp,TestRecalcUALAnchorProp,,012j0000000tL1yAAE,AnchorOpp,Closed won,2018-08-20 00:00:00,TestRecalcUAL-sss10,,Community Solar,RecalcUALTest
+RecalcAnchorOpp,TestRecalcUALAnchorProp,productTwo,012j0000000tL1yAAE,AnchorOpp,Closed won,2018-08-20 00:00:00,TestRecalcUAL-sss10,,Community Solar,RecalcUALTest

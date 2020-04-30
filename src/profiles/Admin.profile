@@ -807,6 +807,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProductionSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProductionToBillScheduler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -24540,6 +24544,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Default_Payment_Method_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Description</field>
         <readable>true</readable>
@@ -28127,6 +28136,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Production__c.End_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Production__c.First_Date_Production_Billed__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
