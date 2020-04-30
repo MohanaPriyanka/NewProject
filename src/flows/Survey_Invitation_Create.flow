@@ -62,14 +62,14 @@
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
-                <stringValue>&quot;https://jeff-bluewavememberportal.cs59.force.com/survey/runtimeApp.app?invitationId=&quot;+[SurveyInvitation].Id+&quot;&amp;surveyName=&quot;+[SurveyInvitation].Survey.DeveloperName+&quot;&amp;UUID=&quot;+[SurveyInvitation].UUID</stringValue>
+                <stringValue>&quot;https://bluewavememberportal.force.com/Support/survey/runtimeApp.app?invitationId=&quot;+[SurveyInvitation].Id+&quot;&amp;surveyName=&quot;+[SurveyInvitation].Survey.DeveloperName+&quot;&amp;UUID=&quot;+[SurveyInvitation].UUID</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_2280354219</name>
+        <name>formula_2_myRule_1_A1_0547207977</name>
         <dataType>String</dataType>
-        <expression>&quot;https://jeff-bluewavememberportal.cs59.force.com/survey/runtimeApp.app?invitationId=&quot;+{!myVariable_current.Id}+&quot;&amp;surveyName=&quot;+{!myVariable_current.Survey.DeveloperName}+&quot;&amp;UUID=&quot;+{!myVariable_current.UUID}</expression>
+        <expression>&quot;https://bluewavememberportal.force.com/Support/survey/runtimeApp.app?invitationId=&quot;+{!myVariable_current.Id}+&quot;&amp;surveyName=&quot;+{!myVariable_current.Survey.DeveloperName}+&quot;&amp;UUID=&quot;+{!myVariable_current.UUID}</expression>
     </formulas>
-    <interviewLabel>Survey_Invitation_Create-4_InterviewLabel</interviewLabel>
+    <interviewLabel>Survey_Invitation_Create-5_InterviewLabel</interviewLabel>
     <label>Survey Invitation: Create</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -171,7 +171,7 @@
             </processMetadataValues>
             <field>Survey_URL__c</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_2280354219</elementReference>
+                <elementReference>formula_2_myRule_1_A1_0547207977</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
