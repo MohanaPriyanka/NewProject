@@ -87,7 +87,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         }
 
         ZuoraDataQueryService.ProcessingParameter param = new ZuoraDataQueryService.ProcessingParameter();
-        param.className = 'ProductionToBillService';
+        param.className = 'ProductionDetailBillService';
         param.optionalStrings = invoiceItemIds;
         Map<String,Boolean> booleanMap = new Map<String,Boolean>();
         booleanMap.put('MoreBillsToProcess',invoiceItems.size() == batchSize);
@@ -222,8 +222,14 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     private Decimal getWeightedApplicationAmount(Transfer_Part__c transferProdDetail, Decimal staticBillAmount){
         Decimal applicationAmount = 0;
         if (transferProdDetail.Transfer__r.Billing_Method__c == 'kWh'){
+            if (transferProdDetail.Transfer__r.Transfer_kWh__c == 0){
+                return 0;
+            }
             applicationAmount = staticBillAmount * (transferProdDetail.kWh_Amount__c / transferProdDetail.Transfer__r.Transfer_kWh__c);
         } else {
+            if (transferProdDetail.Transfer__r.Transfer_Amount__c == 0){
+                return 0;
+            }
             applicationAmount = staticBillAmount * (transferProdDetail.Amount__c / transferProdDetail.Transfer__r.Transfer_Amount__c);
         }
         applicationAmount = Util.roundValue(applicationAmount,2, 'HALF_UP');
@@ -301,7 +307,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
 
     public static void setUnservicedUASBReadyForProdDetail(List<UASB__c> uasbs){
         for (UASB__c uasb : uasbs) {
-            if (uasb.Externally_Serviced__c){
+            if (uasb.Externally_Serviced__c && uasb.Credits_Allocated__c != null && uasb.Credits_Allocated__c != 0){
                 uasb.Ready_For_Production_Detail__c = true;
             }
         }
