@@ -13316,6 +13316,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.Survey_URL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.Time_to_Close__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -38587,6 +38592,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Submittals__c.Submittal_No__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SurveyInvitation.Case__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
