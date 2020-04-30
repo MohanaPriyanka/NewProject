@@ -39461,6 +39461,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Transfer_Part__c.Change_in_Utilization__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Transfer_Part__c.Journal_Entry__c</field>
         <readable>true</readable>
     </fieldPermissions>
