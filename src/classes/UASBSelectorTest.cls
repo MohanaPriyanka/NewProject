@@ -90,6 +90,10 @@ public class UASBSelectorTest {
         );
         insert new List<UASB__c>{billOne, billTwo, billThree};
 
+        billOne.Ready_For_Production_Detail__c = true;
+        billTwo.Ready_For_Production_Detail__c = true;
+        billThree.Ready_For_Production_Detail__c = true;
+
         UASBSelector selector = new UASBSelector();
         List<UASB__c> uasbList = selector.getUnservicedWithoutProductionDetail(5);
 
