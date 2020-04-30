@@ -91,6 +91,61 @@
             <field>Bill_Part__c</field>
             <table>Transfer_Part__c</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Change_in_Utilization__c</field>
+            <table>Transfer_Part__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Externally_Serviced_UASB__c</field>
+            <table>Transfer_Part__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Production__c.Billing_Method__c</field>
+            <table>Transfer_Part__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Production__c.Client_Account__c</field>
+            <table>Transfer_Part__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Production__c.Client_Account__c.AccountNumber</field>
+            <table>Transfer_Part__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Production__c.Shared_Solar_System__c</field>
+            <table>Transfer_Part__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Production__c.Shared_Solar_System__c.Unique_ID__c</field>
+            <table>Transfer_Part__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Production__c.Shared_Solar_System__c.Name</field>
+            <table>Transfer_Part__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Production__c.First_Date_Production_Billed__c</field>
+            <table>Transfer_Part__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Transfer__c.Bill_Period__c</field>
+            <table>Transfer_Part__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Transfer__c.Bill_Period__c.Bill_Date__c</field>
+            <table>Transfer_Part__c</table>
+        </columns>
         <masterLabel>Production Detail</masterLabel>
     </sections>
 </ReportType>
