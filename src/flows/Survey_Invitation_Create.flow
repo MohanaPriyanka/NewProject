@@ -65,11 +65,11 @@
                 <stringValue>&quot;https://jeff-bluewavememberportal.cs59.force.com/survey/runtimeApp.app?invitationId=&quot;+[SurveyInvitation].Id+&quot;&amp;surveyName=&quot;+[SurveyInvitation].Survey.DeveloperName+&quot;&amp;UUID=&quot;+[SurveyInvitation].UUID</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_3040562611</name>
+        <name>formula_2_myRule_1_A1_2280354219</name>
         <dataType>String</dataType>
         <expression>&quot;https://jeff-bluewavememberportal.cs59.force.com/survey/runtimeApp.app?invitationId=&quot;+{!myVariable_current.Id}+&quot;&amp;surveyName=&quot;+{!myVariable_current.Survey.DeveloperName}+&quot;&amp;UUID=&quot;+{!myVariable_current.UUID}</expression>
     </formulas>
-    <interviewLabel>Survey_Invitation_Create-3_InterviewLabel</interviewLabel>
+    <interviewLabel>Survey_Invitation_Create-4_InterviewLabel</interviewLabel>
     <label>Survey Invitation: Create</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -171,13 +171,13 @@
             </processMetadataValues>
             <field>Survey_URL__c</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_3040562611</elementReference>
+                <elementReference>formula_2_myRule_1_A1_2280354219</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
     </recordUpdates>
     <startElementReference>myDecision</startElementReference>
-    <status>Obsolete</status>
+    <status>Active</status>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>
