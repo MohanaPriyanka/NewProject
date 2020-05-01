@@ -93,6 +93,7 @@ public class UASBSelectorTest {
         billOne.Ready_For_Production_Detail__c = true;
         billTwo.Ready_For_Production_Detail__c = true;
         billThree.Ready_For_Production_Detail__c = true;
+        update new List<UASB__c>{billOne, billTwo, billThree};
 
         UASBSelector selector = new UASBSelector();
         List<UASB__c> uasbList = selector.getUnservicedWithoutProductionDetail(5);
