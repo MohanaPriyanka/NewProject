@@ -2,7 +2,7 @@
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
         <fullName>Case_Close_Email_Alert_to_Customer</fullName>
-        <description>Case Close Email Alert to Customer</description>
+        <description>Permissions Approval Rejection</description>
         <protected>false</protected>
         <recipients>
             <field>ContactId</field>
@@ -13,7 +13,7 @@
     </alerts>
     <alerts>
         <fullName>Case_Close_Email_Alert_to_Customer_Phone</fullName>
-        <description>Case Close Email Alert to Customer (Phone)</description>
+        <description>Customer Support Survey Email</description>
         <protected>false</protected>
         <recipients>
             <field>ContactId</field>
