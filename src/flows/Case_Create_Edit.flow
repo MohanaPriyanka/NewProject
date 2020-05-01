@@ -2176,7 +2176,7 @@
         </rules>
     </decisions>
     <description>Runs when Case object is created or edited</description>
-    <interviewLabel>Case_Create_Edit-16_InterviewLabel</interviewLabel>
+    <interviewLabel>Case_Create_Edit-13_InterviewLabel</interviewLabel>
     <label>Case Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -2412,7 +2412,7 @@
             </processMetadataValues>
             <field>SurveyId</field>
             <value>
-                <stringValue>0Kd2C000000CaSUSA0</stringValue>
+                <stringValue>0Kd0a000000TN2hCAG</stringValue>
             </value>
         </inputAssignments>
         <object>SurveyInvitation</object>
@@ -2501,7 +2501,7 @@
         <object>Case</object>
     </recordUpdates>
     <startElementReference>isChangedDecision4_myRule_3_Status</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>cancelWaits</name>
         <dataType>String</dataType>
