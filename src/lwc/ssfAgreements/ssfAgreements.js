@@ -7,6 +7,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 import getContentDocumentsById from '@salesforce/apex/SimpleSignupFormController.getContentDocumentDataById';
 import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormController.getContentDocumentLinksByLead'
+import getContentDistributionById from '@salesforce/apex/SimpleSignupFormController.getContentDistributionById';
 import {makeRequest} from 'c/httpRequestService';
 
 export default class SsfAgreements extends LightningElement {
@@ -254,6 +255,14 @@ export default class SsfAgreements extends LightningElement {
         this.contractDocuments = contracts;
         var disclosurePosition;
         for (let c in contracts) {
+            try{
+                contracts[c].downloadLink = 'data:application/pdf;base64, ' + btoa(contracts[c].ContentDocument.LatestPublishedVersion.VersionData);
+                contracts[c].downloadName = JSON.parse(JSON.stringify(contracts[c].ContentDocument.LatestPublishedVersion.Title));
+            } catch(exp) {
+                contracts[c].downloadLink = '';
+                contracts[c].downloadName = '';
+            }
+            
             if (contracts[c].ContentDocument.LatestPublishedVersion.Title === 'Community Solar Agreement.pdf' ) {
                 this.csAgreementDocumentId = contracts[c].ContentDocumentId;
                 contracts[c].ContentDocument.LatestPublishedVersion.Title = 'Community Solar Agreement';
@@ -271,15 +280,34 @@ export default class SsfAgreements extends LightningElement {
     }
 
     filePreview(event) {
-        getContentDocumentsById({documentId : event.target.dataset.id, leadId: this.lead.id, email: this.lead.email})
-        .then(result => {
-            this.showContractDocument = true;
-            this.documentUrl = 'data:application/pdf;base64,' + result;
-        })
-        .catch(error => {
-            this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
-        });
+        if(this.supportsDataUri) {
+            getContentDocumentsById({documentId : event.target.dataset.id, leadId: this.lead.id, email: this.lead.email})
+            .then(result => {
+                this.showContractDocument = true;
+                this.documentUrl = 'data:application/pdf;base64,' + result;
+            }).catch(error => {
+                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
+            });
+        } else {
+            getContentDistributionById({documentId : event.target.dataset.id, leadId: this.lead.id, email: this.lead.email})
+            .then(result => {
+                this.showContractDocument = true;
+                this.documentUrl = result;
+            }).catch(error => {
+                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
+            });
+        }
+        
+        
     }
+
+    get supportsDataUri() {
+        var navua = window.navigator.userAgent.toLowerCase();
+        if(navua.indexOf("trident") > -1 || navua.indexOf("edge") > -1) {
+            return false;
+        }
+        return true;
+    };
 
     hideContractDocument(event) {
         this.showContractDocument = false;

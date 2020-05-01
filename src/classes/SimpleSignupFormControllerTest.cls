@@ -110,6 +110,50 @@ public with sharing class SimpleSignupFormControllerTest {
                 System.assert(false, 'Did not expect any exceptions when querying for a valid lead id, email, and docid combination, but received ' +
                     ahe.getMessage() + '\n' + ahe.getStackTraceString());
             }
+
+            try {
+                SimpleSignupFormController.getContentDistributionById(testLead.Id, 'fakeemail', contentDocId);
+                System.assert(false, 'Expected a fake email to generate an authorization exception');
+            } catch (AuraHandledException ahe) {
+                System.assert(ahe.getMessage().contains('did not match'), 'Exception should indicate the lead id and email did not match, but received ' + ahe.getMessage());
+            }
+
+            try {
+                SimpleSignupFormController.getContentDistributionById(testLead.Id, testLead.Email, contentDocId);
+                System.assert(false, 'Expected a Content Doc with no Content Distribution to generate an exception');
+            } catch (Exception ahe) {
+                System.assert(ahe.getMessage().contains('Did not find any content distributions '), 'Exception should indicate that there are no Content Distribution records for that Content Doc ID, but received ' + ahe.getMessage());
+            }
         }
+    }
+
+
+    @IsTest
+    private static void testContentDistributionSuccess() {
+        Lead testLead = [SELECT Id, Email FROM Lead];
+        ContentVersion csaCV = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('SSF CSA body'),
+            Title = 'Community Solar Agreement.pdf',
+            PathOnClient = '/Community Solar Agreement.pdf'
+        );
+        insert csaCV;
+        ContentDocumentSelector selector = new ContentDocumentSelector();
+        String csaContentDocId = selector.getDocumentIdFromVersionId(csaCV.Id);
+
+        String csaPath = SimpleSignupFormController.getContentDistributionById(testLead.Id, testLead.Email, csaContentDocId);
+        System.assertNotEquals(null, csaPath, 'Expected SimpleSignupFormController.getContentDistributionById() to return one auto-generated ContentDistribution public link');
+
+        ContentVersion sdfCV = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('SSF SDF body'),
+            Title = 'Solar Disclosure Form.pdf',
+            PathOnClient = '/Solar Disclosure Form.pdf'
+        );
+        insert sdfCV;
+        String sdfContentDocId = selector.getDocumentIdFromVersionId(sdfCV.Id);
+
+        String sdfPath = SimpleSignupFormController.getContentDistributionById(testLead.Id, testLead.Email, sdfContentDocId);
+        System.assertNotEquals(null, sdfPath, 'Expected SimpleSignupFormController.getContentDistributionById() to return one auto-generated ContentDistribution public link');
     }
 }
