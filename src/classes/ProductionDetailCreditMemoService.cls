@@ -105,13 +105,15 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
             }
         }
 
-        for (ZuoraAPI.CreditMemoPartItem partItems : memoPartItems.itemParts){
-            Journal_Entry__c creditMemoPartEntry = new Journal_Entry__c(
-                Id = creditMemo.Id,
-                Applied_Record_Id__c = partItems.InvoiceItemId,
-                Amount__c = partItems.Amount
-            );
-            journalEntriesByPart.add(creditMemoPartEntry);
+        if (memoPartItems != null) {
+            for (ZuoraAPI.CreditMemoPartItem partItems : memoPartItems.itemParts) {
+                Journal_Entry__c creditMemoPartEntry = new Journal_Entry__c(
+                    Id = creditMemo.Id,
+                    Applied_Record_Id__c = partItems.InvoiceItemId,
+                    Amount__c = partItems.Amount
+                );
+                journalEntriesByPart.add(creditMemoPartEntry);
+            }
         }
         return journalEntriesByPart;
     }
