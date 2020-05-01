@@ -18081,6 +18081,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.Survey_URL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.Time_to_Close__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -44247,6 +44252,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Subscription_Transfer__c.Sum_of_Old_Subscriptions__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SurveyInvitation.Case__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
