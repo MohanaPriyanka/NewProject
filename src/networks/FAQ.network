@@ -30,6 +30,11 @@
         <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
         <profile>api only</profile>
+        <profile>external bfg user</profile>
+        <profile>bfg standard user</profile>
+        <profile>bw technology</profile>
+        <profile>bwc executive</profile>
+        <profile>bfg marketing user</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
