@@ -6,6 +6,8 @@
 public without sharing class SimpleSignupFormController {
     private static ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
     private static CSLeadsRESTControllerV3 restControllerV3 = new CSLeadsRESTControllerV3();
+
+
     @AuraEnabled
     public static String getContentDocumentDataById(Id leadId, String email, Id documentId) {
         try {
@@ -24,6 +26,18 @@ public without sharing class SimpleSignupFormController {
             }
         }
         throw Util.createAuraExceptionWithMessage('Document id ' + documentId + ' is not related to lead id ' + leadId);
+    }
+
+
+    @AuraEnabled
+    public static String getContentDistributionById(Id leadId, String email, Id documentId) {
+        try {
+            restControllerV3.validateAuthorization(leadId, email);
+        } catch (Util.AuthorizationBWException abwe) {
+            throw Util.createAuraExceptionWithMessage('The email (' + email + ') and leadId (' + leadId + ') provided did not match');
+        }
+
+        return contentDocumentSelector.getPublicDistributionLinkByDocId(documentId);
     }
 
     @AuraEnabled

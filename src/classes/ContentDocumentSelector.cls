@@ -75,4 +75,12 @@ public inherited sharing class ContentDocumentSelector {
                 AND CreatedDate <= :endDate
         ];
     }
+
+    public String getPublicDistributionLinkByDocId(Id contentDocumentId) {
+        List<ContentDistribution> contentDistributions = [SELECT DistributionPublicUrl FROM ContentDistribution WHERE ContentDocumentId = :contentDocumentId];
+        if (contentDistributions.isEmpty()) {
+            throw Util.createAuraExceptionWithMessage('Did not find any content distributions for content document id ' + contentDocumentId);
+        }
+        return contentDistributions[0].DistributionPublicUrl;
+    }
 }
