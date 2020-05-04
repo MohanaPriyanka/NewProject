@@ -286,6 +286,16 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account.Account_Number__c</formula>
+        <label>Account Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Adjusted_Time_to_Close__c</fullName>
         <description>This field is the lesser of the difference between the First Login Date and Case Open Date and Case Closed Date and Case Opened Date (found in Time to Close field), counting only weekdays.</description>
         <externalId>false</externalId>
@@ -1987,6 +1997,54 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>of_Calls__c</fullName>
+        <externalId>false</externalId>
+        <label># of Calls</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>of_Emails__c</fullName>
+        <externalId>false</externalId>
+        <label># of Emails</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>of_Letters__c</fullName>
+        <externalId>false</externalId>
+        <label># of Letters</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>of_SMS__c</fullName>
+        <externalId>false</externalId>
+        <label># of SMS</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <listViews>
         <fullName>Alert_Expire_Emails</fullName>
