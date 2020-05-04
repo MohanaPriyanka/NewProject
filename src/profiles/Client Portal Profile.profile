@@ -742,10 +742,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>UASTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>UserHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
