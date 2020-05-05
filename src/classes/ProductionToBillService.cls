@@ -74,7 +74,6 @@ public without sharing class ProductionToBillService implements Queueable, Datab
 
     private void executeCreditMemoJob(){
         List<Journal_Entry__c> creditMemosToAttempt;
-        List<Journal_Entry__c> creditMemosExecuted;
 
         try {
             /*
@@ -92,7 +91,7 @@ public without sharing class ProductionToBillService implements Queueable, Datab
                 ProductionDetailCreditMemoService creditMemoService = new ProductionDetailCreditMemoService();
                 requiresRequeue = creditMemoService.createProductionDetailFromCreditMemo(creditMemosToAttempt);
                 incompleteEntries.addAll(creditMemoService.incompleteEntries);
-                markJournalEntriesAsComplete(creditMemosExecuted);
+                markJournalEntriesAsComplete(creditMemosToAttempt);
             }
             if (creditMemosToAttempt.size() == batchSize || requiresRequeue){
                 queueJob(OperationType.CREDITMEMO);

@@ -1884,6 +1884,17 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <fullName>SuppliedPhone</fullName>
     </fields>
     <fields>
+        <fullName>Survey_URL__c</fullName>
+        <description>Populated via process builder on Survey Invitation object</description>
+        <externalId>false</externalId>
+        <inlineHelpText>CSAT Survey link related to this case</inlineHelpText>
+        <label>Survey URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
         <fullName>Time_to_Close__c</fullName>
         <externalId>false</externalId>
         <formula>CASE( MOD( DATEVALUE(CreatedDate) - DATE(1985,6,24),7), 

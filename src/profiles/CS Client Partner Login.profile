@@ -3214,6 +3214,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProductionSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProductionUpdateSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -39347,6 +39351,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Production__c.First_Date_Production_Billed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Production__c.Pre_Transfer_Reductions__c</field>
         <readable>true</readable>
@@ -43209,6 +43218,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Transfer_Part__c.Bill_Part__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Transfer_Part__c.Change_in_Utilization__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -63436,6 +63450,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Product_Tariff__c-Product Tariff Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Production__c-Production Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Project_Assemblage__c-Project Assemblage Layout</layout>

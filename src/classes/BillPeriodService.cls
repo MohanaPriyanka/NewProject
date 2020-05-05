@@ -8,6 +8,8 @@
 public with sharing class BillPeriodService {
 
     private Set<Id> verifiedBillPeriods = new Set<Id>();
+    public Map<Id, Bill_Period__c> completedBillPeriods = new Map<Id, Bill_Period__c>();
+
     @TestVisible
     private static ProductionSelector productionSelector = new ProductionSelector();
 
@@ -18,10 +20,16 @@ public with sharing class BillPeriodService {
 
     public void onBeforeUpdate(List<Bill_Period__c> bpList, Map<Id, Bill_Period__c> oldMap) {
         evaluateStatus(bpList, oldMap);
+        List<Production__c> productionsToUpdate = new List<Production__c>();
         if (verifiedBillPeriods.size() > 0 ) {
-            List<Production__c> verifiedProductions = verifyProductions();
-            updateRecords(verifiedProductions);
+            productionsToUpdate = verifyProductions();
         }
+
+        if (completedBillPeriods.size() > 0) {
+            productionsToUpdate = markFirstBillDate();
+        }
+
+        updateRecords(productionsToUpdate);
     }
 
     private void evaluateStatus(List<Bill_Period__c> bpList, Map<Id, Bill_Period__c> oldMap) {
@@ -36,6 +44,8 @@ public with sharing class BillPeriodService {
                         bp.Date_Credit_Transfers_QCed__c = Date.today();
                     } when 'Generated' {
                         bp.Date_Generated__c = Date.Today();
+                    } when 'Bill Run Complete' {
+                        completedBillPeriods.put(bp.Id, bp);
                     }
                 }
 
@@ -63,6 +73,19 @@ public with sharing class BillPeriodService {
         }
 
         return verifiedProductions;
+    }
+
+    public List<Production__c> markFirstBillDate() {
+        Map<Production__c, Bill_Period__c> productionToBillPeriod = productionSelector.selectProductionByBillPeriod(completedBillPeriods);
+        List<Production__c> billedProductions = new List<Production__c>();
+        for (Production__c prod : productionToBillPeriod.keySet()) {
+            if (prod.First_Date_Production_Billed__c == null) {
+                prod.First_Date_Production_Billed__c = productionToBillPeriod.get(prod).Bill_Date__c;
+                billedProductions.add(prod);
+            }
+        }
+
+        return billedProductions;
     }
 
 
