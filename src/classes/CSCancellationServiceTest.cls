@@ -222,7 +222,7 @@ public with sharing class CSCancellationServiceTest {
             FROM Case
             WHERE Subject LIKE '%finaled UAL%'
         ];
-//failing here
+
         System.assertEquals(0, caseList.size());
     }
 
@@ -290,7 +290,7 @@ public with sharing class CSCancellationServiceTest {
             FROM Case
             WHERE Subject LIKE '%finaled UAL%'
         ];
-//failing for cases
+
         System.assertEquals(1, caseList.size());
     }
 
@@ -345,7 +345,7 @@ public with sharing class CSCancellationServiceTest {
             FROM Case
             WHERE Subject LIKE '%finaled UAL%'
         ];
-//failing here
+
         System.assertEquals(3, caseList.size());
     }
 
@@ -882,7 +882,7 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testAccountWithCancelledUASIsUpdated() {
         // Set up an account with two UALs that are removed at different times
-        Shared_Solar_System__c sss1 = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'SSS1'];
+        Shared_Solar_System__c sss1 = [SELECT Id, Utility_NMC_Tariff__r.Id FROM Shared_Solar_System__c WHERE Name = 'SSS1'];
         Account propAcct1 = [SELECT Id FROM Account WHERE Name = 'Prop Account 1'];
         Product2 normalCSProduct = [SELECT Id FROM Product2 WHERE Name = 'BlueWave Community Solar'];
         Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '18-0515 Oxford Barrett St. P1'];
@@ -899,6 +899,7 @@ public with sharing class CSCancellationServiceTest {
                 Shared_Solar_System__c = sss1.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
+                NMC_Tariff__c = sss1.Utility_NMC_Tariff__r.Id,
                 Product_Line__c = 'Community Solar',
                 CloseDate = System.today());
         insert opportunityFour;
@@ -1542,7 +1543,8 @@ public with sharing class CSCancellationServiceTest {
 
         // First we need to set up a new opportunity and subscription
         Opportunity opportunity = [
-            SELECT Id, Name, AccountId, Shared_Solar_System__c, StageName, Product__c, Product_Line__c, CloseDate
+            SELECT Id, Name, AccountId, Shared_Solar_System__c, StageName, Product__c, Product_Line__c,
+                CloseDate, NMC_Tariff__c
             FROM Opportunity
             LIMIT 1
         ];
@@ -1584,7 +1586,7 @@ public with sharing class CSCancellationServiceTest {
         // First we need to set up a new opportunity and subscription
         Opportunity opportunity = [
             SELECT Id, Name, AccountId, Shared_Solar_System__c, StageName, Product__c, Product_Line__c, CloseDate,
-                Product__r.Cancellation_Paragraph_Two__c, Product__r.Cancellation_Paragraph_Three__c
+                Product__r.Cancellation_Paragraph_Two__c, Product__r.Cancellation_Paragraph_Three__c, NMC_Tariff__c
             FROM Opportunity
             LIMIT 1
         ];

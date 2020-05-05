@@ -170,6 +170,7 @@ public without sharing class CSCancellationService {
     public static void processFinaledUtilityAccounts(List<Utility_Account_Subscription__c> uasesToMarkInactive) {
         UtilityAccountSubscriptions subscriptions = new UtilityAccountSubscriptions(uasesToMarkInactive);
         subscriptions.handleFinaledAccounts();
+        subscriptions.zeroInactiveSubscriptions();
         createCaseToTransferOrTerminate(subscriptions);
     }
 
