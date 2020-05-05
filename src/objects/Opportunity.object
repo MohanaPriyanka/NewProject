@@ -9992,8 +9992,8 @@ ISPICKVAL(Homeowner_s_Insurance_Status__c,&quot;Received: Approved&quot;)</error
         <description>If a CS Anchor Opp stage equals Complete and SSS assigned to opp is not management only, partner lookup must be populated.</description>
         <errorConditionFormula>IF( 
 AND(
-RecordType.Name = &apos;BFG - Community Solar (Anchor)&apos;,
-ISPICKVAL(  StageName , &apos;Complete&apos; ), 
+RecordTypeId = &apos;012j0000000n2t9&apos;,
+ISPICKVAL( StageName , &apos;Complete&apos; ), 
 NOT(ISPICKVAL( Shared_Solar_System__r.CS_Services_Type__c, &apos;Management Only&apos; )),
 ISBLANK( Partner_tag_lookup__c )
 ), 
