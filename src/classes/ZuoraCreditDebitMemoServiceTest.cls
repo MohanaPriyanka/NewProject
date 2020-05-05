@@ -383,4 +383,32 @@ public class ZuoraCreditDebitMemoServiceTest {
             System.assert(bwe.getMessage().contains('Could not relate adjustment'));
         }
     }
+
+    @IsTest
+    private static void testConvertSFAdjustToCreditMemoFromInvoiceMatch() {
+        String adjustJSON = '{' +
+            '"Id":"a0p3I000002ziZoQAI",' +
+            '"Name":"Test",' +
+            '"Utility_Account_Subscription__c":"a1d3I000000HP97QAG",' +
+            '"Client__c":"0013I00000I77klQAB",' +
+            '"Adjustment_Amount__c":-100.00,' +
+            '"Adjustment_Type__c":"Client Credit",' +
+            '"Credits_Allocated__c":100.00,' +
+            '"Utility_Account_Subscription__r":{' +
+            '"Id":"a1d3I000000HP97QAG",' +
+            '"Opportunity__c":"0063I000002Y9OuQAK",' +
+            '"Utility_Account_Log__c":"a1b3I000000Hk6fQAC",' +
+            '"Opportunity__r":{"Id":"0063I000002Y9OuQAK","Shared_Solar_System__c":"a1J3I0000003QoOUAU","AccountId":"0013I00000I77l8QAB",' +
+            '"Shared_Solar_System__r":{"Id":"a1J3I0000003QoOUAU","Utility__c":"a1M3I0000009HazUAE","Name":"Project E Dog St","Unique_ID__c":"SSS-000099",' +
+            '"Utility__r":{"Id":"a1M3I0000009HazUAE","Name":"National Grid"}},' +
+            '"Account":{"Id":"0013I00000I77l8QAB","Zuora_Id__c":"2c92c0f96e3aa331016e3ca8eb2c48b7"}}},' +
+            '"Client__r":{"Id":"0013I00000I77klQAB","Account_Number__c":"BW-00000385"}}';
+        Bill_Adjustment__c adjust = (Bill_Adjustment__c) JSON.deserialize(adjustJSON, Bill_Adjustment__c.class);
+        ZuoraAPI.CreditMemo creditMemo = ZuoraCreditDebitMemoService.convertSFAdjustToCreditMemoFromInvoice(adjust, System.today());
+        System.assertEquals('SSS-000099', creditMemo.Project_Zcustom);
+        System.assertEquals('BW-00000385', creditMemo.ClientOwner_Zcustom);
+        System.assertEquals('2c92c094713a9cad01714d1bb4b26b4d', creditMemo.invoiceId);
+        System.assertEquals(1, creditMemo.items.size());
+        System.assertEquals('2c92c094713a9cad01714d1bb4de6b4e', creditMemo.items[0].invoiceItemId);
+    }
 }
