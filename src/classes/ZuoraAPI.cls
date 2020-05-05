@@ -3,7 +3,7 @@
  * Description: 
  * Test: 
  *************************************************************************************/
-@SuppressWarnings('PMD.ExcessivePublicCount, PMD.VariableNamingConventions, PMD.TooManyFields')
+@SuppressWarnings('PMD.ExcessivePublicCount, PMD.VariableNamingConventions, PMD.TooManyFields, PMD.ExcessiveClassLength')
 public with sharing class ZuoraAPI {
     // https://www.zuora.com/developer/api-reference/#tag/RSA-Signatures
     public class RSASignature {
@@ -219,6 +219,15 @@ public with sharing class ZuoraAPI {
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
         public String CRM_ID_Zcustom;
+        // For creating credit memos from invoice
+        public List<CreditMemoItem> items;
+        public String invoiceId;
+    }
+
+    public class CreditMemoItem {
+        public Decimal amount;
+        public String invoiceItemId;
+        public String skuName;
     }
 
     public class CreditMemoWithParts {

@@ -15,44 +15,71 @@ public class ZuoraCreditDebitMemoService {
 
     public static Bill_Adjustment__c createCreditOrDebitMemo(Bill_Adjustment__c adjustment, Date effectiveDate){
         if (adjustment.Adjustment_Amount__c < 0){
-            ZuoraAPI.CreditMemo creditMemo;
+            return handleCreditMemo(adjustment, effectiveDate);
+        } else {
+            return handleDebitMemo(adjustment, effectiveDate);
+        }
+    }
+
+    private static Bill_Adjustment__c handleDebitMemo(Bill_Adjustment__c adjustment, Date effectiveDate) {
+        ZuoraAPI.DebitMemo debitMemo;
+        HttpResponse response;
+        if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
+            try {
+                debitMemo = convertSFAdjustToDebitMemoFromInvoice(adjustment, effectiveDate);
+                debitMemo.effectiveDate = effectiveDate;
+                response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/invoices/' + debitMemo.invoiceId + '/debitmemos', debitMemo, false);
+            } catch (Util.BWException bwe) {
+                Logger.logLater(
+                    'ZuoraCreditDebitMemoService',
+                    'createCreditOrDebitMemo',
+                    'Handle this adjustment manually: ' + bwe.getMessage() + '\n' + bwe.getStackTraceString(),
+                    Logger.ERROR
+                );
+                return null;
+            }
+        } else {
+            debitMemo = convertSFAdjustToDebitMemo(adjustment);
+            debitMemo.effectiveDate = effectiveDate;
+            response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/debitmemos', debitMemo, false);
+        }
+
+        adjustment = handleAPIResponse(
+            debitMemo.CRM_ID_Zcustom,
+            response,
+            false
+        );
+        return adjustment;
+    }
+
+    private static Bill_Adjustment__c handleCreditMemo(Bill_Adjustment__c adjustment, Date effectiveDate) {
+        ZuoraAPI.CreditMemo creditMemo;
+        HttpResponse response;
+        if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
+            try {
+                creditMemo = convertSFAdjustToCreditMemoFromInvoice(adjustment, effectiveDate);
+                creditMemo.effectiveDate = effectiveDate;
+                response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/invoices/' + creditMemo.invoiceId + '/creditmemos', creditMemo, false);
+            } catch (Util.BWException bwe) {
+                Logger.logLater(
+                    'ZuoraCreditDebitMemoService',
+                    'createCreditOrDebitMemo',
+                    'Handle this adjustment manually: ' + bwe.getMessage() + '\n' + bwe.getStackTraceString(),
+                    Logger.ERROR
+                );
+                return null;
+            }
+        } else {
             creditMemo = convertSFAdjustToCreditMemo(adjustment);
             creditMemo.effectiveDate = effectiveDate;
-            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/creditmemos',creditMemo,false);
-            adjustment = handleAPIResponse(
-                creditMemo.CRM_ID_Zcustom,
-                response,
-                true
-            );
-        } else {
-            ZuoraAPI.DebitMemo debitMemo;
-            HttpResponse response;
-            if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
-                try {
-                    debitMemo = convertSFAdjustToDebitMemoFromInvoice(adjustment, effectiveDate);
-                    debitMemo.effectiveDate = effectiveDate;
-                    response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/invoices/'+debitMemo.invoiceId+'/debitmemos',debitMemo,false);
-                } catch (Util.BWException bwe) {
-                    Logger.logLater(
-                        'ZuoraCreditDebitMemoService',
-                        'createCreditOrDebitMemo',
-                        'Handle this adjustment manually: ' + bwe.getMessage() + '\n' + bwe.getStackTraceString(),
-                        Logger.ERROR
-                    );
-                    return null;
-                }
-            } else {
-                debitMemo = convertSFAdjustToDebitMemo(adjustment);
-                debitMemo.effectiveDate = effectiveDate;
-                response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/debitmemos',debitMemo,false);
-            }
-
-            adjustment = handleAPIResponse(
-                debitMemo.CRM_ID_Zcustom,
-                response,
-                false
-            );
+            response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/creditmemos', creditMemo, false);
         }
+
+        adjustment = handleAPIResponse(
+            creditMemo.CRM_ID_Zcustom,
+            response,
+            true
+        );
         return adjustment;
     }
 
@@ -135,6 +162,45 @@ public class ZuoraCreditDebitMemoService {
         creditMemo.charges = new List<ZuoraAPI.CreditCharge>{chargeLine};
         creditMemo.CRM_ID_Zcustom = adjust.Id;
         creditMemo.reasonCode = adjust.Adjustment_Type__c;
+        return creditMemo;
+    }
+
+    @TestVisible
+    private static ZuoraAPI.CreditMemo convertSFAdjustToCreditMemoFromInvoice(Bill_Adjustment__c adjust, Date effectiveDate) {
+        String accountId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
+        String client = adjust.Client__r.Account_Number__c;
+        String project = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
+
+        ZuoraAPI.CreditMemo creditMemo = new ZuoraAPI.CreditMemo();
+        ZuoraAPI.CreditMemoItem creditMemoItem = new ZuoraAPI.CreditMemoItem();
+        creditMemoItem.amount = -adjust.Adjustment_Amount__c;
+        creditMemoItem.skuName = 'Utility Credit';
+        creditMemo.items = new List<ZuoraAPI.CreditMemoItem>{creditMemoItem};
+        creditMemo.effectiveDate = effectiveDate;
+        creditMemo.reasonCode = adjust.Adjustment_Type__c;
+        creditMemo.Project_Zcustom = project;
+        creditMemo.ClientOwner_Zcustom = client;
+        creditMemo.CRM_ID_Zcustom = adjust.Id;
+
+        Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
+            ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(accountId);
+        List<ZuoraAPI.InvoiceItem> invoiceItems = invoiceService.getRecentItems(accountId);
+        invoiceItems.sort();
+        for (ZuoraAPI.InvoiceItem invoiceItem : invoiceItems) {
+            ZuoraOutstandingItemsService.RatePlanCharge ratePlanCharge = ratePlanChargesByChargeId.get(invoiceItem.chargeId);
+            if (ratePlanCharge != null && ratePlanCharge.matches(client, project)) {
+                creditMemo.invoiceId = invoiceItem.invoiceId;
+                creditMemoItem.invoiceItemId = invoiceItem.id;
+                break;
+            }
+        }
+
+        if (creditMemo.invoiceId == null || creditMemoItem.invoiceItemId == null) {
+            throw new Util.BWException('Could not relate adjustment ' + adjust.Id +
+                ' with client: ' + client + ' and project: ' + project + ' to an invoice.\n' +
+                'RatePlanCharges: ' + JSON.serialize(ratePlanChargesByChargeId) + '\n' +
+                'InvoiceItems: ' + JSON.serialize(invoiceItems));
+        }
         return creditMemo;
     }
 
