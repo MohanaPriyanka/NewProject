@@ -3336,14 +3336,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProductionUpdateSelector</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ProductionUpdateSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>QueueableApplicationReview</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3597,10 +3589,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UASSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UASTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>

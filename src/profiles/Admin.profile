@@ -1067,10 +1067,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>UASTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>UserAndGroupSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
