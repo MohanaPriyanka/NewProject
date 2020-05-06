@@ -4,6 +4,8 @@
  */
 
 public with sharing class ZuoraReturnedPaymentService {
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
     public Zuora__PaymentMethod__c payMethod;
 
     // Used to reverse payments that are found to be returned by leaving the payment as applied, but creating a new
@@ -22,10 +24,11 @@ public with sharing class ZuoraReturnedPaymentService {
 
     public List<ZuoraAPI.DebitMemo> convertPaymentToDebitMemos(ZuoraAPI.Payment payment) {
         HttpResponse response;
-        ZuoraAPI.OrderBySubscriptionOwner subscription =
-            ZuoraSubscriptionService.getOrderBySubscriptionOwner(payment.accountId);
-
-        response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/payments/'+ payment.Id +'/parts', null, false);
+        ZuoraAPI.OrderBySubscriptionOwner subscription;
+        if (!featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
+            subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(payment.accountId);
+        }
+        response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/payments/'+ payment.id +'/parts', null, false);
         ZuoraAPI.PaymentParts paymentParts =
             (ZuoraAPI.PaymentParts) JSON.deserialize(response.getBody(), ZuoraAPI.PaymentParts.class);
 
@@ -33,7 +36,7 @@ public with sharing class ZuoraReturnedPaymentService {
         for (ZuoraAPI.PaymentPart paymentPart : paymentParts.parts) {
             response = ZuoraAPIHelper.callJsonEndpoint(
                 'GET',
-                '/v1/payments/' + payment.Id + '/parts/' + paymentPart.id + '/itemparts',
+                '/v1/payments/' + payment.id + '/parts/' + paymentPart.id + '/itemparts',
                 null,
                 false
             );
@@ -57,48 +60,62 @@ public with sharing class ZuoraReturnedPaymentService {
     private ZuoraAPI.DebitMemo getDebitMemoFromDebitMemoItem(String debitMemoId, ZuoraAPI.OrderBySubscriptionOwner subscription, ZuoraAPI.PaymentPartItem paymentPartItem, ZuoraAPI.Payment payment) {
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/debitmemos/' + debitMemoId, null, false);
         ZuoraAPI.ZuoraDebitMemo appliedDebitMemo = (ZuoraAPI.ZuoraDebitMemo) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.ZuoraDebitMemo.class);
-        String productRatePlanChargeId =
-            subscription.getProductRatePlanChargeId(appliedDebitMemo.ClientOwner_Zcustom, appliedDebitMemo.Project_Zcustom);
-
-        ZuoraAPI.DebitMemo debitMemo = getDebitMemoTemplateFromPayment(paymentPartItem, productRatePlanChargeId, payment);
-        debitMemo.Project_Zcustom = appliedDebitMemo.Project_Zcustom;
-        debitMemo.ClientOwner_Zcustom = appliedDebitMemo.ClientOwner_Zcustom;
+        ZuoraAPI.DebitMemo debitMemo;
+        if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
+            debitMemo = getDebitMemoTemplateFromPayment(paymentPartItem, null, payment, appliedDebitMemo.Project_Zcustom, appliedDebitMemo.ClientOwner_Zcustom);
+        } else {
+            String productRatePlanChargeId =
+                subscription.getProductRatePlanChargeId(appliedDebitMemo.ClientOwner_Zcustom, appliedDebitMemo.Project_Zcustom);
+            debitMemo = getDebitMemoTemplateFromPayment(paymentPartItem, productRatePlanChargeId, payment, appliedDebitMemo.Project_Zcustom, appliedDebitMemo.ClientOwner_Zcustom);
+        }
         return debitMemo;
     }
 
+    // Uses up to seven callouts, invoice-item, rate-plan-charge, and then to associate the DM to an old invoice item
     private ZuoraAPI.DebitMemo getDebitMemoFromInvoiceItem(ZuoraAPI.PaymentPartItem paymentPartItem, ZuoraAPI.OrderBySubscriptionOwner subscription, ZuoraAPI.Payment payment) {
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/object/invoice-item/' + paymentPartItem.invoiceItemId, null, false);
         ZuoraAPI.InvoiceItem invoiceItem = (ZuoraAPI.InvoiceItem) JSON.deserialize(response.getBody(), ZuoraAPI.InvoiceItem.class);
         response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/object/rate-plan-charge/' + invoiceItem.RatePlanChargeId + '?fields=Project__c,ClientOwner__c', null, false);
         ZuoraAPI.RatePlanCharge ratePlanCharge =
             (ZuoraAPI.RatePlanCharge) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.RatePlanCharge.class);
-
-        String productRatePlanChargeId =
-            subscription.getProductRatePlanChargeId(ratePlanCharge.ClientOwner_Zcustom, ratePlanCharge.Project_Zcustom);
-
-        ZuoraAPI.DebitMemo debitMemo = getDebitMemoTemplateFromPayment(paymentPartItem, productRatePlanChargeId, payment);
-        debitMemo.Project_Zcustom = ratePlanCharge.Project_Zcustom;
-        debitMemo.ClientOwner_Zcustom = ratePlanCharge.ClientOwner_Zcustom;
+        ZuoraAPI.DebitMemo debitMemo;
+        if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
+            debitMemo = getDebitMemoTemplateFromPayment(paymentPartItem, null, payment, ratePlanCharge.Project_Zcustom, ratePlanCharge.ClientOwner_Zcustom);
+        } else {
+            String productRatePlanChargeId =
+                subscription.getProductRatePlanChargeId(ratePlanCharge.ClientOwner_Zcustom, ratePlanCharge.Project_Zcustom);
+            debitMemo = getDebitMemoTemplateFromPayment(paymentPartItem, productRatePlanChargeId, payment, ratePlanCharge.Project_Zcustom, ratePlanCharge.ClientOwner_Zcustom);
+        }
         return debitMemo;
     }
 
-    private ZuoraAPI.DebitMemo getDebitMemoTemplateFromPayment(ZuoraAPI.PaymentPartItem paymentPartItem, String productRatePlanChargeId, ZuoraAPI.Payment payment) {
+    private ZuoraAPI.DebitMemo getDebitMemoTemplateFromPayment(ZuoraAPI.PaymentPartItem paymentPartItem, String productRatePlanChargeId, ZuoraAPI.Payment payment, String project, String client) {
         Map<String,String> gatewayNameFromIdMap = gatewayNameFromGatewayIdMap();
 
-        ZuoraAPI.DebitMemoCharge debitCharge = new ZuoraAPI.DebitMemoCharge();
-        debitCharge.amount = paymentPartItem.amount;
-        debitCharge.chargeId = productRatePlanChargeId;
-
         ZuoraAPI.DebitMemo debitMemo = new ZuoraAPI.DebitMemo();
-        debitMemo.accountId = payment.accountId;
         debitMemo.effectiveDate = System.today();
-        debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>{debitCharge};
+        debitMemo.Project_Zcustom = project;
+        debitMemo.ClientOwner_Zcustom = client;
+        debitMemo.CRM_ID_Zcustom = payment.number_Zreserved;
+        if (productRatePlanChargeId == null) {
+            ZuoraAPI.DebitMemoItem debitMemoItem = new ZuoraAPI.DebitMemoItem();
+            debitMemoItem.amount = paymentPartItem.amount;
+            debitMemoItem.skuName = 'Utility Credit';
+            debitMemo.items = new List<ZuoraAPI.DebitMemoItem>{debitMemoItem};
+            ZuoraCreditDebitMemoService.setDebitMemoInvoiceItem(payment.accountId, debitMemo);
+        } else {
+            ZuoraAPI.DebitMemoCharge debitCharge = new ZuoraAPI.DebitMemoCharge();
+            debitCharge.amount = paymentPartItem.amount;
+            debitCharge.chargeId = productRatePlanChargeId;
+            debitMemo.accountId = payment.accountId;
+            debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>{debitCharge};
+        }
         debitMemo.reasonCode = 'Returned Payment';
         debitMemo.comment = 'Original Payment ' + payment.id + ', PaymentPartItem ' + paymentPartItem.id;
         // Stamp payment values for later use in GL download:
         debitMemo.ArchivedChargentData_Zcustom = payment.ArchivedChargentData_Zcustom;
         debitMemo.Gateway_Zcustom = gatewayNameFromIdMap.get(payment.gatewayId);
-        debitMemo.Lockbox_Zcustom = payment.Lockbox_Zcustom;
+        debitMemo.Lockbox_Zcustom = payment.Lockbox_zcustom;
 
         List<Zuora__PaymentMethod__c> methods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(new List<String>{payment.PaymentMethodId});
         if (methods.size() > 0){

@@ -13,6 +13,7 @@ public with sharing class ZuoraInvoiceService {
     public Map<Id, Zuora__ZInvoice__c> invoiceMap;
     @TestVisible
     private static LetterStreamInsertSelector insertSelector = new LetterStreamInsertSelector();
+    private static MultiMap invoiceItemByAccountCache = MultiMap.newListInstance();
 
     public ZuoraInvoiceService() {
     }
@@ -271,6 +272,9 @@ public with sharing class ZuoraInvoiceService {
     }
 
     public List<ZuoraAPI.InvoiceItem> getRecentItems(String zuoraAcctId) {
+        if (invoiceItemByAccountCache.containsKey(zuoraAcctId)) {
+            return (List<ZuoraAPI.InvoiceItem>) CollectionUtil.toTypedList(invoiceItemByAccountCache.getValues(zuoraAcctId), new List<ZuoraAPI.InvoiceItem>());
+        }
         // Just getting a year's worth of invoices to constrain the query
         Datetime startDate = Datetime.now() - 365;
         String queryString = invoiceSelector.getByAccountId(zuoraAcctId) + 'AND InvoiceDate > \'' + startDate.format('yyyy-MM-dd') + '\'';
@@ -285,6 +289,7 @@ public with sharing class ZuoraInvoiceService {
         String response = ZuoraAPIHelper.query(queryString, false);
         ZuoraOutstandingItemsService.QueryResultInvoiceItems queriedInvoiceItems =
             (ZuoraOutstandingItemsService.QueryResultInvoiceItems) JSON.deserialize(response, ZuoraOutstandingItemsService.QueryResultInvoiceItems.class);
-        return (queriedInvoiceItems.records==null?new List<ZuoraAPI.InvoiceItem>():queriedInvoiceItems.records);
+        invoiceItemByAccountCache.putValues(zuoraAcctId, queriedInvoiceItems.records==null?new List<ZuoraAPI.InvoiceItem>():queriedInvoiceItems.records);
+        return (List<ZuoraAPI.InvoiceItem>) CollectionUtil.toTypedList(invoiceItemByAccountCache.getValues(zuoraAcctId), new List<ZuoraAPI.InvoiceItem>());
     }
 }
