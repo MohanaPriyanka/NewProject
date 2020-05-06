@@ -94,7 +94,6 @@ public without sharing class PartnerCommissionService{
                 Name = opp.Partner_tag_lookup__r.Name + ' - ' + opp.Name + ' - ' + commissionPaymentType.LEFT(80),
                 Opportunity__c = opp.Id,
                 Status__c = 'Pending Approval',
-                Type__c = commissionPaymentType,
                 Commission_Type__c = commissionPaymentType
             );
             checkForDuplicatesAndAddToList(newPayment, pendingCommission.typeOfCommission);

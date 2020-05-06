@@ -97,7 +97,7 @@ public without sharing class OpportunitiesSelector {
             SELECT Id, StageName, Product_Line__c,  Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
                 CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_Up_Front__c, Product__c,
                 Commission_Structure__c, Partner_tag_lookup__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name,
-                (SELECT Id FROM Commission_Payments__r WHERE Status__c = 'Approved' AND Type__c = 'Contract Execution')
+                (SELECT Id FROM Commission_Payments__r WHERE Status__c = 'Approved' AND Commission_Type__c = 'Contract Execution')
             FROM Opportunity
             WHERE Id IN : opportunityIds
         ];
