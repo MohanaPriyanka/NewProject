@@ -72,6 +72,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getCreditMemoParts();
         } else if (endpoint.contains('/v1/invoices/') && endpoint.contains('/items')) {
             return getInvoiceItem(endpoint);
+        } else if (endpoint.contains('/v1/invoices/') && endpoint.contains('/debitmemos')) {
+            return createDebitMemo();
         } else if (endpoint.contains('/v1/debitmemos/') && endpoint.contains('/items')) {
             return getDebitMemoItems(endpoint);
         } else if (endpoint.contains('/v1/creditmemos?status=Posted') || endpoint.contains('/v1/creditmemos/')) {
@@ -768,8 +770,18 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '"ChargeNumber":"C-00003171",' +
                 '"Name":"Utility Credit",' +
                 '"Project__c":"SSS-000099"}';
+            ratePlan += ',{"ClientOwner__c":"BW-0023170",' +
+                '"Id":"2c92c0f96ae3b195016ae5e3665e0c09",' +
+                '"ChargeNumber":"C-00003172",' +
+                '"Name":"Utility Credit",' +
+                '"Project__c":"SSS-000024"}';
+            ratePlan += ',{"ClientOwner__c":"BW-00000385",' +
+                '"Id":"2c92c0fa6e3a9391016e3cb3d7eb7962",' +
+                '"ChargeNumber":"C-00003173",' +
+                '"Name":"Utility Credit",' +
+                '"Project__c":"SSS-000098"}';
             if (reqBody.contains('query')) {
-                res.setBody('{"records":[' + ratePlan + '], "size":1,"done":true}');
+                res.setBody('{"records":[' + ratePlan + '], "size":3,"done":true}');
             } else {
                 res.setBody(ratePlan);
             }
@@ -780,7 +792,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '"Name":"Utility Credit",' +
                 '"Project__c":"SSS-000098"}';
             if (reqBody.contains('query')) {
-                res.setBody('{"records":[' + ratePlan + '], "size":1,"done":true}');
+                res.setBody('{"records":[' + ratePlan + '], "size":3,"done":true}');
             } else {
                 res.setBody(ratePlan);
             }
@@ -803,7 +815,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         HttpResponse res = getJSON();
         res.setBody('{"records":[' +
             '{"InvoiceId":"2c92c094713a9cad01714d1bb4b26b4d","ChargeDate":"2020-04-05T21:29:53.000-04:00","ChargeId":"2c92c0f96ae3b195016ae5e3665e0c08","Id":"2c92c094713a9cad01714d1bb4de6b4e"},' +
-            '{"InvoiceId":"2c92c094713a9cad01714d1bb4b26b4d","ChargeDate":"2020-04-05T21:29:53.000-04:00","ChargeId":"2c92c0fa6e3a9391016e3cb3d7eb7962","Id":"2c92c094713a9cad01714d1bb4de6b4f"}],' +
+            '{"InvoiceId":"2c92c094713a9cad01714d1bb4b26b4d","ChargeDate":"2020-04-05T21:29:53.000-04:00","ChargeId":"2c92c0fa6e3a9391016e3cb3d7eb7962","Id":"2c92c094713a9cad01714d1bb4de6b4f"},' +
+            '{"InvoiceId":"2c92c094713a9cad01714d1bb4b26b4e","ChargeDate":"2020-04-05T21:29:53.000-04:00","ChargeId":"2c92c0f96ae3b195016ae5e3665e0c09","Id":"2c92c094713a9cad01714d1bb4de6b4g"}],' +
             '"done":true,"size":2}');
         return res;
     }

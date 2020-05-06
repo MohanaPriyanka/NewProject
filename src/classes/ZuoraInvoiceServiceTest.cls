@@ -504,8 +504,16 @@ public with sharing class ZuoraInvoiceServiceTest {
     @IsTest
     private static void testGetRecentItems() {
         ZuoraInvoiceService invoiceService = new ZuoraInvoiceService();
-        List<ZuoraAPI.InvoiceItem> invoiceItems = invoiceService.getRecentItems('');
-        System.assertEquals(2, invoiceItems.size());
+        System.assertEquals(0, ZuoraAPIHelper.numberCalloutsForZuoraNamespace);
+        List<ZuoraAPI.InvoiceItem> invoiceItems = invoiceService.getRecentItems('Account1');
+        System.assertEquals(2, ZuoraAPIHelper.numberCalloutsForZuoraNamespace,
+            'Expected InvoiceService.getRecentItems to use 2 callouts the first time');
+        invoiceService.getRecentItems('Account1');
+        System.assertEquals(2, ZuoraAPIHelper.numberCalloutsForZuoraNamespace,
+            'Expected InvoiceService.getRecentItems to use no callouts if a cache hit');
+        invoiceService.getRecentItems('Account2');
+        System.assertEquals(4, ZuoraAPIHelper.numberCalloutsForZuoraNamespace,
+            'Expected InvoiceService.getRecentItems to use 2 callouts if a cache miss');
     }
 
     /*************

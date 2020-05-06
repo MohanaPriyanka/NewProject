@@ -393,10 +393,15 @@ public with sharing class ZuoraSubscriptionServiceTest {
 
     @IsTest
     private static void testGetAllRatePlanChargesByAccountId() {
+        System.assertEquals(0, ZuoraAPIHelper.numberCalloutsForZuoraNamespace);
         Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
             ZuoraSubscriptionService.getAllRatePlanChargesByAccountId('');
-        System.assertEquals(1, ratePlanChargesByChargeId.size(), 'Mock just returns a single rate plan charge');
         System.assertEquals('SSS-000099', ratePlanChargesByChargeId.get('2c92c0f96ae3b195016ae5e3665e0c08').Project_Zcustom);
+        System.assertEquals(3, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use 3 callouts the first time');
+        System.assertEquals(ratePlanChargesByChargeId, ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(''));
+        System.assertEquals(3, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use no callouts for cache hit');
+        ZuoraSubscriptionService.getAllRatePlanChargesByAccountId('NewAccount');
+        System.assertEquals(6, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use 3 more callouts for cache miss');
     }
 
     @IsTest
