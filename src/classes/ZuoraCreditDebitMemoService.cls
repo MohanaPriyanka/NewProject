@@ -85,8 +85,13 @@ public class ZuoraCreditDebitMemoService {
 
     public static void createAndPostDebitMemos(List<ZuoraAPI.DebitMemo> debitMemos) {
         for (ZuoraAPI.DebitMemo debitMemo : debitMemos) {
-            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/debitmemos', debitMemo, false);
-            ZuoraCreditDebitMemoService.handleAPIResponse(null, response, false);
+            if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
+                HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/invoices/' + debitMemo.invoiceId + '/debitmemos', debitMemo, false);
+                ZuoraCreditDebitMemoService.handleAPIResponse(null, response, false);
+            } else {
+                HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/debitmemos', debitMemo, false);
+                ZuoraCreditDebitMemoService.handleAPIResponse(null, response, false);
+            }
         }
     }
 
@@ -127,6 +132,14 @@ public class ZuoraCreditDebitMemoService {
         debitMemo.ClientOwner_Zcustom = client;
         debitMemo.CRM_ID_Zcustom = adjust.Id;
 
+        setDebitMemoInvoiceItem(accountId, debitMemo);
+        return debitMemo;
+    }
+
+    public static void setDebitMemoInvoiceItem(String accountId, ZuoraAPI.DebitMemo debitMemo) {
+        String project = debitMemo.Project_Zcustom;
+        String client = debitMemo.ClientOwner_Zcustom;
+        String relatedId = debitMemo.CRM_ID_Zcustom;
         Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
             ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(accountId);
         List<ZuoraAPI.InvoiceItem> invoiceItems = invoiceService.getRecentItems(accountId);
@@ -135,21 +148,20 @@ public class ZuoraCreditDebitMemoService {
             ZuoraOutstandingItemsService.RatePlanCharge ratePlanCharge = ratePlanChargesByChargeId.get(invoiceItem.chargeId);
             if (ratePlanCharge != null && ratePlanCharge.matches(client, project)) {
                 debitMemo.invoiceId = invoiceItem.invoiceId;
-                debitMemoItem.invoiceItemId = invoiceItem.id;
+                debitMemo.items[0].invoiceItemId = invoiceItem.id;
                 break;
             }
         }
 
-        if (debitMemo.invoiceId == null || debitMemoItem.invoiceItemId == null) {
-            throw new Util.BWException('Could not relate adjustment ' + adjust.Id +
+        if (debitMemo.invoiceId == null || debitMemo.items[0].invoiceItemId == null) {
+            throw new Util.BWException('Could not relate adjustment or payment ' + relatedId +
                 ' with client: ' + client + ' and project: ' + project + ' to an invoice.\n' +
                 'RatePlanCharges: ' + JSON.serialize(ratePlanChargesByChargeId) + '\n' +
                 'InvoiceItems: ' + JSON.serialize(invoiceItems));
         }
-        return debitMemo;
     }
 
-    public static ZuoraAPI.CreditMemo convertSFAdjustToCreditMemo (Bill_Adjustment__c adjust){
+    public static ZuoraAPI.CreditMemo convertSFAdjustToCreditMemo(Bill_Adjustment__c adjust) {
         // Credit Memo Application assumes we only have one credit item here:
         ZuoraAPI.CreditCharge chargeLine = new ZuoraAPI.CreditCharge();
         chargeLine.amount = (-1*adjust.Adjustment_Amount__c);
@@ -231,7 +243,7 @@ public class ZuoraCreditDebitMemoService {
             }
         } else {
             String errorMessage = 'Memo did not successfully create: ' + memoCRMId + '\n' + response.getBody();
-            Logger.logLater('ZuoraCreditDebitMemoService', 'handleAPIResponse', errorMessage, Logger.ERROR);
+            throw new Util.BWException(errorMessage);
         }
         return adjustToUpdate;
     }
