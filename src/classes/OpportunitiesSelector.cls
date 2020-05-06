@@ -65,8 +65,8 @@ public without sharing class OpportunitiesSelector {
         return [
             SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
                 CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,
-                Commission_Structure__r.Cents_kW_DC_First_Bill__c,
-                Commission_Structure__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name
+                Commission_Structure__r.Cents_kW_DC_First_Bill__c, StageName, Product_Line__c,
+                Commission_Structure__c, Partner_tag_lookup__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name
             FROM Opportunity
             WHERE Commission_Structure__r.Cents_kW_DC_First_Bill__c != null
             AND Commission_Structure__r.Cents_kW_DC_First_Bill__c != 0
@@ -80,8 +80,8 @@ public without sharing class OpportunitiesSelector {
         return [
             SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
                 CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,
-                Commission_Structure__r.Cents_kW_DC_First_Bill__c,
-                Commission_Structure__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name
+                Commission_Structure__r.Cents_kW_DC_First_Bill__c, StageName, Product_Line__c,
+                Commission_Structure__c,  Partner_tag_lookup__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name
             FROM Opportunity
             WHERE Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != null
             AND Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != 0
@@ -91,6 +91,18 @@ public without sharing class OpportunitiesSelector {
             AND AccountId IN : accountIds
         ];
     }
+
+    public List<Opportunity> selectByIdWithApprovedCommissionPayment(Set<Id> opportunityIds) {
+        return [
+            SELECT Id, StageName, Product_Line__c,  Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
+                CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_Up_Front__c, Product__c,
+                Commission_Structure__c, Partner_tag_lookup__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name,
+                (SELECT Id FROM Commission_Payments__r WHERE Status__c = 'Approved' AND Type__c = 'Contract Execution')
+            FROM Opportunity
+            WHERE Id IN : opportunityIds
+        ];
+    }
+
     public List<Opportunity> getOppsFromSSS(Set<Id> sssIds) {
         return [
             SELECT Id, Name,
@@ -98,15 +110,6 @@ public without sharing class OpportunitiesSelector {
                 Shared_Solar_System__r.Id
             FROM Opportunity
             WHERE Shared_Solar_System__r.Id IN : sssIds
-        ];
-    }
-    public List<Opportunity> selectByIdSet(Set<Id> oppIds) {
-        return [
-            SELECT Id, StageName, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
-                CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_Up_Front__c, Product__c,
-                Commission_Structure__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name
-            FROM Opportunity
-            WHERE Id IN : oppIds
         ];
     }
     public Map<Id, Opportunity> getOppsForTestMethods(Set<Id> oppIds) {

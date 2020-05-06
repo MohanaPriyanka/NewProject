@@ -137,4 +137,28 @@ public without sharing class UASSelector {
             'Shared_Solar_System__r.Name,' + fields + ' WHERE Opportunity__c IN :oppIds AND Next_Schedule_Z_Status__c = :szStatus';
         return Database.query(String.escapeSingleQuotes(soql));
     }
+
+    public Map<Id,Decimal> getUASSummaryByOpportunity(Set<Id> oppIds, Boolean useSubscriptionOrders) {
+        Map<Id,Decimal> oppToUASSummaryMap = new Map<Id,Decimal>();
+
+        List<AggregateResult> uasSummary = [
+            SELECT COUNT(Id) numberOfRecords,
+                Opportunity__c opportunityId,
+                SUM(Future_Customer_Subscription_KWDC_Rollup__c) postSubOrderkWSize,
+                SUM(Customer_Subscription_KW_DC__c) preSubOrderkWSize
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__c IN : oppIds
+            AND Next_Schedule_Z_Status__c = 'Active Subscription'
+            GROUP BY Opportunity__c
+        ];
+        for (AggregateResult uasAgg : uasSummary){
+            Id opportunityId = (Id)uasAgg.get('opportunityId');
+            if (useSubscriptionOrders) {
+                oppToUASSummaryMap.put(opportunityId,(Decimal)uasAgg.get('postSubOrderkWSize'));
+            } else {
+                oppToUASSummaryMap.put(opportunityId,(Decimal)uasAgg.get('preSubOrderkWSize'));
+            }
+        }
+        return oppToUASSummaryMap;
+    }
 }

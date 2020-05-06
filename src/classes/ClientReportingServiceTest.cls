@@ -358,8 +358,8 @@ public with sharing class ClientReportingServiceTest {
         System.assertEquals(0, clientALSSDelete.size());
         Test.stopTest();
     }
-
+    
     private static void useMocks() {
-        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
+        UtilityAccountSubscriptionHandler.partnerCommissionHandler = (PartnerCommissionHandler) Test.createStub(PartnerCommissionHandler.class, new PartnerCommissionHandlerTest.MockPartnerCommissionHandler());
     }
 }

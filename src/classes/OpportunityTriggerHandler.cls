@@ -1,10 +1,14 @@
 /*************************************************************************************
- * Test: OpportunityTriggerTest,LeadTriggerHandlerTest,CSCancellationServiceTest, ClientBrandingServiceTest
+ * Test: OpportunityTriggerTest,LeadTriggerHandlerTest,CSCancellationServiceTest,
+ * ClientBrandingServiceTest, PartnerCommissionHandlerTest
  *************************************************************************************/
 
 public without sharing class OpportunityTriggerHandler {
     private Boolean m_isExecuting = false;
     private Integer batchSize = 0;
+
+    @TestVisible
+    private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
 
     public void onBeforeInsert(List<Opportunity> newOppList){
         customIdSwapOpp(newOppList, null);
@@ -16,7 +20,6 @@ public without sharing class OpportunityTriggerHandler {
     public void onBeforeUpdate(List<Opportunity> oldOppList, List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
         customIdSwapOpp(updatedOppList, oldOppMap);
         mapDocuSignRS(updatedOppList, oldOppMap);
-        updateInvoicedSubscription(oldOppMap, newOppMap);
         eventHandling(updatedOppList, oldOppMap);
     }
 
@@ -25,7 +28,7 @@ public without sharing class OpportunityTriggerHandler {
         if (!acctsToCancel.isEmpty()) {
             CSCancellationService.closeAccounts(acctsToCancel);
         }
-
+        createPartnerCommission(oldMap, newMap);
         ClientReportingService.updateClientUAS(newMap, oldMap);
     }
 
@@ -158,36 +161,21 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-    public void updateInvoicedSubscription(Map<ID, Opportunity> oldOpps, Map<ID, Opportunity> newOpps){
-        List<Opportunity> opportunityList = new List<Opportunity>();
-        Map<Id, Decimal> oppUASTotalMap = new Map<Id, Decimal>();
+    public void createPartnerCommission(Map<ID, Opportunity> oldOpps, Map<ID, Opportunity> newOpps){
+        Set<Id> opportunityIdSet = new Set<Id>();
 
         for (Opportunity newOpp : newOpps.values()) {
-            if (oldOpps.get(newOpp.Id).StageName != 'Complete'
-                && newOpp.StageName == 'Complete'
-                && newOpp.Product_Line__c == 'Community Solar'
-                && newOpp.Subscription_Size_for_Invoicing__c == null){
-                    opportunityList.add(newOpp);
+            Opportunity oldOpp = oldOpps.get(newOpp.Id);
+            if (oldOpp.StageName != 'Complete'
+                && newOpp.StageName == 'Complete') {
+                opportunityIdSet.add(newOpp.Id);
+            } else if (oldOpp.Commission_Structure__c != null
+                && oldOpp.Commission_Structure__c != newOpp.Commission_Structure__c){
+                opportunityIdSet.add(newOpp.Id);
             }
-
-            //if sss changes
-
-            // query for client uas where Opportunity ID = opp
-            // update client uas
         }
-        if (opportunityList.size() > 0){
-            for (AggregateResult uasSUM : [SELECT Opportunity__r.Id oppId,
-                                                SUM(Customer_Subscription_KW_DC__c) subscriptionSum
-                                            FROM Utility_Account_Subscription__c
-                                            WHERE Opportunity__r.Id IN : opportunityList
-                                            GROUP BY Opportunity__r.Id]){
-                oppUASTotalMap.put((Id)uasSUM.get('oppId'), (Decimal)uasSUM.get('subscriptionSum'));
-            }
-            for (Opportunity oppToUpdate : opportunityList){
-                if (oppUASTotalMap.containsKey(oppToUpdate.Id)){
-                    oppToUpdate.Subscription_Size_for_Invoicing__c = oppUASTotalMap.get(oppToUpdate.Id);
-                }
-            }
+        if (opportunityIdSet.size() > 0){
+            partnerCommissionHandler.queueCalculatePartnerCommission(opportunityIdSet);
         }
     }
 
