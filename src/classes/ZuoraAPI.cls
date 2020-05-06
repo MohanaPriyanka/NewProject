@@ -887,6 +887,7 @@ public with sharing class ZuoraAPI {
         public String Lockbox_zcustom;
         public String ArchivedChargentData_Zcustom;
         public Boolean success;
+        public String number_Zreserved;
         // Populated by a DataQuery result
         public String CrmId;
         public String GatewayResponse;

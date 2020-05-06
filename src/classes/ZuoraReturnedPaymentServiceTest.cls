@@ -4,7 +4,11 @@
 @IsTest
 public with sharing class ZuoraReturnedPaymentServiceTest {
     public static void useMocks() {
+        useMocks(false);
+    }
+    public static void useMocks(Boolean associateDMToInvoices) {
         ZuoraController.paymentSelector = (ZuoraPaymentSelector) Test.createStub(ZuoraPaymentSelector.class, new MockZuoraPaymentSelector());
+        ZuoraReturnedPaymentService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(associateDMToInvoices));
     }
     @TestSetup public static void testDataSetup() {
         ZuoraCreditDebitMemoServiceTest.testDataSetup();
@@ -39,6 +43,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
 
     @IsTest
     private static void testConvertPaymentToDebitMemos() {
+        useMocks();
         Test.startTest();
         ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService();
         ZuoraAPI.Payment payment = returnedPaymentService.checkIfPaymentIsAlreadyReturned('2c92c0fb6cb90e36016cc137e05d46dc');
@@ -62,14 +67,14 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         System.assertEquals(3, debitMemos.size(), 'Expected to get three debit memos to reverse this payment');
         for (ZuoraAPI.DebitMemo debitMemo : debitMemos) {
             if (debitMemo.charges[0].amount == 13.67) {
-                debitMemo.ClientOwner_Zcustom = 'BW-0023170';
-                debitMemo.Project_Zcustom = 'SSS-000024';
+                System.assertEquals('BW-0023170', debitMemo.ClientOwner_Zcustom);
+                System.assertEquals('SSS-000024', debitMemo.Project_Zcustom);
             } else if (debitMemo.charges[0].amount == 134.70) {
-                debitMemo.ClientOwner_Zcustom = 'BW-00000385';
-                debitMemo.Project_Zcustom = 'SSS-000099';
+                System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
+                System.assertEquals('SSS-000099', debitMemo.Project_Zcustom);
             } else if (debitMemo.charges[0].amount == 120.21) {
-                debitMemo.ClientOwner_Zcustom = 'BW-00000385';
-                debitMemo.Project_Zcustom = 'SSS-000098';
+                System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
+                System.assertEquals('SSS-000098', debitMemo.Project_Zcustom);
             } else {
                 System.assert(false, 'Debit memos should be one of the amounts of the payment part items!');
             }
@@ -96,7 +101,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
     @IsTest
     private static void testPaymentReturnWebservice() {
         Test.startTest();
-        useMocks();
+        useMocks(true);
         ZuoraController.reverseReturnedPayment(Util.getFakeId(Schema.Zuora__Payment__c.SObjectType));
         Test.stopTest();
         Integer paymentCalls = 0, debitMemoCalls = 0;
@@ -128,7 +133,68 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
             AND Severity__c = :Logger.ERROR
         ];
         System.assertEquals(1, errorLogs.size());
-        System.assert(errorLogs[0].Message__c.contains('Not enough callouts'));
+        System.assert(errorLogs[0].Message__c.contains('Not enough callouts'), errorLogs[0].Message__c);
+    }
+
+    @IsTest
+    private static void testNotEnoughCalloutsToReversePaymentWithDMsAssociatedToInvoices() {
+        ZuoraController.paymentSelector = (ZuoraPaymentSelector) Test.createStub(ZuoraPaymentSelector.class, new MockZuoraPaymentSelector());
+        ZuoraReturnedPaymentService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(true));
+        // Reversing the payment requires 10 callouts, plus 6 callouts to create/post debit memos, and 1 to update the payment.
+        // Setting the number of callouts used at 85 won't give it enough
+        ZuoraAPIHelper.numberCalloutsForZuoraNamespace = 85;
+        Test.startTest();
+        ZuoraController.reverseReturnedPayment(Util.getFakeId(Schema.Zuora__Payment__c.SObjectType));
+        Test.stopTest();
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ZuoraController'
+            AND (NOT Method__c = 'getPaymentMethod')
+            AND Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('Not enough callouts'), errorLogs[0].Message__c);
+    }
+
+    @IsTest
+    private static void testConvertPaymentToDebitMemosAssociatedToInvoices() {
+        useMocks(true);
+        Test.startTest();
+        ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService();
+        ZuoraAPI.Payment payment = returnedPaymentService.checkIfPaymentIsAlreadyReturned('2c92c0fb6cb90e36016cc137e05d46dc');
+        List<ZuoraAPI.DebitMemo> debitMemos =
+            returnedPaymentService.convertPaymentToDebitMemos(payment);
+        Test.stopTest();
+        Integer itemPartCalls = 0, invoiceItemCalls = 0, debitMemoCalls = 0;
+        for (ZuoraAPIHelper.EndpointCall endpointCall : ZuoraAPIHelper.endpointsCalled) {
+            if (endpointCall.endpoint.contains('itemparts')) {
+                itemPartCalls++;
+            } else if (endpointCall.endpoint.contains('invoice-item')) {
+                invoiceItemCalls++;
+            } else if (endpointCall.endpoint.contains('debitmemos')) {
+                debitMemoCalls++;
+            }
+        }
+        // This payment has 2 parts: a debit memo and invoice. The invoice has two invoice items
+        System.assertEquals(2, itemPartCalls);
+        System.assertEquals(1, debitMemoCalls);
+        System.assertEquals(2, invoiceItemCalls);
+        System.assertEquals(3, debitMemos.size(), 'Expected to get three debit memos to reverse this payment');
+        for (ZuoraAPI.DebitMemo debitMemo : debitMemos) {
+            if (debitMemo.items[0].amount == 13.67) {
+                System.assertEquals('BW-0023170', debitMemo.ClientOwner_Zcustom);
+                System.assertEquals('SSS-000024', debitMemo.Project_Zcustom);
+            } else if (debitMemo.items[0].amount == 134.70) {
+                System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
+                System.assertEquals('SSS-000099', debitMemo.Project_Zcustom);
+            } else if (debitMemo.items[0].amount == 120.21) {
+                System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
+                System.assertEquals('SSS-000098', debitMemo.Project_Zcustom);
+            } else {
+                System.assert(false, 'Debit memos should be one of the amounts of the payment part items!');
+            }
+        }
     }
 
     /*************
