@@ -169,7 +169,7 @@ public without sharing class OpportunityTriggerHandler {
             if (oldOpp.StageName != 'Complete'
                 && newOpp.StageName == 'Complete') {
                 opportunityIdSet.add(newOpp.Id);
-            } else if (oldOpp.Commission_Structure__c != null
+            } else if (oldOpp.Commission_Structure__c != null && newOpp.Commission_Structure__c != null
                 && oldOpp.Commission_Structure__c != newOpp.Commission_Structure__c){
                 opportunityIdSet.add(newOpp.Id);
             }
