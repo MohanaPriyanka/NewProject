@@ -227,6 +227,7 @@ public with sharing class CSCancellationServiceTest {
     }
 
     @IsTest static void testOneUASIsUpdated() {
+        useMocks(false);
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (systemProperties.isEmpty()) {
             System_Properties__c property = new System_Properties__c(Name = 'System');
@@ -278,9 +279,6 @@ public with sharing class CSCancellationServiceTest {
             System.assertEquals(today, uas.Date_Removed_from_Project__c);
             System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
             System.assertEquals(true, uas.Finaled__c);
-            if (isSOFeatureEnabled()) {
-                System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-            }
         }
 
         //There should be a Partner Support case created for each corresponding account
@@ -295,6 +293,7 @@ public with sharing class CSCancellationServiceTest {
     }
 
     @IsTest static void testAllUASAreUpdated() {
+        useMocks(false);
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (systemProperties.isEmpty()) {
             System_Properties__c property = new System_Properties__c(Name = 'System');
@@ -333,9 +332,6 @@ public with sharing class CSCancellationServiceTest {
             System.assertEquals(today, uas.Date_Removed_from_Project__c);
             System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
             System.assertEquals(true, uas.Finaled__c);
-            if (isSOFeatureEnabled()) {
-                System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-            }
         }
 
         //There should be a Partner Support case created for each corresponding account
@@ -347,6 +343,74 @@ public with sharing class CSCancellationServiceTest {
         ];
 
         System.assertEquals(3, caseList.size());
+    }
+    @IsTest static void testZeroedFinaledAccounts() {
+        useMocks(true);
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.isEmpty()) {
+            System_Properties__c property = new System_Properties__c(Name = 'System');
+            property.Finaled_Case_Owner__c = 'Customer_Care';
+            insert property;
+        } else {
+            systemProperties[0].Finaled_Case_Owner__c = 'Customer_Care';
+            update systemProperties[0];
+        }
+
+        List<Utility_Account_Log__c> ualList = [
+            SELECT Id, Date_Utility_Account_Cancelled__c
+            FROM Utility_Account_Log__c
+        ];
+
+        System.assertEquals(3, ualList.size());
+
+        Date today = Date.today();
+
+
+        Map<Id, Utility_Account_Subscription__c> activeSubscriptionMap = new Map<Id, Utility_Account_Subscription__c>([
+            SELECT Id, Date_Removed_from_Project__c, Next_Schedule_Z_Status__c, Finaled__c,
+                Future_Customer_Subscription_KWDC_Rollup__c, Future_Share_of_System_Rollup__c
+            FROM Utility_Account_Subscription__c
+            WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
+        ]);
+
+        System.assertEquals(3, activeSubscriptionMap.size());
+
+
+        for (Utility_Account_Log__c ual : ualList) {
+            ual.Date_Utility_Account_Cancelled__c = today;
+        }
+
+        update ualList;
+
+        List<Utility_Account_Subscription__c> uasUpdatedList = [
+            SELECT Id, Date_Removed_from_Project__c, Next_Schedule_Z_Status__c, Finaled__c,
+                Future_Customer_Subscription_KWDC_Rollup__c
+            FROM Utility_Account_Subscription__c
+            WHERE Utility_Account_Log__r.Date_Utility_Account_Cancelled__c != NULL
+        ];
+
+        System.assertEquals(3, uasUpdatedList.size());
+
+        for (Utility_Account_Subscription__c uas : uasUpdatedList) {
+            System.assertEquals(today, uas.Date_Removed_from_Project__c);
+            System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
+            System.assertEquals(true, uas.Finaled__c);
+            System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+        }
+
+        List<Subscription_Order__c> zeroSOList = [
+            SELECT Id, Type__c, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Id,
+                Approved_Change_in_Subscription__c, Approved_Change_in_Percent_Share__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c IN :activeSubscriptionMap.keySet()
+            AND Type__c = 'Cancellation'
+        ];
+
+        System.assertEquals(3, zeroSOList.size());
+        for (Subscription_Order__c so : zeroSOList) {
+            System.assertEquals(so.Approved_Change_in_Subscription__c, (-1)*activeSubscriptionMap.get(so.Utility_Account_Subscription__r.Id).Future_Customer_Subscription_KWDC_Rollup__c);
+            System.assertEquals(so.Approved_Change_in_Percent_Share__c, (-1)*activeSubscriptionMap.get(so.Utility_Account_Subscription__r.Id).Future_Share_of_System_Rollup__c);
+        }
     }
 
     @IsTest static void setupDataForOppCancellationIsCorrect() {
@@ -1753,4 +1817,9 @@ public with sharing class CSCancellationServiceTest {
 
 
     }
+
+    private static void useMocks(Boolean featureOn) {
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
+    }
+
 }
