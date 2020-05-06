@@ -8,6 +8,8 @@ public with sharing class ZuoraSubscriptionService {
     @TestVisible
     private static Map<String, ZuoraAPI.OrderBySubscriptionOwner> ordersBySubscriptionOwnerCache = new Map<String, ZuoraAPI.OrderBySubscriptionOwner>();
     private static Map<String, ZuoraAPI.SubscriptionsByAccount> subscriptionsByAccountCache = new Map<String, ZuoraAPI.SubscriptionsByAccount>();
+    private static Map<String, Map<String, ZuoraOutstandingItemsService.RatePlanCharge>> ratePlanChargesByAccountCache =
+        new Map<String, Map<String, ZuoraOutstandingItemsService.RatePlanCharge>>();
 
     public static List<String> createSubscriptions(List<SubscriptionParam> subscriptionParams) {
         List<String> subscriptionsCreated = new List<String>();
@@ -191,6 +193,9 @@ public with sharing class ZuoraSubscriptionService {
     }
 
     public static Map<String, ZuoraOutstandingItemsService.RatePlanCharge> getAllRatePlanChargesByAccountId(String zuoraAcctId) {
+        if (ratePlanChargesByAccountCache.containsKey(zuoraAcctId)) {
+            return ratePlanChargesByAccountCache.get(zuoraAcctId);
+        }
         // When a subscription is changed through an Order, for instance to add another Rate Plan Charge, the previous
         // subscription is expired and another one created with copies of the previous Rate Plan Charges. So even though
         // an account may only have one active subscription, we should get all subscriptions and their corresponding RPCs
@@ -208,6 +213,7 @@ public with sharing class ZuoraSubscriptionService {
         for (ZuoraOutstandingItemsService.RatePlanCharge ratePlanCharge : ratePlanCharges) {
             ratePlanChargesByChargeId.put(ratePlanCharge.Id, ratePlanCharge);
         }
+        ratePlanChargesByAccountCache.put(zuoraAcctId, ratePlanChargesByChargeId);
         return ratePlanChargesByChargeId;
     }
 
