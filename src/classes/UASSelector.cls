@@ -29,7 +29,9 @@ public without sharing class UASSelector {
     public static List<Utility_Account_Subscription__c> selectByUAL(Set<Id> ualIds) {
         return [
             SELECT Id,
-                Utility_Account_Log__c,
+                Subscription_Type__c,
+                Annual_kWh_Subscription_Future_Rollup__c,
+                Annual_Cost_Future_Rollup__c,
                 Utility_Account_Log__r.Name,
                 Utility_Account_Log__r.Account__c,
                 Utility_Account_Log__r.Account__r.Id,
