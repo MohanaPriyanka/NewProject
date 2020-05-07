@@ -2,7 +2,7 @@
  * Test: PartnerInvoiceSelectorTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class PartnerInvoiceSelector {
+public inherited sharing class PartnerInvoiceSelector {
     public List<Invoice__c> getPendingPartnerInvoices(Set<Id> partnerIds) {
         List<Invoice__c> partnerInvoices = [
             SELECT Id, Partner__c, Due_Date__c

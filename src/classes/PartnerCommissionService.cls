@@ -146,7 +146,7 @@ public without sharing class PartnerCommissionService{
     }
 
     private void populateContractExecutionMaps(List<Opportunity> opportunities){
-        Set<Id> oppIds = (new Map<Id,Opportunity>(opportunities)).keySet();
+        Set<Id> oppIds = CollectionUtil.getIdSet(opportunities);
         populateUASMap(oppIds);
         populateCommissionStructureMap(opportunities);
         populateExistingPaymentsMap(oppIds);
@@ -285,7 +285,7 @@ public without sharing class PartnerCommissionService{
 
     private Invoice__c createPartnerInvoice(Id partnerId, String partnerName){
         Date monthFromToday = System.today().addMonths(1);
-        Date dueDate = Date.newInstance(monthFromToday.Year(),monthFromToday.month(),15);
+        Date dueDate = Date.newInstance(monthFromToday.year(),monthFromToday.month(),15);
         Date dueToAccountingDate = Date.newInstance(monthFromToday.Year(),monthFromToday.month(),3);
         Datetime dueDatetime = Datetime.newInstance(dueDate.year(), dueDate.month(),dueDate.day());
         String monthName = dueDatetime.format('MMMMM');

@@ -2,7 +2,7 @@
  * Test: CommissionPaymentSelectorTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class CommissionPaymentSelector {
+public inherited sharing class CommissionPaymentSelector {
     public List<Commission_Payment__c> getPendingCommissionPayments(Set<Id> oppIds, String type) {
         List<Commission_Payment__c> commissionPayments = [
             SELECT Id, Opportunity__c

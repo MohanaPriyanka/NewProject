@@ -18,9 +18,13 @@ public class PartnerCommissionHandler{
 
     public class PendingBillCommission {
         @TestVisible
-        private List<Opportunity> FirstBillOpps;
+        private List<Opportunity> firstBillOpps;
         @TestVisible
-        private List<Opportunity> FirstPaymentOpps;
+        private List<Opportunity> firstPaymentOpps;
+        public PendingBillCommission() {
+            this.firstBillOpps = new List<Opportunity>();
+            this.firstPaymentOpps = new List<Opportunity>();
+        }
     }
 
     public static void onAfterInvoiceInsert(List<Zuora__ZInvoice__c> zInvoices) {
@@ -45,11 +49,11 @@ public class PartnerCommissionHandler{
             PartnerCommissionHandler service = new PartnerCommissionHandler();
             PendingBillCommission oppsToUpdate = service.findUninvoicedCommission(accountIds);
 
-            if (oppsToUpdate.FirstBillOpps != null) {
-                callPartnerCommissionService(oppsToUpdate.FirstBillOpps, PartnerCommissionService.CommissionType.FIRSTBILLSENT);
+            if (oppsToUpdate.firstBillOpps.size() > 0) {
+                callPartnerCommissionService(oppsToUpdate.firstBillOpps, PartnerCommissionService.CommissionType.FIRSTBILLSENT);
             }
-            if (oppsToUpdate.FirstPaymentOpps != null) {
-                callPartnerCommissionService(oppsToUpdate.FirstPaymentOpps, PartnerCommissionService.CommissionType.FIRSTBILLPAID);
+            if (oppsToUpdate.firstPaymentOpps.size() > 0) {
+                callPartnerCommissionService(oppsToUpdate.firstPaymentOpps, PartnerCommissionService.CommissionType.FIRSTBILLPAID);
             }
         } catch (Exception excep){
             Logger.LogNow(
@@ -68,8 +72,6 @@ public class PartnerCommissionHandler{
         if (accountsToCheck.size() > 0) {
             setJournalEntryMap(accountsToCheck);
             String accountAndProjectKey;
-            oppsPendingCommission.FirstBillOpps = new List<Opportunity>();
-            oppsPendingCommission.FirstPaymentOpps = new List<Opportunity>();
 
             for (Opportunity opp : allOpsToCheck) {
                 accountAndProjectKey = opp.Account.Account_Number__c + opp.Shared_Solar_System__r.Unique_ID__c;
@@ -79,10 +81,10 @@ public class PartnerCommissionHandler{
                     objects = acctToJournalEntryMap.get(accountAndProjectKey);
                 }
                 if (hasEntries && objects.contains('InvoiceItem')) {
-                    oppsPendingCommission.FirstBillOpps.add(opp);
+                    oppsPendingCommission.firstBillOpps.add(opp);
                 }
                 if (hasEntries && objects.contains('PaymentPart')) {
-                    oppsPendingCommission.FirstPaymentOpps.add(opp);
+                    oppsPendingCommission.firstPaymentOpps.add(opp);
                 }
             }
         }
