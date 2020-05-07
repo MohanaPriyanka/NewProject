@@ -505,7 +505,7 @@ public class ProductEscalationTest {
             Attempted_Transfer__c = 13483.66,
             Transfer_Amount__c = 13483.66,
             Default_Credit_Value__c = 0.13,
-            Bills_Generated__c = true
+            Bills_Generated__c = false
         );
 
 
@@ -535,7 +535,7 @@ public class ProductEscalationTest {
             Attempted_Transfer__c = 13483.66,
             Transfer_Amount__c = 13483.66,
             Default_Credit_Value__c = 0.13,
-            Bills_Generated__c = true
+            Bills_Generated__c = false
         );
 
         Bill_Period__c bpA3 = new Bill_Period__c(
@@ -564,7 +564,7 @@ public class ProductEscalationTest {
             Attempted_Transfer__c = 13483.66,
             Transfer_Amount__c = 13483.66,
             Default_Credit_Value__c = 0.13,
-            Bills_Generated__c = true
+            Bills_Generated__c = false
         );
 
 
@@ -605,7 +605,7 @@ public class ProductEscalationTest {
             Attempted_Transfer__c = 40983.43,
             Transfer_Amount__c = 40983.43,
             Default_Credit_Value__c = 0.13,
-            Bills_Generated__c = true
+            Bills_Generated__c = false
         );
 
         Transfer__c transferB2 = new Transfer__c(
@@ -619,7 +619,7 @@ public class ProductEscalationTest {
             Attempted_Transfer__c = 20000,
             Transfer_Amount__c = 20000,
             Default_Credit_Value__c = 0.13,
-            Bills_Generated__c = true
+            Bills_Generated__c = false
         );
 
 
@@ -659,7 +659,7 @@ public class ProductEscalationTest {
             Attempted_Transfer__c = 40983.43,
             Transfer_Amount__c = 40983.43,
             Default_Credit_Value__c = 0.13,
-            Bills_Generated__c = true
+            Bills_Generated__c = false
         );
 
         Transfer__c transferB4 = new Transfer__c(
@@ -673,7 +673,7 @@ public class ProductEscalationTest {
             Attempted_Transfer__c = 20000,
             Transfer_Amount__c = 20000,
             Default_Credit_Value__c = 0.13,
-            Bills_Generated__c = true
+            Bills_Generated__c = false
         );
 
 
@@ -714,7 +714,7 @@ public class ProductEscalationTest {
             Attempted_Transfer__c = 40983.43,
             Transfer_Amount__c = 40983.43,
             Default_Credit_Value__c = 0.13,
-            Bills_Generated__c = true
+            Bills_Generated__c = false
         );
 
         Transfer__c transferB6 = new Transfer__c(
@@ -728,14 +728,15 @@ public class ProductEscalationTest {
             Attempted_Transfer__c = 20000,
             Transfer_Amount__c = 20000,
             Default_Credit_Value__c = 0.13,
-            Bills_Generated__c = true
+            Bills_Generated__c = false
         );
 
-
+        List<Transfer__c> transfers = new List<Transfer__c>{
+            transferA1, transferA2, transferA3, transferB1, transferB2, transferB3, transferB4, transferB5, transferB6
+        };
         insert new List<Bill_Period__c>{bpA1, bpA2, bpA3, bpB1, bpB2, bpB3};
         insert new List<Production__c>{prodA1, prodA2, prodA3, prodB1, prodB2, prodB3, prodB4, prodB5, prodb6};
-        insert new List<Transfer__c>{transferA1, transferA2, transferA3, transferB1, transferB2, transferB3, transferB4, transferB5, transferB6};
-
+        insert transfers;
 
         //Parts for multiple months of production in one Bill Period are created manually so that they can be ordered correctly
         TransferPartService transferPartService = new TransferPartService();
@@ -746,7 +747,10 @@ public class ProductEscalationTest {
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferB5});
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferB6});
 
-
+        for (Transfer__c transfer : transfers){
+            transfer.Bills_Generated__c = true;
+        }
+        update transfers;
     }
 
     public static void switchProductToPercentDiscount(){
@@ -805,13 +809,13 @@ public class ProductEscalationTest {
         insertOldProductionUpdates();
 
         List<Shared_Solar_System__c> sssList = [
-            SELECT Id, Name, Count_of_Transfers__c
+            SELECT Id, Name, Number_of_Billed_Production_Periods__c
             FROM Shared_Solar_System__c
         ];
 
         System.assertEquals(2, sssList.size());
-        System.assertEquals(3, sssList[0].Count_of_Transfers__c);
-        System.assertEquals(6, sssList[1].Count_of_Transfers__c);
+        System.assertEquals(3, sssList[0].Number_of_Billed_Production_Periods__c);
+        System.assertEquals(6, sssList[1].Number_of_Billed_Production_Periods__c);
 
         Product_Escalation_Schedule__c newSchedule = new Product_Escalation_Schedule__c (
             Name = 'Product Escalator: 100% Discount First 4 Transfers'
@@ -901,13 +905,13 @@ public class ProductEscalationTest {
         insertOldProductionUpdates();
 
         List<Shared_Solar_System__c> sssList = [
-            SELECT Id, Name, Count_of_Transfers__c
+            SELECT Id, Name, Number_of_Billed_Production_Periods__c
             FROM Shared_Solar_System__c
         ];
 
         System.assertEquals(2, sssList.size());
-        System.assertEquals(3, sssList[0].Count_of_Transfers__c);
-        System.assertEquals(6, sssList[1].Count_of_Transfers__c);
+        System.assertEquals(3, sssList[0].Number_of_Billed_Production_Periods__c);
+        System.assertEquals(6, sssList[1].Number_of_Billed_Production_Periods__c);
 
         Product_Escalation_Schedule__c newSchedule = ProductService.createEscalationSchedule(0.03, 0.14, 20, 2);
 
@@ -974,6 +978,6 @@ public class ProductEscalationTest {
     }
 
     private static void useMocks() {
-        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
+        UtilityAccountSubscriptionHandler.partnerCommissionHandler = (PartnerCommissionHandler) Test.createStub(PartnerCommissionHandler.class, new PartnerCommissionHandlerTest.MockPartnerCommissionHandler());
     }
 }

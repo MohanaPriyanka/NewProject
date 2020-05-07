@@ -98,7 +98,7 @@ public without sharing class BillGenerationService {
     private UASB__c setUASBFields(Schedule_Z_Subscription__c szs, Transfer__c transfer){
         Product_Escalator__c escalatorProduct;
         if (szs.Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c != null){
-            Integer productionCount =  (Integer)szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c;
+            Integer productionCount =  (Integer)szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c;
             escalatorProduct = getProductEscalator(szs, productionCount);
         }
         Decimal shareOfSystem = szs.Percent_Share__c;

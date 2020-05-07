@@ -1,7 +1,7 @@
 /**
  * Created by SarahRenfro on 9/5/2019.
  *
- * TestedBy: TransferPartServiceTest, AllocationScheduleServiceTest
+ * TestedBy: TransferPartServiceTest, AllocationScheduleServiceTest, TransferServiceTest
  */
 
 trigger TransferTrigger on Transfer__c (before update, before insert, after update, after insert) {
@@ -11,6 +11,8 @@ trigger TransferTrigger on Transfer__c (before update, before insert, after upda
 
     TransferPartService transferPartService = new TransferPartService();
     AllocationScheduleService alsService = new AllocationScheduleService();
+    ClientReportingService clientReportingService = new ClientReportingService();
+    TransferService transferService = new TransferService();
 
     switch on Trigger.operationType {
         when BEFORE_UPDATE {
@@ -18,10 +20,12 @@ trigger TransferTrigger on Transfer__c (before update, before insert, after upda
         }
         when BEFORE_INSERT {
             alsService.populateAllocationScheduleOnTransfer(Trigger.new);
+            clientReportingService.stampClient(Trigger.new);
         }
         when AFTER_UPDATE {
             transferPartService.onAfterTransferUpdate(Trigger.new, Trigger.oldMap);
             alsService.queueUpdateALSStatuses(Trigger.new, Trigger.oldMap);
+            transferService.changeInBillsGenerated(Trigger.new, Trigger.oldMap);
         }
         when AFTER_INSERT {
             transferPartService.createPartsFromTransfer(Trigger.new);

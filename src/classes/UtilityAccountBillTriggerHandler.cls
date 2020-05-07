@@ -48,7 +48,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                 Utility_Account_Subscription__r.UAS_Number__c,
                 Utility_Account_Subscription__r.Externally_Serviced__c,
                 Utility_Account_Subscription__r.Share_of_System__c ,
-                Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c,
+                Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c,
                 Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kwh_dc__c,
                 Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
                 Utility_Account_Subscription__r.Opportunity__r.NMC_Value__c,
@@ -239,7 +239,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                         Decimal systemProduction, 
                                         Decimal systemNMCs){
 
-        productionCount =  productionCount + szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c;
+        productionCount =  productionCount + szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c;
         Product_Escalator__c escalatorProduct = getProductEscalator(szs, productionCount);
         Decimal shareOfSystem = szs.Percent_Share__c;
         String creditsRoundingMethod = szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c;

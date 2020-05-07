@@ -132,6 +132,79 @@ public with sharing class ClientReportingServiceTest {
         }
     }
     @IsTest
+    public static void testClientStampsProductionAndBillRecords(){
+        List<Shared_Solar_System__c> sssList = [
+            SELECT Id, Name, Client_Account__r.Name
+            FROM Shared_Solar_System__c
+            WHERE (Name = 'Oxford Barrett St. P1' OR Name = 'Oxford Barrett St. P3')
+            ORDER BY Name
+        ];
+        System.assert(sssList[0].Client_Account__c != sssList[1].Client_Account__c);
+
+        Production__c prodP1 = new Production__c(
+            Shared_Solar_System__c = sssList[0].Id,
+            Name = 'Production'
+        );
+        Production__c prodP3 = new Production__c(
+            Shared_Solar_System__c = sssList[1].Id,
+            Name = 'Production'
+        );
+        Bill_Period__c billPeriodP1 = new Bill_Period__c(
+            Shared_Solar_System__c = sssList[0].Id,
+            Name = 'BillPer'
+        );
+        Bill_Period__c billPeriodP3 = new Bill_Period__c(
+            Shared_Solar_System__c = sssList[1].Id,
+            Name = 'BillPer'
+        );
+        Transfer__c transferP1 = new Transfer__c(
+            Shared_Solar_System__c = sssList[0].Id,
+            Attempted_Transfer__c = 100,
+            Attempted_kWh_Transfer__c = 100,
+            Transfer_Amount__c = 100,
+            Date_of_Transfer__c = Date.newInstance(2019, 6, 4),
+            Name = 'TRF'
+        );
+        Transfer__c transferP3 = new Transfer__c(
+            Shared_Solar_System__c = sssList[1].Id,
+            Attempted_Transfer__c = 100,
+            Attempted_kWh_Transfer__c = 100,
+            Transfer_Amount__c = 100,
+            Date_of_Transfer__c = Date.newInstance(2019, 6, 4),
+            Name = 'TRF'
+        );
+
+        insert new List<Production__c>{prodP1,prodP3};
+        insert new List<Bill_Period__c>{billPeriodP1,billPeriodP3};
+        insert new List<Transfer__c>{transferP1,transferP3};
+
+        List<Production__c> prodList = [
+            SELECT Id, Client_Account__c
+            FROM Production__c
+            WHERE (Id = : prodP1.Id OR Id = : prodP3.Id)
+            ORDER BY Shared_Solar_System__r.Name
+        ];
+        List<Bill_Period__c> bpList = [
+            SELECT Id, Client_Account__c
+            FROM Bill_Period__c
+            WHERE (Id = : billPeriodP1.Id OR Id = : billPeriodP3.Id)
+            ORDER BY Shared_Solar_System__r.Name
+        ];
+        List<Transfer__c> trfList = [
+            SELECT Id, Client_Account__c
+            FROM Transfer__c
+            WHERE (Id = : transferP1.Id OR Id = : transferP3.Id)
+            ORDER BY Shared_Solar_System__r.Name
+        ];
+
+        System.assertEquals(sssList[0].Client_Account__c,prodList[0].Client_Account__c);
+        System.assertEquals(sssList[1].Client_Account__c,prodList[1].Client_Account__c);
+        System.assertEquals(sssList[0].Client_Account__c,bpList[0].Client_Account__c);
+        System.assertEquals(sssList[1].Client_Account__c,bpList[1].Client_Account__c);
+        System.assertEquals(sssList[0].Client_Account__c,trfList[0].Client_Account__c);
+        System.assertEquals(sssList[1].Client_Account__c,trfList[1].Client_Account__c);
+    }
+    @IsTest
     public static void testExternallyServicedAdjustment() {
         Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
         Transfer__c transfer = [
@@ -360,6 +433,6 @@ public with sharing class ClientReportingServiceTest {
     }
 
     private static void useMocks() {
-        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
+        UtilityAccountSubscriptionHandler.partnerCommissionHandler = (PartnerCommissionHandler) Test.createStub(PartnerCommissionHandler.class, new PartnerCommissionHandlerTest.MockPartnerCommissionHandler());
     }
 }

@@ -249,10 +249,12 @@ private class BillPeriodServiceTest {
     @IsTest
     static void testMarkBillPeriodsAsBillRunComplete(){
         Shared_Solar_System__c sss = [
-            SELECT Id
+            SELECT Id, First_Bill_Date__c
             FROM Shared_Solar_System__c
             LIMIT 1
         ];
+
+        System.assertEquals(null, sss.First_Bill_Date__c);
 
         Bill_Period__c bp1 = new Bill_Period__c(
             Name = 'sssA - July Bill Period 2016',
@@ -281,12 +283,21 @@ private class BillPeriodServiceTest {
         BillPeriodService.markBillPeriodsAsBillRunComplete(Date.newInstance(2019, 7, 20));
 
         List<Bill_Period__c> billPeriods = [
-            SELECT Id
+            SELECT Id, Bill_Date__c, Shared_Solar_System__c
             FROM Bill_Period__c
             WHERE Bill_Status__c = 'Bill Run Complete'
         ];
 
         System.assertEquals(1,billPeriods.size());
+
+        Shared_Solar_System__c sssAfter = [
+            SELECT Id, First_Bill_Date__c
+            FROM Shared_Solar_System__c
+            WHERE Id = : billPeriods[0].Shared_Solar_System__c
+        ];
+
+        System.assertEquals(billPeriods[0].Bill_Date__c, sssAfter.First_Bill_Date__c);
+        System.assertNotEquals(null, sssAfter.First_Bill_Date__c);
     }
 
     @IsTest
