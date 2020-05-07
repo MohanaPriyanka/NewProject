@@ -185,17 +185,6 @@
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Actual_First_Bill_Date__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>This field must be manually populated after the first production update</inlineHelpText>
-        <label>Actual First BW Bill Date</label>
-        <required>false</required>
-        <trackFeedHistory>true</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Actual_Mechanical_Completion_Override__c</fullName>
         <description>Fill in with the date the project reached mechanical completion.</description>
         <externalId>false</externalId>
