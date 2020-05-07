@@ -19,15 +19,6 @@ public without sharing class PartnerCommissionService{
     private Map<Id,Commission_Payment__c> oppToExistingContractExecutionPaymentMap = new Map<Id,Commission_Payment__c>();
     private Map<String,Invoice__c> partnerToOldestOpenInvoiceMap = new Map<String,Invoice__c>();
 
-    @TestVisible
-    private List<Opportunity> opportunitiesToUpdate = new List<Opportunity>();
-    @TestVisible
-    private List<Case> casesToInsert = new List<Case>();
-    @TestVisible
-    private List<Commission_Payment__c> commissionPaymentRecordsToInsert = new List<Commission_Payment__c>();
-    @TestVisible
-    private List<Commission_Payment__c> commissionPaymentRecordsToUpdate = new List<Commission_Payment__c>();
-
     public enum CommissionType {CONTRACTEXECUTION, FIRSTBILLSENT, FIRSTBILLPAID}
 
     public class PendingCommission {
@@ -35,13 +26,18 @@ public without sharing class PartnerCommissionService{
         public CommissionType typeOfCommission;
     }
 
+    public fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+        new List<SObjectType> {
+            Opportunity.SObjectType,
+            Commission_Payment__c.SObjectType,
+            Case.SObjectType
+        }
+    );
+
     public void createCommissionRecords(PendingCommission pendingCommission){
         try {
             calculateCommissionRecords(pendingCommission);
-            insert commissionPaymentRecordsToInsert;
-            update commissionPaymentRecordsToUpdate;
-            insert casesToInsert;
-            update opportunitiesToUpdate;
+            uow.commitWork();
         } catch (Exception excep){
             Logger.logNow('PartnerCommissionService','createCommissionRecords', excep.getStackTraceString() + ' ' + excep.getMessage(),'ERROR');
         }
@@ -107,9 +103,9 @@ public without sharing class PartnerCommissionService{
         }
         if (existingContractExecutionPayment != null){
             newPayment.Id = existingContractExecutionPayment.Id;
-            commissionPaymentRecordsToUpdate.add(newPayment);
+            uow.registerDirty(newPayment);
         } else {
-            commissionPaymentRecordsToInsert.add(newPayment);
+            uow.registerNew(newPayment);
         }
     }
 
@@ -220,16 +216,12 @@ public without sharing class PartnerCommissionService{
 
     private void setOpportunityFields(List<Opportunity> opportunities){
         for (Opportunity opportunity : opportunities){
-            Boolean uasUpdateRequired = setUASSummary(opportunity);
-            Boolean commissionUpdateRequired = setActiveCommissionStructure(opportunity);
-            if (uasUpdateRequired || commissionUpdateRequired){
-                opportunitiesToUpdate.add(opportunity);
-            }
+            setUASSummary(opportunity);
+            setActiveCommissionStructure(opportunity);
         }
     }
 
-    private Boolean setUASSummary(Opportunity opportunity){
-        Boolean requiresUpdate = false;
+    private void setUASSummary(Opportunity opportunity){
         Decimal uasSummary = oppToUASSummaryMap.get(opportunity.Id);
         if (uasSummary == null){
             Logger.logLater(
@@ -240,13 +232,11 @@ public without sharing class PartnerCommissionService{
             );
         } else if (opportunity.CS_Capacity_Allocated__c == null || opportunity.CS_Capacity_Allocated__c != uasSummary){
             opportunity.CS_Capacity_Allocated__c = uasSummary;
-            requiresUpdate = true;
+            uow.registerDirty(opportunity);
         }
-        return requiresUpdate;
     }
 
-    private Boolean setActiveCommissionStructure(Opportunity opportunity){
-        Boolean requiresUpdate = false;
+    private void setActiveCommissionStructure(Opportunity opportunity){
         if (opportunity.Commission_Structure__c == null){
             String partnerProductKey = String.valueOf(opportunity.Partner_tag_lookup__c) + String.valueOf(opportunity.Product__c);
             Commission_Structure__c structure = partnerProductKeyToCommissionMap.get(partnerProductKey);
@@ -262,10 +252,9 @@ public without sharing class PartnerCommissionService{
             } else {
                 opportunity.Commission_Structure__c = structure.Id;
                 opportunity.Commission_Structure__r = structure;
-                requiresUpdate = true;
+                uow.registerDirty(opportunity);
             }
         }
-        return requiresUpdate;
     }
 
     private void createCaseForSupportFollowUp(String description, Id opportunityId){
@@ -280,7 +269,7 @@ public without sharing class PartnerCommissionService{
         newCase.Origin = 'Other';
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
-        casesToInsert.add(newCase);
+        uow.registerNew(newCase);
     }
 
     private Invoice__c createPartnerInvoice(Id partnerId, String partnerName){

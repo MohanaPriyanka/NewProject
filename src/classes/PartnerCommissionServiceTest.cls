@@ -22,17 +22,26 @@ public class PartnerCommissionServiceTest {
         PartnerCommissionService service = new PartnerCommissionService();
         service.calculateCommissionRecords(pendingComm);
 
-        System.assertEquals(10,service.opportunitiesToUpdate.size());
-        System.assertEquals(1,service.casesToInsert.size());
-        System.assertEquals(7,service.commissionPaymentRecordsToInsert.size());
-        System.assertEquals(2,service.commissionPaymentRecordsToUpdate.size());
+        List<Opportunity> opportunitiesToUpdate = (List<Opportunity>)
+            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Opportunity');
+        List<Case> casesToInsert = (List<Case>)
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'Case');
+        List<Commission_Payment__c> commissionPaymentRecordsToInsert = (List<Commission_Payment__c>)
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'Commission_Payment__c');
+        List<Commission_Payment__c> commissionPaymentRecordsToUpdate = (List<Commission_Payment__c>)
+            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Commission_Payment__c');
 
-        for (Commission_Payment__c payment : service.commissionPaymentRecordsToInsert){
+        System.assertEquals(10,opportunitiesToUpdate.size());
+        System.assertEquals(1,casesToInsert.size());
+        System.assertEquals(7,commissionPaymentRecordsToInsert.size());
+        System.assertEquals(2,commissionPaymentRecordsToUpdate.size());
+
+        for (Commission_Payment__c payment : commissionPaymentRecordsToInsert){
             System.assertEquals('Contract Execution',payment.Commission_Type__c);
         }
 
         Integer countOfNullCommissionStructure = 0;
-        for (Opportunity opp : service.opportunitiesToUpdate){
+        for (Opportunity opp : opportunitiesToUpdate){
             System.assertNotEquals(null,opp.CS_Capacity_Allocated__c);
             if (opp.Commission_Structure__c == null){
                 countOfNullCommissionStructure += 1;
@@ -40,7 +49,7 @@ public class PartnerCommissionServiceTest {
         }
         System.assertEquals(1, countOfNullCommissionStructure);
 
-        Case caseToInsert = service.casesToInsert[0];
+        Case caseToInsert = casesToInsert[0];
         System.assertEquals('Issue with Creation of Commission Payment',caseToInsert.Subject);
         System.assertEquals('0063K000003pyqIQAQ',caseToInsert.Related_Opportunity__c);
     }
@@ -57,12 +66,22 @@ public class PartnerCommissionServiceTest {
         PartnerCommissionService service = new PartnerCommissionService();
         service.calculateCommissionRecords(pendingComm);
 
-        // Only Contract Execution Type should update opportunities, update comm. payments or insert cases:
-        System.assertEquals(0,service.opportunitiesToUpdate.size());
-        System.assertEquals(0,service.casesToInsert.size());
-        System.assertEquals(0,service.commissionPaymentRecordsToUpdate.size());
+        List<Opportunity> opportunitiesToUpdate = (List<Opportunity>)
+            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Opportunity');
+        List<Case> casesToInsert = (List<Case>)
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'Case');
+        List<Commission_Payment__c> commissionPaymentRecordsToInsert = (List<Commission_Payment__c>)
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'Commission_Payment__c');
+        List<Commission_Payment__c> commissionPaymentRecordsToUpdate = (List<Commission_Payment__c>)
+            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Commission_Payment__c');
 
-        System.assertEquals(10,service.commissionPaymentRecordsToInsert.size());
+
+        // Only Contract Execution Type should update opportunities, update comm. payments or insert cases:
+        System.assertEquals(0,opportunitiesToUpdate.size());
+        System.assertEquals(0,casesToInsert.size());
+        System.assertEquals(0,commissionPaymentRecordsToUpdate.size());
+
+        System.assertEquals(10,commissionPaymentRecordsToInsert.size());
     }
 
     private static void useMocks() {
