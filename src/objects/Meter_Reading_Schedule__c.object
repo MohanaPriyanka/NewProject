@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -204,6 +203,20 @@ ISBLANK(December_Meter_Read_Date__c )=false)=true,&quot;INACTIVE&quot;,&quot;ACT
         </valueSet>
     </fields>
     <fields>
+        <fullName>Utility_lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is the lookup to Utility object.</description>
+        <externalId>false</externalId>
+        <label>Utility</label>
+        <referenceTo>Utility__c</referenceTo>
+        <relationshipLabel>Meter Reading Schedules</relationshipLabel>
+        <relationshipName>Meter_Reading_Schedules</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Year_Effective__c</fullName>
         <description>This is the year the schedule is effective for. Do not apply schedule for a past year for current meter reading.</description>
         <externalId>false</externalId>
@@ -228,7 +241,7 @@ ISBLANK(December_Meter_Read_Date__c )=false)=true,&quot;INACTIVE&quot;,&quot;ACT
         <type>Text</type>
     </nameField>
     <pluralLabel>Meter Reading Schedules</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
