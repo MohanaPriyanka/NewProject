@@ -781,22 +781,6 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Count_of_Transfers__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Total # of Transfers that have Bills Generated</inlineHelpText>
-        <label>Count of Transfers</label>
-        <summaryFilterItems>
-            <field>Transfer__c.Bills_Generated__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Transfer__c.Shared_Solar_System__c</summaryForeignKey>
-        <summaryOperation>count</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Credit_Score_Requirement__c</fullName>
         <defaultValue>700</defaultValue>
         <externalId>false</externalId>

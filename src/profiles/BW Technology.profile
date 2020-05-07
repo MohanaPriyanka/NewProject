@@ -42855,11 +42855,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Count_of_Transfers__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Credit_Score_Requirement__c</field>
         <readable>true</readable>
