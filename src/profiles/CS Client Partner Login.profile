@@ -14083,7 +14083,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Cancellation_Reason_External__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -17023,6 +17023,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.AccountId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Account_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -62808,34 +62813,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Client Case View</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Client Case View</layout>
-        <recordType>Case.Asset_Management_Case</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Client Case View</layout>
-        <recordType>Case.Case</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Client Case View</layout>
-        <recordType>Case.Client_Services</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Client Case View</layout>
-        <recordType>Case.Customer_Care</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Client Case View</layout>
-        <recordType>Case.Finance_Case</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Client Case View</layout>
-        <recordType>Case.Partner_Care_Case</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Client Case View</layout>
-        <recordType>Case.Product_Support</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>

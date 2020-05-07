@@ -286,6 +286,18 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Account_Name__c</fullName>
+        <description>Used to give Clients visibility to cases since they don&apos;t have Account visibility</description>
+        <externalId>false</externalId>
+        <formula>Account.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Account_Number__c</fullName>
         <externalId>false</externalId>
         <formula>Account.Account_Number__c</formula>

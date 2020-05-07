@@ -1696,6 +1696,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Cancellation_Reason_External__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Cancellation_Reason__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4647,6 +4652,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.AccountId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Account_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
