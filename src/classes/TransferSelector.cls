@@ -82,9 +82,11 @@ public without sharing class TransferSelector {
                 Bill_Period__r.Bill_Status__c, Allocation_Schedule__r.Id, Allocation_Schedule__r.Name
             FROM Transfer__c
             WHERE Bill_Period__c IN : billPeriodIds
+            AND Bills_Generated__c = false
             AND Bill_By__c = 'UASB'
             AND Transferred_To__c = 'Customer'
         ];
     }
+
 
 }
