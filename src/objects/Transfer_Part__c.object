@@ -177,32 +177,35 @@
     <fields>
         <fullName>Change_in_Utilization__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(Production__r.Billing_Method__c == &apos;kWh&apos;,
+        <formula>IF(ISPICKVAL(Type__c,&quot;Transfer&quot;),
+IF(Production__r.Billing_Method__c == &apos;kWh&apos;,
 IF(
 AND(
-Transfer__r.Bill_Period__r.Bill_Date__c == Production__r.First_Date_Production_Billed__c
+ISPICKVAL(Transfer__r.Transfer_Type__c,&apos;Main&apos;)
 ,kWh_Amount__c &gt; 0
 ),
 (kWh_Amount__c - Production__r.Production_kWh__c) /Production__r.Production_kWh__c,
 IF(
-AND(ISPICKVAL(Type__c,&quot;Transfer&quot;),kWh_Amount__c &gt; 0),
+kWh_Amount__c &gt; 0,
 kWh_Amount__c /Production__r.Production_kWh__c,
 0
 )
 ),
 IF(
 AND(
-Transfer__r.Bill_Period__r.Bill_Date__c == Production__r.First_Date_Production_Billed__c,
-Amount__c &gt; 0
+ISPICKVAL(Transfer__r.Transfer_Type__c,&apos;Main&apos;)
+,Amount__c &gt; 0
 ),
 (Amount__c - Production__r.Credits_Available_for_Allocation__c) /Production__r.Credits_Available_for_Allocation__c,
 IF(
-AND(ISPICKVAL(Type__c,&quot;Transfer&quot;),Amount__c &gt; 0),
+Amount__c &gt; 0,
 Amount__c /Production__r.Credits_Available_for_Allocation__c,
 0
 )
 )
-)</formula>
+)
+,
+0)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>The % effect of a detail record on the utilization of the parent production record. The difference between 100% utilization and reality. When all credits have been transferred, the sum will = 0. If credits are still outstanding, the sum will be negative.</inlineHelpText>
         <label>Change in Utilization</label>
