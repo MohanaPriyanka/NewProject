@@ -24,7 +24,7 @@ public class FFLibHelperTest {
         https://github.com/apex-enterprise-patterns/fflib-apex-common/issues/239#issuecomment-553541756
         This method calls untested methods to get coverage
     */
-
+    @SuppressWarnings('PMD.ApexUnitTestClassShouldHaveAsserts')
     @IsTest
     public static void testCoverageForUOW(){
         Account newAccount = new Account(Name = 'Test');
