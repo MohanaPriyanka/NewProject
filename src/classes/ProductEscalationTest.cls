@@ -805,13 +805,13 @@ public class ProductEscalationTest {
         insertOldProductionUpdates();
 
         List<Shared_Solar_System__c> sssList = [
-            SELECT Id, Name, Number_of_Billed_Production_Periods__c
+            SELECT Id, Name, Count_of_Transfers__c
             FROM Shared_Solar_System__c
         ];
 
         System.assertEquals(2, sssList.size());
-        System.assertEquals(3, sssList[0].Number_of_Billed_Production_Periods__c);
-        System.assertEquals(6, sssList[1].Number_of_Billed_Production_Periods__c);
+        System.assertEquals(3, sssList[0].Count_of_Transfers__c);
+        System.assertEquals(6, sssList[1].Count_of_Transfers__c);
 
         Product_Escalation_Schedule__c newSchedule = new Product_Escalation_Schedule__c (
             Name = 'Product Escalator: 100% Discount First 4 Transfers'
@@ -901,13 +901,13 @@ public class ProductEscalationTest {
         insertOldProductionUpdates();
 
         List<Shared_Solar_System__c> sssList = [
-            SELECT Id, Name, Number_of_Billed_Production_Periods__c
+            SELECT Id, Name, Count_of_Transfers__c
             FROM Shared_Solar_System__c
         ];
 
         System.assertEquals(2, sssList.size());
-        System.assertEquals(3, sssList[0].Number_of_Billed_Production_Periods__c);
-        System.assertEquals(6, sssList[1].Number_of_Billed_Production_Periods__c);
+        System.assertEquals(3, sssList[0].Count_of_Transfers__c);
+        System.assertEquals(6, sssList[1].Count_of_Transfers__c);
 
         Product_Escalation_Schedule__c newSchedule = ProductService.createEscalationSchedule(0.03, 0.14, 20, 2);
 
