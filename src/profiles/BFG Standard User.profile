@@ -33471,6 +33471,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Survey_URL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.System_Assigned__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -38597,6 +38602,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>SurveyInvitation.Case__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SurveyInvitation.Opportunity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
