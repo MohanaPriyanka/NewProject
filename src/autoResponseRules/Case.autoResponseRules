@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AutoResponseRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <autoResponseRule>
+        <fullName>Case Auto-Response Email</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Customer Care</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.SuppliedEmail</field>
+                <operation>notEqual</operation>
+                <value>no-reply@mail.trulywireless.com</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>noreply@bluewavesolar.com</replyToEmail>
+            <senderEmail>noreply@bluewavesolar.com</senderEmail>
+            <senderName>Bluewave Customer Support</senderName>
+            <template>Customer_Care_Cases/Customer_Care_Case_Open</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Partner Care Case</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.SuppliedEmail</field>
+                <operation>notEqual</operation>
+                <value>no-reply@mail.trulywireless.com</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>noreply@bluewavesolar.com</replyToEmail>
+            <senderEmail>noreply@bluewavesolar.com</senderEmail>
+            <senderName>BlueWave Partner Support</senderName>
+            <template>Customer_Care_Cases/Partner_Support_Case_Open</template>
+        </ruleEntry>
+    </autoResponseRule>
+</AutoResponseRules>
