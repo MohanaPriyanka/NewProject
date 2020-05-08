@@ -40,6 +40,7 @@ public inherited sharing class SharedSolarSystemsSelector {
             'Product__r.Name, Product__r.Customer_Subscription_Type__c, Sales_Partners__c ' +
             'FROM Shared_Solar_System__c ' +
             'WHERE Capacity_Available_to_be_Reserved__c > 0 ' +
+            'AND Open__c = true ' + 
             'AND Utility__c IN : utilityIds ';
         if (loadZoneString != '') {
             query +=
