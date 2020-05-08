@@ -23,7 +23,7 @@
  *  OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 **/
-
+@SuppressWarnings('PMD.ClassNamingConventions,PMD.ApexSharingViolations,PMD.ExcessivePublicCount,PMD.IfStmtsMustUseBraces,PMD.IfElseStmtsMustUseBraces,PMD.ApexUnitTestClassShouldHaveAsserts,PMD.MethodNamingConventions')
 @IsTest
 private with sharing class fflib_SObjectUnitOfWorkTest
 {

@@ -1,3 +1,5 @@
+// Tested by: fflib_SObjectUnitOfWorkTest, FFLibHelperTest
+@SuppressWarnings('PMD.ClassNamingConventions,PMD.ApexSharingViolations,PMD.ExcessivePublicCount,PMD.IfStmtsMustUseBraces,PMD.IfElseStmtsMustUseBraces,PMD.ApexUnitTestClassShouldHaveAsserts,PMD.MethodNamingConventions')
 /**
  * Copyright (c), FinancialForce.com, inc
  * All rights reserved.
