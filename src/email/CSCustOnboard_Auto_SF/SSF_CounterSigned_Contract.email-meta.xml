@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
-    <available>true</available>
+    <available>false</available>
     <encodingKey>ISO-8859-1</encodingKey>
     <name>SSF: CounterSigned Contract</name>
     <style>none</style>
-    <subject>Welcome to Bluewave!</subject>
+    <subject>Welcome to BlueWave!</subject>
     <textOnly>Hey BlueWaver,  Our energy future starts with you.Thanks for choosing BlueWave as your community solar provider and supporting local solar energy. Your BlueWave Community Solar agreement is now fully executed!
 
 BlueWave would like to learn more about your community solar subscription experience. Your feedback is very important to help us improve the shopping experience for other community solar customers.
