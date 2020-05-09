@@ -360,6 +360,6 @@ public with sharing class ClientReportingServiceTest {
     }
 
     private static void useMocks() {
-        UtilityAccountSubscriptionHandler.partnerCommissionService = (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
+        UtilityAccountSubscriptionHandler.partnerCommissionHandler = (PartnerCommissionHandler) Test.createStub(PartnerCommissionHandler.class, new PartnerCommissionHandlerTest.MockPartnerCommissionHandler());
     }
 }

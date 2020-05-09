@@ -3,7 +3,7 @@
  */
 
 @IsTest
-private class UtilityAccountSubscriptionHandlerTest {
+public class UtilityAccountSubscriptionHandlerTest {
     @TestSetup
     public static void setupData() {
         Utility__c ngrid = new Utility__c(
@@ -84,6 +84,7 @@ private class UtilityAccountSubscriptionHandlerTest {
                 Partner_tag_lookup__c = partner.Id,
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
+                Product_Line__c = 'Community Solar',
                 CloseDate = System.today());
 
         insert opportunityone;
@@ -115,6 +116,7 @@ private class UtilityAccountSubscriptionHandlerTest {
                 Partner_tag_lookup__c = partner.Id,
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
+                Product_Line__c = 'Community Solar',
                 CloseDate = System.today());
         insert opportunitytwo;
 
@@ -222,165 +224,5 @@ private class UtilityAccountSubscriptionHandlerTest {
         System.assertNotEquals(null, checkUAS.Shared_Solar_System__c);
         System.assertEquals(opp.Shared_Solar_System__c, checkUAS.Shared_Solar_System__c);
 
-    }
-
-    @IsTest
-    public static void testRecalculatePartnerCommissionWhenOppChanges(){
-        Utility_Account_Subscription__c uasToUpdate = [
-            SELECT Id, Opportunity__c, Opportunity__r.Name
-            FROM Utility_Account_Subscription__c
-            WHERE Name = '0000234'
-            LIMIT 1
-        ];
-        Id oldOppId = uasToUpdate.Opportunity__r.Id;
-
-        Opportunity newOpp = [
-            SELECT Id, Name, Shared_Solar_System__c, Product__c, Partner_tag_lookup__c
-            FROM Opportunity
-            WHERE NOT(Id = : uasToUpdate.Opportunity__c)
-            LIMIT 1
-        ];
-        Commission_Structure__c structure = new Commission_Structure__c(
-            Cents_kW_DC_Up_Front__c = 0.10,
-            Active__c = true,
-            Partner__c = newOpp.Partner_tag_lookup__c,
-            Product__c = newOpp.Product__c
-        );
-        insert structure;
-
-        List<Commission_Payment__c> oldCommission = [
-            SELECT Id
-            FROM Commission_Payment__c
-        ];
-        System.assertEquals(0,oldCommission.size());
-
-        Test.startTest();
-        uasToUpdate.Opportunity__c = newOpp.Id;
-        update uasToUpdate;
-        Test.stopTest();
-
-        List<Commission_Payment__c> newCommission = [
-            SELECT Id, Opportunity__c, Amount_Due__c
-            FROM Commission_Payment__c
-            ORDER BY Opportunity__r.Name
-        ];
-
-        // Move UAS from one opp to the other, both Opps have StageName = Complete and don't have any previously
-        // approved Commission Payments, so we expect to create 1 for each.
-        System.assertEquals(2,newCommission.size());
-
-        System.assertEquals(oldOppId,newCommission[0].Opportunity__c);
-        System.assertEquals(newOpp.Id,newCommission[1].Opportunity__c);
-
-        System.assertEquals(0,Util.nullToZero(newCommission[0].Amount_Due__c));
-        System.assertNotEquals(0,Util.nullToZero(newCommission[1].Amount_Due__c));
-    }
-
-    @IsTest
-    public static void testRecalculatePartnerCommissionWhenSubscriptionChanges(){
-        Utility_Account_Subscription__c uasToUpdate = [
-            SELECT Id, Opportunity__c, Opportunity__r.Name,
-                Opportunity__r.Product__c,
-                Opportunity__r.Partner_tag_lookup__c,
-                Annual_kwh_subscription_future__c
-            FROM Utility_Account_Subscription__c
-            WHERE Name = '0000234'
-            LIMIT 1
-        ];
-
-        Commission_Structure__c structure = new Commission_Structure__c(
-            Cents_kW_DC_Up_Front__c = 0.10,
-            Active__c = true,
-            Partner__c = uasToUpdate.Opportunity__r.Partner_tag_lookup__c,
-            Product__c = uasToUpdate.Opportunity__r.Product__c
-        );
-        insert structure;
-
-        List<Commission_Payment__c> oldCommission = [
-            SELECT Id
-            FROM Commission_Payment__c
-        ];
-        System.assertEquals(0,oldCommission.size());
-
-        Test.startTest();
-            FeatureService featureService = new FeatureService();
-            if (featureService.isEnabled('Subscription_Orders')){
-                Subscription_Order__c so = new Subscription_Order__c(
-                    Utility_Account_Subscription__c = uasToUpdate.Id,
-                    Type__c = 'Initial',
-                    Effective_Date__c = System.now(),
-                    Approval_Status__c = 'Approved',
-                    Change_in_Annual_kWh__c = 2000
-                );
-                insert so;
-            } else {
-                uasToUpdate.Annual_kwh_subscription_future__c = 2000;
-                update uasToUpdate;
-            }
-        Test.stopTest();
-
-        List<Commission_Payment__c> newCommission = [
-            SELECT Id, Opportunity__c, Amount_Due__c
-            FROM Commission_Payment__c
-            ORDER BY Opportunity__r.Name
-        ];
-
-        System.assertEquals(1,newCommission.size());
-        System.assertNotEquals(0,Util.nullToZero(newCommission[0].Amount_Due__c));
-    }
-
-    @IsTest
-    public static void testRecalculatePartnerCommissionOnInsertOrUpdate(){
-        Utility_Account_Subscription__c uasToDelete = [
-            SELECT Id, Opportunity__c, Opportunity__r.Name,
-                Opportunity__r.Product__c,
-                Opportunity__r.Partner_tag_lookup__c,
-                Annual_kwh_subscription_future__c,
-                Name, Utility_Account_Log__c,
-                Next_Schedule_Z_Status__c,
-                Calculated_Annual_Cost_of_Electricity__c,
-                Subscribed_Annual_Cost_of_Electricity__c
-            FROM Utility_Account_Subscription__c
-            WHERE Name = '0000234'
-            LIMIT 1
-        ];
-        Utility_Account_Subscription__c newUAS = uasToDelete.clone(false,true,false,false);
-        Opportunity newOpp = [
-            SELECT Id, Name, Shared_Solar_System__c, Product__c, Partner_tag_lookup__c
-            FROM Opportunity
-            WHERE NOT (Id = : uasToDelete.Opportunity__c)
-            LIMIT 1
-        ];
-        newUAS.Opportunity__c = newOpp.Id;
-
-        Commission_Structure__c structure = new Commission_Structure__c(
-            Cents_kW_DC_Up_Front__c = 0.10,
-            Active__c = true,
-            Partner__c = uasToDelete.Opportunity__r.Partner_tag_lookup__c,
-            Product__c = uasToDelete.Opportunity__r.Product__c
-        );
-        insert structure;
-
-        List<Commission_Payment__c> oldCommission = [
-            SELECT Id
-            FROM Commission_Payment__c
-        ];
-        System.assertEquals(0,oldCommission.size());
-
-        Test.startTest();
-            delete uasToDelete;
-            insert newUAS;
-        Test.stopTest();
-
-        List<Commission_Payment__c> newCommission = [
-            SELECT Id, Opportunity__c, Amount_Due__c
-            FROM Commission_Payment__c
-            ORDER BY Opportunity__r.Name
-        ];
-
-        System.assertEquals(2,newCommission.size());
-
-        System.assertEquals(uasToDelete.Opportunity__c,newCommission[0].Opportunity__c);
-        System.assertEquals(newUAS.Opportunity__c,newCommission[1].Opportunity__c);
     }
 }
