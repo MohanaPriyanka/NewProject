@@ -19,8 +19,10 @@ public class PartnerCommissionServiceTest {
             System.assertEquals(null,opp.Commission_Structure__c);
         }
 
+        Test.startTest();
         PartnerCommissionService service = new PartnerCommissionService();
         service.calculateCommissionRecords(pendingComm);
+        Test.stopTest();
 
         List<Opportunity> opportunitiesToUpdate = (List<Opportunity>)
             FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Opportunity');

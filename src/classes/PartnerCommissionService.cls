@@ -208,7 +208,7 @@ public without sharing class PartnerCommissionService{
                 invoicesToInsert.add(createPartnerInvoice(partnerId, partnerIdToNameMap.get(partnerId)));
             }
         }
-        insert invoicesToInsert;
+        //insert invoicesToInsert;
         for (Invoice__c invoice : invoicesToInsert){
             partnerToOldestOpenInvoiceMap.put(invoice.Partner__c, invoice);
         }
