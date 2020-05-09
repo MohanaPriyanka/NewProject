@@ -9,7 +9,7 @@ trigger ZuoraPaymentTrigger on Zuora__Payment__c (after insert) {
 
     switch on Trigger.operationType {
         when AFTER_INSERT {
-            PartnerCommissionService.onAfterPaymentInsert(Trigger.new);
+            PartnerCommissionHandler.onAfterPaymentInsert(Trigger.new);
         }
     }
 }
