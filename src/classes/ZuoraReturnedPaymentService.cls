@@ -97,7 +97,7 @@ public with sharing class ZuoraReturnedPaymentService {
         debitMemo.Project_Zcustom = project;
         debitMemo.ClientOwner_Zcustom = client;
         debitMemo.CRM_ID_Zcustom = payment.number_Zreserved;
-        if (productRatePlanChargeId == null) {
+        if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
             ZuoraAPI.DebitMemoItem debitMemoItem = new ZuoraAPI.DebitMemoItem();
             debitMemoItem.amount = paymentPartItem.amount;
             debitMemoItem.skuName = 'Utility Credit';
