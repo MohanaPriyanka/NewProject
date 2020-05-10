@@ -86,6 +86,14 @@ public class PartnerCommissionServiceTest {
         System.assertEquals(10,commissionPaymentRecordsToInsert.size());
     }
 
+    @IsTest
+    private static void testPartnerInvoiceCreation(){
+        PartnerCommissionService service = new PartnerCommissionService();
+        Invoice__c partnerInvoice = service.createPartnerInvoice('a0s3K0000006wCMQAY','Partner One');
+        System.assertEquals('a0s3K0000006wCMQAY',partnerInvoice.Partner__c);
+        System.assertEquals(15,partnerInvoice.Due_Date__c.day());
+    }
+
     private static void useMocks() {
         PartnerCommissionService.utilityaccountSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         PartnerCommissionService.commissionStructureSelector = (CommissionStructureSelector) Test.createStub(CommissionStructureSelector.class, new MockCommStructureSelector());
@@ -199,17 +207,24 @@ public class PartnerCommissionServiceTest {
             Invoice__c nextMonthsInvoice = new Invoice__c(
                 Id = 'a0c3K000000F0pUQAS',
                 Partner__c = 'a0s3K0000006wCRQAY',
-                Due_Date__c = Date.newInstance(monthFromToday.Year(),monthFromToday.month(),15)
+                Due_Date__c = Date.newInstance(monthFromToday.Year(), monthFromToday.month(), 15)
             );
-            Invoice__c thisMonthsInvoice = new Invoice__c(
+            Invoice__c thisMonthsInvoicePartner1 = new Invoice__c(
                 Id = 'a0c3K000000F0pUQAS',
                 Partner__c = 'a0s3K0000006wCRQAY',
-                Due_Date__c = Date.newInstance(today.Year(),today.month(),15)
+                Due_Date__c = Date.newInstance(today.Year(), today.month(), 15)
+            );
+            Invoice__c thisMonthsInvoicePartner2 = new Invoice__c(
+                Id = 'a0c3K000000F0pUQAT',
+                Partner__c = 'a0s3K0000006wCMQAY',
+                Due_Date__c = Date.newInstance(today.Year(), today.month(), 15)
             );
 
             switch on methodCall.stubbedMethodName {
                 when 'getPendingPartnerInvoices' {
-                    return new List<Invoice__c>{nextMonthsInvoice, thisMonthsInvoice};
+                    return new List<Invoice__c>{
+                        nextMonthsInvoice, thisMonthsInvoicePartner1, thisMonthsInvoicePartner2
+                    };
                 }
             }
             return null;

@@ -208,7 +208,7 @@ public without sharing class PartnerCommissionService{
                 invoicesToInsert.add(createPartnerInvoice(partnerId, partnerIdToNameMap.get(partnerId)));
             }
         }
-        //insert invoicesToInsert;
+        insert invoicesToInsert;
         for (Invoice__c invoice : invoicesToInsert){
             partnerToOldestOpenInvoiceMap.put(invoice.Partner__c, invoice);
         }
@@ -272,6 +272,7 @@ public without sharing class PartnerCommissionService{
         uow.registerNew(newCase);
     }
 
+    @TestVisible
     private Invoice__c createPartnerInvoice(Id partnerId, String partnerName){
         Date monthFromToday = System.today().addMonths(1);
         Date dueDate = Date.newInstance(monthFromToday.year(),monthFromToday.month(),15);
