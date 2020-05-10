@@ -322,7 +322,6 @@ public class ZuoraOutstandingItemsService {
     public class ProcessingParameter {
         public String processorClassName;
         public ZuoraAPI.CreditMemoWithItem creditMemo;
-        public List<ZuoraHistoricalApplicationService.Payable> payables; // To be removed with Zuora Historical classes
         public List<OutstandingItem> allOutstandingItems;
 
         public ProcessingParameter() {
@@ -332,13 +331,6 @@ public class ZuoraOutstandingItemsService {
         public ProcessingParameter(String processorClassName, ZuoraAPI.CreditMemoWithItem creditMemo) {
             this.processorClassName = processorClassName;
             this.creditMemo = creditMemo;
-            this.allOutstandingItems = new List<OutstandingItem>();
-        }
-
-        public ProcessingParameter(String processorClassName, List<ZuoraHistoricalApplicationService.Payable> payables) {
-            // To be removed with Zuora Historical classes
-            this.processorClassName = processorClassName;
-            this.payables = payables;
             this.allOutstandingItems = new List<OutstandingItem>();
         }
     }

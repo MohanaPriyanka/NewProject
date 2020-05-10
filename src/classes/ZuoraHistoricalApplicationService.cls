@@ -45,29 +45,6 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
                 return;
             }
         }
-        while (!processingParameter.payables.isEmpty()) {
-            Payable payable = (Payable) processingParameter.payables[0];
-            try {
-                if (payable.creditMemo != null) {
-                    applyCreditMemo(payable);
-                }
-                if (payable.payment != null) {
-                    createAndApplyPayment(payable.payment);
-                }
-                processingParameter.payables.remove(0);
-            } catch (Util.FatalBWException bwe) {
-                Logger.logLater('ZuoraHistoricalApplicationService', 'processOutstandingItems',
-                    'Error processing payable, stopping further processing: \n' + bwe.getMessage() + '\n' + bwe.getStackTraceString() + '\n' + payable,
-                    Logger.ERROR);
-                break;
-            } catch (Exception e) {
-                Logger.logLater('ZuoraHistoricalApplicationService', 'processOutstandingItems',
-                    'Warning processing payable, will requeue: \n' + e.getMessage() + '\n' + e.getStackTraceString() + '\n' + payable,
-                    Logger.WARN);
-                requeue();
-                break;
-            }
-        }
         Logger.flushLogs();
     }
 
