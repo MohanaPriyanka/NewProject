@@ -7,10 +7,9 @@
 public with sharing class ZuoraSubscriptionServiceTest {
     @TestSetup
     public static void testSetup() {
-        UtilityAccountSubscriptionHandler.partnerCommissionService =
-            (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
+        UtilityAccountSubscriptionHandler.partnerCommissionHandler =
+            (PartnerCommissionHandler) Test.createStub(PartnerCommissionHandler.class, new PartnerCommissionHandlerTest.MockPartnerCommissionHandler());
         Util.disableAllTriggers();
-
         TestFactory.insertBWAddress();
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
@@ -37,7 +36,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
         Test.loadData(ChargentOrders__Transaction__c.SObjectType, 'TestCSTransaction');
         TestFactory.setCSBillSettings();
-
         // Because there's no way to populate self lookups:
         // https://salesforce.stackexchange.com/questions/54527/test-loaddata-undocumented-but-useful-behavior-loading-relationships
         // We put the parent account's name in AccountNumber and use that to update the accounts.
@@ -53,12 +51,10 @@ public with sharing class ZuoraSubscriptionServiceTest {
         }
         update accounts;
         Util.enableAllTriggers();
-
         zqu__ZProduct__c zProduct = new zqu__ZProduct__c(
             Name = 'Community Solar'
         );
         insert zProduct;
-
         zqu__ProductRatePlan__c productRatePlan = new zqu__ProductRatePlan__c(
             Name = 'Community Solar Subscriptions',
             zqu__ZuoraId__c = '2c92c0f86ab120de016ab427c7d8234d',
@@ -72,7 +68,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         );
         insert productRatePlanCharge;
     }
-
     @IsTest
     public static void testCreateSubscription() {
         ZuoraSubscriptionService.OrderActionParam param = new ZuoraSubscriptionService.OrderActionParam();
@@ -83,22 +78,17 @@ public with sharing class ZuoraSubscriptionServiceTest {
         param.productRatePlanChargeId = '2c92c0f969c8f15e0169caed586a1909';
         param.clientName = 'AES Distributed Energy';
         param.projectName = 'Albany Post Road Solar Farm';
-
         Set<ZuoraSubscriptionService.ClientProject> clientProjects = new Set<ZuoraSubscriptionService.ClientProject>();
         ZuoraSubscriptionService.ClientProject norton = new ZuoraSubscriptionService.ClientProject('Norton Solar Development', 'Norton Solar Farm');
         clientProjects.add(norton);
         ZuoraSubscriptionService.ClientProject dudley = new ZuoraSubscriptionService.ClientProject('AMP', 'Dudley #3');
         clientProjects.add(dudley);
-
         ZuoraSubscriptionService.SubscriptionParam subscriptionParam = new ZuoraSubscriptionService.SubscriptionParam(param, clientProjects);
         List<String> subscriptions = ZuoraSubscriptionService.createSubscriptions(new List<ZuoraSubscriptionService.SubscriptionParam>{subscriptionParam});
         System.assertEquals('A-S00000090', subscriptions[0]);
     }
-
     @IsTest
     public static void testDataLoad() {
-        ZuoraSubscriptionAsyncService.featureService =
-            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
         asyncService.initForDataLoad();
         // There should be enough subscriptions to require queueable invocation
@@ -109,7 +99,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         Test.startTest();
         Database.executeBatch(asyncService);
         Test.stopTest();
-
         ZuoraSubscriptionAsyncService nextAsyncService = ZuoraSubscriptionAsyncService.nextAsyncService;
         System.assert(nextAsyncService.allSubscriptionsToCreate.size() > 0);
         System.assert(ZuoraSubscriptionAsyncService.batchedSubscriptionsToCreate.size() == 0);
@@ -120,7 +109,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'ZuoraAPIHelper'];
         System.assertEquals(1, errorLogs.size());
     }
-
     @IsTest
     public static void testTimeout() {
         ZuoraSubscriptionAsyncService.featureService =
@@ -137,7 +125,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         ZuoraAPIHelper.calloutMillis = 119000;
         Database.executeBatch(asyncService);
         Test.stopTest();
-
         ZuoraSubscriptionAsyncService nextAsyncService = ZuoraSubscriptionAsyncService.nextAsyncService;
         // We expect to try everything again
         System.assertEquals(allSubscriptionsToCreateStartingSize, nextAsyncService.allSubscriptionsToCreate.size());
@@ -146,11 +133,9 @@ public with sharing class ZuoraSubscriptionServiceTest {
         errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'ZuoraSubscriptionService'];
         System.assertEquals(1, errorLogs.size());
     }
-
     @IsTest
     public static void testClientProjectSets() {
         Set<ZuoraSubscriptionService.ClientProject> clientProjectSet = new Set<ZuoraSubscriptionService.ClientProject>();
-
         ZuoraSubscriptionService.ClientProject clientProjectA = new ZuoraSubscriptionService.ClientProject('foo', 'bar');
         clientProjectSet.add(clientProjectA);
         ZuoraSubscriptionService.ClientProject clientProjectB = new ZuoraSubscriptionService.ClientProject('foo', 'bar');
@@ -160,7 +145,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         clientProjectSet.add(clientProjectC);
         System.assertEquals(2, clientProjectSet.size());
     }
-
     @IsTest
     public static void testSRPCListForDataload() {
         Map<String, ZuoraSubscriptionService.SubscriptionParam> accountNumberToSubscriptionMap =
@@ -170,59 +154,47 @@ public with sharing class ZuoraSubscriptionServiceTest {
         orderActionParam.accountNumber = '1234';
         orderActionParam.clientName = 'AMP';
         orderActionParam.projectName = 'Westport';
-
         ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
         System.assertEquals(1, accountNumberToSubscriptionMap.size());
-
         orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
         orderActionParam.accountNumber = 'ABCD';
         orderActionParam.clientName = 'AMP';
         orderActionParam.projectName = 'Westport Blossom Rd A';
-
         ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
         System.assertEquals(2, accountNumberToSubscriptionMap.size());
         // There shouldn't be additional client projects - the client/project combination is on the original param
         System.assertEquals(0, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
-
         orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
         orderActionParam.accountNumber = 'ABCD';
         orderActionParam.clientName = 'AMP';
         orderActionParam.projectName = 'Westport Blossom Rd A';
-
         ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
         // Even when we add another one, there shouldn't be any additional client projects
         System.assertEquals(0, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
-
         orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
         orderActionParam.accountNumber = 'ABCD';
         orderActionParam.clientName = 'AMP';
         orderActionParam.projectName = 'Westport Blossom Rd B';
-
         ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
         // This should have gotten added to ABCD's additional client projects, not as another account
         System.assertEquals(2, accountNumberToSubscriptionMap.size());
         System.assertEquals(1, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
-
         orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
         orderActionParam.accountNumber = 'ABCD';
         orderActionParam.clientName = 'AMP';
         orderActionParam.projectName = 'Westport Blossom Rd B';
-
         ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
         // But if we add another Westport Blossom Rd B, we shouldn't add another additional client project
         System.assertEquals(2, accountNumberToSubscriptionMap.size());
         System.assertEquals(1, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
-
         orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
         orderActionParam.accountNumber = 'ABCD';
         orderActionParam.clientName = 'Goldman';
         orderActionParam.projectName = 'Westport Blossom Rd B';
-
         ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
         // But if add another client/project combination, we should add the additional client project
         System.assertEquals(2, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
     }
-
     @IsTest
     public static void testExistingSubscriptionWithDifferentSRPC() {
         ZuoraSubscriptionService.OrderActionParam orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
@@ -235,7 +207,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         // ExistingAccount should have Goldman/Dudley and Goldman/Barrett, but not AMP/Dudley. So we should expect to see one
         // AddProduct call to add AMP/Dudley to subscription A-S00002141
         ZuoraSubscriptionService.createSubscription(orderActionParam, new Set<ZuoraSubscriptionService.ClientProject>{clientProject});
-
         // Expect one error log for ZuoraAPIHelper, callJSONEndpoint, Fine
         System.assertEquals(1, Logger.logs.values().size());
         // Expect two messages, one for the subscriptionOwner query, and the other for the addProduct call
@@ -244,7 +215,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         System.assert(Logger.logs.values()[0][1].message.contains('AddProduct'));
         System.assert(Logger.logs.values()[0][1].message.contains('"customFields":{"Project__c":"Dudley","ClientOwner__c":"AMP"}'));
     }
-
     @IsTest
     public static void testExistingSubscriptionWithSameSRPC() {
         ZuoraSubscriptionService.OrderActionParam orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
@@ -260,7 +230,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         // ExistingAccount should have Goldman/Dudley and Goldman/Barrett, but not AMP/Dudley. So we should expect to see one
         // AddProduct call to add AMP/Dudley to subscription A-S00002141
         ZuoraSubscriptionService.createSubscription(orderActionParam, new Set<ZuoraSubscriptionService.ClientProject>{clientProject});
-
         // Expect one error log for ZuoraAPIHelper, callJSONEndpoint, Fine
         System.assertEquals(1, Logger.logs.values().size());
         // Expect two messages, one for the subscriptionOwner query, and the other for the addProduct call
@@ -271,7 +240,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         System.assert(Logger.logs.values()[0][1].message.contains('"triggerDate":"2017-01-01","name":"ContractEffective"'));
         System.assert(Logger.logs.values()[0][1].message.contains('"customFields":{"Project__c":"Dudley","ClientOwner__c":"AMP"}'));
     }
-
     @IsTest
     public static void testExistingSubscription() {
         ZuoraSubscriptionService.OrderActionParam orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
@@ -284,14 +252,12 @@ public with sharing class ZuoraSubscriptionServiceTest {
         // ExistingAccount should have Goldman/Dudley and Goldman/Barrett. So we should expect to see just one query, but no
         // other calls
         ZuoraSubscriptionService.createSubscription(orderActionParam, new Set<ZuoraSubscriptionService.ClientProject>{clientProject});
-
         // Expect one error log for ZuoraAPIHelper, callJSONEndpoint, Fine
         System.assertEquals(1, Logger.logs.values().size());
         // Expect one messages, for for the subscriptionOwner query
         System.assertEquals(1, Logger.logs.values()[0].size());
         System.assert(Logger.logs.values()[0][0].message.contains('/v1/orders/subscriptionOwner'));
     }
-
     @IsTest
     public static void testOrdersBySubscriptionOwnerCache() {
         List<Error_Log__c> errorLogs = [
@@ -300,7 +266,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
             WHERE Class__c = 'ZuoraAPIHelper'
         ];
         System.assertEquals(0, errorLogs.size());
-
         ZuoraSubscriptionService.getOrderBySubscriptionOwner('12345');
         Logger.flushLogs();
         errorLogs = [
@@ -311,7 +276,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         // There should be one error log since we did the callout
         System.assertEquals(1, errorLogs.size());
         System.assertEquals(1, ZuoraSubscriptionService.ordersBySubscriptionOwnerCache.size());
-
         ZuoraSubscriptionService.getOrderBySubscriptionOwner('12345');
         Logger.flushLogs();
         errorLogs = [
@@ -322,7 +286,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         // Since we cache the result, there should still only be one error log
         System.assertEquals(1, errorLogs.size());
         System.assertEquals(1, ZuoraSubscriptionService.ordersBySubscriptionOwnerCache.size());
-
         ZuoraSubscriptionService.getOrderBySubscriptionOwner('67890');
         Logger.flushLogs();
         errorLogs = [
@@ -334,7 +297,6 @@ public with sharing class ZuoraSubscriptionServiceTest {
         System.assertEquals(2, errorLogs.size());
         System.assertEquals(2, ZuoraSubscriptionService.ordersBySubscriptionOwnerCache.size());
     }
-
     @IsTest
     public static void testGetOrderBySubscriptionOwnerPages() {
         ZuoraAPI.Order order = new ZuoraAPI.Order('12345', System.today());
@@ -353,12 +315,10 @@ public with sharing class ZuoraSubscriptionServiceTest {
         }
         System.assert(foundExistingAccount);
         System.assert(found12345);
-
         obso =
             ZuoraSubscriptionService.getOrderBySubscriptionOwnerPage('/v1/orders/subscriptionOwner/ExistingAccountPage', null);
         System.assertEquals(4, obso.orders.size());
     }
-
     @IsTest
     public static void testTransactionSelectorForReturns() {
         List<ChargentOrders__Transaction__c> transactions = [
@@ -384,26 +344,18 @@ public with sharing class ZuoraSubscriptionServiceTest {
         update transactions;
         System.assertEquals(2, returnedTransactions.size());
         System.assertEquals(5, approvedTransactions.size());
-
         ChargentTransactionSelector transactionSelector = new ChargentTransactionSelector();
         List<ChargentOrders__Transaction__c> returnedTransactionsFromSelector =
             transactionSelector.selectTransactionsNotMarkedReturned(transactionIds);
         System.assertEquals(approvedTransactions.size(), returnedTransactionsFromSelector.size());
     }
-
     @IsTest
     private static void testGetAllRatePlanChargesByAccountId() {
-        System.assertEquals(0, ZuoraAPIHelper.numberCalloutsForZuoraNamespace);
         Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
             ZuoraSubscriptionService.getAllRatePlanChargesByAccountId('');
+        System.assertEquals(1, ratePlanChargesByChargeId.size(), 'Mock just returns a single rate plan charge');
         System.assertEquals('SSS-000099', ratePlanChargesByChargeId.get('2c92c0f96ae3b195016ae5e3665e0c08').Project_Zcustom);
-        System.assertEquals(3, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use 3 callouts the first time');
-        System.assertEquals(ratePlanChargesByChargeId, ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(''));
-        System.assertEquals(3, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use no callouts for cache hit');
-        ZuoraSubscriptionService.getAllRatePlanChargesByAccountId('NewAccount');
-        System.assertEquals(6, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use 3 more callouts for cache miss');
     }
-
     @IsTest
     private static void testGetSubscriptionsByAccount() {
         ZuoraAPI.SubscriptionsByAccount sba = new ZuoraSubscriptionService().getSubscriptionsByAccount('');
