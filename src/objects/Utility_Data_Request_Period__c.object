@@ -142,6 +142,20 @@
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>Custom_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Custom_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>Rate_Class__c</fields>
+        <fields>Rate_Subclass__c</fields>
+        <fields>Service_Start_Date__c</fields>
+        <fields>Service_End_Date__c</fields>
+        <fields>Quantity_Qualifier__c</fields>
+        <fields>Product_Transfer_Type__c</fields>
+        <fields>Measurement_Reference__c</fields>
+        <fields>Measurement_Unit__c</fields>
+        <fields>Measurement_Value__c</fields>
+        <label>Custom Compact Layout</label>
+    </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
