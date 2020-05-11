@@ -155,7 +155,11 @@
     <externalSharingModel>Private</externalSharingModel>
     <fields>
         <fullName>Account_Type__c</fullName>
+        <description>E=Customer receives supply from an ESCO
+U=Customer receives supply from the Utility</description>
         <externalId>false</externalId>
+        <inlineHelpText>E=Customer receives supply from an ESCO
+U=Customer receives supply from the Utility</inlineHelpText>
         <label>Account Type</label>
         <length>30</length>
         <required>false</required>
@@ -167,7 +171,9 @@
     </fields>
     <fields>
         <fullName>Load_Profile_Description__c</fullName>
+        <description>Load profile codes must be sent when the service is electric. Load profile definitions are accessible from the utility&apos;s website</description>
         <externalId>false</externalId>
+        <inlineHelpText>Load profile codes must be sent when the service is electric. Load profile definitions are accessible from the utility&apos;s website</inlineHelpText>
         <label>Load Profile Description</label>
         <length>30</length>
         <required>false</required>
@@ -179,7 +185,15 @@
     </fields>
     <fields>
         <fullName>Measurement_Reference__c</fullName>
+        <description>AN=Actual Period
+BR=Bill History/The utility tariff provides for minimum charges regardless of actual consumption below the minimum and the utility does not retain the actual consumption data
+CQ=Calculated Quantity
+EN=Estimated Period</description>
         <externalId>false</externalId>
+        <inlineHelpText>AN=Actual Period
+BR=Bill History/The utility tariff provides for minimum charges regardless of actual consumption below the minimum and the utility does not retain the actual consumption data
+CQ=Calculated Quantity
+EN=Estimated Period</inlineHelpText>
         <label>Measurement Reference</label>
         <length>5</length>
         <required>false</required>
@@ -191,7 +205,23 @@
     </fields>
     <fields>
         <fullName>Measurement_Unit__c</fullName>
+        <description>AJ=Adjusted Kilowatt Demand
+HH=Hundred Cubic Feet (CCF)
+K1=Kilowatt Demand/kW
+K2=Kilovolt Amperes Reactive Demand/kVAR
+K3=Kilovolt Amperes Reactive Hour/kVARh
+K4=Kilovolt Amperes/kVA
+KH=Kilowatt Hour/kWh
+TD=Therms TZ=Thousand Cubic Feet (MCF)</description>
         <externalId>false</externalId>
+        <inlineHelpText>AJ=Adjusted Kilowatt Demand
+HH=Hundred Cubic Feet (CCF)
+K1=Kilowatt Demand/kW
+K2=Kilovolt Amperes Reactive Demand/kVAR
+K3=Kilovolt Amperes Reactive Hour/kVARh
+K4=Kilovolt Amperes/kVA
+KH=Kilowatt Hour/kWh
+TD=Therms TZ=Thousand Cubic Feet (MCF)</inlineHelpText>
         <label>Measurement Unit</label>
         <length>255</length>
         <required>false</required>
@@ -216,7 +246,15 @@
     </fields>
     <fields>
         <fullName>Product_Transfer_Type__c</fullName>
+        <description>BC=Unmetered Services Summary
+BG=Non repeating information &amp; factors used to determine monthly forecast quantities
+FG=Scheduling Determinants/Additional Info
+PM=Physical Meter Information SU=Account Services Summary</description>
         <externalId>false</externalId>
+        <inlineHelpText>BC=Unmetered Services Summary
+BG=Non repeating information &amp; factors used to determine monthly forecast quantities
+FG=Scheduling Determinants/Additional Info
+PM=Physical Meter Information SU=Account Services Summary</inlineHelpText>
         <label>Product Transfer Type</label>
         <length>5</length>
         <required>false</required>
@@ -228,7 +266,27 @@
     </fields>
     <fields>
         <fullName>Quantity_Qualifier__c</fullName>
+        <description>1Y=Base Quantity
+CQ=Calculated Quantity
+D1=Billed
+FJ=Slope Quantity
+KA=Estimated Quantity
+KC=Capacity Obligation
+KZ=Transmission Obligation
+LH=UFG Rate
+LP=Load Factor
+QD=Quantity Delivered</description>
         <externalId>false</externalId>
+        <inlineHelpText>1Y=Base Quantity
+CQ=Calculated Quantity
+D1=Billed
+FJ=Slope Quantity
+KA=Estimated Quantity
+KC=Capacity Obligation
+KZ=Transmission Obligation
+LH=UFG Rate
+LP=Load Factor
+QD=Quantity Delivered</inlineHelpText>
         <label>Quantity Qualifier</label>
         <length>5</length>
         <required>false</required>
@@ -267,7 +325,9 @@
     </fields>
     <fields>
         <fullName>Rate_Class__c</fullName>
+        <description>Utility rate code as found in the tariff. (This code can be used to retrieve rates from a utility&apos;s web site.)</description>
         <externalId>false</externalId>
+        <inlineHelpText>Utility rate code as found in the tariff. (This code can be used to retrieve rates from a utility&apos;s web site.)</inlineHelpText>
         <label>Rate Class</label>
         <length>30</length>
         <required>false</required>
@@ -279,7 +339,9 @@
     </fields>
     <fields>
         <fullName>Rate_Subclass__c</fullName>
+        <description>This segment must be sent if a rate subclass is applicable. Provides further clarification of the Utility Rate Service Class. Prior to 11/2/2015 O&amp;R would send the Capacity Obligation in this field.</description>
         <externalId>false</externalId>
+        <inlineHelpText>This segment must be sent if a rate subclass is applicable. Provides further clarification of the Utility Rate Service Class. Prior to 11/2/2015 O&amp;R would send the Capacity Obligation in this field.</inlineHelpText>
         <label>Rate Subclass</label>
         <length>30</length>
         <required>false</required>
@@ -332,7 +394,17 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Utility Data Request Periods</pluralLabel>
-    <searchLayouts />
+    <searchLayouts>
+        <searchResultsAdditionalFields>Rate_Class__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Rate_Subclass__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Service_Start_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Service_End_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Quantity_Qualifier__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Product_Transfer_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Measurement_Reference__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Measurement_Unit__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Measurement_Value__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata"
+      xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -169,7 +170,11 @@
     </fields>
     <fields>
         <fullName>Account_Type__c</fullName>
+        <description>E=Customer receives supply from an ESCO
+U=Customer receives supply from the Utility</description>
         <externalId>false</externalId>
+        <inlineHelpText>E=Customer receives supply from an ESCO
+U=Customer receives supply from the Utility</inlineHelpText>
         <label>Account Type</label>
         <length>30</length>
         <required>false</required>
@@ -237,7 +242,13 @@
     </fields>
     <fields>
         <fullName>Exception_Reason_Code__c</fullName>
+        <description>Ex: A13=Other A76=Account not found or invalid
+A80=Service, Commodity or Billing Option Not Available
+A91=Acct does not have service requested. See ESGData Dictionary for full list.</description>
         <externalId>false</externalId>
+        <inlineHelpText>Ex: A13=Other A76=Account not found or invalid
+A80=Service, Commodity or Billing Option Not Available
+A91=Acct does not have service requested. See ESGData Dictionary for full list.</inlineHelpText>
         <label>Exception Reason Code</label>
         <length>255</length>
         <required>false</required>
@@ -260,7 +271,11 @@
     </fields>
     <fields>
         <fullName>Government_Credit_Code__c</fullName>
+        <description>N=No, account does not have a NYPA Discount
+Y=Yes, account does have a NYPA Discount</description>
         <externalId>false</externalId>
+        <inlineHelpText>N=No, account does not have a NYPA Discount
+Y=Yes, account does have a NYPA Discount</inlineHelpText>
         <label>Government Credit Code</label>
         <length>10</length>
         <required>false</required>
@@ -272,7 +287,11 @@
     </fields>
     <fields>
         <fullName>LDC_Customer_Eligibility__c</fullName>
+        <description>N=No, the account is not receiving Utility Discounts/Incentive Rates
+Y=Yes, the account is receiving Utility Discounts/Incentive Rates</description>
         <externalId>false</externalId>
+        <inlineHelpText>N=No, the account is not receiving Utility Discounts/Incentive Rates
+Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpText>
         <label>LDC Customer Eligibility</label>
         <length>30</length>
         <required>false</required>
@@ -298,7 +317,9 @@
     </fields>
     <fields>
         <fullName>Name_Qualifier__c</fullName>
+        <description>8R=Customer Name</description>
         <externalId>false</externalId>
+        <inlineHelpText>8R=Customer Name</inlineHelpText>
         <label>Name Qualifier</label>
         <length>10</length>
         <required>false</required>
@@ -324,7 +345,9 @@
     <fields>
         <fullName>Old_Account_Number__c</fullName>
         <complianceGroup>PII</complianceGroup>
+        <description>Required when LDC acct number has changed in the last 90 days</description>
         <externalId>false</externalId>
+        <inlineHelpText>Required when LDC acct number has changed in the last 90 days</inlineHelpText>
         <label>Old Account Number</label>
         <length>30</length>
         <required>false</required>
@@ -465,7 +488,17 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Utility Data Requests</pluralLabel>
-    <searchLayouts />
+    <searchLayouts>
+        <searchResultsAdditionalFields>Request_Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Request_Sent_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Request_Recieved_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Utility_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Exception_Reason_Code__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Exception_Reason_Description__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields n1:nil="true" />
+        <searchResultsAdditionalFields>Customer_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Utility_DUNS__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
