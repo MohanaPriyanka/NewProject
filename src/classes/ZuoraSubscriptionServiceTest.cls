@@ -7,8 +7,8 @@
 public with sharing class ZuoraSubscriptionServiceTest {
     @TestSetup
     public static void testSetup() {
-        UtilityAccountSubscriptionHandler.partnerCommissionService =
-            (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new PartnerCommissionServiceTest.MockPartnerCommissionService());
+        UtilityAccountSubscriptionHandler.partnerCommissionHandler =
+            (PartnerCommissionHandler) Test.createStub(PartnerCommissionHandler.class, new PartnerCommissionHandlerTest.MockPartnerCommissionHandler());
         Util.disableAllTriggers();
 
         TestFactory.insertBWAddress();
