@@ -2449,7 +2449,7 @@
             </processMetadataValues>
             <field>SurveyId</field>
             <value>
-                <stringValue>0Kd2C000000CaSUSA0</stringValue>
+                <stringValue>{!Environment.VAR_SURVEY Customer and Partner Case feedback}</stringValue>
             </value>
         </inputAssignments>
         <object>SurveyInvitation</object>
