@@ -31109,6 +31109,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Meter_Reading_Schedule__c.Utility_lookup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Meter_Reading_Schedule__c.Year_Effective__c</field>
         <readable>true</readable>
     </fieldPermissions>
