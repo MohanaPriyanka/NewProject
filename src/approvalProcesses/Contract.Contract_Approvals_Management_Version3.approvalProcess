@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
-    <active>false</active>
+    <active>true</active>
     <allowRecall>true</allowRecall>
     <allowedSubmitters>
         <type>creator</type>
@@ -29,14 +29,22 @@
         <field>Team_Submitted_By__c</field>
     </approvalPageFields>
     <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>lfreshman@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <label>Legal Approval</label>
+        <name>Legal_Approval</name>
+    </approvalStep>
+    <approvalStep>
         <allowDelegate>false</allowDelegate>
         <assignedApprover>
             <approver>
                 <name>cmadden@bluewavesolar.com</name>
-                <type>user</type>
-            </approver>
-            <approver>
-                <name>lfreshman@bluewavesolar.com</name>
                 <type>user</type>
             </approver>
             <approver>
@@ -45,7 +53,7 @@
             </approver>
             <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
         </assignedApprover>
-        <description>This is the approval step through which all contract records of the 4 specified contract types go to Customer Product and Legal approvers for unanimous decision making. 
+        <description>This is the approval step through which all contract records of the 4 specified contract types go to Customer Product approvers for unanimous decision making. 
 This step comes before the signatory step.</description>
         <entryCriteria>
             <criteriaItems>
@@ -55,8 +63,11 @@ This step comes before the signatory step.</description>
             </criteriaItems>
         </entryCriteria>
         <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
-        <label>Customer Product and Legal Approval Step</label>
-        <name>Customer_Product_and_Legal_Approval_Step</name>
+        <label>Customer Product Approval Step</label>
+        <name>Customer_Product_Approval_Step</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
     </approvalStep>
     <approvalStep>
         <allowDelegate>false</allowDelegate>
@@ -323,16 +334,16 @@ This step comes before the signatory step.</description>
             <name>Contract_Approvals_Final_Approval</name>
             <type>Alert</type>
         </action>
-        <action>
-            <name>Set_Status_to_Activated</name>
-            <type>FieldUpdate</type>
-        </action>
     </finalApprovalActions>
     <finalApprovalRecordLock>true</finalApprovalRecordLock>
     <finalRejectionActions>
         <action>
             <name>Contract_Approvals_Final_Rejection</name>
             <type>Alert</type>
+        </action>
+        <action>
+            <name>Set_Contract_Status_to_Draft</name>
+            <type>FieldUpdate</type>
         </action>
     </finalRejectionActions>
     <finalRejectionRecordLock>true</finalRejectionRecordLock>
@@ -342,7 +353,7 @@ This step comes before the signatory step.</description>
             <type>FieldUpdate</type>
         </action>
     </initialSubmissionActions>
-    <label>Contract Approvals Management Version 2</label>
+    <label>Contract Approvals Management Version 3</label>
     <recordEditability>AdminOnly</recordEditability>
     <showApprovalHistory>true</showApprovalHistory>
 </ApprovalProcess>
