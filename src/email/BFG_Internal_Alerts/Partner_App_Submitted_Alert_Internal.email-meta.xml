@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Partner App Submitted Alert - Internal</name>
+    <style>none</style>
+    <subject>New CS Partner Application</subject>
+    <textOnly>A new CS Partner Application has been submitted for you to review. Here&apos;s a link to the Partner&apos;s Account.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
