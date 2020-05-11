@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customButtons>LASER_Credit_Access_Custom</customButtons>
+    <customButtons>New_Customer_Care_Case</customButtons>
+    <customButtons>Opt_in_for_Text_Messages</customButtons>
+    <customButtons>Opt_out_for_Text_Messages</customButtons>
+    <customButtons>Send_Text_Message</customButtons>
     <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DisableCustomerPortal</excludeButtons>
+    <excludeButtons>EnableCustomerPortal</excludeButtons>
+    <excludeButtons>RequestUpdate</excludeButtons>
+    <excludeButtons>RequestUseSfdc</excludeButtons>
+    <excludeButtons>SendEmail</excludeButtons>
+    <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
+    <excludeButtons>ViewCustomerPortal</excludeButtons>
+    <excludeButtons>XClean</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
         <detailHeading>false</detailHeading>
@@ -9,156 +22,89 @@
         <label>Fields</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Address</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Company</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Building_Owner__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Parent_Account__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Building_Use__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Reason_Unqualified__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Required</behavior>
                 <field>Name</field>
             </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LASERCA__Home_Address__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LASERCA__Home_City__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LASERCA__Home_State__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Home_Apt_Suite__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LASERCA__Home_Zip__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Income__c</field>
+            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Email</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Status</field>
+                <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Mortgage_Lender__c</field>
+                <field>Application_Type__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Roof_Type__c</field>
+                <field>Opportunity__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Roof_Age__c</field>
+                <field>Other_Bank_Executive__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Product_line__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Utility and Sizing</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Electricity_Provider__c</field>
+                <field>Avidia_Service_Provider__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>System_Size_kw_AC__c</field>
+                <field>Type_of_Avidia_Service_Provider__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>System_Size_kW_DC__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Proposed_EPC_Pricing__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Estimated_IX_costs_included_in__c</field>
+                <behavior>Readonly</behavior>
+                <field>CreatedById</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Yield_kWh_kW__c</field>
+                <field>AccountId</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Estimated_Utility_Upgrade_Cost__c</field>
+                <field>Lead__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Impact_Study_Costs__c</field>
+                <field>LASERCA__Social_Security_Number__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ISA_Status__c</field>
+                <height>200</height>
+                <page>et4ae5__ContactActions</page>
+                <showLabel>false</showLabel>
+                <showScrollbars>false</showScrollbars>
+                <width>100%</width>
             </layoutItems>
         </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Proposed Product Information</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Module_Manufacturer__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Module_Nameplate_Rating__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Module_Count__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Inverter_Manufacturer__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Inverter_Nameplate_Rating__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Inverter_Count__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Additional Info</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>C_I_In_take_Form_info__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
@@ -207,7 +153,7 @@
         <relatedContentItems>
             <layoutItem>
                 <behavior>Readonly</behavior>
-                <field>CampaignId</field>
+                <field>AccountId</field>
             </layoutItem>
         </relatedContentItems>
         <relatedContentItems>
@@ -217,44 +163,67 @@
         </relatedContentItems>
     </relatedContent>
     <relatedLists>
-        <relatedList>RelatedNoteList</relatedList>
+        <relatedList>RelatedEntityHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
-        <fields>OPPORTUNITY.NAME</fields>
-        <fields>ACCOUNT.NAME</fields>
-        <fields>OPPORTUNITY.CLOSE_DATE</fields>
-        <relatedList>Opportunity.Lead__c</relatedList>
+        <fields>CASES.CASE_NUMBER</fields>
+        <fields>CASES.REASON</fields>
+        <fields>CASES.RECORDTYPE</fields>
+        <fields>CASES.SUBJECT</fields>
+        <fields>CASES.PRIORITY</fields>
+        <fields>CASES.CREATED_DATE</fields>
+        <fields>CASES.STATUS</fields>
+        <fields>OWNER_NAME</fields>
+        <relatedList>RelatedCaseList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>LASERCA__Personal_Credit_Report__c.LASERCA__Contact__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>LASERCA__Credit_Report_Log__c.LASERCA__Contact__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>ACCOUNT.NAME</fields>
         <fields>ACCOUNT.ADDRESS1_CITY</fields>
         <fields>ACCOUNT.PHONE1</fields>
-        <relatedList>Account.Lead__c</relatedList>
+        <relatedList>Account.Send_Bills_Contact__c</relatedList>
     </relatedLists>
     <relatedLists>
-        <fields>TASK.SUBJECT</fields>
-        <fields>ACTIVITY.TASK</fields>
-        <fields>TASK.DUE_DATE</fields>
-        <fields>CORE.USERS.FULL_NAME</fields>
-        <fields>TASK.LAST_UPDATE</fields>
-        <relatedList>RelatedHistoryList</relatedList>
+        <fields>NAME</fields>
+        <fields>et4ae5__EmailName__c</fields>
+        <fields>et4ae5__fBusiness_Unit__c</fields>
+        <fields>et4ae5__Created_Date_Time__c</fields>
+        <fields>et4ae5__Send_Status_View__c</fields>
+        <fields>et4ae5__Status_Date_Time__c</fields>
+        <fields>et4ae5__FromName__c</fields>
+        <fields>et4ae5__FromEmail__c</fields>
+        <fields>et4ae5__Campaigns__c</fields>
+        <fields>et4ae5__Reports__c</fields>
+        <relatedList>et4ae5__SendDefinition__c.et4ae5__Contact__c</relatedList>
     </relatedLists>
     <relatedLists>
-        <fields>CAMPAIGN.NAME</fields>
-        <fields>CAMPAIGN.START_DATE</fields>
-        <fields>CAMPAIGN.CAMPAIGN_TYPE</fields>
-        <fields>CM.STATUS</fields>
-        <fields>CM.RESPONDED</fields>
-        <fields>CM.LAST_UPDATE</fields>
-        <relatedList>RelatedCampaignList</relatedList>
+        <fields>NAME</fields>
+        <relatedList>et4ae5__IndividualEmailResult__c.et4ae5__Contact__c</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>FULL_NAME</fields>
+        <fields>LEAD.COMPANY</fields>
+        <fields>LEAD.PHONE</fields>
+        <relatedList>Lead.CoApplicant_Contact__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <relatedList>RelatedNoteList</relatedList>
+    </relatedLists>
+    <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h0a00000AyNti</masterLabel>
+        <masterLabel>00hj000000BAY0S</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

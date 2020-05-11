@@ -7181,9 +7181,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Contact.DoNotCall</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -11886,9 +11886,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Lead.DoNotCall</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -47011,14 +47011,6 @@
         <layout>Contact-Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contact-Contact Layout</layout>
-        <recordType>Contact.Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Contact Layout</layout>
-        <recordType>Contact.Partner_Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Contact-Project Management Layout</layout>
         <recordType>Contact.Project_Management_Contact</recordType>
     </layoutAssignments>
@@ -53653,10 +53645,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ModerateChatter</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ModifyAllData</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
