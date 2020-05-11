@@ -54,6 +54,30 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
+        <fullName>LDC_Rate_Class__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used in the EDI integration as part of the unique identifier for rate classes</inlineHelpText>
+        <label>LDC Rate Class</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LDC_Rate_Subclass__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used in the EDI integration as a part of the unique identifier for rate classes</inlineHelpText>
+        <label>LDC Rate Subclass</label>
+        <length>10</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Utility__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>The utility that the rate class is for.</description>
@@ -80,7 +104,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Rate Classes</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
