@@ -39,7 +39,7 @@ Contract/Project Value: {!myVariable_current.Project_Value__c}</stringValue>
         <inputParameters>
             <name>subjectNameOrId</name>
             <value>
-                <stringValue>0F92C0000000ccYSAQ</stringValue>
+                <stringValue>{!Environment.VAR_Chatter Contract Approval Group}</stringValue>
             </value>
         </inputParameters>
     </actionCalls>
