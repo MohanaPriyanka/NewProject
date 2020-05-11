@@ -53582,10 +53582,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ManageEntitlements</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ManageExchangeConfig</name>
     </userPermissions>
     <userPermissions>
@@ -53691,10 +53687,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ModerateChatter</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ModifyAllData</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
