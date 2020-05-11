@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <customButtons>Check_Loadzone</customButtons>
-    <customButtons>LASER_Credit_Access_Custom</customButtons>
-    <excludeButtons>Clone</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
-    <excludeButtons>FindDup</excludeButtons>
+    <excludeButtons>ChangeOwnerOne</excludeButtons>
+    <excludeButtons>DisableCustomerPortal</excludeButtons>
+    <excludeButtons>DisablePartnerPortal</excludeButtons>
+    <excludeButtons>DisablePrmSuperUser</excludeButtons>
+    <excludeButtons>EnableCustomerPortal</excludeButtons>
+    <excludeButtons>EnablePrmSuperUser</excludeButtons>
+    <excludeButtons>RequestUpdate</excludeButtons>
+    <excludeButtons>SendEmail</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
+    <excludeButtons>ViewCustomerPortal</excludeButtons>
     <excludeButtons>XClean</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -15,29 +19,32 @@
         <label>Record Information</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>OwnerId</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Required</behavior>
-                <field>Status</field>
+                <field>Name</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Date_of_Application_2__c</field>
+                <behavior>Edit</behavior>
+                <field>Capital_Raising__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Continue_Application_Link__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
+                <behavior>Required</behavior>
+                <field>AccountId</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Product_line__c</field>
+                <field>OwnerId</field>
+            </layoutItems>
+            <layoutItems>
+                <height>200</height>
+                <page>et4ae5__ContactActions</page>
+                <showLabel>false</showLabel>
+                <showScrollbars>false</showScrollbars>
+                <width>100%</width>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -46,15 +53,18 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Customer Information</label>
+        <label>Contact Information</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Name</field>
+                <behavior>Edit</behavior>
+                <field>Title</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Email</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -62,71 +72,23 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Secondary_Phone__c</field>
+                <field>MobilePhone</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Company</field>
+                <behavior>Readonly</behavior>
+                <field>ClickToDial__Click_to_Call_Phone__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>ClickToDial__Click_to_Call_Mobile__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Load_Zone__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Utility_1__c</field>
-            </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Available_Capacity__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Acquisition Information</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Custom_ID__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Partner_Lookup__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>bs_Sales_ID__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Number_of_Years_at_Location__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Number_of_Years_in_Business__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>false</customLabel>
-        <detailHeading>false</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Lead Information</label>
-        <layoutColumns/>
-        <layoutColumns/>
-        <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -136,52 +98,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Address</field>
+                <field>MailingAddress</field>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Parcel_Zip__c</field>
-            </layoutItems>
-        </layoutColumns>
+        <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>BFG - Community Solar Information</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Credit_Approval_Status2__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Privacy_Policy_Acknowledged__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Credit_Check_Acknowledged__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Utility_Bill_Access_Acknowledged__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>System Information</label>
-        <layoutColumns/>
-        <layoutColumns/>
-        <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -224,6 +145,15 @@
         <customLabel>false</customLabel>
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
+        <label>Contact Information</label>
+        <layoutColumns/>
+        <layoutColumns/>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>false</customLabel>
+        <detailHeading>false</detailHeading>
+        <editHeading>true</editHeading>
         <label>Description Information</label>
         <layoutColumns/>
         <style>OneColumn</style>
@@ -236,22 +166,22 @@
             <quickActionName>FeedItem.ContentPost</quickActionName>
         </quickActionListItems>
         <quickActionListItems>
-            <quickActionName>Lead.Task</quickActionName>
+            <quickActionName>Contact.Task</quickActionName>
         </quickActionListItems>
         <quickActionListItems>
-            <quickActionName>Lead.Log_a_Call</quickActionName>
+            <quickActionName>Contact.Log_a_Call</quickActionName>
         </quickActionListItems>
         <quickActionListItems>
-            <quickActionName>Lead.Event</quickActionName>
+            <quickActionName>Contact.Event</quickActionName>
+        </quickActionListItems>
+        <quickActionListItems>
+            <quickActionName>Contact.Case</quickActionName>
         </quickActionListItems>
         <quickActionListItems>
             <quickActionName>FeedItem.LinkPost</quickActionName>
         </quickActionListItems>
         <quickActionListItems>
             <quickActionName>FeedItem.PollPost</quickActionName>
-        </quickActionListItems>
-        <quickActionListItems>
-            <quickActionName>SendEmail</quickActionName>
         </quickActionListItems>
     </quickActionList>
     <relatedContent>
@@ -260,18 +190,22 @@
                 <component>wits:newsPanel</component>
             </layoutItem>
         </relatedContentItems>
+        <relatedContentItems>
+            <layoutItem>
+                <behavior>Readonly</behavior>
+                <field>AccountId</field>
+            </layoutItem>
+        </relatedContentItems>
     </relatedContent>
     <relatedLists>
-        <fields>TASK.SUBJECT</fields>
-        <fields>ACTIVITY.TASK</fields>
-        <fields>TASK.DUE_DATE</fields>
-        <fields>CORE.USERS.FULL_NAME</fields>
-        <fields>TASK.LAST_UPDATE</fields>
-        <fields>ClickToDial__ClickToCallPhone__c</fields>
-        <relatedList>RelatedHistoryList</relatedList>
+        <fields>ACCOUNT.NAME</fields>
+        <fields>ACCOUNT.ADDRESS1_CITY</fields>
+        <fields>ACCOUNT.PHONE1</fields>
+        <relatedList>Account.Send_Bills_Contact__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
+        <fields>TASK.WHAT_NAME</fields>
         <fields>ACTIVITY.TASK</fields>
         <fields>TASK.DUE_DATE</fields>
         <fields>TASK.STATUS</fields>
@@ -280,16 +214,39 @@
         <relatedList>RelatedActivityList</relatedList>
     </relatedLists>
     <relatedLists>
-        <relatedList>RelatedNoteList</relatedList>
+        <fields>TASK.SUBJECT</fields>
+        <fields>TASK.WHAT_NAME</fields>
+        <fields>ACTIVITY.TASK</fields>
+        <fields>TASK.DUE_DATE</fields>
+        <fields>CORE.USERS.FULL_NAME</fields>
+        <fields>TASK.LAST_UPDATE</fields>
+        <relatedList>RelatedHistoryList</relatedList>
     </relatedLists>
-    <runAssignmentRulesDefault>true</runAssignmentRulesDefault>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>et4ae5__EmailName__c</fields>
+        <fields>et4ae5__fBusiness_Unit__c</fields>
+        <fields>et4ae5__Created_Date_Time__c</fields>
+        <fields>et4ae5__Send_Status_View__c</fields>
+        <fields>et4ae5__Status_Date_Time__c</fields>
+        <fields>et4ae5__FromName__c</fields>
+        <fields>et4ae5__FromEmail__c</fields>
+        <fields>et4ae5__Campaigns__c</fields>
+        <fields>et4ae5__Reports__c</fields>
+        <relatedList>et4ae5__SendDefinition__c.et4ae5__Contact__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>et4ae5__IndividualEmailResult__c.et4ae5__Contact__c</relatedList>
+    </relatedLists>
+    <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
-    <showRunAssignmentRulesCheckbox>true</showRunAssignmentRulesCheckbox>
+    <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hj000000BEYj9</masterLabel>
+        <masterLabel>00hj000000BB4ed</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
