@@ -31,6 +31,15 @@
         <template>Product_Team/Contract_Approvals_Final_Rejection</template>
     </alerts>
     <fieldUpdates>
+        <fullName>Set_Contract_Status_to_Draft</fullName>
+        <field>Status</field>
+        <literalValue>Draft</literalValue>
+        <name>Set Contract Status to Draft</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Set_Status_to_Activated</fullName>
         <description>This is one of the automatic final approval actions, which set the Status field to &apos;Activated&apos;.</description>
         <field>Status</field>
@@ -49,5 +58,6 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
     </fieldUpdates>
 </Workflow>
