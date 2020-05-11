@@ -95,18 +95,6 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
 
     private void initForDataLoadInternal() {
         getRatePlanIds();
-        // We're not adding this to selector classes since they are for one-time data migration
-        // Consumes ~31k query rows as of May 2019
-        List<AggregateResult> systemsBillsByAccount = [
-            SELECT Property_Account__r.Id Id, Shared_Solar_System__r.Id systemId, Client__r.Id clientId,
-                MIN(Client__r.Account_Number__c) clientName,
-                MIN(Shared_Solar_System__r.Unique_ID__c) projectName,
-                MIN(Date__c) billDate
-            FROM System_Bill__c
-            WHERE Property_Account__r.Zuora_Id__c != NULL
-            GROUP BY Property_Account__r.Id, Shared_Solar_System__r.Id, Client__r.Id
-            ORDER BY MIN(Date__c), Property_Account__r.Id, Shared_Solar_System__r.Id
-        ];
         // Consumes ~3k query rows as of May 2019
         List<AggregateResult> scheduleZSubscriptionsByAccount = [
             SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Id Id,
@@ -123,9 +111,6 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
                 Schedule_Z__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Id
         ];
         Set<Id> accountIds = new Set<Id>();
-        for (AggregateResult aggregateResult : systemsBillsByAccount) {
-            accountIds.add(aggregateResult.Id);
-        }
         for (AggregateResult aggregateResult : scheduleZSubscriptionsByAccount) {
             accountIds.add(aggregateResult.Id);
         }
@@ -137,7 +122,6 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
 
         Map<String, ZuoraSubscriptionService.SubscriptionParam> accountNumberToSubscriptionMap =
             new Map<String, ZuoraSubscriptionService.SubscriptionParam>();
-        updateSubscriptionMap(systemsBillsByAccount, accountMap, accountNumberToSubscriptionMap);
         updateSubscriptionMap(scheduleZSubscriptionsByAccount, accountMap, accountNumberToSubscriptionMap);
         allSubscriptionsToCreate = accountNumberToSubscriptionMap.values();
     }
