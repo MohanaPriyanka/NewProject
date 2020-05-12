@@ -991,6 +991,68 @@
                     <stringValue>Community Solar</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Anchor</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Public Offtake</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>myRule_17_pmetdec</targetReference>
             </connector>
@@ -1011,7 +1073,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_20</name>
-            <conditionLogic>1 AND 2 AND( (3 and 4) or 5 )</conditionLogic>
+            <conditionLogic>1 AND 2 AND( (3 and 4) or 5 ) and 6 and 7</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -1165,6 +1227,68 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>CSAP</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Anchor</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Public Offtake</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1395,6 +1519,68 @@
                     <stringValue>Community Solar</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Anchor</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Public Offtake</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>myDecision</targetReference>
             </connector>
@@ -1412,7 +1598,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myPreWaitRule_myWait_myRule_20</name>
-            <conditionLogic>1 AND 2 AND( (3 and 4) or 5 )</conditionLogic>
+            <conditionLogic>1 AND 2 AND( (3 and 4) or 5 ) and 6 and 7</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -1566,6 +1752,68 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>CSAP</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Anchor</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Public Offtake</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -2231,6 +2479,68 @@
                     <stringValue>Community Solar</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_old.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Anchor</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_old.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Public Offtake</stringValue>
+                </rightValue>
+            </conditions>
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
@@ -2260,7 +2570,7 @@
         </rules>
         <rules>
             <name>myRule_20_pmetrule</name>
-            <conditionLogic>1 AND 2 AND( (3 and 4) or 5 )</conditionLogic>
+            <conditionLogic>1 AND 2 AND( (3 and 4) or 5 ) and 6 and 7</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -2416,6 +2726,68 @@
                     <stringValue>CSAP</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_old.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Anchor</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_old.Customer_Group__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Public Offtake</stringValue>
+                </rightValue>
+            </conditions>
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
@@ -2521,7 +2893,7 @@
                 <stringValue>TEXT (PRIORVALUE ( [Opportunity].StageName ))</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_12_myRule_11_A3_1363665651</name>
+        <name>formula_12_myRule_11_A3_3538031863</name>
         <dataType>String</dataType>
         <expression>TEXT (PRIORVALUE ( {!myVariable_current.StageName} ))</expression>
     </formulas>
@@ -2532,7 +2904,7 @@
                 <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_13_myRule_11_A2_2581075414</name>
+        <name>formula_13_myRule_11_A2_1621275564</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
@@ -2543,7 +2915,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_18_myRule_17_A2_0870505173</name>
+        <name>formula_18_myRule_17_A2_8220274524</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -2554,7 +2926,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_21_myRule_20_A4_7430223508</name>
+        <name>formula_21_myRule_20_A4_7380990967</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -2565,7 +2937,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_22_myRule_20_A2_7872492417</name>
+        <name>formula_22_myRule_20_A2_8804497548</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -2577,7 +2949,7 @@
                 </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A2_0486873984</name>
+        <name>formula_3_myRule_1_A2_5176553267</name>
         <dataType>String</dataType>
         <expression>TEXT({!myVariable_current.StageName})</expression>
     </formulas>
@@ -2588,7 +2960,7 @@
                 <stringValue>TEXT(PRIORVALUE([Opportunity].StageName ) )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_4_myRule_1_A2_4719721892</name>
+        <name>formula_4_myRule_1_A2_1920157286</name>
         <dataType>String</dataType>
         <expression>TEXT(PRIORVALUE({!myVariable_current.StageName} ) )</expression>
     </formulas>
@@ -2599,7 +2971,7 @@
                 <stringValue>NOW() </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_5_myRule_1_A1_3472883476</name>
+        <name>formula_5_myRule_1_A1_0689897162</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
@@ -2610,7 +2982,7 @@
                 <stringValue>TEXT(PRIORVALUE([Opportunity].StageName ))</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_8_myRule_7_A3_7890092848</name>
+        <name>formula_8_myRule_7_A3_4953196439</name>
         <dataType>String</dataType>
         <expression>TEXT(PRIORVALUE({!myVariable_current.StageName} ))</expression>
     </formulas>
@@ -2621,11 +2993,11 @@
                 <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_9_myRule_7_A2_0231819267</name>
+        <name>formula_9_myRule_7_A2_3106098019</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
-    <interviewLabel>Opportunity_Create_Edit-22_InterviewLabel</interviewLabel>
+    <interviewLabel>Opportunity_Create_Edit-26_InterviewLabel</interviewLabel>
     <label>Opportunity Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -2759,7 +3131,7 @@
             </processMetadataValues>
             <field>Previous_Stage__c</field>
             <value>
-                <elementReference>formula_12_myRule_11_A3_1363665651</elementReference>
+                <elementReference>formula_12_myRule_11_A3_3538031863</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -3013,7 +3385,7 @@
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_18_myRule_17_A2_0870505173</elementReference>
+                <elementReference>formula_18_myRule_17_A2_8220274524</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3257,7 +3629,7 @@
             </processMetadataValues>
             <field>New_Stage__c</field>
             <value>
-                <elementReference>formula_3_myRule_1_A2_0486873984</elementReference>
+                <elementReference>formula_3_myRule_1_A2_5176553267</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3323,7 +3695,7 @@
             </processMetadataValues>
             <field>Previous_Stage__c</field>
             <value>
-                <elementReference>formula_4_myRule_1_A2_4719721892</elementReference>
+                <elementReference>formula_4_myRule_1_A2_1920157286</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -3369,7 +3741,7 @@
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_22_myRule_20_A2_7872492417</elementReference>
+                <elementReference>formula_22_myRule_20_A2_8804497548</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3613,7 +3985,7 @@
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_21_myRule_20_A4_7430223508</elementReference>
+                <elementReference>formula_21_myRule_20_A4_7380990967</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3923,7 +4295,7 @@
             </processMetadataValues>
             <field>Previous_Stage__c</field>
             <value>
-                <elementReference>formula_8_myRule_7_A3_7890092848</elementReference>
+                <elementReference>formula_8_myRule_7_A3_4953196439</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -4138,7 +4510,7 @@
             </processMetadataValues>
             <field>Closed_On__c</field>
             <value>
-                <elementReference>formula_13_myRule_11_A2_2581075414</elementReference>
+                <elementReference>formula_13_myRule_11_A2_1621275564</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -4461,7 +4833,7 @@
             </processMetadataValues>
             <field>Closed_On__c</field>
             <value>
-                <elementReference>formula_5_myRule_1_A1_3472883476</elementReference>
+                <elementReference>formula_5_myRule_1_A1_0689897162</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -4676,7 +5048,7 @@
             </processMetadataValues>
             <field>Closed_On__c</field>
             <value>
-                <elementReference>formula_9_myRule_7_A2_0231819267</elementReference>
+                <elementReference>formula_9_myRule_7_A2_3106098019</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
