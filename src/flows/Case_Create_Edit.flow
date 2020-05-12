@@ -78,13 +78,13 @@
         <inputParameters>
             <name>surveyName</name>
             <value>
-                <stringValue>partner_and_customer_case_feedback_f94b130d_57de_4401_bec4_b0e0228a675f</stringValue>
+                <stringValue>{!Environment.VAR_SURVEY NAME: Customer and Partner Case Feedback}</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>emailTemplateName</name>
             <value>
-                <stringValue>Customer_Support_Case_Close_1588275202979</stringValue>
+                <stringValue>{!Environment.VAR_SURVEY Customer and Partner Case Feedback email template}</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -968,7 +968,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_3</name>
-            <conditionLogic>1 and 2 and (3 or 4 or 8) and 5 and 6 and 7</conditionLogic>
+            <conditionLogic>1 and 2 and (3 or 4 or 8) and 5 and 6 and 7 and 9</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -1221,6 +1221,43 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Phone</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideReferenceTo</name>
+                    <value>
+                        <stringValue>Contact</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>ID</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -2176,7 +2213,7 @@
         </rules>
     </decisions>
     <description>Runs when Case object is created or edited</description>
-    <interviewLabel>Case_Create_Edit-16_InterviewLabel</interviewLabel>
+    <interviewLabel>Case_Create_Edit-17_InterviewLabel</interviewLabel>
     <label>Case Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -2412,7 +2449,7 @@
             </processMetadataValues>
             <field>SurveyId</field>
             <value>
-                <stringValue>0Kd2C000000CaSUSA0</stringValue>
+                <stringValue>{!Environment.VAR_SURVEY Customer and Partner Case feedback}</stringValue>
             </value>
         </inputAssignments>
         <object>SurveyInvitation</object>
@@ -2501,7 +2538,7 @@
         <object>Case</object>
     </recordUpdates>
     <startElementReference>isChangedDecision4_myRule_3_Status</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>cancelWaits</name>
         <dataType>String</dataType>
