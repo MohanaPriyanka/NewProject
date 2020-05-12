@@ -45,6 +45,18 @@
         <template>CS_Billing_Emails/CS_Recurring_Payments</template>
     </alerts>
     <alerts>
+        <fullName>Sales_Partner_Application_Submitted_Notification</fullName>
+        <description>Sales Partner Application Submitted Notification</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>Partner_Application_QC_Team</recipient>
+            <type>group</type>
+        </recipients>
+        <senderAddress>productsupport@bluewavesolar.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>BFG_Internal_Alerts/Partner_App_Submitted_Alert_Internal</template>
+    </alerts>
+    <alerts>
         <fullName>X3_Days_Past_Due</fullName>
         <description>3 Days Past Due</description>
         <protected>false</protected>
