@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 1/23/2019.
  * Description: Used to query shared solar systems
- * Test: SharedSolarSystemSelectorTest, ProductionUpdateSelectorTest
+ * Test: SharedSolarSystemSelectorTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class SharedSolarSystemsSelector {
