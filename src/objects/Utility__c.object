@@ -128,6 +128,17 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
+    <fields>
+        <fullName>Utility_DUNS_Number__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used in the EDI integration as unique identifier for utilities</inlineHelpText>
+        <label>Utility DUNS Number</label>
+        <length>20</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
     <label>Utility</label>
     <listViews>
         <fullName>All</fullName>
