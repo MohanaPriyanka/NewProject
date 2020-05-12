@@ -21,7 +21,7 @@ public inherited sharing class SharedSolarSystemsSelector {
     }
     public Map<Id, Shared_Solar_System__c> getSSSMap(Set<Id> sssIds) {
         Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>([
-            SELECT Id, Client_Account__c
+            SELECT Id, Client_Account__c, Number_of_Billed_Production_Periods__c
             FROM Shared_Solar_System__c
             WHERE Id IN :sssIds
         ]);

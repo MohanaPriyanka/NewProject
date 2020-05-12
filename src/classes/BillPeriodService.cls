@@ -124,11 +124,20 @@ public with sharing class BillPeriodService {
         try {
             List<Bill_Period__c> billPeriodsToUpdate;
             billPeriodsToUpdate = BillPeriodSelector.getBillPeriodsByMonth(invoiceDate.Month(), invoiceDate.Year());
+            List<Shared_Solar_System__c> systemsToUpdate = new List<Shared_Solar_System__c>();
 
             for (Bill_Period__c billPeriod : billPeriodsToUpdate){
                 billPeriod.Bill_Status__c = 'Bill Run Complete';
+                if (billPeriod.Shared_Solar_System__r.First_Bill_Date__c == null){
+                    Shared_Solar_System__c sssToUpdate = new Shared_Solar_System__c(
+                        Id = billPeriod.Shared_Solar_System__c,
+                        First_Bill_Date__c = billPeriod.Bill_Date__c
+                    );
+                    systemsToUpdate.add(sssToUpdate);
+                }
             }
             update billPeriodsToUpdate;
+            update systemsToUpdate;
             return billPeriodsToUpdate.size();
         } catch (Exception excep){
             Logger.logNow('BillPeriodService','markBillPeriodsAsBillRunComplete',excep.getMessage() + '__' + excep.getStackTraceString());
