@@ -7918,6 +7918,17 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <type>Percent</type>
     </fields>
     <fields>
+        <fullName>Survey_URL__c</fullName>
+        <description>Used in Salesforce Surveys to send post-sale surveys to customers.</description>
+        <externalId>false</externalId>
+        <label>Survey URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
         <fullName>SyncedQuoteId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
