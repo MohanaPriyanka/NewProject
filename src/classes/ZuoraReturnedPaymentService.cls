@@ -25,7 +25,9 @@ public with sharing class ZuoraReturnedPaymentService {
     public List<ZuoraAPI.DebitMemo> convertPaymentToDebitMemos(ZuoraAPI.Payment payment) {
         HttpResponse response;
         ZuoraAPI.OrderBySubscriptionOwner subscription;
-        if (!featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
+        if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
+            // We don't create debit memos from a subscription charge, so we don't need the subscription
+        } else {
             subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(payment.accountId);
         }
         response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/payments/'+ payment.id +'/parts', null, false);
@@ -97,7 +99,7 @@ public with sharing class ZuoraReturnedPaymentService {
         debitMemo.Project_Zcustom = project;
         debitMemo.ClientOwner_Zcustom = client;
         debitMemo.CRM_ID_Zcustom = payment.number_Zreserved;
-        if (productRatePlanChargeId == null) {
+        if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
             ZuoraAPI.DebitMemoItem debitMemoItem = new ZuoraAPI.DebitMemoItem();
             debitMemoItem.amount = paymentPartItem.amount;
             debitMemoItem.skuName = 'Utility Credit';
