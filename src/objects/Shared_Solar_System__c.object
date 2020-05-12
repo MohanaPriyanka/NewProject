@@ -185,17 +185,6 @@
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Actual_First_Bill_Date__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>This field must be manually populated after the first production update</inlineHelpText>
-        <label>Actual First BW Bill Date</label>
-        <required>false</required>
-        <trackFeedHistory>true</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Actual_Mechanical_Completion_Override__c</fullName>
         <description>Fill in with the date the project reached mechanical completion.</description>
         <externalId>false</externalId>
@@ -1018,23 +1007,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>First_Bill_Date__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>First Bill Date from related Bill Periods where &quot;Bill Run Complete&quot;</inlineHelpText>
-        <label>First Bill Date</label>
-        <summarizedField>Bill_Period__c.Bill_Date__c</summarizedField>
-        <summaryFilterItems>
-            <field>Bill_Period__c.Bill_Status__c</field>
-            <operation>equals</operation>
-            <value>Bill Run Complete</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Bill_Period__c.Shared_Solar_System__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Graph_Box__c</fullName>
