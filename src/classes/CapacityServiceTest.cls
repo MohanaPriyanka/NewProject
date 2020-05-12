@@ -291,6 +291,25 @@ public with sharing class CapacityServiceTest {
     }
 
     @IsTest
+    private static void testFindCapacityByZipCodeNoPartners() {
+        Partner__c partner =[SELECT Id FROM Partner__c WHERE Name = 'ACE Solar'];
+        Shared_Solar_System__c sss = [SELECT Id, Sales_Partners__c FROM Shared_Solar_System__c WHERE Sales_Partners__c = 'ACE Solar'];
+        sss.Sales_Partners__c = null;
+        update sss;
+
+        CapacityService service = new CapacityService();
+        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345', partner.Id);
+        System.assertEquals('12345', response.zipcode, 'Response zip code (' + response.zipcode + ') should match submitted zip code (12345)');
+        System.assertNotEquals(0, response.utilities.size(), 'At least one utility should match the zip code and be returned');
+        System.assertNotEquals(0, response.utilityIds.size(), 'At least one utility ID should match the zip code and be returned');
+        System.assertNotEquals(0, response.loadZones.size(), 'At least one load zone should match the zip code and be returned');
+        System.assertNotEquals(0, response.loadZoneNames.size(), 'At least one load zone name should match the zip code and be returned');
+        System.assertEquals(0, response.products.size(), 'Because the match Shared Solar System does not have any Sales Partners, no products should be returned');
+        System.assertEquals(0, response.sharedSolarSystems.size(), 'Because the match Shared Solar System does not have any Sales Partners, no Shared Solar Systems should be returned');
+        System.assertEquals(false, response.hasCapacity(), 'Because the match Shared Solar System does not have any Sales Partners, the response should indicate no available capacity');
+    }
+
+    @IsTest
     public static void testFindCapacityByZipCodeWithPartner() {
         CapacityService service = new CapacityService();
         CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345');
