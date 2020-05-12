@@ -34,7 +34,6 @@
             <casePriority>Medium</casePriority>
             <createTask>true</createTask>
             <emailAddress>anchorsupport@bluewavesolar.com</emailAddress>
-            <emailServicesAddress>anchorsupport@33y70skjymwt9emepx2gh5koci19w6j94gzctzfm2uq1xo0t7j.2c-d48cuas.cs59.case.sandbox.salesforce.com</emailServicesAddress>
             <isVerified>true</isVerified>
             <routingName>Anchor Support</routingName>
             <saveEmailHeaders>true</saveEmailHeaders>
