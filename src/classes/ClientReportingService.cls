@@ -7,6 +7,9 @@
 public without sharing class ClientReportingService {
     @TestVisible
     private static FeatureService featureService = new FeatureService();
+
+    // Client Stamps:
+
     public static void stampClient(List<Bill_Adjustment__c> adjustments) {
         // Called from before insert trigger:
         Set<Id> uasIds = new Set<Id>();
@@ -63,6 +66,33 @@ public without sharing class ClientReportingService {
             prod.Client_Account__c = sss.Client_Account__c;
         }
     }
+    public void stampClient(List<Bill_Period__c> billPeriods) {
+        Set<Id> sssIds = new Set<Id>();
+        for (Bill_Period__c billPeriod : billPeriods) {
+            sssIds.add(billPeriod.Shared_Solar_System__c);
+        }
+        SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+        Map<Id, Shared_Solar_System__c> sssMap  = sssSelector.getSSSMap(sssIds);
+        for (Bill_Period__c billPeriod : billPeriods) {
+            Shared_Solar_System__c sss = sssMap.get(billPeriod.Shared_Solar_System__c);
+            billPeriod.Client_Account__c = sss.Client_Account__c;
+        }
+    }
+    public void stampClient(List<Transfer__c> transfers) {
+        Set<Id> sssIds = new Set<Id>();
+        for (Transfer__c transfer : transfers) {
+            sssIds.add(transfer.Shared_Solar_System__c);
+        }
+        SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+        Map<Id, Shared_Solar_System__c> sssMap  = sssSelector.getSSSMap(sssIds);
+        for (Transfer__c transfer : transfers) {
+            Shared_Solar_System__c sss = sssMap.get(transfer.Shared_Solar_System__c);
+            transfer.Client_Account__c = sss.Client_Account__c;
+        }
+    }
+
+    // Client Health Score
+
     public static void updateClientReports( Map<ID, Client_Health_Report__c> oldReportMap,
                                             Map<ID, Client_Health_Report__c> newReportMap) {
         for (Client_Health_Report__c newReport : newReportMap.values()) {
@@ -116,6 +146,9 @@ public without sharing class ClientReportingService {
             (utilization*(1/countOfVariables)));
         return healthScore;
     }
+
+    // Client UASes/ALSSes:
+
     public static void insertClientUAS(List<Utility_Account_Subscription__c> uasList) {
         List<Client_Utility_Account_Subscription__c> clientUASList = new List<Client_Utility_Account_Subscription__c> ();
         Set<Id> parentIds = new Set<Id>();

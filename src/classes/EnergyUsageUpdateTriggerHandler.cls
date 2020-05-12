@@ -291,7 +291,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Utility_Account_Log__c,
                 Opportunity__r.Name,
                 Opportunity__r.Account.Name,
-                Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c,
+                Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c,
                 Opportunity__r.Shared_Solar_System__r.Name,
                 Opportunity__r.Shared_Solar_System__c,
                 Opportunity__r.Shared_Solar_System__r.Id,

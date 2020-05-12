@@ -34,7 +34,7 @@ public with sharing class ScheduleZSubscriptionSelector {
         'Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kwh_dc__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c,' +
-        'Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c,' +
+        'Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.NMC_Value__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,' +
@@ -171,7 +171,7 @@ public with sharing class ScheduleZSubscriptionSelector {
                     Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kwh_dc__c,
                     Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
                     Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c,
+                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c,
                     Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
                     Utility_Account_Subscription__r.Opportunity__r.NMC_Value__c,
                     Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,
