@@ -84,7 +84,7 @@
         <inputParameters>
             <name>emailTemplateName</name>
             <value>
-                <stringValue>Customer_Ops_Case_Close_1588000308717</stringValue>
+                <stringValue>{!Environment.VAR_SURVEY Customer and Partner Case Feedback email template}</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
