@@ -47,7 +47,6 @@
             <casePriority>Medium</casePriority>
             <createTask>true</createTask>
             <emailAddress>customercare@bluewavesolar.com</emailAddress>
-            <emailServicesAddress>customercare@n-2e9j5vdkr5d7y04yfo3rtbaxovp0499fwcqrh4ywcoq4jaobya.2c-d48cuas.cs59.case.sandbox.salesforce.com</emailServicesAddress>
             <isVerified>true</isVerified>
             <routingName>Customer Care</routingName>
             <saveEmailHeaders>true</saveEmailHeaders>
