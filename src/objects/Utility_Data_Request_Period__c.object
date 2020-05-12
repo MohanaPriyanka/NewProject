@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>Custom_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Custom_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>Rate_Class__c</fields>
+        <fields>Rate_Subclass__c</fields>
+        <fields>Service_Start_Date__c</fields>
+        <fields>Service_End_Date__c</fields>
+        <fields>Quantity_Qualifier__c</fields>
+        <fields>Product_Transfer_Type__c</fields>
+        <fields>Measurement_Reference__c</fields>
+        <fields>Measurement_Unit__c</fields>
+        <fields>Measurement_Value__c</fields>
+        <label>Custom Compact Layout</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Account_Type__c</fullName>
+        <description>E=Customer receives supply from an ESCO
+U=Customer receives supply from the Utility</description>
+        <externalId>false</externalId>
+        <inlineHelpText>E=Customer receives supply from an ESCO
+U=Customer receives supply from the Utility</inlineHelpText>
+        <label>Account Type</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Load_Profile_Description__c</fullName>
+        <description>Load profile codes must be sent when the service is electric. Load profile definitions are accessible from the utility&apos;s website</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Load profile codes must be sent when the service is electric. Load profile definitions are accessible from the utility&apos;s website</inlineHelpText>
+        <label>Load Profile Description</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Measurement_Reference__c</fullName>
+        <description>AN=Actual Period
+BR=Bill History/The utility tariff provides for minimum charges regardless of actual consumption below the minimum and the utility does not retain the actual consumption data
+CQ=Calculated Quantity
+EN=Estimated Period</description>
+        <externalId>false</externalId>
+        <inlineHelpText>AN=Actual Period
+BR=Bill History/The utility tariff provides for minimum charges regardless of actual consumption below the minimum and the utility does not retain the actual consumption data
+CQ=Calculated Quantity
+EN=Estimated Period</inlineHelpText>
+        <label>Measurement Reference</label>
+        <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Measurement_Unit__c</fullName>
+        <description>AJ=Adjusted Kilowatt Demand
+HH=Hundred Cubic Feet (CCF)
+K1=Kilowatt Demand/kW
+K2=Kilovolt Amperes Reactive Demand/kVAR
+K3=Kilovolt Amperes Reactive Hour/kVARh
+K4=Kilovolt Amperes/kVA
+KH=Kilowatt Hour/kWh
+TD=Therms TZ=Thousand Cubic Feet (MCF)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>AJ=Adjusted Kilowatt Demand
+HH=Hundred Cubic Feet (CCF)
+K1=Kilowatt Demand/kW
+K2=Kilovolt Amperes Reactive Demand/kVAR
+K3=Kilovolt Amperes Reactive Hour/kVARh
+K4=Kilovolt Amperes/kVA
+KH=Kilowatt Hour/kWh
+TD=Therms TZ=Thousand Cubic Feet (MCF)</inlineHelpText>
+        <label>Measurement Unit</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Measurement_Value__c</fullName>
+        <externalId>false</externalId>
+        <label>Measurement Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Product_Transfer_Type__c</fullName>
+        <description>BC=Unmetered Services Summary
+BG=Non repeating information &amp; factors used to determine monthly forecast quantities
+FG=Scheduling Determinants/Additional Info
+PM=Physical Meter Information SU=Account Services Summary</description>
+        <externalId>false</externalId>
+        <inlineHelpText>BC=Unmetered Services Summary
+BG=Non repeating information &amp; factors used to determine monthly forecast quantities
+FG=Scheduling Determinants/Additional Info
+PM=Physical Meter Information SU=Account Services Summary</inlineHelpText>
+        <label>Product Transfer Type</label>
+        <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Quantity_Qualifier__c</fullName>
+        <description>1Y=Base Quantity
+CQ=Calculated Quantity
+D1=Billed
+FJ=Slope Quantity
+KA=Estimated Quantity
+KC=Capacity Obligation
+KZ=Transmission Obligation
+LH=UFG Rate
+LP=Load Factor
+QD=Quantity Delivered</description>
+        <externalId>false</externalId>
+        <inlineHelpText>1Y=Base Quantity
+CQ=Calculated Quantity
+D1=Billed
+FJ=Slope Quantity
+KA=Estimated Quantity
+KC=Capacity Obligation
+KZ=Transmission Obligation
+LH=UFG Rate
+LP=Load Factor
+QD=Quantity Delivered</inlineHelpText>
+        <label>Quantity Qualifier</label>
+        <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Quantity__c</fullName>
+        <externalId>false</externalId>
+        <label>Quantity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Rate_Class_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Rate Class</label>
+        <referenceTo>Rate_Class__c</referenceTo>
+        <relationshipLabel>Utility Data Request Periods</relationshipLabel>
+        <relationshipName>Utility_Data_Request_Periods</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Rate_Class__c</fullName>
+        <description>Utility rate code as found in the tariff. (This code can be used to retrieve rates from a utility&apos;s web site.)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Utility rate code as found in the tariff. (This code can be used to retrieve rates from a utility&apos;s web site.)</inlineHelpText>
+        <label>Rate Class</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Rate_Subclass__c</fullName>
+        <description>This segment must be sent if a rate subclass is applicable. Provides further clarification of the Utility Rate Service Class. Prior to 11/2/2015 O&amp;R would send the Capacity Obligation in this field.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This segment must be sent if a rate subclass is applicable. Provides further clarification of the Utility Rate Service Class. Prior to 11/2/2015 O&amp;R would send the Capacity Obligation in this field.</inlineHelpText>
+        <label>Rate Subclass</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Service End Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Service_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Service Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Data_Request__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Utility Data Request</label>
+        <referenceTo>Utility_Data_Request__c</referenceTo>
+        <relationshipLabel>Utility Data Request Periods</relationshipLabel>
+        <relationshipName>Utility_Data_Request_Periods</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Utility Data Request Period</label>
+    <nameField>
+        <displayFormat>UDRP-{0000}</displayFormat>
+        <label>Utility Data Request Period</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Utility Data Request Periods</pluralLabel>
+    <searchLayouts>
+        <searchResultsAdditionalFields>Rate_Class__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Rate_Subclass__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Service_Start_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Service_End_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Quantity_Qualifier__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Product_Transfer_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Measurement_Reference__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Measurement_Unit__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Measurement_Value__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>
