@@ -407,4 +407,111 @@ private class PostSandboxRefresherTest {
         leads = [SELECT Id FROM Lead WHERE Id IN :leads AND IsConverted = TRUE];
         System.assertEquals(1, leads.size());
     }
+
+    @IsTest
+    private static void testPostSandboxRefresherDataDeleterAttachments() {
+        List<Account> accounts = [
+            SELECT Id
+            FROM Account
+        ];
+
+        List<Attachment> allAttachments = new List<Attachment>();
+        Blob b = Blob.valueOf('Test data');
+        for (Account acc : accounts) {
+            Attachment att = new Attachment(
+                ParentId = acc.Id,
+                Description = 'Attachment for deletion',
+                Name = 'Attachment for Deletion',
+                Body = b
+            );
+            allAttachments.add(att);
+        }
+        insert allAttachments;
+
+        List<Attachment> checkAttachments = [
+            SELECT Id
+            FROM Attachment
+        ];
+        System.assertEquals(28, checkAttachments.size());
+
+        Test.startTest();
+        String queryString = 'SELECT Id FROM Attachment';
+        GenericQueryLocatorBatchDMLOperation dataDeleter = new GenericQueryLocatorBatchDMLOperation(queryString, 'Delete');
+        Database.executeBatch(dataDeleter);
+        Test.stopTest();
+
+        List<Attachment> deletedAttachments = [
+            SELECT Id
+            FROM Attachment
+        ];
+
+        System.assertEquals(0, deletedAttachments.size());
+    }
+
+    @IsTest
+    private static void testPostSandboxRefresherDataDeleterEmailMessages() {
+        Case c = new Case(
+            Subject = 'Test Case'
+        );
+        insert c;
+
+        List<EmailMessage> allEmails = new List<EmailMessage>();
+        for (Integer i = 0 ; i < 10 ; i++) {
+            EmailMessage email = new EmailMessage();
+            email.Subject = 'Test Email';
+            email.HtmlBody = 'Test Email';
+            email.ParentId = c.Id;
+            allEmails.add(email);
+        }
+
+        insert allEmails;
+        List<EmailMessage> checkEmailMessages = [
+            SELECT Id
+            FROM EmailMessage
+        ];
+
+        System.assertEquals(10, checkEmailMessages.size());
+
+        Test.startTest();
+        String queryString = 'SELECT Id FROM EmailMessage';
+        GenericQueryLocatorBatchDMLOperation dataDeleter = new GenericQueryLocatorBatchDMLOperation(queryString, 'Delete');
+        Database.executeBatch(dataDeleter);
+        Test.stopTest();
+
+        List<EmailMessage> deletedEmailMessages = [
+            SELECT Id
+            FROM EmailMessage
+        ];
+
+        System.assertEquals(0, deletedEmailMessages.size());
+    }
+
+    @IsTest
+    public static void testDeleteFiles() {
+        List<ContentVersion> files = new List<ContentVersion>();
+        for (Integer i = 0; i < 10; i++) {
+            ContentVersion cv = new ContentVersion();
+            cv.Title = 'Test Document';
+            cv.PathOnClient = 'TestDocument.pdf';
+            cv.VersionData = Blob.valueOf('Test Content');
+            cv.IsMajorVersion = true;
+            files.add(cv);
+        }
+        insert files;
+
+        List<ContentDocument> checkFiles = [
+            SELECT Id
+            FROM ContentDocument
+        ];
+        System.assertEquals(10, checkFiles.size());
+        PostSandboxSchedulable refresher = new PostSandboxSchedulable();
+        refresher.deleteFiles();
+
+        List<ContentDocument> deletedFiles = [
+            SELECT Id
+            FROM ContentDocument
+        ];
+
+        System.assertEquals(0, deletedFiles.size());
+    }
 }

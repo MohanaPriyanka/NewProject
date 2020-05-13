@@ -12,6 +12,9 @@ public without sharing class PostSandboxSchedulable implements Schedulable {
         try {
             setSystemAdmins();
             cancelPostSandboxCronJob();
+            deleteAttachments();
+            deleteEmailMessages();
+            deleteFiles();
         } catch (Exception e) {
             Logger.logNow('PostSandboxSchedulable', 'setSystemAdmins', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         }
@@ -44,5 +47,30 @@ public without sharing class PostSandboxSchedulable implements Schedulable {
         for (CronTrigger t : triggerList) {
             System.abortJob(t.Id);
         }
+    }
+
+    private void deleteAttachments() {
+        // Call to batch to delete all Attachments (100K+)
+        String queryString = 'SELECT Id FROM Attachment';
+        GenericQueryLocatorBatchDMLOperation dataDeleter = new GenericQueryLocatorBatchDMLOperation(queryString, 'Delete');
+        Database.executeBatch(dataDeleter);
+    }
+
+    private void deleteEmailMessages() {
+        // Call batch to delete all email messages (54K+)
+        String queryString = 'SELECT Id FROM EmailMessage';
+        GenericQueryLocatorBatchDMLOperation dataDeleter = new GenericQueryLocatorBatchDMLOperation(queryString, 'Delete');
+        Database.executeBatch(dataDeleter);
+    }
+
+    @TestVisible
+    private void deleteFiles() {
+        //query for all files to delete (~300 records)
+        List<ContentDocument> allFiles = [
+            SELECT Id
+            FROM ContentDocument
+        ];
+
+        delete allFiles;
     }
 }
