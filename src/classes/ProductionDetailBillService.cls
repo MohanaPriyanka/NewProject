@@ -13,8 +13,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
 
     private Set<Id> transferIds = new Set<Id>();
-    private Set<Id> uasbIds = new Set<Id>();
-    private Set<Id> adjustmentIds = new Set<Id>();
+    private Set<String> zuoraUsageIds = new Set<String>();
 
     @TestVisible
     private Map<String, GLInvoiceItem> invoiceIdToUsageMap = new Map<String, GLInvoiceItem>();
@@ -41,9 +40,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         private Decimal Amount;
         private Datetime BillDatetime;
         @TestVisible
-        private UASB__c UASB;
-        @TestVisible
-        private Bill_Adjustment__c Adjustment;
+        private List<SFRecord> SFRecords;
 
         private UsageRecord(Journal_Entry__c entry) {
             this.Client = entry.Client__c;
@@ -71,6 +68,13 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
                 + String.valueOf(this.BillYear);
             return key;
         }
+    }
+
+    public class SFRecord {
+        @TestVisible
+        private UASB__c UASB;
+        @TestVisible
+        private Bill_Adjustment__c Adjustment;
     }
 
     public void createProductionDetailFromInvoiceItems(List<Journal_Entry__c> invoiceItems, Integer batchSize) {
@@ -130,25 +134,43 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
 
     @TestVisible
     private void fromUsageGetUASBsAndProductionAdjustments() {
-        Map<Id, UASB__c> uasbMap = uasbSelector.getUASBsFromIds(uasbIds);
-        Map<Id, Bill_Adjustment__c> adjustMap = adjustmentSelector.getAdjustmentsFromIds(adjustmentIds);
+        Map<String,List<UASB__c>> uasbMap = uasbSelector.getUASBMapFromExternalIds(zuoraUsageIds);
+        Map<String,List<Bill_Adjustment__c>> adjustMap = adjustmentSelector.getAdjustmentMapFromExternalIds(zuoraUsageIds);
 
         for (String invoiceItemId : invoiceIdtoUsageMap.keySet()){
-            List<UsageRecord> bills = invoiceIdToUsageMap.get(invoiceItemId).Bills;
-            for (UsageRecord bill : bills){
-                if (uasbMap.containsKey(bill.InternalId)){
-                    bill.UASB = uasbMap.get(bill.InternalId);
-                    transferIds.add(bill.UASB.Transfer__c);
-                } else if (adjustMap.containsKey(bill.InternalId)){
-                    bill.Adjustment = adjustMap.get(bill.InternalId);
-                    transferIds.add(bill.Adjustment.Transfer__c);
-                } else {
-                    Logger.logNow(
-                        'ProductionToBillService',
-                        'fromUsageGetUASBsAndProductionAdjustments',
-                        'Could not find UASB or Adjustment for: ' + JSON.serialize(bill)
-                    );
-                }
+            List<UsageRecord> usageRecords = invoiceIdToUsageMap.get(invoiceItemId).Bills;
+            for (UsageRecord usage : usageRecords){
+                List<UASB__c> uasbList = uasbMap.get(usage.ExternalId);
+                List<Bill_Adjustment__c> adjustList = adjustMap.get(usage.ExternalId);
+                generateSFRecordListForUsage(usage, uasbList, adjustList);
+            }
+        }
+    }
+
+    private void generateSFRecordListForUsage(UsageRecord usage, List<UASB__c> uasbList, List<Bill_Adjustment__c> adjustList){
+        usage.SFRecords = new List<SFRecord>();
+        if (uasbList == null && adjustList == null) {
+            Logger.logNow(
+                'ProductionToBillService',
+                'fromUsageGetUASBsAndProductionAdjustments',
+                'Could not find UASB or Adjustment for: ' + JSON.serialize(usage)
+            );
+            return;
+        }
+        if (uasbList != null){
+            for (UASB__c uasbRecord : uasbList){
+                transferIds.add(uasbRecord.Transfer__c);
+                SFRecord record = new SFRecord();
+                record.UASB = uasbRecord;
+                usage.SFRecords.add(record);
+            }
+        }
+        if (adjustList != null){
+            for (Bill_Adjustment__c adjustment : adjustList){
+                transferIds.add(adjustment.Transfer__c);
+                SFRecord record = new SFRecord();
+                record.Adjustment = adjustment;
+                usage.SFRecords.add(record);
             }
         }
     }
@@ -159,19 +181,19 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         for (String invoiceItemId : invoiceIdtoUsageMap.keySet()){
             GLInvoiceItem invItem = invoiceIdToUsageMap.get(invoiceItemId);
             for (UsageRecord bill : invItem.Bills){
-                distributeAmongTransferProductionDetail(bill, invItem.JERecordId);
+                for (SFRecord sfBill : bill.SFRecords){
+                    distributeAmongTransferProductionDetail(sfBill, invItem.JERecordId);
+                }
             }
         }
     }
 
-    private void distributeAmongTransferProductionDetail(UsageRecord bill, Id journalRecordId){
-        if (bill.Amount == 0){
-            return;
-        } else if (bill.UASB != null){
-            createBillProductionDetail(bill.UASB.Transfer__c, bill.Amount, 'Bill', journalRecordId);
+    private void distributeAmongTransferProductionDetail(SFRecord bill, Id journalRecordId){
+        if (bill.UASB != null && bill.UASB.Discounted_Bill__c != 0){
+            createBillProductionDetail(bill.UASB.Transfer__c, bill.UASB.Discounted_Bill__c, 'Bill', journalRecordId);
             createBillProductionDetail(bill.UASB.Transfer__c, bill.UASB.Savings__c, 'Customer Savings', journalRecordId);
-        } else if (bill.Adjustment != null){
-            createBillProductionDetail(bill.Adjustment.Transfer__c, bill.Amount, 'Bill', journalRecordId);
+        } else if (bill.Adjustment != null && bill.Adjustment.Adjustment_Amount__c != 0){
+            createBillProductionDetail(bill.Adjustment.Transfer__c, bill.Adjustment.Adjustment_Amount__c, 'Bill', journalRecordId);
             createBillProductionDetail(bill.Adjustment.Transfer__c, bill.Adjustment.Discount__c, 'Customer Savings', journalRecordId);
         }
     }
@@ -195,7 +217,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
             part = setRelatedRecordId(part, type, relatedRecordId);
             Decimal applicationAmount = getWeightedApplicationAmount(transferDetail, staticBillAmount);
 
-            if (applicationAmount <= decliningBillAmount){
+            if (Math.abs(applicationAmount) <= Math.abs(decliningBillAmount)){
                 part.Amount__c = applicationAmount;
                 decliningBillAmount -= applicationAmount;
             } else {
@@ -211,8 +233,10 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     }
 
     private Transfer_Part__c setRelatedRecordId(Transfer_Part__c transferProdDetail, String type, Id relatedRecordId){
-        if (type == 'Externally Serviced'){
+        if (type == 'Externally Serviced' && relatedRecordId.getSObjectType() == UASB__c.sObjectType){
             transferProdDetail.Externally_Serviced_UASB__c = relatedRecordId;
+        } else if (type == 'Externally Serviced' && relatedRecordId.getSObjectType() == Bill_Adjustment__c.sObjectType){
+            transferProdDetail.Externally_Serviced_Bill_Adjustment__c = relatedRecordId;
         } else {
             transferProdDetail.Journal_Entry__c = relatedRecordId;
         }
@@ -250,7 +274,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
             if (keyToJournalEntryMap.containsKey(matchKey)){
                 UsageRecord record = keyToJournalEntryMap.get(matchKey);
                 invoiceToUsageMap = addToUsageMap(invoiceToUsageMap, record, usageKey);
-                addToUASBOrAdjustList(usageKey.InternalId);
+                zuoraUsageIds.add(usageKey.ExternalId);
             }
         }
         return invoiceToUsageMap;
@@ -279,16 +303,13 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         return usageMap;
     }
 
-    private void addToUASBOrAdjustList(Id recordId) {
-        if (recordId.getSObjectType() == UASB__c.sObjectType){
-            uasbIds.add(recordId);
-        } else if (recordId.getSObjectType() == Bill_Adjustment__c.sObjectType){
-            adjustmentIds.add(recordId);
-        }
-    }
-
     public void createProductionDetailFromUnservicedUASB(List<UASB__c> unservicedUASBs){
         calculateProductionDetailFromUnservicedUASB(unservicedUASBs);
+        insert productionDetailToInsert;
+    }
+
+    public void createProductionDetailFromUnservicedAdjustment(List<Bill_Adjustment__c> unservicedAdjusts){
+        calculateProductionDetailFromUnservicedAdjustment(unservicedAdjusts);
         insert productionDetailToInsert;
     }
 
@@ -305,10 +326,31 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         }
     }
 
+    @TestVisible
+    private void calculateProductionDetailFromUnservicedAdjustment(List<Bill_Adjustment__c> unservicedUASBs){
+        for (Bill_Adjustment__c exBill : unservicedUASBs){
+            transferIds.add(exBill.Transfer__c);
+        }
+
+        transferToDetailMap = productionDetailSelector.getTransferPartMap(transferIds);
+
+        for (Bill_Adjustment__c externalBill : unservicedUASBs){
+            createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
+        }
+    }
+
     public static void setUnservicedUASBReadyForProdDetail(List<UASB__c> uasbs){
         for (UASB__c uasb : uasbs) {
             if (uasb.Externally_Serviced__c && uasb.Credits_Allocated__c != null && uasb.Credits_Allocated__c != 0){
                 uasb.Ready_For_Production_Detail__c = true;
+            }
+        }
+    }
+
+    public static void setUnservicedAdjustReadyForProdDetail(List<Bill_Adjustment__c> adjustments){
+        for (Bill_Adjustment__c adjust : adjustments) {
+            if (adjust.Externally_Serviced__c){
+                adjust.Ready_For_Production_Detail__c = true;
             }
         }
     }

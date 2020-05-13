@@ -558,6 +558,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AdjustmentSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AuthNetAPI</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3374,11 +3378,23 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProductionDetailBillService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProductionSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ProductionSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionToBillService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionToBillServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3639,6 +3655,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UASBSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UASBSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -16815,6 +16835,11 @@
         <editable>false</editable>
         <field>Bill_Adjustment__c.Production_Update__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Bill_Adjustment__c.Ready_For_Production_Detail__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -44264,6 +44289,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Transfer_Part__c.Credits_Billed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Transfer_Part__c.Externally_Serviced_Bill_Adjustment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
