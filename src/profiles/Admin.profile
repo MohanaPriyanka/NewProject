@@ -3089,6 +3089,26 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountContactRelation.EndDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountContactRelation.IsActive</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountContactRelation.Roles</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountContactRelation.StartDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Account_Bill_ID__c</field>
         <readable>true</readable>
@@ -48724,6 +48744,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>AccountBrand-Account BrandLayout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>AccountContactRelation-Account Contact Relationship Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account_Bill__c-Account Bill Layout</layout>
