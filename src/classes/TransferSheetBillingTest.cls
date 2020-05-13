@@ -96,7 +96,7 @@ public class TransferSheetBillingTest {
         System.assertEquals(0.18,escThree.New_Solar_Electricity_Rate__c);
 
         // Mock sets count of transfer = 2, so should use 0.18 rate
-        System.assertEquals(2,szsList[1].Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c);
+        System.assertEquals(2,szsList[1].Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c);
         List<UASB__c> uasbs = BillGenerationService.calculateUASBsFromTransfer(transfer, BillGenerationService.BillType.BOTH);
         System.assertEquals(0.18,uasbs[1].Solar_Electricity_Rate__c);
     }
@@ -583,7 +583,7 @@ public class TransferSheetBillingTest {
                 '"Opportunity__r" : {"Id":"0000000AAA","Name":"Oppty A",' +
                 '"Product__r" : {"NMC_Discount__c" : 12.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Use Solar Electric Rate","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "kWh"}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "kWh"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
             String szsTwo = '{"Id":"szsTwo_ID","Customer_Subscription_kW_DC__c": 12.00,"Percent_Share__c" : 0.8300,' +
@@ -593,7 +593,7 @@ public class TransferSheetBillingTest {
                 '"Opportunity__r" : {"Id":"0000000BBB","Name":"Oppty B", "Product_Escalation_Schedule__c" : "a6o19000000CsuGAAS",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "NMC"}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
             String szsThree = '{"Id":"szsThree_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
@@ -603,7 +603,7 @@ public class TransferSheetBillingTest {
                 '"Opportunity__r" : {"Id":"0000000CCC","Name":"Oppty C",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "NMC"}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
             String szsFour = '{"Id":"szsFour_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
@@ -613,7 +613,7 @@ public class TransferSheetBillingTest {
                 '"Opportunity__r" : {"Id":"0000000DDD","Name":"Oppty D",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Use Solar Electric Rate","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "kWh"}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "kWh"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
             String szsFive = '{"Id":"szsFive_ID","Customer_Subscription_kW_DC__c": 7.00,"Percent_Share__c" : 0.4841,' +
@@ -623,14 +623,14 @@ public class TransferSheetBillingTest {
                 '"Opportunity__r" : {"Id":"0000000EEE","Name":"Oppty E",' +
                 '"Product__r" : {"NMC_Discount__c" : 25.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "NMC"}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCBBB"}}}';
             String szsSix = '{"Id":"szsSix_ID","Schedule_Z__c" : "a3z190000009UUvCCC",' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Six", ' +
                 '"Utility_Account_Log__r" : {"Name" : "666333222"},' +
                 '"Opportunity__r" : {"Id":"0000000FFF","Name":"Oppty F",' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "NMC"}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCBBB"}}}';
             String onTimeSZS = '[' + szsOne + ',' + szsTwo + ',' + szsThree + ',' + szsFour + ',' + szsFive + ']';
