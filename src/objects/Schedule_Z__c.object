@@ -506,6 +506,6 @@ CASE(Utility__c,
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>/00O0a000005FEM2?pv0={!Schedule_Z__c.Id}</url>
+        <url>https://bluewavesolar--megha.lightning.force.com/lightning/r/Report/00O3K000000JtQZUA0/view?fv0={!Schedule_Z__c.Id}</url>
     </webLinks>
 </CustomObject>
