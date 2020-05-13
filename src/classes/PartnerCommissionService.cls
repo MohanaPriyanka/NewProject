@@ -87,7 +87,7 @@ public without sharing class PartnerCommissionService{
                 Due_Date__c = dueDate,
                 Due_to_Accounting__c = dueToAccountingDate,
                 Invoice__c = partnerInvoice.Id,
-                Name = opp.Partner_tag_lookup__r.Name + ' - ' + opp.Name + ' - ' + commissionPaymentType.LEFT(80),
+                Name = (opp.Partner_tag_lookup__r.Name + ' - ' + opp.Name + ' - ' + commissionPaymentType).LEFT(80),
                 Opportunity__c = opp.Id,
                 Status__c = 'Pending Approval',
                 Commission_Type__c = commissionPaymentType
@@ -272,7 +272,6 @@ public without sharing class PartnerCommissionService{
         uow.registerNew(newCase);
     }
 
-    @TestVisible
     private Invoice__c createPartnerInvoice(Id partnerId, String partnerName){
         Date monthFromToday = System.today().addMonths(1);
         Date dueDate = Date.newInstance(monthFromToday.year(),monthFromToday.month(),15);
@@ -281,7 +280,7 @@ public without sharing class PartnerCommissionService{
         String monthName = dueDatetime.format('MMMMM');
 
         Invoice__c invoiceToCreate = new Invoice__c(
-            Name = partnerName + ' ' + monthName + ' ' + String.valueOf(dueDate.Year()),
+            Name = (partnerName + ' ' + monthName + ' ' + String.valueOf(dueDate.Year())).LEFT(80),
             Due_Date__c = dueDate,
             Due_to_Accounting__c = dueToAccountingDate,
             Invoice_Type__c = 'Direct',
