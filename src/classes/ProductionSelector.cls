@@ -46,4 +46,24 @@ public inherited sharing class ProductionSelector {
 
         return productionToBillPeriod;
     }
+
+    public Map<Id,Integer> getBilledProductionBySSS(Set<Id> sssIds){
+        List<AggregateResult> productionBySSSSummary = [
+            SELECT COUNT(Id) prodCount, Shared_Solar_System__c sssId
+            FROM Production__c
+            WHERE Id IN (
+                SELECT Production__c
+                FROM Transfer_Part__c
+                WHERE Transfer__r.Bills_Generated__c = TRUE
+                AND Transfer__r.Shared_Solar_System__c IN : sssIds
+            )
+            AND Shared_Solar_System__c IN : sssIds
+            GROUP BY Shared_Solar_System__c
+        ];
+        Map<Id,Integer> billedTransfersMap = new Map<Id,Integer>();
+        for (AggregateResult aggResult : productionBySSSSummary) {
+            billedTransfersMap.put((Id) aggResult.get('sssId'), (Integer) aggResult.get('prodCount'));
+        }
+        return billedTransfersMap;
+    }
 }

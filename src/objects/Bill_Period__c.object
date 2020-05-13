@@ -215,6 +215,19 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Client_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped on creation from Shared Solar System&apos;s Client</inlineHelpText>
+        <label>Client Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Bill Periods</relationshipLabel>
+        <relationshipName>Bill_Periods</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Comments_about_Host_Account_Bill__c</fullName>
         <externalId>false</externalId>
         <label>Comments about Host Account Bill</label>
