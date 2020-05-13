@@ -11,4 +11,15 @@
         <required>false</required>
         <type>Lookup</type>
     </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Survey Invitations</relationshipLabel>
+        <relationshipName>Survey_Invitations</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
 </CustomObject>
