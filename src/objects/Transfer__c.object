@@ -153,7 +153,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <externalSharingModel>Private</externalSharingModel>
     <fields>
         <fullName>Allocation_Schedule__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
@@ -296,19 +296,18 @@
     </fields>
     <fields>
         <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <description>The Transfer object is looking up to the SSS object.</description>
         <externalId>false</externalId>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
         <relationshipLabel>Transfers</relationshipLabel>
         <relationshipName>Transfers</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Total_Transferred__c</fullName>
@@ -445,7 +444,7 @@
         <searchResultsAdditionalFields>Transfer_Amount__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Total_Transferred__c</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
     <validationRules>
         <fullName>Bill_Generated_checked</fullName>
         <active>true</active>
