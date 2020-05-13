@@ -78,6 +78,19 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Utility_NMC_Tariff__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Utility NMC Tariff</label>
+        <referenceTo>Utility_NMC_Tariff__c</referenceTo>
+        <relationshipLabel>Rate Classes</relationshipLabel>
+        <relationshipName>Rate_Classes</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Utility__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>The utility that the rate class is for.</description>

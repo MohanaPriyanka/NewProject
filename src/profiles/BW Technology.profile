@@ -40464,6 +40464,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Sizing_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.Solar_Electricity_Rate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -41465,6 +41470,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Rate_Class__c.LDC_Rate_Subclass__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Rate_Class__c.Utility_NMC_Tariff__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46573,6 +46583,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Subscription__c.Utility_NMC_Tariff__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Utility__c</field>
         <readable>true</readable>
@@ -47020,6 +47035,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_NMC_Tariff__c.September__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_NMC_Tariff__c.Size_Ratio__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
