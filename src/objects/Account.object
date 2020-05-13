@@ -15998,25 +15998,6 @@ window.top.location.href = urlStart + &apos;&amp;inConsole=no&amp;optType=0&apos
 }</url>
     </webLinks>
     <webLinks>
-        <fullName>Send_Installer_Application</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Send Installer Application</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/_ui/core/email/author/EmailAuthor?p3_lkid={!Account.Id}&amp;template_id=00X0a000000NRg1</url>
-    </webLinks>
-    <webLinks>
         <fullName>Send_Storage_Application</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
