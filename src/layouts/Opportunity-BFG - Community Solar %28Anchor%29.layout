@@ -84,6 +84,10 @@
                 <behavior>Edit</behavior>
                 <field>ContractId</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Partner_tag_lookup__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
