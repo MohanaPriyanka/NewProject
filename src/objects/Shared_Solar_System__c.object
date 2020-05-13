@@ -3870,14 +3870,18 @@ NOT(Waitlist__c)
  OR ( 
 ISBLANK(TEXT(Product__r.Sizing_Method__c )),
 
-AND ( 
-ISPICKVAL(Product__r.Sizing_Method__c, &apos;NMC Tariff&apos;),
-ISBLANK (Utility_NMC_Tariff__c) 
-),
-
-AND ( 
+AND(
 ISPICKVAL(Product__r.Sizing_Method__c, &apos;Project Ratio&apos;),
-ISBLANK( Sizing_Ratio__c)
+OR(
+AND( 
+ISPICKVAL( Product__r.Customer_Subscription_Type__c , &apos;Electricity Cost ($)&apos;),
+ISBLANK( Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c ) 
+),
+AND(
+ISPICKVAL( Product__r.Customer_Subscription_Type__c , &apos;kWh&apos;),
+ISBLANK( Utility_NMC_Tariff__r.Size_Ratio__c)
+)
+)
 )
 ), ISPICKVAL(Stage__c, &apos;Acquisition&apos;)
 )</errorConditionFormula>
