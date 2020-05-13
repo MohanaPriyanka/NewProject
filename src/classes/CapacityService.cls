@@ -72,8 +72,9 @@ public without sharing class CapacityService {
         // Allowing null partnerNames to match to all systems, to support CSAP behavior
         for (Shared_Solar_System__c sharedSolarSystem: sharedSolarSystems) {
             if (partnerName == null ||
-                sharedSolarSystem.Sales_Partners__c.split(';').contains(partnerName) ||
-                sharedSolarSystem.Sales_Partners__c.split(';').contains('All')) {
+                (sharedSolarSystem.Sales_Partners__c != null &&
+                (sharedSolarSystem.Sales_Partners__c.split(';').contains(partnerName) ||
+                sharedSolarSystem.Sales_Partners__c.split(';').contains('All')))) {
                 zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
                 zipcodeResponse.products.add(sharedSolarSystem.Product__r);
             }
