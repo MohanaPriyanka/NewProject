@@ -2,6 +2,12 @@
 <SharingSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <accessMappings>
         <accessLevel>Read</accessLevel>
+        <object>Bill_Period__c</object>
+        <objectField>Client_Account__c</objectField>
+        <userField>Contact.RelatedAccount</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
         <object>Client_Utility_Account_Subscription__c</object>
         <objectField>Shared_Solar_System__c.Client_Account__c</objectField>
         <userField>Contact.RelatedAccount</userField>
@@ -26,12 +32,24 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
+        <object>Production__c</object>
+        <objectField>Client_Account__c</objectField>
+        <userField>Contact.RelatedAccount</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
         <object>Shared_Solar_System__c</object>
+        <objectField>Client_Account__c</objectField>
+        <userField>Contact.RelatedAccount</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Transfer__c</object>
         <objectField>Client_Account__c</objectField>
         <userField>Contact.RelatedAccount</userField>
     </accessMappings>
     <description>Grants read access to SSS (and read access to detail objects in master details relationships where SSS is the master) and Opportunity based off of client lookup.
 Specifically for Client profile with Related Account access on Contact.</description>
     <name>Client Portal - Related Accounts</name>
-    <profiles>CS Client Partner Login_Related Accounts</profiles>
+    <profiles>cs client partner login_related accounts</profiles>
 </SharingSet>
