@@ -1821,15 +1821,15 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Expired</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>In Approval Process</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
