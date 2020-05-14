@@ -152,7 +152,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <externalSharingModel>Private</externalSharingModel>
     <fields>
         <fullName>Billing_Method__c</fullName>
         <externalId>false</externalId>
@@ -357,16 +357,15 @@
     </fields>
     <fields>
         <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
         <relationshipLabel>Production</relationshipLabel>
         <relationshipName>Production</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Start_Date__c</fullName>
@@ -493,7 +492,7 @@
     </nameField>
     <pluralLabel>Production</pluralLabel>
     <searchLayouts />
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
     <validationRules>
         <fullName>Client_Account_Edit_Permissions</fullName>
         <active>true</active>

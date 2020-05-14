@@ -6,16 +6,17 @@
     <caseCreateNotificationTemplate>Emails_to_Delete/SUPPORTWebtoCaseemailresponseSAMPLE</caseCreateNotificationTemplate>
     <caseFeedItemSettings>
         <characterLimit>400</characterLimit>
-        <collapseThread>true</collapseThread>
         <displayFormat>Default</displayFormat>
         <feedItemType>EmailMessageEvent</feedItemType>
     </caseFeedItemSettings>
+    <caseFeedReadUnreadLtng>false</caseFeedReadUnreadLtng>
     <caseMergeInLightning>true</caseMergeInLightning>
     <closeCaseThroughStatusChange>true</closeCaseThroughStatusChange>
     <defaultCaseFeedLayoutOn>true</defaultCaseFeedLayoutOn>
     <defaultCaseOwner>Customer_Care</defaultCaseOwner>
     <defaultCaseOwnerType>Queue</defaultCaseOwnerType>
     <emailToCase>
+        <enableE2CAttachmentAsFile>false</enableE2CAttachmentAsFile>
         <enableE2CSourceTracking>true</enableE2CSourceTracking>
         <enableEmailToCase>true</enableEmailToCase>
         <enableHtmlEmail>true</enableHtmlEmail>
@@ -25,6 +26,19 @@
         <notifyOwnerOnNewCaseEmail>true</notifyOwnerOnNewCaseEmail>
         <overEmailLimitAction>Bounce</overEmailLimitAction>
         <preQuoteSignature>false</preQuoteSignature>
+        <routingAddresses>
+            <addressType>EmailToCase</addressType>
+            <caseOrigin>Email</caseOrigin>
+            <caseOwner>Anchor_Support</caseOwner>
+            <caseOwnerType>Queue</caseOwnerType>
+            <casePriority>Medium</casePriority>
+            <createTask>true</createTask>
+            <emailAddress>anchorsupport@bluewavesolar.com</emailAddress>
+            <isVerified>true</isVerified>
+            <routingName>Anchor Support</routingName>
+            <saveEmailHeaders>true</saveEmailHeaders>
+            <taskStatus>New</taskStatus>
+        </routingAddresses>
         <routingAddresses>
             <addressType>EmailToCase</addressType>
             <caseOrigin>Email</caseOrigin>
@@ -78,14 +92,19 @@
         <unauthorizedSenderAction>Discard</unauthorizedSenderAction>
     </emailToCase>
     <enableCaseFeed>true</enableCaseFeed>
+    <enableCollapseEmailThread>true</enableCollapseEmailThread>
     <enableDraftEmails>true</enableDraftEmails>
     <enableEarlyEscalationRuleTriggers>false</enableEarlyEscalationRuleTriggers>
     <enableEmailActionDefaultsHandler>false</enableEmailActionDefaultsHandler>
+    <enableEscalateQfiToCaseInternal>false</enableEscalateQfiToCaseInternal>
+    <enableEscalateQfiToCaseNetworks>false</enableEscalateQfiToCaseNetworks>
+    <enableExtNetworksCaseFeedEnabled>false</enableExtNetworksCaseFeedEnabled>
     <enableSuggestedArticlesApplication>true</enableSuggestedArticlesApplication>
     <enableSuggestedArticlesCustomerPortal>false</enableSuggestedArticlesCustomerPortal>
     <enableSuggestedArticlesPartnerPortal>false</enableSuggestedArticlesPartnerPortal>
     <enableSuggestedSolutions>false</enableSuggestedSolutions>
     <escalateCaseBefore>false</escalateCaseBefore>
+    <keepCaseMergeRecords>false</keepCaseMergeRecords>
     <keepRecordTypeOnAssignmentRule>true</keepRecordTypeOnAssignmentRule>
     <notifyContactOnCaseComment>false</notifyContactOnCaseComment>
     <notifyDefaultCaseOwner>true</notifyDefaultCaseOwner>
@@ -96,6 +115,7 @@
     <systemUserEmail>lalexander@bluewavesolar.com</systemUserEmail>
     <useSystemEmailAddress>true</useSystemEmailAddress>
     <useSystemUserAsDefaultCaseUser>true</useSystemUserAsDefaultCaseUser>
+    <visibleInCssCheckbox>false</visibleInCssCheckbox>
     <webToCase>
         <caseOrigin>Web</caseOrigin>
         <defaultResponseTemplate>Customer_Care_Cases/Customer_Care_Case_Open</defaultResponseTemplate>
