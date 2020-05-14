@@ -86,7 +86,8 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 }
                 roundedSubscription = so.Calculated_Change_in_Subscription_KW_DC__c/so.Total_System_Size_kW_DC__c;
             }
-            so.Approved_Change_in_Subscription__c = roundedSubscription.setScale((Integer)so.Utility_Number_of_Decimal_Places__c + 2) * so.Total_System_Size_kW_DC__c;
+            roundedSubscription = roundedSubscription.setScale((Integer)so.Utility_Number_of_Decimal_Places__c + 2) * so.Total_System_Size_kW_DC__c;
+            so.Approved_Change_in_Subscription__c = roundedSubscription.setScale(6);
         }
         return stampSOs;
     }
