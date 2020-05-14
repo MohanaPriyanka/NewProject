@@ -14,10 +14,32 @@
                 <operation>notEqual</operation>
                 <value>no-reply@mail.trulywireless.com</value>
             </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Anchor Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>noreply@bluewavesolar.com</replyToEmail>
+            <senderEmail>noreply@bluewavesolar.com</senderEmail>
+            <senderName>Anchor Support</senderName>
+            <template>Customer_Care_Cases/Anchor_Support_Case_Open</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Customer Care</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.SuppliedEmail</field>
+                <operation>notEqual</operation>
+                <value>no-reply@mail.trulywireless.com</value>
+            </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
             <replyToEmail>noreply@bluewavesolar.com</replyToEmail>
             <senderEmail>noreply@bluewavesolar.com</senderEmail>
-            <senderName>Bluewave Customer Support</senderName>
+            <senderName>BlueWave Customer Support</senderName>
             <template>Customer_Care_Cases/Customer_Care_Case_Open</template>
         </ruleEntry>
         <ruleEntry>
