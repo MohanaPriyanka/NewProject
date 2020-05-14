@@ -629,6 +629,18 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         </valueSet>
     </fields>
     <fields>
+        <fullName>Disclosure_Form_Conga_Template__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the ID of the Conga template used in SSF for the disclosure form for Contracts generated off of the Contract object.</inlineHelpText>
+        <label>Disclosure Form Conga Template</label>
+        <length>180</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>DisplayUrl</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1132,6 +1144,18 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <type>Percent</type>
     </fields>
     <fields>
+        <fullName>Generic_Terms_Conga_Template__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the conga template id for the generic terms contract generated off of the Contract object in SSF.</inlineHelpText>
+        <label>Generic Terms Conga Template</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Hide_in_Requested_Product__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -1619,6 +1643,18 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Project_Specific_Conga_Template__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the conga template for project specific contracts generated off of the contract object in SSF.</inlineHelpText>
+        <label>Project Specific Conga Template</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>QuantityUnitOfMeasure</fullName>
