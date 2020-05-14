@@ -604,6 +604,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             System.assertEquals(6.3840,sumComplete);
             System.assertEquals(24.8608,sumReserved);
             System.assertEquals(9.5392,sumOther);
+            sumReserved = sumReserved.setScale(6);
         } else {
             System.assertEquals(6.3846,sumComplete);
             System.assertEquals(24.8616,sumReserved);
