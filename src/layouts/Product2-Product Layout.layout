@@ -349,6 +349,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Sizing_Method__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Default_Business_Usage__c</field>
             </layoutItems>
             <layoutItems>
