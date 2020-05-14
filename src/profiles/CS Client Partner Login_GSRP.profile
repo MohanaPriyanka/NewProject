@@ -16837,7 +16837,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Bill_Adjustment__c.Ready_For_Production_Detail__c</field>
         <readable>true</readable>
     </fieldPermissions>

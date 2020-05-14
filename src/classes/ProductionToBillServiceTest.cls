@@ -198,25 +198,22 @@ public with sharing class ProductionToBillServiceTest {
         acct05268 = updatedInvoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
         acct05956 = updatedInvoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
 
-        System.assertEquals('a1i0a000008yU78AAE',acct04202.Bills[0].SFRecords[0].UASB.Id);
-        System.assertEquals(null,acct04202.Bills[0].SFRecords[0].Adjustment);
+        System.assertEquals('a1i0a000008yU78AAE',acct04202.Bills[0].SFRecords[0].Id);
 
-        System.assertEquals(null,acct00524.Bills[0].SFRecords[0].UASB);
-        System.assertEquals('a0p0a000008YSBuAAO',acct00524.Bills[0].SFRecords[0].Adjustment.Id);
+        System.assertEquals('a0p0a000008YSBuAAO',acct00524.Bills[0].SFRecords[0].Id);
 
-        System.assertEquals(null,acct05268.Bills[0].SFRecords[0].UASB);
-        System.assertEquals('a0p0a000008YSCuAAO',acct05268.Bills[0].SFRecords[0].Adjustment.Id);
+        System.assertEquals('a0p0a000008YSCuAAO',acct05268.Bills[0].SFRecords[0].Id);
 
         List<ProductionDetailBillService.UsageRecord> usageList = acct05956.Bills;
         System.assertEquals(8,usageList.size());
         for (ProductionDetailBillService.UsageRecord usage : usageList){
-            System.assertNotEquals(null,usage.SFRecords[0].UASB);
+            System.assertNotEquals(null,usage.SFRecords);
             if (usage.ExternalId == '2c92c0f96e3aa331016e3cc6717f2aaa'){
-                System.assertEquals('a1i0a000008yUM7AAM',usage.SFRecords[0].UASB.Id);
+                System.assertEquals('a1i0a000008yUM7AAM',usage.SFRecords[0].Id);
             } else if (usage.ExternalId == '2c92c0f96e3aa331016e3cc671ac2aac'){
-                System.assertEquals('a1i0a000008yTxMAAU',usage.SFRecords[0].UASB.Id);
+                System.assertEquals('a1i0a000008yTxMAAU',usage.SFRecords[0].Id);
             } else if (usage.ExternalId == '2c92c0f96e3aa331016e3cc672022aaf'){
-                System.assertEquals('a1i0a000008yUNsAAM',usage.SFRecords[0].UASB.Id);
+                System.assertEquals('a1i0a000008yUNsAAM',usage.SFRecords[0].Id);
             }
         }
     }
@@ -279,8 +276,9 @@ public with sharing class ProductionToBillServiceTest {
         ProductionDetailBillService.GLInvoiceItem acct04202 = invoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
         System.assertEquals(37.23,acct04202.Amount);
         System.assertEquals(37.23,acct04202.SumOfAmount);
-        System.assertEquals(10,acct04202.Bills[0].SFRecords[0].UASB.Savings__c);
-        System.assertEquals('a900a000000GqNBAA0',acct04202.Bills[0].SFRecords[0].UASB.Transfer__c);
+        UASB__c uasb = (UASB__c)acct04202.Bills[0].SFRecords[0];
+        System.assertEquals(10,uasb.Savings__c);
+        System.assertEquals('a900a000000GqNBAA0',uasb.Transfer__c);
 
         List<Transfer_Part__c> parts = service.productionDetailToInsert;
         System.assertEquals(6,parts.size());
@@ -320,8 +318,11 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(1997.03,acct05956.Amount);
         System.assertEquals(1997.03,acct05956.SumOfAmount);
         System.assertEquals(8,acct05956.Bills.size());
-        System.assertEquals('a900a000000GrNBAA0',acct05956.Bills[0].SFRecords[0].UASB.Transfer__c);
-        System.assertEquals('a900a000000GrNBAA0',acct05956.Bills[7].SFRecords[0].UASB.Transfer__c);
+        UASB__c uasbOne = (UASB__c) acct05956.Bills[0].SFRecords[0];
+        UASB__c uasbSeven = (UASB__c) acct05956.Bills[0].SFRecords[0];
+
+        System.assertEquals('a900a000000GrNBAA0',uasbOne.Transfer__c);
+        System.assertEquals('a900a000000GrNBAA0',uasbSeven.Transfer__c);
 
         // 8 bills * 2 transfers, 1 for bill, 1 for savings:
         List<Transfer_Part__c> parts = service.productionDetailToInsert;
