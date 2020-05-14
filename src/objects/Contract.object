@@ -1821,10 +1821,6 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Draft</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Expired</fullName>
                 <default>false</default>
             </values>
@@ -1833,7 +1829,7 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Superseded</fullName>
+                <fullName>New</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
