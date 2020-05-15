@@ -39,7 +39,7 @@ public class AdjustmentSelectorTest {
         insert uas1;
     }
 
-    @isTest public static void testGetAdjustmentsFromIds() {
+    @isTest public static void testGetAdjustmentMapFromExternalIds() {
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Opportunity__r.AccountId
             FROM Utility_Account_Subscription__c
@@ -49,25 +49,34 @@ public class AdjustmentSelectorTest {
             Account__c = uasList[0].Opportunity__r.AccountId,
             Adjustment_Type__c = 'BW Credit',
             Reason_For_Adjustment__c = 'Some Reason',
+            Zuora_Id__c = 'aaa1230002',
             Utility_Account_Subscription__c = uasList[0].Id
         );
         Bill_Adjustment__c adjustTwo = new Bill_Adjustment__c(
             Account__c = uasList[0].Opportunity__r.AccountId,
             Adjustment_Type__c = 'BW Credit',
             Reason_For_Adjustment__c = 'Some Reason',
+            Zuora_Id__c = 'aaa1230003',
             Utility_Account_Subscription__c = uasList[0].Id
         );
         Bill_Adjustment__c adjustThree = new Bill_Adjustment__c(
             Account__c = uasList[0].Opportunity__r.AccountId,
             Adjustment_Type__c = 'BW Credit',
             Reason_For_Adjustment__c = 'Some Reason',
+            Zuora_Id__c = 'aaa1230002',
             Utility_Account_Subscription__c = uasList[0].Id
         );
         insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree};
 
         AdjustmentSelector selector = new AdjustmentSelector();
-        Map<Id, Bill_Adjustment__c> billMap = selector.getAdjustmentsFromIds(new Set<Id>{adjustTwo.Id, adjustThree.Id});
-        System.assertEquals(2,billMap.values().size());
+        Map<String,List<Bill_Adjustment__c>> billMap = selector.getAdjustmentMapFromExternalIds(new Set<String>{
+            'aaa1230002','aaa1230001','aaa1230003'
+        });
+        List<Bill_Adjustment__c> adjustmentList1 = billMap.get('aaa1230002');
+        List<Bill_Adjustment__c> adjustmentList2 = billMap.get('aaa1230003');
+
+        System.assertEquals(2,adjustmentList1.size());
+        System.assertEquals(1,adjustmentList2.size());
     }
 
     @isTest public static void testGetAdjustmentsFromExternalIds(){
@@ -102,5 +111,46 @@ public class AdjustmentSelectorTest {
         AdjustmentSelector selector = new AdjustmentSelector();
         List<Bill_Adjustment__c> billList = selector.getAdjustmentsFromExternalIds(new Set<String>{'aaa235','aaa236'});
         System.assertEquals(2,billList.size());
+    }
+
+    @isTest public static void testGetUnservicedWithoutProductionDetail(){
+        Util.enableTrigger('Disable_BillAdjustmentTrigger__c');
+        Account clientAccount = new Account(Name = 'Client');
+        insert clientAccount;
+
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Opportunity__r.AccountId
+            FROM Utility_Account_Subscription__c
+        ];
+
+        Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(
+            Account__c = uasList[0].Opportunity__r.AccountId,
+            Client__c = clientAccount.Id,
+            Adjustment_Type__c = 'BW Credit',
+            Externally_Serviced__c = true,
+            Reason_For_Adjustment__c = 'Some Reason',
+            Utility_Account_Subscription__c = uasList[0].Id
+        );
+        Bill_Adjustment__c adjustTwo = new Bill_Adjustment__c(
+            Account__c = uasList[0].Opportunity__r.AccountId,
+            Client__c = clientAccount.Id,
+            Adjustment_Type__c = 'BW Credit',
+            Externally_Serviced__c = true,
+            Reason_For_Adjustment__c = 'Some Reason',
+            Utility_Account_Subscription__c = uasList[0].Id
+        );
+        Bill_Adjustment__c adjustThree = new Bill_Adjustment__c(
+            Account__c = uasList[0].Opportunity__r.AccountId,
+            Client__c = clientAccount.Id,
+            Adjustment_Type__c = 'BW Credit',
+            Externally_Serviced__c = true,
+            Reason_For_Adjustment__c = 'Some Reason',
+            Utility_Account_Subscription__c = uasList[0].Id
+        );
+        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree};
+
+        AdjustmentSelector selector = new AdjustmentSelector();
+        List<Bill_Adjustment__c> adjustments = selector.getUnservicedWithoutProductionDetail(2);
+        System.assertEquals(2,adjustments.size());
     }
 }

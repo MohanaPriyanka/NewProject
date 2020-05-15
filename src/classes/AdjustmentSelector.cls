@@ -43,12 +43,23 @@ public without sharing class AdjustmentSelector {
         return Database.getQueryLocator(queryString);
     }
 
-    public Map<Id, Bill_Adjustment__c> getAdjustmentsFromIds(Set<Id> adjustmentIds){
-        return new Map<Id, Bill_Adjustment__c>([
-            SELECT Id, Transfer__c, Discount__c
+    public Map<String,List<Bill_Adjustment__c>> getAdjustmentMapFromExternalIds(Set<String> zuoraIds){
+        Map<String,List<Bill_Adjustment__c>> externalIdToAdjustMap = new Map<String,List<Bill_Adjustment__c>>();
+        List<Bill_Adjustment__c> adjustList = [
+            SELECT Id, Transfer__c, Discount__c, Zuora_Id__c
             FROM Bill_Adjustment__c
-            WHERE Id IN : adjustmentIds
-        ]);
+            WHERE Zuora_Id__c IN : zuoraIds
+        ];
+        for (Bill_Adjustment__c adjust : adjustList) {
+            if (externalIdToAdjustMap.containsKey(adjust.Zuora_Id__c)){
+                List<Bill_Adjustment__c> existingList = externalIdToAdjustMap.get(adjust.Zuora_Id__c);
+                existingList.add(adjust);
+                externalIdToAdjustMap.put(adjust.Zuora_Id__c,existingList);
+            } else {
+                externalIdToAdjustMap.put(adjust.Zuora_Id__c,new List<Bill_Adjustment__c>{adjust});
+            }
+        }
+        return externalIdToAdjustMap;
     }
 
     public List<Bill_Adjustment__c> getAdjustmentsFromExternalIds(Set<String> zuoraIds){
@@ -58,5 +69,15 @@ public without sharing class AdjustmentSelector {
             WHERE Zuora_Id__c IN : zuoraIds
         ];
         return adjustments;
+    }
+
+    public List<Bill_Adjustment__c> getUnservicedWithoutProductionDetail(Integer batchSize){
+        return new List<Bill_Adjustment__c>([
+            SELECT Id, Externally_Serviced__c, Transfer__c, Credits_Allocated__c
+            FROM Bill_Adjustment__c
+            WHERE Externally_Serviced__c = true
+            AND Ready_for_Production_Detail__c = true
+            LIMIT : batchSize
+        ]);
     }
 }
