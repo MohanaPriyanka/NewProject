@@ -449,6 +449,16 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Ready_For_Production_Detail__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Only externally serviced Adjustments get marked with this checkbox on insertion, to be caught by production detail creation scheduled job</inlineHelpText>
+        <label>Ready For Production Detail</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Reason_For_Adjustment__c</fullName>
         <externalId>false</externalId>
         <label>Reason For Adjustment:</label>

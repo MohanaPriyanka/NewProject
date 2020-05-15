@@ -3844,6 +3844,35 @@ NOT(Waitlist__c)
         <errorMessage>If the shared solar system&apos;s name contains Waitlist, you must also check the &quot;Waitlist&quot; checkbox</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Sizing_Information_Required</fullName>
+        <active>true</active>
+        <description>A shared solar system should not be able to go to the Acquisition stage without the sizing information filled out.</description>
+        <errorConditionFormula>AND(
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Autosizing.Feature_is_Enabled__c = true,
+ OR ( 
+ISBLANK(TEXT(Product__r.Sizing_Method__c )),
+
+AND(
+ISPICKVAL(Product__r.Sizing_Method__c, &apos;Project Ratio&apos;),
+
+OR(
+ISBLANK(TEXT(Product__r.Customer_Subscription_Type__c)),
+AND( 
+ISPICKVAL( Product__r.Customer_Subscription_Type__c , &apos;Electricity Cost ($)&apos;),
+ISBLANK( Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c ) 
+),
+AND(
+ISPICKVAL( Product__r.Customer_Subscription_Type__c , &apos;kWh&apos;),
+ISBLANK( Utility_NMC_Tariff__r.Size_Ratio__c)
+)
+)
+
+)
+), ISPICKVAL(Stage__c, &apos;Acquisition&apos;)
+)</errorConditionFormula>
+        <errorMessage>A shared solar system cannot go to the Acquisition stage without the sizing information filled out.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Utility_Decimals_Requirement</fullName>
         <active>true</active>
         <errorConditionFormula>AND(

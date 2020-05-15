@@ -226,6 +226,28 @@ Amount__c /Production__r.Credits_Available_for_Allocation__c,
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Externally_Serviced_Bill_Adjustment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Externally Serviced Bill Adjustment</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Bill Adjustment must be externally serviced</errorMessage>
+            <filterItems>
+                <field>Bill_Adjustment__c.Externally_Serviced__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Bill_Adjustment__c</referenceTo>
+        <relationshipLabel>Production Detail</relationshipLabel>
+        <relationshipName>Production_Detail</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Externally_Serviced_UASB__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

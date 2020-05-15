@@ -5,8 +5,10 @@ public without sharing class ProductionToBillService implements Queueable, Datab
     private static JournalEntrySelector journalEntrySelector = new JournalEntrySelector();
     @TestVisible
     private static UASBSelector uasbSelector = new UASBSelector();
+    @TestVisible
+    private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
 
-    public enum OperationType {BILL, PAYMENT, CREDITMEMO, UNSERVICED}
+    public enum OperationType {BILL, PAYMENT, CREDITMEMO, UNSERVICED_BILL, UNSERVICED_ADJUST}
     public OperationType opType;
     public Integer batchSize;
 
@@ -26,8 +28,10 @@ public without sharing class ProductionToBillService implements Queueable, Datab
             executePaymentJob();
         } else if (opType == OperationType.CREDITMEMO){
             executeCreditMemoJob();
-        } else if (opType == OperationType.UNSERVICED){
-            executeUnservicedJob();
+        } else if (opType == OperationType.UNSERVICED_BILL){
+            executeUnservicedBillJob();
+        } else if (opType == OperationType.UNSERVICED_ADJUST){
+            executeUnservicedAdjustJob();
         }
     }
 
@@ -97,7 +101,7 @@ public without sharing class ProductionToBillService implements Queueable, Datab
                 queueJob(OperationType.CREDITMEMO);
             } else {
                 updateJournalEntriesReadyStatus(incompleteEntries, true);
-                queueJob(OperationType.UNSERVICED);
+                queueJob(OperationType.UNSERVICED_BILL);
             }
         } catch (Exception excep) {
             String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(creditMemosToAttempt);
@@ -105,7 +109,7 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         }
     }
 
-    private void executeUnservicedJob(){
+    private void executeUnservicedBillJob(){
         List<UASB__c> externallyServicedUASBs = new List<UASB__c>();
         try {
             externallyServicedUASBs = uasbSelector.getUnservicedWithoutProductionDetail(batchSize);
@@ -115,11 +119,31 @@ public without sharing class ProductionToBillService implements Queueable, Datab
                 markUASBsAsComplete(externallyServicedUASBs);
             }
             if (externallyServicedUASBs.size() == batchSize){
-                queueJob(OperationType.UNSERVICED);
+                queueJob(OperationType.UNSERVICED_BILL);
+            } else {
+                queueJob(OperationType.UNSERVICED_ADJUST);
             }
         } catch (Exception excep){
             String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(externallyServicedUASBs);
-            Logger.logNow('ProductionToBillService', 'executeUnservicedJob', message);
+            Logger.logNow('ProductionToBillService', 'executeUnservicedBillJob', message);
+        }
+    }
+
+    private void executeUnservicedAdjustJob(){
+        List<Bill_Adjustment__c> externallyServicedAdjusts = new List<Bill_Adjustment__c>();
+        try {
+            externallyServicedAdjusts = adjustmentSelector.getUnservicedWithoutProductionDetail(batchSize);
+            if (externallyServicedAdjusts.size() > 0){
+                ProductionDetailBillService billService = new ProductionDetailBillService();
+                billService.createProductionDetailFromUnservicedAdjustment(externallyServicedAdjusts);
+                markAdjustmentsAsComplete(externallyServicedAdjusts);
+            }
+            if (externallyServicedAdjusts.size() == batchSize){
+                queueJob(OperationType.UNSERVICED_ADJUST);
+            }
+        } catch (Exception excep){
+            String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(externallyServicedAdjusts);
+            Logger.logNow('ProductionToBillService', 'executeUnservicedAdjustJob', message);
         }
     }
 
@@ -144,10 +168,19 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         update entries;
     }
 
+    @TestVisible
     private void markUASBsAsComplete(List<UASB__c> unservicedBills){
         for (UASB__c uasb : unservicedBills){
             uasb.Ready_for_Production_Detail__c = false;
         }
         update unservicedBills;
+    }
+
+    @TestVisible
+    private void markAdjustmentsAsComplete(List<Bill_Adjustment__c> unservicedAdjusts){
+        for (Bill_Adjustment__c adjust : unservicedAdjusts){
+            adjust.Ready_for_Production_Detail__c = false;
+        }
+        update unservicedAdjusts;
     }
 }
