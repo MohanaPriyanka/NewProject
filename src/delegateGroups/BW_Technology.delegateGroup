@@ -165,22 +165,26 @@
     <permissionSets>Manage Entities (Legal)</permissionSets>
     <permissionSets>Update ALSS Date Enacted</permissionSets>
     <permissionSets>Einstein Search</permissionSets>
+    <permissionSets>Composer Administrator</permissionSets>
+    <permissionSets>Composer User</permissionSets>
+    <permissionSets>Trigger Administrator</permissionSets>
+    <permissionSets>Batch Administrator</permissionSets>
     <permissionSets>CS Customer Data Import</permissionSets>
     <permissionSets>Portfolio Management</permissionSets>
     <permissionSets>Data Mask</permissionSets>
     <permissionSets>FP&amp;A Shared Solar System Management</permissionSets>
+    <permissionSets>Salesforce Survey Admin</permissionSets>
+    <permissionSets>Client Health Report Management</permissionSets>
+    <permissionSets>CS BW Countersignature</permissionSets>
+    <permissionSets>SSSO Creation</permissionSets>
+    <permissionSets>Subscription Order Mgmt</permissionSets>
+    <permissionSets>Subscription Order Visibility</permissionSets>
     <permissionSets>Edit Products</permissionSets>
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Underwriting Screen Access</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
-    <permissionSets>Salesforce Survey Admin</permissionSets>
-    <permissionSets>CS BW Countersignature</permissionSets>
-    <permissionSets>Client Health Report Management</permissionSets>
-    <permissionSets>SSSO Creation</permissionSets>
-    <permissionSets>Subscription Order Mgmt</permissionSets>
-    <permissionSets>Subscription Order Visibility</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
     <permissionSets>Permission Set for Payment Request (Chargent Orders)</permissionSets>

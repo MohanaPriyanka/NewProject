@@ -357,16 +357,15 @@
     </fields>
     <fields>
         <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
         <relationshipLabel>Production</relationshipLabel>
         <relationshipName>Production</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Start_Date__c</fullName>
