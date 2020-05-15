@@ -13,8 +13,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
 
     private Set<Id> transferIds = new Set<Id>();
-    private Set<Id> uasbIds = new Set<Id>();
-    private Set<Id> adjustmentIds = new Set<Id>();
+    private Set<String> zuoraUsageIds = new Set<String>();
 
     @TestVisible
     private Map<String, GLInvoiceItem> invoiceIdToUsageMap = new Map<String, GLInvoiceItem>();
@@ -22,54 +21,110 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     public List<Transfer_Part__c> productionDetailToInsert = new List<Transfer_Part__c>();
 
     public class GLInvoiceItem {
-        public List<UsageRecord> Bills;
-        public Decimal Amount;
-        public Decimal SumOfAmount;
-        public Id JERecordId;
+        public List<UsageRecord> bills;
+        public Decimal amount;
+        public Decimal sumOfAmount;
+        public Id jERecordId;
+        private Set<Id> transferIds;
+
+        public void populateSFRecordsFromUsage(Map<String,List<UASB__c>> uasbMap, Map<String,List<Bill_Adjustment__c>> adjustMap) {
+            this.transferIds = new Set<Id>();
+            for (UsageRecord usage : this.bills) {
+                usage.relateRecords(uasbMap.get(usage.externalId));
+                usage.relateRecords(adjustMap.get(usage.externalId));
+                this.transferIds.addAll(usage.transferIds);
+                if (usage.sFRecords.size() == 0) {
+                    Logger.logNow(
+                        'ProductionToBillService',
+                        'fromUsageGetUASBsAndProductionAdjustments',
+                        'Could not find UASB or Adjustment for: ' + JSON.serialize(usage)
+                    );
+                    return;
+                }
+            }
+        }
+
+        public List<SObject> getAllSFRecords(){
+            List<SObject> sfRecords = new List<SObject>();
+            for (UsageRecord usage : this.bills) {
+                sfRecords.addAll(usage.sFRecords);
+            }
+            return sfRecords;
+        }
     }
 
     @TestVisible
     private class UsageRecord {
-        private String CustomerNumber;
-        private Integer BillMonth;
-        private Integer BillYear;
-        private String Project;
-        private String Client;
-        private Id InternalId;
+        private String customerNumber;
+        private Integer billMonth;
+        private Integer billYear;
+        private String project;
+        private String client;
+        private Id internalId;
         @TestVisible
-        private String ExternalId;
-        private Decimal Amount;
-        private Datetime BillDatetime;
+        private String externalId;
+        private Decimal amount;
+        private Datetime billDatetime;
         @TestVisible
-        private UASB__c UASB;
-        @TestVisible
-        private Bill_Adjustment__c Adjustment;
+        private List<SObject> sFRecords;
+        private Set<Id> transferIds;
 
         private UsageRecord(Journal_Entry__c entry) {
-            this.Client = entry.Client__c;
-            this.Project = entry.Project__c;
-            this.CustomerNumber = entry.Customer_Account__c;
-            this.BillMonth = entry.Date__c.month();
-            this.BillYear = entry.Date__c.year();
-            this.InternalId = entry.Id;
-            this.ExternalId = entry.External_Id__c;
-            this.Amount = entry.Amount__c;
+            this.client = entry.Client__c;
+            this.project = entry.Project__c;
+            this.customerNumber = entry.Customer_Account__c;
+            this.billMonth = entry.Date__c.month();
+            this.billYear = entry.Date__c.year();
+            this.internalId = entry.Id;
+            this.externalId = entry.External_Id__c;
+            this.amount = entry.Amount__c;
         }
 
         private String generateKey() {
-            if (this.BillMonth == null
-                && this.BillYear == null
-                && this.BillDatetime.date() != null){
-                Date billDate = this.BillDatetime.date();
-                this.BillMonth = billDate.month();
-                this.BillYear = billDate.year();
+            if (this.billMonth == null
+                && this.billYear == null
+                && this.billDatetime.date() != null){
+                Date billDate = this.billDatetime.date();
+                this.billMonth = billDate.month();
+                this.billYear = billDate.year();
             }
-            String key = this.CustomerNumber
-                + this.Project
-                + this.Client
-                + String.valueOf(this.BillMonth)
-                + String.valueOf(this.BillYear);
+            String key = this.customerNumber
+                + this.project
+                + this.client
+                + String.valueOf(this.billMonth)
+                + String.valueOf(this.billYear);
             return key;
+        }
+
+        private void checkForNullLists(){
+            if (this.sFRecords == null){
+                this.sFRecords = new List<SObject>();
+            }
+            if (this.transferIds == null){
+                this.transferIds = new Set<Id>();
+            }
+        }
+
+        private void relateRecords(List<UASB__c> uasbList){
+            this.checkForNullLists();
+            if (uasbList == null){
+                return;
+            }
+            for (UASB__c uasbRecord : uasbList){
+                this.transferIds.add(uasbRecord.Transfer__c);
+                this.sFRecords.add(uasbRecord);
+            }
+        }
+
+        private void relateRecords(List<Bill_Adjustment__c> adjustList){
+            this.checkForNullLists();
+            if (adjustList == null){
+                return;
+            }
+            for (Bill_Adjustment__c adjustment : adjustList){
+                this.transferIds.add(adjustment.Transfer__c);
+                this.sFRecords.add(adjustment);
+            }
         }
     }
 
@@ -130,49 +185,43 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
 
     @TestVisible
     private void fromUsageGetUASBsAndProductionAdjustments() {
-        Map<Id, UASB__c> uasbMap = uasbSelector.getUASBsFromIds(uasbIds);
-        Map<Id, Bill_Adjustment__c> adjustMap = adjustmentSelector.getAdjustmentsFromIds(adjustmentIds);
+        Map<String,List<UASB__c>> uasbMap = uasbSelector.getUASBMapFromExternalIds(zuoraUsageIds);
+        Map<String,List<Bill_Adjustment__c>> adjustMap = adjustmentSelector.getAdjustmentMapFromExternalIds(zuoraUsageIds);
 
         for (String invoiceItemId : invoiceIdtoUsageMap.keySet()){
-            List<UsageRecord> bills = invoiceIdToUsageMap.get(invoiceItemId).Bills;
-            for (UsageRecord bill : bills){
-                if (uasbMap.containsKey(bill.InternalId)){
-                    bill.UASB = uasbMap.get(bill.InternalId);
-                    transferIds.add(bill.UASB.Transfer__c);
-                } else if (adjustMap.containsKey(bill.InternalId)){
-                    bill.Adjustment = adjustMap.get(bill.InternalId);
-                    transferIds.add(bill.Adjustment.Transfer__c);
-                } else {
-                    Logger.logNow(
-                        'ProductionToBillService',
-                        'fromUsageGetUASBsAndProductionAdjustments',
-                        'Could not find UASB or Adjustment for: ' + JSON.serialize(bill)
-                    );
-                }
-            }
+            GLInvoiceItem invItem = invoiceIdToUsageMap.get(invoiceItemId);
+            invItem.populateSFRecordsFromUsage(uasbMap, adjustMap);
+            transferIds.addAll(invItem.transferIds);
         }
     }
 
     @TestVisible
     private void distributeInvoiceItemAmongTransferProductionDetail() {
         transferToDetailMap = productionDetailSelector.getTransferPartMap(transferIds);
+
         for (String invoiceItemId : invoiceIdtoUsageMap.keySet()){
             GLInvoiceItem invItem = invoiceIdToUsageMap.get(invoiceItemId);
-            for (UsageRecord bill : invItem.Bills){
-                distributeAmongTransferProductionDetail(bill, invItem.JERecordId);
+            for (SObject sfBill : invItem.getAllSFRecords()){
+                distributeAmongTransferProductionDetail(sfBill, invItem.JERecordId);
             }
         }
     }
 
-    private void distributeAmongTransferProductionDetail(UsageRecord bill, Id journalRecordId){
-        if (bill.Amount == 0){
-            return;
-        } else if (bill.UASB != null){
-            createBillProductionDetail(bill.UASB.Transfer__c, bill.Amount, 'Bill', journalRecordId);
-            createBillProductionDetail(bill.UASB.Transfer__c, bill.UASB.Savings__c, 'Customer Savings', journalRecordId);
-        } else if (bill.Adjustment != null){
-            createBillProductionDetail(bill.Adjustment.Transfer__c, bill.Amount, 'Bill', journalRecordId);
-            createBillProductionDetail(bill.Adjustment.Transfer__c, bill.Adjustment.Discount__c, 'Customer Savings', journalRecordId);
+    private void distributeAmongTransferProductionDetail(SObject sfRecord, Id journalRecordId){
+        if (sfRecord.getSObjectType() == UASB__c.SObjectType){
+            UASB__c bill = (UASB__c)sfRecord;
+            if (bill.Discounted_Bill__c == 0){
+                return;
+            }
+            createBillProductionDetail(bill.Transfer__c, bill.Discounted_Bill__c, 'Bill', journalRecordId);
+            createBillProductionDetail(bill.Transfer__c, bill.Savings__c, 'Customer Savings', journalRecordId);
+        } else if (sfRecord.getSObjectType() == Bill_Adjustment__c.SObjectType){
+            Bill_Adjustment__c adjust = (Bill_Adjustment__c)sfRecord;
+            if (adjust.Adjustment_Amount__c == 0){
+                return;
+            }
+            createBillProductionDetail(adjust.Transfer__c, adjust.Adjustment_Amount__c, 'Bill', journalRecordId);
+            createBillProductionDetail(adjust.Transfer__c, adjust.Discount__c, 'Customer Savings', journalRecordId);
         }
     }
 
@@ -195,7 +244,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
             part = setRelatedRecordId(part, type, relatedRecordId);
             Decimal applicationAmount = getWeightedApplicationAmount(transferDetail, staticBillAmount);
 
-            if (applicationAmount <= decliningBillAmount){
+            if (Math.abs(applicationAmount) <= Math.abs(decliningBillAmount)){
                 part.Amount__c = applicationAmount;
                 decliningBillAmount -= applicationAmount;
             } else {
@@ -211,8 +260,10 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     }
 
     private Transfer_Part__c setRelatedRecordId(Transfer_Part__c transferProdDetail, String type, Id relatedRecordId){
-        if (type == 'Externally Serviced'){
+        if (type == 'Externally Serviced' && relatedRecordId.getSObjectType() == UASB__c.sObjectType){
             transferProdDetail.Externally_Serviced_UASB__c = relatedRecordId;
+        } else if (type == 'Externally Serviced' && relatedRecordId.getSObjectType() == Bill_Adjustment__c.sObjectType){
+            transferProdDetail.Externally_Serviced_Bill_Adjustment__c = relatedRecordId;
         } else {
             transferProdDetail.Journal_Entry__c = relatedRecordId;
         }
@@ -250,28 +301,28 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
             if (keyToJournalEntryMap.containsKey(matchKey)){
                 UsageRecord record = keyToJournalEntryMap.get(matchKey);
                 invoiceToUsageMap = addToUsageMap(invoiceToUsageMap, record, usageKey);
-                addToUASBOrAdjustList(usageKey.InternalId);
+                zuoraUsageIds.add(usageKey.externalId);
             }
         }
         return invoiceToUsageMap;
     }
 
     private Map<String, GLInvoiceItem> addToUsageMap(Map<String, GLInvoiceItem> usageMap, UsageRecord invoiceKey, UsageRecord usageKey) {
-        String externalId = invoiceKey.ExternalId;
+        String externalId = invoiceKey.externalId;
         GLInvoiceItem invoiceItem;
 
         if (usageMap.containsKey(externalId)){
             invoiceItem = usageMap.get(externalId);
-            invoiceItem.Bills.add(usageKey);
-            invoiceItem.SumOfAmount += usageKey.Amount;
+            invoiceItem.bills.add(usageKey);
+            invoiceItem.sumOfAmount += usageKey.amount;
         } else {
             invoiceItem = new GLInvoiceItem();
-            invoiceItem.Bills = new List<UsageRecord>{usageKey};
-            invoiceItem.Amount = invoiceKey.Amount;
-            invoiceItem.SumOfAmount = usageKey.Amount;
-            invoiceItem.JERecordId = invoiceKey.InternalId;
+            invoiceItem.bills = new List<UsageRecord>{usageKey};
+            invoiceItem.amount = invoiceKey.amount;
+            invoiceItem.sumOfAmount = usageKey.amount;
+            invoiceItem.jERecordId = invoiceKey.internalId;
         }
-        if (invoiceItem.SumOfAmount > invoiceItem.Amount){
+        if (invoiceItem.sumOfAmount > invoiceItem.amount){
             Logger.logNow('ProductionToBillService','addToUsageMap','Sum of Parts is greater than Invoice Amount ' + JSON.serialize(invoiceItem));
         } else {
             usageMap.put(externalId,invoiceItem);
@@ -279,16 +330,13 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         return usageMap;
     }
 
-    private void addToUASBOrAdjustList(Id recordId) {
-        if (recordId.getSObjectType() == UASB__c.sObjectType){
-            uasbIds.add(recordId);
-        } else if (recordId.getSObjectType() == Bill_Adjustment__c.sObjectType){
-            adjustmentIds.add(recordId);
-        }
-    }
-
     public void createProductionDetailFromUnservicedUASB(List<UASB__c> unservicedUASBs){
         calculateProductionDetailFromUnservicedUASB(unservicedUASBs);
+        insert productionDetailToInsert;
+    }
+
+    public void createProductionDetailFromUnservicedAdjustment(List<Bill_Adjustment__c> unservicedAdjusts){
+        calculateProductionDetailFromUnservicedAdjustment(unservicedAdjusts);
         insert productionDetailToInsert;
     }
 
@@ -305,10 +353,31 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         }
     }
 
+    @TestVisible
+    private void calculateProductionDetailFromUnservicedAdjustment(List<Bill_Adjustment__c> unservicedUASBs){
+        for (Bill_Adjustment__c exBill : unservicedUASBs){
+            transferIds.add(exBill.Transfer__c);
+        }
+
+        transferToDetailMap = productionDetailSelector.getTransferPartMap(transferIds);
+
+        for (Bill_Adjustment__c externalBill : unservicedUASBs){
+            createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
+        }
+    }
+
     public static void setUnservicedUASBReadyForProdDetail(List<UASB__c> uasbs){
         for (UASB__c uasb : uasbs) {
             if (uasb.Externally_Serviced__c && uasb.Credits_Allocated__c != null && uasb.Credits_Allocated__c != 0){
                 uasb.Ready_For_Production_Detail__c = true;
+            }
+        }
+    }
+
+    public static void setUnservicedAdjustReadyForProdDetail(List<Bill_Adjustment__c> adjustments){
+        for (Bill_Adjustment__c adjust : adjustments) {
+            if (adjust.Externally_Serviced__c){
+                adjust.Ready_For_Production_Detail__c = true;
             }
         }
     }

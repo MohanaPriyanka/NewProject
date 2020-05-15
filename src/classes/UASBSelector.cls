@@ -1,6 +1,6 @@
 /* Tested by: ZuoraUsageServiceTest, UASBSelectorTest
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UASBSelector {
     public static Database.QueryLocator uasbsNotYetInZuora(Date invoiceDate) {
         String query =
@@ -24,12 +24,23 @@ public without sharing class UASBSelector {
         return Database.getQueryLocator(query);
     }
 
-    public Map<Id, UASB__c> getUASBsFromIds(Set<Id> uasbIds){
-        return new Map<Id, UASB__c>([
-            SELECT Id, Transfer__c, Savings__c
+    public Map<String,List<UASB__c>> getUASBMapFromExternalIds(Set<String> zuoraIds){
+        Map<String,List<UASB__c>> externalIdToUASBMap = new Map<String,List<UASB__c>>();
+        List<UASB__c> uasbList = [
+            SELECT Id, Transfer__c, Savings__c, Zuora_Id__c
             FROM UASB__c
-            WHERE Id IN : uasbIds
-        ]);
+            WHERE Zuora_Id__c IN : zuoraIds
+        ];
+        for (UASB__c bill : uasbList) {
+            if (externalIdToUASBMap.containsKey(bill.Zuora_Id__c)){
+                List<UASB__c> billList = externalIdToUASBMap.get(bill.Zuora_Id__c);
+                billList.add(bill);
+                externalIdToUASBMap.put(bill.Zuora_Id__c,billList);
+            } else {
+                externalIdToUASBMap.put(bill.Zuora_Id__c,new List<UASB__c>{bill});
+            }
+        }
+        return externalIdToUASBMap;
     }
 
     public List<UASB__c> getUnservicedWithoutProductionDetail(Integer batchSize){
