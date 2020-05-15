@@ -45,7 +45,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         } else {
             Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
             if (leadToReturn == null || leadToReturn.Email != email) {
-                throw new Util.AuthorizationBWException('Invalid authorization, the leadId (' + leadId + ') does not match the email (' + email + '); should be ' + leadToReturn.Email);
+                throw new Util.AuthorizationBWException('Invalid authorization, the leadId (' + leadId + ') does not match the email (' + email + ')');
             } else if(leadToReturn.Accounts__r.size() > 1) {
                 envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
                 response.statusCode = statusCode.badRequest;
