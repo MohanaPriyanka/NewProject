@@ -28,6 +28,13 @@ public with sharing class CSLeadsRESTControllerV3Test {
     }
 
     @IsTest
+    private static void testGetLeadSuccess() {
+        useMocks();
+        controller.getLead(Util.getFakeId(Schema.Lead.SObjectType), CSLeadsRESTControllerV2Test.SAMPLE_EMAIL);
+        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed GET request should succeed');
+    }
+
+    @IsTest
     private static void testPatchLeadSuccess() {
         useMocks();
         String jsonRequest = '{' +

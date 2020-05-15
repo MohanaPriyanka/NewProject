@@ -16,10 +16,10 @@ public inherited sharing class ContentDocumentSelector {
     public List<ContentDocumentLink> selectByLinkedEntity(Id entityId) {
         return [
             SELECT Id, ContentDocumentId, ContentDocument.LatestPublishedVersion.Title,
-                ContentDocument.LatestPublishedVersion.VersionData
+                ContentDocument.LatestPublishedVersion.VersionData, ContentDocument.CreatedDate
             FROM ContentDocumentLink
             WHERE LinkedEntityId = :entityId
-            ORDER BY ContentDocument.ContentSize DESC
+            ORDER BY ContentDocument.CreatedDate DESC
         ];
     }
 
@@ -82,5 +82,16 @@ public inherited sharing class ContentDocumentSelector {
             throw Util.createAuraExceptionWithMessage('Did not find any content distributions for content document id ' + contentDocumentId);
         }
         return contentDistributions[0].DistributionPublicUrl;
+    }
+
+    public List<ContentDocumentLink> getContractsAfterDateByLinkedEntity(Id entityId, Datetime mustBeAfter) {
+        return [
+            SELECT Id, ContentDocumentId, ContentDocument.LatestPublishedVersion.Title,
+                ContentDocument.LatestPublishedVersion.VersionData, ContentDocument.CreatedDate
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = :entityId
+              AND ContentDocument.CreatedDate > :mustBeAfter
+            ORDER BY ContentDocument.ContentSize DESC
+        ];
     }
 }

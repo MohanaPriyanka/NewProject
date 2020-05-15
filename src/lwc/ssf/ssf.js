@@ -27,6 +27,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track selectedProduct;
     @track zipCodeResponse;
     @track resiApplicationType = true;
+    @track mostRecentDocs;
     @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {
@@ -206,7 +207,9 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     }
 
     handleLeadCreation(event) {
-        this.leadJSON = JSON.stringify(event.detail);
+        var returned = event.detail;
+        this.leadJSON = JSON.stringify(returned.lead);
+        this.mostRecentDocs = returned.mostRecentDocs;
         this.getAgreements = true;
         this.getBasicInfo = false;
         this.enterEmail = false;

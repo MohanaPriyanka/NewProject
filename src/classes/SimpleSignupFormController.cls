@@ -39,15 +39,20 @@ public without sharing class SimpleSignupFormController {
 
         return contentDocumentSelector.getPublicDistributionLinkByDocId(documentId);
     }
+    
 
     @AuraEnabled
-    public static List<ContentDocumentLink> getContentDocumentLinksByLead(Id leadId, String email) {
+    public static List<ContentDocumentLink> getContentDocumentLinksByLead(Id leadId, String email, Datetime mostRecentDocDate) {
         try {
             restControllerV3.validateAuthorization(leadId, email);
         } catch (Util.AuthorizationBWException abwe) {
             throw Util.createAuraExceptionWithMessage('The email (' + email + ') and leadId (' + leadId + ') provided did not match');
         }
 
+        if(mostRecentDocDate != null) {
+            return contentDocumentSelector.getContractsAfterDateByLinkedEntity(leadId, mostRecentDocDate);
+        }
+        
         return contentDocumentSelector.selectByLinkedEntity(leadId);
     }
 }

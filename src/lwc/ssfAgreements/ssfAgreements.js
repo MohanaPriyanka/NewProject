@@ -12,6 +12,7 @@ import {makeRequest} from 'c/httpRequestService';
 
 export default class SsfAgreements extends LightningElement {
     @api leadJson;
+    @api mostRecentDocs;
     lead;
     @track disclosures;
     @track creditCheck;
@@ -38,6 +39,13 @@ export default class SsfAgreements extends LightningElement {
     connectedCallback() {
         if (!this.lead && this.leadJson) {
             this.lead = JSON.parse(this.leadJson);
+        }
+        
+        if(this.mostRecentDocs) {
+            this.mostRecentDocs = JSON.parse(this.mostRecentDocs);
+            if(typeof this.mostRecentDocs === 'object') {
+                this.postProcessContractDocs(this.mostRecentDocs);
+            }
         }
     }
 
@@ -228,14 +236,14 @@ export default class SsfAgreements extends LightningElement {
             this.spinnerMessage = 'This can take a minute';
         }, 1000);
         this.documentPollerId = window.setInterval(() => {
-            getContentDocumentLinksByLead({leadId: this.lead.id, email: this.lead.email})
+            getContentDocumentLinksByLead({leadId: this.lead.id, email: this.lead.email, mostRecentDocDate: this.mostRecentDocs})
             .then(result => {
                 if (result.length >= 2) {
                     this.postProcessContractDocs(result);
                 }
             })
             .catch(error => {
-                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
+                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error.body.message);
                 window.clearInterval(this.documentPollerId);
                 window.clearTimeout(this.documentPollerTimeoutId);
                 this.showSpinner = false;
