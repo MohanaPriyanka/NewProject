@@ -182,11 +182,11 @@ IF(Production__r.Billing_Method__c == &apos;kWh&apos;,
 IF(
 AND(
 ISPICKVAL(Transfer__r.Transfer_Type__c,&apos;Main&apos;)
-,kWh_Amount__c &gt; 0
+,kWh_Amount__c != 0
 ),
 (kWh_Amount__c - Production__r.Production_kWh__c) /Production__r.Production_kWh__c,
 IF(
-kWh_Amount__c &gt; 0,
+kWh_Amount__c != 0,
 kWh_Amount__c /Production__r.Production_kWh__c,
 0
 )
@@ -194,11 +194,11 @@ kWh_Amount__c /Production__r.Production_kWh__c,
 IF(
 AND(
 ISPICKVAL(Transfer__r.Transfer_Type__c,&apos;Main&apos;)
-,Amount__c &gt; 0
+,Amount__c != 0
 ),
 (Amount__c - Production__r.Credits_Available_for_Allocation__c) /Production__r.Credits_Available_for_Allocation__c,
 IF(
-Amount__c &gt; 0,
+Amount__c != 0,
 Amount__c /Production__r.Credits_Available_for_Allocation__c,
 0
 )
