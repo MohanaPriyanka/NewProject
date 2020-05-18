@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -360,7 +359,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>SREC Invoices</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
     <webLinks>
@@ -380,10 +379,7 @@
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://composer.congamerge.com?SolMgr=1 
-&amp;sessionId={!API.Session_ID} 
-&amp;serverUrl={!API.Partner_Server_URL_290} 
-&amp;Id={!SREC_Invoice__c.Id}
+        <url>/apex/APXTConga4__Conga_Composer?serverUrl={!API.Partner_Server_URL_370}&amp;id={!SREC_Invoice__c.Id}
 &amp;TemplateId=a2F0a000001UxkB
 &amp;DefaultPDF=1 
 &amp;SC0=1 
