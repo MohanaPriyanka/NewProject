@@ -72,6 +72,21 @@
     <flexiPageRegions>
         <componentInstances>
             <componentInstanceProperties>
+                <name>numberOfTopicsToDisplay</name>
+                <value>10</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>searchHint</name>
+                <value>Type a topic name and press Enter.</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>title</name>
+                <value>Topics</value>
+            </componentInstanceProperties>
+            <componentName>forceChatter:topicsOnRecordWrapper</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
                 <name>hideHeader</name>
                 <value>false</value>
             </componentInstanceProperties>
