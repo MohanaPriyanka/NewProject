@@ -184,7 +184,7 @@ AND(
 ISPICKVAL(Transfer__r.Transfer_Type__c,&apos;Main&apos;)
 ,kWh_Amount__c != 0
 ),
-(kWh_Amount__c - Production__r.Production_kWh__c) /Production__r.Production_kWh__c,
+IF(kWh_Amount__c &lt; 0, -1, 1)*(ABS(kWh_Amount__c) - ABS(Production__r.Production_kWh__c)) /Production__r.Production_kWh__c,
 IF(
 kWh_Amount__c != 0,
 kWh_Amount__c /Production__r.Production_kWh__c,
@@ -196,7 +196,7 @@ AND(
 ISPICKVAL(Transfer__r.Transfer_Type__c,&apos;Main&apos;)
 ,Amount__c != 0
 ),
-(Amount__c - Production__r.Credits_Available_for_Allocation__c) /Production__r.Credits_Available_for_Allocation__c,
+IF(Amount__c &lt; 0, -1, 1)*(ABS(Amount__c) - ABS(Production__r.Credits_Available_for_Allocation__c)) /Production__r.Credits_Available_for_Allocation__c,
 IF(
 Amount__c != 0,
 Amount__c /Production__r.Credits_Available_for_Allocation__c,
