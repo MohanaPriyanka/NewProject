@@ -199,29 +199,4 @@
         </valueSet>
     </fields>
     <sharingModel>ControlledByCampaign</sharingModel>
-    <webLinks>
-        <fullName>Conga</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Conga</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>https://composer.congamerge.com?SolMgr=1
-&amp;sessionId={!API.Session_ID}
-&amp;serverUrl={!API.Partner_Server_URL_290}
-&amp;Id={!CampaignMember.Id}
-&amp;ContactId={!CampaignMember.ContactId}
-&amp;TemplateId=IF({!CampaignMember.CampaignId}=&quot;7010a000002uNgS&quot;,&quot;a2F0a000001ZWou&quot;,IF({!CampaignMember.CampaignId}=&quot;7010a000002uNgX&quot;,&quot;a2F0a000001ZWop&quot;,&quot;a2F0a000001ZWoz&quot;))
-&amp;SC1=Attachments</url>
-    </webLinks>
 </CustomObject>
