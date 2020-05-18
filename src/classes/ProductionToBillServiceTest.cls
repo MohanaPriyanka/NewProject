@@ -114,14 +114,15 @@ public with sharing class ProductionToBillServiceTest {
 
         Test.startTest();
         ProductionToBillService prodService = new ProductionToBillService();
-        prodService.queueJob(ProductionToBillService.OperationType.UNSERVICED);
+        prodService.queueJob(ProductionToBillService.OperationType.UNSERVICED_BILL);
+        prodService.queueJob(ProductionToBillService.OperationType.UNSERVICED_ADJUST);
         Test.stopTest();
 
         List<Error_Log__c> afterLogs = [
             SELECT Class__c, Message__c, Method__c
             FROM Error_Log__c
             WHERE Class__c = 'ProductionToBillService'
-            AND Method__c = 'executeUnservicedJob'
+            AND Method__c LIKE 'executeUnserviced%'
         ];
         System.assert(afterLogs.size() > 0);
     }
@@ -182,10 +183,10 @@ public with sharing class ProductionToBillServiceTest {
         ProductionDetailBillService.GLInvoiceItem acct05268 = oldInvoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
         ProductionDetailBillService.GLInvoiceItem acct05956 = oldInvoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
 
-        System.assertEquals(null,acct04202.Bills[0].UASB);
-        System.assertEquals(null,acct00524.Bills[0].UASB);
-        System.assertEquals(null,acct05268.Bills[0].UASB);
-        System.assertEquals(null,acct05956.Bills[0].UASB);
+        System.assertEquals(null,acct04202.Bills[0].SFRecords);
+        System.assertEquals(null,acct00524.Bills[0].SFRecords);
+        System.assertEquals(null,acct05268.Bills[0].SFRecords);
+        System.assertEquals(null,acct05956.Bills[0].SFRecords);
 
         Test.startTest();
             service.fromUsageGetUASBsAndProductionAdjustments();
@@ -197,25 +198,22 @@ public with sharing class ProductionToBillServiceTest {
         acct05268 = updatedInvoiceMap.get('2c92c0fb6e3aa321016e3df574337a9b');
         acct05956 = updatedInvoiceMap.get('2c92c0fa6e3a938d016e3dfdc93450b2');
 
-        System.assertEquals('a1i0a000008yU78AAE',acct04202.Bills[0].UASB.Id);
-        System.assertEquals(null,acct04202.Bills[0].Adjustment);
+        System.assertEquals('a1i0a000008yU78AAE',acct04202.Bills[0].SFRecords[0].Id);
 
-        System.assertEquals(null,acct00524.Bills[0].UASB);
-        System.assertEquals('a0p0a000008YSBuAAO',acct00524.Bills[0].Adjustment.Id);
+        System.assertEquals('a0p0a000008YSBuAAO',acct00524.Bills[0].SFRecords[0].Id);
 
-        System.assertEquals(null,acct05268.Bills[0].UASB);
-        System.assertEquals('a0p0a000008YSCuAAO',acct05268.Bills[0].Adjustment.Id);
+        System.assertEquals('a0p0a000008YSCuAAO',acct05268.Bills[0].SFRecords[0].Id);
 
         List<ProductionDetailBillService.UsageRecord> usageList = acct05956.Bills;
         System.assertEquals(8,usageList.size());
         for (ProductionDetailBillService.UsageRecord usage : usageList){
-            System.assertNotEquals(null,usage.UASB);
+            System.assertNotEquals(null,usage.SFRecords);
             if (usage.ExternalId == '2c92c0f96e3aa331016e3cc6717f2aaa'){
-                System.assertEquals('a1i0a000008yUM7AAM',usage.UASB.Id);
+                System.assertEquals('a1i0a000008yUM7AAM',usage.SFRecords[0].Id);
             } else if (usage.ExternalId == '2c92c0f96e3aa331016e3cc671ac2aac'){
-                System.assertEquals('a1i0a000008yTxMAAU',usage.UASB.Id);
+                System.assertEquals('a1i0a000008yTxMAAU',usage.SFRecords[0].Id);
             } else if (usage.ExternalId == '2c92c0f96e3aa331016e3cc672022aaf'){
-                System.assertEquals('a1i0a000008yUNsAAM',usage.UASB.Id);
+                System.assertEquals('a1i0a000008yUNsAAM',usage.SFRecords[0].Id);
             }
         }
     }
@@ -242,7 +240,7 @@ public with sharing class ProductionToBillServiceTest {
         */
 
         List<Transfer_Part__c> parts = service.productionDetailToInsert;
-        System.assertEquals(50,parts.size());
+        System.assertEquals(54,parts.size());
 
         Decimal billSum = 0;
         Integer billCount = 0;
@@ -256,9 +254,9 @@ public with sharing class ProductionToBillServiceTest {
                 savingsSum += part.Amount__c;
             }
         }
-        System.assertEquals(25,billCount);
-        System.assertEquals(2740.23,billSum);
-        System.assertEquals(130,savingsSum);
+        System.assertEquals(27,billCount);
+        System.assertEquals(2615.17,billSum);
+        System.assertEquals(140,savingsSum);
     }
 
     @IsTest
@@ -278,8 +276,9 @@ public with sharing class ProductionToBillServiceTest {
         ProductionDetailBillService.GLInvoiceItem acct04202 = invoiceMap.get('2c92c0fb6e3aa322016e3df698ff7e9f');
         System.assertEquals(37.23,acct04202.Amount);
         System.assertEquals(37.23,acct04202.SumOfAmount);
-        System.assertEquals(10,acct04202.Bills[0].UASB.Savings__c);
-        System.assertEquals('a900a000000GqNBAA0',acct04202.Bills[0].UASB.Transfer__c);
+        UASB__c uasb = (UASB__c)acct04202.Bills[0].SFRecords[0];
+        System.assertEquals(10,uasb.Savings__c);
+        System.assertEquals('a900a000000GqNBAA0',uasb.Transfer__c);
 
         List<Transfer_Part__c> parts = service.productionDetailToInsert;
         System.assertEquals(6,parts.size());
@@ -319,8 +318,11 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(1997.03,acct05956.Amount);
         System.assertEquals(1997.03,acct05956.SumOfAmount);
         System.assertEquals(8,acct05956.Bills.size());
-        System.assertEquals('a900a000000GrNBAA0',acct05956.Bills[0].UASB.Transfer__c);
-        System.assertEquals('a900a000000GrNBAA0',acct05956.Bills[7].UASB.Transfer__c);
+        UASB__c uasbOne = (UASB__c) acct05956.Bills[0].SFRecords[0];
+        UASB__c uasbSeven = (UASB__c) acct05956.Bills[0].SFRecords[0];
+
+        System.assertEquals('a900a000000GrNBAA0',uasbOne.Transfer__c);
+        System.assertEquals('a900a000000GrNBAA0',uasbSeven.Transfer__c);
 
         // 8 bills * 2 transfers, 1 for bill, 1 for savings:
         List<Transfer_Part__c> parts = service.productionDetailToInsert;
@@ -339,6 +341,47 @@ public with sharing class ProductionToBillServiceTest {
         }
         System.assertEquals(1997.03,billSum);
         System.assertEquals(80,savingsSum);
+    }
+
+    @IsTest
+    public static void testDistributeAmongTransferWithMultipleUASBs(){
+        useMocks();
+        ProductionDetailBillService service = new ProductionDetailBillService();
+        returnEntryNumber = 0;
+
+        Test.startTest();
+        // 1 Invoice with 8 Subscriptions on 1 Project, but bill is from a transfer with 2 parts:
+        service.fromInvoicesGetUsage(new Set<String>{'2c92c0fa6e3a9391016e3df87b1f687a'},getMockUsageDataQueryResult());
+        service.fromUsageGetUASBsAndProductionAdjustments();
+        service.distributeInvoiceItemAmongTransferProductionDetail();
+        Test.stopTest();
+
+        Map<String, ProductionDetailBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
+        ProductionDetailBillService.GLInvoiceItem acct000524 = invoiceMap.get('2c92c0fa6e3a9391016e3df87b1f687a');
+        system.debug(JSON.serialize(invoiceMap));
+        system.debug(JSON.serialize(acct000524));
+
+        System.assertEquals(252.73,acct000524.Amount);
+        System.assertEquals(252.73,acct000524.SumOfAmount);
+        System.assertEquals(1,acct000524.Bills.size());
+        System.assertEquals(2,acct000524.Bills[0].SFRecords.size());
+
+        // 2 bills, one has 1 transfer parts, other has 2. 1 for bill, 1 for savings:
+        List<Transfer_Part__c> parts = service.productionDetailToInsert;
+        System.assertEquals(6,parts.size());
+
+        Decimal billSum = 0;
+        Decimal savingsSum = 0;
+        for (Transfer_Part__c part : parts){
+            if (part.Type__c == 'Bill'){
+                billSum += part.Amount__c;
+            }
+            if (part.Type__c == 'Customer Savings'){
+                savingsSum += part.Amount__c;
+            }
+        }
+        System.assertEquals(252.73,billSum);
+        System.assertEquals(20,savingsSum);
     }
 
     @IsTest
@@ -553,6 +596,131 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(30.34,uasbThreeSum);
     }
 
+    @IsTest
+    public static void testUnservicedAdjusts(){
+        useMocks();
+        List<Bill_Adjustment__c> externalAdjusts = getExternallyServicedAdjustments();
+
+        Test.startTest();
+        ProductionDetailBillService service = new ProductionDetailBillService();
+        service.calculateProductionDetailFromUnservicedAdjustment(externalAdjusts);
+        Test.stopTest();
+
+        List<Transfer_Part__c> unservicedParts = service.productionDetailToInsert;
+        System.assertEquals(7,unservicedParts.size());
+
+        Decimal uasbOneSum = 0;
+        Decimal uasbTwoSum = 0;
+        Decimal uasbThreeSum = 0;
+
+        System.debug('UNSERVICED' + unservicedParts);
+
+        for (Transfer_Part__c part : unservicedParts){
+            System.assertEquals('Externally Serviced',part.Type__c);
+            if (part.Externally_Serviced_Bill_Adjustment__c == 'a0p3K000000LKaMQAA'){
+                uasbOneSum += part.Amount__c;
+            } else if (part.Externally_Serviced_Bill_Adjustment__c == 'a0p3K000001LKaMQAB'){
+                uasbTwoSum += part.Amount__c;
+            } else {
+                uasbThreeSum += part.Amount__c;
+            }
+        }
+
+        System.assertEquals(133.34,uasbOneSum);
+        System.assertEquals(80,uasbTwoSum);
+        System.assertEquals(30.34,uasbThreeSum);
+    }
+
+    @IsTest
+    public static void testNegativeBillAmount(){
+        String transferMapAsString = '{"a900a000000GsOyAAK":[' +
+            '{"attributes":{"type":"Transfer_Part__c"},"Id":"a8y0a000000Gu3rAAA","Name":"InvoiceOne_ProductionOne","Production__c":"a8u0a000000I4ETAA0","Transfer__c":"a900a000000GsOyAAK","Transfer__r":{"attributes":{"type":"Transfer__c"},"Id":"a900a000000GsOyAAK","Billing_Method__c":"kWh","Transfer_kWh__c":22187},"Journal_Entry__c":"a920a000000HSfsAAG","kWh_Amount__c":10000,"Type__c":"Bill"},' +
+            '{"attributes":{"type":"Transfer_Part__c"},"Id":"a8y0a000000Gu3rBBB","Name":"InvoiceOne_ProductionTwo","Production__c":"a8u0a000000I4ETAA1","Transfer__c":"a900a000000GsOyAAK","Transfer__r":{"attributes":{"type":"Transfer__c"},"Id":"a900a000000GsOyAAK","Billing_Method__c":"kWh","Transfer_kWh__c":22187},"Journal_Entry__c":"a920a000000HSfsAAG","kWh_Amount__c":12000,"Type__c":"Bill"},' +
+            '{"attributes":{"type":"Transfer_Part__c"},"Id":"a8y0a000000Gu3rCCC","Name":"InvoiceOne_ProductionThree","Production__c":"a8u0a000000I4ETAA2","Transfer__c":"a900a000000GsOyAAK","Transfer__r":{"attributes":{"type":"Transfer__c"},"Id":"a900a000000GsOyAAK","Billing_Method__c":"kWh","Transfer_kWh__c":22187},"Journal_Entry__c":"a920a000000HSfsAAG","kWh_Amount__c":187,"Type__c":"Bill"}' +
+            ']}';
+        Map<Id,List<Transfer_Part__c>> mapParts = (Map<Id,List<Transfer_Part__c>>)JSON.deserialize(transferMapAsString,Map<Id,List<Transfer_Part__c>>.class);
+
+        ProductionDetailBillService service = new ProductionDetailBillService();
+        service.transferToDetailMap = mapParts;
+        // NEGATIVE Value should yield parts that are also negative
+        service.createBillProductionDetail('a900a000000GsOyAAK',-221.87,'Bill','a920a000000HuJoAAA');
+
+        List<Transfer_Part__c> partsToInsertList = service.productionDetailToInsert;
+        System.assertEquals(3,partsToInsertList.size());
+
+        Integer recordCount = 0;
+        for (Transfer_Part__c partsToInsert : partsToInsertList){
+            if (partsToInsert.Amount__c == -100 || partsToInsert.Amount__c == -1.87 || partsToInsert.Amount__c == -120){
+                recordCount += 1;
+            } else {
+                System.assert(false);
+            }
+        }
+        System.assertEquals(3,recordCount);
+
+        service.productionDetailToInsert = new List<Transfer_Part__c>();
+        // POSITIVE Value should yield same results as negative, with a different sign
+        service.createBillProductionDetail('a900a000000GsOyAAK',221.87,'Bill','a920a000000HuJoAAA');
+
+        partsToInsertList = service.productionDetailToInsert;
+        System.assertEquals(3,partsToInsertList.size());
+
+        recordCount = 0;
+        for (Transfer_Part__c partsToInsert : partsToInsertList){
+            if (partsToInsert.Amount__c == 100 || partsToInsert.Amount__c == 1.87 || partsToInsert.Amount__c == 120){
+                recordCount += 1;
+            } else {
+                System.assert(false);
+            }
+        }
+        System.assertEquals(3,recordCount);
+    }
+
+    @IsTest
+    public static void testUncheckReadyForProductionDetail(){
+        Util.disableTrigger('Disable_BillAdjustmentTrigger__c');
+        Util.disableTrigger('Disable_UASBTrigger__c');
+
+        Account propAccount1 = new Account(
+            Name = 'Property Account');
+        insert propAccount1;
+
+        UASB__c billOne = new UASB__c(
+            Account__c = propAccount1.Id,
+            Externally_Serviced__c = true,
+            Ready_For_Production_Detail__c = true
+        );
+        insert billOne;
+
+        Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(
+            Account__c = propAccount1.Id,
+            Adjustment_Type__c = 'BW Credit',
+            Externally_Serviced__c = true,
+            Ready_For_Production_Detail__c = true,
+            Reason_For_Adjustment__c = 'Some Reason'
+        );
+        insert adjustOne;
+
+        ProductionToBillService service = new ProductionToBillService();
+        service.markUASBsAsComplete(new List<UASB__c>{billOne});
+        service.markAdjustmentsAsComplete(new List<Bill_Adjustment__c>{adjustOne});
+
+        UASB__c requeriedUASB = [
+            SELECT Id, Ready_For_Production_Detail__c
+            FROM UASB__c
+            WHERE Id = : billOne.Id
+            LIMIT 1
+        ];
+        Bill_Adjustment__c requeriedAdj = [
+            SELECT Id, Ready_For_Production_Detail__c
+            FROM Bill_Adjustment__c
+            WHERE Id = : adjustOne.Id
+            LIMIT 1
+        ];
+        System.assert(!requeriedUASB.Ready_For_Production_Detail__c);
+        System.assert(!requeriedAdj.Ready_For_Production_Detail__c);
+    }
+
 
     /* ********* MOCKS ************ */
 
@@ -692,38 +860,41 @@ public with sharing class ProductionToBillServiceTest {
     }
 
     public class MockUASBSelector extends MockProvider {
-      MockUASBSelector() {
+        MockUASBSelector() {
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
             String uasbMapAsString = '{' +
-                '"a1i0a000008yUBfAAM":{"Id":"a1i0a000008yUBfAAM", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yiV4AAI":{"Id":"a1i0a000008yiV4AAI", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yU78AAE":{"Id":"a1i0a000008yU78AAE", "Savings__c":10,"Transfer__c":"a900a000000GqNBAA0"},' +
-                '"a1i0b000008yiQYAAY":{"Id":"a1i0b000008yiQYAAY", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yiQYAAY":{"Id":"a1i0a000008yiQYAAY", "Savings__c":10,"Transfer__c":"a900a000000GqNBAA0"},' +
-                '"a1i0b000008yiV4AAI":{"Id":"a1i0b000008yiV4AAI", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yigvAAA":{"Id":"a1i0a000008yigvAAA", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yiGrAAI":{"Id":"a1i0a000008yiGrAAI", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yihFAAQ":{"Id":"a1i0a000008yihFAAQ", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yih1AAA":{"Id":"a1i0a000008yih1AAA", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yigsAAA":{"Id":"a1i0a000008yigsAAA", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yifVAAQ":{"Id":"a1i0a000008yifVAAQ", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yifJAAQ":{"Id":"a1i0a000008yifJAAQ", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yihjAAA":{"Id":"a1i0a000008yihjAAA", "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a1i0a000008yUOIAA2":{"Id":"a1i0a000008yUOIAA2", "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"},' +
-                '"a1i0a000008yUM7AAM":{"Id":"a1i0a000008yUM7AAM", "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"},' +
-                '"a1i0a000008yULrAAM":{"Id":"a1i0a000008yULrAAM", "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"},' +
-                '"a1i0a000008yTxMAAU":{"Id":"a1i0a000008yTxMAAU", "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"},' +
-                '"a1i0a000008yUOdAAM":{"Id":"a1i0a000008yUOdAAM", "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"},' +
-                '"a1i0a000008yUO6AAM":{"Id":"a1i0a000008yUO6AAM", "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"},' +
-                '"a1i0a000008yUNsAAM":{"Id":"a1i0a000008yUNsAAM", "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"},' +
-                '"a1i0a000008yUNnAAM":{"Id":"a1i0a000008yUNnAAM", "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"}' +
+                '"2c92c0f96e3aa333016e3cf0482a601d":[' +
+                '{"Id":"a1i0a000008yUBfAAM", "Discounted_Bill__c":152.00, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
+                '{"Id":"a1i0a000009yUBfAAM", "Discounted_Bill__c":100.73, "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"}' +
+                '],' +
+                '"2c92c0f96e3aa331016e3cd782c2000d":[{"Id":"a1i0a000008yiV4AAI", "Discounted_Bill__c":370.69, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cd782c2640d":[{"Id":"a1i0a000008yU78AAE", "Discounted_Bill__c":37.23, "Savings__c":10,"Transfer__c":"a900a000000GqNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc670012ab0":[{"Id":"a1i0b000008yiQYAAY", "Discounted_Bill__c":370.69, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cd782e3640e":[{"Id":"a1i0a000008yiQYAAY", "Discounted_Bill__c":62.55, "Savings__c":10,"Transfer__c":"a900a000000GqNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3dd672212ab0":[{"Id":"a1i0b000008yiV4AAI", "Discounted_Bill__c":370.69, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc6723a2ab1":[{"Id":"a1i0a000008yigvAAA", "Discounted_Bill__c":288.71, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc672512ab5":[{"Id":"a1i0a000008yiGrAAI", "Discounted_Bill__c":136.64, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc672702ab6":[{"Id":"a1i0a000008yihFAAQ", "Discounted_Bill__c":425.36, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc672892ab7":[{"Id":"a1i0a000008yih1AAA", "Discounted_Bill__c":251.25, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc672a12ab9":[{"Id":"a1i0a000008yigsAAA", "Discounted_Bill__c":692.04, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc672b92abb":[{"Id":"a1i0a000008yifVAAQ", "Discounted_Bill__c":220.39, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc672d12abc":[{"Id":"a1i0a000008yifJAAQ", "Discounted_Bill__c":436.18, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc672ee2abd":[{"Id":"a1i0a000008yihjAAA", "Discounted_Bill__c":639.15, "Savings__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc6715f2aa8":[{"Id":"a1i0a000008yUOIAA2", "Discounted_Bill__c":249.62, "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc6717f2aaa":[{"Id":"a1i0a000008yUM7AAM", "Discounted_Bill__c":50.12, "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc671962aab":[{"Id":"a1i0a000008yULrAAM", "Discounted_Bill__c":45.15, "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc671ac2aac":[{"Id":"a1i0a000008yTxMAAU", "Discounted_Bill__c":248.92, "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc671c62aad":[{"Id":"a1i0a000008yUOdAAM", "Discounted_Bill__c":500.34, "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc671e62aae":[{"Id":"a1i0a000008yUO6AAM", "Discounted_Bill__c":234.45, "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc672022aaf":[{"Id":"a1i0a000008yUNsAAM", "Discounted_Bill__c":123.4, "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"}],' +
+                '"2c92c0f96e3aa331016e3cc672212ab0":[{"Id":"a1i0a000008yUNnAAM", "Discounted_Bill__c":545.03, "Savings__c":10,"Transfer__c":"a900a000000GrNBAA0"}]' +
                 '}';
 
             switch on methodCall.stubbedMethodName {
-                when 'getUASBsFromIds' {
-                    return (Map<Id, UASB__c>)JSON.deserialize(uasbMapAsString, Map<Id, UASB__c>.class);
+                when 'getUASBMapFromExternalIds' {
+                    return (Map<String,List<UASB__c>>)JSON.deserialize(uasbMapAsString, Map<String,List<UASB__c>>.class);
                 }
                 when 'getUnservicedWithoutProductionDetail' {
                     return getExternallyServicedUASBs();
@@ -739,11 +910,11 @@ public with sharing class ProductionToBillServiceTest {
 
         public override Object handleMethodCall(MethodCall methodCall) {
             String adjustMapAsString = '{' +
-                '"a0p0a000008ZZBuAAO":{"Id":"a0p0a000008ZZBuAAO", "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a0p0a000008YSBuAAO":{"Id":"a0p0a000008YSBuAAO", "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a0p0a000008YSCuAAO":{"Id":"a0p0a000008YSCuAAO", "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a0p0a000008AABuAAO":{"Id":"a0p0a000008AABuAAO", "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"},' +
-                '"a0p0a000008BBBuAAO":{"Id":"a0p0a000008BBBuAAO", "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}' +
+                '"2c92c0f86e3a939f016e3ceadda44909":[{"Id":"a0p0a000008ZZBuAAO", "Adjustment_Amount__c":10, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f96e3aa333016e3cf0484b601f":[{"Id":"a0p0a000008YSBuAAO", "Adjustment_Amount__c":10, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f86e3a939f016e3cebdda44909":[{"Id":"a0p0a000008YSCuAAO", "Adjustment_Amount__c":255.63, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f86e3a939g016e3cebdda44909":[{"Id":"a0p0a000008AABuAAO", "Adjustment_Amount__c":10, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92c0f86e3a939h016e3cebdda44909":[{"Id":"a0p0a000008BBBuAAO", "Adjustment_Amount__c":10, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}]' +
                 '}';
 
             String adjustListAsString = '[' +
@@ -759,8 +930,8 @@ public with sharing class ProductionToBillServiceTest {
                 '"Id":"a0p0a000008BBBuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0029"}]';
 
             switch on methodCall.stubbedMethodName {
-                when 'getAdjustmentsFromIds' {
-                    return (Map<Id, Bill_Adjustment__c>)JSON.deserialize(adjustMapAsString, Map<Id, Bill_Adjustment__c>.class);
+                when 'getAdjustmentMapFromExternalIds' {
+                    return (Map<String,List<Bill_Adjustment__c>>)JSON.deserialize(adjustMapAsString, Map<String,List<Bill_Adjustment__c>>.class);
                 }
                 when 'getAdjustmentsFromExternalIds' {
                     return (List<Bill_Adjustment__c>)JSON.deserialize(adjustListAsString, List<Bill_Adjustment__c>.class);
@@ -1135,5 +1306,27 @@ public with sharing class ProductionToBillServiceTest {
             Credits_Allocated__c = 30.34
         );
         return new List<UASB__c>{uasbOne, uasbTwo, uasbThree};
+    }
+
+    private static List<Bill_Adjustment__c> getExternallyServicedAdjustments(){
+        Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(
+            Id = 'a0p3K000000LKaMQAA',
+            Externally_Serviced__c = true,
+            Transfer__c = 'a900a000000GpNBAA0',
+            Credits_Allocated__c = 133.34
+        );
+        Bill_Adjustment__c adjustTwo = new Bill_Adjustment__c(
+            Id = 'a0p3K000001LKaMQAB',
+            Externally_Serviced__c = true,
+            Transfer__c = 'a900a000000GqNBAA0',
+            Credits_Allocated__c = 80
+        );
+        Bill_Adjustment__c adjustThree = new Bill_Adjustment__c(
+            Id = 'a0p3K000002LKaMQAC',
+            Externally_Serviced__c = true,
+            Transfer__c = 'a900a000000GqNBAA0',
+            Credits_Allocated__c = 30.34
+        );
+        return new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree};
     }
 }
