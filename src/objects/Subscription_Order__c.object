@@ -200,7 +200,7 @@
         <label>Approved Change in Subscription (KW DC)</label>
         <precision>18</precision>
         <required>false</required>
-        <scale>4</scale>
+        <scale>6</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
