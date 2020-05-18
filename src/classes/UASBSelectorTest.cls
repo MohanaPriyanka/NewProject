@@ -39,7 +39,7 @@ public class UASBSelectorTest {
         insert uas1;
     }
 
-    @isTest public static void testGetUASBsFromIds() {
+    @isTest public static void testGetUASBsFromExternalIds() {
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Opportunity__r.AccountId
             FROM Utility_Account_Subscription__c
@@ -47,21 +47,30 @@ public class UASBSelectorTest {
 
         UASB__c billOne = new UASB__c(
             Account__c = uasList[0].Opportunity__r.AccountId,
+            Zuora_Id__c = 'bbb1230005',
             Utility_Account_Subscription__c = uasList[0].Id
         );
         UASB__c billTwo = new UASB__c(
             Account__c = uasList[0].Opportunity__r.AccountId,
+            Zuora_Id__c = 'bbb1230001',
             Utility_Account_Subscription__c = uasList[0].Id
         );
         UASB__c billThree = new UASB__c(
             Account__c = uasList[0].Opportunity__r.AccountId,
+            Zuora_Id__c = 'bbb1230001',
             Utility_Account_Subscription__c = uasList[0].Id
         );
         insert new List<UASB__c>{billOne, billTwo, billThree};
 
         UASBSelector selector = new UASBSelector();
-        Map<Id, UASB__c> billMap = selector.getUASBsFromIds(new Set<Id>{billTwo.Id, billThree.Id});
-        System.assertEquals(2,billMap.values().size());
+        Map<String,List<UASB__c>> billMap = selector.getUASBMapFromExternalIds(new Set<String>{
+            'bbb1230001', 'bbb1230004', 'bbb1230005'
+        });
+        List<UASB__c> billListOne = billMap.get('bbb1230001');
+        List<UASB__c> billListTwo = billMap.get('bbb1230005');
+
+        System.assertEquals(2,billListOne.size());
+        System.assertEquals(1,billListTwo.size());
     }
 
     @isTest public static void testGetUnservicedWithoutProductionDetail(){

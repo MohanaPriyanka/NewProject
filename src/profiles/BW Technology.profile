@@ -563,6 +563,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AdjustmentSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AuthNetAPI</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3387,6 +3391,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProductionDetailBillService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProductionDetailSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3701,6 +3709,10 @@
     <classAccesses>
         <apexClass>UASBSelector</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UASBSelectorTest</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>UASSelector</apexClass>
@@ -16851,6 +16863,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Bill_Adjustment__c.Production_Update__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Bill_Adjustment__c.Ready_For_Production_Detail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45236,6 +45253,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Transfer_Part__c.Credits_Billed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer_Part__c.Externally_Serviced_Bill_Adjustment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
