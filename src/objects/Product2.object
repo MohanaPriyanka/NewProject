@@ -1661,6 +1661,31 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <type>Percent</type>
     </fields>
     <fields>
+        <fullName>Sizing_Method__c</fullName>
+        <externalId>false</externalId>
+        <label>Sizing Method</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Project Ratio</fullName>
+                    <default>false</default>
+                    <label>Project Ratio</label>
+                </value>
+                <value>
+                    <fullName>Rate Class Ratio</fullName>
+                    <default>false</default>
+                    <label>Rate Class Ratio</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Solar_Electricity_Rate__c</fullName>
         <externalId>false</externalId>
         <label>Solar Electricity Rate</label>
