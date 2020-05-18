@@ -682,6 +682,7 @@ public with sharing class ZuoraAPI {
         public List<ZuoraQueryResultRecord> records;
         public Integer size;
         public Boolean done;
+        public String queryLocator;
     }
     public class ZuoraQueryResultRecord {
         public String Id;
