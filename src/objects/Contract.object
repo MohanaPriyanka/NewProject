@@ -583,7 +583,7 @@
         <label>Customer Signature Date/Time</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>DateTime</type>
     </fields>
     <fields>
@@ -644,7 +644,7 @@
         <inlineHelpText>This is used in SSF to generate the review version of the contract via Conga.</inlineHelpText>
         <label>Generate Review Version</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -654,7 +654,7 @@
         <inlineHelpText>This is used in SSF to generate the customer signed version of the contract via Conga.</inlineHelpText>
         <label>Generate Signed Version</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>Checkbox</type>
     </fields>
     <fields>
