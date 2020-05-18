@@ -5282,29 +5282,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>BWC_Founders</fullName>
@@ -6156,29 +6133,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>BWC_Principals</fullName>
@@ -7027,29 +6981,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -7907,29 +7838,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>BW_Principals</fullName>
@@ -8781,29 +8689,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Service Provider</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9773,29 +9658,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Vertically_Integrated__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -10660,29 +10522,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Executive_Team</fullName>
@@ -11531,29 +11370,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12640,29 +12456,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Partner_Account</fullName>
@@ -13640,29 +13433,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Vertically_Integrated__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -14555,29 +14325,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Residential_Loan</fullName>
@@ -15430,29 +15177,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Service Provider</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Municipal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

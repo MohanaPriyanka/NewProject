@@ -178,31 +178,6 @@ ISBLANK(December_Meter_Read_Date__c )=false)=true,&quot;INACTIVE&quot;,&quot;ACT
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Utility__c</fullName>
-        <externalId>false</externalId>
-        <label>Utility</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>National Grid</fullName>
-                    <default>false</default>
-                    <label>National Grid</label>
-                </value>
-                <value>
-                    <fullName>Eversource</fullName>
-                    <default>false</default>
-                    <label>Eversource</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Utility_lookup__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>This is the lookup to Utility object.</description>
