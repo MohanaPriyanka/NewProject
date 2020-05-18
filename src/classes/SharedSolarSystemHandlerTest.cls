@@ -59,6 +59,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             NM_Rate_Floor__c = 0,
             Days_in_Bill_Period__c = 20,
             Customer_Subscription_Type__c = 'kWh',
+            Sizing_Method__c = 'Rate Class Ratio',
             Monthly_Late_Fee__c = 1);
         Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
             Family = 'Community Solar',
