@@ -126,6 +126,7 @@ public with sharing class ZuoraAPI {
         // Used by action/update to null a field that's set
         public List<String> fieldsToNull;
         public String CommunicationProfileId;
+        public Boolean APM_Zcustom = true;
 
         // Default constructor
         public ZuoraAccount() {
