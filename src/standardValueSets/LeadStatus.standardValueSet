@@ -8,15 +8,15 @@
         <converted>false</converted>
     </standardValue>
     <standardValue>
-        <fullName>Marketing Qualified</fullName>
-        <default>false</default>
-        <label>Marketing Qualified</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
         <fullName>Contacted</fullName>
         <default>false</default>
         <label>Contacting</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Marketing Qualified</fullName>
+        <default>false</default>
+        <label>Marketing Qualified</label>
         <converted>false</converted>
     </standardValue>
     <standardValue>
