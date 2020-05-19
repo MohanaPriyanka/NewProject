@@ -648,6 +648,53 @@
                 <default>false</default>
             </values>
         </picklistValues>
+               <picklistValues>
+            <picklist>Utility__c</picklist>
+            <values>
+                <fullName>Eversource</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eversource%2FMuni</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eversource%2FNGRID</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Green Mountain Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Municipal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Municipal%2FNGRID</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>National Grid</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Orange %26 Rockland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PSE%26G</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SCE%26G</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unitil</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
     </recordTypes>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
