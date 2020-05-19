@@ -291,6 +291,16 @@
                     <label>Vendor Agreement</label>
                 </value>
                 <value>
+                    <fullName>Generic</fullName>
+                    <default>false</default>
+                    <label>Generic</label>
+                </value>
+                <value>
+                    <fullName>Project Specific</fullName>
+                    <default>false</default>
+                    <label>Project Specific</label>
+                </value>
+                <value>
                     <fullName>Lease Agreement</fullName>
                     <default>false</default>
                     <isActive>false</isActive>
@@ -1815,6 +1825,17 @@
         <active>true</active>
         <label>Customer Contract</label>
         <picklistValues>
+            <picklist>Contract_Type__c</picklist>
+            <values>
+                <fullName>Generic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Specific</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Status</picklist>
             <values>
                 <fullName>Activated</fullName>
@@ -1830,17 +1851,6 @@
             </values>
             <values>
                 <fullName>In Approval Process</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Contract_Type__c</picklist>
-            <values>
-                <fullName>Generic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Specific</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
