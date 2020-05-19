@@ -2268,7 +2268,7 @@ Total_System_Size_kWh_DC__c
     <fields>
         <fullName>Total_System_Size_kWh_DC__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Use this field to calculate SSS information.</inlineHelpText>
+        <inlineHelpText>Total system size in kW DC.</inlineHelpText>
         <label>Total System Size (kW DC)</label>
         <precision>8</precision>
         <required>false</required>
