@@ -3,8 +3,7 @@
     <customButtons>Billing_Info</customButtons>
     <customButtons>Customer_Billing_Summary</customButtons>
     <customButtons>Submit_Bill_Adjustment</customButtons>
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>DisableCustomerPortalAccount</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -319,7 +318,7 @@
     </relatedContent>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Zuora__TotalInvoiceBalance__c</fields>
+        <fields>Zuora__Balance__c</fields>
         <relatedList>Zuora__CustomerAccount__c.Zuora__Account__c</relatedList>
     </relatedLists>
     <relatedLists>
