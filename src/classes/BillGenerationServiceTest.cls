@@ -1,6 +1,3 @@
-// JP 1/19/20 : Once we've transitioned fully over to billing off transfers and only creating UASBs, delete this
-// everything is covered by TransferSheetBillingTest
-
 @isTest
 public class BillGenerationServiceTest {
     @TestSetup
@@ -11,12 +8,6 @@ public class BillGenerationServiceTest {
     }
 
     public static void generateBills(List<Id> billPeriodIdList) {
-        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
-        Decimal csBillBatchSize = sysProp.CS_Bill_Batch_Size__c;
-        if (csBillBatchSize == null || csBillBatchSize < 1){
-            sysProp.CS_Bill_Batch_Size__c = 20;
-            update sysProp;
-        }
         List<Bill_Period__c> billPeriods = [
             SELECT Id, Shared_Solar_System__c, Bill_Date__c
             FROM Bill_Period__c
