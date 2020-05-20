@@ -35018,11 +35018,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Meter_Reading_Schedule__c.Utility__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Meter_Reading_Schedule__c.Year_Effective__c</field>
         <readable>false</readable>
     </fieldPermissions>
