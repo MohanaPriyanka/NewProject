@@ -1866,6 +1866,16 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Shared_with_Client__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>This checkbox is automatically checked when a case is shared with a Client</inlineHelpText>
+        <label>Shared with Client</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Skip_Round_Robin__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -5302,6 +5312,17 @@ window.open(&apos;/003?rlid=RelatedContactList&amp;id={!Case.AccountId}&apos;,&a
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
         <url>/00Oj0000004iDSu?pv0={!Case.AccountId}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Share_with_Client</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Share with Client</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/flow/Client_Case_Sharing?var_CaseId={!Case.Id}</url>
     </webLinks>
     <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>
