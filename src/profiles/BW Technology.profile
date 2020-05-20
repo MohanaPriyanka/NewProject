@@ -21197,6 +21197,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Customer_Signature_Date_Time__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Date_Needed__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -21223,6 +21228,21 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.EndDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Generate_Review_Version__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Generate_Signed_Version__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Lead__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21286,8 +21306,18 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Parent_Contract__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Contract.Pricebook2Id</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Product__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -40292,6 +40322,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Disclosure_Form_Conga_Template__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.DisplayUrl</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -40348,6 +40383,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.Floor_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Generic_Terms_Conga_Template__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -40503,6 +40543,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.Program__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Project_Specific_Conga_Template__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -65618,6 +65663,10 @@
         <recordType>Contract.Client_Contract</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Contract-Customer Contract</layout>
+        <recordType>Contract.Customer_Contract</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Contract-General Contract Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -75136,6 +75185,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Contract.Client_Contract</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contract.Customer_Contract</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

@@ -45,10 +45,6 @@
                 <behavior>Edit</behavior>
                 <field>Program__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Sizing_Method__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -146,6 +142,31 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Hide_in_Requested_Product__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Loan_Fee_1__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Loan_Fee_1_Description__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Stamp_Tax__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Template Information</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Conga_Template_Id_s__c</field>
             </layoutItems>
             <layoutItems>
@@ -164,21 +185,19 @@
                 <behavior>Edit</behavior>
                 <field>Docusign_Template_CoSigner__c</field>
             </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Hide_in_Requested_Product__c</field>
+                <field>Disclosure_Form_Conga_Template__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Loan_Fee_1__c</field>
+                <field>Project_Specific_Conga_Template__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Loan_Fee_1_Description__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Stamp_Tax__c</field>
+                <field>Generic_Terms_Conga_Template__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -327,6 +346,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Customer_Subscription_Type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Sizing_Method__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

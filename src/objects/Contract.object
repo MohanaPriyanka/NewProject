@@ -291,6 +291,16 @@
                     <label>Vendor Agreement</label>
                 </value>
                 <value>
+                    <fullName>Generic</fullName>
+                    <default>false</default>
+                    <label>Generic</label>
+                </value>
+                <value>
+                    <fullName>Project Specific</fullName>
+                    <default>false</default>
+                    <label>Project Specific</label>
+                </value>
+                <value>
                     <fullName>Lease Agreement</fullName>
                     <default>false</default>
                     <isActive>false</isActive>
@@ -577,6 +587,16 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Customer_Signature_Date_Time__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the date/time field used for customer contract</inlineHelpText>
+        <label>Customer Signature Date/Time</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
         <fullName>Date_Needed__c</fullName>
         <externalId>false</externalId>
         <label>Date Needed</label>
@@ -626,6 +646,40 @@
         <fullName>EndDate</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Generate_Review_Version__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>This is used in SSF to generate the review version of the contract via Conga.</inlineHelpText>
+        <label>Generate Review Version</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Generate_Signed_Version__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>This is used in SSF to generate the customer signed version of the contract via Conga.</inlineHelpText>
+        <label>Generate Signed Version</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>This is used for Customer contracts that are generated when the customer is still a lead.</inlineHelpText>
+        <label>Lead</label>
+        <referenceTo>Lead</referenceTo>
+        <relationshipLabel>Contracts</relationshipLabel>
+        <relationshipName>Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Link_to_Box_Drive__c</fullName>
@@ -815,10 +869,10 @@
         <fullName>Parent_Contract__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>This field is normally populated on contracts that are amendments to an active contract.</inlineHelpText>
+        <inlineHelpText>This field is normally populated on contracts that are amendments to an active contract.It is also used for customer contracts that are covered by a boilerplate terms/generic contract that allows us to generate project specific contracts on their behalf.</inlineHelpText>
         <label>Parent Contract</label>
         <referenceTo>Contract</referenceTo>
-        <relationshipLabel>Amendments</relationshipLabel>
+        <relationshipLabel>Contracts</relationshipLabel>
         <relationshipName>ParentContracts</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -860,6 +914,20 @@
     <fields>
         <fullName>Pricebook2Id</fullName>
         <inlineHelpText>This financial field does not need to be populated.</inlineHelpText>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Product__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>This is used for customer contracts to show the product and contract that was used.</inlineHelpText>
+        <label>Product</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Contracts</relationshipLabel>
+        <relationshipName>Contracts</relationshipName>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
@@ -1748,6 +1816,486 @@
             </values>
             <values>
                 <fullName>Quarterly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Customer_Contract</fullName>
+        <active>true</active>
+        <label>Customer Contract</label>
+        <picklistValues>
+            <picklist>Contract_Type__c</picklist>
+            <values>
+                <fullName>Generic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Specific</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Expired</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Approval Process</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Acquisition_Invoicing_Timing__c</picklist>
+            <values>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One-Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Billing_Communications__c</picklist>
+            <values>
+                <fullName>Autopay Sign-Up</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Collections</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly Statement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other%2C see detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Receipt</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Assignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schedule Z Filing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Termination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upcoming Bill</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Communication_Branding__c</picklist>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cobranding with Client</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Money_Transfer_Method__c</picklist>
+            <values>
+                <fullName>Customer pays BW and BW Remits Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer pays Project Co Directly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Management_Fee_Trigger__c</picklist>
+            <values>
+                <fullName>COD</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Custom</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Effective Date</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>First Bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PTO</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Management_Invoicing_Timing__c</picklist>
+            <values>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One-Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reporting_Requirements__c</picklist>
+            <values>
+                <fullName>Accounts Aging</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Accounts Receivable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Terminations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Days Sales Outstanding %28DSO%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other%2C see detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Attrition</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>State_Applications__c</picklist>
+            <values>
+                <fullName>AK</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AL</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AR</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AZ</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FL</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HI</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>IA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ID</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>IL</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>IN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>KS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>KY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MD</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ME</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MI</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ND</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NJ</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>OH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>OK</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>OR</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RI</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SD</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TX</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WI</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WY</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Team_Submitted_By__c</picklist>
+            <values>
+                <fullName>Business Applications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CS Product Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Product Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data and Finance Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Information %26 Technology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Legal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Marketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Office Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Originations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>People</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UX Development</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
