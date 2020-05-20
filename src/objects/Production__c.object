@@ -378,7 +378,7 @@
     <fields>
         <fullName>Unbilled_Credits__c</fullName>
         <externalId>false</externalId>
-        <formula>Credits_Transferred__c - Customer_Savings__c - Credits_Billed__c</formula>
+        <formula>Credits_Transferred__c - Customer_Savings__c - Credits_Billed__c - Credits_Externally_Serviced__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Unbilled credits. Credits Transferred - Credits Billed. If transferred credits have not yet been billed, this value will be positive</inlineHelpText>
         <label>Pending Billing</label>

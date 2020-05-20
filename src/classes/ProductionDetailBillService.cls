@@ -39,7 +39,6 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
                         'fromUsageGetUASBsAndProductionAdjustments',
                         'Could not find UASB or Adjustment for: ' + JSON.serialize(usage)
                     );
-                    return;
                 }
             }
         }
@@ -210,22 +209,19 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     private void distributeAmongTransferProductionDetail(SObject sfRecord, Id journalRecordId){
         if (sfRecord.getSObjectType() == UASB__c.SObjectType){
             UASB__c bill = (UASB__c)sfRecord;
-            if (bill.Discounted_Bill__c == 0){
-                return;
-            }
             createBillProductionDetail(bill.Transfer__c, bill.Discounted_Bill__c, 'Bill', journalRecordId);
             createBillProductionDetail(bill.Transfer__c, bill.Savings__c, 'Customer Savings', journalRecordId);
         } else if (sfRecord.getSObjectType() == Bill_Adjustment__c.SObjectType){
             Bill_Adjustment__c adjust = (Bill_Adjustment__c)sfRecord;
-            if (adjust.Adjustment_Amount__c == 0){
-                return;
-            }
             createBillProductionDetail(adjust.Transfer__c, adjust.Adjustment_Amount__c, 'Bill', journalRecordId);
             createBillProductionDetail(adjust.Transfer__c, adjust.Discount__c, 'Customer Savings', journalRecordId);
         }
     }
 
     public void createBillProductionDetail(Id transferId, Decimal billAmount, String type, Id relatedRecordId){
+        if (billAmount == null || billAmount == 0){
+            return;
+        }
         billAmount = Util.roundValue(billAmount,2, 'HALF_UP');
         Decimal staticBillAmount = billAmount;
         Decimal decliningBillAmount = billAmount;
@@ -349,7 +345,10 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         transferToDetailMap = productionDetailSelector.getTransferPartMap(transferIds);
 
         for (UASB__c externalBill : unservicedUASBs){
-            createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
+            if (externalBill.Credits_Allocated__c != null && externalBill.Credits_Allocated__c != 0){
+                createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
+
+            }
         }
     }
 

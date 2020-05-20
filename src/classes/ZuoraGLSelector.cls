@@ -16,13 +16,12 @@ public with sharing class ZuoraGLSelector {
             'FROM InvoiceItem it ' +
             'INNER JOIN RatePlanCharge rp ON it.rateplanchargeid = rp.Id ' +
             'INNER JOIN Invoice iv ON it.invoiceid = iv.Id ' +
-            'INNER JOIN Account a ON iv.accountid = a.Id ' +
-            'WHERE it.chargeamount > 0';
+            'INNER JOIN Account a ON iv.accountid = a.Id ';
 
         if (startDate != null && endDate != null){
             Datetime startTime = DateTime.newInstance(startDate.year(),startDate.month(),startDate.day());
             Datetime endTime = DateTime.newInstance(endDate.year(),endDate.month(),endDate.day());
-            invoiceItemQuery += ' AND iv.invoicedate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
+            invoiceItemQuery += ' WHERE iv.invoicedate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
             invoiceItemQuery += ' AND iv.invoicedate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
         }
         return invoiceItemQuery;
