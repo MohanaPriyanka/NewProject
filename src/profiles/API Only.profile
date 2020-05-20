@@ -30251,6 +30251,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Calculated_Change_in_kW_DC_Rounded__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Subscription_Order__c.Change_in_Annual_Cost__c</field>
         <readable>true</readable>
@@ -30308,6 +30313,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Subscription_Order__c.Shared_Solar_System_Order__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.System_Change_kW_DC_Rounded__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47962,10 +47972,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Subscription_Order__c-Subscription Order Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Subscription_Order__c-Subscription Order Layout</layout>
-        <recordType>Subscription_Order__c.Subscription_Orders</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Subscription_Order__c-System Change Order</layout>

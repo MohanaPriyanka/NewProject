@@ -97,6 +97,10 @@
                 <behavior>Readonly</behavior>
                 <field>Calculated_Change_in_Subscription_KW_DC__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Calculated_Change_in_kW_DC_Rounded__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
