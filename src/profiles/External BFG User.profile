@@ -364,10 +364,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>EnergyUsageUpdateTriggerHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>Excel</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -797,10 +793,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UtilTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UtilityAccountBillTriggerHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
