@@ -614,19 +614,20 @@ public with sharing class RESTRouterV2Test {
         jsonResponse = response.responseBody.toString();
         Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
-        Map<String, Object> patchResponseObj = (Map<String,Object>) patchResponseEnvelope.get('data');
-        Map<String, Object> patchResponseLead = (Map<String,Object>) patchResponseObj.get('lead');
+        Map<String, Object> patchResponseLead = (Map<String,Object>) patchResponseEnvelope.get('data');
         
         List<Object> patchResponsePropertyAccounts = (List<Object>) patchResponseLead.get('propertyAccounts');
         Map<String, Object> patchResponsePropertyAccount = (Map<String,Object>) patchResponsePropertyAccounts[0];
+        System.assertEquals(1, patchResponsePropertyAccounts.size(), 'One property account should be returned');
+        System.assertEquals(postResponsePropertyAccount.get('Id'), patchResponsePropertyAccount.get('Id'), 'The property account returned should be the same one created by the POST call');
 
         List<Object> patchResponseUALs = (List<Object>) patchResponsePropertyAccount.get('utilityAccountLogs');
         Map<String, Object> patchResponseUAL = (Map<String,Object>) patchResponseUALs[0];
+        System.assertEquals(1, patchResponseUALs.size(), 'One utility account log should be returned');
+        System.assertEquals(postResponseUAL.get('Id'), patchResponseUAL.get('Id'), 'The utility account log returned should be the same one created by the POST call');
 
-        System.assert(patchResponseObj.containsKey('mostRecentDocs'), 'Response should include parameter for most recent docs');
-        String mrd = (String)patchResponseObj.get('mostRecentDocs');
-        System.assertNotEquals(null, mrd, 'mostRecentDocs parameter should not have a null value, as docs exist but no changes were made to the lead');
-        System.assertEquals(2, mrd.countMatches('{"attributes":{"type":"ContentDocumentLink"'), 'mostRecentDocs parameter should be a list of two ContentDocumentLinks, as docs exist but no changes were made to the lead');
+        List<Object> patchResponseDocs = (List<Object>) patchResponseLead.get('contentDocs');
+        System.assertEquals(2, patchResponseDocs.size(), 'Two ContentDocumentLinks should be returned, as docs exist but no changes were made to the lead');
     }
 
     @IsTest
@@ -671,7 +672,7 @@ public with sharing class RESTRouterV2Test {
         List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
         Datetime createdDate = Datetime.now().addDays(-1);
         Test.setCreatedDate(cvList[0].ContentDocumentId, createdDate);
-        Test.setCreatedDate(cvList[1].ContentDocumentId, createdDate);
+        Test.setCreatedDate(cvList[1].ContentDocumentId, createdDate.addMinutes(-10));
 
         ContentDocumentLink cdl = new ContentDocumentLink(
             ContentDocumentId = cvList[0].ContentDocumentId,
@@ -712,19 +713,23 @@ public with sharing class RESTRouterV2Test {
         jsonResponse = response.responseBody.toString();
         Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
-        Map<String, Object> patchResponseObj = (Map<String,Object>) patchResponseEnvelope.get('data');
-        Map<String, Object> patchResponseLead = (Map<String,Object>) patchResponseObj.get('lead');
+        Map<String, Object> patchResponseLead = (Map<String,Object>) patchResponseEnvelope.get('data');
         
         List<Object> patchResponsePropertyAccounts = (List<Object>) patchResponseLead.get('propertyAccounts');
         Map<String, Object> patchResponsePropertyAccount = (Map<String,Object>) patchResponsePropertyAccounts[0];
+        System.assertEquals(1, patchResponsePropertyAccounts.size(), 'One property account should be returned');
+        System.assertEquals(postResponsePropertyAccount.get('Id'), patchResponsePropertyAccount.get('Id'), 'The property account returned should be the same one created by the POST call');
 
         List<Object> patchResponseUALs = (List<Object>) patchResponsePropertyAccount.get('utilityAccountLogs');
         Map<String, Object> patchResponseUAL = (Map<String,Object>) patchResponseUALs[0];
+        System.assertEquals(1, patchResponseUALs.size(), 'One utility account log should be returned');
+        System.assertEquals(postResponseUAL.get('Id'), patchResponseUAL.get('Id'), 'The utility account log returned should be the same one created by the POST call');
 
-        System.assert(patchResponseObj.containsKey('mostRecentDocs'), 'Response should include parameter for most recent docs');
-        String mrd = (String)patchResponseObj.get('mostRecentDocs');
-        Datetime dt = DateTime.valueOfGmt(mrd.mid(1, 19).replace('T', ' '));
-        System.assertEquals(createdDate.date(), dt.date(), 'Response should be created date for mostRecentDocs, as docs exist and changes were made to the lead');
+        List<Object> patchResponseDocs = (List<Object>) patchResponseLead.get('contentDocs');
+        Map<String, Object> patchResponseDoc = (Map<String,Object>) patchResponseDocs[0];
+        System.assertEquals(1, patchResponseDocs.size(), 'One ContentDocumentLink should be returned, as docs exist and changes were made to the lead');
+        System.assertEquals(cdl.Id, patchResponseDoc.get('docLinkId'), 'Response should be the CDL for the most recent doc, as docs exist and changes were made to the lead');
+
         System.assertNotEquals(postResponseLead.get('streetAddress'), patchResponseLead.get('streetAddress'), 'The updated lead streetAddress field value should not match the original field value');
         for(String fieldName : updatedAccountFields()) {
             System.assertNotEquals(postResponsePropertyAccount.get(fieldName), patchResponsePropertyAccount.get(fieldName), 'The updated property account ' + fieldName + ' field value should not match the original field value');

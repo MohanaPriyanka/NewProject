@@ -6,7 +6,7 @@
 public inherited sharing class ContentDocumentSelector {
     public List<ContentDocument> selectById(Set<Id> documentIds) {
         return [
-            SELECT Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData, ContentSize
+            SELECT Id, ContentSize, CreatedDate, LatestPublishedVersion.Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData
             FROM ContentDocument
             WHERE Id IN :documentIds
             ORDER BY ContentSize DESC
@@ -15,8 +15,8 @@ public inherited sharing class ContentDocumentSelector {
 
     public List<ContentDocumentLink> selectByLinkedEntity(Id entityId) {
         return [
-            SELECT Id, ContentDocumentId, ContentDocument.LatestPublishedVersion.Title,
-                ContentDocument.LatestPublishedVersion.VersionData, ContentDocument.CreatedDate
+            SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate, 
+            ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData
             FROM ContentDocumentLink
             WHERE LinkedEntityId = :entityId
             ORDER BY ContentDocument.CreatedDate DESC
@@ -78,16 +78,16 @@ public inherited sharing class ContentDocumentSelector {
 
     public String getPublicDistributionLinkByDocId(Id contentDocumentId) {
         List<ContentDistribution> contentDistributions = [SELECT DistributionPublicUrl FROM ContentDistribution WHERE ContentDocumentId = :contentDocumentId];
-        if (contentDistributions.isEmpty()) {
-            throw Util.createAuraExceptionWithMessage('Did not find any content distributions for content document id ' + contentDocumentId);
+        if (!contentDistributions.isEmpty()) {
+            return contentDistributions[0].DistributionPublicUrl;
         }
-        return contentDistributions[0].DistributionPublicUrl;
+        return null;
     }
 
     public List<ContentDocumentLink> getContractsAfterDateByLinkedEntity(Id entityId, Datetime mustBeAfter) {
         return [
-            SELECT Id, ContentDocumentId, ContentDocument.LatestPublishedVersion.Title,
-                ContentDocument.LatestPublishedVersion.VersionData, ContentDocument.CreatedDate
+            SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate, 
+                ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData
             FROM ContentDocumentLink
             WHERE LinkedEntityId = :entityId
               AND ContentDocument.CreatedDate > :mustBeAfter

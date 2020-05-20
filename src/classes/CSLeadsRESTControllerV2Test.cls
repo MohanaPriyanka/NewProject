@@ -586,7 +586,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '}]}';
 
         controller.patchApplication(jsonRequest);
-
+        
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
     }
 

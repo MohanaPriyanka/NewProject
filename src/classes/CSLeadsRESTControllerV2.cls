@@ -154,24 +154,19 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         RestResponse response = RestContext.response;
         Lead existingLead = leadSelector.selectOneWithPropertiesAndUtilities(requestLead.id);
 
-            Savepoint sp = Database.setSavepoint();
         if (applicationValid(jsonRequest, response, existingLead)) {
+            Savepoint sp = Database.setSavepoint();
             try {
-                Boolean regenerateDocs = existingLead.CreatedDate.date() < Date.today().addDays(-9) || contractFieldsUpdated(jsonRequest, existingLead);
+                List<ContentDocumentLink> existingDocs = contentSelector.selectByLinkedEntity(existingLead.Id);
+                Boolean regenerateDocs = existingDocs.isEmpty() || existingDocs[0].ContentDocument.CreatedDate.date() < Date.today().addDays(ContentDocLinkPrivacyScheduler.minDaysInPast) || contractFieldsUpdated(jsonRequest, existingLead);
                 updateAccount(jsonRequest);
                 updateUtilityAccountLogs(jsonRequest);
                 updateLead(jsonRequest, regenerateDocs);
 
-                List<ContentDocumentLink> mostRecentDocs = contentSelector.selectByLinkedEntity(requestLead.id);
-                String mostRecentDocsStr = 
-                    mostRecentDocs.size() < 2 ? 
-                    null :
-                    regenerateDocs ?
-                        JSON.serialize(mostRecentDocs[0].ContentDocument.CreatedDate) : 
-                        JSON.serialize(new List<ContentDocumentLink>{mostRecentDocs[0], mostRecentDocs[1]});
                 
                 // format response
                 Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(requestLead.id);
+                List<ContentDocumentLink> docsToReturn = contentSelector.selectByLinkedEntity(leadToReturn.Id);
                 RestLead responseLead = new RestLead(leadToReturn);
                 responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{new RestLead.RestPropertyAccount(leadToReturn.Accounts__r[0])};
                 List<RestLead.RestUtilityAccountLog> ualForReturn = new List<RestLead.RestUtilityAccountLog>();
@@ -179,14 +174,28 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                     ualForReturn.add(new RestLead.RestUtilityAccountLog(ual));
                 }
                 responseLead.propertyAccounts.get(0).utilityAccountLogs = ualForReturn;
+                responseLead.contentDocs = new List<RestLead.RestContentDocument>();
+                if(!docsToReturn.isEmpty()) {
+                    RestLead.RestContentDocument rcd = new RestLead.RestContentDocument(docsToReturn[0]);
+                    rcd.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd.id);
+                    responseLead.contentDocs.add(rcd);
+                }
+                if(!regenerateDocs) {
+                    RestLead.RestContentDocument rcd = new RestLead.RestContentDocument(docsToReturn[1]);
+                    rcd.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd.id);
+                    responseLead.contentDocs.add(rcd);
+                }
+                
 
-                envelope.setData(new Map<String, Object>{'mostRecentDocs' => mostRecentDocsStr, 'lead' => responseLead});
+                envelope.setData(responseLead);
                 response.statusCode = statusCode.ok;
+
             } catch (Util.BWException bwe) {
                 envelope.addError(bwe.getMessage());
                 response.statusCode = statusCode.badRequest;
                 Database.rollback(sp);
             } catch (Exception e) {
+                System.debug(e.getCause() + ' / ' + e.getLineNumber() + ' / ' + e.getMessage() + ' / ' + e.getStackTraceString() + ' / ' + e.getTypeName());
                 envelope.addError(e.getMessage());
                 response.statusCode = statusCode.internalServerError;
                 Database.rollback(sp);

@@ -53,10 +53,12 @@ public with sharing class SimpleSignupFormControllerTest {
             System.assertEquals(0, cds.selectById(new Set<Id>{contentDocId}).size(),
                 'Expected the selector to not find any docs because of sharing restriction');
 
-            contentDocumentLinks = SimpleSignupFormController.getContentDocumentLinksByLead(lead.Id, lead.Email, null);
-            System.assertEquals(1, contentDocumentLinks.size(),
+            String cdlStr = SimpleSignupFormController.getContentDocumentLinksByLead(lead.Id, lead.Email, null);
+            System.debug(cdlStr);
+            List<RestLead.RestContentDocument> rcdList = (List<RestLead.RestContentDocument>) JSON.deserialize(cdlStr, List<RestLead.RestContentDocument>.class);
+            System.assertEquals(1, rcdList.size(),
                 'Expected to find a single content document link shared to the guest user for this lead id');
-            System.assertEquals(contentDocId, contentDocumentLinks[0].ContentDocumentId,
+            System.assertEquals(contentDocId, rcdList[0].id,
                 'Expected to get the right content document id');
             System.assertNotEquals(null, SimpleSignupFormController.getContentDocumentDataById(lead.Id, lead.Email, contentDocId),
                 'Expected to get some base64 encoded data back from the controller running without sharing');
@@ -119,10 +121,10 @@ public with sharing class SimpleSignupFormControllerTest {
             }
 
             try {
-                SimpleSignupFormController.getContentDistributionById(testLead.Id, testLead.Email, contentDocId);
-                System.assert(false, 'Expected a Content Doc with no Content Distribution to generate an exception');
+                System.assertEquals(null, SimpleSignupFormController.getContentDistributionById(testLead.Id, testLead.Email, contentDocId), 'Expected a Content Doc with no Content Distribution to return null');
             } catch (Exception ahe) {
-                System.assert(ahe.getMessage().contains('Did not find any content distributions '), 'Exception should indicate that there are no Content Distribution records for that Content Doc ID, but received ' + ahe.getMessage());
+                System.assert(false, 'Did not expect any exceptions when querying for a valid lead id, email, and docid combination, even when there are no Content Distribution records to return, but received ' +
+                    ahe.getMessage() + '\n' + ahe.getStackTraceString());
             }
         }
 
@@ -191,10 +193,19 @@ public with sharing class SimpleSignupFormControllerTest {
         );
         insert cdl;
 
-        List<ContentDocumentLink> retList = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, null);
+
+        ContentDocumentSelector docSelector = new ContentDocumentSelector();
+        List<ContentDocumentLink> cdlList = docSelector.selectByLinkedEntity(testLead.Id);
+        RestLead.RestContentDocument rcd1 = new RestLead.RestContentDocument(cdlList[0]);   // most recent
+        RestLead.RestContentDocument rcd2 = new RestLead.RestContentDocument(cdlList[1]);   // oldest
+
+        String retStr = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, null);
+        List<RestLead.RestContentDocument> retList = (List<RestLead.RestContentDocument>)JSON.deserialize(retStr, List<RestLead.RestContentDocument>.class);
         System.assertEquals(2, retList.size(), 'With no minimum start date, both CDLs should be returned');
-        retList = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, Datetime.now().addDays(-1));
+
+        retStr = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, JSON.serialize(new List<RestLead.RestContentDocument>{rcd2}));
+        retList = (List<RestLead.RestContentDocument>)JSON.deserialize(retStr, List<RestLead.RestContentDocument>.class);
         System.assertEquals(1, retList.size(), 'Only one CDL should be returned, as the other was created before the minimum start date');
-        System.assertNotEquals(cdl.Id, retList[0].Id, 'The CDL returned should be the one with the created date of today');
+        System.assertEquals(rcd1.id, retList[0].id, 'The CDL returned should be the one with the created date of today');
     }
 }

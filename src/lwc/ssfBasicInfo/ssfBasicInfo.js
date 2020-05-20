@@ -232,7 +232,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if(!this.resumedApp) {
             this.createLead(this.restLead).then(
                 (resolveResult) => {
-                    this.dispatchEvent(new CustomEvent('leadcreated', {detail: {mostRecentDocs: null, lead: resolveResult} }));
+                    this.dispatchEvent(new CustomEvent('leadcreated', { detail: resolveResult }));
                     this.showSpinner = false;
                 },
                 (rejectResult) => {
@@ -250,7 +250,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         } else {
             this.patchApplication(this.restLead).then(
                 (resolveResult) => {
-                    this.dispatchEvent(new CustomEvent('leadcreated', {detail: resolveResult}));
+                    this.dispatchEvent(new CustomEvent('leadcreated', { detail: resolveResult }));
                     this.showSpinner = false;
                 },
                 (rejectResult) => {
