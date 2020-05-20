@@ -266,4 +266,25 @@ public class BillGenerationServiceTest {
         System.assertEquals(8,beforeUASBs.size());
         System.assertEquals(14,afterUASBs.size());
     }
+
+    @isTest
+    public static void testAsyncBatchJob() {
+        List<UASB__c> beforeUASBs = queryForBills();
+
+        Test.startTest();
+            List<Transfer__c> transfers = insertSecondMonthProduction();
+            List<Bill_Period__c> billPeriods = [
+                SELECT Id, Shared_Solar_System__c, Bill_Date__c
+                FROM Bill_Period__c
+                WHERE Id = : transfers[0].Bill_Period__c
+            ];
+            BillGenerationAsyncService ee = new BillGenerationAsyncService(billPeriods);
+            Database.executeBatch(ee, 1);
+        Test.stopTest();
+
+        List<UASB__c> afterUASBs = queryForBills();
+
+        System.assertEquals(8,beforeUASBs.size());
+        System.assertEquals(14,afterUASBs.size());
+    }
 }
