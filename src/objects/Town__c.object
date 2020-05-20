@@ -648,7 +648,7 @@
                 <default>false</default>
             </values>
         </picklistValues>
-               <picklistValues>
+        <picklistValues>
             <picklist>Utility__c</picklist>
             <values>
                 <fullName>Eversource</fullName>
