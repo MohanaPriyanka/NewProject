@@ -3,6 +3,11 @@
     <description>Read access to the new fields for subscription order. This was put in a permission set so that we can deploy this now, and assign when we go live with the feature.</description>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Subscription_Order__c.Allocation_Schedule_Subscription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Subscription_Order__c.Approval_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -49,6 +54,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Subscription_Order__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Date_Enacted_By_Utility__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

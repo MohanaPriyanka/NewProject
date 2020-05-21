@@ -1,11 +1,10 @@
 /**
  * Created by SarahRenfro on 2/11/2020.
  *
- * Tested By: SubscriptionManagementServiceTestclass
+ * Tested By: SubscriptionManagementServiceTestclass, SubscriptionOrderSelectorTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class SubscriptionOrderSelector {
-
     public List<Subscription_Order__c> selectByIds(Set<Id> soIds) {
         return [
             SELECT Id,
@@ -21,6 +20,17 @@ public inherited sharing class SubscriptionOrderSelector {
                 Utility_Number_of_Decimal_Places__c
             FROM Subscription_Order__c
             WHERE Id IN :soIds
+        ];
+    }
+
+    public List<Subscription_Order__c> selectUnenactedByUASId(Set<Id> uasIds) {
+        return [
+            SELECT Id, Name,
+                Utility_Account_Subscription__c,
+                Allocation_Schedule_Subscription__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c IN : uasIds
+            AND Date_Enacted_By_Utility__c = null
         ];
     }
 }
