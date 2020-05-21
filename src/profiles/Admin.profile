@@ -23831,11 +23831,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Meter_Reading_Schedule__c.Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Meter_Reading_Schedule__c.Utility_lookup__c</field>
         <readable>true</readable>
     </fieldPermissions>
