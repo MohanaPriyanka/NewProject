@@ -1007,6 +1007,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SubscriptionOrderSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SystemBillsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -31561,6 +31565,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Allocation_Schedule_Subscription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Subscription_Order__c.Approval_Status__c</field>
         <readable>true</readable>
@@ -31593,6 +31602,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Subscription_Order__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Date_Enacted_By_Utility__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

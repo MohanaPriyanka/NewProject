@@ -12,9 +12,11 @@ trigger ScheduleZSubscriptionTrigger on Schedule_Z_Subscription__c (after insert
     if (Util.isDisabled('Disable_Client_Objects_Trigger__c')) {
         return;
     }
+    SubscriptionOrderALSSService subscriptionOrders = new SubscriptionOrderALSSService();
 
     if (Trigger.isInsert) {
         ClientReportingService.insertClientALSS(Trigger.new);
+        subscriptionOrders.setAllocationScheduleSubscription(Trigger.new);
     }
 
     if (Trigger.isDelete && Trigger.isBefore) {
