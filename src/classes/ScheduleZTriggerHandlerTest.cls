@@ -286,9 +286,7 @@ public class ScheduleZTriggerHandlerTest {
 
         Schedule_Z__c sss1ScheduleZ = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
-            Shared_Solar_System__c = sss1.Id,
-            Status__c = 'Enacted by Utility',
-            Date_Enacted_by_Utility__c = System.today()
+            Shared_Solar_System__c = sss1.Id
         );
 
         Schedule_Z__c sss1ScheduleZ2 = new Schedule_Z__c(
@@ -300,6 +298,7 @@ public class ScheduleZTriggerHandlerTest {
         insert sss1ScheduleZ;
         // Because a process builder sets teh Date_Enacted_by_Utility to today(), and we use that date to figure
         // out the order of the SZs, set the date back
+        sss1ScheduleZ.Status__c = 'Enacted by Utility';
         sss1ScheduleZ.Date_Enacted_by_Utility__c = System.today().addMonths(-5);
         update sss1ScheduleZ;
         insert sss1ScheduleZ2;
