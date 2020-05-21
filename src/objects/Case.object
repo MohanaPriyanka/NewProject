@@ -5322,7 +5322,7 @@ window.open(&apos;/003?rlid=RelatedContactList&amp;id={!Case.AccountId}&apos;,&a
         <masterLabel>Share with Client</masterLabel>
         <openType>replace</openType>
         <protected>false</protected>
-        <url>/flow/Client_Case_Sharing?var_CaseId={!Case.Id}</url>
+        <url>/flow/Client_Case_Sharing?var_CaseID={!Case.Id}</url>
     </webLinks>
     <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>
