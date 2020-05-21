@@ -165,7 +165,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     }
     @TestVisible
     private static void updateDocusignToDemoConfig() {
-        if (!Util.isSandboxOrTest()) {
+   /*     if (!Util.isSandboxOrTest()) {
             throw new Util.BWException('Don\'t update DocuSign config in production this way');
         }
         List<dsfs__DocuSignAccountConfiguration__c> docusignConfigs = [
@@ -191,6 +191,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
             update systemProperties[0];
         }
+        */
     }
     @TestVisible
     private static void switchChargentToTestMode() {
@@ -778,6 +779,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             Transfer__c transferA = new Transfer__c(
                 Name = 'Main Transfer - sssA August',
                 Bill_Period__c = bpA.Id,
+                Bill_By__c = 'UASB',
                 Date_of_Transfer__c = twoMonthsAgo,
                 Shared_Solar_System__c = sssList[0].Id,
                 Transfer_Type__c = 'Main',
@@ -790,6 +792,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             Transfer__c transferB = new Transfer__c(
                 Name = 'Main Transfer - sssB August',
                 Bill_Period__c = bpB.Id,
+                Bill_By__c = 'UASB',
                 Date_of_Transfer__c = twoMonthsAgo,
                 Shared_Solar_System__c = sssList[1].Id,
                 Transfer_Type__c = 'Main',
@@ -802,12 +805,10 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             insert new List<Transfer__c>{transferB, transferA};
             TransferPartService transferPartService = new TransferPartService();
             transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA, transferB});
-            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{bpA, bpB});
-            // We want to skip running in a batch, so that we can set the Account Bills to published before starting
-            // the next round of bills (so that the bill number is updated appropriately)
-            ee.createBills(ScheduleZSubscriptionSelector.getListForBilling(ee.scheduleZs));
-            ee.finish(null);
-            setBillsToPublished();
+
+            BillGenerationAsyncService ee = new BillGenerationAsyncService(new List<Bill_Period__c>{bpA, bpB});
+            ee.executeBatchJob();
+
             if (!Test.isRunningTest()) {
                 PostSandboxRefresher.callTransferHelper2Future(JSON.serialize(csDataSetting));
             }
@@ -876,6 +877,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             Transfer__c transferA = new Transfer__c(
                 Name = 'Main Transfer - sssA September',
                 Bill_Period__c = bpA.Id,
+                Bill_By__c = 'UASB',
                 Date_of_Transfer__c = oneMonthAgo,
                 Shared_Solar_System__c = sssList[0].Id,
                 Transfer_Type__c = 'Main',
@@ -888,6 +890,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             Transfer__c transferB = new Transfer__c(
                 Name = 'Main Transfer - sssB September',
                 Bill_Period__c = bpB.Id,
+                Bill_By__c = 'UASB',
                 Date_of_Transfer__c = oneMonthAgo,
                 Shared_Solar_System__c = sssList[1].Id,
                 Transfer_Type__c = 'Main',
@@ -900,10 +903,8 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             insert new List<Transfer__c>{transferB, transferA};
             TransferPartService transferPartService = new TransferPartService();
             transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA, transferB});
-            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{bpA, bpB});
-            ee.createBills(ScheduleZSubscriptionSelector.getListForBilling(ee.scheduleZs));
-            ee.finish(null);
-            setBillsToPublished();
+            BillGenerationAsyncService ee = new BillGenerationAsyncService(new List<Bill_Period__c>{bpA, bpB});
+            ee.executeBatchJob();
             if (!Test.isRunningTest()) {
                 PostSandboxRefresher.callTransferHelper3Future(JSON.serialize(csDataSetting));
             }
@@ -971,6 +972,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             Transfer__c transferA = new Transfer__c(
                 Name = 'Main Transfer - sssA October',
                 Bill_Period__c = bpA.Id,
+                Bill_By__c = 'UASB',
                 Date_of_Transfer__c = oneMonthAgo.addMonths(1),
                 Shared_Solar_System__c = sssList[0].Id,
                 Transfer_Type__c = 'Main',
@@ -983,6 +985,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             Transfer__c transferB = new Transfer__c(
                 Name = 'Main Transfer - sssB October',
                 Bill_Period__c = bpB.Id,
+                Bill_By__c = 'UASB',
                 Date_of_Transfer__c = oneMonthAgo.addMonths(1),
                 Shared_Solar_System__c = sssList[1].Id,
                 Transfer_Type__c = 'Main',
@@ -995,10 +998,8 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             insert new List<Transfer__c>{transferB, transferA};
             TransferPartService transferPartService = new TransferPartService();
             transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA, transferB});
-            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{bpA, bpB});
-            ee.createBills(ScheduleZSubscriptionSelector.getListForBilling(ee.scheduleZs));
-            ee.finish(null);
-            setBillsToPublished();
+            BillGenerationAsyncService ee = new BillGenerationAsyncService(new List<Bill_Period__c>{bpA, bpB});
+            ee.executeBatchJob();
         }
     }
     public class CSDataSetting {
@@ -1072,6 +1073,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             CloseDate = System.today(),
             RecordTypeId = '012j00000010HPE',
             Product_Line__c = 'Community Solar',
+            NMC_Tariff__c = sss.Utility_NMC_Tariff__c,
             CreatedDate = csDataDate
         );
         return opportunity1;
@@ -1085,6 +1087,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             Next_Schedule_Z_Status__c = 'Active Subscription',
             calculated_annual_cost_of_electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400,
+            Annual_kwh_subscription_future__c  = subscription*1300,
             Customer_Subscription_KW_DC_STATIC__c = subscription,
             CreatedDate = csDataDate
         );
@@ -1092,7 +1095,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     }
     private static void createSubscriptions(Integer sssIndex, List<PostSandboxRefresher.Name> names) {
         List<Shared_Solar_System__c> sssList = [
-            SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
+            SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id, Utility_NMC_Tariff__c
             FROM Shared_Solar_System__c
             ORDER BY Name DESC
         ];
@@ -1163,17 +1166,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             }
         }
         insert subscriptions;
-    }
-    private static void setBillsToPublished() {
-        List <Account_Bill__c> listAccountBills = [
-            SELECT Id, Published__c
-            FROM Account_Bill__c
-            WHERE Published__c = FALSE
-        ];
-        for (Account_Bill__c acctBill : listAccountBills) {
-            acctBill.Published__c = true;
-        }
-        update listAccountBills;
     }
     public static void deleteCSRecords() {
         if (Util.isSandboxOrTest()) {
