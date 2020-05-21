@@ -165,7 +165,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     }
     @TestVisible
     private static void updateDocusignToDemoConfig() {
-   /*     if (!Util.isSandboxOrTest()) {
+        if (!Util.isSandboxOrTest()) {
             throw new Util.BWException('Don\'t update DocuSign config in production this way');
         }
         List<dsfs__DocuSignAccountConfiguration__c> docusignConfigs = [
@@ -191,7 +191,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
             update systemProperties[0];
         }
-        */
     }
     @TestVisible
     private static void switchChargentToTestMode() {
