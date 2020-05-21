@@ -75,19 +75,16 @@ public without sharing class SubscriptionManagementService implements Queueable{
         List<Subscription_Order__c> stampSOs = soSelector.selectByIds(soIds);
         for (Subscription_Order__c so : stampSOs ) {
             so.Effective_Date__c = System.now();
-            Decimal roundedSubscription;
             if (so.RecordTypeId == systemChangeOrderRecordTypeId) {
                 so.Approved_Change_in_Percent_Share__c = so.System_Change_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
-                roundedSubscription = (so.System_Change_kW_DC_Subscription__c - so.Previous_kw_DC_Subscription__c)/so.Total_System_Size_kW_DC__c;
+                so.Approved_Change_in_Subscription__c = so.System_Change_kW_DC_Rounded__c - so.Previous_kw_DC_Subscription__c;
             } else {
                 so.Approved_Change_in_Percent_Share__c = so.Calculated_Change_in_Percent_Share_of_Sy__c;
                 if (so.Calculated_Change_in_Subscription_KW_DC__c == null) {
                     throw new Util.BWException('Unable to calculate subscription - please make sure all necessary System Input fields are populated.');
                 }
-                roundedSubscription = so.Calculated_Change_in_Subscription_KW_DC__c/so.Total_System_Size_kW_DC__c;
+                so.Approved_Change_in_Subscription__c = so.Calculated_Change_in_kW_DC_Rounded__c;
             }
-            roundedSubscription = roundedSubscription.setScale((Integer)so.Utility_Number_of_Decimal_Places__c + 2) * so.Total_System_Size_kW_DC__c;
-            so.Approved_Change_in_Subscription__c = roundedSubscription.setScale(6);
         }
         return stampSOs;
     }
