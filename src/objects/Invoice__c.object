@@ -668,9 +668,34 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Invoices</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Approved_Invoice_Generation</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Approved Invoice Generation</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/apex/APXTConga4__Conga_Composer?serverUrl={!API.Partner_Server_URL_370}&amp;id={!Invoice__c.Id}
+&amp;QueryId=[CPs]a270a000001dIFQ
+&amp;TemplateId=a2F0a000001VB4m
+&amp;DefaultPDF=1 
+&amp;SC0=1 
+&amp;SC1=Attachments 
+&amp;AC0=1</url>
+    </webLinks>
     <webLinks>
         <fullName>Zuora__InvoicePDF</fullName>
         <availability>online</availability>
