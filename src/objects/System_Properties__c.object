@@ -3,18 +3,6 @@
     <customSettingsType>List</customSettingsType>
     <enableFeeds>false</enableFeeds>
     <fields>
-        <fullName>CS_Bill_Batch_Size__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Determines the batch size of UASBs inserted by a production update in the EnergyUsageUpdateTriggerHandler</inlineHelpText>
-        <label>CS Bill Batch Size</label>
-        <precision>2</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Copado_API_Key__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>API Key for the user that Copado webhooks can use (e.g. to deploy a promotion).</inlineHelpText>
@@ -71,14 +59,6 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Disable_AccountBillTrigger__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Disable AccountBillTrigger</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Disable_AccountTrigger__c</fullName>
