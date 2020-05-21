@@ -108,11 +108,11 @@ public without sharing class BillGenerationService {
 
     @TestVisible
     private UASB__c setUASBFields(Schedule_Z_Subscription__c szs, Transfer__c transfer){
-        Product_Escalator__c escalatorProduct;
+        Product_Escalator__c escalatorForThisTransfer;
         if (szs.Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c != null){
-            Integer productionCount = (Integer)szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c;
-            // The current sum +1 for the record being generated:
-            escalatorProduct = getProductEscalator(szs, productionCount + 1);
+            Integer billedProductionPeriodsBeforeThisTransfer =
+                (Integer)szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c;
+            escalatorForThisTransfer = getProductEscalator(szs, billedProductionPeriodsBeforeThisTransfer + 1);
         }
         Decimal shareOfSystem = szs.Percent_Share__c;
         String creditsRoundingMethod = szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c;
@@ -171,9 +171,9 @@ public without sharing class BillGenerationService {
             generatedUASB.PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c;
         }
 
-        if (escalatorProduct != null){
-            generatedUASB.NMC_Discount__c = escalatorProduct.New_NMC_Discount__c;
-            generatedUASB.Solar_Electricity_Rate__c = escalatorProduct.New_Solar_Electricity_Rate__c;
+        if (escalatorForThisTransfer != null){
+            generatedUASB.NMC_Discount__c = escalatorForThisTransfer.New_NMC_Discount__c;
+            generatedUASB.Solar_Electricity_Rate__c = escalatorForThisTransfer.New_Solar_Electricity_Rate__c;
         }
 
         return generatedUASB;

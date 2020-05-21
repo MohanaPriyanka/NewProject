@@ -285,6 +285,6 @@ public class BillGenerationServiceTest {
         List<UASB__c> afterUASBs = queryForBills();
 
         System.assertEquals(8,beforeUASBs.size());
-        System.assertEquals(14,afterUASBs.size());
+        System.assertEquals(12,afterUASBs.size());
     }
 }

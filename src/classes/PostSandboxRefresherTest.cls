@@ -91,12 +91,12 @@ private class PostSandboxRefresherTest {
         PostSandboxRefresher.switchChargentToTestMode();
         Test.stopTest();
         List<Contact> contactList = [SELECT Id, Email
-        FROM Contact
-        WHERE Email LIKE '%@email.com'];
+                                     FROM Contact
+                                     WHERE Email LIKE '%@email.com'];
         System.assertEquals(contactList.size(), 0);
         List<Lead> leadList = [SELECT Id, Email
-        FROM Lead
-        WHERE Email LIKE '%@email.com'];
+                               FROM Lead
+                               WHERE Email LIKE '%@email.com'];
         System.assertEquals(leadList.size(), 0);
         List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
         System.assertEquals('pyao@bluewavesolar.com', systemProperties[0].DocuSign_Customer_Care_User__c);
