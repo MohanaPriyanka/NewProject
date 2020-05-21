@@ -58,7 +58,7 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
             }
         }
         if (paymentAmount > 0){
-            Logger.logLater('ZuoraPaymentPageController','applyPaymentToOutstandingItems','Payment was not completely applied: ' + String.valueOf(payment));
+            Logger.logLater('ZuoraPaymentService','applyPaymentToOutstandingItems','Payment was not completely applied: ' + String.valueOf(payment));
         }
         application.effectiveDate = DateUtil.convertGmtToDate(effectiveDate);
         return application;
@@ -90,25 +90,25 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
     }
 
     private void executeApplyJob() {
-        try {
-            Integer recordCount = 0;
-            Integer batchSize = 10;
-            List<ZuoraAPI.Payment> nextJobQueue = new List<ZuoraAPI.Payment>();
-
-            for (ZuoraAPI.Payment payment : paymentsToApply) {
-                if (recordCount >= batchSize) {
-                    nextJobQueue.add(payment);
-                } else {
-                    applyPaymentToBalance(payment);
-                }
-                recordCount += 1;
-            }
+        Integer recordCount = 0;
+        Integer batchSize = 10;
+        List<ZuoraAPI.Payment> nextJobQueue = new List<ZuoraAPI.Payment>();
+        for (ZuoraAPI.Payment payment : paymentsToApply) {
             if (recordCount >= batchSize) {
-                queueApplyJob(nextJobQueue);
+                nextJobQueue.add(payment);
+            } else {
+                recordCount += 1;
+                try {
+                    applyPaymentToBalance(payment);
+                } catch (Exception excep){
+                    Logger.logLater('ZuoraPaymentService','executeApplyJob',excep.getMessage()+ '_' + excep.getStackTraceString()+ '_' + JSON.serialize(paymentsToApply));
+                    continue;
+                }
             }
-        } catch (Exception excep){
-            Logger.logNow('ZuoraPaymentService','executeApplyJob',excep.getMessage()+ '_' + excep.getStackTraceString()+ '_' + JSON.serialize(paymentsToApply));
-
+        }
+        if (recordCount >= batchSize) {
+            Logger.flushLogs();
+            queueApplyJob(nextJobQueue);
         }
     }
 
