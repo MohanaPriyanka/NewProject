@@ -126,14 +126,6 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Disable_EnergyUsageUpdateTrigger__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Disable EnergyUsageUpdateTrigger</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Disable_Journal_Entry_Trigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -227,14 +219,6 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Disable SubscriptionOrder Trigger</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Disable_System_Bill_Trigger__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Disable System Bill Trigger</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
