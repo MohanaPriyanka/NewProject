@@ -3733,10 +3733,7 @@ IF(AND(Credit_Score_Integer_2__c &gt; 680, Debt_to_Income__c &lt;= 0.40), &quot;
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://composer.congamerge.com?SolMgr=1
-&amp;sessionId={!API.Session_ID}
-&amp;serverUrl={!API.Partner_Server_URL_290}
-&amp;Id={!LASERCA__Personal_Credit_Report__c.Id}
+        <url>/apex/APXTConga4__Conga_Composer?serverUrl={!API.Partner_Server_URL_370}&amp;id={!LASERCA__Personal_Credit_Report__c.Id}
 
 &amp;QueryId=[CreditScoreDisclosur]a27j0000001Dp3r
 
