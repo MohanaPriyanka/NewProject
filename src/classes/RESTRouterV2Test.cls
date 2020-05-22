@@ -539,20 +539,7 @@ public with sharing class RESTRouterV2Test {
     @IsTest
     private static void testPatchApplicationSuccessNoDocRegen() {
         // <setup>
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/leads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(validResiJsonRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        RESTRouterV2.postRequest();
-
-        RestResponse response = RestContext.response;
-        String jsonResponse = response.responseBody.toString();
-
+        String jsonResponse = createLead();
         Map<String, Object> postResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         Map<String, Object> postResponseLead = (Map<String,Object>) postResponseEnvelope.get('data');
         
@@ -597,7 +584,7 @@ public with sharing class RESTRouterV2Test {
         // </setup>
 
 
-        req = new RestRequest();
+        RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/application';
         req.httpMethod = 'PATCH';
         req.addHeader('Content-Type', 'application/json');
@@ -610,7 +597,7 @@ public with sharing class RESTRouterV2Test {
 
         RESTRouterV2.patchRequest();
         
-        response = RestContext.response;
+        RestResponse response = RestContext.response;
         jsonResponse = response.responseBody.toString();
         Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
@@ -630,9 +617,7 @@ public with sharing class RESTRouterV2Test {
         System.assertEquals(2, patchResponseDocs.size(), 'Two ContentDocumentLinks should be returned, as docs exist but no changes were made to the lead');
     }
 
-    @IsTest
-    private static void testPatchApplicationSuccessRegenDocs() {
-        // <setup>
+    private static String createLead() {
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
         req.httpMethod = 'POST';
@@ -645,14 +630,17 @@ public with sharing class RESTRouterV2Test {
         RESTRouterV2.postRequest();
 
         RestResponse response = RestContext.response;
-        String jsonResponse = response.responseBody.toString();
+        return response.responseBody.toString();
+    }
 
+    @IsTest
+    private static void testPatchApplicationSuccessRegenDocs() {
+        // <setup>
+        String jsonResponse = createLead();
         Map<String, Object> postResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         Map<String, Object> postResponseLead = (Map<String,Object>) postResponseEnvelope.get('data');
-        
         List<Object> postResponsePropertyAccounts = (List<Object>) postResponseLead.get('propertyAccounts');
         Map<String, Object> postResponsePropertyAccount = (Map<String,Object>) postResponsePropertyAccounts[0];
-        
         List<Object> postResponseUALs = (List<Object>) postResponsePropertyAccount.get('utilityAccountLogs');
         Map<String, Object> postResponseUAL = (Map<String,Object>) postResponseUALs[0];
         
@@ -691,7 +679,7 @@ public with sharing class RESTRouterV2Test {
         // </setup>
 
 
-        req = new RestRequest();
+        RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/application';
         req.httpMethod = 'PATCH';
         req.addHeader('Content-Type', 'application/json');
@@ -709,7 +697,7 @@ public with sharing class RESTRouterV2Test {
 
         RESTRouterV2.patchRequest();
         
-        response = RestContext.response;
+        RestResponse response = RestContext.response;
         jsonResponse = response.responseBody.toString();
         Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');

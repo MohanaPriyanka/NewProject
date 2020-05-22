@@ -288,22 +288,8 @@ export default class SsfAgreements extends LightningElement {
         if(contract) {
             if(this.supportsDataUri) {
                 this.documentUrl = 'data:application/pdf;base64,' +  contract.body;
-                // getContentDocumentsById({documentId : event.target.dataset.id, leadId: this.lead.id, email: this.lead.email})
-                // .then(result => {
-                //     this.showContractDocument = true;
-                //     this.documentUrl = 'data:application/pdf;base64,' + result;
-                // }).catch(error => {
-                //     this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
-                // });
             } else {
                 this.documentUrl = contract.publicUrl;
-                // getContentDistributionById({documentId : event.target.dataset.id, leadId: this.lead.id, email: this.lead.email})
-                // .then(result => {
-                //     this.showContractDocument = true;
-                //     this.documentUrl = result;
-                // }).catch(error => {
-                //     this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
-                // });
             }
             this.showContractDocument = true;
         }

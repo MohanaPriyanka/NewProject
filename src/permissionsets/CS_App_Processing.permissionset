@@ -3,6 +3,11 @@
     <description>Provides access to Generate Docs for Review on Lead. Was used during Zuora go-live to process CS Apps created without payment information, providing access ACH fields, CC and DS Envelope ID on Opportunity.</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Generate_Docs_for_Review__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.ACH_Account_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>

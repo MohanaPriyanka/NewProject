@@ -163,30 +163,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 updateUtilityAccountLogs(jsonRequest);
                 updateLead(jsonRequest, regenerateDocs);
 
-                
-                // format response
-                Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(requestLead.id);
-                List<ContentDocumentLink> docsToReturn = contentSelector.selectByLinkedEntity(leadToReturn.Id);
-                RestLead responseLead = new RestLead(leadToReturn);
-                responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{new RestLead.RestPropertyAccount(leadToReturn.Accounts__r[0])};
-                List<RestLead.RestUtilityAccountLog> ualForReturn = new List<RestLead.RestUtilityAccountLog>();
-                for(Utility_Account_Log__c ual : leadToReturn.Utility_Account_Logs__r) {
-                    ualForReturn.add(new RestLead.RestUtilityAccountLog(ual));
-                }
-                responseLead.propertyAccounts.get(0).utilityAccountLogs = ualForReturn;
-                responseLead.contentDocs = new List<RestLead.RestContentDocument>();
-                if(!docsToReturn.isEmpty()) {
-                    RestLead.RestContentDocument rcd = new RestLead.RestContentDocument(docsToReturn[0]);
-                    rcd.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd.id);
-                    responseLead.contentDocs.add(rcd);
-                }
-                if(!regenerateDocs) {
-                    RestLead.RestContentDocument rcd = new RestLead.RestContentDocument(docsToReturn[1]);
-                    rcd.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd.id);
-                    responseLead.contentDocs.add(rcd);
-                }
-                
-
+                RestLead responseLead = formatRestLeadFromLeadAndChildren(requestLead.id, regenerateDocs);
                 envelope.setData(responseLead);
                 response.statusCode = statusCode.ok;
 
@@ -195,7 +172,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 response.statusCode = statusCode.badRequest;
                 Database.rollback(sp);
             } catch (Exception e) {
-                System.debug(e.getCause() + ' / ' + e.getLineNumber() + ' / ' + e.getMessage() + ' / ' + e.getStackTraceString() + ' / ' + e.getTypeName());
                 envelope.addError(e.getMessage());
                 response.statusCode = statusCode.internalServerError;
                 Database.rollback(sp);
@@ -533,6 +509,31 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
 
         return false;
+    }
+
+    private RestLead formatRestLeadFromLeadAndChildren(Id leadId, Boolean regenerateDocs) {
+        Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
+        List<ContentDocumentLink> docsToReturn = contentSelector.selectByLinkedEntity(leadId);
+        RestLead responseLead = new RestLead(leadToReturn);
+        responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{new RestLead.RestPropertyAccount(leadToReturn.Accounts__r[0])};
+        List<RestLead.RestUtilityAccountLog> ualForReturn = new List<RestLead.RestUtilityAccountLog>();
+        for(Utility_Account_Log__c ual : leadToReturn.Utility_Account_Logs__r) {
+            ualForReturn.add(new RestLead.RestUtilityAccountLog(ual));
+        }
+        responseLead.propertyAccounts.get(0).utilityAccountLogs = ualForReturn;
+        responseLead.contentDocs = new List<RestLead.RestContentDocument>();
+        if(!docsToReturn.isEmpty()) {
+            RestLead.RestContentDocument rcd = new RestLead.RestContentDocument(docsToReturn[0]);
+            rcd.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd.id);
+            responseLead.contentDocs.add(rcd);
+        }
+        if(!regenerateDocs) {
+            RestLead.RestContentDocument rcd = new RestLead.RestContentDocument(docsToReturn[1]);
+            rcd.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd.id);
+            responseLead.contentDocs.add(rcd);
+        }
+
+        return responseLead;
     }
 
 }
