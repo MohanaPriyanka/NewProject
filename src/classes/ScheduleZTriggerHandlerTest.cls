@@ -346,7 +346,7 @@ public class ScheduleZTriggerHandlerTest {
 
         FeatureService featureService = new FeatureService();
         if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(20.231919, sss1ScheduleZs[0].Customer_Subscription_kW_DC__c);
+            System.assertEquals(20.230473, sss1ScheduleZs[0].Customer_Subscription_kW_DC__c);
         } else {
             System.assertEquals(20.2312, sss1ScheduleZs[0].Customer_Subscription_kW_DC__c);
         }
