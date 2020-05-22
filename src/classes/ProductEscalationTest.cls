@@ -449,8 +449,6 @@ public class ProductEscalationTest {
             Default_Credit_Value__c = 0.13
         );
 
-
-
         insert new List<Transfer__c>{transferA1, transferB1, transferB2};
 
         Test.stopTest();
@@ -777,9 +775,8 @@ public class ProductEscalationTest {
         List<Bill_Period__c> billPeriods;
         billPeriods = BillPeriodSelector.getBillPeriodsByMonth(oneMonthAgo.month(), oneMonthAgo.year());
 
-
-        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(billPeriods);
-        ee.runBills();
+        BillGenerationAsyncService ee = new BillGenerationAsyncService(billPeriods);
+        ee.executeBatchJob();
     }
 
     @IsTest public static void percentDiscountNoEscalator() {
@@ -907,6 +904,7 @@ public class ProductEscalationTest {
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Name, Number_of_Billed_Production_Periods__c
             FROM Shared_Solar_System__c
+            ORDER BY Name
         ];
 
         System.assertEquals(2, sssList.size());
@@ -927,6 +925,16 @@ public class ProductEscalationTest {
         Test.startTest();
         runOneMonthsBills();
         Test.stopTest();
+
+        List<Shared_Solar_System__c> sssList2 = [
+            SELECT Id, Name, Number_of_Billed_Production_Periods__c
+            FROM Shared_Solar_System__c
+            ORDER BY Name
+        ];
+
+        System.assertEquals(2, sssList2.size());
+        System.assertEquals(4, sssList2[0].Number_of_Billed_Production_Periods__c);
+        System.assertEquals(8, sssList2[1].Number_of_Billed_Production_Periods__c);
 
         /* All UASes are 10 kW for consistency:
             (sss1) Kwh = 566.23, SEE = 0.1485, Bill = 84.09 (transfer #4)

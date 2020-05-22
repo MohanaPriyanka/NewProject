@@ -2,20 +2,6 @@
 public class ZuoraUsageServiceTest {
     @testSetup public static void testDataSetup() {
         MultipleMonthProductionUpdateTest.multipleMonthTest();
-        setBillsToUnPublished();
-    }
-
-    public static void setBillsToUnPublished() {
-        List <Account_Bill__c> listAccountBills = [
-            SELECT Id, Published__c
-            FROM Account_Bill__c
-            WHERE Published__c = TRUE
-        ];
-        for (Account_Bill__c acctBill : listAccountBills) {
-            acctBill.Published__c = FALSE;
-            acctBill.Reason_For_Unpublish__c = 'Test reason for unpublishing this bill';
-        }
-        update listAccountBills;
     }
 
     // To avoid SOQL Limits, do this method inside Test.StartTest()
