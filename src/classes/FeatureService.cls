@@ -23,15 +23,28 @@ public without sharing class FeatureService {
       *************/
     @TestVisible
     private class Mock extends MockProvider {
-        private Boolean enabled;
+        private Boolean enabled = false;
+        private Map<String, Boolean> featureFlagMap;
         public Mock(Boolean enabled) {
             this.enabled = enabled;
+        }
+        public Mock(Map<String, Boolean> featureFlagMap) {
+            this.featureFlagMap = featureFlagMap;
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'isEnabled' {
-                    return enabled;
+                    String featureName = (String) methodCall.listOfArgs[0];
+                    if (featureFlagMap != null) {
+                        if (featureFlagMap.containsKey(featureName)) {
+                            return featureFlagMap.get(featureName);
+                        } else {
+                            throw new Util.BWException('Feature needs to be set explicitly in map: ' + featureName);
+                        }
+                    } else {
+                        return enabled;
+                    }
                 }
             }
             return null;
