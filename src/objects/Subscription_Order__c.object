@@ -273,6 +273,21 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Calculated_Change_in_kW_DC_Rounded__c</fullName>
+        <externalId>false</externalId>
+        <formula>Calculated_Change_in_Percent_Share_of_Sy__c * Total_System_Size_kW_DC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This field calculates the kW DC subscription by multiplying the Share of System value by the total kw dc system size. I</inlineHelpText>
+        <label>Calculated Change in kW DC (Rounded)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Change_in_Annual_Cost__c</fullName>
         <description>This is used for subscription orders where the related product is sized using dollars. It represents the net change from previously approved subscription orders.</description>
         <externalId>false</externalId>
@@ -455,6 +470,21 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>System_Change_kW_DC_Rounded__c</fullName>
+        <externalId>false</externalId>
+        <formula>System_Change_Percent_Share_of_System__c  * Total_System_Size_kW_DC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This uses the System Change Percent Share of System multiplied by the Total System Size in kW DC to find the kw DC Subscription value.</inlineHelpText>
+        <label>System Change kW DC (Rounded)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>System_Change_kW_DC_Subscription__c</fullName>
