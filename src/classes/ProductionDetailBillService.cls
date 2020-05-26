@@ -345,10 +345,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         transferToDetailMap = productionDetailSelector.getTransferPartMap(transferIds);
 
         for (UASB__c externalBill : unservicedUASBs){
-            if (externalBill.Credits_Allocated__c != null && externalBill.Credits_Allocated__c != 0){
-                createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
-
-            }
+            createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
         }
     }
 
