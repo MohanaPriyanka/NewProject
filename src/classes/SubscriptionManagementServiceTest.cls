@@ -213,11 +213,11 @@ private class SubscriptionManagementServiceTest {
             if (so.Name == '0001234') {
                 System.assertEquals(25.0000, so.Calculated_Change_in_Subscription_KW_DC__c);
                 System.assertEquals(1.73000, so.Approved_Change_in_Percent_Share__c);
-                System.assertEquals(24.985152, so.Approved_Change_in_Subscription__c);
+                System.assertEquals(25.0000, so.Approved_Change_in_Subscription__c);
             } else {
-                System.assertEquals(25.0000, so.System_Change_kW_DC_Subscription__c);
+                System.assertEquals(25.0000, so.System_Change_kW_DC_Rounded__c);
                 System.assertEquals(1.00, so.Approved_Change_in_Percent_Share__c);
-                System.assertEquals(5.040864, so.Approved_Change_in_Subscription__c);
+                System.assertEquals(5.0000, so.Approved_Change_in_Subscription__c);
             }
         }
     }
@@ -262,6 +262,7 @@ private class SubscriptionManagementServiceTest {
                 '"Approval_Status__c" : "Approved",' +
                 '"Calculated_Change_in_Percent_Share_of_Sy__c" : 1.73000,' +
                 '"Calculated_Change_in_Subscription_KW_DC__c" : 25.0000,' +
+                '"Calculated_Change_in_kW_DC_Rounded__c" : 25.0000,' +
                 '"Utility_Number_of_Decimal_Places__c" : 2,' +
                 '"Total_System_Size_kW_DC__c" : 1095.84' +
                 '},' +
@@ -273,7 +274,7 @@ private class SubscriptionManagementServiceTest {
                 '"Previous_Percent_Share_of_System__c" : 0.73000,' +
                 '"Previous_kw_DC_Subscription__c" : 20.0000,' +
                 '"System_Change_Percent_Share_of_System__c" : 1.73000,' +
-                '"System_Change_kW_DC_Subscription__c" : 25.0000,' +
+                '"System_Change_kW_DC_Rounded__c" : 25.0000,' +
                 '"Utility_Number_of_Decimal_Places__c" : 2,' +
                 '"Total_System_Size_kW_DC__c" : 1095.84' +
                 '}]';
