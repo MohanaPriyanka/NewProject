@@ -56,19 +56,19 @@ public class ZuoraCreditDebitMemoService {
     private static Bill_Adjustment__c handleCreditMemo(Bill_Adjustment__c adjustment, Date effectiveDate) {
         ZuoraAPI.CreditMemo creditMemo;
         HttpResponse response;
-            try {
+        try {
             creditMemo = convertSFAdjustToCreditMemo(adjustment);
-                creditMemo.effectiveDate = effectiveDate;
+            creditMemo.effectiveDate = effectiveDate;
             response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/creditmemos', creditMemo, false);
-            } catch (Util.BWException bwe) {
-                Logger.logLater(
-                    'ZuoraCreditDebitMemoService',
-                    'createCreditOrDebitMemo',
-                    'Handle this adjustment manually: ' + bwe.getMessage() + '\n' + bwe.getStackTraceString(),
-                    Logger.ERROR
-                );
-                return null;
-            }
+        } catch (Util.BWException bwe) {
+            Logger.logLater(
+                'ZuoraCreditDebitMemoService',
+                'createCreditOrDebitMemo',
+                'Handle this adjustment manually: ' + bwe.getMessage() + '\n' + bwe.getStackTraceString(),
+                Logger.ERROR
+            );
+            return null;
+        }
 
         adjustment = handleAPIResponse(
             creditMemo.CRM_ID_Zcustom,
@@ -178,16 +178,16 @@ public class ZuoraCreditDebitMemoService {
         String project = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
 
         if (featureService.isEnabled('Multiple_Subscriptions')) {
-        Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
+            Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
                 ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(zuoraAcctId);
             for (ZuoraOutstandingItemsService.RatePlanCharge ratePlanCharge : ratePlanChargesByChargeId.values()) {
                 if (ratePlanCharge.matches(client, project)) {
                     return ratePlanCharge.ProductRatePlanChargeId;
-        }
-        }
+                }
+            }
             throw new Util.BWException('No client/project found for client: ' + client + ' and project '+ project);
         } else {
-        ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+            ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
             return subscription.getProductRatePlanChargeId(client, project);
         }
     }
