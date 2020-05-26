@@ -23,7 +23,7 @@ public without sharing class FeatureService {
       *************/
     @TestVisible
     private class Mock extends MockProvider {
-        private Boolean enabled = false;
+        private Boolean enabled;
         private Map<String, Boolean> featureFlagMap;
         public Mock(Boolean enabled) {
             this.enabled = enabled;
