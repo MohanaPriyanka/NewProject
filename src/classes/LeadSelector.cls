@@ -17,7 +17,6 @@ public without sharing class LeadSelector {
         'City',
         'Company',
         'Continue_Application_Link__c',
-        'CreatedDate',
         'Customer_Referral__c',
         'Customer_type__c',
         'LASERCA__Home_Address__c',
@@ -71,6 +70,7 @@ public without sharing class LeadSelector {
         'Annual_kWh__c', 
         'Annual_Cost_of_Electricity__c'
     };
+
 
     public static List<Lead> selectConvertedByIds(List<Id> leadIds) {
         return [
@@ -147,12 +147,13 @@ public without sharing class LeadSelector {
     
 
     public Lead selectOneWithPropertiesAndUtilities(Id leadId) {
-        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', Product__r.Name, Customer_Signed_Date__c, Utility_relationship__r.EIA_ID__c';
+        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Product__r.Name, Customer_Signed_Date__c, Utility_relationship__r.EIA_ID__c';
         query += ', (SELECT ' + String.join(apiPropertyAccountFields, ', ') + ' FROM Accounts__r)';
         query += ', (SELECT ' + String.join(apiUtilityAccountFields, ', ') + ' FROM Utility_Account_Logs__r)';
         query += ' FROM Lead WHERE Id = :leadId LIMIT 1';
         return Database.query(String.escapeSingleQuotes(query));
     }
+
 
     public List<Lead> selectForMerge(Set<Id> leadIds) {
         String fields = String.join(apiLeadFields, ', ');
@@ -160,4 +161,5 @@ public without sharing class LeadSelector {
         List<Lead> leadList = Database.query(String.escapeSingleQuotes(query));
         return leadList;
     }
+
 }
