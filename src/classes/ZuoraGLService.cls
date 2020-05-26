@@ -32,20 +32,20 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
     }
 
     public class GeneralLedgerItem {
-        String Project;
-        String Client;
-        String CustomerAccount;
-        String CRMId;
-        Date GLDate;
-        Datetime GLDatetime;
-        Decimal Amount;
-        String ReasonCode;
-        String ExternalId;
-        String Gateway;
-        String Lockbox;
-        String PaymentMethod;
-        String ArchivedChargentData;
-        String AppliedRecordId;
+        public String Project;
+        public String Client;
+        public String CustomerAccount;
+        public String CRMId;
+        public Date GLDate;
+        public Datetime GLDatetime;
+        public Decimal Amount;
+        public String ReasonCode;
+        public String ExternalId;
+        public String Gateway;
+        public String Lockbox;
+        public String PaymentMethod;
+        public String ArchivedChargentData;
+        public String AppliedRecordId;
     }
 
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {

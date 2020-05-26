@@ -27,7 +27,7 @@ public without sharing class UASBSelector {
     public Map<String,List<UASB__c>> getUASBMapFromExternalIds(Set<String> zuoraIds){
         Map<String,List<UASB__c>> externalIdToUASBMap = new Map<String,List<UASB__c>>();
         List<UASB__c> uasbList = [
-            SELECT Id, Transfer__c, Savings__c, Zuora_Id__c
+            SELECT Id, Transfer__c, Savings__c, Zuora_Id__c, Discounted_Bill__c
             FROM UASB__c
             WHERE Zuora_Id__c IN : zuoraIds
         ];

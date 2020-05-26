@@ -46,7 +46,7 @@ public without sharing class AdjustmentSelector {
     public Map<String,List<Bill_Adjustment__c>> getAdjustmentMapFromExternalIds(Set<String> zuoraIds){
         Map<String,List<Bill_Adjustment__c>> externalIdToAdjustMap = new Map<String,List<Bill_Adjustment__c>>();
         List<Bill_Adjustment__c> adjustList = [
-            SELECT Id, Transfer__c, Discount__c, Zuora_Id__c
+            SELECT Id, Transfer__c, Discount__c, Zuora_Id__c, Adjustment_Amount__c
             FROM Bill_Adjustment__c
             WHERE Zuora_Id__c IN : zuoraIds
         ];
