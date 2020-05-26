@@ -65,8 +65,6 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
             if (recordsToUpdate.size() > 0){
                 GenericBatchDMLOperation batchDML = new GenericBatchDMLOperation(recordsToUpdate, 'Update');
                 batchDML.triggersToDisable = new List<String>{
-                    'Disable_System_Bill_Trigger__c',
-                    'Disable_AccountBillTrigger__c',
                     'Disable_AccountTrigger__c',
                     'Disable_BillAdjustmentTrigger__c'
                 };
