@@ -145,7 +145,6 @@ public class BillGenerationServiceTest {
 
         System_Properties__c property = new System_Properties__c(
             Name = 'System',
-            CS_Bill_Batch_Size__c = 50,
             Days_Generate_Bills_for_Cancelled__c = daysToLookBack,
             Minimum_Balance_Bills_for_Cancelled__c = 0);
         insert property;
