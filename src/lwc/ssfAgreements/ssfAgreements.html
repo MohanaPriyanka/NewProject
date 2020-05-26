@@ -13,9 +13,9 @@
   </div>
   <div class="slds-m-around--medium">
     <template iterator:it={contractDocuments}>
-      <p key={it.value.ContentDocumentId}>
-          <a key={it.value.ContentDocumentId} href="javascript:void(0);">
-            <span style="color:blue" key={it.value.ContentDocumentId} data-id={it.value.ContentDocumentId} onclick={filePreview}>{it.value.ContentDocument.LatestPublishedVersion.Title}</span>
+      <p key={it.value.id}>
+          <a key={it.value.id} href="javascript:void(0);">
+            <span style="color:blue" key={it.value.id} data-id={it.value.id} onclick={filePreview}>{it.value.title}</span>
           </a>
       </p>
     </template>

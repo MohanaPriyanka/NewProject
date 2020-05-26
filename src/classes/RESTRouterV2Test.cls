@@ -537,8 +537,87 @@ public with sharing class RESTRouterV2Test {
     /** Application **/
 
     @IsTest
-    public static void testPatchApplicationSuccess() {
+    private static void testPatchApplicationSuccessNoDocRegen() {
         // <setup>
+        String jsonResponse = createLead();
+        Map<String, Object> postResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> postResponseLead = (Map<String,Object>) postResponseEnvelope.get('data');
+        
+        List<Object> postResponsePropertyAccounts = (List<Object>) postResponseLead.get('propertyAccounts');
+        Map<String, Object> postResponsePropertyAccount = (Map<String,Object>) postResponsePropertyAccounts[0];
+        
+        List<Object> postResponseUALs = (List<Object>) postResponsePropertyAccount.get('utilityAccountLogs');
+        Map<String, Object> postResponseUAL = (Map<String,Object>) postResponseUALs[0];
+        
+        ContentVersion cv = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('SDF body'),
+            Title = 'Solar Disclosure Form.pdf',
+            PathOnClient = '/Solar Disclosure Form.pdf'
+        );
+        ContentVersion cv2 = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('CSA body'),
+            Title = 'Community Solar Agreement.pdf.pdf',
+            PathOnClient = '/Community Solar Agreement.pdf.pdf'
+        );
+        insert new List<ContentVersion>{cv,cv2};
+        List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
+        Datetime createdDate = Datetime.now().addDays(-1);
+        Test.setCreatedDate(cvList[0].ContentDocumentId, createdDate);
+        Test.setCreatedDate(cvList[1].ContentDocumentId, createdDate);
+
+        ContentDocumentLink cdl = new ContentDocumentLink(
+            ContentDocumentId = cvList[0].ContentDocumentId,
+            LinkedEntityId = (Id)postResponseLead.get('id'),
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        ContentDocumentLink cdl2 = new ContentDocumentLink(
+            ContentDocumentId = cvList[1].ContentDocumentId,
+            LinkedEntityId = (Id)postResponseLead.get('id'),
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        insert new List<ContentDocumentLink>{cdl, cdl2};
+
+        // </setup>
+
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/application';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+
+        String applicationJson = JSON.serialize(postResponseEnvelope.get('data'));
+        req.requestBody = Blob.valueOf(applicationJson);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.patchRequest();
+        
+        RestResponse response = RestContext.response;
+        jsonResponse = response.responseBody.toString();
+        Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
+        Map<String, Object> patchResponseLead = (Map<String,Object>) patchResponseEnvelope.get('data');
+        
+        List<Object> patchResponsePropertyAccounts = (List<Object>) patchResponseLead.get('propertyAccounts');
+        Map<String, Object> patchResponsePropertyAccount = (Map<String,Object>) patchResponsePropertyAccounts[0];
+        System.assertEquals(1, patchResponsePropertyAccounts.size(), 'One property account should be returned');
+        System.assertEquals(postResponsePropertyAccount.get('Id'), patchResponsePropertyAccount.get('Id'), 'The property account returned should be the same one created by the POST call');
+
+        List<Object> patchResponseUALs = (List<Object>) patchResponsePropertyAccount.get('utilityAccountLogs');
+        Map<String, Object> patchResponseUAL = (Map<String,Object>) patchResponseUALs[0];
+        System.assertEquals(1, patchResponseUALs.size(), 'One utility account log should be returned');
+        System.assertEquals(postResponseUAL.get('Id'), patchResponseUAL.get('Id'), 'The utility account log returned should be the same one created by the POST call');
+
+        List<Object> patchResponseDocs = (List<Object>) patchResponseLead.get('contentDocs');
+        System.assertEquals(2, patchResponseDocs.size(), 'Two ContentDocumentLinks should be returned, as docs exist but no changes were made to the lead');
+    }
+
+    private static String createLead() {
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
         req.httpMethod = 'POST';
@@ -551,21 +630,56 @@ public with sharing class RESTRouterV2Test {
         RESTRouterV2.postRequest();
 
         RestResponse response = RestContext.response;
-        String jsonResponse = response.responseBody.toString();
+        return response.responseBody.toString();
+    }
 
+    @IsTest
+    private static void testPatchApplicationSuccessRegenDocs() {
+        // <setup>
+        String jsonResponse = createLead();
         Map<String, Object> postResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         Map<String, Object> postResponseLead = (Map<String,Object>) postResponseEnvelope.get('data');
-        
         List<Object> postResponsePropertyAccounts = (List<Object>) postResponseLead.get('propertyAccounts');
         Map<String, Object> postResponsePropertyAccount = (Map<String,Object>) postResponsePropertyAccounts[0];
-        
         List<Object> postResponseUALs = (List<Object>) postResponsePropertyAccount.get('utilityAccountLogs');
         Map<String, Object> postResponseUAL = (Map<String,Object>) postResponseUALs[0];
         
+        ContentVersion cv = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('SDF body'),
+            Title = 'Solar Disclosure Form.pdf',
+            PathOnClient = '/Solar Disclosure Form.pdf'
+        );
+        ContentVersion cv2 = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('CSA body'),
+            Title = 'Community Solar Agreement.pdf.pdf',
+            PathOnClient = '/Community Solar Agreement.pdf.pdf'
+        );
+        insert new List<ContentVersion>{cv,cv2};
+        List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
+        Datetime createdDate = Datetime.now().addDays(-1);
+        Test.setCreatedDate(cvList[0].ContentDocumentId, createdDate);
+        Test.setCreatedDate(cvList[1].ContentDocumentId, createdDate.addMinutes(-10));
+
+        ContentDocumentLink cdl = new ContentDocumentLink(
+            ContentDocumentId = cvList[0].ContentDocumentId,
+            LinkedEntityId = (Id)postResponseLead.get('id'),
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        ContentDocumentLink cdl2 = new ContentDocumentLink(
+            ContentDocumentId = cvList[1].ContentDocumentId,
+            LinkedEntityId = (Id)postResponseLead.get('id'),
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        insert new List<ContentDocumentLink>{cdl, cdl2};
+
         // </setup>
 
 
-        req = new RestRequest();
+        RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/application';
         req.httpMethod = 'PATCH';
         req.addHeader('Content-Type', 'application/json');
@@ -583,7 +697,7 @@ public with sharing class RESTRouterV2Test {
 
         RESTRouterV2.patchRequest();
         
-        response = RestContext.response;
+        RestResponse response = RestContext.response;
         jsonResponse = response.responseBody.toString();
         Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
@@ -591,10 +705,18 @@ public with sharing class RESTRouterV2Test {
         
         List<Object> patchResponsePropertyAccounts = (List<Object>) patchResponseLead.get('propertyAccounts');
         Map<String, Object> patchResponsePropertyAccount = (Map<String,Object>) patchResponsePropertyAccounts[0];
+        System.assertEquals(1, patchResponsePropertyAccounts.size(), 'One property account should be returned');
+        System.assertEquals(postResponsePropertyAccount.get('Id'), patchResponsePropertyAccount.get('Id'), 'The property account returned should be the same one created by the POST call');
 
         List<Object> patchResponseUALs = (List<Object>) patchResponsePropertyAccount.get('utilityAccountLogs');
         Map<String, Object> patchResponseUAL = (Map<String,Object>) patchResponseUALs[0];
+        System.assertEquals(1, patchResponseUALs.size(), 'One utility account log should be returned');
+        System.assertEquals(postResponseUAL.get('Id'), patchResponseUAL.get('Id'), 'The utility account log returned should be the same one created by the POST call');
 
+        List<Object> patchResponseDocs = (List<Object>) patchResponseLead.get('contentDocs');
+        Map<String, Object> patchResponseDoc = (Map<String,Object>) patchResponseDocs[0];
+        System.assertEquals(1, patchResponseDocs.size(), 'One ContentDocumentLink should be returned, as docs exist and changes were made to the lead');
+        System.assertEquals(cdl.Id, patchResponseDoc.get('docLinkId'), 'Response should be the CDL for the most recent doc, as docs exist and changes were made to the lead');
 
         System.assertNotEquals(postResponseLead.get('streetAddress'), patchResponseLead.get('streetAddress'), 'The updated lead streetAddress field value should not match the original field value');
         for(String fieldName : updatedAccountFields()) {

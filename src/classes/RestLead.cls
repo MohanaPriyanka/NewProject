@@ -26,6 +26,7 @@ public without sharing class RestLead {
     public String eiaId;
     public String continueApplicationLink;
     public List<RestPropertyAccount> propertyAccounts;
+    public List<RestContentDocument> contentDocs;
     public String campaignId;
     public String referralName;
     public String referralEmail;
@@ -427,6 +428,43 @@ public without sharing class RestLead {
             if (fieldNames.contains('annualCostOfElectricity')) baseUAL.Annual_Cost_of_Electricity__c = this.annualCostOfElectricity;
     
             return baseUAL;
+        }
+    }
+
+    public class RestContentDocument {
+        public Id id;
+        public Id leadId;
+        public Id contractId;
+        public Id lastPublishedVersionId;
+        public Id docLinkId;
+        public String title;
+        public String body;
+        public String publicUrl;
+        public Decimal size;
+        public Datetime createdDate;
+
+        public RestContentDocument() {
+        }
+
+        public RestContentDocument(ContentDocumentLink cdl) {
+            this.id = cdl.ContentDocumentId;
+            this.leadId = cdl.LinkedEntityId;
+            // this.contractId = cdl.LinkedEntityId;            for when contracts are implemented
+            this.lastPublishedVersionId = cdl.ContentDocument.LatestPublishedVersion.Id;
+            this.docLinkId = cdl.Id;
+            this.title = cdl.ContentDocument.LatestPublishedVersion.Title;
+            this.body = EncodingUtil.base64Encode(cdl.ContentDocument.LatestPublishedVersion.VersionData);
+            this.size = cdl.ContentDocument.ContentSize;
+            this.createdDate = cdl.ContentDocument.CreatedDate;
+        }
+
+        public RestContentDocument(ContentDocument cd) {
+            this.id = cd.Id;
+            this.lastPublishedVersionId = cd.LatestPublishedVersion.Id;
+            this.title = cd.LatestPublishedVersion.Title;
+            this.body = EncodingUtil.base64Encode(cd.LatestPublishedVersion.VersionData);
+            this.size = cd.ContentSize;
+            this.createdDate = cd.CreatedDate;
         }
     }
 }
