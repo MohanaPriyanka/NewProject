@@ -52,11 +52,11 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                         zuoraUsageLineItems.add(usage);
                     }
                 }
-            } catch (Util.BWException bwException) {
+            } catch (Exception e) {
                 Logger.logLater(
                     'ZuoraUsageService',
                     'convertSFUsageToZuoraUsage',
-                    'Conversion to usage failed for id: ' + sfUsage.Id + bwException.getMessage(),
+                    'Conversion to usage failed for id: ' + sfUsage.Id + '\n' + e.getMessage() + '\n' + e.getStackTraceString(),
                     Logger.ERROR
                 );
             }

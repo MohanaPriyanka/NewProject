@@ -385,7 +385,10 @@ public class ZuoraCreditDebitMemoServiceTest {
     }
 
     @IsTest
-    private static void testConvertSFAdjustToCreditMemoFromInvoiceMatch() {
+    private static void testHandleCreditMemo() {
+        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Relate_Debit_Memos_To_Invoices'=>false,'Multiple_Subscriptions'=>true};
+        ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
+
         String adjustJSON = '{' +
             '"Id":"a0p3I000002ziZoQAI",' +
             '"Name":"Test",' +
@@ -404,11 +407,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             '"Account":{"Id":"0013I00000I77l8QAB","Zuora_Id__c":"2c92c0f96e3aa331016e3ca8eb2c48b7"}}},' +
             '"Client__r":{"Id":"0013I00000I77klQAB","Account_Number__c":"BW-00000385"}}';
         Bill_Adjustment__c adjust = (Bill_Adjustment__c) JSON.deserialize(adjustJSON, Bill_Adjustment__c.class);
-        ZuoraAPI.CreditMemo creditMemo = ZuoraCreditDebitMemoService.convertSFAdjustToCreditMemoFromInvoice(adjust, System.today());
-        System.assertEquals('SSS-000099', creditMemo.Project_Zcustom);
-        System.assertEquals('BW-00000385', creditMemo.ClientOwner_Zcustom);
-        System.assertEquals('2c92c094713a9cad01714d1bb4b26b4d', creditMemo.invoiceId);
-        System.assertEquals(1, creditMemo.items.size());
-        System.assertEquals('2c92c094713a9cad01714d1bb4de6b4e', creditMemo.items[0].invoiceItemId);
+        adjust = ZuoraCreditDebitMemoService.handleCreditMemo(adjust, System.today());
+        System.assertNotEquals(null, adjust.Zuora_Id__c, 'Expected to have a credit memo uploaded to Zuora');
     }
 }
