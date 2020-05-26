@@ -34,10 +34,14 @@ export default class SsfAgreements extends LightningElement {
     @track spinnerMessage;
     documentPollerId;
     documentPollerTimeoutId;
+    mostRecentDocDate;
 
     connectedCallback() {
         if (!this.lead && this.leadJson) {
             this.lead = JSON.parse(this.leadJson);
+            if(this.lead.contentDocs && this.lead.contentDocs.length === 2) {
+                this.postProcessContractDocs(this.lead.contentDocs);
+            }
         }
     }
 
@@ -228,14 +232,15 @@ export default class SsfAgreements extends LightningElement {
             this.spinnerMessage = 'This can take a minute';
         }, 1000);
         this.documentPollerId = window.setInterval(() => {
-            getContentDocumentLinksByLead({leadId: this.lead.id, email: this.lead.email})
+            getContentDocumentLinksByLead({leadId: this.lead.id, email: this.lead.email, mostRecentDocsStr: JSON.stringify(this.lead.contentDocs)})
             .then(result => {
-                if (result.length >= 2) {
-                    this.postProcessContractDocs(result);
+                let docs = JSON.parse(result);
+                if (docs.length >= 2) {
+                    this.postProcessContractDocs(docs);
                 }
             })
             .catch(error => {
-                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
+                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error.body.message);
                 window.clearInterval(this.documentPollerId);
                 window.clearTimeout(this.documentPollerTimeoutId);
                 this.showSpinner = false;
@@ -255,21 +260,13 @@ export default class SsfAgreements extends LightningElement {
         this.contractDocuments = contracts;
         var disclosurePosition;
         for (let c in contracts) {
-            try{
-                contracts[c].downloadLink = 'data:application/pdf;base64, ' + btoa(contracts[c].ContentDocument.LatestPublishedVersion.VersionData);
-                contracts[c].downloadName = JSON.parse(JSON.stringify(contracts[c].ContentDocument.LatestPublishedVersion.Title));
-            } catch(exp) {
-                contracts[c].downloadLink = '';
-                contracts[c].downloadName = '';
+            if (contracts[c].title === 'Community Solar Agreement.pdf' ) {
+                this.csAgreementDocumentId = contracts[c].id;
+                contracts[c].title = 'Community Solar Agreement';
             }
-            
-            if (contracts[c].ContentDocument.LatestPublishedVersion.Title === 'Community Solar Agreement.pdf' ) {
-                this.csAgreementDocumentId = contracts[c].ContentDocumentId;
-                contracts[c].ContentDocument.LatestPublishedVersion.Title = 'Community Solar Agreement';
-            }
-            if (contracts[c].ContentDocument.LatestPublishedVersion.Title === 'Solar Disclosure Form.pdf') {
-                this.disclosureDocumentId = contracts[c].ContentDocumentId;
-                contracts[c].ContentDocument.LatestPublishedVersion.Title = 'Solar Disclosure Form';
+            if (contracts[c].title === 'Solar Disclosure Form.pdf') {
+                this.disclosureDocumentId = contracts[c].id;
+                contracts[c].title = 'Solar Disclosure Form';
                 disclosurePosition = c;
             }
         }
@@ -280,29 +277,28 @@ export default class SsfAgreements extends LightningElement {
     }
 
     filePreview(event) {
-        if(this.supportsDataUri) {
-            getContentDocumentsById({documentId : event.target.dataset.id, leadId: this.lead.id, email: this.lead.email})
-            .then(result => {
-                this.showContractDocument = true;
-                this.documentUrl = 'data:application/pdf;base64,' + result;
-            }).catch(error => {
-                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
-            });
-        } else {
-            getContentDistributionById({documentId : event.target.dataset.id, leadId: this.lead.id, email: this.lead.email})
-            .then(result => {
-                this.showContractDocument = true;
-                this.documentUrl = result;
-            }).catch(error => {
-                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
-            });
+        var contract;
+        for(let c in this.contractDocuments) {
+            if(this.contractDocuments[c].id === event.target.dataset.id) {
+                contract = this.contractDocuments[c];
+                break;
+            }
         }
-        
+
+        if(contract) {
+            if(this.supportsDataUri) {
+                this.documentUrl = 'data:application/pdf;base64,' +  contract.body;
+            } else {
+                this.documentUrl = contract.publicUrl;
+            }
+            this.showContractDocument = true;
+        }
         
     }
 
     get supportsDataUri() {
         var navua = window.navigator.userAgent.toLowerCase();
+        // trident = IE
         if(navua.indexOf("trident") > -1 || navua.indexOf("edge") > -1) {
             return false;
         }
