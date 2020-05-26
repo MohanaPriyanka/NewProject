@@ -31,8 +31,17 @@ public without sharing class BillGenerationService {
     // Called from Preview Bills Screen on Transfer:
     @AuraEnabled
     public static List<UASB__c> calculateUASBsFromTransfer(Transfer__c transfer, BillType operationType) {
+        return calculateUASBsFromTransfer(transfer, operationType, true);
+    }
+
+    public static List<UASB__c> calculateUASBsFromTransfer(Transfer__c transfer, BillType operationType, Boolean isAura) {
         BillGenerationService billGenService = new BillGenerationService();
-        billGenService.checkRequiredTransferFields(transfer);
+        String errorMessage = billGenService.checkRequiredTransferFields(transfer);
+        if (isAura && errorMessage != null){
+            throw Util.createAuraExceptionWithMessage(errorMessage);
+        } else if (errorMessage != null){
+            throw new Util.BWException(errorMessage);
+        }
         List<UASB__c> uasbs = billGenService.calculateUASBesFromSZSes(billGenService.getScheduleZSubscriptionList(transfer, operationType), transfer);
         return uasbs;
     }
@@ -81,25 +90,29 @@ public without sharing class BillGenerationService {
         return uasbsToInsert;
     }
 
-    private void checkRequiredTransferFields(Transfer__c transfer){
+    private String checkRequiredTransferFields(Transfer__c transfer){
         String errorMessage = 'Cannot make UASBs from a Transfer ';
         if (transfer.Allocation_Schedule__c == null){
-            throw Util.createAuraExceptionWithMessage(errorMessage + 'because the Transfer does not have an Allocation Schedule populated');
+            errorMessage += 'because the Transfer does not have an Allocation Schedule populated';
         } else if (transfer.Attempted_kWh_Transfer__c == null || transfer.Attempted_Transfer__c == null){
-            throw Util.createAuraExceptionWithMessage(errorMessage + 'without Attempted kWh Transfer & Attempted Transfer populated');
+            errorMessage += 'without Attempted kWh Transfer & Attempted Transfer populated';
         } else if (transfer.Default_Credit_Value__c == null){
-            throw Util.createAuraExceptionWithMessage(errorMessage + 'without Default Credit Value populated');
+            errorMessage += 'without Default Credit Value populated';
         } else if (transfer.Bill_Period__c == null || transfer.Bill_Period__r.Bill_Date__c == null || transfer.Date_of_Transfer__c == null){
-            throw Util.createAuraExceptionWithMessage(errorMessage + 'without Date of Transfer & Bill Period Date populated');
+            errorMessage += 'without Date of Transfer & Bill Period Date populated';
+        } else {
+            errorMessage = null;
         }
+        return errorMessage;
     }
 
     @TestVisible
     private UASB__c setUASBFields(Schedule_Z_Subscription__c szs, Transfer__c transfer){
-        Product_Escalator__c escalatorProduct;
+        Product_Escalator__c escalatorForThisTransfer;
         if (szs.Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c != null){
-            Integer productionCount =  (Integer)szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c;
-            escalatorProduct = getProductEscalator(szs, productionCount);
+            Integer billedProductionPeriodsBeforeThisTransfer =
+                (Integer)szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c;
+            escalatorForThisTransfer = getProductEscalator(szs, billedProductionPeriodsBeforeThisTransfer + 1);
         }
         Decimal shareOfSystem = szs.Percent_Share__c;
         String creditsRoundingMethod = szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c;
@@ -158,9 +171,9 @@ public without sharing class BillGenerationService {
             generatedUASB.PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c;
         }
 
-        if (escalatorProduct != null){
-            generatedUASB.NMC_Discount__c = escalatorProduct.New_NMC_Discount__c;
-            generatedUASB.Solar_Electricity_Rate__c = escalatorProduct.New_Solar_Electricity_Rate__c;
+        if (escalatorForThisTransfer != null){
+            generatedUASB.NMC_Discount__c = escalatorForThisTransfer.New_NMC_Discount__c;
+            generatedUASB.Solar_Electricity_Rate__c = escalatorForThisTransfer.New_Solar_Electricity_Rate__c;
         }
 
         return generatedUASB;

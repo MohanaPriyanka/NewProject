@@ -397,11 +397,7 @@ public class MultipleMonthProductionUpdateTest {
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferA2, transferA3, transferA4, transferA5, transferA6, transferA7});
         Test.stopTest();
 
-
-        EnergyUsageUpdateTriggerHandler ee1 = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{bpA1});
-        ee1.runBills();
-        EnergyUsageUpdateTriggerHandler ee2 = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{bpA2});
-        ee2.runBills();
+        BillGenerationServiceTest.generateBills(new List<Id>{bpA1.Id, bpA2.Id});
     }
 
     @isTest public static void testBillCreation() {
@@ -433,9 +429,6 @@ public class MultipleMonthProductionUpdateTest {
         System.assertEquals(23000, uasblist[3].Total_System_NMCs__c);
         System.assertEquals(0.1234, uasblist[4].NMC_Rate__c);
         System.assertEquals(364667, uasblist[5].Total_System_Production_kWh__c);
-        System.assertEquals(uasblist[7].System_Bill__c, uasblist[6].System_Bill__c);
-        System.assertNotEquals(uasblist[7].System_Bill__c, uasblist[8].System_Bill__c);
-        System.assertEquals(uasblist[8].System_Bill__c, uasblist[11].System_Bill__c);
         System.assertEquals(0.1234, uasblist[9].NMC_Rate__c);
         System.assertEquals(0.1619, uasblist[10].NMC_Rate__c);
     }

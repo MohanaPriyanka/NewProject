@@ -29,7 +29,6 @@ public with sharing class ClientReportingServiceTest {
     }
     @IsTest
     public static void testAdjustmentClientOwnerStamp() {
-        Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
         Utility_Account_Subscription__c uas = [
             SELECT Id, Opportunity__r.Shared_Solar_System__c, Opportunity__r.AccountId,
                 Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c, Externally_Serviced__c
@@ -99,34 +98,39 @@ public with sharing class ClientReportingServiceTest {
     }
     @IsTest
     public static void testUASBClientOwnerStamp() {
-        Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
-        Bill_Period__c billPeriod = [
-            SELECT Id, Shared_Solar_System__c, Bill_Date__c, Bill_Status__c
-            FROM Bill_Period__c
-            WHERE Name = 'sssA - March 2016'
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Opportunity__r.AccountId
+            FROM Utility_Account_Subscription__c
         ];
-        Transfer__c transfer = [
-            SELECT Id, Name, Shared_Solar_System__c, Allocation_Schedule__c, Attempted_Transfer__c, Bill_Period__c,
-                Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Total_kWh_Transferred__c,
-                Total_Transferred__c, Transfer_Amount__c, Transfer_kWh__c, Transfer_Type__c, Date_of_Transfer__c,
-                Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
-            FROM Transfer__c
-            WHERE Bill_Period__c = :billPeriod.Id
-            LIMIT 1
-        ];
-        TransferPartService transferPartService = new TransferPartService();
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transfer});
-        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{billPeriod});
-        ee.runBills();
+
+        UASB__c billOne = new UASB__c(
+            Account__c = uasList[0].Opportunity__r.AccountId,
+            Zuora_Id__c = 'bbb1230005',
+            Utility_Account_Subscription__c = uasList[0].Id
+        );
+        UASB__c billTwo = new UASB__c(
+            Account__c = uasList[0].Opportunity__r.AccountId,
+            Zuora_Id__c = 'bbb1230001',
+            Utility_Account_Subscription__c = uasList[0].Id
+        );
+        UASB__c billThree = new UASB__c(
+            Account__c = uasList[0].Opportunity__r.AccountId,
+            Zuora_Id__c = 'bbb1230001',
+            Utility_Account_Subscription__c = uasList[0].Id
+        );
+        insert new List<UASB__c>{billOne, billTwo, billThree};
+
         List<UASB__c> uasbs = [
-            SELECT Id, Client__c
+            SELECT Id, Client__c,
+                Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
             FROM UASB__c
         ];
         System.assert(uasbs.size() > 0);
+
         for (UASB__c uasb : uasbs) {
             System.assertNotEquals(null, uasb.Client__c);
             System.assertEquals(
-                transfer.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
+                uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
                 uasb.Client__c
             );
         }
@@ -206,7 +210,6 @@ public with sharing class ClientReportingServiceTest {
     }
     @IsTest
     public static void testExternallyServicedAdjustment() {
-        Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
         Transfer__c transfer = [
             SELECT Id, Name, Shared_Solar_System__c, Allocation_Schedule__c, Attempted_Transfer__c, Bill_Period__c,
                 Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Total_kWh_Transferred__c,
