@@ -345,7 +345,7 @@ public class ScheduleZTriggerHandlerTest {
 
         FeatureService featureService = new FeatureService();
         if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(20.23191898, sss1ScheduleZs[0].Customer_Subscription_kW_DC__c);
+            System.assertEquals(20.230473, sss1ScheduleZs[0].Customer_Subscription_kW_DC__c);
         } else {
             System.assertEquals(20.2312, sss1ScheduleZs[0].Customer_Subscription_kW_DC__c);
         }
@@ -385,7 +385,7 @@ public class ScheduleZTriggerHandlerTest {
 
         FeatureService featureService = new FeatureService();
         if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(4.61518512 , sss2ScheduleZs[0].Customer_Subscription_kW_DC__c);
+            System.assertEquals(4.615185, sss2ScheduleZs[0].Customer_Subscription_kW_DC__c);
         } else {
             System.assertEquals(4.6154 , sss2ScheduleZs[0].Customer_Subscription_kW_DC__c);
         }
