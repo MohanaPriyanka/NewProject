@@ -69,6 +69,7 @@ public class ZuoraOutstandingItemsService {
     public class RatePlanCharge{
         public String Id;
         public String ChargeNumber;
+        public String ProductRatePlanChargeId;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
 

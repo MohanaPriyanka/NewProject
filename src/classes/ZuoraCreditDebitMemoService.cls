@@ -52,14 +52,14 @@ public class ZuoraCreditDebitMemoService {
         return adjustment;
     }
 
+    @TestVisible
     private static Bill_Adjustment__c handleCreditMemo(Bill_Adjustment__c adjustment, Date effectiveDate) {
         ZuoraAPI.CreditMemo creditMemo;
         HttpResponse response;
-        if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
             try {
-                creditMemo = convertSFAdjustToCreditMemoFromInvoice(adjustment, effectiveDate);
+            creditMemo = convertSFAdjustToCreditMemo(adjustment);
                 creditMemo.effectiveDate = effectiveDate;
-                response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/invoices/' + creditMemo.invoiceId + '/creditmemos', creditMemo, false);
+            response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/creditmemos', creditMemo, false);
             } catch (Util.BWException bwe) {
                 Logger.logLater(
                     'ZuoraCreditDebitMemoService',
@@ -69,11 +69,6 @@ public class ZuoraCreditDebitMemoService {
                 );
                 return null;
             }
-        } else {
-            creditMemo = convertSFAdjustToCreditMemo(adjustment);
-            creditMemo.effectiveDate = effectiveDate;
-            response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/creditmemos', creditMemo, false);
-        }
 
         adjustment = handleAPIResponse(
             creditMemo.CRM_ID_Zcustom,
@@ -177,53 +172,24 @@ public class ZuoraCreditDebitMemoService {
         return creditMemo;
     }
 
-    @TestVisible
-    private static ZuoraAPI.CreditMemo convertSFAdjustToCreditMemoFromInvoice(Bill_Adjustment__c adjust, Date effectiveDate) {
-        String accountId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
+    private static String getChargeFromAdjustment(Bill_Adjustment__c adjust){
+        String zuoraAcctId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         String client = adjust.Client__r.Account_Number__c;
         String project = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
 
-        ZuoraAPI.CreditMemo creditMemo = new ZuoraAPI.CreditMemo();
-        ZuoraAPI.CreditMemoItem creditMemoItem = new ZuoraAPI.CreditMemoItem();
-        creditMemoItem.amount = -adjust.Adjustment_Amount__c;
-        creditMemoItem.skuName = 'Utility Credit';
-        creditMemo.items = new List<ZuoraAPI.CreditMemoItem>{creditMemoItem};
-        creditMemo.effectiveDate = effectiveDate;
-        creditMemo.reasonCode = adjust.Adjustment_Type__c;
-        creditMemo.Project_Zcustom = project;
-        creditMemo.ClientOwner_Zcustom = client;
-        creditMemo.CRM_ID_Zcustom = adjust.Id;
-
+        if (featureService.isEnabled('Multiple_Subscriptions')) {
         Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
-            ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(accountId);
-        List<ZuoraAPI.InvoiceItem> invoiceItems = invoiceService.getRecentItems(accountId);
-        invoiceItems.sort();
-        for (ZuoraAPI.InvoiceItem invoiceItem : invoiceItems) {
-            ZuoraOutstandingItemsService.RatePlanCharge ratePlanCharge = ratePlanChargesByChargeId.get(invoiceItem.chargeId);
-            if (ratePlanCharge != null && ratePlanCharge.matches(client, project)) {
-                creditMemo.invoiceId = invoiceItem.invoiceId;
-                creditMemoItem.invoiceItemId = invoiceItem.id;
-                break;
-            }
+                ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(zuoraAcctId);
+            for (ZuoraOutstandingItemsService.RatePlanCharge ratePlanCharge : ratePlanChargesByChargeId.values()) {
+                if (ratePlanCharge.matches(client, project)) {
+                    return ratePlanCharge.ProductRatePlanChargeId;
         }
-
-        if (creditMemo.invoiceId == null || creditMemoItem.invoiceItemId == null) {
-            throw new Util.BWException('Could not relate adjustment ' + adjust.Id +
-                ' with client: ' + client + ' and project: ' + project + ' to an invoice.\n' +
-                'RatePlanCharges: ' + JSON.serialize(ratePlanChargesByChargeId) + '\n' +
-                'InvoiceItems: ' + JSON.serialize(invoiceItems));
         }
-        return creditMemo;
-    }
-
-    private static String getChargeFromAdjustment(Bill_Adjustment__c adjust){
-        String zuoraAcctId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
-
+            throw new Util.BWException('No client/project found for client: ' + client + ' and project '+ project);
+        } else {
         ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
-        return subscription.getProductRatePlanChargeId(
-            adjust.Client__r.Account_Number__c,
-            adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
-        );
+            return subscription.getProductRatePlanChargeId(client, project);
+        }
     }
 
     public static Bill_Adjustment__c handleAPIResponse(String memoCRMId, HttpResponse response, Boolean isCredit){

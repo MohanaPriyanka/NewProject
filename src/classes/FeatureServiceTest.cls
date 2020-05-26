@@ -32,11 +32,24 @@ private class FeatureServiceTest {
         System.assertNotEquals(null, checkFeature);
     }
 
+    @IsTest
+    public static void testFeatureServiceMock() {
+        FeatureService featureService;
+        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Relate_Debit_Memos_To_Invoices'=>false,'Multiple_Subscriptions'=>true};
+        featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
+        System.assert(!featureService.isEnabled('Relate_Debit_Memos_To_Invoices'), 'Relate_Debit_Memos_To_Invoices should not be enabled');
+        System.assert(featureService.isEnabled('Multiple_Subscriptions'), 'Multiple_Subscriptions should be enabled');
+        try {
+            featureService.isEnabled('Feature_Not_Set');
+            System.assert(false, 'Asking for a feature that is not set should throw an exception');
+        } catch (Util.BWException bwe) {
+            System.assert(bwe.getMessage().contains('Feature needs to be set explicitly'), bwe.getMessage());
+        }
+    }
 
     private static void useMocks(Boolean featureOn) {
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockCustomFeatureSelector(featureOn));
     }
-
 
     public class MockCustomFeatureSelector extends MockProvider {
         private Boolean featureOn;
