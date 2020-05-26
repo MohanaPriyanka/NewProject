@@ -628,7 +628,8 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <label>Value of NMC</label>
         <precision>18</precision>
         <required>false</required>
-        <scale>2</scale>
+        <scale>4</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
