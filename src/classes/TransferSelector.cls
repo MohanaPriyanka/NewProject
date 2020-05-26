@@ -85,6 +85,7 @@ public without sharing class TransferSelector {
             AND Bills_Generated__c = false
             AND Bill_By__c = 'UASB'
             AND Transferred_To__c = 'Customer'
+            ORDER BY Date_of_Transfer__c
         ];
     }
 

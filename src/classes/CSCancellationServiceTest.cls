@@ -60,8 +60,8 @@ public with sharing class CSCancellationServiceTest {
             FROM Bill_Period__c
             WHERE Id = : bpA1.Id
         ];
-        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(billPeriods);
-        ee.runBills();
+        BillGenerationAsyncService ee = new BillGenerationAsyncService(billPeriods);
+        ee.executeBatchJob();
     }
 
     @IsTest static void testOverdueAccounts() {
@@ -646,35 +646,31 @@ public with sharing class CSCancellationServiceTest {
         newUASes[0].Next_Schedule_Z_Status__c = 'Inactive Subscription';
         update newUASes;
 
-        List<System_Bill__c> systemBills = [
-            SELECT Id, Date__c, Opportunity__c, Opportunity__r.StageName, (
-                SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c
-                FROM Utility_Account_Subscription_Bills__r
-                ORDER BY Utility_Account_Subscription__r.Next_Schedule_Z_Status__c
-            )
-            FROM System_Bill__c
+        List<UASB__c> uasbList = [
+            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+                Opportunity__c, Opportunity__r.StageName, Date__c
+            FROM UASB__c
         ];
 
         Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills());
         Boolean foundOpp = false;
-        for (System_Bill__c systemBill : systemBills) {
-            if (opportunityMap.get(systemBill.Opportunity__c) != null) {
+        for (UASB__c uasb : uasbList) {
+            if (opportunityMap.get(uasb.Opportunity__c) != null) {
                 foundOpp = true;
-                System.assert(Opportunities.finishedBilling(opportunityMap.get(systemBill.Opportunity__c)));
-                System.assert(!Opportunities.isCancelledWaitlist(opportunityMap.get(systemBill.Opportunity__c)));
-                System.assert(Opportunities.hasActiveUASes(opportunityMap.get(systemBill.Opportunity__c)));
-                System.assert(!Opportunities.allUASesTransferring(opportunityMap.get(systemBill.Opportunity__c)));
+                System.assert(Opportunities.finishedBilling(opportunityMap.get(uasb.Opportunity__c)));
+                System.assert(!Opportunities.isCancelledWaitlist(opportunityMap.get(uasb.Opportunity__c)));
+                System.assert(Opportunities.hasActiveUASes(opportunityMap.get(uasb.Opportunity__c)));
+                System.assert(!Opportunities.allUASesTransferring(opportunityMap.get(uasb.Opportunity__c)));
             }
         }
         System.assert(foundOpp);
 
         // Since there's a single opportunity for a single system, we generate a single bill with a single UAS that's still active
-        System.assertEquals(1, systemBills.size());
-        System.assertEquals(2, systemBills[0].Utility_Account_Subscription_Bills__r.size());
-        System.assertEquals('Active Subscription', systemBills[0].Utility_Account_Subscription_Bills__r[0].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
-        System.assertEquals('Inactive Subscription', systemBills[0].Utility_Account_Subscription_Bills__r[1].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
-        System.assertEquals(Date.newInstance(2018,1,1), systemBills[0].Date__c);
-        System.assertEquals('Complete', systemBills[0].Opportunity__r.StageName);
+        System.assertEquals(2, uasbList.size());
+        System.assertEquals('Active Subscription', uasbList[0].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
+        System.assertEquals('Inactive Subscription', uasbList[1].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
+        System.assertEquals(Date.newInstance(2018,1,1), uasbList[0].Date__c);
+        System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
         Test.startTest();
         CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
@@ -683,7 +679,7 @@ public with sharing class CSCancellationServiceTest {
         List<Opportunity> oppList = [
             SELECT Id, StageName
             FROM Opportunity
-            WHERE Id = :systemBills[0].Opportunity__c
+            WHERE Id = : uasbList[0].Opportunity__c
         ];
         // The System Bill's opportunity shouldn't be cancelled, since it has an active UAS even though it has an inactive UAS
         System.assertEquals(1, oppList.size());
@@ -701,33 +697,30 @@ public with sharing class CSCancellationServiceTest {
         }
         update uases;
 
-        List<System_Bill__c> systemBills = [
-            SELECT Id, Date__c, Opportunity__c, Opportunity__r.StageName, (
-                SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c
-                FROM Utility_Account_Subscription_Bills__r
-            )
-            FROM System_Bill__c
+        List<UASB__c> uasbList = [
+            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+                Opportunity__c, Opportunity__r.StageName, Date__c
+            FROM UASB__c
         ];
 
         Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills());
         Boolean foundOpp = false;
-        for (System_Bill__c systemBill : systemBills) {
-            if (opportunityMap.get(systemBill.Opportunity__c) != null) {
+        for (UASB__c uasb : uasbList) {
+            if (opportunityMap.get(uasb.Opportunity__c) != null) {
                 foundOpp = true;
-                System.assert(Opportunities.finishedBilling(opportunityMap.get(systemBill.Opportunity__c)));
-                System.assert(!Opportunities.isCancelledWaitlist(opportunityMap.get(systemBill.Opportunity__c)));
-                System.assert(!Opportunities.hasActiveUASes(opportunityMap.get(systemBill.Opportunity__c)));
-                System.assert(!Opportunities.allUASesTransferring(opportunityMap.get(systemBill.Opportunity__c)));
+                System.assert(Opportunities.finishedBilling(opportunityMap.get(uasb.Opportunity__c)));
+                System.assert(!Opportunities.isCancelledWaitlist(opportunityMap.get(uasb.Opportunity__c)));
+                System.assert(!Opportunities.hasActiveUASes(opportunityMap.get(uasb.Opportunity__c)));
+                System.assert(!Opportunities.allUASesTransferring(opportunityMap.get(uasb.Opportunity__c)));
             }
         }
         System.assert(foundOpp);
 
         // Since there's a single opportunity for a single system, we generate a single bill with a single UAS that's still active
-        System.assertEquals(1, systemBills.size());
-        System.assertEquals(1, systemBills[0].Utility_Account_Subscription_Bills__r.size());
-        System.assertEquals('Inactive Subscription', systemBills[0].Utility_Account_Subscription_Bills__r[0].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
-        System.assertEquals(Date.newInstance(2018,1,1), systemBills[0].Date__c);
-        System.assertEquals('Complete', systemBills[0].Opportunity__r.StageName);
+        System.assertEquals(1, uasbList.size());
+        System.assertEquals('Inactive Subscription', uasbList[0].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
+        System.assertEquals(Date.newInstance(2018,1,1), uasbList[0].Date__c);
+        System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
         Test.startTest();
         CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
@@ -736,7 +729,7 @@ public with sharing class CSCancellationServiceTest {
         List<Opportunity> oppList = [
             SELECT Id, StageName
             FROM Opportunity
-            WHERE Id = :systemBills[0].Opportunity__c
+            WHERE Id = : uasbList[0].Opportunity__c
         ];
         // The System Bill's opportunity should be cancelled, since it doesn't have an active UAS and hasn't had a recent bill generated
         System.assertEquals(1, oppList.size());
@@ -761,19 +754,17 @@ public with sharing class CSCancellationServiceTest {
         }
         update uases;
 
-        List<System_Bill__c> systemBills = [
-            SELECT Id, Date__c, Opportunity__c, Opportunity__r.StageName, (
-                SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c
-                FROM Utility_Account_Subscription_Bills__r
-            )
-            FROM System_Bill__c
+        List<UASB__c> uasbList = [
+            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+                Opportunity__c, Opportunity__r.StageName, Date__c
+            FROM UASB__c
         ];
 
         Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills());
         // Since there's a single opportunity for a single system, we generate a single bill with a single UAS that's still active
-        System.assertEquals(1, systemBills.size());
+        System.assertEquals(1, uasbList.size());
         System.assertEquals(0, opportunityMap.size(), 'There shouldn\t be any opportunities selected, since they\'re all anchors');
-        System.assertEquals('Complete', systemBills[0].Opportunity__r.StageName);
+        System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
         Test.startTest();
         CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
@@ -782,7 +773,7 @@ public with sharing class CSCancellationServiceTest {
         List<Opportunity> oppList = [
             SELECT Id, StageName
             FROM Opportunity
-            WHERE Id = :systemBills[0].Opportunity__c
+            WHERE Id = : uasbList[0].Opportunity__c
         ];
         // The System Bill's opportunity shouldn't be cancelled since it's an anchor
         System.assertEquals(1, oppList.size());
@@ -833,17 +824,15 @@ public with sharing class CSCancellationServiceTest {
         }
         update uases;
 
-        List<System_Bill__c> systemBills = [
-            SELECT Id, Date__c, Opportunity__c, Opportunity__r.StageName, (
-                SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c
-                FROM Utility_Account_Subscription_Bills__r
-            )
-            FROM System_Bill__c
+        List<UASB__c> uasbList = [
+            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+                Opportunity__c, Opportunity__r.StageName, Date__c
+            FROM UASB__c
         ];
 
         Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills());
-        for (System_Bill__c systemBill : systemBills) {
-            Opportunity opp = opportunityMap.get(systemBill.Opportunity__c);
+        for (UASB__c uasb : uasbList) {
+            Opportunity opp = opportunityMap.get(uasb.Opportunity__c);
             if (opp != null) {
                 System.assert(Opportunities.finishedBilling(opp));
                 System.assert(!Opportunities.isCancelledWaitlist(opp));
@@ -862,9 +851,9 @@ public with sharing class CSCancellationServiceTest {
         }
 
         // Since there's a single opportunity for a single system, we generate a single bill with a single UAS that's still active
-        System.assertEquals(2, systemBills.size());
-        System.assertEquals('Complete', systemBills[0].Opportunity__r.StageName);
-        System.assertEquals('Complete', systemBills[1].Opportunity__r.StageName);
+        System.assertEquals(4, uasbList.size());
+        System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
+        System.assertEquals('Complete', uasbList[2].Opportunity__r.StageName);
 
         CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
         Test.stopTest();
