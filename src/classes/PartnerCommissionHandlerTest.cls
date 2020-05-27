@@ -4,36 +4,43 @@ public class PartnerCommissionHandlerTest {
         Journal_Entry__c entryOne = new Journal_Entry__c(
             Project__c = 'SSS-0002',
             Customer_Account__c = 'BW-00001',
+            Amount__c = 10,
             Object_Type__c = 'PaymentPart'
         );
         Journal_Entry__c entryTwo = new Journal_Entry__c(
             Project__c = 'SSS-0002',
             Customer_Account__c = 'BW-00001',
+            Amount__c = 12,
             Object_Type__c = 'InvoiceItem'
         );
         Journal_Entry__c entryThree = new Journal_Entry__c(
             Project__c = 'SSS-0002',
             Customer_Account__c = 'BW-00004',
+            Amount__c = 12,
             Object_Type__c = 'InvoiceItem'
         );
         Journal_Entry__c entryFour = new Journal_Entry__c(
             Project__c = 'SSS-0003',
             Customer_Account__c = 'BW-00004',
+            Amount__c = 10,
             Object_Type__c = 'PaymentPart'
         );
         Journal_Entry__c entryFive = new Journal_Entry__c(
             Project__c = 'SSS-0003',
             Customer_Account__c = 'BW-00002',
+            Amount__c = 10,
             Object_Type__c = 'PaymentPart'
         );
         Journal_Entry__c entrySix = new Journal_Entry__c(
             Project__c = 'SSS-0003',
             Customer_Account__c = 'BW-00002',
+            Amount__c = 10,
             Object_Type__c = 'PaymentPart'
         );
         Journal_Entry__c entrySeven = new Journal_Entry__c(
             Project__c = 'SSS-0002',
             Customer_Account__c = 'BW-00001',
+            Amount__c = 10,
             Object_Type__c = 'InvoiceItem'
         );
         List<Journal_Entry__c> entryList = new List<Journal_Entry__c>{
@@ -106,6 +113,26 @@ public class PartnerCommissionHandlerTest {
             }
         }
         System.assert(containsBW001);
+    }
+
+    @IsTest
+    private static void testFindUninvoicedCommissionWithZeroAmount() {
+        useMocks();
+        List<Journal_Entry__c> entries = [
+            SELECT Id, Amount__c
+            FROM Journal_Entry__c
+            WHERE Object_Type__c = 'InvoiceItem'
+        ];
+        System.assert(entries.size() >= 3);
+        entries[0].Amount__c = 0;
+        entries[1].Amount__c = 0;
+        entries[2].Amount__c = 0;
+        update entries;
+
+        PartnerCommissionHandler commiss = new PartnerCommissionHandler();
+        PartnerCommissionHandler.PendingBillCommission oppLists = commiss.findUninvoicedCommission(null);
+        System.assertEquals(0,oppLists.FirstBillOpps.size());
+        System.assertEquals(3,oppLists.FirstPaymentOpps.size());
     }
 
     @IsTest
