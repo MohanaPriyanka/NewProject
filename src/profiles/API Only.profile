@@ -375,6 +375,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ExecuteSOQL</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ExecuteSOQLTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>FileDeliveryHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -4976,6 +4984,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Shared_Solar_System__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Shared_with_Client__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
