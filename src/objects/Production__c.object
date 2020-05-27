@@ -292,6 +292,11 @@
             <operation>notEqual</operation>
             <value>Customer</value>
         </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Transfer</value>
+        </summaryFilterItems>
         <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackTrending>false</trackTrending>
