@@ -39,15 +39,34 @@ public without sharing class SimpleSignupFormController {
 
         return contentDocumentSelector.getPublicDistributionLinkByDocId(documentId);
     }
+    
 
     @AuraEnabled
-    public static List<ContentDocumentLink> getContentDocumentLinksByLead(Id leadId, String email) {
+    public static String getContentDocumentLinksByLead(Id leadId, String email, String mostRecentDocsStr) {
         try {
             restControllerV3.validateAuthorization(leadId, email);
         } catch (Util.AuthorizationBWException abwe) {
             throw Util.createAuraExceptionWithMessage('The email (' + email + ') and leadId (' + leadId + ') provided did not match');
         }
 
-        return contentDocumentSelector.selectByLinkedEntity(leadId);
+        List<RestLead.RestContentDocument> mostRecentDocs = new List<RestLead.RestContentDocument>();
+        if(String.isNotBlank(mostRecentDocsStr)) {
+            mostRecentDocs = (List<RestLead.RestContentDocument>)JSON.deserialize(mostRecentDocsStr, List<RestLead.RestContentDocument>.class);
+        }
+        List<ContentDocumentLink> cdlList = new List<ContentDocumentLink>();
+        if(mostRecentDocs!=null && !mostRecentDocs.isEmpty()) {
+            cdlList = contentDocumentSelector.getContractsAfterDateByLinkedEntity(leadId, mostRecentDocs[0].createdDate);
+        } else {
+            cdlList = contentDocumentSelector.selectByLinkedEntity(leadId);
+        }
+        
+        List<RestLead.RestContentDocument> returnRcd = new List<RestLead.RestContentDocument>();
+        for(ContentDocumentLink cdl : cdlList) {
+            RestLead.RestContentDocument rcd = new RestLead.RestContentDocument(cdl);
+            rcd.publicUrl = contentDocumentSelector.getPublicDistributionLinkByDocId(rcd.id);
+            returnRcd.add(rcd);
+        }
+        
+        return JSON.serialize(returnRcd);
     }
 }

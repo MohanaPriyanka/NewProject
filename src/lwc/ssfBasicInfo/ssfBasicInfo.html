@@ -20,7 +20,7 @@
       <lightning-input name="lastName" value={restLead.lastName} class="slds-m-left--small slds-m-right--small" label="Last Name" onchange={genericOnChange} required></lightning-input>
     </div>
     <div class="slds-size--1-of-1">
-      <lightning-input name="email" value={restLead.email} class="slds-m-left--small slds-m-right--small" label="Email" onchange={genericOnChange} type="email" required></lightning-input>
+      <lightning-input name="email" value={restLead.email} class="slds-m-left--small slds-m-right--small" label="Email" onchange={genericOnChange} type="email" required disabled={resumedApp}></lightning-input>
     </div>
     <template if:true={resiApplicationType}>
       <div class="slds-size--1-of-1">
@@ -53,9 +53,11 @@
         <template iterator:it={propertyAccount.utilityAccountLogs}>
             <lightning-accordion-section key={it.value.localid} name={it.value.localid} label={it.value.name}>
                 <template if:false={it.first}>
-                <lightning-button-menu name={it.index} key={it.value.localid} slot="actions" alternative-text="Show menu" icon-size="x-small" menu-alignment="auto" onselect={handleUtilityAccountMenu}>
-                    <lightning-menu-item name={it.index} value="remove" label="Remove" ></lightning-menu-item>
-                </lightning-button-menu>
+                    <template if:false={it.value.doNotDelete}>
+                        <lightning-button-menu name={it.index} key={it.value.localid} slot="actions" alternative-text="Show menu" icon-size="x-small" menu-alignment="auto" onselect={handleUtilityAccountMenu}>
+                            <lightning-menu-item name={it.index} value="remove" label="Remove" ></lightning-menu-item>
+                        </lightning-button-menu>
+                    </template>
                 </template>
                 <div class="slds-grid slds-wrap">
                 <div class="slds-size--1-of-1 slds-small-size--1-of-2">

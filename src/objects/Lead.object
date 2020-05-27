@@ -2420,6 +2420,17 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Generate_Docs_for_Review__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Updated by LWC/PATCH call to retrieve new docs when relevant Lead fields are updated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Flag that triggers a WFR to generate disclosure form and contracts for the Lead</inlineHelpText>
+        <label>Generate Docs for Review</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>HasOptedOutOfEmail</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
