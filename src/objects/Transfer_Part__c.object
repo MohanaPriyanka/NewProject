@@ -307,6 +307,17 @@ FALSE)</formula>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Transfer_Transferred_To__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped from Transfer&apos;s Transferred to field at creation, so the filter can be used for rollup fields on production</inlineHelpText>
+        <label>Transfer Transferred To</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Transfer__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <description>A lookup relationship from Transfer Parts up to Transfer.</description>

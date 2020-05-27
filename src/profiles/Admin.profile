@@ -27201,6 +27201,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Partner__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Partner__c.Additional_CC_Email__c</field>
         <readable>true</readable>
     </fieldPermissions>
