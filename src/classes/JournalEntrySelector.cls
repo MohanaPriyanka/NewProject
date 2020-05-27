@@ -22,6 +22,7 @@ public inherited sharing class JournalEntrySelector {
             FROM Journal_Entry__c
             WHERE Customer_Account__c IN : accountNumber
             AND (Object_Type__c = 'InvoiceItem' OR Object_Type__c = 'PaymentPart')
+            AND Amount__c != 0
             GROUP BY Customer_Account__c, Object_Type__c, Project__c
         ];
         return entries;
