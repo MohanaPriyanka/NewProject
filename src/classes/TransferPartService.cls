@@ -183,6 +183,7 @@ public without sharing class TransferPartService {
                             Production__c = production.Id,
                             Transfer__c = transfer.Id,
                             Amount__c = transfer.Transfer_Amount__c,
+                            Transfer_Transferred_To__c = transfer.Transferred_To__c,
                             kWh_Amount__c = transfer.Transfer_kWh__c
                         );
 

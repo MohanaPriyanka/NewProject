@@ -282,6 +282,27 @@
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Credits_Transferred_to_BW_or_Client__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of all transfers where Transfer Type = BW or Client</inlineHelpText>
+        <label>Credits Transferred to BW or Client</label>
+        <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Transfer_Transferred_To__c</field>
+            <operation>notEqual</operation>
+            <value>Customer</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Transfer</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Customer_Savings__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Rollup of parts with Type = Customer Savings</inlineHelpText>
@@ -378,7 +399,7 @@
     <fields>
         <fullName>Unbilled_Credits__c</fullName>
         <externalId>false</externalId>
-        <formula>Credits_Transferred__c - Customer_Savings__c - Credits_Billed__c - Credits_Externally_Serviced__c</formula>
+        <formula>Credits_Transferred__c - Credits_Transferred_to_BW_or_Client__c - Customer_Savings__c - Credits_Billed__c - Credits_Externally_Serviced__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Unbilled credits. Credits Transferred - Credits Billed. If transferred credits have not yet been billed, this value will be positive</inlineHelpText>
         <label>Pending Billing</label>
