@@ -471,4 +471,172 @@ public with sharing class RESTRouterV3Test {
         }
         System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
     }
+
+    
+
+    /** Contract **/
+    
+    @IsTest
+    static void testPatchContractNoContracts() {
+        // <setup>
+        Product2 product = new Product2(
+            Name = 'CS Product',
+            Generic_Terms_Conga_Template__c = null
+        );
+        insert product;
+        
+        Lead lead = new Lead(
+            FirstName = 'System',
+            LastName = 'Testcase',
+            Email = 'test@invalid.bluewavesolar.com',
+            Company = 'System Testcase',
+            LeadSource = 'Website',
+            Phone = '4444444444',
+            Product__c = product.Id
+        );
+        insert lead;
+        
+        Account propertyAccount = new Account(
+            Lead__c = lead.Id,
+            Name = 'test account'
+        );
+        insert propertyAccount;
+        
+        // </setup>
+
+
+        String jsonRequest = '{' +
+            '   "leadId": "' + lead.Id + '",' +
+            '   "email": "test@invalid.bluewavesolar.com"' +
+            '}';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v3/contracts';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV3.patchRequest();
+
+        RestResponse response = RestContext.response;
+        System.assertEquals(500, response.statusCode, 'PATCH contract for lead with no associated contracts should throw an error');   
+    }
+
+    
+    @IsTest
+    static void testPatchContractInvalidAuth() {
+        // <setup>
+        Product2 product = new Product2(
+            Name = 'CS Product',
+            Generic_Terms_Conga_Template__c = null
+        );
+        insert product;
+        
+        Lead lead = new Lead(
+            FirstName = 'System',
+            LastName = 'Testcase',
+            Email = 'test@invalid.bluewavesolar.com',
+            Company = 'System Testcase',
+            LeadSource = 'Website',
+            Phone = '4444444444',
+            Product__c = product.Id
+        );
+        insert lead;
+        
+        Account propertyAccount = new Account(
+            Lead__c = lead.Id,
+            Name = 'test account'
+        );
+        insert propertyAccount;
+        
+        // </setup>
+
+
+        String jsonRequest = '{' +
+            '   "leadId": "' + lead.Id + '",' +
+            '   "email": "fake@fake.bluewavesolar.com"' +
+            '}';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v3/contracts';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV3.patchRequest();
+
+        RestResponse response = RestContext.response;
+        System.assertEquals(401, response.statusCode, 'PATCH contract that fails authentication should throw an error');   
+    }
+
+
+    @IsTest
+    static void testPatchContractSuccess() {
+        // <setup>
+        Product2 product = new Product2(
+            Name = 'CS Product',
+            Generic_Terms_Conga_Template__c = null
+        );
+        insert product;
+        
+        Lead lead = new Lead(
+            FirstName = 'System',
+            LastName = 'Testcase',
+            Email = 'test@invalid.bluewavesolar.com',
+            Company = 'System Testcase',
+            LeadSource = 'Website',
+            Phone = '4444444444',
+            Product__c = product.Id
+        );
+        insert lead;
+        
+        Account propertyAccount = new Account(
+            Lead__c = lead.Id,
+            Name = 'test account'
+        );
+        insert propertyAccount;
+
+        Contract contract = new Contract(
+            Lead__c = lead.Id,
+            Product__c = product.Id,
+            RecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByDeveloperName().get('Customer_Contract').getRecordTypeId(),
+            AccountId = propertyAccount.Id,
+            Contract_Type__c = 'Generic',
+            Customer_Signature_Date_Time__c = null
+        );
+        insert contract;
+        // </setup>
+
+
+        String jsonRequest = '{' +
+            '   "leadId": "' + lead.Id + '",' +
+            '   "email": "test@invalid.bluewavesolar.com"' +
+            '}';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v3/contracts';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV3.patchRequest();
+
+        RestResponse response = RestContext.response;
+        System.assertEquals(200, response.statusCode, 'PATCH contract for valid lead id with associated contracts should succeed');   
+
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        System.assertEquals('OK', (String)responseEnvelope.get('data'), 'PATCH contract should return true for valid lead id with associated contracts');
+        contract = [SELECT Id, Customer_Signature_Date_Time__c FROM Contract WHERE Id = :contract.Id LIMIT 1];
+        System.assertEquals(Date.today(), contract.Customer_Signature_Date_Time__c.date(), 'PATCH contract should have set the Customer Signature Date Time field');
+    }
 }
