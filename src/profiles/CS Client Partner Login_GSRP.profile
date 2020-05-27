@@ -1350,10 +1350,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>EnergyUsageUpdateTriggerHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>Excel</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3578,14 +3574,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SystemBillsSelector</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SystemBillsSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>TaskHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3691,10 +3679,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UtilTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UtilityAccountBillTriggerHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
