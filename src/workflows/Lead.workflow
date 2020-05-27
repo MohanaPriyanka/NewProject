@@ -750,6 +750,15 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
+        <fullName>Uncheck_Generate_Docs_for_Review_c</fullName>
+        <field>Generate_Docs_for_Review__c</field>
+        <literalValue>0</literalValue>
+        <name>Uncheck Generate_Docs_for_Review__c</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Update_Record_Type_CS</fullName>
         <field>RecordTypeId</field>
         <lookupValue>BFG_Community_Solar</lookupValue>
@@ -1283,11 +1292,18 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
     <rules>
         <fullName>Generate SSF Documents %28Review Version%29</fullName>
         <actions>
+            <name>Uncheck_Generate_Docs_for_Review_c</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
             <name>Conga_Trigger_Review_Contract_Generae</name>
             <type>OutboundMessage</type>
         </actions>
         <active>true</active>
-        <formula>AND( Product_line__c=&quot;Community Solar&quot;, ISPICKVAL(LeadSource,&quot;Switch&quot;), ISBLANK(Customer_Signed_Date__c), NOT(ISBLANK(Product__c)), $User.LastName!=&quot;Originations&quot; )</formula>
+        <description>Previous logic:
+AND( Product_line__c=&quot;Community Solar&quot;, ISPICKVAL(LeadSource,&quot;Switch&quot;), ISBLANK(Customer_Signed_Date__c), NOT(ISBLANK(Product__c)), $User.LastName!=&quot;Originations&quot; )
+Logic moved into POST lead API</description>
+        <formula>Generate_Docs_for_Review__c</formula>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
