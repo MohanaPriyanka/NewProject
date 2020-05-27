@@ -25,17 +25,20 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track utilityAccountSection;
     @track stateOptions;
     utilityAccountCount = 0;
+    resumedApp = false;
     @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {
         // if a lead has already been created, have the form show existing values
         if(this.leadJson) {
+            this.resumedApp = true;
             this.restLead = JSON.parse(this.leadJson);
             this.propertyAccount = this.restLead.propertyAccounts[0];
             if(this.propertyAccount.utilityAccountLogs) {
                 for(let i=0; i < this.propertyAccount.utilityAccountLogs.length; i++) {
                     this.propertyAccount.utilityAccountLogs[i].localid = i+1;
                     this.propertyAccount.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
+                    this.propertyAccount.utilityAccountLogs[i].doNotDelete = true;
                 }
             }
             this.sameBillingAddress = this.propertyAccount.billingStreet == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
@@ -49,7 +52,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 productName: this.selectedProduct
             }
             this.propertyAccount = { 
-                billingPostalCode: this.zipinput, 
+                billingPostalCode: this.resiApplicationType ? '' : this.zipinput, 
                 utilityAccountLogs: [] 
             };
         }
@@ -151,7 +154,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.propertyAccount.utilityAccountLogs.push({
             localid:this.utilityAccountCount,
             name: `Utility Account ${this.utilityAccountCount}`,
-            servicePostalCode: this.zipinput
+            servicePostalCode: this.zipinput,
+            doNotDelete: false
         });
         setTimeout(() => this.utilityAccountSection = this.utilityAccountCount);
     }
@@ -225,10 +229,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.spinnerMessage = 'We\'ll generate documents next.\r\nThis may take a minute, please stand by.';
         }, 6000);
 
-        if(!this.leadJson) {
+        if(!this.resumedApp) {
             this.createLead(this.restLead).then(
                 (resolveResult) => {
-                    this.dispatchEvent(new CustomEvent('leadcreated', {detail: resolveResult}));
+                    this.dispatchEvent(new CustomEvent('leadcreated', { detail: resolveResult }));
                     this.showSpinner = false;
                 },
                 (rejectResult) => {
@@ -244,29 +248,23 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 }
             );
         } else {
-            let origLead = JSON.parse(this.leadJson);
-            if(this.restLead == origLead) {
-                this.dispatchEvent(new CustomEvent('leadcreated', {detail: this.leadJson}));
-                this.showSpinner = false;
-            } else {
-                this.patchApplication(this.restLead).then(
-                    (resolveResult) => {
-                        this.dispatchEvent(new CustomEvent('leadcreated', {detail: resolveResult}));
-                        this.showSpinner = false;
-                    },
-                    (rejectResult) => {
-                        this.showSpinner = false;
-                        let errors = JSON.parse(rejectResult).errors;
-                        let message = '';
-                        if (errors && errors[0]) {
-                            message += errors[0];
-                        } else {
-                            message += rejectResult;
-                        }
-                        this.showWarningToast('Sorry, we ran into a technical problem!', message);
+            this.patchApplication(this.restLead).then(
+                (resolveResult) => {
+                    this.dispatchEvent(new CustomEvent('leadcreated', { detail: resolveResult }));
+                    this.showSpinner = false;
+                },
+                (rejectResult) => {
+                    this.showSpinner = false;
+                    let errors = JSON.parse(rejectResult).errors;
+                    let message = '';
+                    if (errors && errors[0]) {
+                        message += errors[0];
+                    } else {
+                        message += rejectResult;
                     }
-                );
-            }
+                    this.showWarningToast('Sorry, we ran into a technical problem!', message);
+                }
+            );
         }
     }
 

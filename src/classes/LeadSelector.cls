@@ -71,6 +71,7 @@ public without sharing class LeadSelector {
         'Annual_Cost_of_Electricity__c'
     };
 
+
     public static List<Lead> selectConvertedByIds(List<Id> leadIds) {
         return [
             SELECT Id, ConvertedAccountId, Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c
@@ -91,15 +92,54 @@ public without sharing class LeadSelector {
 
     public List<Lead> selectAll(Set<Id> leadIds) {
         return [
-            SELECT Id, Privacy_Policy_Acknowledged__c, Terms_Conditions__c, Zuora_Payment_Ref_Id__c,
-                Zuora_Payment_Ref_Id_Expiration_Date__c, FirstName, LastName, Email, MobilePhone, LeadSource,
-                Company, Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
-                LASERCA__Home_State__c, LASERCA__Home_Zip__c, Parcel_Zip__c, Street, PostalCode, City, State, LoadZone__c,
-                Partner_Lookup__c, Partner_Lookup__r.Id, Partner_Email__c, bs_Sales_ID__c, Customer_Referral__c, Product__c,
-                Product__r.Id, Phone, Business_Title__c, Utility_relationship__r.Name, Product__r.Name,
-                Application_Complete_Date__c, Status, Utility_relationship__r.EIA_ID__c, Continue_Application_Link__c,
-                Product_line__c, Manual_Campaign_ID__c, Utility_relationship__r.Id, Referral_Name__c, Referral_Email__c,
-                Business_Phone__c, Customer_type__c, Customer_Signed_Date__c
+            SELECT 
+                Id, 
+                Application_Complete_Date__c,
+                Application_Type__c, 
+                bs_Sales_ID__c, 
+                Business_Phone__c, 
+                Business_Title__c, 
+                City, 
+                Company, 
+                Continue_Application_Link__c,
+                CreatedDate,
+                Customer_Referral__c, 
+                Customer_Signed_Date__c, 
+                Customer_type__c, 
+                Email, 
+                FirstName, 
+                Generate_Docs_for_Review__c,
+                LASERCA__Home_Address__c, 
+                LASERCA__Home_City__c,
+                LASERCA__Home_State__c, 
+                LASERCA__Home_Zip__c, 
+                LastName,
+                LeadSource,
+                LoadZone__c,
+                Manual_Campaign_ID__c, 
+                MobilePhone, 
+                Parcel_Zip__c, 
+                Partner_Email__c, 
+                Partner_Lookup__c, 
+                Partner_Lookup__r.Id, 
+                Phone, 
+                PostalCode, 
+                Privacy_Policy_Acknowledged__c,  
+                Product_line__c, 
+                Product__c,
+                Product__r.Id, 
+                Product__r.Name, 
+                Referral_Email__c,
+                Referral_Name__c, 
+                State, 
+                Status, 
+                Street, 
+                Utility_relationship__r.Id, 
+                Utility_relationship__r.EIA_ID__c, 
+                Utility_relationship__r.Name, 
+                Terms_Conditions__c, 
+                Zuora_Payment_Ref_Id__c,
+                Zuora_Payment_Ref_Id_Expiration_Date__c
             FROM Lead
             WHERE Id = :leadIds
         ];
@@ -107,12 +147,13 @@ public without sharing class LeadSelector {
     
 
     public Lead selectOneWithPropertiesAndUtilities(Id leadId) {
-        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', Product__r.Name, Customer_Signed_Date__c, Utility_relationship__r.EIA_ID__c';
+        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Product__r.Name, Customer_Signed_Date__c, Utility_relationship__r.EIA_ID__c';
         query += ', (SELECT ' + String.join(apiPropertyAccountFields, ', ') + ' FROM Accounts__r)';
         query += ', (SELECT ' + String.join(apiUtilityAccountFields, ', ') + ' FROM Utility_Account_Logs__r)';
         query += ' FROM Lead WHERE Id = :leadId LIMIT 1';
         return Database.query(String.escapeSingleQuotes(query));
     }
+
 
     public List<Lead> selectForMerge(Set<Id> leadIds) {
         String fields = String.join(apiLeadFields, ', ');
@@ -120,4 +161,5 @@ public without sharing class LeadSelector {
         List<Lead> leadList = Database.query(String.escapeSingleQuotes(query));
         return leadList;
     }
+
 }

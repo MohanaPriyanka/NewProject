@@ -150,4 +150,45 @@ public with sharing class ContentDocumentSelectorTest {
         System.assertEquals(1, cdList[0].ContentDocumentLinks.size(), 'Selector should have returned one Content Document Link');
         System.assertEquals(l1.Id, cdList[0].ContentDocumentLinks[0].LinkedEntityId, 'Selector should have returned the Content Document Link associated with Lead l1');
     }
+
+    @IsTest
+    private static void testGetContractsAfterDateByLinkedEntity() {
+        Lead l = new Lead(
+            FirstName = 'test',
+            LastName = 'testerson',
+            Company = 'test',
+            Email = 'ttesterson@email.com',
+            LeadSource = 'Switch'
+        );
+        insert l;
+
+        List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
+        System.assertEquals(2, cvList.size());
+        Test.setCreatedDate(cvList[0].ContentDocumentId, Datetime.now().addDays(-70));
+
+        ContentDocumentLink cdl = new ContentDocumentLink(
+            ContentDocumentId = cvList[0].ContentDocumentId,
+            LinkedEntityId = l.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        ContentDocumentLink cdl2 = new ContentDocumentLink(
+            ContentDocumentId = cvList[1].ContentDocumentId,
+            LinkedEntityId = l.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        insert new List<ContentDocumentLink>{cdl, cdl2};
+
+        ContentDocumentSelector selector = new ContentDocumentSelector();
+        Test.startTest();
+            List<ContentDocumentLink> cdlList = selector.getContractsAfterDateByLinkedEntity(l.Id, Datetime.now().addDays(-2));
+        Test.stopTest();
+        
+        List<Error_Log__c> errList = [SELECT Id, Message__c FROM Error_Log__c];
+        System.assert(errList.isEmpty(), 'There should be no errors');
+        System.assertEquals(1, cdlList.size(), 'Selector should have returned one Content Document');
+        System.assertNotEquals(cvList[0].ContentDocumentId, cdlList[0].ContentDocumentId, 'Selector should not have returned the Content Document created 70 days ago');
+        System.assertEquals(cvList[1].ContentDocumentId, cdlList[0].ContentDocumentId, 'Selector should have returned the Content Document created today');
+    }
 }

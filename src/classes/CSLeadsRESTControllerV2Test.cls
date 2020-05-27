@@ -44,6 +44,43 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
 
     /*******************
+     *** getLead() ***
+     *******************/
+    @IsTest
+    private static void testGetLeadSuccess() {
+        useMocks();
+        controller.getLead('00Q000000000888', SAMPLE_EMAIL);
+        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed GET request should succeed');
+    }
+
+    @IsTest
+    private static void testGetLeadInvalidAuth() {
+        useMocks();
+        Boolean authError = false;
+        try {
+            controller.getLead(Util.getFakeId(Schema.Lead.SObjectType), 'test@test.com');
+        } catch(Util.AuthorizationBWException abwe) {
+            authError = true;
+        }
+        System.assert(authError, 'Incorrect email should throw authorization error');
+    }
+
+    @IsTest
+    private static void testGetLeadMissingFields() {
+        useMocks();
+        controller.getLead(Util.getFakeId(Schema.Lead.SObjectType), null);
+        System.assertEquals(400, RestContext.response.statusCode, 'Method should return error when either lead ID or email is omitted');
+    }
+
+    @IsTest
+    private static void testGetLeadTooManyAccounts() {
+        useMocks();
+        controller.getLead('00Q000000000777', SAMPLE_EMAIL);
+        System.assertEquals(400, RestContext.response.statusCode, 'Method should return error when lead has multiple property accounts');
+    }
+
+
+    /*******************
      *** patchLead() ***
      *******************/
 
@@ -485,7 +522,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    private static void testPatchApplicationMultiplePropertyAccounts1() {
+    private static void testPatchApplicationMultiplePropertyAccounts() {
         useMocks();
         String jsonRequest = '{ ' +
             '"id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '",' +
@@ -500,7 +537,21 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    private static void testPatchApplicationSuccess() {
+    private static void testPatchApplicationMissingUALs() {
+        useMocks();
+        String jsonRequest = '{ ' +
+            '   "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '",' +
+            '   "propertyAccounts": [ ' +
+            '       { "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '" }' +
+            '   ] ' +
+            '}';
+        controller.patchApplication(jsonRequest);
+
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when no property account fields or UALs are provided');
+    }
+
+    @IsTest
+    private static void testPatchApplicationSuccessNoDocs() {
         useMocks();
         String jsonRequest = '{' +
             '"id": "00Q000000000888",' +
@@ -535,8 +586,193 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '}]}';
 
         controller.patchApplication(jsonRequest);
-
+        
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
+    }
+
+    @IsTest
+    private static void testContractFieldsUpdated() {
+        Partner__c p0 = new Partner__c(Name = 'test record');
+        Partner__c p1 = new Partner__c(Name = 'default test');
+        insert new List<Partner__c>{p0, p1};
+
+        BSST__c sr0 = new BSST__c(Name = 'test rep', Partner__c = p0.Id);
+        BSST__c sr1 = new BSST__c(Name = 'default rep', Partner__c = p1.Id);
+        insert new List<BSST__c>{sr0, sr1};
+
+        p0.Default_Sales_Rep__c = sr0.Id;
+        p1.Default_Sales_Rep__c = sr1.Id;
+        update new List<Partner__c>{p0, p1};
+        
+        System_Properties__c sp = new System_Properties__c(Name = 'test', Default_CS_Partner__c = p1.Id);
+        insert sp;
+        
+        RestLead requestLead = new RestLead();
+        requestLead.firstName = 'Unit';
+        requestLead.lastName = 'Testcase';
+        requestLead.email = 'test@invalid.bluewavesolar.com';
+        requestLead.mobilePhone = '555-555-5555';
+        requestLead.businessPhone = '555-555-1111';
+        requestLead.businessName = 'Test Business';
+        requestLead.streetAddress = '1 Test Street';
+        requestLead.city = 'Suffern';
+        requestLead.state = 'NY';
+        requestLead.zipCode = '10901';
+        requestLead.businessTitle = 'CEO';
+        requestLead.partnerId = p1.Id;
+        requestLead.salesRepId = sr1.Id;
+
+        RestLead.RestPropertyAccount requestAccount = new RestLead.RestPropertyAccount();
+        RestLead.RestUtilityAccountLog requestUAL1 = new RestLead.RestUtilityAccountLog();
+        requestUAL1.serviceStreet = 'Test service street';
+        requestUAL1.serviceCity = 'Test service city';
+        requestUAL1.serviceState = 'NY';
+        requestUAL1.servicePostalCode = '14472';
+        requestUAL1.utilityAccountNumber = '555555';
+
+        requestAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>{requestUAL1};
+        requestLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{requestAccount};
+
+        String leadJSON = '{ ' +
+            '   "attributes": {' +
+            '       "type": "Lead",' +
+            '       "url": "/services/data/v48.0/sobjects/Lead/00Q000000000999"' +
+            '   },' +
+            '   "FirstName": "Unit",' +
+            '   "LastName": "Testcase",' +
+            '   "Email": "test@invalid.bluewavesolar.com",' +
+            '   "MobilePhone": "555-555-5555",' +
+            '   "Business_Phone__c": "555-555-1111",' +
+            '   "Company": "Test Business",' +
+            '   "LASERCA__Home_Address__c": "1 Test Street",' +
+            '   "LASERCA__Home_City__c": "Suffern",' +
+            '   "LASERCA__Home_State__c": "NY",' +
+            '   "LASERCA__Home_Zip__c": "10901",' +
+            '   "Business_Title__c": "CEO",' +
+            '   "Partner_Lookup__c": "' + p1.Id + '",' +
+            '   "bs_Sales_ID__c": "' + sr1.Id + '",' +
+            '   "Id": "00Q000000000999",' +
+            '   "Accounts__r": {' +
+            '       "totalSize": 1,' +
+            '       "done": true,' +
+            '       "records": ' +
+            '           [' +
+            '               {' +
+            '                   "attributes": {' +
+            '                       "type": "Account",' +
+            '                       "url": "/services/data/v48.0/sobjects/Account/001000000000999"' +
+            '                   },' +
+            '                   "Lead__c": "00Q000000000999",' +
+            '                   "Id": "001000000000999"' +
+            '               }' +
+            '           ]' +
+            '   },' + 
+            '   "Utility_Account_Logs__r": {' +
+            '       "totalSize": 1,' +
+            '       "done": true,' +
+            '       "records": ' +
+            '           [' +
+            '               {' +
+            '                   "attributes": {' +
+            '                       "type": "Utility_Account_Log__c",' +
+            '                       "url": "/services/data/v48.0/sobjects/Utility_Account_Log__c/a1b2C000000wv1JQAQ"' +
+            '                   },' +
+            '                   "Lead__c": "00Q000000000999",' +
+            '                   "Id": "a1b000000000999",' +
+            '                   "Account__c": "001000000000999",' +
+            '                   "Name": "555555",' +
+            '                   "Service_Address__c": "Test service street",' +
+            '                   "Service_City__c": "Test service city",' +
+            '                   "Service_State__c": "NY",' +
+            '                   "Service_Zip_Code__c": "14472"' +
+            '               }' +
+            '           ]' +
+            '   }' + 
+            '}';
+        Lead l = (Lead)JSON.deserialize(leadJSON, Lead.class);
+
+        CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
+        System.assert(!controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'No field differences; method should return false');
+
+        requestLead.firstName = 'Change';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to firstName field');
+        requestLead.firstName = 'Unit';
+        requestLead.lastName = 'Change';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to lastName field');
+        requestLead.lastName = 'Testcase';
+        requestLead.email = 'Change@invalid.bluewavesolar.com';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to email field');
+        requestLead.email = 'test@invalid.bluewavesolar.com';
+        requestLead.mobilePhone = '555-555-0000';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to mobilePhone field');
+        requestLead.mobilePhone = '555-555-5555';
+        requestLead.businessPhone = '555-555-0000';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to businessPhone field');
+        requestLead.businessPhone = '555-555-1111';
+        requestLead.businessName = 'Change Business';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to businessName field');
+        requestLead.businessName = 'Test Business';
+        requestLead.streetAddress = '1 Change Street';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to streetAddress field');
+        requestLead.streetAddress = '1 Test Street';
+        requestLead.city = 'Change';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to city field');
+        requestLead.city = 'Suffern';
+        requestLead.state = 'MA';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to state field');
+        requestLead.state = 'NY';
+        requestLead.zipCode = '00000';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to zipCode field');
+        requestLead.zipCode = '10901';
+        requestLead.businessTitle = 'CEO of Change';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to businessTitle field');
+        requestLead.businessTitle = 'CEO';
+        requestLead.partnerId = p0.Id;
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to partnerId field');
+        requestLead.partnerId = null;
+        System.assert(!controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return false, as Lead has default value set for partner ID');
+        requestLead.salesRepId = sr0.Id;
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to salesRepId field');
+        requestLead.salesRepId = null;
+        System.assert(!controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return false, as Lead has default value set for sales rep ID');
+        leadJSON = leadJSON.replace(p1.Id, p0.Id);
+        l = (Lead)JSON.deserialize(leadJSON, Lead.class);
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true, as RestLead.partnerId is null but Lead.Partner_Lookup__c does not have default value set');
+        requestLead.partnerId = p0.Id;
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true, as RestLead.salesRepId is null but Lead.bs_Sales_ID__c does not have default value set');
+        leadJSON = leadJSON.replace(sr1.Id, sr0.Id);
+        l = (Lead)JSON.deserialize(leadJSON, Lead.class);
+        System.assert(!controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'No field differences; method should return false');
+        requestLead.salesRepId = sr0.Id;
+        System.assert(!controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'No field differences; method should return false');
+
+        // test UAL fields
+        requestLead.propertyAccounts[0].utilityAccountLogs[0].serviceStreet = 'Changed service street';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to serviceStreet field');
+        requestLead.propertyAccounts[0].utilityAccountLogs[0].serviceStreet = 'Test service street';
+        requestLead.propertyAccounts[0].utilityAccountLogs[0].serviceCity = 'Changed service city';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to serviceCity field');
+        requestLead.propertyAccounts[0].utilityAccountLogs[0].serviceCity = 'Test service city';
+        requestLead.propertyAccounts[0].utilityAccountLogs[0].serviceState = 'MA';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to serviceState field');
+        requestLead.propertyAccounts[0].utilityAccountLogs[0].serviceState = 'NY';
+        requestLead.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode = '00000';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to servicePostalCode field');
+        requestLead.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode = '14472';
+        System.assert(!controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'No field differences; method should return false');
+        
+        RestLead.RestUtilityAccountLog requestUAL2 = new RestLead.RestUtilityAccountLog();
+        requestUAL1.serviceStreet = 'Test service street';
+        requestUAL1.serviceCity = 'Test service city';
+        requestUAL1.serviceState = 'NY';
+        requestUAL1.servicePostalCode = '14472';
+        requestUAL1.utilityAccountNumber = '999999';
+
+        requestAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>{requestUAL1, requestUAL2};
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to more UALs in RestLead than Lead');
+        requestAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>{requestUAL2};
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return because RestLead UAL is different from Lead UAL');
+
     }
 
     /********************
@@ -687,16 +923,52 @@ public with sharing class CSLeadsRESTControllerV2Test {
                         newLead.Application_Complete_Date__c = Datetime.newInstance(2017, 1, 1);
                     } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000888') {
                         newLead.Id = '00Q000000000888';
+                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000777') {
+                        String leadMapJson = '{ ' +
+                        '   "attributes": {' +
+                        '       "type": "Lead",' +
+                        '       "url": "/services/data/v48.0/sobjects/Lead/00Q000000000777"' +
+                        '   },' +
+                        '   "Email": "' + SAMPLE_EMAIL + '",' +
+                        '   "Id": "00Q000000000777",' +
+                        '   "Accounts__r": {' +
+                        '       "totalSize": 2,' +
+                        '       "done": true,' +
+                        '       "records": ' +
+                        '           [' +
+                        '               {' +
+                        '                   "attributes": {' +
+                        '                       "type": "Account",' +
+                        '                       "url": "/services/data/v48.0/sobjects/Account/001000000000999"' +
+                        '                   },' +
+                        '                   "Lead__c": "00Q000000000777",' +
+                        '                   "Id": "001000000000999"' +
+                        '               },' +
+                        '               {' +
+                        '                   "attributes": {' +
+                        '                       "type": "Account",' +
+                        '                       "url": "/services/data/v48.0/sobjects/Account/001000000000999"' +
+                        '                   },' +
+                        '                   "Lead__c": "00Q000000000777",' +
+                        '                   "Id": "001000000000999"' +
+                        '               }' +
+                        '           ]' +
+                        '   }' +  
+                        '}';
+                        return (Lead)JSON.deserialize(leadMapJson, Lead.class);
                     }
                 }
                 if(stubbedMethodName == 'selectOneWithPropertiesAndUtilities') {
+                    String createDate = Datetime.now().format('yyyy-MM-dd') + 'T' + Datetime.now().format('kk:mm:ss.SSS') + '+0000';
+                    
                     String leadMapJson = '{ ' +
                         '   "attributes": {' +
                         '       "type": "Lead",' +
                         '       "url": "/services/data/v48.0/sobjects/Lead/00Q000000000999"' +
                         '   },' +
-                        '   "Email": "test@invalid.bluewavesolar.com",' +
+                        '   "Email": "' + SAMPLE_EMAIL + '",' +
                         '   "Id": "00Q000000000999",' +
+                        '   "CreatedDate": "' + createDate + '",' +
                         '   "Accounts__r": {' +
                         '       "totalSize": 1,' +
                         '       "done": true,' +
