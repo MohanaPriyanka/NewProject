@@ -16276,7 +16276,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Contract.Management_Fee_Trigger__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -16304,6 +16304,11 @@
         <editable>false</editable>
         <field>Contract.Name</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Onboarding_Fee_Trigger__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
