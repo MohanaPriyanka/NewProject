@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public without sharing class ExecuteSOQL {
     private static Set<String> DATE_LITERAL_FORMATS = new Set<String>{'YESTERDAY','TODAY','TOMORROW','LAST_WEEK','THIS_WEEK','NEXT_WEEK','LAST_MONTH','THIS_MONTH','NEXT_MONTH','LAST_90_DAYS','NEXT_90_DAYS','LAST_N_DAYS','NEXT_N_DAYS','NEXT_N_WEEKS','LAST_N_WEEKS','NEXT_N_MONTHS','LAST_N_MONTHS','THIS_QUARTER','LAST_QUARTER','NEXT_QUARTER','NEXT_N_QUARTERS','LAST_N_QUARTERS','THIS_YEAR','LAST_YEAR','NEXT_YEAR','NEXT_N_YEARS','LAST_N_YEARS','THIS_FISCAL_QUARTER','LAST_FISCAL_QUARTER','NEXT_FISCAL_QUARTER','NEXT_N_FISCAL_QUARTERS','LAST_N_FISCAL_QUARTERS','THIS_FISCAL_YEAR','LAST_FISCAL_YEAR','NEXT_FISCAL_YEAR','NEXT_N_FISCAL_YEARS','LAST_N_FISCAL_YEARS'};
     class ExecuteSOQLException extends Exception {}
@@ -38,7 +39,7 @@ public without sharing class ExecuteSOQL {
                 while (subMatcher.find()) {
                     String subQuery = subMatcher.group(0).removeStart('(').removeEnd(')');
                     String formattedSubQuery = replaceWithFormattedValues(subQuery);
-                   	soqlQuery = soqlQuery.replace(subQuery, formattedSubQuery);
+                    soqlQuery = soqlQuery.replace(subQuery, formattedSubQuery);
                 }
             } else {
                 mPattern = pattern.compile('(?i)(?<=from )(.*)(?= where)');            
@@ -76,13 +77,13 @@ public without sharing class ExecuteSOQL {
         Schema.SObjectType objectType = Schema.getGlobalDescribe().get(sObjectTypeName.replace(' ', ''));
         if (objectType != null) {
             Map<String, String> resultMap = new Map<String, String>();
-        	DescribeSObjectResult d = objectType.getDescribe();
-        	Map<String, SObjectField> fieldMap = d.fields.getMap();
-        	for (String fieldName : fieldNames) {
-            	if (fieldMap.containsKey(fieldName)) {
-                	resultMap.put(fieldName, fieldMap.get(fieldName).getDescribe().getType().name());
-            	}
-        	}
+            DescribeSObjectResult d = objectType.getDescribe();
+            Map<String, SObjectField> fieldMap = d.fields.getMap();
+            for (String fieldName : fieldNames) {
+                if (fieldMap.containsKey(fieldName)) {
+                    resultMap.put(fieldName, fieldMap.get(fieldName).getDescribe().getType().name());
+                }
+            }
             return resultMap; 
         } else {
             throw new ExecuteSOQLException('Unable to get sObject Type for name: '+ sObjectTypeName);
@@ -100,7 +101,7 @@ public without sharing class ExecuteSOQL {
         }
         return query;
     }
-    private static String getFormattedValue(String fieldValue, String fieldType) {		
+    private static String getFormattedValue(String fieldValue, String fieldType) {      
         if (fieldType == 'DATETIME' || fieldType == 'DATE') {
             //Datetime is already formatted
             for (String literal: DATE_LITERAL_FORMATS) {

@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 @isTest
 public class ExecuteSOQLTest {
     @isTest
@@ -67,7 +68,7 @@ public class ExecuteSOQLTest {
                 requests
         });
         Test.stopTest();
-		System.assertEquals(1, results[0].sObjects.size());
+        System.assertEquals(1, results[0].sObjects.size());
         System.assertEquals(acc.Id, results[0].sObjects[0].Id);
     }
 
@@ -115,8 +116,8 @@ public class ExecuteSOQLTest {
         System.assertEquals(true, results[0].sObjects.size() == 3);
         List<Account> accounts = (List<Account>)results[0].sObjects;
         System.assertEquals('Apple', accounts[0].Name);
-      	System.assertEquals('Cucumber', accounts[1].Name);
-		System.assertEquals('Pear', accounts[2].Name);
+        System.assertEquals('Cucumber', accounts[1].Name);
+        System.assertEquals('Pear', accounts[2].Name);
     }
 
     @isTest
