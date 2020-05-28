@@ -46,7 +46,6 @@ public without sharing class UtilityAccountSubscriptionHandler {
         Set<Id> oppIds = new Set<Id>();
         for (Utility_Account_Subscription__c newUAS : uasList) {
             Utility_Account_Subscription__c oldUAS = oldMap.get(newUAS.Id);
-            //TODO: Uases shouldnt be changing opps when subscription orders are live
             oppIds = checkForOppChange(oldUAS.Opportunity__c, newUAS.Opportunity__c, oppIds);
             if (hasSubscriptionChange(oldUAS,newUAS)){
                 oppIds.add(newUAS.Opportunity__c);
@@ -97,6 +96,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
         }
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static void rollupAnchorUASes() {
         UASBSelector uasbSelector = new UASBSelector();
         List<AggregateResult> anchorAggregateResults = uasbSelector.selectAggregateAnchorUASBs();
