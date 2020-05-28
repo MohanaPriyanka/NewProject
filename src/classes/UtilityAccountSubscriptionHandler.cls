@@ -99,7 +99,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
     public static void rollupAnchorUASes() {
         UASBSelector uasbSelector = new UASBSelector();
-        List<AggregateResult> anchorAggregateResults = uasbSelector.selectAggregateAnchorUASBS();
+        List<AggregateResult> anchorAggregateResults = uasbSelector.selectAggregateAnchorUASBs();
         List<Utility_Account_Subscription__c> anchorUASes = new List<Utility_Account_Subscription__c>();
         for (AggregateResult result : anchorAggregateResults) {
             Utility_Account_Subscription__c anchorUAS = new Utility_Account_Subscription__c(

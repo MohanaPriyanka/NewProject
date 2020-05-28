@@ -53,7 +53,7 @@ public without sharing class UASBSelector {
         ]);
     }
 
-    public List<AggregateResult> selectAggregateAnchorUASBS() {
+    public List<AggregateResult> selectAggregateAnchorUASBs() {
 
         List<AggregateResult> activeAnchorRollups = [
             SELECT SUM(Subscription_Production_kWh_Static__c) productionSummary,
