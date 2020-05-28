@@ -590,10 +590,11 @@
     </fields>
     <fields>
         <fullName>Subscribed_Annual_Cost_of_Electricity__c</fullName>
+        <businessStatus>DeprecateCandidate</businessStatus>
         <description>Used for SREC CS Product sizing. It&apos;s the sum of the Annual Cost of Electricity (future) field on all related Utility Account Subscriptions.</description>
         <externalId>false</externalId>
         <inlineHelpText>Used for SREC CS Product sizing. It&apos;s the sum of the Annual Cost of Electricity (future) field on all related Utility Account Subscriptions.</inlineHelpText>
-        <label>Subscribed Annual Cost of Electricity</label>
+        <label>xxSubscribed Annual Cost of Electricity</label>
         <summarizedField>Utility_Account_Subscription__c.Subscribed_Annual_Cost_of_Electricity__c</summarizedField>
         <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
@@ -616,10 +617,11 @@
     </fields>
     <fields>
         <fullName>Subscribed_Annual_kWhs__c</fullName>
+        <businessStatus>DeprecateCandidate</businessStatus>
         <description>This sums the Future kWh subscription fields from all related utility account subscriptions.</description>
         <externalId>false</externalId>
         <inlineHelpText>This sums the Future kWh subscription fields from all related utility account subscriptions.</inlineHelpText>
-        <label>Subscribed Annual kWhs</label>
+        <label>xxSubscribed Annual kWhs</label>
         <summarizedField>Utility_Account_Subscription__c.Annual_kwh_subscription_future__c</summarizedField>
         <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
