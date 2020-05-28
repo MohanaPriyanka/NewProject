@@ -64967,6 +64967,17 @@
         <layout>Service_Territory__c-Service Territory Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Shared_Solar_System__c-Client View SSS</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Shared_Solar_System__c-Client View SSS</layout>
+        <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Shared_Solar_System__c-Client View SSS</layout>
+        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Snapshot_Report_Object__c-Landowner Last Contact Object Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -74208,7 +74219,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
