@@ -73,7 +73,7 @@
                            'slds-is-incomplete'))}"
                     role="presentation">
                   <a class="slds-path__link">
-                    <span title="Complete Application" class="slds-path__title">Complete Application</span>
+                    <span title="Complete Application" class="slds-path__title">Customer Signature</span>
                   </a>
                 </li>
               </aura:if>
