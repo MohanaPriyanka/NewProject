@@ -143,10 +143,11 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
     </fields>
     <fields>
         <fullName>Annual_kwh_subscription_future__c</fullName>
+        <businessStatus>DeprecateCandidate</businessStatus>
         <description>Used for SMART CS contracts. It is the counterpart to annual cost of electricity field, and is used to calculate the future customer subscription kW DC field for Opportunities with the SMART CS contract. It is populated manually.</description>
         <externalId>false</externalId>
         <inlineHelpText>Used for SMART CS contracts. It is the counterpart to annual cost of electricity field, and is used to calculate the future customer subscription kW DC field for Opportunities with the SMART CS contract. It is populated manually.</inlineHelpText>
-        <label>Annual kWh Subscription (Future)</label>
+        <label>xxAnnual kWh Subscription (Future)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -983,10 +984,11 @@ IF(
     </fields>
     <fields>
         <fullName>Subscribed_Annual_Cost_of_Electricity__c</fullName>
+        <businessStatus>DeprecateCandidate</businessStatus>
         <description>Used for SREC CS contracts. Check the Subscription Type to see if this fields should be used. It is used to calculate the future customer subscription kW DC field for Opportunities with the SREC CS Product. It is populated manually.</description>
         <externalId>false</externalId>
         <inlineHelpText>Used for SREC CS contracts. Check the Subscription Type to see if this fields should be used. It is used to calculate the future customer subscription kW DC field for Opportunities with the SREC CS Product. It is populated manually.</inlineHelpText>
-        <label>Annual Cost of Electricity (Future)</label>
+        <label>xxAnnual Cost of Electricity (Future)</label>
         <precision>16</precision>
         <required>false</required>
         <scale>6</scale>
