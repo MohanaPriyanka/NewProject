@@ -119,38 +119,11 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Subscription Order Fields</label>
+        <label>Annual kWh Sizing</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Annual_kWh_Subscription_Future_Rollup__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Annual_Cost_Future_Rollup__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Future_Customer_Subscription_KWDC_Rollup__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Future_Share_of_System_Rollup__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Annual kWh Sizing</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Annual_kwh_subscription_future__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -172,8 +145,8 @@
         <label>Annual Cost Sizing</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Subscribed_Annual_Cost_of_Electricity__c</field>
+                <behavior>Readonly</behavior>
+                <field>Annual_Cost_Future_Rollup__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -200,13 +173,13 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Customer_Subscription_KW_DC__c</field>
+                <field>Future_Customer_Subscription_KWDC_Rollup__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Future_Share_of_System__c</field>
+                <field>Future_Share_of_System_Rollup__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>

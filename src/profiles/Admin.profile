@@ -7279,6 +7279,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Annual_Cost_of_Electricity_Future__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Annual_kWh_Subscription_Future__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Annual_kWh__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -49753,6 +49763,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Subscription_Order__c-Subscription Order Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Subscription_Order__c-Subscription Order Layout</layout>
+        <recordType>Subscription_Order__c.Subscription_Orders</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Subscription_Order__c-System Change Order</layout>

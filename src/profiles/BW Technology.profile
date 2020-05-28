@@ -66349,6 +66349,10 @@
         <layout>Subscription_Order__c-Subscription Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Subscription_Order__c-Subscription Order Layout</layout>
+        <recordType>Subscription_Order__c.Subscription_Orders</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Subscription_Order__c-System Change Order</layout>
         <recordType>Subscription_Order__c.System_Change_Order</recordType>
     </layoutAssignments>
@@ -66432,14 +66436,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-        <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_Editable</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-        <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_on_Schedule_Z</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_Bill_Line_Item__c-Utility Bill Line Item Layout</layout>
@@ -75603,7 +75599,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Subscription_Order__c.Subscription_Orders</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
