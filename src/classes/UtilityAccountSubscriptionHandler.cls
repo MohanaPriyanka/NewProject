@@ -46,6 +46,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
         Set<Id> oppIds = new Set<Id>();
         for (Utility_Account_Subscription__c newUAS : uasList) {
             Utility_Account_Subscription__c oldUAS = oldMap.get(newUAS.Id);
+            //TODO: Uases shouldnt be changing opps when subscription orders are live
             oppIds = checkForOppChange(oldUAS.Opportunity__c, newUAS.Opportunity__c, oppIds);
             if (hasSubscriptionChange(oldUAS,newUAS)){
                 oppIds.add(newUAS.Opportunity__c);
@@ -94,5 +95,20 @@ public without sharing class UtilityAccountSubscriptionHandler {
         if (oppIds.size() > 0){
             partnerCommissionHandler.queueCalculatePartnerCommission(oppIds);
         }
+    }
+
+    public static void rollupAnchorUASes() {
+        UASBSelector uasbSelector = new UASBSelector();
+        List<AggregateResult> anchorAggregateResults = uasbSelector.selectAggregateAnchorUASBS();
+        List<Utility_Account_Subscription__c> anchorUASes = new List<Utility_Account_Subscription__c>();
+        for (AggregateResult result : anchorAggregateResults) {
+            Utility_Account_Subscription__c anchorUAS = new Utility_Account_Subscription__c(
+                Id = (Id)result.get('uasId'),
+                Annual_Subscription_Production_Summary__c = (Decimal)result.get('productionSummary')
+            );
+            anchorUASes.add(anchorUAS);
+        }
+
+        update anchorUASes;
     }
 }
