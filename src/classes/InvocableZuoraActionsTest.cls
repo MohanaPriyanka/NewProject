@@ -242,6 +242,19 @@ public with sharing class InvocableZuoraActionsTest {
         System.assertEquals(0,recordCount[0]);
     }
 
+    @IsTest
+    public static void testUASRollup() {
+        //This is better tested by the UASHandlerTest
+        InvocableUASRollup.rollupUAS();
+        List<Error_Log__c> checkLogs = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+        ];
+
+        //One error message from setup: Found Invoice with No Account
+        System.assertEquals(1, checkLogs.size());
+    }
+
     @IsTest public static void testApplyPayments() {
         List<Zuora_Data_Query__c> beforeQueries = [
             SELECT Id
