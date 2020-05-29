@@ -5,7 +5,7 @@
  */
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class CustomerContractSelector {
+public inherited sharing class CustomerContractSelector {
     
     public Contract selectOne(Id contractId) {
         List<Contract> contracts = this.selectAll(new Set<Id>{contractId});

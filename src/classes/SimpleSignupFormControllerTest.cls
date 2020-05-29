@@ -67,9 +67,6 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assertEquals(1, contentDocumentLinks.size(), 'Expected setup to create one content doc');
         Id contentDocId = contentDocumentLinks[0].ContentDocumentId;
 
-        System.assertNotEquals(null, SimpleSignupFormController.getContentDocumentDataById(lead.Id, lead.Email, contentDocId),
-            'Expected to get some base64 encoded data back from the controller running without sharing');
-
         System.runAs(guest) {
             ContentDocumentSelector cds = new ContentDocumentSelector();
             System.assertEquals(0, cds.selectById(new Set<Id>{contentDocId}).size(),
@@ -81,8 +78,6 @@ public with sharing class SimpleSignupFormControllerTest {
                 'Expected to find a single content document link shared to the guest user for this lead id');
             System.assertEquals(contentDocId, rcdList[0].id,
                 'Expected to get the right content document id');
-            System.assertNotEquals(null, SimpleSignupFormController.getContentDocumentDataById(lead.Id, lead.Email, contentDocId),
-                'Expected to get some base64 encoded data back from the controller running without sharing');
         }
     }
 
@@ -100,38 +95,10 @@ public with sharing class SimpleSignupFormControllerTest {
 
         System.runAs(guest) {
             try {
-                SimpleSignupFormController.getContentDocumentDataById(Util.getFakeId(Lead.SObjectType), testLead.Email, contentDocId);
-                System.assert(false, 'Expected a fake lead id to generate an authorization exception');
-            } catch (AuraHandledException ahe) {
-                System.assert(ahe.getMessage().contains('did not match'), 'Exception should indicate the lead id and email did not match, but received ' + ahe.getMessage());
-            }
-
-            try {
-                SimpleSignupFormController.getContentDocumentDataById(testLead.Id, 'fakeemail', contentDocId);
-                System.assert(false, 'Expected a fake email to generate an authorization exception');
-            } catch (AuraHandledException ahe) {
-                System.assert(ahe.getMessage().contains('did not match'), 'Exception should indicate the lead id and email did not match, but received ' + ahe.getMessage());
-            }
-
-            try {
-                SimpleSignupFormController.getContentDocumentDataById(testLead.Id, testLead.Email, Util.getFakeId(ContentDocument.SObjectType));
-                System.assert(false, 'Expected a fake document to not be linked to the lead');
-            } catch (AuraHandledException ahe) {
-                System.assert(ahe.getMessage().contains('not related'), 'Exception should indicate a document was not related, but received ' + ahe.getStackTraceString());
-            }
-
-            try {
                 SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, 'fakeemail', null);
                 System.assert(false, 'Expected a fake email to generate an authorization exception');
             } catch (AuraHandledException ahe) {
                 System.assert(ahe.getMessage().contains('did not match'), 'Exception should indicate the lead id and email did not match, but received ' + ahe.getMessage());
-            }
-
-            try {
-                SimpleSignupFormController.getContentDocumentDataById(testLead.Id, testLead.Email, contentDocId);
-            } catch (Exception ahe) {
-                System.assert(false, 'Did not expect any exceptions when querying for a valid lead id, email, and docid combination, but received ' +
-                    ahe.getMessage() + '\n' + ahe.getStackTraceString());
             }
 
             try {
@@ -146,18 +113,6 @@ public with sharing class SimpleSignupFormControllerTest {
             } catch (Exception ahe) {
                 System.assert(false, 'Did not expect any exceptions when querying for a valid lead id, email, and docid combination, even when there are no Content Distribution records to return, but received ' +
                     ahe.getMessage() + '\n' + ahe.getStackTraceString());
-            }
-        }
-
-
-        ContentDocumentLink cdl = new ContentDocumentLink(Id = contentDocumentLinks[0].Id, Visibility = 'InternalUsers');
-        update cdl;
-        System.runAs(guest) {
-            try {
-                SimpleSignupFormController.getContentDocumentDataById(testLead.Id, testLead.Email, contentDocId);
-                System.assert(false, 'Expected a doc hidden from guest users to generate an exception');
-            } catch (AuraHandledException ahe) {
-                System.assert(ahe.getMessage().contains('Did not find any'), 'Exception should indicate that no documents were related to the Lead, but received ' + ahe.getStackTraceString());
             }
         }
     }

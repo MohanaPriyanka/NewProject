@@ -6,6 +6,7 @@ import { LightningElement, track, api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormController.getContentDocumentLinksByLead'
+import getContentDistributionLink from '@salesforce/apex/SimpleSignupFormController.getContentDistributionById'
 import {makeRequest} from 'c/httpRequestService';
 
 export default class SsfAgreements extends LightningElement {
@@ -283,7 +284,15 @@ export default class SsfAgreements extends LightningElement {
             if(this.supportsDataUri) {
                 this.documentUrl = 'data:application/pdf;base64,' +  contract.body;
             } else {
-                this.documentUrl = contract.publicUrl;
+                if(contract.publicUrl) {
+                    this.documentUrl = contract.publicUrl;
+                } else {
+                    getContentDistributionLink({ leadId: this.lead.Id, email: this.lead.email, documentId: contract.id })
+                        .then(result => {
+                            this.documentUrl = result;
+                        })
+                }
+                
             }
             this.showContractDocument = true;
         }
