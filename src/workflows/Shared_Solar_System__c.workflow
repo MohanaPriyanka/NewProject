@@ -13,6 +13,7 @@
     </alerts>
     <alerts>
         <fullName>X100_kW_Left_in_System</fullName>
+        <ccEmails>customersupportteam@bluewavesolar.com</ccEmails>
         <description>100 kW Left in System</description>
         <protected>false</protected>
         <recipients>
