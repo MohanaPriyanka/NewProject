@@ -716,9 +716,9 @@
     </fields>
     <fields>
         <fullName>Management_Fee_Trigger__c</fullName>
-        <description>Shows Management Fee trigger event</description>
+        <description>Shows Management Fee trigger event.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Shows Management Fee trigger event</inlineHelpText>
+        <inlineHelpText>Shows Management Fee trigger event.</inlineHelpText>
         <label>Management Fee Trigger</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -726,34 +726,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>First Bill</fullName>
-                    <default>false</default>
-                    <label>First Bill</label>
-                </value>
-                <value>
-                    <fullName>PTO</fullName>
-                    <default>false</default>
-                    <label>PTO</label>
-                </value>
-                <value>
-                    <fullName>COD</fullName>
-                    <default>false</default>
-                    <label>COD</label>
-                </value>
-                <value>
-                    <fullName>Effective Date</fullName>
-                    <default>false</default>
-                    <label>Effective Date</label>
-                </value>
-                <value>
-                    <fullName>Custom</fullName>
-                    <default>false</default>
-                    <label>Custom</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Client_Invoicing_Events</valueSetName>
         </valueSet>
     </fields>
     <fields>
