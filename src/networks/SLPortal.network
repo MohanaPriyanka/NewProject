@@ -28,6 +28,7 @@
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <logoutUrl>https://bluewavememberportal.force.com/slportal/s/login</logoutUrl>
     <networkMemberGroups>
+        <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
     </networkMemberGroups>
     <networkPageOverrides>
