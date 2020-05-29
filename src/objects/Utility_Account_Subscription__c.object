@@ -103,6 +103,20 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c* Opportunity__r.S
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Annual_Subscription_Production_Summary__c</fullName>
+        <description>Sum of the last 12 months of UASB Subscription Production (kWh) for Anchor &amp; Public Offtake customers serviced by BlueWave</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of the last 12 months of UASB Subscription Production (kWh) for Anchor &amp; Public Offtake customers serviced by BlueWave</inlineHelpText>
+        <label>Annual Subscription Production Summary</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Annual_kWh_Subscription_Current__c</fullName>
         <description>Used in SMART contracts. It is the kWh equivalent of the Annual Cost of Electricity (Current) field. It shows how many kWhs are included in the Current Customer Subscription kW DC.</description>
         <externalId>false</externalId>

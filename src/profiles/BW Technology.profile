@@ -1439,6 +1439,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvocableUASRollup</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>InvocableZuoraActionsTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3761,6 +3765,14 @@
     <classAccesses>
         <apexClass>UtilityAccountLogTriggerHandlerTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UtilityAccountSubscriptionHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UtilityAccountSubscriptionHandlerTest</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>UtilityAccountSubscriptions</apexClass>
@@ -19860,6 +19872,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Annual_Cost_of_Electricity_Future__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Annual_Subscription_Production_Summary__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46404,6 +46421,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Annual_Subscription_Production_Summary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Annual_kWh_Subscription_Current__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -66437,14 +66459,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-        <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_Editable</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-        <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_on_Schedule_Z</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_Bill_Line_Item__c-Utility Bill Line Item Layout</layout>
