@@ -234,7 +234,7 @@ public with sharing class ZuoraSubscriptionService {
         }
         ratePlanFilter = ratePlanFilter.left(ratePlanFilter.length() - 4);
         String ratePlanChargeJSON =
-            ZuoraAPIHelper.query('SELECT Id, Name, ChargeNumber, ClientOwner__c, Project__c FROM RatePlanCharge ' + ratePlanFilter, false);
+            ZuoraAPIHelper.query('SELECT Id, Name, ChargeNumber, ProductRatePlanChargeid, ClientOwner__c, Project__c FROM RatePlanCharge ' + ratePlanFilter, false);
         ratePlanChargeJSON = ratePlanChargeJSON.replace('__c', '_Zcustom');
         ZuoraOutstandingItemsService.QueryResultRatePlanCharge queryResult =
             (ZuoraOutstandingItemsService.QueryResultRatePlanCharge)JSON.deserialize(ratePlanChargeJSON, ZuoraOutstandingItemsService.QueryResultRatePlanCharge.class);
