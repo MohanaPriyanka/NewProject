@@ -19,6 +19,7 @@ private class PostSandboxRefresherTest {
         Test.loadData(Account.SObjectType, 'TestCSAccount');
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
+        Test.loadData(Partner__c.SObjectType,'TestRLPartner');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
         Test.stopTest();
@@ -210,9 +211,9 @@ private class PostSandboxRefresherTest {
         List<Partner__c> partners = [
             SELECT Id, Name
             FROM Partner__c
+            WHERE Name = 'BlueWave Test Partner'
         ];
         System.assertEquals(1, partners.size());
-        System.assertEquals('BlueWave Test Partner', partners[0].Name);
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         System.assertNotEquals(null, systemProperties[0].Default_CS_Partner__c);
         List<Contact> partnerContacts = [

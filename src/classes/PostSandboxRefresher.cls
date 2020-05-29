@@ -1077,6 +1077,17 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         );
         return opportunity1;
     }
+    private static List<Opportunity> setOpportunityPartner(List<Opportunity> opportunities){
+        List<Partner__c> partners = [
+            SELECT Id
+            FROM Partner__c
+            LIMIT 1
+        ];
+        for (Opportunity opp : opportunities){
+            opp.Partner_tag_lookup__c = partners[0].Id;
+        }
+        return opportunities;
+    }
     private static Utility_Account_Subscription__c getUtilityAccountSubscription(String name, Integer subscription,
         Utility_Account_Log__c ualog1, Opportunity opportunity1) {
         Utility_Account_Subscription__c uas1 = new Utility_Account_Subscription__c(
@@ -1151,7 +1162,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                 opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
             }
         }
-        insert opportunities;
+        insert setOpportunityPartner(opportunities);
         return opportunities;
     }
     private static void insertSubscriptions(List<Name> names, List<Utility_Account_Log__c> uals, List<Opportunity> opportunities) {
