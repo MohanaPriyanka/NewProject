@@ -60,6 +60,8 @@ public class UtilityAccountSubscriptionHandlerTest {
         Account accountB = new Account(name = 'Account B',
             Parent_Account__c = accountParent.Id);
 
+        insert new List<Account> {accountParent, accountA, accountB};
+
         Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
@@ -224,5 +226,74 @@ public class UtilityAccountSubscriptionHandlerTest {
         System.assertNotEquals(null, checkUAS.Shared_Solar_System__c);
         System.assertEquals(opp.Shared_Solar_System__c, checkUAS.Shared_Solar_System__c);
 
+    }
+
+    @IsTest
+    public static void testRollupAnchorUASes(){
+        Opportunity anchorOpp = [
+            SELECT Id, Customer_Group__c, AccountId
+            FROM Opportunity
+            WHERE Name = 'BOpp'
+            LIMIT 1
+        ];
+        System.assertNotEquals(null, anchorOpp.AccountId);
+        anchorOpp.Customer_Group__c = 'Anchor';
+        update anchorOpp;
+
+        Utility_Account_Subscription__c anchorUAS = [
+            SELECT Id, Customer_Group__c, Opportunity__c,
+                Opportunity__r.AccountId, Annual_Subscription_Production_Summary__c
+            FROM Utility_Account_Subscription__c
+            WHERE Customer_Group__c = 'Anchor'
+            LIMIT 1
+        ];
+
+        System.assertNotEquals(null, anchorUAS);
+        System.assertEquals(null, anchorUAS.Annual_Subscription_Production_Summary__c);
+        System.assertEquals(anchorOpp.Id, anchorUAS.Opportunity__c);
+
+        Date billDate = System.today();
+
+        UASB__c billOne = new UASB__c(
+            Account__c = anchorUAS.Opportunity__r.AccountId,
+            Zuora_Id__c = 'bbb1230005',
+            Utility_Account_Subscription__c = anchorUAS.Id,
+            Date__c = billDate.addMonths(-1),
+            Subscription_Production_kWh_Static__c = 100
+        );
+        UASB__c billTwo = new UASB__c(
+            Account__c = anchorUAS.Opportunity__r.AccountId,
+            Zuora_Id__c = 'bbb1230001',
+            Utility_Account_Subscription__c = anchorUAS.Id,
+            Date__c = billDate.addMonths(-2),
+            Subscription_Production_kWh_Static__c = 100
+        );
+        UASB__c billThree = new UASB__c(
+            Account__c = anchorUAS.Opportunity__r.AccountId,
+            Zuora_Id__c = 'bbb1230001',
+            Utility_Account_Subscription__c = anchorUAS.Id,
+            Date__c = billDate.addMonths(-3),
+            Subscription_Production_kWh_Static__c = 100
+        );
+        UASB__c billLASTYEAR = new UASB__c(
+            Account__c = anchorUAS.Opportunity__r.AccountId,
+            Zuora_Id__c = 'bbb1230001',
+            Utility_Account_Subscription__c = anchorUAS.Id,
+            Date__c = billDate.addMonths(-13),
+            Subscription_Production_kWh_Static__c = 100
+        );
+        insert new List<UASB__c>{billOne, billTwo, billThree, billLASTYEAR};
+
+        UtilityAccountSubscriptionHandler.rollupAnchorUASes();
+
+        anchorUAS = [
+            SELECT Id, Customer_Group__c, Opportunity__c,
+                Opportunity__r.AccountId, Annual_Subscription_Production_Summary__c
+            FROM Utility_Account_Subscription__c
+            WHERE Customer_Group__c = 'Anchor'
+            LIMIT 1
+        ];
+
+        System.assertEquals(300, anchorUAS.Annual_Subscription_Production_Summary__c);
     }
 }
