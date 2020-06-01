@@ -19,6 +19,7 @@ private class PostSandboxRefresherTest {
         Test.loadData(Account.SObjectType, 'TestCSAccount');
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
+        Test.loadData(Partner__c.SObjectType,'TestRLPartner');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
         Test.stopTest();
@@ -87,7 +88,6 @@ private class PostSandboxRefresherTest {
         System.assertEquals(0, chargentOrders.size(), 'Did not expect to load Amex orders');
         Test.startTest();
         PostSandboxRefresher.disableEmails();
-        PostSandboxRefresher.updateDocusignToDemoConfig();
         PostSandboxRefresher.switchChargentToTestMode();
         Test.stopTest();
         List<Contact> contactList = [SELECT Id, Email
@@ -98,8 +98,6 @@ private class PostSandboxRefresherTest {
                                FROM Lead
                                WHERE Email LIKE '%@email.com'];
         System.assertEquals(leadList.size(), 0);
-        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
-        System.assertEquals('pyao@bluewavesolar.com', systemProperties[0].DocuSign_Customer_Care_User__c);
         gateways = [
             SELECT Id, ChargentBase__Merchant_ID__c
             FROM ChargentBase__Gateway__c
@@ -210,9 +208,9 @@ private class PostSandboxRefresherTest {
         List<Partner__c> partners = [
             SELECT Id, Name
             FROM Partner__c
+            WHERE Name = 'BlueWave Test Partner'
         ];
         System.assertEquals(1, partners.size());
-        System.assertEquals('BlueWave Test Partner', partners[0].Name);
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         System.assertNotEquals(null, systemProperties[0].Default_CS_Partner__c);
         List<Contact> partnerContacts = [
