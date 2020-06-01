@@ -715,48 +715,6 @@
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>Management_Fee_Trigger__c</fullName>
-        <description>Shows Management Fee trigger event</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Shows Management Fee trigger event</inlineHelpText>
-        <label>Management Fee Trigger</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>First Bill</fullName>
-                    <default>false</default>
-                    <label>First Bill</label>
-                </value>
-                <value>
-                    <fullName>PTO</fullName>
-                    <default>false</default>
-                    <label>PTO</label>
-                </value>
-                <value>
-                    <fullName>COD</fullName>
-                    <default>false</default>
-                    <label>COD</label>
-                </value>
-                <value>
-                    <fullName>Effective Date</fullName>
-                    <default>false</default>
-                    <label>Effective Date</label>
-                </value>
-                <value>
-                    <fullName>Custom</fullName>
-                    <default>false</default>
-                    <label>Custom</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Management_Fee__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Annual management fee ($/MW DC) for Small Offtake customers. Manually entered by CSBD at contract execution. If blended rate, include blended rate in both Anchor and Small Offtake fields.</inlineHelpText>
@@ -1296,29 +1254,6 @@
         <fullName>Client_Contract</fullName>
         <active>true</active>
         <label>Client Contract</label>
-        <picklistValues>
-            <picklist>Management_Fee_Trigger__c</picklist>
-            <values>
-                <fullName>COD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Custom</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Effective Date</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Bill</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PTO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Contract_Type__c</picklist>
             <values>
@@ -1950,29 +1885,6 @@
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Management_Fee_Trigger__c</picklist>
-            <values>
-                <fullName>COD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Custom</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Effective Date</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Bill</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PTO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Management_Invoicing_Timing__c</picklist>
             <values>
                 <fullName>Annual</fullName>
@@ -2304,29 +2216,6 @@
         <fullName>General_Contract</fullName>
         <active>true</active>
         <label>General Contract</label>
-        <picklistValues>
-            <picklist>Management_Fee_Trigger__c</picklist>
-            <values>
-                <fullName>COD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Custom</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Effective Date</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Bill</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PTO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Contract_Type__c</picklist>
             <values>
