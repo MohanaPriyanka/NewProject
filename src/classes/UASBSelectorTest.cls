@@ -73,6 +73,53 @@ public class UASBSelectorTest {
         System.assertEquals(1,billListTwo.size());
     }
 
+    @IsTest
+    public static void testSelectAggregateAnchorUASBs(){
+        Opportunity anchorOpp = [
+            SELECT Id, Customer_Group__c
+            FROM Opportunity
+            LIMIT 1
+        ];
+        anchorOpp.Customer_Group__c = 'Anchor';
+        update anchorOpp;
+
+        Utility_Account_Subscription__c anchorUAS = [
+            SELECT Id, Opportunity__r.AccountId
+            FROM Utility_Account_Subscription__c
+            LIMIT 1
+        ];
+
+        Date billDate = System.today();
+
+        UASB__c billOne = new UASB__c(
+            Account__c = anchorUAS.Opportunity__r.AccountId,
+            Utility_Account_Subscription__c = anchorUAS.Id,
+            Date__c = billDate.addMonths(-13),
+            Subscription_Production_kWh_Static__c = 100
+        );
+        UASB__c billTwo = new UASB__c(
+            Account__c = anchorUAS.Opportunity__r.AccountId,
+            Utility_Account_Subscription__c = anchorUAS.Id,
+            Date__c = billDate.addMonths(-13),
+            Subscription_Production_kWh_Static__c = 100
+        );
+        UASB__c billThree = new UASB__c(
+            Account__c = anchorUAS.Opportunity__r.AccountId,
+            Utility_Account_Subscription__c = anchorUAS.Id,
+            Date__c = billDate.addMonths(-13),
+            Subscription_Production_kWh_Static__c = 100
+        );
+        insert new List<UASB__c>{billOne, billTwo, billThree};
+        UASBSelector uasbSelector = new UASBSelector();
+        List<AggregateResult> results = uasbSelector.selectAggregateAnchorUASBs();
+
+        System.assertNotEquals(null, results);
+        for (AggregateResult result : results) {
+            System.assertEquals(300, result.get('productionSummary'));
+        }
+
+    }
+
     @isTest public static void testGetUnservicedWithoutProductionDetail(){
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Opportunity__r.AccountId

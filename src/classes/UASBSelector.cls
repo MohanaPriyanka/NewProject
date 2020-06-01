@@ -52,4 +52,20 @@ public without sharing class UASBSelector {
             LIMIT : batchSize
         ]);
     }
+
+    public List<AggregateResult> selectAggregateAnchorUASBs() {
+
+        List<AggregateResult> activeAnchorRollups = [
+            SELECT SUM(Subscription_Production_kWh_Static__c) productionSummary,
+                Utility_Account_Subscription__c uasId
+            FROM UASB__c
+            WHERE Date__c = LAST_N_MONTHS:12
+            AND (Utility_Account_Subscription__r.Customer_Group__c = 'Anchor' OR
+                Utility_Account_Subscription__r.Customer_Group__c = 'Public Offtake')
+            AND Utility_Account_Subscription__r.Externally_Serviced__c = FALSE
+            GROUP BY Utility_Account_Subscription__c
+            ];
+
+        return activeAnchorRollups;
+    }
 }

@@ -95,4 +95,20 @@ public without sharing class UtilityAccountSubscriptionHandler {
             partnerCommissionHandler.queueCalculatePartnerCommission(oppIds);
         }
     }
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public static void rollupAnchorUASes() {
+        UASBSelector uasbSelector = new UASBSelector();
+        List<AggregateResult> anchorAggregateResults = uasbSelector.selectAggregateAnchorUASBs();
+        List<Utility_Account_Subscription__c> anchorUASes = new List<Utility_Account_Subscription__c>();
+        for (AggregateResult result : anchorAggregateResults) {
+            Utility_Account_Subscription__c anchorUAS = new Utility_Account_Subscription__c(
+                Id = (Id)result.get('uasId'),
+                Annual_Subscription_Production_Summary__c = (Decimal)result.get('productionSummary')
+            );
+            anchorUASes.add(anchorUAS);
+        }
+
+        update anchorUASes;
+    }
 }
