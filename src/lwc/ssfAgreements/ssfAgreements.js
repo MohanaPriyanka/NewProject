@@ -5,9 +5,8 @@
 import { LightningElement, track, api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import insertLog from '@salesforce/apex/Logger.insertLog';
-import getContentDocumentsById from '@salesforce/apex/SimpleSignupFormController.getContentDocumentDataById';
 import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormController.getContentDocumentLinksByLead'
-import getContentDistributionById from '@salesforce/apex/SimpleSignupFormController.getContentDistributionById';
+import getContentDistributionLink from '@salesforce/apex/SimpleSignupFormController.getContentDistributionById'
 import {makeRequest} from 'c/httpRequestService';
 
 export default class SsfAgreements extends LightningElement {
@@ -127,14 +126,9 @@ export default class SsfAgreements extends LightningElement {
 
     continueAgreement(event) {
         if (this.validCSAgreement() && this.validDisclosureConsent() && this.validCreditCheckReview() && this.validConsentEmail()) {
-            let restLead = {
-                id: this.lead.id,
-                email: this.lead.email,
-                customerSignedDate: new Date()
-            };
             this.showSpinner = true;
             this.spinnerMessage = 'Saving your consents';
-            this.consentToDocs(restLead).then(
+            this.consentToDocs().then(
                 (resolveResult) => {
                     this.showSpinner = false;
                     const consentsCompleteEvent = new CustomEvent('consentscomplete', {
@@ -150,17 +144,17 @@ export default class SsfAgreements extends LightningElement {
                         message: JSON.stringify(rejectResult),
                         severity: 'Error'
                     });
-                    this.showWarningToast('Oops', 'We ran into a technical issue, please contact customer care\n' + rejectResult);
+                    this.showWarningToast('Oops', 'We ran into a technical issue, please contact customer care\n' + JSON.stringify(rejectResult));
                 }
             );
         }
     }
 
-    consentToDocs(restLead) {
-        let calloutURI = '/apply/services/apexrest/v3/leads';
+    consentToDocs() {
+        let calloutURI = '/apply/services/apexrest/v3/contracts';
         let options = {
             headers: {name: 'Content-Type', value:'application/json'},
-            body: JSON.stringify(restLead)
+            body: JSON.stringify({ leadId: this.lead.id, email: this.lead.email })
         };
         return makeRequest(calloutURI, 'PATCH', options);
     }
@@ -240,7 +234,7 @@ export default class SsfAgreements extends LightningElement {
                 }
             })
             .catch(error => {
-                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error.body.message);
+                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: \n' + error.body.message);
                 window.clearInterval(this.documentPollerId);
                 window.clearTimeout(this.documentPollerTimeoutId);
                 this.showSpinner = false;
@@ -260,13 +254,14 @@ export default class SsfAgreements extends LightningElement {
         this.contractDocuments = contracts;
         var disclosurePosition;
         for (let c in contracts) {
-            if (contracts[c].title === 'Community Solar Agreement.pdf' ) {
-                this.csAgreementDocumentId = contracts[c].id;
-                contracts[c].title = 'Community Solar Agreement';
+            if(contracts[c].title.endsWith('.pdf')) {
+                contracts[c].title = contracts[c].title.slice(0,-4);
             }
-            if (contracts[c].title === 'Solar Disclosure Form.pdf') {
+            if (contracts[c].title === 'Terms and Conditions' || contracts[c].title === 'Community Solar Agreement') {
+                this.csAgreementDocumentId = contracts[c].id;
+            }
+            if (contracts[c].title === 'Solar Disclosure Form') {
                 this.disclosureDocumentId = contracts[c].id;
-                contracts[c].title = 'Solar Disclosure Form';
                 disclosurePosition = c;
             }
         }
@@ -289,7 +284,15 @@ export default class SsfAgreements extends LightningElement {
             if(this.supportsDataUri) {
                 this.documentUrl = 'data:application/pdf;base64,' +  contract.body;
             } else {
-                this.documentUrl = contract.publicUrl;
+                if(contract.publicUrl) {
+                    this.documentUrl = contract.publicUrl;
+                } else {
+                    getContentDistributionLink({ leadId: this.lead.Id, email: this.lead.email, documentId: contract.id })
+                        .then(result => {
+                            this.documentUrl = result;
+                        })
+                }
+                
             }
             this.showContractDocument = true;
         }
