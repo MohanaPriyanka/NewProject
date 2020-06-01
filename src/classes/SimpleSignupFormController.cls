@@ -10,31 +10,6 @@ public without sharing class SimpleSignupFormController {
 
 
     @AuraEnabled
-    public static String getContentDocumentDataById(Id leadId, String email, Id documentId) {
-        try {
-            restControllerV3.validateAuthorization(leadId, email);
-        } catch (Util.AuthorizationBWException abwe) {
-            throw Util.createAuraExceptionWithMessage('The email (' + email + ') and leadId (' + leadId + ') provided did not match');
-        }
-
-        List<Contract> contracts = customerContractSelector.selectByRelatedLead(leadId);
-        if (contracts.isEmpty()) {
-            throw Util.createAuraExceptionWithMessage('Did not find any contracts for lead id ' + leadId);
-        }
-        List<ContentDocumentLink> contentDocumentLinks = contentDocumentSelector.selectByLinkedEntity(contracts[0].Id);
-        if (contentDocumentLinks.isEmpty()) {
-            throw Util.createAuraExceptionWithMessage('Did not find any content docs for lead id ' + leadId);
-        }
-        for (ContentDocumentLink cdl : contentDocumentLinks) {
-            if (cdl.ContentDocumentId == documentId) {
-                return EncodingUtil.base64Encode(cdl.ContentDocument.LatestPublishedVersion.VersionData);
-            }
-        }
-        throw Util.createAuraExceptionWithMessage('Document id ' + documentId + ' is not related to lead id ' + leadId);
-    }
-
-
-    @AuraEnabled
     public static String getContentDistributionById(Id leadId, String email, Id documentId) {
         try {
             restControllerV3.validateAuthorization(leadId, email);
