@@ -6,50 +6,11 @@
  + * ContentDistribution is child of ContentVersion and generates a public url (used in community)
  + * ContentDocumentLink is a child of ContentDocument and controls what records a doc is linked to (QSS Record)
  + * 
- + * Tested By: SLPQuickSalesSheetTest and SimpleSignupFormControllerTest (lines 32-45)
+ + * Tested By: SLPQuickSalesSheetTest
  + *************************************************************************************/
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class FileDeliveryHandler {
-
-  public static void createDistribution (List<ContentVersion> newContent) {
-      List<ContentDistribution> distList = new List<ContentDistribution> ();
-
-      Date todaysDate = System.today();
-      Date expyDate = todaysDate.addDays(15);
-
-      for (ContentVersion cont : newContent){
-          if (cont.Title == 'Loan Summary Sheet.pdf') {
-              ContentDistribution cd = new ContentDistribution();
-              cd.Name = cont.Title;
-              cd.ContentVersionId = cont.Id;
-              cd.PreferencesAllowOriginalDownload = true;
-              cd.PreferencesAllowViewInBrowser = true;
-              cd.PreferencesAllowPDFDownload = true;
-              cd.ExpiryDate = expyDate;
-              cd.PreferencesExpires = true;
-              distList.add(cd);
-          } else if(cont.Title == 'Community Solar Agreement.pdf' || cont.Title == 'Solar Disclosure Form.pdf') {
-            distList.add(new ContentDistribution(
-                Name = cont.Title,
-                ContentVersionId = cont.Id,
-                ExpiryDate = System.today().addDays(10),
-                PreferencesAllowOriginalDownload = false,
-                PreferencesAllowPDFDownload = false,
-                PreferencesAllowViewInBrowser = true,
-                PreferencesExpires = true,
-                PreferencesLinkLatestVersion = true,
-                PreferencesNotifyOnVisit = false,
-                PreferencesNotifyRndtnComplete = false,
-                PreferencesPasswordRequired = false
-            ));
-          }
-      }
-
-      if (distList.size() > 0) {
-          insert distList;
-      }
-  }
   
   public static void findRelatedObject (List<ContentDocumentLink> newShare) {
         List<String> documentObjectList = new List<String>();

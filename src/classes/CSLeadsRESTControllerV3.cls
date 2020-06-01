@@ -35,6 +35,19 @@ public without sharing class CSLeadsRESTControllerV3 extends CSLeadsRESTControll
         super.patchApplication(jsonRequest);
     }
 
+    public override void patchContract(String jsonRequest) {
+        Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
+        if(requestMap.containsKey('leadId') && requestMap.containsKey('email')) {
+            Id leadId = (Id) requestMap.get('leadId');
+            String email = (String) requestMap.get('email');
+            validateAuthorization(leadId, email);
+        } else {
+            throw new Util.AuthorizationBWException('Invalid authorization - the correct fields must be provided for authorization');
+        }
+        
+        super.patchContract(jsonRequest);
+    }
+
     public override void getLead(String leadId, String email) {
         // validation performed in V2
         super.getLead(leadId, email);
