@@ -997,19 +997,13 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>First_Bill_Date__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Date of first bill sent to customers.</inlineHelpText>
+        <inlineHelpText>First Bill Period Date where Bill Status = Bill Run Complete</inlineHelpText>
         <label>First Bill Date</label>
-        <summarizedField>Bill_Period__c.Bill_Date__c</summarizedField>
-        <summaryFilterItems>
-            <field>Bill_Period__c.Bill_Status__c</field>
-            <operation>equals</operation>
-            <value>Bill Run Complete</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Bill_Period__c.Shared_Solar_System__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Summary</type>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Graph_Box__c</fullName>
