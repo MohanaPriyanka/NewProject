@@ -88,8 +88,8 @@ private class PostSandboxRefresherTest {
         System.assertEquals(0, chargentOrders.size(), 'Did not expect to load Amex orders');
         Test.startTest();
         PostSandboxRefresher.disableEmails();
-        PostSandboxRefresher.switchChargentToTestMode();
         Test.stopTest();
+        PostSandboxRefresher.switchChargentToTestMode();
         List<Contact> contactList = [SELECT Id, Email
                                      FROM Contact
                                      WHERE Email LIKE '%@email.com'];
@@ -98,8 +98,6 @@ private class PostSandboxRefresherTest {
                                FROM Lead
                                WHERE Email LIKE '%@email.com'];
         System.assertEquals(leadList.size(), 0);
-        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
-        System.assertEquals('pyao@bluewavesolar.com', systemProperties[0].DocuSign_Customer_Care_User__c);
         gateways = [
             SELECT Id, ChargentBase__Merchant_ID__c
             FROM ChargentBase__Gateway__c
