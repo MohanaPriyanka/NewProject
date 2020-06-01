@@ -88,8 +88,8 @@ private class PostSandboxRefresherTest {
         System.assertEquals(0, chargentOrders.size(), 'Did not expect to load Amex orders');
         Test.startTest();
         PostSandboxRefresher.disableEmails();
-        Test.stopTest();
         PostSandboxRefresher.switchChargentToTestMode();
+        Test.stopTest();
         List<Contact> contactList = [SELECT Id, Email
                                      FROM Contact
                                      WHERE Email LIKE '%@email.com'];
