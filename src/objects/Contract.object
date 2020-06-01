@@ -805,6 +805,19 @@
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>Onboarding_Fee_Trigger__c</fullName>
+        <externalId>false</externalId>
+        <label>Onboarding Fee Trigger</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Client_Invoicing_Events</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Onboarding_Fee__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>$ / MW DC</inlineHelpText>
