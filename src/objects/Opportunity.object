@@ -10026,16 +10026,13 @@ ISPICKVAL(Homeowner_s_Insurance_Status__c,&quot;Received: Approved&quot;)</error
     <validationRules>
         <fullName>Partner_lookup</fullName>
         <active>true</active>
-        <description>If a CS Anchor Opp stage equals Complete and SSS assigned to opp is not management only, partner lookup must be populated.</description>
-        <errorConditionFormula>IF( 
-AND(
-RecordTypeId = &apos;012j0000000n2t9&apos;,
+        <description>We need to differentiate between opportunities acquired by BW and opportunities acquired elsewhere for client invoicing. This makes sure we always know the source of a lead</description>
+        <errorConditionFormula>AND(
+ ISBLANK(Partner_tag_lookup__c), 
 ISPICKVAL( StageName , &apos;Complete&apos; ), 
-NOT(ISPICKVAL( Shared_Solar_System__r.CS_Services_Type__c, &apos;Management Only&apos; )),
-ISBLANK( Partner_tag_lookup__c )
-), 
-true, false )</errorConditionFormula>
-        <errorMessage>Partner lookup must be populated</errorMessage>
+ NOT(ISBLANK(Shared_Solar_System__c)) 
+)</errorConditionFormula>
+        <errorMessage>Partner must be populated for any opportunity linked to a Shared Solar System with Stage = Complete. The partner could be the client for customers acquired elsewhere, or BlueWave Inside Sales if we did not use a sales partner</errorMessage>
     </validationRules>
     <webLinks>
         <fullName>APXTConga4__Conga_Composer_OAuth</fullName>

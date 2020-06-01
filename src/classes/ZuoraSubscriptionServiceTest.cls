@@ -22,6 +22,7 @@ public with sharing class ZuoraSubscriptionServiceTest {
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
         Test.startTest();
+        Test.loadData(Partner__c.SObjectType,'TestRLPartner');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
         Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
