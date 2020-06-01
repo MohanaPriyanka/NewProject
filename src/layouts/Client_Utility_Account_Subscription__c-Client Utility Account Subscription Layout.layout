@@ -141,6 +141,10 @@
                 <field>Annual_Cost_of_Electricity_Future__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Annual_Subscription_Production_Summary__c</field>
+            </layoutItems>
+            <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>

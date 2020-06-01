@@ -33,6 +33,19 @@ Utility_Account_Subscription__r.Subscribed_Annual_Cost_of_Electricity__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Annual_Subscription_Production_Summary__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Annual_Subscription_Production_Summary__c</formula>
+        <label>Annual Subscription Production Summary</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Annual_kWh_Subscription_Future__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
