@@ -443,6 +443,16 @@ public with sharing class ZuoraAPI {
             }
             return null;
         }
+
+        public Integer getNumberOfGateways() {
+            Set<String> gateways = new Set<String>();
+            for (Subscription subscription : subscriptions) {
+                if (subscription.status == 'Active') {
+                    gateways.add(subscription.PaymentGateway_Zcustom);
+                }
+            }
+            return gateways.size();
+        }
     }
 
     public class ProcessingOptions {

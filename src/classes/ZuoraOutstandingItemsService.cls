@@ -316,6 +316,30 @@ public class ZuoraOutstandingItemsService {
         return itemsWithBalance;
     }
 
+    public String startOutstandingItemsQuery(String zuoraAcctId) {
+        String query = 'SELECT paymentgateway__c, chargedate, sum(balance) balance ' +
+            'FROM (' +
+            'SELECT it.id, s.paymentgateway__c, it.balance, it.chargedate ' +
+            'FROM InvoiceItem it ' +
+            'INNER JOIN Invoice iv ON iv.Id = it.invoiceid ' +
+            'INNER JOIN Account a ON iv.accountid = a.Id ' +
+            'INNER JOIN Subscription s ON it.subscriptionid = s.Id ' +
+            'WHERE a.id = \''+zuoraAcctId+'\' ' +
+            'AND it.balance > 0 ' +
+            'UNION ' +
+            'SELECT dmi.id, s.paymentgateway__c, dmi.balance, dmi.chargedate ' +
+            'FROM DebitMemoItem dmi ' +
+            'INNER JOIN DebitMemo dm ON dm.Id = dmi.debitmemoid ' +
+            'INNER JOIN Account a ON dm.accountid = a.id ' +
+            'LEFT OUTER JOIN Subscription s ON dmi.subscriptionid = s.Id ' +
+            'WHERE a.id = \''+zuoraAcctId+'\' ' +
+            'AND dmi.balance > 0) ' +
+            'GROUP BY paymentgateway__c, chargedate ' +
+            'ORDER BY chargedate';
+        Zuora_Data_Query__c zuoraDataQuery = ZuoraDataQueryService.callFromApexWithCallout(query, null);
+        return zuoraDataQuery.Id;
+    }
+
     public interface Processor {
         void processOutstandingItems(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems, ProcessingParameter option);
     }

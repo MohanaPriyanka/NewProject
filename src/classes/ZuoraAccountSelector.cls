@@ -3,6 +3,8 @@
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ZuoraAccountSelector {
+    private static ZuoraSubscriptionService zuoraSubscriptionService = new ZuoraSubscriptionService();
+
     public class QueryResultAccount {
         public List<ZuoraAPI.ZuoraAccount> records;
         public Integer size;
@@ -18,6 +20,8 @@ public without sharing class ZuoraAccountSelector {
         public ZuoraAPI.ZuoraAccount account;
         @AuraEnabled
         public ZuoraAPI.PaymentMethod paymentMethod;
+        @AuraEnabled
+        public Integer numberOfGateways;
     }
 
     public String getZuoraAccountFromSFAccount (String sfAccountId) {
@@ -44,23 +48,20 @@ public without sharing class ZuoraAccountSelector {
         return selectedGateway;
     }
 
-    @AuraEnabled
-    // Non static AuraEnabled methods may not have parameters, but we need to pass through SF Id, so keep this as static
-    // and re-instantiate ZuoraAccountSelector:
-    public static AccountWithPaymentMethod getAccountWithDefaultPaymentMethod (String sfAccountId) {
-        ZuoraAccountSelector selector = new ZuoraAccountSelector();
-        String zuoraAcctId = selector.getZuoraAccountFromSFAccount(sfAccountId);
-        ZuoraAPI.ZuoraAccount acct = selector.getAccountFromZuora(zuoraAcctId);
+    public AccountWithPaymentMethod getAccountWithDefaultPaymentMethod (String sfAccountId) {
+        String zuoraAcctId = getZuoraAccountFromSFAccount(sfAccountId);
+        ZuoraAPI.ZuoraAccount acct = getAccountFromZuora(zuoraAcctId);
         AccountWithPaymentMethod acctWithMethod = new AccountWithPaymentMethod();
         acctWithMethod.account = acct;
-        acctWithMethod.account.PaymentGateway = selector.getGatewayIdFromGatewayName(acct.PaymentGateway).id;
+        acctWithMethod.account.PaymentGateway = getGatewayIdFromGatewayName(acct.PaymentGateway).id;
+        acctWithMethod.numberOfGateways = zuoraSubscriptionService.getSubscriptionsByAccount(zuoraAcctId).getNumberOfGateways();
         if (acct.DefaultPaymentMethodId != null){
             acctWithMethod.paymentMethod = ZuoraPaymentPageController.getPaymentMethod(acct.DefaultPaymentMethodId);
         }
+        Logger.flushLogs();
         return acctWithMethod;
     }
 
-    @TestVisible
     public ZuoraAPI.ZuoraAccount getAccountFromZuora(String zuoraAcctId) {
         String fields = 'Id, ' +
             'AccountNumber, ' +

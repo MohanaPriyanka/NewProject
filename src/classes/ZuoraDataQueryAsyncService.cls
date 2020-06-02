@@ -6,6 +6,7 @@ Tested By: ZuoraDataQueryServiceTest
 public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCallouts {
     public ZuoraDataQueryService.DataQueryResult zuoraQueryResult;
     public ZuoraDataQueryService.DataQueryRequest attemptedQuery;
+    private static ZuoraDataQuerySelector zuoraDataQuerySelector = new ZuoraDataQuerySelector();
 
     public void execute(QueueableContext context) {
         try {
@@ -22,11 +23,7 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
         minutesToRetry = minutesToRetry==0 ? 120 : minutesToRetry;
 
         if (zuoraQueryResult.data.queryStatus != null && zuoraQueryResult.data.id != null) {
-            Zuora_Data_Query__c dataQuery = [
-                SELECT Id, Processing_Parameter__c
-                FROM Zuora_Data_Query__c
-                WHERE Id = :attemptedQuery.recordId
-            ];
+            Zuora_Data_Query__c dataQuery = zuoraDataQuerySelector.selectDataQueryById(attemptedQuery.recordId);
             dataQuery.Zuora_Id__c = zuoraQueryResult.data.id;
             dataQuery.Status__c = zuoraQueryResult.data.queryStatus;
 
@@ -73,13 +70,13 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
     private Zuora_Data_Query__c handleCompletedQuery (Zuora_Data_Query__c dataQueryToUpdate){
         try {
             zuoraQueryResult.getDataFromDataQuery();
-            String dataAsString = zuoraQueryResult.data.allData;
+            String dataAsString = convertDataQueryResponseToJSON(zuoraQueryResult.data.allData);
             dataQueryToUpdate.Link_To_File__c = zuoraQueryResult.data.dataFile;
             // Truncate because Link_To_File__c contains the actual data, Data_From_Zuora__c should really only
             // be used for small data sets or as a preview:
             dataQueryToUpdate.Data_From_Zuora__c = dataAsString.substring(0, Math.min(dataAsString.length(), 131000));
             dataQueryToUpdate.Output_Rows__c = zuoraQueryResult.data.outputRows;
-            if (dataAsString != '{}' && dataQueryToUpdate.Processing_Parameter__c != null) {
+            if (dataAsString != '[{}]' && dataQueryToUpdate.Processing_Parameter__c != null) {
                 ZuoraDataQueryService.ProcessingParameter processingParameter =
                     (ZuoraDataQueryService.ProcessingParameter) JSON.deserialize(dataQueryToUpdate.Processing_Parameter__c, ZuoraDataQueryService.ProcessingParameter.class);
                 ZuoraDataQueryService.handlePostQueryJob(dataAsString, processingParameter);
@@ -89,5 +86,13 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
             Logger.logNow('ZuoraDataQueryAsyncService', 'handleCompletedQuery', errorMessage);
         }
         return dataQueryToUpdate;
+    }
+
+    private String convertDataQueryResponseToJSON(String response) {
+        response = response.replace('}','},');
+        response = response.removeEnd(',');
+        response = '[' + response + ']';
+        response = response.replace('__c','_Zcustom');
+        return response;
     }
 }

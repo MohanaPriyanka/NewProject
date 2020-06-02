@@ -4,6 +4,9 @@
  *************************************************************************************/
 
 public with sharing class ZuoraPaymentPageController {
+    private static ZuoraDataQuerySelector zuoraDataQuerySelector = new ZuoraDataQuerySelector();
+    private static ZuoraAccountSelector zuoraAccountSelector = new ZuoraAccountSelector();
+    private static ZuoraOutstandingItemsService zuoraOutstandingItemsService = new ZuoraOutstandingItemsService();
     @AuraEnabled
     public static PaymentPageMetadata getPageMetadataWithDomain(String domain) {
         PaymentPageMetadata pageMetadata = new PaymentPageMetadata();
@@ -97,7 +100,8 @@ public with sharing class ZuoraPaymentPageController {
 
     @AuraEnabled
     public static ZuoraAccountSelector.AccountWithPaymentMethod getAccountAndPayMethodFromZuora (String sfAccountId){
-        return ZuoraAccountSelector.getAccountWithDefaultPaymentMethod(sfAccountId);
+        ZuoraAccountSelector selector = new ZuoraAccountSelector();
+        return selector.getAccountWithDefaultPaymentMethod(sfAccountId);
     }
 
     @AuraEnabled
@@ -117,9 +121,9 @@ public with sharing class ZuoraPaymentPageController {
             if (!result.success) {
                 // System error, call not completed:
                 String customErrorMessage =
-                    'Error making payment for account: ' + zuoraAcctId +
-                        ' with paymentAmount: ' + paymentAmount +
-                        ' and payment method Id: ' + paymentMethodId;
+                    'Error making payment:\n' +
+                        JSON.serialize(newPayment) + '\n' +
+                        response.getBody();
                 Logger.logNow('ZuoraPaymentPageController', 'makePayment', customErrorMessage, 'ERROR');
             } else if (result.status == 'Processed'){
                 // Call is completed successfully, and transaction is approved:
@@ -142,8 +146,7 @@ public with sharing class ZuoraPaymentPageController {
         return result;
     }
 
-    @AuraEnabled
-    public static Boolean handleGeneralUpdate(String method, Object itemToUpdate) {
+    private static Boolean handleGeneralUpdate(String method, Object itemToUpdate) {
         Boolean isSuccess = false;
         try {
             HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/update', itemToUpdate, true);
@@ -184,5 +187,16 @@ public with sharing class ZuoraPaymentPageController {
         ZuoraPaymentAsyncService paymentAsyncService = new ZuoraPaymentAsyncService();
         paymentAsyncService.setPaymentToApply(successfulPayment);
         System.enqueueJob(paymentAsyncService);
+    }
+
+    @AuraEnabled
+    public static String startOutstandingItemsQuery(String zuoraAcctId) {
+        return zuoraOutstandingItemsService.startOutstandingItemsQuery(zuoraAcctId);
+    }
+
+    @AuraEnabled
+    public static String getQueryResult(Id dataQueryId) {
+        Zuora_Data_Query__c zuoraDataQuery = zuoraDataQuerySelector.selectDataQueryById(dataQueryId);
+        return zuoraDataQuery.Data_From_Zuora__c;
     }
 }
