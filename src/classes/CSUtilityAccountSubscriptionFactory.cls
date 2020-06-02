@@ -39,13 +39,9 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
 
         for (Utility_Account_Log__c ual : uals) {
             if (ual.Lead__r.Product__r.Customer_Subscription_Type__c == 'kWh') {
-                // we need to make copies of the map for each UAL, otherwise we don't create enough UASes
-                Map<Id, Decimal> copyOfSSSRemainingSubscriptionCapacityMap = new Map<Id, Decimal>(sssRemainingSubscriptionCapacityMap);
-                uases.addAll(createUASbyCapacity(ual, copyOfSSSRemainingSubscriptionCapacityMap, opportunities, uasOrders));
+                uases.addAll(createUASbyCapacity(ual, sssRemainingSubscriptionCapacityMap, opportunities, uasOrders));
             } else if (ual.Lead__r.Product__r.Customer_Subscription_Type__c == 'Electricity Cost ($)') {
-                // we need to make copies of the map for each UAL, otherwise we don't create enough UASes
-                Map<Id, Decimal> copyOfSSSRemainingSubscriptionCostMap = new Map<Id, Decimal>(sssRemainingSubscriptionCostMap);
-                uases.addAll(createUASbyCost(ual, copyOfSSSRemainingSubscriptionCostMap, opportunities, uasOrders));
+                uases.addAll(createUASbyCost(ual, sssRemainingSubscriptionCostMap, opportunities, uasOrders));
             }
         }
         return uases;
@@ -181,7 +177,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
 
 
     public static Decimal calculateMaximumkWh(Shared_Solar_System__c sss) {
-        return  sss.Maximum_Subscription_Capacity_kW_DC__c * sss.Expected_Yield_kWh_kW__c;
+        return sss.Maximum_Subscription_Capacity_kW_DC__c * sss.Expected_Yield_kWh_kW__c;
     }
 
 }
