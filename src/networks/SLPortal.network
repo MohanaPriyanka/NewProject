@@ -30,10 +30,6 @@
     <networkMemberGroups>
         <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
-        <profile>partner community user</profile>
-        <profile>partner community user (custom)</profile>
-        <profile>partner community login user</profile>
-        <profile>partner community login user (custom)</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
@@ -46,7 +42,7 @@
     <selfRegistration>false</selfRegistration>
     <sendWelcomeEmail>true</sendWelcomeEmail>
     <site>SLPortal</site>
-    <status>Live</status>
+    <status>DownForMaintenance</status>
     <tabs>
         <defaultTab>home</defaultTab>
         <standardTab>Chatter</standardTab>
