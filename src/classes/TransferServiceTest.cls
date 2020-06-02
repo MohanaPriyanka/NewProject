@@ -53,6 +53,7 @@ private class TransferServiceTest {
             Bills_Generated__c = false
         );
         insert transferP1;
+        transferP1.Default_Credit_Value__c = 0.12;
         update transferP1;
         delete transferP1;
 
@@ -63,13 +64,65 @@ private class TransferServiceTest {
         System.assertEquals(0,transfers.size());
     }
 
-    private static List<Transfer__c> getTransferMocks(){
-        Transfer__c transferOne = new Transfer__c(Id = 'a903K000000026ZQAQ', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000006hM0UAI');
-        Transfer__c transferTwo = new Transfer__c(Id = 'a903K000000027ZQAQ', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000008hM0UAI');
-        Transfer__c transferThree = new Transfer__c(Id = 'a903K000000028ZQAQ', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000008hM0UAI');
-        Transfer__c transferFour = new Transfer__c(Id = 'a903K000000029ZQAQ', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000007hM0UAI');
-        Transfer__c transferFive = new Transfer__c(Id = 'a903K000000010ZQAQ', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000007hM0UAI');
-        Transfer__c transferSix = new Transfer__c(Id = 'a903K000000011ZQAQ', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000005hM0UAI');
+    @IsTest
+    private static void testCreditValueChange(){
+        useMocks();
+        Map<Id, Transfer__c> oldTransferMap = new Map<Id, Transfer__c>();
+        List<Transfer__c> newTransfers = new List<Transfer__c>();
+
+        List<Transfer__c> oldTransfers = getTransferMocks();
+
+        for (Transfer__c oldTransfer : oldTransfers){
+            oldTransfer.Default_Credit_Value__c = 0.17;
+            if (oldTransfer.Id == 'a903K000000028ZQAQ'){
+                oldTransfer.Default_Credit_Value__c = null;
+            }
+            oldTransferMap.put(oldTransfer.Id, oldTransfer);
+        }
+
+        newTransfers = getTransferMocks();
+        for (Transfer__c transfer : newTransfers){
+            transfer.Default_Credit_Value__c = 0.12;
+            if (transfer.Id == 'a903K000000026ZQAQ'){
+                transfer.Default_Credit_Value__c = null;
+            } else if (transfer.Id == 'a903K000000011ZQAQ'){
+                transfer.Default_Credit_Value__c = 0.17;
+            }
+        }
+
+        TransferService service = new TransferService();
+        List<Transfer_Part__c> partsToUpdate = service.findPartsOnCreditValueUpdate(newTransfers, oldTransferMap);
+        System.assertEquals(5,partsToUpdate.size());
+        Map<Id, Transfer_Part__c> partMap = new Map<Id, Transfer_Part__c>();
+
+        for (Transfer_Part__c part : partsToUpdate){
+            partMap.put(part.Transfer__c, part);
+        }
+
+        System.assertEquals(0.12,partMap.get('a903K000000028ZQAQ').Main_Transfer_Default_Credit_Value__c,
+            'main transfer credit value was updated from null to a value, but the transfer part did not update'
+        );
+        System.assertEquals(null,partMap.get('a903K000000026ZQAQ').Main_Transfer_Default_Credit_Value__c,
+            'main transfer credit value was updated from a value to null, but the transfer part did not update'
+        );
+        System.assertEquals(null,partMap.get('a903K000000011ZQAQ'),
+            'main transfer credit value was updated to the same value as before, transfer part should not have updated'
+        );
+        System.assertEquals(0.12,partMap.get('a903K000000027ZQAQ').Main_Transfer_Default_Credit_Value__c,
+            'main transfer credit value was updated, but the transfer part did not update'
+        );
+        System.assertEquals(0.12,partMap.get('a903K000000029ZQAQ').Main_Transfer_Default_Credit_Value__c,
+            'main transfer credit value was updated, but the transfer part did not update'
+        );
+    }
+
+    public static List<Transfer__c> getTransferMocks(){
+        Transfer__c transferOne = new Transfer__c(Id = 'a903K000000026ZQAQ', Transfer_Type__c = 'Main', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000006hM0UAI');
+        Transfer__c transferTwo = new Transfer__c(Id = 'a903K000000027ZQAQ', Transfer_Type__c = 'Main', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000008hM0UAI');
+        Transfer__c transferThree = new Transfer__c(Id = 'a903K000000028ZQAQ', Transfer_Type__c = 'Main', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000008hM0UAI');
+        Transfer__c transferFour = new Transfer__c(Id = 'a903K000000029ZQAQ', Transfer_Type__c = 'Main', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000007hM0UAI');
+        Transfer__c transferFive = new Transfer__c(Id = 'a903K000000010ZQAQ', Transfer_Type__c = 'Main', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000007hM0UAI');
+        Transfer__c transferSix = new Transfer__c(Id = 'a903K000000011ZQAQ', Transfer_Type__c = 'Main', Bills_Generated__c = true, Shared_Solar_System__c = 'a1J3K0000005hM0UAI');
         return new List<Transfer__c>{
             transferOne, transferTwo, transferThree, transferFour, transferFive, transferSix
         };
@@ -77,6 +130,7 @@ private class TransferServiceTest {
 
     private static void useMocks() {
         TransferService.prodSelector = (ProductionSelector) Test.createStub(ProductionSelector.class, new MockProductionSelector());
+        TransferService.prodDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
         TransferService.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockSSSSelctor());
     }
 
@@ -129,6 +183,27 @@ private class TransferServiceTest {
             switch on methodCall.stubbedMethodName {
                 when 'getSSSMap' {
                     return sssMap;
+                }
+            }
+            return null;
+        }
+    }
+
+    public class MockProductionDetailSelector extends MockProvider {
+        public MockProductionDetailSelector() {
+        }
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            String partsAsString = '' +
+                '[{"Transfer__c":"a903K000000026ZQAQ","Transfer__r":{"Id":"a903K000000026ZQAQ","Default_Credit_Value__c":null}},' +
+                '{"Transfer__c":"a903K000000027ZQAQ","Transfer__r":{"Id":"a903K000000027ZQAQ","Default_Credit_Value__c":0.12}},' +
+                '{"Transfer__c":"a903K000000028ZQAQ","Transfer__r":{"Id":"a903K000000028ZQAQ","Default_Credit_Value__c":0.12}},' +
+                '{"Transfer__c":"a903K000000029ZQAQ","Transfer__r":{"Id":"a903K000000029ZQAQ","Default_Credit_Value__c":0.12}},' +
+                '{"Transfer__c":"a903K000000010ZQAQ","Transfer__r":{"Id":"a903K000000010ZQAQ","Default_Credit_Value__c":0.12}}]';
+
+            switch on methodCall.stubbedMethodName {
+                when 'getPartsFromTransfer' {
+                    return (List<Transfer_Part__c>)JSON.deserialize(partsAsString,List<Transfer_Part__c>.class);
                 }
             }
             return null;

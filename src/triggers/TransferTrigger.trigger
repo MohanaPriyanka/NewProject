@@ -26,6 +26,7 @@ trigger TransferTrigger on Transfer__c (before update, before insert, after upda
             transferPartService.onAfterTransferUpdate(Trigger.new, Trigger.oldMap);
             alsService.queueUpdateALSStatuses(Trigger.new, Trigger.oldMap);
             transferService.changeInBillsGenerated(Trigger.new, Trigger.oldMap);
+            transferService.updatePartsOnCreditValueUpdate(Trigger.new, Trigger.oldMap);
         }
         when AFTER_INSERT {
             transferPartService.createPartsFromTransfer(Trigger.new);
