@@ -145,7 +145,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             ));
             ++counter;
 
-            setMaximumSubscriptionCost(sss, ual.Annual_Cost_of_Electricity__c / 2);
+            setMaximumSubscriptionCost(sss, ual.Annual_Cost_of_Electricity__c);
         }
         update sharedSolarSystems;
         sharedSolarSystems = getSharedSolarSystems();
@@ -156,8 +156,8 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         List<Utility_Account_Subscription__c> generatedUASes;
         generatedUASes = CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities);
 
-        // 2 opps & 2 uals each = 4 subscriptions
-        System.assertEquals(4, generatedUASes.size());
+        // 2 opps (max = ual size)   = 2 subscriptions (one for each UAL)
+        System.assertEquals(2, generatedUASes.size());
     }
 
     @IsTest
@@ -235,7 +235,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             ));
             ++counter;
 
-            setMaximumSubscriptionCapactity(sss, ual.Proposed_kWh__c / 2);
+            setMaximumSubscriptionCapactity(sss, ual.Proposed_kWh__c );
         }
         update sharedSolarSystems;
         sharedSolarSystems = getSharedSolarSystems();
@@ -245,9 +245,9 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         List<Utility_Account_Subscription__c> generatedUASes;
         generatedUASes = CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities, uasOrders);
 
-        // 2 opps & 2 uals each = 4 subscriptions
-        System.assertEquals(4, generatedUASes.size());
-        System.assertEquals(4, uasOrders.size());
+        // 2 opps (max = ual size) = 2 subscriptions (one for each UAL)
+        System.assertEquals(2, generatedUASes.size());
+        System.assertEquals(2, uasOrders.size());
 
         for (Integer i = 0; i < generatedUASes.size(); i++ ) {
             System.assertNotEquals(null, uasOrders[i].uas);
@@ -345,7 +345,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
 
     public static List<Shared_Solar_System__c> getSharedSolarSystems() {
         List<Shared_Solar_System__c> sharedSolarSystems = [
-            SELECT Id, Maximum_Subscription_Capacity_kW_DC__c, Expected_Yield_kWh_kW__c, Maximum_Subscription_Cost__c,
+            SELECT Id, Expected_Yield_kWh_kW__c, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c,
                 NMC_Value__c
             FROM Shared_Solar_System__c
         ];
@@ -370,7 +370,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
 
         Test.stopTest();
         Shared_Solar_System__c sssAfterUpdate = [
-            SELECT Id, Maximum_Subscription_Capacity_kW_DC__c, Expected_Yield_kWh_kW__c
+            SELECT Id, Expected_Yield_kWh_kW__c, Maximum_Subscription_Capacity_kW_DC__c
             FROM Shared_Solar_System__c
             WHERE Id =: sss.Id
             LIMIT 1
