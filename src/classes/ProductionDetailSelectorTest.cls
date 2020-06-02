@@ -243,6 +243,25 @@ public class ProductionDetailSelectorTest {
     }
 
     @isTest
+    public static void testGetTransferPartList() {
+        Set<Id> idSet = new Set<Id>();
+        List<Transfer__c> allTransfers = [
+            SELECT Id
+            FROM Transfer__c
+            ORDER BY Name
+        ];
+        for (Transfer__c transfer : allTransfers){
+            idSet.add(transfer.Id);
+        }
+        System.assertEquals(3, allTransfers.size());
+
+        ProductionDetailSelector selector = new ProductionDetailSelector();
+        List<Transfer_Part__c> partsMap = selector.getPartsFromTransfer(idSet);
+
+        System.assertEquals(6, partsMap.size());
+    }
+
+    @isTest
     public static void testGetInvoicePartMap(){
         Set<String> entryExternalIds = new Set<String>{
             '2c92c0fa6e3a9391016e3e30d48066d2','2c92c0fa6e3a9391016e3df87b1f687a'
