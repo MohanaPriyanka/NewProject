@@ -281,6 +281,17 @@ Amount__c /Production__r.Credits_Available_for_Allocation__c,
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Main_Transfer_Default_Credit_Value__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped from the Transfer at creation, if the production detail is linked to a Main Transfer</inlineHelpText>
+        <label>Main Transfer Default Credit Value</label>
+        <precision>11</precision>
+        <required>false</required>
+        <scale>8</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Production__c</fullName>
         <description>A master-detail relationship from Transfer Parts up to Production.</description>
         <externalId>false</externalId>
@@ -394,6 +405,26 @@ FALSE)</formula>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Utilization_Lost_Credit_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+ AND(
+  ISPICKVAL(Transfer__r.Transfer_Type__c,&quot;Excess Credit&quot;),
+  Production__r.Main_Transfer_Default_Credit_Value__c &gt; 0
+ ),
+ (kWh_Amount__c * Production__r.Main_Transfer_Default_Credit_Value__c) - Amount__c,
+ 0
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>In some state programs, un-allocated credits that are sent back to the host account and are later distributed to offtakers are distribued out at a lower credit value rate than the initial allocation. This formula calculates the lost value in dollars.</inlineHelpText>
+        <label>Utilization: Lost Credit Value ($)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>kWh_Amount__c</fullName>
