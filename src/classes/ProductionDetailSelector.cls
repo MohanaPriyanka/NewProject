@@ -24,6 +24,18 @@ public inherited sharing class ProductionDetailSelector {
         return partsMap;
     }
 
+    public List<Transfer_Part__c> getPartsFromTransfer(Set<Id> transferIds) {
+        List<Transfer_Part__c> parts = [
+            SELECT Id, Transfer__c,
+                Main_Transfer_Default_Credit_Value__c,
+                Transfer__r.Default_Credit_Value__c
+            FROM Transfer_Part__c
+            WHERE Transfer__c IN : transferIds
+            AND Type__c = 'Transfer'
+        ];
+        return parts;
+    }
+
     public Map<String, List<Transfer_Part__c>> getInvoicePartMap(Set<String> invoiceEntries) {
         Map<String, List<Transfer_Part__c>> partsMap = new Map<String, List<Transfer_Part__c>>();
         List<Transfer_Part__c> parts = [

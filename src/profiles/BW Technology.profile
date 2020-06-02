@@ -41056,6 +41056,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Production__c.Main_Transfer_Default_Credit_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Production__c.Pre_Transfer_Reductions__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -45340,6 +45345,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer_Part__c.Main_Transfer_Default_Credit_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
         <readable>true</readable>
@@ -45357,6 +45367,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Transfer_Part__c.Utility_Bill_Line_Item__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Transfer_Part__c.Utilization_Lost_Credit_Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -337,6 +337,17 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Main_Transfer_Default_Credit_Value__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Max of Production Detail&apos;s &quot;Main Transfer Default Credit Value&quot;</inlineHelpText>
+        <label>Main Transfer Default Credit Value</label>
+        <summarizedField>Transfer_Part__c.Main_Transfer_Default_Credit_Value__c</summarizedField>
+        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Pre_Transfer_Reductions__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of Parts where &quot;Reduce Available for Allocation&quot; is TRUE (Incentive Payments and Fees)</inlineHelpText>
