@@ -14,6 +14,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         // to batch
         // disableEmails();
         updateLetterStreamToTestConfig();
+        updateDocusignToDemoConfig();
         switchChargentToTestMode();
         setupBWTestPartner();
         setupDataForReportTest();
@@ -161,6 +162,35 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         newLetterStreamSetting.API_Key__c = 'fhv4d7bèv9v6n7_test';
         newLetterStreamSetting.API_Endpoint__c = 'https://secure.letterstream.com/apis/';
         upsert newLetterStreamSetting;
+    }
+    @TestVisible
+    private static void updateDocusignToDemoConfig() {
+        if (!Util.isSandboxOrTest()) {
+            throw new Util.BWException('Don\'t update DocuSign config in production this way');
+        }
+//        List<dsfs__DocuSignAccountConfiguration__c> docusignConfigs = [
+//            SELECT Id, dsfs__OrganizationId__c, dsfs__AccountId__c, dsfs__DocuSignEnvironment__c
+//            FROM dsfs__DocuSignAccountConfiguration__c
+//        ];
+//        dsfs__DocuSignAccountConfiguration__c docusignConfig = new dsfs__DocuSignAccountConfiguration__c();
+//        if (!docusignConfigs.isEmpty()) {
+//            // Not an empty sandbox, update the config
+//            docusignConfig.Id = docusignConfigs[0].Id;
+//        }
+//        docusignConfig.dsfs__OrganizationId__c = [SELECT Id FROM Organization LIMIT 1].Id;
+//        // The demo instance with pyao@bluewavesolar.com login
+//        docusignConfig.dsfs__AccountId__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
+//        docusignConfig.dsfs__DocuSignEnvironment__c = 'demo';
+//        upsert docusignConfig;
+//        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+//        if (systemProperties.size() > 0) {
+//            systemProperties[0].DocuSign_API_Account_ID__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
+//            systemProperties[0].DocuSign_Customer_Care_User__c = 'pyao@bluewavesolar.com';
+//            systemProperties[0].DocuSign_Guest_User__c = 'pyao@bluewave-capital.com';
+//            systemProperties[0].DocuSign_Guest_User_Credential__c = '137Newbury';
+//            systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
+//            update systemProperties[0];
+//        }
     }
     @TestVisible
     private static void switchChargentToTestMode() {
@@ -550,7 +580,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                     Sales_Partners__c = 'All;BlueWave Test Partner',
                     Service_Territories__c = 'NEMA;SEMA;WCMA',
                     BWC_Project_Entity_Manual__c = entity.Id,
-                    Maximum_Subscription_Assemblage__c = 25,
+                    Maximum_Subscription_Capacity_kWDC__c = 25,
                     Utility__c = utility.Id,
                     CreatedDate = csDataDate
                 );
@@ -1047,17 +1077,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         );
         return opportunity1;
     }
-    private static List<Opportunity> setOpportunityPartner(List<Opportunity> opportunities){
-        List<Partner__c> partners = [
-            SELECT Id
-            FROM Partner__c
-            LIMIT 1
-        ];
-        for (Opportunity opp : opportunities){
-            opp.Partner_tag_lookup__c = partners[0].Id;
-        }
-        return opportunities;
-    }
     private static Utility_Account_Subscription__c getUtilityAccountSubscription(String name, Integer subscription,
         Utility_Account_Log__c ualog1, Opportunity opportunity1) {
         Utility_Account_Subscription__c uas1 = new Utility_Account_Subscription__c(
@@ -1132,7 +1151,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                 opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
             }
         }
-        insert setOpportunityPartner(opportunities);
+        insert opportunities;
         return opportunities;
     }
     private static void insertSubscriptions(List<Name> names, List<Utility_Account_Log__c> uals, List<Opportunity> opportunities) {

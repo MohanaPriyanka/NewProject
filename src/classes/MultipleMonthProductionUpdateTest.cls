@@ -81,7 +81,7 @@ public class MultipleMonthProductionUpdateTest {
                                        Client_Account__c = clientAccount.Id,
                                        BWC_Project_Entity_Manual__c = entity1.Id,
                                        Utility__c = eversource.Id,
-                                       Maximum_Subscription_Assemblage__c = 25,
+                                       Maximum_Subscription_Capacity_kWDC__c = 25,
                                        Billing_Method__c = 'kWh');
         insert new List<Shared_Solar_System__c>{sss1};
 

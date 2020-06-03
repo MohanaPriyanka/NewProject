@@ -192,9 +192,9 @@ public without sharing class CSOpportunityFactoryTest {
         insert availableSSS;
 
         availableSSS = [
-            SELECT Id, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c, Expected_Yield_kWh_kW__c,
+            SELECT Id, Maximum_Subscription_Cost__c, Expected_Yield_kWh_kW__c,
                 Reserved_Capacity_kW_DC__c, Project_Capacity_Available_kW_DC__c, Product__c, Utility_NMC_Tariff__c,
-                Credit_Score_Requirement__c
+                Maximum_Subscription_Capacity_kWDC__c, Credit_Score_Requirement__c
             FROM Shared_Solar_System__c
             WHERE Id IN : availableSSS
             ORDER BY Name
@@ -340,9 +340,9 @@ public without sharing class CSOpportunityFactoryTest {
         insert availableSSS;
 
         availableSSS = [
-            SELECT Id, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c, Expected_Yield_kWh_kW__c,
+            SELECT Id, Maximum_Subscription_Cost__c, Expected_Yield_kWh_kW__c,
                 Reserved_Capacity_kW_DC__c, Project_Capacity_Available_kW_DC__c, Product__c, Utility_NMC_Tariff__c,
-                Credit_Score_Requirement__c
+                Credit_Score_Requirement__c, Maximum_Subscription_Capacity_kWDC__c
             FROM Shared_Solar_System__c
             WHERE Id IN : availableSSS
             ORDER BY Name
@@ -406,7 +406,7 @@ public without sharing class CSOpportunityFactoryTest {
 
         System.assertEquals(sss1.Id, opp1.Shared_Solar_System__c);
         System.assertEquals(0, opp1.Annual_Electricity_Cost__c);
-        Decimal maximumKWHSubscription = sss1.Maximum_Subscription_Capacity_kW_DC__c * sss1.Expected_Yield_kWh_kW__c;
+        Decimal maximumKWHSubscription =  sss1.Maximum_Subscription_Capacity_kWDC__c *sss1.Expected_Yield_kWh_kW__c;
         System.assertEquals(maximumKWHSubscription, opp1.Annual_Consumption_kWh__c);
         System.assertEquals(newACHOrder.ChargentOrders__Bank_Name__c, opp1.ACH_Bank_Name__c);
         System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp1.ACH_Name_on_Account__c);
@@ -461,7 +461,7 @@ public without sharing class CSOpportunityFactoryTest {
         insert availableSSS;
 
         availableSSS = [
-            SELECT Id, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c, Expected_Yield_kWh_kW__c,
+            SELECT Id, Maximum_Subscription_Cost__c, Expected_Yield_kWh_kW__c, Maximum_Subscription_Capacity_kWDC__c,
                 Reserved_Capacity_kW_DC__c, Project_Capacity_Available_kW_DC__c, Product__c, Utility_NMC_Tariff__c,
                 Credit_Score_Requirement__c
             FROM Shared_Solar_System__c
@@ -550,7 +550,7 @@ public without sharing class CSOpportunityFactoryTest {
 
         System.assertEquals(sss1.Id, opp1.Shared_Solar_System__c);
         System.assertEquals(0, opp1.Annual_Electricity_Cost__c);
-        Decimal maximumKWHSubscription = sss1.Maximum_Subscription_Capacity_kW_DC__c * sss1.Expected_Yield_kWh_kW__c;
+        Decimal maximumKWHSubscription = sss1.Maximum_Subscription_Capacity_kWDC__c * sss1.Expected_Yield_kWh_kW__c;
         System.assertEquals(maximumKWHSubscription, opp1.Annual_Consumption_kWh__c);
         System.assertEquals('AmericanExpress', opp1.CC_Card_Type__c);
         System.assertEquals('***********0002', opp1.CC_Account_Number__c);

@@ -158,7 +158,7 @@ public with sharing class CSAPControllerTest {
                                                                     Assemblage_Count__c = 1,
                                                                     Sales_Partners__c = 'All',
                                                                     Product__c = smartProduct.Id,
-                                                                    Maximum_Subscription_Assemblage__c = 25);
+                                                                    Maximum_Subscription_Capacity_kWDC__c = 25);
         insert sss1;
         Test.stopTest();
     }
