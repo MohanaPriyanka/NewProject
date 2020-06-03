@@ -16290,11 +16290,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Contract.Management_Fee_Trigger__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Contract.Management_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -33021,6 +33016,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Partner_Sales_Agreement_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Partner_Stage__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
