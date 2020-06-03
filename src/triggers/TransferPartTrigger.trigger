@@ -4,7 +4,7 @@
  * TestedBy: TransferPartServiceTest
  */
 
-trigger TransferPartTrigger on Transfer_Part__c (after insert, after update) {
+trigger TransferPartTrigger on Transfer_Part__c (after insert, after update, before delete) {
     if (Util.isDisabled('Disable_TransferTrigger__c')) {
         return;
     }
@@ -13,6 +13,9 @@ trigger TransferPartTrigger on Transfer_Part__c (after insert, after update) {
 
     if (Trigger.isAfter){
         transferPartService.onAfterTransferParts(Trigger.new);
+    }
+    if (Trigger.isBefore && Trigger.isDelete) {
+        transferPartService.onBeforeDelete(Trigger.new);
     }
 
 }

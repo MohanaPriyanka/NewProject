@@ -4,7 +4,7 @@
  * TestedBy: TransferPartServiceTest, AllocationScheduleServiceTest, TransferServiceTest
  */
 
-trigger TransferTrigger on Transfer__c (before update, before insert, after update, after insert) {
+trigger TransferTrigger on Transfer__c (before update, before insert, before delete, after update, after insert) {
     if (Util.isDisabled('Disable_TransferTrigger__c')) {
         return;
     }
@@ -30,6 +30,9 @@ trigger TransferTrigger on Transfer__c (before update, before insert, after upda
         }
         when AFTER_INSERT {
             transferPartService.createPartsFromTransfer(Trigger.new);
+        }
+        when BEFORE_DELETE {
+            //add method
         }
     }
 }
