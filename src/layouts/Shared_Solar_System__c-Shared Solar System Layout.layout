@@ -440,10 +440,6 @@
                 <field>First_Bill_Date__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Count_of_Transfers__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Meter_Reading_Schedule__c</field>
             </layoutItems>
