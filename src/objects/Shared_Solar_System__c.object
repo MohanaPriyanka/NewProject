@@ -1132,20 +1132,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Maximum_Subscription_Assemblage__c</fullName>
-        <defaultValue>25</defaultValue>
-        <externalId>false</externalId>
-        <label>XXXMaximum Subscription (Assemblage)</label>
-        <precision>7</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Maximum_Subscription_Capacity_kWDC__c</fullName>
         <externalId>false</externalId>
         <label>Maximum Subscription Capacity (kW DC)</label>
@@ -1153,20 +1139,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Maximum_Subscription_Capacity_kW_DC__c</fullName>
-        <externalId>false</externalId>
-        <formula>Assemblage_Count__c * Maximum_Subscription_Assemblage__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXMaximum Subscription Capacity (kW DC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
