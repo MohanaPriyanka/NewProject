@@ -32,7 +32,7 @@ trigger TransferTrigger on Transfer__c (before update, before insert, before del
             transferPartService.createPartsFromTransfer(Trigger.new);
         }
         when BEFORE_DELETE {
-            //add method
+            transferService.onDeleteTransfers(Trigger.old);
         }
     }
 }

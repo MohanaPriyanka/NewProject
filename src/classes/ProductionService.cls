@@ -9,7 +9,7 @@ public with sharing class ProductionService {
     public void onDeleteProduction(List<Production__c> deletedProductions) {
         for (Production__c prod : deletedProductions) {
             if (prod.Verification_Status__c == 'Verified') {
-                prod.addError('Production cannot be deleted if "Verified"');
+                throw new Util.FatalBWException('Production cannot be deleted if "Verified"');
             }
         }
     }

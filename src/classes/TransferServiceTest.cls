@@ -53,14 +53,21 @@ private class TransferServiceTest {
             Bills_Generated__c = false
         );
         insert transferP1;
+        transferP1.Bills_Generated__c = true;
         update transferP1;
-        delete transferP1;
+
+        try {
+            delete transferP1;
+        } catch (Exception e) {
+            System.assert(e.getMessage().contains('Delete failed'),
+                'Transfer cannot be deleted');
+        }
 
         List<Transfer__c> transfers = [
             SELECT Id
             FROM Transfer__c
         ];
-        System.assertEquals(0,transfers.size());
+        System.assertEquals(1,transfers.size());
     }
 
     private static List<Transfer__c> getTransferMocks(){
