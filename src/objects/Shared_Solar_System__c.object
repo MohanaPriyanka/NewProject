@@ -857,7 +857,7 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <fullName>Est_of_Subscribers__c</fullName>
         <description>This is an estimate and is used in DocuSign.</description>
         <externalId>false</externalId>
-        <formula>Total_CS_Capacity_kW_DC_Formula__c / Maximum_Subscription_Assemblage__c</formula>
+        <formula>Total_CS_Capacity_kW_DC_Formula__c / Maximum_Subscription_Capacity_kWDC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>This is an estimate and is used in DocuSign.</inlineHelpText>
         <label>XXXEst # of Subscribers</label>
@@ -1132,11 +1132,10 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Maximum_Subscription_Assemblage__c</fullName>
-        <defaultValue>25</defaultValue>
+        <fullName>Maximum_Subscription_Capacity_kWDC__c</fullName>
         <externalId>false</externalId>
-        <label>XXXMaximum Subscription (Assemblage)</label>
-        <precision>7</precision>
+        <label>Maximum Subscription Capacity (kW DC)</label>
+        <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
@@ -1146,23 +1145,9 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Maximum_Subscription_Capacity_kW_DC__c</fullName>
-        <externalId>false</externalId>
-        <formula>Assemblage_Count__c *  Maximum_Subscription_Assemblage__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Maximum Subscription Capacity (kW DC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Maximum_Subscription_Cost__c</fullName>
         <externalId>false</externalId>
-        <formula>Maximum_Subscription_Capacity_kW_DC__c *  NMC_Value__c *  Expected_Yield_kWh_kW__c</formula>
+        <formula>Maximum_Subscription_Capacity_kWDC__c *  NMC_Value__c *  Expected_Yield_kWh_kW__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Maximum Subscription Cost</label>
         <precision>18</precision>
@@ -3635,6 +3620,19 @@ ISBLANK(Estimated_PTO_Date_MANUAL__c)
         <errorMessage>Cannot change status to acquisition without populating the Estimated COD and PTO dates</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Acquisition_Maximum_Subscription_Require</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+OR (
+Maximum_Subscription_Capacity_kWDC__c = 0,
+ISBLANK(Maximum_Subscription_Capacity_kWDC__c)
+)
+)</errorConditionFormula>
+        <errorMessage>Cannot change status to acquisition without populating the Maximum Subscription KW DC field</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Acquisition_Product_UNMC_Required</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
@@ -3784,6 +3782,8 @@ ISBLANK(Service_Territories__c),
 ISBLANK(Service_Territories__c),
 ISBLANK(Maximum_Subscription_Cost__c ),
 Maximum_Subscription_Cost__c = 0,
+ISBLANK(Maximum_Subscription_Capacity_kWDC__c),
+Maximum_Subscription_Capacity_kWDC__c= 0,
 ISBLANK(Credit_Score_Requirement__c),
 Credit_Score_Requirement__c = 0
 )
@@ -3793,7 +3793,7 @@ Credit_Score_Requirement__c = 0
 2.) Capacity Available to Be Reserved &gt; 0 
 3.) Product and Utility NMC Tariff
 4.) Utility and Service Territories
-5) Maximum Subscription Cost &gt; 0
+5) Maximum Subscription Cost and kW &gt; 0
 6.) Credit Score Requirement</errorMessage>
     </validationRules>
     <validationRules>

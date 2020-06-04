@@ -139,7 +139,7 @@ public with sharing class ClientBrandingServiceTest {
                 Product__c = normalCSProduct.Id,
                 Sales_Partners__c = 'All',
                 BWC_Project_Entity_Manual__c = entity1.Id,
-                Maximum_Subscription_Assemblage__c = 25,
+                Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id);
 
         Shared_Solar_System__c sss2 =
@@ -160,7 +160,7 @@ public with sharing class ClientBrandingServiceTest {
                 Product__c = normalCSProduct.Id,
                 Sales_Partners__c = 'All',
                 BWC_Project_Entity_Manual__c = entity2.Id,
-                Maximum_Subscription_Assemblage__c = 25,
+                Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id);
 
         insert new List<Shared_Solar_System__c>{sss1, sss2};

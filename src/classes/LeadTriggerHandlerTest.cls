@@ -53,14 +53,14 @@ public class LeadTriggerHandlerTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
-                                                                                                                                Utility__c = nationalgrid.Id,
+            Utility__c = nationalgrid.Id,
             Credit_Score_Requirement__c = 200,
             Assignment_order__c = '1',
             Utility_NMC_Tariff__c = nmcRate.Id,
             Product__c = csProduct.Id,
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Assemblage__c = 25
+            Maximum_Subscription_Capacity_kWDC__c = 25
         );
 
         
@@ -502,11 +502,12 @@ public class LeadTriggerHandlerTest {
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3};
 
         Shared_Solar_System__c sssCheck = [
-            SELECT Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c
+            SELECT Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kWDC__c
             FROM Shared_Solar_System__c
             WHERE Id = :sss1.Id
+
         ];
-        System.assertEquals(25, sssCheck.Maximum_Subscription_Capacity_kW_DC__c);
+        System.assertEquals(25, sssCheck.Maximum_Subscription_Capacity_kWDC__c);
         System.assertEquals(6006, sssCheck.Maximum_Subscription_Cost__c);
 
         Partner__c partner = new Partner__c(Name = 'BlueWave Customer Care');
@@ -787,11 +788,11 @@ public class LeadTriggerHandlerTest {
         Shared_Solar_System__c sss3 = getSharedSolarSystem(nmcRate, csProduct, nationalGrid, 'National Grid P1');
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5};
         Shared_Solar_System__c sssCheck = [
-            SELECT Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c
+            SELECT Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kWDC__c
             FROM Shared_Solar_System__c
             WHERE Id = :sss1.Id
         ];
-        System.assertEquals(25, sssCheck.Maximum_Subscription_Capacity_kW_DC__c);
+        System.assertEquals(25, sssCheck.Maximum_Subscription_Capacity_kWDC__c);
         System.assertEquals(6006, sssCheck.Maximum_Subscription_Cost__c);
         Partner__c partner = new Partner__c(Name = 'BlueWave Customer Care');
         insert partner;
@@ -953,7 +954,7 @@ public class LeadTriggerHandlerTest {
             Product__c = csProduct.Id,
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Assemblage__c = 25,
+            Maximum_Subscription_Capacity_kWDC__c = 25,
             Sales_Partners__c = 'All'
         );
         return sss1;

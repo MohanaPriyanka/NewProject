@@ -550,7 +550,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                     Sales_Partners__c = 'All;BlueWave Test Partner',
                     Service_Territories__c = 'NEMA;SEMA;WCMA',
                     BWC_Project_Entity_Manual__c = entity.Id,
-                    Maximum_Subscription_Assemblage__c = 25,
+                    Maximum_Subscription_Capacity_kWDC__c = 25,
                     Utility__c = utility.Id,
                     CreatedDate = csDataDate
                 );

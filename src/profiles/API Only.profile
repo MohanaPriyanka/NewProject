@@ -29142,16 +29142,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Shared_Solar_System__c.Maximum_Subscription_Assemblage__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Maximum_Subscription_Capacity_kW_DC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Maximum_Subscription_Cost__c</field>
         <readable>true</readable>
