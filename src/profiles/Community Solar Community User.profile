@@ -3177,7 +3177,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>MyAccountController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>MyProfilePageController</apexClass>
@@ -3809,7 +3809,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraPaymentPageController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraPaymentPageControllerTest</apexClass>
