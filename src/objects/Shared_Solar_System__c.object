@@ -249,7 +249,7 @@
     <fields>
         <fullName>Anchor_Capacity_Reserved__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of Anchor&amp; Public Offtake Subscriptions when under Management OR Manual input from Reserved Anchor Capacity when no Anchor Subscriptions on SSS under Onboarding or Acquisition Stage</inlineHelpText>
+        <inlineHelpText>Capacity of system with anchor subscriptions.</inlineHelpText>
         <label>Anchor Capacity</label>
         <precision>12</precision>
         <required>false</required>
