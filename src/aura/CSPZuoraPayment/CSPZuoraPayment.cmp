@@ -32,6 +32,8 @@
   <aura:attribute name="missingFieldsMessage" type="String" default="Please complete all required fields to continue"/>
   <aura:attribute name="responseMessage" type="String"/>
   <aura:attribute name="sfAccountId" type="String"/>
+  <aura:attribute name="outstandingItemsByDate" type="Object"/>
+  <aura:handler name="change" value="{!v.outstandingItemsByDate}" action="{!c.checkAllRequiredFields}"/>
 
   <aura:if isTrue="{!$Browser.isPhone}">
     <article class="">
@@ -295,7 +297,9 @@
               </aura:if>
               <div class="slds-align_absolute-center slds-p-top_small">
                 <aura:if isTrue="{!!v.showEnabledButton}">
-                  <i><ui:outputText value="{!v.missingFieldsMessage}"/></i>
+                  <div>
+                    <i><ui:outputText value="{!v.missingFieldsMessage}"/></i>
+                  </div>
                 </aura:if>
               </div>
               <div class="slds-align_absolute-center slds-p-top_small">
@@ -593,7 +597,9 @@
                                     class="slds-text-body_small
                                       slds-p-top_x-small slds-p-bottom_x-small slds-p-left_small slds-p-right_small"/>
                   <aura:if isTrue="{!!v.showEnabledButton}">
-                    <i><ui:outputText class="slds-p-left_xx-large" value="{!v.missingFieldsMessage}"/></i>
+                    <div>
+                      <i><ui:outputText value="{!v.missingFieldsMessage}"/></i>
+                    </div>
                   </aura:if>
                   <aura:if isTrue="{!v.makePaymentOrManageAutopay}">
                     <div class="slds-text-body_small slds-text-color_error slds-p-top_medium">

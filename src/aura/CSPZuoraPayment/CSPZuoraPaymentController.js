@@ -73,4 +73,8 @@
     returnToMyAccount : function(component, event, helper) {
         $A.get('e.force:refreshView').fire();
     },
+
+    checkAllRequiredFields : function(component, event, helper) {
+        helper.checkAllRequiredFields(component, event, helper);
+    }
 })

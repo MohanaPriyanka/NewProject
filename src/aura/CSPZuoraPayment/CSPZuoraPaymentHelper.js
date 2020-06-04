@@ -107,6 +107,8 @@
         let check_PaymentMethodId = component.get("v.newPaymentMethodId");
         let check_MakeAPaymentPage = component.get("v.makePaymentOrManageAutopay");
         let check_AutopayIsOn = component.get("v.newAutopaySelection");
+        let check_AccountMultiGateway = component.get("v.zuoraAccountAndPayMethod");
+        let check_OutstandingItemsByDate = component.get("v.outstandingItemsByDate");
 
         this.disableButton(component, event, helper);
 
@@ -121,6 +123,8 @@
             component.set("v.missingFieldsMessage", 'You must supply a payment method to make a payment.');
         } else if (typeof check_PaymentMethodId === 'undefined' && check_MakeAPaymentPage === false && check_AutopayIsOn === true){
             component.set("v.missingFieldsMessage", 'You must supply a new payment method to change autopay');
+        } else if (check_MakeAPaymentPage && check_AccountMultiGateway.numberOfGateways > 1 && !check_OutstandingItemsByDate) {
+            component.set("v.missingFieldsMessage", 'We\'ll need to make multiple transactions, please wait while we retrieve your balance details.');
         } else {
             component.set("v.missingFieldsMessage", '');
             this.closeMethodEnableButton(component, event, helper);
@@ -129,9 +133,14 @@
 
     sendToZuoraHelper : function(component, event, helper) {
         let payPageOrManageAuto = component.get("v.makePaymentOrManageAutopay");
+        let outstandingItemsByDate = component.get("v.outstandingItemsByDate");
 
-        if (payPageOrManageAuto === true){
-            this.makeZPayment(component, event, helper);
+        if (payPageOrManageAuto) {
+            if (outstandingItemsByDate) {
+                this.makeMultiGatewayPayments(component, event, helper, outstandingItemsByDate);
+            } else {
+                this.makeZPayment(component, event, helper);
+            }
         } else {
             this.modifyAutopay(component, event, helper, 'Your account has been updated successfully.');
         }
@@ -169,17 +178,44 @@
         $A.enqueueAction(actionUpdateZuoraAccount);
     },
 
-    makeZPayment : function(component, event, helper) {
+    makeMultiGatewayPayments : function(component, event, helper, outstandingItemsByDate) {
+        let actionSplitPaymentByGateway = component.get("c.splitPaymentAmountByGateway");
+        actionSplitPaymentByGateway.setParams({
+            "totalPaymentAmount" : component.get("v.paymentAmount"),
+            "outstandingItemsByGateway" : outstandingItemsByDate
+        });
+        actionSplitPaymentByGateway.setCallback(this,function(resp) {
+            if (resp.getState() === 'SUCCESS') {
+                this.makeZPayment(component, event, helper, resp.getReturnValue());
+            } else {
+                let responseMessage = 'Sorry, we ran into a technical problem calculating your payment amount by gateway. Please contact customer care';
+                this.finishAndShowMessage(component, event, helper, responseMessage);
+            }
+        });
+        $A.enqueueAction(actionSplitPaymentByGateway);
+    },
+
+    makeZPayment : function(component, event, helper, multiGatewayAmounts) {
         let actionMakePayment = component.get("c.makePayment");
         let oldAutopayValue = component.get("v.zuoraAccountAndPayMethod.account.AutoPay");
         let newAutopayValue = component.get("v.newAutopaySelection");
 
-        actionMakePayment.setParams({
-            "zuoraAcctId" : component.get("v.zuoraAccountAndPayMethod.account.Id"),
-            "gatewayId" : component.get("v.zuoraAccountAndPayMethod.account.PaymentGateway"),
-            "paymentMethodId" : component.get("v.newPaymentMethodId"),
-            "paymentAmount" : component.get("v.paymentAmount")
-        });
+        if (multiGatewayAmounts) {
+            actionMakePayment.setParams({
+                "zuoraAcctId" : component.get("v.zuoraAccountAndPayMethod.account.Id"),
+                "gatewayId" : multiGatewayAmounts[0].paymentGatewayId,
+                "paymentMethodId" : component.get("v.newPaymentMethodId"),
+                "paymentAmount" : multiGatewayAmounts[0].amount
+            });
+            multiGatewayAmounts.shift();
+        } else {
+            actionMakePayment.setParams({
+                "zuoraAcctId" : component.get("v.zuoraAccountAndPayMethod.account.Id"),
+                "gatewayId" : component.get("v.zuoraAccountAndPayMethod.account.PaymentGateway"),
+                "paymentMethodId" : component.get("v.newPaymentMethodId"),
+                "paymentAmount" : component.get("v.paymentAmount")
+            });
+        }
 
         actionMakePayment.setCallback(this,function(resp) {
             let responseMessage;
@@ -187,16 +223,21 @@
             if (resp.getState() === 'SUCCESS') {
                 let paymentResponse = resp.getReturnValue();
                 if (paymentResponse.status === 'Processed') {
-                    if (oldAutopayValue === false && newAutopayValue === true){
-                        /*
-                            If also signing up for autopay, update default payment method on account
-                            Only want to do this if the payment went through
-                            Also ensures that if they are already on autopay, we don't change default payment method
-                            ie, they can make a one-time payment with a different pay method
-                        */
-                        this.modifyAutopay(component, event, helper, 'Your payment has been approved.');
+                    if (multiGatewayAmounts && multiGatewayAmounts.length > 0) {
+                        this.makeZPayment(component, event, helper, multiGatewayAmounts);
                     } else {
-                        responseMessage = 'Your payment has been approved.';
+                        if (oldAutopayValue === false && newAutopayValue === true) {
+                            /*
+                                If also signing up for autopay, update default payment method on account
+                                Only want to do this if the payment went through
+                                Also ensures that if they are already on autopay, we don't change default payment method
+                                ie, they can make a one-time payment with a different pay method
+                            */
+                            this.modifyAutopay(component, event, helper, 'Your payment has been approved.');
+                            return;
+                        } else {
+                            responseMessage = 'Your payment has been approved.';
+                        }
                     }
                 } else {
                     responseMessage = 'Payment Failed';
