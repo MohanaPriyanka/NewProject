@@ -249,7 +249,7 @@
     <fields>
         <fullName>Anchor_Capacity_Reserved__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Capacity of system with anchor subscriptions.</inlineHelpText>
+        <inlineHelpText>Sum of Anchor&amp; Public Offtake Subscriptions when under Management OR Manual input from Reserved Anchor Capacity when no Anchor Subscriptions on SSS under Onboarding or Acquisition Stage</inlineHelpText>
         <label>Anchor Capacity</label>
         <precision>12</precision>
         <required>false</required>
@@ -2248,7 +2248,6 @@ Total_System_Size_kWh_DC__c
     <fields>
         <fullName>Total_System_Size_kW_AC__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Total system size in kW AC.</inlineHelpText>
         <label>Total System Size (kW AC)</label>
         <precision>8</precision>
         <required>false</required>
@@ -2262,7 +2261,7 @@ Total_System_Size_kWh_DC__c
     <fields>
         <fullName>Total_System_Size_kWh_DC__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Total system size in kW DC.</inlineHelpText>
+        <inlineHelpText>Use this field to calculate SSS information</inlineHelpText>
         <label>Total System Size (kW DC)</label>
         <precision>8</precision>
         <required>false</required>
