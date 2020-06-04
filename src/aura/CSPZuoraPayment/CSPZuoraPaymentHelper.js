@@ -123,7 +123,7 @@
             component.set("v.missingFieldsMessage", 'You must supply a payment method to make a payment.');
         } else if (typeof check_PaymentMethodId === 'undefined' && check_MakeAPaymentPage === false && check_AutopayIsOn === true){
             component.set("v.missingFieldsMessage", 'You must supply a new payment method to change autopay');
-        } else if (check_AccountMultiGateway.numberOfGateways > 1 && !check_OutstandingItemsByDate) {
+        } else if (check_MakeAPaymentPage && check_AccountMultiGateway.numberOfGateways > 1 && !check_OutstandingItemsByDate) {
             component.set("v.missingFieldsMessage", 'We\'ll need to make multiple transactions, please wait while we retrieve your balance details.');
         } else {
             component.set("v.missingFieldsMessage", '');
