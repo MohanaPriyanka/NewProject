@@ -30,11 +30,6 @@
         <default>false</default>
         <label>Fee not Charged</label>
     </customValue>
-    <customValue>
-        <fullName>First Bill</fullName>
-        <default>false</default>
-        <label>First Bill</label>
-    </customValue>
     <masterLabel>Client Invoicing Events</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
