@@ -121,4 +121,21 @@ public without sharing class OpportunitiesSelector {
         ]);
         return oppMap;
     }
+
+   // Invocable methods can have at most one input parameter and its data type must be a List of primitive data types
+    @InvocableMethod(Label='selectOpportunitiesForClientAssignment' Description='Gets Opp without Assignment Agreement for a list of entities')
+    public static List<List<Opportunity>> selectOpportunitiesForClientAssignment(List<List<String>> inputParameters){
+        List<String> entityIds = inputParameters[0];
+        List<Opportunity> opportunities = [
+            SELECT Id, Assignment_Agreement__c
+            FROM Opportunity
+            WHERE Shared_Solar_System__r.BWC_Project_Entity_Manual__c IN : entityIds
+            AND Assignment_Agreement__c = null
+            AND Partner_tag_lookup__r.Account__r.RecordType.DeveloperName != 'Client_Account'
+            AND Account.Parent_Account__r.Account_Temperature__c != 'Hot'
+            AND StageName = 'Complete'
+        ];
+        return new List<List<Opportunity>>{opportunities};
+    }
+
 }
