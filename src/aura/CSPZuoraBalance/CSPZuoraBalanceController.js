@@ -1,5 +1,5 @@
 ({  doInit : function(component, event, helper) {
-        var actionGetBalance = component.get("c.getAccountWithDefaultPaymentMethod");
+        var actionGetBalance = component.get("c.getAccountAndPayMethodFromZuora");
 
         actionGetBalance.setParams({
             "sfAccountId" : component.get("v.recordId")
@@ -20,6 +20,10 @@
                     } else {
                         component.set("v.autopayMethod", zuoraAcct.paymentMethod.AchAccountNumberMask);
                     }
+                }
+
+                if (zuoraAcct.numberOfGateways > 1) {
+                    helper.getOutstandingItems(component, helper, zuoraAcct.account.Id);
                 }
             } else {
                 component.set("v.errorMessage", 'An error has occurred. BlueWave has been notified. Please check back later');

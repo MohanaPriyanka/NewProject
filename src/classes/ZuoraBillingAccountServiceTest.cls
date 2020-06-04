@@ -187,6 +187,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
             '"LastBillSendDate":"2019-05-20",' +
             '"InvoiceBalance":313.250000,"InvoiceDueDate":"2018-06-15",' +
             '"AccountId":"' + oldAccounts[3].Zuora__Zuora_Id__c + '"}';
+        expectedResponse = new ZuoraDataQueryAsyncService().convertDataQueryResponseToJSON(expectedResponse);
 
         Test.startTest();
             ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
@@ -274,6 +275,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
                 '{"MemoBalance":0.000000,"MemoDueDate":null,' +
                 '"InvoiceBalance":313.250000,"InvoiceDueDate":"2018-06-15",' +
                 '"AccountId":"' + oldAccounts[2].Zuora__Zuora_Id__c + '"}';
+        expectedResponse = new ZuoraDataQueryAsyncService().convertDataQueryResponseToJSON(expectedResponse);
 
         Test.startTest();
             ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
