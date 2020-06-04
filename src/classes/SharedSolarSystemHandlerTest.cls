@@ -82,6 +82,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Client_Account__c = clientAccount.Id,
             Product__c = normalCSProduct.Id,
             Utility_NMC_Tariff__c = everbillNMC.Id,
+            Maximum_Subscription_Capacity_kWDC__c = 25,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 48,
@@ -127,7 +128,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'All',
-            Maximum_Subscription_Assemblage__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25);
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3};
         List<Shared_Solar_System__c> noSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(

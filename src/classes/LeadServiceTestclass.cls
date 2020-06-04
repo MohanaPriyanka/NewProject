@@ -98,6 +98,7 @@ public class LeadServiceTestclass {
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'BlueWave Test Partner',
+            Maximum_Subscription_Capacity_kWDC__c = 25,
             Billing_Method__c = 'kWh'
         );
 
@@ -116,7 +117,7 @@ public class LeadServiceTestclass {
             Product__c = csProduct2.Id,
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Assemblage__c = 25,
+            Maximum_Subscription_Capacity_kWDC__c = 25,
             Sales_Partners__c = 'All',
             Billing_Method__c = 'NMC'
         );

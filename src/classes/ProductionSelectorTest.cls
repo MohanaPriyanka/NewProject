@@ -28,7 +28,7 @@ private class ProductionSelectorTest {
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'All',
-            Maximum_Subscription_Assemblage__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25);
 
         insert sss1;
 
@@ -89,7 +89,7 @@ private class ProductionSelectorTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c = 1000,
-            Maximum_Subscription_Assemblage__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25);
         insert sss1;
 
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(
@@ -99,7 +99,7 @@ private class ProductionSelectorTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c = 1000,
-            Maximum_Subscription_Assemblage__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25);
         insert sss2;
 
         Production__c prod1 = new Production__c(

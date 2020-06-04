@@ -579,7 +579,7 @@ public class TestcaseRecordDeleterTest {
                 Sales_Partners__c = 'All',
 //                Billing_Method__c = 'NMC',
                 BWC_Project_Entity_Manual__c = entity2.Id,
-                Maximum_Subscription_Assemblage__c = 25,
+                Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id
             );
         insert sss2;

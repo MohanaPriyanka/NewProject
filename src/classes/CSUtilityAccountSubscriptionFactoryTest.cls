@@ -47,7 +47,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Product__c = csProduct.Id,
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Assemblage__c = 25,
+            Maximum_Subscription_Capacity_kWDC__c = 25,
             Sales_Partners__c = 'All'
         );
 
@@ -66,7 +66,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Product__c = csProduct.Id,
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Assemblage__c = 25,
+            Maximum_Subscription_Capacity_kWDC__c = 25,
             Sales_Partners__c = 'All'
         );
 
@@ -144,7 +144,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Shared_Solar_System__c = sss.Id
             ));
             ++counter;
-
             setMaximumSubscriptionCost(sss, ual.Annual_Cost_of_Electricity__c);
         }
         update sharedSolarSystems;
@@ -156,7 +155,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         List<Utility_Account_Subscription__c> generatedUASes;
         generatedUASes = CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities);
 
-        // 2 opps (max = ual size)   = 2 subscriptions (one for each UAL)
+        // 2 opps (max = ual size)  = 2 subscriptions (one for each UAL)
         System.assertEquals(2, generatedUASes.size());
     }
 
@@ -345,7 +344,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
 
     public static List<Shared_Solar_System__c> getSharedSolarSystems() {
         List<Shared_Solar_System__c> sharedSolarSystems = [
-            SELECT Id, Expected_Yield_kWh_kW__c, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c,
+            SELECT Id, Expected_Yield_kWh_kW__c, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kWDC__c,
                 NMC_Value__c
             FROM Shared_Solar_System__c
         ];
@@ -353,7 +352,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     }
 
     public static void setMaximumSubscriptionCapactity(Shared_Solar_System__c sss, Decimal maximumCapacity) {
-        sss.Expected_Yield_kWh_kW__c = maximumCapacity / sss.Maximum_Subscription_Capacity_kW_DC__c;
+        sss.Expected_Yield_kWh_kW__c = maximumCapacity / sss.Maximum_Subscription_Capacity_kWDC__c;
     }
 
     @IsTest
@@ -370,7 +369,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
 
         Test.stopTest();
         Shared_Solar_System__c sssAfterUpdate = [
-            SELECT Id, Expected_Yield_kWh_kW__c, Maximum_Subscription_Capacity_kW_DC__c
+            SELECT Id, Expected_Yield_kWh_kW__c, Maximum_Subscription_Capacity_kWDC__c
             FROM Shared_Solar_System__c
             WHERE Id =: sss.Id
             LIMIT 1
@@ -382,7 +381,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     }
 
     public static void setMaximumSubscriptionCost(Shared_Solar_System__c sss, Decimal maximumCost) {
-        sss.Expected_Yield_kWh_kW__c = (maximumCost / (sss.Maximum_Subscription_Capacity_kW_DC__c * sss.NMC_Value__c));
+        sss.Expected_Yield_kWh_kW__c = (maximumCost / (sss.Maximum_Subscription_Capacity_kWDC__c * sss.NMC_Value__c));
     }
 
     @IsTest
