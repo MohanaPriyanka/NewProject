@@ -10,6 +10,7 @@
   <aura:attribute name="showZuoraPaymentCmp" type="Boolean"/>
   <aura:attribute name="showSpinner" type="Boolean" default="true"/>
   <aura:attribute name="outstandingItemsByDate" type="Object"/>
+  <aura:attribute name="outstandingItemsQueryTimeout" type="Object"/>
 
   <aura:if isTrue="{!v.showSpinner}">
     <lightning:spinner alternativeText="Loading..." size="medium"/>

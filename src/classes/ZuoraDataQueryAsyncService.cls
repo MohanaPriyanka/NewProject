@@ -88,7 +88,7 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
         return dataQueryToUpdate;
     }
 
-    private String convertDataQueryResponseToJSON(String response) {
+    public String convertDataQueryResponseToJSON(String response) {
         response = response.replace('}','},');
         response = response.removeEnd(',');
         response = '[' + response + ']';

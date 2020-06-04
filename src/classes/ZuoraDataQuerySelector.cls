@@ -1,7 +1,7 @@
 /**
  * Created by peteryao on 5/28/20.
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class ZuoraDataQuerySelector {
     public Zuora_Data_Query__c selectDataQueryById(Id dataQueryId) {
         Zuora_Data_Query__c dataQuery = [

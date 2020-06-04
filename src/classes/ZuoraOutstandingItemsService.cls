@@ -35,14 +35,20 @@ public class ZuoraOutstandingItemsService {
     }
 
     public class OutstandingItem implements Comparable {
-        public Decimal AmountOutstanding;
-        public Datetime EffectiveDate;
-        public String Project;
-        public String Client;
+        @AuraEnabled
+        public Decimal AmountOutstanding  {get; set;}
+        @AuraEnabled
+        public Datetime EffectiveDate {get; set;}
+        @AuraEnabled
+        public String Project {get; set;}
+        @AuraEnabled
+        public String Client {get; set;}
         public String Id;
         public String ParentId;
         public Boolean IsInvoiceItem; // Only DebitMemo or InvoiceItem
         public Decimal AmountToApply;
+        @AuraEnabled
+        public String PaymentGatewayId {get; set;}
 
         // Compares by effective date first. If dates are the same between invoice items, sorts by project. If projects
         // are the same, then sorts by client.
@@ -317,25 +323,26 @@ public class ZuoraOutstandingItemsService {
     }
 
     public String startOutstandingItemsQuery(String zuoraAcctId) {
-        String query = 'SELECT paymentgateway__c, chargedate, sum(balance) balance ' +
+        String query = 'SELECT paymentgateway__c PaymentGatewayId, Project__c, ClientOwner__c, EffectiveDate, sum(balance) AmountOutstanding ' +
             'FROM (' +
-            'SELECT it.id, s.paymentgateway__c, it.balance, it.chargedate ' +
+            'SELECT it.id, rpc.Project__c, rpc.ClientOwner__c, s.paymentgateway__c, it.balance, iv.InvoiceDate EffectiveDate ' +
             'FROM InvoiceItem it ' +
             'INNER JOIN Invoice iv ON iv.Id = it.invoiceid ' +
             'INNER JOIN Account a ON iv.accountid = a.Id ' +
             'INNER JOIN Subscription s ON it.subscriptionid = s.Id ' +
+            'INNER JOIN RatePlanCharge rpc ON it.rateplanchargeid = rpc.id ' +
             'WHERE a.id = \''+zuoraAcctId+'\' ' +
             'AND it.balance > 0 ' +
             'UNION ' +
-            'SELECT dmi.id, s.paymentgateway__c, dmi.balance, dmi.chargedate ' +
+            'SELECT dmi.id, dm.Project__c, dm.ClientOwner__c, s.paymentgateway__c, dmi.balance, dm.MemoDate EffectiveDate ' +
             'FROM DebitMemoItem dmi ' +
             'INNER JOIN DebitMemo dm ON dm.Id = dmi.debitmemoid ' +
             'INNER JOIN Account a ON dm.accountid = a.id ' +
             'LEFT OUTER JOIN Subscription s ON dmi.subscriptionid = s.Id ' +
             'WHERE a.id = \''+zuoraAcctId+'\' ' +
             'AND dmi.balance > 0) ' +
-            'GROUP BY paymentgateway__c, chargedate ' +
-            'ORDER BY chargedate';
+            'GROUP BY paymentgateway__c, Project__c, ClientOwner__c, EffectiveDate ' +
+            'ORDER BY EffectiveDate, Project__c, ClientOwner__c';
         Zuora_Data_Query__c zuoraDataQuery = ZuoraDataQueryService.callFromApexWithCallout(query, null);
         return zuoraDataQuery.Id;
     }

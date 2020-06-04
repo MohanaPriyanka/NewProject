@@ -23,6 +23,20 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         private String code;
         private String message;
 
+        public String getQueryId() {
+            if (data != null) {
+                return data.id;
+            }
+            return null;
+        }
+
+        public String getQueryStatus() {
+            if (data != null) {
+                return data.queryStatus;
+            }
+            return null;
+        }
+
         public String getDataFromDataQuery(){
             HttpRequest request = new HttpRequest();
             request.setEndpoint(data.dataFile);
@@ -103,8 +117,8 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
             Query__c = queryString,
             Processing_Parameter__c = JSON.serialize(processingParameter),
             Number_of_Retries__c = 2,
-            Zuora_Id__c = dataQueryResult.data.id,
-            Status__c = dataQueryResult.data.queryStatus
+            Zuora_Id__c = dataQueryResult.getQueryId(),
+            Status__c = dataQueryResult.getQueryStatus()
         );
         insert zuoraDataQuery;
         ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(dataQueryResult, new DataQueryRequest(zuoraDataQuery));
@@ -154,7 +168,8 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         }
     }
 
-    public static DataQueryResult submitDataQuery(String queryString) {
+    @TestVisible
+    private static DataQueryResult submitDataQuery(String queryString) {
         DataQueryResult dataResult = new DataQueryResult();
         try {
             DataQueryOutput outputTarget = new DataQueryOutput();

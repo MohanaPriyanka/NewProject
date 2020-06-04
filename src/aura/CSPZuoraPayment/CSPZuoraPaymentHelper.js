@@ -107,6 +107,8 @@
         let check_PaymentMethodId = component.get("v.newPaymentMethodId");
         let check_MakeAPaymentPage = component.get("v.makePaymentOrManageAutopay");
         let check_AutopayIsOn = component.get("v.newAutopaySelection");
+        let check_AccountMultiGateway = component.get("v.zuoraAccountAndPayMethod");
+        let check_OutstandingItemsByDate = component.get("v.outstandingItemsByDate");
 
         this.disableButton(component, event, helper);
 
@@ -121,6 +123,8 @@
             component.set("v.missingFieldsMessage", 'You must supply a payment method to make a payment.');
         } else if (typeof check_PaymentMethodId === 'undefined' && check_MakeAPaymentPage === false && check_AutopayIsOn === true){
             component.set("v.missingFieldsMessage", 'You must supply a new payment method to change autopay');
+        } else if (check_AccountMultiGateway.numberOfGateways > 1 && !check_OutstandingItemsByDate) {
+            component.set("v.missingFieldsMessage", 'We\'ll need to make multiple transactions, please wait while we retrieve your balance details.');
         } else {
             component.set("v.missingFieldsMessage", '');
             this.closeMethodEnableButton(component, event, helper);
@@ -175,26 +179,20 @@
     },
 
     makeMultiGatewayPayments : function(component, event, helper, outstandingItemsByDate) {
-        let multiGatewayAmounts = this.getMultiGatewayAmounts(component.get("v.paymentAmount"), outstandingItemsByDate);
-        console.log(JSON.stringify(Array.from(multiGatewayAmounts.entries())));
-        this.makeZPayment(component, event, helper, Array.from(multiGatewayAmounts.entries()));
-    },
-
-    getMultiGatewayAmounts : function(paymentAmount, outstandingItemsByDate) {
-        let multiGatewayAmounts = new Map();
-        for (let i = 0; i < outstandingItemsByDate.length; i++) {
-            let paymentGateway = outstandingItemsByDate[i].paymentgateway_Zcustom;
-            let outstandingItemAmount = outstandingItemsByDate[i].balance;
-            let amountToPay = Math.min(paymentAmount, outstandingItemAmount);
-            if (amountToPay <= 0) {
-                break;
+        let actionSplitPaymentByGateway = component.get("c.splitPaymentAmountByGateway");
+        actionSplitPaymentByGateway.setParams({
+            "totalPaymentAmount" : component.get("v.paymentAmount"),
+            "outstandingItemsByGateway" : outstandingItemsByDate
+        });
+        actionSplitPaymentByGateway.setCallback(this,function(resp) {
+            if (resp.getState() === 'SUCCESS') {
+                this.makeZPayment(component, event, helper, resp.getReturnValue());
+            } else {
+                let responseMessage = 'Sorry, we ran into a technical problem calculating your payment amount by gateway. Please contact customer care';
+                this.finishAndShowMessage(component, event, helper, responseMessage);
             }
-            let existingGatewayAmount = multiGatewayAmounts.has(paymentGateway)?multiGatewayAmounts.get(paymentGateway):0;
-            multiGatewayAmounts.set(paymentGateway, Math.round((existingGatewayAmount + amountToPay) * 100) / 100);
-            // Because .1 + .2 = 0.30000000000000004 https://floating-point-gui.de/
-            paymentAmount = Math.round((paymentAmount - amountToPay) * 100) / 100;
-        }
-        return multiGatewayAmounts;
+        });
+        $A.enqueueAction(actionSplitPaymentByGateway);
     },
 
     makeZPayment : function(component, event, helper, multiGatewayAmounts) {
@@ -205,9 +203,9 @@
         if (multiGatewayAmounts) {
             actionMakePayment.setParams({
                 "zuoraAcctId" : component.get("v.zuoraAccountAndPayMethod.account.Id"),
-                "gatewayId" : multiGatewayAmounts[0][0],
+                "gatewayId" : multiGatewayAmounts[0].paymentGatewayId,
                 "paymentMethodId" : component.get("v.newPaymentMethodId"),
-                "paymentAmount" : multiGatewayAmounts[0][1]
+                "paymentAmount" : multiGatewayAmounts[0].amount
             });
             multiGatewayAmounts.shift();
         } else {

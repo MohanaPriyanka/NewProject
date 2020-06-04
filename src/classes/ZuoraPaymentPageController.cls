@@ -199,4 +199,33 @@ public with sharing class ZuoraPaymentPageController {
         Zuora_Data_Query__c zuoraDataQuery = zuoraDataQuerySelector.selectDataQueryById(dataQueryId);
         return zuoraDataQuery.Data_From_Zuora__c;
     }
+
+    @AuraEnabled
+    public static List<GatewayAmount> splitPaymentAmountByGateway(Decimal totalPaymentAmount, List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItemsByGateway) {
+        Map<String, GatewayAmount> multiGatewayAmounts = new Map<String, GatewayAmount>();
+        for (ZuoraOutstandingItemsService.OutstandingItem outstandingItem : outstandingItemsByGateway) {
+            String paymentGateway = outstandingItem.PaymentGatewayId;
+            Decimal outstandingItemAmount = outstandingItem.AmountOutstanding;
+            Decimal amountToPay = Math.min(outstandingItemAmount, totalPaymentAmount);
+            if (amountToPay <= 0) {
+                break;
+            }
+            Decimal existingGatewayAmount = multiGatewayAmounts.containsKey(paymentGateway) ? multiGatewayAmounts.get(paymentGateway).amount : 0;
+            multiGatewayAmounts.put(paymentGateway, new GatewayAmount(paymentGateway, existingGatewayAmount + amountToPay));
+            totalPaymentAmount -= amountToPay;
+        }
+        return multiGatewayAmounts.values();
+    }
+
+    public class GatewayAmount {
+        @AuraEnabled
+        public String paymentGatewayId;
+        @AuraEnabled
+        public Decimal amount;
+
+        public GatewayAmount(String gatewayId, Decimal amount) {
+            this.paymentGatewayId = gatewayId;
+            this.amount = amount;
+        }
+    }
 }
