@@ -29223,11 +29223,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Shared_Solar_System__c.Partner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Shared_Solar_System__c.Payment_Threshold__c</field>
         <readable>true</readable>
     </fieldPermissions>

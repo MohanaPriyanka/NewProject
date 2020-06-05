@@ -1358,32 +1358,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Partner__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXPartners</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>MultiselectPicklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>BlueWave Incentive Program</fullName>
-                    <default>false</default>
-                    <label>BlueWave Incentive Program</label>
-                </value>
-                <value>
-                    <fullName>Boston Solar</fullName>
-                    <default>false</default>
-                    <label>Boston Solar</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-        <visibleLines>4</visibleLines>
-    </fields>
-    <fields>
         <fullName>Payment_Threshold__c</fullName>
         <description>Percent of project that needs to be filled to get paid</description>
         <externalId>false</externalId>
@@ -2582,7 +2556,6 @@ null)</formula>
         <columns>Service_Territories__c</columns>
         <columns>Open__c</columns>
         <columns>Capacity_Available_to_be_Reserved__c</columns>
-        <columns>Partner__c</columns>
         <columns>Partner_Assignment__c</columns>
         <columns>System_Utility__c</columns>
         <columns>Utility__c</columns>
@@ -2955,17 +2928,6 @@ null)</formula>
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Partner__c</picklist>
-            <values>
-                <fullName>BlueWave Incentive Program</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Boston Solar</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3452,17 +3414,6 @@ null)</formula>
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Partner__c</picklist>
-            <values>
-                <fullName>BlueWave Incentive Program</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Boston Solar</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
