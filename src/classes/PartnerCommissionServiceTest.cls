@@ -16,7 +16,6 @@ public class PartnerCommissionServiceTest {
         System.assertEquals(10,pendingComm.opportunitiesToRun.size());
         for (Opportunity opp : pendingComm.opportunitiesToRun){
             System.assertEquals(null,opp.CS_Capacity_Allocated__c);
-            System.assertEquals(null,opp.Commission_Structure__c);
         }
 
         Test.startTest();
@@ -38,9 +37,17 @@ public class PartnerCommissionServiceTest {
         System.assertEquals(7,commissionPaymentRecordsToInsert.size());
         System.assertEquals(2,commissionPaymentRecordsToUpdate.size());
 
+        Boolean containsOpp = false;
         for (Commission_Payment__c payment : commissionPaymentRecordsToInsert){
             System.assertEquals('Contract Execution',payment.Commission_Type__c);
+            System.assert(payment.Amount_Due__c > 0);
+            if (payment.Opportunity__c == '0063K000003pyqLQAQ'){
+                System.assertNotEquals(2008.384,payment.Amount_Due__c);
+                System.assertEquals(2008.38,payment.Amount_Due__c);
+                containsOpp = true;
+            }
         }
+        System.assert(containsOpp);
 
         Integer countOfNullCommissionStructure = 0;
         for (Opportunity opp : opportunitiesToUpdate){
