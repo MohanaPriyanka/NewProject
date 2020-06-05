@@ -16,6 +16,7 @@ public class PartnerCommissionServiceTest {
         System.assertEquals(10,pendingComm.opportunitiesToRun.size());
         for (Opportunity opp : pendingComm.opportunitiesToRun){
             System.assertEquals(null,opp.CS_Capacity_Allocated__c);
+            System.assertEquals(null,opp.Commission_Structure__c);
         }
 
         Test.startTest();
