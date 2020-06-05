@@ -1343,32 +1343,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Partner__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXPartners</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>MultiselectPicklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>BlueWave Incentive Program</fullName>
-                    <default>false</default>
-                    <label>BlueWave Incentive Program</label>
-                </value>
-                <value>
-                    <fullName>Boston Solar</fullName>
-                    <default>false</default>
-                    <label>Boston Solar</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-        <visibleLines>4</visibleLines>
-    </fields>
-    <fields>
         <fullName>Payment_Threshold__c</fullName>
         <description>Percent of project that needs to be filled to get paid</description>
         <externalId>false</externalId>
@@ -1674,6 +1648,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>All Care Energy Inc.</label>
                 </value>
                 <value>
+                    <fullName>Ambient Energy Inc.</fullName>
+                    <default>false</default>
+                    <label>Ambient Energy Inc.</label>
+                </value>
+                <value>
                     <fullName>Arcadia Power</fullName>
                     <default>false</default>
                     <label>Arcadia Power</label>
@@ -1682,6 +1661,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Barbara Cerullo</fullName>
                     <default>false</default>
                     <label>Barbara Cerullo</label>
+                </value>
+                <value>
+                    <fullName>Beacon Energy Solutions LLC</fullName>
+                    <default>false</default>
+                    <label>Beacon Energy Solutions LLC</label>
                 </value>
                 <value>
                     <fullName>BlueDot Solar</fullName>
@@ -1739,6 +1723,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Energy Consulting Associates</label>
                 </value>
                 <value>
+                    <fullName>Energy Partner Consultants</fullName>
+                    <default>false</default>
+                    <label>Energy Partner Consultants</label>
+                </value>
+                <value>
                     <fullName>EnergySage</fullName>
                     <default>false</default>
                     <label>EnergySage</label>
@@ -1747,6 +1736,16 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>First Parish in Wayland</fullName>
                     <default>false</default>
                     <label>First Parish in Wayland</label>
+                </value>
+                <value>
+                    <fullName>Fuse Energy</fullName>
+                    <default>false</default>
+                    <label>Fuse Energy</label>
+                </value>
+                <value>
+                    <fullName>Global Energy Development LLC</fullName>
+                    <default>false</default>
+                    <label>Global Energy Development LLC</label>
                 </value>
                 <value>
                     <fullName>Grace Episcopal Church</fullName>
@@ -1802,6 +1801,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Placeholder Partner</fullName>
                     <default>false</default>
                     <label>Placeholder Partner</label>
+                </value>
+                <value>
+                    <fullName>PowerPlay Energy Group</fullName>
+                    <default>false</default>
+                    <label>PowerPlay Energy Group</label>
                 </value>
                 <value>
                     <fullName>Quest Energy Solutions</fullName>
@@ -1864,6 +1868,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Solar on Earth</label>
                 </value>
                 <value>
+                    <fullName>Solar Simplified</fullName>
+                    <default>false</default>
+                    <label>Solar Simplified</label>
+                </value>
+                <value>
                     <fullName>Solstice Initiative</fullName>
                     <default>false</default>
                     <label>Solstice Initiative</label>
@@ -1917,36 +1926,6 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Yeloha</fullName>
                     <default>false</default>
                     <label>Yeloha</label>
-                </value>
-                <value>
-                    <fullName>Global Energy Development LLC</fullName>
-                    <default>false</default>
-                    <label>Global Energy Development LLC</label>
-                </value>
-                <value>
-                    <fullName>Energy Partner Consultants</fullName>
-                    <default>false</default>
-                    <label>Energy Partner Consultants</label>
-                </value>
-                <value>
-                    <fullName>PowerPlay Energy Group</fullName>
-                    <default>false</default>
-                    <label>PowerPlay Energy Group</label>
-                </value>
-                <value>
-                    <fullName>Beacon Energy Solutions LLC</fullName>
-                    <default>false</default>
-                    <label>Beacon Energy Solutions LLC</label>
-                </value>
-                <value>
-                    <fullName>Ambient Energy Inc.</fullName>
-                    <default>false</default>
-                    <label>Ambient Energy Inc.</label>
-                </value>
-                <value>
-                    <fullName>Solar Simplified</fullName>
-                    <default>false</default>
-                    <label>Solar Simplified</label>
                 </value>
                 <value>
                     <fullName>Other Test Partner</fullName>
@@ -2562,7 +2541,6 @@ null)</formula>
         <columns>Service_Territories__c</columns>
         <columns>Open__c</columns>
         <columns>Capacity_Available_to_be_Reserved__c</columns>
-        <columns>Partner__c</columns>
         <columns>Partner_Assignment__c</columns>
         <columns>System_Utility__c</columns>
         <columns>Utility__c</columns>
@@ -2692,6 +2670,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>First Parish in Wayland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fuse Energy</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2931,17 +2913,6 @@ null)</formula>
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Partner__c</picklist>
-            <values>
-                <fullName>BlueWave Incentive Program</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Boston Solar</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3428,17 +3399,6 @@ null)</formula>
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Partner__c</picklist>
-            <values>
-                <fullName>BlueWave Incentive Program</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Boston Solar</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
