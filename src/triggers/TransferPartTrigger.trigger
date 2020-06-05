@@ -15,7 +15,7 @@ trigger TransferPartTrigger on Transfer_Part__c (after insert, after update, bef
         transferPartService.onAfterTransferParts(Trigger.new);
     }
     if (Trigger.isBefore && Trigger.isDelete) {
-        transferPartService.onBeforeDelete(Trigger.new);
+        transferPartService.onBeforeDelete(Trigger.old);
     }
 
 }
