@@ -496,9 +496,8 @@ private class TransferPartServiceTest {
 
         try {
             delete productionDetail;
+            System.assert(false, 'Expected delete to throw an exception - Production Detail cannot be deleted when Production is Verified');
         } catch (Exception e) {
-            System.assert(e.getMessage().contains('Delete failed'),
-                'Production Detail cannot be deleted when Production is Verified');
         }
     }
 

@@ -17,7 +17,7 @@ trigger ProductionTrigger on Production__c (before insert, before delete) {
             clientReportingService.stampClient(Trigger.new);
         }
         when BEFORE_DELETE {
-            productionService.onDeleteProduction(Trigger.new);
+            productionService.onDeleteProduction(Trigger.old);
         }
     }
 }

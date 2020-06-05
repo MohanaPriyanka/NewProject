@@ -33,7 +33,7 @@ public without sharing class TransferService {
     public void onDeleteTransfers(List<Transfer__c> deletedTransfers) {
         for (Transfer__c transfer : deletedTransfers) {
             if (transfer.Bills_Generated__c == true) {
-                throw new Util.FatalBWException('Transfer cannot be deleted if bills have been generated: ' + transfer.Id);
+                transfer.addError('Transfer cannot be deleted if bills have been generated: ' + transfer.Id);
             }
         }
     }

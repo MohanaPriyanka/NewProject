@@ -47,9 +47,8 @@ private class ProductionServiceTest {
 
         try {
             delete production;
+            System.assert(false, 'Expected delete to throw an exception - Production cannot be deleted when Verified');
         } catch (Exception e) {
-            System.assert(e.getMessage().contains('Delete failed'),
-                'Production cannot be deleted when Production is Verified');
         }
 
     }
@@ -95,8 +94,6 @@ private class ProductionServiceTest {
                     Bill_Period__c bp  = (Bill_Period__c) JSON.deserialize(billPeriod, Bill_Period__c.class);
                     productionMap.put(production, bp);
                     return productionMap;
-
-                    // return Map<Production, Bill Period>
                 }
             }
             return null;
