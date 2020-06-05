@@ -1028,6 +1028,48 @@ IF(ISBLANK(Personal_Credit_Report_Co_Applicant__c),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Assigned_to_Client__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+AND(
+NOT(ISBLANK(Assignment_Agreement__c)),
+NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Draft&quot;))
+),
+true,
+false
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>True if this opportunity is linked to a client assignment agreement, unless the assignment agreement has Status = Draft</inlineHelpText>
+        <label>Assigned to Client</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Assignment_Agreement__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Assignment Agreement</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Assignment Agreement must be a contract with record type = Assignment Agreement</errorMessage>
+            <filterItems>
+                <field>Contract.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Assignment Agreement</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Customer Assignments (Opportunity)</relationshipLabel>
+        <relationshipName>CustomerAssignmentsOpp</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Available_Capital_in_Tranche__c</fullName>
         <externalId>false</externalId>
         <label>Available Capital in Tranche</label>
@@ -1054,17 +1096,13 @@ IF(ISBLANK(Personal_Credit_Report_Co_Applicant__c),
     </fields>
     <fields>
         <fullName>Average_Debt_to_Income_After__c</fullName>
-        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
-        <formula>IF(Personal_Credit_Report_Co_Applicant__c == null, null, 
-((Personal_Credit_Report2__r.LASERCA__Sum_of_monthly_Personal_Debt__c + 
-Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c + Personal_Credit_Report2__r.LASERCA__Lead__r.Monthly_Payment__c) / (( Annual_Independent_Income__c  +  Co_Applicant_Income__c )/12)))</formula>
+        <formula>0</formula>
         <inlineHelpText>Average of Applicant and Co-Applicant DTI</inlineHelpText>
-        <label>Average Debt to Income (After)</label>
+        <label>XX Average Debt to Income (After)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -10022,6 +10060,20 @@ ISPICKVAL(Homeowner_s_Insurance_Status__c,&quot;Received: Approved&quot;)</error
 	false)
 )</errorConditionFormula>
         <errorMessage>One or more of the preceding disbursal dates are missing information. Please provide this information before entering this disbursal&apos;s date.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Opportunity_Assignment_Agreement</fullName>
+        <active>true</active>
+        <description>We should not change a customer&apos;s assignment agreement after it has been set</description>
+        <errorConditionFormula>AND(
+ISCHANGED(Assignment_Agreement__c),
+OR(
+PRIORVALUE(Assigned_to_Client__c),
+Assigned_to_Client__c
+)
+)</errorConditionFormula>
+        <errorDisplayField>Assignment_Agreement__c</errorDisplayField>
+        <errorMessage>We should not change a customer&apos;s assignment agreement after it has been set, unless the assignment agreement has status = Draft</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Partner_lookup</fullName>
