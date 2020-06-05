@@ -202,6 +202,7 @@ public with sharing class ZuoraPaymentPageController {
 
     @AuraEnabled
     public static List<GatewayAmount> splitPaymentAmountByGateway(Decimal totalPaymentAmount, List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItemsByGateway) {
+        outstandingItemsByGateway.sort();
         Map<String, GatewayAmount> multiGatewayAmounts = new Map<String, GatewayAmount>();
         for (ZuoraOutstandingItemsService.OutstandingItem outstandingItem : outstandingItemsByGateway) {
             String paymentGateway = outstandingItem.PaymentGatewayId;
