@@ -1689,6 +1689,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>All Care Energy Inc.</label>
                 </value>
                 <value>
+                    <fullName>Ambient Energy Inc.</fullName>
+                    <default>false</default>
+                    <label>Ambient Energy Inc.</label>
+                </value>
+                <value>
                     <fullName>Arcadia Power</fullName>
                     <default>false</default>
                     <label>Arcadia Power</label>
@@ -1697,6 +1702,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Barbara Cerullo</fullName>
                     <default>false</default>
                     <label>Barbara Cerullo</label>
+                </value>
+                <value>
+                    <fullName>Beacon Energy Solutions LLC</fullName>
+                    <default>false</default>
+                    <label>Beacon Energy Solutions LLC</label>
                 </value>
                 <value>
                     <fullName>BlueDot Solar</fullName>
@@ -1754,6 +1764,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Energy Consulting Associates</label>
                 </value>
                 <value>
+                    <fullName>Energy Partner Consultants</fullName>
+                    <default>false</default>
+                    <label>Energy Partner Consultants</label>
+                </value>
+                <value>
                     <fullName>EnergySage</fullName>
                     <default>false</default>
                     <label>EnergySage</label>
@@ -1762,6 +1777,16 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>First Parish in Wayland</fullName>
                     <default>false</default>
                     <label>First Parish in Wayland</label>
+                </value>
+                <value>
+                    <fullName>Fuse Energy</fullName>
+                    <default>false</default>
+                    <label>Fuse Energy</label>
+                </value>
+                <value>
+                    <fullName>Global Energy Development LLC</fullName>
+                    <default>false</default>
+                    <label>Global Energy Development LLC</label>
                 </value>
                 <value>
                     <fullName>Grace Episcopal Church</fullName>
@@ -1817,6 +1842,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Placeholder Partner</fullName>
                     <default>false</default>
                     <label>Placeholder Partner</label>
+                </value>
+                <value>
+                    <fullName>PowerPlay Energy Group</fullName>
+                    <default>false</default>
+                    <label>PowerPlay Energy Group</label>
                 </value>
                 <value>
                     <fullName>Quest Energy Solutions</fullName>
@@ -1879,6 +1909,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Solar on Earth</label>
                 </value>
                 <value>
+                    <fullName>Solar Simplified</fullName>
+                    <default>false</default>
+                    <label>Solar Simplified</label>
+                </value>
+                <value>
                     <fullName>Solstice Initiative</fullName>
                     <default>false</default>
                     <label>Solstice Initiative</label>
@@ -1932,36 +1967,6 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Yeloha</fullName>
                     <default>false</default>
                     <label>Yeloha</label>
-                </value>
-                <value>
-                    <fullName>Global Energy Development LLC</fullName>
-                    <default>false</default>
-                    <label>Global Energy Development LLC</label>
-                </value>
-                <value>
-                    <fullName>Energy Partner Consultants</fullName>
-                    <default>false</default>
-                    <label>Energy Partner Consultants</label>
-                </value>
-                <value>
-                    <fullName>PowerPlay Energy Group</fullName>
-                    <default>false</default>
-                    <label>PowerPlay Energy Group</label>
-                </value>
-                <value>
-                    <fullName>Beacon Energy Solutions LLC</fullName>
-                    <default>false</default>
-                    <label>Beacon Energy Solutions LLC</label>
-                </value>
-                <value>
-                    <fullName>Ambient Energy Inc.</fullName>
-                    <default>false</default>
-                    <label>Ambient Energy Inc.</label>
-                </value>
-                <value>
-                    <fullName>Solar Simplified</fullName>
-                    <default>false</default>
-                    <label>Solar Simplified</label>
                 </value>
                 <value>
                     <fullName>Other Test Partner</fullName>
@@ -2707,6 +2712,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>First Parish in Wayland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fuse Energy</fullName>
                 <default>false</default>
             </values>
             <values>
