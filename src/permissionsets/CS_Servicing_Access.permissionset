@@ -3796,10 +3796,6 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
         <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_Editable</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
