@@ -195,7 +195,7 @@
                         <div class="slds-p-top_medium slds-p-bottom_medium">
                           <lightning:radioGroup aura:id ="radioButtonPaymentAmount"
                                                 options="{!v.RadioOptions}"
-                                                onchange="{!c.onPaymentAmountChange}"
+                                                onchange="{!c.onToggleFullBalance}"
                                                 value="{!v.balanceSelection}"
                                                 type="radio"/>
                           <lightning:input type="number"
@@ -491,7 +491,7 @@
                             <div class="slds-p-top_medium slds-p-bottom_medium">
                               <lightning:radioGroup aura:id ="radioButtonPaymentAmount"
                                                     options="{!v.RadioOptions}"
-                                                    onchange="{!c.onPaymentAmountChange}"
+                                                    onchange="{!c.onToggleFullBalance}"
                                                     value="{!v.balanceSelection}"
                                                     type="radio"/>
                               <lightning:input type="number"

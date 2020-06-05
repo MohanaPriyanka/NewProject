@@ -341,8 +341,7 @@ public class ZuoraOutstandingItemsService {
             'LEFT OUTER JOIN Subscription s ON dmi.subscriptionid = s.Id ' +
             'WHERE a.id = \''+zuoraAcctId+'\' ' +
             'AND dmi.balance > 0) ' +
-            'GROUP BY paymentgateway__c, Project__c, ClientOwner__c, EffectiveDate ' +
-            'ORDER BY EffectiveDate, Project__c, ClientOwner__c';
+            'GROUP BY paymentgateway__c, Project__c, ClientOwner__c, EffectiveDate';
         Zuora_Data_Query__c zuoraDataQuery = ZuoraDataQueryService.callFromApexWithCallout(query, null);
         return zuoraDataQuery.Id;
     }
