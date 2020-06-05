@@ -715,6 +715,19 @@
         <type>Percent</type>
     </fields>
     <fields>
+        <fullName>Management_Fee_Prepayment_Trigger__c</fullName>
+        <externalId>false</externalId>
+        <label>Management Fee Prepayment Trigger</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Client_Invoicing_Events</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Management_Fee_Trigger__c</fullName>
         <description>Shows Management Fee trigger event.</description>
         <externalId>false</externalId>
