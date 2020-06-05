@@ -224,7 +224,7 @@ public with sharing class ZuoraPaymentPageControllerTest {
         itemFour.PaymentGatewayId = 'Gateway B';
 
         List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems = new List<ZuoraOutstandingItemsService.OutstandingItem>{
-            itemOne, itemTwo, itemThree, itemFour
+            itemFour, itemTwo, itemOne, itemThree
         };
 
         List<ZuoraPaymentPageController.GatewayAmount> gatewayAmounts;

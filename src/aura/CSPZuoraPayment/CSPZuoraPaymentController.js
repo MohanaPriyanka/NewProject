@@ -10,6 +10,16 @@
         helper.handlePaymentAmountChange(component, event, helper);
     },
 
+    onToggleFullBalance : function(component, event, helper) {
+        if (component.get('v.balanceSelection') === 'customAmount') {
+            helper.handlePaymentAmountChange(component, event, helper);
+        } else {
+            component.set("v.customPaymentAmountMessage", '');
+            component.set("v.paymentAmount", Math.max(0,component.get("v.zuoraAccountAndPayMethod").account.Balance));
+            helper.checkAllRequiredFields(component, event, helper);
+        }
+    },
+
     onPaymentMethodChange : function(component, event, helper) {
         event.stopPropagation();
         var response = event.getParam('response');

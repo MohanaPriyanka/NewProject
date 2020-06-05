@@ -79,22 +79,16 @@
     },
 
     handlePaymentAmountChange : function(component, event, helper) {
-        let ratioButtons = component.find("radioButtonPaymentAmount").get("v.value");
         let zAcctBalance = component.get("v.zuoraAccountAndPayMethod").account.Balance;
-        component.set("v.customPaymentAmountMessage", '');
         let customPaymentAmount = component.get("v.customChargeAmount");
-
-        if (ratioButtons === 'customAmount'){
-            component.set("v.paymentAmount", Math.max(0,Math.min(customPaymentAmount,zAcctBalance)));
-            if (customPaymentAmount < 0) {
-                component.set("v.customPaymentAmountMessage", 'Payment amount must be greater than zero.');
-            } else if (customPaymentAmount > zAcctBalance) {
-                component.set("v.customPaymentAmountMessage", 'Payment amount can not be more than your current outstanding balance.');
-            }
-        } else if (customPaymentAmount > 0){
-            component.set("v.balanceSelection",'customAmount');
+        component.set("v.balanceSelection","customAmount");
+        component.set("v.paymentAmount", Math.max(0,Math.min(customPaymentAmount,zAcctBalance)));
+        if (customPaymentAmount < 0) {
+            component.set("v.customPaymentAmountMessage", 'Payment amount must be greater than zero.');
+        } else if (customPaymentAmount > zAcctBalance) {
+            component.set("v.customPaymentAmountMessage", 'Payment amount can not be more than your current outstanding balance.');
         } else {
-            component.set("v.paymentAmount", Math.max(0,zAcctBalance));
+            component.set("v.customPaymentAmountMessage", '');
         }
         this.checkAllRequiredFields(component, event, helper);
     },
@@ -188,7 +182,7 @@
             if (resp.getState() === 'SUCCESS') {
                 this.makeZPayment(component, event, helper, resp.getReturnValue());
             } else {
-                let responseMessage = 'Sorry, we ran into a technical problem calculating your payment amount by gateway. Please contact customer care';
+                let responseMessage = 'Sorry, we ran into a technical problem calculating your payment amounts. Please contact customer care';
                 this.finishAndShowMessage(component, event, helper, responseMessage);
             }
         });
