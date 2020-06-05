@@ -82,7 +82,7 @@ public without sharing class PartnerCommissionService{
                 continue;
             }
             Commission_Payment__c newPayment = new Commission_Payment__c(
-                Amount_Due__c = commissionAmount,
+                Amount_Due__c = commissionAmount.setScale(2,RoundingMode.HALF_UP),
                 Commission_Structure__c = opp.Commission_Structure__c,
                 Due_Date__c = dueDate,
                 Due_to_Accounting__c = dueToAccountingDate,
