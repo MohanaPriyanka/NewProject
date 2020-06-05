@@ -117,6 +117,46 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Assigned_to_Client__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+AND(
+NOT(ISBLANK(Assignment_Agreement__c)),
+NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Draft&quot;))
+),
+true,
+false
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>True if this contract is linked to a client assignment agreement, unless the assignment agreement has Status = Draft</inlineHelpText>
+        <label>Assigned to Client</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Assignment_Agreement__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Assignment Agreement</label>
+        <lookupFilter>
+            <active>true</active>
+            <errorMessage>Assignment agreement must be a contract with record type = Assignment Agreement</errorMessage>
+            <filterItems>
+                <field>Contract.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Assignment Agreement</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Customer Assignments (Contracts)</relationshipLabel>
+        <relationshipName>CustomerAssignments</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>BW_Company_Entity__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -2811,6 +2851,26 @@
         <searchResultsAdditionalFields>CONTRACT_TERM</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Contract_Assignment_Agreement</fullName>
+        <active>true</active>
+        <description>AND(
+ISCHANGED(Assignment_Agreement__c),
+OR(
+PRIORVALUE(Assigned_to_Client__c),
+NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Draft&quot;))
+)
+)</description>
+        <errorConditionFormula>AND(
+ISCHANGED(Assignment_Agreement__c),
+OR(
+PRIORVALUE(Assigned_to_Client__c),
+Assigned_to_Client__c
+)
+)</errorConditionFormula>
+        <errorDisplayField>Assignment_Agreement__c</errorDisplayField>
+        <errorMessage>We should not change a customer&apos;s assignment agreement after it has been set, unless the assignment agreement has status = Draft</errorMessage>
+    </validationRules>
     <webLinks>
         <fullName>APXTConga4__Conga_Composer_OAuth</fullName>
         <availability>online</availability>

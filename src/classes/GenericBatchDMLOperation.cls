@@ -32,6 +32,11 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
         }
     }
 
+    @InvocableMethod(Label='genericBatchUpdate')
+    public static void callUpdateFromFlow(List<List<SObject>> recordsToUpdate){
+        Database.executeBatch(new GenericBatchDMLOperation(recordsToUpdate[0], 'Update'));
+    }
+
     public void setLeadConvertOption(LeadConvertOption leadConvertOption) {
         this.leadConvertOption = leadConvertOption;
     }
@@ -131,28 +136,28 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
     }
 
     // https://salesforce.stackexchange.com/questions/125880/do-the-result-objects-in-database-have-a-common-ancestor
-    public List<GenericResult> saveResult2GR(List<Database.SaveResult> resultList) {
+    private List<GenericResult> saveResult2GR(List<Database.SaveResult> resultList) {
         List<GenericResult> genericResultList = new List<GenericResult>();
         for (Database.SaveResult result : resultList) {
             genericResultList.add(new GenericResult(result));
         }
         return genericResultList;
     }
-    public List<GenericResult> upsertResult2GR(List<Database.UpsertResult> resultList) {
+    private List<GenericResult> upsertResult2GR(List<Database.UpsertResult> resultList) {
         List<GenericResult> genericResultList = new List<GenericResult>();
         for (Database.UpsertResult result : resultList) {
             genericResultList.add(new GenericResult(result));
         }
         return genericResultList;
     }
-    public List<GenericResult> deleteResult2GR(List<Database.DeleteResult> resultList) {
+    private List<GenericResult> deleteResult2GR(List<Database.DeleteResult> resultList) {
         List<GenericResult> genericResultList = new List<GenericResult>();
         for (Database.DeleteResult result : resultList) {
             genericResultList.add(new GenericResult(result));
         }
         return genericResultList;
     }
-    public List<GenericResult> leadConvertResult2GR(List<Database.LeadConvertResult> resultList) {
+    private List<GenericResult> leadConvertResult2GR(List<Database.LeadConvertResult> resultList) {
         List<GenericResult> genericResultList = new List<GenericResult>();
         for (Database.LeadConvertResult result : resultList) {
             genericResultList.add(new GenericResult(result));
