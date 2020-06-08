@@ -339,7 +339,7 @@ public with sharing class DocuSignHelperTest {
                 Product__c = csProduct.Id,
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
-                Maximum_Subscription_Assemblage__c = 25
+                Maximum_Subscription_Capacity_kWDC__c = 25
         );
 
 
@@ -605,7 +605,7 @@ public with sharing class DocuSignHelperTest {
                 Product__c = csProduct.Id,
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
-                Maximum_Subscription_Assemblage__c = 25,
+                Maximum_Subscription_Capacity_kWDC__c = 25,
                 Sales_Partners__c = 'Barbara Cerullo; Boston Solar'
         );
 
@@ -624,7 +624,7 @@ public with sharing class DocuSignHelperTest {
                 Product__c = csProduct.Id,
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
-                Maximum_Subscription_Assemblage__c = 25,
+                Maximum_Subscription_Capacity_kWDC__c = 25,
                 Sales_Partners__c = 'Barbara Cerullo; Boston Solar'
         );
         insert new List<Shared_Solar_System__c>{sss1, sss2};

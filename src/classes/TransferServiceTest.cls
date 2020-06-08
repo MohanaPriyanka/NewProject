@@ -40,7 +40,7 @@ private class TransferServiceTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c = 1000,
-            Maximum_Subscription_Assemblage__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25);
         insert sss1;
 
         Transfer__c transferP1 = new Transfer__c(
@@ -53,7 +53,6 @@ private class TransferServiceTest {
             Bills_Generated__c = false
         );
         insert transferP1;
-        transferP1.Default_Credit_Value__c = 0.12;
         update transferP1;
         delete transferP1;
 
