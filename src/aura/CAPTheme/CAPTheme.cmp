@@ -1,5 +1,0 @@
-<aura:component implements="forceCommunity:themeLayout" access="global">
-  <aura:attribute name="header" type="Aura.Component[]" required="false"/>
-  {!v.header}
-  {!v.body}
-</aura:component>

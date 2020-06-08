@@ -1,4 +1,0 @@
-<aura:event type="APPLICATION" access="global">
-   <aura:attribute name="residentialEquipment" type="Residential_Equipment__c" access="global"/>	
-   <aura:attribute name="opportunityID" type="String" access="global"/>	
-</aura:event>

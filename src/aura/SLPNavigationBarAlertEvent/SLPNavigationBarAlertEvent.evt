@@ -1,3 +1,0 @@
-<aura:event type="APPLICATION" access="global">
-	<aura:attribute name="pendingCustomersAlert" type="Boolean" access="global"/>       
-</aura:event>
