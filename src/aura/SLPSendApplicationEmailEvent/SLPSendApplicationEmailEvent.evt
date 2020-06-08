@@ -1,4 +1,0 @@
-<aura:event type="APPLICATION" access="global">
-    <aura:attribute name="openModal" type="String" access="global"/>	
-    <aura:attribute name="closeModal" type="String" access="global"/>	
-</aura:event>

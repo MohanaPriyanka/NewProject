@@ -1,3 +1,0 @@
-<aura:event type="APPLICATION" access="global">
-	<aura:attribute name="stageName" type="String" access="global"/>       
-</aura:event>
