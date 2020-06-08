@@ -12,10 +12,10 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(0,beforeLogs.size());
 
         Test.startTest();
-            ProductionToBillScheduler prodService = new ProductionToBillScheduler();
-            Datetime dt = Datetime.now().addMinutes(2);
-            String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-            System.schedule('P2B',cronExpress,prodService);
+        ProductionToBillScheduler prodService = new ProductionToBillScheduler();
+        Datetime dt = Datetime.now().addMinutes(2);
+        String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+        System.schedule('P2B',cronExpress,prodService);
         Test.stopTest();
 
         List<Error_Log__c> afterLogs = [
@@ -63,8 +63,8 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(0,beforeLogs.size());
 
         Test.startTest();
-            ProductionToBillService prodService = new ProductionToBillService();
-            prodService.queueJob(ProductionToBillService.OperationType.PAYMENT);
+        ProductionToBillService prodService = new ProductionToBillService();
+        prodService.queueJob(ProductionToBillService.OperationType.PAYMENT);
         Test.stopTest();
 
         List<Error_Log__c> afterLogs = [
@@ -138,8 +138,8 @@ public with sharing class ProductionToBillServiceTest {
         useMocks();
 
         Test.startTest();
-            ProductionDetailBillService service = new ProductionDetailBillService();
-            service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
+        ProductionDetailBillService service = new ProductionDetailBillService();
+        service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
         Test.stopTest();
 
         Map<String, ProductionDetailBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
@@ -189,7 +189,7 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(null,acct05956.Bills[0].SFRecords);
 
         Test.startTest();
-            service.fromUsageGetUASBsAndProductionAdjustments();
+        service.fromUsageGetUASBsAndProductionAdjustments();
         Test.stopTest();
 
         Map<String, ProductionDetailBillService.GLInvoiceItem> updatedInvoiceMap = service.invoiceIdToUsageMap;
@@ -224,9 +224,9 @@ public with sharing class ProductionToBillServiceTest {
         ProductionDetailBillService service = new ProductionDetailBillService();
 
         Test.startTest();
-            service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
-            service.fromUsageGetUASBsAndProductionAdjustments();
-            service.distributeInvoiceItemAmongTransferProductionDetail();
+        service.fromInvoicesGetUsage(getMockInvoiceItemIds(),getMockUsageDataQueryResult());
+        service.fromUsageGetUASBsAndProductionAdjustments();
+        service.distributeInvoiceItemAmongTransferProductionDetail();
         Test.stopTest();
 
         System.assertEquals(6,getMockInvoiceItemIds().size());
@@ -266,10 +266,10 @@ public with sharing class ProductionToBillServiceTest {
         returnEntryNumber = 4;
 
         Test.startTest();
-            // 1 Invoice with 1 Subscription on 1 Project, but bill is from a transfer with 3 parts:
-            service.fromInvoicesGetUsage(new Set<String>{'2c92c0fb6e3aa322016e3df698ff7e9f'},getMockUsageDataQueryResult());
-            service.fromUsageGetUASBsAndProductionAdjustments();
-            service.distributeInvoiceItemAmongTransferProductionDetail();
+        // 1 Invoice with 1 Subscription on 1 Project, but bill is from a transfer with 3 parts:
+        service.fromInvoicesGetUsage(new Set<String>{'2c92c0fb6e3aa322016e3df698ff7e9f'},getMockUsageDataQueryResult());
+        service.fromUsageGetUASBsAndProductionAdjustments();
+        service.distributeInvoiceItemAmongTransferProductionDetail();
         Test.stopTest();
 
         Map<String, ProductionDetailBillService.GLInvoiceItem> invoiceMap = service.invoiceIdToUsageMap;
@@ -453,8 +453,8 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(0,beforeQueries.size());
 
         Test.startTest();
-            ProductionDetailBillService service = new ProductionDetailBillService();
-            service.createProductionDetailFromInvoiceItems(entries, 10);
+        ProductionDetailBillService service = new ProductionDetailBillService();
+        service.createProductionDetailFromInvoiceItems(entries, 10);
         Test.stopTest();
 
         List<Zuora_Data_Query__c> afterQueries = [
@@ -539,19 +539,19 @@ public with sharing class ProductionToBillServiceTest {
     public static void testCreditMemoPreexistingRecordDeletion(){
         String jeListAsJSON = '[' +
             '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAA", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo", ' +
-                '"Transfer_Parts__r":{"totalSize":1,"done":true,"records":[' +
-                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAA","Id":"a8y3K0000009ougQAA"}]}' +
-                '}, ' +
+            '"Transfer_Parts__r":{"totalSize":1,"done":true,"records":[' +
+            '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAA","Id":"a8y3K0000009ougQAA"}]}' +
+            '}, ' +
             '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAB", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo", ' +
-                '"Transfer_Parts__r":{"totalSize":2,"done":true,"records":[' +
-                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAB","Id":"a8y3K0000009ougQCC"},' +
-                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAB","Id":"a8y3K0000009ougQDD"}]}' +
-                '}, ' +
+            '"Transfer_Parts__r":{"totalSize":2,"done":true,"records":[' +
+            '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAB","Id":"a8y3K0000009ougQCC"},' +
+            '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAB","Id":"a8y3K0000009ougQDD"}]}' +
+            '}, ' +
             '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAC", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo"}, ' +
             '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAD", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo", ' +
-                '"Transfer_Parts__r":{"totalSize":1,"done":true,"records":[' +
-                '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAD","Id":"a8y3K0000009ougQBB"}]}' +
-                '}, ' +
+            '"Transfer_Parts__r":{"totalSize":1,"done":true,"records":[' +
+            '{"attributes":{"type":"Transfer_Part__c"},"Journal_Entry__c":"a920a000000HuJoAAD","Id":"a8y3K0000009ougQBB"}]}' +
+            '}, ' +
             '{"attributes":{"type":"Journal_Entry__c"},"Id":"a920a000000HuJoAAE", "Object_Type__c" : "CreditMemo", "Query_Type__c":"CreditMemo"} ' +
             ']';
         List<Journal_Entry__c> entryList = (List<Journal_Entry__c>)JSON.deserialize(jeListAsJSON, List<Journal_Entry__c>.class);
@@ -569,8 +569,8 @@ public with sharing class ProductionToBillServiceTest {
         List<UASB__c> externalUASBs = getExternallyServicedUASBs();
 
         Test.startTest();
-            ProductionDetailBillService service = new ProductionDetailBillService();
-            service.calculateProductionDetailFromUnservicedUASB(externalUASBs);
+        ProductionDetailBillService service = new ProductionDetailBillService();
+        service.calculateProductionDetailFromUnservicedUASB(externalUASBs);
         Test.stopTest();
 
         List<Transfer_Part__c> unservicedParts = service.productionDetailToInsert;
@@ -917,24 +917,9 @@ public with sharing class ProductionToBillServiceTest {
                 '"2c92c0f86e3a939h016e3cebdda44909":[{"Id":"a0p0a000008BBBuAAO", "Adjustment_Amount__c":10, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}]' +
                 '}';
 
-            String adjustListAsString = '[' +
-                '{"attributes":{"type":"Bill_Adjustment__c"},' +
-                '"Id":"a0p0a000008ZZBuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0033"},' +
-                '{"attributes":{"type":"Bill_Adjustment__c"},' +
-                '"Id":"a0p0a000008YSBuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0032"},' +
-                '{"attributes":{"type":"Bill_Adjustment__c"},' +
-                '"Id":"a0p0a000008YSCuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0031"},' +
-                '{"attributes":{"type":"Bill_Adjustment__c"},' +
-                '"Id":"a0p0a000008AABuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0030"},' +
-                '{"attributes":{"type":"Bill_Adjustment__c"},' +
-                '"Id":"a0p0a000008BBBuAAO","Discount__c":"10","Transfer__c":"a900a000000GpNBAA0","Zuora_Id__c":"4028905f5a890526015a8d77adea0029"}]';
-
             switch on methodCall.stubbedMethodName {
                 when 'getAdjustmentMapFromExternalIds' {
                     return (Map<String,List<Bill_Adjustment__c>>)JSON.deserialize(adjustMapAsString, Map<String,List<Bill_Adjustment__c>>.class);
-                }
-                when 'getAdjustmentsFromExternalIds' {
-                    return (List<Bill_Adjustment__c>)JSON.deserialize(adjustListAsString, List<Bill_Adjustment__c>.class);
                 }
             }
             return null;
@@ -1142,7 +1127,7 @@ public with sharing class ProductionToBillServiceTest {
             Client__c = 'BW-0009470',
             Amount__c = 121.87,
             Applied_Record_Id__c = null,
-            External_Id__c = '4028905f5a890526015a8d77adea0029',
+            External_Id__c = '2c92c0f86e3a939h016e3cebdda44909',
             Reason_Code__c = 'Production',
             Customer_Account__c = 'bw-00524',
             Date__c = mayBillDate
@@ -1155,7 +1140,7 @@ public with sharing class ProductionToBillServiceTest {
             Client__c = 'BW-0009470',
             Amount__c = 31.72,
             Applied_Record_Id__c = null,
-            External_Id__c = '4028905f5a890526015a8d77adea0030',
+            External_Id__c = '2c92c0f86e3a939g016e3cebdda44909',
             Reason_Code__c = 'Client Credit',
             Customer_Account__c = 'bw-00524',
             Date__c = mayBillDate
@@ -1168,7 +1153,7 @@ public with sharing class ProductionToBillServiceTest {
             Client__c = 'BW-0009470',
             Amount__c = 60.00,
             Applied_Record_Id__c = null,
-            External_Id__c = '4028905f5a890526015a8d77adea0031',
+            External_Id__c = '2c92c0f86e3a939f016e3cebdda44909',
             Reason_Code__c = 'BW Credit',
             Customer_Account__c = 'bw-05268',
             Date__c = mayBillDate
@@ -1181,7 +1166,7 @@ public with sharing class ProductionToBillServiceTest {
             Client__c = 'BW-0009470',
             Amount__c = 37.23,
             Applied_Record_Id__c = null,
-            External_Id__c = '4028905f5a890526015a8d77adea0032',
+            External_Id__c = '2c92c0f96e3aa333016e3cf0484b601f',
             Reason_Code__c = 'Production',
             Customer_Account__c = 'bw-04202',
             Date__c = mayBillDate
@@ -1194,7 +1179,7 @@ public with sharing class ProductionToBillServiceTest {
             Client__c = 'BW-0009470',
             Amount__c = 62.55,
             Applied_Record_Id__c = null,
-            External_Id__c = '4028905f5a890526015a8d77adea0033',
+            External_Id__c = '2c92c0f86e3a939f016e3ceadda44909',
             Reason_Code__c = 'Client Credit',
             Customer_Account__c = 'bw-04202',
             Date__c = juneBillDate

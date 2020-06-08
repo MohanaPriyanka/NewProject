@@ -54,21 +54,26 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
             adjustmentExternalIds.add(entry.External_Id__c);
         }
 
-        Map<String, Bill_Adjustment__c> zuoraIdToAdjustMap = new Map<String, Bill_Adjustment__c>();
-        List<Bill_Adjustment__c> adjustmentList = adjustmentSelector.getAdjustmentsFromExternalIds(adjustmentExternalIds);
+        Map<String,List<Bill_Adjustment__c>> adjustMap = adjustmentSelector.getAdjustmentMapFromExternalIds(adjustmentExternalIds);
 
-        for (Bill_Adjustment__c adjust : adjustmentList){
-            zuoraIdToAdjustMap.put(adjust.Zuora_Id__c, adjust);
-            transferRecordIds.add(adjust.Transfer__c);
+        for (String entryId : adjustMap.keySet()){
+            for (Bill_Adjustment__c adjust : adjustMap.get(entryId)){
+                transferRecordIds.add(adjust.Transfer__c);
+            }
         }
 
         ProductionDetailBillService billService = new ProductionDetailBillService();
         billService.transferToDetailMap = productionDetailSelector.getTransferPartMap(transferRecordIds);
 
         for (Journal_Entry__c entry : billItems){
-            Bill_Adjustment__c sfAdjustment = zuoraIdToAdjustMap.get(entry.External_Id__c);
-            billService.createBillProductionDetail(sfAdjustment.Transfer__c, -1 * entry.Amount__c, 'Bill', entry.Id);
-            billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Discount__c, 'Customer Savings', entry.Id);
+            List<Bill_Adjustment__c> adjustments = adjustMap.get(entry.External_Id__c);
+            if (adjustments == null){
+                continue;
+            }
+            for (Bill_Adjustment__c sfAdjustment : adjustments){
+                billService.createBillProductionDetail(sfAdjustment.Transfer__c, -1 * sfAdjustment.Adjustment_Amount__c, 'Bill', entry.Id);
+                billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Discount__c, 'Customer Savings', entry.Id);
+            }
         }
         productionDetailToInsert.addAll(billService.productionDetailToInsert);
     }
@@ -82,7 +87,7 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
     private List<Journal_Entry__c> splitCreditMemoIntoParts(Journal_Entry__c creditMemo){
         HttpResponse response;
         ZuoraAPI.CreditMemoWithParts memoParts;
-        ZuoraAPI.CreditMemoWithItems memoPartItems;
+        List<ZuoraAPI.CreditMemoPartItem> memoPartItemList = new List<ZuoraAPI.CreditMemoPartItem>();
         List<Journal_Entry__c> journalEntriesByPart = new List<Journal_Entry__c>();
 
         response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/creditmemos/'+ creditMemo.External_Id__c +'/parts', null, false);
@@ -96,7 +101,9 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
                 String urlString = '/v1/creditmemos/'+ creditMemo.External_Id__c +'/parts/';
                 urlString += memoPart.Id + '/itemparts';
                 response = ZuoraAPIHelper.callJsonEndpoint('GET', urlString, null, false);
-                memoPartItems = (ZuoraAPI.CreditMemoWithItems) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithItems.class);
+                ZuoraAPI.CreditMemoWithItems partItems;
+                partItems = (ZuoraAPI.CreditMemoWithItems) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithItems.class);
+                memoPartItemList.addAll(partItems.itemParts);
             } else {
                 // If credit memo part doesn't have InvoiceId or DebitMemoId, it has an unapplied amount that
                 // will need to be allocated to production later. Keep the credit memo marked with
@@ -105,8 +112,8 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
             }
         }
 
-        if (memoPartItems != null) {
-            for (ZuoraAPI.CreditMemoPartItem partItems : memoPartItems.itemParts) {
+        if (memoPartItemList != null) {
+            for (ZuoraAPI.CreditMemoPartItem partItems : memoPartItemList) {
                 Journal_Entry__c creditMemoPartEntry = new Journal_Entry__c(
                     Id = creditMemo.Id,
                     Applied_Record_Id__c = partItems.InvoiceItemId,
