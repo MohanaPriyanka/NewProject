@@ -182,6 +182,7 @@ public with sharing class ScheduleZSubscriptionSelector {
                     Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c,
                     Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c
                 FROM Schedule_Z_Subscriptions__r
+                WHERE (Schedule_Z__r.Status__c = 'Billing' OR Schedule_Z__r.Status__c = 'Replaced')
                 ORDER BY CreatedDate DESC
                 LIMIT 1
             )
