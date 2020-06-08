@@ -348,6 +348,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Maximum_Subscription_Capacity_kWDC__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Maximum_Subscription_Assemblage__c</field>
             </layoutItems>
         </layoutColumns>
