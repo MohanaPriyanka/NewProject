@@ -15,7 +15,7 @@ public with sharing class ZuoraAccountSelectorTest {
         );
         insert newAccount;
         ZuoraAccountSelector.AccountWithPaymentMethod acctWithPayMethod;
-        acctWithPayMethod = ZuoraAccountSelector.getAccountWithDefaultPaymentMethod(newAccount.Id);
+        acctWithPayMethod = new ZuoraAccountSelector().getAccountWithDefaultPaymentMethod(newAccount.Id);
 
         System.assertEquals(230.00, acctWithPayMethod.account.Balance);
         System.assertEquals(false, acctWithPayMethod.account.AutoPay);

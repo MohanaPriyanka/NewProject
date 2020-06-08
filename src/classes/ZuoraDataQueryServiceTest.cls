@@ -80,6 +80,30 @@ public class ZuoraDataQueryServiceTest {
     }
 
     @IsTest
+    private static void testQueryFromApexWithCallout() {
+        List<Zuora_Data_Query__c> queries = [
+            SELECT Id, Query__c, Status__c, Zuora_Id__c, Data_From_Zuora__c
+            FROM Zuora_Data_Query__c
+        ];
+        System.assertEquals(0,queries.size());
+
+        Test.startTest();
+        ZuoraDataQueryService.callFromApexWithCallout('SHOW Columns FROM Account', null);
+        Test.stopTest();
+
+        List<Zuora_Data_Query__c> updatedQueries = [
+            SELECT Id, Query__c, Status__c, Zuora_Id__c, Data_From_Zuora__c
+            FROM Zuora_Data_Query__c
+        ];
+
+        System.assertEquals(1,updatedQueries.size());
+        System.assertEquals('7742a20c-18ea-4fde-b185-4aed364ce22c', updatedQueries[0].Zuora_Id__c);
+        System.assertEquals('completed', updatedQueries[0].Status__c);
+        String dataAsString = updatedQueries[0].Data_From_Zuora__c;
+        System.assert(dataAsString.length() > 200);
+    }
+
+    @IsTest
     private static void testAsyncStatusUpdate() {
         List<Zuora_Data_Query__c> queries = [
             SELECT Id, Query__c, Status__c, Zuora_Id__c, Data_From_Zuora__c
