@@ -179,7 +179,19 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AllocationScheduleSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AllocationScheduleServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BatchCreditSRECHandler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>BillGenerationAndDeliveryServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -263,6 +275,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSQualificationTestclass</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSSubscriptionEnroller</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -276,6 +292,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CSVReader</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CapacityServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -304,6 +324,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ChargentTransactionSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientBrandingServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -584,6 +608,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LeadSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LeadServiceTestclass</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1019,7 +1047,15 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SubscriptionManagementServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SubscriptionOrderSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SubscriptionSizingTestclass</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -30486,12 +30522,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Shared_Solar_System__c.Maximum_Subscription_Assemblage__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Maximum_Subscription_Capacity_kW_DC__c</field>
+        <field>Shared_Solar_System__c.Maximum_Subscription_Capacity_kWDC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30567,11 +30598,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Partner_Assignment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Shared_Solar_System__c.Partner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

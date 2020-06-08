@@ -183,4 +183,75 @@ public with sharing class ZuoraPaymentPageControllerTest {
         ];
         System.assertEquals(1, logs.size(), 'Expected an error about max retries');
     }
+
+    @IsTest
+    private static void testGetOutstandingItemsQuery() {
+        ZuoraAPIHelperTest.testSetup();
+        Test.startTest();
+        String zuoraDataQueryId = ZuoraPaymentPageController.startOutstandingItemsQuery('zuoraAcctId');
+        Test.stopTest();
+        System.assertNotEquals(null, ZuoraPaymentPageController.getQueryResult(zuoraDataQueryId), 'Expected a result from the outstandingitems data query');
+    }
+
+    @IsTest
+    private static void testSplitPaymentAmountByGateway() {
+        ZuoraOutstandingItemsService.OutstandingItem itemOne = new ZuoraOutstandingItemsService.OutstandingItem();
+        itemOne.AmountOutstanding = 5;
+        itemOne.EffectiveDate = Datetime.newInstance(2019,02,01,12,10,00);
+        itemOne.Project = 'SSS-0000012';
+        itemOne.Client = 'BW-0000123';
+        itemOne.PaymentGatewayId = 'Gateway A';
+
+        ZuoraOutstandingItemsService.OutstandingItem itemTwo = new ZuoraOutstandingItemsService.OutstandingItem();
+        itemTwo.AmountOutstanding = 50;
+        itemTwo.EffectiveDate = Datetime.newInstance(2019,02,01,12,10,01);
+        itemTwo.Project = 'SSS-0000018';
+        itemTwo.Client = 'BW-0000122';
+        itemTwo.PaymentGatewayId = 'Gateway B';
+
+        ZuoraOutstandingItemsService.OutstandingItem itemThree = new ZuoraOutstandingItemsService.OutstandingItem();
+        itemThree.AmountOutstanding = 2;
+        itemThree.EffectiveDate = Datetime.newInstance(2019,02,01,13,10,00);
+        itemThree.Project = 'SSS-0000016';
+        itemThree.Client = 'BW-0000122';
+        itemThree.PaymentGatewayId = 'Gateway A';
+
+        ZuoraOutstandingItemsService.OutstandingItem itemFour = new ZuoraOutstandingItemsService.OutstandingItem();
+        itemFour.AmountOutstanding = 10.33;
+        itemFour.EffectiveDate = Datetime.newInstance(2019,02,01,14,10,00);
+        itemFour.Project = 'SSS-0000012';
+        itemFour.Client = 'BW-0000123';
+        itemFour.PaymentGatewayId = 'Gateway B';
+
+        List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems = new List<ZuoraOutstandingItemsService.OutstandingItem>{
+            itemFour, itemTwo, itemOne, itemThree
+        };
+
+        List<ZuoraPaymentPageController.GatewayAmount> gatewayAmounts;
+        gatewayAmounts = ZuoraPaymentPageController.splitPaymentAmountByGateway(5, outstandingItems);
+        System.assertEquals(1, gatewayAmounts.size(), '$5 payment matches just itemOne');
+        System.assertEquals('Gateway A', gatewayAmounts[0].paymentGatewayId, '$5 payment should be to Gateway A');
+        System.assertEquals(5, gatewayAmounts[0].amount, 'gatewayAmount should be for $5');
+
+        gatewayAmounts = ZuoraPaymentPageController.splitPaymentAmountByGateway(10.50, outstandingItems);
+        System.assertEquals(2, gatewayAmounts.size(), '$10.50 payment matches itemOne and itemTwo');
+        System.assertEquals('Gateway A', gatewayAmounts[0].paymentGatewayId, 'first gatewayAmount should be to Gateway A');
+        System.assertEquals(5, gatewayAmounts[0].amount, 'first gatewayAmount should be for $5');
+        System.assertEquals('Gateway B', gatewayAmounts[1].paymentGatewayId, 'second gatewayAmount should be to Gateway B');
+        System.assertEquals(5.50, gatewayAmounts[1].amount, 'second gatewayAmount should be for $5.50');
+
+        gatewayAmounts = ZuoraPaymentPageController.splitPaymentAmountByGateway(55.55, outstandingItems);
+        System.assertEquals(2, gatewayAmounts.size(), '$55.55 payment matches itemOne, itemTwo, and itemThree');
+        System.assertEquals('Gateway A', gatewayAmounts[0].paymentGatewayId, 'first gatewayAmount should be to Gateway A');
+        System.assertEquals(5.55, gatewayAmounts[0].amount, 'first gatewayAmount should be for $5.55');
+        System.assertEquals('Gateway B', gatewayAmounts[1].paymentGatewayId, 'second gatewayAmount should be to Gateway B');
+        System.assertEquals(50, gatewayAmounts[1].amount, 'second gatewayAmount should be for $50');
+
+        gatewayAmounts = ZuoraPaymentPageController.splitPaymentAmountByGateway(100, outstandingItems);
+        System.assertEquals(2, gatewayAmounts.size(), '$100 payment matches all items');
+        System.assertEquals('Gateway A', gatewayAmounts[0].paymentGatewayId, 'first gatewayAmount should be to Gateway A');
+        System.assertEquals(7, gatewayAmounts[0].amount, 'first gatewayAmount should be for $7');
+        System.assertEquals('Gateway B', gatewayAmounts[1].paymentGatewayId, 'second gatewayAmount should be to Gateway B');
+        System.assertEquals(60.33, gatewayAmounts[1].amount, 'second gatewayAmount should be for $60.33');
+    }
 }

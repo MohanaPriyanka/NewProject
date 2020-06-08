@@ -18,6 +18,7 @@ public without sharing class PartnerCommissionService{
     private Map<String,Commission_Structure__c> partnerProductKeyToCommissionMap = new Map<String,Commission_Structure__c>();
     private Map<Id,Commission_Payment__c> oppToExistingContractExecutionPaymentMap = new Map<Id,Commission_Payment__c>();
     private Map<String,Invoice__c> partnerToOldestOpenInvoiceMap = new Map<String,Invoice__c>();
+    private Date dueDate;
 
     public enum CommissionType {CONTRACTEXECUTION, FIRSTBILLSENT, FIRSTBILLPAID}
 
@@ -63,9 +64,8 @@ public without sharing class PartnerCommissionService{
     }
 
     private void calculateCommissionPayments(PendingCommission pendingCommission){
-        Date monthFromToday = System.today().addMonths(1);
-        Date dueDate = Date.newInstance(monthFromToday.Year(),monthFromToday.month(),15);
-        Date dueToAccountingDate = Date.newInstance(monthFromToday.Year(),monthFromToday.month(),3);
+        Date dueDate = getDueDate();
+        Date dueToAccountingDate = Date.newInstance(dueDate.Year(),dueDate.month(),3);
         String commissionPaymentType = convertCommissionTypeEnumToPicklist(pendingCommission.typeOfCommission);
 
         for (Opportunity opp : pendingCommission.opportunitiesToRun){
@@ -82,7 +82,7 @@ public without sharing class PartnerCommissionService{
                 continue;
             }
             Commission_Payment__c newPayment = new Commission_Payment__c(
-                Amount_Due__c = commissionAmount,
+                Amount_Due__c = commissionAmount.setScale(2,RoundingMode.HALF_UP),
                 Commission_Structure__c = opp.Commission_Structure__c,
                 Due_Date__c = dueDate,
                 Due_to_Accounting__c = dueToAccountingDate,
@@ -197,7 +197,7 @@ public without sharing class PartnerCommissionService{
             partnerIds.add(opportunity.Partner_tag_lookup__c);
             partnerIdToNameMap.put(opportunity.Partner_tag_lookup__c, opportunity.Partner_tag_lookup__r.Name);
         }
-        List<Invoice__c> invoices = partnerInvoiceSelector.getPendingPartnerInvoices(partnerIds);
+        List<Invoice__c> invoices = partnerInvoiceSelector.getPendingPartnerInvoices(partnerIds, getDueDate());
         for (Invoice__c invoice : invoices){
             partnerToOldestOpenInvoiceMap.put(invoice.Partner__c, invoice);
         }
@@ -274,9 +274,8 @@ public without sharing class PartnerCommissionService{
 
     @TestVisible
     private Invoice__c createPartnerInvoice(Id partnerId, String partnerName){
-        Date monthFromToday = System.today().addMonths(1);
-        Date dueDate = Date.newInstance(monthFromToday.year(),monthFromToday.month(),15);
-        Date dueToAccountingDate = Date.newInstance(monthFromToday.Year(),monthFromToday.month(),3);
+        Date dueDate = getDueDate();
+        Date dueToAccountingDate = Date.newInstance(dueDate.Year(),dueDate.month(),3);
         Datetime dueDatetime = Datetime.newInstance(dueDate.year(), dueDate.month(),dueDate.day());
         String monthName = dueDatetime.format('MMMMM');
 
@@ -290,5 +289,13 @@ public without sharing class PartnerCommissionService{
             Status__c = 'Received >> QC'
         );
         return invoiceToCreate;
+    }
+
+    private Date getDueDate(){
+        if (dueDate == null){
+            Date monthFromToday = System.today().addMonths(1);
+            dueDate = Date.newInstance(monthFromToday.year(),monthFromToday.month(),15);
+        }
+        return dueDate;
     }
 }

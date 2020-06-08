@@ -64,7 +64,7 @@ public class CustomerCommunicationHandlerTest{
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
                                            BWC_Project_Entity_Manual__c = entity1.Id,
-                                           Maximum_Subscription_Assemblage__c = 25,
+                                           Maximum_Subscription_Capacity_kWDC__c = 25,
                                            Billing_Method__c = 'NMC');
             insert sss1;
 
@@ -85,7 +85,7 @@ public class CustomerCommunicationHandlerTest{
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
                                            BWC_Project_Entity_Manual__c = entity1.Id,
-                                           Maximum_Subscription_Assemblage__c = 25,
+                                           Maximum_Subscription_Capacity_kWDC__c = 25,
                                            Billing_Method__c = 'NMC');
             insert sss2;
 
@@ -107,7 +107,7 @@ public class CustomerCommunicationHandlerTest{
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
                                            BWC_Project_Entity_Manual__c = entity1.Id,
-                                           Maximum_Subscription_Assemblage__c = 25,
+                                           Maximum_Subscription_Capacity_kWDC__c = 25,
                                            Billing_Method__c = 'NMC');
             insert sss3;
 

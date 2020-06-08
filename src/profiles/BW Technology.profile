@@ -567,6 +567,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AllocationScheduleSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AllocationScheduleServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AuthNetAPI</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1133,6 +1141,10 @@
     <classAccesses>
         <apexClass>ClickToDial__TaskController</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientBrandingServiceTest</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ClientReportObjectSelector</apexClass>
@@ -3621,6 +3633,14 @@
     <classAccesses>
         <apexClass>StaticResourceSelectorTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SubscriptionManagementServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SubscriptionSizingTestclass</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SystemSettingsSelector</apexClass>
@@ -43191,12 +43211,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Shared_Solar_System__c.Maximum_Subscription_Assemblage__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Maximum_Subscription_Capacity_kW_DC__c</field>
+        <field>Shared_Solar_System__c.Maximum_Subscription_Capacity_kWDC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -43272,11 +43287,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Partner_Assignment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Shared_Solar_System__c.Partner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -579,8 +579,8 @@ ROUND(Customer_Subscription_KW_DC__c/ Opportunity__r.Shared_Solar_System__r.Tota
         <externalId>false</externalId>
         <formula>IF(
 $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
-Shared_Solar_System__r.Maximum_Subscription_Capacity_kW_DC__c,
-Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Capacity_kW_DC__c
+Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c,
+Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Maximum Subscription Capacity (kW DC)</label>
@@ -612,9 +612,9 @@ Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Capacity_kW_DC__c
         <formula>IF(
 $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
 
-Shared_Solar_System__r.Expected_Yield_kWh_kW__c*Shared_Solar_System__r.Maximum_Subscription_Capacity_kW_DC__c,
+Shared_Solar_System__r.Expected_Yield_kWh_kW__c*Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c,
 
-Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c*Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Capacity_kW_DC__c
+Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c*Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>This is the maximum annual kwh that can be put on a single UAS. It is driven by the Maximum Subscription Capacity on the SSS for the UAS.</inlineHelpText>

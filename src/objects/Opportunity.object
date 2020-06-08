@@ -1618,7 +1618,7 @@ Null)))</formula>
     <fields>
         <fullName>Clone_Status__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(  CS_Capacity_Allocated__c &gt;= Shared_Solar_System__r.Maximum_Subscription_Capacity_kW_DC__c, &quot;Multiple Records Needed - Please Clone&quot;, &quot;No Clones Needed&quot;)</formula>
+        <formula>IF(  CS_Capacity_Allocated__c &gt;= Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c , &quot;Multiple Records Needed - Please Clone&quot;, &quot;No Clones Needed&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Clone Status</label>
         <required>false</required>

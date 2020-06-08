@@ -23,6 +23,20 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         private String code;
         private String message;
 
+        public String getQueryId() {
+            if (data != null) {
+                return data.id;
+            }
+            return null;
+        }
+
+        public String getQueryStatus() {
+            if (data != null) {
+                return data.queryStatus;
+            }
+            return null;
+        }
+
         public String getDataFromDataQuery(){
             HttpRequest request = new HttpRequest();
             request.setEndpoint(data.dataFile);
@@ -70,6 +84,13 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public String queryString;
         public Integer numberOfRetries;
         public Id recordId;
+        public DataQueryRequest() {
+        }
+        public DataQueryRequest(Zuora_Data_Query__c zuoraDataQuery) {
+            this.queryString = zuoraDataQuery.Query__c;
+            this.numberOfRetries = Integer.valueOf(zuoraDataQuery.Number_of_Retries__c);
+            this.recordId = zuoraDataQuery.Id;
+        }
     }
 
     public DataQueryRequest scheduledQuery;
@@ -79,7 +100,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         well when multiple queries are running at the same time. */
     public static void callFromTrigger(List<Zuora_Data_Query__c> sfDataQueries) {
         for (Zuora_Data_Query__c record : sfDataQueries){
-            if (record.Query__c != null){
+            if (record.Query__c != null && record.Zuora_Id__c == null) {
                 DataQueryRequest query = new DataQueryRequest();
                 query.queryString = record.Query__c;
                 query.numberOfRetries = (Integer) record.Number_of_Retries__c;
@@ -88,6 +109,20 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
                 callDataQueryInFuture(queryToExecuteAsString);
             }
         }
+    }
+
+    public static Zuora_Data_Query__c callFromApexWithCallout(String queryString, ProcessingParameter processingParameter) {
+        ZuoraDataQueryService.DataQueryResult dataQueryResult = ZuoraDataQueryService.submitDataQuery(queryString);
+        Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
+            Query__c = queryString,
+            Processing_Parameter__c = JSON.serialize(processingParameter),
+            Number_of_Retries__c = 2,
+            Zuora_Id__c = dataQueryResult.getQueryId(),
+            Status__c = dataQueryResult.getQueryStatus()
+        );
+        insert zuoraDataQuery;
+        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(dataQueryResult, new DataQueryRequest(zuoraDataQuery));
+        return zuoraDataQuery;
     }
 
     public static void callFromApex(String queryString, ProcessingParameter processingParameter) {
@@ -163,12 +198,6 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
 
     public static void handlePostQueryJob(String response, ProcessingParameter method){
         try {
-            // Zuora's response isn't true JSON, so we have to modify to be able to deserialize:
-            response = response.replace('}','},');
-            response = response.removeEnd(',');
-            response = '[' + response + ']';
-            response = response.replace('__c','_Zcustom');
-
             if (method != null && method.className != null) {
                 Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
                 jobToProcess.executePostQueryJob(method, response);

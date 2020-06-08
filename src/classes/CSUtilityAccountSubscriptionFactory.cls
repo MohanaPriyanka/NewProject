@@ -177,7 +177,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
 
 
     public static Decimal calculateMaximumkWh(Shared_Solar_System__c sss) {
-        return sss.Maximum_Subscription_Capacity_kW_DC__c * sss.Expected_Yield_kWh_kW__c;
+        return sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c;
     }
 
 }

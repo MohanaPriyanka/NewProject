@@ -1,4 +1,4 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,flexipage:availableForAllPageTypes" controller="ZuoraAccountSelector">
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,flexipage:availableForAllPageTypes" controller="ZuoraPaymentPageController">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:attribute name="myBill" type="Decimal"/>
   <aura:attribute name="autopayMethod" type="String"/>
@@ -9,6 +9,8 @@
   <aura:attribute name="makePaymentOrManageAutopay" type="Boolean"/>
   <aura:attribute name="showZuoraPaymentCmp" type="Boolean"/>
   <aura:attribute name="showSpinner" type="Boolean" default="true"/>
+  <aura:attribute name="outstandingItemsByDate" type="Object"/>
+  <aura:attribute name="outstandingItemsQueryTimeout" type="Object"/>
 
   <aura:if isTrue="{!v.showSpinner}">
     <lightning:spinner alternativeText="Loading..." size="medium"/>
@@ -61,7 +63,7 @@
                 <aura:if isTrue="{!v.showZuoraPaymentCmp}">
                   <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
                     <div class="slds-col slds-size_12-of-12">
-                      <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}" sfAccountId="{!v.recordId}"/>
+                      <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}" sfAccountId="{!v.recordId}" outstandingItemsByDate="{!v.outstandingItemsByDate}"/>
                     </div>
                   </div>
                   <aura:set attribute="else">
@@ -133,7 +135,7 @@
             <lightning:layout multipleRows="true">
               <lightning:layoutItem class="slds-p-bottom_small" size="12">
                 <aura:if isTrue="{!v.showZuoraPaymentCmp}">
-                  <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}" sfAccountId="{!v.recordId}"/>
+                  <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}" sfAccountId="{!v.recordId}" outstandingItemsByDate="{!v.outstandingItemsByDate}"/>
                   <aura:set attribute="else">
                     <lightning:button aura:id="signupForAutopay"
                                       name="signupForAutopay"
