@@ -36,9 +36,11 @@ public with sharing class PartnerInvoiceSelectorTest {
             FROM Partner__c
         ];
 
+        Date dueDate = Date.newInstance(2020,03,14);
+
         PartnerInvoiceSelector selector = new PartnerInvoiceSelector();
         List<Invoice__c> invoices = selector.getPendingPartnerInvoices(
-            new Set<Id>{partners[0].Id, partners[1].Id}
+            new Set<Id>{partners[0].Id, partners[1].Id}, dueDate
         );
 
         System.assertEquals(2,invoices.size());
