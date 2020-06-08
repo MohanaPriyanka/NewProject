@@ -1,3 +1,0 @@
-<aura:event type="APPLICATION" access="global">
-	<aura:attribute name="dashboardDisplay" type="String" access="global"/>       
-</aura:event>
