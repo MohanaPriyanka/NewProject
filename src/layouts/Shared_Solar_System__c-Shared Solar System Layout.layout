@@ -205,10 +205,6 @@
                 <behavior>Readonly</behavior>
                 <field>Maximum_Subscription_Cost__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Maximum_Subscription_Capacity_kW_DC__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
