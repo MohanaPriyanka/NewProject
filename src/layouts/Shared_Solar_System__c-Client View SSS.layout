@@ -39,15 +39,15 @@
                 <field>Client_Management_Contract__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>Total_System_Size_kW_AC__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>Total_System_Size_kWh_DC__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>Anchor_Capacity_Reserved__c</field>
             </layoutItems>
         </layoutColumns>
