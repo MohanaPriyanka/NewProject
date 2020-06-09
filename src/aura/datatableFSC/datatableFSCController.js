@@ -58,12 +58,13 @@
             cmp.set('v.obj', 'standard2');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_standard2'));
         }
-        /*
+
         if(cmp.get('v.mydata_standard3') && cmp.get('v.mydata_standard3').length > 0){
             cmp.set('v.mydata', cmp.get('v.mydata_standard3'));
             cmp.set('v.obj', 'standard3');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_standard3'));
         }
+/*
         if(cmp.get('v.mydata_standard4') && cmp.get('v.mydata_standard4').length > 0){
             cmp.set('v.mydata', cmp.get('v.mydata_standard4'));
             cmp.set('v.obj', 'standard4');
@@ -89,6 +90,11 @@
             cmp.set('v.mydata', cmp.get('v.mydata_custom2'));
             cmp.set('v.obj', 'custom2');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_custom2'));
+        }
+        if(cmp.get('v.mydata_custom3') && cmp.get('v.mydata_custom3').length > 0){
+            cmp.set('v.mydata', cmp.get('v.mydata_custom3'));
+            cmp.set('v.obj', 'custom3');
+            cmp.set('v.preSelection', cmp.get('v.selectedRows_custom3'));
         }
         console.log(cmp.get('v.mydata'));
      	

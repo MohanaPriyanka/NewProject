@@ -1127,6 +1127,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContractSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContractSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CreateOrderandPaymentRequest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -16137,6 +16145,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract.Anchor_Management_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Assigned_to_Client__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Assignment_Agreement__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31532,6 +31550,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Assessors_Parcel_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Assigned_to_Client__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Assignment_Agreement__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -55880,6 +55908,10 @@
         <layout>ContentVersion-Content Version Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Contract-Assignment Agreement</layout>
+        <recordType>Contract.Assignment_Agreement</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Contract-Client Contract Layout</layout>
         <recordType>Contract.Client_Contract</recordType>
     </layoutAssignments>
@@ -63421,6 +63453,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>Contract.Assignment_Agreement</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>Contract.Client_Contract</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -64286,6 +64323,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Customer_Analytics</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Customer_Assignment</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>

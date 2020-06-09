@@ -116,4 +116,21 @@ public with sharing class OpportunitiesSelectorTest {
         OpportunitiesSelector selector = new OpportunitiesSelector();
         System.assert(selector.selectByIdWithApprovedCommissionPayment(oppIds).size() > 0);
     }
+
+    @IsTest
+    public static void testSelectOpportunitiesForClientAssignment(){
+        List<Entity__c> entities = [
+            SELECT Id
+            FROM Entity__c
+        ];
+        System.assert(entities.size() > 0);
+        List<String> entityIds = new List<String>();
+        for (Entity__c entity : entities){
+            entityIds.add(entity.Id);
+        }
+        List<Opportunity> opportunities;
+        opportunities = OpportunitiesSelector.selectOpportunitiesForClientAssignment(new List<List<String>>{entityIds})[0];
+
+        System.assert(opportunities.size() > 0);
+    }
 }
