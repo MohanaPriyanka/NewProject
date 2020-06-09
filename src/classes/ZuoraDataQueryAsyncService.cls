@@ -11,16 +11,20 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
     public void execute(QueueableContext context) {
         try {
             checkZuoraQueryStatus();
-        } catch(Exception excep) {
+        } catch (Exception excep) {
             String errorMessage = String.valueOf(zuoraQueryResult) + '\n' + excep.getMessage() + '\n' + excep.getStackTraceString();
-            Logger.logNow('ZuoraDataQueryAsyncService', 'runCheck', errorMessage);
+            Logger.logLater('ZuoraDataQueryAsyncService', 'runCheck', errorMessage, Logger.ERROR);
+        } finally {
+            Logger.flushLogs();
         }
+
     }
 
     private void checkZuoraQueryStatus(){
         zuoraQueryResult = ZuoraDataQueryService.checkDataQueryStatus(zuoraQueryResult);
         Integer minutesToRetry = (Integer) Util.getSystemPropertyDecimal('Zuora_Data_Query_Minutes_To_Retry__c');
         minutesToRetry = minutesToRetry==0 ? 120 : minutesToRetry;
+        Boolean retryAfterException = false;
 
         if (zuoraQueryResult.data.queryStatus != null && zuoraQueryResult.data.id != null) {
             Zuora_Data_Query__c dataQuery = zuoraDataQuerySelector.selectDataQueryById(attemptedQuery.recordId);
@@ -31,7 +35,14 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
             // If job failed, save errors to record
             // If not complete, update status then re-queue job:
             if (zuoraQueryResult.data.queryStatus == 'completed') {
-                dataQuery = handleCompletedQuery(dataQuery);
+                try {
+                    dataQuery = handleCompletedQuery(dataQuery);
+                } catch (Util.BWException bwe) {
+                    retryAfterException = true;
+                } catch (Exception e) {
+                    String errorMessage = String.valueOf(zuoraQueryResult) + '\n' + e.getMessage() + '\n' + e.getStackTraceString();
+                    Logger.logNow('ZuoraDataQueryAsyncService', 'checkZuoraQueryStatus', errorMessage);
+                }
             } else if (zuoraQueryResult.data.queryStatus == 'failed' && attemptedQuery.numberOfRetries > 0){
                 // Because we sometimes see system issues in Zuora (due to the volume of requests at certain times)
                 // we want to schedule a retry a few hours after the initial request:
@@ -52,7 +63,7 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
                 dataQuery.Data_From_Zuora__c = 'Will not retry, hit error: ' + String.valueOf(zuoraQueryResult);
             }
             update dataQuery;
-            if (zuoraQueryResult.data.queryStatus == 'in_progress' || zuoraQueryResult.data.queryStatus == 'accepted') {
+            if (zuoraQueryResult.data.queryStatus == 'in_progress' || zuoraQueryResult.data.queryStatus == 'accepted' || retryAfterException) {
                 attemptedQuery.recordId = dataQuery.Id;
                 queueCheckDataQueryStatus(zuoraQueryResult, attemptedQuery);
             }
@@ -68,22 +79,17 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
     }
 
     private Zuora_Data_Query__c handleCompletedQuery (Zuora_Data_Query__c dataQueryToUpdate){
-        try {
-            zuoraQueryResult.getDataFromDataQuery();
-            String dataAsString = convertDataQueryResponseToJSON(zuoraQueryResult.data.allData);
-            dataQueryToUpdate.Link_To_File__c = zuoraQueryResult.data.dataFile;
-            // Truncate because Link_To_File__c contains the actual data, Data_From_Zuora__c should really only
-            // be used for small data sets or as a preview:
-            dataQueryToUpdate.Data_From_Zuora__c = dataAsString.substring(0, Math.min(dataAsString.length(), 131000));
-            dataQueryToUpdate.Output_Rows__c = zuoraQueryResult.data.outputRows;
-            if (dataAsString != '[{}]' && dataQueryToUpdate.Processing_Parameter__c != null) {
-                ZuoraDataQueryService.ProcessingParameter processingParameter =
-                    (ZuoraDataQueryService.ProcessingParameter) JSON.deserialize(dataQueryToUpdate.Processing_Parameter__c, ZuoraDataQueryService.ProcessingParameter.class);
-                ZuoraDataQueryService.handlePostQueryJob(dataAsString, processingParameter);
-            }
-        } catch(Exception excep) {
-            String errorMessage = String.valueOf(zuoraQueryResult) + '\n' + excep.getMessage() + '\n' + excep.getStackTraceString();
-            Logger.logNow('ZuoraDataQueryAsyncService', 'handleCompletedQuery', errorMessage);
+        zuoraQueryResult.getDataFromDataQuery();
+        String dataAsString = convertDataQueryResponseToJSON(zuoraQueryResult.data.allData);
+        dataQueryToUpdate.Link_To_File__c = zuoraQueryResult.data.dataFile;
+        // Truncate because Link_To_File__c contains the actual data, Data_From_Zuora__c should really only
+        // be used for small data sets or as a preview:
+        dataQueryToUpdate.Data_From_Zuora__c = dataAsString.substring(0, Math.min(dataAsString.length(), 131000));
+        dataQueryToUpdate.Output_Rows__c = zuoraQueryResult.data.outputRows;
+        if (dataAsString != '[{}]' && dataQueryToUpdate.Processing_Parameter__c != null) {
+            ZuoraDataQueryService.ProcessingParameter processingParameter =
+                (ZuoraDataQueryService.ProcessingParameter) JSON.deserialize(dataQueryToUpdate.Processing_Parameter__c, ZuoraDataQueryService.ProcessingParameter.class);
+            ZuoraDataQueryService.handlePostQueryJob(dataAsString, processingParameter);
         }
         return dataQueryToUpdate;
     }

@@ -74,6 +74,21 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public Map<String, Integer> optionalIntegers;
         public Set<String> optionalStrings;
         public Map<String, Boolean> optionalBooleans;
+        public ProcessingParameter() {
+        }
+        public ProcessingParameter(String className) {
+            this.className = className;
+        }
+        public Boolean shouldRetry() {
+            if (optionalBooleans == null || optionalIntegers == null) {
+                return false;
+            }
+            Boolean retryOnBWException = optionalBooleans.get('RetryOnBWException');
+            Integer retryAttempt = optionalIntegers.get('RetryAttempt');
+            Decimal maxRetries = Util.getSystemPropertyDecimal('Zuora_Payment_Application_Retries__c');
+            return (retryOnBWException != null && retryOnBWException &&
+                retryAttempt != null && retryAttempt <= maxRetries);
+        }
     }
 
     public interface Processor {
@@ -197,13 +212,11 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
     }
 
     public static void handlePostQueryJob(String response, ProcessingParameter method){
-        try {
-            if (method != null && method.className != null) {
-                Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
-                jobToProcess.executePostQueryJob(method, response);
-            }
-        } catch (Exception excep) {
-            Logger.logNow('ZuoraDataQueryService', 'handlePostQueryJob', 'for method: ' + method + excep.getMessage() + '\n' + excep.getStackTraceString());
+        if (method != null && method.className != null) {
+            Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
+            jobToProcess.executePostQueryJob(method, response);
         }
     }
+
+    public class RetriableException extends Exception {}
 }

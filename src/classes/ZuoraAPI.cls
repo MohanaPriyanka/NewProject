@@ -952,19 +952,49 @@ public with sharing class ZuoraAPI {
         public Decimal amount;
         public String invoiceId;
         public List<ZuoraInvoiceItemApplication> items;
+        public ZuoraInvoiceApplication() {
+        }
+        public ZuoraInvoiceApplication(String invoiceId, Decimal amount) {
+            this.invoiceId = invoiceId;
+            this.amount = amount;
+        }
+        public ZuoraInvoiceApplication(String invoiceId, String invoiceItemId, Decimal amount) {
+            this.invoiceId = invoiceId;
+            this.amount = amount;
+            this.items = new List<ZuoraInvoiceItemApplication>{new ZuoraInvoiceItemApplication(invoiceItemId, amount)};
+        }
     }
     public class ZuoraInvoiceItemApplication {
         public Decimal amount;
         public String invoiceItemId;
+        public ZuoraInvoiceItemApplication(String invoiceItemId, Decimal amount) {
+            this.invoiceItemId = invoiceItemId;
+            this.amount = amount;
+        }
     }
     public class ZuoraDebitMemoApplication {
         public Decimal amount;
         public String debitMemoId;
         public List<ZuoraDebitMemoItemApplication> items;
+        public ZuoraDebitMemoApplication() {
+        }
+        public ZuoraDebitMemoApplication(String debitMemoId, Decimal amount) {
+            this.debitMemoId = debitMemoId;
+            this.amount = amount;
+        }
+        public ZuoraDebitMemoApplication(String debitMemoId, String debitMemoItemId, Decimal amount) {
+            this.debitMemoId = debitMemoId;
+            this.amount = amount;
+            this.items = new List<ZuoraDebitMemoItemApplication>{new ZuoraDebitMemoItemApplication(debitMemoItemId, amount)};
+        }
     }
     public class ZuoraDebitMemoItemApplication {
         public Decimal amount;
         public String debitMemoItemId;
+        public ZuoraDebitMemoItemApplication(String debitMemoItemId, Decimal amount) {
+            this.debitMemoItemId = debitMemoItemId;
+            this.amount = amount;
+        }
     }
 
     public class PaymentGateway {

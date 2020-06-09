@@ -92,12 +92,6 @@ public class ZuoraOutstandingItemsService {
         return applyToOutstandingItems(outstandingItems, amountToApply, project, client, null, null, null);
     }
 
-    // Use this if we just have entity and not project (for instance, when importing historical payments)
-    public static List<OutstandingItem> applyToOutstandingItems (List<OutstandingItem> outstandingItems, Decimal amountToApply,
-        String entity, String client, Map<String, Id> projectToEntityMap, Date effectiveDate) {
-        return applyToOutstandingItems(outstandingItems, amountToApply, null, client, entity, projectToEntityMap, effectiveDate);
-    }
-
     private static List<OutstandingItem> applyToOutstandingItems (List<OutstandingItem> outstandingItems, Decimal amountToApply,
         String project, String client, String entity, Map<String, Id> projectToEntityMap, Date effectiveDate) {
         List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply = new List<ZuoraOutstandingItemsService.OutstandingItem>();
@@ -322,10 +316,8 @@ public class ZuoraOutstandingItemsService {
         return itemsWithBalance;
     }
 
-    public String startOutstandingItemsQuery(String zuoraAcctId) {
-        String query = 'SELECT paymentgateway__c PaymentGatewayId, Project__c, ClientOwner__c, EffectiveDate, sum(balance) AmountOutstanding ' +
-            'FROM (' +
-            'SELECT it.id, rpc.Project__c, rpc.ClientOwner__c, s.paymentgateway__c, it.balance, iv.InvoiceDate EffectiveDate ' +
+    public String startOutstandingItemsQuery(String zuoraAcctId, ZuoraDataQueryService.ProcessingParameter option) {
+        String query = 'SELECT it.id, iv.Id ParentId, true IsInvoiceItem, rpc.Project__c Project, rpc.ClientOwner__c Client, s.paymentgateway__c PaymentGatewayId, it.balance AmountOutstanding, iv.InvoiceDate EffectiveDate ' +
             'FROM InvoiceItem it ' +
             'INNER JOIN Invoice iv ON iv.Id = it.invoiceid ' +
             'INNER JOIN Account a ON iv.accountid = a.Id ' +
@@ -334,15 +326,14 @@ public class ZuoraOutstandingItemsService {
             'WHERE a.id = \''+zuoraAcctId+'\' ' +
             'AND it.balance > 0 ' +
             'UNION ' +
-            'SELECT dmi.id, dm.Project__c, dm.ClientOwner__c, s.paymentgateway__c, dmi.balance, dm.MemoDate EffectiveDate ' +
+            'SELECT dmi.id, dm.Id ParentId, false IsInvoiceItem, dm.Project__c Project, dm.ClientOwner__c Client, s.paymentgateway__c PaymentGatewayId, dmi.balance AmountOutstanding, dm.MemoDate EffectiveDate ' +
             'FROM DebitMemoItem dmi ' +
             'INNER JOIN DebitMemo dm ON dm.Id = dmi.debitmemoid ' +
             'INNER JOIN Account a ON dm.accountid = a.id ' +
             'LEFT OUTER JOIN Subscription s ON dmi.subscriptionid = s.Id ' +
             'WHERE a.id = \''+zuoraAcctId+'\' ' +
-            'AND dmi.balance > 0) ' +
-            'GROUP BY paymentgateway__c, Project__c, ClientOwner__c, EffectiveDate';
-        Zuora_Data_Query__c zuoraDataQuery = ZuoraDataQueryService.callFromApexWithCallout(query, null);
+            'AND dmi.balance > 0';
+        Zuora_Data_Query__c zuoraDataQuery = ZuoraDataQueryService.callFromApexWithCallout(query, option);
         return zuoraDataQuery.Id;
     }
 

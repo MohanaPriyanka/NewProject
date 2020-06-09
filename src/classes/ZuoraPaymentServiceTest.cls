@@ -43,7 +43,7 @@ public with sharing class ZuoraPaymentServiceTest {
         // Test partial payment:
         ZuoraAPI.ZuoraPaymentApplication application;
         ZuoraPaymentService paymentService = new ZuoraPaymentService();
-        application = paymentService.applyPaymentToOutstandingItems(unsortedItemList, payment);
+        application = paymentService.getPaymentApplicationForOutstandingItems(unsortedItemList, payment);
         System.assertEquals(1,application.invoices.size());
         System.assertEquals(2,application.debitMemos.size());
         System.assertEquals(10,application.debitMemos[0].amount);
@@ -53,7 +53,7 @@ public with sharing class ZuoraPaymentServiceTest {
         // Test full payment:
         payment.amount = 67;
         ZuoraAPI.ZuoraPaymentApplication secondApplication;
-        secondApplication = paymentService.applyPaymentToOutstandingItems(unsortedItemList, payment);
+        secondApplication = paymentService.getPaymentApplicationForOutstandingItems(unsortedItemList, payment);
         System.assertEquals(2,secondApplication.invoices.size());
         System.assertEquals(2,secondApplication.debitMemos.size());
         System.assertEquals(10,secondApplication.debitMemos[0].amount);
@@ -90,7 +90,7 @@ public with sharing class ZuoraPaymentServiceTest {
 
         ZuoraAPI.ZuoraPaymentApplication application;
         ZuoraPaymentService paymentService = new ZuoraPaymentService();
-        application = paymentService.applyPaymentToOutstandingItems(itemList, payment);
+        application = paymentService.getPaymentApplicationForOutstandingItems(itemList, payment);
         System.assertEquals(1,application.invoices.size());
         System.assertEquals(0,application.debitMemos.size());
         System.assertEquals(DateUtil.convertGmtToDate(System.now()), application.effectiveDate,
@@ -98,7 +98,7 @@ public with sharing class ZuoraPaymentServiceTest {
 
         itemList.add(itemTwo);
         itemList.sort();
-        application = paymentService.applyPaymentToOutstandingItems(itemList, payment);
+        application = paymentService.getPaymentApplicationForOutstandingItems(itemList, payment);
         System.assertEquals(1,application.invoices.size());
         System.assertEquals(1,application.debitMemos.size());
         System.assertEquals(DateUtil.convertGmtToDate(futureDate), application.effectiveDate,
@@ -106,7 +106,7 @@ public with sharing class ZuoraPaymentServiceTest {
 
         itemList.add(itemThree);
         itemList.sort();
-        application = paymentService.applyPaymentToOutstandingItems(itemList, payment);
+        application = paymentService.getPaymentApplicationForOutstandingItems(itemList, payment);
         System.assertEquals(1,application.invoices.size());
         System.assertEquals(1,application.debitMemos.size());
         System.assertEquals(DateUtil.convertGmtToDate(futureDate), application.effectiveDate,
@@ -135,7 +135,7 @@ public with sharing class ZuoraPaymentServiceTest {
 
         ZuoraAPI.ZuoraPaymentApplication application;
         ZuoraPaymentService paymentService = new ZuoraPaymentService();
-        application = paymentService.applyPaymentToOutstandingItems(outstandingItems, payment);
+        application = paymentService.getPaymentApplicationForOutstandingItems(outstandingItems, payment);
 
         System.assertEquals(2,application.invoices.size());
         System.assertEquals(270,application.invoices[0].amount);
