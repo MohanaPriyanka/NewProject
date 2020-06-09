@@ -1,3 +1,0 @@
-<aura:event type="APPLICATION" access="global">
-    <aura:attribute name="attributeAssignmentHelper" type="Boolean" access="global"/>	   
-</aura:event>
