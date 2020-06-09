@@ -7,6 +7,9 @@
         <design:attribute name="mydata_standard2" label="Collection - Leads"/>
         <design:attribute name="selectedRows_standard2" label="Output Selected Leads"/>
 
+        <design:attribute name="mydata_standard3" label="Collection - Entities"/>
+        <design:attribute name="selectedRows_standard3" label="Output Selected Entities"/>
+
 <!--    <design:attribute name="mydata_standard3" label="Collection - Cases"/>
         <design:attribute name="selectedRows_standard3" label="Output Selected Cases"/>
 

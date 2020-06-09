@@ -292,6 +292,28 @@ private class PostSandboxRefresherTest {
         System.assertEquals(1,updatedTriggerOffWarning.size());
     }
     @IsTest
+    static void testInvocableGenericBatch(){
+        List<Account> acctList = [
+            SELECT Id, Name
+            FROM Account
+            LIMIT 2
+        ];
+        for (Account acct : acctList){
+            acct.Name = 'SomeUnique AccountNameB';
+        }
+        Test.startTest();
+        List<List<SObject>> sobjList = new List<List<SObject>>{acctList};
+        GenericBatchDMLOperation.callUpdateFromFlow(sobjList);
+        Test.stopTest();
+
+        List<Account> accounts = [
+            SELECT Id
+            FROM Account
+            WHERE Name = 'SomeUnique AccountNameB'
+        ];
+        System.assertEquals(2,accounts.size());
+    }
+    @IsTest
     private static void testSetSystemAdmins() {
         Profile bfgStandardUserProfile = [
             SELECT Id
