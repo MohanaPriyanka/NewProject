@@ -160,7 +160,7 @@
     <permissionSets>Client Reporting General Ledger View</permissionSets>
     <permissionSets>Query Zuora Data</permissionSets>
     <permissionSets>SSS Customer Facing Info Management</permissionSets>
-    <permissionSets>Production &amp; Transfer Delete Access</permissionSets>
+    <permissionSets>Production and Transfer Admin</permissionSets>
     <permissionSets>HubSpot Integration Permissions</permissionSets>
     <permissionSets>Manage Entities (Legal)</permissionSets>
     <permissionSets>Update ALSS Date Enacted</permissionSets>
@@ -186,6 +186,7 @@
     <permissionSets>Knowledge Manager</permissionSets>
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
     <permissionSets>Customer Contract Mgmt</permissionSets>
+    <permissionSets>Customer Assignment Agreement Management</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
     <permissionSets>Permission Set for Payment Request (Chargent Orders)</permissionSets>

@@ -1,6 +1,0 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPUserHelper">
-    <aura:attribute name="partnerLogo" type="String" />    
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />      
-    <img src="{!'/slportal/servlet/servlet.FileDownload?file=' + v.partnerLogo[0] }" width="300" height="100"/>
-
-</aura:component>
