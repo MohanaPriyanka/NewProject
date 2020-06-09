@@ -44,6 +44,10 @@ https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_compo
         <aura:attribute name="mydata_standard2" type="Lead[]"/>
         <aura:attribute name="selectedRows_standard2" type="Lead[]"/>
 
+        <aura:attribute name="mydata_standard3" type="Entity__c[]"/>
+        <aura:attribute name="selectedRows_standard3" type="Entity__c[]"/>
+
+
 <!--    <aura:attribute name="mydata_standard3" type="Case[]"/>
         <aura:attribute name="selectedRows_standard3" type="Case[]"/>
 
@@ -60,8 +64,11 @@ https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_compo
         <aura:attribute name="mydata_custom1" type="ContentDocument[]"/>
         <aura:attribute name="selectedRows_custom1" type="ContentDocument[]"/>
     
-    	<aura:attribute name="mydata_custom2" type="Utility_Account_Subscription__c[]"/>
+    	  <aura:attribute name="mydata_custom2" type="Utility_Account_Subscription__c[]"/>
         <aura:attribute name="selectedRows_custom2" type="Utility_Account_Subscription__c[]"/>
+
+        <aura:attribute name="mydata_custom3" type="Entity__c[]"/>
+        <aura:attribute name="selectedRows_custom3" type="Entity__c[]"/>
     
     <aura:attribute name="mycolumns" type="List"/>
     
@@ -130,7 +137,7 @@ https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_compo
     <aura:attribute name="hideShow" type="String" default="show"/>
 
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
-    
+
     <lightning:datatable aura:id="flowTable" data="{! v.mydata }" 
         columns="{! v.mycolumns }" 
         keyField="Id"
