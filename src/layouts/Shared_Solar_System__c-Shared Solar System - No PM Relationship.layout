@@ -350,10 +350,6 @@
                 <behavior>Edit</behavior>
                 <field>Maximum_Subscription_Capacity_kWDC__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Maximum_Subscription_Assemblage__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -420,10 +416,6 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>First_Bill_Date__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Count_of_Transfers__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
