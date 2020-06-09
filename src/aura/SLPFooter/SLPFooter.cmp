@@ -1,6 +1,6 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" access="global" extends="c.BlueWaveParent">
   <aura:attribute name="partnerFooter" type="Boolean" default="false"/>
-  
+  <aura:attribute name="lenderOfRecord" type="String"/>
   <aura:attribute name="csap" type="Boolean" default="true"/>
 
   <div aura:id="divider" class="divider slds-align--absolute-center"/>
