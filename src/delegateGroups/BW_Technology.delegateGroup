@@ -179,13 +179,13 @@
     <permissionSets>SSSO Creation</permissionSets>
     <permissionSets>Subscription Order Mgmt</permissionSets>
     <permissionSets>Subscription Order Visibility</permissionSets>
-    <permissionSets>Customer Contract Mgmt</permissionSets>
     <permissionSets>Edit Products</permissionSets>
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Underwriting Screen Access</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
+    <permissionSets>Customer Contract Mgmt</permissionSets>
     <permissionSets>Customer Assignment Agreement Management</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
