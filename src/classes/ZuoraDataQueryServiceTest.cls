@@ -198,4 +198,22 @@ public class ZuoraDataQueryServiceTest {
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size(), 'Expected no errors from a zero result query with no processing parameter');
     }
+
+    @IsTest
+    private static void testPostQueryRetries() {
+        Test.startTest();
+        ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter('ZuoraDataQueryServiceTest.PostQueryTest');
+        ZuoraDataQueryService.callFromApex('SHOW Columns FROM Account', processingParameter);
+        Test.stopTest();
+        List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c WHERE Severity__c = :Logger.WARN];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('Exception caught, but retrying'),
+            'Expected to retry the post query job because a RetriableException was thrown');
+    }
+
+    public class PostQueryTest implements ZuoraDataQueryService.Processor {
+        public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
+            throw new ZuoraDataQueryService.RetriableException('Retry post query job');
+        }
+    }
 }

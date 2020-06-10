@@ -7,15 +7,27 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
     public List<ZuoraAPI.Payment> paymentsToApply;
     private ZuoraSubscriptionService zuoraSubscriptionService = new ZuoraSubscriptionService();
     private ZuoraOutstandingItemsService outstandingItemsService = new ZuoraOutstandingItemsService();
+    private ZuoraAccountSelector zuoraAccountSelector = new ZuoraAccountSelector();
 
-    public void applyPaymentToBalance(ZuoraAPI.Payment successfulPayment){
+    public ZuoraPaymentService() {
+    }
+    public ZuoraPaymentService(List<ZuoraAPI.Payment> paymentsToApply) {
+        this.paymentsToApply = paymentsToApply;
+    }
+
+    public void applyPaymentToBalance(ZuoraAPI.Payment successfulPayment) {
+        applyPaymentToBalance(successfulPayment, new List<ZuoraAPI.Payment>());
+    }
+    public void applyPaymentToBalance(ZuoraAPI.Payment successfulPayment, List<ZuoraAPI.Payment> otherPaymentsToApply) {
         String zuoraAccountId = successfulPayment.accountId;
         Integer numberOfGateways = zuoraSubscriptionService.getSubscriptionsByAccount(zuoraAccountId).getNumberOfGateways();
         if (numberOfGateways > 1) {
             ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter('ZuoraPaymentService');
             processingParameter.methodName = 'ApplyToMultiGatewayBalance';
-            processingParameter.optionalStrings = new Set<String>();
-            processingParameter.optionalStrings.add(JSON.serialize(successfulPayment));
+            processingParameter.optionalStrings = new Map<String, String>();
+            processingParameter.optionalStrings.put('Payment', JSON.serialize(successfulPayment, true));
+            processingParameter.optionalStrings.put('OtherPaymentsToApply', JSON.serialize(otherPaymentsToApply, true));
+            processingParameter.enableRetries();
             outstandingItemsService.startOutstandingItemsQuery(zuoraAccountId, processingParameter);
             return;
         }
@@ -24,6 +36,9 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
         outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemParentsByDate(zuoraAccountId);
         ZuoraAPI.ZuoraPaymentApplication application = getPaymentApplicationForOutstandingItems(outstandingItems, successfulPayment);
         sendPaymentApplicationToZuora(successfulPayment, application);
+        if (!otherPaymentsToApply.isEmpty()) {
+            System.enqueueJob(new ZuoraPaymentService(otherPaymentsToApply));
+        }
     }
 
     private void sendPaymentApplicationToZuora(ZuoraAPI.Payment successfulPayment, ZuoraAPI.ZuoraPaymentApplication application) {
@@ -32,21 +47,22 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
             (ZuoraPaymentPageController.PaymentResponse) System.JSON.deserialize(response.getBody(), ZuoraPaymentPageController.PaymentResponse.class);
         if (!result.success) {
             if (response.getBody().contains('optimistic locking failed')) {
-                throw new Util.BWException(response.getBody() + '\n' + String.valueOf(successfulPayment));
+                throw new Util.BWException(response.getBody() + '\n' + JSON.serialize(successfulPayment) + '\n' + JSON.serialize(application));
             } else {
-                throw new Util.FatalBWException('Failure in Zuora:\n' + response.getBody() + '\n' + String.valueOf(successfulPayment));
+                throw new Util.FatalBWException('Failure in Zuora:\n' + response.getBody() + '\n' + JSON.serialize(successfulPayment));
             }
         }
     }
 
-    public ZuoraAPI.ZuoraPaymentApplication getPaymentApplicationForOutstandingItems(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems,
+    @TestVisible
+    private ZuoraAPI.ZuoraPaymentApplication getPaymentApplicationForOutstandingItems(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems,
         ZuoraAPI.Payment payment) {
         return getPaymentApplicationForOutstandingItems(outstandingItems, payment, true);
     }
 
     @TestVisible
     private ZuoraAPI.ZuoraPaymentApplication getPaymentApplicationForOutstandingItems(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems,
-        ZuoraAPI.Payment payment, Boolean outstandingItemsAreParents) {
+        ZuoraAPI.Payment payment, Boolean outstandingItemsAreDebitMemosOrInvoicesNotItems) {
         ZuoraAPI.ZuoraPaymentApplication application = new ZuoraAPI.ZuoraPaymentApplication();
         application.invoices = new List<ZuoraAPI.ZuoraInvoiceApplication>();
         application.debitMemos = new List<ZuoraAPI.ZuoraDebitMemoApplication>();
@@ -68,13 +84,13 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
             applicationAmount = Math.min(paymentAmount,item.AmountOutstanding);
             paymentAmount -= applicationAmount;
             if (item.IsInvoiceItem) {
-                if (outstandingItemsAreParents) {
+                if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
                     application.invoices.add(new ZuoraAPI.ZuoraInvoiceApplication(item.Id, applicationAmount));
                 } else {
                     application.invoices.add(new ZuoraAPI.ZuoraInvoiceApplication(item.ParentId, item.Id, applicationAmount));
                 }
             } else {
-                if (outstandingItemsAreParents) {
+                if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
                     application.debitMemos.add(new ZuoraAPI.ZuoraDebitMemoApplication(item.Id, applicationAmount));
                 } else {
                     application.debitMemos.add(new ZuoraAPI.ZuoraDebitMemoApplication(item.ParentId, item.Id, applicationAmount));
@@ -91,17 +107,6 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
         return application;
     }
 
-    public static void getAndApplyPaymentsWithUnappliedBalance(){
-        ZuoraDataQueryService.ProcessingParameter parameter = new ZuoraDataQueryService.ProcessingParameter('ZuoraPaymentService');
-        parameter.methodName = 'PaymentsWithUnappliedBalance';
-        String queryString = 'SELECT p.Id, p.accountid, p.unappliedamount, p.paymentmethodid, p.status ' +
-            'FROM Payment p ' +
-            'INNER JOIN Account a ON p.accountid = a.Id ' +
-            'WHERE (p.unappliedamount > 0 AND p.status = \'Processed\') ' +
-            'AND (a.totalinvoicebalance > 0 OR a.totaldebitmemobalance > 0 )';
-        ZuoraDataQueryService.callFromApex(queryString, parameter);
-    }
-
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
         if (method.methodName == 'PaymentsWithUnappliedBalance') {
             paymentsToApply = (List<ZuoraAPI.Payment>)JSON.deserialize(response, List<ZuoraAPI.Payment>.class);
@@ -109,57 +114,53 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
                 // We only want to distribute the unapplied amount, not the full amount in this case
                 // Payment.Amount in Zuora will not and can not be updated by this change:
                 payment.amount = payment.unappliedAmount;
+                // Because we can't query for gateway id, just gateway name, we need to convert it.
+                payment.gatewayId = zuoraAccountSelector.getGatewayIdFromGatewayName(payment.gatewayName).id;
             }
-            queueApplyJob(paymentsToApply);
+            System.enqueueJob(new ZuoraPaymentService(paymentsToApply));
         } else if (method.methodName == 'ApplyToMultiGatewayBalance') {
-            try {
-                List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems =
-                    (List<ZuoraOutstandingItemsService.OutstandingItem>) JSON.deserialize(response, List<ZuoraOutstandingItemsService.OutstandingItem>.class);
-                ZuoraAPI.Payment successfulPayment = (ZuoraAPI.Payment) JSON.deserialize(new List<String>(method.optionalStrings)[0], ZuoraAPI.Payment.class);
-                outstandingItems.sort();
-                ZuoraAPI.ZuoraPaymentApplication application = getPaymentApplicationForOutstandingItems(outstandingItems, successfulPayment, false);
-                sendPaymentApplicationToZuora(successfulPayment, application);
-            } catch (Util.BWException bwe) {
-                if (method.shouldRetry()) {
-                    throw new ZuoraDataQueryService.RetriableException(bwe.getMessage());
-                }
-                throw new Util.FatalBWException(bwe.getMessage());
-            }
+            applyToMultiGatewayBalance(response, method);
         } else {
             Logger.logLater('ZuoraPaymentService', 'executePostQueryJob', 'Unknown method name in processing parameter: ' + method, Logger.ERROR);
         }
     }
 
-    public void execute(QueueableContext context) {
-        executeApplyJob();
-    }
-
-    private void executeApplyJob() {
-        Integer recordCount = 0;
-        Integer batchSize = 10;
-        List<ZuoraAPI.Payment> nextJobQueue = new List<ZuoraAPI.Payment>();
-        for (ZuoraAPI.Payment payment : paymentsToApply) {
-            if (recordCount >= batchSize) {
-                nextJobQueue.add(payment);
-            } else {
-                recordCount += 1;
-                try {
-                    applyPaymentToBalance(payment);
-                } catch (Exception excep){
-                    Logger.logLater('ZuoraPaymentService','executeApplyJob',excep.getMessage()+ '_' + excep.getStackTraceString()+ '_' + JSON.serialize(paymentsToApply));
-                    continue;
+    @TestVisible
+    private List<ZuoraAPI.Payment> applyToMultiGatewayBalance(String response, ZuoraDataQueryService.ProcessingParameter method) {
+        try {
+            List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems =
+                (List<ZuoraOutstandingItemsService.OutstandingItem>) JSON.deserialize(response, List<ZuoraOutstandingItemsService.OutstandingItem>.class);
+            ZuoraAPI.Payment successfulPayment = (ZuoraAPI.Payment) JSON.deserialize(method.optionalStrings.get('Payment'), ZuoraAPI.Payment.class);
+            outstandingItems.sort();
+            ZuoraAPI.ZuoraPaymentApplication application = getPaymentApplicationForOutstandingItems(outstandingItems, successfulPayment, false);
+            sendPaymentApplicationToZuora(successfulPayment, application);
+            String otherPaymentsJSON = method.optionalStrings.get('OtherPaymentsToApply');
+            if (otherPaymentsJSON != null) {
+                List<ZuoraAPI.Payment> paymentsToApply = (List<ZuoraAPI.Payment>) JSON.deserialize(otherPaymentsJSON, List<ZuoraAPI.Payment>.class);
+                if (!paymentsToApply.isEmpty()) {
+                    if (Test.isRunningTest()) {
+                        return paymentsToApply;
+                    } else {
+                        System.enqueueJob(new ZuoraPaymentService(paymentsToApply));
+                    }
                 }
             }
+        } catch (Util.BWException bwe) {
+            if (method.shouldRetry(Util.getSystemPropertyDecimal('Zuora_Payment_Application_Retries__c'))) {
+                method.incrementRetryAttempt();
+                throw new ZuoraDataQueryService.RetriableException(bwe.getMessage());
+            }
+            throw new Util.FatalBWException(bwe.getMessage());
         }
-        if (recordCount >= batchSize) {
-            Logger.flushLogs();
-            queueApplyJob(nextJobQueue);
-        }
+        return null;
     }
 
-    private static void queueApplyJob(List<ZuoraAPI.Payment> paymentsToQueue){
-        ZuoraPaymentService applyJob = new ZuoraPaymentService();
-        applyJob.paymentsToApply = paymentsToQueue;
-        System.enqueueJob(applyJob);
+    public void execute(QueueableContext context) {
+        try {
+            ZuoraAPI.Payment paymentToApply = paymentsToApply.remove(0);
+            applyPaymentToBalance(paymentToApply, paymentsToApply);
+        } catch (Exception excep) {
+            Logger.logNow('ZuoraPaymentService','executeApplyJob',excep.getMessage()+ '\n' + excep.getStackTraceString()+ '\n' + JSON.serialize(paymentsToApply));
+        }
     }
 }

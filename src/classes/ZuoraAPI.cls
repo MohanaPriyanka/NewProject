@@ -904,6 +904,7 @@ public with sharing class ZuoraAPI {
         public String CrmId;
         public String GatewayResponse;
         public Decimal unappliedAmount;
+        public String gatewayName;
     }
 
     public class ArchivedChargentData {
