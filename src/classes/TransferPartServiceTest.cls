@@ -82,6 +82,7 @@ private class TransferPartServiceTest {
             Shared_Solar_System__c = sss1.Id,
             Production_kWh__c = 15000,
             Credits_Generated__c = 8000,
+            Verification_Status__c = 'Verified',
             Start_Date__c = Date.newInstance(2019, 6, 1),
             End_Date__c = Date.newInstance(2019, 6, 29)
         );
@@ -403,9 +404,6 @@ private class TransferPartServiceTest {
 
     }
 
-    //TODO: WRITE RETURNED TRANSFER TEST
-
-
     @IsTest
     public static void testCreateCaseForTooMuchTransferCredit(){
         Shared_Solar_System__c sss1 = [
@@ -487,6 +485,21 @@ private class TransferPartServiceTest {
 
     }
 
+    @IsTest
+    public static void testDeleteProductionDetails() {
+        Transfer_Part__c productionDetail = [
+            SELECT Id, Production__r.Verification_Status__c
+            FROM Transfer_Part__c
+            WHERE Production__r.Name = 'SSS 1 Production - June 2019'
+            LIMIT 1
+        ];
+
+        try {
+            delete productionDetail;
+            System.assert(false, 'Expected delete to throw an exception - Production Detail cannot be deleted when Production is Verified');
+        } catch (Exception e) {
+        }
+    }
 
 
 

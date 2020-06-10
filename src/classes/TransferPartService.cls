@@ -63,6 +63,16 @@ public without sharing class TransferPartService {
         }
     }
 
+    public void onBeforeDelete(Map<Id, Transfer_Part__c> deletedProductionDetails) {
+        List<Transfer_Part__c> deletedDetails = ProductionDetailSelector.getDetailsForDeletion(deletedProductionDetails);
+        for (Transfer_Part__c detail : deletedDetails) {
+            if (detail.Production__r.Verification_Status__c == 'Verified') {
+                Transfer_Part__c triggerDetail = deletedProductionDetails.get(detail.Id);
+                triggerDetail.addError('Production Detail cannot be deleted if Production is "Verified"');
+            }
+        }
+    }
+
 
     public List<Transfer__c> rollupTransferPartsToTransfer(List<Transfer_Part__c> allTransferParts){
         //When transfer parts are inserted or updated, they need to write back to their Transfer records

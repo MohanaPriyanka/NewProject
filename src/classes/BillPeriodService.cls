@@ -11,7 +11,7 @@ public with sharing class BillPeriodService {
     public Map<Id, Bill_Period__c> completedBillPeriods = new Map<Id, Bill_Period__c>();
 
     @TestVisible
-    private static ProductionSelector productionSelector = new ProductionSelector();
+    private static ProductionService productionService = new ProductionService();
 
     public void onAfterInsert(List<Bill_Period__c> bpList) {
         List<Transfer__c> transfers = assignTransfers(bpList);
@@ -22,11 +22,11 @@ public with sharing class BillPeriodService {
         evaluateStatus(bpList, oldMap);
         List<Production__c> productionsToUpdate = new List<Production__c>();
         if (verifiedBillPeriods.size() > 0 ) {
-            productionsToUpdate = verifyProductions();
+            productionsToUpdate = productionService.verifyProductions(verifiedBillPeriods);
         }
 
         if (completedBillPeriods.size() > 0) {
-            productionsToUpdate = markFirstBillDate();
+            productionsToUpdate = productionService.markFirstBillDate(completedBillPeriods);
         }
 
         updateRecords(productionsToUpdate);
@@ -64,30 +64,6 @@ public with sharing class BillPeriodService {
             return true;
         }
     }
-
-    public List<Production__c> verifyProductions() {
-        //Get all the transfer parts that are related to Main Transfers related to the Bill Periods
-        List<Production__c> verifiedProductions = productionSelector.selectPendingVerificationProductions(verifiedBillPeriods);
-        for (Production__c production : verifiedProductions) {
-            production.Verification_Status__c = 'Verified';
-        }
-
-        return verifiedProductions;
-    }
-
-    public List<Production__c> markFirstBillDate() {
-        Map<Production__c, Bill_Period__c> productionToBillPeriod = productionSelector.selectProductionByBillPeriod(completedBillPeriods);
-        List<Production__c> billedProductions = new List<Production__c>();
-        for (Production__c prod : productionToBillPeriod.keySet()) {
-            if (prod.First_Date_Production_Billed__c == null) {
-                prod.First_Date_Production_Billed__c = productionToBillPeriod.get(prod).Bill_Date__c;
-                billedProductions.add(prod);
-            }
-        }
-
-        return billedProductions;
-    }
-
 
     public List<Transfer__c> assignTransfers(List<Bill_Period__c> bpList) {
         Map<Id, Bill_Period__c> sssToBillPeriod = new Map<Id, Bill_Period__c>();
