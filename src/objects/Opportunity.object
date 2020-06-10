@@ -1033,13 +1033,16 @@ IF(ISBLANK(Personal_Credit_Report_Co_Applicant__c),
         <formula>IF(
 AND(
 NOT(ISBLANK(Assignment_Agreement__c)),
-NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Draft&quot;))
+AND(
+NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Draft&quot;)),
+NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Rejected&quot;))
+)
 ),
 true,
 false
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>True if this opportunity is linked to a client assignment agreement, unless the assignment agreement has Status = Draft</inlineHelpText>
+        <inlineHelpText>True if this opportunity is linked to a client assignment agreement, unless the assignment agreement has Status = Draft or Rejected</inlineHelpText>
         <label>Assigned to Client</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -10081,7 +10084,7 @@ Assigned_to_Client__c
         <description>We need to differentiate between opportunities acquired by BW and opportunities acquired elsewhere for client invoicing. This makes sure we always know the source of a lead</description>
         <errorConditionFormula>AND(
  ISBLANK(Partner_tag_lookup__c), 
-ISPICKVAL( StageName , &apos;Complete&apos; ), 
+ ISPICKVAL(StageName,&apos;Complete&apos;), 
  NOT(ISBLANK(Shared_Solar_System__c)) 
 )</errorConditionFormula>
         <errorMessage>Partner must be populated for any opportunity linked to a Shared Solar System with Stage = Complete. The partner could be the client for customers acquired elsewhere, or BlueWave Inside Sales if we did not use a sales partner</errorMessage>
