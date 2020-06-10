@@ -481,7 +481,10 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
     <fields>
         <fullName>Externally_Serviced__c</fullName>
         <externalId>false</externalId>
-        <formula>IF (  
+        <formula>IF (
+ ISPICKVAL( Externally_Serviced_Override__c , &quot;&quot;),
+
+IF (  
  AND( 
   OR (
     ISPICKVAL(Opportunity__r.Customer_Group__c, &quot;Public Offtake&quot;),
@@ -499,15 +502,14 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
     NOT(ISPICKVAL(Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c, &quot;&quot;)),
     NOT(ISPICKVAL(Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c, &quot;BlueWave&quot;))
   )
-      ),
-OR(
-    ISPICKVAL( Externally_Serviced_Override__c , &quot;Externally Serviced&quot;),
-    ISPICKVAL( Externally_Serviced_Override__c , &quot;&quot;))
- 
-
-      
+      )      
  ),
-TRUE, FALSE)</formula>
+TRUE, FALSE),
+
+IF (
+ ISPICKVAL( Externally_Serviced_Override__c , &quot;Externally Serviced&quot;), true, false)
+
+)</formula>
         <inlineHelpText>Checked if subscription is billed by RadianGen</inlineHelpText>
         <label>Externally Serviced</label>
         <trackHistory>false</trackHistory>
