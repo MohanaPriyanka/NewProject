@@ -8580,6 +8580,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Date_Invoiced__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Date_Needed__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8616,6 +8621,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract.Generate_Signed_Version__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Invoice_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
