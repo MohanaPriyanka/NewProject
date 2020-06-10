@@ -79,40 +79,6 @@ public class AdjustmentSelectorTest {
         System.assertEquals(1,adjustmentList2.size());
     }
 
-    @isTest public static void testGetAdjustmentsFromExternalIds(){
-        List<Utility_Account_Subscription__c> uasList = [
-            SELECT Id, Opportunity__r.AccountId
-            FROM Utility_Account_Subscription__c
-        ];
-
-        Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(
-            Account__c = uasList[0].Opportunity__r.AccountId,
-            Adjustment_Type__c = 'BW Credit',
-            Zuora_Id__c = 'aaa234',
-            Reason_For_Adjustment__c = 'Some Reason',
-            Utility_Account_Subscription__c = uasList[0].Id
-        );
-        Bill_Adjustment__c adjustTwo = new Bill_Adjustment__c(
-            Account__c = uasList[0].Opportunity__r.AccountId,
-            Adjustment_Type__c = 'BW Credit',
-            Zuora_Id__c = 'aaa235',
-            Reason_For_Adjustment__c = 'Some Reason',
-            Utility_Account_Subscription__c = uasList[0].Id
-        );
-        Bill_Adjustment__c adjustThree = new Bill_Adjustment__c(
-            Account__c = uasList[0].Opportunity__r.AccountId,
-            Adjustment_Type__c = 'BW Credit',
-            Zuora_Id__c = 'aaa236',
-            Reason_For_Adjustment__c = 'Some Reason',
-            Utility_Account_Subscription__c = uasList[0].Id
-        );
-        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree};
-
-        AdjustmentSelector selector = new AdjustmentSelector();
-        List<Bill_Adjustment__c> billList = selector.getAdjustmentsFromExternalIds(new Set<String>{'aaa235','aaa236'});
-        System.assertEquals(2,billList.size());
-    }
-
     @isTest public static void testGetUnservicedWithoutProductionDetail(){
         Util.enableTrigger('Disable_BillAdjustmentTrigger__c');
         Account clientAccount = new Account(Name = 'Client');
