@@ -134,23 +134,27 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
             outstandingItems.sort();
             ZuoraAPI.ZuoraPaymentApplication application = getPaymentApplicationForOutstandingItems(outstandingItems, successfulPayment, false);
             sendPaymentApplicationToZuora(successfulPayment, application);
-            String otherPaymentsJSON = method.optionalStrings.get('OtherPaymentsToApply');
-            if (otherPaymentsJSON != null) {
-                List<ZuoraAPI.Payment> paymentsToApply = (List<ZuoraAPI.Payment>) JSON.deserialize(otherPaymentsJSON, List<ZuoraAPI.Payment>.class);
-                if (!paymentsToApply.isEmpty()) {
-                    if (Test.isRunningTest()) {
-                        return paymentsToApply;
-                    } else {
-                        System.enqueueJob(new ZuoraPaymentService(paymentsToApply));
-                    }
-                }
-            }
+            return queueAdditionalPaymentsToApply(method);
         } catch (Util.BWException bwe) {
             if (method.shouldRetry(Util.getSystemPropertyDecimal('Zuora_Payment_Application_Retries__c'))) {
                 method.incrementRetryAttempt();
                 throw new ZuoraDataQueryService.RetriableException(bwe.getMessage());
             }
             throw new Util.FatalBWException(bwe.getMessage());
+        }
+    }
+
+    private List<ZuoraAPI.Payment> queueAdditionalPaymentsToApply(ZuoraDataQueryService.ProcessingParameter method) {
+        String otherPaymentsJSON = method.optionalStrings.get('OtherPaymentsToApply');
+        if (otherPaymentsJSON != null) {
+            List<ZuoraAPI.Payment> paymentsToApply = (List<ZuoraAPI.Payment>) JSON.deserialize(otherPaymentsJSON, List<ZuoraAPI.Payment>.class);
+            if (!paymentsToApply.isEmpty()) {
+                if (Test.isRunningTest()) {
+                    return paymentsToApply;
+                } else {
+                    System.enqueueJob(new ZuoraPaymentService(paymentsToApply));
+                }
+            }
         }
         return null;
     }

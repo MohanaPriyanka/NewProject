@@ -128,7 +128,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     }
 
     public void createProductionDetailFromInvoiceItems(List<Journal_Entry__c> invoiceItems, Integer batchSize) {
-        Set<String> invoiceItemIds = new Set<String>();
+        Map<String, String> invoiceItemIds = new Map<String, String>();
         Set<String> accountNumbers = new Set<String>();
         Date minDate;
         Date maxDate;
@@ -136,7 +136,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         for (Journal_Entry__c entry : invoiceItems){
             minDate = DateUtil.min(minDate, entry.Date__c);
             maxDate = DateUtil.max(maxDate, entry.Date__c);
-            invoiceItemIds.add(entry.External_Id__c);
+            invoiceItemIds.put(entry.External_Id__c, entry.External_Id__c);
             accountNumbers.add(entry.Customer_Account__c);
         }
 
@@ -153,7 +153,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
 
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
         try {
-            fromInvoicesGetUsage(method.optionalStrings, response);
+            fromInvoicesGetUsage(method.optionalStrings.keySet(), response);
             fromUsageGetUASBsAndProductionAdjustments();
             distributeInvoiceItemAmongTransferProductionDetail();
             insert productionDetailToInsert;
