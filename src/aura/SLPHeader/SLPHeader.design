@@ -1,0 +1,4 @@
+<design:component >
+    <design:attribute name="showLogout" label="Show Logout" description="Toggles the logout dropdown on the right side of the header"/>
+    <design:attribute name="link" label="Logo Link" description="URL when clicking on the logo on the left"/>
+</design:component>
