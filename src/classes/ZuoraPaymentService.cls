@@ -146,16 +146,17 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
 
     private List<ZuoraAPI.Payment> queueAdditionalPaymentsToApply(ZuoraDataQueryService.ProcessingParameter method) {
         String otherPaymentsJSON = method.optionalStrings.get('OtherPaymentsToApply');
-        if (otherPaymentsJSON != null) {
-            List<ZuoraAPI.Payment> paymentsToApply = (List<ZuoraAPI.Payment>) JSON.deserialize(otherPaymentsJSON, List<ZuoraAPI.Payment>.class);
-            if (!paymentsToApply.isEmpty()) {
-                if (Test.isRunningTest()) {
-                    return paymentsToApply;
-                } else {
-                    System.enqueueJob(new ZuoraPaymentService(paymentsToApply));
-                }
-            }
+        if (otherPaymentsJSON == null) {
+            return null;
         }
+        List<ZuoraAPI.Payment> paymentsToApply = (List<ZuoraAPI.Payment>) JSON.deserialize(otherPaymentsJSON, List<ZuoraAPI.Payment>.class);
+        if (paymentsToApply.isEmpty()) {
+            return null;
+        }
+        if (Test.isRunningTest()) {
+            return paymentsToApply;
+        }
+        System.enqueueJob(new ZuoraPaymentService(paymentsToApply));
         return null;
     }
 
