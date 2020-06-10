@@ -129,11 +129,16 @@ public without sharing class OpportunitiesSelector {
         List<Opportunity> opportunities = [
             SELECT Id, Assignment_Agreement__c
             FROM Opportunity
-            WHERE Shared_Solar_System__r.BWC_Project_Entity_Manual__c IN : entityIds
-            AND Assignment_Agreement__c = null
-            AND Partner_tag_lookup__r.Account__r.RecordType.DeveloperName != 'Client_Account'
-            AND Account.Parent_Account__r.Account_Temperature__c != 'Hot'
-            AND StageName = 'Complete'
+            WHERE Id IN (
+                SELECT Opportunity__c
+                FROM Utility_Account_Subscription__c
+                WHERE Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c IN : entityIds
+                AND Next_Schedule_Z_Status__c = 'Active Subscription'
+                AND Opportunity__r.Assignment_Agreement__c = null
+                AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.DeveloperName != 'Client_Account'
+                AND Opportunity__r.Account.Account_Temperature__c != 'Hot'
+                AND Opportunity__r.StageName = 'Complete'
+            )
         ];
         return new List<List<Opportunity>>{opportunities};
     }

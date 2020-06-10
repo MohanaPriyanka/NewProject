@@ -122,13 +122,16 @@
         <formula>IF(
 AND(
 NOT(ISBLANK(Assignment_Agreement__c)),
-NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Draft&quot;))
+AND(
+NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Draft&quot;)),
+NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Rejected&quot;))
+)
 ),
 true,
 false
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>True if this contract is linked to a client assignment agreement, unless the assignment agreement has Status = Draft</inlineHelpText>
+        <inlineHelpText>True if this contract is linked to a client assignment agreement, unless the assignment agreement has Status = Draft or Rejected</inlineHelpText>
         <label>Assigned to Client</label>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -637,6 +640,16 @@ false
         <type>DateTime</type>
     </fields>
     <fields>
+        <fullName>Date_Invoiced__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Primary use case is customer assignment agreements, set by accounting</inlineHelpText>
+        <label>Date Invoiced</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Date_Needed__c</fullName>
         <externalId>false</externalId>
         <label>Date Needed</label>
@@ -706,6 +719,18 @@ false
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Invoice_Number__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Reference Id for Accounting System</inlineHelpText>
+        <label>Invoice Number</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Lead__c</fullName>
@@ -1339,23 +1364,19 @@ false
         <picklistValues>
             <picklist>Status</picklist>
             <values>
-                <fullName>Activated</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Draft</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Expired</fullName>
+                <fullName>Executed</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>In Approval Process</fullName>
+                <fullName>Rejected</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Superseded</fullName>
+                <fullName>Sent</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
