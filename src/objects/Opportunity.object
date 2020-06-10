@@ -1033,13 +1033,16 @@ IF(ISBLANK(Personal_Credit_Report_Co_Applicant__c),
         <formula>IF(
 AND(
 NOT(ISBLANK(Assignment_Agreement__c)),
-NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Draft&quot;))
+AND(
+NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Draft&quot;)),
+NOT(ISPICKVAL(Assignment_Agreement__r.Status,&quot;Rejected&quot;))
+)
 ),
 true,
 false
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>True if this opportunity is linked to a client assignment agreement, unless the assignment agreement has Status = Draft</inlineHelpText>
+        <inlineHelpText>True if this opportunity is linked to a client assignment agreement, unless the assignment agreement has Status = Draft or Rejected</inlineHelpText>
         <label>Assigned to Client</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
