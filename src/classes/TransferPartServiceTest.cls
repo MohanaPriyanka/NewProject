@@ -488,7 +488,7 @@ private class TransferPartServiceTest {
     @IsTest
     public static void testDeleteProductionDetails() {
         Transfer_Part__c productionDetail = [
-            SELECT Id
+            SELECT Id, Production__r.Verification_Status__c
             FROM Transfer_Part__c
             WHERE Production__r.Name = 'SSS 1 Production - June 2019'
             LIMIT 1
