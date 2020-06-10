@@ -30,6 +30,14 @@ public without sharing class TransferService {
         update partsToUpdate;
     }
 
+    public void onDeleteTransfers(List<Transfer__c> deletedTransfers) {
+        for (Transfer__c transfer : deletedTransfers) {
+            if (transfer.Bills_Generated__c == true) {
+                transfer.addError('Transfer cannot be deleted if bills have been generated: ' + transfer.Id);
+            }
+        }
+    }
+
     @TestVisible
     private List<Transfer_Part__c> findPartsOnCreditValueUpdate(List<Transfer__c> newTransfers, Map<Id, Transfer__c> oldTransferMap){
         Set<Id> transferIds = new Set<Id>();
