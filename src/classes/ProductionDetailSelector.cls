@@ -73,4 +73,12 @@ public inherited sharing class ProductionDetailSelector {
         }
         return paymentSumMap;
     }
+
+    public static List<Transfer_Part__c> getDetailsForDeletion(Map<Id, Transfer_Part__c> details) {
+        List<Transfer_Part__c> detailList = [
+            SELECT Id, Production__r.Verification_Status__c
+            FROM Transfer_Part__c
+        ];
+        return detailList;
+    }
 }

@@ -34,7 +34,7 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
 
     @InvocableMethod(Label='genericBatchUpdate')
     public static void callUpdateFromFlow(List<List<SObject>> recordsToUpdate){
-        Database.executeBatch(new GenericBatchDMLOperation(recordsToUpdate[0], 'Update'));
+        Database.executeBatch(new GenericBatchDMLOperation(recordsToUpdate[0], 'Update'),50);
     }
 
     public void setLeadConvertOption(LeadConvertOption leadConvertOption) {
