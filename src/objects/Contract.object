@@ -244,6 +244,75 @@ false
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Conga_Review_Contract__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid=&quot; + Conga_Template__c +
+&quot;&amp;queryid=[UAL]{!Environment.VAR_QUERY_SSFCONTRACT_UAL}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_BIZ}?pv1=&quot; + Lead__r.Id + &quot;,[Lead]{!Environment.VAR_QUERY_SSFCONTRACT_LEAD}?pv1=&quot; + Lead__r.Id +
+&quot;&amp;sc0=1&quot; +
+&quot;&amp;sc1=SalesforceFile&quot; +
+&quot;&amp;APDF=0&quot; +
+&quot;&amp;contentnetworkid=0DB0a000000L0ryGAC&quot; +
+&quot;&amp;contentsharetype=V&quot; +
+&quot;&amp;contentvisibility=AllUsers&quot; +
+&quot;&amp;defaultpdf=1&quot; +
+&quot;&amp;qmode=SalesforceFile&quot; +
+&quot;&amp;UF0=1&quot; +
+&quot;&amp;MFTS0=Generate_Review_Version__c&quot; +
+&quot;&amp;MFTSValue0=false&quot;</formula>
+        <inlineHelpText>This contains the parameter for the conga trigger that runs when the review version of the contract is generated.</inlineHelpText>
+        <label>Conga Review Contract</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Conga_Signed_Contract__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid=&quot; + Conga_Template__c +
+&quot;&amp;queryid=[CustSig]{!Environment.VAR_QUERY_SSFCONTRACT_CUSTSIG}?pv0=&quot; + Id + &quot;,[BizSig]{!Environment.VAR_QUER_SSFCONTRACT_BIZSIG}?pv0=&quot; + Id + &quot;,[UAL]{!Environment.VAR_QUERY_SSFCONTRACT_UAL}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_BIZ}?pv1=&quot; + Lead__r.Id + &quot;,[Lead]{!Environment.VAR_QUERY_SSFCONTRACT_LEAD}?pv1=&quot; + Lead__r.Id +
+&quot;&amp;sc0=1&quot; +
+&quot;&amp;sc1=SalesforceFile&quot; +
+&quot;&amp;APDF=0&quot; +
+&quot;&amp;contentnetworkid=0DB0a000000L0ryGAC&quot; +
+&quot;&amp;contentsharetype=V&quot; +
+&quot;&amp;contentvisibility=AllUsers&quot; +
+&quot;&amp;defaultpdf=1&quot; +
+&quot;&amp;UF0=1&quot; +
+&quot;&amp;MFTS0=Generate_Signed_Version__c&quot; +
+&quot;&amp;MFTSValue0=false&quot; +
+&quot;&amp;EmailTemplateId=00X0a000000j4jB&quot; +
+&quot;&amp;EmailToId=&quot; + Lead__r.Id +
+&quot;&amp;EmailRelatedToId=&quot; + Lead__r.Id +
+&quot;&amp;EmailFromId=0D20a0000004K0P&quot; +
+&quot;&amp;qmode=SendEmail&quot;</formula>
+        <label>Conga Signed Contract</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Conga_Template__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+ ISPICKVAL(Contract_Type__c,&quot;Generic&quot;),
+
+&quot;[Terms and Conditions]&quot;&amp;Product__r.Generic_Terms_Conga_Template__c,
+
+&quot;[Community Solar Agreement]&quot;&amp;Product__r.Project_Specific_Conga_Template__c&amp;&quot;,[Solar Disclosure Form]&quot;&amp;Product__r.Disclosure_Form_Conga_Template__c
+
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Conga Template</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>ContractTerm</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
