@@ -4,6 +4,7 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ZuoraAccountSelector {
     private static ZuoraSubscriptionService zuoraSubscriptionService = new ZuoraSubscriptionService();
+    private static QueryResultGateways gatewayList;
 
     public class QueryResultAccount {
         public List<ZuoraAPI.ZuoraAccount> records;
@@ -35,17 +36,18 @@ public without sharing class ZuoraAccountSelector {
     }
 
     public ZuoraAPI.PaymentGateway getGatewayIdFromGatewayName (String gatewayName) {
-        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint( 'GET', '/v1/paymentgateways', null, false );
-        QueryResultGateways gatewayList = (QueryResultGateways)JSON.deserialize(response.getBody(), QueryResultGateways.class);
-        ZuoraAPI.PaymentGateway selectedGateway;
-        for (ZuoraAPI.PaymentGateway gateway : gatewayList.paymentgateways){
-            if (gatewayName == null && gateway.isDefault){
-                selectedGateway = gateway;
-            } else if (gateway.isActive && gateway.name == gatewayName){
-                selectedGateway = gateway;
+        if (gatewayList == null) {
+            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint( 'GET', '/v1/paymentgateways', null, false );
+            gatewayList = (QueryResultGateways) JSON.deserialize(response.getBody(), QueryResultGateways.class);
+        }
+        for (ZuoraAPI.PaymentGateway gateway : gatewayList.paymentgateways) {
+            if (gatewayName == null && gateway.isDefault) {
+                return gateway;
+            } else if (gateway.isActive && gateway.name == gatewayName) {
+                return gateway;
             }
         }
-        return selectedGateway;
+        return null;
     }
 
     public AccountWithPaymentMethod getAccountWithDefaultPaymentMethod (String sfAccountId) {
