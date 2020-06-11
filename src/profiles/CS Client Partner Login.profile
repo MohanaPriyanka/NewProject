@@ -77394,7 +77394,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
