@@ -38,7 +38,7 @@ public without sharing class CSSubscriptionEnroller {
         ualList = [
                 SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,
                         Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
-                        Utility_NMC_Tariff__c
+                        Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__c
                 FROM Utility_Account_Log__c
                 WHERE Lead__c IN :leadIds
                 ORDER BY Annual_Cost_of_Electricity__c DESC
@@ -52,7 +52,7 @@ public without sharing class CSSubscriptionEnroller {
 
         sssList = [
                 SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c,
-                        Product__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
+                        Product__c, Product__r.Sizing_Method__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
                         Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
                         Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
                         BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
