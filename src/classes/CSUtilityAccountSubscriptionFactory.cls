@@ -12,6 +12,11 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         public Subscription_Order__c sOrder;
     }
 
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
+    @TestVisible
+    private static Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>();
+
     public static List<Utility_Account_Subscription__c> generateSubscriptions(
         List<Utility_Account_Log__c> uals,
         List<Shared_Solar_System__c> sharedSolarSystems,
@@ -30,6 +35,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         Map<Id, Decimal> sssRemainingSubscriptionCapacityMap = new Map<Id, Decimal>();
 
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
+            sssMap.put(sss.Id, sss);
             sssRemainingSubscriptionCostMap.put(sss.Id, sss.Maximum_Subscription_Cost__c);
             Decimal maximumSubscriptionkWh = calculateMaximumkWh(sss);
             sssRemainingSubscriptionCapacityMap.put(sss.Id, maximumSubscriptionkWh);
@@ -86,6 +92,14 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         UAS_Number__c = uasNumberCounter,
                         Annual_kwh_subscription_future__c = annualElectricityCapacityAssigned
                     );
+
+                    if (featureService.isEnabled('Sizing_Method')) {
+                        if (sssMap.get(opp.Shared_Solar_System__c).Product__r.Sizing_Method__c == 'Rate Class Ratio') {
+                            uas.Sizing_Method__c = ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c;
+                        } else {
+                            uas.Sizing_Method__c = sssMap.get(opp.Shared_Solar_System__c).Utility_NMC_Tariff__c;
+                        }
+                    }
                     uasNumberCounter++;
                     uases.add(uas);
                     createSOByCapacity(uasOrders, uas, annualElectricityCapacityAssigned);
@@ -135,6 +149,11 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         calculated_annual_cost_of_electricity__c = annualElectricityCostAssigned,
                         Subscribed_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned
                     );
+
+                    if (featureService.isEnabled('Sizing_Method')) {
+                        //Only SREC projects are Electricity Cost and therefore get their NMC Value from the SSS
+                        uas.Sizing_Method__c = sssMap.get(opp.Shared_Solar_System__c).Utility_NMC_Tariff__c;
+                    }
                     uasNumberCounter++;
                     uases.add(uas);
                     createSOByCost(uasOrders, uas, annualElectricityCostAssigned);
