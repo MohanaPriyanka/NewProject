@@ -276,7 +276,9 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
 
         Map<Id, Decimal> sssForSingleSubscription = new Map<Id, Decimal>();
         Map<Id, Decimal> sssForMultipleSubscription = new Map<Id, Decimal>();
+        Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
+            sssMap.put(sss.Id, sss);
             opportunities.add(new Opportunity(
                 Name = 'Opp ' + counter,
                 Shared_Solar_System__c = sss.Id
@@ -288,6 +290,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             // set the maximum cost to get 2 subscriptions
             sssForMultipleSubscription.put(sss.Id, ual.Annual_Cost_of_Electricity__c / 2);
         }
+        CSUtilityAccountSubscriptionFactory.sssMap = sssMap;
 
         List<Utility_Account_Subscription__c> single = new List<Utility_Account_Subscription__c>();
         List<Utility_Account_Subscription__c> multiple = new List<Utility_Account_Subscription__c>();
@@ -342,10 +345,23 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         System.assertEquals(2, multiple.size());
     }
 
+    public static List<Utility_Account_Log__c> getUtilityAccountLogs() {
+
+        List<Utility_Account_Log__c> ualList = [
+            SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,
+                Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
+                Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__c
+            FROM Utility_Account_Log__c
+            ORDER BY Annual_Cost_of_Electricity__c DESC
+        ];
+        return ualList;
+
+    }
+
     public static List<Shared_Solar_System__c> getSharedSolarSystems() {
         List<Shared_Solar_System__c> sharedSolarSystems = [
             SELECT Id, Expected_Yield_kWh_kW__c, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kWDC__c,
-                NMC_Value__c
+                NMC_Value__c, Product__r.Name, Product__r.Sizing_Method__c, Utility_NMC_Tariff__c
             FROM Shared_Solar_System__c
         ];
         return sharedSolarSystems;
@@ -402,6 +418,69 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         ];
 
         System.assertEquals(4000.00, sssAfterUpdate.Maximum_Subscription_Cost__c);
+    }
+
+    @IsTest
+    public static void testSizingMethodFeatureFlag() {
+        useMocks(true);
+
+        Utility_NMC_Tariff__c sizeRatio =  new Utility_NMC_Tariff__c(
+            Size_Ratio__c = 1.2,
+            Name = 'Eversource R1 Sizing Method'
+        );
+        insert sizeRatio;
+
+        Rate_Class__c rateClass = new Rate_Class__c(
+            Name = 'Eversource R1',
+            Utility_NMC_Tariff__c = sizeRatio.Id
+        );
+        insert rateClass;
+
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Proposed_kWh__c = 15000,
+            Name_on_Account__c = 'Sarah Renfro',
+            Name = 'Account 1',
+            Utility_Rate_Class__c = rateClass.Id
+        );
+
+        insert ual;
+
+        Product2 csProduct = [
+            SELECT Id, Sizing_Method__c, Name
+            FROM Product2
+            LIMIT 1
+        ];
+
+        csProduct.Sizing_Method__c = 'Rate Class Ratio';
+        update csProduct;
+
+        //Requery to mimic CSSubscriptionEnroller queries for UALs and SSSs
+        List<Utility_Account_Log__c> ualList = getUtilityAccountLogs();
+        List<Shared_Solar_System__c> sharedSolarSystems = getSharedSolarSystems();
+
+        Integer counter = 1;
+        List<Opportunity> opportunities = new List<Opportunity>();
+        Map<Id, Decimal> sssForSingleSubscription = new Map<Id, Decimal>();
+        Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>();
+        for (Shared_Solar_System__c sss : sharedSolarSystems) {
+            opportunities.add(new Opportunity(
+                Name = 'Opp ' + counter,
+                Shared_Solar_System__c = sss.Id,
+                Product__c = csProduct.Id
+            ));
+            ++counter;
+
+            // set the maximum cost to get 1 subscription
+            sssForSingleSubscription.put(sss.Id, ual.Proposed_kWh__c);
+            sssMap.put(sss.Id, sss);
+        }
+        CSUtilityAccountSubscriptionFactory.sssMap = sssMap;
+
+        List<Utility_Account_Subscription__c> single = new List<Utility_Account_Subscription__c>();
+        single.addAll(CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ualList[0], sssForSingleSubscription, opportunities));
+
+        System.assertEquals(sizeRatio.Id, single[0].Sizing_Method__c);
+
     }
 
     private static void useMocks(Boolean featureOn) {
