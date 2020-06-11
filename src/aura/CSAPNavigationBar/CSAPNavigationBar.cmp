@@ -3,7 +3,7 @@
   <aura:attribute name="showNavBar" type="Boolean" default="true"/>
   <aura:attribute name="stageIndex" type="Integer" default="0"/>
   <aura:attribute name="partnerId" type="String"/>
-  <aura:attribute name="partnerApp" type="Boolean"/>
+  <aura:attribute name="partnerApp" type="Boolean"/> 
   <aura:attribute name="loading" type="Boolean" default="true"/>
   <!-- Set when handling the NavigationEvent -->
   <aura:attribute name="lead" type="Lead"/>
