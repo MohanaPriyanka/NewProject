@@ -48320,6 +48320,10 @@
         <layout>Subscription_Order__c-Subscription Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Subscription_Order__c-Subscription Order Layout</layout>
+        <recordType>Subscription_Order__c.Subscription_Orders</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Subscription_Order__c-System Change Order</layout>
         <recordType>Subscription_Order__c.System_Change_Order</recordType>
     </layoutAssignments>
@@ -54348,6 +54352,10 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ModifyAllData</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>ModifyMetadata</name>
     </userPermissions>
     <userPermissions>
@@ -54445,6 +54453,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>UseWebLink</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewAllData</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

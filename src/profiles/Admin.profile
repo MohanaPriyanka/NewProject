@@ -49880,6 +49880,10 @@
         <layout>Subscription_Order__c-Subscription Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Subscription_Order__c-Subscription Order Layout</layout>
+        <recordType>Subscription_Order__c.Subscription_Orders</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Subscription_Order__c-System Change Order</layout>
         <recordType>Subscription_Order__c.System_Change_Order</recordType>
     </layoutAssignments>
