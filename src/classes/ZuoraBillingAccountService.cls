@@ -33,7 +33,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
                 }
             }
 
-            update propAccountsToUpdate;
+            Util.updateSObjs(propAccountsToUpdate);
         } catch (Exception excep) {
             Logger.logNow('ZuoraBillingAccountService','checkPropertyAccountDiscrepancy',excep.getMessage() + '\n' + excep.getStackTraceString());
         }

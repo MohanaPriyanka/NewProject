@@ -191,7 +191,7 @@ public with sharing class ZuoraPaymentPageController {
 
     @AuraEnabled
     public static String startOutstandingItemsQuery(String zuoraAcctId) {
-        return zuoraOutstandingItemsService.startOutstandingItemsQuery(zuoraAcctId);
+        return zuoraOutstandingItemsService.startOutstandingItemsQuery(zuoraAcctId, null);
     }
 
     @AuraEnabled

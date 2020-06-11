@@ -43,7 +43,7 @@ public with sharing class ZuoraPaymentServiceTest {
         // Test partial payment:
         ZuoraAPI.ZuoraPaymentApplication application;
         ZuoraPaymentService paymentService = new ZuoraPaymentService();
-        application = paymentService.applyPaymentToOutstandingItems(unsortedItemList, payment);
+        application = paymentService.getPaymentApplicationForOutstandingItems(unsortedItemList, payment);
         System.assertEquals(1,application.invoices.size());
         System.assertEquals(2,application.debitMemos.size());
         System.assertEquals(10,application.debitMemos[0].amount);
@@ -53,7 +53,7 @@ public with sharing class ZuoraPaymentServiceTest {
         // Test full payment:
         payment.amount = 67;
         ZuoraAPI.ZuoraPaymentApplication secondApplication;
-        secondApplication = paymentService.applyPaymentToOutstandingItems(unsortedItemList, payment);
+        secondApplication = paymentService.getPaymentApplicationForOutstandingItems(unsortedItemList, payment);
         System.assertEquals(2,secondApplication.invoices.size());
         System.assertEquals(2,secondApplication.debitMemos.size());
         System.assertEquals(10,secondApplication.debitMemos[0].amount);
@@ -90,7 +90,7 @@ public with sharing class ZuoraPaymentServiceTest {
 
         ZuoraAPI.ZuoraPaymentApplication application;
         ZuoraPaymentService paymentService = new ZuoraPaymentService();
-        application = paymentService.applyPaymentToOutstandingItems(itemList, payment);
+        application = paymentService.getPaymentApplicationForOutstandingItems(itemList, payment);
         System.assertEquals(1,application.invoices.size());
         System.assertEquals(0,application.debitMemos.size());
         System.assertEquals(DateUtil.convertGmtToDate(System.now()), application.effectiveDate,
@@ -98,7 +98,7 @@ public with sharing class ZuoraPaymentServiceTest {
 
         itemList.add(itemTwo);
         itemList.sort();
-        application = paymentService.applyPaymentToOutstandingItems(itemList, payment);
+        application = paymentService.getPaymentApplicationForOutstandingItems(itemList, payment);
         System.assertEquals(1,application.invoices.size());
         System.assertEquals(1,application.debitMemos.size());
         System.assertEquals(DateUtil.convertGmtToDate(futureDate), application.effectiveDate,
@@ -106,7 +106,7 @@ public with sharing class ZuoraPaymentServiceTest {
 
         itemList.add(itemThree);
         itemList.sort();
-        application = paymentService.applyPaymentToOutstandingItems(itemList, payment);
+        application = paymentService.getPaymentApplicationForOutstandingItems(itemList, payment);
         System.assertEquals(1,application.invoices.size());
         System.assertEquals(1,application.debitMemos.size());
         System.assertEquals(DateUtil.convertGmtToDate(futureDate), application.effectiveDate,
@@ -135,7 +135,7 @@ public with sharing class ZuoraPaymentServiceTest {
 
         ZuoraAPI.ZuoraPaymentApplication application;
         ZuoraPaymentService paymentService = new ZuoraPaymentService();
-        application = paymentService.applyPaymentToOutstandingItems(outstandingItems, payment);
+        application = paymentService.getPaymentApplicationForOutstandingItems(outstandingItems, payment);
 
         System.assertEquals(2,application.invoices.size());
         System.assertEquals(270,application.invoices[0].amount);
@@ -143,28 +143,9 @@ public with sharing class ZuoraPaymentServiceTest {
     }
 
     @IsTest
-    public static void testDataQueryForUnappliedPayments(){
-        List<Zuora_Data_Query__c> beforeQueries = [
-            SELECT Id
-            FROM Zuora_Data_Query__c
-        ];
-        System.assertEquals(0,beforeQueries.size());
-
-        Test.startTest();
-        ZuoraPaymentService.getAndApplyPaymentsWithUnappliedBalance();
-        Test.stopTest();
-
-        List<Zuora_Data_Query__c> afterQueries = [
-            SELECT Id
-            FROM Zuora_Data_Query__c
-        ];
-        System.assertEquals(1,afterQueries.size());
-    }
-
-    @IsTest
     public static void testPostQueryExecution(){
         String response = '' +
-            '[{"Id":"2c92c0fa6e3a9395016e3ea23a912962","accountid":"2c92c0f86e3a939f016e3c9d350e3c6b",' +
+            '[{"Id":"2c92c0fa6e3a9395016e3ea23a912962","accountid":"2c92c0f86ae3a4ad016ae5e247886605",' +
             '"unappliedamount":311.930000000,"paymentmethodid":"2c92c0f868a2023a0168a79e7f4f3f70",' +
             '"status":"Processed"},' +
             '{"Id":"2c92c0fb6e3aa322016e3e9c15022235","accountid":"2c92c0f86e3a939f016e3c9d34e33c6a",' +
@@ -191,8 +172,10 @@ public with sharing class ZuoraPaymentServiceTest {
         System.assertEquals(0,beforeLogs.size());
 
         Test.startTest();
-            ZuoraPaymentService service = new ZuoraPaymentService();
-            service.executePostQueryJob(null, response);
+        ZuoraPaymentService service = new ZuoraPaymentService();
+        ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter('PaymentService');
+        processingParameter.methodName = 'PaymentsWithUnappliedBalance';
+        service.executePostQueryJob(processingParameter, response);
         Test.stopTest();
 
         List<Error_Log__c> afterLogs = [
@@ -209,4 +192,95 @@ public with sharing class ZuoraPaymentServiceTest {
         }
         System.assert(paymentApp);
     }
+
+    @IsTest
+    private static void testApplyToMultiGatewayBalance() {
+        ZuoraAPIHelperTest.testSetup();
+        String response = '' +
+            '[{"id":"2c92c086729245f3017295ab520e6a77","ParentId":"2c92c086729245f3017295ab51ea6a75","IsInvoiceItem":true,"Project":"SSS-000215","Client":"BW-0035924","PaymentGatewayId":"2c92c0f9699ec9fe0169a68ab88b6ae3","AmountOutstanding":71.820000000,"EffectiveDate":"2020-04-20"},\n' +
+            '{"id":"2c92c08572923a9d01729583e48a67d0","ParentId":"2c92c08572923a9d01729583e47167ce","IsInvoiceItem":true,"Project":"SSS-000215","Client":"BW-0035924","PaymentGatewayId":"2c92c0f9699ec9fe0169a68ab88b6ae3","AmountOutstanding":84.860000000,"EffectiveDate":"2020-03-20"},\n' +
+            '{"id":"2c92c0fa729d8bfc01729e755dc47136","ParentId":"2c92c0fa729d8bfc01729e755dba7135","IsInvoiceItem":false,"Project":"SSS-000214","Client":"BW-0035924","PaymentGatewayId":"2c92c0f96d82c23b016da3c1ad9170f6","AmountOutstanding":43.320000000,"EffectiveDate":"2020-06-10"},\n' +
+            '{"id":"2c92c0fa729d8bed01729e7489f17f3a","ParentId":"2c92c0fa729d8bed01729e7489e87f39","IsInvoiceItem":false,"Project":"SSS-000215","Client":"BW-0035924","PaymentGatewayId":"2c92c0f9699ec9fe0169a68ab88b6ae3","AmountOutstanding":1.110000000,"EffectiveDate":"2020-06-10"}]';
+        String paymentJSON = '{"unappliedAmount":157.790000000,"paymentMethodId":"2c92c0f9729889aa01729abdd7553ee1",' +
+            '"id":"2c92c0fa729d8bed01729e7bcb6c16ea","gatewayName":"CS Receivables Co TEST",' +
+            '"gatewayId":"2c92c0f9699ec9fe0169a68ab88b6ae3","amount":157.790000000,"accountId":"2c92c0f972924cb80172957f6e9e6e42"}';
+        String otherPaymentsToApplyJSON = '[{"unappliedAmount":43.320000000,"paymentMethodId":"2c92c0f9729889aa01729abdd7553ee1",' +
+            '"id":"2c92c0fa729d8bed01729e7bd0c11716","gatewayName":"Joe Jenny","gatewayId":"2c92c0f96d82c23b016da3c1ad9170f6",' +
+            '"amount":43.320000000,"accountId":"2c92c0f972924cb80172957f6e9e6e42"}]';
+        ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter();
+        processingParameter.optionalStrings = new Map<String, String>();
+        processingParameter.optionalStrings.put('Payment', paymentJSON);
+        processingParameter.optionalStrings.put('OtherPaymentsToApply', otherPaymentsToApplyJSON);
+        ZuoraPaymentService paymentService = new ZuoraPaymentService();
+
+        Test.startTest();
+        List<ZuoraAPI.Payment> otherPaymentsToApply = paymentService.applyToMultiGatewayBalance(response, processingParameter);
+        Test.stopTest();
+
+        System.assertEquals(1, ZuoraAPIHelper.endpointsCalled.size(), 'Expected to make one callout');
+        System.assert(ZuoraAPIHelper.endpointsCalled[0].endpoint.contains('/apply'), 'Expected callout to be /apply');
+        System.assertEquals(otherPaymentsToApplyJSON,  JSON.serialize(otherPaymentsToApply, true),
+            'Expected ZuoraPaymentService to queue other payments to apply after applying this payment');
+
+    }
+
+    @IsTest
+    private static void testApplyToMultiGatewayBalanceWithLocking() {
+        ZuoraAPIHelperTest.testSetup();
+        String response = '' +
+            '[{"id":"2c92c086729245f3017295ab520e6a77","ParentId":"2c92c086729245f3017295ab51ea6a75","IsInvoiceItem":true,"Project":"SSS-000215","Client":"BW-0035924","PaymentGatewayId":"2c92c0f9699ec9fe0169a68ab88b6ae3","AmountOutstanding":71.820000000,"EffectiveDate":"2020-04-20"},\n' +
+            '{"id":"2c92c08572923a9d01729583e48a67d0","ParentId":"2c92c08572923a9d01729583e47167ce","IsInvoiceItem":true,"Project":"SSS-000215","Client":"BW-0035924","PaymentGatewayId":"2c92c0f9699ec9fe0169a68ab88b6ae3","AmountOutstanding":84.860000000,"EffectiveDate":"2020-03-20"},\n' +
+            '{"id":"2c92c0fa729d8bfc01729e755dc47136","ParentId":"2c92c0fa729d8bfc01729e755dba7135","IsInvoiceItem":false,"Project":"SSS-000214","Client":"BW-0035924","PaymentGatewayId":"2c92c0f96d82c23b016da3c1ad9170f6","AmountOutstanding":43.320000000,"EffectiveDate":"2020-06-10"},\n' +
+            '{"id":"2c92c0fa729d8bed01729e7489f17f3a","ParentId":"2c92c0fa729d8bed01729e7489e87f39","IsInvoiceItem":false,"Project":"SSS-000215","Client":"BW-0035924","PaymentGatewayId":"2c92c0f9699ec9fe0169a68ab88b6ae3","AmountOutstanding":1.110000000,"EffectiveDate":"2020-06-10"}]';
+        String paymentJSON = '{"unappliedAmount":157.790000000,"paymentMethodId":"2c92c0f9729889aa01729abdd7553ee1",' +
+            '"id":"2c92c0fa729d8bed01729e7bcb6c16eaOPTIMISTICLOCKING","gatewayName":"CS Receivables Co TEST",' +
+            '"gatewayId":"2c92c0f9699ec9fe0169a68ab88b6ae3","amount":157.790000000,"accountId":"2c92c0f972924cb80172957f6e9e6e42"}';
+        String otherPaymentsToApplyJSON = '[{"unappliedAmount":43.320000000,"paymentMethodId":"2c92c0f9729889aa01729abdd7553ee1",' +
+            '"id":"2c92c0fa729d8bed01729e7bd0c11716","gatewayName":"Joe Jenny","gatewayId":"2c92c0f96d82c23b016da3c1ad9170f6",' +
+            '"amount":43.320000000,"accountId":"2c92c0f972924cb80172957f6e9e6e42"}]';
+        ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter();
+        processingParameter.optionalStrings = new Map<String, String>();
+        processingParameter.optionalStrings.put('Payment', paymentJSON);
+        processingParameter.optionalStrings.put('OtherPaymentsToApply', otherPaymentsToApplyJSON);
+        processingParameter.enableRetries();
+        ZuoraPaymentService paymentService = new ZuoraPaymentService();
+
+        try {
+            paymentService.applyToMultiGatewayBalance(response, processingParameter);
+            System.assert(false, 'Expected to throw a RetriableException');
+        } catch (ZuoraDataQueryService.RetriableException re) {
+            System.assertEquals(1, processingParameter.optionalIntegers.get(processingParameter.RETRY_ATTEMPT),
+                'Expected the processing parameter retry attempt to be incremented when retrying');
+        }
+    }
+
+    @IsTest
+    private static void testApplyToBalanceWithMultipleGateways() {
+        String paymentJSON = '{"unappliedAmount":157.790000000,"paymentMethodId":"2c92c0f9729889aa01729abdd7553ee1",' +
+            '"id":"2c92c0fa729d8bed01729e7bcb6c16ea","gatewayName":"CS Receivables Co TEST",' +
+            '"gatewayId":"2c92c0f9699ec9fe0169a68ab88b6ae3","amount":157.790000000,"accountId":"2c92c0f972924cb80172957f6e9e6e42"}';
+        String otherPaymentsToApplyJSON = '[{"unappliedAmount":43.320000000,"paymentMethodId":"2c92c0f9729889aa01729abdd7553ee1",' +
+            '"id":"2c92c0fa729d8bed01729e7bd0c11716","gatewayName":"Joe Jenny","gatewayId":"2c92c0f96d82c23b016da3c1ad9170f6",' +
+            '"amount":43.320000000,"accountId":"2c92c0f972924cb80172957f6e9e6e42"}]';
+        ZuoraAPI.Payment successfulPayment = (ZuoraAPI.Payment) JSON.deserialize(paymentJSON, ZuoraAPI.Payment.class);
+        List<ZuoraAPI.Payment> otherPaymentsToApply = (List<ZuoraAPI.Payment>) JSON.deserialize(otherPaymentsToApplyJSON, List<ZuoraAPI.Payment>.class);
+        ZuoraPaymentService zuoraPaymentService = new ZuoraPaymentService();
+
+        System.assertEquals(2, new ZuoraSubscriptionService().getSubscriptionsByAccount(successfulPayment.accountId).getNumberOfGateways(),
+            'Expected our test to be for a customer with multiple gateways');
+
+        List<Zuora_Data_Query__c> zuoraDataQueries = [SELECT Id, Processing_Parameter__c FROM Zuora_Data_Query__c];
+        System.assertEquals(0, zuoraDataQueries.size());
+        zuoraPaymentService.applyPaymentToBalance(successfulPayment, otherPaymentsToApply);
+        zuoraDataQueries = [SELECT Id, Processing_Parameter__c FROM Zuora_Data_Query__c];
+        System.assertEquals(1, zuoraDataQueries.size(),
+            'When applying payments to a multi-gateway customer, we should start a data query to get outstanding items');
+        ZuoraDataQueryService.ProcessingParameter processingParameter =
+            (ZuoraDataQueryService.ProcessingParameter) JSON.deserialize(zuoraDataQueries[0].Processing_Parameter__c, ZuoraDataQueryService.ProcessingParameter.class);
+        System.assertEquals(paymentJSON, processingParameter.optionalStrings.get('Payment'),
+            'After outstanding items are retrieved, we apply this payment');
+        System.assertEquals(otherPaymentsToApplyJSON, processingParameter.optionalStrings.get('OtherPaymentsToApply'),
+            'After applying the payment, we queue other payments to apply');
+    }
+
 }

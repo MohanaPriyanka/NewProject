@@ -72,8 +72,41 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public Map<String,Date> optionalDates;
         public Set<Id> recordIds;
         public Map<String, Integer> optionalIntegers;
-        public Set<String> optionalStrings;
+        public Map<String, String> optionalStrings;
         public Map<String, Boolean> optionalBooleans;
+        private final String RETRY_ON_EXCEPTION = 'RetryOnException';
+        @TestVisible
+        private final String RETRY_ATTEMPT = 'RetryAttempt';
+        public ProcessingParameter() {
+        }
+        public ProcessingParameter(String className) {
+            this.className = className;
+        }
+        public void enableRetries() {
+            if (optionalBooleans == null) {
+                optionalBooleans = new Map<String, Boolean>();
+            }
+            optionalBooleans.put(RETRY_ON_EXCEPTION, true);
+            if (optionalIntegers == null) {
+                optionalIntegers = new Map<String, Integer>();
+            }
+            optionalIntegers.put(RETRY_ATTEMPT, 0);
+        }
+        public Boolean shouldRetry(Decimal maxRetries) {
+            if (optionalBooleans == null || optionalIntegers == null) {
+                return false;
+            }
+            Boolean retryOnBWException = optionalBooleans.get(RETRY_ON_EXCEPTION);
+            Integer retryAttempt = optionalIntegers.get(RETRY_ATTEMPT);
+            return (retryOnBWException != null && retryOnBWException &&
+                retryAttempt != null && retryAttempt <= maxRetries);
+        }
+        public void incrementRetryAttempt() {
+            if (optionalIntegers == null) {
+                return;
+            }
+            optionalIntegers.put(RETRY_ATTEMPT, optionalIntegers.get(RETRY_ATTEMPT)+1);
+        }
     }
 
     public interface Processor {
@@ -115,7 +148,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         ZuoraDataQueryService.DataQueryResult dataQueryResult = ZuoraDataQueryService.submitDataQuery(queryString);
         Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
             Query__c = queryString,
-            Processing_Parameter__c = JSON.serialize(processingParameter),
+            Processing_Parameter__c = JSON.serialize(processingParameter, true),
             Number_of_Retries__c = 2,
             Zuora_Id__c = dataQueryResult.getQueryId(),
             Status__c = dataQueryResult.getQueryStatus()
@@ -128,7 +161,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
     public static void callFromApex(String queryString, ProcessingParameter processingParameter) {
         Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
             Query__c = queryString,
-            Processing_Parameter__c = JSON.serialize(processingParameter),
+            Processing_Parameter__c = JSON.serialize(processingParameter, true),
             Number_of_Retries__c = 2
         );
         insert zuoraDataQuery;
@@ -197,13 +230,11 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
     }
 
     public static void handlePostQueryJob(String response, ProcessingParameter method){
-        try {
-            if (method != null && method.className != null) {
-                Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
-                jobToProcess.executePostQueryJob(method, response);
-            }
-        } catch (Exception excep) {
-            Logger.logNow('ZuoraDataQueryService', 'handlePostQueryJob', 'for method: ' + method + excep.getMessage() + '\n' + excep.getStackTraceString());
+        if (method != null && method.className != null) {
+            Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
+            jobToProcess.executePostQueryJob(method, response);
         }
     }
+
+    public class RetriableException extends Exception {}
 }
