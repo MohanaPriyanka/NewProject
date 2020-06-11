@@ -341,72 +341,7 @@ public with sharing class LoanUnderwritingTest {
         System.assertEquals(1, attachments.size());
     }
 
-    static testMethod void testUpdateLeadAndRequestDocument() {
-        Lead lead = [SELECT Id, Name, Email, CAP_Stage__c, Sales_Person_Name__c
-        FROM Lead
-        WHERE FirstName = 'leadMALoanTerm10Rate699'
-        LIMIT 1];
-
-        LoanHandlerTestClass.convertLeads(new List<Lead>{lead});
-        CAPController.createLoanAndEquipment(lead.Id, lead.Email);
-        lead = [SELECT Id, ConvertedContactId FROM Lead WHERE Id = :lead.Id];
-        Map<String, Partner_Task__c> taskMap = LoanHandler.getPartnerTasks(new List<String>{
-            lead.Id
-        });
-        Partner_Task__c provideAllDocTask = taskMap.get(lead.Id + ' Provide All Customer Information');
-        Partner_Task__c provideIncomeDocTask = taskMap.get(lead.Id + ' Income Documentation');
-        provideAllDocTask.Status__c = 'Complete';
-        provideIncomeDocTask.Status__c = 'Complete';
-        lead.CAP_Stage__c = 'NAV_Income_Doc';
-
-        update provideAllDocTask;
-        update provideIncomeDocTask;
-        update lead;
-
-        lead = [SELECT Id, Name, Email, CAP_Stage__c, ConvertedOpportunityId, Status, Sales_Person_Name__c
-        FROM Lead
-        WHERE FirstName = 'leadMALoanTerm10Rate699'
-        LIMIT 1];
-
-        Map<String, Partner_Task__c> preUpdatedTaskMap = LoanHandler.getPartnerTasks(new List<String>{
-            lead.Id
-        });
-        Partner_Task__c preUpdatedProvideAllDocTask = preUpdatedTaskMap.get(lead.Id + ' Provide All Customer Information');
-        Partner_Task__c preUpdatedProvideIncomeDocTask = preUpdatedTaskMap.get(lead.Id + ' Income Documentation');
-
-        // Assert that the Partner tasks are complete and the customer has finished the application
-        System.assertEquals('Complete', preUpdatedProvideAllDocTask.Status__c);
-        System.assertEquals('Complete', preUpdatedProvideIncomeDocTask.Status__c);
-        System.assertEquals('Qualified', lead.Status);
-        System.assertEquals('NAV_Income_Doc', lead.CAP_Stage__c);
-
-        Test.startTest();
-
-        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
-        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
-        List<String> docs = new List<String>();
-        docs.add('Pay Stub');
-        LoanUnderwriting.updateLeadAndRequestDocument(lead, docs);
-
-        lead = [SELECT Id, Name, Email, CAP_Stage__c, Status
-        FROM Lead
-        WHERE FirstName = 'leadMALoanTerm10Rate699'
-        LIMIT 1];
-
-        preUpdatedTaskMap = LoanHandler.getPartnerTasks(new List<String>{
-            lead.Id
-        });
-        preUpdatedProvideAllDocTask = preUpdatedTaskMap.get(lead.Id + ' Provide All Customer Information');
-        preUpdatedProvideIncomeDocTask = preUpdatedTaskMap.get(lead.Id + ' Income Documentation');
-
-        // Assert that the tasks have been updated to 'Pending' and CAP Stage is now set to 'Complete
-        System.assertEquals('Pending', preUpdatedProvideAllDocTask.Status__c);
-        System.assertEquals('Pending', preUpdatedProvideIncomeDocTask.Status__c);
-        System.assertEquals('NAV_Complete', lead.CAP_Stage__c);
-        System.assertEquals('Awaiting Info Requested from Customer', lead.Status);
-        Test.stopTest();
-    }
-
+   
     static testMethod void testSendContinueApplicationRequest() {
         Test.startTest();
 

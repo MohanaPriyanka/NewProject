@@ -192,54 +192,6 @@ private class PCRApprovalHandlerTest {
         Test.stopTest();
     }
 
-    static testMethod void testPreQualified() {
-        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
-        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
-        productVar.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
-        productVar.Lender_of_Record__c = 'Avidia';
-
-        Product2 mslp = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
-        mslp.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
-        mslp.Lender_of_Record__c = 'Avidia';
-        mslp.Program__c = 'MSLP';
-        insert new List<Product2>{productVar, mslp};
-
-        Lead leadAG = newLead(90000, 20000, productVar.Id, false, partner.Id);
-        insert leadAG;
-
-        Test.startTest();
-        LASERCA__Personal_Credit_Report__c pcrAG = new LASERCA__Personal_Credit_Report__c(LASERCA__Lead__c = leadAG.Id,
-            LASERCA__Credit_Score_TransUnion__c = '815');
-        insert pcrAG;
-        LASERCA__Trade_Accounts__c tradeacctAG = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAG.id,
-            LASERCA__Monthly_Payment__c = 200);
-        insert tradeacctAG;
-        insert getCRL(pcrAG);
-
-        pcrAG.Avidia_Review_Status__c = 'Pending Review';
-        update pcrAG;
-        Test.stopTest();
-
-        pcrAG.Avidia_Review_Status__c = 'Reviewed - PreApproved';
-        PCRApprovalHandler.alreadyRan = false;
-        PCRApprovalHandler.noDelay = true;
-        update pcrAG;
-
-        pcrAG = [
-            SELECT Id, Solar_Loan_Approval_Status__c, LASERCA__Credit_Score_TransUnion__c, DTI_Before__c,
-                LASERCA__Lead__r.Status, LASERCA__Contact__c
-            FROM LASERCA__Personal_Credit_Report__c
-            WHERE LASERCA__Credit_Score_TransUnion__c = '815'
-        ];
-
-        System.assertEquals('Pre-Qualified', pcrAG.LASERCA__Lead__r.Status);
-
-        System.assertEquals(3, SLPCreditStatus.getCustomerProducts(leadAG.Id).size());
-        // This product should show up in the SLPCreditStatus.getCustomerProducts
-        leadAG.Product__c = mslp.id;
-        update leadAG;
-        System.assertEquals(4, SLPCreditStatus.getCustomerProducts(leadAG.Id).size());
-    }
 
     static testMethod void testPCRProductUpdate() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
