@@ -227,7 +227,7 @@
         <externalId>false</externalId>
         <formula>ROUND( Calculated_Change_in_Subscription_KW_DC__c / Total_System_Size_kW_DC__c ,  Utility_Number_of_Decimal_Places__c  + 2)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Calculated Change in % of System</label>
+        <label>XCalculated Change in % of System</label>
         <precision>18</precision>
         <required>false</required>
         <scale>5</scale>
@@ -263,7 +263,7 @@ Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara 
 
 Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
         <inlineHelpText>Unrounded Subscription Calculation</inlineHelpText>
-        <label>Calculated Change in Subscription KW DC</label>
+        <label>XCalculated Change in Subscription KW DC</label>
         <precision>18</precision>
         <required>false</required>
         <scale>4</scale>
@@ -278,7 +278,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <formula>Calculated_Change_in_Percent_Share_of_Sy__c * Total_System_Size_kW_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>This field calculates the kW DC subscription by multiplying the Share of System value by the total kw dc system size. I</inlineHelpText>
-        <label>Calculated Change in kW DC (Rounded)</label>
+        <label>XCalculated Change in kW DC (Rounded)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>6</scale>
@@ -379,6 +379,33 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>New_Annual_Cost__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the new annual cost that the UAS will have once the SO is effective.</inlineHelpText>
+        <label>New Annual Cost</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>New_Annual_kWh__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the new annual kwh that the UAS will have once this SO is effective.</inlineHelpText>
+        <label>New Annual kWh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Previous_Annual_Cost__c</fullName>
         <description>This is the Annual Cost on the UAS at the time the subscription order was created</description>
         <externalId>false</externalId>
@@ -463,7 +490,7 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
         <externalId>false</externalId>
         <formula>ROUND(   System_Change_kW_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>System Change Percent Share of System</label>
+        <label>New Percent Share of System</label>
         <precision>18</precision>
         <required>false</required>
         <scale>5</scale>
@@ -477,7 +504,7 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
         <formula>System_Change_Percent_Share_of_System__c  * Total_System_Size_kW_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>This uses the System Change Percent Share of System multiplied by the Total System Size in kW DC to find the kw DC Subscription value.</inlineHelpText>
-        <label>System Change kW DC (Rounded)</label>
+        <label>New kW DC (Rounded)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>6</scale>
@@ -491,18 +518,18 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
         <externalId>false</externalId>
         <formula>IF(
 
-AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,  Previous_kw_DC_Subscription__c !=0),
+AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,   New_Annual_kWh__c !=0),
 
- Previous_Annual_kwh__c / Expected_Yield_kWh_kW__c ,
+ New_Annual_kWh__c / Expected_Yield_kWh_kW__c ,
 
 IF( Utility_Account_Subscription__r.UAS_Number__c &gt; 1 ,
 
- Previous_Annual_Cost__c  / Value_of_NMC__c / Expected_Yield_kWh_kW__c,
+  New_Annual_Cost__c  / Value_of_NMC__c / Expected_Yield_kWh_kW__c,
 
 IF(
 
 OR( Utility_Account_Subscription__r.Auto_Unround__c = TRUE , Utility_Account_Subscription__r.UAS_Number__c = 1),
-  Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
+ New_Annual_Cost__c  / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
 
 
 IF(
@@ -511,9 +538,9 @@ OR(Utility_Account_Subscription__r.UAS_Number__c=1, Utility_Account_Subscription
 
 Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara Barton&apos;),
 
-Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
+Round(( New_Annual_Cost__c  / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>System Change kW DC Subscription</label>
+        <label>New kW DC Subscription</label>
         <precision>18</precision>
         <required>false</required>
         <scale>4</scale>
