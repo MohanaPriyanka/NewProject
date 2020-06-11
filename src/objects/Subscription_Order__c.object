@@ -518,7 +518,7 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
         <externalId>false</externalId>
         <formula>IF(
 
-AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,   New_Annual_kWh__c !=0),
+TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,
 
  New_Annual_kWh__c / Expected_Yield_kWh_kW__c ,
 
