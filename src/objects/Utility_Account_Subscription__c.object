@@ -1197,19 +1197,6 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
-        <fullName>Utility_NMC_Tariff__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Utility NMC Tariff</label>
-        <referenceTo>Utility_NMC_Tariff__c</referenceTo>
-        <relationshipLabel>Utility Account Subscriptions</relationshipLabel>
-        <relationshipName>Utility_Account_Subscriptions</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Utility__c</fullName>
         <externalId>false</externalId>
         <formula>Opportunity__r.UtilityMapper__c</formula>
