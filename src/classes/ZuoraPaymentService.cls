@@ -31,11 +31,16 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
             outstandingItemsService.startOutstandingItemsQuery(zuoraAccountId, processingParameter);
             return;
         }
-
-        List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
-        outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemParentsByDate(zuoraAccountId);
-        ZuoraAPI.ZuoraPaymentApplication application = getPaymentApplicationForOutstandingItems(outstandingItems, successfulPayment);
-        sendPaymentApplicationToZuora(successfulPayment, application);
+        try {
+            List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
+            outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemParentsByDate(zuoraAccountId);
+            ZuoraAPI.ZuoraPaymentApplication application = getPaymentApplicationForOutstandingItems(outstandingItems, successfulPayment);
+            sendPaymentApplicationToZuora(successfulPayment, application);
+        } catch (Exception e) {
+            Logger.logLater('ZuoraPaymentService','applyPaymentToBalance',
+                'Caught exception applying payment:\n' + e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serialize(successfulPayment, true),
+                Logger.ERROR);
+        }
         if (!otherPaymentsToApply.isEmpty()) {
             System.enqueueJob(new ZuoraPaymentService(otherPaymentsToApply));
         }
@@ -49,7 +54,10 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
             if (response.getBody().contains('optimistic locking failed')) {
                 throw new Util.BWException(response.getBody() + '\n' + JSON.serialize(successfulPayment) + '\n' + JSON.serialize(application));
             } else {
-                throw new Util.FatalBWException('Failure in Zuora:\n' + response.getBody() + '\n' + JSON.serialize(successfulPayment));
+                throw new Util.FatalBWException('Payment application failure in Zuora:\n' +
+                    'response: ' + response.getBody() + '\n' +
+                    'payment: ' + JSON.serialize(successfulPayment, true) + '\n' +
+                    'application: ' + JSON.serialize(application, true));
             }
         }
     }
@@ -101,7 +109,7 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
             }
         }
         if (paymentAmount > 0){
-            Logger.logLater('ZuoraPaymentService','applyPaymentToOutstandingItems','Payment was not completely applied: ' + String.valueOf(payment));
+            Logger.logLater('ZuoraPaymentService','applyPaymentToOutstandingItems','Payment was not completely applied: ' + String.valueOf(payment), Logger.WARN);
         }
         application.effectiveDate = DateUtil.convertGmtToDate(effectiveDate);
         return application;
@@ -161,11 +169,13 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
     }
 
     public void execute(QueueableContext context) {
+        ZuoraAPI.Payment paymentToApply;
         try {
-            ZuoraAPI.Payment paymentToApply = paymentsToApply.remove(0);
+            paymentToApply = paymentsToApply.remove(0);
             applyPaymentToBalance(paymentToApply, paymentsToApply);
         } catch (Exception excep) {
-            Logger.logNow('ZuoraPaymentService','executeApplyJob',excep.getMessage()+ '\n' + excep.getStackTraceString()+ '\n' + JSON.serialize(paymentsToApply));
+            Logger.logNow('ZuoraPaymentService','executeApplyJob',
+                excep.getMessage()+ '\n' + excep.getStackTraceString()+ '\n' + JSON.serialize(paymentToApply, true) + '\n' + JSON.serialize(paymentsToApply, true));
         }
     }
 }
