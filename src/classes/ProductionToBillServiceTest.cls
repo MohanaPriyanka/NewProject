@@ -536,8 +536,8 @@ public with sharing class ProductionToBillServiceTest {
         // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records,
         // HOWEVER, because the callouts were already at 88, only 1 payment record will be made before re-queueing
         System.assertEquals(2,countOfPayments);
-        // Only 2 of the 5 JE will be marked as complete:
-        System.assertEquals(2,completedEntries.size());
+        // Only 3 of the 5 JE will be marked as complete:
+        System.assertEquals(3,completedEntries.size());
     }
 
     @IsTest

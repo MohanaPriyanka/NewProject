@@ -40,8 +40,8 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
                 completedJEs.add(creditMemo);
                 collectionItems.addAll(splitCreditMemoIntoParts(creditMemo));
             } else {
-                // If we hit the calloutLimit, do not add to either billItems or collectionItems,
-                // and therefore JE is not in completedJEs, so it will remain marked as "ready for production detail"
+                // If we hit the calloutLimit, do not add to completedJEs List, so the JE will remain
+                // marked as "Ready for Production Detail" = true, and get pulled into the next batch
             }
         }
         createBillItemForCreditMemo(billItems);
