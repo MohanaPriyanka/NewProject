@@ -249,7 +249,7 @@
     <fields>
         <fullName>Anchor_Capacity_Reserved__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of Anchor&amp; Public Offtake Subscriptions when under Management OR Manual input from Reserved Anchor Capacity when no Anchor Subscriptions on SSS under Onboarding or Acquisition Stage</inlineHelpText>
+        <inlineHelpText>Capacity of system with anchor subscriptions.</inlineHelpText>
         <label>Anchor Capacity</label>
         <precision>12</precision>
         <required>false</required>
@@ -416,7 +416,8 @@
         <fullName>BWC_Project_Entity_Manual__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>BWC Project Entity</label>
+        <inlineHelpText>Entity name of project.</inlineHelpText>
+        <label>Project Entity</label>
         <referenceTo>Entity__c</referenceTo>
         <relationshipLabel>Shared Solar Systems</relationshipLabel>
         <relationshipName>Shared_Solar_Systems</relationshipName>
@@ -773,6 +774,7 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <fullName>Credit_Score_Requirement__c</fullName>
         <defaultValue>700</defaultValue>
         <externalId>false</externalId>
+        <inlineHelpText>Minimum accepted customer FICO score.</inlineHelpText>
         <label>Credit Score Requirement</label>
         <precision>5</precision>
         <required>false</required>
@@ -958,7 +960,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <fullName>Estimated_Mechanical_Completion_Override__c</fullName>
         <description>Estimated date the project will reach mechanical completion.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Estimated date the project will reach mechanical completion.</inlineHelpText>
+        <inlineHelpText>Estimated date the project will reach mechanical completion, provided by client.</inlineHelpText>
         <label>Estimated Mechanical Completion</label>
         <required>false</required>
         <trackFeedHistory>true</trackFeedHistory>
@@ -995,7 +997,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>First_Bill_Date__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>First Bill Period Date where Bill Status = Bill Run Complete</inlineHelpText>
+        <inlineHelpText>Date of first bill sent to customers.</inlineHelpText>
         <label>First Bill Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -1046,6 +1048,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Host_Utility_Account_Number__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Host Utility Account Number supplied by utility.</inlineHelpText>
         <label>Host Utility Account Number</label>
         <length>20</length>
         <required>false</required>
@@ -1402,6 +1405,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <fullName>Product__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
+        <inlineHelpText>Primary customer product.</inlineHelpText>
         <label>Product</label>
         <referenceTo>Product2</referenceTo>
         <relationshipLabel>Shared Solar Systems</relationshipLabel>
@@ -2208,6 +2212,7 @@ Total_System_Size_kWh_DC__c
     <fields>
         <fullName>Total_System_Size_kW_AC__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Total system size in kW AC.</inlineHelpText>
         <label>Total System Size (kW AC)</label>
         <precision>8</precision>
         <required>false</required>
@@ -2221,7 +2226,7 @@ Total_System_Size_kWh_DC__c
     <fields>
         <fullName>Total_System_Size_kWh_DC__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Use this field to calculate SSS information</inlineHelpText>
+        <inlineHelpText>Total system size in kW DC.</inlineHelpText>
         <label>Total System Size (kW DC)</label>
         <precision>8</precision>
         <required>false</required>
