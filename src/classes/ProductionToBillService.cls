@@ -78,26 +78,27 @@ public without sharing class ProductionToBillService implements Queueable, Datab
 
     private void executeCreditMemoJob(){
         List<Journal_Entry__c> creditMemosToAttempt;
+        List<Journal_Entry__c> completedCreditMemos;
 
         try {
             /*
                 We will use at least 2 callouts per credit memo, but since we don't know how many part items there
                 will be for any given CM, we can't know exactly how many callouts calculateProductionDetailFromCreditMemo
-                will use. If we come close to the callout limit, we will stop processing credit memos and requeue
+                will use. If we come close to the callout limit, we will stop processing credit memos and requeue.
             */
             batchSize = Math.min(batchSize, 50);
-            Boolean requiresRequeue = false;
             creditMemosToAttempt = journalEntrySelector.getEntriesWithoutProductionDetail(
                 new List<String>{'CreditMemo'}, batchSize
             );
 
             if (creditMemosToAttempt.size() > 0){
                 ProductionDetailCreditMemoService creditMemoService = new ProductionDetailCreditMemoService();
-                requiresRequeue = creditMemoService.createProductionDetailFromCreditMemo(creditMemosToAttempt);
+                creditMemoService.createProductionDetailFromCreditMemo(creditMemosToAttempt);
                 incompleteEntries.addAll(creditMemoService.incompleteEntries);
-                markJournalEntriesAsComplete(creditMemosToAttempt);
+                completedCreditMemos = creditMemoService.completedJEs;
+                markJournalEntriesAsComplete(completedCreditMemos);
             }
-            if (creditMemosToAttempt.size() == batchSize || requiresRequeue){
+            if (creditMemosToAttempt.size() == batchSize || completedCreditMemos.size() != creditMemosToAttempt.size()){
                 queueJob(OperationType.CREDITMEMO);
             } else {
                 updateJournalEntriesReadyStatus(incompleteEntries, true);
