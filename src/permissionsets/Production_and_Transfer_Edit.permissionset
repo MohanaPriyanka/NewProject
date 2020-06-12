@@ -321,7 +321,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Transfer__c.Shared_Solar_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
