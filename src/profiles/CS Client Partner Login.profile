@@ -41133,7 +41133,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Anchor_Capacity_Reserved__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -41173,7 +41173,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.BWC_Project_Entity_Manual__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -41268,7 +41268,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Credit_Score_Requirement__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -41334,6 +41334,11 @@
         <editable>false</editable>
         <field>Shared_Solar_System__c.Estimated_First_Bill_Date__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Estimated_Mechanical_Completion_Override__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -41463,7 +41468,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Product__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -41588,7 +41593,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_System_Size_kW_AC__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -63535,10 +63540,6 @@
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Client View SSS</layout>
-        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Snapshot_Report_Object__c-Landowner Last Contact Object Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -79147,14 +79148,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>AllowUniversalSearch</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>AssignTopics</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ChatterEnabledForUser</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
