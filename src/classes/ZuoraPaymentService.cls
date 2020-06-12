@@ -36,9 +36,9 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
             outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemParentsByDate(zuoraAccountId);
             ZuoraAPI.ZuoraPaymentApplication application = getPaymentApplicationForOutstandingItems(outstandingItems, successfulPayment);
             sendPaymentApplicationToZuora(successfulPayment, application);
-        } catch (Exception e) {
+        } catch (Util.FatalBWException bwe) {
             Logger.logLater('ZuoraPaymentService','applyPaymentToBalance',
-                'Caught exception applying payment:\n' + e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serialize(successfulPayment, true),
+                'Caught exception applying payment:\n' + bwe.getMessage() + '\n' + bwe.getStackTraceString() + '\n' + JSON.serialize(successfulPayment, true),
                 Logger.ERROR);
         }
         if (!otherPaymentsToApply.isEmpty()) {
