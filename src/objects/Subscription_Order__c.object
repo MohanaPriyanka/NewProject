@@ -768,7 +768,8 @@ ISPICKVAL(Approval_Status__c,&apos;&apos;)
 PRIORVALUE(Approval_Status__c)!=&apos;&apos;,
 NOT(ISBLANK( Approved_Change_in_Subscription__c)),
 NOT(ISCHANGED( Approved_Change_in_Subscription__c)),
-NOT(ISCHANGED( Allocation_Schedule_Subscription__c))
+NOT(ISCHANGED( Allocation_Schedule_Subscription__c)),
+NOT(ISCHANGED( Contract_Fee_Detail__c))
 )</errorConditionFormula>
         <errorDisplayField>Approval_Status__c</errorDisplayField>
         <errorMessage>Once a Subscription Order is Approved, it cannot be edited. To update a customers subscription, please log a new Subscription Order.</errorMessage>

@@ -29,6 +29,10 @@
                 <behavior>Edit</behavior>
                 <field>Shared_Solar_System_Order__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Contract_Fee_Detail__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
