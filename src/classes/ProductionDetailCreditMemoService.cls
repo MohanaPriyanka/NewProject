@@ -5,24 +5,25 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
     private List<Transfer_Part__c> productionDetailToInsert = new List<Transfer_Part__c>();
     @TestVisible
     private List<Transfer_Part__c> productionDetailToDelete = new List<Transfer_Part__c>();
+    // Incomplete Entries aren't fully applied in Zuora yet, and should remain marked as "Ready for Production Detail"
     public List<Journal_Entry__c> incompleteEntries = new List<Journal_Entry__c>();
+    public List<Journal_Entry__c> completedJEs = new List<Journal_Entry__c>();
+
     @TestVisible
     private static ProductionDetailSelector productionDetailSelector = new ProductionDetailSelector();
     @TestVisible
     private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
 
-    public Boolean createProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
-        Boolean requiresRequeue = calculateProductionDetailFromCreditMemo(creditMemoEntries);
+    public void createProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
+        calculateProductionDetailFromCreditMemo(creditMemoEntries);
         insert productionDetailToInsert;
         delete productionDetailToDelete;
-        return requiresRequeue;
     }
 
     @TestVisible
-    private Boolean calculateProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
+    private void calculateProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
         List<Journal_Entry__c> billItems = new List<Journal_Entry__c>();
         List<Journal_Entry__c> collectionItems = new List<Journal_Entry__c>();
-        Boolean requiresRequeue = false;
 
         for (Journal_Entry__c creditMemo : creditMemoEntries) {
             // If a Credit Memo Journal Entry is marked as "Ready_for_Production_Detail__c" but already
@@ -32,18 +33,19 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
             }
             if (creditMemo.Reason_Code__c == 'Production'){
                 billItems.add(creditMemo);
+                completedJEs.add(creditMemo);
             } else if (ZuoraAPIHelper.getCalloutsRemaining() > 10) {
                 // There is only 1 Journal Entry per credit memo, so we need to get the parts (ie, records it is
                 // applied to) before reusing the same method that is used for Payment Journal Entries
+                completedJEs.add(creditMemo);
                 collectionItems.addAll(splitCreditMemoIntoParts(creditMemo));
             } else {
-                // If we hit the calloutLimit
-                requiresRequeue = true;
+                // If we hit the calloutLimit, do not add to completedJEs List, so the JE will remain
+                // marked as "Ready for Production Detail" = true, and get pulled into the next batch
             }
         }
         createBillItemForCreditMemo(billItems);
         createPaymentItemForCreditMemo(collectionItems);
-        return requiresRequeue;
     }
 
     private void createBillItemForCreditMemo(List<Journal_Entry__c> billItems){
