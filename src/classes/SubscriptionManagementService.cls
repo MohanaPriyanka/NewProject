@@ -19,6 +19,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
     public List<CSUtilityAccountSubscriptionFactory.UASOrder> uasOrders = new List<CSUtilityAccountSubscriptionFactory.UASOrder>();
     public List<Utility_Account_Subscription__c> upsertUASes = new List<Utility_Account_Subscription__c>();
     public List<Subscription_Order__c> soInsertList = new List<Subscription_Order__c>();
+
     public void execute(QueueableContext context) {
         FeatureService featureService = new FeatureService();
         if (oppIdsWithChangedNMCTariff != null && featureService.isEnabled('Subscription_Orders')) {
@@ -42,14 +43,16 @@ public without sharing class SubscriptionManagementService implements Queueable{
             }
         }
     }
+
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void changeNMCTariff(Set<Id> oppIds) {
         List<Utility_Account_Subscription__c> uases = uasSelector.selectByOpp(oppIds);
-        List<Subscription_Order__c> soList = createSystemChangeOrders(uases, null);
+        List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uases, null);
         if (soList.size() > 0 ) {
             insert soList;
         }
     }
+
     public void populateSubscriptionOrder(List<Subscription_Order__c> soList) {
         Set<Id> uasIds = new Set<Id>();
         for (Subscription_Order__c so : soList) {
@@ -59,6 +62,10 @@ public without sharing class SubscriptionManagementService implements Queueable{
         for (Subscription_Order__c so : soList) {
             Utility_Account_Subscription__c uas = uasMap.get(so.Utility_Account_Subscription__c);
             if (uas != null) {
+                so.Previous_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c;
+                so.Previous_Annual_kwh__c = uas.Annual_kWh_Subscription_Future_Rollup__c;
+                so.Previous_kw_DC_Subscription__c = uas.Future_Customer_Subscription_KWDC_Rollup__c;
+                so.Previous_Percent_Share_of_System__c = uas.Future_Share_of_System_Rollup__c;
                 so.Client_Account__c = uas.Shared_Solar_System__r.Client_Account__c;
                 so.Expected_Yield_kWh_kW__c = uas.Shared_Solar_System__r.Expected_Yield_kWh_kW__c;
                 so.Total_System_Size_kW_DC__c = uas.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
@@ -69,25 +76,23 @@ public without sharing class SubscriptionManagementService implements Queueable{
             }
         }
     }
+
     @TestVisible
     private List<Subscription_Order__c> stampApprovedValues(Set<Id> soIds) {
-        Id systemChangeOrderRecordTypeId = Schema.SObjectType.Subscription_Order__c.getRecordTypeInfosByName().get('System Change Order').getRecordTypeId();
         List<Subscription_Order__c> stampSOs = soSelector.selectByIds(soIds);
         for (Subscription_Order__c so : stampSOs ) {
             so.Effective_Date__c = System.now();
-            if (so.RecordTypeId == systemChangeOrderRecordTypeId) {
-                so.Approved_Change_in_Percent_Share__c = so.System_Change_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
-                so.Approved_Change_in_Subscription__c = so.System_Change_kW_DC_Rounded__c - so.Previous_kw_DC_Subscription__c;
+            so.Approved_Change_in_Percent_Share__c = so.System_Change_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
+            so.Approved_Change_in_Subscription__c = so.System_Change_kW_DC_Rounded__c - so.Previous_kw_DC_Subscription__c;
+            if (so.Product__r.Customer_Subscription_Type__c == 'kWh') {
+                so.Change_in_Annual_kWh__c = so.New_Annual_kWh__c - so.Previous_Annual_kwh__c;
             } else {
-                so.Approved_Change_in_Percent_Share__c = so.Calculated_Change_in_Percent_Share_of_Sy__c;
-                if (so.Calculated_Change_in_Subscription_KW_DC__c == null) {
-                    throw new Util.BWException('Unable to calculate subscription - please make sure all necessary System Input fields are populated.');
-                }
-                so.Approved_Change_in_Subscription__c = so.Calculated_Change_in_kW_DC_Rounded__c;
+                so.Change_in_Annual_Cost__c = so.New_Annual_Cost__c - so.Previous_Annual_Cost__c;
             }
         }
         return stampSOs;
     }
+
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void handleSharedSolarSystemOrders(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         List<Shared_Solar_System__c> sssToUpdate = new List<Shared_Solar_System__c>();
@@ -101,12 +106,13 @@ public without sharing class SubscriptionManagementService implements Queueable{
             Shared_Solar_System__c sss = updateSSSFromSSSO(ssso);
             sssToUpdate.add(sss);
             List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{ssso.Shared_Solar_System__c});
-            List<Subscription_Order__c> soList = createSystemChangeOrders(uasList, ssso);
+            List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uasList, ssso);
             soListToInsert.addAll(soList);
         }
         update sssToUpdate;
         insert soListToInsert;
     }
+
     public Shared_Solar_System__c updateSSSFromSSSO(Shared_Solar_System_Order__c ssso) {
         Shared_Solar_System__c sssToUpdate = sssSelector.selectOne(ssso.Shared_Solar_System__c);
         sssToUpdate.Apex_Context__c = true;
@@ -118,19 +124,16 @@ public without sharing class SubscriptionManagementService implements Queueable{
         }
         return sssToUpdate;
     }
-    public List<Subscription_Order__c> createSystemChangeOrders(List<Utility_Account_Subscription__c> uasList, Shared_Solar_System_Order__c ssso) {
-        Id systemChangeOrderRecordTypeId = Schema.SObjectType.Subscription_Order__c.getRecordTypeInfosByName().get('System Change Order').getRecordTypeId();
+
+    public List<Subscription_Order__c> createSystemChangeSubscriptionOrders(List<Utility_Account_Subscription__c> uasList, Shared_Solar_System_Order__c ssso) {
         List<Subscription_Order__c> soList = new List<Subscription_Order__c>();
         for (Utility_Account_Subscription__c uas : uasList) {
             Subscription_Order__c so = new Subscription_Order__c(
-                RecordTypeId = systemChangeOrderRecordTypeId,
                 Utility_Account_Subscription__c = uas.Id,
                 Approval_Status__c = 'Approved',
                 Effective_Date__c = System.now(),
-                Previous_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
-                Previous_Annual_kwh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
-                Previous_kw_DC_Subscription__c = uas.Future_Customer_Subscription_KWDC_Rollup__c,
-                Previous_Percent_Share_of_System__c = uas.Future_Share_of_System_Rollup__c
+                New_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
+                New_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c
             );
             if (ssso != null) {
                 so.Type__c = 'Shared Solar System Update';
@@ -162,6 +165,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         }
         return approvedSSSOs;
     }
+
     @TestVisible
     private void transferSubscriptionsOnSSSChange() {
         //Get all createable fields for Active Subscriptions - if we add more fields later, this query will still grab them
@@ -176,8 +180,8 @@ public without sharing class SubscriptionManagementService implements Queueable{
             uasOrder.uas = cloneUAS;
             Subscription_Order__c so = new Subscription_Order__c(
                 Type__c = 'Transfer',
-                Change_in_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
-                Change_in_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
+                New_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
+                New_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
                 Approval_Status__c = 'Approved',
                 Effective_Date__c = System.now()
             );
@@ -188,6 +192,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         }
         soInsertList.addAll(zeroSubscriptions(uasList, 'Transfer'));
     }
+
     public List<Subscription_Order__c> zeroSubscriptions(List<Utility_Account_Subscription__c> uasList, String zeroType) {
         List<Subscription_Order__c> zeroedSOs = new List<Subscription_Order__c>();
         for (Utility_Account_Subscription__c uas : uasList) {
@@ -196,12 +201,12 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 Approval_Status__c = 'Approved',
                 Effective_Date__c = System.now(),
                 Utility_Account_Subscription__c = uas.Id,
-                Comments__c = 'ZEROED'
+                Comments__c = 'Subscription Order was created to zero out UAS'
             );
             if (uas.Subscription_Type__c == 'kWh') {
-                zeroedSO.Change_in_Annual_kWh__c = (-1)*uas.Annual_kWh_Subscription_Future_Rollup__c;
+                zeroedSO.New_Annual_kWh__c = 0;
             } else {
-                zeroedSO.Change_in_Annual_Cost__c =(-1)*uas.Annual_Cost_Future_Rollup__c;
+                zeroedSO.New_Annual_Cost__c = 0;
             }
             zeroedSOs.add(zeroedSO);
         }
@@ -232,9 +237,9 @@ public without sharing class SubscriptionManagementService implements Queueable{
                     Approval_Status__c = 'Approved'
                 );
                 if (uas.Subscription_Type__c == 'kWh') {
-                    so.Change_in_Annual_kWh__c = uas.Annual_kwh_subscription_future__c;
+                    so.New_Annual_kWh__c = uas.Annual_kwh_subscription_future__c;
                 } else {
-                    so.Change_in_Annual_Cost__c = uas.Subscribed_Annual_Cost_of_Electricity__c;
+                    so.New_Annual_Cost__c = uas.Subscribed_Annual_Cost_of_Electricity__c;
                 }
                 soInserts.add(so);
             }

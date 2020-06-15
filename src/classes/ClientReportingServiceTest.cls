@@ -349,7 +349,7 @@ public with sharing class ClientReportingServiceTest {
             Subscription_Order__c soResize = new Subscription_Order__c(
                 Utility_Account_Subscription__c = uas.Id,
                 Type__c = 'Resize',
-                Change_in_Annual_Cost__c = 200,
+                New_Annual_Cost__c = 500,
                 Approval_Status__c = 'Approved',
                 Effective_Date__c = System.now()
             );
