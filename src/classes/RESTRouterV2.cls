@@ -27,6 +27,9 @@ global without sharing class RESTRouterV2 {
                 when '/application' {
                     controller.patchApplication(jsonRequest);
                 }
+                when '/contracts' {
+                    controller.patchContract(jsonRequest);
+                }
                 when else {
                     envelope.addError('Path not found');
                     RestContext.response.statusCode = 404;

@@ -5,28 +5,8 @@
 
 public without sharing class SimpleSignupFormController {
     private static ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
+    private static CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     private static CSLeadsRESTControllerV3 restControllerV3 = new CSLeadsRESTControllerV3();
-
-
-    @AuraEnabled
-    public static String getContentDocumentDataById(Id leadId, String email, Id documentId) {
-        try {
-            restControllerV3.validateAuthorization(leadId, email);
-        } catch (Util.AuthorizationBWException abwe) {
-            throw Util.createAuraExceptionWithMessage('The email (' + email + ') and leadId (' + leadId + ') provided did not match');
-        }
-
-        List<ContentDocumentLink> contentDocumentLinks = contentDocumentSelector.selectByLinkedEntity(leadId);
-        if (contentDocumentLinks.isEmpty()) {
-            throw Util.createAuraExceptionWithMessage('Did not find any content docs for lead id ' + leadId);
-        }
-        for (ContentDocumentLink cdl : contentDocumentLinks) {
-            if (cdl.ContentDocumentId == documentId) {
-                return EncodingUtil.base64Encode(cdl.ContentDocument.LatestPublishedVersion.VersionData);
-            }
-        }
-        throw Util.createAuraExceptionWithMessage('Document id ' + documentId + ' is not related to lead id ' + leadId);
-    }
 
 
     @AuraEnabled
@@ -53,11 +33,13 @@ public without sharing class SimpleSignupFormController {
         if(String.isNotBlank(mostRecentDocsStr)) {
             mostRecentDocs = (List<RestLead.RestContentDocument>)JSON.deserialize(mostRecentDocsStr, List<RestLead.RestContentDocument>.class);
         }
+
+        List<Contract> contracts = customerContractSelector.selectByRelatedLead(leadId);
         List<ContentDocumentLink> cdlList = new List<ContentDocumentLink>();
         if(mostRecentDocs!=null && !mostRecentDocs.isEmpty()) {
-            cdlList = contentDocumentSelector.getContractsAfterDateByLinkedEntity(leadId, mostRecentDocs[0].createdDate);
+            cdlList = contentDocumentSelector.getContractsAfterDateByLinkedEntity(contracts[0].Id, mostRecentDocs[0].createdDate);
         } else {
-            cdlList = contentDocumentSelector.selectByLinkedEntity(leadId);
+            cdlList = contentDocumentSelector.selectByLinkedEntity(contracts[0].Id);
         }
         
         List<RestLead.RestContentDocument> returnRcd = new List<RestLead.RestContentDocument>();
