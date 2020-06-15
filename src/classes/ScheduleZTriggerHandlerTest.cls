@@ -611,4 +611,36 @@ public class ScheduleZTriggerHandlerTest {
         // but sss2 should be linked to the second schedule z, since sss2SecondAllocationSchedule is dated after sss2FirstAllocationSchedule
         System.assertEquals(sss2SecondAllocationSchedule.Id,updatedUASListTwo[3].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
     }
+
+    @IsTest static void testReacquisitionStartDate(){
+        String sssListAsString = '[' +
+            '{"Id":"a1J3F00000126FTUAY","Reacquisition_Start_Date__c":null},' +
+            '{"Id":"a1J3F00000126FUUAY","Reacquisition_Start_Date__c":null},' +
+            '{"Id":"a1J3F00000126FSUAY","Reacquisition_Start_Date__c":"2020-04-02"}]';
+
+        String aLSesAsString = '[' +
+            '{"Id":"a3z3F0000008KBCQA2","Name":"18-0515 Oxford Barrett St. P1",' +
+            '"Status__c":"Enacted by Utility",' +
+            '"Date_Enacted_by_Utility__c":"2020-06-02",' +
+            '"Shared_Solar_System__c":"a1J3F00000126FTUAY",' +
+            '"Submitted_Utilization__c":100},' +
+            '{"Id":"a3z3F0000009KBDQB2","Name":"18-0615 Oxford Barrett St. P3",' +
+            '"Status__c":"Enacted by Utility",' +
+            '"Shared_Solar_System__c":"a1J3F00000126FUUAY",' +
+            '"Submitted_Utilization__c":99},' +
+            '{"Id":"a3z3F0000008KBDQA2","Name":"18-0615 Oxford Barrett St. P2",' +
+            '"Status__c":"Enacted by Utility",' +
+            '"Shared_Solar_System__c":"a1J3F00000126FSUAY",' +
+            '"Submitted_Utilization__c":100}]';
+
+        List<Schedule_Z__c> enactedAllocationSchedules = (List<Schedule_Z__c>)JSON.deserialize(aLSesAsString, List<Schedule_Z__c>.class);
+        List<Shared_Solar_System__c> enactedSSSes = (List<Shared_Solar_System__c>)JSON.deserialize(sssListAsString, List<Shared_Solar_System__c>.class);
+
+        List<Shared_Solar_System__c> sssToUpdate;
+        sssToUpdate = ScheduleZTriggerHandler.setReacquisitionStartDate(enactedAllocationSchedules,enactedSSSes);
+
+        System.assertEquals(1,sssToUpdate.size());
+        System.assertEquals('a1J3F00000126FTUAY',sssToUpdate[0].Id);
+        System.assertEquals(Date.newInstance(2020,06,02),sssToUpdate[0].Reacquisition_Start_Date__c);
+    }
 }
