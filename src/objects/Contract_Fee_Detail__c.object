@@ -355,7 +355,7 @@
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Product</label>
-        <referenceTo>Zuora__Product__c</referenceTo>
+        <referenceTo>Product2</referenceTo>
         <relationshipLabel>Contract Fee Detail</relationshipLabel>
         <relationshipName>Contract_Fee_Detail</relationshipName>
         <required>false</required>
