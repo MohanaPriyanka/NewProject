@@ -275,7 +275,7 @@ false
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Template__c +
-&quot;&amp;queryid=[CustSig]{!Environment.VAR_QUERY_SSFCONTRACT_CUSTSIG}?pv0=&quot; + Id + &quot;,[BizSig]{!Environment.VAR_QUER_SSFCONTRACT_BIZSIG}?pv0=&quot; + Id + &quot;,[UAL]{!Environment.VAR_QUERY_SSFCONTRACT_UAL}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_BIZ}?pv1=&quot; + Lead__r.Id + &quot;,[Lead]{!Environment.VAR_QUERY_SSFCONTRACT_LEAD}?pv1=&quot; + Lead__r.Id + &quot;,[ResiSig]a273I0000000ql2QAA?pv1=&quot; + Lead__r.Id +
+&quot;&amp;queryid=[CustSig]{!Environment.VAR_QUERY_SSFCONTRACT_CUSTSIG}?pv0=&quot; + Id + &quot;,[BizSig]{!Environment.VAR_QUER_SSFCONTRACT_BIZSIG}?pv0=&quot; + Id + &quot;,[UAL]{!Environment.VAR_QUERY_SSFCONTRACT_UAL}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_BIZ}?pv1=&quot; + Lead__r.Id + &quot;,[Lead]{!Environment.VAR_QUERY_SSFCONTRACT_LEAD}?pv1=&quot; + Lead__r.Id + 
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;APDF=0&quot; +
