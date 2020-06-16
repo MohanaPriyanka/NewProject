@@ -346,7 +346,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     public static List<Shared_Solar_System__c> getSharedSolarSystems() {
         List<Shared_Solar_System__c> sharedSolarSystems = [
             SELECT Id, Expected_Yield_kWh_kW__c, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kWDC__c,
-                NMC_Value__c, Product__r.Name, Product__r.Sizing_Method__c, Utility_NMC_Tariff__c
+                NMC_Value__c
             FROM Shared_Solar_System__c
         ];
         return sharedSolarSystems;
