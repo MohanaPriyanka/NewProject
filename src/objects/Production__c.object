@@ -179,16 +179,6 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Credit_Value__c</fullName>
-        <externalId>false</externalId>
-        <label>Credit Value</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>6</scale>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Credits_Available_for_Allocation__c</fullName>
         <externalId>false</externalId>
         <formula>Credits_Generated__c  -   Pre_Transfer_Reductions__c</formula>
@@ -362,19 +352,6 @@
         <summaryOperation>sum</summaryOperation>
         <trackTrending>false</trackTrending>
         <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Production_Update__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <inlineHelpText>This is the Production Update that created the Production record for historical data</inlineHelpText>
-        <label>Production Update (TEMP)</label>
-        <referenceTo>Energy_Usage_Update__c</referenceTo>
-        <relationshipLabel>Production</relationshipLabel>
-        <relationshipName>Production</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Production_kWh__c</fullName>
