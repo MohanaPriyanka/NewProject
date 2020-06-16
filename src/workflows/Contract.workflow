@@ -78,7 +78,7 @@
         <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
         <fields>Conga_Signed_Contract__c</fields>
         <fields>Id</fields>
-        <includeSessionId>false</includeSessionId>
+        <includeSessionId>true</includeSessionId>
         <integrationUser>api@bluewavesolar.com</integrationUser>
         <name>Generate and Send SSF Documents (Signed</name>
         <protected>false</protected>
