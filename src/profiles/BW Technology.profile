@@ -16994,11 +16994,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Bill_Period__c.Total_Billed_STAMPED__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>BlueWave_Blog__c.Audience__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -41164,11 +41159,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Production__c.Credit_Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Production__c.Credits_Available_for_Allocation__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -41220,11 +41210,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Production__c.Pre_Transfer_Reductions__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Production__c.Production_Update__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45519,11 +45504,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Transfer_Part__c.Credits_Billed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Transfer_Part__c.Externally_Serviced_Bill_Adjustment__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -45555,11 +45535,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Transfer_Part__c.Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Transfer_Part__c.Utility_Bill_Line_Item__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45620,11 +45595,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Transfer__c.Default_Credit_Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Transfer__c.Production_Update__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
