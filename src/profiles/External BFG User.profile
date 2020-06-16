@@ -2,6 +2,11 @@
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>External BFG User</fullName>
     <applicationVisibilities>
+        <application>BlueWave_Agile</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>BlueWave_Finance_Group</application>
         <default>true</default>
         <visible>true</visible>
