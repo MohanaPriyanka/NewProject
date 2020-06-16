@@ -57,15 +57,15 @@ private class SubscriptionManagementServiceTest {
             }
         }
         //Check Zeroed Subscription Orders
-        System.assertEquals(-2420, subscriptionManagementService.soInsertList[0].Change_in_Annual_Cost__c);
+        System.assertEquals(0, subscriptionManagementService.soInsertList[0].New_Annual_Cost__c);
         System.assertEquals('a1d29000001C3xuAAC', subscriptionManagementService.soInsertList[0].Utility_Account_Subscription__c);
-        System.assertEquals(-3000, subscriptionManagementService.soInsertList[1].Change_in_Annual_Cost__c);
+        System.assertEquals(0, subscriptionManagementService.soInsertList[1].New_Annual_Cost__c);
         System.assertEquals('a1d2900000222xuAAC', subscriptionManagementService.soInsertList[1].Utility_Account_Subscription__c);
         //Check cloned Subscription Orders and UASes
-        System.assertEquals(2420, subscriptionManagementService.uasOrders[0].sOrder.Change_in_Annual_Cost__c);
+        System.assertEquals(2420, subscriptionManagementService.uasOrders[0].sOrder.New_Annual_Cost__c);
         System.assertEquals('Active Subscription', subscriptionManagementService.uasOrders[0].uas.Next_Schedule_Z_Status__c);
         System.assertNotEquals(sssId, subscriptionManagementService.uasOrders[0].uas.Shared_Solar_System__c);
-        System.assertEquals(3000, subscriptionManagementService.uasOrders[1].sOrder.Change_in_Annual_Cost__c);
+        System.assertEquals(3000, subscriptionManagementService.uasOrders[1].sOrder.New_Annual_Cost__c);
         System.assertEquals('Active Subscription', subscriptionManagementService.uasOrders[1].uas.Next_Schedule_Z_Status__c);
         System.assertNotEquals(sssId, subscriptionManagementService.uasOrders[1].uas.Shared_Solar_System__c);
     }
@@ -82,6 +82,9 @@ private class SubscriptionManagementServiceTest {
         System.assertEquals(1095.84, so.Total_System_Size_kW_DC__c);
         System.assertEquals(2, so.Utility_Number_of_Decimal_Places__c );
         System.assertEquals(0.1848, so.Value_of_NMC__c);
+        System.assertEquals(2600, so.Previous_Annual_Cost__c);
+        System.assertEquals(5.1979, so.Previous_kw_DC_Subscription__c);
+        System.assertEquals(0.37, so.Previous_Percent_Share_of_System__c);
         System.assertNotEquals(null, so.Product__c);
     }
     @IsTest
@@ -188,7 +191,7 @@ private class SubscriptionManagementServiceTest {
         UASSelector uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{ssso.Shared_Solar_System__c});
         SubscriptionManagementService service = new SubscriptionManagementService();
-        List<Subscription_Order__c> soToInsert = service.createSystemChangeOrders(uasList, ssso);
+        List<Subscription_Order__c> soToInsert = service.createSystemChangeSubscriptionOrders(uasList, ssso);
         System.assertEquals(2, soToInsert.size());
     }
     @IsTest
@@ -197,25 +200,28 @@ private class SubscriptionManagementServiceTest {
         SubscriptionManagementService service = new SubscriptionManagementService();
         UASSelector uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         List<Utility_Account_Subscription__c> mockUASes = uasSelector.selectByOpp(null);
-        List<Subscription_Order__c> checkSOs = service.createSystemChangeOrders(mockUASes, null);
+        List<Subscription_Order__c> checkSOs = service.createSystemChangeSubscriptionOrders(mockUASes, null);
         System.assertEquals(2, checkSOs.size());
         System.assertEquals('Resize', checkSOs[0].Type__c);
         System.assertEquals(null, checkSOs[0].Shared_Solar_System_Order__c);
     }
+
     @IsTest
     private static void testApprovedSO() {
         useMocks(true);
         SubscriptionManagementService service = new SubscriptionManagementService();
         List<Subscription_Order__c> checkSOs = service.stampApprovedValues(null);
         System.assertEquals(2, checkSOs.size());
-        //SO 0005678 is a System Change Order - Approval fields are stamped with system change - previous
+        //SO 0001234 is an Initial Subscription Order - Previous values are 0
         for (Subscription_Order__c so : checkSOs) {
             if (so.Name == '0001234') {
-                System.assertEquals(25.0000, so.Calculated_Change_in_Subscription_KW_DC__c);
+                System.assertEquals(25.0000, so.System_Change_kW_DC_Rounded__c);
+                System.assertEquals(15000, so.Change_in_Annual_kWh__c);
                 System.assertEquals(1.73000, so.Approved_Change_in_Percent_Share__c);
                 System.assertEquals(25.0000, so.Approved_Change_in_Subscription__c);
             } else {
                 System.assertEquals(25.0000, so.System_Change_kW_DC_Rounded__c);
+                System.assertEquals(10000, so.Change_in_Annual_kWh__c);
                 System.assertEquals(1.00, so.Approved_Change_in_Percent_Share__c);
                 System.assertEquals(5.0000, so.Approved_Change_in_Subscription__c);
             }
@@ -255,28 +261,38 @@ private class SubscriptionManagementServiceTest {
         public MockSOSelector() {
         }
         public override Object handleMethodCall(MethodCall methodCall){
-            String systemChangeOrderRecordTypeId = Schema.SObjectType.Subscription_Order__c.getRecordTypeInfosByName().get('System Change Order').getRecordTypeId();
-            String soList ='[{"attributes" : {"type" : "Subscription_Order__c","url" : "/services/data/v47.0/sobjects/Subscription_Order__c/a9W8A0000000xL4UAI"},' +
-                '"Id" : "a9W8A0000000xL4UAI",' +
+            String soList ='[{"attributes" : {"type" : "Subscription_Order__c","url" : "/services/data/v47.0/sobjects/Subscription_Order__c/a9W8A0000000xL5UAI"},' +
+                '"Id" : "a9W8A0000000xL5UAI",' +
                 '"Name" : "0001234",' +
                 '"Approval_Status__c" : "Approved",' +
-                '"Calculated_Change_in_Percent_Share_of_Sy__c" : 1.73000,' +
-                '"Calculated_Change_in_Subscription_KW_DC__c" : 25.0000,' +
-                '"Calculated_Change_in_kW_DC_Rounded__c" : 25.0000,' +
+                '"New_Annual_kWh__c" : 15000,' +
+                '"Previous_Annual_kWh__c" : 0,' +
+                '"Previous_Percent_Share_of_System__c" : 0,' +
+                '"Previous_kw_DC_Subscription__c" : 0,' +
+                '"System_Change_Percent_Share_of_System__c" : 1.73000,' +
+                '"System_Change_kW_DC_Rounded__c" : 25.0000,' +
                 '"Utility_Number_of_Decimal_Places__c" : 2,' +
-                '"Total_System_Size_kW_DC__c" : 1095.84' +
+                '"Total_System_Size_kW_DC__c" : 1095.84,' +
+                '"Product__c" : "01t3F000005XDZGQA4",' +
+                '"Product__r": {"attributes" : {"type" : "Product2","url" : "/services/data/v47.0/sobjects/Product2/01t3F000005XDZGQA4"},' +
+                    '"Id" : "01t3F000005XDZGQA4",' +
+                    '"Customer_Subscription_Type__c" : "kWh" }' +
                 '},' +
                 '{"attributes" : {"type" : "Subscription_Order__c","url" : "/services/data/v47.0/sobjects/Subscription_Order__c/a9W8A0000000xL5UAI"},' +
                 '"Id" : "a9W8A0000000xL5UAI",' +
                 '"Name" : "0005678",' +
                 '"Approval_Status__c" : "Approved",' +
-                '"RecordTypeId" : "' + systemChangeOrderRecordTypeId + '",' +
+                '"New_Annual_kWh__c" : 25000,' +
+                '"Previous_Annual_kWh__c" : 15000,' +
                 '"Previous_Percent_Share_of_System__c" : 0.73000,' +
                 '"Previous_kw_DC_Subscription__c" : 20.0000,' +
                 '"System_Change_Percent_Share_of_System__c" : 1.73000,' +
                 '"System_Change_kW_DC_Rounded__c" : 25.0000,' +
                 '"Utility_Number_of_Decimal_Places__c" : 2,' +
-                '"Total_System_Size_kW_DC__c" : 1095.84' +
+                '"Total_System_Size_kW_DC__c" : 1095.84,' +
+                '"Product__r": {"attributes" : {"type" : "Product2","url" : "/services/data/v47.0/sobjects/Product2/01t3F000005XDZGQA4"},' +
+                    '"Id" : "01t3F000005XDZGQA4",' +
+                    '"Customer_Subscription_Type__c" : "kWh" }' +
                 '}]';
             return (List<Subscription_Order__c>) JSON.deserialize(soList, List<Subscription_Order__c>.class);
         }
@@ -308,6 +324,10 @@ private class SubscriptionManagementServiceTest {
                 String uasByMap = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d29000001C3xuAAC",' +
                 '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
+                    '"Annual_Cost_Future_Rollup__c": "' + 2600 + '",' +
+                    '"Annual_kWh_Subscription_Future_Rollup__c": "' + 11000 + '",' +
+                    '"Future_Customer_Subscription_KWDC_Rollup__c": "' + 5.1979 + '",' +
+                    '"Future_Share_of_System_Rollup__c": "' + 0.37 + '",' +
                 '"Opportunity__c" : "00629000008boK7AAI",' +
                 '"Opportunity__r":{"attributes" : {"type" : "Opportunity","url" : "/services/data/v47.0/sobjects/Opportunity/00629000009SnvfAAC"},' +
                 '"Id" : "00629000008boK7AAI",' +
@@ -332,6 +352,10 @@ private class SubscriptionManagementServiceTest {
                 '{ "attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d2900000222xuAAC",' +
                 '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
+                    '"Annual_Cost_Future_Rollup__c": "' + 2600 + '",' +
+                    '"Annual_kWh_Subscription_Future_Rollup__c": "' + 11000 + '",' +
+                    '"Future_Customer_Subscription_KWDC_Rollup__c": "' + 5.1979 + '",' +
+                    '"Future_Share_of_System_Rollup__c": "' + 0.37 + '",' +
                 '"Opportunity__c" : "00629000008boJ7AAI",' +
                 '"Opportunity__r":{"attributes" : {"type" : "Opportunity","url" : "/services/data/v47.0/sobjects/Opportunity/00629000009SnvfAAC"},' +
                 '"Id" : "00629000008boJ7AAI",' +

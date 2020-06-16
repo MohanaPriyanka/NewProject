@@ -9,15 +9,16 @@ public inherited sharing class SubscriptionOrderSelector {
         return [
             SELECT Id,
                 Name,
+                New_Annual_Cost__c,
+                New_Annual_kWh__c,
+                Previous_Annual_Cost__c,
+                Previous_Annual_kwh__c,
+                Previous_Percent_Share_of_System__c,
+                Previous_kw_DC_Subscription__c,
+                Product__r.Customer_Subscription_Type__c,
                 System_Change_Percent_Share_of_System__c,
                 System_Change_kW_DC_Subscription__c,
                 System_Change_kW_DC_Rounded__c,
-                Previous_Percent_Share_of_System__c,
-                Previous_kw_DC_Subscription__c,
-                Calculated_Change_in_Percent_Share_of_Sy__c,
-                Calculated_Change_in_Subscription_KW_DC__c,
-                Calculated_Change_in_kW_DC_Rounded__c,
-                RecordType.Name,
                 Total_System_Size_kW_DC__c,
                 Utility_Number_of_Decimal_Places__c
             FROM Subscription_Order__c
