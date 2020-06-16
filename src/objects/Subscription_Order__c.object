@@ -339,6 +339,21 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <type>TextArea</type>
     </fields>
     <fields>
+        <fullName>Contract_Fee_Detail__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Acquisition rate charged to client for this change</inlineHelpText>
+        <label>Contract Fee Detail</label>
+        <referenceTo>Contract_Fee_Detail__c</referenceTo>
+        <relationshipLabel>Subscription Orders</relationshipLabel>
+        <relationshipName>Subscription_Orders</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Date_Enacted_By_Utility__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
@@ -753,7 +768,8 @@ ISPICKVAL(Approval_Status__c,&apos;&apos;)
 PRIORVALUE(Approval_Status__c)!=&apos;&apos;,
 NOT(ISBLANK( Approved_Change_in_Subscription__c)),
 NOT(ISCHANGED( Approved_Change_in_Subscription__c)),
-NOT(ISCHANGED( Allocation_Schedule_Subscription__c))
+NOT(ISCHANGED( Allocation_Schedule_Subscription__c)),
+NOT(ISCHANGED( Contract_Fee_Detail__c))
 )</errorConditionFormula>
         <errorDisplayField>Approval_Status__c</errorDisplayField>
         <errorMessage>Once a Subscription Order is Approved, it cannot be edited. To update a customers subscription, please log a new Subscription Order.</errorMessage>
