@@ -14,7 +14,6 @@ public without sharing class ScheduleZTriggerHandler {
     // For newly enacted Schedule Zs, we want to set the previous Schedule Z to retired, and update any UASes that
     // that aren't on the new Schedule Z.
     public static void handleNewlyEnactedScheduleZ(Map<Id, Schedule_Z__c> oldMap, List<Schedule_Z__c> newScheduleZS) {
-        List<Schedule_Z__c> szToUpdate = new List<Schedule_Z__c>();
         List<Schedule_Z__c> enactedScheduleZS = new List<Schedule_Z__c>();
 
         // Create a list of the Sched Z's that changed Status__c
@@ -31,7 +30,7 @@ public without sharing class ScheduleZTriggerHandler {
         }
 
         List<Shared_Solar_System__c> sharedSolarSystemsWithEnactedSZs = [
-            SELECT Id,
+            SELECT Id, Reacquisition_Start_Date__c,
             (SELECT Id, Date_Enacted_by_Utility__c
             FROM Schedule_Zs__r
             WHERE Date_Schedule_Z_Retired_by_Utility__c = NULL
@@ -41,35 +40,15 @@ public without sharing class ScheduleZTriggerHandler {
             WHERE Id IN :systemIdsWithEnactedSZs
         ];
 
-        // We need to get all all Schedule Zs with their subscriptions for the next step in the process to find UASes
-        // with Schedule Z Subscriptions not on the new Schedule Z.
-        Map<Id, Set<Id>> szToUASesMap = getSZtoUASesMap(sharedSolarSystemsWithEnactedSZs);
-        List<Utility_Account_Subscription__c> uasesToRetire = new List<Utility_Account_Subscription__c>();
-        for (Shared_Solar_System__c sss : sharedSolarSystemsWithEnactedSZs) {
-            if (sss.Schedule_Zs__r.size() > 1) {
-                sss.Schedule_Zs__r[1].Date_Schedule_Z_Retired_by_Utility__c = sss.Schedule_Zs__r[0].Date_Enacted_by_Utility__c;
-                szToUpdate.add(sss.Schedule_Zs__r[1]);
-                uasesToRetire.addAll(
-                    findUASesToRetire(
-                        sss.Schedule_Zs__r[1].Id,
-                        sss.Schedule_Zs__r[0].Date_Enacted_by_Utility__c,
-                        sss.Schedule_Zs__r[0].Id,
-                        szToUASesMap
-                    )
-                );
-            }
-        }
-        if (szToUpdate.size() > 0) {
-            update szToUpdate;
-        }
-        if (uasesToRetire.size() > 0) {
-            update uasesToRetire;
-        }
+        retireUASesAndScheduleZs(sharedSolarSystemsWithEnactedSZs);
 
         List<Utility_Account_Subscription__c> uasesToUpdate = matchALSSToUAS(enactedScheduleZS);
         if (uasesToUpdate.size() > 0){
             update uasesToUpdate;
         }
+
+        List<Shared_Solar_System__c> sssToUpdate = setReacquisitionStartDate(enactedScheduleZS,sharedSolarSystemsWithEnactedSZs);
+        update sssToUpdate;
 
         if (Util.getSystemPropertyCheckbox('Use_Zuora_For_Subscription_Billing__c') && enactedScheduleZS.size() > 0) {
             ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
@@ -104,6 +83,35 @@ public without sharing class ScheduleZTriggerHandler {
         }
 
         return scheduleZIdToUASesMap;
+    }
+
+    private static void retireUASesAndScheduleZs(List<Shared_Solar_System__c> sharedSolarSystemsWithEnactedSZs){
+        // We need to get all all Schedule Zs with their subscriptions for the next step in the process to find UASes
+        // with Schedule Z Subscriptions not on the new Schedule Z.
+        Map<Id, Set<Id>> szToUASesMap = getSZtoUASesMap(sharedSolarSystemsWithEnactedSZs);
+        List<Utility_Account_Subscription__c> uasesToRetire = new List<Utility_Account_Subscription__c>();
+        List<Schedule_Z__c> szToUpdate = new List<Schedule_Z__c>();
+
+        for (Shared_Solar_System__c sss : sharedSolarSystemsWithEnactedSZs) {
+            if (sss.Schedule_Zs__r.size() > 1) {
+                sss.Schedule_Zs__r[1].Date_Schedule_Z_Retired_by_Utility__c = sss.Schedule_Zs__r[0].Date_Enacted_by_Utility__c;
+                szToUpdate.add(sss.Schedule_Zs__r[1]);
+                uasesToRetire.addAll(
+                    findUASesToRetire(
+                        sss.Schedule_Zs__r[1].Id,
+                        sss.Schedule_Zs__r[0].Date_Enacted_by_Utility__c,
+                        sss.Schedule_Zs__r[0].Id,
+                        szToUASesMap
+                    )
+                );
+            }
+        }
+        if (szToUpdate.size() > 0) {
+            update szToUpdate;
+        }
+        if (uasesToRetire.size() > 0) {
+            update uasesToRetire;
+        }
     }
 
     private static List<Utility_Account_Subscription__c> findUASesToRetire(Id retiredScheduleZId, Date retiredDate, Id enactedScheduleZId, Map<Id, Set<Id>> szToUASesMap) {
@@ -193,5 +201,24 @@ public without sharing class ScheduleZTriggerHandler {
             }
         }
         return uasesToUpdate;
+    }
+
+    @TestVisible
+    private static List<Shared_Solar_System__c> setReacquisitionStartDate(  List<Schedule_Z__c> enactedSchedules,
+                                                                            List<Shared_Solar_System__c> enactedSSSes){
+        List<Shared_Solar_System__c> sssToUpdate = new List<Shared_Solar_System__c>();
+        Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>();
+        for (Shared_Solar_System__c sss : enactedSSSes){
+            sssMap.put(sss.Id, sss);
+        }
+
+        for (Schedule_Z__c allocationSchedule : enactedSchedules){
+            Shared_Solar_System__c sss = sssMap.get(allocationSchedule.Shared_Solar_System__c);
+            if (sss.Reacquisition_Start_Date__c == null && allocationSchedule.Submitted_Utilization__c >= 100){
+                sss.Reacquisition_Start_Date__c = allocationSchedule.Date_Enacted_by_Utility__c;
+                sssToUpdate.add(sss);
+            }
+        }
+        return sssToUpdate;
     }
 }
