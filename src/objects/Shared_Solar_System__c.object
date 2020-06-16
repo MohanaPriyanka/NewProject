@@ -1521,6 +1521,17 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Reacquisition_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The date at which acquisition is over and reacquisition begins, usually set by the first date at which an allocation schedule is accepted by the utility at 100%.</inlineHelpText>
+        <label>Reacquisition Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Reserved_Anchor_Capacity__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Manual input for reserved anchor and public offtake capacity when under Onboarding or Acquisition stage</inlineHelpText>
