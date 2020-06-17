@@ -42,6 +42,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
             }
         }
     }
+
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void changeNMCTariff(Set<Id> oppIds) {
         List<Utility_Account_Subscription__c> uases = uasSelector.selectByOpp(oppIds);
@@ -152,6 +153,11 @@ public without sharing class SubscriptionManagementService implements Queueable{
         }
         List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
         update updateSOs;
+
+        // To prevent calling a future method from a future method
+        if(!System.isFuture()) {
+            ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(approvedSOs);
+        }
     }
     public List<Shared_Solar_System_Order__c> checkSSSOApproval(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         List<Shared_Solar_System_Order__c> approvedSSSOs = new List<Shared_Solar_System_Order__c>();
