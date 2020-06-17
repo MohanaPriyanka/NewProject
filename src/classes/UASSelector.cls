@@ -71,6 +71,10 @@ public without sharing class UASSelector {
     public Map<Id, Utility_Account_Subscription__c> getUASMap(Set<Id> uasIds) {
         Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>( [
             SELECT Id,
+                Annual_Cost_Future_Rollup__c,
+                Annual_kWh_Subscription_Future_Rollup__c,
+                Future_Customer_Subscription_KWDC_Rollup__c,
+                Future_Share_of_System_Rollup__c,
                 Shared_Solar_System__r.Client_Account__c,
                 Shared_Solar_System__r.Expected_Yield_kWh_kW__c,
                 Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
