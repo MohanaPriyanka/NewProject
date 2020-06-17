@@ -310,18 +310,6 @@
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
-    <fields>
-        <fullName>Total_Billed_STAMPED__c</fullName>
-        <description>This field is temporary for migrating historical data from PU to Bill Periods</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This field is temporary for migrating historical data from PU to Bill Periods</inlineHelpText>
-        <label>Total Billed (STAMPED)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
     <label>Bill Period</label>
     <listViews>
         <fullName>All</fullName>
