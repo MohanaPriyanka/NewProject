@@ -12,6 +12,11 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         public Subscription_Order__c sOrder;
     }
 
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
+    @TestVisible
+    private static Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>();
+
     public static List<Utility_Account_Subscription__c> generateSubscriptions(
         List<Utility_Account_Log__c> uals,
         List<Shared_Solar_System__c> sharedSolarSystems,
@@ -30,6 +35,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         Map<Id, Decimal> sssRemainingSubscriptionCapacityMap = new Map<Id, Decimal>();
 
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
+            sssMap.put(sss.Id, sss);
             sssRemainingSubscriptionCostMap.put(sss.Id, sss.Maximum_Subscription_Cost__c);
             Decimal maximumSubscriptionkWh = calculateMaximumkWh(sss);
             sssRemainingSubscriptionCapacityMap.put(sss.Id, maximumSubscriptionkWh);
@@ -86,6 +92,9 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         UAS_Number__c = uasNumberCounter,
                         Annual_kwh_subscription_future__c = annualElectricityCapacityAssigned
                     );
+
+                    populateSizingMethod(ual, uas, opp);
+
                     uasNumberCounter++;
                     uases.add(uas);
                     createSOByCapacity(uasOrders, uas, annualElectricityCapacityAssigned);
@@ -135,6 +144,9 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         calculated_annual_cost_of_electricity__c = annualElectricityCostAssigned,
                         Subscribed_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned
                     );
+
+                    populateSizingMethod(ual, uas, opp);
+
                     uasNumberCounter++;
                     uases.add(uas);
                     createSOByCost(uasOrders, uas, annualElectricityCostAssigned);
@@ -151,7 +163,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
 
             Subscription_Order__c so = new Subscription_Order__c(
                 Type__c = 'Initial',
-                Change_in_Annual_kWh__c = annualElectricityCapacityAssigned,
+                New_Annual_kWh__c = annualElectricityCapacityAssigned,
                 Effective_Date__c = System.now(),
                 Approval_Status__c = 'Approved'
             );
@@ -165,7 +177,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
             UASOrder order = new UASOrder();
             Subscription_Order__c so = new Subscription_Order__c(
                 Type__c = 'Initial',
-                Change_in_Annual_Cost__c = annualElectricityCostAssigned,
+                New_Annual_Cost__c = annualElectricityCostAssigned,
                 Effective_Date__c = System.now(),
                 Approval_Status__c = 'Approved'
             );
@@ -175,6 +187,25 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         }
     }
 
+    private static void populateSizingMethod(Utility_Account_Log__c ual, Utility_Account_Subscription__c uas, Opportunity opp) {
+        if (!featureService.isEnabled('Sizing_Method')) {
+            return;
+        }
+
+        if (sssMap.get(opp.Shared_Solar_System__c).Product__r.Sizing_Method__c == 'Rate Class Ratio') {
+            if (ual.Utility_Rate_Class__c == null) {
+                uas.Sizing_Method__c = ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c;
+            } else {
+                //CSAP does not populate the UAL's Rate Class before conversion. We do not want to throw an error.
+                //We can default to the Sizing Method on the SSS and flag ops (case or comment?)
+                uas.Sizing_Method__c = sssMap.get(opp.Shared_Solar_System__c).Utility_NMC_Tariff__c;
+                uas.Subscription_Comment_c__c = 'Utility Account did not have a Rate Class assigned upon conversion. ' +
+                    'Therefore this subscription was created using the default Sizing Method on the SSS.';
+            }
+        } else {
+            uas.Sizing_Method__c = sssMap.get(opp.Shared_Solar_System__c).Utility_NMC_Tariff__c;
+        }
+    }
 
     public static Decimal calculateMaximumkWh(Shared_Solar_System__c sss) {
         return sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c;
