@@ -86,6 +86,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         UAS_Number__c = uasNumberCounter,
                         Annual_kwh_subscription_future__c = annualElectricityCapacityAssigned
                     );
+
                     uasNumberCounter++;
                     uases.add(uas);
                     createSOByCapacity(uasOrders, uas, annualElectricityCapacityAssigned);
@@ -135,6 +136,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         calculated_annual_cost_of_electricity__c = annualElectricityCostAssigned,
                         Subscribed_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned
                     );
+
                     uasNumberCounter++;
                     uases.add(uas);
                     createSOByCost(uasOrders, uas, annualElectricityCostAssigned);
@@ -151,7 +153,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
 
             Subscription_Order__c so = new Subscription_Order__c(
                 Type__c = 'Initial',
-                Change_in_Annual_kWh__c = annualElectricityCapacityAssigned,
+                New_Annual_kWh__c = annualElectricityCapacityAssigned,
                 Effective_Date__c = System.now(),
                 Approval_Status__c = 'Approved'
             );
@@ -165,7 +167,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
             UASOrder order = new UASOrder();
             Subscription_Order__c so = new Subscription_Order__c(
                 Type__c = 'Initial',
-                Change_in_Annual_Cost__c = annualElectricityCostAssigned,
+                New_Annual_Cost__c = annualElectricityCostAssigned,
                 Effective_Date__c = System.now(),
                 Approval_Status__c = 'Approved'
             );

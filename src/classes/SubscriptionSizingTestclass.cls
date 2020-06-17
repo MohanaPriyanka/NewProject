@@ -1,21 +1,16 @@
 /**
  * Created by SarahRenfro on 4/17/2020.
  *
- * This testclass creates UASes that mimic the rounded and unrounded values in Production. It was made to fail until the
- * Subscription Orders subscription sizes that rolled up to the UAS matched the kW_Allocation__c on the UAS.
+ * Details: This testclass creates UASes that mimic the subscription sizing bugs we have experienced and since fixed.
  *
- * To make the assertions pass, code was added to the SubscriptionManagementService.stampApprovedValues() to round the subscription size
- * and therefore match the kw Allocation.
- *
- * There are also assertions to ensure the Percent Share is correctly calculated despite the change.
  */
 
 
 @IsTest
 public with sharing class SubscriptionSizingTestclass {
 
-    @IsTest
-    public static void testSubscriptionSizing() {
+    @TestSetup
+    public static void testSetup() {
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
 
         Utility__c eversource = new Utility__c(
@@ -88,6 +83,7 @@ public with sharing class SubscriptionSizingTestclass {
         );
 
         Shared_Solar_System__c kwhSSS = new Shared_Solar_System__c(
+            Name = 'kWh Shared Solar System',
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
             Open__c = true,
@@ -201,37 +197,184 @@ public with sharing class SubscriptionSizingTestclass {
 
         insert new List<Utility_Account_Subscription__c> {uasA, uasB, uasC, uasD};
 
-        List<Utility_Account_Subscription__c> checkUASes = [
-            SELECT Id, Name, kW_Allocation__c, Customer_Subscription_KW_DC__c,
-                Future_Customer_Subscription_KWDC_Rollup__c, Future_Share_of_System_Rollup__c
-            FROM Utility_Account_Subscription__c
-            ORDER BY Name
-        ];
 
 
-        for (Utility_Account_Subscription__c uas : checkUASes) {
-            if (uas.Name == '0000111') {
-                //Unrounded: 5.7652
-                System.assertEquals(5.832, uas.kW_Allocation__c);
-                System.assertEquals(5.832, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-                System.assertEquals(.1, uas.Future_Share_of_System_Rollup__c);
-            } else if (uas.Name == '0000222') {
-                //Unrounded: 10.9005
-                System.assertEquals(11.0808, uas.kW_Allocation__c);
-                System.assertEquals(11.0808, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-                System.assertEquals(.19, uas.Future_Share_of_System_Rollup__c);
-            } else if (uas.Name == '0000333') {
-                //Unrounded: 25
-                System.assertEquals(25.014528, uas.kW_Allocation__c);
-                System.assertEquals(25.014528, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-                System.assertEquals(2.31, uas.Future_Share_of_System_Rollup__c);
-            } else {
-                //Unrounded: 3.0597
-                System.assertEquals(3.032064, uas.kW_Allocation__c);
-                System.assertEquals(3.032064, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-                System.assertEquals(.28, uas.Future_Share_of_System_Rollup__c);
-            }
-        }
 
     }
+
+    @IsTest
+    public static void testPartsOfAWholeBug() {
+        /**
+            Bug Explanation:
+            Using subscription orders, the % share and kW DC on Utility Account Subscriptions are calculated by summing
+            their related subscription orders. Each subscription order calculates the change in % share and change in
+            kW DC for each incremental change in kWh or cost.
+
+            However, because the formulas for % share and kW DC involve rounding and division, summing the “parts”
+            (in this case, subscription orders) won’t always be equivalent to the calculation when it is done for the
+            “whole” (in this case, the UAS). In this case, we should not sum numbers that have been rounded.
+
+            SOLUTION:
+            Always populate the total "New Annual kwh/Cost" as well as the "Previous Annual kWh/Cost" on the SO. Use the
+            "New" values to calculate the "whole" subscription and store in System_Change_Percent_Share and
+            System_Change_Subscription (labeled "New" in UI).
+
+            The 4 "Approved Changes" can then be calculated by subtracting New - Previous values and rolled up to UAS.
+       */
+
+        Shared_Solar_System__c kwhSSS =[
+            SELECT Id, Total_System_Size_kWh_DC__c, Expected_Yield_kWh_kW__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'kWh Shared Solar System'
+            LIMIT 1
+        ];
+        kwhSSS.Total_System_Size_kWh_DC__c = 3467.75;
+        kwhSSS.Expected_Yield_kWh_kW__c = 1300;
+        update kwhSSS;
+
+        //Delete subscription orders automatically inserted for testSetup
+        List<Subscription_Order__c> deleteSOs = [
+            SELECT Id
+            FROM Subscription_Order__c
+        ];
+        delete deleteSOs;
+
+        List<Utility_Account_Subscription__c> uases = [
+            SELECT Id
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000111' OR
+            Name = '0000222'
+            ORDER BY Name ASC
+        ];
+
+        Subscription_Order__c firstWrongSO = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uases[0].Id,
+            Change_in_Annual_kWh__c = 4565
+
+        );
+        insert firstWrongSO;
+
+        Subscription_Order__c secondWrongSO = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uases[0].Id,
+            Change_in_Annual_kWh__c = 659.68
+        );
+        insert secondWrongSO;
+
+        Subscription_Order__c firstCorrectedSO = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uases[1].Id,
+            Approval_Status__c = 'Approved',
+            New_Annual_kWh__c = 4565
+        );
+        insert firstCorrectedSO;
+
+        Subscription_Order__c secondCorrectedSO = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uases[1].Id,
+            Approval_Status__c = 'Approved',
+            New_Annual_kWh__c = 5224.68
+        );
+        insert secondCorrectedSO;
+
+
+        List<Subscription_Order__c> checkSOs = [
+            SELECT Id, Calculated_Change_in_Subscription_KW_DC__c, Calculated_Change_in_Percent_Share_of_Sy__c,
+                Calculated_Change_in_kW_DC_Rounded__c, Change_in_Annual_kWh__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c = :uases[0].Id
+            ORDER BY CreatedDate ASC
+        ];
+
+        secondCorrectedSO = [
+            SELECT Id, Approved_Change_in_Subscription__c, Approved_Change_in_Percent_Share__c, Change_in_Annual_kWh__c
+            FROM Subscription_Order__c
+            WHERE Id = :secondCorrectedSO.Id
+            ORDER BY CreatedDate ASC
+            LIMIT 1
+        ];
+
+        System.assertNotEquals(null, secondCorrectedSO.Approved_Change_in_Subscription__c );
+        System.assertEquals(659.68, secondCorrectedSO.Change_in_Annual_kWh__c);
+
+        Utility_Account_Subscription__c uasB = [
+            SELECT Id, Future_Share_of_System_Rollup__c, Future_Customer_Subscription_KWDC_Rollup__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = :uases[1].Id
+            LIMIT 1
+        ];
+
+        //Subscription Orders created using the old "Calculated" fields only used "Change in kWh"
+        System.assertEquals(3.5115, checkSOs[0].Calculated_Change_in_Subscription_KW_DC__c);
+        System.assertEquals(3.467750, checkSOs[0].Calculated_Change_in_kW_DC_Rounded__c);
+        System.assertEquals(0.100, checkSOs[0].Calculated_Change_in_Percent_Share_of_Sy__c);
+
+        System.assertEquals(0.5074, checkSOs[1].Calculated_Change_in_Subscription_KW_DC__c);
+        System.assertEquals(0.346775, checkSOs[1].Calculated_Change_in_kW_DC_Rounded__c);
+        System.assertEquals(0.0100, checkSOs[1].Calculated_Change_in_Percent_Share_of_Sy__c);
+
+        //Calculate total subscription as "parts"
+        Decimal totalUsage = checkSOs[0].Change_in_Annual_kWh__c + checkSOs[1].Change_in_Annual_kWh__c;
+        Decimal wrongSubscriptionTotal = checkSOs[0].Calculated_Change_in_kW_DC_Rounded__c + checkSOs[1].Calculated_Change_in_kW_DC_Rounded__c;
+        Decimal wrongShareTotal = checkSOs[0].Calculated_Change_in_Percent_Share_of_Sy__c + checkSOs[1].Calculated_Change_in_Percent_Share_of_Sy__c;
+        System.assertEquals(5224.68, totalUsage);
+        System.assertEquals(0.0011, wrongShareTotal/ 100);
+
+        //Calculate total subscription as "whole"
+        Decimal correctedSubscription = totalUsage/kwhSSS.Expected_Yield_kWh_kW__c;
+        Decimal correctedShare = correctedSubscription/kwhSSS.Total_System_Size_kWh_DC__c;
+        correctedShare = correctedShare.setScale(4);
+        System.assertEquals(0.0012, correctedShare);
+        correctedSubscription = correctedShare * kwhSSS.Total_System_Size_kWh_DC__c;
+        System.assertEquals(4.1613, correctedSubscription);
+
+        //Confirm the subscription orders that calculate via "parts" do not equal "whole" subscription
+        System.assertNotEquals(correctedSubscription, wrongSubscriptionTotal);
+        System.assertNotEquals(correctedShare, wrongShareTotal);
+
+        //Confirm that the second set of Subscription Orders correctly rollup to the "Corrected" value (Fixed bug)
+        System.assertEquals(correctedSubscription, uasB.Future_Customer_Subscription_KWDC_Rollup__c);
+        System.assertEquals(correctedShare, uasB.Future_Share_of_System_Rollup__c/100);
+    }
+
+    @IsTest
+    public static void testRoundingBug() {
+    /**
+        BUG: Subscription calculations were originally unrounded in the same way the uas.kW_Allocation__c was calculated.
+
+        SOLUTION:
+        To make the assertions pass, a new "rounded" field was added to the SO to round the subscription size appropriately
+        and therefore match the kw Allocation.
+
+        There are also assertions to ensure the Percent Share is correctly calculated despite the change.
+     */
+List<Utility_Account_Subscription__c> checkUASes = [
+ SELECT Id, Name, kW_Allocation__c, Customer_Subscription_KW_DC__c,
+     Future_Customer_Subscription_KWDC_Rollup__c, Future_Share_of_System_Rollup__c
+ FROM Utility_Account_Subscription__c
+ ORDER BY Name
+];
+
+
+for (Utility_Account_Subscription__c uas : checkUASes) {
+ if (uas.Name == '0000111') {
+     //Unrounded: 5.7652
+     System.assertEquals(5.832, uas.kW_Allocation__c);
+     System.assertEquals(5.832, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+     System.assertEquals(.1, uas.Future_Share_of_System_Rollup__c);
+ } else if (uas.Name == '0000222') {
+     //Unrounded: 10.9005
+     System.assertEquals(11.0808, uas.kW_Allocation__c);
+     System.assertEquals(11.0808, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+     System.assertEquals(.19, uas.Future_Share_of_System_Rollup__c);
+ } else if (uas.Name == '0000333') {
+     //Unrounded: 25
+     System.assertEquals(25.014528, uas.kW_Allocation__c);
+     System.assertEquals(25.014528, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+     System.assertEquals(2.31, uas.Future_Share_of_System_Rollup__c);
+ } else {
+     //Unrounded: 3.0597
+     System.assertEquals(3.032064, uas.kW_Allocation__c);
+     System.assertEquals(3.032064, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+     System.assertEquals(.28, uas.Future_Share_of_System_Rollup__c);
+ }
+}
+}
 }
