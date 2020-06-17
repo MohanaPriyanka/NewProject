@@ -7,7 +7,11 @@
  *************************************************************************************/
 
 public without sharing class BlueWaveParent {
-    
+    @AuraEnabled
+    public static String getLicenseType() {
+        SLPUserHelper.PartnerProfile profile = SLPUserHelper.getPartnerProfile();
+        return profile.LicenseType;
+    }
 
     public static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
 
@@ -38,7 +42,12 @@ public without sharing class BlueWaveParent {
         return options;
     }
 
-    
+    @AuraEnabled
+    public static List<SLPortal_Settings__c> getSLPortalCustomSetting() { 
+        List<SLPortal_Settings__c> slpSettings = SLPortal_Settings__c.getall().values();
+        return slpSettings;
+    }
+
     @AuraEnabled
     public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType, String description) {
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
@@ -78,7 +87,26 @@ public without sharing class BlueWaveParent {
         return Id.valueOf(fileId);
     }
 
-    
+    @AuraEnabled
+    public static Boolean checkIfDisbursalOnHold(Id oppId) {
+
+        Loan__c loan = [
+            SELECT Id,
+            (SELECT Id, Status__c
+             FROM Disbursals__r) 
+            FROM Loan__c
+            WHERE Opportunity__c =: oppId
+        ];
+
+        for (Disbursal__c disbursal : loan.Disbursals__r) {
+            if (disbursal.Status__c == 'Hold') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private static void appendToFile(Id fileId, String base64Data) {
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
         
