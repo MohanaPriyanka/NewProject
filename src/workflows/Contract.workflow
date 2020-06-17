@@ -60,4 +60,59 @@
         <protected>false</protected>
         <reevaluateOnChange>true</reevaluateOnChange>
     </fieldUpdates>
+    <outboundMessages>
+        <fullName>Conga_Generate_Review_Contract</fullName>
+        <apiVersion>49.0</apiVersion>
+        <description>Generates the Review version of the contract and attaches it to the contract.</description>
+        <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
+        <fields>Conga_Review_Contract__c</fields>
+        <fields>Id</fields>
+        <includeSessionId>true</includeSessionId>
+        <integrationUser>api@bluewavesolar.com</integrationUser>
+        <name>Conga Generate Review Contract</name>
+        <protected>false</protected>
+        <useDeadLetterQueue>false</useDeadLetterQueue>
+    </outboundMessages>
+    <outboundMessages>
+        <fullName>Conga_Trigger_Generate_Signed_Contract</fullName>
+        <apiVersion>49.0</apiVersion>
+        <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
+        <fields>Conga_Signed_Contract__c</fields>
+        <fields>Id</fields>
+        <includeSessionId>true</includeSessionId>
+        <integrationUser>api@bluewavesolar.com</integrationUser>
+        <name>Conga Trigger Generate Signed Contract</name>
+        <protected>false</protected>
+        <useDeadLetterQueue>false</useDeadLetterQueue>
+    </outboundMessages>
+    <rules>
+        <fullName>Generate Review Version</fullName>
+        <actions>
+            <name>Conga_Generate_Review_Contract</name>
+            <type>OutboundMessage</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Contract.Generate_Review_Version__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <description>Generates the review version of customer contracts</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Generate Signed Version</fullName>
+        <actions>
+            <name>Conga_Trigger_Generate_Signed_Contract</name>
+            <type>OutboundMessage</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Contract.Generate_Signed_Version__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <description>Generates the Signed version of customer contracts</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
 </Workflow>

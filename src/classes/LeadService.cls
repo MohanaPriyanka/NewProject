@@ -118,6 +118,24 @@ public without sharing class LeadService {
 
     }
 
+
+    public void updateRelatedContracts(List<Lead> triggerNew, Map<Id, Lead> triggerOldMap) {
+        Map<Id, Lead> leadsForContractUpdate = new Map<Id, Lead>();
+        for(Lead lead : triggerNew) {
+            if(lead.Product__c != triggerOldMap.get(lead.Id).Product__c) {
+                leadsForContractUpdate.put(lead.Id, lead);
+            }
+        }
+        if(!leadsForContractUpdate.isEmpty()) {
+            CustomerContractSelector ccSelect = new CustomerContractSelector();
+            List<Contract> contracts = ccSelect.selectByRelatedLeads(leadsForContractUpdate.keySet());
+            for(Contract c : contracts) {
+                c.Product__c = leadsForContractUpdate.get(c.Lead__c).Product__c;
+            }
+            Util.updateAndLog(contracts, 'LeadService', 'updateRelatedContracts');
+        }
+    }
+
     /**
      * Copies Property Account info from a Lead
      *

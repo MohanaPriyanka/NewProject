@@ -539,7 +539,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         if (featureService.isEnabled('Subscription_Orders')) {
             Subscription_Order__c resize = new Subscription_Order__c(
                 Utility_Account_Subscription__c = selectedUAS.Id,
-                Change_in_Annual_kWh__c = 4000.1,
+                New_Annual_kWh__c = 12000,
                 Type__c = 'Resize',
                 Approval_Status__c = 'Approved',
                 Effective_Date__c = System.now()

@@ -174,14 +174,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CAPController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CAPControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CSAPController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -251,10 +243,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CheckAddressFieldUpdate</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CoApplicantConvertTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -410,14 +398,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>FormAssemblyHelper</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>FormAssemblyHelperTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>GenericBatchDMLOperation</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -483,10 +463,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LoanHandlerTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LoanPipelineConvertTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -674,58 +650,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SLPAddCoApplicant</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPAddCustomer</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPAlertsHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPAllCustomersHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPControllersTestclass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPCreditStatus</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPCustomerHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPDashboardHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPDashboardStageChartHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPFileHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPQuickSalesSheetHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPQuickSalesSheetTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPUserHelper</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ScheduleZTriggerHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -767,14 +691,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SiteRegisterControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TaskHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TaskHandlerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -6337,6 +6253,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Allocation_Schedule_Subscription__c.kW_Allocation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Annual_Cost_of_Electricity_Future__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Annual_kWh_Subscription_Future__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46457,10 +46383,6 @@
         <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
-        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Snapshot_Report_Object__c-Landowner Last Contact Object Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -46484,6 +46406,10 @@
     <layoutAssignments>
         <layout>Subscription_Order__c-Subscription Order Layout</layout>
         <recordType>Subscription_Order__c.Subscription_Orders</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Subscription_Order__c-System Change Order</layout>
+        <recordType>Subscription_Order__c.System_Change_Order</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>System_Bill__c-System Bill Layout</layout>
@@ -49550,6 +49476,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Subscription_Order__c.Subscription_Orders</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Subscription_Order__c.System_Change_Order</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

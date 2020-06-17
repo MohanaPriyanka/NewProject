@@ -112,11 +112,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Subscribed_Annual_Cost_of_Electricity__c</field>
+                <field>Subsc_Annual_Cost_of_Electricity_Rollup__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Subscribed_Annual_kWhs__c</field>
+                <field>Subscribed_Annual_kWhs_Rollup__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

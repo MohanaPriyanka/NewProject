@@ -94,11 +94,6 @@ public without sharing class LeadTriggerHandler {
             if (!lead.Docs_Requested__c && oldLeadMap.get(lead.Id).Docs_Requested__c) {
                 LoanHandler.completeAdditionalIncomeDocTask(lead.Id);
             }
-            if (lead.Status == 'Qualified' &&
-                oldLeadMap.get(lead.Id).Status != 'Qualified' &&
-                !Test.isRunningTest()) {
-                CAPController.sendContractIfAbsent(lead, lead.Email);
-            }
         }
         if (!convertedCSLeads.isEmpty()) {
             deleteDuplicateContact(convertedCSLeads);

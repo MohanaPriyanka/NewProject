@@ -3,6 +3,7 @@
  */
 
 @IsTest
+@SuppressWarnings('PMD.ExcessivePublicCount')
 public with sharing class CSLeadsRESTControllerV2Test {
 
     private static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
@@ -13,6 +14,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.leadService = (LeadService) Test.createStub(LeadService.class, mockLeadService);
         controller.accountService = (AccountService) Test.createStub(AccountService.class, new MockAccountService());
         controller.ualService = (UALService) Test.createStub(UALService.class, new MockUALService());
+        controller.customerContractService = (CustomerContractService) Test.createStub(CustomerContractService.class, new MockCustomerContractService());
         controller.capacityService = (CapacityService) Test.createStub(CapacityService.class, new MockCapacityService());
         controller.duplicateService = (CSLeadsDuplicateService) Test.createStub(CSLeadsDuplicateService.class , new MockDuplicateService(false));
 
@@ -420,7 +422,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         useMocks();
 
         String jsonRequest = '{' +
-            '"leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '",' +
+            '"leadId": "00Q000000000888",' +
             '"billingStreet": "Test billing street",' +
             '"billingCity": "Test billing city",' +
             '"billingState": "NY",' +
@@ -775,6 +777,41 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     }
 
+
+    /**************************
+     *** patchContract() ***
+     **************************/
+
+    @IsTest
+    static void testPatchContractInvalidLeadId() {
+        useMocks();
+        String jsonRequest = '{ "leadId": null }';
+        controller.patchContract(jsonRequest);
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH contract should throw an error when no lead id is provided');
+
+        jsonRequest = '{ "leadId": "" }';
+        controller.patchContract(jsonRequest);
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH contract should throw an error when an invalid lead id is provided');
+
+        jsonRequest = '{ "email": "' + SAMPLE_EMAIL + '" }';
+        controller.patchContract(jsonRequest);
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH contract should throw an error when no lead id is provided');
+
+        jsonRequest = '{ "leadId": 12345 }';
+        controller.patchContract(jsonRequest);
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH contract should throw an error when an invalid lead id is provided');
+    }
+
+    @IsTest
+    static void testPatchContractSuccess() {
+        useMocks();
+        String jsonRequest = '{ "leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '" }';
+        controller.patchContract(jsonRequest);
+        System.assertEquals(200, RestContext.response.statusCode, 'PATCH contract should not throw an error when a valid lead id is provided');
+    }
+
+
+
     /********************
      *** SYSTEM TESTS ***
      ********************/
@@ -853,6 +890,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         Map<String, Object> responseUtilityAccountLog = (Map<String,Object>) responseUtilityAccountLogs[0];
 
         System.assertEquals(201, response.statusCode, 'POST should create properly');
+        System.assertEquals(1, [SELECT Id FROM Contract WHERE Lead__c = :(Id)responseLead.get('id')].size(), 'A contract should be created for this lead, as it has both a product and a property account');
 
         // verify lead request/response fields
         System.assertNotEquals(responseLead.get('id'), null, 'id should be set on POST response');
@@ -881,9 +919,65 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
 
+    @IsTest
+    private static void testPostSuccessSystemNoContract() {
+        String jsonRequest = '{' +
+            '"firstName": "System",' +
+            '"lastName": "Testcase",' +
+            '"email": "test@invalid.bluewavesolar.com",' +
+            '"mobilePhone": "555-555-5555",' +
+            '"applicationType": "Residential",' +
+            '"streetAddress": "1 Test Street",' +
+            '"city": "Suffern",' +
+            '"state": "NY",' +
+            '"zipCode": "10901",' +
+            '"eiaId": "1234",' +
+            '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
+            '"productName": "CS Product",' +
+            '"campaignId": "0005500000"' +
+            '}';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        RestResponse response = RestContext.response;
+
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
+        Id leadId = (Id)responseLead.get('id');
+
+        System.assertEquals(201, response.statusCode, 'POST should create properly');
+        System.assertEquals(0, [SELECT Id FROM Contract WHERE Lead__c = :leadId].size(), 'No contract should be created for this lead, as it has a product but no property account');
+
+        jsonRequest = '{' +
+            '"leadId": "' + leadId + '",' +
+            '"billingStreet": "Test billing street",' +
+            '"billingCity": "Test billing city",' +
+            '"billingState": "NY",' +
+            '"billingPostalCode": "14472"' +
+            '}';
+        controller.postPropertyAccount(jsonRequest);
+
+        System.assertEquals(201, RestContext.response.statusCode, 'A PropertyAccount POST with minimal fields should succeed');
+        System.assertEquals(1, [SELECT Id FROM Contract WHERE Lead__c = :leadId].size(), 'A contract should be created for this lead, as it now has both a product and a property account');
+    }
+
+
     /*************
      *** MOCKS ***
      *************/
+    @TestVisible
+    private static String SAMPLE_EMAIL = 'email@invalid.com';
+    
     @TestVisible
     private class MockLeadService extends MockProvider {
         public MockLeadService(){}
@@ -904,11 +998,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             List<MethodCall> updateCalls = getMethodCallsByName('updateLead');
             return (Lead) updateCalls.get(updateCalls.size() - 1).listOfArgs.get(0);
         }
-
     }
 
-    @TestVisible
-    private static String SAMPLE_EMAIL = 'email@invalid.com';
     @TestVisible
     private class MockLeadSelector implements StubProvider {
         public MockLeadSelector(){}
@@ -1100,6 +1191,24 @@ public with sharing class CSLeadsRESTControllerV2Test {
             }
             
             return new Utility_Account_Log__c();
+        }
+    }
+
+    @TestVisible
+    private class MockCustomerContractService extends MockProvider {
+        public MockCustomerContractService(){}
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'createContractFromLead' {
+                    return new Contract();
+                }
+                when 'signCustomerContracts' {
+                    return true;
+                }
+            }
+            
+            return null;
         }
     }
 
