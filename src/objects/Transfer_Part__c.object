@@ -216,16 +216,6 @@ Amount__c /Production__r.Credits_Available_for_Allocation__c,
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>Credits_Billed__c</fullName>
-        <externalId>false</externalId>
-        <label>Credits Billed</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Externally_Serviced_Bill_Adjustment__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -393,18 +383,6 @@ FALSE)</formula>
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Utility_Bill_Line_Item__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <inlineHelpText>Utility Bill Line Item that created Transfer Part for historical data</inlineHelpText>
-        <label>Utility Bill Line Item (TEMP)</label>
-        <referenceTo>Utility_Bill_Line_Item__c</referenceTo>
-        <relationshipName>Transfer_Parts</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Utilization_Lost_Credit_Value__c</fullName>
