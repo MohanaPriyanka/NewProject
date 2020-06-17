@@ -784,6 +784,7 @@ PRIORVALUE(Approval_Status__c)!=&apos;&apos;,
 NOT(ISBLANK( Approved_Change_in_Subscription__c)),
 NOT(ISCHANGED( Approved_Change_in_Subscription__c)),
 NOT(ISCHANGED( Allocation_Schedule_Subscription__c)),
+NOT(ISCHANGED( Contract_Fee_Detail__c)),
 NOT(ISCHANGED( Client_Assignment_Agreement__c))
 )</errorConditionFormula>
         <errorDisplayField>Approval_Status__c</errorDisplayField>
