@@ -330,6 +330,21 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Client_Assignment_Agreement__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Assignment Agreement contract, populated when the Assignment Agreement on the corresponding Opportunity (or Opportunity&apos;s Contract) is populated or changed</inlineHelpText>
+        <label>Client Assignment Agreement</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Subscription Orders</relationshipLabel>
+        <relationshipName>Subscription_Orders</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
@@ -763,13 +778,14 @@ OR(
 ISPICKVAL(Approval_Status__c,&apos;Approved&apos;),
 ISPICKVAL(Approval_Status__c,&apos;&apos;)
 )
-/* Prevents changing the approval status once it&amp;amp;apos;s been set to approved, but still allowing it to be set to approved.*/
+/* Prevents changing the approval status once it&apos;s been set to approved, but still allowing it to be set to approved.*/
 ,
 PRIORVALUE(Approval_Status__c)!=&apos;&apos;,
 NOT(ISBLANK( Approved_Change_in_Subscription__c)),
 NOT(ISCHANGED( Approved_Change_in_Subscription__c)),
 NOT(ISCHANGED( Allocation_Schedule_Subscription__c)),
-NOT(ISCHANGED( Contract_Fee_Detail__c))
+NOT(ISCHANGED( Contract_Fee_Detail__c)),
+NOT(ISCHANGED( Client_Assignment_Agreement__c))
 )</errorConditionFormula>
         <errorDisplayField>Approval_Status__c</errorDisplayField>
         <errorMessage>Once a Subscription Order is Approved, it cannot be edited. To update a customers subscription, please log a new Subscription Order.</errorMessage>
