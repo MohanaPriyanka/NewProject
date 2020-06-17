@@ -35,4 +35,23 @@ public inherited sharing class SubscriptionOrderSelectorTest {
             System.assert(queriedOrders.size() >= 3);
         }
     }
+
+    @IsTest
+    public static void testSelectApprovedByOppIds() {
+        try {
+            new SubscriptionOrderSelector().selectApprovedByOppIds(new Set<Id>());
+        } catch (Exception e) {
+            System.assert(false, 'Selector should not have thrown an exception: ' + e.getMessage() + '\n' + e.getStackTraceString());
+        }
+    }
+
+    @IsTest
+    public static void testSelectApprovedByContractIds() {
+        try {
+            new SubscriptionOrderSelector().selectApprovedByContractIds(new Set<Id>());
+        } catch (Exception e) {
+            System.assert(false, 'Selector should not have thrown an exception: ' + e.getMessage() + '\n' + e.getStackTraceString());
+        }
+    }
+
 }

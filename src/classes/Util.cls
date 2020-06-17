@@ -14,6 +14,8 @@ public without sharing class Util {
     private static Integer MAX_TRIES = 10;
     @TestVisible
     private static Boolean mockDML = false;
+    @TestVisible
+    private static List<SObject> objectsUpdatedIfMockingDML;
 
     public static void insertSObj(SObject sobj) {
         insertSObjs(new List<SObject>{sobj}, 0, null, null);
@@ -44,6 +46,7 @@ public without sharing class Util {
 
     private static void updateSObjs(List<SObject> sobjs, Integer count) {
         if (mockDML) {
+            objectsUpdatedIfMockingDML = sobjs;
             return;
         }
 
