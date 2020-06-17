@@ -21,12 +21,6 @@
         <connector>
             <targetReference>Template_Assigner_Screen</targetReference>
         </connector>
-        <inputParameters>
-            <name>invoiceDates</name>
-            <value>
-                <elementReference>Invoice_Date</elementReference>
-            </value>
-        </inputParameters>
     </actionCalls>
     <actionCalls>
         <description>Makes API call to Zuora to execute a bill run, which gets outstanding usage and creates invoices.</description>
