@@ -100,17 +100,18 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     private Decimal getCapacitySumOfUASList(List<Utility_Account_Subscription__c> uasList, Id sssId){
         Decimal summarizedCapacity = 0;
         Boolean subscriptionOrderFeature = featureService.isEnabled('Subscription_Orders');
-        if (uasList.size() > 0) {
-            for (Utility_Account_Subscription__c uas : uasList) {
-                if (subscriptionOrderFeature) {
-                    if (uas.Opportunity__r.Shared_Solar_System__c == sssId && uas.Future_Customer_Subscription_KWDC_Rollup__c != 0) {
-                        summarizedCapacity += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+        if (uasList.size() == 0) {
+            return summarizedCapacity;
         }
-                } else {
-                    if (uas.Opportunity__r.Shared_Solar_System__c == sssId
-                        && uas.Customer_Subscription_KW_DC__c != null) {
-                        summarizedCapacity += uas.Customer_Subscription_KW_DC__c;
-    }
+        for (Utility_Account_Subscription__c uas : uasList) {
+            if (subscriptionOrderFeature) {
+                if (uas.Opportunity__r.Shared_Solar_System__c == sssId && uas.Future_Customer_Subscription_KWDC_Rollup__c != 0) {
+                    summarizedCapacity += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+                }
+            } else {
+                if (uas.Opportunity__r.Shared_Solar_System__c == sssId
+                    && uas.Customer_Subscription_KW_DC__c != null) {
+                    summarizedCapacity += uas.Customer_Subscription_KW_DC__c;
                 }
             }
         }
