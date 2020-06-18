@@ -6,6 +6,8 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     @TestVisible
     private static UASSelector uasSelector = new UASSelector();
     @TestVisible
+    private static SubscriptionOrderSelector subscripOrderSelector = new SubscriptionOrderSelector();
+    @TestVisible
     private static FeatureService featureService = new FeatureService();
     public void execute(SchedulableContext sch) {
         Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
@@ -129,19 +131,55 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             || uas.Opportunity_Stage__c == 'Lost'
         );
     }
-    public void queueClientBrandKeyUpdate(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes){
+
+    public void onUpdateCheckForChangedValues(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes){
         Set<Id> sssWithChangedBrandKey = new Set<Id>();
+        Map<Id,Shared_Solar_System__c> sssWithChangedReacqStartDate = new Map<Id,Shared_Solar_System__c>();
+
         for (Shared_Solar_System__c newSSS : newSSSes){
             Shared_Solar_System__c oldSSS = oldSSSMap.get(newSSS.Id);
             if (newSSS.Client_Brand_Key__c != oldSSS.Client_Brand_Key__c
                 || newSSS.BWC_Project_Entity_Manual__c != oldSSS.BWC_Project_Entity_Manual__c){
                 sssWithChangedBrandKey.add(newSSS.Id);
             }
+            if (newSSS.Reacquisition_Start_Date__c != oldSSS.Reacquisition_Start_Date__c &&
+                newSSS.Reacquisition_Start_Date__c < System.Today()){
+                sssWithChangedReacqStartDate.put(newSSS.Id,newSSS);
+            }
         }
         if (sssWithChangedBrandKey.size() > 0){
-            ClientBrandingService brandService = new ClientBrandingService();
-            brandService.sssIdWithChangedClientBrandKey = sssWithChangedBrandKey;
-            System.enqueueJob(brandService);
+            queueClientBrandKeyUpdate(sssWithChangedBrandKey);
+        }
+        if (sssWithChangedReacqStartDate.size() > 0){
+            reacquisitionStartDateChange(sssWithChangedReacqStartDate);
+        }
+    }
+
+    private void queueClientBrandKeyUpdate(Set<Id> sssWithChangedBrandKey){
+        ClientBrandingService brandService = new ClientBrandingService();
+        brandService.sssIdWithChangedClientBrandKey = sssWithChangedBrandKey;
+        System.enqueueJob(brandService);
+    }
+
+    private void reacquisitionStartDateChange(Map<Id,Shared_Solar_System__c> sssWithChangedReacqStartDate){
+        Set<Id> ordersToUpdate = new Set<Id>();
+        // We don't want to prevent the enactment of an Allocation Schedule if we hit an error here, so use try/catch:
+        try {
+            for (Id sssId : sssWithChangedReacqStartDate.keySet()){
+                Date newReacqStartDate = sssWithChangedReacqStartDate.get(sssId).Reacquisition_Start_Date__c;
+                // Query within a loop isn't ideal, but it allows us to limit the number of Subscription Orders
+                // that are returned by the query by filtering for date and SSS at the same time
+                Map<Id, Subscription_Order__c> soMap = subscripOrderSelector.getAcquisitionOrdersBySSS(sssId,newReacqStartDate);
+                ordersToUpdate.addAll(soMap.keySet());
+            }
+            ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService();
+            service.setSubOrderContractFeeDetail(ordersToUpdate);
+        } catch (Exception excep){
+            Logger.logNow(
+                'SharedSolarSystemHandler',
+                'reacquisitionStartDateChange',
+                excep.getMessage() + excep.getStackTraceString() + JSON.serialize(ordersToUpdate)
+            );
         }
     }
 }

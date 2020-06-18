@@ -20,7 +20,16 @@ public inherited sharing class SubscriptionOrderSelector {
                 System_Change_kW_DC_Subscription__c,
                 System_Change_kW_DC_Rounded__c,
                 Total_System_Size_kW_DC__c,
-                Utility_Number_of_Decimal_Places__c
+                Utility_Number_of_Decimal_Places__c,
+                Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
+                Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name,
+                Effective_Date__c,
+                Approved_Change_in_Subscription__c,
+                Contract_Fee_Detail__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c
             FROM Subscription_Order__c
             WHERE Id IN :soIds
         ];
@@ -53,5 +62,15 @@ public inherited sharing class SubscriptionOrderSelector {
             WHERE Utility_Account_Subscription__r.Opportunity__r.ContractId IN :contractIds
             AND Approval_Status__c = 'Approved'
         ];
+    }
+
+    public Map<Id, Subscription_Order__c> getAcquisitionOrdersBySSS(Id sssId, Date newReacqStartDate) {
+        return new Map<Id, Subscription_Order__c> ([
+            SELECT Id, Name
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__r.Shared_Solar_System__c = : sssId
+            AND Effective_Date__c >= : newReacqStartDate
+            AND Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c = false
+        ]);
     }
 }
