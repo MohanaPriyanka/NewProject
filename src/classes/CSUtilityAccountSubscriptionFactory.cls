@@ -94,7 +94,6 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                     );
 
                     populateSizingMethod(ual, uas, opp);
-
                     uasNumberCounter++;
                     uases.add(uas);
                     createSOByCapacity(uasOrders, uas, annualElectricityCapacityAssigned);
@@ -191,9 +190,8 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         if (!featureService.isEnabled('Sizing_Method')) {
             return;
         }
-
         if (sssMap.get(opp.Shared_Solar_System__c).Product__r.Sizing_Method__c == 'Rate Class Ratio') {
-            if (ual.Utility_Rate_Class__c == null) {
+            if (ual.Utility_Rate_Class__c != null) {
                 uas.Sizing_Method__c = ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c;
             } else {
                 //CSAP does not populate the UAL's Rate Class before conversion. We do not want to throw an error.
