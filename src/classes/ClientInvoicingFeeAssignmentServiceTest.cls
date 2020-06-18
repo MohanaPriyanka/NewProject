@@ -276,11 +276,12 @@ public class ClientInvoicingFeeAssignmentServiceTest {
     }
 
     public static List<Subscription_Order__c> getSubscriptionOrderMocks(){
-        Date monthFromToday = System.Today().addMonths(1);
-        Date monthAgo = System.Today().addMonths(-1);
+        Date today = System.Today();
+        Date monthFromToday = today.addMonths(1);
+        Date monthAgo = today.addMonths(-1);
 
         String queryData = '[' +
-            '{"Id":"a9W3F000000A1P6UAK","Utility_Account_Subscription__c":"a1d3F0000013EV1QAM",' +
+            '{"Id":"a9W3F000000A1P6UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000013EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000013EV1QAM",' +
             '"Opportunity__c":"0063F00000MVO8EQAX",' +
@@ -293,7 +294,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A1P7UAK","Utility_Account_Subscription__c":"a1d3F0000014EV1QAM",' +
+            '{"Id":"a9W3F000000A1P7UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000014EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000014EV1QAM",' +
             '"Opportunity__c":"0063F00000MVO9EQAX",' +
@@ -306,7 +307,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A2P6UAK","Utility_Account_Subscription__c":"a1d3F0000013EV1QAM",' +
+            '{"Id":"a9W3F000000A2P6UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000013EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000013EV1QAM",' +
             '"Opportunity__c":"0063F00000AAO8EQAX",' +
@@ -319,7 +320,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A2P7UAK","Utility_Account_Subscription__c":"a1d3F0000014EV1QAM",' +
+            '{"Id":"a9W3F000000A2P7UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000014EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000014EV1QAM",' +
             '"Opportunity__c":"0063F00000MVO9EQAX",' +
@@ -332,7 +333,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A1P8UAK","Utility_Account_Subscription__c":"a1d3F0000015EV1QAM",' +
+            '{"Id":"a9W3F000000A1P8UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000015EV1QAM",' +
             '"Approved_Change_in_Subscription__c":-12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000015EV1QAM",' +
             '"Opportunity__c":"0063F00000MXO9EQAX",' +
@@ -345,7 +346,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A1P9UAK","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
+            '{"Id":"a9W3F000000A1P9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000016EV1QAM",' +
             '"Opportunity__c":"0063F00000MWO9EQAX",' +
@@ -358,7 +359,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A1Q9UAK","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
+            '{"Id":"a9W3F000000A1Q9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000016EV1QAM",' +
             '"Opportunity__c":"0063F00000MWO9EQAX",' +
@@ -371,7 +372,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A1R9UAK","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
+            '{"Id":"a9W3F000000A1R9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000016EV1QAM",' +
             '"Opportunity__c":"0063F00000MWO9EQAX",' +
@@ -384,7 +385,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A1S9UAK","Utility_Account_Subscription__c":"a1d3F0000017EV1QAM",' +
+            '{"Id":"a9W3F000000A1S9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000017EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000017EV1QAM",' +
             '"Opportunity__c":"0063F00000NWO9EQAX",' +
@@ -397,7 +398,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A1T9UAK","Utility_Account_Subscription__c":"a1d3F0000018EV1QAM",' +
+            '{"Id":"a9W3F000000A1T9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000018EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000018EV1QAM",' +
             '"Opportunity__c":"0063F00000XQO9EQAX",' +
@@ -410,7 +411,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A1U7UAK","Utility_Account_Subscription__c":"a1d3F0000019EV1QAM",' +
+            '{"Id":"a9W3F000000A1U7UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000019EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000019EV1QAM",' +
             '"Opportunity__c":"0063F00000XQO9EAAA",' +
@@ -423,7 +424,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A2U7UAK","Utility_Account_Subscription__c":"a1d3F0000019EV1QAM",' +
+            '{"Id":"a9W3F000000A2U7UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000019EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000025EV1QAM",' +
             '"Opportunity__c":"0063F00000ZZO9EAAA",' +
@@ -436,7 +437,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
-            '{"Id":"a9W3F000000A1V9UAK","Utility_Account_Subscription__c":"a1d3F0000020EV1QAM",' +
+            '{"Id":"a9W3F000000A1V9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000020EV1QAM",' +
             '"Approved_Change_in_Subscription__c":-12.00,' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000020EV1QAM",' +
             '"Opportunity__c":"0063F00000ZQO9EQAX",' +

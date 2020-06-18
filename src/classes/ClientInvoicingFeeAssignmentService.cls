@@ -37,7 +37,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.nonResidential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Non-Residential';
             this.downsizing = subOrder.Approved_Change_in_Subscription__c < 0;
             this.upsizing = subOrder.Approved_Change_in_Subscription__c >= 0;
-            this.acquisition = reacqStartDate == null || reacqStartDate >= System.Today();
+            this.acquisition = reacqStartDate == null || reacqStartDate > subOrder.Effective_Date__c;
             this.reacquisition = !acquisition;
         }
 
@@ -178,8 +178,10 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         if (subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != null &&
             subOrder.Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name != null &&
             subOrder.Approved_Change_in_Subscription__c != null &&
+            subOrder.Effective_Date__c != null &&
             subOrder.Utility_Account_Subscription__r.Shared_Solar_System__c != null &&
-            subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c != null){
+            subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c != null &&
+            subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c != null){
             return true;
         } else {
             Logger.logLater('ClientInvoicingFeeAssignmentService', 'hasRequiredFields', JSON.serialize(subOrder), 'INFO');
