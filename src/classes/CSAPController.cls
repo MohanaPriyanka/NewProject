@@ -4,10 +4,7 @@
  * Test: CSAPControllerTest, DocuSignHelperTest, LeadTriggerHandlerTest
  *************************************************************************************/
 public without sharing class CSAPController {
-    public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
-    static {
-        profile = SLPUserHelper.getPartnerProfile();
-    }
+    
 
     public class SSSResult {
         // at the time of adding this, we only have a single SREC and SMART product, we we need not handle multiple ysstems with differen SREC and SMART Products.
