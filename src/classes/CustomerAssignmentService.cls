@@ -15,6 +15,9 @@ public without sharing class CustomerAssignmentService {
         }
         Map<Id, Id> oppToAssignmentAgreementMap =
             getOppsWithUpdatedAssignmentAgreements(newMap, oldMap);
+        if (oppToAssignmentAgreementMap.isEmpty()) {
+            return;
+        }
         List<Subscription_Order__c> approvedSubscriptionOrdersByOpp =
             subscriptionOrderSelector.selectApprovedByOppIds(oppToAssignmentAgreementMap.keySet());
         List<Subscription_Order__c> sosWithUpdatedAssignmentAgreements =
@@ -50,6 +53,9 @@ public without sharing class CustomerAssignmentService {
         }
         Map<Id, Id> contractsToAssignmentAgreementMap =
             getContractsWithUpdatedAssignmentAgreements(newMap, oldMap);
+        if (contractsToAssignmentAgreementMap.isEmpty()) {
+            return;
+        }
         List<Subscription_Order__c> approvedSubscriptionOrdersByContract =
             subscriptionOrderSelector.selectApprovedByContractIds(contractsToAssignmentAgreementMap.keySet());
         List<Subscription_Order__c> sosWithUpdatedAssignmentAgreements =
