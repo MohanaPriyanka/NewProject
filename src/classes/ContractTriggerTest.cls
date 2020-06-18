@@ -33,11 +33,17 @@ public with sharing class ContractTriggerTest {
         System.assertEquals(null, Util.objectsUpdatedIfMockingDML);
         Account a = new Account(Name = 'Foo');
         insert a;
-        Contract c = new Contract(AccountId = a.Id);
-        insert c;
+        Contract customerContract = new Contract(AccountId = a.Id);
+        Id assignmentAgreementRecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
+        Contract assignmentAgreement = new Contract(
+            AccountId = a.Id,
+            RecordTypeId = assignmentAgreementRecordTypeId
+        );
+        insert new List<Contract>{customerContract, assignmentAgreement};
         System.assertEquals(null, Util.objectsUpdatedIfMockingDML,
             'Did not expect any updated to be attempted yet');
-        update c;
+        customerContract.Assignment_Agreement__c = assignmentAgreement.Id;
+        update customerContract;
         System.assertEquals(0, Util.objectsUpdatedIfMockingDML.size(),
             'Expected customerAssignmentService.updateAssignmentAgreements trigger to call an update with no rows');
     }
