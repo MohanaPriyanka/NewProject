@@ -9,6 +9,7 @@ public without sharing class OpportunityTriggerHandler {
 
     @TestVisible
     private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
+    private static CustomerAssignmentService customerAssignmentService = new CustomerAssignmentService();
 
     public void onBeforeInsert(List<Opportunity> newOppList){
         customIdSwapOpp(newOppList, null);
@@ -31,6 +32,7 @@ public without sharing class OpportunityTriggerHandler {
         }
         createPartnerCommission(oldMap, newMap);
         ClientReportingService.updateClientUAS(newMap, oldMap);
+        customerAssignmentService.updateAssignmentAgreements(oldMap, newMap);
     }
 
     public void queueNMCTariffChange(List<Opportunity> oppList, Map<Id, Opportunity> oldMap) {
@@ -116,6 +118,7 @@ public without sharing class OpportunityTriggerHandler {
         return eventMap;
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     private static void setPartnerForTests(List<Opportunity> newOppList){
         // Only for test records, to avoid validation rule error that opportunities must have a partner
         if (!Test.isRunningTest()) {
@@ -137,29 +140,31 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-    public void mapDocuSignRS(List<Opportunity> oppList, Map<ID, Opportunity> oldOppMap){
+    public void mapDocuSignRS(List<Opportunity> oppList, Map<Id, Opportunity> oldOppMap){
         Set<String> oppIdSet = new Set<String>();
         for (Opportunity opp : oppList) {
             if (opp.Email__c != null) {
                 oppIdSet.add(opp.Email__c);
             }
         }
-        if (oppIdSet.size() > 0){
-            Map<String, dsfs__DocuSign_Recipient_Status__c> mapDocRS = new Map<String, dsfs__DocuSign_Recipient_Status__c>();
-            for (dsfs__DocuSign_Recipient_Status__c obj : [SELECT Id, Name, dsfs__Parent_Status_Record__c, dsfs__Recipient_Status__c, dsfs__DocuSign_Recipient_Email__c
-                                                          FROM dsfs__DocuSign_Recipient_Status__c
-                                                          WHERE dsfs__DocuSign_Recipient_Email__c IN : oppIdSet]){
-                mapDocRS.put(obj.dsfs__DocuSign_Recipient_Email__c, obj);
-            }
-            for (Opportunity opp : oppList) {
-                if (Trigger.isInsert || Trigger.isUpdate || oldOppMap.get(opp.Id). Email__c != opp.Email__C){
-                    if (mapDocRS.containsKey(opp.Email__c)){
-                       opp.DocuSign_Recipient__c = mapDocRS.get(opp.Email__c).Id;
-                    }
+        if (oppIdSet.isEmpty()) {
+            return;
+        }
+        Map<String, dsfs__DocuSign_Recipient_Status__c> mapDocRS = new Map<String, dsfs__DocuSign_Recipient_Status__c>();
+        for (dsfs__DocuSign_Recipient_Status__c obj : [
+            SELECT Id, Name, dsfs__Parent_Status_Record__c, dsfs__Recipient_Status__c, dsfs__DocuSign_Recipient_Email__c
+            FROM dsfs__DocuSign_Recipient_Status__c
+            WHERE dsfs__DocuSign_Recipient_Email__c IN : oppIdSet
+        ]) {
+            mapDocRS.put(obj.dsfs__DocuSign_Recipient_Email__c, obj);
+        }
+        for (Opportunity opp : oppList) {
+            if (Trigger.isInsert || Trigger.isUpdate || oldOppMap.get(opp.Id).Email__c != opp.Email__c) {
+                if (mapDocRS.containsKey(opp.Email__c)) {
+                    opp.DocuSign_Recipient__c = mapDocRS.get(opp.Email__c).Id;
                 }
-                else if (oldOppMap.get(opp.Id).Email__c != opp.Email__c && !mapDocRS.containsKey(opp.Email__c)) {
-                    opp.DocuSign_Recipient__c = null;
-                }
+            } else if (oldOppMap.get(opp.Id).Email__c != opp.Email__c && !mapDocRS.containsKey(opp.Email__c)) {
+                opp.DocuSign_Recipient__c = null;
             }
         }
     }

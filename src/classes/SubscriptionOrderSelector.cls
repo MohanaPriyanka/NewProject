@@ -36,4 +36,22 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Date_Enacted_By_Utility__c = null
         ];
     }
+
+    public List<Subscription_Order__c> selectApprovedByOppIds(Set<Id> oppIds) {
+        return [
+            SELECT Id, Client_Assignment_Agreement__c, Utility_Account_Subscription__r.Opportunity__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__r.Opportunity__c IN :oppIds
+            AND Approval_Status__c = 'Approved'
+        ];
+    }
+
+    public List<Subscription_Order__c> selectApprovedByContractIds(Set<Id> contractIds) {
+        return [
+            SELECT Id, Client_Assignment_Agreement__c, Utility_Account_Subscription__r.Opportunity__r.ContractId
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__r.Opportunity__r.ContractId IN :contractIds
+            AND Approval_Status__c = 'Approved'
+        ];
+    }
 }
