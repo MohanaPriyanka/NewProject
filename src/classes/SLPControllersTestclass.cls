@@ -552,66 +552,6 @@ public without sharing class SLPControllersTestclass {
         }
     }
 
-    @isTest static void testSaveNoChangeRequired() {
-        Test.startTest();
-        User execUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
-
-        Lead lead;
-        for (Lead l : getLeads()) {
-            if (l.FirstName == 'NY') {
-                lead = l;
-                break;
-            }
-        }
-        lead.CAP_Stage__c = 'NAV_Confirmations';
-        Util.disableTrigger('Disable_LeadTrigger__c');
-        update lead;
-        Util.enableTrigger('Disable_LeadTrigger__c');
-
-        System.assertEquals(lead.LastName, 'Test');
-  
-        LoanHandler.createResidentialEquipment(new List<Lead>{lead});
-        LoanHandler.resetTriggerContext();
-        LoanHandler.createLoan(new List<Lead>{lead});
-        Loan__c loan = [SELECT Id FROM Loan__c WHERE Lead__c = :lead.Id];
-        Util.printSOQLLimit('1');
-        System.runAs(execUser) {
-            Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
-            Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
-
-            Residential_Equipment__c re = SLPCustomerHandler.getCustomerInformation(loan.Id);
-            System.assertEquals(null, re.Module_Manufacturer__c);
-
-            Residential_Equipment__c updatedRE = SLPCustomerHandler.saveChangeOrder(loan.Id,
-                '{"number_of_modules__c":"24","module_manufacturer__c":"LG","module_model_number__c":"LG335",' +
-                    '"number_of_inverters__c":"24","inverter_manufacturer__c":"Enphase","inverter_model_number__c":"IQ6Plus",' +
-                    '"Estimated_Completion_Date__c":"04/30/2018","generator_nameplate_capacity__c":"8.04",' +
-                    '"System_Cost__change":' + lead.Requested_Loan_Amount__c + ',' +
-                    '"Number_of_Modules__change":2,"Module_Manufacturer__change":"LG","Module_Model_Number__change":"LG335",' +
-                    '"Number_of_Inverters__change":24,"Inverter_Manufacturer__change":"Enphase","Inverter_Model_Number__change":"IQ6Plus",' +
-                    '"Estimated_Completion_Date__change":"04/30/2018","Generator_Nameplate_Capacity__change":8.04,"Storage__change":true,' +
-                    '"Storage_Grid_Hybrid__change":"Yes","Storage_Capacity__change":10,"Storage_Full_or_Partial_Home__change":"Full home backup",' +
-                    '"Storage_Inverter_Manufacturer__change":"SolarEdge","Storage_Inverter_Model__change":"StorEdge 10kw",' +
-                    '"Storage_Manufacturer__change":"Tesla","Storage_Model__change":"Powerwall"}');
-            System.assertEquals(null, updatedRE.Loan__r.Lead__r.Change_Order_Status__c);
-            re = SLPCustomerHandler.getCustomerInformation(loan.Id);
-            System.assertEquals('LG', re.Module_Manufacturer__c);
-            System.assertEquals('LG335', re.Module_Model_Number__c);
-            System.assertEquals(2, re.Number_of_Modules__c);
-            System.assertEquals('Enphase', re.Inverter_Manufacturer__c);
-            System.assertEquals('IQ6Plus', re.Inverter_Model_Number__c);
-            System.assertEquals(24, re.Number_of_Inverters__c);
-            System.assertEquals(8.04, re.Generator_Nameplate_Capacity__c);
-            System.assertEquals(10, re.Storage_Capacity__c);
-            System.assertEquals(true, re.Storage_Grid_Hybrid__c);
-            System.assertEquals('Full home backup', re.Storage_Full_or_Partial_Home__c);
-            System.assertEquals('SolarEdge', re.Storage_Inverter_Manufacturer__c);
-            System.assertEquals('Tesla', re.Storage_Manufacturer__c);
-            System.assertEquals('StorEdge 10kw', re.Storage_Inverter_Model__c);
-            System.assertEquals('Powerwall', re.Storage_Model__c);
-        }
-        Test.stopTest();
-    }
 
     @isTest static void testMaxLoanAmount() {
         LASERCA__Personal_Credit_Report__c pcr = [
