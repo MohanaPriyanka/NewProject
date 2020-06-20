@@ -220,9 +220,6 @@ public without sharing class SLPControllersTestclass {
 
             Lead leadRecord = leadMap.get('leadMALoanTerm10Rate699');
 
-            SLPCreditStatus.sendApplication(leadRecord.Id, 12);
-            System.assertEquals(1, MessagingService.emailsSent.size());
-
             productReturnList.clear();
             productReturnList = SLPCreditStatus.getCustomerProducts(leadMap.get('coApplicantLead').Id);
             System.assertEquals(0, productReturnList.size());
@@ -330,89 +327,7 @@ public without sharing class SLPControllersTestclass {
         Test.stopTest();
     }
 
-    @isTest static void testCustomerHandlerUser() {
-        User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'tropicole34@aol.com'];
-        List<Lead> leadList = new List<Lead>();
-        List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
-        Residential_Equipment__c equipmentRecord;
 
-        Test.startTest();
-
-        leadList = getLeads();
-        LoanHandler.createResidentialEquipment(leadList);
-        LoanHandler.createLoan(leadList);
-
-        List<Loan__c> loanList = [SELECT Id, Partner__c, Sales_Agent__c,
-        (SELECT Id, Name, Owner__c FROM Partner_Tasks__r WHERE Status__c = 'Pending' LIMIT 1) FROM Loan__c];
-        update loanList;
-        System.runAs(partnerUser) {
-            SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
-            System.assertEquals(5, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
-            SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
-            System.assertEquals(0, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
-            equipmentRecord = SLPCustomerHandler.getCustomerInformation(loanList[0].Id);
-            String partnerProfile = SLPCustomerHandler.getLicenseTypeandReferralCode();
-            System.assertEquals('Manager/test/true', partnerProfile);
-            List<String> addressList = new List<String>();
-            addressList.add('Jpentaleri@bluewavesolar.com');
-            Boolean emailSuccess = MessagingService.createAndSendDynamicTemplateEmail('SLP_Community_Solar_Application', 'customercare@bluewavesolar.com', 'Subject Line', addressList, '{!ReferralCode}', 'get500');
-            // emailSuccess should be true, but in case Deliverability is turned off:
-            System.assertEquals(1, MessagingService.emailsSent.size());
-        }
-
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
-
-        System.runAs(partnerUser) {
-            partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loanList[0].Id);
-        }
-        Test.stopTest();
-    }
-
-    @isTest static void testCustomerHandlerExec() {
-        User partnerUser = [SELECT Id, ContactId, Partner_ID__c, Sales_Representative_Id__c FROM User WHERE Email = 'colematthewswain@gmail.com'];
-
-        List<Lead> leadList = new List<Lead>();
-        List<Partner_Task__c> partnerTaskList = new List<Partner_Task__c>();
-        Residential_Equipment__c equipmentRecord;
-
-        Test.startTest();
-
-        leadList = getLeads();
-        LoanHandler.createResidentialEquipment(leadList);
-        LoanHandler.createLoan(leadList);
-        Database.leadConvert lc = new Database.leadConvert();
-        lc.setLeadId(leadList.get(0).id);
-        lc.setConvertedStatus('Qualified');
-        Database.LeadConvertResult lcr = Database.convertLead(lc);
-        System.assert(lcr.isSuccess());
-
-        Opportunity opportunityRecord = [SELECT Id FROM Opportunity];
-        opportunityRecord.StageName = 'Expired';
-        update opportunityRecord;
-
-        Loan__c loan = [SELECT Id FROM Loan__c LIMIT 1];
-        System.runAs(partnerUser) {
-            SLPAllCustomersHandler.LoanRecords loanRecords = SLPAllCustomersHandler.getAllCustomers();
-            System.assertEquals(4, loanRecords.completedLoans.size() + loanRecords.loansInProcess.size());
-            System.assertEquals(1, loanRecords.expiredApplicants.size());
-            SLPAllCustomersHandler.LeadRecords leadRecords = SLPAllCustomersHandler.getLeads();
-            System.assertEquals(0, leadRecords.declinedApplicants.size() + leadRecords.pendingApplications.size());
-            equipmentRecord = SLPCustomerHandler.getCustomerInformation(loan.Id);
-        }
-
-        for (Lead leadRecord : leadList) {
-            leadRecord.Status = 'Qualified';
-        }
-        update leadList;
-
-        System.runAs(partnerUser) {
-            partnerTaskList = SLPCustomerHandler.getLoanCustomerTasks(loan.Id);
-        }
-        Test.stopTest();
-    }
 
     @isTest static void testCustomerHandlerPartThree() {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
@@ -524,45 +439,7 @@ public without sharing class SLPControllersTestclass {
         Test.stopTest();
     }
 
-    @isTest static void testSLPSendApplicationEmail() {
-        if (SLPortal_Settings__c.getall().isEmpty()) {
-            insert new SLPortal_Settings__c(Name = 'System',
-                Require_IBLS_for_MSL_Loans__c = true);
-        }
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'colematthewswain@gmail.com'];
-        Partner__c partnerRecord = [SELECT Id, Name FROM Partner__c];
-        String emailTest;
-        Lead newLead = new Lead(
-            FirstName = 'Cole',
-            LastName = 'Swain',
-            LASERCA__Home_Address__c = '55 Boston St.',
-            LASERCA__Home_City__c = 'Boston',
-            LASERCA__Home_State__c = 'MA',
-            LASERCA__Home_Zip__c = '02052',
-            Email = 'colemswain@gmail.com',
-            LASERCA__Social_Security_Number__c = '000000001',
-            Requested_Loan_Amount__c = 25000,
-            Annual_Income_Currency__c = 150000,
-            Credit_Check_Acknowledged__c = true,
-            Privacy_Policy_Acknowledged__c = true,
-            Automatic_Product_Assignment__c = true,
-            Product_Program__c = 'BlueWave Solar Loan',
-            Unfinished_Lead__c = true,
-            Utility_Bill_Access_Acknowledged__c = true
-        );
-
-        Test.startTest();
-
-        System.runAs(partnerUser) {
-            SLPAddCustomer.sendApplication(newLead, 25000);
-        }
-        SLPortal_Settings__c slportalSettings = SLPortal_Settings__c.getall().values()[0];
-        slportalSettings.Require_IBLS_for_MSL_Loans__c = false;
-        update slportalSettings;
-        SLPAddCustomer.sendApplication(newLead, 25000);
-        Test.stopTest();
-        System.assertEquals(1, MessagingService.emailsSent.size());
-    }
+ 
 
     @isTest static void testViewPreQualifiedRecords() {
         User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
@@ -601,92 +478,10 @@ public without sharing class SLPControllersTestclass {
 
         Test.startTest();
 
-        System.runAs(partnerUser) {
-            List<SLPortal_Settings__c> customSetting = BlueWaveParent.getSLPortalCustomSetting();
-            Id newFileId = BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'solarloans@bluewavesolar.com','');
-            BlueWaveParent.saveTheChunkWithDescription((String)equipment.Id, attach.Name, 'base64', '.png', 'PTO Documentation', 'solarloans@bluewavesolar.com', newFileId);
-
-            List<Attachment> attachList = [SELECT Id, Body
-            FROM Attachment
-            WHERE Id = : newFileId];
-
-            System.Assert(attachList.size()>0);
-            System.AssertEquals(customSetting.size(), 1);
-        }
+        
     }
 
-    @isTest static void testSLPAddCoApplicant() {
-        User partnerUser = [SELECT Id FROM User WHERE Email = 'tropicole34@aol.com'];
-        String checkForCoAppsTest;
-        String getCoAppLinkTest;
-        String sendCoAppEmailTest;
-        Contact checkaddCoApp;
-        String leadId;
-        String leadName;
-        Integer i;
-        Integer j;
-        Date dob = date.newInstance(1990, 05, 13);
-
-        Account coAppPlaceholder = new Account (Name = 'Co-Applicant Placeholder');
-        insert coAppPlaceholder;
-
-        Contact coAppInfo = new Contact(FirstName = 'Jordan',
-            LastName = 'CoApplicant',
-            Email = 'jpentaleri@bluewavesolar.com');
-        Contact preExisting = new Contact(FirstName = 'Jordan',
-            LastName = 'PreExist',
-            Email = 'jpentaleri@bluewavesolar.com');
-        insert preExisting;
-
-        Contact newCoApp = new Contact(FirstName = 'Jordan',
-            LastName = 'PreExist',
-            Email = 'jpentaleri@bluewavesolar.com',
-            LASERCA__Home_Address__c = '200 Street',
-            LASERCA__Home_State__c = 'MA',
-            LASERCA__Home_City__c = 'Boston',
-            LASERCA__Home_Zip__c = '02114',
-            Income__c = 40000,
-            LASERCA__Co_Applicant_DOB__c = dob,
-            LASERCA__Social_Security_Number__c = '000000001',
-            Credit_Check_Acknowledged__c = TRUE,
-            Privacy_Policy_Acknowledged__c = TRUE,
-            LASERCA__Co_Applicant_Social_Security_Number__c  = '000000001');
-
-
-        Test.startTest();
-        List<Lead> leadList = [SELECT Id, Unfinished_Lead__c, Status FROM Lead];
-        for (i=0 ; i < leadList.size(); i++) {
-            leadList.get(i).Status = 'Unqualified';
-            if ( i == 1 ) {
-                leadList.get(i).CoApplicant_Contact__c = preExisting.Id;
-            } else if ( i == 2 ) {
-                leadList.get(i).Partner_Sent_Co_Signer_Link__c = TRUE;
-            }
-        }
-        update leadList;
-        for (j = 0; j < leadList.size(); j++) {
-            leadId = leadList.get(j).Id;
-            System.runAs(partnerUser) {
-                if ( j == 1) {
-                    checkForCoAppsTest = SLPAddCoApplicant.checkForCoApps(leadId);
-                    System.assertEquals(checkForCoAppsTest, 'hasCoApp');
-                    getCoAppLinkTest = SLPAddCoApplicant.getCoAppLink(coAppInfo, leadId);
-                    System.assertNotEquals(checkForCoAppsTest, '');
-                    sendCoAppEmailTest = SLPAddCoApplicant.sendCoAppEmail(newCoApp, leadList.get(j));
-                    System.assertEquals(sendCoAppEmailTest, 'success');
-                } else if ( j == 2) {
-                    checkForCoAppsTest = SLPAddCoApplicant.checkForCoApps(leadId);
-                    System.assertEquals(checkForCoAppsTest, 'sentEmail');
-                    getCoAppLinkTest = SLPAddCoApplicant.getCoAppLink(coAppInfo, leadId);
-                    System.assertNotEquals(checkForCoAppsTest, '');
-                    checkaddCoApp = SLPAddCoApplicant.addNewCoApplicant(newCoApp, leadList.get(j));
-                    System.assertNotEquals(checkaddCoApp.Lead__c, '');
-                }
-            }
-        }
-        Test.stopTest();
-    }
-
+  
     @isTest static void testErrorParsing() {
         System.assertEquals('CreditBureau - Invalid borrower first name',
             SLPAddCustomer.parseError('ERROR: E999 - CreditBureau - Invalid borrower first name'));
@@ -774,7 +569,7 @@ public without sharing class SLPControllersTestclass {
         Util.enableTrigger('Disable_LeadTrigger__c');
 
         System.assertEquals(lead.LastName, 'Test');
-        lead = CAPController.convertLead(lead.Id, lead.Email);
+  
         LoanHandler.createResidentialEquipment(new List<Lead>{lead});
         LoanHandler.resetTriggerContext();
         LoanHandler.createLoan(new List<Lead>{lead});
