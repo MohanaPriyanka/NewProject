@@ -425,7 +425,7 @@ public class ScheduleZTriggerHandlerTest {
 
         Test.stopTest();
 
-        List<Error_Log__c> logs = [SELECT Message__c FROM Error_Log__c];
+        List<Error_Log__c> logs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'ZuoraSubscriptionAsyncService'];
         System.assertEquals(1, logs.size());
         System.assert(logs[0].Message__c.contains('Found an account that should have a Zuora Id but didn\'t'));
     }
@@ -464,7 +464,7 @@ public class ScheduleZTriggerHandlerTest {
 
         Test.stopTest();
 
-        List<Error_Log__c> logs = [SELECT Message__c FROM Error_Log__c];
+        List<Error_Log__c> logs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'ZuoraSubscriptionAsyncService'];
         System.assertEquals(1, logs.size());
         System.assert(logs[0].Message__c.contains('zuora.com/v1/orders'));
         System.assert(logs[0].Message__c.contains('CreateSubscription'));
@@ -503,10 +503,11 @@ public class ScheduleZTriggerHandlerTest {
 
         Test.stopTest();
 
-        List<Error_Log__c> logs = [SELECT Message__c FROM Error_Log__c WHERE Severity__c = :Logger.ERROR];
+        List<Error_Log__c> logs = [SELECT Message__c FROM Error_Log__c WHERE Severity__c = :Logger.ERROR AND Class__c = 'ZuoraSubscriptionAsyncService'];
+
         System.assertEquals(1, logs.size());
         System.assert(logs[0].Message__c.contains('Found an account that should have a Zuora Id but didn\'t'), 'Expected to find an account without a Zuora Id');
-        logs = [SELECT Message__c FROM Error_Log__c WHERE Severity__c != :Logger.ERROR];
+        logs = [SELECT Message__c FROM Error_Log__c WHERE Severity__c != :Logger.ERROR AND Class__c = 'ZuoraSubscriptionAsyncService'];
         System.assert(logs[0].Message__c.contains('zuora.com/v1/orders'), 'Expected a v1/orders callout');
         System.assert(logs[0].Message__c.contains('CreateSubscription'), 'Expected CreateSubscription in the orders callout');
     }
