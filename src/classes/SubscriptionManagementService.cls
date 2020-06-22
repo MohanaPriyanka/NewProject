@@ -168,7 +168,9 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 excep.getStackTraceString() + ' ' +
                 excep.getMessage() + ' ' +
                 JSON.serialize(approvedSOs);
-            //Logger.logNow('SubscriptionManagementService', 'checkSOApproval', errorMessage);
+            if (!Test.isRunningTest()){
+                Logger.logNow('SubscriptionManagementService', 'checkSOApproval', errorMessage);
+            }
         }
     }
     public List<Shared_Solar_System_Order__c> checkSSSOApproval(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {

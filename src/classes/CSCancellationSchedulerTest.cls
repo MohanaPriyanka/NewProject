@@ -65,7 +65,7 @@ private class CSCancellationSchedulerTest {
         cancellationScheduler.execute(null);
         Test.stopTest();
 
-        errorLogs = [SELECT Id, Method__c FROM Error_Log__c];
+        errorLogs = [SELECT Id, Method__c FROM Error_Log__c WHERE Class__c = 'CSCancellationScheduler'];
         System.assertEquals(1, errorLogs.size());
         System.assertEquals('previewCancellation', errorLogs[0].Method__c, 'Expected a previewCancellation error log');
     }

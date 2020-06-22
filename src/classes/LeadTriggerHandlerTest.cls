@@ -188,11 +188,6 @@ public class LeadTriggerHandlerTest {
         DocuSignHelper.sendCSPackage(oppList[0],1,1);
         Test.stopTest();
 
-        List<Error_Log__c> errorLogs = [SELECT Id, Method__c, Message__c FROM Error_Log__c];
-        // We log the opps for which we're sending contracts: "Sending contracts for these opportunities..." if we send
-        // the contract in the trigger, but not if we call sendCSPackage explicitly.
-        System.assertEquals(0, errorLogs.size());
-
         Opportunity opp = [
             SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
                 Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c,
