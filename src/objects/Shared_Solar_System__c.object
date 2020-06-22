@@ -1783,6 +1783,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>James Bigelow</label>
                 </value>
                 <value>
+                    <fullName>Management Services Partners LLC</fullName>
+                    <default>false</default>
+                    <label>Management Services Partners LLC</label>
+                </value>
+                <value>
                     <fullName>Mass Renewables</fullName>
                     <default>false</default>
                     <label>Mass Renewables</label>
@@ -2710,6 +2715,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>James Bigelow</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Management Services Partners LLC</fullName>
                 <default>false</default>
             </values>
             <values>
