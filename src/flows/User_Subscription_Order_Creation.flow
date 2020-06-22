@@ -331,20 +331,6 @@
         <locationX>682</locationX>
         <locationY>566</locationY>
         <assignmentItems>
-            <assignToReference>var_newAnnualCost</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>scrvarNew_Annual_Cost</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>var_newAnnualkWh</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>scrvarNew_Annual_kWh</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>sov_SubscriptionOrder.Utility_Account_Subscription__c</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -376,14 +362,14 @@
             <assignToReference>sov_SubscriptionOrder.New_Annual_Cost__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>var_newAnnualCost</elementReference>
+                <numberValue>0.0</numberValue>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>sov_SubscriptionOrder.New_Annual_kWh__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>var_newAnnualkWh</elementReference>
+                <numberValue>0.0</numberValue>
             </value>
         </assignmentItems>
         <connector>
@@ -1081,7 +1067,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
             <targetReference>Get_UAS</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>varErrorMessage</name>
         <text>&lt;p&gt;An Error Occurred in the User Subscription Order Creation Flow:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
