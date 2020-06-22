@@ -7,11 +7,7 @@
  *************************************************************************************/
 
 public without sharing class BlueWaveParent {
-    @AuraEnabled
-    public static String getLicenseType() {
-        SLPUserHelper.PartnerProfile profile = SLPUserHelper.getPartnerProfile();
-        return profile.LicenseType;
-    }
+    
 
     public static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
 
@@ -42,11 +38,7 @@ public without sharing class BlueWaveParent {
         return options;
     }
 
-    @AuraEnabled
-    public static List<SLPortal_Settings__c> getSLPortalCustomSetting() { 
-        List<SLPortal_Settings__c> slpSettings = SLPortal_Settings__c.getall().values();
-        return slpSettings;
-    }
+    
 
     @AuraEnabled
     public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType, String description) {
