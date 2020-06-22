@@ -57,7 +57,7 @@ private class CSCancellationSchedulerTest {
     static void testPreview() {
         CustomerCommunicationHandlerTest.setDaysPastDue(System.Today().addDays(-68), 10);
 
-        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'CSCancellationScheduler'];
         System.assertEquals(0, errorLogs.size(), 'Expected no error logs');
 
         Test.startTest();
