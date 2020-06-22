@@ -153,8 +153,23 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 approvedSOs.add(so.Id);
             }
         }
+
+        if (approvedSOs.isEmpty()) {
+            return;
+        }
+
         List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
         update updateSOs;
+
+        try {
+            ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(approvedSOs);
+        } catch (Exception excep){
+            String errorMessage = 'Could not run ClientInvoicingFeeAssignmentService ' +
+                excep.getStackTraceString() + ' ' +
+                excep.getMessage() + ' ' +
+                JSON.serialize(approvedSOs);
+            Logger.logNow('SubscriptionManagementService', 'checkSOApproval', errorMessage);
+        }
     }
     public List<Shared_Solar_System_Order__c> checkSSSOApproval(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         List<Shared_Solar_System_Order__c> approvedSSSOs = new List<Shared_Solar_System_Order__c>();
