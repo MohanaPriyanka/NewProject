@@ -38,7 +38,9 @@ public without sharing class CSSubscriptionEnroller {
         ualList = [
                 SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,
                         Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
-                        Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__c
+                        Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__c,
+                        Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c,
+                        Subsc_Annual_Cost_of_Electricity_Rollup__c, Subscribed_Annual_kWhs_Rollup__c
                 FROM Utility_Account_Log__c
                 WHERE Lead__c IN :leadIds
                 ORDER BY Annual_Cost_of_Electricity__c DESC
@@ -51,10 +53,11 @@ public without sharing class CSSubscriptionEnroller {
         ];
 
         sssList = [
-                SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c,
-                        Product__c, Product__r.Sizing_Method__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
+                SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Billing_Method__c,
+                        Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c,
+                        Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
                         Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
-                        Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
+                        Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
                         BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
                 FROM Shared_Solar_System__c
                 WHERE Open__c = TRUE
@@ -113,11 +116,13 @@ public without sharing class CSSubscriptionEnroller {
     }
 
     public void enroll() {
-
-        for (Lead lead : leads) {
-            calculateProposedkWh(lead);
+        if (!featureService.isEnabled('Sizing_Method')) {
+            for (Lead lead : leads) {
+                calculateProposedkWh(lead);
+            }
+            updateUALs();
         }
-        updateUALs();
+
         for (Integer leadIndex = 0; leadIndex < leads.size(); leadIndex++) {
             AnnualEnergyTotal annualTotals = getAnnualTotals(leads[leadIndex]);
             if (annualTotals.cost == 0 && annualTotals.kWh == 0) {
@@ -210,15 +215,20 @@ public without sharing class CSSubscriptionEnroller {
             if (ual.Annual_Cost_of_Electricity__c == null && ual.Annual_kWh__c == null) {
                 throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
             }
-            if (featureService.isEnabled('Subscription_Orders')) {
+
+            if (featureService.isEnabled('Sizing_Method')) {
                 totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
-                totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
-                totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
+                totalAnnualkWhElectricity += Util.nullToZero(ual.Annual_kWh__c);
             } else {
                 totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subscribed_Annual_Cost_of_Electricity__c);
                 totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
+            }
+
+            if (featureService.isEnabled('Subscription_Orders')) {
+                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
+                totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
+            } else {
+                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subscribed_Annual_Cost_of_Electricity__c);
                 totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs__c);
             }
 

@@ -13,25 +13,54 @@ public with sharing class SubscriptionSizingTestclass {
     public static void testSetup() {
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
 
+        Partner__c partner1 = new Partner__c (
+            Name = 'BlueWave Test Partner',
+            Email__c = 'bwtest@email.com'
+        );
+        insert partner1;
+
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
         );
         insert eversource;
 
-        Utility_NMC_Tariff__c kwhNMCTarrif = new Utility_NMC_Tariff__c (Name = 'kwh Tariff? ',
+        Utility_NMC_Tariff__c kwhSizingMethodR1 = new Utility_NMC_Tariff__c (Name = 'kwh Tariff? ',
+            Utility__c = 'Eversource',
+            Class__c = 'Class 1',
+            Value_of_Net_Metering_Credit__c = 0.1137,
+            Size_Ratio__c = 1.2,
+            Current_Billing_Rate__c = TRUE
+        );
+
+
+        Utility_NMC_Tariff__c kwhSizingMethodR2 = new Utility_NMC_Tariff__c (Name = 'kwh Tariff? ',
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1137,
-            Current_Billing_Rate__c = TRUE);
-        insert kwhNMCTarrif;
+            Size_Ratio__c = 1.5,
+            Current_Billing_Rate__c = TRUE,
+            Customer_Type__c = 'Residential'
+        );
 
-        Utility_NMC_Tariff__c costNMCTariff = new Utility_NMC_Tariff__c (Name = 'Cost Tariff',
+        Utility_NMC_Tariff__c costSizingMethod = new Utility_NMC_Tariff__c (Name = 'Cost Tariff',
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1812,
             Current_Billing_Rate__c = TRUE);
-        insert costNMCTariff;
+        insert new List<Utility_NMC_Tariff__c>{kwhSizingMethodR1, kwhSizingMethodR2, costSizingMethod};
+
+        Rate_Class__c rateClassR1 = new Rate_Class__c(
+            Name = 'Eversource R1',
+            Utility_NMC_Tariff__c = kwhSizingMethodR1.Id
+        );
+
+        Rate_Class__c rateClassR2 = new Rate_Class__c(
+            Name = 'Eversource R2',
+            Utility_NMC_Tariff__c = kwhSizingMethodR2.Id
+        );
+
+        insert new List<Rate_Class__c> {rateClassR1, rateClassR2};
 
 
         Product2 costProduct = new Product2( Name = 'BlueWave Community Solar',
@@ -39,6 +68,7 @@ public with sharing class SubscriptionSizingTestclass {
             Product_Type__c = 'Community Solar',
             State__c = 'MA',
             Customer_Subscription_Type__c = 'Electricity Cost ($)',
+            Sizing_Method__c = 'Project Ratio',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = True,
             Lender_of_Record__c = 'BlueWave',
@@ -53,6 +83,7 @@ public with sharing class SubscriptionSizingTestclass {
             Product_Type__c = 'Community Solar',
             State__c = 'MA',
             Customer_Subscription_Type__c = 'kWh',
+            Sizing_Method__c = 'Rate Class Ratio',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = True,
             Lender_of_Record__c = 'BlueWave',
@@ -64,6 +95,14 @@ public with sharing class SubscriptionSizingTestclass {
 
         insert new List<Product2>{costProduct, kwhProduct};
 
+        //product tariffs --> to be used when testing sizing method flag being off
+        Product_Tariff__c kwhProductTariff = new Product_Tariff__c(
+            Product__c = kwhProduct.Id,
+            Size_Ratio__c = 1.5,
+            Utility_NMC_Tariff__c = kwhSizingMethodR2.Id
+        );
+        insert kwhProductTariff;
+
         Shared_Solar_System__c costSSS = new Shared_Solar_System__c(
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
@@ -74,6 +113,8 @@ public with sharing class SubscriptionSizingTestclass {
             Total_System_Size_kWh_DC__c = 1082.88,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
+            Utility_NMC_Tariff__c = costSizingMethod.Id,
+            Product__c = costProduct.Id,
             Credit_Score_Requirement__c = 300,
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
@@ -93,6 +134,8 @@ public with sharing class SubscriptionSizingTestclass {
             Total_System_Size_kWh_DC__c = 5832,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
+            Utility_NMC_Tariff__c = kwhSizingMethodR1.Id,
+            Product__c = kwhProduct.Id,
             Credit_Score_Requirement__c = 300,
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1316,
@@ -101,12 +144,68 @@ public with sharing class SubscriptionSizingTestclass {
             Maximum_Subscription_Capacity_kWDC__c = 25
         );
 
-        insert new List<Shared_Solar_System__c>{costSSS, kwhSSS};
+        Shared_Solar_System__c kwhSSSTwo = new Shared_Solar_System__c(
+            Name = 'kWh Shared Solar System Two',
+            Service_Territory__c = 'SEMA',
+            Service_Territories__c = 'SEMA',
+            Open__c = true,
+            Billing_Method__c = 'kWh',
+            Reserved_Capacity_kW_DC__c = '10',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 5832,
+            Total_System_Size_kW_AC__c  = 996,
+            Utility__c = eversource.Id,
+            Utility_NMC_Tariff__c = kwhSizingMethodR1.Id,
+            Product__c = kwhProduct.Id,
+            Credit_Score_Requirement__c = 300,
+            Assignment_Order__c = '2',
+            Expected_Yield_kWh_kW__c = 1316,
+            Assemblage_Count__c = 1,
+            Sales_Partners__c = 'All',
+            Maximum_Subscription_Capacity_kWDC__c = 25
+        );
+        //max kwh subscription = 25*1316 = 32900
+        insert new List<Shared_Solar_System__c>{costSSS, kwhSSS, kwhSSSTwo};
+
+        Load_U__c eversourceLZU = new Load_U__c(
+            Name = '12345',
+            LZ__c = 'SEMA'
+        );
+        insert eversourceLZU;
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = eversourceLZU.Id,
+            Utility__c = eversource.Id
+        );
+        insert junction;
+
+        Lead switchLead = (Lead)TestFactory.createSObject(new Lead(
+            LastName = 'Testcase',
+            FirstName = 'Switch',
+            Email = 'switch@email.com',
+            Utility_relationship__c = eversource.Id,
+            LASERCA__Home_Address__c = '123 Street',
+            LASERCA__Home_City__c = 'Albany',
+            LASERCA__Home_Zip__c = '12345',
+            LASERCA__Home_State__c = 'NY',
+            LoadZone__c = 'SEMA',
+            LeadSource = 'Switch',
+            Company = 'Switch Comp',
+            Status = 'Sales Qualified',
+            Partner_Lookup__c = partner1.Id,
+            Product_line__c = 'Community Solar',
+            Product__c = kwhProduct.Id,
+            Parcel_Zip__c = '12345',
+            Customer_type__c = 'Residential',
+            Application_Type__c = 'Residential',
+            System_Assignment__c = 'Automatic - Assignment Order'));
+        insert switchLead;
+
 
         Opportunity opportunityA = new Opportunity(
             Name = 'Ashley Smith',
             Shared_Solar_System__c = kwhSSS.Id,
-            NMC_Tariff__c = kwhNMCTarrif.Id,
+            NMC_Tariff__c = kwhSizingMethodR1.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
             Product__c = kwhProduct.Id,
@@ -116,7 +215,7 @@ public with sharing class SubscriptionSizingTestclass {
         Opportunity opportunityB = new Opportunity(
             Name = 'Stephen Ward',
             Shared_Solar_System__c = kwhSSS.Id,
-            NMC_Tariff__c = kwhNMCTarrif.Id,
+            NMC_Tariff__c = kwhSizingMethodR1.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
             Product__c = kwhProduct.Id,
@@ -126,7 +225,7 @@ public with sharing class SubscriptionSizingTestclass {
         Opportunity opportunityC = new Opportunity(
             Name = 'Nafisa Wong',
             Shared_Solar_System__c = costSSS.Id,
-            NMC_Tariff__c = costNMCTariff.Id,
+            NMC_Tariff__c = costSizingMethod.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
             Product__c = costProduct.Id,
@@ -136,7 +235,7 @@ public with sharing class SubscriptionSizingTestclass {
         Opportunity opportunityD = new Opportunity(
             Name = 'Ritik Mann',
             Shared_Solar_System__c = costSSS.Id,
-            NMC_Tariff__c = costNMCTariff.Id,
+            NMC_Tariff__c = costSizingMethod.Id,
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
             Product__c = costProduct.Id,
@@ -198,7 +297,79 @@ public with sharing class SubscriptionSizingTestclass {
         insert new List<Utility_Account_Subscription__c> {uasA, uasB, uasC, uasD};
 
 
+    }
 
+    @IsTest
+    //Need to convert leads to actually test the sizing method apex
+    public static void testSizingMethodConversion() {
+        useMocks(true);
+        Lead switchLead = [
+            SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
+                LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Product__c
+            FROM Lead
+            WHERE FirstName = 'Switch'
+            LIMIT 1
+        ];
+
+        LeadService leadService = new LeadService();
+
+        Account propertyAccount = leadService.buildPropertyAccountFromLegacyLead(switchLead);
+        insert propertyAccount;
+
+        Rate_Class__c rateClassR2 = [
+            SELECT Id, Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c
+            FROM Rate_Class__c
+            WHERE Name = 'Eversource R2'
+            LIMIT 1
+        ];
+
+        Utility_Account_Log__c ual = leadService.buildUtilityAccountLogFromLegacyLead(switchLead, propertyAccount);
+        //size of ual should be split onto 2 separate projects
+        //one should be maxed out (take the sss min), the other should take the ual min
+        //should take on the 1.5 size ratio rather than the 1.2 on the sss
+        ual.Annual_kWh__c = 40000;
+        ual.Utility_Rate_Class__c = rateClassR2.Id;
+        insert ual;
+        LeadServiceTestclass.pullCreditForLead(switchLead.Id);
+
+
+        switchLead.Status = 'Qualified';
+        update switchLead;
+
+
+        //convert the lead
+        Database.LeadConvert lc = new Database.LeadConvert();
+        lc.setLeadId(switchLead.Id);
+        lc.setConvertedStatus('Qualified');
+        lc.setDoNotCreateOpportunity(true);
+
+        Database.LeadConvertResult lcr = Database.convertLead(lc, false);
+        System.assert(lcr.isSuccess(), lcr.getErrors());
+
+        // query for the opportunity and utility account subscriptions after the fact
+        List<Opportunity> convertedOpps = [
+            SELECT Id
+            FROM Opportunity
+            WHERE AccountId = :propertyAccount.Id
+        ];
+        System.assertEquals(2, convertedOpps.size());
+
+        List<Utility_Account_Subscription__c> convertedUASes = [
+            SELECT Id, Sizing_Method__c, Shared_Solar_System__r.Name, Annual_kWh_Subscription_Future_Rollup__c
+            FROM Utility_Account_Subscription__c
+            WHERE Utility_Account_Log__c = :ual.Id
+        ];
+        System.assertEquals(2, convertedUASes.size());
+        for (Utility_Account_Subscription__c uas : convertedUASes) {
+            if (uas.Shared_Solar_System__r.Name == 'kWh Shared Solar System Two') {
+                System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c );
+                System.assertEquals(18066.67, uas.Annual_kWh_Subscription_Future_Rollup__c);
+            } else {
+                System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c );
+                System.assertEquals(21933.33, uas.Annual_kWh_Subscription_Future_Rollup__c);
+
+            }
+        }
 
     }
 
@@ -377,4 +548,7 @@ for (Utility_Account_Subscription__c uas : checkUASes) {
  }
 }
 }
+    private static void useMocks(Boolean featureOn) {
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
+    }
 }
