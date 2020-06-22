@@ -70,6 +70,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
             }
         }
     }
+
     @TestVisible
     private List<Subscription_Order__c> stampApprovedValues(Set<Id> soIds) {
         Id systemChangeOrderRecordTypeId = Schema.SObjectType.Subscription_Order__c.getRecordTypeInfosByName().get('System Change Order').getRecordTypeId();
@@ -154,9 +155,16 @@ public without sharing class SubscriptionManagementService implements Queueable{
         List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
         update updateSOs;
 
-        // To prevent calling a future method from a future method
-        if(!System.isFuture()) {
-            ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(approvedSOs);
+        try {
+            if (approvedSOs.size() > 0) {
+                ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(approvedSOs);
+            }
+        } catch (Exception excep){
+            String errorMessage = 'Could not run ClientInvoicingFeeAssignmentService ' +
+                excep.getStackTraceString() + ' ' +
+                excep.getMessage() + ' ' +
+                JSON.serialize(approvedSOs);
+            Logger.logNow('SubscriptionManagementService', 'checkSOApproval', errorMessage);
         }
     }
     public List<Shared_Solar_System_Order__c> checkSSSOApproval(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
