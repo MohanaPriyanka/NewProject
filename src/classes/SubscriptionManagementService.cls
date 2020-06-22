@@ -152,13 +152,16 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 approvedSOs.add(so.Id);
             }
         }
+
+        if (approvedSOs.isEmpty()) {
+            return;
+        }
+
         List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
         update updateSOs;
 
         try {
-            if (approvedSOs.size() > 0) {
-                ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(approvedSOs);
-            }
+            ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(approvedSOs);
         } catch (Exception excep){
             String errorMessage = 'Could not run ClientInvoicingFeeAssignmentService ' +
                 excep.getStackTraceString() + ' ' +
