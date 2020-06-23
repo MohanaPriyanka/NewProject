@@ -54,4 +54,36 @@ public inherited sharing class SubscriptionOrderSelectorTest {
         }
     }
 
+    @IsTest
+    public static void testGetAcquisitionOrdersBySSS(){
+        FeatureService featureService = new FeatureService();
+
+        List<Shared_Solar_System__c> sssList = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            ORDER BY Name
+            LIMIT 2
+        ];
+
+        Date reacDate = System.today().addDays(-6);
+
+        SubscriptionOrderSelector selector = new SubscriptionOrderSelector();
+        Map<Id,Subscription_Order__c> queriedOrdersOne = selector.getAcquisitionOrdersBySSS(sssList[0].Id, reacDate);
+        Map<Id,Subscription_Order__c> queriedOrdersTwo = selector.getAcquisitionOrdersBySSS(sssList[1].Id, reacDate);
+
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(9,queriedOrdersOne.values().size());
+            System.assertEquals(6,queriedOrdersTwo.values().size());
+        }
+
+        reacDate = System.today().addDays(2);
+
+        Map<Id,Subscription_Order__c> queriedFutureOrdersOne = selector.getAcquisitionOrdersBySSS(sssList[0].Id, reacDate);
+        Map<Id,Subscription_Order__c> queriedFutureOrdersTwo = selector.getAcquisitionOrdersBySSS(sssList[1].Id, reacDate);
+
+        if (featureService.isEnabled('Subscription_Orders')) {
+            System.assertEquals(0,queriedFutureOrdersOne.values().size());
+            System.assertEquals(0,queriedFutureOrdersTwo.values().size());
+        }
+    }
 }
