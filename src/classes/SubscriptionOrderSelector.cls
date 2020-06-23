@@ -23,9 +23,11 @@ public inherited sharing class SubscriptionOrderSelector {
                 Utility_Number_of_Decimal_Places__c,
                 Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
                 Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name,
+
                 Approved_Change_in_Subscription__c,
                 Contract_Fee_Detail__c,
                 Effective_Date__c,
+
                 Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c,
@@ -34,7 +36,6 @@ public inherited sharing class SubscriptionOrderSelector {
             WHERE Id IN :soIds
         ];
     }
-
     public List<Subscription_Order__c> selectUnenactedByUASId(Set<Id> uasIds) {
         return [
             SELECT Id, Name,
@@ -45,7 +46,6 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Date_Enacted_By_Utility__c = null
         ];
     }
-
     public List<Subscription_Order__c> selectApprovedByOppIds(Set<Id> oppIds) {
         return [
             SELECT Id, Client_Assignment_Agreement__c, Utility_Account_Subscription__r.Opportunity__c
@@ -54,7 +54,6 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Approval_Status__c = 'Approved'
         ];
     }
-
     public List<Subscription_Order__c> selectApprovedByContractIds(Set<Id> contractIds) {
         return [
             SELECT Id, Client_Assignment_Agreement__c, Utility_Account_Subscription__r.Opportunity__r.ContractId
@@ -62,5 +61,14 @@ public inherited sharing class SubscriptionOrderSelector {
             WHERE Utility_Account_Subscription__r.Opportunity__r.ContractId IN :contractIds
             AND Approval_Status__c = 'Approved'
         ];
+    }
+    public Map<Id, Subscription_Order__c> getAcquisitionOrdersBySSS(Id sssId, Date newReacqStartDate) {
+        return new Map<Id, Subscription_Order__c> ([
+            SELECT Id, Name
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__r.Shared_Solar_System__c = : sssId
+            AND Effective_Date__c >= : newReacqStartDate
+            AND Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c = false
+        ]);
     }
 }
