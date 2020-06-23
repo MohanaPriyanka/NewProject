@@ -275,7 +275,7 @@ false
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Template__c +
-&quot;&amp;queryid=[CustSig]{!Environment.VAR_QUERY_SSFCONTRACT_CUSTSIG}?pv0=&quot; + Id + &quot;,[BizSig]{!Environment.VAR_QUER_SSFCONTRACT_BIZSIG}?pv0=&quot; + Id + &quot;,[UAL]{!Environment.VAR_QUERY_SSFCONTRACT_UAL}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_BIZ}?pv1=&quot; + Lead__r.Id + &quot;,[Lead]{!Environment.VAR_QUERY_SSFCONTRACT_LEAD}?pv1=&quot; + Lead__r.Id + 
+&quot;&amp;queryid=[CustSig]{!Environment.VAR_QUERY_SSFCONTRACT_CUSTSIG}?pv0=&quot; + Id + &quot;,[BizSig]{!Environment.VAR_QUER_SSFCONTRACT_BIZSIG}?pv0=&quot; + Id + &quot;,[UAL]{!Environment.VAR_QUERY_SSFCONTRACT_UAL}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_BIZ}?pv1=&quot; + Lead__r.Id + &quot;,[Lead]{!Environment.VAR_QUERY_SSFCONTRACT_LEAD}?pv1=&quot; + Lead__r.Id + &quot;,[ResiSig]{!Environment.VAR_CONGA_QUERY_SSFCONTRACT_ResiSig}?pv0=&quot; + Id +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;APDF=0&quot; +
@@ -305,8 +305,10 @@ false
 
 &quot;[Terms and Conditions]&quot;&amp;Product__r.Generic_Terms_Conga_Template__c,
 
-&quot;[Community Solar Agreement]&quot;&amp;Product__r.Project_Specific_Conga_Template__c&amp;&quot;,[Solar Disclosure Form]&quot;&amp;Product__r.Disclosure_Form_Conga_Template__c
+&quot;[Community Solar Agreement]&quot;&amp;Product__r.Project_Specific_Conga_Template__c&amp;
+IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&quot;&amp;&quot;[Solar Disclosure Form]&quot;&amp;Product__r.Disclosure_Form_Conga_Template__c
 
+)
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Conga Template</label>
