@@ -89,5 +89,18 @@ public without sharing class TransferSelector {
         ];
     }
 
-
+    public List<Transfer__c> getUnbilledTransfersBySSS(Set<Id> sssIds) {
+        return [
+            SELECT Id, Name, Shared_Solar_System__c, Allocation_Schedule__c, Attempted_Transfer__c, Bill_Period__c,
+                Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Attempted_kWh_Transfer__c,
+                Total_Transferred__c, Transfer_Amount__c, Transfer_Type__c, Date_of_Transfer__c, Bill_Period__r.Name,
+                Bill_Period__r.Bill_Status__c, Allocation_Schedule__r.Id, Allocation_Schedule__r.Name
+            FROM Transfer__c
+            WHERE Shared_Solar_System__c = :sssIds
+            AND Bills_Generated__c = FALSE
+            AND Bill_By__c = 'UASB'
+            AND Transferred_To__c = 'Customer'
+            ORDER BY Date_of_Transfer__c
+        ];
+    }
 }
