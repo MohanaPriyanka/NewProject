@@ -460,21 +460,6 @@
         $A.util.removeClass(modal, 'slds-fade-in-hide');
     },
 
-    getSLPSettings : function(component, event, helper) {
-        var self = this;
-        return new Promise(function(resolve, reject) {
-            var action = component.get("c.getSLPortalCustomSetting");
-            action.setCallback(this,function(resp) {
-                if (resp.getState() == 'SUCCESS') {
-                    var slpSettings = resp.getReturnValue();
-                    resolve(slpSettings);
-                } else {
-                    self.logError('BlueWaveParentHelper', 'getSLPSettings', resp.getError());
-                }
-            });
-            $A.enqueueAction(action);
-        });
-    },
 
     // To compare date strings
     getFormattedDate : function(dateString) {
