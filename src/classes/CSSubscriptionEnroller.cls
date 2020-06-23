@@ -11,6 +11,10 @@
 public without sharing class CSSubscriptionEnroller {
     @TestVisible
     private static FeatureService featureService = new FeatureService();
+    @TestVisible
+    private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+    @TestVisible
+    private static UALSelector ualSelector = new UALSelector();
     private List<Utility_Account_Log__c> ualList;
     private List<Account> propAccountList;
     private Map<Id, List<Utility_Account_Log__c>> ualsByLeadId;
@@ -35,16 +39,8 @@ public without sharing class CSSubscriptionEnroller {
         for (Lead lead : leads) {
             leadIds.add(lead.Id);
         }
-        ualList = [
-                SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,
-                        Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
-                        Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__c,
-                        Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c,
-                        Subsc_Annual_Cost_of_Electricity_Rollup__c, Subscribed_Annual_kWhs_Rollup__c
-                FROM Utility_Account_Log__c
-                WHERE Lead__c IN :leadIds
-                ORDER BY Annual_Cost_of_Electricity__c DESC
-        ];
+
+        ualList = ualSelector.selectByLeads(leadIds);
 
         propAccountList = [
                 SELECT Id, Lead__c
@@ -52,17 +48,7 @@ public without sharing class CSSubscriptionEnroller {
                 WHERE Lead__c IN :leadIds AND RecordType.Name = 'Property'
         ];
 
-        sssList = [
-                SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Billing_Method__c,
-                        Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c,
-                        Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
-                        Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
-                        Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
-                        BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
-                FROM Shared_Solar_System__c
-                WHERE Open__c = TRUE
-                AND Capacity_Available_to_be_Reserved__c > 0
-        ];
+        sssList = sssSelector.getSharedSolarSystemsForEnrollment();
         sssByIds = new Map<Id, Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : sssList) {
             sssByIds.put(sss.Id, sss);
@@ -89,7 +75,7 @@ public without sharing class CSSubscriptionEnroller {
         }
 
         List<Product2> products = [
-                SELECT Id, Program__c, (
+                SELECT Id, Program__c, Sizing_Method__c, (
                         SELECT Id, Name, Size_Ratio__c, Utility_NMC_Tariff__r.Customer_Type__c,
                                 Utility_NMC_Tariff__r.Minimum_kWh__c, Utility_NMC_Tariff__r.Maximum_kWh__c,
                                 Utility_NMC_Tariff__r.Utility_Relationship__c, Utility_NMC_Tariff__c
@@ -215,10 +201,13 @@ public without sharing class CSSubscriptionEnroller {
             if (ual.Annual_Cost_of_Electricity__c == null && ual.Annual_kWh__c == null) {
                 throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
             }
-
             if (featureService.isEnabled('Sizing_Method')) {
                 totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-                totalAnnualkWhElectricity += Util.nullToZero(ual.Annual_kWh__c);
+                if (productsMap.get(lead.Product__c).Sizing_Method__c == 'Rate Class Ratio' && ual.Utility_Rate_Class__c != null) {
+                    totalAnnualkWhElectricity += Util.nullToZero((ual.Annual_kWh__c * ual.Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c));
+                } else {
+                    totalAnnualkWhElectricity += Util.nullToZero(ual.Annual_kWh__c);
+                }
             } else {
                 totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
                 totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);

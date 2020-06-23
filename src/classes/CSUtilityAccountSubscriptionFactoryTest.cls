@@ -378,13 +378,8 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     }
 
     public static List<Shared_Solar_System__c> getSharedSolarSystems() {
-        List<Shared_Solar_System__c> sharedSolarSystems = [
-            SELECT Id, Expected_Yield_kWh_kW__c, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kWDC__c,
-                NMC_Value__c, Product__r.Name, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c,
-                Utility_NMC_Tariff__c, Billing_Method__c, Utility_NMC_Tariff__r.Size_Ratio__c
-            FROM Shared_Solar_System__c
-        ];
-        return sharedSolarSystems;
+        SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+        return sssSelector.getSharedSolarSystemsForEnrollment();
     }
 
     public static void setMaximumSubscriptionCapactity(Shared_Solar_System__c sss, Decimal maximumCapacity) {
@@ -460,6 +455,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         insert ual;
 
         //Requery to mimic CSSubscriptionEnroller queries for UALs and SSSs
+
         List<Utility_Account_Log__c> ualList = getUtilityAccountLogs();
         List<Shared_Solar_System__c> sharedSolarSystems = getSharedSolarSystems();
 

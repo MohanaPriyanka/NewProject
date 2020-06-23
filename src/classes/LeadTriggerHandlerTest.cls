@@ -734,6 +734,12 @@ public class LeadTriggerHandlerTest {
     }
 
     @IsTest static void testMultipleSubscriptionsBykWh() {
+        useMocks();
+
+        FeatureService check = new FeatureService();
+        System.assertEquals(false, check.isEnabled('Sizing_Method'));
+        System.assertEquals(true, check.isEnabled('Subscription_Orders'));
+
         System_Properties__c sysProp = new System_Properties__c(
             Name = 'System',
             DocuSign_API_Account_ID__c = '123',
@@ -760,6 +766,7 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .1848,
             Name = 'Nation Grid WCMA Class 2 - S/F 2016',
             Sizing_Rate__c = true,
+            Size_Ratio__c = 1.5,
             Date__c = Date.today()
         );
         insert nmcRate;
@@ -767,6 +774,7 @@ public class LeadTriggerHandlerTest {
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Program__c = 'SMART - Community Solar',
+            Sizing_Method__c = 'Project Ratio',
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
@@ -837,12 +845,16 @@ public class LeadTriggerHandlerTest {
         primaryProperty.Personal_Credit_Report__c = pcr.Id;
         additionalProperty.Personal_Credit_Report__c = pcr.Id;
         update new List<Lead>{primaryProperty, additionalProperty};
-        // kW DC = Annual Cost / NMC Rate / Yield
+        // kW DC = Annual kWh / NMC Rate / Yield
+        //Annual kwh = 26,000
+        //proposed kwh = 39,000
         Utility_Account_Log__c ual1 = new Utility_Account_Log__c(
             Lead__c = primaryProperty.Id,
             Annual_kWh__c = (1300 * 20), // sss yield 1300 kWh/kW * 30 kW subscription
             Name_on_Account__c = 'Primary 1'
         );
+        //Annual kwh = 4333.33
+        //proposed kwh = 6500
         Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
             Lead__c = primaryProperty.Id,
             Annual_kWh__c = (1300 * 5 / 1.5).setScale(2), // sss yield 1300 kWh/kW * 5 kW subscription / 1.5 for Eversource R1
@@ -853,6 +865,7 @@ public class LeadTriggerHandlerTest {
             Annual_kWh__c = (1300 * 25 / 1.45), // sss yield 1300 kWh/kW * 25 kW subscription / 1.45 for NG G2
             Name_on_Account__c = 'Additional 1'
         );
+
         insert new List<Utility_Account_Log__c>{ual1, ual2, ual3};
         List<Opportunity> opps = [SELECT Id FROM Opportunity];
         List<Utility_Account_Subscription__c> uases = [SELECT Id FROM Utility_Account_Subscription__c];
@@ -889,7 +902,7 @@ public class LeadTriggerHandlerTest {
             WHERE Opportunity__r.AccountId =: eversourceLeads[0].ConvertedAccountId
             GROUP BY Opportunity__r.AccountId
         ];
-        // Should be a 25kW, 10kW and 5kW UAS, for a total of 35
+        //Should be 25kW, 5kWh and 5kWh UASes for a total of 35
         System.assertEquals(3, uasAggregate[0].get('num'));
 
         FeatureService featureService = new FeatureService();
@@ -958,5 +971,33 @@ public class LeadTriggerHandlerTest {
             Sales_Partners__c = 'All'
         );
         return sss1;
+    }
+
+    private static void useMocks() {
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockCustomFeatureSelector());
+    }
+
+    public class MockCustomFeatureSelector extends MockProvider {
+        public MockCustomFeatureSelector() {
+        }
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on (String)methodCall.listOfArgs[0]{
+                when 'Sizing_Method' {
+                    Custom_Feature_Enablement__mdt customFeature = new Custom_Feature_Enablement__mdt(
+                        DeveloperName = 'Sizing_Method',
+                        Feature_is_Enabled__c = false
+                    );
+                    return customFeature;
+                } when 'Subscription_Orders' {
+                    Custom_Feature_Enablement__mdt customFeature = new Custom_Feature_Enablement__mdt(
+                        DeveloperName = 'Subscription_Orders',
+                        Feature_is_Enabled__c = true
+                    );
+                    return customFeature;
+                }
+            }
+            return null;
+        }
     }
 }

@@ -295,12 +295,9 @@ public with sharing class SubscriptionSizingTestclass {
         );
 
         insert new List<Utility_Account_Subscription__c> {uasA, uasB, uasC, uasD};
-
-
     }
 
     @IsTest
-    //Need to convert leads to actually test the sizing method apex
     public static void testSizingMethodConversion() {
         useMocks(true);
         Lead switchLead = [
@@ -324,20 +321,16 @@ public with sharing class SubscriptionSizingTestclass {
         ];
 
         Utility_Account_Log__c ual = leadService.buildUtilityAccountLogFromLegacyLead(switchLead, propertyAccount);
-        //size of ual should be split onto 2 separate projects
-        //one should be maxed out (take the sss min), the other should take the ual min
-        //should take on the 1.5 size ratio rather than the 1.2 on the sss
-        ual.Annual_kWh__c = 40000;
+        //size of ual should be split onto 2 separate projects - even though 32800 < sss Max of 32,900
+        // This is because the UAL Annual kWh is multiplied by UAL Size Ratio of 1.5
+        ual.Annual_kWh__c = 32800;
         ual.Utility_Rate_Class__c = rateClassR2.Id;
         insert ual;
         LeadServiceTestclass.pullCreditForLead(switchLead.Id);
 
-
         switchLead.Status = 'Qualified';
         update switchLead;
 
-
-        //convert the lead
         Database.LeadConvert lc = new Database.LeadConvert();
         lc.setLeadId(switchLead.Id);
         lc.setConvertedStatus('Qualified');
@@ -346,7 +339,6 @@ public with sharing class SubscriptionSizingTestclass {
         Database.LeadConvertResult lcr = Database.convertLead(lc, false);
         System.assert(lcr.isSuccess(), lcr.getErrors());
 
-        // query for the opportunity and utility account subscriptions after the fact
         List<Opportunity> convertedOpps = [
             SELECT Id
             FROM Opportunity
@@ -363,14 +355,12 @@ public with sharing class SubscriptionSizingTestclass {
         for (Utility_Account_Subscription__c uas : convertedUASes) {
             if (uas.Shared_Solar_System__r.Name == 'kWh Shared Solar System Two') {
                 System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c );
-                System.assertEquals(18066.67, uas.Annual_kWh_Subscription_Future_Rollup__c);
+                System.assertEquals(10866.67, uas.Annual_kWh_Subscription_Future_Rollup__c);
             } else {
                 System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c );
                 System.assertEquals(21933.33, uas.Annual_kWh_Subscription_Future_Rollup__c);
-
             }
         }
-
     }
 
     @IsTest
