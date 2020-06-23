@@ -4,11 +4,12 @@ Tested By: ZuoraGLServiceTest
 *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryService.Processor {
-    public Integer daysToLookBack;
-    public Map<String, String> depositAccountToClientMap;
-    public List<Journal_Entry__c> entriesSafeToDelete;
-    public List<Case> reconciliationItems;
-    public List<Journal_Entry__c> entriesToUpsert;
+    @TestVisible
+    private Integer daysToLookBack;
+    private Map<String, String> depositAccountToClientMap;
+    private List<Journal_Entry__c> entriesSafeToDelete;
+    private List<Case> reconciliationItems;
+    private List<Journal_Entry__c> entriesToUpsert;
 
     public void execute(SchedulableContext ctx){
         Date today = System.today();
@@ -31,7 +32,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         ZuoraDataQueryService.callFromApex(queryString,methodToRunAfter);
     }
 
-    public class GeneralLedgerItem {
+    private class GeneralLedgerItem {
         public String Project;
         public String Client;
         public String CustomerAccount;
@@ -93,7 +94,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
     }
 
     @TestVisible
-    public void saveAccountingPeriodCloseDate(Date periodCloseDate) {
+    private void saveAccountingPeriodCloseDate(Date periodCloseDate) {
         try {
             Zuora_Custom_Setting__c zuoraSetting = Zuora_Custom_Setting__c.getOrgDefaults();
             zuoraSetting.Last_Accounting_Period_Close_Date__c = periodCloseDate;
@@ -107,7 +108,8 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         }
     }
 
-    public void generalGLRecordInsert(String response, ZuoraDataQueryService.ProcessingParameter method){
+    @TestVisible
+    private void generalGLRecordInsert(String response, ZuoraDataQueryService.ProcessingParameter method){
         List<GeneralLedgerItem> ledgerItems = new List<GeneralLedgerItem>();
         Map<String, Journal_Entry__c> zuoraJournalEntries = new Map<String, Journal_Entry__c>();
 
@@ -124,7 +126,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             delete entriesSafeToDelete;
         }
         if (reconciliationItems.size() > 0){
-            insert reconciliationItems;
+            upsert reconciliationItems External_Id__c;
         }
         if (entriesToUpsert.size() > 200){
             Database.executeBatch(new GenericBatchDMLOperation(entriesToUpsert, 'Upsert'));
@@ -148,7 +150,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         return depositAccountToClientMap;
     }
 
-    public Journal_Entry__c setArchivedPaymentFields(GeneralLedgerItem ledger, Journal_Entry__c entry) {
+    private Journal_Entry__c setArchivedPaymentFields(GeneralLedgerItem ledger, Journal_Entry__c entry) {
         ZuoraAPI.ArchivedChargentData chargentData;
         chargentData = (ZuoraAPI.ArchivedChargentData)System.JSON.deserialize(ledger.ArchivedChargentData, ZuoraAPI.ArchivedChargentData.class);
         entry.Paid_To_Client__c = chargentData.ClientNumber;
@@ -157,7 +159,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         return entry;
     }
 
-    public Journal_Entry__c setZuoraPaymentFields(GeneralLedgerItem ledger, Journal_Entry__c entry){
+    private Journal_Entry__c setZuoraPaymentFields(GeneralLedgerItem ledger, Journal_Entry__c entry){
         if (ledger.Gateway != null){
             entry.Deposit_Account__c = ledger.Gateway;
             if (depositAccountToClientMap.containsKey(ledger.Gateway)){
@@ -250,12 +252,12 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             // Only log error if data in a closed period would be changing
             Journal_Entry__c zuoraRecord = zuoraEntriesToUpsert.get(sfEntry.External_Id__c);
             if (!entriesMatch(sfEntry, zuoraRecord)) {
-                reconciliationItems.add(createRecItem('Update', JSON.serialize(sfEntry) + JSON.serialize(zuoraRecord)));
+                reconciliationItems.add(createRecItem('Update', JSON.serialize(sfEntry) + JSON.serialize(zuoraRecord), sfEntry.External_Id__c));
             }
             zuoraEntriesToUpsert.remove(sfEntry.External_Id__c);
         } else if (!inUpsertList && inClosedPeriod) {
             // We expected to see closed period SF records in Zuora, but they do not exist:
-            reconciliationItems.add(createRecItem('Delete', JSON.serialize(sfEntry)));
+            reconciliationItems.add(createRecItem('Delete', JSON.serialize(sfEntry), sfEntry.External_Id__c));
         } else if (!inUpsertList) {
             // If SF record is still in an open period, but no longer exists in Zuora, delete it:
             entriesSafeToDelete.add(sfEntry);
@@ -269,11 +271,12 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         if (zuoraEntry.Date__c > periodCloseDate) {
             entriesToUpsert.add(zuoraEntry);
         } else {
-            reconciliationItems.add(createRecItem('Insert', JSON.serialize(zuoraEntry)));
+            reconciliationItems.add(createRecItem('Insert', JSON.serialize(zuoraEntry), zuoraEntry.External_Id__c));
         }
     }
 
-    private Case createRecItem(String actionType, String message){
+    @TestVisible
+    private Case createRecItem(String actionType, String message, String externalId) {
         CaseFactory caseFactory = new CaseFactory();
         Case newCase = caseFactory.getCase('Data_Ops');
         newCase.Subject = 'Attempted Journal Entry ' + actionType + ' in Closed Period';
@@ -282,6 +285,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         newCase.Origin = 'Other';
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
+        newCase.External_Id__c = externalId;
         return newCase;
     }
 
