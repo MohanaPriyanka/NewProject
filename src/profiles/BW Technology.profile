@@ -3663,10 +3663,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>TaskHandlerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>TestBillCreationForCancelledCustomers</apexClass>
         <enabled>true</enabled>
     </classAccesses>
