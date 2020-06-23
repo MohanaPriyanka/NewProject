@@ -1090,6 +1090,18 @@ IF(Account.RecordTypeId=&quot;012j00000010Ha3&quot;,&quot;%26&amp;isParentAcct%3
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>External_Id__c</fullName>
+        <externalId>true</externalId>
+        <inlineHelpText>External id that can be used for upserts</inlineHelpText>
+        <label>External Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Finance_Category__c</fullName>
         <externalId>false</externalId>
         <label>Finance Category</label>
