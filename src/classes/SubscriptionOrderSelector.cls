@@ -20,7 +20,16 @@ public inherited sharing class SubscriptionOrderSelector {
                 System_Change_kW_DC_Subscription__c,
                 System_Change_kW_DC_Rounded__c,
                 Total_System_Size_kW_DC__c,
-                Utility_Number_of_Decimal_Places__c
+                Utility_Number_of_Decimal_Places__c,
+                Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
+                Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name,
+                Approved_Change_in_Subscription__c,
+                Contract_Fee_Detail__c,
+                Effective_Date__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c
             FROM Subscription_Order__c
             WHERE Id IN :soIds
         ];
