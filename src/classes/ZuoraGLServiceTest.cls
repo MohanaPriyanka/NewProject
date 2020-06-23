@@ -358,10 +358,18 @@ public class ZuoraGLServiceTest {
 
         insert new List<Journal_Entry__c>{attemptedDelete, entryInOpenPeriod, entryInClosedPeriod};
 
+        ZuoraGLService glService = new ZuoraGLService();
+        Case existingRecItemForDelete = glService.createRecItem('Delete', JSON.serialize(attemptedDelete), attemptedDelete.External_Id__c);
+        existingRecItemForDelete.Status = 'Closed';
+        Case existinRecItemForClosedPeriod = glService.createRecItem('Insert', JSON.serialize(entryInClosedPeriod), entryInClosedPeriod.External_Id__c);
+        existinRecItemForClosedPeriod.Status = 'In Progress';
+        insert new List<Case>{existingRecItemForDelete, existinRecItemForClosedPeriod};
+
         List<Case> originalRecItems = [
             SELECT Id, Subject, Description
             FROM Case
             WHERE Subject LIKE 'Attempted Journal Entry%'
+            AND External_Id__c != NULL
         ];
 
         List<Journal_Entry__c> originalJE = [
@@ -430,21 +438,23 @@ public class ZuoraGLServiceTest {
         System.assertEquals(3,countOfChecks);
 
         List<Case> recItems = [
-            SELECT Id, Subject, Description
+            SELECT Id, Subject, Description, Status
             FROM Case
             WHERE Subject LIKE 'Attempted Journal Entry%'
             ORDER BY Subject DESC
         ];
 
-        System.assertEquals(0,originalRecItems.size());
+        System.assertEquals(2,originalRecItems.size(), 'Expected two existing cases with external id set');
         System.assertEquals(3,recItems.size());
 
         System.assert(recItems[0].Description.contains('2c92c0fb6c8afb4e016c926615190873'));
         System.assertEquals('Attempted Journal Entry Update in Closed Period',recItems[0].Subject);
+        System.assertEquals('In Progress',recItems[0].Status);
         System.assert(recItems[1].Description.contains('2c92c0fb6c8afb4e016c926615190872'));
         System.assertEquals('Attempted Journal Entry Insert in Closed Period',recItems[1].Subject);
         System.assert(recItems[2].Description.contains('2c92c0fb6c8afb4e016c926615190811'));
         System.assertEquals('Attempted Journal Entry Delete in Closed Period',recItems[2].Subject);
+        System.assertEquals('Closed',recItems[2].Status);
     }
 
     @IsTest
