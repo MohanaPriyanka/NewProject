@@ -3578,10 +3578,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>TaskHandlerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>TestBillCreationForCancelledCustomers</apexClass>
         <enabled>false</enabled>
     </classAccesses>
