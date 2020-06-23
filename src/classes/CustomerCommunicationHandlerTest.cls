@@ -330,11 +330,6 @@ public class CustomerCommunicationHandlerTest{
         System.assertEquals(dt.day(), ct.NextFireTime.day());
         System.assertEquals(dt.month(), ct.NextFireTime.month());
 
-        List<Error_Log__c> errorList = [
-            SELECT Id, Class__c, Method__c, User__c
-            FROM Error_Log__c
-        ];
-        System.assertEquals(0, errorList.size());
         System.assertEquals(MessagingService.emailsSent.size(), 2);
     }
 
@@ -361,11 +356,6 @@ public class CustomerCommunicationHandlerTest{
         System.assertEquals(dt.day(), ct.NextFireTime.day());
         System.assertEquals(dt.month(), ct.NextFireTime.month());
 
-        List<Error_Log__c> errorList = [
-            SELECT Id, Class__c, Method__c, User__c
-            FROM Error_Log__c
-        ];
-        System.assertEquals(0, errorList.size());
         System.assertEquals(MessagingService.emailsSent.size(), 1);
     }
 
@@ -392,11 +382,6 @@ public class CustomerCommunicationHandlerTest{
         System.assertEquals(dt.day(), ct.NextFireTime.day());
         System.assertEquals(dt.month(), ct.NextFireTime.month());
 
-        List<Error_Log__c> errorList = [
-            SELECT Id, Class__c, Method__c, User__c
-            FROM Error_Log__c
-        ];
-        System.assertEquals(0, errorList.size());
         System.assertEquals(MessagingService.emailsSent.size(), 3);
     }
 
