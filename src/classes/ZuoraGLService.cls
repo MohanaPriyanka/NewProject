@@ -19,8 +19,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         getAllDataFromZuora(today.addDays(-1*daysToLookBack), today);
     }
 
-    @TestVisible
-    private static void getAllDataFromZuora(Date startDate, Date endDate){
+    public static void getAllDataFromZuora(Date startDate, Date endDate){
         /*  Starts with Accounting Period, then then starts chain of Invoice Items, Credit Memos, Debit Memos
             and Payment Parts: Zuora does not perform well when multiple queries are running at the same time.
         */
