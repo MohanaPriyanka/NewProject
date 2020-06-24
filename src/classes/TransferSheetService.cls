@@ -28,11 +28,26 @@ public without sharing class TransferSheetService {
 
     @AuraEnabled
     public static List<UASBWithStatus> getTransferFromId(Id transferRecordId) {
-        Transfer__c transfer = TransferSelector.getTransferById(transferRecordId);
+        Transfer__c transfer = transferSelector.getTransferById(transferRecordId);
         if (transfer.Bills_Generated__c) {
             throw Util.createAuraExceptionWithMessage('Bills Already Generated for this Transfer');
         }
+        preventBillingTransferOutOfOrder(transfer);
         return getUASBListFromTransferSheet(transfer);
+    }
+
+    @TestVisible
+    private static void preventBillingTransferOutOfOrder(Transfer__c transfer) {
+        List<Transfer__c> allTransfers = transferSelector.getUnbilledTransfersBySSS(new Set<Id>{
+            transfer.Shared_Solar_System__c
+        });
+        for (Transfer__c otherTransfer : allTransfers) {
+            if (otherTransfer.Date_of_Transfer__c < transfer.Date_of_Transfer__c) {
+                throw Util.createAuraExceptionWithMessage('There is another transfer (' + otherTransfer.Id + ')' +
+                    ' not yet billed that has a Date of Transfer (' + otherTransfer.Date_of_Transfer__c.format() + ')' +
+                    ' older than this one that should be handled first');
+            }
+        }
     }
 
     public static List<UASBWithStatus> getUASBListFromTransferSheet(Transfer__c transfer) {

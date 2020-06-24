@@ -296,4 +296,10 @@ public class TransferSelectorTest {
         sssList = SharedSolarSystemsSelector.getAllSSSWithTransfersNotInList(null);
         System.assertEquals(3, sssList.size());
     }
+    @IsTest
+    static void testGetUnbilledTransfersBySSS() {
+        Shared_Solar_System__c sss1 = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'Project A Oak Road' LIMIT 1];
+        List<Transfer__c> unbilledTransfers = new TransferSelector().getUnbilledTransfersBySSS(new Set<Id>{sss1.Id});
+        System.assertEquals(1, unbilledTransfers.size(), 'TestSetup should have set up one unbilled transfer for Project A');
+    }
 }
