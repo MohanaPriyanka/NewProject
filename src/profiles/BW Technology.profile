@@ -3311,10 +3311,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PartnerAlertHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PartnerHealthBatch</apexClass>
         <enabled>true</enabled>
     </classAccesses>

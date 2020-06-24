@@ -2987,10 +2987,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PartnerAlertHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PartnerHealthBatch</apexClass>
         <enabled>false</enabled>
     </classAccesses>
