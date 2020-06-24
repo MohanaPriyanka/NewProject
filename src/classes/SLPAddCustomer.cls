@@ -6,13 +6,11 @@
  *
  * Tested By: SLPControllerTestclass
  *************************************************************************************/
-
 public without sharing class SLPAddCustomer {
     public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
     static {
         profile = SLPUserHelper.getPartnerProfile();
     }
-
     //the addNewLeadRecord method adds a new SL customer to the database via the SLP
     @AuraEnabled
     public static Lead addNewLeadRecord (Lead newLead) {
@@ -24,7 +22,6 @@ public without sharing class SLPAddCustomer {
         } else {
             recordType = 'BlueWave Solar Loan';
         }
-
         leadRecordType = [SELECT Id
                           FROM RecordType
                           WHERE Name = : recordType
@@ -33,7 +30,6 @@ public without sharing class SLPAddCustomer {
         if (newLead.LASERCA__Home_State__c.length() > 2) {
             newLead.LASERCA__Home_State__c = BlueWaveParent.convertStateToAbbreviation(newLead.LASERCA__Home_State__c);
         }
-
         String propertyString = newLead.firstName + ' ' + newLead.lastName;
         newLead.Company = propertyString;
         newLead.Unfinished_Lead__c = true;
@@ -43,27 +39,22 @@ public without sharing class SLPAddCustomer {
         newLead.Bs_Sales_ID__c = profile.salesRepId;
         newLead.Product_Line__c = 'Residential Loan';
         newLead.RecordTypeId = leadRecordType.Id;
-
         if (String.isNotBlank(profile.salesRepEmail)) {
             newLead.Partner_Email__c = profile.salesRepEmail;
         } else if (String.isNotBlank(profile.partnerEmail)) {
             newLead.Partner_Email__c = profile.partnerEmail;
         }
         insert newLead;
-
         return newLead;
     }
-
     @AuraEnabled
     public static Lead updateLeadRecord (Lead updatedLead) {
         String propertyString = updatedLead.firstName + ' ' + updatedLead.lastName;
         updatedLead.Company = propertyString;
         updatedLead.Email_Re_Enter__c = updatedLead.Email;
-
         update updatedLead;
         return updatedLead;
     } 
-
     // Assumes the version of Laser Credit Access that pulls credit via trigger and future method
     // For errors, check Apex Jobs (https://login.salesforce.com/apexpages/setup/listAsyncApexJobs.apexp)
     // or Credit Report Log objects related to the Lead
@@ -72,7 +63,6 @@ public without sharing class SLPAddCustomer {
         lead.LASERCA__Pull_Credit_Report__c = true;
         update lead;
     }
-
     @AuraEnabled
     public static Integer getCreditCheckTimeout() {
         List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
@@ -83,7 +73,6 @@ public without sharing class SLPAddCustomer {
             return(60000);
         }
     }
-
     @AuraEnabled
     public static String checkCreditStatus(Lead leadToQuery) {
         Lead lead = [SELECT Id, Status, LASTMODIFIEDDATE,
@@ -101,7 +90,6 @@ public without sharing class SLPAddCustomer {
         } else if (!lead.LASERCA__Credit_Report_Logs__r.isEmpty()) {
             // Since an installer can run credit multiple times on an applicant (if there was an error),
             // there might be multiple CRLs, some or all of which might be for previous credit checks.
-
             // Assuming the credit check is run based on checking the "Pull Credit Check" checkbox, we
             // can use the Lead.LASTMODIFIEDDATE to find the relevant CRL.
             for (LASERCA__Credit_Report_Log__c crl : lead.LASERCA__Credit_Report_Logs__r) {
@@ -112,7 +100,6 @@ public without sharing class SLPAddCustomer {
         }
         return(lead.Status);
     }
-
     // We often get errors in this format, if so, we can parse out the error text (everything after the first dash)
     //   ERROR: E999 - CreditBureau - Invalid borrower first name
     @testVisible
@@ -123,7 +110,6 @@ public without sharing class SLPAddCustomer {
             return(s);
         }
     }
-
     //the getPartnerRecord method returns the partner record to the lightning component. It is currently being used to identify the partner's
     //state to determine if the add a customer page should allow the user to submit MSLP applications
     @AuraEnabled
@@ -141,13 +127,10 @@ public without sharing class SLPAddCustomer {
                 FROM Partner__c 
                 WHERE Id = : profile.partnerId LIMIT 1];
     }
-
     public static String getCAPUrl(Id leadId) {
         String host = Url.getSalesforceBaseUrl().toExternalForm() + '/';
         return (host + 'apply/s/loan-application?leadId=' + leadId);
     }
-
-  
     @AuraEnabled
     public static List<String> getActiveStates() {
         List<String> states = profile.partnerMarkets.split(';',15);
@@ -164,7 +147,6 @@ public without sharing class SLPAddCustomer {
         }
         return options;
     }    
-
     @AuraEnabled
     public static String getLenderOfRecord(String state) {
         List<AggregateResult> products = [SELECT Lender_of_Record__c
@@ -180,12 +162,10 @@ public without sharing class SLPAddCustomer {
         }
         return result;
     }
- 
     @AuraEnabled
     public static List<Product2> getProducts(String state) {
         return getProducts(state, 'Residential Loan');
     }
-
     @AuraEnabled
     public static List<Product2> getProducts(String state, String productType) {
         return Util.getActiveProducts(new List<String>{state}, profile.partnerId, productType);

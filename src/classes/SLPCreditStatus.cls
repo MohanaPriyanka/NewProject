@@ -7,32 +7,27 @@
  *
  Tested By: SLPControllerTestclass and PCRApprovalHandlerTest.testPreQualified (to test getCustomerProducts)
  *************************************************************************************/
-
 public without sharing class SLPCreditStatus {
     public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
     static {
       profile = SLPUserHelper.getPartnerProfile();
     }
-  
     //The searchLeads method enables the user to search for customers on the credit status page
     @AuraEnabled 
     public static List<Lead> searchLeads (String searchValue, String leadId) {
         return getLeadsInternal(searchValue, null);
     }
-  
     //The getLeads method loads the leads for the credit status page on doInIt and also submits the selected lead into the continue appliation stage.
     @AuraEnabled 
     public static List<Lead> getLeads (String searchValue, String leadId) {
         return getLeadsInternal(null, LeadId);
     }
-  
     private static List<Lead> getLeadsInternal (String searchValue, String leadId) {
       List<Lead> leadList = new List<Lead>();
       String leadQuery = 'SELECT Id, Name, Firstname, LastName, Pre_Qualification_Status__c, Status, LASERCA__Home_Address__c, Update_Dummy__c, DOER_Solar_Loan__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Email, Annual_Income_Currency__c, Requested_Loan_Amount__c, Co_Applicant_First_Name__c, Co_Applicant_Last_Name__c, Co_Applicant_Email__c, Co_Applicant_Phone__c, Co_Applicant_Social_Security__c, Co_Applicant_Income__c, Co_Applicant_Address__c, Application_Type__c, CoApplicant_Contact__c, Joint_Applicant_Type__c, Co_Applicant_Date_of_Birth__c, Partner_Sent_Co_Signer_Link__c, Product__c, Product__r.Loan_Term__c, Product__r.Program__c' ;
       leadQuery += ' FROM Lead' ;
       leadQuery += ' WHERE Partner_Lookup__r.Id  =  \'' + profile.partnerId +  '\' ';
       leadQuery += ' AND Product_Line__c = \'' + 'Residential Loan' + '\' ' ;
-  
       if (profile.licenseType != 'Executive' ) {
         //if the user is not an executive, only show that user's leads
         leadQuery += ' AND bs_Sales_ID__r.Id  =  \'' + profile.salesRepId +  '\' ';
@@ -60,12 +55,10 @@ public without sharing class SLPCreditStatus {
       }
       return leadList; 
     }     
-  
     @AuraEnabled 
         public static List<Product2> getCustomerProducts (String leadId) {
         List<Product2> productList = new List<Product2>();
         List<Lead> leadList = new List<Lead>();
-  
         // If the lead is pre-qualified and has a Product, we want to add that product to the product list
         // even if it's deactivated.
         Lead lead = [SELECT Id, Product__c, Product__r.Name, Product__r.Product_Type__c, Product__r.Program__c, 
@@ -76,7 +69,6 @@ public without sharing class SLPCreditStatus {
                      WHERE Id = :leadId];
         Boolean addLeadsProduct = (lead.Personal_Credit_Report__r.Avidia_Review_Status__c == PCRApprovalHandler.REVIEWEDPREAPPROVED ||
                                    lead.Personal_Credit_Report__r.Avidia_Review_Status__c == PCRApprovalHandler.REVIEWEDAPPROVED);
-      
         PCRApprovalHandler.CreditQualifyingMetrics creditMetric = PCRApprovalHandler.calculateCreditQualifyingMetrics(leadId);
         leadList.add(creditMetric.lead);
         PCRApprovalHandler.ProductRepo productRepo = new PCRApprovalHandler.ProductRepo(leadList);
@@ -105,10 +97,8 @@ public without sharing class SLPCreditStatus {
         if (addLeadsProduct) {
             productList.add(lead.Product__r);
         }
-                                      
         return productList;
     }
-    
     @AuraEnabled 
     public static Product2 getSelectedProduct (String productId) {
       List<Product2> productList = [SELECT Id, Name, External_Name__c, Loan_Term__c, Program__c
@@ -116,13 +106,10 @@ public without sharing class SLPCreditStatus {
                                     WHERE Id = : productId]; 
       return productList[0];                      
     }
-  
-    
     @AuraEnabled 
     public static void viewPreQualifiedRecords () {
       List<Lead> leadsNotViewedByAdminList = new List<Lead>();
       List<Lead> leadsNotViewedByAgentList = new List<Lead>();
-  
       String leadQuery = 'SELECT Id, Viewed_by_Partner_Admin__c, Viewed_by_Partner_Agent__c' ;
       leadQuery += '   FROM Lead' ;    
       leadQuery += '   WHERE Partner_Lookup__r.Id  =  \'' + profile.partnerId +  '\' ';

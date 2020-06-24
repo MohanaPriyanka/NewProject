@@ -10,44 +10,30 @@ public without sharing class SLPAllCustomersHandler {
      *
      * Tested By: SLPControllersTestclass
      *************************************************************************************/
-        
-    
         public class LoanRecords {
             @AuraEnabled
             public Loan__c[] loansInProcess { get; set; }
-    
             @AuraEnabled
             public Loan__c[] completedLoans { get; set; }
-    
             @AuraEnabled
             public Loan__c[] expiredApplicants { get; set; }
-    
             public LoanRecords() {
                 loansInProcess = new List<Loan__c>();
                 completedLoans = new List<Loan__c>();
                 expiredApplicants = new List<Loan__c>();
             }
         }
-    
         public class LeadRecords {
             @AuraEnabled
             public Lead[] allLeads {get;set;}
-    
             @AuraEnabled
             public Lead[] pendingApplications {get;set;}
-    
             @AuraEnabled
             public Lead[] declinedApplicants {get;set;}
-    
-    
             public LeadRecords() {
                 allLeads = new List<Lead>();
                 pendingApplications = new List<Lead>();
                 declinedApplicants = new List<Lead>();
             }
         }
-    
-                
-    
-           
     }
