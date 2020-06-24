@@ -40,6 +40,13 @@ export default class BasicDatatable extends LightningElement {
                     mode: 'sticky'
                 });
                 this.dispatchEvent(event);
+            } else if (errorMessage.includes('There is another transfer')) {
+                const event = new ShowToastEvent({
+                    title: 'Older Unbilled Transfer Found',
+                    mode: 'sticky',
+                    message: errorMessage
+                });
+                this.dispatchEvent(event);
             } else {
                 const event = new ShowToastEvent({
                     title: 'Could not load UASB list',

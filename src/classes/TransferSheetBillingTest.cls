@@ -565,6 +565,38 @@ public class TransferSheetBillingTest {
         System.assertEquals(1,filesUploaded.size());
     }
 
+    @IsTest
+    private static void testPreventBillingTransfersOutOfOrder() {
+        TransferSheetService.transferSelector = (TransferSelector) Test.createStub(TransferSelector.class, new MockTransferSelector());
+        System.assertEquals(1, TransferSheetService.transferSelector.getUnbilledTransfersBySSS(null).size(),
+            'Mock should return one unbilled transfer');
+        System.assertEquals(Date.newInstance(2020,02,06), TransferSheetService.transferSelector.getUnbilledTransfersBySSS(null)[0].Date_of_Transfer__c,
+            'Mocked unbilled transfer should have a date of 2/6/2020');
+        Transfer__c transferBeingQCed = new Transfer__c(
+            Date_of_Transfer__c = Date.newInstance(2020,3,1)
+        );
+        try {
+            TransferSheetService.preventBillingTransferOutOfOrder(transferBeingQCed);
+            System.assert(false, 'Should have thrown an exception because transfer being QCed is later than other unbilled transfers ');
+        } catch (Exception e) {
+            System.assert(e.getMessage().contains('There is another transfer'), 'Error should indicate another transfer');
+        }
+        transferBeingQCed.Date_of_Transfer__c = Date.newInstance(2020,02,06);
+        try {
+            TransferSheetService.preventBillingTransferOutOfOrder(transferBeingQCed);
+            System.assert(true, 'Should not have prevented this transfer since it has the same date as the other unbilled transfer (maybe itself)');
+        } catch (Exception e) {
+            System.assert(false, 'Should not have prevented this transfer since it has the same date as the other unbilled transfer (maybe itself): ' + e.getMessage() + '\n' + e.getStackTraceString());
+        }
+        transferBeingQCed.Date_of_Transfer__c = Date.newInstance(2020,01,06);
+        try {
+            TransferSheetService.preventBillingTransferOutOfOrder(transferBeingQCed);
+            System.assert(true, 'Should not have prevented this transfer since it has an earlier date as the other unbilled transfer');
+        } catch (Exception e) {
+            System.assert(false, 'Should not have prevented this transfer since it has an earlier date as the other unbilled transfer: ' + e.getMessage() + '\n' + e.getStackTraceString());
+        }
+    }
+
     private static void useMocks() {
         BillGenerationService.szsSelector = (ScheduleZSubscriptionSelector) Test.createStub(ScheduleZSubscriptionSelector.class, new MockSZSSelector());
         BillGenerationService.escalatorSelector = (ProductEscalatorSelector) Test.createStub(ProductEscalatorSelector.class, new MockPESelector());
@@ -719,6 +751,29 @@ public class TransferSheetBillingTest {
             switch on methodCall.stubbedMethodName {
                 when 'selectById' {
                     return accountMap;
+                }
+            }
+            return null;
+        }
+    }
+
+    public class MockTransferSelector extends MockProvider {
+        public MockTransferSelector() {
+        }
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'getUnbilledTransfersBySSS' {
+                    String unbilledTransfers = '[{"Id":"a900v0000000KjjAAE",' +
+                        '"Name":"Main Transfer - Project A","Shared_Solar_System__c":"a1J0v000000t6CcEAI",' +
+                        '"Allocation_Schedule__c":"a3z0v000000EFs4AAG","Attempted_Transfer__c":12033.730,' +
+                        '"Bill_Period__c":"a8x0v0000000ONdAAM","Default_Credit_Value__c":0.18480000,' +
+                        '"Bills_Generated__c":false,"Attempted_kWh_Transfer__c":81869.0000,' +
+                        '"Total_Transferred__c":12033.73,"Transfer_Amount__c":12033.73,' +
+                        '"Transfer_Type__c":"Main","Date_of_Transfer__c":"2020-02-06",' +
+                        '"Bill_Period__r":{"Id":"a8x0v0000000ONdAAM","Bill_Date__c":"2020-02-12","Name":"Feb Period"},' +
+                        '"Allocation_Schedule__r":{"Id":"a3z0v000000EFs4AAG","Name":"2016 - sssA"}}]';
+                    return (List<Transfer__c>) JSON.deserialize(unbilledTransfers, List<Transfer__c>.class);
                 }
             }
             return null;
