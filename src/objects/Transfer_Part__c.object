@@ -293,10 +293,11 @@ Amount__c /Production__r.Credits_Available_for_Allocation__c,
     </fields>
     <fields>
         <fullName>Production__c</fullName>
-        <description>A master-detail relationship from Transfer Parts up to Production.</description>
+        <description>A master-detail relationship from Transfer Parts up to Production</description>
         <externalId>false</externalId>
         <label>Production</label>
         <referenceTo>Production__c</referenceTo>
+        <relationshipLabel>Production Detail</relationshipLabel>
         <relationshipName>Transfer_Parts</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>true</reparentableMasterDetail>
