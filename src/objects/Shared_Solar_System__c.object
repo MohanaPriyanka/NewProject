@@ -1562,9 +1562,8 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Reserved_Capacity_kW_DC__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of non-anchor customer subscriptions for which we are reserving capacity, but customers are not officially committed to the project. Opportunity is still in QC stages (Pending BW Signature, QC In Process or Pending QC Signature)</inlineHelpText>
         <label>Reserved Capacity (kW DC)</label>
-        <length>10</length>
+        <length>11</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
