@@ -424,7 +424,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     }
 
     public static List<Utility_Account_Log__c> getUtilityAccountLogs() {
-
         List<Utility_Account_Log__c> ualList = [
             SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,
                 Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
@@ -435,22 +434,21 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             ORDER BY Annual_Cost_of_Electricity__c DESC
         ];
         return ualList;
-
     }
 
     //Mimic sssSelector.getSharedSolarSystemsForEnrollment() but add ability to query by product
     public static List<Shared_Solar_System__c> getSharedSolarSystems(String product) {
         return [
             SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
-            Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c,
-            Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
-            Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
-            Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
-            BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c, NMC_Value__c
-        FROM Shared_Solar_System__c
-        WHERE Open__c = TRUE
-        AND Capacity_Available_to_be_Reserved__c > 0
-        AND Product__r.Name = :product
+                Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c,
+                Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
+                Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
+                Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
+                BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c, NMC_Value__c
+            FROM Shared_Solar_System__c
+            WHERE Open__c = TRUE
+            AND Capacity_Available_to_be_Reserved__c > 0
+            AND Product__r.Name = :product
         ];
     }
 
@@ -463,7 +461,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         useMocks(false);
         List<Shared_Solar_System__c> sharedSolarSystems = getSharedSolarSystems('SMART Community Solar');
         Decimal maximumCapacitykWh = CSUtilityAccountSubscriptionFactory.calculateMaximumkWh(sharedSolarSystems[0], null);
-
         System.assertEquals(32900, maximumCapacitykWh);
 
         Test.startTest();
@@ -480,7 +477,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         ];
 
         Decimal maximumCapacitykWhAfter = CSUtilityAccountSubscriptionFactory.calculateMaximumkWh(sssAfterUpdate, null);
-
         System.assertEquals(40000, maximumCapacitykWhAfter);
     }
 
@@ -490,11 +486,8 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
 
     @IsTest
     public static void testSetMaximumSubscriptionCost() {
-
         List<Shared_Solar_System__c> sharedSolarSystems = getSharedSolarSystems('SREC Community Solar');
-
         System.assertEquals(6006.00, sharedSolarSystems[0].Maximum_Subscription_Cost__c);
-
         setMaximumSubscriptionCost(sharedSolarSystems[0], 4000.00);
         update sharedSolarSystems[0];
 
@@ -528,18 +521,16 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         List<Opportunity> opportunities = new List<Opportunity>();
         Map<Id, CSUtilityAccountSubscriptionFactory.SSSSubscription> sssSubscriptionMap = new Map<Id, CSUtilityAccountSubscriptionFactory.SSSSubscription>();
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
-                opportunities.add(new Opportunity(
-                    Name = 'Opp ' + counter,
-                    Shared_Solar_System__c = sss.Id
-                ));
-                ++counter;
+            opportunities.add(new Opportunity(
+                Name = 'Opp ' + counter,
+                Shared_Solar_System__c = sss.Id
+            ));
+            ++counter;
 
-                CSUtilityAccountSubscriptionFactory.SSSSubscription sssSubscription = new CSUtilityAccountSubscriptionFactory.SSSSubscription(sss);
-                sssSubscriptionMap.put(sss.Id, sssSubscription);
-
+            CSUtilityAccountSubscriptionFactory.SSSSubscription sssSubscription = new CSUtilityAccountSubscriptionFactory.SSSSubscription(sss);
+            sssSubscriptionMap.put(sss.Id, sssSubscription);
         }
         CSUtilityAccountSubscriptionFactory.sssSubscriptionMap = sssSubscriptionMap;
-
         List<Utility_Account_Subscription__c> single = new List<Utility_Account_Subscription__c>();
         single.addAll(CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ualList[0], opportunities));
 
