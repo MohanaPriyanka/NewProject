@@ -9,11 +9,8 @@
 public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     public static Date csDataDate = Date.newInstance(2000,1,1);
     public void runApexClass(SandboxContext context) {
-        // As of Dec 2019, disabling emails hits CPU limits, but we're also not copying customer data (Contact) into sandboxes.
-        // Leaving it here in case there are other objects that have email on them that we copy, and we need to change this
-        // to batch
-        // disableEmails();
         updateLetterStreamToTestConfig();
+        updateDocusignToDemoConfig();
         switchChargentToTestMode();
         setupBWTestPartner();
         setupDataForReportTest();
@@ -26,69 +23,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                 'isConverted' => false
             }
         };
-    @TestVisible
-    private static void disableEmails() {
-        if (Util.isSandboxOrTest()) {
-            // Map from SObject to List of Email Fields
-            Map<String, List<String>> soEmailFieldMap = findEmailFields();
-            // Invalidate Email fields found on SObjects
-            processEmailFields(soEmailFieldMap);
-        } else {
-            throw new Util.BWException('Don\'t disable emails in production this way');
-        }
-    }
-    private static Map<String, List<String>> findEmailFields() {
-        Map<String, List<String>> soEmailFieldMap = new Map<String, List<String>>();
-        // Iterate over all SObjects
-        for (SObjectType soType : Schema.getGlobalDescribe().values()) {
-            DescribeSObjectResult soDescribe = soType.getDescribe();
-            // Skip objects we cannot query or update
-            if (!soDescribe.isQueryable() || !soDescribe.isUpdateable() || soDescribe.getName() == 'User') {
-                continue;
-            }
-            String objectTypeName = soDescribe.getName();
-            // Iterate over all fields found on a given SObject
-            for (SObjectField soField : soDescribe.fields.getMap().values()) {
-                DescribeFieldResult field = soField.getDescribe();
-                // Skip non Email type fields
-                if (field.getType() != Schema.DisplayType.EMAIL) {
-                    continue;
-                }
-                // Skip emails that cannot be filtered on or updated
-                if (!field.isFilterable() || !field.isUpdateable()) {
-                    continue;
-                }
-                // Collect all Email fields found
-                if (soEmailFieldMap.containsKey(objectTypeName)) {
-                    soEmailFieldMap.get(objectTypeName).add(field.getName());
-                } else {
-                    soEmailFieldMap.put(objectTypeName,
-                        new List<String>{
-                            field.getName()
-                        });
-                }
-            }
-        }
-        return soEmailFieldMap;
-    }
-    private static void processEmailFields(Map<String, List<String>> soEmailFieldMap) {
-        // Iterate over the SObject to Email Fields collection
-        for (String objectName : soEmailFieldMap.keySet()) {
-            // Get any specified conditionals
-            Map<String, Object> conditionals = new Map<String, Object>();
-            if (objectConditionals.containsKey(objectName)) {
-                conditionals = objectConditionals.get(objectName);
-            }
-            // Build a list of all fields that need to be queried
-            List<String> emailFields = soEmailFieldMap.get(objectName);
-            List<String> fieldList = new List<String>();
-            fieldList.addAll(emailFields);
-            fieldList.addAll(conditionals.keySet());
-            // Generate a SOQL query to get records with non null emails
-            String soql = getSOQL(objectName, fieldList);
-            System.enqueueJob(new PostSandboxRefresher.RecordUpdater(soql, conditionals, emailFields));
-        }
-    }
     public class RecordUpdater implements Queueable {
         String soql;
         Map<String, Object> conditionals;
@@ -167,25 +101,10 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         if (!Util.isSandboxOrTest()) {
             throw new Util.BWException('Don\'t switch Chargent to Test Mode!');
         }
-        List<ChargentOrders__ChargentOrder__c> orders = [
-            SELECT Id
-            FROM ChargentOrders__ChargentOrder__c
-            WHERE ChargentOrders__Card_Type__c != null
-            OR ChargentOrders__Bank_Account_Type__c != null
-        ];
-        for (ChargentOrders__ChargentOrder__c chargentOrder : orders) {
-            chargentOrder.ChargentOrders__Payment_Method__c = 'Credit Card';
-            chargentOrder.ChargentOrders__Card_Type__c = 'American Express';
-            chargentOrder.ChargentOrders__Card_Number__c = '370000000000002';
-        }
-        if (orders.size() > 0) {
-            Database.executeBatch(new GenericBatchDMLOperation(orders, 'Update'));
-        }
         // We'll switch all gateways to Authorize for now since they have a test gateway.
         RecordType authorizeRT = [SELECT Id FROM RecordType WHERE DeveloperName = 'Authorizenet' LIMIT 1];
         List<ChargentBase__Gateway__c> gateways = [SELECT Id, Name FROM ChargentBase__Gateway__c];
         for (ChargentBase__Gateway__c gateway : gateways) {
-            gateway.Name = 'Test ' + gateway.Name;
             gateway.ChargentBase__Test_Mode__c = true;
             gateway.RecordTypeId = authorizeRT.Id;
             gateway.ChargentBase__Merchant_ID__c = '2EBsLaEw64D';
@@ -249,6 +168,21 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             RecordTypeId = '012j0000000uetM',
             Sales_Representative__c = salesRepExec.Id);
         insert salesRepContact;
+    }
+    @TestVisible
+    private static void updateDocusignToDemoConfig() {
+        if (!Util.isSandboxOrTest()) {
+            throw new Util.BWException('Don\'t update DocuSign config in production this way');
+        }
+        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        if (systemProperties.size() > 0) {
+            systemProperties[0].DocuSign_API_Account_ID__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
+            systemProperties[0].DocuSign_Customer_Care_User__c = 'pyao@bluewavesolar.com';
+            systemProperties[0].DocuSign_Guest_User__c = 'pyao@bluewave-capital.com';
+            systemProperties[0].DocuSign_Guest_User_Credential__c = '137Newbury';
+            systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
+            update systemProperties[0];
+        }
     }
     /*
      CS Record Loader loads community solar records for testing. Currently, bill numbers aren't advanced
