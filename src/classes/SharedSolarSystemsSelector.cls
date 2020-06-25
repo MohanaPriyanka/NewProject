@@ -97,11 +97,11 @@ public inherited sharing class SharedSolarSystemsSelector {
 
     public List<Shared_Solar_System__c> getSharedSolarSystemsForEnrollment() {
         return [
-            SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Billing_Method__c,
+            SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
                 Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c,
                 Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
                 Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
-                Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
+                Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
                 BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
             FROM Shared_Solar_System__c
             WHERE Open__c = TRUE

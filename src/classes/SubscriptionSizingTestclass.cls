@@ -354,11 +354,11 @@ public with sharing class SubscriptionSizingTestclass {
         System.assertEquals(2, convertedUASes.size());
         for (Utility_Account_Subscription__c uas : convertedUASes) {
             if (uas.Shared_Solar_System__r.Name == 'kWh Shared Solar System Two') {
-                System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c );
-                System.assertEquals(10866.67, uas.Annual_kWh_Subscription_Future_Rollup__c);
+                System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c, 'UAS should be stamped with Sizing Method from UALs Rate Class' );
+                System.assertEquals(10866.67, uas.Annual_kWh_Subscription_Future_Rollup__c, 'Second UAS should be created as excess capacity from first SSS.');
             } else {
-                System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c );
-                System.assertEquals(21933.33, uas.Annual_kWh_Subscription_Future_Rollup__c);
+                System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c, 'UAS should be stamped with Sizing Method from UALs Rate Class');
+                System.assertEquals(21933.33, uas.Annual_kWh_Subscription_Future_Rollup__c, 'First UAS should be maxed out by SSS max kWh after Rate Class Size Ratio has been applied.');
             }
         }
     }

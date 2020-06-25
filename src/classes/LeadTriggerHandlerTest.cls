@@ -188,7 +188,7 @@ public class LeadTriggerHandlerTest {
         DocuSignHelper.sendCSPackage(oppList[0],1,1);
         Test.stopTest();
 
-        List<Error_Log__c> errorLogs = [SELECT Id, Method__c, Message__c FROM Error_Log__c];
+        List<Error_Log__c> errorLogs = [SELECT Id, Method__c, Message__c FROM Error_Log__c WHERE Class__c = 'DocuSignHelper'];
         // We log the opps for which we're sending contracts: "Sending contracts for these opportunities..." if we send
         // the contract in the trigger, but not if we call sendCSPackage explicitly.
         System.assertEquals(0, errorLogs.size());
@@ -734,11 +734,11 @@ public class LeadTriggerHandlerTest {
     }
 
     @IsTest static void testMultipleSubscriptionsBykWh() {
-        useMocks();
-
-        FeatureService check = new FeatureService();
-        System.assertEquals(false, check.isEnabled('Sizing_Method'));
-        System.assertEquals(true, check.isEnabled('Subscription_Orders'));
+        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Sizing_Method'=>false,'Subscription_Orders'=>true};
+        FeatureService featureServiceMock = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
+        CSSubscriptionEnroller.featureService = featureServiceMock;
+        CSOpportunityFactory.featureService = featureServiceMock;
+        CSUtilityAccountSubscriptionFactory.featureService  = featureServiceMock;
 
         System_Properties__c sysProp = new System_Properties__c(
             Name = 'System',
@@ -971,33 +971,5 @@ public class LeadTriggerHandlerTest {
             Sales_Partners__c = 'All'
         );
         return sss1;
-    }
-
-    private static void useMocks() {
-        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockCustomFeatureSelector());
-    }
-
-    public class MockCustomFeatureSelector extends MockProvider {
-        public MockCustomFeatureSelector() {
-        }
-
-        public override Object handleMethodCall(MethodCall methodCall) {
-            switch on (String)methodCall.listOfArgs[0]{
-                when 'Sizing_Method' {
-                    Custom_Feature_Enablement__mdt customFeature = new Custom_Feature_Enablement__mdt(
-                        DeveloperName = 'Sizing_Method',
-                        Feature_is_Enabled__c = false
-                    );
-                    return customFeature;
-                } when 'Subscription_Orders' {
-                    Custom_Feature_Enablement__mdt customFeature = new Custom_Feature_Enablement__mdt(
-                        DeveloperName = 'Subscription_Orders',
-                        Feature_is_Enabled__c = true
-                    );
-                    return customFeature;
-                }
-            }
-            return null;
-        }
     }
 }

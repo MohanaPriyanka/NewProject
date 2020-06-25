@@ -63,13 +63,16 @@ public without sharing class CSOpportunityFactory {
         return oppListToCreate;
     }
 
+    //TODO: move calculateMaxkwh from both CSOpportunityFactory and CSUASFactory to SSS Domain class
     @TestVisible
     private static Decimal calculateMaximumkWh(Shared_Solar_System__c sss) {
+        Decimal maximumkWh;
         if (featureService.isEnabled('Sizing_Method') && sss.Product__r.Sizing_Method__c == 'Project Ratio') {
-            return (sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c)/sss.Utility_NMC_Tariff__r.Size_Ratio__c;
+            maximumkWh =  (sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c)/sss.Utility_NMC_Tariff__r.Size_Ratio__c;
         } else {
-            return sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c;
+            maximumkWh =  sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c;
         }
+        return maximumkWh.setScale(2, RoundingMode.HALF_DOWN);
     }
 
 

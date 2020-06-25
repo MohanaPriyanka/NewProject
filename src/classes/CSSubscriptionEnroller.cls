@@ -135,14 +135,13 @@ public without sharing class CSSubscriptionEnroller {
     }
 
 
-    public List<Utility_Account_Log__c> getUALList(Lead lead) {
+    private List<Utility_Account_Log__c> getUALList(Lead lead) {
         List<Utility_Account_Log__c> ualListForLead = ualsByLeadId.get(lead.Id);
         if (ualListForLead == null) {
             ualListForLead = new List<Utility_Account_Log__c>();
         } else {
             return ualListForLead;
         }
-
 
         for (Utility_Account_Log__c ual : ualList) {
             if (ual.Lead__c == lead.Id) {
@@ -154,7 +153,7 @@ public without sharing class CSSubscriptionEnroller {
         return ualListForLead;
     }
 
-    public List<Shared_Solar_System__c> getSortedSharedSolarSystems(Lead lead) {
+    private List<Shared_Solar_System__c> getSortedSharedSolarSystems(Lead lead) {
         List<SSSWrapper> sssWrappers = new List<SSSWrapper>();
         List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : sssList) {
@@ -176,7 +175,7 @@ public without sharing class CSSubscriptionEnroller {
         return sortedSharedSolarSystems;
     }
 
-    public Id getPropertyAccount(Lead lead) {
+    private Id getPropertyAccount(Lead lead) {
         Id propAccountId;
         //If Switch lead, the property account will be in the list already. If CSAP Lead, will need to grab the Converted Account
         if (propAccountList.size() > 0) {
@@ -194,7 +193,7 @@ public without sharing class CSSubscriptionEnroller {
 
     }
 
-    public AnnualEnergyTotal getAnnualTotals(Lead lead) {
+    private AnnualEnergyTotal getAnnualTotals(Lead lead) {
         Decimal totalAnnualCostOfElectricity = 0;
         Decimal totalAnnualkWhElectricity = 0;
         for (Utility_Account_Log__c ual : getUALList(lead)) {
@@ -225,7 +224,7 @@ public without sharing class CSSubscriptionEnroller {
         return new AnnualEnergyTotal(totalAnnualCostOfElectricity, totalAnnualkWhElectricity);
     }
 
-    public void createOpportunity(Lead lead) {
+    private void createOpportunity(Lead lead) {
         AnnualEnergyTotal annualTotals = getAnnualTotals(lead);
         List<Shared_Solar_System__c> availableSSS = getSortedSharedSolarSystems(lead);
         ChargentOrders__ChargentOrder__c baseChargentOrder = chOrdersByLeadId.get(lead.Id);
@@ -236,7 +235,7 @@ public without sharing class CSSubscriptionEnroller {
         leadOppsMap.put(lead.Id, oppListToCreate);
     }
 
-    public void insertOpps() {
+    private void insertOpps() {
         List<Opportunity> oppsToInsert = new List<Opportunity>();
         for (List<Opportunity> opps : leadOppsMap.values()) {
             oppsToInsert.addAll(opps);
@@ -252,8 +251,7 @@ public without sharing class CSSubscriptionEnroller {
         }
     }
     //Get all of the opportunities and then pull all of the contacts that are linked to the Opportunity.Account
-    public void insertOppContactRoles() {
-
+    private void insertOppContactRoles() {
         Map<Id, List<Contact>> accountIdToContactMap = new Map<Id, List<Contact>>();
         List<Opportunity> oppList = [SELECT Id, Parent_Account_ID__c FROM Opportunity WHERE ID IN :oppIdList];
         for (Opportunity opp : oppList) {
@@ -284,7 +282,7 @@ public without sharing class CSSubscriptionEnroller {
         }
     }
 
-    public void createUAS(Lead lead) {
+    private void createUAS(Lead lead) {
         List<Shared_Solar_System__c> sharedSolarSystems = getSortedSharedSolarSystems(lead);
         List<Opportunity> opportunities = leadOppsMap.get(lead.Id);
         List<Utility_Account_Log__c> uals = ualsByLeadId.get(lead.Id);
@@ -308,7 +306,7 @@ public without sharing class CSSubscriptionEnroller {
     }
 
     //Link the chargent order to the property account, not the converted account
-    public void moveChOrderToAccount(Lead lead) {
+    private void moveChOrderToAccount(Lead lead) {
         ChargentOrders__ChargentOrder__c baseChargentOrder = chOrdersByLeadId.get(lead.Id);
         if (baseChargentOrder == null) {
             return;
@@ -319,13 +317,13 @@ public without sharing class CSSubscriptionEnroller {
         chargentOrdersToUpdate.add(baseChargentOrder);
     }
 
-    public void updateChargentOrders() {
+    private void updateChargentOrders() {
         if (!chargentOrdersToUpdate.isEmpty()) {
             update chargentOrdersToUpdate;
         }
     }
 
-    public void calculateProposedkWh(Lead lead) {
+    private void calculateProposedkWh(Lead lead) {
         List<Utility_Account_Log__c> uals = getUALList(lead);
         Product2 product = productsMap.get(lead.Product__c);
         for (Utility_Account_Log__c ual : uals) {
@@ -350,7 +348,7 @@ public without sharing class CSSubscriptionEnroller {
         ualsByLeadId.put(lead.Id, uals);
     }
 
-    public static Product_Tariff__c assignUtilityTariff(Utility_Account_Log__c ual, Lead lead, List<Product_Tariff__c> tariffs) {
+    private static Product_Tariff__c assignUtilityTariff(Utility_Account_Log__c ual, Lead lead, List<Product_Tariff__c> tariffs) {
         Product_Tariff__c assignedTariff;
         if (tariffs == null) {
             return assignedTariff;
@@ -374,7 +372,7 @@ public without sharing class CSSubscriptionEnroller {
         return assignedTariff;
     }
 
-    public void updateUALs() {
+    private void updateUALs() {
         update ualsToUpdateMap.values();
     }
 

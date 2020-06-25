@@ -13,9 +13,15 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
     }
     public class SSSSubscription {
         public Shared_Solar_System__c sss;
+        public String sizingMethod;
         public Decimal maximumkWh;
         public Decimal maximumCost;
-        public String sizingMethod;
+        public SSSSubscription(Shared_Solar_System__c sss) {
+            this.sss = sss;
+            this.sizingMethod = sss.Product__r.Sizing_Method__c;
+            this.maximumkWh = calculateMaximumkWh(sss, null);
+            this.maximumCost = sss.Maximum_Subscription_Cost__c;
+        }
     }
 
     @TestVisible
@@ -39,12 +45,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
     ) {
 
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
-            SSSSubscription sssSubscription = new SSSSubscription();
-            sssSubscription.sss = sss;
-            sssSubscription.sizingMethod = sss.Product__r.Sizing_Method__c;
-            sssSubscription.maximumkWh = calculateMaximumkWh(sss, null);
-            sssSubscription.maximumCost = sss.Maximum_Subscription_Cost__c;
-            sssSubscriptionMap.put(sss.Id, sssSubscription);
+            sssSubscriptionMap.put(sss.Id, new SSSSubscription(sss));
         }
 
         List<Utility_Account_Subscription__c> uases = new List<Utility_Account_Subscription__c>();
@@ -59,15 +60,16 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         return uases;
     }
 
-
-    public static List<Utility_Account_Subscription__c> createUASbyCapacity(
+    @TestVisible
+    private static List<Utility_Account_Subscription__c> createUASbyCapacity(
         Utility_Account_Log__c ual,
         List<Opportunity> opportunities
     ) {
         return createUASbyCapacity(ual, opportunities, null);
     }
 
-    public static List<Utility_Account_Subscription__c> createUASbyCapacity(
+    @TestVisible
+    private static List<Utility_Account_Subscription__c> createUASbyCapacity(
         Utility_Account_Log__c ual,
         List<Opportunity> opportunities,
         List<UASOrder> uasOrders
@@ -90,8 +92,6 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                     sssRemainingSubscriptionCapacity = calculateMaximumkWh(sssSubscription.sss, ual);
                 }
                 Decimal annualElectricityCapacityAssigned = Math.min(remainingUALCapacityToAllocate, sssRemainingSubscriptionCapacity);
-                System.debug(annualElectricityCapacityAssigned);
-                System.debug(sssRemainingSubscriptionCapacity);
                 if (annualElectricityCapacityAssigned > 0) {
                     //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
                     sssRemainingSubscriptionCapacity -= annualElectricityCapacityAssigned;
@@ -117,15 +117,16 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         return uases;
     }
 
-
-    public static List<Utility_Account_Subscription__c> createUASbyCost(
+    @TestVisible
+    private static List<Utility_Account_Subscription__c> createUASbyCost(
         Utility_Account_Log__c ual,
         List<Opportunity> opportunities
     ) {
         return createUASbyCost(ual, opportunities, null);
     }
 
-    public static List<Utility_Account_Subscription__c> createUASbyCost(
+    @TestVisible
+    private static List<Utility_Account_Subscription__c> createUASbyCost(
         Utility_Account_Log__c ual,
         List<Opportunity> opportunities,
         List<UASOrder> uasOrders
@@ -139,8 +140,6 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                 SSSSubscription sssSubscription = sssSubscriptionMap.get(opp.Shared_Solar_System__c);
                 Decimal sssRemainingSubscriptionCost = sssSubscription.maximumCost;
                 Decimal annualElectricityCostAssigned = Math.min(remainingUALCostToAllocate, sssRemainingSubscriptionCost);
-                System.debug(annualElectricityCostAssigned);
-                System.debug(sssRemainingSubscriptionCost);
                 if (annualElectricityCostAssigned > 0) {
                     //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
                     sssRemainingSubscriptionCost -= annualElectricityCostAssigned;
@@ -217,17 +216,17 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         }
     }
 
+    //TODO: move calculateMaxkwh from both CSOpportunityFactory and CSUASFactory to SSS Domain class
     public static Decimal calculateMaximumkWh(Shared_Solar_System__c sss, Utility_Account_Log__c ual){
         Decimal sssRemainingSubscriptionCapacity = sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c;
-        if (featureService.isEnabled('Sizing_Method') && sss.Billing_Method__c == 'kWh' ) {
+        if (featureService.isEnabled('Sizing_Method') && sss.Product__r.Customer_Subscription_Type__c == 'kWh' ) {
             if (sss.Product__r.Sizing_Method__c == 'Rate Class Ratio' && ual != null && ual.Utility_Rate_Class__c != null) {
                 sssRemainingSubscriptionCapacity = sssRemainingSubscriptionCapacity/ual.Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c;
             } else if (sss.Product__r.Sizing_Method__c == 'Project Ratio'){
                 sssRemainingSubscriptionCapacity = sssRemainingSubscriptionCapacity/sss.Utility_NMC_Tariff__r.Size_Ratio__c;
             }
         }
-
-        return sssRemainingSubscriptionCapacity.setScale(2);
+        return sssRemainingSubscriptionCapacity.setScale(2, RoundingMode.HALF_DOWN);
     }
 
 }
