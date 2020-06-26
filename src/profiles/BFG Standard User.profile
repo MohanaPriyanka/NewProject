@@ -12025,12 +12025,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Autopay_Schedule__c.Preview__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Autopay_Schedule__c.Resolution__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Autopay_Schedule__c.Run_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Autopay_Schedule__c.Send_Results_To__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
