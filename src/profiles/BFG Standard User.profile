@@ -35245,6 +35245,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Product2.Disclosure_Template_Countersigned__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Product2.DisplayUrl</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -35471,6 +35476,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.Project_Specific_Conga_Template__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.Project_Specific_Template_Countersigned__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -641,6 +641,18 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Disclosure_Template_Countersigned__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Conga template ID for the countersigned version of disclosure forms for SSF.</inlineHelpText>
+        <label>Disclosure Template (Countersigned)</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>DisplayUrl</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1665,6 +1677,18 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project_Specific_Template_Countersigned__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Conga template ID for the countersigned version of project specific contracts.</inlineHelpText>
+        <label>Project Specific Template (Countersigned</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
