@@ -772,6 +772,16 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>Generate_Countersigned_Version__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Generates the Countersigned version of the contract for SSF applicants, and emails it to the customer.</inlineHelpText>
+        <label>Generate Countersigned Version</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Generate_Review_Version__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
