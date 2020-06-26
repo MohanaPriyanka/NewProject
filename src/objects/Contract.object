@@ -265,8 +265,8 @@ false
 &quot;&amp;uf0=1&quot; +
 &quot;&amp;mfts0=Generate_Countersigned_Version__c&quot; +
 &quot;&amp;mftsvalue0=False&quot; +
-&quot;&amp;mfts1=CompanySignedDate&quot; +
-&quot;&amp;mftsvalue1=&quot; + TEXT(TODAY())</formula>
+&quot;&amp;MFTS1=CompanySignedDate&quot; +
+&quot;&amp;MFTSValue1=&quot; + TEXT(TODAY())</formula>
         <inlineHelpText>Sets the Conga parameters used for generating the countersigned version of SSF contracts.</inlineHelpText>
         <label>Conga Countersigned Contract</label>
         <required>false</required>
