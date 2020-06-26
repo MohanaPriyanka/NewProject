@@ -21,9 +21,7 @@ private class PostSandboxRefresherTest {
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Partner__c.SObjectType,'TestRLPartner');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
-        Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
         Test.stopTest();
-        Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
         if (System_Properties__c.getall().isEmpty()) {
             insert new System_Properties__c(
                 Name = 'System',
@@ -73,47 +71,24 @@ private class PostSandboxRefresherTest {
         System.assert(letterStreamSettings[0].API_Key__c.contains('test'));
         System.assertEquals('Test Config', letterStreamSettings[0].Name);
     }
-    static testMethod void testSandboxRefresh() {
+    @IsTest
+    static void testSandboxRefresh() {
         List<ChargentBase__Gateway__c> gateways = [
             SELECT Id, ChargentBase__Merchant_ID__c
             FROM ChargentBase__Gateway__c
-            WHERE Name LIKE 'Test%'
+            WHERE ChargentBase__Test_Mode__c = TRUE
         ];
         System.assertEquals(0, gateways.size(), 'Did not expect to load test gateways');
-        List<ChargentOrders__ChargentOrder__c> chargentOrders = [
-            SELECT Id
-            FROM ChargentOrders__ChargentOrder__c
-            WHERE ChargentOrders__Card_Type__c = 'American Express'
-        ];
-        System.assertEquals(0, chargentOrders.size(), 'Did not expect to load Amex orders');
         Test.startTest();
-        PostSandboxRefresher.disableEmails();
         PostSandboxRefresher.switchChargentToTestMode();
+        PostSandboxRefresher.updateDocusignToDemoConfig();
         Test.stopTest();
-        List<Contact> contactList = [SELECT Id, Email
-                                     FROM Contact
-                                     WHERE Email LIKE '%@email.com'];
-        System.assertEquals(contactList.size(), 0);
-        List<Lead> leadList = [SELECT Id, Email
-                               FROM Lead
-                               WHERE Email LIKE '%@email.com'];
-        System.assertEquals(leadList.size(), 0);
         gateways = [
             SELECT Id, ChargentBase__Merchant_ID__c
             FROM ChargentBase__Gateway__c
-            WHERE Name LIKE 'Test%'
+            WHERE ChargentBase__Test_Mode__c = FALSE
         ];
-        // The two loaded gateways should be Test
-        System.assertEquals(2, gateways.size());
-        chargentOrders = [
-            SELECT Id, ChargentOrders__Billing_Last_Name__c
-            FROM ChargentOrders__ChargentOrder__c
-            WHERE ChargentOrders__Card_Type__c != 'American Express'
-            AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
-            AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
-        ];
-        // All loaded orders should be Amex now
-        System.assertEquals(0, chargentOrders.size());
+        System.assertEquals(0, gateways.size(), 'Did not expect any non-test gateways after running the refresher');
     }
     static testMethod void testBatchUpdateFailure() {
         List<Lead> leadList = [SELECT Id, Company
