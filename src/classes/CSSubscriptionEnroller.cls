@@ -11,6 +11,10 @@
 public without sharing class CSSubscriptionEnroller {
     @TestVisible
     private static FeatureService featureService = new FeatureService();
+    @TestVisible
+    private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+    @TestVisible
+    private static UALSelector ualSelector = new UALSelector();
     private List<Utility_Account_Log__c> ualList;
     private List<Account> propAccountList;
     private Map<Id, List<Utility_Account_Log__c>> ualsByLeadId;
@@ -35,14 +39,8 @@ public without sharing class CSSubscriptionEnroller {
         for (Lead lead : leads) {
             leadIds.add(lead.Id);
         }
-        ualList = [
-                SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,
-                        Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
-                        Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__c
-                FROM Utility_Account_Log__c
-                WHERE Lead__c IN :leadIds
-                ORDER BY Annual_Cost_of_Electricity__c DESC
-        ];
+
+        ualList = ualSelector.selectByLeads(leadIds);
 
         propAccountList = [
                 SELECT Id, Lead__c
@@ -50,16 +48,7 @@ public without sharing class CSSubscriptionEnroller {
                 WHERE Lead__c IN :leadIds AND RecordType.Name = 'Property'
         ];
 
-        sssList = [
-                SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c,
-                        Product__c, Product__r.Sizing_Method__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
-                        Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
-                        Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
-                        BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
-                FROM Shared_Solar_System__c
-                WHERE Open__c = TRUE
-                AND Capacity_Available_to_be_Reserved__c > 0
-        ];
+        sssList = sssSelector.getSharedSolarSystemsForEnrollment();
         sssByIds = new Map<Id, Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : sssList) {
             sssByIds.put(sss.Id, sss);
@@ -86,7 +75,7 @@ public without sharing class CSSubscriptionEnroller {
         }
 
         List<Product2> products = [
-                SELECT Id, Program__c, (
+                SELECT Id, Program__c, Sizing_Method__c, (
                         SELECT Id, Name, Size_Ratio__c, Utility_NMC_Tariff__r.Customer_Type__c,
                                 Utility_NMC_Tariff__r.Minimum_kWh__c, Utility_NMC_Tariff__r.Maximum_kWh__c,
                                 Utility_NMC_Tariff__r.Utility_Relationship__c, Utility_NMC_Tariff__c
@@ -113,11 +102,13 @@ public without sharing class CSSubscriptionEnroller {
     }
 
     public void enroll() {
-
-        for (Lead lead : leads) {
-            calculateProposedkWh(lead);
+        if (!featureService.isEnabled('Sizing_Method')) {
+            for (Lead lead : leads) {
+                calculateProposedkWh(lead);
+            }
+            updateUALs();
         }
-        updateUALs();
+
         for (Integer leadIndex = 0; leadIndex < leads.size(); leadIndex++) {
             AnnualEnergyTotal annualTotals = getAnnualTotals(leads[leadIndex]);
             if (annualTotals.cost == 0 && annualTotals.kWh == 0) {
@@ -144,14 +135,13 @@ public without sharing class CSSubscriptionEnroller {
     }
 
 
-    public List<Utility_Account_Log__c> getUALList(Lead lead) {
+    private List<Utility_Account_Log__c> getUALList(Lead lead) {
         List<Utility_Account_Log__c> ualListForLead = ualsByLeadId.get(lead.Id);
         if (ualListForLead == null) {
             ualListForLead = new List<Utility_Account_Log__c>();
         } else {
             return ualListForLead;
         }
-
 
         for (Utility_Account_Log__c ual : ualList) {
             if (ual.Lead__c == lead.Id) {
@@ -163,7 +153,7 @@ public without sharing class CSSubscriptionEnroller {
         return ualListForLead;
     }
 
-    public List<Shared_Solar_System__c> getSortedSharedSolarSystems(Lead lead) {
+    private List<Shared_Solar_System__c> getSortedSharedSolarSystems(Lead lead) {
         List<SSSWrapper> sssWrappers = new List<SSSWrapper>();
         List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : sssList) {
@@ -185,7 +175,7 @@ public without sharing class CSSubscriptionEnroller {
         return sortedSharedSolarSystems;
     }
 
-    public Id getPropertyAccount(Lead lead) {
+    private Id getPropertyAccount(Lead lead) {
         Id propAccountId;
         //If Switch lead, the property account will be in the list already. If CSAP Lead, will need to grab the Converted Account
         if (propAccountList.size() > 0) {
@@ -203,22 +193,30 @@ public without sharing class CSSubscriptionEnroller {
 
     }
 
-    public AnnualEnergyTotal getAnnualTotals(Lead lead) {
+    private AnnualEnergyTotal getAnnualTotals(Lead lead) {
         Decimal totalAnnualCostOfElectricity = 0;
         Decimal totalAnnualkWhElectricity = 0;
         for (Utility_Account_Log__c ual : getUALList(lead)) {
             if (ual.Annual_Cost_of_Electricity__c == null && ual.Annual_kWh__c == null) {
                 throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
             }
-            if (featureService.isEnabled('Subscription_Orders')) {
+            if (featureService.isEnabled('Sizing_Method')) {
                 totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
-                totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
-                totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
+                if (productsMap.get(lead.Product__c).Sizing_Method__c == 'Rate Class Ratio' && ual.Utility_Rate_Class__c != null) {
+                    totalAnnualkWhElectricity += Util.nullToZero((ual.Annual_kWh__c * ual.Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c));
+                } else {
+                    totalAnnualkWhElectricity += Util.nullToZero(ual.Annual_kWh__c);
+                }
             } else {
                 totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subscribed_Annual_Cost_of_Electricity__c);
                 totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
+            }
+
+            if (featureService.isEnabled('Subscription_Orders')) {
+                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
+                totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
+            } else {
+                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subscribed_Annual_Cost_of_Electricity__c);
                 totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs__c);
             }
 
@@ -226,7 +224,7 @@ public without sharing class CSSubscriptionEnroller {
         return new AnnualEnergyTotal(totalAnnualCostOfElectricity, totalAnnualkWhElectricity);
     }
 
-    public void createOpportunity(Lead lead) {
+    private void createOpportunity(Lead lead) {
         AnnualEnergyTotal annualTotals = getAnnualTotals(lead);
         List<Shared_Solar_System__c> availableSSS = getSortedSharedSolarSystems(lead);
         ChargentOrders__ChargentOrder__c baseChargentOrder = chOrdersByLeadId.get(lead.Id);
@@ -237,7 +235,7 @@ public without sharing class CSSubscriptionEnroller {
         leadOppsMap.put(lead.Id, oppListToCreate);
     }
 
-    public void insertOpps() {
+    private void insertOpps() {
         List<Opportunity> oppsToInsert = new List<Opportunity>();
         for (List<Opportunity> opps : leadOppsMap.values()) {
             oppsToInsert.addAll(opps);
@@ -253,8 +251,7 @@ public without sharing class CSSubscriptionEnroller {
         }
     }
     //Get all of the opportunities and then pull all of the contacts that are linked to the Opportunity.Account
-    public void insertOppContactRoles() {
-
+    private void insertOppContactRoles() {
         Map<Id, List<Contact>> accountIdToContactMap = new Map<Id, List<Contact>>();
         List<Opportunity> oppList = [SELECT Id, Parent_Account_ID__c FROM Opportunity WHERE ID IN :oppIdList];
         for (Opportunity opp : oppList) {
@@ -285,7 +282,7 @@ public without sharing class CSSubscriptionEnroller {
         }
     }
 
-    public void createUAS(Lead lead) {
+    private void createUAS(Lead lead) {
         List<Shared_Solar_System__c> sharedSolarSystems = getSortedSharedSolarSystems(lead);
         List<Opportunity> opportunities = leadOppsMap.get(lead.Id);
         List<Utility_Account_Log__c> uals = ualsByLeadId.get(lead.Id);
@@ -309,7 +306,7 @@ public without sharing class CSSubscriptionEnroller {
     }
 
     //Link the chargent order to the property account, not the converted account
-    public void moveChOrderToAccount(Lead lead) {
+    private void moveChOrderToAccount(Lead lead) {
         ChargentOrders__ChargentOrder__c baseChargentOrder = chOrdersByLeadId.get(lead.Id);
         if (baseChargentOrder == null) {
             return;
@@ -320,13 +317,13 @@ public without sharing class CSSubscriptionEnroller {
         chargentOrdersToUpdate.add(baseChargentOrder);
     }
 
-    public void updateChargentOrders() {
+    private void updateChargentOrders() {
         if (!chargentOrdersToUpdate.isEmpty()) {
             update chargentOrdersToUpdate;
         }
     }
 
-    public void calculateProposedkWh(Lead lead) {
+    private void calculateProposedkWh(Lead lead) {
         List<Utility_Account_Log__c> uals = getUALList(lead);
         Product2 product = productsMap.get(lead.Product__c);
         for (Utility_Account_Log__c ual : uals) {
@@ -351,7 +348,7 @@ public without sharing class CSSubscriptionEnroller {
         ualsByLeadId.put(lead.Id, uals);
     }
 
-    public static Product_Tariff__c assignUtilityTariff(Utility_Account_Log__c ual, Lead lead, List<Product_Tariff__c> tariffs) {
+    private static Product_Tariff__c assignUtilityTariff(Utility_Account_Log__c ual, Lead lead, List<Product_Tariff__c> tariffs) {
         Product_Tariff__c assignedTariff;
         if (tariffs == null) {
             return assignedTariff;
@@ -375,7 +372,7 @@ public without sharing class CSSubscriptionEnroller {
         return assignedTariff;
     }
 
-    public void updateUALs() {
+    private void updateUALs() {
         update ualsToUpdateMap.values();
     }
 

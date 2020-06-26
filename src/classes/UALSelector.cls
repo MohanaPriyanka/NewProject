@@ -1,6 +1,6 @@
 /**
  * Created by jlugo on 2019-07-10.
- * Tested by system tests in RESTRouterV2Test.
+ * Tested by: System tests in RESTRouterV2Test
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UALSelector {
@@ -30,4 +30,15 @@ public without sharing class UALSelector {
         ]);
     }
 
+    public List<Utility_Account_Log__c> selectByLeads(List<Id> leadIds) {
+        return [
+            SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,Annual_kWh__c, Proposed_kWh__c,
+                Lead__r.Product__r.Customer_Subscription_Type__c,Utility_NMC_Tariff__c, Utility_Rate_Class__c,
+                Utility_Rate_Class__r.Utility_NMC_Tariff__c, Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c,
+                Subsc_Annual_Cost_of_Electricity_Rollup__c, Subscribed_Annual_kWhs_Rollup__c
+            FROM Utility_Account_Log__c
+            WHERE Lead__c IN :leadIds
+            ORDER BY Annual_Cost_of_Electricity__c DESC
+        ];
+    }
 }
