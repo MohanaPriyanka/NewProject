@@ -454,9 +454,38 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Externally_Serviced_Override__c</fullName>
+        <description>Sets UAS to Externally/Internally Serviced</description>
+        <externalId>false</externalId>
+        <label>Externally Serviced Override</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Externally Serviced</fullName>
+                    <default>false</default>
+                    <label>Externally Serviced</label>
+                </value>
+                <value>
+                    <fullName>Internally Serviced</fullName>
+                    <default>false</default>
+                    <label>Internally Serviced</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Externally_Serviced__c</fullName>
         <externalId>false</externalId>
         <formula>IF (  
+ ISPICKVAL( Externally_Serviced_Override__c , &quot;&quot;),
+
+IF (  
  AND( 
   OR (
     ISPICKVAL(Opportunity__r.Customer_Group__c, &quot;Public Offtake&quot;),
@@ -476,7 +505,12 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
   )
       )
  ),
-TRUE, FALSE)</formula>
+TRUE, FALSE),
+
+IF (
+ ISPICKVAL( Externally_Serviced_Override__c , &quot;Externally Serviced&quot;), true, false)
+
+)</formula>
         <inlineHelpText>Checked if subscription is billed by RadianGen</inlineHelpText>
         <label>Externally Serviced</label>
         <trackHistory>false</trackHistory>
