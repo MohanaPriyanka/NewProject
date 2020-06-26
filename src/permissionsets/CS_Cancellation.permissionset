@@ -79,12 +79,16 @@
     <hasActivationRequired>false</hasActivationRequired>
     <label>CS Cancellation</label>
     <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Autopay_Schedule__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <tabSettings>
+        <tab>Autopay_Schedule__c</tab>
+        <visibility>Available</visibility>
+    </tabSettings>
 </PermissionSet>
