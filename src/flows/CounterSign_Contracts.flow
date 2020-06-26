@@ -4,7 +4,7 @@
         <description>Formats the record collection variable so that it can be used in SOQL queries.</description>
         <name>AddQuotes_Contracts</name>
         <label>AddQuotes_Contracts</label>
-        <locationX>495</locationX>
+        <locationX>497</locationX>
         <locationY>217</locationY>
         <actionName>AddQuotesToFields</actionName>
         <actionType>apex</actionType>
@@ -14,7 +14,7 @@
         <inputParameters>
             <name>fieldCollection</name>
             <value>
-                <elementReference>GetContactsfromOps.stringList</elementReference>
+                <elementReference>extractContracts.fieldValueCollection</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -73,28 +73,33 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <description>This gets the Contact Ids related to the opportunities the user selects, so that it can be used in the SOQL query to get record variables for the contact records</description>
-        <name>GetContactsfromOps</name>
-        <label>GetContactsfromOps</label>
-        <locationX>429</locationX>
-        <locationY>37</locationY>
+        <name>extractContracts</name>
+        <label>extractContracts</label>
+        <locationX>401</locationX>
+        <locationY>67</locationY>
         <actionName>ExtractStringsFromCollection</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>AddQuotes_Contracts</targetReference>
         </connector>
         <dataTypeMappings>
-            <typeName>T__inputCollection</typeName>
+            <typeName>T__inputRecordCollection</typeName>
             <typeValue>Opportunity</typeValue>
         </dataTypeMappings>
         <inputParameters>
-            <name>fieldName</name>
+            <name>dedupeValues</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>fieldAPIName</name>
             <value>
                 <stringValue>ContractId</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>inputCollection</name>
+            <name>inputRecordCollection</name>
             <value>
                 <elementReference>socv_SelectedOpportuniites</elementReference>
             </value>
@@ -187,7 +192,6 @@
         </connector>
     </assignments>
     <interviewLabel>CounterSign Contracts {!$Flow.CurrentDateTime}</interviewLabel>
-    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>CounterSign Contracts</label>
     <loops>
         <name>Loop_Contracts</name>
@@ -278,7 +282,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>GetContactsfromOps</targetReference>
+            <targetReference>extractContracts</targetReference>
         </connector>
         <fields>
             <name>scr_SelectOpportunities</name>
@@ -351,7 +355,7 @@
             <targetReference>ExecuteSOQL_Opportunities</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>SOQL_Contracts</name>
         <text>SELECT Id,Name,Status FROM Contract WHERE Id IN ({!var_ContractIdList})</text>
