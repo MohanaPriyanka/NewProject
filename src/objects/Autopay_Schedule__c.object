@@ -43,17 +43,26 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <description>Used to drive when recurring Chargent Orders are updated, and to consolidate pre-charge QC results</description>
+    <description>Used to schedule a preview or non-preview CS Cancellation</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Preview__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Run a preview of the cancellation only</inlineHelpText>
+        <label>Preview</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
     <fields>
         <fullName>Resolution__c</fullName>
         <externalId>false</externalId>
@@ -66,18 +75,30 @@
     <fields>
         <fullName>Run_Date__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Date on which the RecurringPaymentsHandler should execute its logic</inlineHelpText>
+        <inlineHelpText>Date on which the CSCancellationScheduler should run on Accounts and Opportunities</inlineHelpText>
         <label>Run Date</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Send_Results_To__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Results of the cancellation run will be sent to this user.</inlineHelpText>
+        <label>Send Results To</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>CS_Cancellation_Schedules</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Summary__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Populated by code after the RecurringPaymentHandler is finished</inlineHelpText>
+        <inlineHelpText>Populated by code after the CSCancellationScheduler runs on a schedule (but not when run ad-hoc).</inlineHelpText>
         <label>Summary</label>
-        <length>32768</length>
+        <length>131072</length>
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>10</visibleLines>
@@ -98,7 +119,7 @@
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
     </fields>
-    <label>Autopay Schedule</label>
+    <label>CS Cancellation Schedule</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
@@ -110,11 +131,11 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <displayFormat>APS-{0000}</displayFormat>
-        <label>Autopay Schedule Name</label>
+        <displayFormat>CSCS-{0000}</displayFormat>
+        <label>CS Cancellation Schedule Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Autopay Schedules</pluralLabel>
+    <pluralLabel>CS Cancellation Schedules</pluralLabel>
     <searchLayouts>
         <customTabListAdditionalFields>Run_Date__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>Time_Finished__c</customTabListAdditionalFields>

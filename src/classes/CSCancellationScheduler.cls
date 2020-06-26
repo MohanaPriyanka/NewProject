@@ -11,82 +11,133 @@ public without sharing class CSCancellationScheduler implements Schedulable{
     private List<Opportunity> cancelledOpportunities = new List<Opportunity>();
     @TestVisible
     private List<Account> accountsRemovedFromAllProjects = new List<Account>();
-    public Boolean previewOnly;
-
-    public CSCancellationScheduler() {
-        previewOnly = false;
-    }
-
-    public CSCancellationScheduler(Boolean previewOnly) {
-        this.previewOnly = previewOnly;
-    }
+    @TestVisible
+    private Boolean previewOnly = false;
+    public static final String ACCOUNT_OVERDUE_DESCRIPTION =
+        'These accounts, if any, will get a Cancellation Reason of "Lack of Payment", a Cancellation ' +
+            'Request Date of today, and an automated cancellation comment.\n' +
+            'Salesforce will subsequently email the customer of their cancellation.\n' +
+            'To exclude accounts, check the Override Delinquency Removal checkbox on the account' +
+            '\n-------------\n';
+    public static final String OPPORTUNITY_CANCELLATION_DESCRIPTION =
+        'These opportunities, if any, will get their Stage set to Cancelled because we\'re done billing' +
+            ' them, they don\'t have all UASes transferring, and don\'t have any active UASes' +
+            '\n-------------\n';
+    public static final String ACCOUNT_REMOVAL_DESCRIPTION =
+        'These accounts, if any, will get marked with a Date Removed From Last Project because all of' +
+            ' their opportunities have a Date Removed From Project, and subsequently be emailed that they are off all' +
+            ' projects.' +
+            '\n-------------\n';
 
     public void execute(SchedulableContext sc) {
-        if (previewOnly) {
-            previewCancellation();
-            return;
+        Autopay_Schedule__c schedule = getSchedule(System.today());
+        if (schedule != null) {
+            handleAccountsAndOpportunities(schedule.Preview__c, schedule);
         }
+    }
 
+    @TestVisible
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    private Autopay_Schedule__c getSchedule(Date today) {
+        List<Autopay_Schedule__c> schedules = [
+            SELECT Id, Run_Date__c, Preview__c, Send_Results_To__r.Email
+            FROM Autopay_Schedule__c
+            WHERE Run_Date__c = :today
+        ];
+        if (!schedules.isEmpty()) {
+            return schedules[0];
+        } else {
+            return null;
+        }
+    }
+
+    public String handleAccountsAndOpportunities(Boolean preview, Autopay_Schedule__c schedule) {
         Savepoint sp = Database.setSavepoint();
         try {
-            overdueAccounts =
-                CSCancellationService.handleOverdueAccounts();
-            cancelledOpportunities =
-                CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
-            accountsRemovedFromAllProjects =
-                CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
-            if (!overdueAccounts.isEmpty() ||
-                !cancelledOpportunities.isEmpty() ||
-                !accountsRemovedFromAllProjects.isEmpty()) {
-                String message = '';
-                message += 'Overdue Accounts set as overdue: ' + sobjectListToIdString(overdueAccounts) + '\n\n';
-                message += 'Cancelled Opps: ' + sobjectListToIdString(cancelledOpportunities) + '\n\n';
-                message += 'Accounts removed from all projects: ' + sobjectListToIdString(accountsRemovedFromAllProjects) + '\n\n';
-                message += 'Limits:\n' +
-                    Util.getCPULimit('CPU') + '\n' +
-                    Util.getHeapLimit('Heap') + '\n' +
-                    Util.getSOQLLimit('Queries') + '\n' +
-                    Util.getRowLimit('Rows');
-                Logger.logNow('CSCancellationScheduler', 'execute', message, Logger.WARN);
-            }
+            return cancel(preview, schedule);
         } catch (Exception e) {
             Database.rollback(sp);
             Logger.logNow('CSCancellationScheduler', 'execute', e.getMessage() + e.getStackTraceString());
         }
+        return null;
     }
 
-    private void previewCancellation() {
-        String previewMessage = '';
-        List<Account> accountList = AccountsSelector.selectCS67DaysPastDueWithAnchorOpps();
-        previewMessage += 'These accounts, if any, will get a Cancellation Reason of "Lack of Payment", a Cancellation ' +
-            'Request Date of today, and an automated cancellation comment, and subsequently be emailed of their cancellation. ' +
-            'To exclude them, check the Override Delinquency Removal checkbox on the account\n-------------\n';
-        for (Account account : accountList) {
-            previewMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
-        }
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    private String cancel(Boolean preview, Autopay_Schedule__c schedule) {
+        String outputMessage = '';
+        outputMessage = handleOverdueAccounts(preview);
 
-        previewMessage += '\n\nThese opportunities, if any, will get their Stage set to Cancelled because we\'re done billing' +
-            ' them, they don\'t have all UASes transferring, and don\'t have any active UASes\n-------------\n';
-        List<Opportunity> opportunities = CSCancellationService.getOpportunitiesToCancel();
-        for (Opportunity opportunity : opportunities) {
-            previewMessage += opportunity.Id + ', ' + opportunity.Name + '\n';
-        }
+        outputMessage += '\n\n';
+        outputMessage += handleOpportunities(preview);
 
-        previewMessage += '\n\nThese accounts, if any, will be marked with a Date Removed From Last Project because all of' +
-            ' their opportunities have a Date Removed From Project, and subsequently be emailed that they are off all' +
-            ' projects.\n-------------\n';
-        List<Account> accountsRemovedFromAllProjects = CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate();
+        outputMessage += '\n\n';
+        outputMessage += handleAccountsToRemove(preview);
+        outputMessage += '\n\n';
+        outputMessage += 'Limits:\n' +
+            Util.getCPULimit('CPU') + '\n' +
+            Util.getHeapLimit('Heap') + '\n' +
+            Util.getSOQLLimit('Queries') + '\n' +
+            Util.getRowLimit('Rows');
+
+        if (schedule != null) {
+            schedule.Summary__c = outputMessage;
+            schedule.Time_Finished__c = System.now();
+            update schedule;
+
+            if (schedule.Send_Results_To__r.Email != null) {
+                Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+                mail.setPlainTextBody(outputMessage);
+                mail.setToAddresses(new List<String>{schedule.Send_Results_To__r.Email});
+                mail.setSubject('CS Cancellation'+(preview?' Preview':'')+' Results');
+                MessagingService.sendEmail(new List<Messaging.Email>{mail});
+            }
+        }
+        return outputMessage;
+    }
+
+    public String handleOverdueAccounts(Boolean preview) {
+        String outputMessage = CSCancellationScheduler.ACCOUNT_OVERDUE_DESCRIPTION;
+        if (preview) {
+            overdueAccounts = AccountsSelector.selectCS67DaysPastDueWithAnchorOpps();
+        } else {
+            outputMessage = outputMessage.replace('will get', 'got');
+            overdueAccounts =
+                CSCancellationService.handleOverdueAccounts();
+        }
+        for (Account account : overdueAccounts) {
+            outputMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
+        }
+        return outputMessage;
+    }
+
+    public String handleOpportunities(Boolean preview) {
+        String outputMessage = CSCancellationScheduler.OPPORTUNITY_CANCELLATION_DESCRIPTION;
+        if (preview) {
+            cancelledOpportunities = CSCancellationService.getOpportunitiesToCancel();
+        } else {
+            outputMessage = outputMessage.replace('will get', 'got');
+            cancelledOpportunities =
+                CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
+        }
+        for (Opportunity opportunity : cancelledOpportunities) {
+            outputMessage += opportunity.Id + ', ' + opportunity.Name + '\n';
+        }
+        return outputMessage;
+    }
+
+    public String handleAccountsToRemove(Boolean preview) {
+        String outputMessage = CSCancellationScheduler.ACCOUNT_REMOVAL_DESCRIPTION;
+        if (preview) {
+            accountsRemovedFromAllProjects = AccountsSelector.selectCS67DaysPastDueWithAnchorOpps();
+        } else {
+            outputMessage = outputMessage.replace('will get', 'got');
+            accountsRemovedFromAllProjects =
+                CSCancellationService.handleOverdueAccounts();
+        }
         for (Account account : accountsRemovedFromAllProjects) {
-            previewMessage += account.Id + ', ' + account.Name + ', ' + account.Date_Removed_from_Project__c + '\n';
+            outputMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
         }
+        return outputMessage;
 
-        Logger.logNow('CSCancellationScheduler', 'previewCancellation', previewMessage, Logger.INFO);
-    }
-
-    private String sobjectListToIdString(List<SObject> sObjects) {
-        Map<Id, SObject> sobjMap = new Map<Id, SObject>();
-        sobjMap.putAll(sObjects);
-        Set<Id> idSet = sobjMap.keySet();
-        return String.join(new List<Id>(idSet), ', ');
     }
 }
