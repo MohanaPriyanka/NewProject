@@ -40779,6 +40779,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.NYPA__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Name_on_Account__c</field>
         <readable>true</readable>
@@ -40837,6 +40842,11 @@
         <editable>false</editable>
         <field>Utility_Account_Log__c.Proposed_kWh__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.RNY__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
