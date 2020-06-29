@@ -3,7 +3,6 @@
  */
 @IsTest
 public with sharing class SharedSolarSystemHandlerTest {
-    @TestSetup
     public static void setupData() {
         Test.startTest();
         Utility__c eversource = new Utility__c(
@@ -45,8 +44,15 @@ public with sharing class SharedSolarSystemHandlerTest {
             Utility__c = eversource.Id
         );
         insert junction;
-        Account clientAccount = new Account(name = 'Test Client');
+        RecordType clientRT = [SELECT Id FROM RecordType WHERE Name = 'Client Account' LIMIT 1];
+        Account clientAccount = new Account(name = 'Test Client', RecordTypeId = clientRT.Id);
         insert clientAccount;
+
+        Partner__c newPartner = new Partner__c(
+            Name = 'Partner',
+            Account__c = clientAccount.Id
+        );
+        insert newPartner;
         Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
@@ -239,6 +245,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             new Opportunity(Name = 'Alyssa Testcase1 0000234',
                 AccountId = propAcct1.Id,
                 Shared_Solar_System__c = sss1.Id,
+                Customer_Group__c = 'Residential',
+                Partner_tag_lookup__c = newPartner.Id,
                 StageName = 'Complete',
                 NMC_Tariff__c = everbillNMC.Id,
                 Product__c = normalCSProduct.Id,
@@ -248,6 +256,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             new Opportunity(Name = 'Alyssa Testcase2 0000236',
                 AccountId = propAcct2.Id,
                 Shared_Solar_System__c = sss2.Id,
+                Customer_Group__c = 'Residential',
+                Partner_tag_lookup__c = newPartner.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
@@ -256,6 +266,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             new Opportunity(Name = 'Alyssa Testcase3 0000238',
                 AccountId = propAcct3.Id,
                 Shared_Solar_System__c = sss2.Id,
+                Customer_Group__c = 'Residential',
+                Partner_tag_lookup__c = newPartner.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
@@ -264,6 +276,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             new Opportunity(Name = 'Alyssa Anchor 0000238',
                 AccountId = propAcct3.Id,
                 Shared_Solar_System__c = sss2.Id,
+                Partner_tag_lookup__c = newPartner.Id,
                 StageName = 'Complete',
                 Customer_Group__c = 'Anchor',
                 Product__c = normalCSProduct.Id,
@@ -324,7 +337,8 @@ public with sharing class SharedSolarSystemHandlerTest {
         insert new List<Schedule_Z__c>{scheduleZ1, scheduleZ2, scheduleZ3};
         Test.stopTest();
     }
-    public static void addMoreTestRecords() {
+    public static void setupMoreData() {
+        setupData();
         Shared_Solar_System__c sss2 = [
             SELECT Id, Product__c
             FROM Shared_Solar_System__c
@@ -426,8 +440,63 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Subscribed_Annual_Cost_of_Electricity__c = 32000);
         insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree, uasFour};
     }
+    public static void createContractTestRecords(){
+        Account account = [SELECT Id FROM Account LIMIT 1];
+        RecordType clientRT = [SELECT Id FROM RecordType WHERE Name = 'Client Contract' LIMIT 1];
+
+        Contract contractA = new Contract(
+            Name = 'Client Contract A',
+            AccountId = account.Id,
+            RecordTypeId = clientRT.Id
+        );
+        insert contractA;
+
+        Contract_Fee_Detail__c acq = new Contract_Fee_Detail__c(
+            Contract__c = contractA.Id,
+            Acquisition_Channels_BCS_Acquired__c = true,
+            Acquisition_Channels_Non_BCS_Acquired__c = true,
+            Acquisition_Cust_Group_Anchor__c = true,
+            Acquisition_Cust_Group_Public_Offtake__c = true,
+            Acquisition_Cust_Group_Residential__c = true,
+            Acquisition_Cust_Group_Non_Residential__c = true,
+            Acquisition_Sizing_Type_Downsizing__c = true,
+            Acquisition_Sizing_Type_Upsizing__c = true,
+            Acquisition_Type_Acquisition__c = true,
+            Acquisition_Type_Reacquisition__c = false,
+            Fee__c = 0.10
+        );
+        Contract_Fee_Detail__c reacq = new Contract_Fee_Detail__c(
+            Contract__c = contractA.Id,
+            Acquisition_Channels_BCS_Acquired__c = true,
+            Acquisition_Channels_Non_BCS_Acquired__c = true,
+            Acquisition_Cust_Group_Anchor__c = true,
+            Acquisition_Cust_Group_Public_Offtake__c = true,
+            Acquisition_Cust_Group_Residential__c = true,
+            Acquisition_Cust_Group_Non_Residential__c = true,
+            Acquisition_Sizing_Type_Downsizing__c = true,
+            Acquisition_Sizing_Type_Upsizing__c = true,
+            Acquisition_Type_Acquisition__c = false,
+            Acquisition_Type_Reacquisition__c = true,
+            Fee__c = 0.20
+        );
+        insert new List<Contract_Fee_Detail__c>{
+            acq, reacq
+        };
+
+        List<Shared_Solar_System__c> sssList = [
+            SELECT Id, Client_Acquisition_Contract__c, Client_Management_Contract__c
+            FROM Shared_Solar_System__c
+        ];
+        for (Shared_Solar_System__c sss : sssList){
+            sss.Client_Acquisition_Contract__c = contractA.Id;
+            sss.Client_Management_Contract__c = contractA.Id;
+        }
+        update sssList;
+    }
+
     @IsTest
     public static void testApexContext() {
+        setupData();
         Shared_Solar_System__c sss = [
             SELECT Id, Apex_Context__c, Stage__c, Estimated_COD_Date_Manual__c, Estimated_PTO_Date_MANUAL__c
             FROM Shared_Solar_System__c
@@ -482,6 +551,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testSharedSolarSystemUpdate() {
+        setupData();
         Test.startTest();
         List<Utility_Account_Subscription__c> uas = [SELECT Utility_Account_Log__c,
             Opportunity__c,
@@ -504,6 +574,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testMultipleUASes() {
+        setupData();
         Shared_Solar_System__c originalSSS = [
             SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c
             FROM Shared_Solar_System__c
@@ -570,7 +641,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testDifferentStatuses() {
-        addMoreTestRecords();
+        setupMoreData();
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Customer_Subscription_KW_DC__c, Name, Opportunity__r.StageName, Next_Schedule_Z_Status__c,
                 Future_Customer_Subscription_KWDC_Rollup__c
@@ -615,8 +686,8 @@ public with sharing class SharedSolarSystemHandlerTest {
 
         System.assertEquals(4, countComplete + countReserved);
         Test.startTest();
-            SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
-            handler.updateSSS();
+        SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
+        handler.updateSSS();
         Test.stopTest();
         Shared_Solar_System__c sssUpdated = [
             SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c, Reserved_capacity_kW_DC__c
@@ -629,6 +700,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testStageUpdate(){
+        setupData();
         List<Shared_Solar_System__c> testSSS = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c
             FROM Shared_Solar_System__c
@@ -642,6 +714,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testReservedAnchorCapacity(){
+        setupData();
         List<Shared_Solar_System__c> sssList = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c
             FROM Shared_Solar_System__c
@@ -693,5 +766,55 @@ public with sharing class SharedSolarSystemHandlerTest {
         } else {
             System.assertEquals(23.0769, checkSSS[1].Anchor_Capacity_Reserved__c);
         }
+    }
+    @IsTest
+    public static void testReacqStartDateChange(){
+        useMocks(true);
+        setupData();
+        createContractTestRecords();
+
+        Date sevenDaysAgo = System.today().addDays(-7);
+        Date threeDaysAgo = System.today().addDays(-3);
+
+        List<Subscription_Order__c> beforeOrders = [
+            SELECT Id, Contract_Fee_Detail__c, Approval_Status__c
+            FROM Subscription_Order__c
+        ];
+
+        System.assertEquals(4,beforeOrders.size());
+        for (Subscription_Order__c order : beforeOrders){
+            System.assertEquals(null,order.Contract_Fee_Detail__c);
+        }
+
+        Test.startTest();
+        List<Shared_Solar_System__c> sssList = [
+            SELECT Name, Reacquisition_Start_Date__c, Client_Acquisition_Contract__c, Client_Management_Contract__c
+            FROM Shared_Solar_System__c
+            ORDER BY Name
+            LIMIT 2
+        ];
+        System.assertEquals(null,sssList[0].Reacquisition_Start_Date__c);
+        System.assertEquals(null,sssList[1].Reacquisition_Start_Date__c);
+        sssList[0].Reacquisition_Start_Date__c = sevenDaysAgo;
+        sssList[1].Reacquisition_Start_Date__c = threeDaysAgo;
+        update sssList;
+        Test.stopTest();
+
+        List<Subscription_Order__c> afterOrders = [
+            SELECT Id, Contract_Fee_Detail__c, Contract_Fee_Detail__r.Fee__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c
+            FROM Subscription_Order__c
+        ];
+
+        System.assertEquals(4,afterOrders.size());
+        for (Subscription_Order__c order : afterOrders){
+            // Reacq has $0.20 fee, acq has $0.10 fee
+            System.assertEquals(0.20,order.Contract_Fee_Detail__r.Fee__c);
+        }
+    }
+
+    private static void useMocks(Boolean featureOn) {
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
     }
 }
