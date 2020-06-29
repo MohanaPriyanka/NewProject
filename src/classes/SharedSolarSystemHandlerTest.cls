@@ -3,11 +3,11 @@
  */
 @IsTest
 public with sharing class SharedSolarSystemHandlerTest {
-    @TestSetup
     public static void setupData() {
-        useMocks(true);
 
+        useMocks(true);
         Test.startTest();
+
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -50,7 +50,6 @@ public with sharing class SharedSolarSystemHandlerTest {
         RecordType clientRT = [SELECT Id FROM RecordType WHERE Name = 'Client Account' LIMIT 1];
         Account clientAccount = new Account(name = 'Test Client', RecordTypeId = clientRT.Id);
         insert clientAccount;
-
         Partner__c newPartner = new Partner__c(
             Name = 'Partner',
             Account__c = clientAccount.Id
@@ -338,9 +337,9 @@ public with sharing class SharedSolarSystemHandlerTest {
             Status__c = 'Billing'
         );
         insert new List<Schedule_Z__c>{scheduleZ1, scheduleZ2, scheduleZ3};
-        Test.stopTest();
     }
-    public static void addMoreTestRecords() {
+    public static void setupMoreData() {
+        setupData();
         Shared_Solar_System__c sss2 = [
             SELECT Id, Product__c
             FROM Shared_Solar_System__c
@@ -445,14 +444,12 @@ public with sharing class SharedSolarSystemHandlerTest {
     public static void createContractTestRecords(){
         Account account = [SELECT Id FROM Account LIMIT 1];
         RecordType clientRT = [SELECT Id FROM RecordType WHERE Name = 'Client Contract' LIMIT 1];
-
         Contract contractA = new Contract(
             Name = 'Client Contract A',
             AccountId = account.Id,
             RecordTypeId = clientRT.Id
         );
         insert contractA;
-
         Contract_Fee_Detail__c acq = new Contract_Fee_Detail__c(
             Contract__c = contractA.Id,
             Acquisition_Channels_BCS_Acquired__c = true,
@@ -484,7 +481,6 @@ public with sharing class SharedSolarSystemHandlerTest {
         insert new List<Contract_Fee_Detail__c>{
             acq, reacq
         };
-
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Client_Acquisition_Contract__c, Client_Management_Contract__c
             FROM Shared_Solar_System__c
@@ -495,9 +491,9 @@ public with sharing class SharedSolarSystemHandlerTest {
         }
         update sssList;
     }
-
     @IsTest
     public static void testApexContext() {
+        setupData();
         Shared_Solar_System__c sss = [
             SELECT Id, Apex_Context__c, Stage__c, Estimated_COD_Date_Manual__c, Estimated_PTO_Date_MANUAL__c
             FROM Shared_Solar_System__c
@@ -552,6 +548,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testSharedSolarSystemUpdate() {
+        setupData();
         Test.startTest();
         List<Utility_Account_Subscription__c> uas = [SELECT Utility_Account_Log__c,
             Opportunity__c,
@@ -574,6 +571,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testMultipleUASes() {
+        setupData();
         Shared_Solar_System__c originalSSS = [
             SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c
             FROM Shared_Solar_System__c
@@ -591,7 +589,6 @@ public with sharing class SharedSolarSystemHandlerTest {
             System.assertEquals(6.3846,originalSSS.Capacity_Committed_kW_DC__c);
             System.assertEquals(23.0769,originalSSS.Anchor_capacity_reserved__c);
         }
-
         Utility_Account_Subscription__c selectedUAS = [
             SELECT Utility_Account_Log__c,
                 Opportunity__c,
@@ -629,7 +626,6 @@ public with sharing class SharedSolarSystemHandlerTest {
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
-
         if (featureService.isEnabled('Subscription_Orders')) {
             System.assertEquals(9.4624,sssUpdated.Capacity_Committed_kW_DC__c);
             System.assertEquals(23.0784,sssUpdated.Anchor_capacity_reserved__c);
@@ -640,7 +636,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testDifferentStatuses() {
-        addMoreTestRecords();
+        setupMoreData();
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Customer_Subscription_KW_DC__c, Name, Opportunity__r.StageName, Next_Schedule_Z_Status__c,
                 Future_Customer_Subscription_KWDC_Rollup__c
@@ -656,8 +652,6 @@ public with sharing class SharedSolarSystemHandlerTest {
         Decimal sumReserved = 0;
         Integer countOther = 0;
         Decimal sumOther = 0;
-
-
         for (Utility_Account_Subscription__c uas : uasList){
             if (uas.Opportunity__r.StageName == 'Complete') {
                 countComplete += 1;
@@ -670,7 +664,6 @@ public with sharing class SharedSolarSystemHandlerTest {
                 sumOther += uas.Customer_Subscription_KW_DC__c;
             }
         }
-
         FeatureService featureService = new FeatureService();
         if (featureService.isEnabled('Subscription_Orders')) {
             System.assertEquals(6.3840,sumComplete);
@@ -682,7 +675,6 @@ public with sharing class SharedSolarSystemHandlerTest {
             System.assertEquals(24.8616,sumReserved);
             System.assertEquals(9.5385,sumOther);
         }
-
         System.assertEquals(4, countComplete + countReserved);
         Test.startTest();
         SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
@@ -699,6 +691,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testStageUpdate(){
+        setupData();
         List<Shared_Solar_System__c> testSSS = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c
             FROM Shared_Solar_System__c
@@ -712,6 +705,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testReservedAnchorCapacity(){
+        setupData();
         List<Shared_Solar_System__c> sssList = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c
             FROM Shared_Solar_System__c
@@ -731,14 +725,12 @@ public with sharing class SharedSolarSystemHandlerTest {
         //SSS2 does have anchors --> Anchor Capacity should be sum of anchor opps
         System.assertEquals(7, checkSSS[0].Reserved_Anchor_Capacity__c);
         System.assertEquals(7, checkSSS[0].Anchor_Capacity_Reserved__c);
-
         FeatureService featureService = new FeatureService();
         if (featureService.isEnabled('Subscription_Orders')) {
             System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
         } else {
             System.assertEquals(23.0769, checkSSS[1].Anchor_Capacity_Reserved__c);
         }
-
         checkSSS[0].Open__c = false;
         checkSSS[1].Open__c = false;
         update checkSSS;
@@ -757,7 +749,6 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertEquals('Management', checkSSS[0].Stage__c);
         System.assertEquals(0, checkSSS[0].Anchor_Capacity_Reserved__c);
         System.assertEquals('Management', checkSSS[1].Stage__c);
-
         if (featureService.isEnabled('Subscription_Orders')) {
             System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
         } else {
@@ -766,21 +757,19 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testReacqStartDateChange(){
-        createContractTestRecords();
 
+
+        createContractTestRecords();
         Date sevenDaysAgo = System.today().addDays(-7);
         Date threeDaysAgo = System.today().addDays(-3);
-
         List<Subscription_Order__c> beforeOrders = [
             SELECT Id, Contract_Fee_Detail__c, Approval_Status__c
             FROM Subscription_Order__c
         ];
-
         System.assertEquals(4,beforeOrders.size());
         for (Subscription_Order__c order : beforeOrders){
             System.assertEquals(null,order.Contract_Fee_Detail__c);
         }
-
         Test.startTest();
         List<Shared_Solar_System__c> sssList = [
             SELECT Name, Reacquisition_Start_Date__c, Client_Acquisition_Contract__c, Client_Management_Contract__c
@@ -794,32 +783,27 @@ public with sharing class SharedSolarSystemHandlerTest {
         sssList[1].Reacquisition_Start_Date__c = threeDaysAgo;
         update sssList;
         Test.stopTest();
-
         List<Subscription_Order__c> afterOrders = [
             SELECT Id, Contract_Fee_Detail__c, Contract_Fee_Detail__r.Fee__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c
             FROM Subscription_Order__c
         ];
-
         System.assertEquals(4,afterOrders.size());
         for (Subscription_Order__c order : afterOrders){
             // Reacq has $0.20 fee, acq has $0.10 fee
             System.assertEquals(0.20,order.Contract_Fee_Detail__r.Fee__c);
         }
     }
-
     private static void useMocks(Boolean featureOn) {
+
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockCustomFeatureSelector(featureOn));
     }
-
     public class MockCustomFeatureSelector extends MockProvider {
         private Boolean featureOn;
-
         public MockCustomFeatureSelector(Boolean featureOn) {
             this.featureOn = featureOn;
         }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName{
                 when 'getCustomFeature' {
@@ -831,5 +815,6 @@ public with sharing class SharedSolarSystemHandlerTest {
             }
             return null;
         }
+
     }
 }
