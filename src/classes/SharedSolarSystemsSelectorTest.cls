@@ -79,7 +79,22 @@ public with sharing class SharedSolarSystemsSelectorTest {
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25);
-        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4};
+        Shared_Solar_System__c sss5 = new Shared_Solar_System__c(   Name = 'Closed SSS',
+            Service_Territory__c = 'NEMA',
+            Service_Territories__c = 'NEMA',
+            Open__c = false,
+            Reserved_Capacity_kW_DC__c = '10',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c  = 996,
+            Utility__c = nationalGrid.Id,
+            Credit_Score_Requirement__c = 300,
+            Assignment_Order__c = '1',
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Sales_Partners__c = 'All',
+            Maximum_Subscription_Capacity_kWDC__c = 25);
+        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5};
     }
 
 
@@ -213,5 +228,12 @@ public with sharing class SharedSolarSystemsSelectorTest {
         SharedSolarSystemsSelector selector = new SharedSolarSystemsSelector();
         List<Shared_Solar_System__c> sssList = selector.getAllSSSes();
         System.assert(sssList.size() > 0);
+    }
+
+    @IsTest
+    public static void testGeSharedSolarSystemsForEnrollment() {
+        SharedSolarSystemsSelector selector = new SharedSolarSystemsSelector();
+        List<Shared_Solar_System__c> sssList = selector.getSharedSolarSystemsForEnrollment();
+        System.assertEquals(4, sssList.size());
     }
 }

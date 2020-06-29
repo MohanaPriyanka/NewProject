@@ -734,6 +734,12 @@ public class LeadTriggerHandlerTest {
     }
 
     @IsTest static void testMultipleSubscriptionsBykWh() {
+        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Sizing_Method'=>false,'Subscription_Orders'=>true};
+        FeatureService featureServiceMock = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
+        CSSubscriptionEnroller.featureService = featureServiceMock;
+        CSOpportunityFactory.featureService = featureServiceMock;
+        CSUtilityAccountSubscriptionFactory.featureService  = featureServiceMock;
+
         System_Properties__c sysProp = new System_Properties__c(
             Name = 'System',
             DocuSign_API_Account_ID__c = '123',
@@ -760,6 +766,7 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .1848,
             Name = 'Nation Grid WCMA Class 2 - S/F 2016',
             Sizing_Rate__c = true,
+            Size_Ratio__c = 1.5,
             Date__c = Date.today()
         );
         insert nmcRate;
@@ -767,6 +774,7 @@ public class LeadTriggerHandlerTest {
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Program__c = 'SMART - Community Solar',
+            Sizing_Method__c = 'Project Ratio',
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
@@ -837,12 +845,16 @@ public class LeadTriggerHandlerTest {
         primaryProperty.Personal_Credit_Report__c = pcr.Id;
         additionalProperty.Personal_Credit_Report__c = pcr.Id;
         update new List<Lead>{primaryProperty, additionalProperty};
-        // kW DC = Annual Cost / NMC Rate / Yield
+        // kW DC = Annual kWh / NMC Rate / Yield
+        //Annual kwh = 26,000
+        //proposed kwh = 39,000
         Utility_Account_Log__c ual1 = new Utility_Account_Log__c(
             Lead__c = primaryProperty.Id,
             Annual_kWh__c = (1300 * 20), // sss yield 1300 kWh/kW * 30 kW subscription
             Name_on_Account__c = 'Primary 1'
         );
+        //Annual kwh = 4333.33
+        //proposed kwh = 6500
         Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
             Lead__c = primaryProperty.Id,
             Annual_kWh__c = (1300 * 5 / 1.5).setScale(2), // sss yield 1300 kWh/kW * 5 kW subscription / 1.5 for Eversource R1
@@ -853,6 +865,7 @@ public class LeadTriggerHandlerTest {
             Annual_kWh__c = (1300 * 25 / 1.45), // sss yield 1300 kWh/kW * 25 kW subscription / 1.45 for NG G2
             Name_on_Account__c = 'Additional 1'
         );
+
         insert new List<Utility_Account_Log__c>{ual1, ual2, ual3};
         List<Opportunity> opps = [SELECT Id FROM Opportunity];
         List<Utility_Account_Subscription__c> uases = [SELECT Id FROM Utility_Account_Subscription__c];
@@ -889,7 +902,7 @@ public class LeadTriggerHandlerTest {
             WHERE Opportunity__r.AccountId =: eversourceLeads[0].ConvertedAccountId
             GROUP BY Opportunity__r.AccountId
         ];
-        // Should be a 25kW, 10kW and 5kW UAS, for a total of 35
+        //Should be 25kW, 5kWh and 5kWh UASes for a total of 35
         System.assertEquals(3, uasAggregate[0].get('num'));
 
         FeatureService featureService = new FeatureService();

@@ -52,13 +52,20 @@ public class LeadServiceTestclass {
             Name = 'Nation Grid WCMA Class 2 - S/F 2016',
             Sizing_Rate__c = true,
             Date__c = Date.today()));
-        insert nmcRate;
+
+        Utility_NMC_Tariff__c kwhRate = new Utility_NMC_Tariff__c(
+            Name = 'National Grid R1',
+            Size_Ratio__c = 1.0,
+            Date__c = Date.today()
+        );
+        insert new List<Utility_NMC_Tariff__c>{nmcRate, kwhRate};
 
         Product2 csProduct = new Product2(
             Name = 'VDER',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Program__c = 'VDER - Community Solar',
+            Sizing_Method__c = 'Project Ratio',
             State__c = 'NY',
             IsActive = true,
             Lender_of_Record__c = 'BlueWave',
@@ -71,6 +78,7 @@ public class LeadServiceTestclass {
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Program__c = 'SREC - Community Solar',
+            Sizing_Method__c = 'Project Ratio',
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
@@ -92,6 +100,7 @@ public class LeadServiceTestclass {
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
             Utility__c = nyseg.Id,
+            Utility_NMC_Tariff__c = kwhRate.Id,
             Credit_Score_Requirement__c = 500,
             Assignment_Order__c = '1',
             Product__c = csProduct.Id,
