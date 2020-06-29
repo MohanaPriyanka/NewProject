@@ -12,7 +12,7 @@
     <permissionSets>Trailhead Tracker</permissionSets>
     <permissionSets>Send Emails</permissionSets>
     <permissionSets>Inline Editing</permissionSets>
-    <permissionSets>CS Billing</permissionSets>
+    <permissionSets>CS Billing Edit</permissionSets>
     <permissionSets>Loan Servicing Visibility</permissionSets>
     <permissionSets>Loan Servicing Editing</permissionSets>
     <permissionSets>SREC Management</permissionSets>
