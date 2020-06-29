@@ -212,7 +212,13 @@ public without sharing class Util {
         return 'Limits: ' + prefix + ': ' + Limits.getQueryRows() + ' rows of '
             + Limits.getLimitQueryRows() + ' used';
     }
-
+    public static String getLimits(String prefix) {
+        return 'Limits:\n' +
+            Util.getCPULimit('CPU') + '\n' +
+            Util.getHeapLimit('Heap') + '\n' +
+            Util.getSOQLLimit('Queries') + '\n' +
+            Util.getRowLimit('Rows');
+    }
 
     public class BWException extends Exception {}
     public class FatalBWException extends Exception {}
