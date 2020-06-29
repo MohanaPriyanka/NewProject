@@ -233,6 +233,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         if (method != null && method.className != null) {
             Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
             jobToProcess.executePostQueryJob(method, response);
+            Logger.logNow('ZuoraDataQueryService', 'handlePostQueryJob', 'Limits for method' + JSON.serialize(method) + '\n' + Util.getLimits(''), Logger.INFO);
         }
     }
 

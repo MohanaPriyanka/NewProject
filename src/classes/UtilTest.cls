@@ -158,6 +158,13 @@ public with sharing class UtilTest {
             errorCaught = true;
         }
         System.assert(!errorCaught);
+
+        try {
+            Util.getLimits('Get Limits');
+        } catch (Exception e) {
+            errorCaught = true;
+        }
+        System.assert(!errorCaught, 'Util.getLimits() threw an exception');
     }
 
     @IsTest
