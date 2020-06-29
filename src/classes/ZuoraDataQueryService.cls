@@ -1,6 +1,6 @@
 /*************************************************************************************
 Created By Jordan Pentaleri 08/2019
-Tested By: ZuoraDataQueryServiceTest
+Tested By: ZuoraDataQueryServiceTest,ZuoraPaymentServiceTest (for retry testing)
 *************************************************************************************/
 
 // Suppressing Excessive Public Count because so many methods/variables are shared between
@@ -233,7 +233,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         if (method != null && method.className != null) {
             Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
             jobToProcess.executePostQueryJob(method, response);
-            Logger.logNow('ZuoraDataQueryService', 'handlePostQueryJob', 'Limits for method' + JSON.serialize(method) + '\n' + Util.getLimits(''), Logger.INFO);
+            Logger.logNow('ZuoraDataQueryService', 'handlePostQueryJob', 'Limits for method:\n' + JSON.serialize(method) + '\n' + Util.getLimits(''), Logger.INFO);
         }
     }
 
