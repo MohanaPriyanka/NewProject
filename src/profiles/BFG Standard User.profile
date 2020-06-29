@@ -1135,6 +1135,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContractTriggerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CreateOrderandPaymentRequest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -10551,6 +10555,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.NumberOfEmployees</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Number_of_Active_Contracts__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
