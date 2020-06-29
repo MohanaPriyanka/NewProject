@@ -4,7 +4,6 @@
 @IsTest
 public with sharing class SharedSolarSystemHandlerTest {
     public static void setupData() {
-        Test.startTest();
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -335,7 +334,6 @@ public with sharing class SharedSolarSystemHandlerTest {
             Status__c = 'Billing'
         );
         insert new List<Schedule_Z__c>{scheduleZ1, scheduleZ2, scheduleZ3};
-        Test.stopTest();
     }
     public static void setupMoreData() {
         setupData();
