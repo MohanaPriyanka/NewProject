@@ -47,8 +47,10 @@ https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_compo
         <aura:attribute name="mydata_standard3" type="Entity__c[]"/>
         <aura:attribute name="selectedRows_standard3" type="Entity__c[]"/>
 
-
-<!--    <aura:attribute name="mydata_standard3" type="Case[]"/>
+		<aura:attribute name="mydata_standard4" type="Opportunity[]"/>
+        <aura:attribute name="selectedRows_standard4" type="Opportunity[]"/>
+<!--    
+		<aura:attribute name="mydata_standard3" type="Case[]"/>
         <aura:attribute name="selectedRows_standard3" type="Case[]"/>
 
         <aura:attribute name="mydata_standard4" type="Contact[]"/>
@@ -56,10 +58,9 @@ https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_compo
         
         <aura:attribute name="mydata_standard5" type="Contract[]"/>
         <aura:attribute name="selectedRows_standard5" type="Contract[]"/>
-
-        <aura:attribute name="mydata_standard6" type="Opportunity[]"/>
-        <aura:attribute name="selectedRows_standard6" type="Opportunity[]"/>
 -->
+
+
     
         <aura:attribute name="mydata_custom1" type="ContentDocument[]"/>
         <aura:attribute name="selectedRows_custom1" type="ContentDocument[]"/>
