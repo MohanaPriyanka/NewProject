@@ -12,7 +12,7 @@
     <permissionSets>Trailhead Tracker</permissionSets>
     <permissionSets>Send Emails</permissionSets>
     <permissionSets>Inline Editing</permissionSets>
-    <permissionSets>CS Billing</permissionSets>
+    <permissionSets>CS Billing Edit</permissionSets>
     <permissionSets>Loan Servicing Visibility</permissionSets>
     <permissionSets>Loan Servicing Editing</permissionSets>
     <permissionSets>SREC Management</permissionSets>
@@ -188,6 +188,8 @@
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
     <permissionSets>Production and Transfer Edit</permissionSets>
     <permissionSets>Production and Transfer Read</permissionSets>
+    <permissionSets>Client Invoicing</permissionSets>
+    <permissionSets>Client Invoicing Admin</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
     <permissionSets>Permission Set for Payment Request (Chargent Orders)</permissionSets>
