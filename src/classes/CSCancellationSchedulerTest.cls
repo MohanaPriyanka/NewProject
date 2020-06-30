@@ -30,10 +30,15 @@ private class CSCancellationSchedulerTest {
             WHERE Id = : uasb.Opportunity__r.AccountId
             LIMIT 1
         ];
-        acct.Max_Overdue_Due_Date_Zuora__c = System.Today().addDays(-68);
+        acct.Max_Overdue_Due_Date_Zuora__c = System.today().addDays(-68);
         acct.Total_Outstanding_Balance_Zuora__c = 12.00;
         update acct;
 
+        Autopay_Schedule__c schedule = new Autopay_Schedule__c(
+            Run_Date__c = System.today(),
+            Send_Results_To__c = UserInfo.getUserId()
+        );
+        insert schedule;
         Test.startTest();
         CSCancellationScheduler cancellationScheduler = new CSCancellationScheduler();
         cancellationScheduler.execute(null);
@@ -43,30 +48,66 @@ private class CSCancellationSchedulerTest {
         System.assertEquals(1, cancellationScheduler.overdueAccounts.size());
         System.assertEquals(1, cancellationScheduler.cancelledOpportunities.size());
         System.assertEquals(0, cancellationScheduler.accountsRemovedFromAllProjects.size());
+        if (UserInfo.getUserEmail() != null) {
+            System.assertEquals(1, MessagingService.emailsSent.size(), 'Expected to send an email of the summary');
+        }
 
-        // There should be just one error log describing the results
-        List<Error_Log__c> errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CSCancellationScheduler'];
-        System.assertEquals(1, errorLogs.size());
-        System.assert(errorLogs[0].Message__c.contains('Overdue Accounts set as overdue:'),
-            'Expected an error log with a cancellation summary, but got this instead:' + errorLogs[0].Message__c);
-        System.assert(errorLogs[0].Message__c.contains('Cancelled Opps:'),
-            'Expected an error log with a cancellation summary, but got this instead:' + errorLogs[0].Message__c);
+        schedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c WHERE Id = :schedule.Id];
+        System.assert(schedule.Summary__c.contains(CSCancellationScheduler.ACCOUNT_OVERDUE_DESCRIPTION.replace('will get', 'got')),
+            'Expected a non-preview summary to be written to the schedule');
     }
 
     @IsTest
     static void testPreview() {
-        CustomerCommunicationHandlerTest.setDaysPastDue(System.Today().addDays(-68), 10);
+        CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-68), 10);
 
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'CSCancellationScheduler'];
         System.assertEquals(0, errorLogs.size(), 'Expected no error logs');
 
+        Autopay_Schedule__c schedule = new Autopay_Schedule__c(
+            Run_Date__c = System.today(),
+            Preview__c = true
+        );
+        insert schedule;
         Test.startTest();
-        CSCancellationScheduler cancellationScheduler = new CSCancellationScheduler(true);
+        CSCancellationScheduler cancellationScheduler = new CSCancellationScheduler();
         cancellationScheduler.execute(null);
         Test.stopTest();
 
-        errorLogs = [SELECT Id, Method__c FROM Error_Log__c WHERE Class__c = 'CSCancellationScheduler'];
-        System.assertEquals(1, errorLogs.size());
-        System.assertEquals('previewCancellation', errorLogs[0].Method__c, 'Expected a previewCancellation error log');
+        schedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c WHERE Id = :schedule.Id];
+        System.assert(schedule.Summary__c.contains(CSCancellationScheduler.ACCOUNT_OVERDUE_DESCRIPTION), 'Expected a preview summary to be written');
+    }
+
+    @IsTest
+    static void testNoSchedule() {
+        Test.startTest();
+        CSCancellationScheduler cancellationScheduler = new CSCancellationScheduler();
+        cancellationScheduler.previewOnly = true;
+        cancellationScheduler.execute(null);
+        Integer queriesAfterScheduler = Limits.getQueries();
+        Test.stopTest();
+
+        System.assertEquals(1, queriesAfterScheduler,
+            'Expected to only run one query, to find the schedule for the current day');
+    }
+
+    @IsTest
+    private static void testInvocable() {
+        InvocableCSCanceller.CancellationStep step = new InvocableCSCanceller.CancellationStep(true, 'OverdueAccounts');
+        List<InvocableCSCanceller.CancellationStep> steps = new List<InvocableCSCanceller.CancellationStep>{step};
+        System.assertNotEquals(null, InvocableCSCanceller.cancelCS(steps), 'Expected output when previewing OverdueAccounts');
+        step.stepName = 'Opportunities';
+        System.assertNotEquals(null, InvocableCSCanceller.cancelCS(steps), 'Expected output when previewing Opportunities');
+        step.stepName = 'OverdueAccounts';
+        System.assertNotEquals(null, InvocableCSCanceller.cancelCS(steps), 'Expected output when previewing OverdueAccounts');
+        step.stepName = 'All';
+        System.assertNotEquals(null, InvocableCSCanceller.cancelCS(steps), 'Expected output when previewing all steps');
+        step.stepName = 'Foo';
+        try {
+            InvocableCSCanceller.cancelCS(steps);
+            System.assert(false, 'Expected to throw an exception when providing an invalid step name');
+        } catch (Exception e) {
+            System.assert(e.getMessage().contains('Unknown step'), e.getMessage() + '\n' + e.getStackTraceString());
+        }
     }
 }
