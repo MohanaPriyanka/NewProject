@@ -11940,13 +11940,23 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
+        <field>Autopay_Schedule__c.Preview__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Autopay_Schedule__c.Resolution__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Autopay_Schedule__c.Run_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Autopay_Schedule__c.Send_Results_To__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -57102,7 +57112,7 @@
     <objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
-        <allowEdit>true</allowEdit>
+        <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Autopay_Schedule__c</object>
