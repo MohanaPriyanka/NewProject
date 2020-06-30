@@ -160,6 +160,19 @@ Utility_Account_Subscription__r.Annual_kwh_subscription_future__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Customer_Payment_Method__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Billing_Account__r.Zuora__PaymentMethod_Type__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Customer Payment Method</label>
+        <required>false</required>
+        <securityClassification>Confidential</securityClassification>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Customer_Utility_Company__c</fullName>
         <externalId>false</externalId>
         <formula>Utility_Account_Subscription__r.Utility_Account_Log__r.Utility_lookup__r.Name</formula>
@@ -192,6 +205,25 @@ Utility_Account_Subscription__r.Annual_kwh_subscription_future__c
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>FICO_score__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( 
+OR (
+(Utility_Account_Subscription__r.Opportunity__r.FICO__c = 0),
+(Utility_Account_Subscription__r.Opportunity__r.FICO__c = 9999)), 
+null, Utility_Account_Subscription__r.Opportunity__r.FICO__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>FICO score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <securityClassification>Confidential</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
