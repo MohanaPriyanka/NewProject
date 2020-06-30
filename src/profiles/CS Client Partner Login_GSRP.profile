@@ -19818,6 +19818,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Customer_Payment_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Customer_Utility_Company__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -19839,6 +19844,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Entity_Assignment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.FICO_score__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
