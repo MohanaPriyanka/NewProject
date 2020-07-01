@@ -1239,6 +1239,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContractTriggerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CopadoSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -14913,6 +14917,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.NumberOfEmployees</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Number_of_Active_Contracts__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

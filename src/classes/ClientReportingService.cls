@@ -1,12 +1,19 @@
 /*************************************************************************************
  * Created By: peteryao on 2019-03-03  
  * Description: Methods to aid with CS Client Reporting, e.g. client owner stamping
- * Test: ClientReportingServiceTest
+ * Test: ClientReportingServiceTest, ContractTriggerTest
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ClientReportingService {
     @TestVisible
     private static FeatureService featureService = new FeatureService();
+    private static AccountsSelector accountsSelector = new AccountsSelector();
+    @TestVisible
+    private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+        new List<SObjectType> {
+            Account.SObjectType
+        }
+    );
 
     // Client Stamps:
 
@@ -243,5 +250,50 @@ public without sharing class ClientReportingService {
                 alssToClientUASMap.put(uasToALSSMap.get(clientUAS.Utility_Account_Subscription__c), clientUAS);
         }
         return alssToClientUASMap;
+    }
+
+    public void rollupActiveContractsToAccounts(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
+        Set<Id> accountIds;
+        switch on Trigger.operationType {
+            when AFTER_INSERT, AFTER_UNDELETE {
+                accountIds = getAccountIdsWithUpdatedContracts(newMap);
+            } when AFTER_UPDATE {
+                accountIds = getAccountIdsWithUpdatedContracts(newMap, oldMap);
+            } when AFTER_DELETE {
+                accountIds = getAccountIdsWithUpdatedContracts(oldMap);
+            } when else {
+                throw new Util.BWException('Trigger operation not handled: ' + Trigger.operationType);
+            }
+        }
+        List<Account> accountsWithContracts = accountsSelector.selectAll(accountIds);
+        for (Account account : accountsWithContracts) {
+            if (account.Number_of_Active_Contracts__c != account.Contracts.size()) {
+                account.Number_of_Active_Contracts__c = account.Contracts.size();
+                uow.registerDirty(account);
+            }
+        }
+        uow.commitWork();
+    }
+
+    private Set<Id> getAccountIdsWithUpdatedContracts(Map<Id, Contract> newMap) {
+        Set<Id> accountIds = new Set<Id>();
+        for (Contract contract : newMap.values()) {
+            accountIds.add(contract.AccountId);
+        }
+        return accountIds;
+    }
+
+    private Set<Id> getAccountIdsWithUpdatedContracts(Map<Id, Contract> newMap, Map<Id, Contract> oldMap) {
+        Set<Id> accountIds = new Set<Id>();
+        for (Contract contract : newMap.values()) {
+            if (oldMap.get(contract.Id).AccountId != contract.AccountId) {
+                accountIds.add(oldMap.get(contract.Id).AccountId);
+                accountIds.add(contract.AccountId);
+            }
+            if (oldMap.get(contract.Id).Status != contract.Status) {
+                accountIds.add(contract.AccountId);
+            }
+        }
+        return accountIds;
     }
 }
