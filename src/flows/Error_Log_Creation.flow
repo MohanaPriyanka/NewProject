@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <interviewLabel>Error Log Creation {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Error Log Creation</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Error_Log</name>
+        <label>Create Error Log</label>
+        <locationX>212</locationX>
+        <locationY>49</locationY>
+        <inputReference>socv_ErrorLog</inputReference>
+    </recordCreates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Create_Error_Log</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>socv_ErrorLog</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Error_Log__c</objectType>
+    </variables>
+</Flow>
