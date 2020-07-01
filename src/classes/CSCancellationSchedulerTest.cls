@@ -82,7 +82,6 @@ private class CSCancellationSchedulerTest {
     static void testNoSchedule() {
         Test.startTest();
         CSCancellationScheduler cancellationScheduler = new CSCancellationScheduler();
-        cancellationScheduler.previewOnly = true;
         cancellationScheduler.execute(null);
         Integer queriesAfterScheduler = Limits.getQueries();
         Test.stopTest();

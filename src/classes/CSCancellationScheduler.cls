@@ -11,8 +11,6 @@ public without sharing class CSCancellationScheduler implements Schedulable{
     private List<Opportunity> cancelledOpportunities = new List<Opportunity>();
     @TestVisible
     private List<Account> accountsRemovedFromAllProjects = new List<Account>();
-    @TestVisible
-    private Boolean previewOnly = false;
     public static final String ACCOUNT_OVERDUE_DESCRIPTION =
         'These accounts, if any, will get a Cancellation Reason of "Lack of Payment", a Cancellation ' +
             'Request Date of today, and an automated cancellation comment.\n' +
