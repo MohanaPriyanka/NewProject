@@ -78,6 +78,7 @@ public inherited sharing class ProductionDetailSelector {
         List<Transfer_Part__c> detailList = [
             SELECT Id, Production__r.Verification_Status__c
             FROM Transfer_Part__c
+            WHERE Id IN :details.keySet()
         ];
         return detailList;
     }
