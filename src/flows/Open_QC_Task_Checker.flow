@@ -154,6 +154,20 @@
                 <stringValue>Complete</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Contract Pending</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Pending BlueWave Signature</stringValue>
+            </value>
+        </filters>
         <object>Opportunity</object>
         <outputReference>sovOpportunity</outputReference>
         <queriedFields>Id</queriedFields>
@@ -215,7 +229,13 @@
         <locationY>692</locationY>
         <inputReference>sovOpportunity</inputReference>
     </recordUpdates>
-    <startElementReference>Find_CS_Opportunity</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Find_CS_Opportunity</targetReference>
+        </connector>
+    </start>
     <status>Active</status>
     <variables>
         <name>loopvar_QCCase</name>

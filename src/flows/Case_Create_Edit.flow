@@ -84,7 +84,7 @@
         <inputParameters>
             <name>emailTemplateName</name>
             <value>
-                <stringValue>{!Environment.VAR_SURVEY Customer and Partner Case Feedback email template}</stringValue>
+                <stringValue>Customer_Ops_Case_Close_1588293285409</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -726,6 +726,37 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Category__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>QC</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>myRule_11_A1</targetReference>
             </connector>
@@ -968,7 +999,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_3</name>
-            <conditionLogic>1 and 2 and (3 or 4 or 8) and 5 and 6 and 7 and 9</conditionLogic>
+            <conditionLogic>1 and 2 and (3 or 4 or 8) and 5 and 6 and 7</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -1221,43 +1252,6 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Phone</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideReferenceTo</name>
-                    <value>
-                        <stringValue>Contact</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.ContactId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -2213,7 +2207,7 @@
         </rules>
     </decisions>
     <description>Runs when Case object is created or edited</description>
-    <interviewLabel>Case_Create_Edit-17_InterviewLabel</interviewLabel>
+    <interviewLabel>Case_Create_Edit-15_InterviewLabel</interviewLabel>
     <label>Case Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
