@@ -224,7 +224,7 @@
         <locationY>478</locationY>
         <assignmentItems>
             <assignToReference>OppRecordCount</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <numberValue>1.0</numberValue>
             </value>
