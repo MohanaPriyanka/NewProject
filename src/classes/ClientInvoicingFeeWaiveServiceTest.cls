@@ -95,291 +95,147 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
         String queryData = '[' +
             '{"Id":"a9W3F000000A1P6UAK","Effective_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Utility_Account_Subscription__c":"a1d3F0000013EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":8,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":"COD",' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":null},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":8,"Waive_Reacquisition_Fee_Project_Date__c":"COD","Waive_Reacquisition_Fee_Max_Project__c":null},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000013EV1QAM",' +
-            '"Opportunity__c":"0063F00000MVO8EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Opportunity__c":"0063F00000MVO8EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"'+ String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"'+ String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
-            '"Opportunity__r":{"Id":"0063F00000MVO8EQAX","Customer_Group__c":"Residential",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000MVO8EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A1P7UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000014EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":2,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":"COD",' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":null},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":2,"Waive_Reacquisition_Fee_Project_Date__c":"COD","Waive_Reacquisition_Fee_Max_Project__c":null},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000014EV1QAM",' +
-            '"Opportunity__c":"0063F00000MVO9EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Opportunity__c":"0063F00000MVO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
-            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Residential",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A2P6UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000013EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":2,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":"PTO",' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":null},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":2,"Waive_Reacquisition_Fee_Project_Date__c":"PTO","Waive_Reacquisition_Fee_Max_Project__c":null},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000013EV1QAM",' +
-            '"Opportunity__c":"0063F00000AAO8EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Opportunity__c":"0063F00000AAO8EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
-            '"Opportunity__r":{"Id":"0063F00000AAO8EQAX","Customer_Group__c":"Residential",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000AAO8EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A2P7UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000014EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":8,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":"PTO",' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":null},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":8,"Waive_Reacquisition_Fee_Project_Date__c":"PTO","Waive_Reacquisition_Fee_Max_Project__c":null},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000014EV1QAM",' +
-            '"Opportunity__c":"0063F00000MVO9EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Opportunity__c":"0063F00000MVO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Residential",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A1P8UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000015EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":-12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":6,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":"First Customer Bill Date",' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":null},' +
+            '"Approved_Change_in_Subscription__c":-12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":6,"Waive_Reacquisition_Fee_Project_Date__c":"First Customer Bill Date","Waive_Reacquisition_Fee_Max_Project__c":null},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000015EV1QAM",' +
-            '"Opportunity__c":"0063F00000MXO9EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Opportunity__c":"0063F00000MXO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MXO9EQAX","Customer_Group__c":"Residential",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000MXO9EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A1P9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":0,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":"First Customer Bill Date",' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":null},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":0,"Waive_Reacquisition_Fee_Project_Date__c":"First Customer Bill Date","Waive_Reacquisition_Fee_Max_Project__c":null},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000016EV1QAM",' +
-            '"Opportunity__c":"0063F00000MWO9EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KHH9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KHH9QAO",' +
+            '"Opportunity__c":"0063F00000MWO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KHH9QAO","Client_Management_Contract__c":"8003F000000KHH9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Residential",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A1Q9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"'+ String.valueOf(fourMonthsAgo) + '"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":1,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":"Contract Effective Date",' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":null},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"'+ String.valueOf(fourMonthsAgo) + '"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":1,"Waive_Reacquisition_Fee_Project_Date__c":"Contract Effective Date","Waive_Reacquisition_Fee_Max_Project__c":null},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000016EV1QAM",' +
-            '"Opportunity__c":"0063F00000MWO9EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KHH9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KHH9QAO",' +
+            '"Opportunity__c":"0063F00000MWO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KHH9QAO","Client_Management_Contract__c":"8003F000000KHH9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Non-Residential",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Non-Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A1R9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"'+ String.valueOf(fourMonthsAgo) + '"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":1,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":"Contract Effective Date",' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":null},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"'+ String.valueOf(fourMonthsAgo) + '"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":1,"Waive_Reacquisition_Fee_Project_Date__c":"Contract Effective Date","Waive_Reacquisition_Fee_Max_Project__c":null},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000016EV1QAM",' +
-            '"Opportunity__c":"0063F00000MWO9EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Opportunity__c":"0063F00000MWO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Non-Residential",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Non-Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A1S9UAK","Effective_Date__c":"'+ String.valueOf(today) + '","Utility_Account_Subscription__c":"a1d3F0000017EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":null,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":null,' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":5},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":null,"Waive_Reacquisition_Fee_Project_Date__c":null,"Waive_Reacquisition_Fee_Max_Project__c":5},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000017EV1QAM",' +
-            '"Opportunity__c":"0063F00000NWO9EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Opportunity__c":"0063F00000NWO9EQAX","Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Non-Residential",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Non-Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A1T9UAK","Effective_Date__c":"'+ String.valueOf(today) +  '","Utility_Account_Subscription__c":"a1d3F0000018EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":null,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":null,' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":5},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":null,"Waive_Reacquisition_Fee_Project_Date__c":null,"Waive_Reacquisition_Fee_Max_Project__c":5},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000018EV1QAM",' +
-            '"Opportunity__c":"0063F00000XQO9EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Opportunity__c":"0063F00000XQO9EQAX","Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A1U7UAK","Effective_Date__c":"'+ String.valueOf(today) + '","Utility_Account_Subscription__c":"a1d3F0000019EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":null,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":null,' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":5},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":null,"Waive_Reacquisition_Fee_Project_Date__c":null,"Waive_Reacquisition_Fee_Max_Project__c":5},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000019EV1QAM",' +
-            '"Opportunity__c":"0063F00000XQO9EAAA",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Opportunity__c":"0063F00000XQO9EAAA","Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Public Offtake",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Public Offtake","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A2U7UAK","Effective_Date__c":"'+ String.valueOf(today) + '","Utility_Account_Subscription__c":"a1d3F0000019EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":null,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":null,' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":5},' +
+            '"Approved_Change_in_Subscription__c":12.00,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
+            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":null,"Waive_Reacquisition_Fee_Project_Date__c":null,"Waive_Reacquisition_Fee_Max_Project__c":5},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3F0000025EV1QAM",' +
-            '"Opportunity__c":"0063F00000ZZO9EAAA",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Opportunity__c":"0063F00000ZZO9EAAA","Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
+            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
-            '"Opportunity__r":{"Id":"0063F00000ZZO9EAAA","Customer_Group__c":"Public Offtake",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000ZZO9EAAA","Customer_Group__c":"Public Offtake","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}}'+
             ']';
