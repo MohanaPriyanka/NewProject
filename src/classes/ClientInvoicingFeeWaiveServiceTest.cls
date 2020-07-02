@@ -4,6 +4,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
     private static void testSetSubscriptionOrderAcquisitionFee() {
         useMocks();
         List<Subscription_Order__c> orders = getSubscriptionOrderMocks();
+        System.assertEquals(12,orders.size());
 
         ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.setFeesToWaive(orders);
@@ -60,9 +61,6 @@ public class ClientInvoicingFeeWaiveServiceTest {
                 when 'a9W3F000000A2U7UAK' {
                     System.assert(false,'Did not expect this fee to be waived because it is over the 5% project max');
                 }
-                when 'a9W3F000000A1V9UAK' {
-                    System.assert(false,'Did not expect this fee to be waived because it is over the 5% project max');
-                }
             }
         }
     }
@@ -94,7 +92,6 @@ public class ClientInvoicingFeeWaiveServiceTest {
         Date sixMonthsAgo = today.addMonths(-6);
         Date fourMonthsAgo = today.addMonths(-4);
         Date monthFromToday = today.addMonths(1);
-        Datetime nowDatetime = System.now();
 
         String queryData = '[' +
             '{"Id":"a9W3F000000A1P6UAK","Effective_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Utility_Account_Subscription__c":"a1d3F0000013EV1QAM",' +
@@ -384,31 +381,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A1V9UAK","Effective_Date__c":"'+ String.valueOf(today) + '","Utility_Account_Subscription__c":"a1d3F0000020EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":-12.00,' +
-            '"Contract_Fee_Detail__r":{' +
-            '"Fee__c":0.10,' +
-            '"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, ' +
-            '"Waive_Reacquisition_Fee_Number_Months__c":null,' +
-            '"Waive_Reacquisition_Fee_Project_Date__c":null,' +
-            '"Waive_Reacquisition_Fee_Max_Project__c":5},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000020EV1QAM",' +
-            '"Opportunity__c":"0063F00000ZQO9EQAX",' +
-            '"Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'",' +
-            '"Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '",' +
-            '"First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor",' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
-            '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}}' +
+            '}}}'+
             ']';
         return (List<Subscription_Order__c>) JSON.deserialize(queryData, List<Subscription_Order__c>.class);
     }
