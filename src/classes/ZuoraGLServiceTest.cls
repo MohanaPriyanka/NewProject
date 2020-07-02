@@ -23,20 +23,17 @@ public class ZuoraGLServiceTest {
         System.assert(paymentPartsDMWithDate.length() > 25);
         System.assert(paymentPartsIVWithDate.length() > 25);
 
-        String invoiceItemsNullDate = ZuoraGLSelector.getInvoiceItems(null, null);
         String creditMemosNullDate = ZuoraGLSelector.getCreditMemos(null, null);
         String debitMemosNullDate = ZuoraGLSelector.getDebitMemos(null, null);
         String paymentPartsDMNullDate = ZuoraGLSelector.getPaymentPartsDM(null, null);
         String paymentPartsIVNullDate = ZuoraGLSelector.getPaymentPartsIV(null, null);
 
-        System.assert(invoiceItemsNullDate.length() > 25);
         System.assert(creditMemosNullDate.length() > 25);
         System.assert(debitMemosNullDate.length() > 25);
         System.assert(paymentPartsDMNullDate.length() > 25);
         System.assert(paymentPartsIVNullDate.length() > 25);
 
         System.assert(invoiceItemsWithDate.contains('TIMESTAMP'));
-        System.assert(!invoiceItemsNullDate.contains('TIMESTAMP'));
 
         System.assert(paymentPartsDMWithDate.contains('effectiveDate'));
         System.assert(paymentPartsIVWithDate.contains('effectiveDate'));
