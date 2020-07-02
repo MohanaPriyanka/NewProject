@@ -160,7 +160,7 @@ public with sharing class UtilTest {
         System.assert(!errorCaught);
 
         try {
-            Util.getLimits('Get Limits');
+            Util.getLimits();
         } catch (Exception e) {
             errorCaught = true;
         }
