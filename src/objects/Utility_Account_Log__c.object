@@ -634,6 +634,11 @@
         <inlineHelpText>Used for SREC CS Product sizing. It&apos;s the sum of the Future Annual Cost of Electricity (rollup) field on all related Utility Account Subscriptions.</inlineHelpText>
         <label>Subscribed Annual Cost of Electricity</label>
         <summarizedField>Utility_Account_Subscription__c.Annual_Cost_Future_Rollup__c</summarizedField>
+        <summaryFilterItems>
+            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
+            <operation>equals</operation>
+            <value>Active Subscription</value>
+        </summaryFilterItems>
         <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
@@ -648,6 +653,11 @@
         <inlineHelpText>Used for SREC CS Product sizing. It&apos;s the sum of the Annual Cost of Electricity (future) field on all related Utility Account Subscriptions.</inlineHelpText>
         <label>xxSubscribed Annual Cost of Electricity</label>
         <summarizedField>Utility_Account_Subscription__c.Subscribed_Annual_Cost_of_Electricity__c</summarizedField>
+        <summaryFilterItems>
+            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
+            <operation>equals</operation>
+            <value>Active Subscription</value>
+        </summaryFilterItems>
         <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
@@ -661,6 +671,11 @@
         <inlineHelpText>This sums the Future kWh subscription fields from all related utility account subscriptions.</inlineHelpText>
         <label>Subscribed Annual kWhs</label>
         <summarizedField>Utility_Account_Subscription__c.Annual_kWh_Subscription_Future_Rollup__c</summarizedField>
+        <summaryFilterItems>
+            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
+            <operation>equals</operation>
+            <value>Active Subscription</value>
+        </summaryFilterItems>
         <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
@@ -675,6 +690,11 @@
         <inlineHelpText>This sums the Future kWh subscription fields from all related utility account subscriptions.</inlineHelpText>
         <label>xxSubscribed Annual kWhs</label>
         <summarizedField>Utility_Account_Subscription__c.Annual_kwh_subscription_future__c</summarizedField>
+        <summaryFilterItems>
+            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
+            <operation>equals</operation>
+            <value>Active Subscription</value>
+        </summaryFilterItems>
         <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
