@@ -39,6 +39,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                     this.propertyAccount.utilityAccountLogs[i].localid = i+1;
                     this.propertyAccount.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
                     this.propertyAccount.utilityAccountLogs[i].doNotDelete = true;
+                    this.propertyAccount.utilityAccountLogs[i].showUpload = (this.propertyAccount.utilityAccountLogs[i].utilityBills);
                 }
             }
             this.sameBillingAddress = this.propertyAccount.billingStreet == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
@@ -155,7 +156,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             localid:this.utilityAccountCount,
             name: `Utility Account ${this.utilityAccountCount}`,
             servicePostalCode: this.zipinput,
-            doNotDelete: false
+            doNotDelete: false,
+            showUpload: true,
+            utilityBills: []
         });
         setTimeout(() => this.utilityAccountSection = this.utilityAccountCount);
     }
@@ -187,15 +190,30 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     }
 
     applicationValid() {
-        const allValid = [...this.template.querySelectorAll('lightning-input')]
+        var allValid = [...this.template.querySelectorAll('lightning-input')]
         .reduce((validSoFar, inputCmp) => {
             inputCmp.reportValidity();
             return validSoFar && inputCmp.checkValidity();
         }, true);
+        this.propertyAccount.utilityAccountLogs.forEach(ual => {
+            if(!ual.utilityBills || ual.utilityBills.length === 0) {
+                allValid = false;
+                this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
+                    if(element.index === ual.index) {
+                        element.addError();
+                    }
+                });
+            }
+        });
+        
         if (!allValid) {
             this.showWarningToast('Warning!', 'Please verify your application before submitting');
             return false;
         }
+        
+        this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
+            element.removeError();
+        });
         return true;
     }
 
@@ -293,5 +311,16 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             variant: 'warning'
         });
         this.dispatchEvent(evt);
+    }
+
+    handleUpload(event) {
+        let files = event.detail;
+        let index = event.target.dataset.rowIndex;
+        let ual = this.propertyAccount.utilityAccountLogs[index];
+        files.forEach(file => {
+            ual.utilityBills.push({
+                id: file
+            }); 
+        });
     }
 }

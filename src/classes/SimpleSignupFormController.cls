@@ -5,28 +5,9 @@
 
 public without sharing class SimpleSignupFormController {
     private static ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
+    private static CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     private static CSLeadsRESTControllerV3 restControllerV3 = new CSLeadsRESTControllerV3();
-
-
-    @AuraEnabled
-    public static String getContentDocumentDataById(Id leadId, String email, Id documentId) {
-        try {
-            restControllerV3.validateAuthorization(leadId, email);
-        } catch (Util.AuthorizationBWException abwe) {
-            throw Util.createAuraExceptionWithMessage('The email (' + email + ') and leadId (' + leadId + ') provided did not match');
-        }
-
-        List<ContentDocumentLink> contentDocumentLinks = contentDocumentSelector.selectByLinkedEntity(leadId);
-        if (contentDocumentLinks.isEmpty()) {
-            throw Util.createAuraExceptionWithMessage('Did not find any content docs for lead id ' + leadId);
-        }
-        for (ContentDocumentLink cdl : contentDocumentLinks) {
-            if (cdl.ContentDocumentId == documentId) {
-                return EncodingUtil.base64Encode(cdl.ContentDocument.LatestPublishedVersion.VersionData);
-            }
-        }
-        throw Util.createAuraExceptionWithMessage('Document id ' + documentId + ' is not related to lead id ' + leadId);
-    }
+    private static ContentService contentService = new ContentService();
 
 
     @AuraEnabled
@@ -53,11 +34,13 @@ public without sharing class SimpleSignupFormController {
         if(String.isNotBlank(mostRecentDocsStr)) {
             mostRecentDocs = (List<RestLead.RestContentDocument>)JSON.deserialize(mostRecentDocsStr, List<RestLead.RestContentDocument>.class);
         }
+
+        List<Contract> contracts = customerContractSelector.selectByRelatedLead(leadId);
         List<ContentDocumentLink> cdlList = new List<ContentDocumentLink>();
         if(mostRecentDocs!=null && !mostRecentDocs.isEmpty()) {
-            cdlList = contentDocumentSelector.getContractsAfterDateByLinkedEntity(leadId, mostRecentDocs[0].createdDate);
+            cdlList = contentDocumentSelector.getContractsAfterDateByLinkedEntity(contracts[0].Id, mostRecentDocs[0].createdDate);
         } else {
-            cdlList = contentDocumentSelector.selectByLinkedEntity(leadId);
+            cdlList = contentDocumentSelector.selectByLinkedEntity(contracts[0].Id);
         }
         
         List<RestLead.RestContentDocument> returnRcd = new List<RestLead.RestContentDocument>();
@@ -69,4 +52,76 @@ public without sharing class SimpleSignupFormController {
         
         return JSON.serialize(returnRcd);
     }
+
+
+    @AuraEnabled(cacheable=true)
+    public static String getDummyRecordId(){
+        if(Schema.sObjectType.Custom_File_Upload_Share__c.fields.Id.isAccessible()) {
+            List<Custom_File_Upload_Share__c> cfus = [SELECT Id FROM Custom_File_Upload_Share__c ORDER BY CreatedDate DESC LIMIT 1];
+            if(!cfus.isEmpty()) {
+                return cfus[0].Id;
+            }
+        }
+
+        return null;
+    }
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    private static Id getReparentUserId() {
+        String siteName = Site.getName();
+        List<Site> sites = [SELECT GuestRecordDefaultOwnerId FROM Site WHERE Name = :siteName];
+        if(!sites.isEmpty() && sites[0].GuestRecordDefaultOwnerId != null) {
+            return sites[0].GuestRecordDefaultOwnerId;
+        }
+
+        // if method is not called from site context, return backup user
+        List<User> backupUser = [SELECT Id, Email, Username FROM User WHERE Name = 'API'];
+        if(!backupUser.isEmpty()) {
+            return backupUser[0].Id;
+        }
+
+        return null;
+    }
+
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    @AuraEnabled
+    public static String unlinkDocsFromDummyRecord(List<String> documents){
+        Id dummyRecordId = getDummyRecordId();
+        Id ownerId = getReparentUserId();
+        if(dummyRecordId == null || ownerId == null) {
+            Logger.logNow('SimpleSignupFormController', 'unlinkDocsFromDummyRecord', 'Unable to reparent uploaded docs for site guest user file upload. Missing dummy record or new owner ID.');
+            return null;
+        }
+        
+        List<ContentDocumentLink> linksToDelete = new List<ContentDocumentLink>();
+        Set<Id> documentIds = new Set<Id>();
+        for(String doc : documents) {
+            documentIds.add(doc);
+        }
+
+        for (ContentDocumentLink link : [SELECT Id, LinkedEntityId, ContentDocumentId FROM ContentDocumentLink WHERE ContentDocumentId IN: documentIds AND LinkedEntityId = :dummyRecordId]){
+            linksToDelete.add(link);
+        }
+        
+        try {
+            delete linksToDelete;
+            changeOwnerOfUpload(documentIds, ownerId);
+        } catch(Exception ex) {
+            Logger.logNow('SimpleSignupFormController', 'unlinkDocsFromDummyRecord', 'Unable to reparent uploaded docs for site guest user file upload. ' + ex.getMessage() + '\nStack Trace: ' + ex.getStackTraceString());
+        }
+        return 'OK';
+    }
+
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public static void changeOwnerOfUpload(Set<Id> docIds, Id ownerId){
+        List<ContentDocument> newDocs = new List<ContentDocument>();
+        for(ContentDocument myDoc : [SELECT Id FROM ContentDocument WHERE Id IN: docIds]){
+            myDoc.OwnerId = ownerId;
+            newDocs.add(mydoc);
+        }
+        update newDocs;
+    }
+
 }
