@@ -14,7 +14,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
     public void execute(SchedulableContext ctx){
         Date today = System.today();
         if (daysToLookBack == null){
-            daysToLookBack = 45;
+            daysToLookBack = 60;
         }
         getAllDataFromZuora(today.addDays(-1*daysToLookBack), today);
     }
@@ -300,13 +300,14 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             || sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c){
             isMatch = false;
             String message = 'Amount:' + String.valueOf(sfEntry.Amount__c != zuoraEntry.Amount__c);
-            message += '_Date:' + String.valueOf(sfEntry.Date__c != zuoraEntry.Date__c);
-            message += '_Project:' +  String.valueOf(sfEntry.Project__c != zuoraEntry.Project__c);
-            message += '_Client:' +  String.valueOf(sfEntry.Client__c != zuoraEntry.Client__c);
-            message += '_Customer:' +  String.valueOf(sfEntry.Customer_Account__c != zuoraEntry.Customer_Account__c);
-            message += '_Paid to Client:' +  String.valueOf(sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c);
-            message += '_DepositAccount:' +  String.valueOf(sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c);
-            message += '_Date Debugging: ' +  String.valueOf(sfEntry.Date__c) + String.valueOf(zuoraEntry.Date__c);
+            message += '\nDate:' + String.valueOf(sfEntry.Date__c != zuoraEntry.Date__c);
+            message += '\nDate Debugging: ' +  sfEntry.Date__c.isSameDay(zuoraEntry.Date__c);
+            message += '\nProject:' +  String.valueOf(sfEntry.Project__c != zuoraEntry.Project__c);
+            message += '\nClient:' +  String.valueOf(sfEntry.Client__c != zuoraEntry.Client__c);
+            message += '\nCustomer:' +  String.valueOf(sfEntry.Customer_Account__c != zuoraEntry.Customer_Account__c);
+            message += '\nPaid to Client:' +  String.valueOf(sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c);
+            message += '\nDepositAccount:' +  String.valueOf(sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c);
+            Logger.logLater('ZuoraGLService', 'entriesMatch', message + '\n' + JSON.serialize(sfEntry) + '\n' + JSON.serialize(zuoraEntry), Logger.INFO);
         }
         return isMatch;
     }
