@@ -307,7 +307,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             message += '\nCustomer:' +  String.valueOf(sfEntry.Customer_Account__c != zuoraEntry.Customer_Account__c);
             message += '\nPaid to Client:' +  String.valueOf(sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c);
             message += '\nDepositAccount:' +  String.valueOf(sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c);
-            Logger.logLater('ZuoraGLService', 'entriesMatch', message + '\n' + JSON.serialize(sfEntry) + '\n' + JSON.serialize(zuoraEntry));
+            Logger.logLater('ZuoraGLService', 'entriesMatch', message + '\n' + JSON.serialize(sfEntry) + '\n' + JSON.serialize(zuoraEntry), Logger.INFO);
         }
         return isMatch;
     }
