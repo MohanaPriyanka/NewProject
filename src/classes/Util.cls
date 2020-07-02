@@ -205,14 +205,17 @@ public without sharing class Util {
             + Limits.getLimitQueries() + ' used';
     }
     public static String getHeapLimit(String prefix) {
-        return 'Limits: ' + prefix + ': ' + Limits.getHeapSize()/1000000 + ' of '
-            + Limits.getLimitHeapSize()/1000000 + ' used';
+        Integer heapSize = Limits.getHeapSize();
+        Integer heapLimit = Limits.getLimitHeapSize();
+        Decimal percent = (Decimal) (heapSize*100)/heapLimit;
+        return 'Limits: ' + prefix + ': ' + heapSize + ' of '
+            + heapLimit + ' bytes used (' + percent.setScale(2) + '%)';
     }
     public static String getRowLimit(String prefix) {
         return 'Limits: ' + prefix + ': ' + Limits.getQueryRows() + ' rows of '
             + Limits.getLimitQueryRows() + ' used';
     }
-    public static String getLimits(String prefix) {
+    public static String getLimits() {
         return 'Limits:\n' +
             Util.getCPULimit('CPU') + '\n' +
             Util.getHeapLimit('Heap') + '\n' +
