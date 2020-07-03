@@ -123,6 +123,7 @@ public with sharing class CSLeadsRESTControllerV3Test {
         controller.accountService = (AccountService) Test.createStub(AccountService.class, new CSLeadsRESTControllerV2Test.MockAccountService());
         controller.ualService = (UALService) Test.createStub(UALService.class, new CSLeadsRESTControllerV2Test.MockUALService());
         controller.capacityService = (CapacityService) Test.createStub(CapacityService.class, new CSLeadsRESTControllerV2Test.MockCapacityService());
+        controller.uow = (fflib_SObjectUnitOfWork) Test.createStub(fflib_SObjectUnitOfWork.class, new CSLeadsRESTControllerV2Test.MockUOW());
 
         controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new CSLeadsRESTControllerV2Test.MockLeadSelector());
         controller.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new CSLeadsRESTControllerV2Test.MockAccountsSelector());

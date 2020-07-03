@@ -14,11 +14,15 @@ public inherited sharing class ContentDocumentSelector {
     }
 
     public List<ContentDocumentLink> selectByLinkedEntity(Id entityId) {
+        return selectByLinkedEntities(new Set<Id>{entityId});
+    }
+
+    public List<ContentDocumentLink> selectByLinkedEntities(Set<Id> entityIds) {
         return [
             SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate, 
             ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData
             FROM ContentDocumentLink
-            WHERE LinkedEntityId = :entityId
+            WHERE LinkedEntityId = :entityIds
             ORDER BY ContentDocument.CreatedDate DESC
         ];
     }
@@ -52,6 +56,14 @@ public inherited sharing class ContentDocumentSelector {
             LIMIT 1
         ];
         return versionList[0].ContentDocumentId;
+    }
+
+    public List<ContentDocument> getContentDocsFromContentVersions(Set<Id> contentVersionIds) {
+        return [
+            SELECT ContentSize, CreatedDate, LatestPublishedVersion.Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData
+            FROM ContentDocument
+            WHERE LatestPublishedVersion.Id = :contentVersionIds
+        ];
     }
 
     public List<ContentDocument> getLeadDocsCreatedWithinRange(Datetime startDate, Datetime endDate) {

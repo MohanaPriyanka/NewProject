@@ -367,8 +367,10 @@ public without sharing class RestLead {
         public String servicePostalCode;
         public Decimal annualKWh;
         public Decimal annualCostOfElectricity;
+        public List<RestContentDocument> utilityBills;
 
         public RestUtilityAccountLog() {
+            this.utilityBills = new List<RestContentDocument>();
         }
 
         public void validateCreateFields() {
@@ -431,10 +433,11 @@ public without sharing class RestLead {
         }
     }
 
+    
     public class RestContentDocument {
         public Id id;
         public Id leadId;
-        public Id contractId;
+        public Id parentId;     // the linked entity
         public Id lastPublishedVersionId;
         public Id docLinkId;
         public String title;
@@ -442,14 +445,14 @@ public without sharing class RestLead {
         public String publicUrl;
         public Decimal size;
         public Datetime createdDate;
+        public Integer index;    // used for file upload occurring before parent insert
 
         public RestContentDocument() {
         }
 
         public RestContentDocument(ContentDocumentLink cdl) {
             this.id = cdl.ContentDocumentId;
-            this.leadId = cdl.LinkedEntityId;
-            // this.contractId = cdl.LinkedEntityId;            for when contracts are implemented
+            this.parentId = cdl.LinkedEntityId;
             this.lastPublishedVersionId = cdl.ContentDocument.LatestPublishedVersion.Id;
             this.docLinkId = cdl.Id;
             this.title = cdl.ContentDocument.LatestPublishedVersion.Title;
@@ -465,6 +468,24 @@ public without sharing class RestLead {
             this.body = EncodingUtil.base64Encode(cd.LatestPublishedVersion.VersionData);
             this.size = cd.ContentSize;
             this.createdDate = cd.CreatedDate;
+        }
+
+        public ContentVersion asContentVersionForInsert() {
+            return new ContentVersion(
+                Title = this.title,
+                VersionData = EncodingUtil.base64Decode(this.body),
+                ContentLocation = 'S',
+                PathOnClient = '/' + this.title,
+                File_Category__c = 'Customer Utility Bill'
+            );
+        }
+
+        public ContentDocumentLink asContentDocLinkForInsert() {
+            return new ContentDocumentLink(
+                ContentDocumentId = this.id,
+                ShareType = 'V',
+                Visibility = 'AllUsers'
+            );
         }
     }
 }

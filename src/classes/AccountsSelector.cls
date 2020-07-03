@@ -129,6 +129,10 @@ public without sharing class AccountsSelector {
         ];
     }
 
+    public Map<Id, Account> selectPropertyAccountsByLeadIdsMap(Set<Id> leadIds) {
+        return new Map<Id, Account>(selectPropertyAccountsByLeadIds(leadIds));
+    }
+
     // Returns a map instead of the aggregate result list so it can be mocked (since we can't deserialize AggregateResult):
     // https://salesforce.stackexchange.com/questions/203810/how-to-deserialize-aggregateresults
     public List<Map<String, Object>> selectForReconciliation(List<String> zuoraAccountIds) {
