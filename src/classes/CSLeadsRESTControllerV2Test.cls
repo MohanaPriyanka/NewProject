@@ -864,7 +864,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         List<Object> requestUtilityBills = (List<Object>) requestUtilityAccountLog.get('utilityBills');
         Map<String, Object> requestUtilityBill = (Map<String, Object>) requestUtilityBills[0];
 
-
+        
         String jsonResponse = response.responseBody.toString();
         Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
@@ -944,59 +944,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '       }]' +
             '   }]' +
             '}]}';
-    }
-
-
-    @IsTest
-    private static void testPostSuccessSystemNoContract() {
-        String jsonRequest = '{' +
-            '"firstName": "System",' +
-            '"lastName": "Testcase",' +
-            '"email": "test@invalid.bluewavesolar.com",' +
-            '"mobilePhone": "555-555-5555",' +
-            '"applicationType": "Residential",' +
-            '"streetAddress": "1 Test Street",' +
-            '"city": "Suffern",' +
-            '"state": "NY",' +
-            '"zipCode": "10901",' +
-            '"eiaId": "1234",' +
-            '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
-            '"productName": "CS Product",' +
-            '"campaignId": "0005500000"' +
-            '}';
-
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/leads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        RESTRouterV2.postRequest();
-
-        RestResponse response = RestContext.response;
-
-        String jsonResponse = response.responseBody.toString();
-        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
-        Id leadId = (Id)responseLead.get('id');
-
-        System.assertEquals(201, response.statusCode, 'POST should create properly');
-        System.assertEquals(0, [SELECT Id FROM Contract WHERE Lead__c = :leadId].size(), 'No contract should be created for this lead, as it has a product but no property account');
-
-        jsonRequest = '{' +
-            '"leadId": "' + leadId + '",' +
-            '"billingStreet": "Test billing street",' +
-            '"billingCity": "Test billing city",' +
-            '"billingState": "NY",' +
-            '"billingPostalCode": "14472"' +
-            '}';
-        controller.postPropertyAccount(jsonRequest);
-
-        System.assertEquals(201, RestContext.response.statusCode, 'A PropertyAccount POST with minimal fields should succeed');
-        System.assertEquals(1, [SELECT Id FROM Contract WHERE Lead__c = :leadId].size(), 'A contract should be created for this lead, as it now has both a product and a property account');
     }
 
 
