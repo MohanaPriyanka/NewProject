@@ -1,5 +1,6 @@
 @IsTest
 public class LeadTriggerHandlerTest {
+
     @IsTest static void customerSubscriptionProcessTest() {
         System_Properties__c sysProp = new System_Properties__c(
             Name = 'System',
@@ -120,21 +121,56 @@ public class LeadTriggerHandlerTest {
         lead2.Status = 'Qualified';
         update lead;
 
-
+        Account propertyAccount = new Account(
+            Name = 'Joey Chan',
+            Lead__c = lead.Id,
+            BillingStreet = '123 Test',
+            BillingCity = 'Test',
+            BillingStateCode = 'NY',
+            BillingPostalCode = '02633',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId()
+        );
+        Account propertyAccount2 = new Account(
+            Name = 'Jordan Pentaleri',
+            Lead__c = lead2.Id,
+            BillingStreet = '456 Test',
+            BillingCity = 'Test',
+            BillingStateCode = 'NY',
+            BillingPostalCode = '02633'
+        );
+        insert new List<Account>{propertyAccount, propertyAccount2};
 
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Lead__c = lead.Id,
-            Annual_Cost_of_Electricity__c = 10000,
-            Name_on_Account__c = 'Joey Chan'
+            Annual_Cost_of_Electricity__c = 1000,
+            Name_on_Account__c = 'Joey Chan',
+            Account__c = propertyAccount.Id
         );
-        insert ual;
-        
         Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
             Lead__c = lead2.Id,
-            Annual_Cost_of_Electricity__c = 10000,
-            Name_on_Account__c = 'Joey Chan'
+            Annual_Cost_of_Electricity__c = 1000,
+            Name_on_Account__c = 'Jordan Pentaleri',
+            Account__c = propertyAccount2.Id
         );
-        insert ual2;
+        insert new List<Utility_Account_Log__c>{ual, ual2};
+
+        Contract contract = new Contract(
+            Lead__c = lead.Id,
+            Product__c = csProduct.Id,
+            RecordTypeId = CustomerContractService.RECORD_TYPE_ID,
+            AccountId = propertyAccount.Id,
+            Contract_Type__c = 'Generic',
+            Customer_Signature_Date_Time__c = System.now()
+        );
+        Contract contract2 = new Contract(
+            Lead__c = lead2.Id,
+            Product__c = csProduct.Id,
+            RecordTypeId = CustomerContractService.RECORD_TYPE_ID,
+            AccountId = propertyAccount2.Id,
+            Contract_Type__c = 'Project Specific',
+            Customer_Signature_Date_Time__c = System.now()
+        );
+        insert new List<Contract>{contract, contract2};
 
 
         Database.leadConvert lc = new Database.leadConvert();
@@ -170,6 +206,8 @@ public class LeadTriggerHandlerTest {
             );
             insert newDRS;
         }
+        List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c FROM Error_Log__c WHERE Severity__c = 'Error'];
+        System.assertEquals(0, errorLogs.size());
 
         Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
@@ -188,19 +226,27 @@ public class LeadTriggerHandlerTest {
         DocuSignHelper.sendCSPackage(oppList[0],1,1);
         Test.stopTest();
 
-        List<Error_Log__c> errorLogs = [SELECT Id, Method__c, Message__c FROM Error_Log__c WHERE Class__c = 'DocuSignHelper'];
+        errorLogs = [SELECT Id, Class__c, Method__c, Message__c FROM Error_Log__c WHERE Severity__c = 'Error'];
         // We log the opps for which we're sending contracts: "Sending contracts for these opportunities..." if we send
         // the contract in the trigger, but not if we call sendCSPackage explicitly.
         System.assertEquals(0, errorLogs.size());
 
         Opportunity opp = [
-            SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
-                Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c,
-            (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
+            SELECT Id, AccountId, Lead__c, Product__c, ContractId, Contract.AccountId, Contract.Contract_Type__c, 
+                Contract.Customer_Signature_Date_Time__c, Contract.Lead__c, Contract.Parent_Contract__c, Contract.Product__c,
+                (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
             FROM Opportunity
         ];
         System.assertEquals(1, opp.dsfs__R00N80000002fD9vEAE__r.size());
         System.assertEquals('Sent', opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__Envelope_Status__c);
+        System.assertNotEquals(contract.Id, opp.ContractId, 'A new Contract should have been created for this Opportunity');
+        System.assertEquals(opp.AccountId, opp.Contract.AccountId, 'Opportunity\'s Contract should have the same Account as its Opportunity');
+        System.assertEquals(opp.Lead__c, opp.Contract.Lead__c, 'Opportunity\'s Contract should have the same Lead as its Opportunity');
+        System.assertEquals(opp.Product__c, opp.Contract.Product__c, 'Opportunity\'s Contract should have the same Product as its Opportunity');
+        System.assertEquals('Project Specific', opp.Contract.Contract_Type__c, 'Opportunity\'s Contract type should be Project-Specific, as the parent Lead has a Generic contract type');
+        System.assertEquals(contract.Customer_Signature_Date_Time__c, opp.Contract.Customer_Signature_Date_Time__c, 'Opportunity\'s Contract should have the same customer signature date time as its parent Contract');
+        System.assertEquals(contract.Id, opp.Contract.Parent_Contract__c, 'Opportunity\'s Contract should have the parent Lead\'s original Contract as its parent Contract');
+
     }
 
     @IsTest static void testCaseandContactConversion() {
@@ -576,7 +622,6 @@ public class LeadTriggerHandlerTest {
             Lead__c = additionalProperty.Id,
             Autopay_Only__c = true
         );
-
         insert new List<ChargentOrders__ChargentOrder__c>{newACHOrder1, newACHOrder2};
 
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
@@ -606,6 +651,24 @@ public class LeadTriggerHandlerTest {
         );
         insert new List<Utility_Account_Log__c>{ual1, ual2, ual3};
 
+        Contract contract = new Contract(
+            Lead__c = primaryProperty.Id,
+            Product__c = csProduct.Id,
+            RecordTypeId = CustomerContractService.RECORD_TYPE_ID,
+            AccountId = parentAccount.Id,
+            Contract_Type__c = 'Generic',
+            Customer_Signature_Date_Time__c = System.now()
+        );
+        Contract contract2 = new Contract(
+            Lead__c = additionalProperty.Id,
+            Product__c = csProduct.Id,
+            RecordTypeId = CustomerContractService.RECORD_TYPE_ID,
+            AccountId = parentAccount.Id,
+            Contract_Type__c = 'Project Specific',
+            Customer_Signature_Date_Time__c = System.now()
+        );
+        insert new List<Contract>{contract, contract2};
+
         List<Opportunity> opps = [SELECT Id FROM Opportunity];
         List<Utility_Account_Subscription__c> uases = [SELECT Id FROM Utility_Account_Subscription__c];
         // There should be no opps or uases to start
@@ -628,7 +691,9 @@ public class LeadTriggerHandlerTest {
         // 2 opps for the Eversource lead (one for each SSS)
         opps = [
             SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c, ACH_Bank_Routing_Number__c,
-                CC_Account_Number__c, ACH_Account_Number__c, CC_Card_Type__c
+                CC_Account_Number__c, ACH_Account_Number__c, CC_Card_Type__c, Lead__c, Product__c, ContractId, 
+                Contract.AccountId, Contract.Contract_Type__c, Contract.Customer_Signature_Date_Time__c, 
+                Contract.Lead__c, Contract.Parent_Contract__c, Contract.Product__c
             FROM Opportunity
             WHERE Shared_Solar_System__r.Utility__r.Name = 'Eversource'
             AND AccountId =: eversourceLeads[0].ConvertedAccountId
@@ -644,6 +709,14 @@ public class LeadTriggerHandlerTest {
                 //from ACHOrder2
                 System.assertEquals('************1234', opp.CC_Account_Number__c);
             }
+
+            System.assertNotEquals(contract.Id, opp.ContractId, 'A new Contract should have been created for each Opportunity');
+            System.assertEquals(opp.AccountId, opp.Contract.AccountId, 'Opportunity\'s Contract should have the same Account as its Opportunity');
+            System.assertEquals(opp.Lead__c, opp.Contract.Lead__c, 'Opportunity\'s Contract should have the same Lead as its Opportunity');
+            System.assertEquals(opp.Product__c, opp.Contract.Product__c, 'Opportunity\'s Contract should have the same Product as its Opportunity');
+            System.assertEquals('Project Specific', opp.Contract.Contract_Type__c, 'Opportunity\'s Contract type should be Project-Specific, as the parent Lead has a Generic contract type');
+            System.assertEquals(contract.Customer_Signature_Date_Time__c, opp.Contract.Customer_Signature_Date_Time__c, 'Opportunity\'s Contract should have the same customer signature date time as its parent Contract');
+            System.assertEquals(contract.Id, opp.Contract.Parent_Contract__c, 'Opportunity\'s Contract should have the parent Lead\'s original Contract as its parent Contract');
         }
 
         List<AggregateResult> uasAggregate = [
@@ -689,12 +762,14 @@ public class LeadTriggerHandlerTest {
 
         // Just 1 opp for NGrid since there's only one system
         opps = [
-            SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c
+            SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c, ContractId
             FROM Opportunity
             WHERE Shared_Solar_System__r.Utility__r.Name = 'National Grid'
             AND AccountId =: ngridLeads[0].ConvertedAccountId
         ];
         System.assertEquals(1, opps.size());
+        System.assertEquals(contract2.Id, opps[0].ContractId, 'This Opportunity should have been assigned the parent Contract, not had a new one created');
+        
 
         uasAggregate = [
             SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
@@ -892,6 +967,7 @@ public class LeadTriggerHandlerTest {
             AND AccountId =: eversourceLeads[0].ConvertedAccountId
         ];
         System.assertEquals(2, opps.size());
+        
         List<AggregateResult> uasAggregate = [
             SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
                 MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum,

@@ -139,6 +139,30 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>Utility_Data_Collection_Mechanism__c</fullName>
+        <externalId>false</externalId>
+        <label>Utility Data Collection Mechanism</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>File Upload</fullName>
+                    <default>false</default>
+                    <label>File Upload</label>
+                </value>
+                <value>
+                    <fullName>EDI</fullName>
+                    <default>false</default>
+                    <label>EDI</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
     <label>Utility</label>
     <listViews>
         <fullName>All</fullName>
