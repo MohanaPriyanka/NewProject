@@ -8917,7 +8917,57 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Management_Fee_Trigger__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Management_Fee_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Management_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract_Fee_Detail__c.Product__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Project_Capacity_Group_Anchor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Project_Capacity_Group_Non_Anchor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Project_Type_Acquisition_Management__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Project_Type_Management_Only__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Recurring_Escalator_Frequency__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Recurring_Escalator__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Recurring_Frequency__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -49381,6 +49431,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contract-General Contract Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contract_Fee_Detail__c-Contract Fee Detail Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Custom_Feature_Enablement__mdt-Custom Feature Enablement Layout</layout>

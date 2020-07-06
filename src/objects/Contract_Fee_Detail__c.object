@@ -351,6 +351,55 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Management_Fee_Trigger__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The SSS milestone date that starts management fees - can be used for either one-time or recurring fees. For one time, the date the charge is incurred. For recurring, the start date that the recurring charge begins</inlineHelpText>
+        <label>Management Fee Trigger</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Client_Invoicing_Events</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Management_Fee_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>One-Time fees are often called &quot;onboarding fees&quot;</inlineHelpText>
+        <label>Management Fee Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>One-Time</fullName>
+                    <default>false</default>
+                    <label>One-Time</label>
+                </value>
+                <value>
+                    <fullName>Recurring</fullName>
+                    <default>false</default>
+                    <label>Recurring</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Management_Fee__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Management Fee</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Product__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -363,6 +412,120 @@
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
+    <fields>
+        <fullName>Project_Capacity_Group_Anchor__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for mgmt fees with a fixed $ per portion of the project that is reserved for anchor capacity</inlineHelpText>
+        <label>Project Capacity Group: Anchor</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Project_Capacity_Group_Non_Anchor__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for mgmt fees with a fixed $ per portion of the project that is reserved for small offtake capacity</inlineHelpText>
+        <label>Project Capacity Group: Non-Anchor</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Project_Type_Acquisition_Management__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>For management fees that are only relevant for projects that are Acq &amp; Management</inlineHelpText>
+        <label>Project Type: Acquisition &amp; Management</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Project_Type_Management_Only__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>For management fees that are only relevant for projects that are Management Only</inlineHelpText>
+        <label>Project Type: Management Only</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Recurring_Escalator_Frequency__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The frequency in which a recurring escalator is increased or decreased. For ex.) a fee that increases 2% annually</inlineHelpText>
+        <label>Recurring Escalator Frequency</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Monthly</fullName>
+                    <default>false</default>
+                    <label>Monthly</label>
+                </value>
+                <value>
+                    <fullName>Quarterly</fullName>
+                    <default>false</default>
+                    <label>Quarterly</label>
+                </value>
+                <value>
+                    <fullName>Annually</fullName>
+                    <default>false</default>
+                    <label>Annually</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Recurring_Escalator__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The % escalator at which recurring charges are increased or decreased over time. See the &quot;Recurring Escalator Frequency&quot; field to set how often the escalator takes effect</inlineHelpText>
+        <label>Recurring Escalator</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Recurring_Frequency__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The frequency at which the recurring fee is charged. The start date is set by the &quot;Management Fee Trigger&quot; field</inlineHelpText>
+        <label>Recurring Frequency</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Monthly</fullName>
+                    <default>false</default>
+                    <label>Monthly</label>
+                </value>
+                <value>
+                    <fullName>Quarterly</fullName>
+                    <default>false</default>
+                    <label>Quarterly</label>
+                </value>
+                <value>
+                    <fullName>Annually</fullName>
+                    <default>false</default>
+                    <label>Annually</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
     <label>Contract Fee Detail</label>
     <nameField>
         <displayFormat>CFD-{000000}</displayFormat>
@@ -373,5 +536,67 @@
     <pluralLabel>Contract Fee Detail</pluralLabel>
     <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Do_not_populate_acq_fee_fields_if_mgmt</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+Management_Fee__c,
+OR(
+Acquisition_Cust_Group_Anchor__c,
+Acquisition_Cust_Group_Residential__c, 
+Acquisition_Sizing_Type_Downsizing__c,  
+Acquisition_Sizing_Type_Upsizing__c,  
+Acquisition_Channels_BCS_Acquired__c,  
+Acquisition_Channels_Non_BCS_Acquired__c  
+)
+)</errorConditionFormula>
+        <errorDisplayField>Management_Fee__c</errorDisplayField>
+        <errorMessage>If this is an management fee, do not populate acquisition fee fields</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Do_not_populate_mgmt_fee_fields_if_acq</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+OR(
+ Acquisition_Type_Acquisition__c ,
+ Acquisition_Type_Reacquisition__c 
+),
+OR(
+Project_Capacity_Group_Anchor__c, Project_Capacity_Group_Non_Anchor__c,  Project_Type_Acquisition_Management__c,  Project_Type_Management_Only__c,
+NOT(ISPICKVAL(Management_Fee_Trigger__c,&quot;&quot;)),
+NOT(ISPICKVAL(Management_Fee_Type__c,&quot;&quot;))
+)
+)</errorConditionFormula>
+        <errorDisplayField>Acquisition_Type_Acquisition__c</errorDisplayField>
+        <errorMessage>If this is an acquisition fee, do not populate management fee fields</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Fee_Type_Must_Be_Set</fullName>
+        <active>true</active>
+        <errorConditionFormula>NOT(
+OR(
+Acquisition_Type_Acquisition__c,
+Acquisition_Type_Reacquisition__c,
+Management_Fee__c 
+)
+)</errorConditionFormula>
+        <errorMessage>You must set the fee type to be either Acquisition, Reacquisition or Management</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Recurring_Field_Must_be_Populated_Togeth</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR(
+AND( 
+ISPICKVAL(Management_Fee_Type__c,&quot;Recurring&quot;),
+ISPICKVAL(Recurring_Frequency__c,&quot;&quot;)
+),
+AND( 
+NOT(ISPICKVAL(Management_Fee_Type__c,&quot;Recurring&quot;)),
+NOT(ISPICKVAL(Recurring_Frequency__c,&quot;&quot;))
+)
+)</errorConditionFormula>
+        <errorDisplayField>Management_Fee_Type__c</errorDisplayField>
+        <errorMessage>If this fee is recurring, you must populate the recurring frequency field. You can&apos;t populate recurring frequency without also setting the fee type to recurring</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
