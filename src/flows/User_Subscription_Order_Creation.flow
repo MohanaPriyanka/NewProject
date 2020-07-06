@@ -27,8 +27,8 @@
         <description>Assign inputs to sov for subscription orders.</description>
         <name>Add_SOs_to_List</name>
         <label>Add SOs to List</label>
-        <locationX>544</locationX>
-        <locationY>573</locationY>
+        <locationX>806</locationX>
+        <locationY>867</locationY>
         <assignmentItems>
             <assignToReference>socv_SO</assignToReference>
             <operator>Add</operator>
@@ -328,8 +328,8 @@
     <assignments>
         <name>assgnSO_Variables_Assignment</name>
         <label>SO Variables Assignment</label>
-        <locationX>682</locationX>
-        <locationY>566</locationY>
+        <locationX>795</locationX>
+        <locationY>731</locationY>
         <assignmentItems>
             <assignToReference>sov_SubscriptionOrder.Utility_Account_Subscription__c</assignToReference>
             <operator>Assign</operator>
@@ -464,6 +464,76 @@
             <targetReference>assgnAdd_UAS_to_List</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Assign_Error_Log</name>
+        <label>Assign Error Log</label>
+        <locationX>620</locationX>
+        <locationY>1091</locationY>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Timestamp__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.User__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_RunningUserID</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Message__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>errormessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Error_Log_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Error_Log_0</name>
+        <label>Assign Error Log</label>
+        <locationX>569</locationX>
+        <locationY>1213</locationY>
+        <assignmentItems>
+            <assignToReference>socv_ErrorLog</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sov_ErrorLog</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Error_Log</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assigns the UAS as the Flow Record, so that it can be referenced in error logs.</description>
+        <name>Assign_FlowRecord</name>
+        <label>Assign_FlowRecord</label>
+        <locationX>582</locationX>
+        <locationY>11</locationY>
+        <assignmentItems>
+            <assignToReference>$Flow.CurrentRecord</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sovUAS.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>SO_Input_0</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>dec_Type</name>
         <label>Type Decision</label>
@@ -529,8 +599,8 @@
     <decisions>
         <name>dec_Type_0</name>
         <label>Type Decision</label>
-        <locationX>977</locationX>
-        <locationY>1210</locationY>
+        <locationX>1162</locationX>
+        <locationY>1200</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Cancellation_0</name>
@@ -588,6 +658,11 @@
         <picklistObject>Subscription_Order__c</picklistObject>
     </dynamicChoiceSets>
     <formulas>
+        <name>formula_RunningUserID</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Id}</expression>
+    </formulas>
+    <formulas>
         <name>formula_TextnewAnnualSubscription</name>
         <dataType>String</dataType>
         <expression>CASE(
@@ -640,18 +715,21 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <connector>
             <targetReference>assgnUAS_Variable_Assignment</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log</targetReference>
+        </faultConnector>
         <inputReference>sov_Transfer</inputReference>
     </recordCreates>
     <recordCreates>
         <name>SO_Creation</name>
         <label>SO Creation</label>
-        <locationX>984</locationX>
-        <locationY>1085</locationY>
+        <locationX>1171</locationX>
+        <locationY>1040</locationY>
         <connector>
             <targetReference>dec_Type_0</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Error</targetReference>
+            <targetReference>Assign_Error_Log</targetReference>
         </faultConnector>
         <inputReference>socv_SO</inputReference>
     </recordCreates>
@@ -683,11 +761,11 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <recordLookups>
         <name>Get_UAS</name>
         <label>Get_UAS</label>
-        <locationX>586</locationX>
+        <locationX>401</locationX>
         <locationY>13</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>SO_Input_0</targetReference>
+            <targetReference>Assign_FlowRecord</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -709,27 +787,30 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <recordUpdates>
         <name>Update_UAS</name>
         <label>Update UAS</label>
-        <locationX>1359</locationX>
-        <locationY>1210</locationY>
+        <locationX>908</locationX>
+        <locationY>1197</locationY>
         <connector>
             <targetReference>Success_0</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log</targetReference>
+        </faultConnector>
         <inputReference>socv_UAS</inputReference>
     </recordUpdates>
     <screens>
         <name>Error</name>
         <label>Error</label>
-        <locationX>1352</locationX>
+        <locationX>314</locationX>
         <locationY>1085</locationY>
-        <allowBack>true</allowBack>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
             <name>txt_Error</name>
             <fieldText>&lt;p&gt;The Subscription Order was not able to be created because an error occurred. Business Application has been notified.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The most common reason for this happening is not having permission to create Subscription Orders. If this is the case, please submit a case to productsupport@bluewavesolar.com to have those permissions assigned to you.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
-        <showFooter>false</showFooter>
+        <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
@@ -1047,8 +1128,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <screens>
         <name>Success_0</name>
         <label>Success</label>
-        <locationX>987</locationX>
-        <locationY>1401</locationY>
+        <locationX>1147</locationX>
+        <locationY>1465</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1067,11 +1148,45 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
             <targetReference>Get_UAS</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
+    <subflows>
+        <name>Error_Log</name>
+        <label>Error Log</label>
+        <locationX>463</locationX>
+        <locationY>1087</locationY>
+        <connector>
+            <targetReference>Error</targetReference>
+        </connector>
+        <flowName>Error_Log_Creation</flowName>
+        <inputAssignments>
+            <name>socv_ErrorLog</name>
+            <value>
+                <elementReference>socv_ErrorLog</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>socv_ErrorLog</assignToReference>
+            <name>socv_ErrorLog</name>
+        </outputAssignments>
+    </subflows>
+    <textTemplates>
+        <name>errormessage</name>
+        <text>Flow: User Subscription Order Creation
+Record: {!$Flow.CurrentRecord}
+Message: {!$Flow.FaultMessage}</text>
+    </textTemplates>
     <textTemplates>
         <name>varErrorMessage</name>
         <text>&lt;p&gt;An Error Occurred in the User Subscription Order Creation Flow:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
     </textTemplates>
+    <variables>
+        <name>socv_ErrorLog</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Error_Log__c</objectType>
+    </variables>
     <variables>
         <name>socv_SO</name>
         <dataType>SObject</dataType>
