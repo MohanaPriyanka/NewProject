@@ -212,10 +212,6 @@ public with sharing class ZuoraBillingAccountServiceTest {
             ORDER BY Name
         ];
 
-        List<Error_Log__c> errorLogs = [SELECT Message__c, Severity__c, Class__c, Method__c FROM Error_Log__c];
-        System.assertEquals(1, errorLogs.size(), 'Expected one error log but got these: ' + JSON.serialize(errorLogs));
-        System.assert(errorLogs[0].Message__c.contains('Limits for method'), 'Expected an Info error log about limits but got these: ' + JSON.serialize(errorLogs));
-
         System.assertEquals(oldAccounts[0].Id, updatedAccounts[0].Id);
         System.assertEquals(oldAccounts[1].Id, updatedAccounts[1].Id);
         System.assertEquals(oldAccounts[2].Id, updatedAccounts[2].Id);
@@ -302,6 +298,10 @@ public with sharing class ZuoraBillingAccountServiceTest {
             WHERE Id IN : accountIdSet
             ORDER BY Name
         ];
+
+        List<Error_Log__c> errorLogs = [SELECT Message__c, Severity__c, Class__c, Method__c FROM Error_Log__c];
+        System.assertEquals(1, errorLogs.size(), 'Expected one error log but got these: ' + JSON.serialize(errorLogs));
+        System.assert(errorLogs[0].Message__c.contains('Limits for method'), 'Expected an Info error log about limits but got these: ' + JSON.serialize(errorLogs));
 
         System.assertEquals(oldAccounts[0].Id, updatedAccounts[0].Id);
         System.assertEquals(oldAccounts[1].Id, updatedAccounts[1].Id);
