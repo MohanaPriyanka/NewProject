@@ -13,10 +13,10 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
             checkZuoraQueryStatus();
         } catch (Exception excep) {
             String errorMessage = String.valueOf(zuoraQueryResult) + '\n' + excep.getMessage() + '\n' + excep.getStackTraceString();
-            Logger.logNow('ZuoraDataQueryAsyncService', 'execute', errorMessage, Logger.ERROR);
+            Logger.logLater('ZuoraDataQueryAsyncService', 'execute', errorMessage, Logger.ERROR);
+        } finally {
             Logger.flushLogs();
         }
-
     }
 
     private void checkZuoraQueryStatus(){
