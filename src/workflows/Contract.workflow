@@ -73,6 +73,18 @@
         <useDeadLetterQueue>false</useDeadLetterQueue>
     </outboundMessages>
     <outboundMessages>
+        <fullName>Generate_and_Send_SSF_Documents_Counte</fullName>
+        <apiVersion>48.0</apiVersion>
+        <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
+        <fields>Conga_Countersigned_Contract__c</fields>
+        <fields>Id</fields>
+        <includeSessionId>true</includeSessionId>
+        <integrationUser>api@bluewavesolar.com</integrationUser>
+        <name>Generate/Send SSF Docs (Countersigned)</name>
+        <protected>false</protected>
+        <useDeadLetterQueue>false</useDeadLetterQueue>
+    </outboundMessages>
+    <outboundMessages>
         <fullName>Generate_and_Send_SSF_Documents_Signed</fullName>
         <apiVersion>48.0</apiVersion>
         <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
@@ -107,6 +119,20 @@
         <active>true</active>
         <criteriaItems>
             <field>Contract.Generate_Signed_Version__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Generate and Send SSF Documents %28Countersigned Version%29</fullName>
+        <actions>
+            <name>Generate_and_Send_SSF_Documents_Counte</name>
+            <type>OutboundMessage</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Contract.Generate_Countersigned_Version__c</field>
             <operation>equals</operation>
             <value>True</value>
         </criteriaItems>
