@@ -15,7 +15,7 @@ public without sharing class AccountsSelector {
             OR RecordType.Name = 'Business Development- Offtake')
             FROM Account
             WHERE RecordType.Name = 'Property'
-            AND Days_Past_Due__c > 67
+            AND Days_Past_Due__c > :CSCancellationScheduler.DAYS_PAST_DUE_DEACTIVATION_TRIGGER
             AND Override_Delinquency_Removal__c = FALSE
             AND Cancellation_Request_Date__c = NULL
             ORDER BY Name
