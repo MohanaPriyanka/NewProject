@@ -20,7 +20,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
 
         for (i = 0; i < 10; i++) {
             Zuora__CustomerAccount__c newAccount = new Zuora__CustomerAccount__c(
-                Name = 'Account Name',
+                Name = 'Account Name' + String.valueOf(i),
                 Zuora__Account__c = accountsToInsert[i].Id,
                 Zuora__Zuora_Id__c = '2c92c0f86b78f56c016b7b0048' + String.valueOf(i),
                 Zuora__AutoPay__c = false
@@ -298,6 +298,10 @@ public with sharing class ZuoraBillingAccountServiceTest {
             ORDER BY Name
         ];
 
+        List<Error_Log__c> errorLogs = [SELECT Message__c, Severity__c, Class__c, Method__c FROM Error_Log__c];
+        System.assertEquals(1, errorLogs.size(), 'Expected one error log but got these: ' + JSON.serialize(errorLogs));
+        System.assert(errorLogs[0].Message__c.contains('Limits for method'), 'Expected an Info error log about limits but got these: ' + JSON.serialize(errorLogs));
+
         System.assertEquals(oldAccounts[0].Id, updatedAccounts[0].Id);
         System.assertEquals(oldAccounts[1].Id, updatedAccounts[1].Id);
         System.assertEquals(oldAccounts[2].Id, updatedAccounts[2].Id);
@@ -335,5 +339,107 @@ public with sharing class ZuoraBillingAccountServiceTest {
             System.assertEquals(1, account.Zuora__R00N40000001kyLcEAI__r.size(), 'Expected one billing account for each account');
             System.assertEquals(account.Zuora__R00N40000001kyLcEAI__r[0].Id, account.Billing_Account__c, 'Expected Billing Account on Account to be set');
         }
+    }
+
+    @IsTest
+    private static void testDaysPastDueCases() {
+        Util.mockDML = true;
+        ZuoraBillingAccountService billingAccountService = new ZuoraBillingAccountService();
+        ZuoraBillingAccountService.BalanceQueryResult queryResult = new ZuoraBillingAccountService.BalanceQueryResult();
+        List<ZuoraBillingAccountService.BalanceQueryResult> queryResults = new List<ZuoraBillingAccountService.BalanceQueryResult>{queryResult};
+
+        queryResult.InvoiceBalance = 100;
+        queryResult.InvoiceDueDate = System.today()+30;
+        queryResult.AccountId = '000001';
+        ZuoraBillingAccountService.zuoraAcctSelector =
+            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 67, '0010v00000X7SHjAAN'));
+        ZuoraBillingAccountService.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Case.SObjectType}, new FFLibHelperTest.MockDML());
+        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults), null);
+        System.assertEquals(1, FFLibHelperTest.getRegisterNewListFromUnitOfWork(ZuoraBillingAccountService.uow, 'Case').size(),
+            'Expected a case for a 67 days past due account that now only has outstanding items due in the future');
+
+        queryResult.InvoiceBalance = 100;
+        queryResult.InvoiceDueDate = System.today();
+        queryResult.AccountId = '000001';
+        ZuoraBillingAccountService.zuoraAcctSelector =
+            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 67, '0010v00000X7SHjAAN'));
+        ZuoraBillingAccountService.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Case.SObjectType}, new FFLibHelperTest.MockDML());
+        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults), null);
+        System.assertEquals(1, FFLibHelperTest.getRegisterNewListFromUnitOfWork(ZuoraBillingAccountService.uow, 'Case').size(),
+            'Expected a case for a 67 days past due account that now only has outstanding items due today');
+
+        queryResult.InvoiceBalance = 100;
+        queryResult.InvoiceDueDate = System.today()-1;
+        queryResult.AccountId = '000001';
+        ZuoraBillingAccountService.zuoraAcctSelector =
+            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 67, '0010v00000X7SHjAAN'));
+        ZuoraBillingAccountService.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Case.SObjectType}, new FFLibHelperTest.MockDML());
+        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults), null);
+        System.assertEquals(0, FFLibHelperTest.getRegisterNewListFromUnitOfWork(ZuoraBillingAccountService.uow, 'Case').size(),
+            'Did not expect a case for a 67 days past due account that still has an overdue item');
+
+        queryResult.InvoiceBalance = 100;
+        queryResult.InvoiceDueDate = System.today();
+        queryResult.AccountId = '000001';
+        ZuoraBillingAccountService.zuoraAcctSelector =
+            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 91, '0010v00000X7SHjAAN'));
+        ZuoraBillingAccountService.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Case.SObjectType}, new FFLibHelperTest.MockDML());
+        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults), null);
+        System.assertEquals(0, FFLibHelperTest.getRegisterNewListFromUnitOfWork(ZuoraBillingAccountService.uow, 'Case').size(),
+            'Did not expect a case for a 91 days past due account that is fully paid');
+
+        queryResult.AccountId = '000002';
+        ZuoraBillingAccountService.zuoraAcctSelector =
+            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 91, '0010v00000X7SHjAAN'));
+        ZuoraBillingAccountService.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Case.SObjectType}, new FFLibHelperTest.MockDML());
+        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults), null);
+        System.assertEquals(0, FFLibHelperTest.getRegisterNewListFromUnitOfWork(ZuoraBillingAccountService.uow, 'Case').size(),
+            'Did not expect a case for a 91 days past due account that has no outstanding items');
+    }
+
+    private class MockZuoraAccountSelector implements StubProvider {
+        private String zuoraId;
+        private Integer daysPastDue;
+        private String parentAccountId;
+        public MockZuoraAccountSelector(String zuoraId, Integer daysPastDue, String parentAccountId) {
+            this.zuoraId = zuoraId;
+            this.daysPastDue = daysPastDue;
+            this.parentAccountId = parentAccountId;
+        }
+        @SuppressWarnings('PMD.ExcessiveParameterList')
+        public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
+            List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
+            switch on stubbedMethodName {
+                when 'getAllBillingAccounts' {
+                    return new List<Zuora__CustomerAccount__c>{getCustomerAccount()};
+                }
+            }
+            return null;
+        }
+        private Zuora__CustomerAccount__c getCustomerAccount() {
+            Map<SObjectField, Object> customerAccountValues = new Map<SObjectField, Object> {
+                Zuora__CustomerAccount__c.Id => 'a710v0000009Si3AAE',
+                Zuora__CustomerAccount__c.Name => 'Joshua Phillips',
+                Zuora__CustomerAccount__c.Zuora__Zuora_Id__c => zuoraId,
+                Zuora__CustomerAccount__c.Zuora__Autopay__c => false,
+                Zuora__CustomerAccount__c.Zuora__Batch__c => 'Batch1',
+                Zuora__CustomerAccount__c.Zuora__Account__c => Util.getFakeId(Account.SObjectType)
+            };
+            Map<SObjectField, Object> propertyAccountValues = new Map<SObjectField, Object> {
+                Account.Id => Util.getFakeId(Account.SObjectType),
+                Account.Recurring_Billing__c => false,
+                Account.Total_Outstanding_Balance_Zuora__c => 10,
+                Account.Max_Overdue_Due_Date_Zuora__c => System.today()-daysPastDue,
+                Account.Last_Bill_Send_Date_New_Charges_Zuora__c => Date.newInstance(2020,5,20),
+                Account.Days_Past_Due__c => daysPastDue,
+                Account.Parent_Account__c => parentAccountId
+            };
+
+            sfab_FabricatedSObject fabricatedCustomerAccount = new sfab_FabricatedSObject(Zuora__CustomerAccount__c.class, customerAccountValues);
+            fabricatedCustomerAccount.setParent('Zuora__Account__r', new sfab_FabricatedSObject(Account.class, propertyAccountValues));
+            Zuora__CustomerAccount__c customerAccount = (Zuora__CustomerAccount__c) fabricatedCustomerAccount.toSObject();
+            return customerAccount;
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-@isTest
+@IsTest
 public class FFLibHelperTest {
     public static List<SObject> getRegisterNewListFromUnitOfWork (fflib_SObjectUnitOfWork unitOfWork, String sObjectType){
         Map<String, List<SObject>> objectMap = unitOfWork.m_newListByType;
@@ -42,5 +42,14 @@ public class FFLibHelperTest {
         uow.registerPublishBeforeTransaction(eventList);
         uow.registerPublishAfterSuccessTransaction(eventList);
         uow.registerPublishAfterFailureTransaction(eventList);
+    }
+
+    public class MockDML implements fflib_SObjectUnitOfWork.IDML
+    {
+        public void dmlInsert(List<SObject> objList) {}
+        public void dmlUpdate(List<SObject> objList) {}
+        public void dmlDelete(List<SObject> objList) {}
+        public void eventPublish(List<SObject> objList) {}
+        public void emptyRecycleBin(List<SObject> objList) {}
     }
 }
