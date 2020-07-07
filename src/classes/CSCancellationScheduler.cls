@@ -26,6 +26,8 @@ public without sharing class CSCancellationScheduler implements Schedulable{
             ' their opportunities have a Date Removed From Project, and subsequently be emailed that they are off all' +
             ' projects.' +
             '\n-------------\n';
+    public static final Integer DAYS_PAST_DUE_DEACTIVATION_TRIGGER = 67;
+    public static final Integer DAYS_PAST_DUE_BAD_DEBT_TRIGGER = 90;
 
     public void execute(SchedulableContext sc) {
         Autopay_Schedule__c schedule = getSchedule(System.today());

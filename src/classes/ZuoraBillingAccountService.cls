@@ -4,7 +4,15 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ZuoraBillingAccountService implements Schedulable, ZuoraDataQueryService.Processor {
+    @TestVisible
     private static ZuoraAccountSelector zuoraAcctSelector = new ZuoraAccountSelector();
+    private static CaseFactory caseFactory = new CaseFactory();
+    @TestVisible
+    private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+        new List<SObjectType> {
+            Case.SObjectType
+        }
+    );
     public void checkPropertyAccountDiscrepancy(List<Zuora__CustomerAccount__c> billingAccounts) {
         checkPropertyAccountDiscrepancyFuture(CollectionUtil.toIds(CollectionUtil.getIds(billingAccounts)));
     }
@@ -15,7 +23,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
 
     @Future
     // Future methods must be declared as static, and can't have sobject parameters (like List<Zuora__CustomerAccount__c>)
-    public static void checkPropertyAccountDiscrepancyFuture(Set<Id> accountsToCheck) {
+    private static void checkPropertyAccountDiscrepancyFuture(Set<Id> accountsToCheck) {
         try {
             List<Account> propAccountsToUpdate = new List<Account>();
             List<Zuora__CustomerAccount__c> zuoraAccounts = zuoraAcctSelector.getBillingAccountsById(accountsToCheck);
@@ -44,7 +52,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
     }
 
     @Future
-    public static void setBillingAccountOnPropertyAccountFuture(Set<Id> billingAccountsInserted) {
+    private static void setBillingAccountOnPropertyAccountFuture(Set<Id> billingAccountsInserted) {
         try {
             List<Account> propAccountsToUpdate = new List<Account>();
             List<Zuora__CustomerAccount__c> zuoraAccounts = zuoraAcctSelector.getBillingAccountsById(billingAccountsInserted);
@@ -60,7 +68,9 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
             Logger.logNow('ZuoraBillingAccountService','setBillingAccountOnPropertyAccountFuture',e.getMessage() + '\n' + e.getStackTraceString());
         }
     }
-    public void startDaysPastDueUpdate(Set<Id> accountsToCheck) {
+
+    @TestVisible
+    private void startDaysPastDueUpdate(Set<Id> accountsToCheck) {
         try {
             ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
             finishMethod.className = 'ZuoraBillingAccountService';
@@ -83,6 +93,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
         updateDaysPastDue(response, parameter.recordIds);
     }
 
+    @TestVisible
     private void updateDaysPastDue(String queryResponse, Set<Id> recordIds) {
         try {
             List<Account> accountsToUpdate = new List<Account>();
@@ -95,49 +106,71 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
             }
             for (Zuora__CustomerAccount__c zuoraAccount : zuoraBillingAccounts){
                 String zuoraId = zuoraAccount.Zuora__Zuora_Id__c;
-                Account property = new Account();
-                property.Id = zuoraAccount.Zuora__Account__r.Id;
+                Account propertyToUpdate = new Account();
+                propertyToUpdate.Id = zuoraAccount.Zuora__Account__r.Id;
                 if (zuoraIdToAccountSummary.containsKey(zuoraId)){
-                    property.Total_Outstanding_Balance_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).TotalBalance;
-                    property.Max_Overdue_Due_Date_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).MinDueDate;
-                    property.Last_Bill_Send_Date_New_Charges_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).LastBillSendDate;
+                    propertyToUpdate.Total_Outstanding_Balance_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).TotalBalance;
+                    propertyToUpdate.Max_Overdue_Due_Date_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).MinDueDate;
+                    propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).LastBillSendDate;
                 } else {
                     // No invoices or debit memos with a balance were returned for that account, so set to null:
-                    property.Total_Outstanding_Balance_Zuora__c = 0;
-                    property.Max_Overdue_Due_Date_Zuora__c = null;
-                    property.Last_Bill_Send_Date_New_Charges_Zuora__c = null;
+                    propertyToUpdate.Total_Outstanding_Balance_Zuora__c = 0;
+                    propertyToUpdate.Max_Overdue_Due_Date_Zuora__c = null;
+                    propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c = null;
                 }
-                if (property.Total_Outstanding_Balance_Zuora__c !=
+                if (propertyToUpdate.Total_Outstanding_Balance_Zuora__c !=
                     zuoraAccount.Zuora__Account__r.Total_Outstanding_Balance_Zuora__c ||
-                    property.Max_Overdue_Due_Date_Zuora__c !=
+                    propertyToUpdate.Max_Overdue_Due_Date_Zuora__c !=
                     zuoraAccount.Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c ||
-                    property.Last_Bill_Send_Date_New_Charges_Zuora__c != zuoraAccount.Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c){
-                    accountsToUpdate.add(property);
+                    propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c != zuoraAccount.Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c){
+                    accountsToUpdate.add(propertyToUpdate);
+                }
+                if (zuoraAccount.Zuora__Account__r.Days_Past_Due__c >= CSCancellationScheduler.DAYS_PAST_DUE_DEACTIVATION_TRIGGER &&
+                    zuoraAccount.Zuora__Account__r.Days_Past_Due__c < CSCancellationScheduler.DAYS_PAST_DUE_BAD_DEBT_TRIGGER &&
+                    (propertyToUpdate.Max_Overdue_Due_Date_Zuora__c == null || propertyToUpdate.Max_Overdue_Due_Date_Zuora__c >= System.today())) {
+                    uow.registerNew(getCaseToReactivateCustomer(zuoraAccount));
                 }
             }
             if (accountsToUpdate.size() > 200){
                 Database.executeBatch(new GenericBatchDMLOperation(accountsToUpdate, 'Update'));
             } else if (accountsToUpdate.size() > 0){
-                update accountsToUpdate;
+                Util.updateSObjs(accountsToUpdate);
             }
+            uow.commitWork();
         } catch (Exception excep){
             Logger.logNow('ZuoraBillingAccountService','updateDaysPastDue',excep.getMessage() + excep.getStackTraceString());
         }
     }
 
-    public class AccountSummary{
+    private Case getCaseToReactivateCustomer(Zuora__CustomerAccount__c zuoraAccount) {
+        Case collectionsCase = caseFactory.getCase('Collections');
+        collectionsCase.Subject = '67-90 days past due customer fully paid their balance';
+        collectionsCase.Description = zuoraAccount.Name + ' (' + zuoraAccount.Zuora__Account__r.Id + ') was at ' +
+            zuoraAccount.Zuora__Account__r.Days_Past_Due__c + ' days past due and fully paid their balance. ' +
+            'Please review their subscriptions status to see if they should be reactivated';
+        collectionsCase.AccountId = zuoraAccount.Zuora__Account__r.Parent_Account__c;
+        collectionsCase.Category__c = 'Billing-Payment';
+        collectionsCase.Priority = 'Medium';
+        collectionsCase.Product_Line__c = 'Community Solar';
+        collectionsCase.Origin = 'Other';
+        collectionsCase.Case_Type__c = 'BlueWave';
+        collectionsCase.Disable_Followup_Email__c = true;
+        return collectionsCase;
+    }
+
+    private class AccountSummary{
         public Decimal TotalBalance;
         public Date MinDueDate;
         public Date LastBillSendDate;
     }
-
-    public class BalanceQueryResult {
-        Decimal MemoBalance;
-        Date MemoDueDate;
-        Date LastBillSendDate;
-        Decimal InvoiceBalance;
-        Date InvoiceDueDate;
-        String AccountId;
+    @TestVisible
+    private class BalanceQueryResult {
+        public Decimal MemoBalance;
+        public Date MemoDueDate;
+        public Date LastBillSendDate;
+        public Decimal InvoiceBalance;
+        public Date InvoiceDueDate;
+        public String AccountId;
     }
 
     private static Map<String, AccountSummary> summarizeBalanceQueryResult(String queryResponse){
