@@ -20,7 +20,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
 
         for (i = 0; i < 10; i++) {
             Zuora__CustomerAccount__c newAccount = new Zuora__CustomerAccount__c(
-                Name = 'Account Name',
+                Name = 'Account Name' + String.valueOf(i),
                 Zuora__Account__c = accountsToInsert[i].Id,
                 Zuora__Zuora_Id__c = '2c92c0f86b78f56c016b7b0048' + String.valueOf(i),
                 Zuora__AutoPay__c = false
