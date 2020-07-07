@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public class sfab_FabricatedSObjectStub extends sfab_FabricatedSObject {
     private Map<String, Object> serializedMap;
     @testVisible private Boolean serializeInvoked = false;

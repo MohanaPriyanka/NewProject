@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 @isTest
 private class sfab_FabricatedSObjectTest {
     @isTest

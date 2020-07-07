@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public class sfab_FabricatedSObjectNodeStub implements sfab_FabricatedSObjectNode  {
     public Boolean serializeInvoked = false;
     public Map<String, Object> serializedNode;

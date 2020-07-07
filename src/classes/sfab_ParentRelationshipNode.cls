@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public class sfab_ParentRelationshipNode implements sfab_FabricatedSObjectNode {
     private String fieldName;
     private sfab_FabricatedSObject parent;

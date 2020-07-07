@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public class sfab_ChildRelationshipNode implements sfab_FabricatedSObjectNode {
     private String fieldName;
     private List<sfab_FabricatedSObject> children;

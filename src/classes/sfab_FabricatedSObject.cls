@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public virtual class sfab_FabricatedSObject {
     private Type sType;
     @testVisible private List<sfab_FabricatedSObjectNode> nodes = new List<sfab_FabricatedSObjectNode>();

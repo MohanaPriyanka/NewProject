@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public class sfab_FieldValuePairNode implements sfab_FabricatedSObjectNode {
     protected Schema.SObjectField field;
     protected Object value;
