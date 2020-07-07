@@ -106,28 +106,28 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
             }
             for (Zuora__CustomerAccount__c zuoraAccount : zuoraBillingAccounts){
                 String zuoraId = zuoraAccount.Zuora__Zuora_Id__c;
-                Account zuoraAccountToUpdate = new Account();
-                zuoraAccountToUpdate.Id = zuoraAccount.Zuora__Account__r.Id;
+                Account propertyToUpdate = new Account();
+                propertyToUpdate.Id = zuoraAccount.Zuora__Account__r.Id;
                 if (zuoraIdToAccountSummary.containsKey(zuoraId)){
-                    zuoraAccountToUpdate.Total_Outstanding_Balance_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).TotalBalance;
-                    zuoraAccountToUpdate.Max_Overdue_Due_Date_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).MinDueDate;
-                    zuoraAccountToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).LastBillSendDate;
+                    propertyToUpdate.Total_Outstanding_Balance_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).TotalBalance;
+                    propertyToUpdate.Max_Overdue_Due_Date_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).MinDueDate;
+                    propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).LastBillSendDate;
                 } else {
                     // No invoices or debit memos with a balance were returned for that account, so set to null:
-                    zuoraAccountToUpdate.Total_Outstanding_Balance_Zuora__c = 0;
-                    zuoraAccountToUpdate.Max_Overdue_Due_Date_Zuora__c = null;
-                    zuoraAccountToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c = null;
+                    propertyToUpdate.Total_Outstanding_Balance_Zuora__c = 0;
+                    propertyToUpdate.Max_Overdue_Due_Date_Zuora__c = null;
+                    propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c = null;
                 }
-                if (zuoraAccountToUpdate.Total_Outstanding_Balance_Zuora__c !=
+                if (propertyToUpdate.Total_Outstanding_Balance_Zuora__c !=
                     zuoraAccount.Zuora__Account__r.Total_Outstanding_Balance_Zuora__c ||
-                    zuoraAccountToUpdate.Max_Overdue_Due_Date_Zuora__c !=
+                    propertyToUpdate.Max_Overdue_Due_Date_Zuora__c !=
                     zuoraAccount.Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c ||
-                    zuoraAccountToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c != zuoraAccount.Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c){
-                    accountsToUpdate.add(zuoraAccountToUpdate);
+                    propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c != zuoraAccount.Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c){
+                    accountsToUpdate.add(propertyToUpdate);
                 }
                 if (zuoraAccount.Zuora__Account__r.Days_Past_Due__c >= CSCancellationScheduler.DAYS_PAST_DUE_DEACTIVATION_TRIGGER &&
                     zuoraAccount.Zuora__Account__r.Days_Past_Due__c < CSCancellationScheduler.DAYS_PAST_DUE_BAD_DEBT_TRIGGER &&
-                    (zuoraAccountToUpdate.Max_Overdue_Due_Date_Zuora__c == null || zuoraAccountToUpdate.Max_Overdue_Due_Date_Zuora__c >= System.today())) {
+                    (propertyToUpdate.Max_Overdue_Due_Date_Zuora__c == null || propertyToUpdate.Max_Overdue_Due_Date_Zuora__c >= System.today())) {
                     uow.registerNew(getCaseToReactivateCustomer(zuoraAccount));
                 }
             }
