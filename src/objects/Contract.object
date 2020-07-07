@@ -247,6 +247,34 @@ false
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Conga_Countersigned_Contract__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid=&quot; + Conga_Template_ID_Countersigned__c +
+&quot;&amp;qvar0id={!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNCONTRACT}?pv0=&quot; + Id +
+&quot;&amp;queryid=[ResiSig]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNRESISIG}?pv1={QVar0},[Opp]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNOPP}?pv1={QVar0},[UAS]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNUAS}?pv1={QVar0},[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNBIZ}?pv1={QVar0},[Resi]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNRESI}?pv1={QVar0}&quot; +
+&quot;&amp;sc1=SalesforceFile&quot; +
+&quot;&amp;defaultpdf=1&quot; +
+&quot;&amp;sc0=1&quot; +
+&quot;&amp;apdf=0&quot; +
+&quot;&amp;emailtemplateid=00X0a000000j75n&quot; +
+&quot;&amp;emailtoid=&quot; + Account.Send_Bills_Contact__r.Id +
+&quot;&amp;emailrelatedtoid={QVar0}&quot; +
+&quot;&amp;emailfromid=0D20a0000004K0P&quot; +
+&quot;&amp;qmode=SendEmail&quot; +
+&quot;&amp;uf0=1&quot; +
+&quot;&amp;mfts0=Generate_Countersigned_Version__c&quot; +
+&quot;&amp;mftsvalue0=False&quot; +
+&quot;&amp;MFTS1=CompanySignedDate&quot; +
+&quot;&amp;MFTSValue1=&quot; + TEXT(TODAY())</formula>
+        <inlineHelpText>Sets the Conga parameters used for generating the countersigned version of SSF contracts.</inlineHelpText>
+        <label>Conga Countersigned Contract</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Conga_Review_Contract__c</fullName>
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
@@ -292,6 +320,26 @@ false
 &quot;&amp;EmailFromId=0D20a0000004K0P&quot; +
 &quot;&amp;qmode=SendEmail&quot;</formula>
         <label>Conga Signed Contract</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Conga_Template_ID_Countersigned__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+ ISPICKVAL(Contract_Type__c,&quot;Generic&quot;),
+
+&quot;[Terms and Conditions]&quot;&amp;Product__r.Generic_Terms_Template_Countersigned__c,
+
+&quot;[Community Solar Agreement]&quot;&amp;Product__r.Project_Specific_Template_Countersigned__c&amp;
+IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&quot;&amp;&quot;[Solar Disclosure Form]&quot;&amp;Product__r.Disclosure_Template_Countersigned__c
+
+)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Conga Template ID (Countersigned)</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -770,6 +818,16 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>EndDate</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Generate_Countersigned_Version__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Generates the Countersigned version of the contract for SSF applicants, and emails it to the customer.</inlineHelpText>
+        <label>Generate Countersigned Version</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Generate_Review_Version__c</fullName>
