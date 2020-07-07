@@ -28,7 +28,6 @@ public with sharing class ZuoraBillingAccountServiceTest {
             zAccountsToInsert.add(newAccount);
         }
         insert zAccountsToInsert;
-        System.debug(LoggingLevel.ERROR, zAccountsToInsert);
     }
 
     @IsTest public static void testDisableTrigger() {
