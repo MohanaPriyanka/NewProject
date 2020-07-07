@@ -95,8 +95,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
 
     public fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<SObjectType> {
-            Subscription_Order__c.SObjectType,
-            Client_Invoicing_Memo__c.SObjectType
+            Subscription_Order__c.SObjectType
         }
     );
 
@@ -111,6 +110,8 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         setSubscriptionOrderAcquisitionFee(queriedSOs);
         uow.commitWork();
         Logger.flushLogs();
+
+        uow = new fflib_SObjectUnitOfWork(new List<SObjectType> {Client_Invoicing_Memo__c.SObjectType});
 
         List<Subscription_Order__c> ordersAfterFeesAreSet = subscripOrderSelector.selectByIds(subscriptionOrderIds);
         ClientInvoicingFeeWaiveService waiveService = new ClientInvoicingFeeWaiveService();
