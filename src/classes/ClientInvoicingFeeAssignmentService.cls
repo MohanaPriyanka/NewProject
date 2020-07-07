@@ -114,8 +114,9 @@ public without sharing class ClientInvoicingFeeAssignmentService {
 
         List<Subscription_Order__c> ordersAfterFeesAreSet = subscripOrderSelector.selectByIds(subscriptionOrderIds);
         ClientInvoicingFeeWaiveService waiveService = new ClientInvoicingFeeWaiveService();
-        waiveService.uow = uow;
-        waiveService.waiveFeesIfNecessary(ordersAfterFeesAreSet);
+        waiveService.waiveFeesIfNecessary(ordersAfterFeesAreSet, uow);
+        uow.commitWork();
+        Logger.flushLogs();
     }
 
     public void setSubscriptionOrderAcquisitionFee(List<Subscription_Order__c> subOrders){

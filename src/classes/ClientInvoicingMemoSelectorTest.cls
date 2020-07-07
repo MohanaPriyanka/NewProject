@@ -1,52 +1,81 @@
 @IsTest
 public with sharing class ClientInvoicingMemoSelectorTest {
     @testSetup public static void setupTestData(){
-        UASSelectorTest.testSetup();
+        Util.disableAllTriggers();
+        Shared_Solar_System__c sssOne = new Shared_Solar_System__c(Name = 'Test SSS One');
+        Shared_Solar_System__c sssTwo = new Shared_Solar_System__c(Name = 'Test SSS Two');
+        insert new List<Shared_Solar_System__c>{sssOne,sssTwo};
 
-        List<Subscription_Order__c> subOrders = [
-            SELECT Id, Utility_Account_Subscription__c
-            FROM Subscription_Order__c
-            ORDER BY Utility_Account_Subscription__r.Name
-        ];
+        Utility_Account_Log__c ualOne = new Utility_Account_Log__c(Name = '000124');
+        insert ualOne;
+
+        Utility_Account_Subscription__c uasOne = new Utility_Account_Subscription__c(
+            Name = '000123',
+            Shared_Solar_System__c = sssOne.Id,
+            Utility_Account_Log__c = ualOne.Id
+        );
+        Utility_Account_Subscription__c uasTwo = new Utility_Account_Subscription__c(
+            Name = '000123',
+            Shared_Solar_System__c = sssTwo.Id,
+            Utility_Account_Log__c = ualOne.Id
+        );
+        insert new List<Utility_Account_Subscription__c>{uasOne,uasTwo};
+
+        Subscription_Order__c orderOne = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uasOne.Id,
+            Approved_Change_in_Subscription__c = 10,
+            Approval_Status__c = 'Approved'
+        );
+        Subscription_Order__c orderTwo = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uasOne.Id,
+            Approved_Change_in_Subscription__c = 10,
+            Approval_Status__c = 'Approved'
+        );
+        Subscription_Order__c orderThree = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uasTwo.Id,
+            Approved_Change_in_Subscription__c = 10,
+            Approval_Status__c = 'Approved'
+        );
+        Subscription_Order__c orderFour = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uasTwo.Id,
+            Approved_Change_in_Subscription__c = 10,
+            Approval_Status__c = 'Approved'
+        );
+        List<Subscription_Order__c> ordersToInsert = new List<Subscription_Order__c>{
+            orderOne, orderTwo, orderThree, orderFour
+        };
+        insert ordersToInsert;
 
         List<Client_Invoicing_Memo__c> memosToInsert = new List<Client_Invoicing_Memo__c>();
-
-        for (Subscription_Order__c order : subOrders){
+        for (Subscription_Order__c order : ordersToInsert){
             Client_Invoicing_Memo__c memo = new Client_Invoicing_Memo__c(
                 Subscription_Order__c = order.Id,
                 Effective_Date__c = System.today(),
-                Amount__c = 10
+                Amount__c = -10
             );
             memosToInsert.add(memo);
         }
-
         insert memosToInsert;
+        Util.enableAllTriggers();
     }
 
     @IsTest
     public static void testGetWaivedFeesBySSS() {
-        List<Subscription_Order__c> subOrders = [
-            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Shared_Solar_System__c, Approved_Change_in_Subscription__c
-            FROM Subscription_Order__c
-            WHERE Utility_Account_Subscription__r.Shared_Solar_System__c != null
+        List<Shared_Solar_System__c> sssList = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            ORDER BY Name
         ];
-        System.assert(subOrders.size() > 0);
-
         Set<Id> sssIdSet = new Set<Id>();
-
-        for (Subscription_Order__c order : subOrders){
-            sssIdSet.add(order.Utility_Account_Subscription__r.Shared_Solar_System__c);
+        for (Shared_Solar_System__c sss : sssList){
+            sssIdSet.add(sss.Id);
         }
         System.assert(sssIdSet.size() > 0);
-
-        List<Id> sssList = new List<Id>(sssIdSet);
 
         ClientInvoicingMemoSelector selector = new ClientInvoicingMemoSelector();
         Map<Id,Decimal> kwMap = selector.getWaivedFeesBySSS(sssIdSet);
 
-        System.assert(kwMap.get(sssList[0]) > 0);
-        System.assert(kwMap.get(sssList[1]) > 0);
-        System.assert(kwMap.get(sssList[2]) > 0);
-        System.assert(kwMap.get(sssList[3]) > 0);
+        System.assertEquals(20,kwMap.get(sssList[0].Id));
+        System.assertEquals(20,kwMap.get(sssList[1].Id));
     }
 }

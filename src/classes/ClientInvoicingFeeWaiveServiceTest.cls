@@ -7,6 +7,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
         System.assertEquals(12,orders.size());
 
         ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
+        service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType> {Client_Invoicing_Memo__c.SObjectType});
         service.setFeesToWaive(orders);
 
         List<Client_Invoicing_Memo__c> memosToInsert = (List<Client_Invoicing_Memo__c>)
@@ -19,22 +20,19 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
             switch on subOrderIdAsString {
                 when 'a9W3F000000A1P6UAK' {
-                    System.assert(true,'Expected this fee to be waived with a COD Date Filter');
-                    System.assertEquals(-120,memo.Amount__c);
+                    System.assertEquals(-120,memo.Amount__c,'Expected this fee to be waived with a COD Date Filter');
                 }
                 when 'a9W3F000000A1P7UAK' {
                     System.assert(false,'Did not expect this fee to be waived with a COD Date Filter');
                 }
                 when 'a9W3F000000A2P7UAK' {
-                    System.assert(true,'Expected this fee to be waived with a PTO Date Filter');
-                    System.assertEquals(-120,memo.Amount__c);
+                    System.assertEquals(-120,memo.Amount__c,'Expected this fee to be waived with a PTO Date Filter');
                 }
                 when 'a9W3F000000A2P6UAK' {
                     System.assert(false,'Did not expect this fee to be waived with a PTO Date Filter');
                 }
                 when 'a9W3F000000A1P8UAK' {
-                    System.assert(true,'Expected this fee to be waived with a First Bill Date Filter');
-                    System.assertEquals(-120,memo.Amount__c);
+                    System.assertEquals(-120,memo.Amount__c,'Expected this fee to be waived with a First Bill Date Filter');
                 }
                 when 'a9W3F000000A1P9UAK' {
                     System.assert(false,'Did not expect this fee to be waived with a First Bill Date Filter');
@@ -43,17 +41,14 @@ public class ClientInvoicingFeeWaiveServiceTest {
                     System.assert(false,'Did not expect this fee to be waived with a Contract Effective Date Filter');
                 }
                 when 'a9W3F000000A1R9UAK' {
-                    System.assert(true,'Expected this fee to be waived with a Contract Effective Date Filter');
-                    System.assertEquals(-120,memo.Amount__c);
+                    System.assertEquals(-120,memo.Amount__c,'Expected this fee to be waived with a Contract Effective Date Filter');
                 }
                 when 'a9W3F000000A1S9UAK' {
-                    System.assert(true,'Expected this fee to be waived because it is under the 5% project max');
-                    System.assertEquals(-120,memo.Amount__c);
+                    System.assertEquals(-120,memo.Amount__c,'Expected this fee to be waived because it is under the 5% project max');
                 }
                 when 'a9W3F000000A1T9UAK' {
-                    System.assert(true,'Expected this fee to be waived because it is under the 5% project max');
                     // Only 9.24 kW left before hitting 5% cap, so only partially waived:
-                    System.assertEquals(-92.36,memo.Amount__c);
+                    System.assertEquals(-92.36,memo.Amount__c, 'Expected this fee to be waived because it is under the 5% project max');
                 }
                 when 'a9W3F000000A1U7UAK' {
                     System.assert(false,'Did not expect this fee to be waived because it is over the 5% project max');

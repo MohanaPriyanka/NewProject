@@ -4,22 +4,15 @@ public without sharing class ClientInvoicingFeeWaiveService {
 
     private Map<Id,Decimal> sssIdToTotalWaivedkWMap;
 
-    public fflib_SObjectUnitOfWork uow;
+    @TestVisible
+    private fflib_SObjectUnitOfWork uow;
 
-    public void waiveFeesIfNecessary(List<Subscription_Order__c> subOrders){
+    public void waiveFeesIfNecessary(List<Subscription_Order__c> subOrders, fflib_SObjectUnitOfWork uowParam){
+        uow = uowParam;
         setFeesToWaive(subOrders);
-        uow.commitWork();
-        Logger.flushLogs();
     }
 
     public void setFeesToWaive(List<Subscription_Order__c> subOrders){
-        if (uow == null){
-            uow = new fflib_SObjectUnitOfWork(
-                new List<SObjectType> {
-                    Client_Invoicing_Memo__c.SObjectType
-                }
-            );
-        }
         setSSSMap(subOrders);
         for (Subscription_Order__c order : subOrders){
             if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c){
