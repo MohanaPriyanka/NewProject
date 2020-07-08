@@ -6,40 +6,40 @@
 <template>
     <template if:false={showSpinner}>
         <div class="slds-grid slds-wrap">
-            <div class="slds-size--1-of-1 slds-p-around--medium slds-text-align--center slds-text-heading--large">
+            <div class="slds-size_1-of-1 slds-var-p-around_medium slds-text-align_center slds-text-heading_large">
             Contact Information
             </div>
             <template if:false={resiApplicationType}>
-            <div class="slds-size--1-of-1 slds-small-size--1-of-1 slds-p-left--medium slds-p-right--medium">
+            <div class="slds-size_1-of-1 slds-small-size_1-of-1 slds-var-p-left_medium slds-var-p-right_medium">
                 Personal Info
             </div>
             </template>
-            <div class="slds-size--1-of-1 slds-small-size--1-of-2">
-            <lightning-input name="firstName" value={restLead.firstName} class="slds-m-left--small slds-m-right--small" label="First Name" onchange={genericOnChange} required></lightning-input>
+            <div class="slds-size_1-of-1 slds-small-size_1-of-2">
+            <lightning-input name="firstName" value={restLead.firstName} class="slds-var-m-left_small slds-var-m-right_small" label="First Name" onchange={genericOnChange} required></lightning-input>
             </div>
-            <div class="slds-size--1-of-1 slds-small-size--1-of-2">
-            <lightning-input name="lastName" value={restLead.lastName} class="slds-m-left--small slds-m-right--small" label="Last Name" onchange={genericOnChange} required></lightning-input>
+            <div class="slds-size_1-of-1 slds-small-size_1-of-2">
+            <lightning-input name="lastName" value={restLead.lastName} class="slds-var-m-left_small slds-var-m-right_small" label="Last Name" onchange={genericOnChange} required></lightning-input>
             </div>
-            <div class="slds-size--1-of-1">
-            <lightning-input name="email" value={restLead.email} class="slds-m-left--small slds-m-right--small" label="Email" onchange={genericOnChange} type="email" required disabled={resumedApp}></lightning-input>
+            <div class="slds-size_1-of-1">
+            <lightning-input name="email" value={restLead.email} class="slds-var-m-left_small slds-var-m-right_small" label="Email" onchange={genericOnChange} type="email" required disabled={resumedApp}></lightning-input>
             </div>
             <template if:true={resiApplicationType}>
-            <div class="slds-size--1-of-1">
-                <lightning-input name="mobilePhone" value={restLead.mobilePhone} class="slds-m-left--small slds-m-right--small"  label="Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
+            <div class="slds-size_1-of-1">
+                <lightning-input name="mobilePhone" value={restLead.mobilePhone} class="slds-var-m-left_small slds-var-m-right_small"  label="Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
             </div>
             </template>
             <template if:false={resiApplicationType}>
-            <div class="slds-size--1-of-1 slds-small-size--1-of-1 slds-p-top--medium slds-p-left--medium slds-p-right--medium">
+            <div class="slds-size_1-of-1 slds-small-size_1-of-1 slds-var-p-top_medium slds-var-p-left_medium slds-var-p-right_medium">
                 Business Info
             </div>
-            <div class="slds-size--1-of-1">
-                <lightning-input name="businessName" value={restLead.businessName} class="slds-m-left--small slds-m-right--small" label="Name of Business or Organization" onchange={genericOnChange} required></lightning-input>
+            <div class="slds-size_1-of-1">
+                <lightning-input name="businessName" value={restLead.businessName} class="slds-var-m-left_small slds-var-m-right_small" label="Name of Business or Organization" onchange={genericOnChange} required></lightning-input>
             </div>
-            <div class="slds-size--1-of-1">
-                <lightning-input name="businessTitle" value={restLead.businessTitle} class="slds-m-left--small slds-m-right--small"  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
+            <div class="slds-size_1-of-1">
+                <lightning-input name="businessTitle" value={restLead.businessTitle} class="slds-var-m-left_small slds-var-m-right_small"  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
             </div>
-            <div class="slds-size--1-of-1">
-                <lightning-input name="businessPhone" value={restLead.businessPhone} class="slds-m-left--small slds-m-right--small"  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
+            <div class="slds-size_1-of-1">
+                <lightning-input name="businessPhone" value={restLead.businessPhone} class="slds-var-m-left_small slds-var-m-right_small"  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
             </div>
             </template>
         </div>
