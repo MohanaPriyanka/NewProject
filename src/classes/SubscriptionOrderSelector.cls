@@ -21,19 +21,27 @@ public inherited sharing class SubscriptionOrderSelector {
                 System_Change_kW_DC_Rounded__c,
                 Total_System_Size_kW_DC__c,
                 Utility_Number_of_Decimal_Places__c,
+                Approved_Change_in_Subscription__c,
+                Effective_Date__c,
                 Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
                 Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name,
-
-                Approved_Change_in_Subscription__c,
-                Contract_Fee_Detail__c,
-                Effective_Date__c,
-
                 Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c,
-                Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_PTO_Date_MANUAL__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.First_Bill_Date__c,
+                Contract_Fee_Detail__c,
+                Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c,
+                Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c,
+                Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c,
+                Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c,
+                Contract_Fee_Detail__r.Fee__c,
+                Contract_Fee_Detail__r.Contract__r.StartDate
             FROM Subscription_Order__c
             WHERE Id IN :soIds
+            ORDER BY Effective_Date__c
         ];
     }
     public List<Subscription_Order__c> selectUnenactedByUASId(Set<Id> uasIds) {
