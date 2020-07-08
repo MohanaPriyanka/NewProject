@@ -4,8 +4,9 @@ Service for ContentDocument, ContentVersion and ContentDocumentLink actions
 Tested by ContentServiceTest
 */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public with sharing class ContentService {
+public without sharing class ContentService {
     public static ContentDocumentSelector documentSelector = new ContentDocumentSelector();
+
 
     @AuraEnabled
     public static void setCategoryOnContentVersion(List<Id> documentIdList, String category){
@@ -21,6 +22,7 @@ public with sharing class ContentService {
         }
         update versionsToUpdate;
     }
+
 
     public ContentDocumentLink uploadFileToRecordAndShareInternally(String fileBody, Id recordId, String fileName){
         ContentVersion cv = new ContentVersion(
@@ -42,6 +44,7 @@ public with sharing class ContentService {
 
         return cdl;
     }
+
 
     public void makeContentDocLinksPrivate(List<ContentDocument> cdList) {
         List<ContentDocumentLink> linkList = new List<ContentDocumentLink>();

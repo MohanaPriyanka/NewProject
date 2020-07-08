@@ -432,7 +432,6 @@ public with sharing class RESTRouterV2Test {
 
         RestResponse response = RestContext.response;
         String jsonResponse = response.responseBody.toString();
-
         Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
 
@@ -539,15 +538,7 @@ public with sharing class RESTRouterV2Test {
     @IsTest
     private static void testPatchApplicationSuccessNoDocRegen() {
         // <setup>
-        String jsonResponse = createLead();
-        Map<String, Object> postResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> postResponseLead = (Map<String,Object>) postResponseEnvelope.get('data');
-        
-        List<Object> postResponsePropertyAccounts = (List<Object>) postResponseLead.get('propertyAccounts');
-        Map<String, Object> postResponsePropertyAccount = (Map<String,Object>) postResponsePropertyAccounts[0];
-        
-        List<Object> postResponseUALs = (List<Object>) postResponsePropertyAccount.get('utilityAccountLogs');
-        Map<String, Object> postResponseUAL = (Map<String,Object>) postResponseUALs[0];
+        Lead lead = createLead();
         
         ContentVersion cv = new ContentVersion(
             ContentLocation = 'S',
@@ -569,13 +560,13 @@ public with sharing class RESTRouterV2Test {
 
         ContentDocumentLink cdl = new ContentDocumentLink(
             ContentDocumentId = cvList[0].ContentDocumentId,
-            LinkedEntityId = (Id)postResponseLead.get('id'),
+            LinkedEntityId = lead.Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
         ContentDocumentLink cdl2 = new ContentDocumentLink(
             ContentDocumentId = cvList[1].ContentDocumentId,
-            LinkedEntityId = (Id)postResponseLead.get('id'),
+            LinkedEntityId = lead.Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
@@ -589,7 +580,9 @@ public with sharing class RESTRouterV2Test {
         req.httpMethod = 'PATCH';
         req.addHeader('Content-Type', 'application/json');
 
-        String applicationJson = JSON.serialize(postResponseEnvelope.get('data'));
+        CSLeadsRESTControllerV2 ctrl = new CSLeadsRESTControllerV2();
+        RestLead restLead = ctrl.formatRestLeadFromLeadAndChildren(lead, false);
+        String applicationJson = JSON.serialize(restLead);
         req.requestBody = Blob.valueOf(applicationJson);
 
         RestContext.request = req;
@@ -598,51 +591,82 @@ public with sharing class RESTRouterV2Test {
         RESTRouterV2.patchRequest();
         
         RestResponse response = RestContext.response;
-        jsonResponse = response.responseBody.toString();
-        Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
-        Map<String, Object> patchResponseLead = (Map<String,Object>) patchResponseEnvelope.get('data');
-        
-        List<Object> patchResponsePropertyAccounts = (List<Object>) patchResponseLead.get('propertyAccounts');
-        Map<String, Object> patchResponsePropertyAccount = (Map<String,Object>) patchResponsePropertyAccounts[0];
-        System.assertEquals(1, patchResponsePropertyAccounts.size(), 'One property account should be returned');
-        System.assertEquals(postResponsePropertyAccount.get('Id'), patchResponsePropertyAccount.get('Id'), 'The property account returned should be the same one created by the POST call');
-
-        List<Object> patchResponseUALs = (List<Object>) patchResponsePropertyAccount.get('utilityAccountLogs');
-        Map<String, Object> patchResponseUAL = (Map<String,Object>) patchResponseUALs[0];
-        System.assertEquals(1, patchResponseUALs.size(), 'One utility account log should be returned');
-        System.assertEquals(postResponseUAL.get('Id'), patchResponseUAL.get('Id'), 'The utility account log returned should be the same one created by the POST call');
-
-        List<Object> patchResponseDocs = (List<Object>) patchResponseLead.get('contentDocs');
-        System.assertEquals(2, patchResponseDocs.size(), 'Two ContentDocumentLinks should be returned, as docs exist but no changes were made to the lead');
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        RestLead returnedLead = (RestLead) JSON.deserialize(JSON.serialize(patchResponseEnvelope.get('data')), RestLead.class);
+        System.assertEquals(lead.Id, returnedLead.id, 'The lead returned should be the same one created during setup');
+        System.assertEquals(1, returnedLead.propertyAccounts.size(), 'One property account should be returned');
+        System.assertEquals(lead.Accounts__r[0].Id, returnedLead.propertyAccounts[0].id, 'The property account returned should be the same one created during setup');
+        System.assertEquals(1, returnedLead.propertyAccounts[0].utilityAccountLogs.size(), 'One utility account log should be returned');
+        System.assertEquals(lead.Utility_Account_Logs__r[0].Id, returnedLead.propertyAccounts[0].utilityAccountLogs[0].id, 'The utility account log returned should be the same one created during setup');
+        System.assertEquals(2, returnedLead.contentDocs.size(), 'Two ContentDocumentLinks should be returned, as docs exist but no changes were made to the lead');
     }
 
-    private static String createLead() {
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/leads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(validResiJsonRequest);
+    private static Lead createLead() {
+        Lead l = new Lead(
+            FirstName = 'System',
+            LastName = 'Testcase',
+            Email = 'test@invalid.bluewavesolar.com',
+            MobilePhone = '555-555-5555',
+            Phone = '555-555-5555',
+            Company = 'System Testcase',
+            Application_Type__c = 'Residential',
+            LASERCA__Home_Address__c = '1 Test Street',
+            LASERCA__Home_City__c = 'Suffern',
+            LASERCA__Home_State__c = 'NY',
+            LASERCA__Home_Zip__c = '10901',
+            Street = '1 Test Street',
+            City = 'Suffern',
+            State = BlueWaveParent.convertAbbreviationToState('NY'),
+            PostalCode = '10901',
+            LeadSource = 'Switch',
+            Product_line__c = 'Community Solar',
+            Customer_type__c = 'Residential',
+            Application_Source_Phase_1__c = 'Switch without Partner',
+            Continue_Application_Link__c = 'http://switch.bluewavesolar.invalid',
+            Referral_Name__c = 'RefFirst RefLast',
+            Referral_Email__c = 'refemail@invalid.bluewavesolar.com',
+            Product__c = [SELECT Id FROM Product2 LIMIT 1].Id,
+            Utility_relationship__c = [SELECT Id FROM Utility__c LIMIT 1].Id
+        );
+        LeadService leadService = new LeadService();
+        l = leadService.insertLead(l);
 
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
+        Account a = new Account(
+            Lead__c = l.Id,
+            Name = l.Company,
+            Product_Line__c = 'Community Solar',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId(),
+            Electricity_Provider__c = l.Utility_relationship__c,
+            BillingStreet = 'Test billing street',
+            BillingCity = 'Test billing city',
+            BillingState = BlueWaveParent.convertAbbreviationToState('NY'),
+            BillingPostalCode = '14472'
+        );
+        AccountService accountService = new AccountService();
+        a = accountService.insertAccount(a);
 
-        RESTRouterV2.postRequest();
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Account__c = a.Id,
+            Lead__c = l.Id,
+            Name = '555555',
+            Name_on_Account__c = 'Test Accounts Payable',
+            Service_Address__c = 'Test service street',
+            Service_City__c = 'Test service city',
+            Service_State__c = 'NY',
+            Service_Zip_Code__c = '14472'
+        );
+        insert ual;
 
-        RestResponse response = RestContext.response;
-        return response.responseBody.toString();
+        LeadSelector leadSelector = new LeadSelector();
+        return leadSelector.selectOneWithPropertiesAndUtilities(l.Id);
     }
 
     @IsTest
     private static void testPatchApplicationSuccessRegenDocs() {
         // <setup>
-        String jsonResponse = createLead();
-        Map<String, Object> postResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> postResponseLead = (Map<String,Object>) postResponseEnvelope.get('data');
-        List<Object> postResponsePropertyAccounts = (List<Object>) postResponseLead.get('propertyAccounts');
-        Map<String, Object> postResponsePropertyAccount = (Map<String,Object>) postResponsePropertyAccounts[0];
-        List<Object> postResponseUALs = (List<Object>) postResponsePropertyAccount.get('utilityAccountLogs');
-        Map<String, Object> postResponseUAL = (Map<String,Object>) postResponseUALs[0];
+        Lead lead = createLead();
         
         ContentVersion cv = new ContentVersion(
             ContentLocation = 'S',
@@ -664,13 +688,13 @@ public with sharing class RESTRouterV2Test {
 
         ContentDocumentLink cdl = new ContentDocumentLink(
             ContentDocumentId = cvList[0].ContentDocumentId,
-            LinkedEntityId = (Id)postResponseLead.get('id'),
+            LinkedEntityId = lead.Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
         ContentDocumentLink cdl2 = new ContentDocumentLink(
             ContentDocumentId = cvList[1].ContentDocumentId,
-            LinkedEntityId = (Id)postResponseLead.get('id'),
+            LinkedEntityId = lead.Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
@@ -685,11 +709,10 @@ public with sharing class RESTRouterV2Test {
         req.addHeader('Content-Type', 'application/json');
 
         String applicationJson = getApplicationJson(
-            (Id)postResponseLead.get('id'), 
-            (Id)postResponsePropertyAccount.get('id'), 
-            (Id)postResponseUAL.get('id')
+            lead.Id, 
+            lead.Accounts__r[0].Id, 
+            lead.Utility_Account_Logs__r[0].Id
         );
-
         req.requestBody = Blob.valueOf(applicationJson);
 
         RestContext.request = req;
@@ -698,53 +721,15 @@ public with sharing class RESTRouterV2Test {
         RESTRouterV2.patchRequest();
         
         RestResponse response = RestContext.response;
-        jsonResponse = response.responseBody.toString();
-        Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         System.assertEquals(200, response.statusCode, 'Properly formatted PATCH call should succeed');
-        Map<String, Object> patchResponseLead = (Map<String,Object>) patchResponseEnvelope.get('data');
-        
-        List<Object> patchResponsePropertyAccounts = (List<Object>) patchResponseLead.get('propertyAccounts');
-        Map<String, Object> patchResponsePropertyAccount = (Map<String,Object>) patchResponsePropertyAccounts[0];
-        System.assertEquals(1, patchResponsePropertyAccounts.size(), 'One property account should be returned');
-        System.assertEquals(postResponsePropertyAccount.get('Id'), patchResponsePropertyAccount.get('Id'), 'The property account returned should be the same one created by the POST call');
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        RestLead returnedLead = (RestLead) JSON.deserialize(JSON.serialize(patchResponseEnvelope.get('data')), RestLead.class);
+        assertLeadAndChildrenChanged(lead, returnedLead);
 
-        List<Object> patchResponseUALs = (List<Object>) patchResponsePropertyAccount.get('utilityAccountLogs');
-        Map<String, Object> patchResponseUAL = (Map<String,Object>) patchResponseUALs[0];
-        System.assertEquals(1, patchResponseUALs.size(), 'One utility account log should be returned');
-        System.assertEquals(postResponseUAL.get('Id'), patchResponseUAL.get('Id'), 'The utility account log returned should be the same one created by the POST call');
-
-        List<Object> patchResponseDocs = (List<Object>) patchResponseLead.get('contentDocs');
-        Map<String, Object> patchResponseDoc = (Map<String,Object>) patchResponseDocs[0];
-        System.assertEquals(1, patchResponseDocs.size(), 'One ContentDocumentLink should be returned, as docs exist and changes were made to the lead');
-        System.assertEquals(cdl.Id, patchResponseDoc.get('docLinkId'), 'Response should be the CDL for the most recent doc, as docs exist and changes were made to the lead');
-
-        System.assertNotEquals(postResponseLead.get('streetAddress'), patchResponseLead.get('streetAddress'), 'The updated lead streetAddress field value should not match the original field value');
-        for(String fieldName : updatedAccountFields()) {
-            System.assertNotEquals(postResponsePropertyAccount.get(fieldName), patchResponsePropertyAccount.get(fieldName), 'The updated property account ' + fieldName + ' field value should not match the original field value');
-        }
-        for(String fieldName : updatedUALFields()) {
-            System.assertNotEquals(postResponseUAL.get(fieldName), patchResponseUAL.get(fieldName), 'The updated utility account log ' + fieldName + ' field value should not match the original field value');
-        }
-    }
-
-    private static List<String> updatedAccountFields() {
-        return new List<String>{
-            'billingStreet',
-            'billingCity',
-            'billingState',
-            'billingPostalCode'
-        };
-    }
-
-    private static List<String> updatedUALFields() {
-        return new List<String>{
-            'utilityAccountNumber',
-            'nameOnAccount',
-            'serviceStreet',
-            'serviceCity',
-            'serviceState',
-            'servicePostalCode'
-        };
+        System.assertEquals(1, returnedLead.contentDocs.size(), 'One ContentDocumentLink should be returned, as docs exist and changes were made to the lead');
+        RestLead.RestContentDocument updatedContentDoc = returnedLead.contentDocs[0];
+        System.assertEquals(cdl.Id, updatedContentDoc.docLinkId, 'Response should be the CDL for the most recent doc, as docs exist and changes were made to the lead');
     }
 
     private static String getApplicationJson(Id leadId, Id acctId, Id ualId) {
@@ -777,6 +762,33 @@ public with sharing class RESTRouterV2Test {
         '] ' +
         '}';
     }
+
+
+    private static void assertLeadAndChildrenChanged(Lead originalLead, RestLead updatedLead) {
+        System.assertEquals(originalLead.Id, updatedLead.id, 'The lead returned should be the same one created during setup');
+        System.assertNotEquals(originalLead.LASERCA__Home_Address__c, updatedLead.streetAddress, 'The updated lead streetAddress field value should not match the original field value');
+        
+        Account originalPropertyAccount = originalLead.Accounts__r[0];
+        RestLead.RestPropertyAccount updatedPropertyAccount = updatedLead.propertyAccounts[0];
+        System.assertEquals(1, updatedLead.propertyAccounts.size(), 'One property account should be returned');
+        System.assertEquals(originalPropertyAccount.Id, updatedPropertyAccount.id, 'The property account returned should be the same one created during setup');
+        System.assertNotEquals(originalPropertyAccount.BillingStreet, updatedPropertyAccount.billingStreet, 'The updated property account BillingStreet field value should not match the original field value');
+        System.assertNotEquals(originalPropertyAccount.BillingCity, updatedPropertyAccount.billingCity, 'The updated property account BillingCity field value should not match the original field value');
+        System.assertNotEquals(originalPropertyAccount.BillingStateCode, updatedPropertyAccount.billingState, 'The updated property account BillingStateCode field value should not match the original field value');
+        System.assertNotEquals(originalPropertyAccount.BillingPostalCode, updatedPropertyAccount.billingPostalCode, 'The updated property account BillingPostalCode field value should not match the original field value');
+
+        Utility_Account_Log__c originalUal = originalLead.Utility_Account_Logs__r[0];
+        RestLead.RestUtilityAccountLog updatedUal = updatedPropertyAccount.utilityAccountLogs[0];
+        System.assertEquals(1, updatedPropertyAccount.utilityAccountLogs.size(), 'One utility account log should be returned');
+        System.assertEquals(originalUal.Id, updatedUal.id, 'The utility account log returned should be the same one created during setup');
+        System.assertNotEquals(originalUAL.Name, updatedUal.utilityAccountNumber, 'The updated utility account log utilityAccountNumber field value should not match the original field value');
+        System.assertNotEquals(originalUAL.Name_on_Account__c, updatedUal.nameOnAccount, 'The updated utility account log nameOnAccount field value should not match the original field value');
+        System.assertNotEquals(originalUAL.Service_Address__c, updatedUal.serviceStreet, 'The updated utility account log serviceStreet field value should not match the original field value');
+        System.assertNotEquals(originalUAL.Service_City__c, updatedUal.serviceCity, 'The updated utility account log serviceCity field value should not match the original field value');
+        System.assertNotEquals(originalUAL.Service_State__c, updatedUal.serviceState, 'The updated utility account log serviceState field value should not match the original field value');
+        System.assertNotEquals(originalUAL.Service_Zip_Code__c, updatedUal.servicePostalCode, 'The updated utility account log servicePostalCode field value should not match the original field value');
+    }
+
 
 
     /** Other **/

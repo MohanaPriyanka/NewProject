@@ -184,4 +184,73 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assertEquals(1, retList.size(), 'Only one CDL should be returned, as the other was created before the minimum start date');
         System.assertEquals(rcd1.id, retList[0].id, 'The CDL returned should be the one with the created date of today');
     }
+
+
+    @IsTest
+    private static void testChangeOwnerOfUpload() {
+        User user2 = new User(
+            Username = 'testUserBlueWave@bluewavesolar.com',
+            Email = 'testUserBlueWave@bluewavesolar.com',
+            LastName = 'McTest',
+            Alias = 'test',
+            ProfileId = UserInfo.getProfileId(),
+            TimeZoneSidKey = UserInfo.getTimeZone().toString(),
+            LocaleSidKey = UserInfo.getLocale(),
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = UserInfo.getLocale()
+        );
+        insert user2;
+        List<ContentDocument> contentDoc = [SELECT Id, OwnerId FROM ContentDocument];
+
+        System.assertEquals(1, contentDoc.size(), 'Setup should return a single ContentDocument record');
+        System.assertNotEquals(user2.Id, contentDoc[0].OwnerId, 'Setup should return a ContentRecord record NOT owned by the new test user');
+
+        Test.startTest();
+            SimpleSignupFormController.changeOwnerOfUpload(new Set<Id>{contentDoc[0].Id}, user2.Id);
+        Test.stopTest();
+
+        ContentDocument cd = [SELECT Id, OwnerId FROM ContentDocument WHERE Id = :contentDoc[0].Id LIMIT 1];
+        System.assertEquals(user2.Id, cd.OwnerId, 'Method should have changed ContentDocument record owner to new test user');
+    }
+
+
+    @IsTest
+    private static void testUnlinkDocsFromDummyRecord() {
+        User backup = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
+
+        Custom_File_Upload_Share__c cfus = new Custom_File_Upload_Share__c(Name = 'test');
+        insert cfus;
+
+        List<ContentDocumentLink> existingCdlList = [SELECT Id, ContentDocumentId, ContentDocument.OwnerId FROM ContentDocumentLink WHERE LinkedEntityId IN (SELECT Id FROM Contract)];
+        System.assertEquals(1, existingCdlList.size(), 'Setup should only return one ContentDocumentLink');
+        System.assertNotEquals(backup.Id, existingCdlList[0].ContentDocument.OwnerId, 'Setup should return a ContentRecord record NOT owned by the new test user');
+        String docId = existingCdlList[0].ContentDocumentId;
+
+        ContentDocumentLink cdl = new ContentDocumentLink(ContentDocumentId = docId, LinkedEntityId = cfus.Id);
+        insert cdl;
+
+        String result = SimpleSignupFormController.unlinkDocsFromDummyRecord(new List<String>{docId});
+
+        System.assertEquals('OK', result, 'Method should return \'OK\' for successful operation');
+        List<ContentDocumentLink> newCdlListToUser = [SELECT Id, LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId = :docId AND LinkedEntityId = :backup.Id];
+        System.assertEquals(1, newCdlListToUser.size(), 'Doc should be linked to new user record');
+        List<ContentDocumentLink> newCdlListToContract = [SELECT Id, LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId = :docId AND LinkedEntityId IN (SELECT Id FROM Custom_File_Upload_Share__c)];
+        System.assert(newCdlListToContract.isEmpty(), 'Doc should no longer be linked to Custom File Upload Share record');
+    }
+
+
+    @IsTest private static void testUnlinkDocsMissingDummyRecord() {
+        User backup = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
+        List<ContentDocumentLink> existingCdlList = [SELECT Id, ContentDocumentId, ContentDocument.OwnerId FROM ContentDocumentLink WHERE LinkedEntityId IN (SELECT Id FROM Contract)];
+        System.assertEquals(1, existingCdlList.size(), 'Setup should only return one ContentDocumentLink');
+        String docId = existingCdlList[0].ContentDocumentId;
+
+        String result = SimpleSignupFormController.unlinkDocsFromDummyRecord(new List<String>{docId});
+
+        System.assertEquals(null, result, 'Missing dummy record should cause method to return null');
+        List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c WHERE Class__c = 'SimpleSignupFormController' AND Method__c = 'unlinkDocsFromDummyRecord'];
+        System.assert(!errors.isEmpty(), 'Missing dummy record, should have caused method to create Error Log records');
+        ContentDocument contentDoc = [SELECT OwnerId FROM ContentDocument WHERE Id = :docId LIMIT 1];
+        System.assertNotEquals(backup.Id, contentDoc.OwnerId, 'Missing dummy record prevents method from reparenting uploaded file');
+    }
 }
