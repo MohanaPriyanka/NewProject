@@ -1,0 +1,32 @@
+/**
+ * Created by JesseFox_GearsCRM on 7/6/2020.
+ */
+
+ @import 'c/ssfStyleLibrary';
+
+.container {
+    background-color: #151c34;
+    color: #d3d3d3;
+    padding: .75rem 0;
+}
+.header {
+    display: flex;
+    flex-flow: row nowrap;
+}
+.heading {
+    font-size: 16px;
+    margin-left: .25rem;
+}
+.body {
+    padding-left: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 14px;
+}
+.ssf-button__icon {
+    color: #d3d3d3;
+    width: .65rem;
+    height: .65rem;
+}
+.rotate {
+    transform: rotate(90deg);
+}

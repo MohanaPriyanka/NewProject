@@ -687,6 +687,136 @@
         <value>This feature has been disabled. Please contact partnersupport@bluewavesolar.com for assistance.</value>
     </labels>
     <labels>
+        <fullName>SSF_FAQ1_Answer</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ1 - Answer</shortDescription>
+        <value>Community Solar is a state incentivized program that makes it possible for homeowners, renters, and businesses to support solar without needing to install their own solar panels.</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ1_Question</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ1 - Question</shortDescription>
+        <value>How is community solar different from rooftop solar?</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ2_Answer</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ2 - Answer</shortDescription>
+        <value>With a BlueWave Community Solar membership, you save money while supporting the development of solar energy in New York. By signing up, you will receive bill credits that reduce your monthly electric bill and you’ll enjoy peace of mind knowing that support contributes to job growth and cleaner electric generation in your area.</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ2_Question</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ2 - Question</shortDescription>
+        <value>What are the benefits of a BlueWave Community Solar membership?</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ3_Answer</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ3 - Answer</shortDescription>
+        <value>A community member like you enjoys saving money and cares about supporting the development of clean energy, so they sign up to support a project. With their support, our partners can build a community solar farm in your region. Once the solar farm is operational, the power it generates is sent to the local utility for distribution on the grid. Then, the member receives credits on their electric bill and they pay for those credits at a reduced rate.</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ3_Question</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ3 - Question</shortDescription>
+        <value>How does Community Solar work?</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ4_Answer</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ4 - Answer</shortDescription>
+        <value>Depending on the project and your location, you can expect to save somewhere between 5%-10% on electricity throughout the year. While you will save on your electric bill every month that credits are applied, the amount of savings will vary. Savings are generally higher during the summer months when solar production is at its peak and lower during the winter months when the sun shines less. Of course, variations in how much energy you use will also affect how much you save.</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ4_Question</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ4 - Question</shortDescription>
+        <value>How much can I save with a BlueWave Community Solar membership?</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ5_Answer</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ5 - Answer</shortDescription>
+        <value>If you move within your utility territory, it’s simple: you can take your membership with you. If you move to a new utility territory, you can cancel free of charge. However, we ask for 90 days’ notice.</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ5_Question</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ5 - Question</shortDescription>
+        <value>What if I have to move or cancel?</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ6_Answer</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ6 - Answer</shortDescription>
+        <value>We are a group of people committed to leaving the planet better than we found it - that’s why we’re a certified B-Corporation on a mission to revolutionize energy with simple, powerful solar solutions. We believe that solar power can improve the quality of life for all, save money, and protect the health of our planet.
+
+ 
+
+BlueWave has developed more than 135 MW of projects, providing community solar access to thousands of customers, both through our own solar farms and through farms developed by others.</value>
+    </labels>
+    <labels>
+        <fullName>SSF_FAQ6_Question</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF FAQ6 - Question</shortDescription>
+        <value>Who is BlueWave?</value>
+    </labels>
+    <labels>
+        <fullName>SSF_WaitingRoom1_Text</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF_WaitingRoom1_Text</shortDescription>
+        <value>The oldest manmade satellite has been in orbit since 1958 and is powered by solar.</value>
+    </labels>
+    <labels>
+        <fullName>SSF_WaitingRoom1_Url</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF_WaitingRoom1_Url</shortDescription>
+        <value>https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1958-002B</value>
+    </labels>
+    <labels>
+        <fullName>SSF_WaitingRoom2_Text</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF_WaitingRoom2_Text</shortDescription>
+        <value>In one hour, more energy from the sun falls on the Earth than is used by everyone around the world in an entire year.</value>
+    </labels>
+    <labels>
+        <fullName>SSF_WaitingRoom2_Url</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF_WaitingRoom2_Url</shortDescription>
+        <value>https://www.uwsp.edu/cnr-ap/KEEP/Documents/Activities/Energy%20Fact%20Sheets/FactsAboutSolarElectricity.pdf</value>
+    </labels>
+    <labels>
+        <fullName>SSF_WaitingRoom3_Text</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF_WaitingRoom3_Text</shortDescription>
+        <value>When there’s a huge solar spill, it&apos;s just called a sunny day.</value>
+    </labels>
+    <labels>
+        <fullName>SSF_WaitingRoom3_Url</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF_WaitingRoom3_Url</shortDescription>
+        <value>www.bluewavesolar.com</value>
+    </labels>
+    <labels>
         <fullName>START_Disclosure_Income_Doc</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>

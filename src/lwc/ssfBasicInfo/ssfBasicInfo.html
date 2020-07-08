@@ -4,243 +4,246 @@
 
 <!-- Simple Signup Form Basic Info -->
 <template>
-  <div class="slds-grid slds-wrap">
-    <div class="slds-size--1-of-1 slds-p-around--medium slds-text-align--center slds-text-heading--large">
-      Contact Information
-    </div>
-    <template if:false={resiApplicationType}>
-      <div class="slds-size--1-of-1 slds-small-size--1-of-1 slds-p-left--medium slds-p-right--medium">
-        Personal Info
-      </div>
-    </template>
-    <div class="slds-size--1-of-1 slds-small-size--1-of-2">
-      <lightning-input name="firstName" value={restLead.firstName} class="slds-m-left--small slds-m-right--small" label="First Name" onchange={genericOnChange} required></lightning-input>
-    </div>
-    <div class="slds-size--1-of-1 slds-small-size--1-of-2">
-      <lightning-input name="lastName" value={restLead.lastName} class="slds-m-left--small slds-m-right--small" label="Last Name" onchange={genericOnChange} required></lightning-input>
-    </div>
-    <div class="slds-size--1-of-1">
-      <lightning-input name="email" value={restLead.email} class="slds-m-left--small slds-m-right--small" label="Email" onchange={genericOnChange} type="email" required disabled={resumedApp}></lightning-input>
-    </div>
-    <template if:true={resiApplicationType}>
-      <div class="slds-size--1-of-1">
-        <lightning-input name="mobilePhone" value={restLead.mobilePhone} class="slds-m-left--small slds-m-right--small"  label="Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
-      </div>
-    </template>
-    <template if:false={resiApplicationType}>
-      <div class="slds-size--1-of-1 slds-small-size--1-of-1 slds-p-top--medium slds-p-left--medium slds-p-right--medium">
-        Business Info
-      </div>
-      <div class="slds-size--1-of-1">
-        <lightning-input name="businessName" value={restLead.businessName} class="slds-m-left--small slds-m-right--small" label="Name of Business or Organization" onchange={genericOnChange} required></lightning-input>
-      </div>
-      <div class="slds-size--1-of-1">
-        <lightning-input name="businessTitle" value={restLead.businessTitle} class="slds-m-left--small slds-m-right--small"  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
-      </div>
-      <div class="slds-size--1-of-1">
-        <lightning-input name="businessPhone" value={restLead.businessPhone} class="slds-m-left--small slds-m-right--small"  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
-      </div>
-    </template>
-  </div>
-  <template if:false={resiApplicationType}>
-    <div class="slds-size--1-of-1 slds-small-size--1-of-1 slds-p-top--medium slds-p-left--medium slds-p-right--medium">
-      Utility Accounts
-    </div>
-  </template>
-  <lightning-accordion
-    allow-multiple-sections-open
-    active-section-name={utilityAccountSection}>
-        <template iterator:it={propertyAccount.utilityAccountLogs}>
-            <lightning-accordion-section key={it.value.localid} name={it.value.localid} label={it.value.name}>
-                <template if:false={it.first}>
-                    <template if:false={it.value.doNotDelete}>
-                        <lightning-button-menu name={it.index} key={it.value.localid} slot="actions" alternative-text="Show menu" icon-size="x-small" menu-alignment="auto" onselect={handleUtilityAccountMenu}>
-                            <lightning-menu-item name={it.index} value="remove" label="Remove" ></lightning-menu-item>
-                        </lightning-button-menu>
-                    </template>
-                </template>
-                <div class="slds-grid slds-wrap">
-                    <div class="slds-size--1-of-1 slds-small-size--1-of-2">
-                        <div class="slds-grid">
-                        <lightning-input key={it.value.localid}
-                                        data-row-index={it.index}
-                                        name="utilityAccountNumber"
-                                        class="slds-m-bottom--small slds-col"
-                                        label="Utility Account Number"
-                                        value={it.value.utilityAccountNumber}
-                                        onchange={utilityAccountOnChange}
-                                        required>
-                        </lightning-input>
-                        <span class="slds-show_small">
-                                <div class="slds-m-right--small"></div>
-                                </span>
-                        </div>
-                    </div>
-                    <div class="slds-size--1-of-1 slds-small-size--1-of-2">
-                        <div class="slds-grid">
-                                <span class="slds-show_small">
-                                <div class="slds-m-right--small"></div>
-                                </span>
-                        <lightning-combobox key={it.value.localid}
-                                            data-row-index={it.index}
-                                            placeholder=""
-                                            class="slds-m-bottom--small slds-col"
-                                            label="Utility"
-                                            name="selectedUtility"
-                                            value={selectedUtility}
-                                            options={utilityOptions}
-                                            onchange={genericOnChange}
-                                            required>
-                        </lightning-combobox>
-                        </div>
-                    </div>
-                    <div class="slds-size--1-of-1">
-                        <lightning-input key={it.value.localid}
-                                        name="nameOnAccount"
-                                        data-row-index={it.index}
-                                        class="slds-m-bottom--small"
-                                        label="Name on Account"
-                                        value={it.value.nameOnAccount}
-                                        onchange={utilityAccountOnChange}
-                                        required>
-                        </lightning-input>
-                    </div>
-                    <div class="slds-size--1-of-1">
-                        <lightning-input key={it.value.localid}
-                                        name="serviceStreet"
-                                        data-row-index={it.index}
-                                        class="slds-m-bottom--small"
-                                        label="Service Street Address"
-                                        value={it.value.serviceStreet}
-                                        onchange={utilityAccountOnChange}
-                                        required>
-                        </lightning-input>
-                    </div>
-                    <div class="slds-size--1-of-1 slds-small-size--6-of-12">
-                        <lightning-input key={it.value.localid}
-                                        name="serviceCity"
-                                        data-row-index={it.index}
-                                        class="slds-m-bottom--small"
-                                        label="City"
-                                        value={it.value.serviceCity}
-                                        onchange={utilityAccountOnChange}
-                                        required>
-                        </lightning-input>
-                    </div>
-                    <div class="slds-size--1-of-1 slds-small-size--2-of-12">
-                        <div class="slds-grid">
-                                <span class="slds-show_small slds-col">
-                                <div class="slds-m-right--small"></div>
-                                </span>
-                        <lightning-combobox key={it.value.localid}
-                                            name="serviceState"
-                                            data-row-index={it.index}
-                                            class="slds-m-bottom--small slds-col"
-                                            placeholder=""
-                                            label="State"
-                                            value={it.value.serviceState}
-                                            onchange={utilityAccountOnChange}
-                                            options={stateOptions}
-                                            required>
-                        </lightning-combobox>
-                        <span class="slds-show_small slds-col">
-                                <div class="slds-m-right--small"></div>
-                                </span>
-                        </div>
-                    </div>
-                    <div class="slds-size_1-of-1 slds-small-size_4-of-12">
-                        <lightning-input type="select" key={it.value.localid}
-                                        name="servicePostalCode"
-                                        data-row-index={it.index}
-                                        class="slds-m-bottom_small"
-                                        label="Zip"
-                                        value={it.value.servicePostalCode}
-                                        onchange={utilityAccountOnChange}
-                                        disabled
-                                        required>
-                        </lightning-input>
-                    </div>
-                    <div class="slds-size_1-of-2 slds-align_absolute-center">
-                        <template if:true={it.value.showUpload}>
-                            <c-ssf-file-upload required input-text="Upload a copy of your utility bill" data-row-index={it.index} onfileuploaded={handleUpload}></c-ssf-file-upload>
-                        </template>
-                    </div>
-                    <div class="slds-size_1-of-2">
-                        <div class="slds-grid_vertical-align-start slds-grid_align-center slds-m-horizontal_small slds-m-top_x-large slds-text-align_center">
-                            <template if:true={it.last}>
-                                <lightning-button 
-                                    label="Add Another Utility Account"
-                                    onclick={addAnotherUtilityAccount}>
-                                </lightning-button>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-            </lightning-accordion-section>
+    <template if:false={showSpinner}>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size--1-of-1 slds-p-around--medium slds-text-align--center slds-text-heading--large">
+            Contact Information
+            </div>
+            <template if:false={resiApplicationType}>
+            <div class="slds-size--1-of-1 slds-small-size--1-of-1 slds-p-left--medium slds-p-right--medium">
+                Personal Info
+            </div>
+            </template>
+            <div class="slds-size--1-of-1 slds-small-size--1-of-2">
+            <lightning-input name="firstName" value={restLead.firstName} class="slds-m-left--small slds-m-right--small" label="First Name" onchange={genericOnChange} required></lightning-input>
+            </div>
+            <div class="slds-size--1-of-1 slds-small-size--1-of-2">
+            <lightning-input name="lastName" value={restLead.lastName} class="slds-m-left--small slds-m-right--small" label="Last Name" onchange={genericOnChange} required></lightning-input>
+            </div>
+            <div class="slds-size--1-of-1">
+            <lightning-input name="email" value={restLead.email} class="slds-m-left--small slds-m-right--small" label="Email" onchange={genericOnChange} type="email" required disabled={resumedApp}></lightning-input>
+            </div>
+            <template if:true={resiApplicationType}>
+            <div class="slds-size--1-of-1">
+                <lightning-input name="mobilePhone" value={restLead.mobilePhone} class="slds-m-left--small slds-m-right--small"  label="Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
+            </div>
+            </template>
+            <template if:false={resiApplicationType}>
+            <div class="slds-size--1-of-1 slds-small-size--1-of-1 slds-p-top--medium slds-p-left--medium slds-p-right--medium">
+                Business Info
+            </div>
+            <div class="slds-size--1-of-1">
+                <lightning-input name="businessName" value={restLead.businessName} class="slds-m-left--small slds-m-right--small" label="Name of Business or Organization" onchange={genericOnChange} required></lightning-input>
+            </div>
+            <div class="slds-size--1-of-1">
+                <lightning-input name="businessTitle" value={restLead.businessTitle} class="slds-m-left--small slds-m-right--small"  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
+            </div>
+            <div class="slds-size--1-of-1">
+                <lightning-input name="businessPhone" value={restLead.businessPhone} class="slds-m-left--small slds-m-right--small"  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
+            </div>
+            </template>
+        </div>
+        <template if:false={resiApplicationType}>
+            <div class="slds-size_1-of-1 slds-small-size_1-of-1 slds-var-p-top_medium slds-var-p-left_medium slds-var-p-right_medium">
+            Utility Accounts
+            </div>
         </template>
-  </lightning-accordion>
+        <lightning-accordion
+            allow-multiple-sections-open
+            active-section-name={utilityAccountSection}>
+                <template iterator:it={propertyAccount.utilityAccountLogs}>
+                    <lightning-accordion-section key={it.value.localid} name={it.value.localid} label={it.value.name}>
+                        <template if:false={it.first}>
+                            <template if:false={it.value.doNotDelete}>
+                                <lightning-button-menu name={it.index} key={it.value.localid} slot="actions" alternative-text="Show menu" icon-size="x-small" menu-alignment="auto" onselect={handleUtilityAccountMenu}>
+                                    <lightning-menu-item name={it.index} value="remove" label="Remove" ></lightning-menu-item>
+                                </lightning-button-menu>
+                            </template>
+                        </template>
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-size_1-of-1 slds-small-size_1-of-2">
+                                <div class="slds-grid">
+                                <lightning-input key={it.value.localid}
+                                                data-row-index={it.index}
+                                                name="utilityAccountNumber"
+                                                class="slds-var-m-bottom_small slds-col"
+                                                label="Utility Account Number"
+                                                value={it.value.utilityAccountNumber}
+                                                onchange={utilityAccountOnChange}
+                                                required>
+                                </lightning-input>
+                                <span class="slds-show_small">
+                                        <div class="slds-var-m-right_small"></div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-small-size_1-of-2">
+                                <div class="slds-grid">
+                                        <span class="slds-show_small">
+                                        <div class="slds-var-m-right_small"></div>
+                                        </span>
+                                <lightning-combobox key={it.value.localid}
+                                                    data-row-index={it.index}
+                                                    placeholder=""
+                                                    class="slds-var-m-bottom_small slds-col"
+                                                    label="Utility"
+                                                    name="selectedUtility"
+                                                    value={selectedUtility}
+                                                    options={utilityOptions}
+                                                    onchange={genericOnChange}
+                                                    required>
+                                </lightning-combobox>
+                                </div>
+                            </div>
+                            <div class="slds-size_1-of-1">
+                                <lightning-input key={it.value.localid}
+                                                name="nameOnAccount"
+                                                data-row-index={it.index}
+                                                class="slds-var-m-bottom_small"
+                                                label="Name on Account"
+                                                value={it.value.nameOnAccount}
+                                                onchange={utilityAccountOnChange}
+                                                required>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-size_1-of-1">
+                                <lightning-input key={it.value.localid}
+                                                name="serviceStreet"
+                                                data-row-index={it.index}
+                                                class="slds-var-m-bottom_small"
+                                                label="Service Street Address"
+                                                value={it.value.serviceStreet}
+                                                onchange={utilityAccountOnChange}
+                                                required>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-small-size_6-of-12">
+                                <lightning-input key={it.value.localid}
+                                                name="serviceCity"
+                                                data-row-index={it.index}
+                                                class="slds-var-m-bottom_small"
+                                                label="City"
+                                                value={it.value.serviceCity}
+                                                onchange={utilityAccountOnChange}
+                                                required>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-small-size_2-of-12">
+                                <div class="slds-grid">
+                                        <span class="slds-show_small slds-col">
+                                        <div class="slds-var-m-right_small"></div>
+                                        </span>
+                                <lightning-combobox key={it.value.localid}
+                                                    name="serviceState"
+                                                    data-row-index={it.index}
+                                                    class="slds-var-m-bottom_small slds-col"
+                                                    placeholder=""
+                                                    label="State"
+                                                    value={it.value.serviceState}
+                                                    onchange={utilityAccountOnChange}
+                                                    options={stateOptions}
+                                                    required>
+                                </lightning-combobox>
+                                <span class="slds-show_small slds-col">
+                                        <div class="slds-var-m-right_small"></div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-small-size_4-of-12">
+                                <lightning-input type="select" key={it.value.localid}
+                                                name="servicePostalCode"
+                                                data-row-index={it.index}
+                                                class="slds-var-m-bottom_small"
+                                                label="Zip"
+                                                value={it.value.servicePostalCode}
+                                                onchange={utilityAccountOnChange}
+                                                disabled
+                                                required>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-size_1-of-2 slds-align_absolute-center">
+                                <template if:true={it.value.showUpload}>
+                                    <c-ssf-file-upload required input-text="Upload a copy of your utility bill" data-row-index={it.index} onfileuploaded={handleUpload}></c-ssf-file-upload>
+                                </template>
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-grid_vertical-align-start slds-grid_align-center slds-var-m-horizontal_small slds-var-m-top_x-large slds-text-align_center">
+                                    <template if:true={it.last}>
+                                        <lightning-button 
+                                            label="Add Another Utility Account"
+                                            onclick={addAnotherUtilityAccount}>
+                                        </lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+        </lightning-accordion>
 
-  <lightning-input class="slds-p-left--medium" type="checkbox" label="Billing Address same as First Service Address" checked={sameBillingAddress} onchange={billingAddressToggle}></lightning-input>
-  <template if:false={sameBillingAddress}>
-    <div class="slds-grid slds-wrap slds-p-left--small slds-p-right--small">
-      <div class="slds-size--1-of-1">
-        <lightning-input name="billingStreet" class="slds-m-bottom--small" label="Billing Street" onchange={propertyAccountOnChange} value={propertyAccount.billingStreet} required></lightning-input>
-      </div>
-      <div class="slds-size--1-of-1 slds-small-size--6-of-12">
-        <lightning-input name="billingCity" class="slds-m-bottom--small" label="City" onchange={propertyAccountOnChange} value={propertyAccount.billingCity} required></lightning-input>
-      </div>
-      <div class="slds-size--1-of-1 slds-small-size--2-of-12">
-        <div class="slds-grid">
-                  <span class="slds-show_small slds-col">
-                    <div class="slds-m-right--small"></div>
-                  </span>
-          <lightning-combobox name="billingState" class="slds-m-bottom--small slds-col" label="State" onchange={propertyAccountOnChange} options={stateOptions} placeholder="" value={propertyAccount.billingState} required></lightning-combobox>
-          <span class="slds-show_small slds-col">
-                      <div class="slds-m-right--small"></div>
-                  </span>
-        </div>
-      </div>
-      <div class="slds-size--1-of-1 slds-small-size--4-of-12">
-        <lightning-input name="billingPostalCode" class="slds-m-bottom--small" label="Zip" onchange={propertyAccountOnChange} value={propertyAccount.billingPostalCode} required></lightning-input>
-      </div>
-    </div>
-  </template>
+        <lightning-input class="slds-var-p-left_medium" type="checkbox" label="Billing Address same as First Service Address" checked={sameBillingAddress} onchange={billingAddressToggle}></lightning-input>
+        <template if:false={sameBillingAddress}>
+            <div class="slds-grid slds-wrap slds-var-p-left_small slds-var-p-right_small">
+            <div class="slds-size_1-of-1">
+                <lightning-input name="billingStreet" class="slds-var-m-bottom_small" label="Billing Street" onchange={propertyAccountOnChange} value={propertyAccount.billingStreet} required></lightning-input>
+            </div>
+            <div class="slds-size_1-of-1 slds-small-size_6-of-12">
+                <lightning-input name="billingCity" class="slds-var-m-bottom_small" label="City" onchange={propertyAccountOnChange} value={propertyAccount.billingCity} required></lightning-input>
+            </div>
+            <div class="slds-size_1-of-1 slds-small-size_2-of-12">
+                <div class="slds-grid">
+                        <span class="slds-show_small slds-col">
+                            <div class="slds-var-m-right_small"></div>
+                        </span>
+                <lightning-combobox name="billingState" class="slds-var-m-bottom_small slds-col" label="State" onchange={propertyAccountOnChange} options={stateOptions} placeholder="" value={propertyAccount.billingState} required></lightning-combobox>
+                <span class="slds-show_small slds-col">
+                            <div class="slds-var-m-right_small"></div>
+                        </span>
+                </div>
+            </div>
+            <div class="slds-size_1-of-1 slds-small-size_4-of-12">
+                <lightning-input name="billingPostalCode" class="slds-var-m-bottom_small" label="Zip" onchange={propertyAccountOnChange} value={propertyAccount.billingPostalCode} required></lightning-input>
+            </div>
+            </div>
+        </template>
 
-  <template if:false={resiApplicationType}>
-    <lightning-input class="slds-p-left--medium" type="checkbox" label="Home Address same as First Service Address" checked={sameHomeAddress} onchange={homeAddressToggle}></lightning-input>
-    <template if:false={sameHomeAddress}>
-      <div class="slds-grid slds-wrap slds-p-left--small slds-p-right--small">
-        <div class="slds-size--1-of-1">
-          <lightning-input name="streetAddress" class="slds-m-bottom--small" label="Street" onchange={genericOnChange} value={restLead.streetAddress} required></lightning-input>
-        </div>
-        <div class="slds-size--1-of-1 slds-small-size--6-of-12">
-          <lightning-input name="city" class="slds-m-bottom--small" label="City" onchange={genericOnChange} value={restLead.city} required></lightning-input>
-        </div>
-        <div class="slds-size--1-of-1 slds-small-size--2-of-12">
-          <div class="slds-grid">
-            <span class="slds-show_small slds-col">
-              <div class="slds-m-right--small"></div>
-            </span>
-            <lightning-combobox name="state" class="slds-m-bottom--small slds-col" label="State" onchange={genericOnChange} options={stateOptions} placeholder="" value={restLead.state} required></lightning-combobox>
-            <span class="slds-show_small slds-col">
-              <div class="slds-m-right--small"></div>
-            </span>
-          </div>
-        </div>
-        <div class="slds-size--1-of-1 slds-small-size--4-of-12">
-          <lightning-input name="zipCode" class="slds-m-bottom--small" label="Zip" onchange={genericOnChange} value={restLead.zipCode} required></lightning-input>
-        </div>
-      </div>
+        <template if:false={resiApplicationType}>
+            <lightning-input class="slds-var-p-left_medium" type="checkbox" label="Home Address same as First Service Address" checked={sameHomeAddress} onchange={homeAddressToggle}></lightning-input>
+            <template if:false={sameHomeAddress}>
+            <div class="slds-grid slds-wrap slds-var-p-left_small slds-var-p-right_small">
+                <div class="slds-size_1-of-1">
+                <lightning-input name="streetAddress" class="slds-var-m-bottom_small" label="Street" onchange={genericOnChange} value={restLead.streetAddress} required></lightning-input>
+                </div>
+                <div class="slds-size_1-of-1 slds-small-size_6-of-12">
+                <lightning-input name="city" class="slds-var-m-bottom_small" label="City" onchange={genericOnChange} value={restLead.city} required></lightning-input>
+                </div>
+                <div class="slds-size_1-of-1 slds-small-size_2-of-12">
+                <div class="slds-grid">
+                    <span class="slds-show_small slds-col">
+                    <div class="slds-var-m-right_small"></div>
+                    </span>
+                    <lightning-combobox name="state" class="slds-var-m-bottom_small slds-col" label="State" onchange={genericOnChange} options={stateOptions} placeholder="" value={restLead.state} required></lightning-combobox>
+                    <span class="slds-show_small slds-col">
+                    <div class="slds-var-m-right_small"></div>
+                    </span>
+                </div>
+                </div>
+                <div class="slds-size_1-of-1 slds-small-size_4-of-12">
+                <lightning-input name="zipCode" class="slds-var-m-bottom_small" label="Zip" onchange={genericOnChange} value={restLead.zipCode} required></lightning-input>
+                </div>
+            </div>
+            </template>
+        </template>
+
+        <p class="slds-var-m-around_small">
+            <lightning-input name="referralName" label="Referral Code" onchange={genericOnChange}></lightning-input>
+        </p>
+        <p class="slds-var-m-around_small">
+            We take privacy and security seriously. Check out our <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b> for more details. By clicking continue, you understand and agree that someone from BlueWave may contact you using the email and phone number provided.
+        </p>
+        <lightning-button label="Continue" onclick={submitApplication} class="slds-var-m-around_small"></lightning-button>
     </template>
-  </template>
-
-  <p class="slds-m-around--small">
-    <lightning-input name="referralName" label="Referral Code" onchange={genericOnChange}></lightning-input>
-  </p>
-  <p class="slds-m-around--small">
-    We take privacy and security seriously. Check out our <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b> for more details. By clicking continue, you understand and agree that someone from BlueWave may contact you using the email and phone number provided.
-  </p>
-  <lightning-button label="Continue" onclick={submitApplication} class="slds-m-around--small"></lightning-button>
-
-  <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
+    <template if:true={showSpinner}>
+        <c-ssf-waiting-room></c-ssf-waiting-room>
+    </template>
 </template>

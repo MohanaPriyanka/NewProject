@@ -8,6 +8,7 @@ import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
 import {makeRequest} from 'c/httpRequestService';
 import { getZipCodeCapacity } from 'c/zipCodeService';
 import insertLog from '@salesforce/apex/Logger.insertLog';
+import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 
 export default class Ssf extends NavigationMixin(LightningElement) {
     @api leadId;
@@ -28,6 +29,9 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track zipCodeResponse;
     @track resiApplicationType = true;
     @wire(CurrentPageReference) pageRef;
+
+    resiIconUrl = staticResourceFolder + '/Icon_House.png';
+    bizIconUrl = staticResourceFolder + '/Icon_City.png';
 
     connectedCallback() {
         if (!this.utilityOptions) {
@@ -133,8 +137,26 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         this[event.target.name] = event.target.value;
     }
 
-    applicationTypeOnChange(event) {
-        this.resiApplicationType = event.target.checked;
+    applicationTypeOnChangeResi() {
+        this.resiApplicationType = true;
+    }
+    
+    applicationTypeOnChangeBiz() {
+        this.resiApplicationType = false;
+    }
+
+    get getResiButtonStyle() {
+        if(this.resiApplicationType) {
+            return 'selected icon-button slds-var-m-horizontal_medium';
+        }
+        return 'icon-button slds-var-m-horizontal_medium';
+    }
+
+    get getBizButtonStyle() {
+        if(this.resiApplicationType) {
+            return 'icon-button slds-var-m-horizontal_medium';
+        }
+        return 'selected icon-button slds-var-m-horizontal_medium';
     }
 
     checkForSubmit(event) {

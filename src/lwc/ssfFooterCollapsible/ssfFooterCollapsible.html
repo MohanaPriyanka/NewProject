@@ -1,0 +1,22 @@
+<!--
+    Created by JesseFox_GearsCRM on 7/6/2020.
+-->
+
+<template>
+    <div class="container">
+        <div class="header">
+            <button class={buttonIconStyle} title={assistiveText} onclick={onButtonIconClick}>
+                <svg class="slds-button__icon ssf-button__icon" aria-hidden="true">
+                    <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+                </svg>
+                <span class="slds-assistive-text">{assistiveText}</span>
+            </button>
+            <h5 class="heading">{heading}</h5>
+        </div>
+        <template if:true={isExpanded}>
+            <div class="body">
+                <slot></slot>
+            </div>
+        </template>
+    </div>
+</template>

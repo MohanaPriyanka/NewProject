@@ -1,0 +1,173 @@
+/**
+ * Created by LindsayHolmes_GearsCRM on 7/7/20.
+ */
+
+button.nav-button {
+    background-color: rgb(21,28,52);
+    color: white;
+    border-radius: 2rem;
+}
+button.icon-button {
+    background-color: rgb(242,242,242);
+    color: rgb(130,130,130);
+    border-radius: 1rem;
+    border-width: 0px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    vertical-align: middle;
+}
+button.selected {
+    border-color: rgb(56, 125, 222);
+    border-width: 3px;
+}
+
+
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+img.icon-button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+div.icon-button {
+    max-width: 130px;
+    height: auto;
+}
+
+
+
+/****************************/
+/*          Text            */
+/****************************/
+
+.light-text {
+    color: rgb(121,121,121);
+}
+
+p {
+    font-family: Centra;
+    font-size: 1em;
+    line-height: 1.5em;
+}
+p.thin {
+    font-family: CentraLight;
+}
+p.x_large {
+    font-size: 1.5em;
+}
+p.large {
+    font-size: 1.125em;
+}
+p.small {
+    font-size: .875em;
+}
+p.x_small {
+    font-size: .75em;
+}
+
+/* headline */
+h1 {
+    font-family: CentraLight;
+    font-size: 2em;
+    line-height: 1.2em;
+}
+/* sub-headline */
+h2 {
+    font-family: Centra;
+    font-size: 1.5em;
+    line-height: 1.2em;
+}
+
+/* section title */
+h3 {
+    font-family: CentraLight;
+    font-size: 1.75em;
+    line-height: 1.25em;
+}
+
+h4 {
+    font-family: CentraLight;
+    font-size: 1.125em;
+    font-weight: bold;
+}
+
+/* small headline */
+h6 {
+    font-family: CentraMedium;
+    font-size: .75em;
+    line-height: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+
+/****************************/
+/*      Font Imports        */
+/****************************/
+@font-face {
+    font-family: 'Centra';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.eot') format('eot');
+}
+
+@font-face {
+    font-family: 'Centra';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.eot') format('eot');
+    font-weight: bold;
+}
+    
+@font-face {
+    font-family: 'Centra';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.eot') format('eot');
+    font-style: italic;
+}
+    
+@font-face {
+    font-family: 'Centra';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.eot') format('eot');
+    font-weight: bold;
+    font-style: italic;
+}
+    
+@font-face {
+    font-family: 'CentraLight';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.eot') format('eot');
+}
+    
+@font-face {
+    font-family: 'CentraLight';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.eot') format('eot');
+    font-style: italic;
+}
+    
+@font-face {
+    font-family: 'CentraMedium';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.eot') format('eot');
+}
+    
+@font-face {
+    font-family: 'CentraMedium';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.eot') format('eot');
+    font-style: italic;
+}
