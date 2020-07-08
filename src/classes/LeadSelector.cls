@@ -162,4 +162,18 @@ public without sharing class LeadSelector {
         return leadList;
     }
 
+
+    public Lead selectOneForContractCreation(Id leadId) {
+        List<Lead> leads = [
+            SELECT Id, Customer_Signed_Date__c, Product__c, Product__r.Generic_Terms_Conga_Template__c,
+                (SELECT Id FROM Accounts__r ORDER BY CreatedDate ASC LIMIT 1)
+            FROM Lead WHERE Id = :leadId
+        ];
+
+        if(leads.isEmpty()) {
+            return null;
+        }
+
+        return leads[0];
+    }
 }
