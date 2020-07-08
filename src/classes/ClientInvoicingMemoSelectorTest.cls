@@ -23,23 +23,19 @@ public with sharing class ClientInvoicingMemoSelectorTest {
 
         Subscription_Order__c orderOne = new Subscription_Order__c(
             Utility_Account_Subscription__c = uasOne.Id,
-            Approved_Change_in_Subscription__c = 10,
-            Approval_Status__c = 'Approved'
+            Approved_Change_in_Subscription__c = 10
         );
         Subscription_Order__c orderTwo = new Subscription_Order__c(
             Utility_Account_Subscription__c = uasOne.Id,
-            Approved_Change_in_Subscription__c = 10,
-            Approval_Status__c = 'Approved'
+            Approved_Change_in_Subscription__c = 10
         );
         Subscription_Order__c orderThree = new Subscription_Order__c(
             Utility_Account_Subscription__c = uasTwo.Id,
-            Approved_Change_in_Subscription__c = 10,
-            Approval_Status__c = 'Approved'
+            Approved_Change_in_Subscription__c = 10
         );
         Subscription_Order__c orderFour = new Subscription_Order__c(
             Utility_Account_Subscription__c = uasTwo.Id,
-            Approved_Change_in_Subscription__c = 10,
-            Approval_Status__c = 'Approved'
+            Approved_Change_in_Subscription__c = 10
         );
         List<Subscription_Order__c> ordersToInsert = new List<Subscription_Order__c>{
             orderOne, orderTwo, orderThree, orderFour
