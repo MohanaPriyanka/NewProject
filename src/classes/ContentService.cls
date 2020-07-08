@@ -4,8 +4,9 @@ Service for ContentDocument, ContentVersion and ContentDocumentLink actions
 Tested by ContentServiceTest
 */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public with sharing class ContentService {
+public without sharing class ContentService {
     public static ContentDocumentSelector documentSelector = new ContentDocumentSelector();
+
 
     @AuraEnabled
     public static void setCategoryOnContentVersion(List<Id> documentIdList, String category){
@@ -21,6 +22,7 @@ public with sharing class ContentService {
         }
         update versionsToUpdate;
     }
+
 
     public ContentDocumentLink uploadFileToRecordAndShareInternally(String fileBody, Id recordId, String fileName){
         ContentVersion cv = new ContentVersion(
@@ -43,6 +45,7 @@ public with sharing class ContentService {
         return cdl;
     }
 
+
     public void makeContentDocLinksPrivate(List<ContentDocument> cdList) {
         List<ContentDocumentLink> linkList = new List<ContentDocumentLink>();
         for(ContentDocument cd : cdList) {
@@ -53,5 +56,35 @@ public with sharing class ContentService {
         }
 
         Util.updateAndLog(linkList, 'ContentService', 'makeContentDocLinksPrivate');
+    }
+
+    public static void createDistribution (List<ContentVersion> newContent) {
+        List<ContentDistribution> distList = new List<ContentDistribution> ();
+        for (ContentVersion cont : newContent){
+            if (cont.Title == 'Loan Summary Sheet.pdf') {
+                ContentDistribution cd = new ContentDistribution();
+                cd.Name = cont.Title;
+                cd.ContentVersionId = cont.Id;
+                cd.PreferencesAllowOriginalDownload = true;
+                cd.PreferencesAllowViewInBrowser = true;
+                cd.PreferencesAllowPDFDownload = true;
+                cd.ExpiryDate = System.today().addDays(15);
+                cd.PreferencesExpires = true;
+                distList.add(cd);
+            } else if(cont.Title == 'Community Solar Agreement.pdf' || cont.Title == 'Solar Disclosure Form.pdf') {
+              distList.add(new ContentDistribution(
+                  Name = cont.Title,
+                  ContentVersionId = cont.Id,
+                  ExpiryDate = System.today().addDays(ContentDocLinkPrivacyScheduler.minDaysInPast),
+                  PreferencesAllowOriginalDownload = false,
+                  PreferencesAllowPDFDownload = false,
+                  PreferencesAllowViewInBrowser = true,
+                  PreferencesExpires = true,
+                  PreferencesLinkLatestVersion = true
+              ));
+            }
+        }
+
+        Util.insertAndLog(distList, 'ContentService', 'createDistribution');
     }
 }

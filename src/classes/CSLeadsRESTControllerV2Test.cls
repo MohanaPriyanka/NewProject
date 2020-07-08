@@ -3,6 +3,7 @@
  */
 
 @IsTest
+@SuppressWarnings('PMD.ExcessivePublicCount')
 public with sharing class CSLeadsRESTControllerV2Test {
 
     private static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
@@ -13,8 +14,10 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.leadService = (LeadService) Test.createStub(LeadService.class, mockLeadService);
         controller.accountService = (AccountService) Test.createStub(AccountService.class, new MockAccountService());
         controller.ualService = (UALService) Test.createStub(UALService.class, new MockUALService());
+        controller.customerContractService = (CustomerContractService) Test.createStub(CustomerContractService.class, new MockCustomerContractService());
         controller.capacityService = (CapacityService) Test.createStub(CapacityService.class, new MockCapacityService());
         controller.duplicateService = (CSLeadsDuplicateService) Test.createStub(CSLeadsDuplicateService.class , new MockDuplicateService(false));
+        controller.uow = (fflib_SObjectUnitOfWork) Test.createStub(fflib_SObjectUnitOfWork.class, new MockUOW());
 
         controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new MockLeadSelector());
         controller.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
@@ -420,7 +423,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         useMocks();
 
         String jsonRequest = '{' +
-            '"leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '",' +
+            '"leadId": "00Q000000000888",' +
             '"billingStreet": "Test billing street",' +
             '"billingCity": "Test billing city",' +
             '"billingState": "NY",' +
@@ -775,6 +778,41 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     }
 
+
+    /**************************
+     *** patchContract() ***
+     **************************/
+
+    @IsTest
+    static void testPatchContractInvalidLeadId() {
+        useMocks();
+        String jsonRequest = '{ "leadId": null }';
+        controller.patchContract(jsonRequest);
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH contract should throw an error when no lead id is provided');
+
+        jsonRequest = '{ "leadId": "" }';
+        controller.patchContract(jsonRequest);
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH contract should throw an error when an invalid lead id is provided');
+
+        jsonRequest = '{ "email": "' + SAMPLE_EMAIL + '" }';
+        controller.patchContract(jsonRequest);
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH contract should throw an error when no lead id is provided');
+
+        jsonRequest = '{ "leadId": 12345 }';
+        controller.patchContract(jsonRequest);
+        System.assertEquals(400, RestContext.response.statusCode, 'PATCH contract should throw an error when an invalid lead id is provided');
+    }
+
+    @IsTest
+    static void testPatchContractSuccess() {
+        useMocks();
+        String jsonRequest = '{ "leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '" }';
+        controller.patchContract(jsonRequest);
+        System.assertEquals(200, RestContext.response.statusCode, 'PATCH contract should not throw an error when a valid lead id is provided');
+    }
+
+
+
     /********************
      *** SYSTEM TESTS ***
      ********************/
@@ -792,10 +830,90 @@ public with sharing class CSLeadsRESTControllerV2Test {
             Phone = '4444444444',
             CreatedDate = System.today().addMonths(-3)
         );
-
         insert websiteLead;
 
-        String jsonRequest = '{' +
+        ContentVersion contentVersion = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('utility bill'),
+            Title = 'UtilityBill.pdf',
+            PathOnClient = '/UtilityBill.pdf'
+        );
+        insert contentVersion;
+        ContentDocumentSelector cds = new ContentDocumentSelector();
+        Id contentDocId = cds.getDocumentIdFromVersionId(contentVersion.Id);
+
+        String jsonRequest = getPostLeadJson(contentDocId);
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        RestResponse response = RestContext.response;
+
+        Map<String, Object> requestLead = (Map<String,Object>) JSON.deserializeUntyped(jsonRequest);
+        List<Object> requestPropertyAccounts = (List<Object>) requestLead.get('propertyAccounts');
+        Map<String, Object> requestPropertyAccount = (Map<String,Object>) requestPropertyAccounts[0];
+        List<Object> requestUtilityAccountLogs = (List<Object>) requestPropertyAccount.get('utilityAccountLogs');
+        Map<String, Object> requestUtilityAccountLog = (Map<String,Object>) requestUtilityAccountLogs[0];
+        List<Object> requestUtilityBills = (List<Object>) requestUtilityAccountLog.get('utilityBills');
+        Map<String, Object> requestUtilityBill = (Map<String, Object>) requestUtilityBills[0];
+
+        
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
+
+        System.assertEquals(201, response.statusCode, 'POST should create properly');
+        System.assertEquals(1, [SELECT Id FROM Contract WHERE Lead__c = :(Id)responseLead.get('id')].size(), 'A contract should be created for this lead, as it has both a product and a property account');
+
+        // verify lead request/response fields
+        System.assertNotEquals(responseLead.get('id'), null, 'id should be set on POST response');
+        System.assertEquals(websiteLead.Id, responseLead.get('id'));
+        for (String key : requestLead.keySet()) {
+            if (requestLead.get(key) instanceof String) {
+                System.assertEquals(requestLead.get(key), responseLead.get(key), 'The requested ' + key + ' is expected to match the actual response');
+            }
+        }
+
+        // verify propertyAccount request/response fields
+        List<Object> responsePropertyAccounts = (List<Object>) responseLead.get('propertyAccounts');
+        Map<String, Object> responsePropertyAccount = (Map<String,Object>) responsePropertyAccounts[0];
+        System.assertEquals(requestLead.get('firstName') + ' ' + requestLead.get('lastName'), responsePropertyAccount.get('name'), 'For resi customers, the name on the prop account should be their first & last name');
+        for (String key : requestPropertyAccount.keySet()) {
+            if (requestPropertyAccount.get(key) instanceof String) {
+                System.assertEquals(requestPropertyAccount.get(key), responsePropertyAccount.get(key), 'The requested ' + key + ' is expected to match the actual response');
+            }
+        }
+
+        // verify UALs request/response fields
+        List<Object> responseUtilityAccountLogs = (List<Object>) responsePropertyAccount.get('utilityAccountLogs');
+        Map<String, Object> responseUtilityAccountLog = (Map<String,Object>) responseUtilityAccountLogs[0];
+        for (String key : requestUtilityAccountLog.keySet()) {
+            if (requestUtilityAccountLog.get(key) instanceof String) {
+                System.assertEquals(requestUtilityAccountLog.get(key), responseUtilityAccountLog.get(key), 'The requested ' + key + ' is expected to match the actual response');
+            }
+        }
+
+        // verify utilityBill response fields
+        List<Object> responseUtilityBills = (List<Object>) responseUtilityAccountLog.get('utilityBills');
+        Map<String, Object> responseUtilityBill = (Map<String, Object>) responseUtilityBills[0];
+        System.assertEquals(contentDocId, responseUtilityBill.get('id'), 'The request should have returned a valid content document ID for utility bill');
+        System.assertEquals(contentVersion.Id, responseUtilityBill.get('lastPublishedVersionId'), 'The request should have returned a valid content version ID for utility bill');
+        System.assertEquals('UtilityBill.pdf', responseUtilityBill.get('title'), 'The request should have returned a valid content version ID for utility bill');
+        System.assertNotEquals(null, responseUtilityBill.get('docLinkId'), 'The request should have returned a valid content document link ID for utility bill');
+        System.assertNotEquals(null, responseUtilityBill.get('body'), 'The request should have returned a valid content document link ID for utility bill');
+        System.assertNotEquals(null, responseUtilityBill.get('size'), 'The request should have returned a valid content document link ID for utility bill');
+        System.assertNotEquals(null, responseUtilityBill.get('createdDate'), 'The request should have returned a valid content document link ID for utility bill');
+    }
+
+    private static String getPostLeadJson(Id contentDocId) {
+        return '{' +
             '"firstName": "System",' +
             '"lastName": "Testcase",' +
             '"email": "test@invalid.bluewavesolar.com",' +
@@ -820,9 +938,32 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '       "serviceCity": "Test service city",' +
             '       "serviceState": "NY",' +
             '       "servicePostalCode": "14472",' +
-            '       "utilityAccountNumber": "555555"' +
+            '       "utilityAccountNumber": "555555",' +
+            '       "utilityBills": [{' +
+            '           "id": "' + contentDocId + '"' +
+            '       }]' +
             '   }]' +
             '}]}';
+    }
+
+
+    @IsTest
+    private static void testPostSuccessSystemNoContract() {
+        String jsonRequest = '{' +
+            '"firstName": "System",' +
+            '"lastName": "Testcase",' +
+            '"email": "test@invalid.bluewavesolar.com",' +
+            '"mobilePhone": "555-555-5555",' +
+            '"applicationType": "Residential",' +
+            '"streetAddress": "1 Test Street",' +
+            '"city": "Suffern",' +
+            '"state": "NY",' +
+            '"zipCode": "10901",' +
+            '"eiaId": "1234",' +
+            '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
+            '"productName": "CS Product",' +
+            '"campaignId": "0005500000"' +
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
@@ -837,47 +978,25 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
         RestResponse response = RestContext.response;
 
-        Map<String, Object> requestLead = (Map<String,Object>) JSON.deserializeUntyped(jsonRequest);
-        List<Object> requestPropertyAccounts = (List<Object>) requestLead.get('propertyAccounts');
-        Map<String, Object> requestPropertyAccount = (Map<String,Object>) requestPropertyAccounts[0];
-        List<Object> requestUtilityAccountLogs = (List<Object>) requestPropertyAccount.get('utilityAccountLogs');
-        Map<String, Object> requestUtilityAccountLog = (Map<String,Object>) requestUtilityAccountLogs[0];
-
         String jsonResponse = response.responseBody.toString();
         Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
-
-        List<Object> responsePropertyAccounts = (List<Object>) responseLead.get('propertyAccounts');
-        Map<String, Object> responsePropertyAccount = (Map<String,Object>) responsePropertyAccounts[0];
-        List<Object> responseUtilityAccountLogs = (List<Object>) responsePropertyAccount.get('utilityAccountLogs');
-        Map<String, Object> responseUtilityAccountLog = (Map<String,Object>) responseUtilityAccountLogs[0];
+        Id leadId = (Id)responseLead.get('id');
 
         System.assertEquals(201, response.statusCode, 'POST should create properly');
+        System.assertEquals(0, [SELECT Id FROM Contract WHERE Lead__c = :leadId].size(), 'No contract should be created for this lead, as it has a product but no property account');
 
-        // verify lead request/response fields
-        System.assertNotEquals(responseLead.get('id'), null, 'id should be set on POST response');
-        System.assertEquals(websiteLead.Id, responseLead.get('id'));
-        for (String key : requestLead.keySet()) {
-            if (requestLead.get(key) instanceof String) {
-                System.assertEquals(requestLead.get(key), responseLead.get(key), 'The requested ' + key + ' is expected to match the actual response');
-            }
-        }
+        jsonRequest = '{' +
+            '"leadId": "' + leadId + '",' +
+            '"billingStreet": "Test billing street",' +
+            '"billingCity": "Test billing city",' +
+            '"billingState": "NY",' +
+            '"billingPostalCode": "14472"' +
+            '}';
+        controller.postPropertyAccount(jsonRequest);
 
-        // verify propertyAccount request/response fields
-        System.assertEquals(requestLead.get('firstName') + ' ' + requestLead.get('lastName'), responsePropertyAccount.get('name'), 'For resi customers, the name on the prop account should be their first & last name');
-        for (String key : requestPropertyAccount.keySet()) {
-            if (requestPropertyAccount.get(key) instanceof String) {
-                System.assertEquals(requestPropertyAccount.get(key), responsePropertyAccount.get(key), 'The requested ' + key + ' is expected to match the actual response');
-            }
-        }
-
-        // verify UALs request/response fields
-        for (String key : requestUtilityAccountLog.keySet()) {
-            if (requestUtilityAccountLog.get(key) instanceof String) {
-                System.assertEquals(requestUtilityAccountLog.get(key), responseUtilityAccountLog.get(key), 'The requested ' + key + ' is expected to match the actual response');
-            }
-        }
-
+        System.assertEquals(201, RestContext.response.statusCode, 'A PropertyAccount POST with minimal fields should succeed');
+        System.assertEquals(1, [SELECT Id FROM Contract WHERE Lead__c = :leadId].size(), 'A contract should be created for this lead, as it now has both a product and a property account');
     }
 
 
@@ -885,16 +1004,19 @@ public with sharing class CSLeadsRESTControllerV2Test {
      *** MOCKS ***
      *************/
     @TestVisible
+    private static String SAMPLE_EMAIL = 'email@invalid.com';
+    
+    @TestVisible
     private class MockLeadService extends MockProvider {
         public MockLeadService(){}
 
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'updateLead' {
-                    return new Lead();
+                    return new Lead(Company = 'test');
                 }
                 when 'insertLead' {
-                    return new Lead(Id = Util.getFakeId(Schema.Lead.SObjectType));
+                    return new Lead(Id = Util.getFakeId(Schema.Lead.SObjectType), Company = 'test');
                 }
             }
             return null;
@@ -904,11 +1026,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             List<MethodCall> updateCalls = getMethodCallsByName('updateLead');
             return (Lead) updateCalls.get(updateCalls.size() - 1).listOfArgs.get(0);
         }
-
     }
 
-    @TestVisible
-    private static String SAMPLE_EMAIL = 'email@invalid.com';
     @TestVisible
     private class MockLeadSelector implements StubProvider {
         public MockLeadSelector(){}
@@ -1053,6 +1172,9 @@ public with sharing class CSLeadsRESTControllerV2Test {
                         }
                     }
                 }
+                when 'selectPropertyAccountsByLeadIdsMap' {
+                    return new Map<Id, Account>{'001000000000999' => new Account(Id = '001000000000999')};
+                }
             }
             return null;
         }
@@ -1097,9 +1219,30 @@ public with sharing class CSLeadsRESTControllerV2Test {
                 when 'selectAllMap'{
                     return new Map<Id, Utility_Account_Log__c>{Util.getFakeId(Schema.Utility_Account_Log__c.SObjectType) => new Utility_Account_Log__c()};
                 }
+                when 'selectAllByLeadMap' {
+                    return new Map<Id, Utility_Account_Log__c>{'a1b000000000999' => new Utility_Account_Log__c(Id='a1b000000000999')};
+                }
             }
             
             return new Utility_Account_Log__c();
+        }
+    }
+
+    @TestVisible
+    private class MockCustomerContractService extends MockProvider {
+        public MockCustomerContractService(){}
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'createContractFromLead' {
+                    return new Contract();
+                }
+                when 'signCustomerContracts' {
+                    return true;
+                }
+            }
+            
+            return null;
         }
     }
 
@@ -1142,6 +1285,15 @@ public with sharing class CSLeadsRESTControllerV2Test {
             } else {
                 return (Lead) JSON.deserialize(jsonLead, Lead.class);
             }
+        }
+    }
+
+    @TestVisible
+    private class MockUOW extends MockProvider {
+        public MockUOW(){}
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            return null;
         }
     }
 

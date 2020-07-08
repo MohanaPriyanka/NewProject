@@ -89,6 +89,7 @@ public with sharing class LeadDispatcher {
         if (result.updatedLeads.size()> 0 ){
             leadService.completeLeadConversion(result.updatedLeads, result.oldLeadMap);
             leadService.convertCasesToContact(result.updatedLeads);
+            leadService.updateRelatedContracts(result.updatedLeads, result.oldLeadMap);
         }
     }
 

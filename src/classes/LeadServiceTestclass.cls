@@ -557,6 +557,36 @@ public class LeadServiceTestclass {
     }
 
 
+    @IsTest
+    static void testProductChange() {
+        Lead lead = [SELECT Id, Product__c, (SELECT Id FROM Accounts__r) FROM Lead LIMIT 1];
+        Product2 newProduct = [SELECT Id FROM Product2 WHERE Id != :lead.Product__c LIMIT 1];
+        Account a = new Account(
+            Lead__c = lead.Id,
+            Name = 'test property account',
+            BillingStreet = 'test street',
+            BillingCity = 'test city',
+            BillingStateCode = 'MA',
+            BillingPostalCode = '02633'
+        );
+        insert a;
+        Contract contract = new Contract(
+            Lead__c = lead.Id,
+            Product__c = lead.Product__c,
+            RecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByDeveloperName().get('Customer_Contract').getRecordTypeId(),
+            AccountId = a.Id
+        );
+        insert contract;
+        
+        Test.startTest();
+            lead.Product__c = newProduct.Id;
+            update lead;
+        Test.stopTest();
+
+        System.assertEquals(newProduct.Id, [SELECT Product__c FROM Contract WHERE Id = :contract.Id LIMIT 1].Product__c, 'New product on Lead should be reflected by new product on Contract');
+    }
+
+
 
     public static void pullCreditForLead(Id leadId) {
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
