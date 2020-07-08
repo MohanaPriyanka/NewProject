@@ -28524,6 +28524,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Production__c.Credits_Transferred_to_BW_or_Client__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Production__c.Customer_Savings__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -32910,6 +32915,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer_Part__c.Transfer_Transferred_To__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
