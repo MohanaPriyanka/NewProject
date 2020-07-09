@@ -2591,6 +2591,73 @@ null)</formula>
         <active>true</active>
         <label>SSS - No PM Relationship</label>
         <picklistValues>
+            <picklist>Service_Territories__c</picklist>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dunwoodie</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hudson Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maine</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Millwood</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>N%2EY%2EC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Sales_Partners__c</picklist>
             <values>
                 <fullName>360 Managed Services</fullName>
@@ -2975,69 +3042,6 @@ null)</formula>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Service_Territories__c</picklist>
-            <values>
-                <fullName>Capital</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Central</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Dunwoodie</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Genesee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Hudson Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Long Island</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Millwood</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mohawk Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>N%2EY%2EC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>North</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>West</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Service_Territory__c</picklist>
             <values>
                 <fullName>Duke Energy Carolinas %28DEC%29</fullName>
@@ -3088,6 +3092,73 @@ null)</formula>
         <fullName>SSS_PM_Relationship</fullName>
         <active>false</active>
         <label>SSS PM Relationship</label>
+        <picklistValues>
+            <picklist>Service_Territories__c</picklist>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dunwoodie</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hudson Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maine</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Millwood</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>N%2EY%2EC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Sales_Partners__c</picklist>
             <values>
@@ -3457,69 +3528,6 @@ null)</formula>
             </values>
             <values>
                 <fullName>2</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Service_Territories__c</picklist>
-            <values>
-                <fullName>Capital</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Central</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Dunwoodie</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Genesee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Hudson Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Long Island</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Millwood</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mohawk Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>N%2EY%2EC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>North</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>West</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
