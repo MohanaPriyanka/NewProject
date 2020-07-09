@@ -1541,6 +1541,8 @@ public with sharing class CSCancellationServiceTest {
         Shared_Solar_System__c sss1 = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'SSS1'];
         createBills(today - 46, sss1.Id);
 
+        Autopay_Schedule__c schedule = new Autopay_Schedule__c(Run_Date__c = System.today());
+        insert schedule;
         Test.startTest();
         Account acct = [
             SELECT Id
