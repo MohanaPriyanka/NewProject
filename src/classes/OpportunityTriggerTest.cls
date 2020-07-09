@@ -109,6 +109,9 @@ public with sharing class OpportunityTriggerTest {
     }
     @IsTest
     public static void testNMCTariffChange() {
+        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Sizing_Method'=>false,'Subscription_Orders'=>true};
+        FeatureService featureServiceMock = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
+        SubscriptionManagementService.featureService = featureServiceMock;
         Opportunity opp = [
             SELECT Id, Name
             FROM Opportunity
@@ -134,7 +137,6 @@ public with sharing class OpportunityTriggerTest {
             ];
         }
 
-        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
         System.assertEquals(3, uasList.size());
         System.assertEquals(2.3200, uasList[0].Future_Customer_Subscription_KWDC_Rollup__c);
         System.assertEquals(6.9600, uasList[1].Future_Customer_Subscription_KWDC_Rollup__c);

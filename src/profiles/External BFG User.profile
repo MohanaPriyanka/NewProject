@@ -30796,11 +30796,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Log__c.Rate_Class__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Service_Address_Formula__c</field>
         <readable>true</readable>

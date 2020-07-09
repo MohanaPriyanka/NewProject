@@ -25,7 +25,7 @@ public with sharing class SubscriptionSizingTestclass {
         );
         insert eversource;
 
-        Utility_NMC_Tariff__c kwhSizingMethodR1 = new Utility_NMC_Tariff__c (Name = 'kwh Tariff? ',
+        Utility_NMC_Tariff__c kwhSizingMethodR1 = new Utility_NMC_Tariff__c (Name = 'kwh Tariff R1 ',
             Utility__c = 'Eversource',
             Class__c = 'Class 1',
             Value_of_Net_Metering_Credit__c = 0.1137,
@@ -34,7 +34,7 @@ public with sharing class SubscriptionSizingTestclass {
         );
 
 
-        Utility_NMC_Tariff__c kwhSizingMethodR2 = new Utility_NMC_Tariff__c (Name = 'kwh Tariff? ',
+        Utility_NMC_Tariff__c kwhSizingMethodR2 = new Utility_NMC_Tariff__c (Name = 'kwh Tariff R2',
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1137,
@@ -48,7 +48,9 @@ public with sharing class SubscriptionSizingTestclass {
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1812,
             Current_Billing_Rate__c = TRUE);
+
         insert new List<Utility_NMC_Tariff__c>{kwhSizingMethodR1, kwhSizingMethodR2, costSizingMethod};
+
 
         Rate_Class__c rateClassR1 = new Rate_Class__c(
             Name = 'Eversource R1',
@@ -266,6 +268,7 @@ public with sharing class SubscriptionSizingTestclass {
             Name = '0000111',
             Utility_Account_Log__c = ualA.Id,
             Opportunity__c = opportunityA.Id,
+            Sizing_Method__c = kwhSizingMethodR1.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Annual_kwh_subscription_future__c = 7587
         );
@@ -274,6 +277,7 @@ public with sharing class SubscriptionSizingTestclass {
             Name = '0000222',
             Utility_Account_Log__c = ualB.Id,
             Opportunity__c =  opportunityB.Id,
+            Sizing_Method__c = kwhSizingMethodR1.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Annual_kwh_subscription_future__c = 14345
         );
@@ -282,6 +286,7 @@ public with sharing class SubscriptionSizingTestclass {
             Name = '0000333',
             Utility_Account_Log__c = ualC.Id,
             Opportunity__c = opportunityC.Id,
+            Sizing_Method__c = costSizingMethod.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Subscribed_Annual_Cost_of_Electricity__c = 5889
         );
@@ -290,6 +295,7 @@ public with sharing class SubscriptionSizingTestclass {
             Name = '0000444',
             Utility_Account_Log__c = ualD.Id,
             Opportunity__c = opportunityD.Id,
+            Sizing_Method__c = costSizingMethod.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Subscribed_Annual_Cost_of_Electricity__c = 720.75
         );
@@ -298,8 +304,64 @@ public with sharing class SubscriptionSizingTestclass {
     }
 
     @IsTest
+    public static void testInvocableRecalculateSubscriptionWithSizingMethod() {
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c,
+                Sizing_Method__c
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000111' OR Name = '0000222'
+        ];
+
+        Utility_NMC_Tariff__c sizingMethod = [
+            SELECT Id, Size_Ratio__c
+            FROM Utility_NMC_Tariff__c
+            WHERE Name = 'kwh Tariff R2'
+            LIMIT 1
+        ];
+
+        Set<Id> uasIds = new Set<Id>();
+        for (Utility_Account_Subscription__c uas : uasList) {
+            System.assertNotEquals(uas.Sizing_Method__c, sizingMethod.Id, 'UAS from setup has kw Tariff R1');
+            uas.Sizing_Method__c = sizingMethod.Id;
+            uasIds.add(uas.Id);
+        }
+        update uasList;
+        Test.startTest();
+        InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(new List<List<Utility_Account_Subscription__c>>{uasList});
+        Test.stopTest();
+
+        List<Subscription_Order__c> soOrders = new List<Subscription_Order__c>();
+        soOrders = [
+            SELECT Id,  New_Annual_kWh__c, Size_Ratio__c, System_Change_kW_DC_Rounded__c,
+                Utility_NMC_Tariff__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c IN :uasIds
+            AND Type__c = 'Resize'
+            ORDER BY New_Annual_kWh__c ASC
+        ];
+
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Sizing_Method')) {
+            System.assertEquals(2, soOrders.size());
+            System.assertEquals(sizingMethod.Id, soOrders[0].Utility_NMC_Tariff__c);
+            System.assertEquals(sizingMethod.Id, soOrders[1].Utility_NMC_Tariff__c);
+            System.assertEquals(1.5, soOrders[0].Size_Ratio__c);
+            System.assertEquals(1.5, soOrders[1].Size_Ratio__c);
+            System.assertEquals(7587, soOrders[0].New_Annual_kWh__c);
+            System.assertEquals(8.7480, soOrders[0].System_Change_kW_DC_Rounded__c);
+            System.assertEquals(14345, soOrders[1].New_Annual_kWh__c);
+            System.assertEquals(16.3296, soOrders[1].System_Change_kW_DC_Rounded__c);
+        } else {
+            System.assertEquals(0, soOrders.size(), 'When the Sizing_Method flag is turned off, we do not support changing' +
+                'the Sizing Method on UASes');
+        }
+    }
+
+    /**
+          System Test for Sizing Method Subscription Sizing
+    **/
+    @IsTest
     public static void testSizingMethodConversion() {
-        useMocks(true);
         Lead switchLead = [
             SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
                 LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, Product__c
@@ -321,7 +383,8 @@ public with sharing class SubscriptionSizingTestclass {
         ];
 
         Utility_Account_Log__c ual = leadService.buildUtilityAccountLogFromLegacyLead(switchLead, propertyAccount);
-        //size of ual should be split onto 2 separate projects - even though 32800 < sss Max of 32,900
+        //when Sizing Method flag is on, size of ual should be split onto 2 separate projects
+        // even though 32800 < sss Max of 32,900
         // This is because the UAL Annual kWh is multiplied by UAL Size Ratio of 1.5
         ual.Annual_kWh__c = 32800;
         ual.Utility_Rate_Class__c = rateClassR2.Id;
@@ -344,23 +407,62 @@ public with sharing class SubscriptionSizingTestclass {
             FROM Opportunity
             WHERE AccountId = :propertyAccount.Id
         ];
-        System.assertEquals(2, convertedOpps.size());
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Sizing_Method')) {
+            System.assertEquals(2, convertedOpps.size());
+        } else {
+            System.assertEquals(1, convertedOpps.size());
+        }
+
 
         List<Utility_Account_Subscription__c> convertedUASes = [
-            SELECT Id, Sizing_Method__c, Shared_Solar_System__r.Name, Annual_kWh_Subscription_Future_Rollup__c
+            SELECT Id, Sizing_Method__c, Shared_Solar_System__r.Name, Annual_kWh_Subscription_Future_Rollup__c,
+                Sizing_Method__r.Size_Ratio__c, Future_Customer_Subscription_KWDC_Rollup__c
             FROM Utility_Account_Subscription__c
             WHERE Utility_Account_Log__c = :ual.Id
         ];
-        System.assertEquals(2, convertedUASes.size());
-        for (Utility_Account_Subscription__c uas : convertedUASes) {
-            if (uas.Shared_Solar_System__r.Name == 'kWh Shared Solar System Two') {
-                System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c, 'UAS should be stamped with Sizing Method from UALs Rate Class' );
-                System.assertEquals(10866.67, uas.Annual_kWh_Subscription_Future_Rollup__c, 'Second UAS should be created as excess capacity from first SSS.');
-            } else {
-                System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c, 'UAS should be stamped with Sizing Method from UALs Rate Class');
-                System.assertEquals(21933.33, uas.Annual_kWh_Subscription_Future_Rollup__c, 'First UAS should be maxed out by SSS max kWh after Rate Class Size Ratio has been applied.');
+        if (featureService.isEnabled('Sizing_Method')) {
+            System.assertEquals(2, convertedUASes.size());
+            for (Utility_Account_Subscription__c uas : convertedUASes) {
+                if (uas.Shared_Solar_System__r.Name == 'kWh Shared Solar System Two') {
+                    System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c, 'UAS should be stamped with Sizing Method from UALs Rate Class' );
+                    System.assertEquals(10866.67, uas.Annual_kWh_Subscription_Future_Rollup__c, 'Second UAS should be created as excess capacity from first SSS.');
+                    System.assertEquals(12.2472, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+                } else {
+                    System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c, 'UAS should be stamped with Sizing Method from UALs Rate Class');
+                    System.assertEquals(21933.33, uas.Annual_kWh_Subscription_Future_Rollup__c, 'First UAS should be maxed out by SSS max kWh after Rate Class Size Ratio has been applied.');
+                    System.assertEquals(25.0776, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+                }
             }
+        } else {
+            System.assertEquals(1, convertedUASes.size());
+            System.assertEquals(32800, convertedUASes[0].Annual_kWh_Subscription_Future_Rollup__c );
+            System.assertEquals(25.0776, convertedUASes[0].Future_Customer_Subscription_KWDC_Rollup__c);
         }
+
+
+        List<Subscription_Order__c> sOrders = [
+            SELECT Id, Utility_NMC_Tariff__c, Size_Ratio__c, Utility_Account_Subscription__c, Utility_NMC_Tariff__r.Size_Ratio__c,
+                Utility_Account_Subscription__r.Sizing_Method__c, New_Annual_kWh__c,
+                System_Change_kW_DC_Rounded__c, System_Change_kW_DC_Subscription__c, Approved_Change_in_Subscription__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__r.Utility_Account_Log__c = :ual.Id
+        ];
+
+
+        if (featureService.isEnabled('Sizing_Method')) {
+            System.assertEquals(2, sOrders.size());
+            for (Subscription_Order__c so : sOrders) {
+                System.assertEquals(so.Utility_Account_Subscription__r.Sizing_Method__c, so.Utility_NMC_Tariff__c,
+                    'SO should be stamped with the Sizing Method from its UAS');
+                System.assertEquals(so.Utility_NMC_Tariff__r.Size_Ratio__c, so.Size_Ratio__c,
+                    'SO should be stamped with the Size Ratio from its Sizing Method');
+            }
+        } else {
+            System.assertEquals(1, sOrders.size());
+        }
+
+
     }
 
     @IsTest
@@ -382,7 +484,6 @@ public with sharing class SubscriptionSizingTestclass {
 
             The 4 "Approved Changes" can then be calculated by subtracting New - Previous values and rolled up to UAS.
        */
-
         Shared_Solar_System__c kwhSSS =[
             SELECT Id, Total_System_Size_kWh_DC__c, Expected_Yield_kWh_kW__c
             FROM Shared_Solar_System__c
@@ -411,7 +512,6 @@ public with sharing class SubscriptionSizingTestclass {
         Subscription_Order__c firstWrongSO = new Subscription_Order__c(
             Utility_Account_Subscription__c = uases[0].Id,
             Change_in_Annual_kWh__c = 4565
-
         );
         insert firstWrongSO;
 
@@ -479,12 +579,24 @@ public with sharing class SubscriptionSizingTestclass {
         System.assertEquals(0.0011, wrongShareTotal/ 100);
 
         //Calculate total subscription as "whole"
-        Decimal correctedSubscription = totalUsage/kwhSSS.Expected_Yield_kWh_kW__c;
-        Decimal correctedShare = correctedSubscription/kwhSSS.Total_System_Size_kWh_DC__c;
-        correctedShare = correctedShare.setScale(4);
-        System.assertEquals(0.0012, correctedShare);
-        correctedSubscription = correctedShare * kwhSSS.Total_System_Size_kWh_DC__c;
-        System.assertEquals(4.1613, correctedSubscription);
+        Decimal correctedSubscription;
+        Decimal correctedShare;
+        FeatureService featureService = new FeatureService();
+        if (featureService.isEnabled('Sizing_Method')) {
+            correctedSubscription = totalUsage*1.2/kwhSSS.Expected_Yield_kWh_kW__c;
+            correctedShare = correctedSubscription/kwhSSS.Total_System_Size_kWh_DC__c;
+            correctedShare = correctedShare.setScale(4);
+            System.assertEquals(0.0014, correctedShare);
+            correctedSubscription = correctedShare * kwhSSS.Total_System_Size_kWh_DC__c;
+            System.assertEquals(4.854850, correctedSubscription);
+        } else {
+            correctedSubscription = totalUsage/kwhSSS.Expected_Yield_kWh_kW__c;
+            correctedShare = correctedSubscription/kwhSSS.Total_System_Size_kWh_DC__c;
+            correctedShare = correctedShare.setScale(4);
+            System.assertEquals(0.0012, correctedShare);
+            correctedSubscription = correctedShare * kwhSSS.Total_System_Size_kWh_DC__c;
+            System.assertEquals(4.1613, correctedSubscription);
+        }
 
         //Confirm the subscription orders that calculate via "parts" do not equal "whole" subscription
         System.assertNotEquals(correctedSubscription, wrongSubscriptionTotal);
@@ -497,47 +609,37 @@ public with sharing class SubscriptionSizingTestclass {
 
     @IsTest
     public static void testRoundingBug() {
-    /**
-        BUG: Subscription calculations were originally unrounded in the same way the uas.kW_Allocation__c was calculated.
+        /**
+            BUG: Subscription calculations were originally unrounded in the same way the uas.kW_Allocation__c was calculated.
 
-        SOLUTION:
-        To make the assertions pass, a new "rounded" field was added to the SO to round the subscription size appropriately
-        and therefore match the kw Allocation.
+            SOLUTION:
+            To make the assertions pass, a new "rounded" field was added to the SO to round the subscription size appropriately
+            and therefore match the kw Allocation.
 
-        There are also assertions to ensure the Percent Share is correctly calculated despite the change.
-     */
-List<Utility_Account_Subscription__c> checkUASes = [
- SELECT Id, Name, kW_Allocation__c, Customer_Subscription_KW_DC__c,
-     Future_Customer_Subscription_KWDC_Rollup__c, Future_Share_of_System_Rollup__c
- FROM Utility_Account_Subscription__c
- ORDER BY Name
-];
+            There are also assertions to ensure the Percent Share is correctly calculated despite the change.
+         */
+        List<Utility_Account_Subscription__c> checkUASes = [
+            SELECT Id, Name, kW_Allocation__c, Customer_Subscription_KW_DC__c,
+                Future_Customer_Subscription_KWDC_Rollup__c, Future_Share_of_System_Rollup__c
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000333' OR Name = '0000444'
+            ORDER BY Name
+        ];
 
-
-for (Utility_Account_Subscription__c uas : checkUASes) {
- if (uas.Name == '0000111') {
-     //Unrounded: 5.7652
-     System.assertEquals(5.832, uas.kW_Allocation__c);
-     System.assertEquals(5.832, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-     System.assertEquals(.1, uas.Future_Share_of_System_Rollup__c);
- } else if (uas.Name == '0000222') {
-     //Unrounded: 10.9005
-     System.assertEquals(11.0808, uas.kW_Allocation__c);
-     System.assertEquals(11.0808, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-     System.assertEquals(.19, uas.Future_Share_of_System_Rollup__c);
- } else if (uas.Name == '0000333') {
-     //Unrounded: 25
-     System.assertEquals(25.014528, uas.kW_Allocation__c);
-     System.assertEquals(25.014528, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-     System.assertEquals(2.31, uas.Future_Share_of_System_Rollup__c);
- } else {
-     //Unrounded: 3.0597
-     System.assertEquals(3.032064, uas.kW_Allocation__c);
-     System.assertEquals(3.032064, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-     System.assertEquals(.28, uas.Future_Share_of_System_Rollup__c);
- }
-}
-}
+        for (Utility_Account_Subscription__c uas : checkUASes) {
+            if (uas.Name == '0000333') {
+                //Unrounded: 25
+                System.assertEquals(25.014528, uas.kW_Allocation__c);
+                System.assertEquals(25.014528, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+                System.assertEquals(2.31, uas.Future_Share_of_System_Rollup__c);
+            } else {
+                //Unrounded: 3.0597
+                System.assertEquals(3.032064, uas.kW_Allocation__c);
+                System.assertEquals(3.032064, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+                System.assertEquals(.28, uas.Future_Share_of_System_Rollup__c);
+            }
+        }
+    }
     private static void useMocks(Boolean featureOn) {
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
     }
