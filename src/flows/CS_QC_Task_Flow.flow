@@ -352,7 +352,7 @@
             <targetReference>Lookup_Opportunity</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>sov_Case</name>
         <dataType>SObject</dataType>
