@@ -352,6 +352,17 @@ IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Terr
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Rate_Class__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Utility_Account_Log__r.Utility_Rate_Class__r.Name</formula>
+        <label>Rate Class</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Service_Address__c</fullName>
         <externalId>false</externalId>
         <formula>Utility_Account_Subscription__r.Utility_Account_Log__r.Service_Address__c</formula>
