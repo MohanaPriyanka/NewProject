@@ -71,6 +71,10 @@
                 <behavior>Readonly</behavior>
                 <field>Customer_Payment_Method__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Rate_Class__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
