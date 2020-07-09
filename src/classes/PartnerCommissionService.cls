@@ -101,13 +101,16 @@ public without sharing class PartnerCommissionService{
         if (type == CommissionType.CONTRACTEXECUTION) {
             existingContractExecutionPayment = oppToExistingContractExecutionPaymentMap.get(newPayment.Opportunity__c);
         }
-        if (existingContractExecutionPayment != null
-            && (existingContractExecutionPayment.Amount_Due__c != newPayment.Amount_Due__c
-            || existingContractExecutionPayment.Commission_Structure__c != newPayment.Commission_Structure__c)){
+
+        if (existingContractExecutionPayment == null){
+            uow.registerNew(newPayment);
+        } else if (existingContractExecutionPayment != null
+                    && (existingContractExecutionPayment.Amount_Due__c != newPayment.Amount_Due__c
+                    || existingContractExecutionPayment.Commission_Structure__c != newPayment.Commission_Structure__c)){
             newPayment.Id = existingContractExecutionPayment.Id;
             uow.registerDirty(newPayment);
         } else {
-            uow.registerNew(newPayment);
+            // update not required because commission amount and structure is the same
         }
     }
 
