@@ -628,7 +628,8 @@ public with sharing class CSCancellationServiceTest {
     @IsTest static void testOppCancellationOnBillingCompletionWithActiveUAS() {
         List<Utility_Account_Subscription__c> uases = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c
+                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c,
+                Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000234'
         ];
@@ -960,6 +961,7 @@ public with sharing class CSCancellationServiceTest {
             new Utility_Account_Subscription__c(Name = '0000239',
                 Utility_Account_Log__c = ual4.Id,
                 Opportunity__c = opportunityFour.Id,
+                Sizing_Method__c = sss1.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
                 calculated_annual_cost_of_electricity__c = 4000,
@@ -1609,7 +1611,8 @@ public with sharing class CSCancellationServiceTest {
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c
+                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c,
+                Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c = :opportunity.Id
             LIMIT 1
@@ -1650,7 +1653,8 @@ public with sharing class CSCancellationServiceTest {
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c
+                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c,
+                Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c = :opportunity.Id
             LIMIT 1

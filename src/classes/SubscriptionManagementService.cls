@@ -14,6 +14,8 @@ public without sharing class SubscriptionManagementService implements Queueable{
     private static SubscriptionOrderSelector soSelector = new SubscriptionOrderSelector();
     @TestVisible
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
     public Set<Id> oppIdsWithChangedNMCTariff;
     public Set<Id> oppIdsWithChangedSSS;
     public List<CSUtilityAccountSubscriptionFactory.UASOrder> uasOrders = new List<CSUtilityAccountSubscriptionFactory.UASOrder>();
@@ -21,7 +23,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
     public List<Subscription_Order__c> soInsertList = new List<Subscription_Order__c>();
 
     public void execute(QueueableContext context) {
-        FeatureService featureService = new FeatureService();
         if (oppIdsWithChangedNMCTariff != null && featureService.isEnabled('Subscription_Orders')) {
             changeNMCTariff(oppIdsWithChangedNMCTariff);
         }
@@ -70,9 +71,16 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 so.Expected_Yield_kWh_kW__c = uas.Shared_Solar_System__r.Expected_Yield_kWh_kW__c;
                 so.Total_System_Size_kW_DC__c = uas.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
                 so.Utility_Number_of_Decimal_Places__c = uas.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c;
-                so.Utility_NMC_Tariff__c = uas.Opportunity__r.NMC_Tariff__c;
-                so.Value_of_NMC__c = uas.Opportunity__r.NMC_Tariff__r.Value_of_NMC__c;
                 so.Product__c = uas.Opportunity__r.Product__c;
+                if(FeatureService.isEnabled('Sizing_Method')) {
+                    so.Utility_NMC_Tariff__c = uas.Sizing_Method__c;
+                    so.Value_of_NMC__c = uas.Sizing_Method__r.Value_of_NMC__c;
+                    so.Size_Ratio__c = uas.Sizing_Method__r.Size_Ratio__c;
+                } else {
+                    so.Utility_NMC_Tariff__c = uas.Opportunity__r.NMC_Tariff__c;
+                    so.Value_of_NMC__c = uas.Opportunity__r.NMC_Tariff__r.Value_of_NMC__c;
+                }
+
             }
         }
     }
@@ -97,7 +105,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
     public void handleSharedSolarSystemOrders(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         List<Shared_Solar_System__c> sssToUpdate = new List<Shared_Solar_System__c>();
         List<Subscription_Order__c> soListToInsert = new List<Subscription_Order__c>();
-        FeatureService featureService = new FeatureService();
         if (!featureService.isEnabled('Subscription_Orders')) {
             return;
         }
@@ -227,6 +234,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         }
         return zeroedSOs;
     }
+
 /*****************************************************************************************************
  * TEST ONLY METHOD TO CREATE SUBSCRIPTION ORDERS EVERY TIME A UAS IS INSERTED IN A TEST SETUP METHOD
  *****************************************************************************************************/
