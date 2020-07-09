@@ -3,6 +3,7 @@
  */
 @IsTest
 public with sharing class SharedSolarSystemHandlerTest {
+    @TestSetup
     public static void setupData() {
 
         useMocks(true);
@@ -29,15 +30,9 @@ public with sharing class SharedSolarSystemHandlerTest {
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1848,
+            Size_Ratio__c = 1,
             Current_Billing_Rate__c = TRUE);
-        Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c(Name = 'Eversource SEMA Class 2',
-            Utility__c = 'Eversource',
-            Class__c = 'Class 2',
-            Value_of_Net_Metering_Credit__c = 0.1848,
-            Sizing_Rate__c = TRUE);
-        insert new List<Utility_NMC_Tariff__c>{
-            everbillNMC, eversizeNMC
-        };
+        insert everbillNMC;
         Load_U__c everLZU = new Load_U__c(Name = '02633',
             LZ__c = 'SEMA',
             Town__c = 'Medfield');
@@ -72,6 +67,8 @@ public with sharing class SharedSolarSystemHandlerTest {
         Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
+            Customer_Subscription_Type__c = 'Electricity Cost ($)',
+            Sizing_Method__c = 'Project Ratio',
             State__c = 'MA',
             ProductCode = 'CS - Bluewave - Public CS - 20%',
             IsActive = True,
@@ -109,6 +106,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Stage__c = 'Onboarding',
             Client_Account__c = clientAccount.Id,
             Product__c = normalCSProduct.Id,
+            Utility_NMC_Tariff__c = everbillNMC.Id,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 32,
@@ -126,6 +124,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Open__c = true,
             Client_Account__c = clientAccount.Id,
             Product__c = normalCSProduct.Id,
+            Utility_NMC_Tariff__c = everbillNMC.Id,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
@@ -248,7 +247,6 @@ public with sharing class SharedSolarSystemHandlerTest {
                 AccountId = propAcct1.Id,
                 Shared_Solar_System__c = sss1.Id,
                 Customer_Group__c = 'Residential',
-                Partner_tag_lookup__c = newPartner.Id,
                 StageName = 'Complete',
                 NMC_Tariff__c = everbillNMC.Id,
                 Product__c = normalCSProduct.Id,
@@ -289,6 +287,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             new Utility_Account_Subscription__c(Name = '0000234',
                 Utility_Account_Log__c = ualog1.Id,
                 Opportunity__c = opportunityone.Id,
+                Sizing_Method__c = everbillNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
                 Calculated_Annual_Cost_of_Electricity__c = 4000,
@@ -298,6 +297,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Utility_Account_Log__c = ualog2.Id,
                 Opportunity__c = opportunitytwo.Id,
                 Shared_Solar_System__c = sss2.Id,
+                Sizing_Method__c = everbillNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 8000
             );
@@ -306,6 +306,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Utility_Account_Log__c = ualog3.Id,
                 Opportunity__c = opportunitythree.Id,
                 Shared_Solar_System__c = sss2.Id,
+                Sizing_Method__c = everbillNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 300
             );
@@ -314,6 +315,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Utility_Account_Log__c = ualog3.Id,
                 Opportunity__c = opportunityFour.Id,
                 Shared_Solar_System__c = sss2.Id,
+                Sizing_Method__c = everbillNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 30000
             );
@@ -337,11 +339,11 @@ public with sharing class SharedSolarSystemHandlerTest {
             Status__c = 'Billing'
         );
         insert new List<Schedule_Z__c>{scheduleZ1, scheduleZ2, scheduleZ3};
+        Test.stopTest();
     }
-    public static void setupMoreData() {
-        setupData();
+    public static void addMoreTestRecords() {
         Shared_Solar_System__c sss2 = [
-            SELECT Id, Product__c
+            SELECT Id, Product__c, Utility_NMC_Tariff__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 2'
             LIMIT 1
@@ -412,6 +414,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Utility_Account_Log__c = ualog1.Id,
                 Opportunity__c = opportunityone.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
+                Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Annual_kwh_subscription_future__c = 4200,
                 Calculated_Annual_Cost_of_Electricity__c = 4200,
                 Subscribed_Annual_Cost_of_Electricity__c = 4200);
@@ -419,6 +422,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             new Utility_Account_Subscription__c(Name = '1100236',
                 Utility_Account_Log__c = ualog2.Id,
                 Opportunity__c = opportunitytwo.Id,
+                Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 8200,
                 Calculated_Annual_Cost_of_Electricity__c = 8200,
@@ -427,6 +431,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             new Utility_Account_Subscription__c(Name = '1100238',
                 Utility_Account_Log__c = ualog3.Id,
                 Opportunity__c = opportunitythree.Id,
+                Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 320,
                 Calculated_Annual_Cost_of_Electricity__c = 320,
@@ -435,6 +440,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             new Utility_Account_Subscription__c(Name = '1100239',
                 Utility_Account_Log__c = ualog3.Id,
                 Opportunity__c = opportunityFour.Id,
+                Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 32000,
                 Calculated_Annual_Cost_of_Electricity__c = 32000,
@@ -493,7 +499,6 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testApexContext() {
-        setupData();
         Shared_Solar_System__c sss = [
             SELECT Id, Apex_Context__c, Stage__c, Estimated_COD_Date_Manual__c, Estimated_PTO_Date_MANUAL__c
             FROM Shared_Solar_System__c
@@ -548,7 +553,6 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testSharedSolarSystemUpdate() {
-        setupData();
         Test.startTest();
         List<Utility_Account_Subscription__c> uas = [SELECT Utility_Account_Log__c,
             Opportunity__c,
@@ -571,7 +575,6 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testMultipleUASes() {
-        setupData();
         Shared_Solar_System__c originalSSS = [
             SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c
             FROM Shared_Solar_System__c
@@ -589,6 +592,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             System.assertEquals(6.3846,originalSSS.Capacity_Committed_kW_DC__c);
             System.assertEquals(23.0769,originalSSS.Anchor_capacity_reserved__c);
         }
+
         Utility_Account_Subscription__c selectedUAS = [
             SELECT Utility_Account_Log__c,
                 Opportunity__c,
@@ -626,6 +630,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
+
         if (featureService.isEnabled('Subscription_Orders')) {
             System.assertEquals(9.4624,sssUpdated.Capacity_Committed_kW_DC__c);
             System.assertEquals(23.0784,sssUpdated.Anchor_capacity_reserved__c);
@@ -636,7 +641,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testDifferentStatuses() {
-        setupMoreData();
+        addMoreTestRecords();
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Customer_Subscription_KW_DC__c, Name, Opportunity__r.StageName, Next_Schedule_Z_Status__c,
                 Future_Customer_Subscription_KWDC_Rollup__c
@@ -652,6 +657,8 @@ public with sharing class SharedSolarSystemHandlerTest {
         Decimal sumReserved = 0;
         Integer countOther = 0;
         Decimal sumOther = 0;
+
+
         for (Utility_Account_Subscription__c uas : uasList){
             if (uas.Opportunity__r.StageName == 'Complete') {
                 countComplete += 1;
@@ -664,6 +671,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 sumOther += uas.Customer_Subscription_KW_DC__c;
             }
         }
+
         FeatureService featureService = new FeatureService();
         if (featureService.isEnabled('Subscription_Orders')) {
             System.assertEquals(6.3840,sumComplete);
@@ -675,10 +683,11 @@ public with sharing class SharedSolarSystemHandlerTest {
             System.assertEquals(24.8616,sumReserved);
             System.assertEquals(9.5385,sumOther);
         }
+
         System.assertEquals(4, countComplete + countReserved);
         Test.startTest();
-        SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
-        handler.updateSSS();
+            SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
+            handler.updateSSS();
         Test.stopTest();
         Shared_Solar_System__c sssUpdated = [
             SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c, Reserved_capacity_kW_DC__c
@@ -691,7 +700,6 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testStageUpdate(){
-        setupData();
         List<Shared_Solar_System__c> testSSS = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c
             FROM Shared_Solar_System__c
@@ -705,7 +713,6 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testReservedAnchorCapacity(){
-        setupData();
         List<Shared_Solar_System__c> sssList = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c
             FROM Shared_Solar_System__c
@@ -725,12 +732,14 @@ public with sharing class SharedSolarSystemHandlerTest {
         //SSS2 does have anchors --> Anchor Capacity should be sum of anchor opps
         System.assertEquals(7, checkSSS[0].Reserved_Anchor_Capacity__c);
         System.assertEquals(7, checkSSS[0].Anchor_Capacity_Reserved__c);
+
         FeatureService featureService = new FeatureService();
         if (featureService.isEnabled('Subscription_Orders')) {
             System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
         } else {
             System.assertEquals(23.0769, checkSSS[1].Anchor_Capacity_Reserved__c);
         }
+
         checkSSS[0].Open__c = false;
         checkSSS[1].Open__c = false;
         update checkSSS;
@@ -749,6 +758,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertEquals('Management', checkSSS[0].Stage__c);
         System.assertEquals(0, checkSSS[0].Anchor_Capacity_Reserved__c);
         System.assertEquals('Management', checkSSS[1].Stage__c);
+
         if (featureService.isEnabled('Subscription_Orders')) {
             System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
         } else {
@@ -757,8 +767,6 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     @IsTest
     public static void testReacqStartDateChange(){
-
-
         createContractTestRecords();
         Date sevenDaysAgo = System.today().addDays(-7);
         Date threeDaysAgo = System.today().addDays(-3);
@@ -792,7 +800,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertEquals(4,afterOrders.size());
         for (Subscription_Order__c order : afterOrders){
             // Reacq has $0.20 fee, acq has $0.10 fee
-            System.assertEquals(0.20,order.Contract_Fee_Detail__r.Fee__c);
+            System.assertEquals(0.20, order.Contract_Fee_Detail__r.Fee__c);
         }
     }
     private static void useMocks(Boolean featureOn) {

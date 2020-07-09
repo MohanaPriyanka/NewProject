@@ -538,6 +538,22 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Size_Ratio__c</fullName>
+        <defaultValue>1</defaultValue>
+        <description>Size Ratio from Sizing Method used to calculate subscription size</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Size Ratio from Sizing Method used to calculate subscription size</inlineHelpText>
+        <label>Size Ratio</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>System_Change_Percent_Share_of_System__c</fullName>
         <externalId>false</externalId>
         <formula>ROUND(   System_Change_kW_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
@@ -572,7 +588,11 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
 
 TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,
 
- New_Annual_kWh__c / Expected_Yield_kWh_kW__c ,
+IF($CustomMetadata.Custom_Feature_Enablement__mdt.Sizing_Method.Feature_is_Enabled__c = true, 
+
+(New_Annual_kWh__c*Size_Ratio__c)/ Expected_Yield_kWh_kW__c,
+
+ New_Annual_kWh__c / Expected_Yield_kWh_kW__c) ,
 
 IF( Utility_Account_Subscription__r.UAS_Number__c &gt; 1 ,
 
@@ -673,14 +693,15 @@ Round(( New_Annual_Cost__c  / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/
     <fields>
         <fullName>Utility_NMC_Tariff__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
-        <description>This is the Utility NMC Tariff that was on either the related Opportunity or Shared Solar System at the time that this record was created.</description>
+        <description>This is the Sizing Method used to calculate the Subscription at the time this record was created.</description>
         <externalId>false</externalId>
-        <inlineHelpText>This is the Utility NMC Tariff that was on either the related Opportunity or Shared Solar System at the time that this record was created.</inlineHelpText>
-        <label>Utility NMC Tariff</label>
+        <inlineHelpText>This is the Sizing Method used to calculate the Subscription at the time this record was created.</inlineHelpText>
+        <label>Sizing Method</label>
         <referenceTo>Utility_NMC_Tariff__c</referenceTo>
         <relationshipLabel>Subscription Orders</relationshipLabel>
         <relationshipName>Subscription_Orders</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -694,6 +715,7 @@ Round(( New_Annual_Cost__c  / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>

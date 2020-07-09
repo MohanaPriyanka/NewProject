@@ -328,11 +328,13 @@ public with sharing class ClientReportingServiceTest {
     @IsTest
     public static void testClientUAS() {
         Utility_Account_Log__c ual = [SELECT Id FROM Utility_Account_Log__c LIMIT 1];
-        Opportunity opp = [SELECT Id, Name, Shared_Solar_System__c, Shared_Solar_System__r.Name FROM Opportunity LIMIT 1];
+        Opportunity opp = [SELECT Id, Name, Shared_Solar_System__c, Shared_Solar_System__r.Name, NMC_Tariff__c
+        FROM Opportunity LIMIT 1];
         Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
             Name = '123456',
             Utility_Account_Log__c = ual.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
+            Sizing_Method__c = opp.NMC_Tariff__c,
             Opportunity__c = opp.Id,
             Subscribed_Annual_Cost_of_Electricity__c = 300,
             calculated_annual_cost_of_electricity__c = 300);
@@ -400,11 +402,12 @@ public with sharing class ClientReportingServiceTest {
     @IsTest
     public static void testClientALSS() {
         Utility_Account_Log__c ual = [SELECT Id FROM Utility_Account_Log__c LIMIT 1];
-        Opportunity opp = [SELECT Id, Shared_Solar_System__c FROM Opportunity LIMIT 1];
+        Opportunity opp = [SELECT Id, Shared_Solar_System__c, NMC_Tariff__c FROM Opportunity LIMIT 1];
         Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
             Name = '123456',
             Utility_Account_Log__c = ual.Id,
             Opportunity__c = opp.Id,
+            Sizing_Method__c = opp.NMC_Tariff__c,
             Subscribed_Annual_Cost_of_Electricity__c = 300,
             Annual_kwh_subscription_future__c = 7000
         );

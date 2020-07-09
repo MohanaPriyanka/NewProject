@@ -627,6 +627,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvocableSizingMethodRecalculation</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>InvocableUASRollup</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1031,6 +1035,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SharedSolarSystems</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SharedSolarSystemsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1060,6 +1068,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SiteRegisterControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SubscriptionManagementService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -32052,6 +32064,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Size_Ratio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Subscription_Order__c.System_Change_Percent_Share_of_System__c</field>
         <readable>false</readable>
@@ -32064,7 +32081,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Subscription_Order__c.System_Change_kW_DC_Subscription__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -33974,11 +33991,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.RNY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Log__c.Rate_Class__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
