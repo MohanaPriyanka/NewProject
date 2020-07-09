@@ -75,6 +75,11 @@
         <default>false</default>
         <label>West</label>
     </customValue>
+    <customValue>
+        <fullName>Maine</fullName>
+        <default>false</default>
+        <label>Maine</label>
+    </customValue>
     <masterLabel>Service Territories</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
