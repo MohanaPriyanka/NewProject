@@ -19,16 +19,7 @@ public class CustomerCommunicationHandlerTest{
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1848,
             Current_Billing_Rate__c = TRUE);
-
-        Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c(Name = 'Eversource SEMA Class 2',
-            Utility__c = 'Eversource',
-            Class__c = 'Class 2',
-            Value_of_Net_Metering_Credit__c = 0.1848,
-            Sizing_Rate__c = TRUE);
-
-        insert new List<Utility_NMC_Tariff__c>{
-            everbillNMC, eversizeNMC
-        };
+        insert everbillNMC;
 
         Load_U__c everLZU = new Load_U__c(Name = '02633',
             LZ__c = 'SEMA',
@@ -59,7 +50,7 @@ public class CustomerCommunicationHandlerTest{
                                            Utility__c = eversource.Id,
                                            Credit_Score_Requirement__c = 200,
                                            Assignment_order__c = '1',
-                                           Utility_NMC_Tariff__c = eversizeNMC.Id,
+                                           Utility_NMC_Tariff__c = everbillNMC.Id,
                                            Expected_Yield_kWh_kW__c = 1300,
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
@@ -80,7 +71,7 @@ public class CustomerCommunicationHandlerTest{
                                            Utility__c = eversource.Id,
                                            Credit_Score_Requirement__c = 200,
                                            Assignment_order__c = '1',
-                                           Utility_NMC_Tariff__c = eversizeNMC.Id,
+                                           Utility_NMC_Tariff__c = everbillNMC.Id,
                                            Expected_Yield_kWh_kW__c = 1300,
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
@@ -102,7 +93,7 @@ public class CustomerCommunicationHandlerTest{
                                            Utility__c = eversource.Id,
                                            Credit_Score_Requirement__c = 200,
                                            Assignment_order__c = '1',
-                                           Utility_NMC_Tariff__c = eversizeNMC.Id,
+                                           Utility_NMC_Tariff__c = everbillNMC.Id,
                                            Expected_Yield_kWh_kW__c = 1300,
                                            Assemblage_Count__c = 1,
                                            Sales_Partners__c = 'All',
@@ -234,6 +225,7 @@ public class CustomerCommunicationHandlerTest{
                 new Utility_Account_Subscription__c(Name = '0000234',
                                                     Utility_Account_Log__c = ualog1.Id,
                                                     Opportunity__c = opportunityone.Id,
+                                                    Sizing_Method__c = everbillNMC.Id,
                                                     Next_Schedule_Z_Status__c = 'Active Subscription',
                                                     Annual_kwh_subscription_future__c = 4000,
                                                     Calculated_Annual_Cost_of_Electricity__c = 4000,
@@ -242,6 +234,7 @@ public class CustomerCommunicationHandlerTest{
                 new Utility_Account_Subscription__c(Name = '0000236',
                                                     Utility_Account_Log__c = ualog2.Id,
                                                     Opportunity__c = opportunitytwo.Id,
+                                                    Sizing_Method__c = everbillNMC.Id,
                                                     Next_Schedule_Z_Status__c = 'Active Subscription',
                                                     Annual_kwh_subscription_future__c = 8000,
                                                     Calculated_Annual_Cost_of_Electricity__c = 8000,
@@ -250,6 +243,7 @@ public class CustomerCommunicationHandlerTest{
                 new Utility_Account_Subscription__c(Name = '0000238',
                                                     Utility_Account_Log__c = ualog3.Id,
                                                     Opportunity__c = opportunitythree.Id,
+                                                    Sizing_Method__c = everbillNMC.Id,
                                                     Next_Schedule_Z_Status__c = 'Active Subscription',
                                                     Annual_kwh_subscription_future__c = 300,
                                                     Calculated_Annual_Cost_of_Electricity__c = 300,

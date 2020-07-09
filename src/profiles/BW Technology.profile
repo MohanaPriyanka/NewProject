@@ -1519,6 +1519,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvocableSizingMethodRecalculation</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>InvocableUASRollup</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3671,6 +3675,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SharedSolarSystems</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SharedSolarSystemsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3709,6 +3717,10 @@
     <classAccesses>
         <apexClass>StaticResourceSelectorTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SubscriptionManagementService</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SubscriptionManagementServiceTest</apexClass>
@@ -44768,6 +44780,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Subscription_Order__c.Shared_Solar_System_Order__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Size_Ratio__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

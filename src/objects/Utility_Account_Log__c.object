@@ -734,7 +734,7 @@
         <deleteConstraint>SetNull</deleteConstraint>
         <description>This is populated by sales/operations. It is the utility rate class that a specific utility account has.</description>
         <externalId>false</externalId>
-        <inlineHelpText>This is populated by sales/operations. It is the utility rate class that a specific utility account has.</inlineHelpText>
+        <inlineHelpText>This is populated by sales/operations from the utility rate class on the Utility Bill. To update the Rate Class, click &quot;Recalculate Subscription&quot; button.</inlineHelpText>
         <label>Rate Class</label>
         <referenceTo>Rate_Class__c</referenceTo>
         <relationshipLabel>Utility Account Logs</relationshipLabel>
@@ -825,7 +825,7 @@
         <availability>online</availability>
         <displayType>button</displayType>
         <linkType>javascript</linkType>
-        <masterLabel>Recalculate Subscriptions</masterLabel>
+        <masterLabel>XXRecalculate Subscriptions</masterLabel>
         <openType>onClickJavaScript</openType>
         <protected>false</protected>
         <url>window.location = &apos;/apex/RecalculateUALCost?id={!Utility_Account_Log__c.Id}&apos;;</url>

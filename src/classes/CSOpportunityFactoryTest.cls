@@ -194,7 +194,7 @@ public without sharing class CSOpportunityFactoryTest {
         availableSSS = [
             SELECT Id, Maximum_Subscription_Cost__c, Expected_Yield_kWh_kW__c,
                 Reserved_Capacity_kW_DC__c, Project_Capacity_Available_kW_DC__c, Product__c, Product__r.Sizing_Method__c,
-                Utility_NMC_Tariff__c, Maximum_Subscription_Capacity_kWDC__c, Credit_Score_Requirement__c
+                Utility_NMC_Tariff__c, Maximum_Subscription_Capacity_kWDC__c, Credit_Score_Requirement__c, Product__r.Customer_Subscription_Type__c
             FROM Shared_Solar_System__c
             WHERE Id IN : availableSSS
             ORDER BY Name
@@ -342,7 +342,8 @@ public without sharing class CSOpportunityFactoryTest {
         availableSSS = [
             SELECT Id, Maximum_Subscription_Cost__c, Expected_Yield_kWh_kW__c,
                 Reserved_Capacity_kW_DC__c, Project_Capacity_Available_kW_DC__c, Product__c, Product__r.Sizing_Method__c,
-                Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Maximum_Subscription_Capacity_kWDC__c
+                Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Maximum_Subscription_Capacity_kWDC__c,
+                Product__r.Customer_Subscription_Type__c
             FROM Shared_Solar_System__c
             WHERE Id IN : availableSSS
             ORDER BY Name
@@ -424,7 +425,6 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals('QC in Process', opp2.StageName);
     }
 
-
     @IsTest
     public static void testCanGenerateCSOpportunitiesWithZuora() {
         Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
@@ -463,7 +463,7 @@ public without sharing class CSOpportunityFactoryTest {
         availableSSS = [
             SELECT Id, Maximum_Subscription_Cost__c, Expected_Yield_kWh_kW__c, Maximum_Subscription_Capacity_kWDC__c,
                 Reserved_Capacity_kW_DC__c, Project_Capacity_Available_kW_DC__c, Product__c, Product__r.Sizing_Method__c,
-                Utility_NMC_Tariff__c, Credit_Score_Requirement__c
+                Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Product__r.Customer_Subscription_Type__c
             FROM Shared_Solar_System__c
             WHERE Id IN : availableSSS
             ORDER BY Name
