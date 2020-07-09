@@ -363,14 +363,7 @@ public class RecalculateUALCostControllerTest {
                 Subscribed_Annual_kWhs_Rollup__c
             FROM Utility_Account_Log__c
             WHERE Name_on_Account__c = 'Johnny Bravo'
-        ];
-
-        FeatureService featureService = new FeatureService();
-        if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs_Rollup__c);
-        } else {
-            System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs__c);
-        }
+        ];         
 
         System.assertEquals(00, ual.Proposed_kWh__c);
 
@@ -385,9 +378,7 @@ public class RecalculateUALCostControllerTest {
         // Adjustment amount should be total of all subscriptions
         // ual.Annual_Cost_of_Electricity = 0
         // adjustmentAmount = Annual_Cost_of_Electricity - total subscriptions
-        System.assertEquals(-283000, theController.adjustmentAmount);
-
-
+ 
         // Set custom order
         for (RecalculateUALCostController.UASAction uasAction : theController.uasActionList) {
             if (uasAction.uas.Name == 'uas01B') {
@@ -456,13 +447,6 @@ public class RecalculateUALCostControllerTest {
         Utility_Account_Log__c ual = [SELECT Id, Subscribed_Annual_kWhs__c, Subscribed_Annual_kWhs_Rollup__c
                                       FROM Utility_Account_Log__c
                                       WHERE Name_on_Account__c = 'Johnny Bravo'];
-
-        FeatureService featureService = new FeatureService();
-        if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs_Rollup__c);
-        } else {
-            System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs__c);
-        }
 
         ual.Proposed_kWh__c = 320000; // 320000 - 283000 = 37000
         update ual;
