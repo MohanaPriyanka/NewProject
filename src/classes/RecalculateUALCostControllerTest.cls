@@ -549,7 +549,6 @@ public class RecalculateUALCostControllerTest {
             System.assertEquals(expectedError, e.getMessage());
         }
 
-
         ual = [
             SELECT Id, Subscribed_Annual_kWhs__c, Subscribed_Annual_kWhs_Rollup__c,
                 (SELECT Id, Opportunity__r.Product__c
