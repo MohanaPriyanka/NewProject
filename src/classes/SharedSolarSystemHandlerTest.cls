@@ -246,6 +246,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             new Opportunity(Name = 'Alyssa Testcase1 0000234',
                 AccountId = propAcct1.Id,
                 Shared_Solar_System__c = sss1.Id,
+                Customer_Group__c = 'Residential',
                 StageName = 'Complete',
                 NMC_Tariff__c = everbillNMC.Id,
                 Product__c = normalCSProduct.Id,

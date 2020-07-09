@@ -261,7 +261,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         Integer counter = 1;
         List<Opportunity> opportunities = new List<Opportunity>();
         List<Shared_Solar_System__c> sharedSolarSystems = getSharedSolarSystems(kwhProduct.Name);
-        List<CSUtilityAccountSubscriptionFactory.UASOrder> uasOrders = new List<CSUtilityAccountSubscriptionFactory.UASOrder>();
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
             opportunities.add(new Opportunity(
                 Name = 'Opp ' + counter,
@@ -281,15 +280,11 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         );
         CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities, uow);
         List<SObject> generatedUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
+        List<SObject> generatedSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Subscription_Order__c');
         // 2 opps (max = ual size) = 2 subscriptions (one for each UAL)
         System.assertEquals(2, generatedUASes.size());
-
-        System.assertEquals(2, uasOrders.size());
-        for (Integer i = 0; i < generatedUASes.size(); i++ ) {
-            System.assertNotEquals(null, uasOrders[i].uas);
-            System.assertNotEquals(null, uasOrders[i].sOrder);
-            System.assertEquals(generatedUASes[i].Id, uasOrders[i].uas.Id);
-        }
+        System.assertEquals(2, generatedSOs.size());
+        
     }
 
     @IsTest
