@@ -45,24 +45,7 @@ public class TestBillCreationForCancelledCustomers {
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1848,
             Current_Billing_Rate__c = TRUE);
-
-        Utility_NMC_Tariff__c ngridbillNMC = new Utility_NMC_Tariff__c(
-            Name = 'National Grid WCMA Class 2 Billing Rate',
-            Utility__c = 'National Grid',
-            Class__c = 'Class 2',
-            Value_of_Net_Metering_Credit__c = 0.1848,
-            Current_Billing_Rate__c = TRUE);
-
-        Utility_NMC_Tariff__c ngridsizeNMC = new Utility_NMC_Tariff__c(
-            Name = 'National Grid WCMA Class 2 Sizing Rate',
-            Utility__c = 'National Grid',
-            Class__c = 'Class 2',
-            Value_of_Net_Metering_Credit__c = 0.1848,
-            Sizing_Rate__c = TRUE);
-
-        insert new List<Utility_NMC_Tariff__c>{
-            everbillNMC, ngridsizeNMC, ngridbillNMC
-        };
+        insert everbillNMC;
 
         Product2 normalCSProduct = new Product2(
             Name = 'BlueWave Community Solar',
@@ -297,6 +280,7 @@ public class TestBillCreationForCancelledCustomers {
             Name = '0000234',
             Utility_Account_Log__c = ualog1.Id,
             Opportunity__c = opportunity1.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 6006,
             Subscribed_Annual_Cost_of_Electricity__c = 6006
@@ -305,6 +289,7 @@ public class TestBillCreationForCancelledCustomers {
             Name = '0000235',
             Utility_Account_Log__c = ualog2.Id,
             Opportunity__c = opportunity2.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 2402.4,
             Subscribed_Annual_Cost_of_Electricity__c = 2402.4
@@ -313,6 +298,7 @@ public class TestBillCreationForCancelledCustomers {
             Name = '0000235',
             Utility_Account_Log__c = ualog2.Id,
             Opportunity__c = opportunity3.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 2642.64,
             Subscribed_Annual_Cost_of_Electricity__c = 2642.64
@@ -321,6 +307,7 @@ public class TestBillCreationForCancelledCustomers {
             Name = '0000236',
             Utility_Account_Log__c = ualog3.Id,
             Opportunity__c = opportunity4.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1201.2,
             Subscribed_Annual_Cost_of_Electricity__c = 1201.2
@@ -329,6 +316,7 @@ public class TestBillCreationForCancelledCustomers {
             Name = '0000236',
             Utility_Account_Log__c = ualog3.Id,
             Opportunity__c = opportunity5.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 4804.8,
             Subscribed_Annual_Cost_of_Electricity__c = 4804.8
@@ -337,6 +325,7 @@ public class TestBillCreationForCancelledCustomers {
             Name = '0000243',
             Utility_Account_Log__c = ualog4.Id,
             Opportunity__c = opportunity6.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 5525.53,
             Subscribed_Annual_Cost_of_Electricity__c = 5525.53

@@ -234,7 +234,7 @@ public class LeadTriggerHandlerTest {
         Opportunity opp = [
             SELECT Id, AccountId, Lead__c, Product__c, ContractId, Contract.AccountId, Contract.Contract_Type__c, 
                 Contract.Customer_Signature_Date_Time__c, Contract.Lead__c, Contract.Parent_Contract__c, Contract.Product__c,
-                (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
+            (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
             FROM Opportunity
         ];
         System.assertEquals(1, opp.dsfs__R00N80000002fD9vEAE__r.size());
@@ -808,13 +808,8 @@ public class LeadTriggerHandlerTest {
         }
     }
 
-    @IsTest static void testMultipleSubscriptionsBykWh() {
-        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Sizing_Method'=>false,'Subscription_Orders'=>true};
-        FeatureService featureServiceMock = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
-        CSSubscriptionEnroller.featureService = featureServiceMock;
-        CSOpportunityFactory.featureService = featureServiceMock;
-        CSUtilityAccountSubscriptionFactory.featureService  = featureServiceMock;
 
+    @IsTest static void testMultipleSubscriptionsBykWh() {
         System_Properties__c sysProp = new System_Properties__c(
             Name = 'System',
             DocuSign_API_Account_ID__c = '123',

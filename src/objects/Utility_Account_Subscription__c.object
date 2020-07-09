@@ -996,6 +996,7 @@ Opportunity__r.Shared_Solar_System_Name__c
         <deleteConstraint>SetNull</deleteConstraint>
         <description>Sizing Method with either NMC Value or Size Ratio to be used in calculating subscriptions</description>
         <externalId>false</externalId>
+        <inlineHelpText>Sizing Method with either NMC Value or Size Ratio to be used in calculating subscriptions. If you need to change the Sizing Method, log a new Subscription Order via button.</inlineHelpText>
         <label>Sizing Method</label>
         <referenceTo>Utility_NMC_Tariff__c</referenceTo>
         <relationshipLabel>Utility Account Subscriptions</relationshipLabel>

@@ -1519,6 +1519,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvocableSizingMethodRecalculation</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>InvocableUASRollup</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3671,6 +3675,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SharedSolarSystems</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SharedSolarSystemsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3709,6 +3717,10 @@
     <classAccesses>
         <apexClass>StaticResourceSelectorTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SubscriptionManagementService</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SubscriptionManagementServiceTest</apexClass>
@@ -44771,6 +44783,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Size_Ratio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Subscription_Order__c.System_Change_Percent_Share_of_System__c</field>
         <readable>false</readable>
@@ -46678,11 +46695,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.RNY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Log__c.Rate_Class__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

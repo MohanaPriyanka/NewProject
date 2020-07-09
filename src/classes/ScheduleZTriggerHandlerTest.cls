@@ -17,15 +17,9 @@ public class ScheduleZTriggerHandlerTest {
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1848,
+            Size_Ratio__c = 1.0,
             Sizing_Rate__c = true);
-
-        Utility_NMC_Tariff__c ngridsizeNMC = new Utility_NMC_Tariff__c (Name = 'National Grid WCMA Class 2',
-            Utility__c = 'National Grid',
-            Class__c = 'Class 2',
-            Value_of_Net_Metering_Credit__c = 0.1848,
-            Sizing_Rate__c = true);
-
-        insert new List<Utility_NMC_Tariff__c>{eversizeNMC, ngridsizeNMC};
+        insert eversizeNMC;
 
         Load_U__c everLZU = new Load_U__c (Name = '02633',
             LZ__c = 'SEMA',
@@ -209,6 +203,7 @@ public class ScheduleZTriggerHandlerTest {
             new Utility_Account_Subscription__c(Name = '0000234',
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunityone.Id,
+                Sizing_Method__c = eversizeNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 26300.5
             );
@@ -217,6 +212,7 @@ public class ScheduleZTriggerHandlerTest {
             new Utility_Account_Subscription__c(Name = '0000235',
                 Utility_Account_Log__c = ualogB.Id,
                 Opportunity__c = opportunityoneB.Id,
+                Sizing_Method__c = eversizeNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 26300.5
             );
@@ -225,6 +221,7 @@ public class ScheduleZTriggerHandlerTest {
             new Utility_Account_Subscription__c(Name = '000-0234',
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunitytwo.Id,
+                Sizing_Method__c = eversizeNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 6000);
 
@@ -233,6 +230,7 @@ public class ScheduleZTriggerHandlerTest {
             new Utility_Account_Subscription__c(Name = '0000237',
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunityone.Id,
+                Sizing_Method__c = eversizeNMC.Id,
                 Next_Schedule_Z_Status__c = 'Inactive Subscription',
                 Annual_kwh_subscription_future__c = 1300009.8
 
@@ -243,6 +241,7 @@ public class ScheduleZTriggerHandlerTest {
             new Utility_Account_Subscription__c(Name = '0000237',
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunitythree.Id,
+                Sizing_Method__c = eversizeNMC.Id,
                 Next_Schedule_Z_Status__c = 'Inactive Subscription',
                 Annual_kwh_subscription_future__c = 1300009.8
             );
@@ -361,6 +360,21 @@ public class ScheduleZTriggerHandlerTest {
             WHERE Name = 'Oxford Barrett St. P2'
             LIMIT 1
         ];
+
+        List<Subscription_Order__c> soOrders = [
+            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Shared_Solar_System__c,
+                Utility_Account_Subscription__r.Sizing_Method__c, New_Annual_kWh__c, Utility_Account_Subscription__r.Subscription_Type__c,
+                Expected_Yield_kWh_kW__c, Size_Ratio__c, Utility_NMC_Tariff__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__r.Shared_Solar_System__c = :sss2.Id
+        ];
+
+        for (Subscription_Order__c so : soOrders) {
+            System.assertNotEquals(null, so.Utility_NMC_Tariff__c);
+            System.assertNotEquals(null, so.Size_Ratio__c);
+            System.assertNotEquals(null, so.New_Annual_kWh__c);
+            System.assertNotEquals(null, so.Expected_Yield_kWh_kW__c);
+        }
 
         Test.startTest();
         // Test subscription set by Customer_Subscription_KW_DC__c (Future Subscription)

@@ -7,8 +7,6 @@
 
 
 public without sharing class CSOpportunityFactory {
-    @TestVisible
-    private static FeatureService featureService = new FeatureService();
 
     public static List<Opportunity> generateCSOpportunities(
         Lead lead,
@@ -29,7 +27,7 @@ public without sharing class CSOpportunityFactory {
                 if (remainingAccountCostToAllocate > 0) {
                     remainingAccountCostToAllocate -= annualElectricityCostAssigned;
                 }
-                Decimal annualElectricitykWhAssigned = Math.min(remainingAccountkWhToAllocate, calculateMaximumkWh(sss));
+                Decimal annualElectricitykWhAssigned = Math.min(remainingAccountkWhToAllocate, SharedSolarSystems.calculateMaximumkWh(sss, null));
                 if (remainingAccountkWhToAllocate > 0) {
                     remainingAccountkWhToAllocate -= annualElectricitykWhAssigned;
                 }
@@ -62,19 +60,6 @@ public without sharing class CSOpportunityFactory {
         }
         return oppListToCreate;
     }
-
-    //TODO: move calculateMaxkwh from both CSOpportunityFactory and CSUASFactory to SSS Domain class
-    @TestVisible
-    private static Decimal calculateMaximumkWh(Shared_Solar_System__c sss) {
-        Decimal maximumkWh;
-        if (featureService.isEnabled('Sizing_Method') && sss.Product__r.Sizing_Method__c == 'Project Ratio') {
-            maximumkWh =  (sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c)/sss.Utility_NMC_Tariff__r.Size_Ratio__c;
-        } else {
-            maximumkWh =  sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c;
-        }
-        return maximumkWh.setScale(2, RoundingMode.HALF_DOWN);
-    }
-
 
     @TestVisible
     private static Opportunity addPaymentInfoToOpp(Opportunity opp, ChargentOrders__ChargentOrder__c chOrder) {

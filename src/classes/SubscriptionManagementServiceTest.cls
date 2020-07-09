@@ -82,6 +82,7 @@ private class SubscriptionManagementServiceTest {
         System.assertEquals(1095.84, so.Total_System_Size_kW_DC__c);
         System.assertEquals(2, so.Utility_Number_of_Decimal_Places__c );
         System.assertEquals(0.1848, so.Value_of_NMC__c);
+        System.assertEquals(1.5, so.Size_Ratio__c);
         System.assertEquals(2600, so.Previous_Annual_Cost__c);
         System.assertEquals(5.1979, so.Previous_kw_DC_Subscription__c);
         System.assertEquals(0.37, so.Previous_Percent_Share_of_System__c);
@@ -227,6 +228,7 @@ private class SubscriptionManagementServiceTest {
             }
         }
     }
+
     @IsTest
     static void testSubscriptionOrdersForTestSetup() {
         useMocks(true);
@@ -300,6 +302,7 @@ private class SubscriptionManagementServiceTest {
     public class MockUASSelector extends MockProvider {
         public MockUASSelector() {
         }
+        //TODO: Need to deprecate the Opp.UtilityNMCTariff fields when Sizing Method is live
         public override Object handleMethodCall(MethodCall methodCall) {
             String uasBySSS = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d29000001C3xuAAC",' +
@@ -324,58 +327,68 @@ private class SubscriptionManagementServiceTest {
                 String uasByMap = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d29000001C3xuAAC",' +
                 '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
-                    '"Annual_Cost_Future_Rollup__c": "' + 2600 + '",' +
-                    '"Annual_kWh_Subscription_Future_Rollup__c": "' + 11000 + '",' +
-                    '"Future_Customer_Subscription_KWDC_Rollup__c": "' + 5.1979 + '",' +
-                    '"Future_Share_of_System_Rollup__c": "' + 0.37 + '",' +
+                '"Annual_Cost_Future_Rollup__c": "' + 2600 + '",' +
+                '"Annual_kWh_Subscription_Future_Rollup__c": "' + 11000 + '",' +
+                '"Future_Customer_Subscription_KWDC_Rollup__c": "' + 5.1979 + '",' +
+                '"Future_Share_of_System_Rollup__c": "' + 0.37 + '",' +
+                '"Sizing_Method__c" : "a1D29000000cScGEAU",' +
+                    '"Sizing_Method__r":{ "attributes" : {"type" : "Utility_NMC_Tariff__c","url" : "/services/data/v47.0/sobjects/Utility_NMC_Tariff__c/a1D29000000cScGEAU"},' +
+                    '"Id" : "a1D29000000cScGEAU",' +
+                    '"Value_of_NMC__c" : 0.184800, ' +
+                    '"Size_Ratio__c": 1.5},' +
                 '"Opportunity__c" : "00629000008boK7AAI",' +
-                '"Opportunity__r":{"attributes" : {"type" : "Opportunity","url" : "/services/data/v47.0/sobjects/Opportunity/00629000009SnvfAAC"},' +
-                '"Id" : "00629000008boK7AAI",' +
-                '"NMC_Tariff__c" : "a1D29000000cScGEAU",' +
-                '"NMC_Tariff__r":{ "attributes" : {"type" : "Utility_NMC_Tariff__c","url" : "/services/data/v47.0/sobjects/Utility_NMC_Tariff__c/a1D29000000cScGEAU"},' +
-                '"Id" : "a1D29000000cScGEAU",' +
-                '"Value_of_NMC__c" : 0.184800},' +
-                '"Product__c" : "01t29000003pkTBAAY"},' +
+                    '"Opportunity__r":{"attributes" : {"type" : "Opportunity","url" : "/services/data/v47.0/sobjects/Opportunity/00629000009SnvfAAC"},' +
+                    '"Id" : "00629000008boK7AAI",' +
+                    '"NMC_Tariff__c" : "a1D29000000cScGEAU",' +
+                    '"NMC_Tariff__r":{ "attributes" : {"type" : "Utility_NMC_Tariff__c","url" : "/services/data/v47.0/sobjects/Utility_NMC_Tariff__c/a1D29000000cScGEAU"},' +
+                        '"Id" : "a1D29000000cScGEAU",' +
+                        '"Value_of_NMC__c" : 0.184800},' +
+                    '"Product__c" : "01t29000003pkTBAAY"},' +
                 '"Shared_Solar_System__c" : "' + sssId + '",' +
-                '"Shared_Solar_System__r": { "attributes" : {"type" : "Shared_Solar_System__c","url" : "/services/data/v47.0/sobjects/Shared_Solar_System__c/a1J29000000tjOkEAI"},' +
-                '"Id" : "' + sssId + '",' +
-                '"Name" : "SSS Test",' +
-                '"Client_Account__c" : "0012900000WKlZoAAL",' +
-                '"Expected_Yield_kWh_kW__c" : 1300.0000,' +
-                '"Total_System_Size_kWh_DC__c" : 1095.84,' +
-                '"Utility__c" : "a1M290000013TkMEAU",' +
-                '"Utility__r": {"attributes" : {"type" : "Utility__c","url" : "/services/data/v47.0/sobjects/Utility__c/a1M290000013TkMEAU"},' +
-                '"Id" : "a1M290000013TkMEAU",' +
-                '"Number_of_Decimal_Places__c" : 2 }' +
-                '}' +
-                '}, ' +
+                    '"Shared_Solar_System__r": { "attributes" : {"type" : "Shared_Solar_System__c","url" : "/services/data/v47.0/sobjects/Shared_Solar_System__c/a1J29000000tjOkEAI"},' +
+                    '"Id" : "' + sssId + '",' +
+                    '"Name" : "SSS Test",' +
+                    '"Client_Account__c" : "0012900000WKlZoAAL",' +
+                    '"Expected_Yield_kWh_kW__c" : 1300.0000,' +
+                    '"Total_System_Size_kWh_DC__c" : 1095.84,' +
+                    '"Utility__c" : "a1M290000013TkMEAU",' +
+                        '"Utility__r": {"attributes" : {"type" : "Utility__c","url" : "/services/data/v47.0/sobjects/Utility__c/a1M290000013TkMEAU"},' +
+                            '"Id" : "a1M290000013TkMEAU",' +
+                            '"Number_of_Decimal_Places__c" : 2 }' +
+                        '}' +
+                    '}, ' +
                 '{ "attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d2900000222xuAAC",' +
                 '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
-                    '"Annual_Cost_Future_Rollup__c": "' + 2600 + '",' +
-                    '"Annual_kWh_Subscription_Future_Rollup__c": "' + 11000 + '",' +
-                    '"Future_Customer_Subscription_KWDC_Rollup__c": "' + 5.1979 + '",' +
-                    '"Future_Share_of_System_Rollup__c": "' + 0.37 + '",' +
+                '"Annual_Cost_Future_Rollup__c": "' + 2600 + '",' +
+                '"Annual_kWh_Subscription_Future_Rollup__c": "' + 11000 + '",' +
+                '"Future_Customer_Subscription_KWDC_Rollup__c": "' + 5.1979 + '",' +
+                '"Future_Share_of_System_Rollup__c": "' + 0.37 + '",' +
+                    '"Sizing_Method__c" : "a1D29000000cScGEAU",' +
+                    '"Sizing_Method__r":{ "attributes" : {"type" : "Utility_NMC_Tariff__c","url" : "/services/data/v47.0/sobjects/Utility_NMC_Tariff__c/a1D29000000cScGEAU"},' +
+                    '"Id" : "a1D29000000cScGEAU",' +
+                    '"Value_of_NMC__c" : 0.184800, ' +
+                    '"Size_Ratio__c": 1.5},' +
                 '"Opportunity__c" : "00629000008boJ7AAI",' +
-                '"Opportunity__r":{"attributes" : {"type" : "Opportunity","url" : "/services/data/v47.0/sobjects/Opportunity/00629000009SnvfAAC"},' +
-                '"Id" : "00629000008boJ7AAI",' +
-                '"NMC_Tariff__c" : "a1D29000000cScGEAU",' +
-                '"NMC_Tariff__r":{ "attributes" : {"type" : "Utility_NMC_Tariff__c","url" : "/services/data/v47.0/sobjects/Utility_NMC_Tariff__c/a1D29000000cScGEAU"},' +
-                '"Id" : "a1D29000000cScGEAU",' +
-                '"Value_of_NMC__c" : 0.184800},' +
-                '"Product__c" : "01t29000003pkTBAAY"},' +
+                    '"Opportunity__r":{"attributes" : {"type" : "Opportunity","url" : "/services/data/v47.0/sobjects/Opportunity/00629000009SnvfAAC"},' +
+                    '"Id" : "00629000008boJ7AAI",' +
+                    '"NMC_Tariff__c" : "a1D29000000cScGEAU",' +
+                        '"NMC_Tariff__r":{ "attributes" : {"type" : "Utility_NMC_Tariff__c","url" : "/services/data/v47.0/sobjects/Utility_NMC_Tariff__c/a1D29000000cScGEAU"},' +
+                            '"Id" : "a1D29000000cScGEAU",' +
+                            '"Value_of_NMC__c" : 0.184800},' +
+                    '"Product__c" : "01t29000003pkTBAAY"},' +
                 '"Shared_Solar_System__c" : "' + sssId + '",' +
-                '"Shared_Solar_System__r": { "attributes" : {"type" : "Shared_Solar_System__c","url" : "/services/data/v47.0/sobjects/Shared_Solar_System__c/a1J29000000tjOkEAI"},' +
-                '"Id" : "' + sssId + '",' +
-                '"Name" : "SSS Test",' +
-                '"Client_Account__c" : "0012900000WKlZoAAL",' +
-                '"Expected_Yield_kWh_kW__c" : 1300.0000,' +
-                '"Total_System_Size_kWh_DC__c" : 1095.84,' +
-                '"Utility__c" : "a1M290000013TkMEAU",' +
-                '"Utility__r": {"attributes" : {"type" : "Utility__c","url" : "/services/data/v47.0/sobjects/Utility__c/a1M290000013TkMEAU"},' +
-                '"Id" : "a1M290000013TkMEAU",' +
-                '"Number_of_Decimal_Places__c" : 2 }' +
-                '}' +
+                    '"Shared_Solar_System__r": { "attributes" : {"type" : "Shared_Solar_System__c","url" : "/services/data/v47.0/sobjects/Shared_Solar_System__c/a1J29000000tjOkEAI"},' +
+                    '"Id" : "' + sssId + '",' +
+                    '"Name" : "SSS Test",' +
+                    '"Client_Account__c" : "0012900000WKlZoAAL",' +
+                    '"Expected_Yield_kWh_kW__c" : 1300.0000,' +
+                    '"Total_System_Size_kWh_DC__c" : 1095.84,' +
+                    '"Utility__c" : "a1M290000013TkMEAU",' +
+                        '"Utility__r": {"attributes" : {"type" : "Utility__c","url" : "/services/data/v47.0/sobjects/Utility__c/a1M290000013TkMEAU"},' +
+                        '"Id" : "a1M290000013TkMEAU",' +
+                        '"Number_of_Decimal_Places__c" : 2 }' +
+                    '}' +
                 '}]';
             String uasByOpp =
                 '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +

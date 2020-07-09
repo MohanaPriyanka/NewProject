@@ -470,20 +470,6 @@
         </valueSet>
     </fields>
     <fields>
-        <fullName>Rate_Class__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <inlineHelpText>Rate Class entered from utility bill. Only populate for SMART and NY product subscriptions.</inlineHelpText>
-        <label>Rate Class</label>
-        <referenceTo>Utility_NMC_Tariff__c</referenceTo>
-        <relationshipLabel>Utility Account Logs (Rate Class)</relationshipLabel>
-        <relationshipName>Utility_Account_Logs1</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Same_Address__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -754,7 +740,7 @@
         <deleteConstraint>SetNull</deleteConstraint>
         <description>This is populated by sales/operations. It is the utility rate class that a specific utility account has.</description>
         <externalId>false</externalId>
-        <inlineHelpText>This is populated by sales/operations. It is the utility rate class that a specific utility account has.</inlineHelpText>
+        <inlineHelpText>This is populated by sales/operations from the utility rate class on the Utility Bill. To update the Rate Class, click &quot;Recalculate Subscription&quot; button.</inlineHelpText>
         <label>Rate Class</label>
         <referenceTo>Rate_Class__c</referenceTo>
         <relationshipLabel>Utility Account Logs</relationshipLabel>
@@ -845,7 +831,7 @@
         <availability>online</availability>
         <displayType>button</displayType>
         <linkType>javascript</linkType>
-        <masterLabel>Recalculate Subscriptions</masterLabel>
+        <masterLabel>XXRecalculate Subscriptions</masterLabel>
         <openType>onClickJavaScript</openType>
         <protected>false</protected>
         <url>window.location = &apos;/apex/RecalculateUALCost?id={!Utility_Account_Log__c.Id}&apos;;</url>

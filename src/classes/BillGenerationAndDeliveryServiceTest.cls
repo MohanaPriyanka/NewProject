@@ -367,6 +367,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Name = '0000234',
             Utility_Account_Log__c = ualog1.Id,
             Opportunity__c = opportunity1.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400
@@ -375,6 +376,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Name = '0000235',
             Utility_Account_Log__c = ualog2.Id,
             Opportunity__c = opportunity2.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400
@@ -383,6 +385,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Name = '0000236',
             Utility_Account_Log__c = ualog3.Id,
             Opportunity__c = opportunity3.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400
@@ -391,6 +394,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Name = '0000237',
             Utility_Account_Log__c = ualog4.Id,
             Opportunity__c = opportunity4.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400
@@ -399,6 +403,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Name = '0000238',
             Utility_Account_Log__c = ualog5.Id,
             Opportunity__c = opportunity5.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400
@@ -407,6 +412,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Name = '00002341',
             Utility_Account_Log__c = ualog1.Id,
             Opportunity__c = opportunity6.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400
@@ -415,6 +421,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Name = '00002351',
             Utility_Account_Log__c = ualog2.Id,
             Opportunity__c = opportunity7.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400
@@ -423,6 +430,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Name = '00002361',
             Utility_Account_Log__c = ualog3.Id,
             Opportunity__c = opportunity8.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400
@@ -431,6 +439,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Name = '0000242',
             Utility_Account_Log__c = ualog9.Id,
             Opportunity__c = opportunity9.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400
@@ -439,6 +448,7 @@ public class BillGenerationAndDeliveryServiceTest {
             Name = '0000243',
             Utility_Account_Log__c = ualog10.Id,
             Opportunity__c = opportunity10.Id,
+            Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Calculated_Annual_Cost_of_Electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400

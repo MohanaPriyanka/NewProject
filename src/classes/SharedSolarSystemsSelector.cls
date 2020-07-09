@@ -40,7 +40,7 @@ public inherited sharing class SharedSolarSystemsSelector {
             'Product__r.Name, Product__r.Customer_Subscription_Type__c, Sales_Partners__c ' +
             'FROM Shared_Solar_System__c ' +
             'WHERE Capacity_Available_to_be_Reserved__c > 0 ' +
-            'AND Open__c = true ' + 
+            'AND Open__c = true ' +
             'AND Utility__c IN : utilityIds ';
         if (loadZoneString != '') {
             query +=
@@ -79,8 +79,8 @@ public inherited sharing class SharedSolarSystemsSelector {
     public Map<String,Shared_Solar_System__c> getSSSByUniqueId(Set<String> blueWaveIds){
         Map<String,Shared_Solar_System__c> bwIdToSSSMap = new Map<String,Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : [ SELECT Id, Unique_ID__c
-                                            FROM Shared_Solar_System__c
-                                            WHERE Unique_ID__c IN : blueWaveIds]){
+        FROM Shared_Solar_System__c
+        WHERE Unique_ID__c IN : blueWaveIds]){
             bwIdToSSSMap.put(sss.Unique_ID__c, sss);
         }
         return bwIdToSSSMap;
@@ -100,9 +100,10 @@ public inherited sharing class SharedSolarSystemsSelector {
             SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
                 Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c,
                 Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
-                Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
-                Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
-                BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
+                Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Utility__r.Number_of_Decimal_Places__c,
+                Expected_Yield_kWh_kW__c, Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,
+                Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
+                BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c, Total_System_Size_kWh_DC__c
             FROM Shared_Solar_System__c
             WHERE Open__c = TRUE
             AND Capacity_Available_to_be_Reserved__c > 0

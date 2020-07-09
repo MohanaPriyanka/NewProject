@@ -15,19 +15,13 @@ public class MultipleMonthProductionUpdateTest {
 
         insert new List<Utility__c>{eversource, nationalGrid};
 
-        Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2', 
-                                                                       Utility__c = 'Eversource', 
-                                                                       Class__c = 'Class 2',
-                                                                       Value_of_Net_Metering_Credit__c = 0.1848,
-                                                                       Current_Billing_Rate__c = TRUE);
 
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2', 
                                                                        Utility__c = 'Eversource', 
                                                                        Class__c = 'Class 2',
                                                                        Value_of_Net_Metering_Credit__c = 0.1848,
                                                                        Sizing_Rate__c = TRUE);
-
-        insert new List<Utility_NMC_Tariff__c>{everbillNMC, eversizeNMC};
+        insert eversizeNMC;
         
         Load_U__c everLZU = new Load_U__c (Name = '02633', 
                                            LZ__c = 'SEMA',
@@ -94,6 +88,7 @@ public class MultipleMonthProductionUpdateTest {
                                                   Product_Type__c = 'Community Solar',
                                                   State__c = 'MA',
                                                   ProductCode = 'CS - BlueWave - 10%',
+                                                  Sizing_Method__c = 'Project Ratio',
                                                   IsActive = True,
                                                   Lender_of_Record__c = 'BlueWave', 
                                                   NMC_Discount__c = 10,
@@ -107,6 +102,7 @@ public class MultipleMonthProductionUpdateTest {
                                                   Product_Type__c = 'Community Solar',
                                                   State__c = 'MA',
                                                   ProductCode = 'CS - Bluewave - Public CS - 20%',
+                                                  Sizing_Method__c = 'Project Ratio',
                                                   IsActive = True,
                                                   Lender_of_Record__c = 'BlueWave', 
                                                   NMC_Discount__c = 20,
@@ -156,6 +152,7 @@ public class MultipleMonthProductionUpdateTest {
                                                 Utility_Account_Log__c = ualogOne.Id,
                                                 Opportunity__c = opportunityOne.Id,
                                                 Shared_Solar_System__c = sss1.Id,
+                                                Sizing_Method__c = eversizeNMC.Id,
                                                 Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Calculated_Annual_Cost_of_Electricity__c = 4804.8,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 4804.8);
@@ -165,6 +162,7 @@ public class MultipleMonthProductionUpdateTest {
                                                 Utility_Account_Log__c = ualogTwo.Id,
                                                 Opportunity__c = opportunityOne.Id,
                                                 Shared_Solar_System__c = sss1.Id,
+                                                Sizing_Method__c = eversizeNMC.Id,
                                                 Next_Schedule_Z_Status__c = 'Active Subscription',
                                                 Calculated_Annual_Cost_of_Electricity__c = 3363.36,
                                                 Subscribed_Annual_Cost_of_Electricity__c = 3363.36);
