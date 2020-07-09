@@ -18,9 +18,9 @@ public class InvocableSizingMethodRecalculation {
     @InvocableMethod(label='Change Sizing Method for Subscriptions')
     public static void recalculateSubscriptionWithSizingMethod(List<List<Utility_Account_Subscription__c>> uasList) {
         FeatureService featureService = new FeatureService();
+        SubscriptionManagementService service = new SubscriptionManagementService();
+        List<Subscription_Order__c> soList =  service.createSystemChangeSubscriptionOrders(uasList[0], null);
         if (featureService.isEnabled('Sizing_Method')) {
-            SubscriptionManagementService service = new SubscriptionManagementService();
-            List<Subscription_Order__c> soList =  service.createSystemChangeSubscriptionOrders(uasList[0], null);
             insert soList;
         }
     }
