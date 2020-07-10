@@ -40,6 +40,23 @@ public without sharing class Util {
         }
     }
 
+    public static void commitWorkWithRetry(fflib_SObjectUnitOfWork uow, Integer numberOfRetries){
+        commitWork(uow, 0, numberOfRetries);
+    }
+
+    private static void commitWork(fflib_SObjectUnitOfWork uow, Integer attemptCount, Integer numberOfRetries){
+        try {
+            attemptCount += 1;
+            uow.commitWork();
+        } catch (System.DmlException de) {
+            if (de.getMessage().contains('UNABLE_TO_LOCK_ROW') && attemptCount < numberOfRetries) {
+                commitWork(uow, attemptCount, numberOfRetries);
+            } else {
+                throw new BWException(de.getStackTraceString() + '\n' + de.getMessage());
+            }
+        }
+    }
+
     public static void updateSObjs(List<SObject> sobjs) {
         updateSObjs(sobjs, 0);
     }
