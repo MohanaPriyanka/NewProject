@@ -364,4 +364,21 @@ public with sharing class UtilTest {
         System.assertEquals('DataThree',mapOfData.get(2)[0]);
         System.assertEquals('DataFour',mapOfData.get(2)[1]);
     }
+
+    @IsTest
+    private static void testCommitWorkWithRetry() {
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(new List<SObjectType> {Account.SObjectType});
+        Account newAccount = new Account(Name = 'Test');
+        uow.registerNew(newAccount);
+        Account newAccountTwo = new Account(Name = 'Test Two');
+        uow.registerNew(newAccountTwo);
+
+        Util.commitWorkWithRetry(uow,3);
+
+        List<Account> newAccounts = [
+            SELECT Id
+            FROM Account
+        ];
+        System.assertEquals(2,newAccounts.size());
+    }
 }
