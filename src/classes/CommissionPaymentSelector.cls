@@ -5,7 +5,7 @@
 public inherited sharing class CommissionPaymentSelector {
     public List<Commission_Payment__c> getPendingCommissionPayments(Set<Id> oppIds, String type) {
         List<Commission_Payment__c> commissionPayments = [
-            SELECT Id, Opportunity__c
+            SELECT Id, Opportunity__c, Amount_Due__c, Commission_Structure__c
             FROM Commission_Payment__c
             WHERE Opportunity__c IN : oppIds
             AND Commission_Type__c = : type
