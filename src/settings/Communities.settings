@@ -16,5 +16,5 @@
     <enablePowerCustomerCaseStatus>false</enablePowerCustomerCaseStatus>
     <enableRelaxPartnerAccountFieldPref>false</enableRelaxPartnerAccountFieldPref>
     <enableUnsupportedBrowserModalPref>true</enableUnsupportedBrowserModalPref>
-    <enableUsernameUniqForOrgPref>false</enableUsernameUniqForOrgPref>
+    <enableUsernameUniqForOrgPref>true</enableUsernameUniqForOrgPref>
 </CommunitiesSettings>
