@@ -94,8 +94,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         usage.StartDateTime = firstOfTheMonth(uasb.Date__c);
         usage.EndDateTime = firstOfTheMonth(uasb.Date__c) + 1;
         usage.ProjectName_Zcustom = uasb.Shared_Solar_System__r.Name;
-        usage.Description = uasb.Shared_Solar_System__r.Utility__r.Name
-            + ' #'
+        usage.Description = '#'
             + uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
         usage.SolarSavings_Zcustom = uasb.Savings__c;
         usage.UtilityCredit_Zcustom = Util.roundValue(uasb.Net_Metering_Credits_Allocated__c, 2, 'HALF_UP');
