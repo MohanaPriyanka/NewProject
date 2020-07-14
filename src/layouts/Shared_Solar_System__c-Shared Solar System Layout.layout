@@ -182,6 +182,10 @@
                 <behavior>Edit</behavior>
                 <field>Billing_Anchors__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Customer_Assignment_Date__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
