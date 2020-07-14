@@ -7,6 +7,8 @@ public without sharing class CustomerAssignmentService {
     @TestVisible
     private static SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
     @TestVisible
+    private static OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
+    @TestVisible
     private static FeatureService featureService = new FeatureService();
 
     public void updateAssignmentAgreements(Map<Id, Opportunity> oldMap, Map<Id, Opportunity> newMap) {
@@ -73,6 +75,37 @@ public without sharing class CustomerAssignmentService {
         }
         return contractsToAssignmentAgreementMap;
     }
+
+    public void signedAssignmentAgreement(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
+        Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
+        Set<Id> contractIds = new Set<Id>();
+        for (Contract aa : newMap.values()) {
+            if (aa.RecordTypeId == aaTypeId && (aa.CompanySignedDate != null && oldMap.get(aa.Id).CompanySignedDate == null)) {
+                contractIds.add(aa.Id);
+            }
+        }
+
+        if (contractIds.size() > 0 ) {
+            List<Shared_Solar_System__c> sssList = populateFirstCustomerAssignmentDate(contractIds);
+            Util.updateSObjs(sssList);
+        }
+    }
+
+    public List<Shared_Solar_System__c> populateFirstCustomerAssignmentDate(Set<Id> contractIds) {
+        Map<Id, Date> sssFirstCustomerDateMap = opportunitiesSelector.selectFirstCustomerSignedDateByAssignmentAgreement(contractIds);
+
+        List<Shared_Solar_System__c> updateSSS = new List<Shared_Solar_System__c>();
+        for (Id sssId : sssFirstCustomerDateMap.keySet()) {
+            Shared_Solar_System__c sss = new Shared_Solar_System__c(
+                Id = sssId,
+                Customer_Assignment_Date__c = sssFirstCustomerDateMap.get(sssId)
+            );
+            updateSSS.add(sss);
+        }
+
+        return updateSSS;
+    }
+
     private List<Subscription_Order__c> getSOsToUpdateFromContracts(List<Subscription_Order__c> approvedSubscriptionOrdersByContract, Map<Id, Id> contractsToAssignmentAgreementMap) {
         List<Subscription_Order__c> sosWithUpdatedAssignmentAgreements = new List<Subscription_Order__c>();
         for (Subscription_Order__c so : approvedSubscriptionOrdersByContract) {
