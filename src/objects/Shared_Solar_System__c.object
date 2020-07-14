@@ -800,6 +800,16 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Customer_Assignment_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Customer Assignment Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Days_until_NTP__c</fullName>
         <externalId>false</externalId>
         <formula>NTP_Target_Date__c - today()</formula>
