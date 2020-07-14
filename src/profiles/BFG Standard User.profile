@@ -40996,7 +40996,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_Account_Log__c.Utility_Rate_Class__c</field>
         <readable>true</readable>
     </fieldPermissions>

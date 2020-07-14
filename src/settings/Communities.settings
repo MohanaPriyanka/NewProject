@@ -5,7 +5,7 @@
     <enableCommunityWorkspaces>true</enableCommunityWorkspaces>
     <enableCspContactVisibilityPref>false</enableCspContactVisibilityPref>
     <enableCspNotesOnAccConPref>true</enableCspNotesOnAccConPref>
-    <enableGuestRecordReassignOrgPref>false</enableGuestRecordReassignOrgPref>
+    <enableGuestRecordReassignOrgPref>true</enableGuestRecordReassignOrgPref>
     <enableGuestSecurityOptOutCruc>false</enableGuestSecurityOptOutCruc>
     <enableGuvSecurityOptOutPref>false</enableGuvSecurityOptOutPref>
     <enableInviteChatterGuestEnabled>false</enableInviteChatterGuestEnabled>
@@ -16,5 +16,5 @@
     <enablePowerCustomerCaseStatus>false</enablePowerCustomerCaseStatus>
     <enableRelaxPartnerAccountFieldPref>false</enableRelaxPartnerAccountFieldPref>
     <enableUnsupportedBrowserModalPref>true</enableUnsupportedBrowserModalPref>
-    <enableUsernameUniqForOrgPref>false</enableUsernameUniqForOrgPref>
+    <enableUsernameUniqForOrgPref>true</enableUsernameUniqForOrgPref>
 </CommunitiesSettings>
