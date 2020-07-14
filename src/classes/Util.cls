@@ -49,7 +49,7 @@ public without sharing class Util {
             attemptCount += 1;
             uow.commitWork();
         } catch (System.DmlException de) {
-            if (de.getMessage().contains('UNABLE_TO_LOCK_ROW') && attemptCount < numberOfRetries) {
+            if (de.getMessage().contains('UNABLE_TO_LOCK_ROW') && attemptCount <= numberOfRetries) {
                 commitWork(uow, attemptCount, numberOfRetries);
             } else {
                 throw new BWException(de.getStackTraceString() + '\n' + de.getMessage());
