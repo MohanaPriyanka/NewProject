@@ -6560,7 +6560,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <fullName>Reserved_System_Capacity_kW_DC2__c</fullName>
         <externalId>false</externalId>
         <label>Reserved System Capacity (kW DC)</label>
-        <length>10</length>
+        <length>11</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
