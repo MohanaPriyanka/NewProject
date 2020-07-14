@@ -213,10 +213,6 @@
                 <behavior>Edit</behavior>
                 <field>Maximum_Subscription_Capacity_kWDC__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Maximum_Subscription_kW_AC_for_DC_calc__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
