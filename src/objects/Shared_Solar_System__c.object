@@ -801,7 +801,9 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
     </fields>
     <fields>
         <fullName>Customer_Assignment_Date__c</fullName>
+        <description>Populated with the Customer Signature Date from the first Assignment Agreement signed by the Client</description>
         <externalId>false</externalId>
+        <inlineHelpText>Populated with the Customer Signature Date from the first Assignment Agreement signed by the Client</inlineHelpText>
         <label>Customer Assignment Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
