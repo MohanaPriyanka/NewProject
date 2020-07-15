@@ -10,6 +10,85 @@
     align-self: center;
     padding: 2em 3em;
 }
+
+
+/****************************/
+/*        Accordion         */
+/****************************/
+.accordion-button.rotate {
+    transform: rotate(90deg);
+}
+.accordion-button:hover {
+    transform: scale(1.2);
+}
+.accordion-button.rotate:hover {
+    transform: rotate(90deg) scale(1.2);
+}
+.accordion-button__icon.top {
+    color: #387cdf;
+    width: 1.1rem;
+    height: 1.1rem;
+}
+.accordion-button__icon {
+    color: #d3d3d3;
+    width: .65rem;
+    height: .65rem;
+}
+
+
+
+/****************************/
+/*         Buttons          */
+/****************************/
+button {
+    display: inline-block;
+    border: none;
+    border-radius: 3em;
+    outline: none;
+    padding: 1.125em 2em;
+    line-height: 1.25em;
+    transition: all .3s ease;
+    text-align: center;
+    font-family: CentraMedium, sans-serif;
+    text-decoration-color: #FFFFFF;
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.18);
+}
+button:hover, button.btn:hover, button.btn-inverse:hover {
+    background-color: #387CDF;
+    box-shadow: 0 4px 8px 0 rgba(43, 47, 57, 0.16);
+    transform: translateY(-2px);
+}
+button.btn {
+    background: #151C34;
+    color: #FFFFFF;
+}
+button.btn-inverse {
+    background-color: #FFFFFF;
+    color: #387CDF;
+}
+
+
+/****************************/
+/*         Foooter          */
+/****************************/
+.footer-container {
+    background-color: #151c34;
+    padding: 2rem;
+    width: 100%;
+}
+.faq-container {
+    color: #d3d3d3;
+    padding: .75rem 0;
+}
+
+
+
+/****************************/
+/*          Form            */
+/****************************/
 .form {
     display: flex;
     flex-wrap: wrap;
@@ -47,51 +126,15 @@
 
 
 /****************************/
-/*         Buttons          */
-/****************************/
-button {
-    display: inline-block;
-    border: none;
-    border-radius: 3em;
-    outline: none;
-    padding: 1.125em 2em;
-    line-height: 1.25em;
-    transition: all .3s ease;
-    text-align: center;
-    font-family: CentraMedium, sans-serif;
-    text-decoration-color: #FFFFFF;
-    text-decoration-line: none;
-    text-decoration-style: solid;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.18);
-}
-button:hover, button.btn:hover, button.btn-inverse:hover {
-    background-color: #387CDF;
-    box-shadow: 0 4px 8px 0 rgba(43, 47, 57, 0.16);
-    transform: translateY(-2px);
-}
-button.btn {
-    background: #151C34;
-    color: #FFFFFF;
-}
-button.btn-inverse {
-    background-color: #FFFFFF;
-    color: #387CDF;
-}
-
-
-
-/****************************/
 /*      Icon Buttons        */
 /****************************/
 div.icon-button-group-container {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    flex-flow: row wrap;
+    margin: 1.5rem -1rem;
+    padding: 0.5rem 0;
 }
 div.icon-button {
     background-color: rgb(242,242,242);
@@ -99,6 +142,7 @@ div.icon-button {
     border-radius: 1em;
     border: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 1rem;
 }
 div.icon-button:hover {
     background-color: #FFFFFF;
@@ -107,9 +151,9 @@ div.icon-button.selected {
     border: 0.2em solid #387CDF;
 }
 div.icon-container {
-    max-width: 130px;
+    max-width: 12rem;
     height: auto;
-    padding: 0.75rem;
+    padding: 0.75rem 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center; 
@@ -123,7 +167,6 @@ img.icon {
     margin-left: auto;
     margin-right: auto;
     margin-top: 0.5rem;
-    width: 80%;
     height: auto;
 }
 p.icon {

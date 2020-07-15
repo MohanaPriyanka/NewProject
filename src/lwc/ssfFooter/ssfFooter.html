@@ -3,16 +3,16 @@
 -->
 
 <template>
-    <div class="container">
+    <div class="footer-container">
         <div class="header-section">
             <div class="heading">
                 <h2>Community Solar FAQs</h2>
-                <button class={buttonIconStyle} title={assistiveText} onclick={onButtonIconClick}>
-                    <svg class="slds-button__icon ssf-button__icon" aria-hidden="true">
+                <div class={buttonIconStyle} title={assistiveText} onclick={onButtonIconClick}>
+                    <svg class="slds-button__icon accordion-button__icon top" aria-hidden="true">
                         <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
                     </svg>
                     <span class="slds-assistive-text">{assistiveText}</span>
-                </button>
+                </div>
             </div>
         </div>
         <template if:true={isExpanded}>

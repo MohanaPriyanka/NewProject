@@ -40,7 +40,7 @@ export default class SsfFooter extends LightningElement {
     }
 
     get buttonIconStyle() {
-        let style = 'slds-button slds-button_icon';
+        let style = 'slds-button slds-button_icon accordion-button';
         if (this.isExpanded) {
             style += ' rotate';
         }
