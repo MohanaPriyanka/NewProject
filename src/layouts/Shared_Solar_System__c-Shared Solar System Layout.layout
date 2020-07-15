@@ -100,6 +100,10 @@
                 <behavior>Readonly</behavior>
                 <field>Unique_ID__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Reacquisition_Start_Date__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -181,10 +185,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Billing_Anchors__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Customer_Assignment_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
