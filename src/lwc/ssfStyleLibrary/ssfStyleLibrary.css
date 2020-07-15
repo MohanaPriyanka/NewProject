@@ -132,8 +132,8 @@ div.icon-button-group-container {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    flex-flow: row wrap;
-    margin: 1.5rem -1rem;
+    margin-top: 2rem;
+    margin-bottom: 3.75rem;
     padding: 0.5rem 0;
 }
 div.icon-button {
@@ -142,7 +142,7 @@ div.icon-button {
     border-radius: 1em;
     border: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 1rem;
+    margin: 0 1rem;
 }
 div.icon-button:hover {
     background-color: #FFFFFF;
@@ -167,6 +167,7 @@ img.icon {
     margin-left: auto;
     margin-right: auto;
     margin-top: 0.5rem;
+    /* width: 80%; */
     height: auto;
 }
 p.icon {
