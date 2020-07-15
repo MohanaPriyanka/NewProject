@@ -1315,6 +1315,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CustomerAssignmentService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CustomerAssignmentServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CustomerCareHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -43405,6 +43413,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Customer_Acquisition__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Customer_Assignment_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

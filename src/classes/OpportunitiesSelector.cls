@@ -5,6 +5,8 @@
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class OpportunitiesSelector {
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
     // To be used when cancelling opportunities, so we also exclude Anchors and Public Offtake
     public static List<Opportunity> selectAllCompleteCSWithUASesAndSystemBills() {
         return [
@@ -121,6 +123,36 @@ public without sharing class OpportunitiesSelector {
         ]);
         return oppMap;
     }
+
+    public Map<Id, Date> selectFirstCustomerSignedDateByAssignmentAgreement(Set<Id> contractIds) {
+        //Contract and Assignment Agreement relationships depend on the Customer Contract Object Feature Flag
+        //FLAG OFF --> Opportunity.Assignment Agreement == contractIds
+        //FLAG ON --> Opportunity.Contract.Assignment Agreement == contractIds
+
+        List<AggregateResult> oppResults = [
+            SELECT Shared_Solar_System__r.Id sssId,
+                MIN(Assignment_Agreement__r.CustomerSignedDate) firstDateOFF,
+                MIN(Contract.Assignment_Agreement__r.CustomerSignedDate) firstDateON
+            FROM Opportunity
+            WHERE (Assignment_Agreement__c IN :contractIds
+            OR Contract.Assignment_Agreement__c IN :contractIds)
+            AND Shared_Solar_System__r.Customer_Assignment_Date__c = NULL
+            GROUP BY Shared_Solar_System__r.Id
+        ];
+
+        Map<Id, Date> firstCustomerDateMap = new Map<Id, Date>();
+        Boolean customerContractFeature = featureService.isEnabled('Customer_Contract_Object');
+        for (AggregateResult ar : oppResults) {
+            if (customerContractFeature) {
+                firstCustomerDateMap.put ((Id)ar.get('sssId'), (Date) ar.get('firstDateON'));
+            } else {
+                firstCustomerDateMap.put ((Id)ar.get('sssId'), (Date) ar.get('firstDateOFF'));
+            }
+        }
+        return firstCustomerDateMap;
+    }
+
+
 
    // Invocable methods can have at most one input parameter and its data type must be a List of primitive data types
     @InvocableMethod(Label='selectOpportunitiesForClientAssignment' Description='Gets Opp without Assignment Agreement for a list of entities')
