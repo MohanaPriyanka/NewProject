@@ -14,8 +14,8 @@
   <aura:handler event="c:ZuoraPaymentPageComplete" action="{!c.onPaymentMethodComplete}"/>
 
     <div class="slds-grid">
-        <div class="slds-col slds-size_1-of-6"></div>
-        <div class="slds-col slds-size_4-of-6">
+        <div class="slds-col slds-size_1-of-12"></div>
+        <div class="slds-col slds-size_10-of-12">
             <div class="slds-align_absolute-center slds-var-p-bottom_x-large ssf-container">
                 <c:LightningErrorHandler/>
                 <aura:if isTrue="{!v.getInfo}">
@@ -67,6 +67,6 @@
                 <c:bluewaveSpinner spinnerMessage="{!v.spinnerMessage}" show="{!v.showSpinner}"/>
             </div>
         </div>
-        <div class="slds-col slds-size_1-of-6"></div>
+        <div class="slds-col slds-size_1-of-12"></div>
     </div>
 </aura:component>

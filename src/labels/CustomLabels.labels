@@ -814,7 +814,7 @@ BlueWave has developed more than 135 MW of projects, providing community solar a
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF_WaitingRoom3_Url</shortDescription>
-        <value>www.bluewavesolar.com</value>
+        <value>https://www.bluewavesolar.com</value>
     </labels>
     <labels>
         <fullName>START_Disclosure_Income_Doc</fullName>

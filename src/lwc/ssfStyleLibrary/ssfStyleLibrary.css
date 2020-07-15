@@ -2,41 +2,137 @@
  * Created by LindsayHolmes_GearsCRM on 7/7/20.
  */
 
-button.nav-button {
-    background-color: rgb(21,28,52);
-    color: white;
-    border-radius: 2rem;
+
+.page-container {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-self: center;
+    padding: 2em 3em;
 }
-button.icon-button {
-    background-color: rgb(242,242,242);
-    color: rgb(130,130,130);
-    border-radius: 1rem;
-    border-width: 0px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    vertical-align: middle;
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
 }
-button.selected {
-    border-color: rgb(56, 125, 222);
-    border-width: 3px;
+.form-section {
+    padding: 0em 4em;
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.form-section.accordion {
+    padding: 0 3em;
+}
+.form-section-accordion {
+    padding: 0 1em;
+    width: 100%;
+}
+.input-group {
+    position: relative;
+    display: flex;
+    width: 100%
+}
+.input-group.half {
+    width: 45%;
+}
+.input-group > lightning-input, .input-group > lightning-combobox {
+    width: 100%;
 }
 
 
-.button-container {
+/****************************/
+/*         Buttons          */
+/****************************/
+button {
+    display: inline-block;
+    border: none;
+    border-radius: 3em;
+    outline: none;
+    padding: 1.125em 2em;
+    line-height: 1.25em;
+    transition: all .3s ease;
+    text-align: center;
+    font-family: CentraMedium, sans-serif;
+    text-decoration-color: #FFFFFF;
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.18);
+}
+button:hover, button.btn:hover, button.btn-inverse:hover {
+    background-color: #387CDF;
+    box-shadow: 0 4px 8px 0 rgba(43, 47, 57, 0.16);
+    transform: translateY(-2px);
+}
+button.btn {
+    background: #151C34;
+    color: #FFFFFF;
+}
+button.btn-inverse {
+    background-color: #FFFFFF;
+    color: #387CDF;
+}
+
+
+
+/****************************/
+/*      Icon Buttons        */
+/****************************/
+div.icon-button-group-container {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
-
-img.icon-button {
+div.icon-button {
+    background-color: rgb(242,242,242);
+    color: rgb(130,130,130);
+    border-radius: 1em;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+div.icon-button:hover {
+    background-color: #FFFFFF;
+}
+div.icon-button.selected {
+    border: 0.2em solid #387CDF;
+}
+div.icon-container {
+    max-width: 130px;
+    height: auto;
+    padding: 0.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+div.icon {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+img.icon {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 60%;
-}
-
-div.icon-button {
-    max-width: 130px;
+    margin-top: 0.5rem;
+    width: 80%;
     height: auto;
+}
+p.icon {
+    font-size: 0.875em;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+div.icon-button.selected > div > div > p {
+    font-weight: 600;
 }
 
 
@@ -47,6 +143,9 @@ div.icon-button {
 
 .light-text {
     color: rgb(121,121,121);
+}
+.blue-text {
+    color: #387CDF;
 }
 
 p {
@@ -75,12 +174,16 @@ h1 {
     font-family: CentraLight;
     font-size: 2em;
     line-height: 1.2em;
+    font-weight: 600;
+    display: block;
 }
 /* sub-headline */
 h2 {
     font-family: Centra;
     font-size: 1.5em;
     line-height: 1.2em;
+    color: rgb(121,121,121);
+    display: block;
 }
 
 /* section title */
@@ -99,10 +202,14 @@ h4 {
 /* small headline */
 h6 {
     font-family: CentraMedium;
-    font-size: .75em;
+    font-size: 1em;
     line-height: 1.2em;
     text-transform: uppercase;
     letter-spacing: 1px;
+    padding-top: 2em;
+    padding-bottom: 0.5em;
+    display: block;
+    width: 100%;
 }
 
 

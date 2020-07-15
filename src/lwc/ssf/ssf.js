@@ -139,24 +139,26 @@ export default class Ssf extends NavigationMixin(LightningElement) {
 
     applicationTypeOnChangeResi() {
         this.resiApplicationType = true;
+        console.log('clicked resi');
     }
     
     applicationTypeOnChangeBiz() {
         this.resiApplicationType = false;
+        console.log('clicked biz');
     }
 
     get getResiButtonStyle() {
         if(this.resiApplicationType) {
-            return 'selected icon-button slds-var-m-horizontal_medium';
+            return 'icon-button selected';
         }
-        return 'icon-button slds-var-m-horizontal_medium';
+        return 'icon-button';
     }
 
     get getBizButtonStyle() {
         if(this.resiApplicationType) {
-            return 'icon-button slds-var-m-horizontal_medium';
+            return 'icon-button';
         }
-        return 'selected icon-button slds-var-m-horizontal_medium';
+        return 'icon-button selected';
     }
 
     checkForSubmit(event) {

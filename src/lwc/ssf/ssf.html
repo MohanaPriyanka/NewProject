@@ -4,89 +4,88 @@
 
 <!-- SimpleSignupForm -->
 <template>
-    <div style="width:100%;justify-content: center;display:flex;align-self:center">
-        <div style="max-width:800px">
-            <template if:true={getZip}>
-                <div class="slds-grid slds-wrap">
-                    <div class="slds-size_1-of-1">
-                        <div class="slds-text-align_center">
-                            <h1 class="slds-var-p-around_medium">
-                                <b>Let's see if community solar is available in your area!</b>
-                            </h1>
-                            <h2 class="light-text slds-var-p-bottom_large">
-                                Enter your zip code and property type to find out!
-                            </h2>
-                            <div class="slds-align_absolute-center" onkeyup={checkForSubmit}>
-                                <div style="min-width: 40%;">
-                                    <lightning-input name="zipCodeInput"
-                                                    label="Zip Code"
-                                                    variant="label-hidden"
-                                                    value={zipCodeInput}
-                                                    onchange={genericOnChange}
-                                                    type="text"
-                                                    pattern="[0-9]{5}"
-                                                    message-when-pattern-mismatch="Please enter your 5 digit ZIP code"
-                                    ></lightning-input>
+    <div class="page-container">
+        <template if:true={getZip}>
+            <div class="slds-grid slds-wrap">
+                <div class="slds-size_1-of-1">
+                    <div class="slds-text-align_center">
+                        <h1 class="slds-var-p-around_medium">
+                            Let's see if community solar is available in your area!
+                        </h1>
+                        <h2 class="slds-var-p-bottom_large">
+                            Enter your zip code and property type to find out!
+                        </h2>
+                        <div class="slds-align_absolute-center" onkeyup={checkForSubmit}>
+                            <div style="min-width: 40%;">
+                                <lightning-input name="zipCodeInput"
+                                                label="Zip Code"
+                                                variant="label-hidden"
+                                                value={zipCodeInput}
+                                                onchange={genericOnChange}
+                                                type="text"
+                                                pattern="[0-9]{5}"
+                                                placeholder="12345"
+                                                class="input_center"
+                                                message-when-pattern-mismatch="Please enter your 5 digit ZIP code"
+                                ></lightning-input>
 
-                                    <div class="slds-var-m-vertical_large slds-var-p-vertical_x-small button-container">
-                                        <button class={getResiButtonStyle} onclick={applicationTypeOnChangeResi}>
-                                            <div class="icon-button slds-var-p-around_small">
-                                                <img src={resiIconUrl} class="icon-button slds-var-m-around_x-small">
-                                                <p class="small slds-var-m-vertical_small">My Home</p>
+                                <div class="icon-button-group-container">
+                                    <div class={getResiButtonStyle} onclick={applicationTypeOnChangeResi}>
+                                        <div class="icon-container">
+                                            <div class="icon">
+                                                <img src={resiIconUrl} class="icon">
+                                                <p class="icon">My Home</p>
                                             </div>
-                                        </button>
-                                        <button class={getBizButtonStyle} onclick={applicationTypeOnChangeBiz}>
-                                            <div class="icon-button slds-var-p-around_small">
-                                                <img src={bizIconUrl} class="icon-button slds-var-m-around_x-small">
-                                                <p class="small slds-var-m-vertical_small">A Business</p>
+                                        </div>
+                                    </div>
+                                    <div class={getBizButtonStyle} onclick={applicationTypeOnChangeBiz}>
+                                        <div class="icon-container">
+                                            <div class="icon">
+                                                <img src={bizIconUrl} class="icon">
+                                                <p class="icon">A Business</p>
                                             </div>
-                                        </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <button class="nav-button" onclick={submitZip}>
-                                <p class="thin large slds-var-m-horizontal_medium slds-var-m-vertical_small">Check Availability</p>
-                            </button>
                         </div>
+                        <button class="btn" onclick={submitZip}>Check Availability
+                        </button>
                     </div>
                 </div>
-            </template>
-            <template if:true={enterEmail}>
-                <div class="slds-grid slds-wrap slds-var-p-around_large">
-                    <div class="slds-size_1-of-1">
-                        <div class="slds-text-align_center">
-                            <h4 class="slds-var-p-bottom_medium">
-                                Please enter your email address to retrieve your application:
-                            </h4>
-                            <p>
-                                Email Address
-                            </p>
-                            <div class="slds-align_absolute-center slds-var-p-top_x-small" style="width: 70%;" onkeyup={checkForSubmit}>
-                                <lightning-input name="email"
-                                        label="Email Address"
-                                        variant="label-hidden"
-                                        value={email}
-                                        onchange={genericOnChange}
-                                        type="email"
-                                        class="slds-var-m-bottom_large">
-                                </lightning-input>
-                            </div>
-                            <lightning-button label="Resume Application" class="slds-var-m-horizontal_small" onclick={getLead}></lightning-button>
+            </div>
+        </template>
+        <template if:true={enterEmail}>
+            <div class="slds-grid slds-wrap slds-var-p-around_large">
+                <div class="slds-size_1-of-1">
+                    <div class="slds-text-align_center">
+                        <h4 class="slds-var-p-bottom_medium">
+                            Please enter your email address to retrieve your application:
+                        </h4>
+                        <p>
+                            Email Address
+                        </p>
+                        <div class="slds-align_absolute-center slds-var-p-top_x-small" style="width: 70%;" onkeyup={checkForSubmit}>
+                            <lightning-input name="email"
+                                    label="Email Address"
+                                    variant="label-hidden"
+                                    value={email}
+                                    onchange={genericOnChange}
+                                    type="email"
+                                    class="slds-var-m-bottom_large">
+                            </lightning-input>
                         </div>
+                        <button class="btn slds-var-m-horizontal_small" onclick={getLead}>Resume Application</button>
                     </div>
                 </div>
-            </template>
-            <template if:true={getBasicInfo}>
-                <div style="max-width:640px">
-                    <c-ssf-basic-info lead-json={leadJSON} utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} resi-application-type={resiApplicationType} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
-                </div>
-            </template>
-            <template if:true={getAgreements}>
-                <div style="max-width:640px">
-                    <c-ssf-agreements lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements>
-                </div>
-            </template>
-            <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
-        </div>
+            </div>
+        </template>
+        <template if:true={getBasicInfo}>
+            <c-ssf-basic-info lead-json={leadJSON} utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} resi-application-type={resiApplicationType} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
+        </template>
+        <template if:true={getAgreements}>
+            <c-ssf-agreements lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements>
+        </template>
+        <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
     </div>
 </template>
