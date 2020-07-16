@@ -2335,7 +2335,7 @@ null)</formula>
         <fullName>Utility_NMC_Tariff__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Utility NMC Tariff</label>
+        <label>Sizing Method</label>
         <referenceTo>Utility_NMC_Tariff__c</referenceTo>
         <relationshipLabel>Shared Solar Systems</relationshipLabel>
         <relationshipName>Shared_Solar_Systems</relationshipName>
@@ -3647,7 +3647,7 @@ ISBLANK(Product__c),
 ISBLANK(Utility_NMC_Tariff__c)
 )
 )</errorConditionFormula>
-        <errorMessage>Cannot change status to acquisition without populating the Product and Utility NMC Tariff (credit value)</errorMessage>
+        <errorMessage>Cannot change status to acquisition without populating the Product and Sizing Method (credit value)</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Acquisition_System_Size_Required</fullName>
@@ -3795,7 +3795,7 @@ Credit_Score_Requirement__c = 0
         <errorMessage>Can&apos;t set a SSS as Open without:
 1.) System Size and Yield
 2.) Capacity Available to Be Reserved &gt; 0 
-3.) Product and Utility NMC Tariff
+3.) Product and Sizing Method
 4.) Utility and Service Territories
 5) Maximum Subscription Cost and kW &gt; 0
 6.) Credit Score Requirement</errorMessage>
