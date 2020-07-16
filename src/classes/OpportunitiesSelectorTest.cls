@@ -150,7 +150,7 @@ public with sharing class OpportunitiesSelectorTest {
         Contract assignmentAgreement = new Contract(
             AccountId = clientAccount.Id,
             RecordTypeId = aaTypeId,
-            CustomerSignedDate = System.today().addMonths(-3)
+            CompanySignedDate = System.today().addMonths(-3)
         );
         insert assignmentAgreement;
 
@@ -190,7 +190,7 @@ public with sharing class OpportunitiesSelectorTest {
 
         Contract assignmentAgreement = new Contract(
             RecordTypeId = aaTypeId,
-            CustomerSignedDate = System.today().addMonths(-3),
+            CompanySignedDate = System.today().addMonths(-3),
             AccountId = clientAccount.Id
         );
         insert assignmentAgreement;
