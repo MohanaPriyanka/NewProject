@@ -38,7 +38,7 @@ public without sharing class PartnerCommissionService{
     public void createCommissionRecords(PendingCommission pendingCommission){
         try {
             calculateCommissionRecords(pendingCommission);
-            Util.commitWorkWithRetry(uow,3);
+            Util.commitWorkWithRetry(uow,10);
         } catch (Exception excep){
             Logger.logNow('PartnerCommissionService','createCommissionRecords', excep.getStackTraceString() + ' ' + excep.getMessage(),'ERROR');
         }
