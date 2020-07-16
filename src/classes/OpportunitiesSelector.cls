@@ -131,8 +131,8 @@ public without sharing class OpportunitiesSelector {
 
         List<AggregateResult> oppResults = [
             SELECT Shared_Solar_System__r.Id sssId,
-                MIN(Assignment_Agreement__r.CustomerSignedDate) firstDateOFF,
-                MIN(Contract.Assignment_Agreement__r.CustomerSignedDate) firstDateON
+                MIN(Assignment_Agreement__r.CompanySignedDate) firstDateOFF,
+                MIN(Contract.Assignment_Agreement__r.CompanySignedDate) firstDateON
             FROM Opportunity
             WHERE (Assignment_Agreement__c IN :contractIds
             OR Contract.Assignment_Agreement__c IN :contractIds)
