@@ -24,7 +24,6 @@ public inherited sharing class SubscriptionOrderSelector {
                 Approved_Change_in_Subscription__c,
                 Effective_Date__c,
                 Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
-                Utility_Account_Subscription__r.Opportunity__r.Underwriting_Criteria__c,
                 Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name,
                 Utility_Account_Subscription__r.Opportunity__r.Assignment_Agreement__r.CustomerSignedDate,
                 Utility_Account_Subscription__r.Shared_Solar_System__c,
