@@ -24,7 +24,9 @@ public inherited sharing class SubscriptionOrderSelector {
                 Approved_Change_in_Subscription__c,
                 Effective_Date__c,
                 Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
+                Utility_Account_Subscription__r.Opportunity__r.Underwriting_Criteria__c,
                 Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name,
+                Utility_Account_Subscription__r.Opportunity__r.Assignment_Agreement__r.CustomerSignedDate,
                 Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c,
@@ -78,5 +80,25 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Effective_Date__c >= : newReacqStartDate
             AND Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c = false
         ]);
+    }
+
+    public Map<Id,Decimal> getSubscriptionOrdersAssignedToClient(Set<Id> uasIds){
+        Map<Id,Decimal> uasIdToSumSoMap = new Map<Id,Decimal>();
+
+        List<AggregateResult> aggResults = [
+            SELECT SUM(Approved_Change_in_Subscription__c) sumApprovedKW,
+                Utility_Account_Subscription__c uasId
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c IN : uasIds
+            AND Client_Assignment_Agreement__c != null
+            AND Client_Assignment_Agreement__r.Status != 'Draft'
+            AND Client_Assignment_Agreement__r.Status != 'Rejected'
+            GROUP BY Utility_Account_Subscription__c
+        ];
+
+        for (AggregateResult aggregateResult : aggResults) {
+            uasIdToSumSoMap.put((Id)aggregateResult.get('uasId'),(Decimal)aggregateResult.get('sumApprovedKW'));
+        }
+        return uasIdToSumSoMap;
     }
 }

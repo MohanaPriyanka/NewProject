@@ -40,6 +40,16 @@ public with sharing class Logger {
         log(className, methodName, message, System.now(), ERROR);
     }
 
+    public static void logNow(String className, String methodName, Exception excep, String additionalMessage, String severity){
+        String message =  excep.getMessage() + '\n' + additionalMessage + '\n' + excep.getStackTraceString();
+        logNow(className, methodName, message, severity);
+    }
+
+    public static void logLater(String className, String methodName, Exception excep, String additionalMessage, String severity){
+        String message =  excep.getMessage() + '\n' + additionalMessage + '\n' + excep.getStackTraceString();
+        logLater(className, methodName, message, severity);
+    }
+
     public static void logLater(String className, String methodName, String message) {
         logLater(className, methodName, message, ERROR);
     }
