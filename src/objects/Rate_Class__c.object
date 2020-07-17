@@ -81,7 +81,7 @@
         <fullName>Utility_NMC_Tariff__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Utility NMC Tariff</label>
+        <label>Sizing Method</label>
         <referenceTo>Utility_NMC_Tariff__c</referenceTo>
         <relationshipLabel>Rate Classes</relationshipLabel>
         <relationshipName>Rate_Classes</relationshipName>
