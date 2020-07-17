@@ -467,6 +467,16 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Acquired_By_Client_Closed_By_BlueWave__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Populated by Client Lead form. Signifies this warm lead will be closed by BlueWave</inlineHelpText>
+        <label>Acquired By Client, Closed By BlueWave</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Address</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>

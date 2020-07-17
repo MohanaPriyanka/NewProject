@@ -9,6 +9,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         private Boolean reacquisition;
         private Boolean bcsAcquired;
         private Boolean notBCSAcquired;
+        private Boolean closedByBCS;
         private Boolean anchor;
         private Boolean publicOfftake;
         private Boolean residential;
@@ -29,6 +30,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             };
             this.recordId = subOrder.Id;
             this.contractIds = contractIds;
+            this.closedByBCS = subOrder.Utility_Account_Subscription__r.Opportunity__r.Acquired_By_Client_Closed_By_BlueWave__c;
             this.bcsAcquired = partnerType != 'Client Account';
             this.notBCSAcquired = partnerType == 'Client Account';
             this.anchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Anchor';
@@ -64,8 +66,9 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
 
         private Boolean acqChannelMatches(ContractFeeDetail feeDetail){
-            return (this.bcsAcquired && feeDetail.bcsAcquired ||
-                this.notBCSAcquired && feeDetail.notBCSAcquired
+            return (this.closedByBCS && feeDetail.closedByBCS &&
+                (this.bcsAcquired && feeDetail.bcsAcquired ||
+                this.notBCSAcquired && feeDetail.notBCSAcquired)
             );
         }
 
@@ -80,6 +83,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         private ContractFeeDetail(Contract_Fee_Detail__c feeDetail) {
             this.recordId = feeDetail.Id;
             this.contractIds = new List<Id>{feeDetail.Contract__c};
+            this.closedByBCS = feeDetail.Acquisition_Channels_Closed_by_BCS__c;
             this.bcsAcquired = feeDetail.Acquisition_Channels_BCS_Acquired__c;
             this.notBCSAcquired = feeDetail.Acquisition_Channels_Non_BCS_Acquired__c;
             this.anchor = feeDetail.Acquisition_Cust_Group_Anchor__c;
