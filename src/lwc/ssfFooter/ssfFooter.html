@@ -1,0 +1,96 @@
+<!--
+    Created by JesseFox_GearsCRM on 7/6/2020.
+-->
+
+<template>
+    <div class="footer-container">
+        <div class="header-section">
+            <div class="heading">
+                <h2>Community Solar FAQs</h2>
+                <div class={buttonIconStyle} title={assistiveText} onclick={onButtonIconClick}>
+                    <svg class="slds-button__icon accordion-button__icon top" aria-hidden="true">
+                        <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+                    </svg>
+                    <span class="slds-assistive-text">{assistiveText}</span>
+                </div>
+            </div>
+        </div>
+        <template if:true={isExpanded}>
+            <div class="slds-grid slds-var-m-top_small">
+                <div class="slds-col slds-size_1-of-2 slds-var-p-horizontal_large">
+                    <c-ssf-footer-collapsible heading={label.faq1Question}>
+                        <p>{label.faq1Answer}</p>
+                    </c-ssf-footer-collapsible>
+                    <c-ssf-footer-collapsible heading={label.faq2Question}>
+                        <p>{label.faq2Answer}</p>
+                    </c-ssf-footer-collapsible>
+                    <c-ssf-footer-collapsible heading={label.faq3Question}>
+                        <p>{label.faq3Answer}</p>
+                    </c-ssf-footer-collapsible>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-var-p-horizontal_large">
+                    <c-ssf-footer-collapsible heading={label.faq4Question}>
+                        <p>{label.faq4Answer}</p>
+                    </c-ssf-footer-collapsible>
+                    <c-ssf-footer-collapsible heading={label.faq5Question}>
+                        <p>{label.faq5Answer}</p>
+                    </c-ssf-footer-collapsible>
+                    <c-ssf-footer-collapsible heading={label.faq6Question}>
+                        <p>{label.faq6Answer}</p>
+                    </c-ssf-footer-collapsible>
+                </div>
+            </div>
+        </template>
+
+        
+        <div class="slds-var-m-top_xx-large slds-var-m-bottom_large slds-var-p-horizontal_large">
+            <img src={logoUrl} class="logo"/>
+        </div>
+
+        <div class="slds-grid footer-section">
+            <div class="slds-col slds-size_4-of-12 slds-var-p-horizontal_large">
+                <div class="address">
+                    111 Huntington Ave<br/>
+                    Suite 650<br/>
+                    Boston, MA 02199
+                </div>
+                <div class="social-links slds-var-m-top_medium">
+                    <a href="https://www.linkedin.com/company/bluewavesolar/" target="_blank">
+                        <img src="https://bluewavesolar.com/resources/img/icons/linkedin.min.svg">
+                    </a>
+                    <a href="https://twitter.com/bluewavesolar" class="slds-var-m-horizontal_small" target="_blank">
+                        <img src="https://bluewavesolar.com/resources/img/icons/twitter.min.svg">
+                    </a>
+                    <a href="https://www.facebook.com/BlueWaveSolar/" target="_blank">
+                        <img src="https://bluewavesolar.com/resources/img/icons/facebook.min.svg">
+                    </a>
+                </div> 
+            </div>
+            <div class="slds-col slds-size_4-of-12 slds-var-p-horizontal_large">
+                <h5>Contact the Bluewave Support Team</h5>
+                    Email: <a class="plain-link" href="mailto:learnmore@bluewavesolar.com" target="_blank">learnmore@bluewavesolar.com</a><br/>
+                    Call: <a class="plain-link" href="tel:+16176814119">(617) 681-4119</a><br/>
+                    Hours: 9am&ndash;5pm Eastern M&ndash;F
+            </div>
+            <div class="slds-col slds-size_4-of-12 slds-var-p-horizontal_large">
+                <h5>
+                    <a class="plain-link" href="https://bluewavesolar.com/bw-resources/solar-101" target="_blank">Check out our Resource Center</a>&nbsp;
+                    <span class="slds-icon_container slds-icon-utility-chevronright">
+                        <svg class="slds-icon slds-icon-text-default link-icon" aria-hidden="true">
+                            <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+                        </svg>
+                    </span>
+                </h5>
+                <br/>
+                <h5>
+                    <a class="plain-link" href="https://bluewavesolar.com" target="_blank">Learn more about BlueWave</a>&nbsp;
+                    <span class="slds-icon_container slds-icon-utility-chevronright">
+                        <svg class="slds-icon slds-icon-text-default link-icon" aria-hidden="true">
+                            <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+                        </svg>
+                    </span>
+                </h5>
+            </div>
+        </div>
+    </div>
+</template>

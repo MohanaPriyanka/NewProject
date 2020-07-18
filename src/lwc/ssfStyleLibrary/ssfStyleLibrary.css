@@ -1,0 +1,324 @@
+/**
+ * Created by LindsayHolmes_GearsCRM on 7/7/20.
+ */
+
+
+.page-container {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-self: center;
+    padding: 2em 3em;
+}
+
+
+/****************************/
+/*        Accordion         */
+/****************************/
+.accordion-button.rotate {
+    transform: rotate(90deg);
+}
+.accordion-button:hover {
+    transform: scale(1.2);
+}
+.accordion-button.rotate:hover {
+    transform: rotate(90deg) scale(1.2);
+}
+.accordion-button__icon.top {
+    color: #387cdf;
+    width: 1.1rem;
+    height: 1.1rem;
+}
+.accordion-button__icon {
+    color: #d3d3d3;
+    width: .65rem;
+    height: .65rem;
+}
+
+
+
+/****************************/
+/*         Buttons          */
+/****************************/
+button {
+    display: inline-block;
+    border: none;
+    border-radius: 3em;
+    outline: none;
+    padding: 1.125em 2em;
+    line-height: 1.25em;
+    transition: all .3s ease;
+    text-align: center;
+    font-family: CentraMedium, sans-serif;
+    text-decoration-color: #FFFFFF;
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.18);
+}
+button:hover, button.btn:hover, button.btn-inverse:hover {
+    background-color: #387CDF;
+    box-shadow: 0 4px 8px 0 rgba(43, 47, 57, 0.16);
+    transform: translateY(-2px);
+}
+button.btn {
+    background: #151C34;
+    color: #FFFFFF;
+}
+button.btn-inverse {
+    background-color: #FFFFFF;
+    color: #387CDF;
+}
+
+
+/****************************/
+/*         Foooter          */
+/****************************/
+.footer-container {
+    background-color: #151c34;
+    padding: 2rem;
+    width: 100%;
+}
+.faq-container {
+    color: #d3d3d3;
+    padding: .75rem 0;
+}
+
+
+
+/****************************/
+/*          Form            */
+/****************************/
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+}
+.form-section {
+    padding: 0em 4em;
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.form-section.accordion {
+    padding: 0 3em;
+}
+.form-section-accordion {
+    padding: 0 1em;
+    width: 100%;
+}
+.input-group {
+    position: relative;
+    display: flex;
+    width: 100%
+}
+.input-group.half {
+    width: 45%;
+}
+.input-group > lightning-input, .input-group > lightning-combobox {
+    width: 100%;
+}
+
+
+/****************************/
+/*      Icon Buttons        */
+/****************************/
+div.icon-button-group-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    margin-bottom: 3.75rem;
+    padding: 0.5rem 0;
+}
+div.icon-button {
+    background-color: rgb(242,242,242);
+    color: rgb(130,130,130);
+    border-radius: 1em;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 0 1rem;
+}
+div.icon-button:hover {
+    background-color: #FFFFFF;
+}
+div.icon-button.selected {
+    border: 0.2em solid #387CDF;
+}
+div.icon-container {
+    max-width: 12rem;
+    height: auto;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+div.icon {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+img.icon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+    /* width: 80%; */
+    height: auto;
+}
+p.icon {
+    font-size: 0.875em;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+div.icon-button.selected > div > div > p {
+    font-weight: 600;
+}
+
+
+
+/****************************/
+/*          Text            */
+/****************************/
+
+.light-text {
+    color: rgb(121,121,121);
+}
+.blue-text {
+    color: #387CDF;
+}
+
+p {
+    font-family: Centra;
+    font-size: 1em;
+    line-height: 1.5em;
+}
+p.thin {
+    font-family: CentraLight;
+}
+p.x_large {
+    font-size: 1.5em;
+}
+p.large {
+    font-size: 1.125em;
+}
+p.small {
+    font-size: .875em;
+}
+p.x_small {
+    font-size: .75em;
+}
+
+/* headline */
+h1 {
+    font-family: CentraLight;
+    font-size: 2em;
+    line-height: 1.2em;
+    font-weight: 600;
+    display: block;
+}
+/* sub-headline */
+h2 {
+    font-family: Centra;
+    font-size: 1.5em;
+    line-height: 1.2em;
+    color: rgb(121,121,121);
+    display: block;
+}
+
+/* section title */
+h3 {
+    font-family: CentraLight;
+    font-size: 1.75em;
+    line-height: 1.25em;
+}
+
+h4 {
+    font-family: CentraLight;
+    font-size: 1.125em;
+    font-weight: bold;
+}
+
+/* small headline */
+h6 {
+    font-family: CentraMedium;
+    font-size: 1em;
+    line-height: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-top: 2em;
+    padding-bottom: 0.5em;
+    display: block;
+    width: 100%;
+}
+
+
+
+/****************************/
+/*      Font Imports        */
+/****************************/
+@font-face {
+    font-family: 'Centra';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.eot') format('eot');
+}
+
+@font-face {
+    font-family: 'Centra';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.eot') format('eot');
+    font-weight: bold;
+}
+    
+@font-face {
+    font-family: 'Centra';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.eot') format('eot');
+    font-style: italic;
+}
+    
+@font-face {
+    font-family: 'Centra';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.eot') format('eot');
+    font-weight: bold;
+    font-style: italic;
+}
+    
+@font-face {
+    font-family: 'CentraLight';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.eot') format('eot');
+}
+    
+@font-face {
+    font-family: 'CentraLight';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.eot') format('eot');
+    font-style: italic;
+}
+    
+@font-face {
+    font-family: 'CentraMedium';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.eot') format('eot');
+}
+    
+@font-face {
+    font-family: 'CentraMedium';
+    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.woff') format('woff'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.woff2') format('woff2'),
+         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.eot') format('eot');
+    font-style: italic;
+}

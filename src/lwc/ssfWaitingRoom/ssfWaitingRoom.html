@@ -1,0 +1,22 @@
+<!--
+    Created by LindsayHolmes_GearsCRM on 7/6/2020.
+-->
+
+<template>
+    <div class="slds-var-p-vertical_large slds-grid_align-center">
+        <div class="slds-var-m-bottom_x-large slds-align_absolute-center slds-size_1-of-1">
+            <img src={loadingGifUrl} alt="Loading" class="loading">
+        </div>
+        <div class="slds-var-m-bottom_large slds-text-align_center slds-size_1-of-1">
+            <h4>Awesome!</h4>
+            <h4>We are now spinning up your subscription agreements.</h4>
+            <h4>This may take a minute or two.</h4>
+        </div>
+        <div class="slds-var-m-bottom_large slds-text-align_center slds-size_1-of-1">
+            <h4>In the meantime, here are some fun facts about the benefits of Community Solar!</h4>
+        </div>
+        <div class="slds-align_absolute-center" style="max-width: 500px;">
+            <c-ssf-carousel items={items} interval-seconds={intervalSeconds}></c-ssf-carousel>
+        </div>
+    </div>
+</template>

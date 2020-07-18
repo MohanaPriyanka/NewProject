@@ -1,0 +1,19 @@
+/**
+ * Created by LindsayHolmes_GearsCRM on 7/6/2020.
+ */
+
+@import 'c/ssfStyleLibrary';
+
+.slds-carousel__panel.panel-hide{
+    display: none;
+}
+
+.slds-carousel__panel img{
+    max-height: 60vh !important;
+}
+
+img.loading {
+    margin: auto;
+    max-width: 85px;
+    height: auto;
+}
