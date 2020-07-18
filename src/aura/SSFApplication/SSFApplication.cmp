@@ -19,7 +19,7 @@
             <div class="slds-align_absolute-center slds-var-p-bottom_x-large ssf-container">
                 <c:LightningErrorHandler/>
                 <aura:if isTrue="{!v.getInfo}">
-                    <c:ssf onconsentscomplete="{!c.handleConsents}" onallcomplete="{!c.showComplete}"/>
+                    <!-- <c:ssf onconsentscomplete="{!c.handleConsents}" onallcomplete="{!c.showComplete}"/> -->
                 </aura:if>
                 <aura:if isTrue="{!v.getPayment}">
                     <div>
