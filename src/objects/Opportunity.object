@@ -1109,20 +1109,6 @@ false
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Average_Debt_to_Income_After__c</fullName>
-        <externalId>false</externalId>
-        <formula>0</formula>
-        <inlineHelpText>Average of Applicant and Co-Applicant DTI</inlineHelpText>
-        <label>XX Average Debt to Income (After)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Average_Debt_to_Income_Before__c</fullName>
         <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
@@ -2941,15 +2927,6 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Disbursal_Due_Contract_del__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(and( text(StageName) = &quot;Complete&quot; ,TODAY()&gt;= Anticipated_Disbursal_Date_Contract_del__c , ISBLANK( Disbursal_1_Contract_Signature_Checkbox__c )) ,TRUE,FALSE)</formula>
-        <label>XXXDisbursal Due (Contract)</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Disbursal_Due_Mechanical_Completion__c</fullName>
         <externalId>false</externalId>
         <formula>if(and( text(StageName) = &quot;Complete&quot; ,TODAY()&gt;= Anticipated_Disbursal_Date_Mechanical__c , ISBLANK(  Disbursal_2_Mechanical_Install_Checkbox__c  )) ,TRUE,FALSE)</formula>
@@ -4430,18 +4407,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>License_Number__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXLicense Number</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Link_to_Interconnection_Form__c</fullName>
@@ -6332,16 +6297,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Ready_for_Disbursal_Intercon__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>XXXReady for Disbursal (Intercon.)</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Ready_to_Reserve_MCEC_Funds__c</fullName>

@@ -21614,11 +21614,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Average_Debt_to_Income_After__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Average_Debt_to_Income_Before__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -22189,11 +22184,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Disbursal_Due_Contract_del__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Disbursal_Due_Mechanical_Completion__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -22600,11 +22590,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Level_of_Interest__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.License_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23155,11 +23140,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.RL_Underwriting_Start_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Ready_for_Disbursal_Intercon__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
