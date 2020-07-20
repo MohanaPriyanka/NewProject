@@ -8284,29 +8284,7 @@ DOER_Solar_Loan__c ==TRUE,(( Monthly_Payment__c *   Product__r.Loan_Term__c )+( 
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>FICO</fullName>
-                    <default>true</default>
-                    <label>FICO</label>
-                </value>
-                <value>
-                    <fullName>Investment-Grade</fullName>
-                    <default>false</default>
-                    <label>Investment-Grade</label>
-                </value>
-                <value>
-                    <fullName>Financial Review</fullName>
-                    <default>false</default>
-                    <label>Financial Review</label>
-                </value>
-                <value>
-                    <fullName>Past Payment History</fullName>
-                    <default>false</default>
-                    <label>Past Payment History</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>Underwriting_Criteria</valueSetName>
         </valueSet>
     </fields>
     <fields>
