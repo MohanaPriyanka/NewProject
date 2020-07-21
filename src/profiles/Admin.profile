@@ -8915,6 +8915,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Acquisition_Channels_Closed_by_BCS__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract_Fee_Detail__c.Acquisition_Channels_Non_BCS_Acquired__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -12731,6 +12736,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Account_created_past_24_hours__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Acquired_By_Client_Closed_By_BlueWave__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -24250,6 +24260,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Acquired_By_Client_Closed_By_BlueWave__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.Added_Expenditures__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -25076,11 +25091,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Disbursal_Due_Contract__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Disbursal_Due_Contract_del__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -49723,6 +49733,18 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Residential%29</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
+        <recordType>Lead.BFG_Community_Solar</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
+        <recordType>Lead.Lead</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
+        <recordType>Lead.Utility_Duke_Energy</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - DOER Solar Loan %28Co-Applicant%29</layout>
