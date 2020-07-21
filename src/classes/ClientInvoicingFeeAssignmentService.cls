@@ -69,8 +69,8 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
 
         private Boolean acqChannelMatches(ContractFeeDetail feeDetail){
-            return (this.closedByBCS && feeDetail.closedByBCS &&
-                (this.bcsAcquired && feeDetail.bcsAcquired ||
+            return (this.closedByBCS == feeDetail.closedByBCS &&
+                    (this.bcsAcquired && feeDetail.bcsAcquired ||
                 this.notBCSAcquired && feeDetail.notBCSAcquired)
             );
         }
@@ -171,7 +171,6 @@ public without sharing class ClientInvoicingFeeAssignmentService {
                     matchCount += 1;
                 }
             }
-
             if (matchCount == 1){
                 uow.registerDirty(orderToUpdate);
             } else if (matchCount == 0){
