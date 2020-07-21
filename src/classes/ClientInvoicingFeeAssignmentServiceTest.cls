@@ -128,7 +128,6 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         useMocks();
         List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
         System.assertEquals(14, ordersToRun.size());
-        System.debug('Orders to run 3rd closed by bw: ' + ordersToRun[2].Id  + ordersToRun[2].Utility_Account_Subscription__r.Opportunity__r.Acquired_By_Client_Closed_By_BlueWave__c);
 
         ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService();
         service.setSubscriptionOrderAcquisitionFee(ordersToRun);
