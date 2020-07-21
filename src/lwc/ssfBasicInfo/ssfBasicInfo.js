@@ -4,7 +4,7 @@
 
 import {LightningElement, track, api, wire} from 'lwc';
 import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
-import { getUSStateOptions } from 'c/util';
+import { getUSStateOptionsFull } from 'c/util';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import {makeRequest} from 'c/httpRequestService';
 
@@ -80,7 +80,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         
         // if certain property values didn't come in from the api, find their values
         if (!this.stateOptions) {
-            this.stateOptions = getUSStateOptions();
+            this.stateOptions = getUSStateOptionsFull();
         }
         if (!this.utilityOptions) {
             this.utilityOptions = [];
@@ -140,6 +140,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     homeAddressToggle(event) {
         this.sameHomeAddress = event.target.checked;
+
     }
 
     addAnotherUtilityAccount() {

@@ -1,0 +1,40 @@
+<!--
+    Created by LindsayHolmes_GearsCRM on 7/6/2020.
+-->
+
+<template>
+    <div class="slds-carousel">
+        <div class="slds-carousel__stage">
+            <div class="slds-carousel__panels" style="transform:translateX(-0%)">
+                <template if:true={components}>
+                    <template for:each={components} for:item="component">
+                        <div id={component.contentId} class={component.contentClass} role="tabpanel"
+                            aria-hidden={component.hidden} key={component.contentId}>
+                                <a href={component.href} class="no-border slds-carousel__panel-action slds-text-link_reset"
+                                    tabindex={component.tabindex}>
+                                    <template if:true={component.image}>
+                                        <div class="slds-carousel__image">
+                                            <img src={component.image} alt={component.alt}/>
+                                        </div>
+                                    </template>
+                                    <template if:false={component.image}>
+                                        <div if:true={component.icon} class="slds-grid">
+                                            <div class="slds-size_1-of-5">
+                                                <img src={component.icon} alt={component.alt} class="carousel-content_icon"/>
+                                            </div>
+                                            <div class="slds-size_4-of-5 carousel-content_text">
+                                                <p class="carousel-content_text">{component.text}</p>    
+                                            </div>
+                                        </div>
+                                        <div if:false={component.icon}>
+                                            <p class="carousel-content_text">{component.text}</p>
+                                        </div>
+                                    </template>
+                                </a>
+                        </div>
+                    </template>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>
