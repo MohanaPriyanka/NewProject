@@ -309,6 +309,10 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Underwriting_Criteria__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Business_Title__c</field>
             </layoutItems>
             <layoutItems>
