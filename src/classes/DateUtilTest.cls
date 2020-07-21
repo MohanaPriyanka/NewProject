@@ -35,4 +35,18 @@ public with sharing class DateUtilTest {
         System.assertEquals(newer, DateUtil.max(newer,null));
         System.assertEquals(newer, DateUtil.max(newer,newer));
     }
+
+    @IsTest
+    private static void testBetween() {
+        Date older = Date.newInstance(2017,02,03);
+        Date middle = Date.newInstance(2017,03,23);
+        Date newer = Date.newInstance(2017,04,23);
+        System.assert(DateUtil.between(older, middle, newer));
+        System.assert(!DateUtil.between(middle, older, newer));
+        System.assert(!DateUtil.between(older, newer, middle));
+        middle = Date.newInstance(2017,04,23);
+        System.assert(DateUtil.between(older, middle, newer), 'Same date is considered to be between');
+        System.assert(!DateUtil.between(middle, older, newer));
+        System.assert(DateUtil.between(older, newer, middle), 'Same date is considered to be between');
+    }
 }

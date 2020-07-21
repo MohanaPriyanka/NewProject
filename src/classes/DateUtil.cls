@@ -34,4 +34,8 @@ public with sharing class DateUtil {
             return null;
         }
     }
+
+    public static Boolean between(Date startDate, Date dateToCheck, Date endDate) {
+        return dateToCheck >= startDate && dateToCheck <= endDate;
+    }
 }

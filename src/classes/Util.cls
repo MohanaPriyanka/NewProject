@@ -423,6 +423,16 @@ public without sharing class Util {
     private static String getFakeId(Schema.SObjectType type) {
         return type.getDescribe().getKeyPrefix() + '0'.repeat(12);
     }
+    @TestVisible
+    private static String incrementFakeId(String id) {
+        Integer lastChar = id.charAt(id.length()-1);
+        String key = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        Integer index = key.indexOfChar(lastChar);
+        if (index == key.length()-1) {
+            throw new BWException('Can only increment 62 times... improve incrementFakeId before using it more than that');
+        }
+        return id.substring(0,id.length()-1) + key.substring(index+1, index+2);
+    }
 
     public static Boolean isSandboxOrTest() {
         Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];

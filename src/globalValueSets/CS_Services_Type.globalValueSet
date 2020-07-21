@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Acquisition &amp; Management</fullName>
+        <default>false</default>
+        <label>Acquisition &amp; Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Management Only</fullName>
+        <default>false</default>
+        <label>Management Only</label>
+    </customValue>
+    <customValue>
+        <fullName>Acquisition Only</fullName>
+        <default>false</default>
+        <label>Acquisition Only</label>
+    </customValue>
+    <masterLabel>CS Services Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
