@@ -71,7 +71,7 @@ public with sharing class LeadDispatcher {
         if (result.websiteLeads.size() > 0 ) {
             BatchLeadsDuplicateService leadsDuplicateService = new BatchLeadsDuplicateService();
             leadsDuplicateService.leads = result.websiteLeads;
-            Database.executeBatch(leadsDuplicateService, 10);
+            Database.executeBatch(leadsDuplicateService, 150);
         }
     }
 

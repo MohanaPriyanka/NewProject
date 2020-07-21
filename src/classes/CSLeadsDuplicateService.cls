@@ -11,7 +11,7 @@ public without sharing class CSLeadsDuplicateService{
 
     @TestVisible private LeadSelector leadSelector = new LeadSelector();
     @TestVisible private DuplicateHelper duplicateHelper = new DuplicateHelper();
-    @TestVisible private Lead masterLead;
+    @TestVisible private Lead mainLead;
 
     public Lead checkLeadDuplicates(Lead newLead) {
         Map<Id, Lead> duplicateMap = new Map<Id, Lead>();
@@ -31,13 +31,13 @@ public without sharing class CSLeadsDuplicateService{
 
         Savepoint sp = Database.setSavepoint();
         try {
-            mapDataToMasterLead(newLead);
+            mapDataToMainLead(newLead);
             mergeDuplicateLeads(duplicateLeads);
-            masterLead = leadSelector.selectOne(masterLead.Id);
-            return masterLead;
+            mainLead = leadSelector.selectOne(mainLead.Id);
+            return mainLead;
         } catch (Exception e) {
             Logger.logNow('CSLeadsDuplicateService', 'checkLeadDuplicates',
-                    'Failed to merge duplicate leads for lead: ' + masterLead.Id + '; ' + e.getMessage() + '\n'
+                    'Failed to merge duplicate leads for lead: ' + mainLead.Id + '; ' + e.getMessage() + '\n'
                             + e.getStackTraceString());
             Database.rollback(sp);
             return newLead;
@@ -48,7 +48,7 @@ public without sharing class CSLeadsDuplicateService{
         Map<Id, Lead> duplicateLeads = new Map<Id, Lead>();
 
         List<Datacloud.FindDuplicatesResult> results = duplicateHelper.findDuplicatesResults(new List<Lead>{lead});
-
+        
         //Loop through DuplicateResults if there is more than one active rule
         for (Datacloud.DuplicateResult dr : results[0].getDuplicateResults()) {
             if ((dr.duplicateRule == 'Lead_Duplicate_Rule' || dr.duplicateRule == 'Lead_Duplicate_Rule_DTC') && dr.matchResults.size() > 0 && dr.getMatchResults()[0].matchRecords.size() >  0 ) {
@@ -73,7 +73,7 @@ public without sharing class CSLeadsDuplicateService{
         //Get ordered list of duplicate leads to find Oldest for Master Lead to preserve timeline and chatter
         List<Lead> duplicateList = new List<Lead>();
         duplicateList = leadSelector.selectForMerge(duplicateMap.keySet());
-        masterLead = duplicateList[0];
+        mainLead = duplicateList[0];
 
         //Add the "new" Lead to front of map so that it is one of the 2 leads grabbed for merge below to have most up-to-date data
         //Remove the master lead from the duplicate list so that it is not merged with itself (currently at index = 1 because moved by newLead)
@@ -82,7 +82,7 @@ public without sharing class CSLeadsDuplicateService{
 
         if (duplicateList.size() > 2) {
             Logger.logNow('CSLeadDuplicateService', 'mergeDuplicateAPILeads',
-                    'CSLeadDuplicateService found more than 2 matching Leads for ' + masterLead.Id + '; ' +
+                    'CSLeadDuplicateService found more than 2 matching Leads for ' + mainLead.Id + '; ' +
                             'We are automatically merging the first two records - Check out the master lead for more duplicates.');
         }
 
@@ -95,14 +95,14 @@ public without sharing class CSLeadsDuplicateService{
         return duplicateList;
     }
 
-    public void mapDataToMasterLead(Lead newLead) {
+    public void mapDataToMainLead(Lead newLead) {
         for (String field : leadSelector.apiLeadFields) {
-            if (masterLead.get(field) != newLead.get(field) && newLead.get(field) != null) {
-                masterLead.put(field, newLead.get(field));
+            if (mainLead.get(field) != newLead.get(field) && newLead.get(field) != null) {
+                mainLead.put(field, newLead.get(field));
             }
         }
 
-        Util.updateSObjs(new List<Lead>{masterLead});
+        Util.updateSObjs(new List<Lead>{mainLead});
     }
 
     public void mergeDuplicateLeads(List<Lead> duplicateLeads) {
@@ -110,17 +110,17 @@ public without sharing class CSLeadsDuplicateService{
             return;
         }
 
-        Database.MergeResult[] mergeResults = duplicateHelper.mergeRecords(masterLead, duplicateLeads, false);
+        Database.MergeResult[] mergeResults = duplicateHelper.mergeRecords(mainLead, duplicateLeads, false);
 
         for (Database.MergeResult res : mergeResults) {
             if (res.isSuccess()) {
-                System.assertEquals(masterLead.Id, res.getId());
+                System.assertEquals(mainLead.Id, res.getId());
                 Logger.logNow('CSLeadDuplicateService', 'mergeDuplicateAPILeads',
                         'Successfully merged leads into master lead: ' + res.getId() + '; Records were reparented to master lead: ' +
                                 res.getUpdatedRelatedIds(), 'INFO' );
             } else {
                 Logger.logNow('CSLeadDuplicateService', 'mergeDuplicateAPILeads',
-                        'Failed to merge duplicate leads into master lead: ' + masterLead.Id + '; ' + '\n' + res.getErrors());
+                        'Failed to merge duplicate leads into master lead: ' + mainLead.Id + '; ' + '\n' + res.getErrors());
             }
         }
     }

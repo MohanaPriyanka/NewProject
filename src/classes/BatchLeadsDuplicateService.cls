@@ -14,9 +14,7 @@ public with sharing class BatchLeadsDuplicateService implements Database.Batchab
 
     public void execute(Database.BatchableContext bc, List<Lead> leadList) {
         for (Lead l : leadList) {
-            if (l.LeadSource == 'Website') {
-                l = service.checkLeadDuplicates(l);
-            }
+            l = service.checkLeadDuplicates(l);
         }
     }
     public void finish(Database.BatchableContext bc) {
