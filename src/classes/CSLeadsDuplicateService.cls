@@ -1,10 +1,13 @@
 /**
  * Created by SarahRenfro on 2/20/2020.
  *
+ * Batchable used for mass import of Leads (no response needed)
+ * API requires immediate response for Lead after merge
+ *
  * Tested By: CSLeadDuplicateServiceTest
  */
 
-public without sharing class CSLeadsDuplicateService {
+public without sharing class CSLeadsDuplicateService{
 
     @TestVisible private LeadSelector leadSelector = new LeadSelector();
     @TestVisible private DuplicateHelper duplicateHelper = new DuplicateHelper();
@@ -29,13 +32,13 @@ public without sharing class CSLeadsDuplicateService {
         Savepoint sp = Database.setSavepoint();
         try {
             mapDataToMasterLead(newLead);
-            mergeDuplicateAPILeads(duplicateLeads);
+            mergeDuplicateLeads(duplicateLeads);
             masterLead = leadSelector.selectOne(masterLead.Id);
             return masterLead;
         } catch (Exception e) {
             Logger.logNow('CSLeadsDuplicateService', 'checkLeadDuplicates',
-                'Failed to merge duplicate leads for lead: ' + masterLead.Id + '; ' + e.getMessage() + '\n'
-                + e.getStackTraceString());
+                    'Failed to merge duplicate leads for lead: ' + masterLead.Id + '; ' + e.getMessage() + '\n'
+                            + e.getStackTraceString());
             Database.rollback(sp);
             return newLead;
         }
@@ -48,14 +51,12 @@ public without sharing class CSLeadsDuplicateService {
 
         //Loop through DuplicateResults if there is more than one active rule
         for (Datacloud.DuplicateResult dr : results[0].getDuplicateResults()) {
-            if (dr.duplicateRule == 'Lead_Duplicate_Rule' && dr.matchResults.size() > 0 && dr.getMatchResults()[0].matchRecords.size() >  0 ) {
+            if ((dr.duplicateRule == 'Lead_Duplicate_Rule' || dr.duplicateRule == 'Lead_Duplicate_Rule_DTC') && dr.matchResults.size() > 0 && dr.getMatchResults()[0].matchRecords.size() >  0 ) {
                 duplicateLeads.putAll(getMatchLeadRecords(dr.matchResults));
             }
         }
-
         return duplicateLeads;
     }
-
     private Map<Id, Lead> getMatchLeadRecords(List<Datacloud.MatchResult> matchResults) {
         Map<Id, Lead> duplicateMap = new Map<Id, Lead>();
         List<Datacloud.MatchRecord> matchRecords = matchResults[0].getMatchRecords();
@@ -69,21 +70,20 @@ public without sharing class CSLeadsDuplicateService {
     }
 
     public List<Lead> createOrderedDuplicateLeadList(Map<Id, Lead> duplicateMap, Lead newLead) {
-
         //Get ordered list of duplicate leads to find Oldest for Master Lead to preserve timeline and chatter
         List<Lead> duplicateList = new List<Lead>();
         duplicateList = leadSelector.selectForMerge(duplicateMap.keySet());
         masterLead = duplicateList[0];
 
-        //Add the API Lead to front of map so that it is one of the 2 leads grabbed for merge below to have most up-to-date data
+        //Add the "new" Lead to front of map so that it is one of the 2 leads grabbed for merge below to have most up-to-date data
         //Remove the master lead from the duplicate list so that it is not merged with itself (currently at index = 1 because moved by newLead)
         duplicateList.add(0, newLead);
         duplicateList.remove(1);
 
         if (duplicateList.size() > 2) {
             Logger.logNow('CSLeadDuplicateService', 'mergeDuplicateAPILeads',
-                'CSLeadDuplicateService found more than 2 matching Leads for ' + masterLead.Id + '; ' +
-                    'We are automatically merging the first two records - Check out the master lead for more duplicates.');
+                    'CSLeadDuplicateService found more than 2 matching Leads for ' + masterLead.Id + '; ' +
+                            'We are automatically merging the first two records - Check out the master lead for more duplicates.');
         }
 
 
@@ -105,7 +105,7 @@ public without sharing class CSLeadsDuplicateService {
         Util.updateSObjs(new List<Lead>{masterLead});
     }
 
-    public void mergeDuplicateAPILeads(List<Lead> duplicateLeads) {
+    public void mergeDuplicateLeads(List<Lead> duplicateLeads) {
         if (duplicateLeads.isEmpty()) {
             return;
         }
@@ -116,11 +116,11 @@ public without sharing class CSLeadsDuplicateService {
             if (res.isSuccess()) {
                 System.assertEquals(masterLead.Id, res.getId());
                 Logger.logNow('CSLeadDuplicateService', 'mergeDuplicateAPILeads',
-                    'Successfully merged leads into master lead: ' + res.getId() + '; Records were reparented to master lead: ' +
-                        res.getUpdatedRelatedIds(), 'INFO' );
+                        'Successfully merged leads into master lead: ' + res.getId() + '; Records were reparented to master lead: ' +
+                                res.getUpdatedRelatedIds(), 'INFO' );
             } else {
                 Logger.logNow('CSLeadDuplicateService', 'mergeDuplicateAPILeads',
-                    'Failed to merge duplicate leads into master lead: ' + masterLead.Id + '; ' + '\n' + res.getErrors());
+                        'Failed to merge duplicate leads into master lead: ' + masterLead.Id + '; ' + '\n' + res.getErrors());
             }
         }
     }
