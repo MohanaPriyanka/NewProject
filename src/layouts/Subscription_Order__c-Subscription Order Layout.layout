@@ -103,6 +103,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Size_Ratio__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Value_of_NMC__c</field>
             </layoutItems>
             <layoutItems>
