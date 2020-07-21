@@ -1,7 +1,7 @@
 /**
  * Created by SarahRenfro on 2/20/2020.
  *
- * Batchable used for mass import of Leads (no response needed)
+ * BatchLeadsDuplicateService used for mass import of Leads (no response needed)
  * API requires immediate response for Lead after merge
  *
  * Tested By: CSLeadDuplicateServiceTest
