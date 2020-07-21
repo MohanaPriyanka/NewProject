@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>Contract Effective Date</fullName>
+        <fullName>Contract: Effective Date</fullName>
         <default>false</default>
-        <label>Contract Effective Date</label>
+        <label>Contract: Effective Date</label>
     </customValue>
     <customValue>
-        <fullName>PTO</fullName>
+        <fullName>Project: PTO</fullName>
         <default>false</default>
-        <label>PTO</label>
+        <label>Project: PTO</label>
     </customValue>
     <customValue>
-        <fullName>COD</fullName>
+        <fullName>Project: COD</fullName>
         <default>false</default>
-        <label>COD</label>
+        <label>Project: COD</label>
     </customValue>
     <customValue>
-        <fullName>First Customer Assignment Date</fullName>
+        <fullName>Project: First Customer Assignment Date</fullName>
         <default>false</default>
-        <label>First Customer Assignment Date</label>
+        <label>Project: First Customer Assignment Date</label>
     </customValue>
     <customValue>
-        <fullName>First Customer Bill Date</fullName>
+        <fullName>Project: First Customer Bill Date</fullName>
         <default>false</default>
-        <label>First Customer Bill Date</label>
+        <label>Project: First Customer Bill Date</label>
     </customValue>
     <customValue>
         <fullName>Fee not Charged</fullName>
         <default>false</default>
         <label>Fee not Charged</label>
+    </customValue>
+    <customValue>
+        <fullName>Customer: Assignment Date</fullName>
+        <default>false</default>
+        <label>Customer: Assignment Date</label>
     </customValue>
     <masterLabel>Client Invoicing Events</masterLabel>
     <sorted>false</sorted>

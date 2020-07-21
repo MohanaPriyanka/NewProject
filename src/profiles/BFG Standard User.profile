@@ -1079,6 +1079,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ClientInvoicingFeeAssignmentService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientInvoicingFeeAssignmentServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ClientReportObjectSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1152,6 +1160,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CreateUALController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CustomerAssignmentService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CustomerAssignmentServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -16586,6 +16602,21 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Acq_Anchor_Qualif_Investment_Grade__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Acq_Anchor_Qualif_Not_Investment_Grade__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Acquisition_Channels_Closed_by_BCS__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Daily_Production_Update__c.Date__c</field>
         <readable>true</readable>
@@ -19968,6 +19999,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Account_created_past_24_hours__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Acquired_By_Client_Closed_By_BlueWave__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31456,6 +31492,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Acquired_By_Client_Closed_By_BlueWave__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Added_Expenditures__c</field>
         <readable>true</readable>
@@ -31659,11 +31700,6 @@
         <editable>true</editable>
         <field>Opportunity.Available_System_Capacity_kW_DC__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Average_Debt_to_Income_After__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -32782,11 +32818,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.License_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Link_to_Interconnection_Form__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -33387,11 +33418,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Ready_for_Disbursal_Intercon__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Ready_for_Disbursal__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -33873,6 +33899,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Undersubscribed_but_at_max_capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Underwriting_Criteria__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37858,6 +37889,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Customer_Acquisition__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Customer_Assignment_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -56431,6 +56467,18 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Residential%29</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
+        <recordType>Lead.BFG_Community_Solar</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
+        <recordType>Lead.Lead</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
+        <recordType>Lead.Utility_Duke_Energy</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - DOER Solar Loan %28Co-Applicant%29</layout>

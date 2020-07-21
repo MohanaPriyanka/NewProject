@@ -217,7 +217,8 @@ false
     <fields>
         <fullName>Committed_Utilization_Remediation__c</fullName>
         <externalId>false</externalId>
-        <label>Committed Utilization Remediation</label>
+        <inlineHelpText>Details, formula, exceptions methodology for calculating fees.</inlineHelpText>
+        <label>Utilization Adjustment Methodology</label>
         <length>32768</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -227,7 +228,8 @@ false
     <fields>
         <fullName>Committed_Utilization__c</fullName>
         <externalId>false</externalId>
-        <label>Committed Utilization</label>
+        <inlineHelpText>Percentage below which the adjustment mechanism would be triggered; if above, no adjustment necessary.</inlineHelpText>
+        <label>Utilization Adjustment Trigger Percent</label>
         <precision>5</precision>
         <required>false</required>
         <scale>2</scale>

@@ -27,6 +27,12 @@ public with sharing class CustomerAssignmentServiceTest {
         '"800000000000009":{"Id":"800000000000009","Assignment_Agreement__c":"800000000000003AAA"},' + // changed AA
         '"800000000000000":{"Id":"800000000000000"}' + // removed AA
         '}';
+    private static String signedAssignmentAgreementNewMap = '{' +
+        '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","CompanySignedDate":"2020-03-19"}' + //signed
+        '}';
+    private static String signedAssignmentAgreementOldMap = '{' +
+        '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","CompanySignedDate": ' + null + '}' + //not signed
+        '}';
 
     @IsTest
     private static void testFindOppsWithUpdatedAgreements() {
@@ -85,6 +91,20 @@ public with sharing class CustomerAssignmentServiceTest {
             System.assertNotEquals('800000000000008', contractId, 'This contract should not have a changed assignment agreement');
         }
     }
+    @IsTest
+    private static void testSignedAssignmentAgreement() {
+        Map<Id, Contract> oldContractMap = (Map<Id, Contract>) JSON.deserialize(signedAssignmentAgreementOldMap, Map<Id, Contract>.class);
+        Map<Id, Contract> newContractMap = (Map<Id, Contract>) JSON.deserialize(signedAssignmentAgreementNewMap, Map<Id, Contract>.class);
+        Util.mockDML = true;
+        CustomerAssignmentService.opportunitiesSelector =
+            (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
+
+        CustomerAssignmentService service = new CustomerAssignmentService();
+        service.signedAssignmentAgreement(oldContractMap, newContractMap);
+
+        List<Shared_Solar_System__c> sssToUpdate = (List<Shared_Solar_System__c>) Util.objectsUpdatedIfMockingDML;
+        System.assertEquals(2, sssToUpdate.size());
+    }
 
     @IsTest
     private static void testUpdateAssignmentAgreementsFromContract() {
@@ -115,6 +135,21 @@ public with sharing class CustomerAssignmentServiceTest {
                     System.assert(false, 'Did not expect SO ' + so.Id + ' to be updated');
                 }
             }
+        }
+    }
+
+    public class MockOppSelector extends MockProvider {
+        public MockOppSelector () {
+        }
+        public override Object handleMethodCall(MethodCall methodCall) {
+            String queryData = '{"a1J3F000000vM0EUAU":"2020-01-01", "a1J3F000000vM0AUAU":"2020-02-02"}';
+            Map<Id, Date> sssFirstCustomerDateMap = (Map<Id, Date>) JSON.deserialize(queryData, Map<Id, Date>.class);
+            switch on methodCall.stubbedMethodName {
+                when 'selectFirstCustomerSignedDateByAssignmentAgreement' {
+                    return sssFirstCustomerDateMap;
+                }
+            }
+            return null;
         }
     }
 

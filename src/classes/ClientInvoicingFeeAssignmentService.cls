@@ -4,11 +4,14 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     @TestVisible
     private static SubscriptionOrderSelector subscripOrderSelector = new SubscriptionOrderSelector();
 
+    private MultiMap contractToFeeDetailMap;
+
     private virtual class FeeQualification {
         private Boolean acquisition;
         private Boolean reacquisition;
         private Boolean bcsAcquired;
         private Boolean notBCSAcquired;
+        private Boolean closedByBCS;
         private Boolean anchor;
         private Boolean publicOfftake;
         private Boolean residential;
@@ -17,6 +20,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         private Boolean upsizing;
         private List<Id> contractIds;
         private Id recordId;
+        private Decimal amount;
     }
 
     private class SubscriptionOrder extends FeeQualification {
@@ -29,6 +33,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             };
             this.recordId = subOrder.Id;
             this.contractIds = contractIds;
+            this.closedByBCS = subOrder.Utility_Account_Subscription__r.Opportunity__r.Acquired_By_Client_Closed_By_BlueWave__c;
             this.bcsAcquired = partnerType != 'Client Account';
             this.notBCSAcquired = partnerType == 'Client Account';
             this.anchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Anchor';
@@ -64,8 +69,9 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
 
         private Boolean acqChannelMatches(ContractFeeDetail feeDetail){
-            return (this.bcsAcquired && feeDetail.bcsAcquired ||
-                this.notBCSAcquired && feeDetail.notBCSAcquired
+            return (this.closedByBCS == feeDetail.closedByBCS &&
+                    (this.bcsAcquired && feeDetail.bcsAcquired ||
+                this.notBCSAcquired && feeDetail.notBCSAcquired)
             );
         }
 
@@ -80,6 +86,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         private ContractFeeDetail(Contract_Fee_Detail__c feeDetail) {
             this.recordId = feeDetail.Id;
             this.contractIds = new List<Id>{feeDetail.Contract__c};
+            this.closedByBCS = feeDetail.Acquisition_Channels_Closed_by_BCS__c;
             this.bcsAcquired = feeDetail.Acquisition_Channels_BCS_Acquired__c;
             this.notBCSAcquired = feeDetail.Acquisition_Channels_Non_BCS_Acquired__c;
             this.anchor = feeDetail.Acquisition_Cust_Group_Anchor__c;
@@ -90,6 +97,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.upsizing = feeDetail.Acquisition_Sizing_Type_Upsizing__c;
             this.acquisition = feeDetail.Acquisition_Type_Acquisition__c;
             this.reacquisition = feeDetail.Acquisition_Type_Reacquisition__c;
+            this.amount = feeDetail.Fee__c;
         }
     }
 
@@ -106,18 +114,22 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     }
 
     public void setSubOrderContractFeeDetail(Set<Id> subscriptionOrderIds){
-        List<Subscription_Order__c> queriedSOs = subscripOrderSelector.selectByIds(subscriptionOrderIds);
-        setSubscriptionOrderAcquisitionFee(queriedSOs);
-        uow.commitWork();
-        Logger.flushLogs();
+        try {
+            List<Subscription_Order__c> queriedSOs = subscripOrderSelector.selectByIds(subscriptionOrderIds);
+            setSubscriptionOrderAcquisitionFee(queriedSOs);
+            uow.commitWork();
+            Logger.flushLogs();
 
-        uow = new fflib_SObjectUnitOfWork(new List<SObjectType> {Client_Invoicing_Memo__c.SObjectType});
+            uow = new fflib_SObjectUnitOfWork(new List<SObjectType> {Client_Invoicing_Memo__c.SObjectType});
 
-        List<Subscription_Order__c> ordersAfterFeesAreSet = subscripOrderSelector.selectByIds(subscriptionOrderIds);
-        ClientInvoicingFeeWaiveService waiveService = new ClientInvoicingFeeWaiveService();
-        waiveService.waiveFeesIfNecessary(ordersAfterFeesAreSet, uow);
-        uow.commitWork();
-        Logger.flushLogs();
+            List<Subscription_Order__c> ordersAfterFeesAreSet = subscripOrderSelector.selectByIds(subscriptionOrderIds);
+            ClientInvoicingFeeWaiveService waiveService = new ClientInvoicingFeeWaiveService(this);
+            waiveService.waiveFeesIfNecessary(ordersAfterFeesAreSet, uow);
+            uow.commitWork();
+            Logger.flushLogs();
+        } catch (Exception excep){
+            Logger.logNow('ClientInvoicingFeeAssignmentService', 'setSubOrderContractFeeDetail', excep, JSON.serialize(subscriptionOrderIds), 'ERROR');
+        }
     }
 
     public void setSubscriptionOrderAcquisitionFee(List<Subscription_Order__c> subOrders){
@@ -134,7 +146,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
 
         List<Contract_Fee_Detail__c> feeDetailList = contractFeeDetailSelector.getContractDetailFromContract(contractIds);
-        MultiMap contractToFeeDetailMap = convertContractFeeListToFeeDetailMap(feeDetailList);
+        contractToFeeDetailMap = convertContractFeeListToFeeDetailMap(feeDetailList);
         matchSubscriptionOrderToFee(subOrdersAsFeeQualifications,contractToFeeDetailMap);
     }
 
@@ -159,7 +171,6 @@ public without sharing class ClientInvoicingFeeAssignmentService {
                     matchCount += 1;
                 }
             }
-
             if (matchCount == 1){
                 uow.registerDirty(orderToUpdate);
             } else if (matchCount == 0){
@@ -195,5 +206,34 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             Logger.logLater('ClientInvoicingFeeAssignmentService', 'hasRequiredFields', JSON.serialize(subOrder), 'INFO');
             return false;
         }
+    }
+
+    public Decimal getCancellationFee(Subscription_Order__c order){
+        // Returns the upsizing reacquisition fee is relevant for this customer type
+        // (ie, the fee at which a customer will be replaced)
+        SubscriptionOrder subOrder = new SubscriptionOrder(order);
+        subOrder.upsizing = true;
+        subOrder.downsizing = false;
+        subOrder.acquisition = false;
+        subOrder.reacquisition = true;
+
+        Set<Object> contractDetails = new Set<Object>();
+        // Max 2 contracts per Subscription Order (1 Acq, 1 Mgmt)
+        for (Id contractId : subOrder.contractIds){
+            contractDetails.addAll(contractToFeeDetailMap.getValues(contractId));
+        }
+
+        for (Object feeDetailObj : contractDetails){
+            ContractFeeDetail feeDetail = (ContractFeeDetail)feeDetailObj;
+            if (subOrder.matches(feeDetail)) {
+                return feeDetail.amount;
+            }
+        }
+        Logger.logNow(
+            'ClientInvoicingFeeAssignmentService',
+            'getCancellationRate',
+            'Sub Order: ' + JSON.serialize(order) + ' and contract fee details: ' + JSON.serialize(contractDetails)
+        );
+        throw new Util.BWException('Could not get cancellation rate for Sub Order: ' + JSON.serialize(order));
     }
 }

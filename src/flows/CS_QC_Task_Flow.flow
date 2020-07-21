@@ -235,6 +235,13 @@
                 <elementReference>sovOpportunity.Partner_tag_lookup__c</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>0120a000000uhu2AAA</stringValue>
+            </value>
+        </filters>
         <object>Account</object>
         <outputReference>sov_PartnerAccount</outputReference>
         <queriedFields>Id</queriedFields>

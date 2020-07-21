@@ -15,10 +15,12 @@ public with sharing class LoggerTest {
         Logger.logNow('Class', 'Method', 'Debug', Logger.DEBUG);
         Logger.logNow('Class', 'Method', 'Info', Logger.INFO);
         Logger.logNow('Class', 'Method', 'Fine', Logger.FINE);
+        Exception excep = new Util.BWException('Test Exception');
+        Logger.logNow('Class', 'Method', excep, 'AdditionalMessage Error','ERROR');
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
-        System.assertEquals(6, errorLogs.size());
+        System.assertEquals(7, errorLogs.size());
         for (Error_Log__c errorLog : errorLogs) {
-            System.assertEquals(errorLog.Severity__c, errorLog.Message__c);
+            System.assert(errorLog.Message__c.contains(errorLog.Severity__c));
         }
     }
 
@@ -41,13 +43,16 @@ public with sharing class LoggerTest {
         Logger.logLater('Class3', 'Method1', 'Info', Logger.INFO);
         // Error log 6
         Logger.logLater('Class3', 'Method', 'Fine', Logger.FINE);
+        // Error log 7
+        Exception excep = new Util.BWException('Test Exception');
+        Logger.logLater('Class4', 'Method', excep, 'AdditionalMessage Error','ERROR');
 
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size());
 
         Logger.flushLogs();
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
-        System.assertEquals(6, errorLogs.size());
+        System.assertEquals(7, errorLogs.size());
         for (Error_Log__c errorLog : errorLogs) {
             if (errorLog.Severity__c == Logger.DEBUG) {
                 System.assertEquals('Warn', errorLog.Message__c);

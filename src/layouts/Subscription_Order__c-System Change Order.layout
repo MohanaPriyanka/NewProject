@@ -43,10 +43,6 @@
                 <behavior>Edit</behavior>
                 <field>Comments__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Client_Assignment_Agreement__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -168,6 +164,10 @@
                 <behavior>Edit</behavior>
                 <field>Allocation_Schedule_Subscription__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Client_Assignment_Agreement__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -219,6 +219,10 @@
             <quickActionName>FeedItem.TextPost</quickActionName>
         </quickActionListItems>
     </quickActionList>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Client_Invoicing_Memo__c.Subscription_Order__c</relatedList>
+    </relatedLists>
     <relatedLists>
         <relatedList>RelatedEntityHistoryList</relatedList>
     </relatedLists>

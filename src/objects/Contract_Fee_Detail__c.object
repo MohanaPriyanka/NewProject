@@ -154,11 +154,41 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
+        <fullName>Acq_Anchor_Qualif_Investment_Grade__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>When checked, this fee will only be valid for anchors that are Investment Grade</inlineHelpText>
+        <label>Acq Anchor Qualif: Investment-Grade</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Acq_Anchor_Qualif_Not_Investment_Grade__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>When checked, this fee will valid for anchors that are not Investment Grade (ie, Financial Review)</inlineHelpText>
+        <label>Acq Anchor Qualif: Not Investment-Grade</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Acquisition_Channels_BCS_Acquired__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <inlineHelpText>True if this fee is valid for customers acquired by BCS</inlineHelpText>
         <label>Acquisition Channels: BCS Acquired</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Acquisition_Channels_Closed_by_BCS__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>When lead is acquired by Client but Closed by BlueWave</inlineHelpText>
+        <label>Acquisition Channels: Closed by BCS</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>

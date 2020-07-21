@@ -4,14 +4,14 @@
 
 <!-- Simple Signup Form Agreements -->
 <template>
-    <div class="slds-p-around--medium slds-text-align--center slds-text-heading--large">
+    <div class="slds-var-p-around_medium slds-text-align_center slds-text-heading_large">
       Agree
     </div>
-  <h1 class="slds-text-align--center"><b>The subscriber must complete this page themselves.</b></h1>
-  <div class="slds-m-around--small">
-    Click to view your community solar agreements:
+  <h4 class="slds-text-align_center"><b>The subscriber must complete this page themselves.</b></h4>
+  <div class="slds-var-m-around_small">
+    <p class="small">Click to view your community solar agreements:</p>
   </div>
-  <div class="slds-m-around--medium">
+  <div class="slds-var-m-around_medium">
     <template iterator:it={contractDocuments}>
       <p key={it.value.id}>
           <a key={it.value.id} href="javascript:void(0);">
@@ -34,24 +34,24 @@
     </div>
   </template>
 
-  <div class="slds-m-around--small">
-    Click the checkboxes below to sign your agreements:
+  <div class="slds-var-m-around_small">
+    <p class="small">Click the checkboxes below to sign your agreements:</p>
   </div>
-  <div style="background-color:#f3f3f3" class="slds-p-around--small">
+  <div style="background-color:#f3f3f3" class="slds-var-p-around_small">
     <template if:true={showDisclosures}>
-      <p class="slds-m-around--small">
+      <p class="slds-var-m-around_small">
         <lightning-input name="disclosures" type="checkbox" checked={disclosures} label="Check to Consent to Electronic Disclosures" onchange={disclosureChecked}></lightning-input>
       </p>
-      <p class="slds-m-around--small">
+      <p class="small slds-var-m-around_small">
         By checking this box, entering my email address in the Email field below, and clicking the "Continue" button, I acknowledge that I have reviewed and agree to the BlueWave <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.my.salesforce.com/sfc/p/j0000001q7GO/a/0a000000MkFk/pvivOEszT68vNzlruWfakqXulDdStUlPcwN5oAm70aA">ESIGN Consent Disclosure</a></b> and consent to receive electronic disclosures. The device I will use to receive and access electronic disclosures meets the hardware and software requirements described in the ESIGN Consent Disclosure.
       </p>
 
     </template>
     <template if:true={showCreditCheck}>
-      <p class="slds-m-around--small">
+      <p class="small slds-var-m-around_small">
         <lightning-input name="creditCheck" checked={creditCheck} type="checkbox" label="Check to Authorize Credit and Utility Billing Review" onchange={creditCheckChecked}></lightning-input>
       </p>
-      <p class="slds-m-around--small">
+      <p class="small slds-var-m-around_small">
         By checking this box, and clicking the “Continue” button, I am providing my electronic signature and signing an electronic record that is my written authorization giving BlueWave permission to perform a soft pull of a consumer report showing my credit history (which will NOT impact my credit score) and to access my electric utility billing history. I am also giving BlueWave my permission to use my credit history and my electric utility billing history to process my application and for any other lawful purpose
         <template if:true={moreCreditCheck}>
           <span>. I understand that BlueWave may share my consumer report with third parties that participate in the transaction contemplated by my application (including but not limited to the owner or developer of the community solar project) and/or any party that intends to use the information as a potential investor, servicer or insurer in connection with a valuation of or an assessment or the risks associated with any agreement I enter into with BlueWave pursuant to my application. I understand that if I ask BlueWave whether it checked my credit, BlueWave will tell me, and if it did, provide the name and address of the consumer reporting agency that provided the information.</span>
@@ -63,10 +63,10 @@
       </p>
     </template>
     <template if:true={showCSAgreement}>
-      <p class="slds-m-around--small">
+      <p class="small slds-var-m-around_small">
         <lightning-input name="csAgreement" checked={csAgreement} type="checkbox" label="Check to Sign Community Solar Agreement and CS Disclosure" onchange={csAgreementChecked}></lightning-input>
       </p>
-      <p class="slds-m-around--small">
+      <p class="small slds-var-m-around_small">
         By checking this box, entering my email address in the Email field below, and clicking the "Continue" button, I acknowledge that I have reviewed and agree to the <b><a href="javascript:void(0);"><span style="color:blue" data-id={csAgreementDocumentId} onclick={filePreview}>Community Solar Agreement</span></a></b> and <b><a href="javascript:void(0);"><span style="color:blue" data-id={disclosureDocumentId} onclick={filePreview}>Solar Disclosure Form</span></a></b> as well as BlueWave's <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b>. I understand that by doing so, I am providing my electronic signature and signing the agreements linked above as electronic records, signature is subject to the additional terms and conditions described here
         <template if:true={moreCSAgreement}>
           <span>. I am also granting BlueWave permission to contact me via the phone number provided on this application. I also acknowledge that this is an application only and consummation of this transaction does not occur upon the placement of my electronic signature on this contract; rather consummation occurs (meaning that there is an executed agreement between BlueWave and me) after BlueWave verifies my eligibility, approves the document that I have electronically signed, and returns the contract to me with its countersignature.</span>
@@ -79,32 +79,33 @@
     </template>
 
     <div class="slds-grid slds-wrap">
-      <div class="slds-size--1-of-3">
+      <div class="slds-size_1-of-3">
       </div>
-      <div class="slds-size--1-of-3">
+      <div class="slds-size_1-of-3">
         <div class="slds-grid slds-wrap">
-          <div class="slds-size--1-of-3 slds-align--absolute-center" onclick={showDisclosureApproval}>
+          <div class="slds-size_1-of-3 slds-align_absolute-center" onclick={showDisclosureApproval}>
             <lightning-icon icon-name={disclosureIcon} alternative-text="Preview" size="x-small"></lightning-icon>
           </div>
-          <div class="slds-size--1-of-3 slds-align--absolute-center" onclick={showCreditCheckApproval}>
+          <div class="slds-size_1-of-3 slds-align_absolute-center" onclick={showCreditCheckApproval}>
             <lightning-icon icon-name={creditCheckIcon} alternative-text="Preview" size="x-small"></lightning-icon>
           </div>
-          <div class="slds-size--1-of-3 slds-align--absolute-center" onclick={showCSAgreementApproval}>
+          <div class="slds-size_1-of-3 slds-align_absolute-center" onclick={showCSAgreementApproval}>
             <lightning-icon icon-name={csAgreementIcon} alternative-text="Preview" size="x-small"></lightning-icon>
           </div>
         </div>
       </div>
-      <div class="slds-size--1-of-3">
+      <div class="slds-size_1-of-3">
       </div>
     </div>
   </div>
 
-  <p class="slds-m-around--small" onkeyup={checkForSubmit}>
+  <p class="slds-var-m-around_small" onkeyup={checkForSubmit}>
     <lightning-input data-id="consentEmail" name="consentEmail" value={consentEmail} type="email" label="Confirm Email to Sign:" onchange={genericOnChange}></lightning-input>
   </p>
-  <p class="slds-m-around--small">
-    <lightning-button label="Continue" onclick={continueAgreement}></lightning-button>
-  </p>
+  
+  <div class="slds-size_1-of-1">
+    <button class="btn slds-var-m-around_small slds-float_right" onclick={continueAgreement}>Continue</button>
+  </div>
 
   <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
 </template>
