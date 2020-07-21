@@ -8899,6 +8899,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Acq_Anchor_Qualif_Investment_Grade__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Acq_Anchor_Qualif_Not_Investment_Grade__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contract_Fee_Detail__c.Acquisition_Channels_BCS_Acquired__c</field>
         <readable>true</readable>
@@ -26641,6 +26651,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Undersubscribed_but_at_max_capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Underwriting_Criteria__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

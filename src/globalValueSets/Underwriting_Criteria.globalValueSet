@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>FICO</fullName>
+        <default>true</default>
+        <label>FICO</label>
+    </customValue>
+    <customValue>
+        <fullName>Investment-Grade</fullName>
+        <default>false</default>
+        <label>Investment-Grade</label>
+    </customValue>
+    <customValue>
+        <fullName>Financial Review</fullName>
+        <default>false</default>
+        <label>Financial Review</label>
+    </customValue>
+    <customValue>
+        <fullName>Past Payment History</fullName>
+        <default>false</default>
+        <label>Past Payment History</label>
+    </customValue>
+    <masterLabel>Underwriting Criteria</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
