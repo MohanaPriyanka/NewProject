@@ -22,8 +22,8 @@ private class CSLeadsDuplicateServiceTest {
         List<Lead> orderedLeads = service.createOrderedDuplicateLeadList(duplicateMap, newLead);
 
         System.assertEquals(2, orderedLeads.size());
-        System.assertNotEquals(null, service.masterLead);
-        System.assertEquals('001000000000111EEA', service.masterLead.Id);
+        System.assertNotEquals(null, service.mainLead);
+        System.assertEquals('001000000000111EEA', service.mainLead.Id);
         System.assertEquals(newLead.Id, orderedLeads[0].Id);
     }
 
@@ -40,8 +40,8 @@ private class CSLeadsDuplicateServiceTest {
         List<Lead> orderedLeads = service.createOrderedDuplicateLeadList(duplicateMap, newLead);
 
         System.assertEquals(2, orderedLeads.size());
-        System.assertNotEquals(null, service.masterLead);
-        System.assertEquals('001000000000111EEA', service.masterLead.Id);
+        System.assertNotEquals(null, service.mainLead);
+        System.assertEquals('001000000000111EEA', service.mainLead.Id);
         System.assertEquals(newLead.Id, orderedLeads[0].Id);
 
         Error_Log__c logError = [
@@ -91,7 +91,7 @@ private class CSLeadsDuplicateServiceTest {
     @IsTest
     static void testCheckLeadDuplicates() {
 
-        Lead masterLead = new Lead(
+        Lead mainLead = new Lead(
                 FirstName = 'Duplicate',
                 LastName = 'Testcase',
                 Email = 'email@test.com',
@@ -99,7 +99,7 @@ private class CSLeadsDuplicateServiceTest {
                 LeadSource = 'Website',
                 CreatedDate = System.today().addDays(-2)
         );
-        insert masterLead;
+        insert mainLead;
 
         Partner__c partner1 = new Partner__c (
                 Name = 'BlueWave Test Partner',
@@ -134,12 +134,12 @@ private class CSLeadsDuplicateServiceTest {
         );
         insert ual;
 
-        Lead checkMasterLead = service.checkLeadDuplicates(newLead);
+        Lead checkmainLead = service.checkLeadDuplicates(newLead);
 
-        masterLead = [
+        mainLead = [
                 SELECT Id, LeadSource, CreatedDate, Partner_Lookup__r.Id
                 FROM Lead
-                WHERE Id = :masterLead.Id
+                WHERE Id = :mainLead.Id
                 LIMIT 1
         ];
 
@@ -163,12 +163,12 @@ private class CSLeadsDuplicateServiceTest {
                 LIMIT 1
         ];
 
-        System.assertEquals(masterLead.Id, checkMasterLead.Id);
-        System.assertEquals('Switch', masterLead.LeadSource);
-        System.assertEquals(System.today().addDays(-2), masterLead.CreatedDate);
-        System.assertEquals(masterLead.Id, ual.Lead__r.Id);
-        System.assertEquals(masterLead.Id, propertyAccount.Lead__r.Id);
-        System.assertEquals(partner1.Id, masterLead.Partner_Lookup__r.Id);
+        System.assertEquals(mainLead.Id, checkmainLead.Id);
+        System.assertEquals('Switch', mainLead.LeadSource);
+        System.assertEquals(System.today().addDays(-2), mainLead.CreatedDate);
+        System.assertEquals(mainLead.Id, ual.Lead__r.Id);
+        System.assertEquals(mainLead.Id, propertyAccount.Lead__r.Id);
+        System.assertEquals(partner1.Id, mainLead.Partner_Lookup__r.Id);
     }
 
 
@@ -183,7 +183,7 @@ private class CSLeadsDuplicateServiceTest {
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
-            String masterJSON = '{"attributes":{"type":"Lead","url":"/services/data/v47.0/sobjects/Lead/001000000000111EEA"},' +
+            String mainJSON = '{"attributes":{"type":"Lead","url":"/services/data/v47.0/sobjects/Lead/001000000000111EEA"},' +
                     '"Id": "001000000000111EEA",' +
                     '"FirstName": "Duplicate",' +
                     '"LastName": "Testcase",' +
@@ -204,8 +204,8 @@ private class CSLeadsDuplicateServiceTest {
                     Set<Id> dupeIds =  (Set<Id>) methodCall.listOfArgs[0];
                     List<Lead> duplicateList = new List<Lead>();
                     if(dupeIds != null) {
-                        Lead masterLead = (Lead) JSON.deserialize(masterJSON, Lead.class);
-                        duplicateList.add(masterLead);
+                        Lead mainLead = (Lead) JSON.deserialize(mainJSON, Lead.class);
+                        duplicateList.add(mainLead);
                         for (Integer i = dupeIds.size()-1; i > 0; i--) {
                             Lead duplicate = (Lead) JSON.deserialize(jsonLead, Lead.class);
                             duplicateList.add(duplicate);
