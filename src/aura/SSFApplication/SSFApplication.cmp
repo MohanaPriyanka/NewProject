@@ -52,10 +52,10 @@
                 <p class="slds-var-p-around_medium slds-text-align_center slds-text-heading_large">
                     Application Complete!
                 </p>
-                <p class="slds-var-p-around_medium">
+                <p class="slds-var-p-around_medium slds-text-align_center">
                     Your Community Solar application is now complete and under final review!
                 </p>
-                <p class="slds-var-p-around_medium">
+                <p class="slds-var-p-around_medium slds-text-align_center">
                     We sent a copy of your agreement(s) to the email address provided in the application. If your application is approved based on our eligibility requirements, we will email you the final signed agreement along with other important information about your subscription.
                     Stay tuned, and thank you for choosing BlueWave Community Solar!
                 </p>
