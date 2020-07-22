@@ -29,6 +29,7 @@ public without sharing class ClientContractService {
             registerSystemForUpdate(clientContracts, sss);
         }
         uow.commitWork();
+        Logger.flushLogs();
     }
 
     private Map<Id, ClientContractsForSystem> getActiveContractsBySystemId(List<Client_Contract__c> activeClientContracts) {
@@ -100,20 +101,30 @@ public without sharing class ClientContractService {
         @TestVisible
         private void addClientContract(Client_Contract__c clientContract) {
             if (clientContract.CS_Services_Type__c == 'Acquisition & Management') {
-                if (this.acquisitionContractId == null) {
-                    this.acquisitionContractId = clientContract.Contract__c;
-                }
-                if (this.managementContractId == null) {
-                    this.managementContractId = clientContract.Contract__c;
-                }
+                setAcquisitionContract(clientContract);
+                setManagementContract(clientContract);
             } else if (clientContract.CS_Services_Type__c == 'Management Only') {
-                if (this.managementContractId == null) {
-                    this.managementContractId = clientContract.Contract__c;
-                }
+                setManagementContract(clientContract);
             } else if (clientContract.CS_Services_Type__c == 'Acquisition Only') {
-                if (this.acquisitionContractId == null) {
-                    this.acquisitionContractId = clientContract.Contract__c;
-                }
+                setAcquisitionContract(clientContract);
+            }
+        }
+
+        private void setManagementContract(Client_Contract__c clientContract) {
+            if (this.managementContractId == null) {
+                this.managementContractId = clientContract.Contract__c;
+            } else {
+                Logger.logLater('ClientContractsForSystem', 'addClientContract',
+                    'Multiple management contracts found: ' + clientContract.Id + ' and ' + this.managementContractId, Logger.ERROR);
+            }
+        }
+
+        private void setAcquisitionContract(Client_Contract__c clientContract) {
+            if (this.acquisitionContractId == null) {
+                this.acquisitionContractId = clientContract.Contract__c;
+            } else {
+                Logger.logLater('ClientContractsForSystem', 'addClientContract',
+                    'Multiple acquisition contracts found: ' + clientContract.Id + ' and ' + this.acquisitionContractId, Logger.ERROR);
             }
         }
         private String getCSServicesType() {
