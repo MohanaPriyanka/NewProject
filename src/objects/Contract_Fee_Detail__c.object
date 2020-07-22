@@ -303,6 +303,7 @@ IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quo
 &amp;&quot; on &quot; 
 &amp;IF(Project_Type_Acquisition_Management__c,&quot;Acquisition &amp; Management&quot;,IF( Project_Type_Management_Only__c,&quot;Management-Only&quot;,&quot;&quot;))
 &amp;&quot; projects&quot; 
+&amp;&quot;, beginning on &quot; &amp; TEXT(Management_Fee_Trigger__c) &amp; &quot; date&quot;
 &amp;IF(ISPICKVAL(Management_Fee_Type__c,&quot;Recurring&quot;),
 &quot;. It is charged &quot; &amp; TEXT(Recurring_Frequency__c),&quot;&quot;)
 &amp;IF(ISBLANK(Recurring_Escalator__c),&quot;&quot;, &quot; with a &quot; &amp; TEXT(Recurring_Escalator_Frequency__c) 
