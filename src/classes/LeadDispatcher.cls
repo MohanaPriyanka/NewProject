@@ -17,6 +17,8 @@ public with sharing class LeadDispatcher {
         public List<Lead> updatedCSAPLeads = new List<Lead>();
         public Map<Id, Lead> oldCSAPMap = new Map<Id, Lead>();
 
+        public List<Lead> websiteLeads = new List<Lead>();
+
         public List<Lead> updatedLeads = new List<Lead>();
         public Map<Id, Lead> oldLeadMap = new Map<Id, Lead>();
     }
@@ -25,8 +27,6 @@ public with sharing class LeadDispatcher {
     //Separate the Switch Leads from the CSAP/Web/Loan Leads
     public static LeadHandlerResult separateLeads(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         LeadHandlerResult result = new LeadHandlerResult();
-
-
         for (Lead lead : updatedLeads) {
             if (lead.LeadSource == 'Switch' || lead.LeadSource == 'Third-Party') {
                 result.updatedLeads.add(lead);
@@ -34,6 +34,8 @@ public with sharing class LeadDispatcher {
                 if (oldLeadMap != null) {
                     result.oldLeadMap.put(lead.Id, oldLeadMap.get(lead.Id));
                 }
+            } else if (lead.LeadSource == 'Website') {
+                result.websiteLeads.add(lead);
             } else {
                 result.updatedCSAPLeads.add(lead);
 
@@ -63,6 +65,16 @@ public with sharing class LeadDispatcher {
         }
     }
 
+    public void checkForDuplicates(List<Lead> leadList) {
+        LeadHandlerResult result = separateLeads(leadList, null);
+
+        if (result.websiteLeads.size() > 0 ) {
+            BatchLeadsDuplicateService leadsDuplicateService = new BatchLeadsDuplicateService();
+            leadsDuplicateService.leads = result.websiteLeads;
+            Database.executeBatch(leadsDuplicateService, 150);
+        }
+    }
+
     public void onBeforeUpdate(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap) {
         LeadHandlerResult result = separateLeads(updatedLeads, oldLeadMap);
 
@@ -73,7 +85,6 @@ public with sharing class LeadDispatcher {
 
         if (result.updatedLeads.size()> 0 ){
             UtilityLoadZoneService.updateLZUL(result.updatedLeads, result.oldLeadMap);
-
         }
 
     }
@@ -92,23 +103,4 @@ public with sharing class LeadDispatcher {
             leadService.updateRelatedContracts(result.updatedLeads, result.oldLeadMap);
         }
     }
-
-//    public void assignPartner(List<Lead> leadList){
-//        //Handle all leads that do not have a Partner yet - ie from Website or Campaigns
-//        //will take the place of ReferralCodeHandler after we retire the old LeadTriggerHandler Class
-//
-//        Partner__c defaultCSPartner = PartnerSelector.selectDefaultCSPartner();
-//
-//        for (Lead lead : leadList) {
-//            if (lead.Product_line__c == 'Community Solar' && lead.Partner_Lookup__c == null) {
-//                lead.Partner_Lookup__c = defaultCSPartner.Id;
-//                lead.bs_Sales_ID__c = defaultCSPartner.Default_Sales_Rep__r.Id;
-//                lead.Partner_Email__c = defaultCSPartner.Email__c;
-//            }
-//        }
-//
-//    }
-
-
-
 }
