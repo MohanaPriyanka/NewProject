@@ -343,6 +343,11 @@ public with sharing class UtilTest {
         String id = Util.getFakeId(Schema.Account.SObjectType);
         System.assertEquals('001000000000000', id, 'Fake ID should be 15 characters long, and have the proper 3-digit prefix for the entity');
     }
+    @IsTest
+    private static void testIncrementFakeId() {
+        String id = Util.getFakeId(Schema.Account.SObjectType);
+        System.assertEquals('001000000000001', Util.incrementFakeId(id), 'Incrementing an id should just add one to the end');
+    }
 
     @IsTest
     private static void testIsSandboxOrTest() {
