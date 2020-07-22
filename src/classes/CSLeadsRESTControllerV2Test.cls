@@ -35,7 +35,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
         Utility__c utilityWithEIA = new Utility__c(
             Name = 'Utility with EIA ID',
-            EIA_ID__c = '1234'
+            EIA_ID__c = '1234',
+            Utility_Data_Collection_Mechanism__c = 'File Upload'
         );
         insert utilityWithEIA;
 
@@ -812,7 +813,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
 
-
     /********************
      *** SYSTEM TESTS ***
      ********************/
@@ -997,6 +997,145 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
         System.assertEquals(201, RestContext.response.statusCode, 'A PropertyAccount POST with minimal fields should succeed');
         System.assertEquals(1, [SELECT Id FROM Contract WHERE Lead__c = :leadId].size(), 'A contract should be created for this lead, as it now has both a product and a property account');
+    }
+
+
+    @IsTest
+    static void testApplicationStatus() {
+        String jsonRequest = '{' +
+            '   "firstName": "System",' +
+            '   "lastName": "Testcase",' +
+            '   "email": "test@invalid.bluewavesolar.com",' +
+            '   "mobilePhone": "555-555-5555",' +
+            '   "applicationType": "Residential",' +
+            '   "streetAddress": "1 Test Street",' +
+            '   "city": "Suffern",' +
+            '   "state": "NY",' +
+            '   "zipCode": "10901",' +
+            '   "eiaId": "1234",' +
+            '   "continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
+            '   "productName": "CS Product",' +
+            '   "campaignId": "0005500000"' +
+            '}';
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+        RESTRouterV2.postRequest();
+        RestResponse response = RestContext.response;
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
+        Id leadId = (Id)responseLead.get('id');
+        Lead lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c FROM Lead WHERE Id = :leadId];
+        System.assertEquals(201, response.statusCode, 'POST should create properly');
+        System.assertEquals('Started', lead.Application_Status__c, 'Lead does not have property accounts or utility account logs; application status should be Started');
+        PageReference url = new PageReference(lead.Continue_Application_Link__c);
+        System.assertEquals('info', url.getParameters().get('loc'), 'Because Application Status is Started, Continue Application Link loc param should be info');
+        
+
+        jsonRequest = '{' +
+            '   "leadId": "' + leadId + '",' +
+            '   "billingStreet": "Test billing street",' +
+            '   "billingCity": "Test billing city",' +
+            '   "billingState": "NY",' +
+            '   "billingPostalCode": "14472"' +
+            '}';
+        controller.postPropertyAccount(jsonRequest);
+        lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c, (SELECT Id FROM Accounts__r) FROM Lead WHERE Id = :leadId];
+        System.assertEquals(201, RestContext.response.statusCode, 'A PropertyAccount POST with minimal fields should succeed');
+        System.assertEquals('Started', lead.Application_Status__c, 'Lead does not have utility account logs; application status should be Started');
+        url = new PageReference(lead.Continue_Application_Link__c);
+        System.assertEquals('info', url.getParameters().get('loc'), 'Because Application Status is Started, Continue Application Link loc param should be info');
+        Id propertyAccountId = lead.Accounts__r[0].Id;
+
+
+        Utility__c utility = [SELECT Id FROM Utility__c WHERE EIA_ID__c = '1234' LIMIT 1];
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Lead__c = leadId,
+            Account__c = propertyAccountId,
+            Utility_lookup__c = utility.Id
+        );
+        insert ual;
+        jsonRequest = '{' +
+        '   "id": "' + ual.Id + '",' +
+        '   "leadId": "' + leadId + '",' +
+        '   "email": "test@invalid.bluewavesolar.com",' +
+        '   "nameOnAccount": "Bob",' +
+        '   "serviceStreet": "Test service street",' +
+        '   "serviceCity": "Test service city",' +
+        '   "serviceState": "NY",' +
+        '   "servicePostalCode": "14472",' +
+        '   "annualKWh": 1000' +
+        '}';
+        controller.patchUtilityAccountLog(jsonRequest);
+        lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c, (SELECT Id, Utility_lookup__r.Name, Utility_lookup__r.Utility_Data_Collection_Mechanism__c FROM Utility_Account_Logs__r) FROM Lead WHERE Id = :leadId];
+        System.assertEquals(200, RestContext.response.statusCode, 'A UAL PATCH with minimal fields should succeed');
+        System.assertEquals('Started', lead.Application_Status__c, 'The Lead\'s utility account log does not have a utility bill uploaded; application status should be Started');
+        url = new PageReference(lead.Continue_Application_Link__c);
+        System.assertEquals('info', url.getParameters().get('loc'), 'Because Application Status is Started, Continue Application Link loc param should be info');
+        Id utilityAccountLogId = lead.Utility_Account_Logs__r[0].Id;
+
+        
+        ContentVersion contentVersion = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('utility bill'),
+            Title = 'UtilityBill.pdf',
+            PathOnClient = '/UtilityBill.pdf',
+            File_Category__c = 'Customer Utility Bill'
+        );
+        insert contentVersion;
+        ContentDocumentSelector cds = new ContentDocumentSelector();
+        Id contentDocId = cds.getDocumentIdFromVersionId(contentVersion.Id);
+        jsonRequest = '{' +
+        '   "id": "' + leadId + '",' +
+        '   "email": "test@invalid.bluewavesolar.com",' +
+        '   "propertyAccounts": [{' +
+        '      "id": "' + propertyAccountId + '",' +
+        '      "billingCity": "' + propertyAccountId + '",' +
+        '      "utilityAccountLogs": [{' +
+        '          "id": "' + utilityAccountLogId + '",' +
+        '          "utilityBills": [{' +
+        '              "id": "' + contentDocId + '",' +
+        '              "lastPublishedVersionId": "' + contentVersion.Id + '"' +
+        '          }]' +
+        '      }]' +
+        '   }]' +
+        '}';
+        controller.patchApplication(jsonRequest);
+        lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c, (SELECT Id, Customer_Signature_Date_Time__c FROM Contracts__r) FROM Lead WHERE Id = :leadId];
+        System.assertEquals(200, RestContext.response.statusCode, 'An Application PATCH with required fields should succeed');
+        System.assertEquals('Customer Info Completed', lead.Application_Status__c, 'The lead, property account, utility account log, and utility bills are all present but contracts are not yet signed; application status should be Customer Info Completed');
+        url = new PageReference(lead.Continue_Application_Link__c);
+        System.assertEquals('agree', url.getParameters().get('loc'), 'Because Application Status is Customer Info Completed, Continue Application Link loc param should be agree');
+
+
+        jsonRequest = '{' +
+        '   "leadId": "' + leadId + '",' +
+        '   "email": "test@invalid.bluewavesolar.com"' +
+        '}';
+        controller.patchContract(jsonRequest);
+        lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c FROM Lead WHERE Id = :leadId];
+        System.assertEquals(200, RestContext.response.statusCode, 'A Contract PATCH with required fields should succeed');
+        System.assertEquals('Contracts Signed', lead.Application_Status__c, 'All customer info is present and all contracts are signed; application status should be Contracts Signed');
+        url = new PageReference(lead.Continue_Application_Link__c);
+        System.assertEquals('pay', url.getParameters().get('loc'), 'Because Application Status is Contracts Signed, Continue Application Link loc param should be pay');
+
+
+        jsonRequest = '{' +
+        '   "id": "' + leadId + '",' +
+        '   "email": "test@invalid.bluewavesolar.com",' +
+        '   "applicationCompleteDate": "2020-07-22T00:00:00Z"' +
+        '}';
+        controller.patchLead(jsonRequest);
+        lead = [SELECT Id, Application_Status__c, Application_Complete_Date__c, Continue_Application_Link__c FROM Lead WHERE Id = :leadId];
+        System.assertEquals(200, RestContext.response.statusCode, 'A Lead PATCH with required fields should succeed');
+        System.assertEquals('Application Completed', lead.Application_Status__c, 'All customer info is present, all contracts are signed, and Application Complete Date is populated; application status should be Application Completed');
+        url = new PageReference(lead.Continue_Application_Link__c);
+        System.assertEquals('complete', url.getParameters().get('loc'), 'Because Application Status is Application Completed, Continue Application Link loc param should be complete');
     }
 
 

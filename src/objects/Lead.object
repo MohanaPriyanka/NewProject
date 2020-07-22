@@ -627,6 +627,42 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Application_Status__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Where the potential customer is in the application process</inlineHelpText>
+        <label>Application Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Started</fullName>
+                    <default>true</default>
+                    <label>Started</label>
+                </value>
+                <value>
+                    <fullName>Customer Info Completed</fullName>
+                    <default>false</default>
+                    <label>Customer Info Completed</label>
+                </value>
+                <value>
+                    <fullName>Contracts Signed</fullName>
+                    <default>false</default>
+                    <label>Contracts Signed</label>
+                </value>
+                <value>
+                    <fullName>Application Completed</fullName>
+                    <default>false</default>
+                    <label>Application Completed</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Application_Type__c</fullName>
         <externalId>false</externalId>
         <label>Application Type</label>

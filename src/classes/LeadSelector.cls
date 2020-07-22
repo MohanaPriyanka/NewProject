@@ -176,4 +176,22 @@ public without sharing class LeadSelector {
 
         return leads[0];
     }
+
+
+    public Lead selectOneForStatusUpdate(Id leadId) {
+        List<Lead> leads = [
+            SELECT Id, Application_Complete_Date__c, Application_Status__c, Continue_Application_Link__c,
+                (SELECT Id FROM Accounts__r),
+                (SELECT Id, Utility_lookup__r.Utility_Data_Collection_Mechanism__c FROM Utility_Account_Logs__r),
+                (SELECT Id, Customer_Signature_Date_Time__c FROM Contracts__r)
+            FROM Lead
+            WHERE Id = :leadId
+        ];
+
+        if(leads.isEmpty()) {
+            return null;
+        }
+
+        return leads[0];
+    }
 }

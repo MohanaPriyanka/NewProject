@@ -94,8 +94,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                     ZuoraAccountService.createAccounts(propertyAccounts);
                 }
                 requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
-
+                
                 Lead lead = leadService.updateLead(leadToUpdate);
+                updateLeadApplicationStatus(lead.Id);
 
                 // TODO: should eventually respond with full data structure to UI (e.g. include property accts and UALs).  Maybe when unit-of-work is implemented?
                 RestLead responseLead = new RestLead(lead);
@@ -119,6 +120,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             accountToUpdate.Zuora_Payment_Ref_Id_Expiration_Date__c = requestAccount.zuoraPaymentRefIdExpirationDate;
 
             Account account = accountService.updateAccount(accountToUpdate);
+            updateLeadApplicationStatus(account.Lead__c);
 
             // TODO: should eventually respond with full data structure to UI (e.g. include  UALs).  Maybe when unit-of-work is implemented?
             RestLead.RestPropertyAccount responseAccount = new RestLead.RestPropertyAccount(account);
@@ -144,6 +146,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             ualToUpdate.Annual_kWh__c = requestUAL.annualKWh;
 
             Utility_Account_Log__c ual = ualService.updateUAL(ualToUpdate);
+            updateLeadApplicationStatus(ual.Lead__c);
 
             RestLead.RestUtilityAccountLog responseUAL = new RestLead.RestUtilityAccountLog(ual);
             envelope.setData(responseUAL);
@@ -173,6 +176,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 if(regenerateDocs) {
                     customerContractService.regenerateDocuments(leadId);
                 }
+                updateLeadApplicationStatus(leadId);
 
                 RestLead responseLead = formatRestLeadFromLeadAndChildren(leadId, regenerateDocs);
                 envelope.setData(responseLead);
@@ -199,6 +203,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         if(requestMap.containsKey('leadId') && requestMap.get('leadId') != null) {
             try {
                 customerContractService.signCustomerContracts((Id)requestMap.get('leadId'));
+                updateLeadApplicationStatus((Id)requestMap.get('leadId'));
                 envelope.setData('OK');
                 response.statusCode = statusCode.ok;
             } catch(System.StringException se) {
@@ -290,7 +295,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         if (requestPropertyAccount.utilityAccountLogs != null && !requestPropertyAccount.utilityAccountLogs.isEmpty()) {
             responsePropertyAccount.utilityAccountLogs = insertUALs(newPropertyAccount, requestPropertyAccount.utilityAccountLogs);
         }
-
+        
+        updateLeadApplicationStatus(associatedLead.Id);
         envelope.setData(responsePropertyAccount);
         response.statusCode = statusCode.created;
         envelope.setJSONResponse(response);
@@ -325,7 +331,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         newUtilityAccountLog = ualService.insertUAL(newUtilityAccountLog);
 
         RestLead.RestUtilityAccountLog responseUtilityAccountLog = new RestLead.RestUtilityAccountLog(newUtilityAccountLog);
-
+        
+        updateLeadApplicationStatus(newUtilityAccountLog.Lead__c);
         envelope.setData(responseUtilityAccountLog);
         response.statusCode = statusCode.created;
         envelope.setJSONResponse(response);
@@ -345,10 +352,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Lead newLead = requestLead.asLead();
         newLead = leadService.insertLead(newLead);
         newLead = duplicateService.checkLeadDuplicates(newLead);
-        if(String.isBlank(newLead.Continue_Application_Link__c)) {
-            newLead.Continue_Application_Link__c = baseUrl + '?leadid=' + newLead.Id + '&email=' + newLead.Email;
-        }
+        
+        newLead.Continue_Application_Link__c = baseUrl + '?leadid=' + newLead.Id + '&email=' + newLead.Email + '&loc=' + APP_STATUS_TO_LOC.get('Started');
         newLead = leadService.updateLead(newLead);
+        
         if (requestLead.propertyAccounts != null) {            
             for(RestLead.RestPropertyAccount requestPropertyAccount : requestLead.propertyAccounts) {
                 Account newAccount = requestPropertyAccount.asAccount(newLead);
@@ -363,6 +370,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 customerContractService.createContractFromLead(newLead.Id);
             }
         }
+        updateLeadApplicationStatus(newLead.Id);
         envelope.setData(formatRestLeadFromLeadAndChildren(newLead.Id, true));
         response.statusCode = statusCode.created;
     }
@@ -639,5 +647,86 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 }
             }
         return restContentDocs;
+    }
+
+
+    public static final Map<String, String> APP_STATUS_TO_LOC = new Map<String, String>{
+        'Started' => 'info',
+        'Customer Info Completed' => 'agree',
+        'Contracts Signed' => 'pay',
+        'Application Completed' => 'complete'
+    };
+
+
+    public void updateLeadApplicationStatus(Id leadId) {
+        Lead lead = leadSelector.selectOneForStatusUpdate(leadId);
+        String status = getApplicationStatus(lead);
+        if(lead.Application_Status__c != status) {
+            lead.Application_Status__c = status;
+
+            PageReference url = new PageReference(lead.Continue_Application_Link__c);
+            url.getParameters().put('loc', APP_STATUS_TO_LOC.get(status));
+            lead.Continue_Application_Link__c = url.getUrl();
+            
+            Database.SaveResult sr = Database.update(lead, false);
+            if(!sr.isSuccess()) {
+                for(Database.Error err : sr.getErrors()) {
+                    Logger.logLater('CSLeadsRESTControllerV2', 'updateLeadApplicationStatus', 'Unable to update Application Status for Lead ' + sr.getId() + '. Error: ' + err.getMessage());
+                }
+                Logger.flushLogs();
+            }
+        }
+    }
+
+
+    public String getApplicationStatus(Lead lead) {
+        if(lead.Application_Complete_Date__c != null) {
+            return 'Application Completed';
+        }
+
+        Boolean contractsSigned = true;
+        for(Contract contract : lead.Contracts__r) {
+            if(contract.Customer_Signature_Date_Time__c == null) {
+                contractsSigned = false;
+                break;
+            }
+        }
+        if(!lead.Contracts__r.isEmpty() && contractsSigned) {
+            return 'Contracts Signed';
+        }
+
+        if(!lead.Accounts__r.isEmpty() && !lead.Utility_Account_Logs__r.isEmpty()) {
+            List<Id> ualIds = new List<Id>();
+            for(Utility_Account_Log__c ual : lead.Utility_Account_Logs__r) {
+                if(ual.Utility_lookup__r.Utility_Data_Collection_Mechanism__c == 'File Upload') {
+                    ualIds.add(ual.Id);
+                }
+            }
+            
+            if(ualIds.isEmpty()) {
+                return 'Customer Info Completed';
+            }
+
+            List<Utility_Account_Log__c> uploadUALs = [
+                SELECT Id,
+                    (SELECT Id FROM ContentDocumentLinks 
+                    WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
+                FROM Utility_Account_Log__c
+                WHERE Id IN :ualIds
+            ];
+            
+            Boolean utilityBillsPresent = !uploadUALs.isEmpty();
+            for(Utility_Account_Log__c ual : uploadUALs) {
+                if(ual.ContentDocumentLinks.isEmpty()) {
+                    utilityBillsPresent = false;
+                    break;
+                }
+            }
+            if(utilityBillsPresent) {
+                return 'Customer Info Completed';
+            }
+        }
+
+        return 'Started';
     }
 }
