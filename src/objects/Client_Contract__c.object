@@ -143,6 +143,7 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
+    <description>Junction between Shared Solar System and Contract to allow effective dating contracts (e.g. future dated amendments).</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
@@ -156,6 +157,7 @@
     <fields>
         <fullName>CS_Services_Type__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Indicates how this Contract should be used for Client Invoicing, and which fields (Client Acquisition Contract and Client Management Contract) are populated on the System.</inlineHelpText>
         <label>CS Services Type</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -170,6 +172,7 @@
         <externalId>false</externalId>
         <formula>Contract__r.EndDate</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>The related Contract&apos;s End Date</inlineHelpText>
         <label>Contract End Date</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -191,6 +194,7 @@
         <externalId>false</externalId>
         <formula>Contract__r.StartDate</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>The related Contract&apos;s Start Date</inlineHelpText>
         <label>Contract Start Date</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -201,6 +205,7 @@
         <externalId>false</externalId>
         <formula>TEXT(Contract__r.Contract_Type__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>The related Contract&apos;s &quot;Contract Type&quot;</inlineHelpText>
         <label>Contract Type</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -211,6 +216,7 @@
         <fullName>Contract__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
+        <inlineHelpText>The Client Contract related to the Shared Solar System. Required to be a Contract with the Client Contract record type.</inlineHelpText>
         <label>Contract</label>
         <lookupFilter>
             <active>true</active>
@@ -223,6 +229,7 @@
             <isOptional>false</isOptional>
         </lookupFilter>
         <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Client Contracts</relationshipLabel>
         <relationshipName>Client_Contract_Junctions</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -231,6 +238,7 @@
     <fields>
         <fullName>Effective_Date__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>At the beginning of this day, the system will automatically populate the Shared Solar System with the related Contract according to the CS Services Type to be used for Client Invoicing.</inlineHelpText>
         <label>Effective Date</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -239,6 +247,7 @@
     <fields>
         <fullName>End_Date__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>At the end of this day, the contract will be automatically removed from the System (unless there is a subsequent Client Contract) and no longer used for client invoicing. Can be different from the Contract&apos;s End Date.</inlineHelpText>
         <label>End Date</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -248,8 +257,10 @@
         <fullName>Shared_Solar_System__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
+        <inlineHelpText>The Shared Solar System related to this Contract.</inlineHelpText>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Client Contracts</relationshipLabel>
         <relationshipName>Client_Contract_Junctions</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>

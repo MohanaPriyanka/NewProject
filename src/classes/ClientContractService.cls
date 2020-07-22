@@ -48,7 +48,8 @@ public without sharing class ClientContractService {
     private void registerSystemForUpdate(ClientContractsForSystem clientContracts, Shared_Solar_System__c sss) {
         if (clientContracts == null) {
             if (sss.Client_Acquisition_Contract__c != null ||
-                sss.Client_Management_Contract__c != null) {
+                sss.Client_Management_Contract__c != null ||
+                sss.CS_Services_Type__c != null) {
                 sss.Client_Acquisition_Contract__c = null;
                 sss.Client_Management_Contract__c = null;
                 sss.CS_Services_Type__c = null;
@@ -58,7 +59,8 @@ public without sharing class ClientContractService {
             }
         } else {
             if (sss.Client_Acquisition_Contract__c != clientContracts.acquisitionContractId ||
-                sss.Client_Management_Contract__c != clientContracts.managementContractId) {
+                sss.Client_Management_Contract__c != clientContracts.managementContractId ||
+                sss.CS_Services_Type__c != clientContracts.getCSServicesType()) {
                 sss.Client_Acquisition_Contract__c = clientContracts.acquisitionContractId;
                 sss.Client_Management_Contract__c = clientContracts.managementContractId;
                 setCSServicesType(sss);
@@ -112,6 +114,17 @@ public without sharing class ClientContractService {
                 if (this.acquisitionContractId == null) {
                     this.acquisitionContractId = clientContract.Contract__c;
                 }
+            }
+        }
+        private String getCSServicesType() {
+            if (managementContractId != null && acquisitionContractId != null) {
+                return 'Acquisition & Management';
+            } else if (managementContractId != null) {
+                return 'Management Only';
+            } else if (acquisitionContractId != null) {
+                return 'Acquisition Only';
+            } else {
+                return '';
             }
         }
     }
