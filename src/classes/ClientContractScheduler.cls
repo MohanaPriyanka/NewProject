@@ -10,7 +10,7 @@ public without sharing class ClientContractScheduler implements Schedulable {
         try {
             clientContractService.setActiveContractsOnAllSSSes();
         } catch (Exception e) {
-            Logger.logNow('ClientContractScheduler', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+            Logger.logNow('ClientContractScheduler', 'execute', e, '', Logger.ERROR);
         }
     }
 }
