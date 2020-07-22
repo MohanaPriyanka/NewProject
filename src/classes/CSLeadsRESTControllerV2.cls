@@ -696,35 +696,43 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
 
         if(!lead.Accounts__r.isEmpty() && !lead.Utility_Account_Logs__r.isEmpty()) {
-            List<Id> ualIds = new List<Id>();
-            for(Utility_Account_Log__c ual : lead.Utility_Account_Logs__r) {
-                if(ual.Utility_lookup__r.Utility_Data_Collection_Mechanism__c == 'File Upload') {
-                    ualIds.add(ual.Id);
-                }
-            }
-            
-            if(ualIds.isEmpty()) {
-                return 'Customer Info Completed';
-            }
+            return getUALStatus(lead.Utility_Account_Logs__r);
+        }
 
-            List<Utility_Account_Log__c> uploadUALs = [
-                SELECT Id,
-                    (SELECT Id FROM ContentDocumentLinks 
-                    WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
-                FROM Utility_Account_Log__c
-                WHERE Id IN :ualIds
-            ];
-            
-            Boolean utilityBillsPresent = !uploadUALs.isEmpty();
-            for(Utility_Account_Log__c ual : uploadUALs) {
-                if(ual.ContentDocumentLinks.isEmpty()) {
-                    utilityBillsPresent = false;
-                    break;
-                }
+        return 'Started';
+    }
+
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    private String getUALStatus(List<Utility_Account_Log__c> ualList) {
+        List<Id> ualIds = new List<Id>();
+        for(Utility_Account_Log__c ual : ualList) {
+            if(ual.Utility_lookup__r.Utility_Data_Collection_Mechanism__c == 'File Upload') {
+                ualIds.add(ual.Id);
             }
-            if(utilityBillsPresent) {
-                return 'Customer Info Completed';
+        }
+        
+        if(ualIds.isEmpty()) {
+            return 'Customer Info Completed';
+        }
+
+        List<Utility_Account_Log__c> uploadUALs = [
+            SELECT Id,
+                (SELECT Id FROM ContentDocumentLinks 
+                WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
+            FROM Utility_Account_Log__c
+            WHERE Id IN :ualIds
+        ];
+        
+        Boolean utilityBillsPresent = !uploadUALs.isEmpty();
+        for(Utility_Account_Log__c ual : uploadUALs) {
+            if(ual.ContentDocumentLinks.isEmpty()) {
+                utilityBillsPresent = false;
+                break;
             }
+        }
+        if(utilityBillsPresent) {
+            return 'Customer Info Completed';
         }
 
         return 'Started';
