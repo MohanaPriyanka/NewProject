@@ -10,17 +10,20 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
     LeadDispatcher leadDispatcher = new LeadDispatcher();
     LoanHandler loanHandler = new LoanHandler (Trigger.isExecuting, Trigger.size);
 
-    if(Trigger.isUpdate && Trigger.isAfter){
-        leadDispatcher.onAfterUpdate(Trigger.new, Trigger.oldMap);
-        loanHandler.OnAfterLeadUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
-    }
-    else if(Trigger.isUpdate && Trigger.isBefore){
-        leadDispatcher.onBeforeUpdate(Trigger.new, Trigger.oldMap);
-        loanHandler.OnBeforeLeadUpdate(Trigger.newMap, Trigger.oldMap);
-
-    }  
-
-    else if(Trigger.isInsert && Trigger.isBefore){
-        leadDispatcher.onBeforeInsert(Trigger.new);
+    switch on Trigger.operationType {
+        when AFTER_UPDATE {
+            leadDispatcher.onAfterUpdate(Trigger.new, Trigger.oldMap);
+            loanHandler.OnAfterLeadUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
+        }
+        when BEFORE_UPDATE {
+            leadDispatcher.onBeforeUpdate(Trigger.new, Trigger.oldMap);
+            loanHandler.OnBeforeLeadUpdate(Trigger.newMap, Trigger.oldMap);
+        }
+        when BEFORE_INSERT {
+            leadDispatcher.onBeforeInsert(Trigger.new);
+        }
+        when AFTER_INSERT {
+           leadDispatcher.checkForDuplicates(Trigger.new);
+        }
     }
 }
