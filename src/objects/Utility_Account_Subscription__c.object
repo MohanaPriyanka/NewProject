@@ -341,7 +341,7 @@ Future_Share_of_System__c
         <description>Customer Subscription value at point of sale. This field is not dynamic and is populated based on a workflow.</description>
         <externalId>false</externalId>
         <inlineHelpText>Used for billing. Populated when Opportunity Stage Name is Pending BW Signature through a process builder. Once the Opp stage is set to Complete the Opp then aggregates this instead of the dynamic.</inlineHelpText>
-        <label>Current Customer Subscription (kW DC)</label>
+        <label>XXCurrent Customer Subscription (kW DC)</label>
         <precision>9</precision>
         <required>false</required>
         <scale>4</scale>
