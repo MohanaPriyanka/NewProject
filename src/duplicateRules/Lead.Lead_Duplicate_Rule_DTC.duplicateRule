@@ -3,13 +3,13 @@
     <actionOnInsert>Allow</actionOnInsert>
     <actionOnUpdate>Allow</actionOnUpdate>
     <alertText xsi:nil="true"/>
-    <description>Duplicate rule to catch DTC leads (not CSAP).</description>
+    <description>Duplicate rule to catch DTC leads (not CSAP or Switch).</description>
     <duplicateRuleFilter>
         <booleanFilter xsi:nil="true"/>
         <duplicateRuleFilterItems>
             <field>LeadSource</field>
-            <operation>notEqual</operation>
-            <value>CSAP</value>
+            <operation>equals</operation>
+            <value>Website</value>
             <sortOrder>1</sortOrder>
             <table>Lead</table>
         </duplicateRuleFilterItems>
