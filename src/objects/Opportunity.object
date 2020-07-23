@@ -8273,6 +8273,21 @@ DOER_Solar_Loan__c ==TRUE,(( Monthly_Payment__c *   Product__r.Loan_Term__c )+( 
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Underwriting_Criteria__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What method we used to underwrite the customer. Investment-Grade and Financial Review are limited to anchors</inlineHelpText>
+        <label>Underwriting Criteria</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Underwriting_Criteria</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Unique_ID__c</fullName>
         <caseSensitive>false</caseSensitive>
         <externalId>false</externalId>
@@ -9990,6 +10005,23 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>Anchor_Underwriting_Criteria</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+OR(
+ISPICKVAL(Underwriting_Criteria__c,&quot;Investment-Grade&quot;),
+ISPICKVAL(Underwriting_Criteria__c,&quot;Financial Review&quot;)
+),
+NOT(
+OR(
+ISPICKVAL(Customer_Group__c,&quot;Anchor&quot;),
+ISPICKVAL(Customer_Group__c,&quot;Public Offtake&quot;)
+)
+)
+)</errorConditionFormula>
+        <errorMessage>Only Anchors can be marked with underwriting criteria = Investment Grade or Financial Review</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>Discount</fullName>
         <active>true</active>

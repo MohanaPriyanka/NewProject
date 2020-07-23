@@ -22,8 +22,8 @@ private class CSLeadsDuplicateServiceTest {
         List<Lead> orderedLeads = service.createOrderedDuplicateLeadList(duplicateMap, newLead);
 
         System.assertEquals(2, orderedLeads.size());
-        System.assertNotEquals(null, service.masterLead);
-        System.assertEquals('001000000000111EEA', service.masterLead.Id);
+        System.assertNotEquals(null, service.mainLead);
+        System.assertEquals('001000000000111EEA', service.mainLead.Id);
         System.assertEquals(newLead.Id, orderedLeads[0].Id);
     }
 
@@ -40,14 +40,14 @@ private class CSLeadsDuplicateServiceTest {
         List<Lead> orderedLeads = service.createOrderedDuplicateLeadList(duplicateMap, newLead);
 
         System.assertEquals(2, orderedLeads.size());
-        System.assertNotEquals(null, service.masterLead);
-        System.assertEquals('001000000000111EEA', service.masterLead.Id);
+        System.assertNotEquals(null, service.mainLead);
+        System.assertEquals('001000000000111EEA', service.mainLead.Id);
         System.assertEquals(newLead.Id, orderedLeads[0].Id);
 
         Error_Log__c logError = [
-            SELECT Id, Class__c, Method__c, Message__c
-            FROM Error_Log__c
-            LIMIT 1
+                SELECT Id, Class__c, Method__c, Message__c
+                FROM Error_Log__c
+                LIMIT 1
         ];
         System.assertNotEquals(null, logError);
         System.assert(logError.Message__c.contains('more than 2 matching Leads'), 'Error Message must be logged when more than 2 duplicates');
@@ -57,60 +57,90 @@ private class CSLeadsDuplicateServiceTest {
     /********************
     *** SYSTEM TESTS ***
     ********************/
+    @IsTest
+    static void testWebsiteLeads() {
+        Lead firstLead = new Lead(
+                FirstName = 'Duplicate',
+                LastName = 'Testcase',
+                Email = 'email@test.com',
+                Company = 'Duplicate Testcase',
+                LeadSource = 'Website',
+                CreatedDate = System.today().addDays(-2)
+        );
+        insert firstLead;
+
+        Lead secondLead = new Lead(
+                FirstName = 'Duplicate',
+                LastName = 'Testcase',
+                Email = 'email@test.com',
+                Company = 'Duplicate Testcase',
+                LeadSource = 'Website',
+                CreatedDate = System.today().addDays(-2)
+        );
+        Test.startTest();
+        insert secondLead;
+        Test.stopTest();
+        List<Lead> checkLeads = [
+                SELECT Id
+                FROM Lead
+        ];
+        System.assertEquals(1, checkLeads.size(), 'Second Lead should have been merged into the first lead');
+
+    }
 
     @IsTest
     static void testCheckLeadDuplicates() {
 
-        Lead masterLead = new Lead(
-            FirstName = 'Duplicate',
-            LastName = 'Testcase',
-            Email = 'email@test.com',
-            Company = 'Duplicate Testcase',
-            LeadSource = 'Website',
-            CreatedDate = System.today().addDays(-2)
+        Lead mainLead = new Lead(
+                FirstName = 'Duplicate',
+                LastName = 'Testcase',
+                Email = 'email@test.com',
+                Company = 'Duplicate Testcase',
+                LeadSource = 'Website',
+                CreatedDate = System.today().addDays(-2)
         );
-        insert masterLead;
+        insert mainLead;
 
         Partner__c partner1 = new Partner__c (
-            Name = 'BlueWave Test Partner',
-            Email__c = 'bwtest@email.com'
+                Name = 'BlueWave Test Partner',
+                Email__c = 'bwtest@email.com'
         );
         insert partner1;
 
         Lead newLead = new Lead(
-            FirstName = 'Duplicate',
-            LastName = 'Testcase',
-            Email = 'email@test.com',
-            Company = 'Duplicate Testcase',
-            LeadSource = 'Switch',
-            MobilePhone = '555-555-5555',
-            Partner_Lookup__c = partner1.Id
+                FirstName = 'Duplicate',
+                LastName = 'Testcase',
+                Email = 'email@test.com',
+                Company = 'Duplicate Testcase',
+                LeadSource = 'Switch',
+                MobilePhone = '555-555-5555',
+                Partner_Lookup__c = partner1.Id
         );
 
         insert newLead;
 
 
         Account propertyAccount = new Account(
-            Name = 'Property Testcase',
-            Lead__c = newLead.Id
+                Name = 'Property Testcase',
+                Lead__c = newLead.Id
         );
 
         insert propertyAccount;
 
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
-            Lead__c = newLead.Id,
-            Account__c = propertyAccount.Id,
-            Name = '12345'
+                Lead__c = newLead.Id,
+                Account__c = propertyAccount.Id,
+                Name = '12345'
         );
         insert ual;
 
-        Lead checkMasterLead = service.checkLeadDuplicates(newLead);
+        Lead checkmainLead = service.checkLeadDuplicates(newLead);
 
-        masterLead = [
-            SELECT Id, LeadSource, CreatedDate, Partner_Lookup__r.Id
-            FROM Lead
-            WHERE Id = :masterLead.Id
-            LIMIT 1
+        mainLead = [
+                SELECT Id, LeadSource, CreatedDate, Partner_Lookup__r.Id
+                FROM Lead
+                WHERE Id = :mainLead.Id
+                LIMIT 1
         ];
 
         try {
@@ -120,25 +150,25 @@ private class CSLeadsDuplicateServiceTest {
         }
 
         propertyAccount = [
-            SELECT Id, Lead__r.Id
-            FROM Account
-            WHERE Id = :propertyAccount.Id
-            LIMIT 1
+                SELECT Id, Lead__r.Id
+                FROM Account
+                WHERE Id = :propertyAccount.Id
+                LIMIT 1
         ];
 
         ual = [
-            SELECT Id, Lead__r.Id
-            FROM Utility_Account_Log__c
-            WHERE Id = :ual.Id
-            LIMIT 1
+                SELECT Id, Lead__r.Id
+                FROM Utility_Account_Log__c
+                WHERE Id = :ual.Id
+                LIMIT 1
         ];
 
-        System.assertEquals(masterLead.Id, checkMasterLead.Id);
-        System.assertEquals('Switch', masterLead.LeadSource);
-        System.assertEquals(System.today().addDays(-2), masterLead.CreatedDate);
-        System.assertEquals(masterLead.Id, ual.Lead__r.Id);
-        System.assertEquals(masterLead.Id, propertyAccount.Lead__r.Id);
-        System.assertEquals(partner1.Id, masterLead.Partner_Lookup__r.Id);
+        System.assertEquals(mainLead.Id, checkmainLead.Id);
+        System.assertEquals('Switch', mainLead.LeadSource);
+        System.assertEquals(System.today().addDays(-2), mainLead.CreatedDate);
+        System.assertEquals(mainLead.Id, ual.Lead__r.Id);
+        System.assertEquals(mainLead.Id, propertyAccount.Lead__r.Id);
+        System.assertEquals(partner1.Id, mainLead.Partner_Lookup__r.Id);
     }
 
 
@@ -153,29 +183,29 @@ private class CSLeadsDuplicateServiceTest {
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
-            String masterJSON = '{"attributes":{"type":"Lead","url":"/services/data/v47.0/sobjects/Lead/001000000000111EEA"},' +
-                '"Id": "001000000000111EEA",' +
-                '"FirstName": "Duplicate",' +
-                '"LastName": "Testcase",' +
-                '"Email": "email@test.com",' +
-                '"LeadSource": "Website"' +
-                '}';
+            String mainJSON = '{"attributes":{"type":"Lead","url":"/services/data/v47.0/sobjects/Lead/001000000000111EEA"},' +
+                    '"Id": "001000000000111EEA",' +
+                    '"FirstName": "Duplicate",' +
+                    '"LastName": "Testcase",' +
+                    '"Email": "email@test.com",' +
+                    '"LeadSource": "Website"' +
+                    '}';
 
             String jsonLead = '{"attributes":{"type":"Lead","url":"/services/data/v47.0/sobjects/Lead/001000000000222EEA"},' +
-                '"Id": "001000000000222EEA",' +
-                '"FirstName": "Duplicate",' +
-                '"LastName": "Testcase",' +
-                '"Email": "email@test.com",' +
-                '"LeadSource": "Website"' +
-                '}';
+                    '"Id": "001000000000222EEA",' +
+                    '"FirstName": "Duplicate",' +
+                    '"LastName": "Testcase",' +
+                    '"Email": "email@test.com",' +
+                    '"LeadSource": "Website"' +
+                    '}';
 
             switch on methodCall.stubbedMethodName{
                 when 'selectForMerge' {
                     Set<Id> dupeIds =  (Set<Id>) methodCall.listOfArgs[0];
                     List<Lead> duplicateList = new List<Lead>();
                     if(dupeIds != null) {
-                        Lead masterLead = (Lead) JSON.deserialize(masterJSON, Lead.class);
-                        duplicateList.add(masterLead);
+                        Lead mainLead = (Lead) JSON.deserialize(mainJSON, Lead.class);
+                        duplicateList.add(mainLead);
                         for (Integer i = dupeIds.size()-1; i > 0; i--) {
                             Lead duplicate = (Lead) JSON.deserialize(jsonLead, Lead.class);
                             duplicateList.add(duplicate);
