@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
@@ -57,11 +56,9 @@
         <fullName>Annual_Report__c</fullName>
         <externalId>false</externalId>
         <label>Annual Report</label>
-        <length>16</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Biennial_Report__c</fullName>
@@ -211,6 +208,31 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>State_Registration_Required__c</fullName>
+        <description>A picklist to identify if state registration is required.</description>
+        <externalId>false</externalId>
+        <label>State Registration Required</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>State__c</fullName>
         <externalId>false</externalId>
         <label>State</label>
@@ -229,7 +251,7 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>State Registrations</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
