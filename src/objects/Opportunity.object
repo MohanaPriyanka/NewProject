@@ -9989,6 +9989,17 @@ ISPICKVAL(Customer_Group__c,&quot;Public Offtake&quot;)
         <errorMessage>Only Anchors can be marked with underwriting criteria = Investment Grade or Financial Review</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Anchor_Underwriting_Criteria_Populated</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISPICKVAL(Customer_Group__c,&quot;Anchor&quot;),
+ISPICKVAL(StageName,&quot;Complete&quot;),
+ISPICKVAL(Underwriting_Criteria__c,&quot;&quot;)
+)</errorConditionFormula>
+        <errorDisplayField>Underwriting_Criteria__c</errorDisplayField>
+        <errorMessage>For anchor opportunities, you must set the Underwriting Criteria field to Investment Grade or Financial Review before setting the stage to Complete</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Discount</fullName>
         <active>true</active>
         <errorConditionFormula>ISPICKVAL( NMCPA__c , &quot;Floating Discount&quot;) &amp;&amp;
