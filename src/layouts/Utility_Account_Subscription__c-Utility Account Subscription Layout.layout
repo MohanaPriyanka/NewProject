@@ -213,10 +213,6 @@
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Customer_Subscription_KW_DC_STATIC__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Share_of_System__c</field>
             </layoutItems>
