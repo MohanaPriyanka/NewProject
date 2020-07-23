@@ -4,7 +4,7 @@
         <description>Sends an email alert to member of the sales partner qc public group (which is internal users only)</description>
         <name>emailalert_NotifySales</name>
         <label>emailalert_NotifySales</label>
-        <locationX>2036</locationX>
+        <locationX>2261</locationX>
         <locationY>73</locationY>
         <actionName>Account.Sales_Partner_Application_Submitted_Notification</actionName>
         <actionType>emailAlert</actionType>
@@ -24,7 +24,7 @@
     <assignments>
         <name>Assign_Account_Fields</name>
         <label>Assign Account Fields</label>
-        <locationX>1451</locationX>
+        <locationX>1676</locationX>
         <locationY>63</locationY>
         <assignmentItems>
             <assignToReference>sovAccount.BillingStreet</assignToReference>
@@ -222,7 +222,7 @@
     <assignments>
         <name>Assign_Current_Stage2</name>
         <label>Assign Current Stage</label>
-        <locationX>645</locationX>
+        <locationX>870</locationX>
         <locationY>64</locationY>
         <assignmentItems>
             <assignToReference>$Flow.CurrentStage</assignToReference>
@@ -238,7 +238,7 @@
     <assignments>
         <name>Assign_Current_Stage6</name>
         <label>Assign Current Stage</label>
-        <locationX>1106</locationX>
+        <locationX>1331</locationX>
         <locationY>66</locationY>
         <assignmentItems>
             <assignToReference>$Flow.CurrentStage</assignToReference>
@@ -254,7 +254,7 @@
     <assignments>
         <name>Assign_Current_Stage7</name>
         <label>Assign Current Stage</label>
-        <locationX>1321</locationX>
+        <locationX>1546</locationX>
         <locationY>65</locationY>
         <assignmentItems>
             <assignToReference>$Flow.CurrentStage</assignToReference>
@@ -270,7 +270,7 @@
     <assignments>
         <name>Assign_Set_AccountCreated_to_True</name>
         <label>Set AccountCreated to True</label>
-        <locationX>554</locationX>
+        <locationX>779</locationX>
         <locationY>328</locationY>
         <assignmentItems>
             <assignToReference>var_AccountCreated</assignToReference>
@@ -303,7 +303,7 @@
         <description>Checks to see if the account is created already in order to handle back button</description>
         <name>dec_Account_Created</name>
         <label>Account Created?</label>
-        <locationX>323</locationX>
+        <locationX>548</locationX>
         <locationY>261</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -389,7 +389,7 @@
     <recordCreates>
         <name>Create_Account</name>
         <label>Create Account</label>
-        <locationX>331</locationX>
+        <locationX>556</locationX>
         <locationY>445</locationY>
         <assignRecordIdToReference>sovAccount.Id</assignRecordIdToReference>
         <connector>
@@ -409,7 +409,7 @@
     <recordCreates>
         <name>Create_Contact</name>
         <label>Create Contact</label>
-        <locationX>1683</locationX>
+        <locationX>1908</locationX>
         <locationY>66</locationY>
         <connector>
             <targetReference>Create_Product_Group_Assignment</targetReference>
@@ -471,7 +471,7 @@
     <recordCreates>
         <name>Create_Error_Log</name>
         <label>Create Error Log</label>
-        <locationX>1668</locationX>
+        <locationX>1893</locationX>
         <locationY>445</locationY>
         <connector>
             <targetReference>scr_end</targetReference>
@@ -509,7 +509,7 @@
     <recordCreates>
         <name>Create_Error_Log_0</name>
         <label>Create Error Log</label>
-        <locationX>813</locationX>
+        <locationX>1038</locationX>
         <locationY>443</locationY>
         <connector>
             <targetReference>Assign_Current_Stage2</targetReference>
@@ -547,7 +547,7 @@
     <recordCreates>
         <name>Create_Product_Group_Assignment</name>
         <label>Create Product Group Assignment</label>
-        <locationX>1838</locationX>
+        <locationX>2063</locationX>
         <locationY>65</locationY>
         <connector>
             <targetReference>emailalert_NotifySales</targetReference>
@@ -585,7 +585,7 @@
     <recordUpdates>
         <name>Update_Account</name>
         <label>Update Account</label>
-        <locationX>1569</locationX>
+        <locationX>1794</locationX>
         <locationY>68</locationY>
         <connector>
             <targetReference>Create_Contact</targetReference>
@@ -595,11 +595,11 @@
         </faultConnector>
         <inputReference>sovAccount</inputReference>
     </recordUpdates>
-    <runInMode>SystemModeWithSharing</runInMode>
+    <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>scr_Address</name>
         <label>Address</label>
-        <locationX>869</locationX>
+        <locationX>1094</locationX>
         <locationY>66</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -746,7 +746,7 @@
     <screens>
         <name>scr_CompanyInfo</name>
         <label>scr_CompanyInfo</label>
-        <locationX>766</locationX>
+        <locationX>991</locationX>
         <locationY>64</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -886,7 +886,7 @@
     <screens>
         <name>scr_ContactInfo</name>
         <label>Contact Information</label>
-        <locationX>333</locationX>
+        <locationX>558</locationX>
         <locationY>54</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -994,7 +994,7 @@ REGEX({!txtBusiness_Phone},&quot;\\D*?(\\d\\D*?){10}&quot;)
     <screens>
         <name>scr_end</name>
         <label>scr_end</label>
-        <locationX>2139</locationX>
+        <locationX>2364</locationX>
         <locationY>443</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1028,7 +1028,7 @@ REGEX({!txtBusiness_Phone},&quot;\\D*?(\\d\\D*?){10}&quot;)
     <screens>
         <name>scr_Intro</name>
         <label>scr_Intro</label>
-        <locationX>151</locationX>
+        <locationX>376</locationX>
         <locationY>61</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1047,7 +1047,7 @@ REGEX({!txtBusiness_Phone},&quot;\\D*?(\\d\\D*?){10}&quot;)
     <screens>
         <name>scrCompany_Background</name>
         <label>Company Background</label>
-        <locationX>964</locationX>
+        <locationX>1189</locationX>
         <locationY>66</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1129,7 +1129,7 @@ REGEX({!txtBusiness_Phone},&quot;\\D*?(\\d\\D*?){10}&quot;)
     <screens>
         <name>scrDisclosures</name>
         <label>Disclosures</label>
-        <locationX>1231</locationX>
+        <locationX>1456</locationX>
         <locationY>65</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
