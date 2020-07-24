@@ -557,8 +557,9 @@
     </fields>
     <fields>
         <fullName>CS_Services_Type__c</fullName>
+        <description>Should use the CS Services Type global picklist, but can&apos;t because it&apos;s already created.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Differentiates between projects where BlueWave is contracted to acquire customers and projects where customers are acquired by another party.</inlineHelpText>
+        <inlineHelpText>Differentiates between projects where BlueWave is contracted to acquire customers and projects where customers are acquired by another party. Set automatically when a new related Client Contract record is effective</inlineHelpText>
         <label>CS Services Type</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -566,7 +567,6 @@
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
-            <restricted>true</restricted>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
@@ -664,7 +664,7 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <deleteConstraint>SetNull</deleteConstraint>
         <description>The field points to the same contract even if there is only one.</description>
         <externalId>false</externalId>
-        <inlineHelpText>The field points to the same contract even if there is only one.</inlineHelpText>
+        <inlineHelpText>Set automatically when a Client Contract is effective, and used for Client Invoicing. It could be the same as the Client Management Contract.</inlineHelpText>
         <label>Client Acquisition Contract</label>
         <referenceTo>Contract</referenceTo>
         <relationshipLabel>Client Acquisition Contract</relationshipLabel>
@@ -695,7 +695,7 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <deleteConstraint>SetNull</deleteConstraint>
         <description>The field points to the same contract even if there is only one.</description>
         <externalId>false</externalId>
-        <inlineHelpText>The field points to the same contract even if there is only one.</inlineHelpText>
+        <inlineHelpText>Set automatically when a Client Contract is effective, and used for Client Invoicing. It could be the same as the Client Acquisition Contract.</inlineHelpText>
         <label>Client Management Contract</label>
         <referenceTo>Contract</referenceTo>
         <relationshipLabel>Client Management Contract</relationshipLabel>
