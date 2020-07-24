@@ -15,34 +15,34 @@
                         <h2 class="slds-var-p-bottom_large">
                             Enter your zip code and property type to find out!
                         </h2>
-                        <div class="slds-align_absolute-center" onkeyup={checkForSubmit}>
-                            <div style="min-width: 60%;">
-                                <lightning-input name="zipCodeInput"
-                                                label="Zip Code"
-                                                variant="label-hidden"
-                                                value={zipCodeInput}
-                                                onchange={genericOnChange}
-                                                type="text"
-                                                pattern="[0-9]{5}"
-                                                class="input_center"
-                                                message-when-pattern-mismatch="Please enter your 5 digit ZIP code"
-                                ></lightning-input>
+                        <div class="slds-align_absolute-center zip-container" onkeyup={checkForSubmit}>
+                            <lightning-input name="zipCodeInput"
+                                            label="Zip Code"
+                                            variant="label-hidden"
+                                            value={zipCodeInput}
+                                            onchange={genericOnChange}
+                                            type="text"
+                                            pattern="[0-9]{5}"
+                                            class="input_center"
+                                            message-when-pattern-mismatch="Please enter your 5 digit ZIP code">
+                            </lightning-input>
+                        </div>
 
-                                <div class="icon-button-group-container">
-                                    <div class={getResiButtonStyle} onclick={applicationTypeOnChangeResi}>
-                                        <div class="icon-container">
-                                            <div class="icon">
-                                                <img src={resiIconUrl} class="icon">
-                                                <p class="icon">My Home</p>
-                                            </div>
+                        <div class="icon-button-group-parent">
+                            <div class="icon-button-group-container">
+                                <div class={getResiButtonStyle} onclick={applicationTypeOnChangeResi}>
+                                    <div class="icon-container">
+                                        <div class="icon">
+                                            <img src={resiIconUrl} class="icon">
+                                            <p class="icon">My Home</p>
                                         </div>
                                     </div>
-                                    <div class={getBizButtonStyle} onclick={applicationTypeOnChangeBiz}>
-                                        <div class="icon-container">
-                                            <div class="icon">
-                                                <img src={bizIconUrl} class="icon">
-                                                <p class="icon">A Business</p>
-                                            </div>
+                                </div>
+                                <div class={getBizButtonStyle} onclick={applicationTypeOnChangeBiz}>
+                                    <div class="icon-container">
+                                        <div class="icon">
+                                            <img src={bizIconUrl} class="icon">
+                                            <p class="icon">A Business</p>
                                         </div>
                                     </div>
                                 </div>
