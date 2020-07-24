@@ -6,10 +6,27 @@
 <template>
     <template if:false={showSpinner}>
         <div class="form">
-            <h1 class="slds-size_1-of-1 slds-var-p-around_medium slds-text-align_center">
+            <h1 class="form-header">
                 Great news! There is community solar available in your area.<br/>
+            </h1>
+            <h1 class="form-subheader">
                 Tell us a little more about your property.
             </h1>
+            
+            <template if:false={resiApplicationType}>
+                <h6>Business Info<span class="blue-text">&nbsp;&gt;</span></h6>
+                <div class="form-section">
+                    <div class="input-group">
+                        <lightning-input name="businessName" value={restLead.businessName} class="slds-var-m-left_small slds-var-m-right_small" label="Name of Business or Organization" onchange={genericOnChange} required></lightning-input>
+                    </div>
+                    <div class="input-group">
+                        <lightning-input name="businessTitle" value={restLead.businessTitle} class="slds-var-m-left_small slds-var-m-right_small"  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
+                    </div>
+                    <div class="input-group">
+                        <lightning-input name="businessPhone" value={restLead.businessPhone} class="slds-var-m-left_small slds-var-m-right_small"  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
+                    </div>
+                </div>
+            </template>
 
             <h6>Contact Info<span class="blue-text">&nbsp;&gt;</span></h6>
             <div class="form-section">
@@ -22,11 +39,11 @@
                 <div class="input-group half">
                     <lightning-input name="email" value={restLead.email} label="Email" onchange={genericOnChange} type="email" required disabled={resumedApp}></lightning-input>
                 </div>
-                <template if:true={resiApplicationType}>
-                    <div class="input-group half">
+                <div class="input-group half">
+                    <template if:true={resiApplicationType}>
                         <lightning-input name="mobilePhone" value={restLead.mobilePhone}  label="Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
-                    </div>
-                </template>
+                    </template>
+                </div>
                 <template if:false={sameHomeAddress}>
                     <div class="input-group half">
                         <lightning-input name="streetAddress" class="slds-var-m-bottom_small" label="Street" onchange={genericOnChange} value={restLead.streetAddress} required></lightning-input>
@@ -45,21 +62,6 @@
                     <lightning-input class="slds-var-p-left_medium" type="checkbox" label="My home address is the same as the property address on my utility account" checked={sameHomeAddress} onchange={homeAddressToggle}></lightning-input>
                 </div>
             </div>
-            
-            <template if:false={resiApplicationType}>
-                <h6>Business Info<span class="blue-text">&nbsp;&gt;</span></h6>
-                <div class="form-section">
-                    <div class="input-group">
-                        <lightning-input name="businessName" value={restLead.businessName} class="slds-var-m-left_small slds-var-m-right_small" label="Name of Business or Organization" onchange={genericOnChange} required></lightning-input>
-                    </div>
-                    <div class="input-group">
-                        <lightning-input name="businessTitle" value={restLead.businessTitle} class="slds-var-m-left_small slds-var-m-right_small"  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
-                    </div>
-                    <div class="input-group">
-                        <lightning-input name="businessPhone" value={restLead.businessPhone} class="slds-var-m-left_small slds-var-m-right_small"  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
-                    </div>
-                </div>
-            </template>
 
             <h6>Billing Info<span class="blue-text">&nbsp;&gt;</span></h6>
             <div class="form-section">
@@ -187,10 +189,13 @@
                                     </div>
                                     <div class="input-group">
                                         <template if:true={it.last}>
-                                            <lightning-button 
-                                                label="Add Another Utility Account"
-                                                onclick={addAnotherUtilityAccount}>
-                                            </lightning-button>
+                                            <div class="combo-button" title="Add another Utility Account" onclick={addAnotherUtilityAccount}>
+                                                <svg class="combo-button__icon" aria-hidden="true">
+                                                    <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#new"></use>
+                                                </svg>
+                                                <span class="slds-assistive-text">Add another Utility Account</span>
+                                                <p class="combo-button__text">Add another Utility Account</p>
+                                            </div>
                                         </template>
                                     </div>
                                 </div>

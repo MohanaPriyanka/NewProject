@@ -1,4 +1,13 @@
-.THIS .ssf-container {
+
+.THIS {
+    box-sizing: border-box;
+}
+
+.THIS.ssf-container {
     background-color: white;
     border-radius: 0.5rem;
+    min-width: 50%;
+    max-width: 98%;
+    width: fit-content;
+    margin: 0 auto;
 }
