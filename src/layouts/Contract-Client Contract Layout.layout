@@ -31,6 +31,10 @@
                 <behavior>Edit</behavior>
                 <field>Pricebook2Id</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Opportunity__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -418,6 +422,17 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Shared_Solar_System__c.Client_Management_Contract__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <fields>NAME</fields>
+        <fields>Shared_Solar_System__c</fields>
+        <fields>CS_Services_Type__c</fields>
+        <fields>Effective_Date__c</fields>
+        <fields>End_Date__c</fields>
+        <relatedList>Client_Contract__c.Contract__c</relatedList>
+        <sortField>Effective_Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>

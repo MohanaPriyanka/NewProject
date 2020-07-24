@@ -14,7 +14,8 @@ public inherited sharing class SharedSolarSystemsSelector {
     }
     public List<Shared_Solar_System__c> selectAll(Set<Id> sssIds) {
         return [
-            SELECT Id, Apex_Context__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c
+            SELECT Id, Apex_Context__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c,
+                CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c
             FROM Shared_Solar_System__c
             WHERE Id IN :sssIds
         ];
@@ -90,7 +91,8 @@ public inherited sharing class SharedSolarSystemsSelector {
             SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
                 Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c, Maximum_Subscription_Capacity_kWDC__c,
                 Total_Capacity_Committed_Reserved__c,
-                Reserved_Anchor_Capacity__c, Name, Stage__c
+                Reserved_Anchor_Capacity__c, Name, Stage__c,
+                CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c
             FROM Shared_Solar_System__c
         ];
     }
