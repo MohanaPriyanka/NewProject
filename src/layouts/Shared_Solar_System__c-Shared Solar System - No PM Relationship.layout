@@ -743,6 +743,18 @@
         <sortField>Date_Approved__c</sortField>
         <sortOrder>Asc</sortOrder>
     </relatedLists>
+    <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <fields>NAME</fields>
+        <fields>Contract__c</fields>
+        <fields>Contract_Name__c</fields>
+        <fields>CS_Services_Type__c</fields>
+        <fields>Effective_Date__c</fields>
+        <fields>End_Date__c</fields>
+        <relatedList>Client_Contract__c.Shared_Solar_System__c</relatedList>
+        <sortField>Effective_Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
