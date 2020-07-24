@@ -96,7 +96,7 @@
         <fullName>Anchor_Acquisition_Fee__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Contracted $ / W for Anchor customers. Entered manually by CSBD.</inlineHelpText>
-        <label>Anchor Acquisition Fee</label>
+        <label>XXAnchor Acquisition Fee</label>
         <precision>18</precision>
         <required>false</required>
         <scale>6</scale>
@@ -108,7 +108,7 @@
         <fullName>Anchor_Management_Fee__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Annual management fee ($/MW DC) for Anchor customers. Manually entered by CSBD at contract execution. If blended rate, include blended rate in both Anchor and Small Offtake fields.</inlineHelpText>
-        <label>Anchor Management Fee</label>
+        <label>XXAnchor Management Fee</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -523,7 +523,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Customer_Acquisition_Fee__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Contracted $ / W for Small Offtake customers. Manually entered by CSBD at contract execution.</inlineHelpText>
-        <label>Small Offtake Acquisition Fee</label>
+        <label>XXSmall Offtake Acquisition Fee</label>
         <precision>18</precision>
         <required>false</required>
         <scale>6</scale>
@@ -535,7 +535,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Customer_Acquisition_Invoicing_Detail__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Terms at which customer acquisition fee is paid</inlineHelpText>
-        <label>Customer Acquisition Invoicing Detail</label>
+        <label>XXCustomer Acquisition Invoicing Detail</label>
         <length>10000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -545,7 +545,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
     <fields>
         <fullName>Customer_Acquisition_Invoicing_Timing__c</fullName>
         <externalId>false</externalId>
-        <label>Customer Acquisition Invoicing Timing</label>
+        <label>XXCustomer Acquisition Invoicing Timing</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -891,7 +891,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
     <fields>
         <fullName>Management_Fee_Detail__c</fullName>
         <externalId>false</externalId>
-        <label>Management Fee Detail</label>
+        <label>XXManagement Fee Detail</label>
         <length>32768</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -902,7 +902,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Management_Fee_Escalator_Percent__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Escalator percentage for management fees. Manually entered by CSBD at contract execution.</inlineHelpText>
-        <label>Management Fee Escalator</label>
+        <label>XXManagement Fee Escalator</label>
         <precision>2</precision>
         <required>false</required>
         <scale>0</scale>
@@ -913,7 +913,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
     <fields>
         <fullName>Management_Fee_Prepayment_Trigger__c</fullName>
         <externalId>false</externalId>
-        <label>Management Fee Prepayment Trigger</label>
+        <label>XXManagement Fee Prepayment Trigger</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -928,7 +928,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <description>Shows Management Fee trigger event.</description>
         <externalId>false</externalId>
         <inlineHelpText>Shows Management Fee trigger event.</inlineHelpText>
-        <label>Management Fee Trigger</label>
+        <label>XXManagement Fee Trigger</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -942,7 +942,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Management_Fee__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Annual management fee ($/MW DC) for Small Offtake customers. Manually entered by CSBD at contract execution. If blended rate, include blended rate in both Anchor and Small Offtake fields.</inlineHelpText>
-        <label>Small Offtake Management Fee</label>
+        <label>XXSmall Offtake Management Fee</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -965,7 +965,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Management_Invoicing_Timing__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Timing of management fee invoicing</inlineHelpText>
-        <label>Management Invoicing Timing</label>
+        <label>XXManagement Invoicing Timing</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1016,7 +1016,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
     <fields>
         <fullName>Onboarding_Fee_Trigger__c</fullName>
         <externalId>false</externalId>
-        <label>Onboarding Fee Trigger</label>
+        <label>XXOnboarding Fee Trigger</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1030,7 +1030,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Onboarding_Fee__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>$ / MW DC</inlineHelpText>
-        <label>Onboarding Fee</label>
+        <label>XXOnboarding Fee</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -1273,7 +1273,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Small_Offtake_Reacquisition_Fee__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Contracted $ / W for Small Offtake customers. Manually entered by CSBD at contract execution.</inlineHelpText>
-        <label>Small Offtake Reacquisition Fee</label>
+        <label>XXSmall Offtake Reacquisition Fee</label>
         <precision>18</precision>
         <required>false</required>
         <scale>6</scale>
