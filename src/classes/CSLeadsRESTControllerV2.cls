@@ -353,7 +353,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         newLead = leadService.insertLead(newLead);
         newLead = duplicateService.checkLeadDuplicates(newLead);
         
-        newLead.Continue_Application_Link__c = baseUrl + '?leadid=' + newLead.Id + '&email=' + newLead.Email + '&loc=' + APP_STATUS_TO_LOC.get('Started');
+        newLead.Continue_Application_Link__c = baseUrl + '?leadid=' + newLead.Id + '&email=' + newLead.Email + '&loc=' + APP_STATUS_TO_LOCATION.get('Started');
         newLead = leadService.updateLead(newLead);
         
         if (requestLead.propertyAccounts != null) {            
@@ -650,7 +650,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
 
-    public static final Map<String, String> APP_STATUS_TO_LOC = new Map<String, String>{
+    public static final Map<String, String> APP_STATUS_TO_LOCATION = new Map<String, String>{
         'Started' => 'info',
         'Customer Info Completed' => 'agree',
         'Contracts Signed' => 'pay',
@@ -658,6 +658,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     };
 
 
+    @SuppressWarnings('PMD.ApexOpenRedirect')
     public void updateLeadApplicationStatus(Id leadId) {
         Lead lead = leadSelector.selectOneForStatusUpdate(leadId);
         String status = getApplicationStatus(lead);
@@ -665,16 +666,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             lead.Application_Status__c = status;
 
             PageReference url = new PageReference(lead.Continue_Application_Link__c);
-            url.getParameters().put('loc', APP_STATUS_TO_LOC.get(status));
+            url.getParameters().put('loc', APP_STATUS_TO_LOCATION.get(status));
             lead.Continue_Application_Link__c = url.getUrl();
             
-            Database.SaveResult sr = Database.update(lead, false);
-            if(!sr.isSuccess()) {
-                for(Database.Error err : sr.getErrors()) {
-                    Logger.logLater('CSLeadsRESTControllerV2', 'updateLeadApplicationStatus', 'Unable to update Application Status for Lead ' + sr.getId() + '. Error: ' + err.getMessage());
-                }
-                Logger.flushLogs();
-            }
+            Util.updateAndLog(new List<SObject>{lead}, 'CSLeadsRESTControllerV2', 'updateLeadApplicationStatus');
         }
     }
 

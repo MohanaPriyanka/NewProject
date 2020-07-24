@@ -5,7 +5,6 @@
     <customButtons>LASER_Credit_Access_Custom</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>FindDup</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
@@ -58,14 +57,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Objections__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Partner_Account__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Partner_Contact__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

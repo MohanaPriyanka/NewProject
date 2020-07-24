@@ -5,6 +5,7 @@
     <customButtons>Check_Loadzone</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <excludeButtons>XClean</excludeButtons>
@@ -56,14 +57,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Generate_Docs_for_Review__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Partner_Account__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Partner_Contact__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
