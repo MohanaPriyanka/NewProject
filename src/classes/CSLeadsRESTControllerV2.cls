@@ -665,9 +665,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         if(lead.Application_Status__c != status) {
             lead.Application_Status__c = status;
 
-            PageReference url = new PageReference(lead.Continue_Application_Link__c);
-            url.getParameters().put('loc', APP_STATUS_TO_LOCATION.get(status));
-            lead.Continue_Application_Link__c = url.getUrl();
+            if(lead.Continue_Application_Link__c != null) {
+                PageReference url = new PageReference(lead.Continue_Application_Link__c);
+                url.getParameters().put('loc', APP_STATUS_TO_LOCATION.get(status));
+                lead.Continue_Application_Link__c = url.getUrl();
+            } else {
+                lead.Continue_Application_Link__c = baseUrl + '?leadid=' + lead.Id + '&email=' + lead.Email + '&loc=' + APP_STATUS_TO_LOCATION.get('Started');
+            }
             
             Util.updateAndLog(new List<SObject>{lead}, 'CSLeadsRESTControllerV2', 'updateLeadApplicationStatus');
         }
