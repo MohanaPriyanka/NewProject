@@ -11,7 +11,7 @@
             </lightning-file-upload>
             <template if:true={isError}>
                 <div data-help-message="true" role="alert" class="slds-form-element__help slds-text-color_error">
-                    You must upload your utility bill before proceeding.
+                    <p class="small">You must upload your utility bill before proceeding.</p>
                 </div>
             </template>
 
@@ -23,37 +23,37 @@
                     onclick={toggleHelp}>
                 </lightning-button>
                 <div if:true={helpTextVisible} class="slds-text-align_left">
-                    <p class="slds-text-heading_small">Why do we need your utility bill?</p>
-                    <p class="slds-text-body_regular slds-m-bottom_small">We collect images of your bill in order to ensure you receive the appropriate amount of credits. The image of your bill just needs to be legible. Otherwise, we have no preference on format.</p>
-                    <p class="slds-text-heading_small">How can you provide it?</p>
-                    <p class="slds-text-body_regular">You can obtain the image through the following methods:</p>
-                    <ul class="slds-list_dotted slds-m-bottom_small slds-text-body_regular">
-                        <li>If you have a hard copy of your bill, you can take a picture of or scan the pages and upload the resulting images</li>
-                        <li>You can take a screenshot of your bill and upload the resulting images</li>
-                        <li>Some utilities allow you to download a pdf of your bill from your account online</li>
-                        <li>Maybe there’s something else we haven’t thought of!</li>
+                    <p>Why do we need your utility bill?</p>
+                    <p class="small slds-var-m-bottom_small">We collect images of your bill in order to ensure you receive the appropriate amount of credits. The image of your bill just needs to be legible. Otherwise, we have no preference on format.</p>
+                    <p>How can you provide it?</p>
+                    <p class="small">You can obtain the image through the following methods:</p>
+                    <ul class="slds-list_dotted slds-var-m-bottom_small">
+                        <li><p class="small">If you have a hard copy of your bill, you can take a picture of or scan the pages and upload the resulting images</p></li>
+                        <li><p class="small">You can take a screenshot of your bill and upload the resulting images</p></li>
+                        <li><p class="small">Some utilities allow you to download a pdf of your bill from your account online</p></li>
+                        <li><p class="small">Maybe there’s something else we haven’t thought of!</p></li>
                     </ul>
-                    <p class="slds-text-heading_small">What does it need to include?</p>
-                    <p class="slds-text-body_regular">Please make sure the bill you provide:</p>
-                    <ul class="slds-list_dotted slds-m-bottom_small slds-text-body_regular">
-                        <li>Is dated within the past 90 days</li>
-                        <li>Has no payments over 2 months past due</li>
-                        <li>Includes all pages of the bill (you can upload as many as 5 individual pages)</li>
+                    <p>What does it need to include?</p>
+                    <p class="small">Please make sure the bill you provide:</p>
+                    <ul class="slds-list_dotted slds-var-m-bottom_small">
+                        <li><p class="small">Is dated within the past 90 days</p></li>
+                        <li><p class="small">Has no payments over 2 months past due</p></li>
+                        <li><p class="small">Includes all pages of the bill (you can upload as many as 5 individual pages)</p></li>
                     </ul>
-                    <p class="slds-text-body_regular">Remember that we’re here to help through chat, email or phone if you need it.</p>
+                    <p class="small">Remember that we’re here to help through chat, email or phone if you need it.</p>
                 </div>
             </div>        
         </template>
         <template if:true={success}>
-            <div class="slds-m-around_small">
+            <div class="slds-var-m-around_small">
                 <lightning-icon 
                     icon-name="utility:success"
                     variant="success"
                     size="x-small"
                     alternative-text="upload successful"
-                    class="slds-m-right_x-small">
+                    class="slds-var-m-right_x-small">
                 </lightning-icon>
-                <span>Utility Bills Uploaded Successfully!</span>
+                <span><p>Utility Bills Uploaded Successfully!</p></span>
             </div>
         </template>
         <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
