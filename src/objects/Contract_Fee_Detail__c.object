@@ -557,6 +557,67 @@ IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quo
         </valueSet>
     </fields>
     <fields>
+        <fullName>Utilization_Adjustment_Amount__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>For every 1% decrease in utilization, the management fee will decrease by this $ amount.</inlineHelpText>
+        <label>Utilization Adjustment Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Utilization_Adjustment_Floor__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Utilization adjustments cannot be more than X percent of the management fee in a given month</inlineHelpText>
+        <label>Utilization Adjustment Floor</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Utilization_Adjustment_Multiplier__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>For every 1% decrease in utilization, the management fee will decrease by this percent.</inlineHelpText>
+        <label>Utilization Adjustment Multiplier</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Utilization_Adjustment_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Utilization Adjustment Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Multiplier (%)</fullName>
+                    <default>false</default>
+                    <label>Multiplier (%)</label>
+                </value>
+                <value>
+                    <fullName>Amount ($)</fullName>
+                    <default>false</default>
+                    <label>Amount ($)</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Waive_Reacquisition_Fee_Max_Project__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Reacquisition fees will be waived until X% of the project has been reacquired</inlineHelpText>
