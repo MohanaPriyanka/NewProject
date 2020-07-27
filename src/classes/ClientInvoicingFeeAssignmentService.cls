@@ -15,6 +15,8 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         private Boolean publicOfftake;
         private Boolean residential;
         private Boolean nonResidential;
+        private Boolean investmentGradeAnchor;
+        private Boolean notInvestmentGradeAnchor;
         private Boolean downsizing;
         private Boolean upsizing;
         private List<Id> contractIds;
@@ -38,6 +40,8 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.publicOfftake = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Public Offtake';
             this.residential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Residential';
             this.nonResidential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Non-Residential';
+            this.investmentGradeAnchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Underwriting_Criteria__c == 'Investment-Grade';
+            this.notInvestmentGradeAnchor = !investmentGradeAnchor;
             this.downsizing = subOrder.Approved_Change_in_Subscription__c < 0;
             this.upsizing = subOrder.Approved_Change_in_Subscription__c >= 0;
             this.acquisition = reacqStartDate == null || reacqStartDate > subOrder.Effective_Date__c;
@@ -47,6 +51,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         private Boolean matches(ContractFeeDetail feeDetail){
             return (this.customerGroupMatches(feeDetail) &&
                 this.acqChannelMatches(feeDetail) &&
+                this.anchorQualifierMatches(feeDetail) &&
                 this.sizingMethodMatches(feeDetail) &&
                 this.acquisitionTypeMatches(feeDetail)
             );
@@ -63,6 +68,13 @@ public without sharing class ClientInvoicingFeeAssignmentService {
                 this.publicOfftake && feeDetail.publicOfftake ||
                 this.residential && feeDetail.residential ||
                 this.nonResidential && feeDetail.nonResidential
+            );
+        }
+
+        private Boolean anchorQualifierMatches(ContractFeeDetail feeDetail){
+            return (!this.anchor ||
+                    (this.investmentGradeAnchor && feeDetail.investmentGradeAnchor ||
+                    this.notInvestmentGradeAnchor && feeDetail.notInvestmentGradeAnchor)
             );
         }
 
@@ -89,6 +101,8 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.publicOfftake = feeDetail.Acquisition_Cust_Group_Public_Offtake__c;
             this.residential = feeDetail.Acquisition_Cust_Group_Residential__c;
             this.nonResidential = feeDetail.Acquisition_Cust_Group_Non_Residential__c;
+            this.investmentGradeAnchor = feeDetail.Acq_Anchor_Qualif_Investment_Grade__c;
+            this.notInvestmentGradeAnchor = feeDetail.Acq_Anchor_Qualif_Not_Investment_Grade__c;
             this.downsizing = feeDetail.Acquisition_Sizing_Type_Downsizing__c;
             this.upsizing = feeDetail.Acquisition_Sizing_Type_Upsizing__c;
             this.acquisition = feeDetail.Acquisition_Type_Acquisition__c;
@@ -147,7 +161,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     }
 
     private void matchSubscriptionOrderToFee(List<SubscriptionOrder> subscriptionOrders,
-                                             MultiMap contractToFeeDetailMap){
+        MultiMap contractToFeeDetailMap){
         for (SubscriptionOrder subOrder : subscriptionOrders){
             Set<Object> contractDetails = new Set<Object>();
             // Max 2 contracts per Subscription Order (1 Acq, 1 Mgmt)

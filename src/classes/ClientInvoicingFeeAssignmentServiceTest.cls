@@ -114,7 +114,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 }
             }
         }
-
+        System.assertEquals(13,ordersToUpdate.size());
     }
 
     @IsTest
@@ -182,6 +182,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Cust_Group_Public_Offtake__c = true,
                 Acquisition_Cust_Group_Residential__c = false,
                 Acquisition_Cust_Group_Non_Residential__c = false,
+                Acq_Anchor_Qualif_Investment_Grade__c = true,
+                Acq_Anchor_Qualif_Not_Investment_Grade__c = false,
                 Acquisition_Sizing_Type_Downsizing__c = false,
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = true,
@@ -197,6 +199,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Cust_Group_Public_Offtake__c = true,
                 Acquisition_Cust_Group_Residential__c = false,
                 Acquisition_Cust_Group_Non_Residential__c = false,
+                Acq_Anchor_Qualif_Investment_Grade__c = true,
+                Acq_Anchor_Qualif_Not_Investment_Grade__c = true,
                 Acquisition_Sizing_Type_Downsizing__c = false,
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = false,
@@ -242,6 +246,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Cust_Group_Public_Offtake__c = true,
                 Acquisition_Cust_Group_Residential__c = true,
                 Acquisition_Cust_Group_Non_Residential__c = true,
+                Acq_Anchor_Qualif_Investment_Grade__c = true,
+                Acq_Anchor_Qualif_Not_Investment_Grade__c = true,
                 Acquisition_Sizing_Type_Downsizing__c = true,
                 Acquisition_Sizing_Type_Upsizing__c = false,
                 Acquisition_Type_Acquisition__c = true,
@@ -257,6 +263,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Cust_Group_Public_Offtake__c = true,
                 Acquisition_Cust_Group_Residential__c = true,
                 Acquisition_Cust_Group_Non_Residential__c = true,
+                Acq_Anchor_Qualif_Investment_Grade__c = true,
+                Acq_Anchor_Qualif_Not_Investment_Grade__c = true,
                 Acquisition_Sizing_Type_Downsizing__c = true,
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = true,
@@ -422,7 +430,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor",' +
+            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor","Underwriting_Criteria__c":"Investment-Grade",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
@@ -461,7 +469,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor",' +
+            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor","Underwriting_Criteria__c":"Financial Review",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
