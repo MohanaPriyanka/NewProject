@@ -34,4 +34,8 @@
         <tab>BW_Countersignature</tab>
         <visibility>Visible</visibility>
     </tabSettings>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EnableNotifications</name>
+    </userPermissions>
 </PermissionSet>
