@@ -190,6 +190,7 @@
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
+    <permissionSets>Campaign Read Access</permissionSets>
     <permissionSets>Anchor Management</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>

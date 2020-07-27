@@ -97,6 +97,10 @@
                 <behavior>Edit</behavior>
                 <field>Certificate_of_Good_Standing__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>State_Registration_Required__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
