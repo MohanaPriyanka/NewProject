@@ -7,6 +7,7 @@ public without sharing class LeadTriggerHandler {
     @TestVisible private static DocuSignHelper dsh;
     @TestVisible private static Boolean skipContractSend = false;
     private Map<String, String> leadToOppConvertMap = new Map<String, String> {
+        'Acquired_By_Client_Closed_By_BlueWave__c'=>'Acquired_By_Client_Closed_By_BlueWave__c',
         'Annual_Income_Currency__c'=>'Annual_Independent_Income__c',
         'Application__c'=>'Application_Date__c',
         'Application_Type__c'=>'Application_Type__c',
