@@ -460,6 +460,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Contract__c = contractA.Id,
             Acquisition_Channels_BCS_Acquired__c = true,
             Acquisition_Channels_Non_BCS_Acquired__c = true,
+            Acquisition_Channels_Closed_by_BCS__c = false,
             Acquisition_Cust_Group_Anchor__c = true,
             Acquisition_Cust_Group_Public_Offtake__c = true,
             Acquisition_Cust_Group_Residential__c = true,
@@ -474,6 +475,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Contract__c = contractA.Id,
             Acquisition_Channels_BCS_Acquired__c = true,
             Acquisition_Channels_Non_BCS_Acquired__c = true,
+            Acquisition_Channels_Closed_by_BCS__c = false,
             Acquisition_Cust_Group_Anchor__c = true,
             Acquisition_Cust_Group_Public_Offtake__c = true,
             Acquisition_Cust_Group_Residential__c = true,
@@ -792,12 +794,15 @@ public with sharing class SharedSolarSystemHandlerTest {
         update sssList;
         Test.stopTest();
         List<Subscription_Order__c> afterOrders = [
-            SELECT Id, Contract_Fee_Detail__c, Contract_Fee_Detail__r.Fee__c,
+            SELECT Id, Utility_Account_Subscription__r.Name, Contract_Fee_Detail__c, Contract_Fee_Detail__r.Fee__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c
             FROM Subscription_Order__c
         ];
         System.assertEquals(4,afterOrders.size());
+        for (Subscription_Order__c order : afterOrders){
+            System.assertNotEquals(null,order.Contract_Fee_Detail__c);
+        }
         for (Subscription_Order__c order : afterOrders){
             // Reacq has $0.20 fee, acq has $0.10 fee
             System.assertEquals(0.20, order.Contract_Fee_Detail__r.Fee__c);
