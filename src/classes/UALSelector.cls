@@ -21,15 +21,6 @@ public without sharing class UALSelector {
         ];
     }
 
-    public Map<Id, Utility_Account_Log__c> selectAllMap(Set<Id> utilityAccountLogIds) {
-        return new Map<Id, Utility_Account_Log__c>([
-            SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
-                Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c
-            FROM Utility_Account_Log__c
-            WHERE Id = :utilityAccountLogIds
-        ]);
-    }
-
     public Map<Id, Utility_Account_Log__c> selectAllByLeadMap(Set<Id> leadIds) {
         return new Map<Id, Utility_Account_Log__c>([
             SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
