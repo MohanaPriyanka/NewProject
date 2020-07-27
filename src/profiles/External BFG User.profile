@@ -190,6 +190,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSLeadsRESTControllerV2</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSLeadsRESTControllerV2Test</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSOpportunityFactory</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -419,6 +427,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LREngineTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LeadSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -719,6 +731,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TransferPartServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UALSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -10684,6 +10700,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Application_Source_Phase_2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Application_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
