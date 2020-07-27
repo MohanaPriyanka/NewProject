@@ -4,19 +4,15 @@ public class ClientInvoicingFeeAssignmentServiceTest {
     private static void testSetSubscriptionOrderAcquisitionFee() {
         useMocks();
         List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
-        System.assertEquals(13,ordersToRun.size());
-
+        System.assertEquals(14,ordersToRun.size());
         ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService();
         service.setSubscriptionOrderAcquisitionFee(ordersToRun);
-
         List<Subscription_Order__c> ordersToUpdate = (List<Subscription_Order__c>)
             FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Subscription_Order__c');
-
         for (Subscription_Order__c order : ordersToUpdate){
             String subOrderIdAsString = order.Id;
             String feeDetailIdAsString = order.Contract_Fee_Detail__c;
             String message = 'Could not match contract fee detail to SO where: ';
-
             switch on subOrderIdAsString {
                 when 'a9W3F000000A1P6UAK' {
                     System.assertEquals(
@@ -109,6 +105,12 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                         message + 'bcs acquired, anchor, downsizing, reacq start date is null'
                     );
                 }
+                when 'a9W3F000000A5P7UAK' {
+                    System.assertEquals('a123F000001VLE7III',
+                            feeDetailIdAsString,
+                            message + 'client acquired, bcs closed'
+                    );
+                }
                 when else {
                     System.assert(false,'Did not expect this Sub. Order ID' + subOrderIdAsString);
                 }
@@ -116,38 +118,46 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         }
         System.assertEquals(13,ordersToUpdate.size());
     }
-
     @IsTest
     private static void testGetCancellationRate (){
         useMocks();
         List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
         System.assertEquals(13,ordersToRun.size());
-
         ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService();
         service.setSubscriptionOrderAcquisitionFee(ordersToRun);
-
         System.assertEquals(0.14,service.getCancellationFee(ordersToRun[0]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
         System.assertEquals(0.15,service.getCancellationFee(ordersToRun[1]), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
         System.assertEquals(0.14,service.getCancellationFee(ordersToRun[2]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
         System.assertEquals(0.15,service.getCancellationFee(ordersToRun[3]), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
         System.assertEquals(0.14,service.getCancellationFee(ordersToRun[4]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
     }
-
+    @IsTest
+    private static void testGetCancellationRate (){
+        useMocks();
+        List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
+        System.assertEquals(14, ordersToRun.size());
+        ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService();
+        service.setSubscriptionOrderAcquisitionFee(ordersToRun);
+        System.assertEquals(0.14,service.getCancellationFee(ordersToRun[0]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
+        System.assertEquals(0.15,service.getCancellationFee(ordersToRun[1]), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
+        System.assertEquals(0.14,service.getCancellationFee(ordersToRun[2]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
+        System.assertEquals(0.15,service.getCancellationFee(ordersToRun[3]), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
+        System.assertEquals(0.14,service.getCancellationFee(ordersToRun[4]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
+    }
     private static void useMocks() {
         ClientInvoicingFeeAssignmentService.contractFeeDetailSelector = (ContractFeeDetailSelector) Test.createStub(ContractFeeDetailSelector.class, new MockFeeDetailSelector());
         ClientInvoicingFeeAssignmentService.subscripOrderSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
     }
-
     public class MockFeeDetailSelector extends MockProvider {
         public MockFeeDetailSelector() {
         }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             Contract_Fee_Detail__c acqBcsAcquiredNonAnchor = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7AAA',
                 Contract__c = '8003F000000KMD9QAO',
                 Acquisition_Channels_BCS_Acquired__c = true,
                 Acquisition_Channels_Non_BCS_Acquired__c = false,
+                Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = false,
                 Acquisition_Cust_Group_Public_Offtake__c = false,
                 Acquisition_Cust_Group_Residential__c = true,
@@ -163,6 +173,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Contract__c = '8003F000000KMD9QAO',
                 Acquisition_Channels_BCS_Acquired__c = false,
                 Acquisition_Channels_Non_BCS_Acquired__c = true,
+                Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = false,
                 Acquisition_Cust_Group_Public_Offtake__c = false,
                 Acquisition_Cust_Group_Residential__c = true,
@@ -178,6 +189,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Contract__c = '8003F000000KMD9QAO',
                 Acquisition_Channels_BCS_Acquired__c = true,
                 Acquisition_Channels_Non_BCS_Acquired__c = true,
+                Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = true,
                 Acquisition_Cust_Group_Public_Offtake__c = true,
                 Acquisition_Cust_Group_Residential__c = false,
@@ -195,6 +207,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Contract__c = '8003F000000KMD9QAO',
                 Acquisition_Channels_BCS_Acquired__c = true,
                 Acquisition_Channels_Non_BCS_Acquired__c = true,
+                Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = true,
                 Acquisition_Cust_Group_Public_Offtake__c = true,
                 Acquisition_Cust_Group_Residential__c = false,
@@ -212,6 +225,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Contract__c = '8003F000000KMD9QAO',
                 Acquisition_Channels_BCS_Acquired__c = true,
                 Acquisition_Channels_Non_BCS_Acquired__c = false,
+                Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = false,
                 Acquisition_Cust_Group_Public_Offtake__c = false,
                 Acquisition_Cust_Group_Residential__c = true,
@@ -227,6 +241,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Contract__c = '8003F000000KMD9QAO',
                 Acquisition_Channels_BCS_Acquired__c = false,
                 Acquisition_Channels_Non_BCS_Acquired__c = true,
+                Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = false,
                 Acquisition_Cust_Group_Public_Offtake__c = false,
                 Acquisition_Cust_Group_Residential__c = true,
@@ -242,6 +257,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Contract__c = '8003F000000KNC9QAO',
                 Acquisition_Channels_BCS_Acquired__c = true,
                 Acquisition_Channels_Non_BCS_Acquired__c = true,
+                Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = true,
                 Acquisition_Cust_Group_Public_Offtake__c = true,
                 Acquisition_Cust_Group_Residential__c = true,
@@ -259,6 +275,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Contract__c = '8003F000000KHH9QAO',
                 Acquisition_Channels_BCS_Acquired__c = true,
                 Acquisition_Channels_Non_BCS_Acquired__c = true,
+                Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = true,
                 Acquisition_Cust_Group_Public_Offtake__c = true,
                 Acquisition_Cust_Group_Residential__c = true,
@@ -271,9 +288,24 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Type_Reacquisition__c = true,
                 Fee__c = 0.17
             );
-
+            Contract_Fee_Detail__c acqClientClosedBCS = new Contract_Fee_Detail__c(
+                Id = 'a123F000001VLE7III',
+                Contract__c = '8003F000000KMD9QAO',
+                Acquisition_Channels_BCS_Acquired__c = false,
+                Acquisition_Channels_Non_BCS_Acquired__c = true,
+                Acquisition_Channels_Closed_by_BCS__c = true,
+                Acquisition_Cust_Group_Anchor__c = false,
+                Acquisition_Cust_Group_Public_Offtake__c = false,
+                Acquisition_Cust_Group_Residential__c = true,
+                Acquisition_Cust_Group_Non_Residential__c = true,
+                Acquisition_Sizing_Type_Downsizing__c = false,
+                Acquisition_Sizing_Type_Upsizing__c = true,
+                Acquisition_Type_Acquisition__c = true,
+                Acquisition_Type_Reacquisition__c = false,
+                Fee__c = 0.09
+            );
             List<Contract_Fee_Detail__c> cfdList = new List<Contract_Fee_Detail__c>{
-                acqBcsAcquiredNonAnchor, acqNonBcsAcquiredNonAnchor, acqAnchor,
+                acqBcsAcquiredNonAnchor, acqNonBcsAcquiredNonAnchor, acqClientClosedBCS, acqAnchor,
                 reacqBcsAcquiredNonAnchor, reacqNonBcsAcquiredNonAnchor, reacqAnchor,
                 downsizingAll, sameRateForAll
             };
@@ -288,7 +320,6 @@ public class ClientInvoicingFeeAssignmentServiceTest {
     public class MockSubscriptionOrderSelector extends MockProvider {
         public MockSubscriptionOrderSelector() {
         }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'selectByIds' {
@@ -298,12 +329,10 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             return null;
         }
     }
-
     public static List<Subscription_Order__c> getSubscriptionOrderMocks(){
         Date today = System.Today();
         Date monthFromToday = today.addMonths(1);
         Date monthAgo = today.addMonths(-1);
-
         String queryData = '[' +
             '{"Id":"a9W3F000000A1P6UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000013EV1QAM",' +
             '"Approved_Change_in_Subscription__c":12.00,' +
@@ -314,6 +343,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
             '"Opportunity__r":{"Id":"0063F00000MVO8EQAX","Customer_Group__c":"Residential",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
@@ -327,6 +357,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
             '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Residential",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
@@ -340,6 +371,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthAgo) + '"},' +
             '"Opportunity__r":{"Id":"0063F00000AAO8EQAX","Customer_Group__c":"Residential",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
@@ -353,6 +385,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
             '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Residential",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
@@ -366,6 +399,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
             '"Opportunity__r":{"Id":"0063F00000MXO9EQAX","Customer_Group__c":"Residential",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
@@ -379,6 +413,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KHH9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
             '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Residential",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
@@ -392,6 +427,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KHH9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
             '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Non-Residential",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
@@ -405,6 +441,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
             '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Non-Residential",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
@@ -418,6 +455,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
             '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Non-Residential",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
@@ -430,7 +468,10 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor","Underwriting_Criteria__c":"Investment-Grade",' +
+
+            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
+
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
@@ -444,6 +485,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
             '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Public Offtake",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
@@ -457,9 +499,25 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthAgo) + '"},' +
             '"Opportunity__r":{"Id":"0063F00000ZZO9EAAA","Customer_Group__c":"Public Offtake",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
+            '}}},' +
+            '{"Id":"a9W3F000000A5P7UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000021EV1QAM",' +
+            '"Approved_Change_in_Subscription__c":12.00,' +
+            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000021EV1QAM",' +
+            '"Opportunity__c":"0063F00000MVO6EQAX",' +
+            '"Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
+            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
+            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
+            '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
+            '"Opportunity__r":{"Id":"0063F00000MVO6EQAX",' +
+            '"Customer_Group__c":"Residential",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "true",' +
+            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
+            '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
+            '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A1V9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000020EV1QAM",' +
             '"Approved_Change_in_Subscription__c":-12.00,' +
@@ -469,7 +527,10 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor","Underwriting_Criteria__c":"Financial Review",' +
+
+            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor",' +
+            '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
+
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +

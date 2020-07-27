@@ -4,6 +4,11 @@
         <enabled>true</enabled>
         <name>CS_Lead_Status_Edit</name>
     </customPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Acquired_By_Client_Closed_By_BlueWave__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>CS Lead Status Editing</label>
 </PermissionSet>

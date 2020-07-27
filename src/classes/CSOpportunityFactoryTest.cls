@@ -238,7 +238,7 @@ public without sharing class CSOpportunityFactoryTest {
         update lead;
 
         lead = [
-            SELECT Id, LASER_Credit_Score__c, ConvertedAccountId, FirstName, LastName, Application__c,
+            SELECT Id, LASER_Credit_Score__c, ConvertedAccountId, FirstName, LastName, Application__c, Acquired_By_Client_Closed_By_BlueWave__c,
                 Application_Type__c, Avidia_Checking_Account__c, Business_Title__c, Customer_Referral__c, Customer_Type__c,
                 Customer_Type_Formula__c, LeadSource, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
@@ -388,7 +388,7 @@ public without sharing class CSOpportunityFactoryTest {
         update lead;
 
         lead = [
-            SELECT Id, LASER_Credit_Score__c, ConvertedAccountId, FirstName, LastName, Application__c,
+            SELECT Id, LASER_Credit_Score__c, ConvertedAccountId, FirstName, LastName, Application__c, Acquired_By_Client_Closed_By_BlueWave__c,
                 Application_Type__c, Avidia_Checking_Account__c, Business_Title__c, Customer_Referral__c, Customer_Type__c,
                 Customer_Type_Formula__c, LeadSource, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
@@ -531,7 +531,7 @@ public without sharing class CSOpportunityFactoryTest {
         update lead;
 
         lead = [
-            SELECT Id, LASER_Credit_Score__c, ConvertedAccountId, FirstName, LastName, Application__c,
+            SELECT Id, LASER_Credit_Score__c, ConvertedAccountId, FirstName, LastName, Application__c, Acquired_By_Client_Closed_By_BlueWave__c,
                 Application_Type__c, Avidia_Checking_Account__c, Business_Title__c, Customer_Referral__c, Customer_Type__c,
                 Customer_Type_Formula__c, LeadSource, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
