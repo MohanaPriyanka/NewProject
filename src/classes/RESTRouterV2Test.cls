@@ -15,7 +15,6 @@ public with sharing class RESTRouterV2Test {
             ',"state": "NY"' +
             ',"zipCode": "10901"' +
             ',"eiaId": "1234"' +
-            ',"continueApplicationLink": "http://switch.bluewavesolar.invalid"' +
             ',"productName": "CS Product"' +
             ',"referralName": "RefFirst RefLast"' +
             ',"referralEmail": "refemail@invalid.bluewavesolar.com"';
@@ -763,7 +762,6 @@ public with sharing class RESTRouterV2Test {
         '}';
     }
 
-
     private static void assertLeadAndChildrenChanged(Lead originalLead, RestLead updatedLead) {
         System.assertEquals(originalLead.Id, updatedLead.id, 'The lead returned should be the same one created during setup');
         System.assertNotEquals(originalLead.LASERCA__Home_Address__c, updatedLead.streetAddress, 'The updated lead streetAddress field value should not match the original field value');
@@ -788,7 +786,6 @@ public with sharing class RESTRouterV2Test {
         System.assertNotEquals(originalUAL.Service_State__c, updatedUal.serviceState, 'The updated utility account log serviceState field value should not match the original field value');
         System.assertNotEquals(originalUAL.Service_Zip_Code__c, updatedUal.servicePostalCode, 'The updated utility account log servicePostalCode field value should not match the original field value');
     }
-
 
 
     /** Other **/
