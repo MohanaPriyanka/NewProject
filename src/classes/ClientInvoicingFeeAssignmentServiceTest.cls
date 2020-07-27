@@ -118,19 +118,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         }
         System.assertEquals(13,ordersToUpdate.size());
     }
-    @IsTest
-    private static void testGetCancellationRate (){
-        useMocks();
-        List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
-        System.assertEquals(13,ordersToRun.size());
-        ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService();
-        service.setSubscriptionOrderAcquisitionFee(ordersToRun);
-        System.assertEquals(0.14,service.getCancellationFee(ordersToRun[0]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
-        System.assertEquals(0.15,service.getCancellationFee(ordersToRun[1]), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
-        System.assertEquals(0.14,service.getCancellationFee(ordersToRun[2]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
-        System.assertEquals(0.15,service.getCancellationFee(ordersToRun[3]), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
-        System.assertEquals(0.14,service.getCancellationFee(ordersToRun[4]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
-    }
+
     @IsTest
     private static void testGetCancellationRate (){
         useMocks();
@@ -528,7 +516,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
 
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor",' +
+            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor","Underwriting_Criteria__c":"Financial Review",' +
             '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
 
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
