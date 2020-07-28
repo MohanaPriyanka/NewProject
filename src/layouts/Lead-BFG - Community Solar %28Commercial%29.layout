@@ -106,6 +106,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Application_Status__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Reason_Unqualified__c</field>
             </layoutItems>
             <layoutItems>
@@ -314,7 +318,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Acquired_By_Client_Closed_By_BlueWave__c</field>
+                <field>Underwriting_Criteria__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
