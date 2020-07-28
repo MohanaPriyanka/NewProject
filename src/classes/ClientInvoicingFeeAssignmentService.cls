@@ -165,7 +165,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     }
 
     private void matchSubscriptionOrderToFee(List<SubscriptionOrder> subscriptionOrders,
-                                             MultiMap contractToFeeDetailMap){
+        MultiMap contractToFeeDetailMap){
         for (SubscriptionOrder subOrder : subscriptionOrders){
             Set<Object> contractDetails = new Set<Object>();
             // Max 2 contracts per Subscription Order (1 Acq, 1 Mgmt)

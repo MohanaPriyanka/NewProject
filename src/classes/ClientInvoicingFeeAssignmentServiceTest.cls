@@ -116,10 +116,9 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 }
             }
         }
-
         System.assertEquals(13,ordersToUpdate.size());
-
     }
+
     @IsTest
     private static void testGetCancellationRate (){
         useMocks();
