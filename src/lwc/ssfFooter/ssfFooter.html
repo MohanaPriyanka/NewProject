@@ -1,0 +1,61 @@
+<!--
+    Created by JesseFox_GearsCRM on 7/6/2020.
+-->
+
+<template>
+    <div class="footer-container">
+        <c-ssf-faq is-expanded={isExpanded}></c-ssf-faq>
+        
+        <div class="row slds-var-m-top_xx-large">
+            <div class="col-6">
+                <img src={logoUrl} class="logo"/>
+            </div>
+        </div>
+
+        <div class="footer-section row">
+            <div class="col-2 slds-var-p-horizontal_large">
+                <div class="address">
+                    111 Huntington Ave<br/>
+                    Suite 650<br/>
+                    Boston, MA 02199
+                </div>
+                <div class="social-links slds-var-m-top_medium">
+                    <a href="https://www.linkedin.com/company/bluewavesolar/" target="_blank">
+                        <img src="https://bluewavesolar.com/resources/img/icons/linkedin.min.svg">
+                    </a>
+                    <a href="https://twitter.com/bluewavesolar" class="slds-var-m-horizontal_small" target="_blank">
+                        <img src="https://bluewavesolar.com/resources/img/icons/twitter.min.svg">
+                    </a>
+                    <a href="https://www.facebook.com/BlueWaveSolar/" target="_blank">
+                        <img src="https://bluewavesolar.com/resources/img/icons/facebook.min.svg">
+                    </a>
+                </div> 
+            </div>
+            <div class="col-2 gray-text slds-var-p-horizontal_large">
+                <h3>Contact the Bluewave Support Team</h3>
+                <p>Email: <a class="plain-link" href="mailto:learnmore@bluewavesolar.com" target="_blank">learnmore@bluewavesolar.com</a></p>
+                <p>Call: <a class="plain-link" href="tel:+16176814119">(617) 681-4119</a></p>
+                <p>Hours: 9am&ndash;5pm Eastern M&ndash;F</p>
+            </div>
+            <div class="col-2 slds-var-p-horizontal_large">
+                <h3>
+                    <a class="plain-link" href="https://bluewavesolar.com/bw-resources/solar-101" target="_blank">Check out our Resource Center</a>&nbsp;
+                    <span class="slds-icon_container slds-icon-utility-chevronright">
+                        <svg class="slds-icon slds-icon-text-default link-icon" aria-hidden="true">
+                            <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+                        </svg>
+                    </span>
+                </h3>
+                <br/>
+                <h3>
+                    <a class="plain-link" href="https://bluewavesolar.com" target="_blank">Learn more about BlueWave</a>&nbsp;
+                    <span class="slds-icon_container slds-icon-utility-chevronright">
+                        <svg class="slds-icon slds-icon-text-default link-icon" aria-hidden="true">
+                            <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+                        </svg>
+                    </span>
+                </h3>
+            </div>
+        </div>
+    </div>
+</template>
