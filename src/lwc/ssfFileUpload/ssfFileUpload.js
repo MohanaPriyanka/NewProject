@@ -58,7 +58,7 @@ export default class SsfFileUpload extends LightningElement {
     }
 
     removeDummyContentLinks() {
-        unlinkDocsFromDummy({ documents: this.documents })
+        unlinkDocsFromDummy({ documents: this.documents, category: this.categoryType })
             .then(result => {
                 this.inputText = 'File uploaded successfully';
                 this.success = true;

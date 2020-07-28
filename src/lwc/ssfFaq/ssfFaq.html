@@ -1,0 +1,55 @@
+<!--
+    Created by JesseFox_GearsCRM on 7/6/2020.
+-->
+
+<template>
+    <div class="faq-title-section">
+        <div class="faq-title">
+            <h2>Community Solar FAQs</h2>
+            <div class="accordion-button" title={assistiveText} onclick={onButtonIconClick}>
+                <svg class={buttonIconStyle} aria-hidden="true">
+                    <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+                </svg>
+                <span class="slds-assistive-text">{assistiveText}</span>
+            </div>
+        </div>
+    </div>
+    <div class="slds-var-m-top_small" if:true={isExpanded}>
+        <div class="row">
+            <div class="col-3">
+                <c-ssf-faq-collapsible heading={label.faq1Question}>
+                    <p>{label.faq1Answer}</p>
+                </c-ssf-faq-collapsible>
+            </div>
+            <div class="col-3">
+                <c-ssf-faq-collapsible heading={label.faq4Question}>
+                    <p>{label.faq4Answer}</p>
+                </c-ssf-faq-collapsible>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <c-ssf-faq-collapsible heading={label.faq2Question}>
+                    <p>{label.faq2Answer}</p>
+                </c-ssf-faq-collapsible>
+            </div>
+            <div class="col-3">
+                <c-ssf-faq-collapsible heading={label.faq5Question}>
+                    <p>{label.faq5Answer}</p>
+                </c-ssf-faq-collapsible>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <c-ssf-faq-collapsible heading={label.faq3Question}>
+                    <p>{label.faq3Answer}</p>
+                </c-ssf-faq-collapsible>
+            </div>
+            <div class="col-3">
+                <c-ssf-faq-collapsible heading={label.faq6Question}>
+                    <p>{label.faq6Answer}</p>
+                </c-ssf-faq-collapsible>
+            </div>
+        </div>
+    </div>
+</template>
