@@ -96,6 +96,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Customer_Sub_Group__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>RecordTypeId</field>
             </layoutItems>
             <layoutItems>
@@ -477,21 +481,6 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>Countersign_and_Send_SSF</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>20</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>New_QC_Task</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>18</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Send_Contract_Click_to_Sign</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>19</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
             <actionName>Opportunity.Task</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>0</sortOrder>
@@ -573,8 +562,6 @@
         </platformActionListItems>
         <platformActionListItems>
             <actionName>dsfs__Send_with_DocuSign</actionName>
-
-
             <actionType>CustomButton</actionType>
             <sortOrder>16</sortOrder>
         </platformActionListItems>
@@ -582,6 +569,21 @@
             <actionName>Send_NMC_Contract_Residential_Copy_to_Partner</actionName>
             <actionType>CustomButton</actionType>
             <sortOrder>17</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>New_QC_Task</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>18</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Send_Contract_Click_to_Sign</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>19</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Countersign_and_Send_SSF</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>20</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <quickActionList>

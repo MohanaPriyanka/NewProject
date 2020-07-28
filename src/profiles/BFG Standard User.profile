@@ -1119,6 +1119,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ClientInvoicingFeeWaiveServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ClientReportObjectSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1376,6 +1380,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>InvocableSizingMethodRecalculation</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvoiceTemplateAssignerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3352,6 +3360,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SubscriptionManagementServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SubscriptionOrderSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -32347,6 +32359,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Customer_Signature_Verified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Customer_Sub_Group__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
