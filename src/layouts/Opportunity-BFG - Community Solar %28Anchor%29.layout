@@ -265,6 +265,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Customer_Sub_Group__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Customer_Phone__c</field>
             </layoutItems>
             <layoutItems>
