@@ -76,6 +76,10 @@
         <field>Opportunity.DS_Envelope_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Prep_Account_for_Delete</flow>
+    </flowAccesses>
     <hasActivationRequired>false</hasActivationRequired>
     <label>CS App Processing</label>
     <objectPermissions>
