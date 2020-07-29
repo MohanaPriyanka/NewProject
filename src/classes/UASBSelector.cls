@@ -60,7 +60,7 @@ public without sharing class UASBSelector {
             FROM UASB__c
             WHERE Date__c = LAST_N_MONTHS:12
             AND (Utility_Account_Subscription__r.Customer_Group__c = 'Anchor' OR
-                Utility_Account_Subscription__r.Customer_Group__c = 'Public Offtake')
+                Utility_Account_Subscription__r.Opportunity__r.Customer_Sub_Group__c = 'Public Offtake')
             AND Utility_Account_Subscription__r.Externally_Serviced__c = FALSE
             GROUP BY Utility_Account_Subscription__c
             ];

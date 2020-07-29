@@ -4,24 +4,31 @@ public with sharing class CSAPControllerTest {
     public static void setupTestData() {
         Test.startTest();
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
-        LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='API Only'];
 
-        User apiUser = new User(
-            FirstName = 'API',
-            LastName = 'API',
-            ProfileId = profileRecord.Id,
-            Alias = '123api',
-            Email = 'api@bluewavesolar.com',
-            EmailEncodingKey ='UTF-8',
-            PortalRole = 'Manager',
-            LanguageLocaleKey ='en_US',
-            LocaleSidKey ='en_US',
-            Country ='United States',
-            IsActive = true,
-            TimeZoneSidKey='America/Los_Angeles',
-            Username='api123@bluewavesolar.com');
-        Util.insertSObj(apiUser);
+        List<User> apiUsers = [
+            SELECT Id, Name, Username
+            FROM User
+            WHERE Name = 'API'
+            AND IsActive = TRUE
+        ];
+        if (apiUsers.isEmpty()) {
+            User apiUser = new User(
+                FirstName = 'API',
+                LastName = 'API',
+                ProfileId = profileRecord.Id,
+                Alias = '123api',
+                Email = 'api@bluewavesolar.com',
+                EmailEncodingKey = 'UTF-8',
+                PortalRole = 'Manager',
+                LanguageLocaleKey = 'en_US',
+                LocaleSidKey = 'en_US',
+                Country = 'United States',
+                IsActive = true,
+                TimeZoneSidKey = 'America/Los_Angeles',
+                Username = 'api123@bluewavesolar.com');
+            Util.insertSObj(apiUser);
+        }
 
         RecordType partnerRecordType = [SELECT Id FROM RecordType WHERE Name = 'Partner Contact'];
 
