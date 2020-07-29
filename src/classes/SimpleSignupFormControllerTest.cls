@@ -229,11 +229,12 @@ public with sharing class SimpleSignupFormControllerTest {
         ContentDocumentLink cdl = new ContentDocumentLink(ContentDocumentId = docId, LinkedEntityId = cfus.Id);
         insert cdl;
 
-        String result = SimpleSignupFormController.unlinkDocsFromDummyRecord(new List<String>{docId});
+        String result = SimpleSignupFormController.unlinkDocsFromDummyRecord(new List<String>{docId}, 'Customer Utility Bill');
 
         System.assertEquals('OK', result, 'Method should return \'OK\' for successful operation');
-        List<ContentDocumentLink> newCdlListToUser = [SELECT Id, LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId = :docId AND LinkedEntityId = :backup.Id];
+        List<ContentDocumentLink> newCdlListToUser = [SELECT Id, LinkedEntityId, ContentDocument.LatestPublishedVersion.File_Category__c FROM ContentDocumentLink WHERE ContentDocumentId = :docId AND LinkedEntityId = :backup.Id];
         System.assertEquals(1, newCdlListToUser.size(), 'Doc should be linked to new user record');
+        System.assertEquals('Customer Utility Bill', newCdlListToUser[0].ContentDocument.LatestPublishedVersion.File_Category__c, 'File category should match the category input to the method');
         List<ContentDocumentLink> newCdlListToContract = [SELECT Id, LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId = :docId AND LinkedEntityId IN (SELECT Id FROM Custom_File_Upload_Share__c)];
         System.assert(newCdlListToContract.isEmpty(), 'Doc should no longer be linked to Custom File Upload Share record');
     }
@@ -245,7 +246,7 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assertEquals(1, existingCdlList.size(), 'Setup should only return one ContentDocumentLink');
         String docId = existingCdlList[0].ContentDocumentId;
 
-        String result = SimpleSignupFormController.unlinkDocsFromDummyRecord(new List<String>{docId});
+        String result = SimpleSignupFormController.unlinkDocsFromDummyRecord(new List<String>{docId}, 'Customer Utility Bill');
 
         System.assertEquals(null, result, 'Missing dummy record should cause method to return null');
         List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c WHERE Class__c = 'SimpleSignupFormController' AND Method__c = 'unlinkDocsFromDummyRecord'];

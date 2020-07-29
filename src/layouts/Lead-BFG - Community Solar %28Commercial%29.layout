@@ -106,6 +106,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Application_Status__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Reason_Unqualified__c</field>
             </layoutItems>
             <layoutItems>
