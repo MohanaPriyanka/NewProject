@@ -76,11 +76,11 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         }
         List<Utility_Account_Subscription__c> relatedUAS = uasSelector.selectActiveUASBySSS(sssIds);
         for (Utility_Account_Subscription__c uas : relatedUAS) {
-            if (!isAnchor(uas) && uas.Opportunity_Stage__c == 'Complete'){
+            if (!isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete'){
                 committedCapacityList.add(uas);
-            } else if (!isAnchor(uas) && !isCancelledStatus(uas)){
+            } else if (!isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)){
                 reservedCapacityList.add(uas);
-            } else if (isAnchor(uas) && !isCancelledStatus(uas)) {
+            } else if (isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
                 anchorCapacityList.add(uas);
             }
         }
@@ -117,9 +117,9 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         }
         return summarizedCapacity;
     }
-    private Boolean isAnchor(Utility_Account_Subscription__c uas){
+    private Boolean isAnchorOrPublicOfftake(Utility_Account_Subscription__c uas){
         return (uas.Customer_Group__c == 'Anchor' ||
-            uas.Customer_Group__c == 'Public Offtake'
+            uas.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake'
         );
     }
     private Boolean isCancelledStatus(Utility_Account_Subscription__c uas){

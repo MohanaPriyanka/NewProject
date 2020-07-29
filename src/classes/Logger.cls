@@ -4,7 +4,7 @@
  * https://developer.salesforce.com/page/An_Introduction_to_Exception_Handling#Logging_in_a_custom_object
  * Tested By: LoggerTest
  *************************************************************************************/
-public with sharing class Logger {
+public with sharing class Logger implements fflib_SObjectUnitOfWork.IDoWork {
     @TestVisible
     private static Map<String, List<Log>> logs;
     private static Integer timesLogsCleared = 0;
@@ -143,5 +143,9 @@ public with sharing class Logger {
         private String getKey() {
             return className + '|' + method + '|' + severity;
         }
+    }
+
+    public void doWork() {
+        Logger.flushLogs();
     }
 }

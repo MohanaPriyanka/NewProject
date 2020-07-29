@@ -257,7 +257,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
             '"Total_System_Size_kWh_DC__c":1220,' +
             '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Public Offtake","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Anchor","Customer_Sub_Group__c":"Public Offtake","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}},' +
             '{"Id":"a9W3F000000A1P8NNN","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000017AA1QAM",' +
@@ -282,7 +282,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
             '"Total_System_Size_kWh_DC__c":1220,' +
             '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
-            '"Opportunity__r":{"Id":"0063F00000ZZO9EAAA","Customer_Group__c":"Public Offtake","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
+            '"Opportunity__r":{"Id":"0063F00000ZZO9EAAA","Customer_Group__c":"Anchor","Customer_Sub_Group__c":"Public Offtake","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
             '}}}'+
             ']';

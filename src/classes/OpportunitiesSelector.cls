@@ -16,7 +16,8 @@ public without sharing class OpportunitiesSelector {
             FROM Opportunity
             WHERE StageName = 'Complete'
             AND Product_Line__c = 'Community Solar'
-            AND Customer_Group__c NOT IN ('Anchor', 'Public Offtake')
+            AND Customer_Group__c != 'Anchor'
+            AND Customer_Sub_Group__c != 'Public Offtake'
             ORDER BY Name
         ];
     }
@@ -42,7 +43,8 @@ public without sharing class OpportunitiesSelector {
             FROM Opportunity
             WHERE StageName = 'Complete'
             AND Product_Line__c = 'Community Solar'
-            AND Customer_Group__c NOT IN ('Anchor', 'Public Offtake')
+            AND Customer_Group__c != 'Anchor'
+            AND Customer_Sub_Group__c != 'Public Offtake'
             AND Id = :oppIds
         ];
     }

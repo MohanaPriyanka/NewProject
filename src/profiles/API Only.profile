@@ -135,6 +135,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AccountsSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AddQuotesToFields</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -248,6 +252,18 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ClientBrandingServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientInvoicingFeeAssignmentService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientInvoicingFeeAssignmentServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientInvoicingFeeWaiveServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -451,6 +467,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvoiceTemplateAssignerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>JournalEntrySelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -585,6 +605,10 @@
     <classAccesses>
         <apexClass>NavHeaderControllerTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>OpportunitiesSelector</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>OpportunityTriggerHandler</apexClass>
@@ -783,6 +807,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ScheduleZSubscriptionSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ScheduleZTriggerHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -832,6 +860,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SubscriptionManagementServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SubscriptionOrderSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1850,6 +1882,11 @@
         <editable>false</editable>
         <field>Account.Count_of_Eversource_Opportunities__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Count_of_Large_Offtake_Opps__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23659,6 +23696,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Customer_Signature_Verified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Customer_Sub_Group__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

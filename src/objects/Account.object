@@ -1326,12 +1326,12 @@ CASE(Days_Past_Due__c,
     <fields>
         <fullName>Count_of_Large_Offtake_Opps__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Count of non-Cancelled Anchor or Public Offtake opportunities that indicate whether this Property Account is large offtake, in which case the cancellation process is manual.</inlineHelpText>
+        <inlineHelpText>Count of non-Cancelled Anchor opportunities that indicate whether this Property Account is large offtake, in which case the cancellation process is manual.</inlineHelpText>
         <label>Count of Large Offtake Opps</label>
         <summaryFilterItems>
             <field>Opportunity.Customer_Group__c</field>
             <operation>equals</operation>
-            <value>Anchor, Public Offtake</value>
+            <value>Anchor</value>
         </summaryFilterItems>
         <summaryFilterItems>
             <field>Opportunity.StageName</field>
@@ -15387,7 +15387,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
      ISBLANK(PRIORVALUE(Cancellation_Request_Date__c)),
      NOT(ISBLANK(Cancellation_Request_Date__c)))</errorConditionFormula>
         <errorDisplayField>Cancellation_Request_Date__c</errorDisplayField>
-        <errorMessage>This account has Anchor or Public Offtake opportunities (that aren&apos;t already cancelled). Please cancel them manually by updating Utility Account Subscriptions.</errorMessage>
+        <errorMessage>This account has Anchor opportunities (that aren&apos;t already cancelled). Please cancel them manually by updating Utility Account Subscriptions.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Cannot_Update_Address_to_Blank</fullName>
@@ -15861,6 +15861,25 @@ sforce.console.openPrimaryTab(null, urlStart + &apos;&amp;inConsole=yes&amp;optT
 }else{
 window.top.location.href = urlStart + &apos;&amp;inConsole=no&amp;optType=0&apos;;
 }</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Prep_for_delete</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Prep for delete</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/flow/Prep_Account_for_Delete?recordId={!Account.Id}</url>
     </webLinks>
     <webLinks>
         <fullName>Send_Storage_Application</fullName>

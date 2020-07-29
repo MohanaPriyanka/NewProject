@@ -2403,6 +2403,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Count_of_Large_Offtake_Opps__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Count_of_RL_Opportunities__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -25114,6 +25119,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Customer_Signature_Verified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Customer_Sub_Group__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

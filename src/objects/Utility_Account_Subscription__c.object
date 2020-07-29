@@ -488,7 +488,7 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
 IF (  
  AND( 
   OR (
-    ISPICKVAL(Opportunity__r.Customer_Group__c, &quot;Public Offtake&quot;),
+    ISPICKVAL(Opportunity__r.Customer_Sub_Group__c, &quot;Public Offtake&quot;),
     ISPICKVAL(Opportunity__r.Customer_Group__c, &quot;Anchor&quot;)
   ),
    
