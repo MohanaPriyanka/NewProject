@@ -4,6 +4,7 @@
  */
 
 public without sharing class CapacitySnapshotScheduler implements Schedulable{
+    @TestVisible
     private static CapacitySnapshotService snapshotService = new CapacitySnapshotService();
     public void execute(SchedulableContext param1) {
         try {

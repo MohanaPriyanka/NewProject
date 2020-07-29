@@ -113,4 +113,35 @@ public with sharing class CapacitySnapshotServiceTest {
         fabbedSSS.setChildren('Utility_Account_Subscriptions__r', new List<sfab_FabricatedSObject>{fabbedUAS});
         return (Shared_Solar_System__c) fabbedSSS.toSObject();
     }
+
+    @IsTest
+    private static void capacitySnapshotSchedulerError() {
+        CapacitySnapshotScheduler.snapshotService = (CapacitySnapshotService) Test.createStub(CapacitySnapshotService.class, new MockCapacitySnapshotService());
+        new CapacitySnapshotScheduler().execute(null);
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'CapacitySnapshotScheduler'
+        ];
+        System.assertEquals(1, errorLogs.size(), 'Expected one error log from an unexpected exception');
+        System.assert(errorLogs[0].Message__c.contains('Unexpected exception'));
+    }
+
+    /*************
+      *** MOCKS ***
+      *************/
+    public class MockCapacitySnapshotService extends MockProvider {
+        public MockCapacitySnapshotService() {
+        }
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'createSnapshots' {
+                    throw new Util.BWException('Unexpected exception');
+                }
+            }
+            return null;
+        }
+    }
+
 }
