@@ -2459,6 +2459,28 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Customer_Sub_Group__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Further categorizes Customer Group</inlineHelpText>
+        <label>Customer Sub-Group</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Public Offtake</fullName>
+                    <default>false</default>
+                    <label>Public Offtake</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Customer_Type__c</fullName>
         <externalId>false</externalId>
         <label>Customer Type</label>
