@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Merge_Helper</name>
+        <label>Merge Helper</label>
+        <locationX>176</locationX>
+        <locationY>437</locationY>
+        <actionName>InvocableMergeHelper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Done</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Errors</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>propertyAccountIdsToPrep</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <description>Deletes the corresponding Zuora account, so this account can be deleted.</description>
+    <interviewLabel>Prep Account for Delete {!$Flow.CurrentDateTime}</interviewLabel>
+    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
+    <label>Prep Account for Delete</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>Done</name>
+        <label>Done</label>
+        <locationX>176</locationX>
+        <locationY>603</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Prep_Finished</name>
+            <fieldText>&lt;p&gt;All set, the Zuora account (if any) has been deleted and you can now merge this account.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Errors</name>
+        <label>Errors</label>
+        <locationX>418</locationX>
+        <locationY>436</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Fault_Text</name>
+            <fieldText>&lt;p&gt;We ran into a problem prepping this account for deletion:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;pre class=&quot;ql-syntax&quot; spellcheck=&quot;false&quot;&gt;{!$Flow.FaultMessage}
+&lt;/pre&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Prep</name>
+        <label>Delete Zuora Account</label>
+        <locationX>176</locationX>
+        <locationY>244</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Merge_Helper</targetReference>
+        </connector>
+        <fields>
+            <name>Warning</name>
+            <fieldText>&lt;p&gt;This will check the Zuora account related to this property account (if any). If there are no enacted subscriptions, it will &lt;b&gt;delete the Zuora account, along with the payment method&lt;/b&gt;, allowing this Salesforce account to be deleted or merged.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For convenience, it&apos;ll also add &quot;dupe&quot; to the end of this Salesforce account&apos;s name.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Click next to continue&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Prep</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>Account</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

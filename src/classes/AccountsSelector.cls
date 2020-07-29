@@ -93,7 +93,7 @@ public without sharing class AccountsSelector {
                 Send_Bills_Contact__c, Send_Bills_Contact__r.Email, Send_Bills_Contact__r.FirstName, Send_Bills_Contact__r.LastName,
                 Additional_Contact__c, Additional_Contact__r.Email,
                 Client_Brand_Key__c, Count_of_Large_Offtake_Opps__c,
-                Zuora_Id__c, Number_of_Active_Contracts__c,
+                Zuora_Id__c, Number_of_Active_Contracts__c, Account_Number__c,
             (
                 SELECT Id, Shared_Solar_System__r.Product__r.Program__c, Shared_Solar_System__r.Utility__c
                 FROM Opportunities WHERE Product_Line__c = 'Community Solar' AND StageName = 'Complete'
