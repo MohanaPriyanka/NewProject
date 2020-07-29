@@ -15863,6 +15863,25 @@ window.top.location.href = urlStart + &apos;&amp;inConsole=no&amp;optType=0&apos
 }</url>
     </webLinks>
     <webLinks>
+        <fullName>Prep_for_delete</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Prep for delete</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/flow/Prep_Account_for_Delete?recordId={!Account.Id}</url>
+    </webLinks>
+    <webLinks>
         <fullName>Send_Storage_Application</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
