@@ -39,7 +39,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.bcsAcquired = partnerType != 'Client Account';
             this.notBCSAcquired = partnerType == 'Client Account';
             this.anchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Anchor';
-            this.publicOfftake = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Public Offtake';
+            this.publicOfftake = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake';
             this.residential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Residential';
             this.nonResidential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Non-Residential';
             this.investmentGradeAnchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Underwriting_Criteria__c == 'Investment-Grade';
@@ -165,7 +165,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     }
 
     private void matchSubscriptionOrderToFee(List<SubscriptionOrder> subscriptionOrders,
-        MultiMap contractToFeeDetailMap){
+                                             MultiMap contractToFeeDetailMap){
         for (SubscriptionOrder subOrder : subscriptionOrders){
             Set<Object> contractDetails = new Set<Object>();
             // Max 2 contracts per Subscription Order (1 Acq, 1 Mgmt)

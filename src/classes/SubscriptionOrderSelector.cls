@@ -24,6 +24,7 @@ public inherited sharing class SubscriptionOrderSelector {
                 Approved_Change_in_Subscription__c,
                 Effective_Date__c,
                 Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
+                Utility_Account_Subscription__r.Opportunity__r.Customer_Sub_Group__c,
                 Utility_Account_Subscription__r.Opportunity__r.Underwriting_Criteria__c,
                 Utility_Account_Subscription__r.Opportunity__r.Acquired_By_Client_Closed_By_BlueWave__c,
                 Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name,
@@ -82,10 +83,8 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c = false
         ]);
     }
-
     public Map<Id,Decimal> getSubscriptionOrdersAssignedToClient(Set<Id> uasIds){
         Map<Id,Decimal> uasIdToSumSoMap = new Map<Id,Decimal>();
-
         List<AggregateResult> aggResults = [
             SELECT SUM(Approved_Change_in_Subscription__c) sumApprovedKW,
                 Utility_Account_Subscription__c uasId
@@ -96,7 +95,6 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Client_Assignment_Agreement__r.Status != 'Rejected'
             GROUP BY Utility_Account_Subscription__c
         ];
-
         for (AggregateResult aggregateResult : aggResults) {
             uasIdToSumSoMap.put((Id)aggregateResult.get('uasId'),(Decimal)aggregateResult.get('sumApprovedKW'));
         }

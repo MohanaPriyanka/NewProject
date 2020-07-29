@@ -18,9 +18,6 @@
                 <behavior>Required</behavior>
                 <field>StageName</field>
             </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -138,6 +135,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Customer_Group__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Customer_Sub_Group__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>

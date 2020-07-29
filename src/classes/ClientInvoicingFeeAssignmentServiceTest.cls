@@ -118,7 +118,6 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         }
         System.assertEquals(13,ordersToUpdate.size());
     }
-
     @IsTest
     private static void testGetCancellationRate (){
         useMocks();
@@ -457,9 +456,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
 
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor",' +
+            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor","Underwriting_Criteria__c":"Investment-Grade",' +
             '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
-
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
@@ -472,7 +470,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Public Offtake",' +
+
+            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Anchor","Customer_Sub_Group__c":"Public Offtake",' +
             '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
@@ -486,7 +485,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
             '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthAgo) + '"},' +
-            '"Opportunity__r":{"Id":"0063F00000ZZO9EAAA","Customer_Group__c":"Public Offtake",' +
+
+            '"Opportunity__r":{"Id":"0063F00000ZZO9EAAA","Customer_Group__c":"Anchor","Customer_Sub_Group__c":"Public Offtake",' +
             '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
@@ -518,7 +518,6 @@ public class ClientInvoicingFeeAssignmentServiceTest {
 
             '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor","Underwriting_Criteria__c":"Financial Review",' +
             '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
-
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +

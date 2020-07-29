@@ -100,7 +100,8 @@ public class InvoiceTemplateAssignerTest {
             new Opportunity(Name = 'PublicOfftake Two',
                 AccountId = accountA.Id,
                 StageName = 'Complete',
-                Customer_Group__c = 'Public Offtake',
+                Customer_Group__c = 'Anchor',
+                Customer_Sub_Group__c = 'Public Offtake',
                 CloseDate = System.today());
         insert new List<Opportunity>{
             opportunityone, opportunitytwo, opportunitythree

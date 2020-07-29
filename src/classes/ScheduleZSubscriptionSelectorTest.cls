@@ -18,7 +18,7 @@ public with sharing class ScheduleZSubscriptionSelectorTest {
         ];
         System.assertEquals(2, opportunities.size());
         for (Opportunity opportunity : opportunities) {
-            opportunity.Customer_Group__c = 'Public Offtake';
+            opportunity.Customer_Sub_Group__c = 'Public Offtake';
         }
         update opportunities;
         Map<Id, Shared_Solar_System__c> sharedSolarSystemMap = new Map<Id, Shared_Solar_System__c>([

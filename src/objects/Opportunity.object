@@ -2459,6 +2459,28 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Customer_Sub_Group__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Further categorizes Customer Group</inlineHelpText>
+        <label>Customer Sub-Group</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Public Offtake</fullName>
+                    <default>false</default>
+                    <label>Public Offtake</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Customer_Type__c</fullName>
         <externalId>false</externalId>
         <label>Customer Type</label>
@@ -9974,18 +9996,10 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
     <validationRules>
         <fullName>Anchor_Underwriting_Criteria</fullName>
         <active>true</active>
-        <errorConditionFormula>AND(
-OR(
-ISPICKVAL(Underwriting_Criteria__c,&quot;Investment-Grade&quot;),
-ISPICKVAL(Underwriting_Criteria__c,&quot;Financial Review&quot;)
-),
-NOT(
-OR(
-ISPICKVAL(Customer_Group__c,&quot;Anchor&quot;),
-ISPICKVAL(Customer_Group__c,&quot;Public Offtake&quot;)
-)
-)
-)</errorConditionFormula>
+        <errorConditionFormula>AND(OR(ISPICKVAL(Underwriting_Criteria__c,&quot;Investment-Grade&quot;),
+       ISPICKVAL(Underwriting_Criteria__c,&quot;Financial Review&quot;)),
+    NOT(ISPICKVAL(Customer_Group__c,&quot;Anchor&quot;))
+    )</errorConditionFormula>
         <errorMessage>Only Anchors can be marked with underwriting criteria = Investment Grade or Financial Review</errorMessage>
     </validationRules>
     <validationRules>
