@@ -38,24 +38,32 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             this.utilityOptions = [];
         }
 
-        if(this.pageRef && this.pageRef.state && this.pageRef.state.leadid) {
-            this.getZip = false;
-            this.leadId = this.pageRef.state.leadid;
-            if(this.pageRef.state.email) {
-                this.email = this.pageRef.state.email;
-                if(!this.leadJSON) {
-                    this.getLead();
+        if(this.pageRef && this.pageRef.state) {
+            if(this.pageRef.state.partnerId) {
+                this.resiApplicationType = false;
+            }
+            if(this.pageRef.state.leadid) {
+                this.getZip = false;
+                this.leadId = this.pageRef.state.leadid;
+                if(this.pageRef.state.email) {
+                    this.email = this.pageRef.state.email;
+                    if(!this.leadJSON) {
+                        this.getLead();
+                    } else {
+                        this.getBasicInfo = true;
+                    }
                 } else {
-                    this.getBasicInfo = true;
+                    this.enterEmail = true;
                 }
+            } else if(this.pageRef.state.zip) {
+                this.getZip = true;
+                this.zipCodeInput = this.pageRef.state.zip;
+                this.submitZip();
             } else {
-                this.enterEmail = true;
+                this.getZip = true;
             }
         } else {
             this.getZip = true;
-            if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
-                this.resiApplicationType = false;
-            }
         }
     }
 
