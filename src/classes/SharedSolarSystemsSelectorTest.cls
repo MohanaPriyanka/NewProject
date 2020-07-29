@@ -239,6 +239,6 @@ public with sharing class SharedSolarSystemsSelectorTest {
 
     @IsTest
     private static void testGetActiveSystemsWithSmallOfftakeUASes() {
-        System.debug(LoggingLevel.ERROR, new SharedSolarSystemsSelector().getActiveSystemsWithSmallOfftakeUASes());
+        System.assertEquals(0, new SharedSolarSystemsSelector().getActiveSystemsWithSmallOfftakeUASes().size());
     }
 }
