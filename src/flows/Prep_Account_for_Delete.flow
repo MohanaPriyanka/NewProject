@@ -22,6 +22,7 @@
     </actionCalls>
     <description>Deletes the corresponding Zuora account, so this account can be deleted.</description>
     <interviewLabel>Prep Account for Delete {!$Flow.CurrentDateTime}</interviewLabel>
+    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Prep Account for Delete</label>
     <processMetadataValues>
         <name>BuilderType</name>
