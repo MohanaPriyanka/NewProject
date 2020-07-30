@@ -2605,6 +2605,10 @@ null)</formula>
         <picklistValues>
             <picklist>Service_Territories__c</picklist>
             <values>
+                <fullName>Bangor Hydro</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Capital</fullName>
                 <default>false</default>
             </values>
@@ -2634,6 +2638,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>Maine</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maine Public Service</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -3107,6 +3115,10 @@ null)</formula>
         <picklistValues>
             <picklist>Service_Territories__c</picklist>
             <values>
+                <fullName>Bangor Hydro</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Capital</fullName>
                 <default>false</default>
             </values>
@@ -3136,6 +3148,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>Maine</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maine Public Service</fullName>
                 <default>false</default>
             </values>
             <values>
