@@ -3097,19 +3097,6 @@ NOT(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c))&amp;&amp; NOT(ISBLANK(D
         </valueSet>
     </fields>
     <fields>
-        <fullName>Discount_Percentage__c</fullName>
-        <description>Required only for a NMCPA Type - Floating Discount.</description>
-        <externalId>false</externalId>
-        <label>NMCPA/PPA Discount Percentage</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>Discount__c</fullName>
         <externalId>false</externalId>
         <formula>ROUND(Product__r.NMC_Discount__c,2)</formula>
