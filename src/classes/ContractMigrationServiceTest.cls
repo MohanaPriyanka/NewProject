@@ -70,7 +70,7 @@ public with sharing class ContractMigrationServiceTest {
             FROM ContentDocumentLink
             WHERE LinkedEntityId IN : contractIdSet
         ];
-        // 4 attachments, 1 for agreement, 1 for disclosure:
+        // 1 for agreement, 1 for disclosure for each opp with a DS
         System.assertEquals(8,documentLinks.size());
     }
 

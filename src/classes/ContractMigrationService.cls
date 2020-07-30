@@ -15,7 +15,7 @@ public without sharing class ContractMigrationService {
         }
     );
 
-    private Map<Id,Contract> contractMap = new Map<Id,Contract>();
+    public Map<Id,Contract> oppToContractMap = new Map<Id,Contract>();
     private Map<Id,ContentVersion> fileToContractMap = new Map<Id,ContentVersion>();
 
     public void executeForOpps(List<Opportunity> oppList){
@@ -36,11 +36,11 @@ public without sharing class ContractMigrationService {
                 Contract_Type__c = 'Project Specific',
                 Assignment_Agreement__c = opp.Assignment_Agreement__c
             );
-            contractMap.put(opp.Id,newContract);
+            oppToContractMap.put(opp.Id,newContract);
         }
-        insert contractMap.values();
+        insert oppToContractMap.values();
         for (Opportunity opp : oppList){
-            Contract cntrt = contractMap.get(opp.Id);
+            Contract cntrt = oppToContractMap.get(opp.Id);
             opp.ContractId = cntrt.Id;
             uow.registerDirty(opp);
         }
@@ -84,7 +84,7 @@ public without sharing class ContractMigrationService {
     }
 
     private void convertAttachmentToFile(Attachment fileAttach, Id opportunityId) {
-        Contract newContract = contractMap.get(opportunityId);
+        Contract newContract = oppToContractMap.get(opportunityId);
         if (newContract == null){
             Logger.logLater('ContractMigrationService','No Contract Record for opp',opportunityId);
             return;
@@ -107,7 +107,7 @@ public without sharing class ContractMigrationService {
 
         Map<Id, ContentVersion> versionmap = contentVersionSelector.selectById(contentVersionIds);
 
-        for (Contract contract : contractMap.values()){
+        for (Contract contract : oppToContractMap.values()){
             ContentVersion version = fileToContractMap.get(contract.Id);
             if (version != null){
                 ContentVersion file = versionmap.get(version.Id);
