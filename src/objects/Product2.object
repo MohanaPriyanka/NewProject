@@ -1665,6 +1665,11 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
                     <default>false</default>
                     <label>VDER - Community Solar</label>
                 </value>
+                <value>
+                    <fullName>Net Energy Billing (NEB)</fullName>
+                    <default>false</default>
+                    <label>Net Energy Billing (NEB)</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
