@@ -57,7 +57,7 @@ public without sharing class ContractMigrationService {
         for (Opportunity opp : oppList){
             oppIds.add(opp.Id);
         }
-        docuSignSelector.getDocusignStatuses(oppIds);
+        docuStatusMap = docuSignSelector.getDocusignStatuses(oppIds);
         for (dsfs__DocuSign_Status__c docSignStatus : docuStatusMap.values()){
             oppToDSMap.put(docSignStatus.dsfs__Opportunity__c,docSignStatus.Id);
         }
