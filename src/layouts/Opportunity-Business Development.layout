@@ -58,10 +58,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Customer_Sub_Group__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>X25kW_Slug_Total__c</field>
             </layoutItems>
             <layoutItems>
@@ -83,6 +79,10 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Anticipated_Loan_Purchase_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Ready_for_Disbursal_Intercon__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -377,17 +377,14 @@
         <relatedList>RelatedContactRoleList</relatedList>
     </relatedLists>
     <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>Utility_Account_Subscription__c.Opportunity__c</relatedList>
-    </relatedLists>
-    <relatedLists>
         <fields>Product2</fields>
         <fields>Quantity</fields>
-        <fields>UnitPrice</fields>
         <fields>ServiceDate</fields>
-        <fields>Description</fields>
-        <fields>ListPrice</fields>
         <relatedList>RelatedLineItemList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Utility_Account_Subscription__c.Opportunity__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>QUOTE.QUOTENUMBER</fields>
