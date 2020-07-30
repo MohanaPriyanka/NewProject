@@ -20,7 +20,8 @@ public without sharing class ContractMigrationService {
 
     public void executeForOpps(List<Opportunity> oppList){
         convertOpportunityToContract(oppList);
-        moveDocuSignContractsToContract(oppList);
+        moveDocuSignAttachmentsToContract(oppList, 'Credit Allocation Agreement');
+        moveDocuSignAttachmentsToContract(oppList, 'Disclosure');
         Logger.flushLogs();
         uow.commitWork();
     }
@@ -45,30 +46,26 @@ public without sharing class ContractMigrationService {
         }
     }
 
-    public void moveDocuSignContractsToContract(List<Opportunity> oppList) {
+    public void moveDocuSignAttachmentsToContract(List<Opportunity> oppList, String documentNameContains) {
         Set<Id> oppIds = new Set<Id>();
+        Map<Id, Id> oppToDSMap = new Map<Id, Id>();
+        Map<Id, Attachment> attachmentMap = new Map<Id, Attachment>();
+        Map<Id, dsfs__DocuSign_Status__c> docuStatusMap;
+        List<Attachment> attachmentList;
+        fileToContractMap = new Map<Id,ContentVersion>();
 
         for (Opportunity opp : oppList){
             oppIds.add(opp.Id);
         }
-        Map<Id, Id> oppToDSMap = new Map<Id, Id>();
-        Map<Id, Attachment> attachmentMap = new Map<Id, Attachment>();
-
-        Map<Id, dsfs__DocuSign_Status__c> docuStatusMap = docuSignSelector.getDocusignStatuses(oppIds);
-
+        docuSignSelector.getDocusignStatuses(oppIds);
         for (dsfs__DocuSign_Status__c docSignStatus : docuStatusMap.values()){
             oppToDSMap.put(docSignStatus.dsfs__Opportunity__c,docSignStatus.Id);
         }
-
-        List<Attachment> attachmentList = attachSelector.getAttachmentsByParentIdAndName(docuStatusMap.keySet(), 'Customer Agreement');
-
+        attachmentList = attachSelector.getAttachmentsByParentIdAndName(docuStatusMap.keySet(), documentNameContains);
         for (Attachment attach : attachmentList){
-            if (attachmentMap.containsKey(attach.ParentId)){
-                Logger.logLater('ContractMigrationService','Found more than 1 attachment for DS',attach.ParentId);
-            }
+            // We expect to see duplicates of the same file so don't log an error if >1 match, just pick one
             attachmentMap.put(attach.ParentId,attach);
         }
-
         for (Id oppId : oppIds){
             Id dsStatusId = oppToDSMap.get(oppId);
             if (dsStatusId == null){

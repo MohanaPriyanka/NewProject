@@ -70,7 +70,8 @@ public with sharing class ContractMigrationServiceTest {
             FROM ContentDocumentLink
             WHERE LinkedEntityId IN : contractIdSet
         ];
-        System.assertEquals(4,documentLinks.size());
+        // 4 attachments, 1 for agreement, 1 for disclosure: 
+        System.assertEquals(8,documentLinks.size());
     }
 
     @IsTest
@@ -107,16 +108,15 @@ public with sharing class ContractMigrationServiceTest {
         Product2 normalCSProduct = [SELECT Id FROM Product2 LIMIT 1];
 
         List<Opportunity> oppList = getOpportunityMocks(accounts,assignAgree.Id,normalCSProduct.Id);
+        System.assertEquals(6,oppList.size());
 
         Test.startTest();
             BatchContractMigration batchJob = new BatchContractMigration();
             batchJob.opportunitiesToRun = oppList;
             Datetime dt = Datetime.now().addMinutes(2);
             String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-            System.schedule('contractMigration',cronExpress,batchJob);
+            System.schedule('testContractMigration',cronExpress,batchJob);
         Test.stopTest();
-
-        System.assertNotEquals(null,batchJob.batchSize);
     }
 
     private static void useMocks() {
