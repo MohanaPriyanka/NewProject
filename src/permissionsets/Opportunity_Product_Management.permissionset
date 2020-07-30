@@ -81,6 +81,10 @@
         <object>Product2</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <recordType>Product2.Client_BD</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
     <userPermissions>
         <enabled>true</enabled>
         <name>EditOppLineItemUnitPrice</name>
