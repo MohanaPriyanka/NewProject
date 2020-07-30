@@ -21,7 +21,7 @@ public with sharing class ContractMigrationServiceTest {
         insert assignmentAgreement;
 
         Product2 normalCSProduct = new Product2(
-            Name = 'BlueWave Community Solar',
+            Name = 'Normal 10% Community Solar',
             Family = 'Community Solar',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = True);
@@ -33,7 +33,7 @@ public with sharing class ContractMigrationServiceTest {
         // 6 Opps, with 5 DS and 4 attachments (2 Opps should log error for missing data)
         List<Account> accounts = new List<Account>([SELECT Id FROM Account WHERE Name LIKE '%Customer%']);
         Contract assignAgree = [SELECT Id FROM Contract LIMIT 1];
-        Product2 normalCSProduct = [SELECT Id FROM Product2 LIMIT 1];
+        Product2 normalCSProduct = [SELECT Id FROM Product2 WHERE Name = 'Normal 10% Community Solar' LIMIT 1];
 
         List<Opportunity> oppList = getOpportunityMocks(accounts,assignAgree.Id,normalCSProduct.Id);
 

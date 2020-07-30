@@ -231,6 +231,6 @@ public with sharing class OpportunitiesSelectorTest {
         OpportunitiesSelector oppSelector = new OpportunitiesSelector();
         List<Opportunity> oppList = oppSelector.getCompleteOppsWithoutContracts();
 
-        System.assertEquals(4, oppList.size());
+        System.assertEquals(17, oppList.size());
     }
 }
