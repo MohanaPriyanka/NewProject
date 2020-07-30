@@ -80,6 +80,16 @@
         <default>false</default>
         <label>Maine</label>
     </customValue>
+    <customValue>
+        <fullName>Bangor Hydro</fullName>
+        <default>false</default>
+        <label>Bangor Hydro</label>
+    </customValue>
+    <customValue>
+        <fullName>Maine Public Service</fullName>
+        <default>false</default>
+        <label>Maine Public Service</label>
+    </customValue>
     <masterLabel>Service Territories</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
