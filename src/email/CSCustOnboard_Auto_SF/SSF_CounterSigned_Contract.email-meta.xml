@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
-    <available>false</available>
+    <available>true</available>
     <encodingKey>ISO-8859-1</encodingKey>
     <name>SSF: CounterSigned Contract</name>
     <style>none</style>
@@ -24,9 +24,9 @@ Your savings will come in the form of bill credits.
 So, what&apos;s a bill credit? The community solar farm you&apos;re subscribed to will produce energy which will feed into the electric grid for distribution to you utility. Your subscription entitles you to benefit from some of that energy production through deductions on your monthly electrical utility bill. Bill credits, or &apos;credits&apos;, represent the portion of energy your community solar subscription has produced.
 
 What happens after credits appear on your utility bill?
-BlueWave will then send you a monthly bill for the credits that were deducted from your monthly utility bill, at a 10% discount.
+BlueWave will then send you a monthly bill for the credits that were deducted from your monthly utility bill, at a {!Opportunity.Discount__c}% discount.
 
-For example: if your farm generates $100 worth of credits, you will see a $100 deduction on your utility bill, and then receive a BlueWave bill for $90. That 10% savings, or in this case, $10, is the benefit you get from your subscription!
+For example: if your farm generates $100 worth of credits, you will see a $100 deduction on your utility bill, and then receive a BlueWave bill for ${!Opportunity.Discount__c*-100+100}. That {!Opportunity.Discount__c}% savings, or in this case, ${!Opportunity.Discount__c}, is the benefit you get from your subscription!
 
 What will timing look like once credits start rolling?
 Once your community solar farm begins generating electricity, your credits will start appearing on your electricity bill each month.
