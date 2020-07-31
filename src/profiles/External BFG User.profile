@@ -22735,8 +22735,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Discount_Percentage__c</field>
-        <readable>false</readable>
+        <field>Opportunity.Discount__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
