@@ -39,7 +39,7 @@ public with sharing class CapacitySnapshotServiceTest {
             sharedSolarSystem.Stage__c = 'Acquisition';
         }
         update systems;
-        System.assertEquals(5, systems.size(), 'Expected to load 4 systems');
+        System.assertEquals(5, systems.size(), 'Expected to load 5 systems');
         CapacitySnapshotScheduler scheduler = new CapacitySnapshotScheduler();
         Test.startTest();
         System.schedule('TestCapacitySnapshotService', '0 0 0 ? * *', scheduler);
