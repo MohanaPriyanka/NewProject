@@ -236,4 +236,9 @@ public with sharing class SharedSolarSystemsSelectorTest {
         List<Shared_Solar_System__c> sssList = selector.getSharedSolarSystemsForEnrollment();
         System.assertEquals(4, sssList.size());
     }
+
+    @IsTest
+    private static void testGetActiveSystemsWithSmallOfftakeUASes() {
+        System.assertEquals(0, new SharedSolarSystemsSelector().getActiveSystemsWithSmallOfftakeUASes().size());
+    }
 }
