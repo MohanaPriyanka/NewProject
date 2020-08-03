@@ -1,11 +1,11 @@
 // Tested by ContractMigrationServiceTest
 
-public without sharing class BatchContractMigration implements Database.Batchable<sObject>, Database.Stateful, Schedulable {
+public without sharing class BatchContractMigration implements Database.Batchable<SObject>, Schedulable {
     @TestVisible
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
 
     public List<Opportunity> opportunitiesToRun;
-    public Integer batchSize;
+    public Integer batchSize = 10;
 
     public void execute(SchedulableContext sc) {
         runBatch();
@@ -14,9 +14,6 @@ public without sharing class BatchContractMigration implements Database.Batchabl
     public void runBatch(){
         if (opportunitiesToRun == null){
             opportunitiesToRun = oppSelector.getCompleteOppsWithoutContracts();
-        }
-        if (batchSize == null){
-            batchSize = 50;
         }
         Database.executeBatch(this, batchSize);
     }
@@ -35,6 +32,6 @@ public without sharing class BatchContractMigration implements Database.Batchabl
     }
 
     public void finish(Database.BatchableContext batchableContext) {
-        Logger.logNow('BatchContractMigration','Finish','Completed');
+        // Nothing to do
     }
 }

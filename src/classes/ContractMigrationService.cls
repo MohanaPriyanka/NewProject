@@ -20,8 +20,8 @@ public without sharing class ContractMigrationService {
 
     public void executeForOpps(List<Opportunity> oppList){
         convertOpportunityToContract(oppList);
-        moveDocuSignAttachmentsToContract(oppList, 'Credit Allocation Agreement');
-        moveDocuSignAttachmentsToContract(oppList, 'Disclosure');
+        cloneDocuSignAttachmentsToContract(oppList, 'Credit Allocation Agreement');
+        cloneDocuSignAttachmentsToContract(oppList, 'Disclosure');
         Logger.flushLogs();
         uow.commitWork();
     }
@@ -46,7 +46,7 @@ public without sharing class ContractMigrationService {
         }
     }
 
-    public void moveDocuSignAttachmentsToContract(List<Opportunity> oppList, String documentNameContains) {
+    public void cloneDocuSignAttachmentsToContract(List<Opportunity> oppList, String documentNameContains) {
         Set<Id> oppIds = new Set<Id>();
         Map<Id, Id> oppToDSMap = new Map<Id, Id>();
         Map<Id, Attachment> attachmentMap = new Map<Id, Attachment>();
