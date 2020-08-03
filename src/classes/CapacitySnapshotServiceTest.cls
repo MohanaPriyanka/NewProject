@@ -62,6 +62,9 @@ public with sharing class CapacitySnapshotServiceTest {
         snapshot = capacitySnapshotService.getSnapshot(getSharedSolarSystem('Complete', false, 0, 99.97, 5827.7631));
         System.assertEquals(1.75, snapshot.Available_Capacity__c.setScale(2), '5827/(99.97/100)-5827 should equal 1.748853586 but got ' + snapshot.Available_Capacity__c);
 
+        snapshot = capacitySnapshotService.getSnapshot(getSharedSolarSystem('Complete', false, 0, 99.97, 5827.7631, true));
+        System.assertEquals(1.75, snapshot.Available_Capacity__c.setScale(2), 'Anchors should be included in available capacity calculations');
+
         snapshot = capacitySnapshotService.getSnapshot(getSharedSolarSystem('Complete', false, 45, 99.97, 5827.7631));
         System.assertEquals(1.75, snapshot.Available_Capacity__c.setScale(2), 'A 45 days late customer should still be included in the available capacity calculation');
         System.assertEquals(5827.7631, snapshot.X45_60_Day_Past_Due_Active_kW__c, 'A 45 days late customer should get that capacity reported');
@@ -70,13 +73,22 @@ public with sharing class CapacitySnapshotServiceTest {
         System.assertEquals(1.75, snapshot.Available_Capacity__c.setScale(2), 'An 89 days late customer should still be included in the available capacity calculation');
         System.assertEquals(5827.7631, snapshot.X60_Day_Past_Due_Active_kW__c, 'An 89 days late customer should get that capacity reported');
 
+        snapshot = capacitySnapshotService.getSnapshot(getSharedSolarSystem('Complete', false, 45, 99.97, 5827.7631, true));
+        System.assertEquals(0, snapshot.X45_60_Day_Past_Due_Active_kW__c, 'A 45 days late anchor should not get that capacity reported');
+
         snapshot = capacitySnapshotService.getSnapshot(getSharedSolarSystem('QC In Process', false, 45, 99.97, 5827.7631));
         System.assertEquals(0, snapshot.Available_Capacity__c.setScale(2), 'A QC In Process customer should not be included in available capacity calcs');
         System.assertEquals(5827.7631, snapshot.QC_Capacity__c, 'A QC In Process customer should be included in the QC Capacity');
 
+        snapshot = capacitySnapshotService.getSnapshot(getSharedSolarSystem('QC In Process', false, 45, 99.97, 5827.7631, true));
+        System.assertEquals(5827.7631, snapshot.QC_Capacity__c, 'A QC In Process anchor should be included in the QC Capacity');
+
         snapshot = capacitySnapshotService.getSnapshot(getSharedSolarSystem('Complete', true, 0, 99.97, 5827.7631));
         System.assertEquals(0, snapshot.Available_Capacity__c.setScale(2), 'Waitlist capacity should not be included in the available capacity calc');
         System.assertEquals(5827.76, snapshot.Waitlist_Capacity__c.setScale(2), 'Waitlist capacity should be reported in waitlist capacity');
+
+        snapshot = capacitySnapshotService.getSnapshot(getSharedSolarSystem('Complete', true, 0, 99.97, 5827.7631, true));
+        System.assertEquals(5827.76, snapshot.Waitlist_Capacity__c.setScale(2), 'Waitlist anchor capacity should be reported in waitlist capacity');
 
         snapshot = capacitySnapshotService.getSnapshot(getSharedSolarSystem('Pending Quality Control Signature', true, 0, 99.97, 5827.7631));
         System.assertEquals(0, snapshot.Available_Capacity__c.setScale(2), 'Waitlist capacity should not be included in the available capacity calc');
@@ -85,6 +97,10 @@ public with sharing class CapacitySnapshotServiceTest {
     }
     private static Shared_Solar_System__c getSharedSolarSystem(String stageName, Boolean waitlist, Integer daysPastDue,
         Decimal futureShareOfSystem, Decimal futureCustomerSubscription) {
+        return getSharedSolarSystem(stageName, waitlist, daysPastDue, futureShareOfSystem, futureCustomerSubscription, false);
+    }
+    private static Shared_Solar_System__c getSharedSolarSystem(String stageName, Boolean waitlist, Integer daysPastDue,
+        Decimal futureShareOfSystem, Decimal futureCustomerSubscription, Boolean anchor) {
         Map<SObjectField, Object> sssValues = new Map<SObjectField, Object>{
             Shared_Solar_System__c.Id => Util.getFakeId(Shared_Solar_System__c.SObjectType)
         };
@@ -94,7 +110,8 @@ public with sharing class CapacitySnapshotServiceTest {
             Utility_Account_Subscription__c.Future_Share_of_System_Rollup__c => futureShareOfSystem
         };
         Map<SObjectField, Object> uasOpportunityValues = new Map<SObjectField, Object>{
-            Opportunity.StageName => stageName
+            Opportunity.StageName => stageName,
+            Opportunity.Customer_Group__c => (anchor?'Anchor':'Residential')
         };
         Map<SObjectField, Object> uasSharedSolarSystemValues = new Map<SObjectField, Object>{
             Shared_Solar_System__c.Waitlist__c => waitlist
