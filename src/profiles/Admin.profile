@@ -32360,6 +32360,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Supporting_Document_Folder__c.Assignment_Agreement__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Supporting_Document_Folder__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>SurveyInvitation.Case__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -50447,6 +50457,9 @@
         <recordType>Subscription_Order__c.System_Change_Order</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Supporting_Document_Folder__c-Supporting Document Folder Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>System_Bill__c-System Bill Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -52514,6 +52527,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Subscription_Transfer__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Supporting_Document_Folder__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -56143,6 +56165,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Subscription_Order__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Supporting_Document_Folder__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
