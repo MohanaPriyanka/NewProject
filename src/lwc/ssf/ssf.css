@@ -2,4 +2,8 @@
  * Created by peteryao on 7/7/20.
  */
 
-@import 'c/ssfStyleLibrary';
+/**
+ *  shared CSS component is not sufficiently bug-free to use at this time
+ *  replacing with static resource and loadStyles
+**/
+/* @import 'c/ssfStyleLibrary'; */

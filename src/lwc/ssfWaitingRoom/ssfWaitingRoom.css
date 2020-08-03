@@ -2,7 +2,11 @@
  * Created by LindsayHolmes_GearsCRM on 7/6/2020.
  */
 
-@import 'c/ssfStyleLibrary';
+/**
+ *  shared CSS component is not sufficiently bug-free to use at this time
+ *  replacing with static resource and loadStyles
+**/
+/* @import 'c/ssfStyleLibrary'; */
 
 .slds-carousel__panel.panel-hide{
     display: none;

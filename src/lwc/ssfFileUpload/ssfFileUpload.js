@@ -1,4 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
+import { loadStyle } from 'lightning/platformResourceLoader';
+import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 import getDummyRecordId from  '@salesforce/apex/SimpleSignupFormController.getDummyRecordId';
 import unlinkDocsFromDummy from '@salesforce/apex/SimpleSignupFormController.unlinkDocsFromDummyRecord';
 import insertLog from '@salesforce/apex/Logger.insertLog';
@@ -26,6 +28,7 @@ export default class SsfFileUpload extends LightningElement {
     // and none were successful in connecting the uploaded file to the new record.
 
     connectedCallback() {
+        loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         if(!this.inputText) {
             this.inputText = 'Please select a file for upload.';
         }
