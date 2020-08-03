@@ -51,7 +51,9 @@ public without sharing class CapacitySnapshotService {
                 futureShareOfSystemTotal += uas.Future_Share_of_System_Rollup__c;
                 futureCustomerSubscriptionTotal += uas.Future_Customer_Subscription_KWDC_Rollup__c;
 
-                if (uas.Opportunity__r.Account.Days_Past_Due__c >= 45 && uas.Opportunity__r.Account.Days_Past_Due__c < 60) {
+                if (uas.Opportunity__r.Customer_Group__c == 'Anchor') {
+                    continue;
+                } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 45 && uas.Opportunity__r.Account.Days_Past_Due__c < 60) {
                     capacitySnapshot.X45_60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
                 } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 60) {
                     capacitySnapshot.X60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
