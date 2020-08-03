@@ -80,10 +80,10 @@
             </div>
         </template>
         <template if:true={getBasicInfo}>
-            <c-ssf-basic-info lead-json={leadJSON} utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} resi-application-type={resiApplicationType} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
+            <!-- <c-ssf-basic-info lead-json={leadJSON} utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} resi-application-type={resiApplicationType} onleadcreated={handleLeadCreation}></c-ssf-basic-info> -->
         </template>
         <template if:true={getAgreements}>
-            <c-ssf-agreements lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements>
+            <!-- <c-ssf-agreements lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements> -->
         </template>
         <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
     </div>

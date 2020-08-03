@@ -13,8 +13,6 @@
   <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
   <aura:handler event="c:ZuoraPaymentPageComplete" action="{!c.onPaymentMethodComplete}"/>
 
-
-
             <div class="slds-align_absolute-center slds-var-p-bottom_x-large ssf-container">
                 <c:LightningErrorHandler/>
                 <aura:if isTrue="{!v.getInfo}">
@@ -65,6 +63,4 @@
                 </aura:if>
                 <c:bluewaveSpinner spinnerMessage="{!v.spinnerMessage}" show="{!v.showSpinner}"/>
             </div>
-
-
 </aura:component>
