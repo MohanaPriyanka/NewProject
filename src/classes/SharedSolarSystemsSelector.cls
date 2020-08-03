@@ -116,10 +116,9 @@ public inherited sharing class SharedSolarSystemsSelector {
         return [
             SELECT Id, (
                 SELECT Id, Opportunity__r.StageName, Opportunity__r.Account.Days_Past_Due__c, Future_Customer_Subscription_KWDC_Rollup__c,
-                    Future_Share_of_System_Rollup__c, Shared_Solar_System__r.Waitlist__c
+                    Future_Share_of_System_Rollup__c, Shared_Solar_System__r.Waitlist__c, Opportunity__r.Customer_Group__c
                 FROM Utility_Account_Subscriptions__r
                 WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
-                AND Opportunity__r.Customer_Group__c != 'Anchor'
                 AND (NOT Opportunity__r.Name LIKE '%test%')
             )
             FROM Shared_Solar_System__c
