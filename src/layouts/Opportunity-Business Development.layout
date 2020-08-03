@@ -82,10 +82,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Ready_for_Disbursal_Intercon__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>BCS_Commission_Paid__c</field>
             </layoutItems>
             <layoutItems>
@@ -380,6 +376,7 @@
         <fields>Product2</fields>
         <fields>Quantity</fields>
         <fields>ServiceDate</fields>
+        <fields>Utility__c</fields>
         <relatedList>RelatedLineItemList</relatedList>
     </relatedLists>
     <relatedLists>
