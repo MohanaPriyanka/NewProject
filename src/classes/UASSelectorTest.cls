@@ -98,6 +98,36 @@ public with sharing class UASSelectorTest {
         System.assertEquals(uasList.size(),selector.selectActiveUASBySSS(sssIdList).size());
     }
 
+    @IsTest public static void testGetUASesForAssignmentAgreement(){
+        Account clientAccount = new Account(Name = 'Client');
+        insert clientAccount;
+        Id rtAssign = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
+        Contract assignmentAgreement = new Contract(
+            Name = 'Assignment Agreement',
+            RecordTypeId = rtAssign,
+            AccountId = clientAccount.Id
+        );
+        insert assignmentAgreement;
+        Contract customerContract = new Contract(
+            Name = 'Customer Contract',
+            AccountId = clientAccount.Id,
+            Assignment_Agreement__c = assignmentAgreement.Id
+        );
+        insert customerContract;
+
+        List<Opportunity> opportunityList = [
+            SELECT ContractId
+            FROM Opportunity
+        ];
+        for (Opportunity opp : opportunityList){
+            opp.ContractId = customerContract.Id;
+        }
+        update opportunityList;
+
+        UASSelector selector = new UASSelector();
+        System.assert(selector.getUASesForAssignmentAgreement(assignmentAgreement.Id).size() > 0);
+    }
+
     private static void useMocks() {
         UtilityAccountSubscriptionHandler.partnerCommissionHandler = (PartnerCommissionHandler) Test.createStub(PartnerCommissionHandler.class, new PartnerCommissionHandlerTest.MockPartnerCommissionHandler());
     }

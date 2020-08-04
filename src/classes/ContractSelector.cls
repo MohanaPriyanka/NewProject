@@ -21,4 +21,12 @@ public inherited sharing class ContractSelector {
         ];
         return new List<List<Contract>>{contracts};
     }
+
+    public List<Contract> getCustomerContractsByAssignmentAgreement(Id assignmentAgreementId) {
+        return [
+            SELECT Id, Name
+            FROM Contract
+            WHERE Assignment_Agreement__c = : assignmentAgreementId
+        ];
+    }
 }
