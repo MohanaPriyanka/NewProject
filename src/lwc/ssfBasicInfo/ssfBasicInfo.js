@@ -6,12 +6,13 @@ import {LightningElement, track, api, wire} from 'lwc';
 import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
 import { getUSStateOptionsFull } from 'c/util';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import {makeRequest} from 'c/httpRequestService';
+import { makeRequest } from 'c/httpRequestService';
+import { loadStyle } from 'lightning/platformResourceLoader';
+import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api zipinput;
     @api leadJson;
-    @api utilityOptions;
     @api resiApplicationType;
     @api selectedProduct;
 
@@ -21,7 +22,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track spinnerMessage;
     @track sameBillingAddress = true;
     @track sameHomeAddress = true;
-    @track selectedUtility;
     @track utilityAccountSection;
     @track stateOptions;
     utilityAccountCount = 0;
@@ -29,6 +29,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {
+        loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         // if a lead has already been created, have the form show existing values
         if(this.leadJson) {
             this.resumedApp = true;
@@ -81,11 +82,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         // if certain property values didn't come in from the api, find their values
         if (!this.stateOptions) {
             this.stateOptions = getUSStateOptionsFull();
-        }
-        if (!this.utilityOptions) {
-            this.utilityOptions = [];
-        } else if (this.utilityOptions.length === 1) {
-            this.selectedUtility = this.utilityOptions[0].value;
         }
         if (this.pageRef && this.pageRef.state && this.pageRef.state.mock) {
             this.mockData();
