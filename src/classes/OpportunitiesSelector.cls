@@ -177,4 +177,19 @@ public without sharing class OpportunitiesSelector {
         return new List<List<Opportunity>>{opportunities};
     }
 
+    public List<Opportunity> getCompleteOppsWithoutContracts() {
+        return [
+            SELECT Id, AccountId,
+                Contract_Status__c,
+                Product_Line__c,
+                Parent_Account_ID__c,
+                BlueWave_Signature_Status__c,
+                Product__c,
+                Assignment_Agreement__c
+            FROM Opportunity
+            WHERE StageName = 'Complete'
+            AND Shared_Solar_System__c != null
+            AND ContractId = null
+        ];
+    }
 }
