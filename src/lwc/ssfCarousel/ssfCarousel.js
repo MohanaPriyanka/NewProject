@@ -3,6 +3,8 @@
  */
 
 import { LightningElement, api, track } from 'lwc';
+import { loadStyle } from 'lightning/platformResourceLoader';
+import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 
 export default class CarouselComponent extends LightningElement {
 
@@ -13,6 +15,10 @@ export default class CarouselComponent extends LightningElement {
     loaded = false;
     intervalVar;
 
+    connectedCallback() {
+        loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+    }
+    
     renderedCallback() {
         if(!this.loaded) {
             this.arrangeComponents();

@@ -3,6 +3,8 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { loadStyle } from 'lightning/platformResourceLoader';
+import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 import faq1Question from '@salesforce/label/c.SSF_FAQ1_Question';
 import faq1Answer from '@salesforce/label/c.SSF_FAQ1_Answer';
 import faq2Question from '@salesforce/label/c.SSF_FAQ2_Question';
@@ -33,6 +35,10 @@ export default class SsfFaq extends LightningElement {
         faq6Answer
     };
 
+    connectedCallback() {
+        loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+    }
+    
     get assistiveText() {
         return this.isExpanded ? 'Collapse Section' : 'Expand Section';
     }

@@ -4,9 +4,11 @@
 
 import { LightningElement, track, api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { loadStyle } from 'lightning/platformResourceLoader';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormController.getContentDocumentLinksByLead'
 import getContentDistributionLink from '@salesforce/apex/SimpleSignupFormController.getContentDistributionById'
+import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 import {makeRequest} from 'c/httpRequestService';
 
 export default class SsfAgreements extends LightningElement {
@@ -36,6 +38,7 @@ export default class SsfAgreements extends LightningElement {
     mostRecentDocDate;
 
     connectedCallback() {
+        loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         if (!this.lead && this.leadJson) {
             this.lead = JSON.parse(this.leadJson);
             if(this.lead.contentDocs && this.lead.contentDocs.length === 2) {
