@@ -21,6 +21,7 @@ public without sharing class RestLead {
     public String productName;
     public Id partnerId;
     public Id salesRepId;
+    public Id utilityId;
     public Datetime customerSignedDate;
     public Datetime applicationCompleteDate;
     public String eiaId;
@@ -49,6 +50,7 @@ public without sharing class RestLead {
         this.loadZone = lead.LoadZone__c;
         this.partnerId = lead.Partner_Lookup__c;
         this.salesRepId = lead.bs_Sales_ID__c;
+        this.utilityId = lead.Utility_relationship__c;
         this.productName = lead.Product__r.Name;
         this.businessPhone = lead.Business_Phone__c;
         this.businessTitle = lead.Business_Title__c;
@@ -59,7 +61,6 @@ public without sharing class RestLead {
         this.campaignId = lead.Manual_Campaign_ID__c;
         this.referralName = lead.Referral_Name__c;
         this.referralEmail = lead.Referral_Email__c;
-
     }
 
     public void validateCreateFields() {
@@ -141,10 +142,10 @@ public without sharing class RestLead {
         if (fieldNames.contains('referralName')) baseLead.Referral_Name__c = this.referralName;
         if (fieldNames.contains('referralEmail')) baseLead.Referral_Email__c = this.referralEmail;
         if (fieldNames.contains('continueApplicationLink')) baseLead.Continue_Application_Link__c = this.continueApplicationLink;
-
+        if (fieldNames.contains('utilityId')) baseLead.Utility_relationship__c = this.utilityId;
         updateDerivedFields(new RestLead(baseLead), baseLead);
 
-        if (this.eiaId != null) {
+        if (this.utilityId == null && this.eiaId != null) {
             updateUtility(this.eiaId, baseLead);
         }
 
@@ -181,7 +182,8 @@ public without sharing class RestLead {
             Manual_Campaign_ID__c = this.campaignId,
             Referral_Name__c = this.referralName,
             Referral_Email__c = this.referralEmail,
-            Continue_Application_Link__c = this.continueApplicationLink
+            Continue_Application_Link__c = this.continueApplicationLink,
+            Utility_relationship__c = this.utilityId
         );
         // Since:
         // - all UALs should have the same zip code under a property account (enforced by the UI and business logic),
@@ -196,7 +198,7 @@ public without sharing class RestLead {
         }
 
         updateDerivedFields(this, newLead);
-        if (this.eiaId != null) {
+        if (this.utilityId == null && this.eiaId != null) {
             updateUtility(this.eiaId, newLead);
         }
 
@@ -358,6 +360,7 @@ public without sharing class RestLead {
         public Id id;
         public Id leadId;
         public Id propertyAccountId;
+        public Id utilityId;
         public String email;
         public String utilityAccountNumber;
         public String nameOnAccount;
@@ -384,6 +387,7 @@ public without sharing class RestLead {
         public RestUtilityAccountLog(Utility_Account_Log__c ual) {
             this.id = ual.Id;
             this.propertyAccountId = ual.Account__c;
+            this.utilityId = ual.Utility_lookup__c;
             this.utilityAccountNumber = ual.Name;
             this.nameOnAccount = ual.Name_on_Account__c;
             this.serviceStreet = ual.Service_Address__c;
@@ -394,8 +398,9 @@ public without sharing class RestLead {
             this.annualCostOfElectricity = ual.Annual_Cost_of_Electricity__c;
         }
 
+        @SuppressWarnings('PMD.ApexCRUDViolation')
         public Utility_Account_Log__c asUAL(Account propertyAccount) {
-            return new Utility_Account_Log__c(
+            Utility_Account_Log__c ual = new Utility_Account_Log__c(
                 Id = id,
                 Account__c = propertyAccount.Id,
                 Lead__c = propertyAccount.Lead__c,
@@ -408,6 +413,13 @@ public without sharing class RestLead {
                 Annual_kWh__c = annualKWh,
                 Annual_Cost_of_Electricity__c = annualCostOfElectricity
             );
+            
+            List<Lead> leadList = [SELECT Utility_relationship__c FROM Lead WHERE Id = :propertyAccount.Lead__c];
+            if(!leadList.isEmpty()) {
+                ual.Utility_lookup__c = leadList[0].Utility_relationship__c;
+            }
+            
+            return ual;
         }
 
         /**
