@@ -10804,6 +10804,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Financial_Underwriting_Document__c.Lead__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>General_Ledger__c.Amount__c</field>
         <readable>true</readable>
