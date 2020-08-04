@@ -8,7 +8,8 @@ public without sharing class ContractMigrationService {
     @TestVisible
     private static ContentVersionSelector contentVersionSelector = new ContentVersionSelector();
 
-    private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+    @TestVisible
+    private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<SObjectType> {
             ContentDocumentLink.SObjectType,
             Opportunity.SObjectType

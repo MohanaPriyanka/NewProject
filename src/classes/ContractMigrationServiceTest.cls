@@ -40,7 +40,12 @@ public with sharing class ContractMigrationServiceTest {
         useMocks();
 
         ContractMigrationService service = new ContractMigrationService();
-        service.executeForOpps(oppList);
+        service.convertOpportunityToContract(oppList);
+        service.cloneDocuSignAttachmentsToContract(oppList, 'Credit Allocation Agreement');
+        service.cloneDocuSignAttachmentsToContract(oppList, 'Disclosure');
+
+        List<ContentDocumentLink> cdlToInsertList = (List<ContentDocumentLink>)
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'ContentDocumentLink');
 
         List<Contract> contracts = [
             SELECT Id, AccountId, Assignment_Agreement__c
@@ -65,13 +70,8 @@ public with sharing class ContractMigrationServiceTest {
         System.assertEquals(2,countOfContractsAccount1);
         System.assert(containsAccount2);
 
-        List<ContentDocumentLink> documentLinks = [
-            SELECT Id
-            FROM ContentDocumentLink
-            WHERE LinkedEntityId IN : contractIdSet
-        ];
         // 1 for agreement, 1 for disclosure for each opp with a DS
-        System.assertEquals(8,documentLinks.size());
+        System.assertEquals(8,cdlToInsertList.size());
     }
 
     @IsTest
