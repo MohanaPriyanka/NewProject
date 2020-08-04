@@ -16,7 +16,6 @@ import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStylin
 export default class Ssf extends NavigationMixin(LightningElement) {
     @api leadId;
     @api email;
-    @api selectedUtility;
 
     @track showSpinner = false;
     @track showModal = false;
@@ -31,6 +30,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track zipCodeInput;
     @track leadJSON;
     @track selectedProduct;
+    @track selectedUtility;
     @track zipCodeResponse;
     @track resiApplicationType = true;
     @wire(CurrentPageReference) pageRef;
