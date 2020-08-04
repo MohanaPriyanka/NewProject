@@ -3,6 +3,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { loadStyle } from 'lightning/platformResourceLoader';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 import factText1 from '@salesforce/label/c.SSF_WaitingRoom1_Text';
 import factText2 from '@salesforce/label/c.SSF_WaitingRoom2_Text';
@@ -35,4 +36,8 @@ export default class SsfWaitingRoom extends LightningElement {
             href: factUrl3
         }
     ];
+    
+    connectedCallback() {
+        loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+    }
 }

@@ -4,14 +4,33 @@
 
 ({
     doInit: function(component) {
-        component.set('v.getInfo', true);
+        var loc;
+        var href = decodeURIComponent(window.location.search.substring(1));
+        var params = href.split('&');
+        var param;
+        var i;
+        for(i = 0; i < params.length; i++) {
+            param = params[i].split('=');
+            if(param[0] === 'loc') {
+                if(param[1] !== undefined) {
+                    loc = param[1];
+                }
+                break;
+            }
+        }
+
         component.set('v.getPayment', false);
-        component.set('v.showComplete', false);
+        if(loc === 'complete') {
+            component.set('v.getInfo', false);
+            component.set('v.showComplete', true);
+        } else {
+            component.set('v.getInfo', true);
+            component.set('v.showComplete', false);
+        }
     },
 
     handleConsents : function(component, event) {
         component.set('v.lead', event.getParams());
-        console.log(event.getParams());
         component.set('v.getInfo', false);
         component.set('v.getPayment', true);
         component.set('v.showComplete', false);
