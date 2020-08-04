@@ -1,0 +1,19 @@
+/**
+ * Created by JesseFox_GearsCRM on 7/6/2020.
+ */
+
+ @import 'c/ssfStyleLibrary';
+
+.header {
+    display: flex;
+    flex-flow: row nowrap;
+}
+.heading {
+    font-size: 16px;
+    margin-left: .25rem;
+}
+.body {
+    padding-left: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 14px;
+}

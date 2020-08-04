@@ -231,14 +231,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CAPController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CAPControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CSAPController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -316,6 +308,18 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CapacityServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CapacitySnapshotScheduler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CapacitySnapshotService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CapacitySnapshotServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -408,10 +412,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ClientReportingServiceTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CoApplicantConvertTestClass</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -639,14 +639,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>FormAssemblyHelper</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>FormAssemblyHelperTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>GatewaySelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -779,10 +771,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LoanPipelineConvertTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LoanServicer</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -912,10 +900,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>PCRTradeAccountHandlerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PartnerAlertHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1063,58 +1047,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SLPAddCoApplicant</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPAddCustomer</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPAlertsHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPAllCustomersHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPControllersTestclass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPCreditStatus</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPCustomerHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPDashboardHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPDashboardStageChartHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPFileHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPQuickSalesSheetHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPQuickSalesSheetTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPUserHelper</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ScheduleZSubscriptionSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1208,10 +1140,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SystemSettingsSelectorTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TaskHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -5412,6 +5340,46 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Capacity_Snapshot__c.As_Of_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Capacity_Snapshot__c.Available_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Capacity_Snapshot__c.Minimum_Waitlist_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Capacity_Snapshot__c.QC_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Capacity_Snapshot__c.Shared_Solar_System__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Capacity_Snapshot__c.Waitlist_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Capacity_Snapshot__c.X45_60_Day_Past_Due_Active_kW__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Capacity_Snapshot__c.X60_Day_Past_Due_Active_kW__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.AccountId</field>
         <readable>true</readable>
@@ -9194,6 +9162,26 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract_Fee_Detail__c.Recurring_Frequency__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Utilization_Adjustment_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Utilization_Adjustment_Floor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Utilization_Adjustment_Multiplier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Utilization_Adjustment_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -25297,8 +25285,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Discount_Percentage__c</field>
+        <editable>false</editable>
+        <field>Opportunity.Discount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -28829,6 +28817,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Production__c.Credits_Transferred__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Production__c.Credits_Transferred_to_BW_or_Client__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -33229,6 +33222,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer_Part__c.Transfer_Transferred_To__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -49580,6 +49578,9 @@
         <layout>Campaign_Inventory_Log__c-Campaign Inventory Log Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Capacity_Snapshot__c-Capacity Snapshot Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Asset Management Layout</layout>
         <recordType>Case.Asset_Management_Case</recordType>
     </layoutAssignments>
@@ -50803,6 +50804,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Campaign_Inventory_Log__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Capacity_Snapshot__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

@@ -210,6 +210,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             inputCmp.reportValidity();
             return validSoFar && inputCmp.checkValidity();
         }, true);
+      
         if(this.isFileUpload) {
             this.propertyAccount.utilityAccountLogs.forEach(ual => {
                 if(!ual.utilityBills || ual.utilityBills.length === 0) {

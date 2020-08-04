@@ -588,20 +588,23 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
 
 TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,
 
-IF($CustomMetadata.Custom_Feature_Enablement__mdt.Sizing_Method.Feature_is_Enabled__c = true, 
-
-(New_Annual_kWh__c*Size_Ratio__c)/ Expected_Yield_kWh_kW__c,
-
- New_Annual_kWh__c / Expected_Yield_kWh_kW__c) ,
+IF(
+  AND(
+   $CustomMetadata.Custom_Feature_Enablement__mdt.Sizing_Method.Feature_is_Enabled__c = true,  
+   NOT(ISBLANK(Utility_Account_Subscription__r.Sizing_Method__c)) 
+     ),
+  (New_Annual_kWh__c*Size_Ratio__c)/ Expected_Yield_kWh_kW__c,
+   New_Annual_kWh__c / Expected_Yield_kWh_kW__c
+) ,
 
 IF( Utility_Account_Subscription__r.UAS_Number__c &gt; 1 ,
 
-  New_Annual_Cost__c  / Value_of_NMC__c / Expected_Yield_kWh_kW__c,
+New_Annual_Cost__c / Value_of_NMC__c / Expected_Yield_kWh_kW__c,
 
 IF(
 
 OR( Utility_Account_Subscription__r.Auto_Unround__c = TRUE , Utility_Account_Subscription__r.UAS_Number__c = 1),
- New_Annual_Cost__c  / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
+New_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
 
 
 IF(
@@ -610,7 +613,7 @@ OR(Utility_Account_Subscription__r.UAS_Number__c=1, Utility_Account_Subscription
 
 Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara Barton&apos;),
 
-Round(( New_Annual_Cost__c  / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
+Round(( New_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>New kW DC Subscription</label>
         <precision>18</precision>

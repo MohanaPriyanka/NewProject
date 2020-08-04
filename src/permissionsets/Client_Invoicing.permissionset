@@ -153,6 +153,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Utilization_Adjustment_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Utilization_Adjustment_Floor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Utilization_Adjustment_Multiplier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Utilization_Adjustment_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract_Fee_Detail__c.Waive_Reacquisition_Fee_Max_Project__c</field>
         <readable>true</readable>
     </fieldPermissions>
