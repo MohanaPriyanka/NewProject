@@ -156,6 +156,22 @@
                 <behavior>Edit</behavior>
                 <field>Recurring_Escalator_Frequency__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utilization_Adjustment_Type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utilization_Adjustment_Multiplier__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utilization_Adjustment_Amount__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utilization_Adjustment_Floor__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -178,7 +194,6 @@
                 <field>Project_Type_Acquisition_Management__c</field>
             </layoutItems>
         </layoutColumns>
-
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
