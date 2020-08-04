@@ -194,7 +194,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     );
                     // Just picking the first one - could be a picklist if we found multiple products (SREC/SMART)
                     this.selectedProduct = this.zipCodeResponse.products[0];
-                    this.dispatchEvent(evt);
                     this.getZip = false;
                     this.getBasicInfo = true;
                 } else {
