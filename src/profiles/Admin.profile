@@ -195,6 +195,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>BatchClientFileCopierService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BatchCreditSRECHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -384,6 +388,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ClientContracts</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientFileCopierService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientFileCopierServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

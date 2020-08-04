@@ -1,5 +1,5 @@
 // Tested by ClientFileCopierServiceTest
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ClientFileCopierService {
     @TestVisible
     private static ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
