@@ -739,5 +739,17 @@ NOT(ISPICKVAL(Recurring_Frequency__c,&quot;&quot;))
         <errorDisplayField>Management_Fee_Type__c</errorDisplayField>
         <errorMessage>If this fee is recurring, you must populate the recurring frequency field. You can&apos;t populate recurring frequency without also setting the fee type to recurring</errorMessage>
     </validationRules>
+    <validationRules>
+        <fullName>Utilization_Amount_Type_Match</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(ISPICKVAL(Utilization_Adjustment_Type__c, &quot;Amount ($)&quot;),ISBLANK(Utilization_Adjustment_Amount__c))</errorConditionFormula>
+        <errorMessage>If you selected Amount for the Utilization Adjustment Type, then you need to fill out the &apos;Utilization Adjustment Amount&apos; field.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Utilization_Multiplier_Type_Match</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(ISPICKVAL(Utilization_Adjustment_Type__c, &quot;Multiplier (%)&quot;),ISBLANK(Utilization_Adjustment_Multiplier__c ))</errorConditionFormula>
+        <errorMessage>If you selected the Multiplier for the Utilization Adjustment Type, then you need to fill out the &apos;Utilization Adjustment Multiplier&apos; field.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
