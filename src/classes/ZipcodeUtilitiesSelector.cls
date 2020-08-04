@@ -4,8 +4,8 @@
  * Test: ZipcodeUtilitySelectorTest
  */
 
-
-public class ZipcodeUtilitiesSelector {
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public inherited sharing class ZipcodeUtilitiesSelector {
     public static List<ZipCode_Utility_Junction__c> selectZipcodeUtilitiesAndLoadzones(String zipcode) {
         List<ZipCode_Utility_Junction__c> zipcodeUtilities = [
             SELECT Utility__r.Id, Utility__r.Name, Utility__r.Utility_Data_Collection_Mechanism__c, Load_Zone_Utility__r.LZ__c,

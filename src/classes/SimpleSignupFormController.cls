@@ -54,6 +54,7 @@ public without sharing class SimpleSignupFormController {
     }
 
 
+    // used before we have a lead id and email, so no way to authenticate
     @AuraEnabled(cacheable=true)
     public static String getDummyRecordId(){
         if(Schema.sObjectType.Custom_File_Upload_Share__c.fields.Id.isAccessible()) {
@@ -66,24 +67,8 @@ public without sharing class SimpleSignupFormController {
         return null;
     }
 
-    @SuppressWarnings('PMD.ApexCRUDViolation')
-    private static Id getReparentUserId() {
-        String siteName = Site.getName();
-        List<Site> sites = [SELECT GuestRecordDefaultOwnerId FROM Site WHERE Name = :siteName];
-        if(!sites.isEmpty() && sites[0].GuestRecordDefaultOwnerId != null) {
-            return sites[0].GuestRecordDefaultOwnerId;
-        }
 
-        // if method is not called from site context, return backup user
-        List<User> backupUser = [SELECT Id, Email, Username FROM User WHERE Name = 'API'];
-        if(!backupUser.isEmpty()) {
-            return backupUser[0].Id;
-        }
-
-        return null;
-    }
-
-
+    // used before we have a lead id and email, so no way to authenticate
     @SuppressWarnings('PMD.ApexCRUDViolation')
     @AuraEnabled
     public static String unlinkDocsFromDummyRecord(List<String> documents, String category){
@@ -126,28 +111,67 @@ public without sharing class SimpleSignupFormController {
     }
 
 
+    // used before we have a lead id and email, so no way to authenticate
+    @AuraEnabled
+    public static RestZipCode.Utility getUtilityFromId(Id utilityId){
+        if(Schema.sObjectType.Utility__c.fields.Id.isAccessible() &&
+            Schema.sObjectType.Utility__c.fields.Name.isAccessible() &&
+            Schema.sObjectType.Utility__c.fields.Utility_Data_Collection_Mechanism__c.isAccessible()) {
+                Utility__c util = [SELECT Id, Name, Utility_Data_Collection_Mechanism__c FROM Utility__c WHERE Id = :utilityId LIMIT 1];
+                return new RestZipCode.Utility(util.Id, util.Name, util.Utility_Data_Collection_Mechanism__c);
+        }
+
+        return null;
+    }
+
+
+    // used before we have a lead id and email, so no way to authenticate
+    @AuraEnabled
+    public static RestZipCode.Utility getUtilityFromEiaId(String eiaId){
+        if(Schema.sObjectType.Utility__c.fields.Id.isAccessible() &&
+            Schema.sObjectType.Utility__c.fields.Name.isAccessible() &&
+            Schema.sObjectType.Utility__c.fields.Utility_Data_Collection_Mechanism__c.isAccessible()) {
+                Utility__c util = [SELECT Id, Name, Utility_Data_Collection_Mechanism__c FROM Utility__c WHERE EIA_ID__c = :eiaId LIMIT 1];
+                return new RestZipCode.Utility(util.Id, util.Name, util.Utility_Data_Collection_Mechanism__c);
+        }
+
+        return null;
+    }
+
+
+
+    /****************************************/
+    /***          HELPER METHODS          ***/
+    /****************************************/
+    
+
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    public static void changeOwnerOfUpload(Set<Id> docIds, Id ownerId){
+    private static Id getReparentUserId() {
+        String siteName = Site.getName();
+        List<Site> sites = [SELECT GuestRecordDefaultOwnerId FROM Site WHERE Name = :siteName];
+        if(!sites.isEmpty() && sites[0].GuestRecordDefaultOwnerId != null) {
+            return sites[0].GuestRecordDefaultOwnerId;
+        }
+
+        // if method is not called from site context, return backup user
+        List<User> backupUser = [SELECT Id, Email, Username FROM User WHERE Name = 'API'];
+        if(!backupUser.isEmpty()) {
+            return backupUser[0].Id;
+        }
+
+        return null;
+    }
+
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    @TestVisible
+    private static void changeOwnerOfUpload(Set<Id> docIds, Id ownerId){
         List<ContentDocument> newDocs = new List<ContentDocument>();
         for(ContentDocument myDoc : [SELECT Id FROM ContentDocument WHERE Id IN: docIds]){
             myDoc.OwnerId = ownerId;
             newDocs.add(mydoc);
         }
         update newDocs;
-    }
-
-
-    @AuraEnabled
-    public static RestZipCode.Utility getUtilityFromId(Id utilityId){
-        Utility__c util = [SELECT Id, Name, Utility_Data_Collection_Mechanism__c FROM Utility__c WHERE Id = :utilityId LIMIT 1];
-        return new RestZipCode.Utility(util.Id, util.Name, util.Utility_Data_Collection_Mechanism__c);
-    }
-
-
-    @AuraEnabled
-    public static RestZipCode.Utility getUtilityFromEiaId(String eiaId){
-        Utility__c util = [SELECT Id, Name, Utility_Data_Collection_Mechanism__c FROM Utility__c WHERE EIA_ID__c = :eiaId LIMIT 1];
-        return new RestZipCode.Utility(util.Id, util.Name, util.Utility_Data_Collection_Mechanism__c);
     }
 
 }
