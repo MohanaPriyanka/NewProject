@@ -16,6 +16,7 @@ import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStylin
 export default class Ssf extends NavigationMixin(LightningElement) {
     @api leadId;
     @api email;
+    @api selectedUtility;
 
     @track showSpinner = false;
     @track showModal = false;
@@ -30,7 +31,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track zipCodeInput;
     @track leadJSON;
     @track selectedProduct;
-    @track selectedUtility;
     @track zipCodeResponse;
     @track resiApplicationType = true;
     @wire(CurrentPageReference) pageRef;
@@ -95,9 +95,9 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     this.selectedProduct = resolveResult.productName;
                     
                     if(resolveResult.utilityId) {
-                        return getUtilById({ utilityId: resolveResult.utilityId});
+                        return getUtilById({ utilityId: resolveResult.utilityId });
                     } else if(resolveResult.eiaId) {
-                        return this.getUtilityByEiaId({ eiaId: resolveResult.eiaId });
+                        return getUtilByEIA({ eiaId: resolveResult.eiaId });
                     } else {
                         this.submitZip();
                     }
