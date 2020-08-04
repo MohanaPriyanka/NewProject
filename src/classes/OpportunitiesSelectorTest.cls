@@ -225,4 +225,12 @@ public with sharing class OpportunitiesSelectorTest {
             System.assertEquals(System.today().addMonths(-3), d);
         }
     }
+
+    @IsTest
+    public static void testGetCompleteOppsWithoutContracts(){
+        OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+        List<Opportunity> oppList = oppSelector.getCompleteOppsWithoutContracts();
+
+        System.assertEquals(17, oppList.size());
+    }
 }
