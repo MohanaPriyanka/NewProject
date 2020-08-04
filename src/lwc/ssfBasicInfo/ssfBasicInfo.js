@@ -13,7 +13,6 @@ import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStylin
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api zipinput;
     @api leadJson;
-    @api selectedUtility;
     @api resiApplicationType;
     @api selectedProduct;
 
@@ -52,8 +51,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.restLead = {
                 applicationType: this.resiApplicationType ? 'Residential' : 'Non-Residential',
                 zipCode: this.zipinput,
-                productName: this.selectedProduct,
-                utilityId: this.selectedUtility
+                productName: this.selectedProduct
             }
             this.propertyAccount = { 
                 billingPostalCode: this.resiApplicationType ? '' : this.zipinput, 
@@ -155,7 +153,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             localid:this.utilityAccountCount,
             name: `Utility Account ${this.utilityAccountCount}`,
             servicePostalCode: this.zipinput,
-            utilityId: this.selectedUtility.utilityId,
             doNotDelete: false,
             showUpload: true,
             utilityBills: []
