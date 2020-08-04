@@ -111,19 +111,6 @@
                                         </lightning-input>
                                     </div>
                                     <div class="input-group half">
-                                        <lightning-combobox key={it.value.localid}
-                                                            data-row-index={it.index}
-                                                            placeholder=""
-                                                            class="slds-var-m-bottom_small slds-col"
-                                                            label="Utility"
-                                                            name="selectedUtility"
-                                                            value={selectedUtility}
-                                                            options={utilityOptions}
-                                                            onchange={genericOnChange}
-                                                            required>
-                                        </lightning-combobox>
-                                    </div>
-                                    <div class="input-group half">
                                         <lightning-input key={it.value.localid}
                                                         name="nameOnAccount"
                                                         data-row-index={it.index}
@@ -134,7 +121,6 @@
                                                         required>
                                         </lightning-input>
                                     </div>
-                                    <div class="input-group half"></div>
                                     <div class="input-group half">
                                         <lightning-input key={it.value.localid}
                                                         name="serviceStreet"
