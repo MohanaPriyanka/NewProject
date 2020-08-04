@@ -16,7 +16,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @api email;
 
     @track showSpinner = false;
-    @track showModal = false;
     @track spinnerMessage;
     @track getZip;
     @track enterEmail;
@@ -28,7 +27,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track zipCodeInput;
     @track leadJSON;
     @track selectedProduct;
-    @track selectedUtility;
     @track zipCodeResponse;
     @track resiApplicationType = true;
     @wire(CurrentPageReference) pageRef;
@@ -39,7 +37,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
-        
+
         if (!this.utilityOptions) {
             this.utilityOptions = [];
         }
@@ -91,9 +89,21 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     this.zipCodeInput = resolveResult.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
                     this.resiApplicationType = resolveResult.applicationType === 'Residential';
                     this.selectedProduct = resolveResult.productName;
-                    this.selectedUtility = resolveResult.utilityId;
-                    
-                    this.showSpinner = false;                  
+                    return getZipCodeCapacity(this.zipCodeInput, this.pageRef.state.partnerId);
+                }
+            )
+            .then(
+                (zipResolveResult) => {
+                    this.showSpinner = false;
+                    if(zipResolveResult.utilities && zipResolveResult.utilities.length >= 1) {
+                        this.utilityOptions = zipResolveResult.utilities.map(
+                            ({name}) => {
+                                return {value: name, label: name};
+                            }
+                        );
+                    }
+
+                    let resolveResult = JSON.parse(this.leadJSON);            
                     this.enterEmail = false;
                     if(this.loc == 'pay') {
                         this.dispatchEvent(new CustomEvent('consentscomplete', { detail: JSON.parse(this.leadJSON) }));
@@ -134,7 +144,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
 
     renderedCallback() {
         const inputBox = this.template.querySelector('lightning-input');
-        if (inputBox && !this.showModal) {
+        if (inputBox) {
             inputBox.focus();
         }
     }
@@ -149,16 +159,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     
     applicationTypeOnChangeBiz() {
         this.resiApplicationType = false;
-    }
-
-    closeModal() {
-        this.showModal = false;
-    }
-
-    proceedWithSelectedUtility() {
-        this.showModal = false;
-        this.getZip = false;
-        this.getBasicInfo = true;
     }
 
     checkForSubmit(event) {
@@ -187,22 +187,16 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                 this.showSpinner = false;
                 this.zipCodeResponse = resolveResult;
                 if (this.zipCodeResponse.hasCapacity && this.zipCodeResponse.products.length >= 1) {
-                    if(this.zipCodeResponse.utilities && this.zipCodeResponse.utilities.length >= 1) {
-                        this.utilityOptions = this.zipCodeResponse.utilities.map(
-                            utility => {
-                                return {value: utility.utilityId, label: utility.name};
-                            }
-                        );
-                    }
+                    this.utilityOptions = this.zipCodeResponse.utilities.map(
+                        ({name}) => {
+                            return {value: name, label: name};
+                        }
+                    );
                     // Just picking the first one - could be a picklist if we found multiple products (SREC/SMART)
                     this.selectedProduct = this.zipCodeResponse.products[0];
-                    if(this.utilityOptions.length > 1) {
-                        this.getZip = true;
-                        this.showModal = true;
-                    } else {
-                        this.selectedUtility = this.utilityOptions[0].value;
-                        this.proceedWithSelectedUtility();
-                    }
+                    this.dispatchEvent(evt);
+                    this.getZip = false;
+                    this.getBasicInfo = true;
                 } else {
                     const evt = new ShowToastEvent({
                         title: 'Sorry, your zip code is not eligible for service at this time',
@@ -247,12 +241,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     // ///////////////////////////////////
     //      STYLING
     // ///////////////////////////////////
-    get getContainerStyle() {
-        if(this.showModal || this.showSpinner) {
-            return 'slds-backdrop slds-backdrop_open';
-        }
-        return '';
-    }
 
     get getResiButtonStyle() {
         let style = 'icon-button';
