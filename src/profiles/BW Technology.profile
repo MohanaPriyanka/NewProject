@@ -23489,7 +23489,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Financial_Underwriting_Document__c.Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
