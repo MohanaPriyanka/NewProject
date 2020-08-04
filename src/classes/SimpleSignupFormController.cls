@@ -136,4 +136,18 @@ public without sharing class SimpleSignupFormController {
         update newDocs;
     }
 
+
+    @AuraEnabled
+    public static RestZipCode.Utility getUtilityFromId(Id utilityId){
+        Utility__c util = [SELECT Id, Name, Utility_Data_Collection_Mechanism__c FROM Utility__c WHERE Id = :utilityId LIMIT 1];
+        return new RestZipCode.Utility(util.Id, util.Name, util.Utility_Data_Collection_Mechanism__c);
+    }
+
+
+    @AuraEnabled
+    public static RestZipCode.Utility getUtilityFromEiaId(String eiaId){
+        Utility__c util = [SELECT Id, Name, Utility_Data_Collection_Mechanism__c FROM Utility__c WHERE EIA_ID__c = :eiaId LIMIT 1];
+        return new RestZipCode.Utility(util.Id, util.Name, util.Utility_Data_Collection_Mechanism__c);
+    }
+
 }

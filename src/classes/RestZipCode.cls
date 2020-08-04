@@ -21,7 +21,7 @@ public inherited sharing class RestZipCode {
     private Set<Utility> getUtilities(Set<Utility__c> utilitySobjs) {
         Set<Utility> utilities = new Set<Utility>();
         for (Utility__c utility : utilitySobjs) {
-            utilities.add(new Utility(utility.Id, utility.Name));
+            utilities.add(new Utility(utility.Id, utility.Name, utility.Utility_Data_Collection_Mechanism__c));
         }
         return utilities;
     }
@@ -37,10 +37,18 @@ public inherited sharing class RestZipCode {
     public class Utility {
         public String utilityId;
         public String name;
+        public String dataCollectionMethod;
 
         public Utility(String id, String name) {
             this.utilityId = id;
             this.name = name;
+            this.dataCollectionMethod = 'File Upload';
+        }
+
+        public Utility(String id, String name, String dataCollectionMethod) {
+            this.utilityId = id;
+            this.name = name;
+            this.dataCollectionMethod = dataCollectionMethod;
         }
     }
 }
