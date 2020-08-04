@@ -5,7 +5,8 @@
 import { LightningElement, api, track, wire} from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
-import {makeRequest} from 'c/httpRequestService';
+import { loadStyle } from 'lightning/platformResourceLoader';
+import { makeRequest } from 'c/httpRequestService';
 import { getZipCodeCapacity } from 'c/zipCodeService';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
@@ -35,6 +36,8 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     bizIconUrl = staticResourceFolder + '/Icon_City.png';
 
     connectedCallback() {
+        loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+
         if (!this.utilityOptions) {
             this.utilityOptions = [];
         }
@@ -99,7 +102,8 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                             }
                         );
                     }
-                    
+
+                    let resolveResult = JSON.parse(this.leadJSON);            
                     this.enterEmail = false;
                     if(this.loc == 'pay') {
                         this.dispatchEvent(new CustomEvent('consentscomplete', { detail: JSON.parse(this.leadJSON) }));
@@ -157,22 +161,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         this.resiApplicationType = false;
     }
 
-    get getResiButtonStyle() {
-        let style = 'icon-button';
-        if(this.resiApplicationType) {
-            style += ' selected';
-        }
-        return style;
-    }
-
-    get getBizButtonStyle() {
-        let style = 'icon-button';
-        if(!this.resiApplicationType) {
-            style += ' selected';
-        }
-        return style;
-    }
-
     checkForSubmit(event) {
         if (event.which === 13) {
             const inputBox = this.template.querySelector('lightning-input');
@@ -206,6 +194,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     );
                     // Just picking the first one - could be a picklist if we found multiple products (SREC/SMART)
                     this.selectedProduct = this.zipCodeResponse.products[0];
+                    this.dispatchEvent(evt);
                     this.getZip = false;
                     this.getBasicInfo = true;
                 } else {
@@ -247,5 +236,25 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             detail: event.detail
         });
         this.dispatchEvent(consentsCompleteEvent);
+    }
+
+    // ///////////////////////////////////
+    //      STYLING
+    // ///////////////////////////////////
+
+    get getResiButtonStyle() {
+        let style = 'icon-button';
+        if(this.resiApplicationType) {
+            style += ' selected';
+        }
+        return style;
+    }
+
+    get getBizButtonStyle() {
+        let style = 'icon-button';
+        if(!this.resiApplicationType) {
+            style += ' selected';
+        }
+        return style;
     }
 }
