@@ -106,10 +106,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Application_Status__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Reason_Unqualified__c</field>
             </layoutItems>
             <layoutItems>
@@ -315,10 +311,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Referral_Email__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Acquired_By_Client_Closed_By_BlueWave__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -558,13 +550,7 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>ChargentOrders__Billing_First_Name__c</fields>
-        <fields>ChargentOrders__Billing_Last_Name__c</fields>
-        <fields>ChargentOrders__Payment_Method__c</fields>
-        <fields>ChargentOrders__Card_Type__c</fields>
-        <fields>ChargentOrders__Card_Last_4__c</fields>
-        <fields>ChargentOrders__Payment_Status__c</fields>
-        <relatedList>ChargentOrders__ChargentOrder__c.Lead__c</relatedList>
+        <relatedList>Financial_Underwriting_Document__c.Lead__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
