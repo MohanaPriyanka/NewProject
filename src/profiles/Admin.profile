@@ -975,6 +975,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProductSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProductionDetailBillService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1160,6 +1168,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SharedSolarSystemsSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SharedSolarSystemsTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -28436,6 +28448,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.Margin_Over_Index_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Max_Subscription_kW_AC_for_DC_calc__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
