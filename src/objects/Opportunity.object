@@ -2400,11 +2400,6 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
                     <default>false</default>
                     <label>Business</label>
                 </value>
-                <value>
-                    <fullName>Public Offtake</fullName>
-                    <default>false</default>
-                    <label>Public Offtake</label>
-                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -9785,6 +9780,17 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>BlueWave Capital</businessProcess>
         <label>BFG</label>
         <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Non-Residential</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>ForecastCategoryName</picklist>
             <values>
                 <fullName>Best Case</fullName>
@@ -9872,6 +9878,21 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>Community Solar Anchor</businessProcess>
         <label>BFG - Community Solar (Anchor)</label>
         <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Anchor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Non-Residential</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
                 <fullName>CSAP</fullName>
@@ -9900,10 +9921,128 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </picklistValues>
     </recordTypes>
     <recordTypes>
+        <fullName>BFG_DOER_Solar_Loan</fullName>
+        <active>true</active>
+        <businessProcess>Residential Loan</businessProcess>
+        <label>BFG - DOER Solar Loan</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>BFG_DOER_Solar_Loan_Co_Applicant</fullName>
+        <active>true</active>
+        <businessProcess>Residential Loan</businessProcess>
+        <label>BFG - DOER Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>BFG_MA_Solar_Loan_Co_Applicant</fullName>
+        <active>true</active>
+        <businessProcess>Residential Loan</businessProcess>
+        <label>BFG - MA Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>BFG_NC_Solar_Loan</fullName>
+        <active>true</active>
+        <businessProcess>Residential Loan</businessProcess>
+        <description>Record Type for All NC Residential Solar Loans</description>
+        <label>BFG - NC Solar Loan</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>BFG_NC_Solar_Loan_Co_Applicant</fullName>
+        <active>true</active>
+        <businessProcess>Residential Loan</businessProcess>
+        <label>BFG - NC Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>BFG_SC_Solar_Loan</fullName>
+        <active>true</active>
+        <businessProcess>Residential Loan</businessProcess>
+        <description>Record Type for All SC Residential Solar Loans</description>
+        <label>BFG - SC Solar Loan</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>BFG_SC_Solar_Loan_Co_Applicant</fullName>
+        <active>true</active>
+        <businessProcess>Residential Loan</businessProcess>
+        <label>BFG - SC Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>BFG_Solar_Loan</fullName>
+        <active>true</active>
+        <businessProcess>Residential Loan</businessProcess>
+        <label>BFG - MA Solar Loan</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
         <fullName>BW_Community_Solar_BCS</fullName>
         <active>true</active>
         <businessProcess>BW Community Solar</businessProcess>
+        <compactLayoutAssignment>BW_Community_Solar_BCS</compactLayoutAssignment>
         <label>BW Community Solar (BCS)</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Non-Residential</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
@@ -9928,6 +10067,27 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
             </values>
             <values>
                 <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Business_Development</fullName>
+        <active>true</active>
+        <businessProcess>BD</businessProcess>
+        <label>Business Development- Offtake</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Anchor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Non-Residential</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Residential</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9937,6 +10097,25 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <active>true</active>
         <businessProcess>C and I</businessProcess>
         <label>C and I</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Anchor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Non-Residential</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Community_Solar</fullName>
@@ -9944,6 +10123,21 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>Community Solar</businessProcess>
         <description>Record Type for all CS Customers</description>
         <label>Community Solar</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Anchor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Non-Residential</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
@@ -9968,6 +10162,58 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
             </values>
             <values>
                 <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Distribution_Partners</fullName>
+        <active>true</active>
+        <businessProcess>BlueWave Capital</businessProcess>
+        <label>Distribution Partners</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Finance</fullName>
+        <active>true</active>
+        <businessProcess>BD</businessProcess>
+        <description>Platform and Project Finance should use this record type to track opportunities</description>
+        <label>Finance</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Anchor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Non-Residential</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Residential</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Marketing</fullName>
+        <active>true</active>
+        <businessProcess>BlueWave Capital</businessProcess>
+        <label>Marketing</label>
+        <picklistValues>
+            <picklist>Customer_Group__c</picklist>
+            <values>
+                <fullName>Residential</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
