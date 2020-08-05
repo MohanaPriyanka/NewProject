@@ -133,7 +133,7 @@ public without sharing class LeadSelector {
                 Referral_Name__c, 
                 State, 
                 Status, 
-                Street, 
+                Street,
                 Utility_relationship__r.Id, 
                 Utility_relationship__r.EIA_ID__c, 
                 Utility_relationship__r.Name, 
@@ -149,7 +149,7 @@ public without sharing class LeadSelector {
     public Lead selectOneWithPropertiesAndUtilities(Id leadId) {
         String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Product__r.Name, Customer_Signed_Date__c, Utility_relationship__r.EIA_ID__c';
         query += ', (SELECT ' + String.join(apiPropertyAccountFields, ', ') + ' FROM Accounts__r)';
-        query += ', (SELECT ' + String.join(apiUtilityAccountFields, ', ') + ' FROM Utility_Account_Logs__r)';
+        query += ', (SELECT ' + String.join(apiUtilityAccountFields, ', ') + ', Utility_lookup__c FROM Utility_Account_Logs__r)';
         query += ' FROM Lead WHERE Id = :leadId LIMIT 1';
         return Database.query(String.escapeSingleQuotes(query));
     }

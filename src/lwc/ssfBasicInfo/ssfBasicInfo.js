@@ -13,6 +13,7 @@ import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStylin
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api zipinput;
     @api leadJson;
+    @api selectedUtility;
     @api resiApplicationType;
     @api selectedProduct;
 
@@ -24,12 +25,27 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track sameHomeAddress = true;
     @track utilityAccountSection;
     @track stateOptions;
+    @track isFileUpload;
+    utilityId; 
     utilityAccountCount = 0;
     resumedApp = false;
     @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+        
+        if(this.selectedUtility && this.selectedUtility.utilityId) {
+            this.utilityId = this.selectedUtility.utilityId;
+
+            if(this.selectedUtility.dataCollectionMethod) {
+                this.isFileUpload = (this.selectedUtility.dataCollectionMethod !== 'EDI');
+            } else {
+                this.isFileUpload = true;
+            }
+        } else {
+            this.isFileUpload = true;
+        }
+
         // if a lead has already been created, have the form show existing values
         if(this.leadJson) {
             this.resumedApp = true;
@@ -40,7 +56,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                     this.propertyAccount.utilityAccountLogs[i].localid = i+1;
                     this.propertyAccount.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
                     this.propertyAccount.utilityAccountLogs[i].doNotDelete = true;
-                    this.propertyAccount.utilityAccountLogs[i].showUpload = (this.propertyAccount.utilityAccountLogs[i].utilityBills);
+                    this.propertyAccount.utilityAccountLogs[i].showUpload = (this.isFileUpload && (!this.propertyAccount.utilityAccountLogs[i].utilityBills || this.propertyAccount.utilityAccountLogs[i].utilityBills.length === 0));
                 }
             }
             this.sameBillingAddress = this.propertyAccount.billingStreet == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
@@ -51,7 +67,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.restLead = {
                 applicationType: this.resiApplicationType ? 'Residential' : 'Non-Residential',
                 zipCode: this.zipinput,
-                productName: this.selectedProduct
+                productName: this.selectedProduct,
+                utilityId: this.utilityId
             }
             this.propertyAccount = { 
                 billingPostalCode: this.resiApplicationType ? '' : this.zipinput, 
@@ -153,8 +170,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             localid:this.utilityAccountCount,
             name: `Utility Account ${this.utilityAccountCount}`,
             servicePostalCode: this.zipinput,
+            utilityId: this.utilityId,
             doNotDelete: false,
-            showUpload: true,
+            showUpload: this.isFileUpload,
             utilityBills: []
         });
         setTimeout(() => this.utilityAccountSection = this.utilityAccountCount);
@@ -192,16 +210,19 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             inputCmp.reportValidity();
             return validSoFar && inputCmp.checkValidity();
         }, true);
-        this.propertyAccount.utilityAccountLogs.forEach(ual => {
-            if(!ual.utilityBills || ual.utilityBills.length === 0) {
-                allValid = false;
-                this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
-                    if(element.index === ual.index) {
-                        element.addError();
-                    }
-                });
-            }
-        });
+      
+        if(this.isFileUpload) {
+            this.propertyAccount.utilityAccountLogs.forEach(ual => {
+                if(!ual.utilityBills || ual.utilityBills.length === 0) {
+                    allValid = false;
+                    this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
+                        if(element.index === ual.index) {
+                            element.addError();
+                        }
+                    });
+                }
+            });
+        }
         
         if (!allValid) {
             this.showWarningToast('Warning!', 'Please verify your application before submitting');

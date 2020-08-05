@@ -152,7 +152,7 @@
                 <sorted>false</sorted>
                 <value>
                     <fullName>File Upload</fullName>
-                    <default>false</default>
+                    <default>true</default>
                     <label>File Upload</label>
                 </value>
                 <value>
