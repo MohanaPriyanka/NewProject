@@ -27715,7 +27715,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Schedule_Z__c.Applied_to_Production_Starting__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -46002,6 +46002,9 @@
     <layoutAssignments>
         <layout>Contract-Customer Contract</layout>
         <recordType>Contract.Customer_Contract</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contract_Fee_Detail__c-Contract Fee Detail Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Daily_Production_Update__c-Daily Production Update Layout</layout>
