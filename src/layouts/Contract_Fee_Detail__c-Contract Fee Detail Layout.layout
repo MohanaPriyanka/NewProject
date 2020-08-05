@@ -124,7 +124,6 @@
                 <field>Waive_Reacquisition_Fee_Max_Project__c</field>
             </layoutItems>
         </layoutColumns>
-
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
@@ -155,6 +154,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Recurring_Escalator_Frequency__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Recurring_Billing_Timing__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
