@@ -21,7 +21,7 @@ public without sharing class ContractMigrationService {
 
     public void executeForOpps(List<Opportunity> oppList){
         convertOpportunityToContract(oppList);
-        cloneDocuSignAttachmentsToContract(oppList, 'Credit Allocation Agreement');
+        cloneDocuSignAttachmentsToContract(oppList, 'Agreement');
         cloneDocuSignAttachmentsToContract(oppList, 'Disclosure');
         Logger.flushLogs();
         uow.commitWork();
