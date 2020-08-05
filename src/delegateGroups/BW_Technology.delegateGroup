@@ -180,18 +180,17 @@
     <permissionSets>Subscription Order Mgmt</permissionSets>
     <permissionSets>Subscription Order Visibility</permissionSets>
     <permissionSets>Customer Contract Mgmt</permissionSets>
-    <permissionSets>Production and Transfer Edit</permissionSets>
-    <permissionSets>Client Invoicing</permissionSets>
-    <permissionSets>Client Invoicing Admin</permissionSets>
-    <permissionSets>Production and Transfer Read</permissionSets>
     <permissionSets>Edit Products</permissionSets>
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Underwriting Screen Access</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
-    <permissionSets>Campaign Read Access</permissionSets>
-    <permissionSets>Anchor Management</permissionSets>
+    <permissionSets>Production and Transfer Edit</permissionSets>
+    <permissionSets>Production and Transfer Read</permissionSets>
+    <permissionSets>Client Invoicing</permissionSets>
+    <permissionSets>Client Invoicing Admin</permissionSets>
+    <permissionSets>CS Financial Doc Visibility</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
     <permissionSets>Permission Set for Payment Request (Chargent Orders)</permissionSets>
@@ -206,6 +205,8 @@
     <permissionSets>CS Servicing Visibility</permissionSets>
     <permissionSets>Report Access</permissionSets>
     <permissionSets>Set Audit Fields upon Record Creation</permissionSets>
+    <permissionSets>Campaign Read Access</permissionSets>
+    <permissionSets>Anchor Management</permissionSets>
     <profiles>BWC Executive</profiles>
     <profiles>IT Support</profiles>
     <profiles>PM Force.com user</profiles>
