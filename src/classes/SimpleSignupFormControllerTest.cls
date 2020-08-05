@@ -240,7 +240,8 @@ public with sharing class SimpleSignupFormControllerTest {
     }
 
 
-    @IsTest private static void testUnlinkDocsMissingDummyRecord() {
+    @IsTest 
+    private static void testUnlinkDocsMissingDummyRecord() {
         User backup = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
         List<ContentDocumentLink> existingCdlList = [SELECT Id, ContentDocumentId, ContentDocument.OwnerId FROM ContentDocumentLink WHERE LinkedEntityId IN (SELECT Id FROM Contract)];
         System.assertEquals(1, existingCdlList.size(), 'Setup should only return one ContentDocumentLink');
@@ -253,5 +254,55 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assert(!errors.isEmpty(), 'Missing dummy record, should have caused method to create Error Log records');
         ContentDocument contentDoc = [SELECT OwnerId FROM ContentDocument WHERE Id = :docId LIMIT 1];
         System.assertNotEquals(backup.Id, contentDoc.OwnerId, 'Missing dummy record prevents method from reparenting uploaded file');
+    }
+
+
+    @IsTest
+    private static void testGetUtilityById(){
+        User guest = [SELECT Id FROM User WHERE Alias = 'guest' LIMIT 1];
+        Utility__c util = new Utility__c(Name = 'Test Utility', Utility_Data_Collection_Mechanism__c = 'File Upload', EIA_ID__c = '12345');
+        insert util;
+
+        Test.startTest();
+            System.runAs(guest){
+                RestZipCode.Utility utility = SimpleSignupFormController.getUtilityFromId(util.Id);
+                System.assertEquals(util.Id, utility.utilityId, 'Returned utility ID should match ID of test utility');
+                System.assertEquals(util.Name, utility.name, 'Returned utility name should match name of test utility');
+                System.assertEquals(util.Utility_Data_Collection_Mechanism__c, utility.dataCollectionMethod, 'Returned utility data collection method should match data collection method of test utility');
+
+                Boolean exceptionThrown = false;
+                try {
+                    utility = SimpleSignupFormController.getUtilityFromId('a1m000000000000');
+                } catch(System.QueryException qe) {
+                    exceptionThrown = true;
+                }
+                System.assert(exceptionThrown, 'Method should have thrown a query expection when a fake ID was input.');
+            }
+        Test.stopTest();
+    }
+
+
+    @IsTest
+    private static void testGetUtilityByEIAId(){
+        User guest = [SELECT Id FROM User WHERE Alias = 'guest' LIMIT 1];
+        Utility__c util = new Utility__c(Name = 'Test Utility', Utility_Data_Collection_Mechanism__c = 'EDI', EIA_ID__c = '12345');
+        insert util;
+
+        Test.startTest();
+            System.runAs(guest){
+                RestZipCode.Utility utility = SimpleSignupFormController.getUtilityFromEiaId('12345');
+                System.assertEquals(util.Id, utility.utilityId, 'Returned utility ID should match ID of test utility');
+                System.assertEquals(util.Name, utility.name, 'Returned utility name should match name of test utility');
+                System.assertEquals(util.Utility_Data_Collection_Mechanism__c, utility.dataCollectionMethod, 'Returned utility data collection method should match data collection method of test utility');
+
+                Boolean exceptionThrown = false;
+                try {
+                    utility = SimpleSignupFormController.getUtilityFromEiaId('99999');
+                } catch(System.QueryException qe) {
+                    exceptionThrown = true;
+                }
+                System.assert(exceptionThrown, 'Method should have thrown a query expection when a fake EIA ID was input.');
+            }
+        Test.stopTest();
     }
 }
