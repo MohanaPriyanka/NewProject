@@ -205,6 +205,8 @@
     <permissionSets>CS Servicing Visibility</permissionSets>
     <permissionSets>Report Access</permissionSets>
     <permissionSets>Set Audit Fields upon Record Creation</permissionSets>
+    <permissionSets>Campaign Read Access</permissionSets>
+    <permissionSets>Anchor Management</permissionSets>
     <profiles>BWC Executive</profiles>
     <profiles>IT Support</profiles>
     <profiles>PM Force.com user</profiles>
