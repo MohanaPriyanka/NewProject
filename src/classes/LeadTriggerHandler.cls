@@ -11,6 +11,7 @@ public without sharing class LeadTriggerHandler {
         'Annual_Income_Currency__c'=>'Annual_Independent_Income__c',
         'Application__c'=>'Application_Date__c',
         'Application_Type__c'=>'Application_Type__c',
+        'bs_Sales_ID__c'=>'BS_Sales_ID__c',
         'Co_Applicant_Address__c'=>'Co_Applicant_Address__c',
         'Co_Applicant_Date_of_Birth__c'=>'Co_Applicant_Date_of_Birth__c',
         'Co_Applicant_Email__c'=>'Co_Applicant_Email__c',
@@ -32,10 +33,11 @@ public without sharing class LeadTriggerHandler {
         'Income_Type_2__c'=>'Income_Type_2__c',
         'Joint_Applicant_Type__c'=>'Joint_Applicant_Type__c',
         'Lead_ID__c'=>'Lead_ID__c',
-        'MobilePhone'=>'Customer_Phone__c',
         'lived_residence_six_months__c'=>'Lived_at_residence_more_than_six_months__c',
-        'Partner_Lookup__c'=>'Partner_tag_lookup__c',
+        'MobilePhone'=>'Customer_Phone__c',
+        'OwnerId'=>'OwnerId',
         'Partner_Email__c'=>'Partner_Email__c',
+        'Partner_Lookup__c'=>'Partner_tag_lookup__c',
         'Partner_Tag__c'=>'Partner_Tag__c',
         'Personal_Credit_Report__c'=>'Personal_Credit_Report2__c',
         'Personal_Credit_Report_Co_Applicant__c'=>'Personal_Credit_Report_Co_Applicant__c',
@@ -46,12 +48,11 @@ public without sharing class LeadTriggerHandler {
         'Referral_Email__c'=>'Referral_Email__c',
         'Requested_Loan_Amount__c'=>'Requested_Loan_Amount__c',
         'Residence_Owner__c'=>'Residence_Owner__c',
-        'bs_Sales_ID__c'=>'BS_Sales_ID__c',
         'Sales_Person__c'=>'Sales_Person_Tag__c',
         'SREC_Product__c'=>'SREC_Product__c',
         'State_of_Issuance__c'=>'State_of_Issuance__c',
         'System_Cost__c'=>'Loan_Principle__c',
-        'OwnerId'=>'OwnerId'
+        'Underwriting_Criteria__c'=>'Underwriting_Criteria__c'
     };
 
     public void onBeforeInsert(List<Lead> leadList){

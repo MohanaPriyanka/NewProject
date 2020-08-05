@@ -28095,6 +28095,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Underwriting_Criteria__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Unfinished_Lead__c</field>
         <readable>true</readable>
@@ -43387,6 +43392,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Availability__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Available_SMB_Underwriting_Method_Docs__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Available_SMB_Underwriting_Method_FICO__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -66455,18 +66470,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-        <recordType>Lead.BFG_Community_Solar</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-        <recordType>Lead.Lead</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-        <recordType>Lead.Utility_Duke_Energy</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - DOER Solar Loan %28Co-Applicant%29</layout>
