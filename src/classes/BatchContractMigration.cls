@@ -5,7 +5,7 @@ public without sharing class BatchContractMigration implements Database.Batchabl
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
 
     public List<Opportunity> opportunitiesToRun;
-    public Integer batchSize = 10;
+    public Integer batchSize = 1;
 
     public void execute(SchedulableContext sc) {
         runBatch();
