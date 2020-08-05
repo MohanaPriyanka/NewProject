@@ -373,13 +373,6 @@
         <relatedList>RelatedContactRoleList</relatedList>
     </relatedLists>
     <relatedLists>
-        <fields>Product2</fields>
-        <fields>Quantity</fields>
-        <fields>ServiceDate</fields>
-        <fields>Utility__c</fields>
-        <relatedList>RelatedLineItemList</relatedList>
-    </relatedLists>
-    <relatedLists>
         <fields>NAME</fields>
         <relatedList>Utility_Account_Subscription__c.Opportunity__c</relatedList>
     </relatedLists>
