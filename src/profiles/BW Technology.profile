@@ -23423,6 +23423,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Financial_Underwriting_Document__c.Lead__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>General_Ledger__c.Amount__c</field>
         <readable>true</readable>
@@ -66348,6 +66353,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Financial_Relationship__c-Financing Relationship Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Financial_Underwriting_Document__c-Financial Underwriting Document</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>FlowInterview-Flow Interview Layout</layout>
