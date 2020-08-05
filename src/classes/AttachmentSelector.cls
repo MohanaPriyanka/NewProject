@@ -9,6 +9,7 @@ public without sharing class AttachmentSelector {
             FROM Attachment
             WHERE ParentId IN : parentIds
             AND Name LIKE : fileNameContains
+            ORDER BY CreatedDate
         ];
     }
 }

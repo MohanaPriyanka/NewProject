@@ -88,6 +88,7 @@ public with sharing class ContractMigrationServiceTest {
         Test.startTest();
             BatchContractMigration batchJob = new BatchContractMigration();
             batchJob.opportunitiesToRun = oppList;
+        	batchJob.batchSize = 50;
             batchJob.runBatch();
         Test.stopTest();
 
@@ -113,6 +114,7 @@ public with sharing class ContractMigrationServiceTest {
         Test.startTest();
             BatchContractMigration batchJob = new BatchContractMigration();
             batchJob.opportunitiesToRun = oppList;
+            batchJob.batchSize = 50;
             Datetime dt = Datetime.now().addMinutes(2);
             String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
             System.schedule('testContractMigration',cronExpress,batchJob);
