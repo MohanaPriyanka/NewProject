@@ -83,7 +83,7 @@ private class CSQualificationTestclass {
                 Load_Zone_Utility__c = loadZone2.Id,
                 Utility__c = central.Id
         );
-        
+
         insert new List<ZipCode_Utility_Junction__c>{junction1, junction2, junction3};
 
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(   Name = 'Albany Post Rd',
