@@ -33,7 +33,7 @@ public with sharing class ClientFileCopierServiceTest {
 
         Test.startTest();
             ClientFileCopierService service = new ClientFileCopierService();
-            service.findAndCloneDocuments(assignmentAgreement.Id,ClientFileCopierService.FileType.CUSTOMERAGREEMENT);
+            service.findAndCloneDocuments(assignmentAgreement.Id,'Customer Agreement');
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -48,8 +48,15 @@ public with sharing class ClientFileCopierServiceTest {
             FROM ContentDocumentLink
             WHERE LinkedEntityId = : afterFolders[0].Id
         ];
-        // 6 Contracts, 2 of which have 2 UASes each.
+        // 7 Contracts, 1 doesn't have any files, 2 others have 2 UASes each = 7 - 1 + 2 = 8
         System.assertEquals(8,afterFiles.size());
+
+        List<Error_Log__c> logs = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE Method__c = 'checkForMissingFiles'
+        ];
+        System.assert(logs.size() > 0);
     }
 
     @IsTest
@@ -71,7 +78,7 @@ public with sharing class ClientFileCopierServiceTest {
 
         Test.startTest();
             ClientFileCopierService service = new ClientFileCopierService();
-            service.findAndCloneDocuments(assignmentAgreement.Id,ClientFileCopierService.FileType.DISCLOSURE);
+            service.findAndCloneDocuments(assignmentAgreement.Id,'Customer Disclosure Form');
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -86,7 +93,7 @@ public with sharing class ClientFileCopierServiceTest {
             FROM ContentDocumentLink
             WHERE LinkedEntityId = : afterFolders[0].Id
         ];
-        // 6 Contracts, 2 of which have a disclosure form attachment, 1 of which has 2 UASes
+        // 7 Contracts, 2 of which have a disclosure form attachment, 1 of which has 2 UASes
         System.assertEquals(3,afterFiles.size());
     }
 
@@ -109,7 +116,7 @@ public with sharing class ClientFileCopierServiceTest {
 
         Test.startTest();
             ClientFileCopierService service = new ClientFileCopierService();
-            service.findAndCloneDocuments(assignmentAgreement.Id,ClientFileCopierService.FileType.CREDITREPORT);
+            service.findAndCloneDocuments(assignmentAgreement.Id,'Customer Credit Report');
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -132,7 +139,7 @@ public with sharing class ClientFileCopierServiceTest {
         ClientFileCopierService.contractSelector = (ContractSelector) Test.createStub(ContractSelector.class, new MockContractSelector());
         ClientFileCopierService.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
         ClientFileCopierService.uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
-        ClientFileCopierService.mockedContentVersionSelector = (ContentVersionSelector) Test.createStub(ContentVersionSelector.class, new MockContentVersionSelector());
+        ClientFileCopierService.contentVersionSelector = (ContentVersionSelector) Test.createStub(ContentVersionSelector.class, new MockContentVersionSelector());
         if (returnContractDocs){
             ClientFileCopierService.contentDocumentSelector = (ContentDocumentSelector) Test.createStub(ContentDocumentSelector.class, new MockContentDocumentContractSelector());
         } else {
@@ -144,6 +151,7 @@ public with sharing class ClientFileCopierServiceTest {
         MockContractSelector() {}
         public override Object handleMethodCall(MethodCall methodCall) {
             String contractsAsString = '[' +
+                '{"Id":"8002f000000GebbAAC"},' + // has no files
                 '{"Id":"8002f000000GevzAAC"},' +
                 '{"Id":"8002f000000Gew0AAC"},' + // has 2 UASes
                 '{"Id":"8002f000000Gew1AAC"},' +
@@ -226,6 +234,7 @@ public with sharing class ClientFileCopierServiceTest {
         public override Object handleMethodCall(MethodCall methodCall) {
             String uasesAsString = '[' +
                 '{"Id":"a1d2f000000FYqDAAW","Name":"0002340","Opportunity__c":"0062f00000EllRvAAJ","Opportunity__r":{"Name":"Joshua Phillips","Personal_Credit_Report2__c":"a0Fj000000EYyV1EAL","ContractId":"8002f000000GevzAAC","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8002f000000GevzAAC","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0000234"}},' +
+                '{"Id":"a1d2f000000FZqDAAW","Name":"0002300","Opportunity__c":"8002f000000GebbAAC","Opportunity__r":{"Name":"Joshua River","Personal_Credit_Report2__c":"a0Fj000000EZZV1EAL","ContractId":"8002f000000GennAAC","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8002f000000GennAAC","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"00002340"}},' +
                 '{"Id":"a1d2f000000FYqEAAW","Name":"0002340","Opportunity__c":"0062f00000EllRwAAJ","Opportunity__r":{"Name":"Joshua Phillips","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL","ContractId":"8002f000000Gew0AAC","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000Gew0AAC","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0000235"}},' +
                 '{"Id":"a1d2f000000FYqFAAW","Name":"0002341","Opportunity__c":"0062f00000EllRwAAJ","Opportunity__r":{"Name":"Joshua Phillips","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL","ContractId":"8002f000000Gew0AAC","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000Gew0AAC","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0000235"}},' +
                 '{"Id":"a1d2f000000FYqGAAW","Name":"0002342","Opportunity__c":"0062f00000EllRxAAJ","Opportunity__r":{"Name":"Donna Simmons","Personal_Credit_Report2__c":"","ContractId":"8002f000000Gew1AAC","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8002f000000Gew1AAC","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"00002341"}},' +
@@ -284,6 +293,13 @@ public with sharing class ClientFileCopierServiceTest {
             switch on methodCall.stubbedMethodName {
                 when 'selectByIdWithData' {
                     return cvMap;
+                }
+                when 'selectById' {
+                    Map<Id, ContentVersion> versionMap = new Map<Id, ContentVersion>([
+                        SELECT Id, ContentDocumentId
+                        FROM ContentVersion
+                    ]);
+                    return versionMap;
                 }
             }
             return null;
