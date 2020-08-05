@@ -112,17 +112,14 @@ public inherited sharing class SharedSolarSystemsSelector {
         ];
     }
 
-    public List<Shared_Solar_System__c> getActiveSystemsWithSmallOfftakeUASes() {
+    public List<Shared_Solar_System__c> selectSharedSolarSystemsForQualificationCheck(String productId, List<Id> utilityIds) {
         return [
-            SELECT Id, (
-                SELECT Id, Opportunity__r.StageName, Opportunity__r.Account.Days_Past_Due__c, Future_Customer_Subscription_KWDC_Rollup__c,
-                    Future_Share_of_System_Rollup__c, Shared_Solar_System__r.Waitlist__c, Opportunity__r.Customer_Group__c
-                FROM Utility_Account_Subscriptions__r
-                WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
-                AND (NOT Opportunity__r.Name LIKE '%test%')
-            )
-            FROM Shared_Solar_System__c
-            WHERE Stage__c IN ('Acquisition', 'Management')
+                SELECT Id, Name, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c,
+                        Sales_Partners__c, Credit_Score_Requirement__c, Product__r.Name, Utility__r.Name
+                FROM Shared_Solar_System__c
+                WHERE Product__c = :productId
+                AND Utility__c IN :utilityIds
+                ORDER BY Assignment_Order__c
         ];
     }
 }
