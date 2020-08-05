@@ -1,7 +1,7 @@
 /**
  * Created by SarahRenfro on 7/6/2020.
  * Description: Domain class for SSS
- * Test: CSUtilityAccountSubscriptionFactoryTest
+ * Test: CSUtilityAccountSubscriptionFactoryTest, SharedSolarSystemsTest
  */
 
 public inherited sharing class SharedSolarSystems {
