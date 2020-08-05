@@ -1149,6 +1149,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Maximum_Subscription_Capacity_kWDC__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Automatically set if the related Product has a &quot;Max Subscription kW AC for DC calc&quot; set (25 kW AC for SMART projects) and both Total System Size kWh DC and Total System Size kW AC fields populated</inlineHelpText>
         <label>Maximum Subscription Capacity (kW DC)</label>
         <precision>18</precision>
         <required>false</required>
