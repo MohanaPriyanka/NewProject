@@ -10014,15 +10014,6 @@ ISPICKVAL(Underwriting_Criteria__c,&quot;&quot;)
         <errorMessage>For anchor opportunities, you must set the Underwriting Criteria field to Investment Grade or Financial Review before setting the stage to Complete</errorMessage>
     </validationRules>
     <validationRules>
-        <fullName>Discount</fullName>
-        <active>true</active>
-        <errorConditionFormula>ISPICKVAL( NMCPA__c , &quot;Floating Discount&quot;) &amp;&amp;
-
-ISBLANK(Discount_Percentage__c)= True</errorConditionFormula>
-        <errorDisplayField>Discount_Percentage__c</errorDisplayField>
-        <errorMessage>Since the NMCPA/PPA type is a Floating Discount, the percentage of the discount must be recorded.</errorMessage>
-    </validationRules>
-    <validationRules>
         <fullName>Escalator_Rate</fullName>
         <active>true</active>
         <errorConditionFormula>ISPICKVAL( NMCPA__c , &quot;With Escalator&quot;) &amp;&amp;
