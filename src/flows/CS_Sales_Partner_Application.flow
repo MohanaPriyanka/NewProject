@@ -826,8 +826,8 @@
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;You&apos;ve entered too many characters! Character limit for this field is 50&lt;/span&gt;&lt;/p&gt;</errorMessage>
-                <formulaExpression>LEN({!txt_EntityType})&lt;50</formulaExpression>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;You&apos;ve entered too many characters! Character limit for this field is 10&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>LEN({!txt_EntityType})&lt;10</formulaExpression>
             </validationRule>
         </fields>
         <fields>
