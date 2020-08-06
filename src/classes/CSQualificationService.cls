@@ -180,7 +180,7 @@ public without sharing class CSQualificationService {
                     matchResult.hasLZ = true;
 
                 }
-                if (sss.Sales_Partners__c.contains('All') || sss.Sales_Partners__c.contains(this.partner)) {
+                if (sss.Sales_Partners__c != null && (sss.Sales_Partners__c.contains('All') || sss.Sales_Partners__c.contains(this.partner))) {
                     matchResult.hasPartner = true;
                 }
                 if (this.fico == null || this.fico >= sss.Credit_Score_Requirement__c) {
