@@ -155,21 +155,26 @@ private class PostSandboxRefresherTest {
         csRecordLoader.execute(null);
         PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper(csDataSetting);
         solarSystemHelper.execute(null);
-        Test.startTest();
-        Boolean caughtException = false;
         try {
-
         	PostSandboxRefresher.TransferHelper transferHelper = new PostSandboxRefresher.TransferHelper(csDataSetting);
        		transferHelper.execute(null);
+        } catch (Exception e) {
+            System.assert(false, e.getMessage() + e.getStackTraceString());
+        }
+        Test.startTest();
+        try {
         	PostSandboxRefresher.TransferHelper2 transferHelper2 = new PostSandboxRefresher.TransferHelper2(csDataSetting);
         	transferHelper2.execute(null);
-        	PostSandboxRefresher.TransferHelper3 transferHelper3 = new PostSandboxRefresher.TransferHelper3(csDataSetting);
-        	transferHelper3.execute(null);  
         } catch (Exception e) {
-            caughtException = true;
+            System.assert(false, e.getMessage() + e.getStackTraceString());
+        }
+        try {
+        	PostSandboxRefresher.TransferHelper3 transferHelper3 = new PostSandboxRefresher.TransferHelper3(csDataSetting);
+        	transferHelper3.execute(null);
+        } catch (Exception e) {
+            System.assert(false, e.getMessage() + e.getStackTraceString());
         }
         Test.stopTest();
-        System.assert(!caughtException);
     }
     @IsTest
     static void testDeleteCSRecords() {

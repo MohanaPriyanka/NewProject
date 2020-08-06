@@ -400,6 +400,26 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Available_SMB_Underwriting_Method_Docs__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Available SMB Underwriting Method: Docs</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Available_SMB_Underwriting_Method_FICO__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Available SMB Underwriting Method: FICO</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Average_Subscription_Size__c</fullName>
         <externalId>false</externalId>
         <label>XXXAverage Subscription Size</label>
@@ -1149,6 +1169,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Maximum_Subscription_Capacity_kWDC__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Automatically set if the related Product has a &quot;Max Subscription kW AC for DC calc&quot; set (25 kW AC for SMART projects) and both Total System Size kWh DC and Total System Size kW AC fields populated</inlineHelpText>
         <label>Maximum Subscription Capacity (kW DC)</label>
         <precision>18</precision>
         <required>false</required>
@@ -3805,16 +3826,18 @@ Maximum_Subscription_Cost__c = 0,
 ISBLANK(Maximum_Subscription_Capacity_kWDC__c),
 Maximum_Subscription_Capacity_kWDC__c= 0,
 ISBLANK(Credit_Score_Requirement__c),
-Credit_Score_Requirement__c = 0
+Credit_Score_Requirement__c = 0,
+AND(Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c)
 )
 )</errorConditionFormula>
         <errorMessage>Can&apos;t set a SSS as Open without:
-1.) System Size and Yield
+1.) System Size &amp; Yield
 2.) Capacity Available to Be Reserved &gt; 0 
-3.) Product and Sizing Method
-4.) Utility and Service Territories
-5) Maximum Subscription Cost and kW &gt; 0
-6.) Credit Score Requirement</errorMessage>
+3.) Product &amp; Utility NMC Tariff
+4.) Utility &amp; Service Territories
+5.) Maximum Subscription Cost &amp; kW &gt; 0
+6.) Credit Score Required
+7.) Underwriting</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>PM_Team_Locks</fullName>

@@ -12,22 +12,6 @@
             <outputField>Date_of_Birth__c</outputField>
         </mappingFields>
         <mappingFields>
-            <inputField>LASERCA__Credit_Bureau__c</inputField>
-            <outputField>Credit_Bureau__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Parent_Account__c</inputField>
-            <outputField>Parent_Account__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Product_Line_Account_Map__c</inputField>
-            <outputField>Product_Line__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Community_Solar_apt_suite__c</inputField>
-            <outputField>Apt_Suite__c</outputField>
-        </mappingFields>
-        <mappingFields>
             <inputField>Comunity_solar_city__c</inputField>
             <outputField>City__c</outputField>
         </mappingFields>
@@ -47,78 +31,26 @@
             <inputField>Electricity_Provider__c</inputField>
             <outputField>Electricity_Provider__c</outputField>
         </mappingFields>
+        <mappingFields>
+            <inputField>LASERCA__Credit_Bureau__c</inputField>
+            <outputField>Credit_Bureau__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Parent_Account__c</inputField>
+            <outputField>Parent_Account__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Product_Line_Account_Map__c</inputField>
+            <outputField>Product_Line__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Community_Solar_apt_suite__c</inputField>
+            <outputField>Apt_Suite__c</outputField>
+        </mappingFields>
         <outputObject>Account</outputObject>
     </objectMapping>
     <objectMapping>
         <inputObject>Lead</inputObject>
-        <mappingFields>
-            <inputField>Monthly_Income_Details__c</inputField>
-            <outputField>Monthly_Income_Details__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Monthly_Income_Details_2__c</inputField>
-            <outputField>Monthly_Income_Details_2__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>More_than_five_years_industry_experience__c</inputField>
-            <outputField>More_than_five_years_industry_experience__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Mortgage_Lender__c</inputField>
-            <outputField>Mortgage_Lender__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Number_of_Years_at_Location__c</inputField>
-            <outputField>Number_of_Years_at_Location__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Number_of_Years_in_Business__c</inputField>
-            <outputField>Number_of_Years_in_Business__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Partner_Lookup__c</inputField>
-            <outputField>Partner_tag_lookup__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Partner_Email__c</inputField>
-            <outputField>Partner_Email__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Partner_Tag__c</inputField>
-            <outputField>Partner_Tag__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Personal_Credit_Report__c</inputField>
-            <outputField>Personal_Credit_Report2__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Personal_Credit_Report_Co_Applicant__c</inputField>
-            <outputField>Personal_Credit_Report_Co_Applicant__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Product__c</inputField>
-            <outputField>Product__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Product_line__c</inputField>
-            <outputField>Product_Line__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Product_Program__c</inputField>
-            <outputField>Product_Program__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Project_Identification_Number__c</inputField>
-            <outputField>project_identification_number__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Proposed_EPC_Pricing__c</inputField>
-            <outputField>EPC_Pricing__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Referral_Email__c</inputField>
-            <outputField>Referral_Email__c</outputField>
-        </mappingFields>
         <mappingFields>
             <inputField>Accessor_s_Parcel_Number__c</inputField>
             <outputField>Assessors_Parcel_Number__c</outputField>
@@ -356,6 +288,74 @@
             <outputField>Monthly_Income_2__c</outputField>
         </mappingFields>
         <mappingFields>
+            <inputField>Monthly_Income_Details__c</inputField>
+            <outputField>Monthly_Income_Details__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Monthly_Income_Details_2__c</inputField>
+            <outputField>Monthly_Income_Details_2__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>More_than_five_years_industry_experience__c</inputField>
+            <outputField>More_than_five_years_industry_experience__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Mortgage_Lender__c</inputField>
+            <outputField>Mortgage_Lender__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Number_of_Years_at_Location__c</inputField>
+            <outputField>Number_of_Years_at_Location__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Number_of_Years_in_Business__c</inputField>
+            <outputField>Number_of_Years_in_Business__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Partner_Lookup__c</inputField>
+            <outputField>Partner_tag_lookup__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Partner_Email__c</inputField>
+            <outputField>Partner_Email__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Partner_Tag__c</inputField>
+            <outputField>Partner_Tag__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Personal_Credit_Report__c</inputField>
+            <outputField>Personal_Credit_Report2__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Personal_Credit_Report_Co_Applicant__c</inputField>
+            <outputField>Personal_Credit_Report_Co_Applicant__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Product__c</inputField>
+            <outputField>Product__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Product_line__c</inputField>
+            <outputField>Product_Line__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Product_Program__c</inputField>
+            <outputField>Product_Program__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Project_Identification_Number__c</inputField>
+            <outputField>project_identification_number__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Proposed_EPC_Pricing__c</inputField>
+            <outputField>EPC_Pricing__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Referral_Email__c</inputField>
+            <outputField>Referral_Email__c</outputField>
+        </mappingFields>
+        <mappingFields>
             <inputField>Requested_Loan_Amount__c</inputField>
             <outputField>Requested_Loan_Amount__c</outputField>
         </mappingFields>
@@ -418,6 +418,10 @@
         <mappingFields>
             <inputField>Total_Annual_Electricity_Cost__c</inputField>
             <outputField>Annual_Electricity_Cost__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Underwriting_Criteria__c</inputField>
+            <outputField>Underwriting_Criteria__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>Utility_relationship__c</inputField>
