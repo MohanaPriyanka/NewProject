@@ -535,11 +535,15 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(2,countOfBills);
         System.assertEquals(2,countOfSavings);
 
+        // 2 Payments are inserted as a part of the 'production' credit memo logic,
+        // which don't use callouts so we aren't testing here:
+        countOfPayments -= 2;
+
         // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records,
         // HOWEVER, because the callouts were already at 88, only 1 payment record will be made before re-queueing
         System.assertEquals(2,countOfPayments);
-        // Only 3 of the 5 JE will be marked as complete:
-        System.assertEquals(3,completedEntries.size());
+        // Only 1 of the 5 JE will be marked as complete:
+        System.assertEquals(1,completedEntries.size());
     }
 
     @IsTest
