@@ -95,6 +95,7 @@ private class CSQualificationTestclass {
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = nyseg.Id,
             Public__c = true,
+            Stage__c = 'Acquisition',
             Credit_Score_Requirement__c = 300,
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
