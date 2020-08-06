@@ -383,6 +383,10 @@
                 <behavior>Edit</behavior>
                 <field>NM_Rate_Floor__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Max_Subscription_kW_AC_for_DC_calc__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

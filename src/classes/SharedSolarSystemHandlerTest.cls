@@ -63,7 +63,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Days_in_Bill_Period__c = 20,
             Customer_Subscription_Type__c = 'kWh',
             Sizing_Method__c = 'Rate Class Ratio',
-            Monthly_Late_Fee__c = 1);
+            Monthly_Late_Fee__c = 1,
+            Max_Subscription_kW_AC_for_DC_calc__c = 25);
         Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
@@ -811,6 +812,37 @@ public with sharing class SharedSolarSystemHandlerTest {
             // Reacq has $0.20 fee, acq has $0.10 fee
             System.assertEquals(0.20, order.Contract_Fee_Detail__r.Fee__c);
         }
+    }
+    @IsTest
+    private static void testRecalculateMaximumSubscriptionCapacityForSMART() {
+        Shared_Solar_System__c sss1 = [
+            SELECT Id, Maximum_Subscription_Capacity_kWDC__c, Product__r.Max_Subscription_kW_AC_for_DC_calc__c,
+                Total_System_Size_kW_AC__c, Total_System_Size_kWh_DC__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'SSS 1'
+        ];
+        System.assertEquals(25, sss1.Product__r.Max_Subscription_kW_AC_for_DC_calc__c,
+            'Expected test setup to set the conversion rate on the product to 25');
+        Decimal expectedMaxSubscription = sss1.Product__r.Max_Subscription_kW_AC_for_DC_calc__c * sss1.Total_System_Size_kWh_DC__c/sss1.Total_System_Size_kW_AC__c;
+        System.assertEquals(expectedMaxSubscription.setScale(4), sss1.Maximum_Subscription_Capacity_kWDC__c.setScale(4),
+            'Expected the trigger to set Maximum_Subscription_Capacity_kWDC__c if the product has a conversion rate');
+        Decimal startingMaxCapacitykWDC = sss1.Maximum_Subscription_Capacity_kWDC__c;
+        sss1.Total_System_Size_kW_AC__c += 100;
+        update sss1;
+
+        sss1 = [
+            SELECT Id, Maximum_Subscription_Capacity_kWDC__c, Product__r.Max_Subscription_kW_AC_for_DC_calc__c,
+                Total_System_Size_kW_AC__c, Total_System_Size_kWh_DC__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'SSS 1'
+        ];
+        System.assertEquals(25, sss1.Product__r.Max_Subscription_kW_AC_for_DC_calc__c,
+            'Expected test setup to set the conversion rate on the product to 25');
+        expectedMaxSubscription = sss1.Product__r.Max_Subscription_kW_AC_for_DC_calc__c * sss1.Total_System_Size_kWh_DC__c/sss1.Total_System_Size_kW_AC__c;
+        System.assertEquals(expectedMaxSubscription.setScale(4), sss1.Maximum_Subscription_Capacity_kWDC__c.setScale(4),
+            'Expected the trigger to set Maximum_Subscription_Capacity_kWDC__c if the product has a conversion rate');
+        System.assertNotEquals(startingMaxCapacitykWDC, sss1.Maximum_Subscription_Capacity_kWDC__c,
+            'Expected the trigger to update Max Subscription Capacity kW DC with system size change');
     }
     private static void useMocks(Boolean featureOn) {
 

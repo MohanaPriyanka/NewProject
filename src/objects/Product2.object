@@ -1437,6 +1437,19 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <type>Percent</type>
     </fields>
     <fields>
+        <fullName>Max_Subscription_kW_AC_for_DC_calc__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>When populated, multiplied by the Conversion Ratio on SSS to populate Maximum Subscription Capacity (kW DC). Intended to be set to 25 kW AC for SMART projects.</inlineHelpText>
+        <label>Max Subscription kW AC for DC calc</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Maximum_Adjustment__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>The maximum percentage a rate can change when adjusted</inlineHelpText>
