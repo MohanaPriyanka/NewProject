@@ -27,7 +27,7 @@ public inherited sharing class SharedSolarSystems {
         return sssRemainingSubscriptionCapacity.setScale(2, RoundingMode.HALF_DOWN);
     }
 
-    public void recalculateMaximumSubscriptionCapacityForSMART() {
+    public void calculateMaximumSubscriptionCapacityForSMART() {
         Set<Id> productIds = new Set<Id>();
         for (Shared_Solar_System__c sss : records) {
             productIds.add(sss.Product__c);

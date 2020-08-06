@@ -8,7 +8,7 @@ public with sharing class SharedSolarSystemsTest {
         SharedSolarSystems.productSelector = (ProductSelector) Test.createStub(ProductSelector.class, new MockProductSelector(true));
         List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{new Shared_Solar_System__c()};
         try {
-            new SharedSolarSystems(sharedSolarSystems).recalculateMaximumSubscriptionCapacityForSMART();
+            new SharedSolarSystems(sharedSolarSystems).calculateMaximumSubscriptionCapacityForSMART();
             System.assert(true, 'We should not have thrown an exception trying to calculate max capacity with null values');
         } catch (Exception e) {
             System.assert(false, e.getMessage() + '\n' + e.getStackTraceString());
@@ -37,7 +37,7 @@ public with sharing class SharedSolarSystemsTest {
         );
         List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{smartSystem, smartSystemNoDC, nonSMARTSystem};
         try {
-            new SharedSolarSystems(sharedSolarSystems).recalculateMaximumSubscriptionCapacityForSMART();
+            new SharedSolarSystems(sharedSolarSystems).calculateMaximumSubscriptionCapacityForSMART();
         } catch (Exception e) {
             System.assert(false, e.getMessage() + '\n' + e.getStackTraceString());
         }

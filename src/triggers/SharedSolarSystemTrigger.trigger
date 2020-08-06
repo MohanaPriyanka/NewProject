@@ -9,10 +9,10 @@ trigger SharedSolarSystemTrigger on Shared_Solar_System__c (before insert, after
 
     switch on Trigger.operationType {
         when BEFORE_INSERT {
-            new SharedSolarSystems(Trigger.new).recalculateMaximumSubscriptionCapacityForSMART();
+            new SharedSolarSystems(Trigger.new).calculateMaximumSubscriptionCapacityForSMART();
         } when BEFORE_UPDATE {
             sharedSolarSystemHandler.summarizeCapacity(Trigger.new);
-            new SharedSolarSystems(Trigger.new).recalculateMaximumSubscriptionCapacityForSMART();
+            new SharedSolarSystems(Trigger.new).calculateMaximumSubscriptionCapacityForSMART();
         } when AFTER_UPDATE {
             sharedSolarSystemHandler.uncheckApexContext(Trigger.new);
             sharedSolarSystemHandler.onUpdateCheckForChangedValues(Trigger.oldMap, Trigger.new);
