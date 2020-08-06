@@ -466,8 +466,10 @@ public with sharing class ProductionToBillServiceTest {
     @IsTest
     public static void testCreateProductionDetailFromCreditMemos(){
         useMocks();
-        // 5 Credit Memos, 2 of which have Reason Code = 'Production' so should make 'Bill' Production Detail records
-        // the remaining 3 should create 'Collection' Production Detail records
+        // 5 Credit Memos Total
+        // 2 of which have Reason Code = 'Production' so should
+        // create 4 records each: 1 Bill, 1 Savings and 1 Payment in the first production period, and 1 Payment in the second
+        // the remaining 3 should only create 'Collection' Production Detail records
         List<Journal_Entry__c> creditMemoEntries = getCreditMemoJournalEntries();
         System.assertEquals(5,creditMemoEntries.size());
 
@@ -492,12 +494,12 @@ public with sharing class ProductionToBillServiceTest {
             }
         }
 
-        // 2 'Bill' Credit Memos create both a bill production detail and savings production detail:
+        // 2 'Bill' Credit Memos create a bill production detail, a savings production detail
+        // and 4 payment records each (2 production periods, 2 parts each)
+        // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records:
         System.assertEquals(2,countOfBills);
         System.assertEquals(2,countOfSavings);
-
-        // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records:
-        System.assertEquals(6,countOfPayments);
+        System.assertEquals(12,countOfPayments);
     }
 
     @IsTest
@@ -533,11 +535,15 @@ public with sharing class ProductionToBillServiceTest {
         System.assertEquals(2,countOfBills);
         System.assertEquals(2,countOfSavings);
 
+        // 2 Payments are inserted as a part of the 'production' credit memo logic,
+        // which don't use callouts so we aren't testing here:
+        countOfPayments -= 2;
+
         // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records,
         // HOWEVER, because the callouts were already at 88, only 1 payment record will be made before re-queueing
         System.assertEquals(2,countOfPayments);
-        // Only 3 of the 5 JE will be marked as complete:
-        System.assertEquals(3,completedEntries.size());
+        // Only 1 of the 5 JE will be marked as complete:
+        System.assertEquals(1,completedEntries.size());
     }
 
     @IsTest

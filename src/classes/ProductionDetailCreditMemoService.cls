@@ -33,8 +33,8 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
             }
             if (creditMemo.Reason_Code__c == 'Production'){
                 billItems.add(creditMemo);
-                completedJEs.add(creditMemo);
-            } else if (ZuoraAPIHelper.getCalloutsRemaining() > 10) {
+            }
+            if (ZuoraAPIHelper.getCalloutsRemaining() > 10) {
                 // There is only 1 Journal Entry per credit memo, so we need to get the parts (ie, records it is
                 // applied to) before reusing the same method that is used for Payment Journal Entries
                 completedJEs.add(creditMemo);
@@ -73,8 +73,9 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
                 continue;
             }
             for (Bill_Adjustment__c sfAdjustment : adjustments){
-                billService.createBillProductionDetail(sfAdjustment.Transfer__c, -1 * sfAdjustment.Adjustment_Amount__c, 'Bill', entry.Id);
+                billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Adjustment_Amount__c, 'Bill', entry.Id);
                 billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Discount__c, 'Customer Savings', entry.Id);
+                billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Adjustment_Amount__c, 'Payment', entry.Id);
             }
         }
         productionDetailToInsert.addAll(billService.productionDetailToInsert);
