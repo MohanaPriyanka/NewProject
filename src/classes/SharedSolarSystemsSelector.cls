@@ -112,6 +112,19 @@ public inherited sharing class SharedSolarSystemsSelector {
         ];
     }
 
+    public List<Shared_Solar_System__c> selectSharedSolarSystemsForQualificationCheck(String productId, List<Id> utilityIds) {
+        return [
+                SELECT Id, Name, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c,
+                        Sales_Partners__c, Credit_Score_Requirement__c, Product__r.Name, Utility__r.Name
+                FROM Shared_Solar_System__c
+                WHERE Product__c = :productId
+                AND Utility__c IN :utilityIds
+                AND Stage__c = 'Acquisition'
+                AND Sales_Partners__c != null
+                ORDER BY Assignment_Order__c
+        ];
+    }
+
     public List<Shared_Solar_System__c> getActiveSystemsWithSmallOfftakeUASes() {
         return [
             SELECT Id, (

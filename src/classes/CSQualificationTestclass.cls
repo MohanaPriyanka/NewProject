@@ -62,7 +62,13 @@ private class CSQualificationTestclass {
             LZ__c = 'Hudson Valley',
             Town__c= 'Albany'
         );
-        insert loadZone;
+
+
+        Load_U__c loadZone2  = new Load_U__c(
+                Name = '56789',
+                LZ__c = 'Mohawk Valley'
+        );
+        insert new List<Load_U__c>{loadZone, loadZone2};
 
         ZipCode_Utility_Junction__c junction1 = new ZipCode_Utility_Junction__c(
             Load_Zone_Utility__c = loadZone.Id,
@@ -73,8 +79,12 @@ private class CSQualificationTestclass {
             Load_Zone_Utility__c = loadZone.Id,
             Utility__c = central.Id
         );
+        ZipCode_Utility_Junction__c junction3 = new ZipCode_Utility_Junction__c(
+                Load_Zone_Utility__c = loadZone2.Id,
+                Utility__c = central.Id
+        );
 
-        insert new List<ZipCode_Utility_Junction__c>{junction1, junction2};
+        insert new List<ZipCode_Utility_Junction__c>{junction1, junction2, junction3};
 
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(   Name = 'Albany Post Rd',
             Service_Territory__c = 'Hudson Valley',
@@ -85,6 +95,7 @@ private class CSQualificationTestclass {
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = nyseg.Id,
             Public__c = true,
+            Stage__c = 'Acquisition',
             Credit_Score_Requirement__c = 300,
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
@@ -157,7 +168,6 @@ private class CSQualificationTestclass {
         lead.Utility_relationship__c = central.Id;
         update lead;
 
-        //Should I query for the lead again before I pull credit?
         pullCreditForLead(lead.Id, true);
 
         Lead checkLead = [
@@ -167,12 +177,9 @@ private class CSQualificationTestclass {
             WHERE Id = :lead.Id
         ];
 
-
-
         System.assertEquals('Unqualified', checkLead.Status);
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c);
         System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c );
-
     }
 
     @IsTest
@@ -187,7 +194,6 @@ private class CSQualificationTestclass {
             FROM Lead
             WHERE Id = :lead.Id
         ];
-
 
         System.assertEquals('Qualified', checkLead.Status);
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c);
@@ -224,5 +230,90 @@ private class CSQualificationTestclass {
         }
         insert crLog;
     }
+
+    @IsTest
+    public static void testQualificationWidgetWithInputs() {
+        List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
+        Lead switchLead = [
+                SELECT Id, Product__c, Parcel_Zip__c
+                FROM Lead
+                LIMIT 1
+        ];
+        Partner__c partner = [
+                SELECT Id
+                FROM Partner__c
+                LIMIT 1
+        ];
+
+        String productId = switchLead.Product__c;
+        String partnerId = partner.Id;
+        String zipCode = switchLead.Parcel_Zip__c;
+        String fico;
+        String utilityId;
+
+        allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
+
+        System.assertEquals(1, allMatches.size());
+        System.assertEquals(true, allMatches[0].completeMatch);
+    }
+
+    @IsTest
+    public static void testQualificationWidgetHalfMatch(){
+        //We expect to still see the SSS returned as a potential match but completeMatch is False
+        // because the fico is not eligible for the project
+
+        Partner__c partner = [
+                SELECT Id
+                FROM Partner__c
+                LIMIT 1
+        ];
+
+        List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
+        Lead switchLead = [
+                SELECT Id, Product__c, Parcel_Zip__c
+                FROM Lead
+                LIMIT 1
+        ];
+        String productId = switchLead.Product__c;
+        String partnerId = partner.Id;
+        String zipCode = switchLead.Parcel_Zip__c;
+        String fico = '200';
+        String utilityId;
+
+        allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
+
+        System.assertEquals(1, allMatches.size());
+        System.assertEquals(false, allMatches[0].completeMatch);
+        System.assertEquals(true, allMatches[0].hasPartner);
+        System.assertEquals(true, allMatches[0].isOpen);
+        System.assertEquals(true, allMatches[0].hasCapacity);
+        System.assertEquals(true, allMatches[0].hasLZ);
+        System.assertEquals(false, allMatches[0].minFICO);
+    }
+
+    @IsTest
+    public static void testQualificationWidgetNoMatch() {
+        List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
+        Lead switchLead = [
+                SELECT Id, Product__c, Parcel_Zip__c
+                FROM Lead
+                LIMIT 1
+        ];
+        Partner__c partner = [
+                SELECT Id
+                FROM Partner__c
+                LIMIT 1
+        ];
+
+        String productId = switchLead.Product__c;
+        String partnerId = partner.Id;
+        String zipCode = '56789';
+        String fico;
+        String utilityId;
+
+        allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
+        System.assertEquals(0, allMatches.size());
+    }
+
 
 }
