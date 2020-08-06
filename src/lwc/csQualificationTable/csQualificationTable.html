@@ -1,0 +1,70 @@
+<template>
+    <div class="slds-box slds-theme_shade slds-theme_alert-texture">
+        <div class="slds-theme_default">
+            <table>
+                <tr class="slds-theme_alt-inverse slds-theme_alert-texture">
+                    <th class="slds-size_1-of-12 slds-p-around_xx-small slds-align--absolute-center">Match Status</th>
+                    <th class="slds-size_2-of-12 slds-p-around_xx-small">Shared Solar System</th>
+                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Open?</th>
+                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Product</th>
+                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Utility</th>
+                    <th class="slds-size_2-of-12 slds-p-around_xx-small">Service Territories</th>
+                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Available Capacity</th>
+                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Minimum FICO</th>
+                    <th class="slds-size_3-of-12 slds-p-around_xx-small">Sales Partners</th>
+                </tr>
+                <template for:each={matches} for:item="item">
+                    <tr key={item.sssName} class = "slds-theme_shade">
+                        <template if:true={item.sssMatch}>
+                            <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Qualified" title="Qualified"></lightning-icon>
+                        </template>
+                        <template if:false={item.sssMatch}>
+                            <lightning-icon icon-name="action:close" size="xx-small" alternative-text="NotQualified" title="NotQualified"></lightning-icon>
+                        </template>
+
+                        <td class="slds-p-around_xx-small">{item.sssName}</td>
+
+                        <template if:true={item.isOpen}>
+                            <td class="slds-p-around_xx-small">{item.sssOpen}</td>
+                        </template>
+                        <template if:false={item.isOpen}>
+                            <td class="slds-theme_warning slds-p-around_xx-small">{item.sssOpen}</td>
+                        </template>
+
+                        <td class="slds-p-around_xx-small">{item.sssProduct}</td>
+                        <td class="slds-p-around_xx-small">{item.sssUtility}</td>
+
+                        <template if:true={item.hasLZ}>
+                            <td class="slds-p-around_xx-small">{item.sssTerritories}</td>
+                        </template>
+                        <template if:false={item.hasLZ}>
+                            <td class="slds-theme_warning slds-p-around_xx-small">{item.sssTerritories}</td>
+                        </template>
+
+
+                        <template if:true={item.hasCapacity}>
+                            <td class="slds-p-around_xx-small">{item.sssCapacity}</td>
+                        </template>
+                        <template if:false={item.hasCapacity}>
+                            <td class="slds-theme_warning slds-p-around_xx-small">{item.sssCapacity}</td>
+                        </template>
+
+                        <template if:true={item.minFICO}>
+                            <td class="slds-p-around_xx-small">{item.sssFICO}</td>
+                        </template>
+                        <template if:false={item.minFICO}>
+                            <td class="slds-theme_warning slds-p-around_xx-small">{item.sssFICO}</td>
+                        </template>
+
+                        <template if:true={item.hasPartner}>
+                            <td class="slds-p-around_xx-small">{item.sssPartners}</td>
+                        </template>
+                        <template if:false={item.hasPartner}>
+                            <td class="slds-theme_warning slds-p-around_xx-small">{item.sssPartners}</td>
+                        </template>
+                    </tr>
+                </template>
+            </table>
+        </div>
+    </div>
+</template>

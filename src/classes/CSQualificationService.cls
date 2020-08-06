@@ -8,8 +8,8 @@ public without sharing class CSQualificationService {
 
 
     public static void checkCSQualification(
-        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap,
-        Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
+            Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap,
+            Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
         Set<Id> pcrIds = new Set<Id>();
 
         if (triggerOldMap == null) {
@@ -21,18 +21,18 @@ public without sharing class CSQualificationService {
         } else {
             for (Id oldId : triggerOldMap.keySet()) {
                 if (triggerNewMap.get(oldId).LASERCA__Status__c == 'Completed' &&
-                    triggerOldMap.get(oldId).LASERCA__Status__c != 'Completed') {
+                        triggerOldMap.get(oldId).LASERCA__Status__c != 'Completed') {
                     pcrIds.add(triggerNewMap.get(oldId).LASERCA__Personal_Credit_Report__c);
                 }
             }
         }
 
         List<LASERCA__Personal_Credit_Report__c> completedPCRs = [
-            SELECT Id, LASERCA__Lead__c, LASERCA__Lead__r.Personal_Credit_Report__c, Approval_Status__c,
-                LASERCA__Contact__c, LASERCA__Sum_of_monthly_Personal_Debt__c, Lead_from_Contact__c,
-                Maximum_Disbursement_Monthly__c, LASERCA__Credit_Score__c, LASERCA__Credit_Score_TransUnion__c
-            FROM LASERCA__Personal_Credit_Report__c
-            WHERE Id = :pcrIds
+                SELECT Id, LASERCA__Lead__c, LASERCA__Lead__r.Personal_Credit_Report__c, Approval_Status__c,
+                        LASERCA__Contact__c, LASERCA__Sum_of_monthly_Personal_Debt__c, Lead_from_Contact__c,
+                        Maximum_Disbursement_Monthly__c, LASERCA__Credit_Score__c, LASERCA__Credit_Score_TransUnion__c
+                FROM LASERCA__Personal_Credit_Report__c
+                WHERE Id = :pcrIds
         ];
 
         List<String> leadIds = new List<String>();
@@ -49,12 +49,12 @@ public without sharing class CSQualificationService {
 
 
         Map<Id, Lead> leadMap =
-            new Map<Id, Lead>([SELECT Id, Utility_relationship__r.Id, Utility_relationship__r.Name, Utility_relationship__c, LoadZone__c, Partner_Name__c, Status,
-                Company, Product_line__c, Electricity_Provider__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
-                LASERCA__Home_State__c, LASERCA__Home_Zip__c, OwnerId, Product__c, Partner_Lookup__r.Name
-            FROM Lead
-            WHERE Id IN :leadIds
-            AND Product_line__c = 'Community Solar']);
+                new Map<Id, Lead>([SELECT Id, Utility_relationship__r.Id, Utility_relationship__r.Name, Utility_relationship__c, LoadZone__c, Partner_Name__c, Status,
+                        Company, Product_line__c, Electricity_Provider__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
+                        LASERCA__Home_State__c, LASERCA__Home_Zip__c, OwnerId, Product__c, Partner_Lookup__r.Name
+                FROM Lead
+                WHERE Id IN :leadIds
+                AND Product_line__c = 'Community Solar']);
 
         if (leadMap.isEmpty()){
             return;
@@ -62,12 +62,12 @@ public without sharing class CSQualificationService {
 
         //Query for all the Shared Solar Systems
         List<Shared_Solar_System__c> sharedSolarSystems = [
-            SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__c, Public__c, Utility__c, Service_Territories__c,
-                Sales_Partners__c
-            FROM Shared_Solar_System__c
-            WHERE Open__c = true
-            AND Capacity_Available_to_be_Reserved__c > 0
-            ORDER BY Credit_Score_Requirement__c ASC
+                SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__c, Public__c, Utility__c, Service_Territories__c,
+                        Sales_Partners__c
+                FROM Shared_Solar_System__c
+                WHERE Open__c = true
+                AND Capacity_Available_to_be_Reserved__c > 0
+                ORDER BY Credit_Score_Requirement__c ASC
         ];
 
         List<Lead> updateLeads = new List<Lead>();
@@ -92,13 +92,13 @@ public without sharing class CSQualificationService {
             //Check if lead is qualified
             for (Shared_Solar_System__c sss : sharedSolarSystems) {
                 if (sss.Utility__c == lead.Utility_relationship__c &&
-                    (sss.Service_Territories__c != null && sss.Service_Territories__c.contains(lead.LoadZone__c)) &&
-                    ((sss.Sales_Partners__c != null &&
-                        (sss.Sales_Partners__c.contains('All') || sss.Sales_Partners__c.contains(lead.Partner_Lookup__r.Name))) ||
-                        sss.Public__c == true) &&
-                    sss.Product__c == lead.Product__c &&
-                    creditScore > sss.Credit_Score_Requirement__c
-                    ) {
+                        (sss.Service_Territories__c != null && sss.Service_Territories__c.contains(lead.LoadZone__c)) &&
+                        ((sss.Sales_Partners__c != null &&
+                                (sss.Sales_Partners__c.contains('All') || sss.Sales_Partners__c.contains(lead.Partner_Lookup__r.Name))) ||
+                                sss.Public__c == true) &&
+                        sss.Product__c == lead.Product__c &&
+                        creditScore > sss.Credit_Score_Requirement__c
+                        ) {
                     result = 'Qualified';
                     break;
                 }
@@ -114,4 +114,99 @@ public without sharing class CSQualificationService {
 
 
     }
+
+    public virtual class QualificationMatch{
+        @AuraEnabled
+        public Shared_Solar_System__c sss;
+        @AuraEnabled
+        public Boolean completeMatch = false;
+        @AuraEnabled
+        public Boolean isOpen = false;
+        @AuraEnabled
+        public Boolean hasCapacity = false;
+        @AuraEnabled
+        public Boolean hasLZ = false;
+        @AuraEnabled
+        public Boolean hasPartner = false;
+        @AuraEnabled
+        public Boolean minFICO = false;
+    }
+
+    public class QualificationInput {
+        public  List<QualificationMatch> qualificationMatches = new List<QualificationMatch>();
+        private List<Id> utilityIds = new List<Id>();
+        private String loadZone;
+        private Id productId;
+        private String partner;
+        private Integer fico;
+
+        public QualificationInput(String product, String partner, String zipCode, String fico, String utility) {
+            this.productId = (Id) product;
+
+            Partner__c getPartner = PartnerSelector.selectPartnerByPartnerId(partner);
+            this.partner = getPartner.Name;
+
+            if (fico != null) {
+                this.fico = Integer.valueOf(fico);
+            }
+
+            List<ZipCode_Utility_Junction__c> zipCodeUtilityJunctions = ZipcodeUtilitiesSelector.selectZipcodeUtilitiesAndLoadzones(zipCode);
+            this.loadZone = zipCodeUtilityJunctions[0].Load_Zone_Utility__r.LZ__c;
+
+            if (utility == null) {
+                for (ZipCode_Utility_Junction__c junction : zipCodeUtilityJunctions) {
+                    this.utilityIds.add(junction.Utility__c);
+                }
+            } else {
+                this.utilityIds.add(utility);
+            }
+        }
+
+        public void createQualificationList() {
+            SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+            List<Shared_Solar_System__c> sssList = sssSelector.selectSharedSolarSystemsForQualificationCheck(this.productId, this.utilityIds);
+
+            for (Shared_Solar_System__c sss : sssList) {
+                QualificationMatch matchResult = new QualificationMatch();
+                matchResult.sss = sss;
+                if (sss.Open__c) {
+                    matchResult.isOpen = true;
+                }
+                if (sss.Capacity_Available_to_be_Reserved__c > 0) {
+                    matchResult.hasCapacity = true;
+
+                }
+                if (sss.Service_Territories__c != null && sss.Service_Territories__c.contains(this.loadZone)) {
+                    matchResult.hasLZ = true;
+                }
+                if (sss.Sales_Partners__c != null && (sss.Sales_Partners__c.contains('All') || sss.Sales_Partners__c.contains(this.partner))) {
+                    matchResult.hasPartner = true;
+                }
+                if (this.fico == null || this.fico >= sss.Credit_Score_Requirement__c) {
+                    matchResult.minFICO = true;
+                }
+
+
+                if (matchResult.isOpen &&
+                        matchResult.hasCapacity &&
+                        matchResult.hasLZ &&
+                        matchResult.hasPartner &&
+                        matchResult.minFICO
+                        ) {
+                    matchResult.completeMatch = true;
+                }
+
+                this.qualificationMatches.add(matchResult);
+            }
+        }
+    }
+
+    @AuraEnabled
+    public static List<QualificationMatch> getQualificationMatches(String product, String partner, String zipCode, String fico, String utility) {
+        QualificationInput input = new QualificationInput(product, partner, zipCode, fico, utility);
+        input.createQualificationList();
+        return input.qualificationMatches;
+    }
+
+
 }
