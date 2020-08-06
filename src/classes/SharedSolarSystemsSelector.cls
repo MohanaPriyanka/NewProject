@@ -119,6 +119,8 @@ public inherited sharing class SharedSolarSystemsSelector {
                 FROM Shared_Solar_System__c
                 WHERE Product__c = :productId
                 AND Utility__c IN :utilityIds
+                AND Stage__c = 'Acquisition'
+                AND Sales_Partners__c != null
                 ORDER BY Assignment_Order__c
         ];
     }
