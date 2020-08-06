@@ -167,7 +167,7 @@ public without sharing class ClientFileCopierService {
             ContentLocation = 'S',
             VersionData = oldFile.VersionData,
             Title = fileName,
-            PathOnClient = '/' + fileName
+            PathOnClient = '/' + fileName + '.pdf'
         );
         return newFile;
     }
