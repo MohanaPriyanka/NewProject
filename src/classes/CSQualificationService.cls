@@ -176,9 +176,8 @@ public without sharing class CSQualificationService {
                     matchResult.hasCapacity = true;
 
                 }
-                if (sss.Service_Territories__c.contains(this.loadZone)) {
+                if (sss.Service_Territories__c != null && sss.Service_Territories__c.contains(this.loadZone)) {
                     matchResult.hasLZ = true;
-
                 }
                 if (sss.Sales_Partners__c != null && (sss.Sales_Partners__c.contains('All') || sss.Sales_Partners__c.contains(this.partner))) {
                     matchResult.hasPartner = true;
