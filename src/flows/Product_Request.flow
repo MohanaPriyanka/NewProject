@@ -24,6 +24,50 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
+        <name>Minimize_Utility_Bar</name>
+        <label>Minimize Utility Bar</label>
+        <locationX>1754</locationX>
+        <locationY>1265</locationY>
+        <actionName>autocomp:minimizeUtilityItem</actionName>
+        <actionType>component</actionType>
+        <connector>
+            <targetReference>Navigate_to_record</targetReference>
+        </connector>
+    </actionCalls>
+    <actionCalls>
+        <name>Navigate_to_record</name>
+        <label>Navigate to record</label>
+        <locationX>1894</locationX>
+        <locationY>1229</locationY>
+        <actionName>autocomp:navigate</actionName>
+        <actionType>component</actionType>
+        <inputParameters>
+            <name>destinationAction</name>
+            <value>
+                <stringValue>view</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>destinationName</name>
+            <value>
+                <stringValue>work__c</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>destinationRecordId</name>
+            <value>
+                <elementReference>varWorkId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>destinationType</name>
+            <value>
+                <stringValue>record</stringValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <description>Opens up a support case</description>
         <name>Open_support_case</name>
         <label>Open support case</label>
@@ -732,7 +776,8 @@
     <formulas>
         <name>forImprovementDescriptionProd</name>
         <dataType>String</dataType>
-        <expression>&quot;As a &quot; &amp; {!scrAs_a_Prod} &amp; &quot; I want &quot; &amp; {!scrI_want_Prod} &amp; &quot; so that &quot; &amp; {!scrso_that_Prod} &amp; &quot;    Additional Details: &quot; &amp; {!scrOther_Details_Prod}</expression>
+        <expression>&quot;As a &quot; &amp; {!scrAs_a_Prod} &amp; &quot; I want &quot; &amp; {!scrI_want_Prod} &amp; &quot; so that &quot; &amp; {!scrso_that_Prod} 
+&amp; &quot;  Impact:&quot; &amp; {!inpImpactQuestion} &amp; &quot;   Additional Details: &quot; &amp; {!scrOther_Details_Prod}</expression>
     </formulas>
     <formulas>
         <name>forListofFiles</name>
@@ -1364,6 +1409,12 @@
             <isRequired>true</isRequired>
         </fields>
         <fields>
+            <name>inpImpactQuestion</name>
+            <fieldText>What is the impact to the business if this work is not done?</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
             <name>scrOther_Details_Prod</name>
             <fieldText>Other Details</fieldText>
             <fieldType>LargeTextArea</fieldType>
@@ -1426,11 +1477,14 @@
     <screens>
         <name>scrImprovementCreated</name>
         <label>Confirmation</label>
-        <locationX>1771</locationX>
-        <locationY>1315</locationY>
+        <locationX>1590</locationX>
+        <locationY>1265</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Minimize_Utility_Bar</targetReference>
+        </connector>
         <fields>
             <name>stgConfirmation1</name>
             <extensionName>c:BlueWaveFlowStagesField</extensionName>

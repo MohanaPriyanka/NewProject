@@ -5,7 +5,7 @@
     "optionLabel" : "Technology",
     "imageUrl" : "https://www.lightningdesignsystem.com/assets/images/logo.svg",
     "iconName" : "standard:bot",
-    "description" : "IT · Originations · Business Applications"
+    "description" : "IT · Business Applications"
   }, {
     "useIcon" : "true",
     "optionValue" : "Operations",
@@ -19,7 +19,7 @@
     "optionLabel" : "Corporate",
     "imageUrl" : "https://www.lightningdesignsystem.com/assets/images/logo.svg",
     "iconName" : "custom:custom15",
-    "description" : "Legal · Marketing · CS Product Management · Client Product Management · Office Management · Accounting"
+    "description" : "Legal · Marketing · Customer Product Management · Client Product Management · Office Management · Accounting"
   } ],
   "objectName" : "agf__ADM_Scrum_Team__c",
   "fieldName" : "Category__c"

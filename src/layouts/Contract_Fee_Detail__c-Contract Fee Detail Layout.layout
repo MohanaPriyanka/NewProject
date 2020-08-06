@@ -93,6 +93,10 @@
                 <field>Acquisition_Channels_Non_BCS_Acquired__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Acquisition_Channels_Closed_by_BCS__c</field>
+            </layoutItems>
+            <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
@@ -124,7 +128,6 @@
                 <field>Waive_Reacquisition_Fee_Max_Project__c</field>
             </layoutItems>
         </layoutColumns>
-
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
@@ -155,22 +158,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Recurring_Escalator_Frequency__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Utilization_Adjustment_Type__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Utilization_Adjustment_Multiplier__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Utilization_Adjustment_Amount__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Utilization_Adjustment_Floor__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -244,7 +231,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h0a00000BFajF</masterLabel>
+        <masterLabel>00h3F000001yhH7</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
