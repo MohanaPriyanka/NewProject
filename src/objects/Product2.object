@@ -2289,6 +2289,68 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         </filters>
         <label>MSLP</label>
     </listViews>
+    <recordTypes>
+        <fullName>Client_BD</fullName>
+        <active>true</active>
+        <label>Client BD</label>
+        <picklistValues>
+            <picklist>Family</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>QuantityUnitOfMeasure</picklist>
+            <values>
+                <fullName>Each</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>kWh</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Default</fullName>
+        <active>true</active>
+        <label>Default</label>
+        <picklistValues>
+            <picklist>Family</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>QuantityUnitOfMeasure</picklist>
+            <values>
+                <fullName>Each</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>kWh</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
     <searchLayouts>
         <customTabListAdditionalFields>PRODUCT2.NAME</customTabListAdditionalFields>
         <customTabListAdditionalFields>PRODUCT2.CUSTOMER_PRODUCT_ID</customTabListAdditionalFields>
