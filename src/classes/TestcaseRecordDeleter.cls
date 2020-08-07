@@ -21,8 +21,7 @@ public without sharing virtual class TestcaseRecordDeleter implements Schedulabl
             Logger.flushLogs();
         }
     }
-
-    @TestVisible
+    
     public void deleteTestcaseRecords() {
         // Finds and deletes accounts from Zuora
         System.enqueueJob(new TestcaseRecordAsyncDeleter());
