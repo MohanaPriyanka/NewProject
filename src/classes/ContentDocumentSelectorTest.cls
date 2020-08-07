@@ -191,4 +191,32 @@ public with sharing class ContentDocumentSelectorTest {
         System.assertNotEquals(cvList[0].ContentDocumentId, cdlList[0].ContentDocumentId, 'Selector should not have returned the Content Document created 70 days ago');
         System.assertEquals(cvList[1].ContentDocumentId, cdlList[0].ContentDocumentId, 'Selector should have returned the Content Document created today');
     }
+
+    @IsTest
+    private static void testSelectByLinkedEntitiesWithoutData() {
+        List<Shared_Solar_System__c> sssList = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+        ];
+        List<ContentVersion> cvList = [
+            SELECT Id, ContentDocumentId, ContentDocument.ContentSize
+            FROM ContentVersion
+            ORDER BY Title
+        ];
+        ContentVersion cv = cvList[0];
+        ContentVersion cv2 = cvList[1];
+
+        ContentDocumentLink linkOne = new ContentDocumentLink(LinkedEntityId = sssList[0].Id, ContentDocumentId = cv.ContentDocumentId);
+        ContentDocumentLink linkTwo = new ContentDocumentLink(LinkedEntityId = sssList[0].Id, ContentDocumentId = cv2.ContentDocumentId);
+        insert new List<ContentDocumentLink>{linkOne, linkTwo};
+
+        ContentDocumentSelector documentSelector = new ContentDocumentSelector();
+
+        Test.startTest();
+        List<ContentDocumentLink> links =
+            documentSelector.selectByLinkedEntitiesWithoutData(new Set<Id>{sssList[0].Id});
+        Test.stopTest();
+
+        System.assertEquals(2, links.size());
+    }
 }

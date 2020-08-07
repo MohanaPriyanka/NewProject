@@ -1,5 +1,4 @@
 // Tested By: ContentVersionSelectorTest
-
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class ContentVersionSelector {
     public Map<Id, ContentVersion> selectById(Set<Id> versionIds) {
@@ -10,4 +9,14 @@ public inherited sharing class ContentVersionSelector {
         ]);
         return versionMap;
     }
+
+    public Map<Id, ContentVersion> selectByIdWithData(Set<Id> versionIds) {
+        Map<Id, ContentVersion> versionMap = new Map<Id, ContentVersion>([
+            SELECT Id, ContentDocumentId, VersionData
+            FROM ContentVersion
+            WHERE Id IN : versionIds
+        ]);
+        return versionMap;
+    }
+
 }

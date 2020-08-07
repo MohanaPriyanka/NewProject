@@ -27,6 +27,16 @@ public inherited sharing class ContentDocumentSelector {
         ];
     }
 
+    public List<ContentDocumentLink> selectByLinkedEntitiesWithoutData(Set<Id> entityIds) {
+        return [
+            SELECT Id, LinkedEntityId, ContentDocumentId,
+                ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = : entityIds
+            ORDER BY ContentDocument.CreatedDate DESC
+        ];
+    }
+
     public ContentDocument getMostRecentTransferSheet(Transfer__c transfer) {
         Set<Id> contentDocIds = new Set<Id>();
         for (ContentDocumentLink docLink : [

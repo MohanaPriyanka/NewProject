@@ -607,6 +607,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>BatchClientFileCopierService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BatchCreditSRECHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1184,6 +1188,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ClientContracts</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientFileCopierService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientFileCopierServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -44981,6 +44993,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Supporting_Document_Folder__c.Assignment_Agreement__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Supporting_Document_Folder__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>SurveyInvitation.Case__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -66981,6 +67003,9 @@
         <layout>Subscription_Transfer__c-Subscription Transfer Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Supporting_Document_Folder__c-Supporting Document Folder Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>System_Bill__c-System Bill Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -77307,6 +77332,10 @@
     <tabVisibilities>
         <tab>Subscription_Order__c</tab>
         <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Supporting_Document_Folder__c</tab>
+        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>System_Bill__c</tab>
