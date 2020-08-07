@@ -104,6 +104,10 @@
                 <field>Acquisition_Channels_Non_BCS_Acquired__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Acquisition_Channels_Closed_by_BCS__c</field>
+            </layoutItems>
+            <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
@@ -165,6 +169,22 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Recurring_Escalator_Frequency__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utilization_Adjustment_Type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utilization_Adjustment_Multiplier__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utilization_Adjustment_Amount__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utilization_Adjustment_Floor__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
