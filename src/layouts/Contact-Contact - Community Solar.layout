@@ -6,12 +6,10 @@
     <customButtons>Opt_in_for_Text_Messages</customButtons>
     <customButtons>Send_Text_Message</customButtons>
     <excludeButtons>Clone</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>DisableCustomerPortal</excludeButtons>
     <excludeButtons>DisablePartnerPortal</excludeButtons>
     <excludeButtons>DisablePrmSuperUser</excludeButtons>
     <excludeButtons>EnablePrmSuperUser</excludeButtons>
-    <excludeButtons>RequestUseSfdc</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
@@ -38,10 +36,6 @@
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Community_Login_Flow__c</field>
-            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>OwnerId</field>
