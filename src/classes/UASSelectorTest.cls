@@ -128,6 +128,20 @@ public with sharing class UASSelectorTest {
         System.assert(selector.getUASesForAssignmentAgreement(assignmentAgreement.Id).size() > 0);
     }
 
+    @IsTest public static void testGetUASSummaryByOpportunity(){
+        List<Opportunity> oppList = [
+            SELECT Id
+            FROM Opportunity
+        ];
+        Set<Id> oppIds = new Set<Id>();
+        for (Opportunity opp : oppList){
+            oppIds.add(opp.Id);
+        }
+        UASSelector selector = new UASSelector();
+        Map<Id,Decimal> summaryMap = selector.getUASSummaryByOpportunity(oppIds,false);
+        System.assert(summaryMap.values().size() > 0);
+    }
+
     private static void useMocks() {
         UtilityAccountSubscriptionHandler.partnerCommissionHandler = (PartnerCommissionHandler) Test.createStub(PartnerCommissionHandler.class, new PartnerCommissionHandlerTest.MockPartnerCommissionHandler());
     }
