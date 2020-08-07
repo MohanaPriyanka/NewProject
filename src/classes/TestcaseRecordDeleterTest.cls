@@ -5,19 +5,6 @@
 @IsTest
 public class TestcaseRecordDeleterTest {
     @TestSetup public static void setupData() {
-        Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
-            Total_Capital__c = 10000000,
-            Investor__c = 'The Bank',
-            Pool_Type__c = 'Revolving Credit Line');
-        insert capitalPool;
-
-        Loan_Traunch__c loanTranchePending = new Loan_Traunch__c(
-            Name = 'Tranche Assignment Pending',
-            Tranche_Type__c = 'Holding',
-            Stage__c = 'Closed',
-            Loan_Data__c = capitalPool.id);
-        insert loanTranchePending;
-
         Product2 srecProduct = new Product2( Name = 'Market Price - $10 Fee',
             Family = 'Solar Loan',
             Product_Type__c = 'SREC',
@@ -122,37 +109,6 @@ public class TestcaseRecordDeleterTest {
             CloseDate = Date.today().addYears(-1));
         insert new List<Opportunity>{oppOne, oppTwo, oppThree};
 
-        Loan__c loanOne = new Loan__c ( Name = 'Jordan Persist',
-            Requested_Loan_Amount__c = 23000.00,
-            Lead__c = leadOne.Id,
-            Partner__c = partner.Id,
-            Sales_Agent__c = salesRep.Id,
-            Number_of_Days_Past_Due__c = 0,
-            Opportunity__c = oppOne.Id,
-            CreatedDate = Date.today().addYears(-1),
-            SREC_Direct_Deposit_Order__c = orderOne.Id,
-            Loan_Tranche__c = loanTranchePending.Id);
-        Loan__c loanTwo = new Loan__c ( Name = 'Jordan Testcase',
-            Requested_Loan_Amount__c = 23000.00,
-            Lead__c = leadTwo.Id,
-            Partner__c = partner.Id,
-            Sales_Agent__c = salesRep.Id,
-            Number_of_Days_Past_Due__c = 0,
-            Opportunity__c = oppTwo.Id,
-            CreatedDate = Date.today().addYears(-1),
-            SREC_Direct_Deposit_Order__c = orderTwo.Id,
-            Loan_Tranche__c = loanTranchePending.Id);
-        Loan__c loanThree = new Loan__c (Name = 'Jordan Testcase',
-            Requested_Loan_Amount__c = 23000.00,
-            Lead__c = leadThree.Id,
-            Partner__c = partner.Id,
-            Sales_Agent__c = salesRep.Id,
-            Number_of_Days_Past_Due__c = 0,
-            Opportunity__c = oppThree.Id,
-            SREC_Direct_Deposit_Order__c = orderThree.Id,
-            Loan_Tranche__c = loanTranchePending.Id);
-        insert new List<Loan__c>{loanOne, loanTwo, loanThree};
-
         LASERCA__Personal_Credit_Report__c pcrOne = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadOne.Id,
             LASERCA__Credit_Score_TransUnion__c = '700'
@@ -169,20 +125,6 @@ public class TestcaseRecordDeleterTest {
         insert new List<LASERCA__Personal_Credit_Report__c>{
             pcrOne, pcrTwo, pcrThree
         };
-
-        Date twoWeeksAgo = System.today().addDays(-30);
-
-        Residential_Equipment__c resiEquipOne = new Residential_Equipment__c(
-            Name = 'Testcase Residential Equipment 1',
-            Loan__c = loanOne.Id,
-            CreatedDate = twoWeeksAgo);
-        Residential_Equipment__c resiEquipTwo = new Residential_Equipment__c(
-            Name = 'Testcase Residential Equipment 2',
-            Loan__c = loanTwo.Id);
-        Residential_Equipment__c resiEquipThree = new Residential_Equipment__c(
-            Name = 'Persist Residential Equipment 3',
-            Loan__c = loanThree.Id);
-        insert new List<Residential_Equipment__c>{resiEquipOne, resiEquipTwo, resiEquipThree};
     }
 
     @IsTest static void testLeadTestcaseDeletion() {
@@ -382,6 +324,80 @@ public class TestcaseRecordDeleterTest {
         Test.stopTest();
     }
 
+    @isTest static void testUASTestcaseDeletion() {
+        Util.disableTrigger('Disable_Client_Objects_Trigger__c');
+        Account newAcct = new Account(Name = 'AccountName');
+        insert newAcct;
+        Utility_Account_Log__c ual =
+            new Utility_Account_Log__c(Name = '0000345',
+                Account__c = newAcct.Id,
+                Annual_Cost_of_Electricity__c = 10000,
+                Name_on_Account__c = 'UAL Persist');
+        insert ual;
+        Shared_Solar_System__c sssOne = new Shared_Solar_System__c(Name = 'SSSOne');
+        insert sssOne;
+        Opportunity testOpportunity = new Opportunity (
+            Name = 'NewContact Testcase',
+            CloseDate = System.today(),
+            StageName = 'New');
+        insert testOpportunity;
+        Opportunity notTestOpportunity = new Opportunity (
+            Name = 'NewContact Something',
+            CloseDate = System.today(),
+            StageName = 'New');
+        insert notTestOpportunity;
+
+        List<Utility_Account_Subscription__c> testUASes = new List<Utility_Account_Subscription__c>();
+        for(Integer i = 0; i<5; i++){
+            Utility_Account_Subscription__c testUAS = new Utility_Account_Subscription__c (
+                Name = '0000-1' + i,
+                Utility_Account_Log__c = ual.Id,
+                Opportunity__c = testOpportunity.Id
+            );
+            testUASes.add(testUAS);
+        }
+        for(Integer i = 0; i<5; i++){
+            Utility_Account_Subscription__c testUAS = new Utility_Account_Subscription__c (
+                Name = '0000-1' + i,
+                Utility_Account_Log__c = ual.Id,
+                Opportunity__c = notTestOpportunity.Id
+            );
+            testUASes.add(testUAS);
+        }
+        insert testUASes;
+        Util.enableTrigger('Disable_Client_Objects_Trigger__c');
+
+        List<Utility_Account_Subscription__c> preTaskUASList = [SELECT Id FROM Utility_Account_Subscription__c];
+        System.assertEquals(10, preTaskUASList.size());
+        List<Client_Utility_Account_Subscription__c> cUASToInsert = new List<Client_Utility_Account_Subscription__c>();
+
+        for (Utility_Account_Subscription__c uas : preTaskUASList){
+            Client_Utility_Account_Subscription__c cUAS = new Client_Utility_Account_Subscription__c(
+                Utility_Account_Subscription__c = uas.Id,
+                Shared_Solar_System__c = sssOne.Id,
+                Name = 'C00-123'
+            );
+            cUASToInsert.add(cUAS);
+        }
+        insert cUASToInsert;
+
+        List<Client_Utility_Account_Subscription__c> preTaskClientUASList = [SELECT Id FROM Client_Utility_Account_Subscription__c];
+        System.assertEquals(10, preTaskClientUASList.size());
+
+        Test.startTest();
+            TestcaseRecordDeleter deleteRecords = new TestcaseRecordDeleter();
+            deleteRecords.deleteAll = true;
+            deleteRecords.deleteTestcaseRecords();
+        Test.stopTest();
+
+//      The task should only delete the 5 of the 10 UASes.
+        List<Utility_Account_Subscription__c> postTaskUASList = [SELECT Id FROM Utility_Account_Subscription__c];
+        System.assertEquals(5, postTaskUASList.size());
+
+        List<Client_Utility_Account_Subscription__c> postTaskClientUASList = [SELECT Id FROM Client_Utility_Account_Subscription__c];
+        System.assertEquals(5, postTaskClientUASList.size());
+    }
+
     @isTest static void testAccountTestcaseDeletion() {
         List<Account> testAccounts = new List<Account>();
         Date today = System.today();
@@ -429,48 +445,6 @@ public class TestcaseRecordDeleterTest {
 
         postTaskAccList = [SELECT Id FROM Account];
         System.assertEquals(13, postTaskAccList.size());
-        Test.stopTest();
-    }
-
-    @isTest static void testLoanTestcaseDeletion() {
-
-        List<Loan__c> preTaskLoanList = [SELECT Id FROM Loan__c];
-        System.assertEquals(3, preTaskLoanList.size());
-
-        Test.startTest();
-        TestcaseRecordDeleter deleteRecords = new TestcaseRecordDeleter();
-        deleteRecords.deleteTestcaseRecords();
-
-//      The method should only delete the one load that is over two weeks old with the last name 'Testcase'
-        List<Loan__c> postTaskLoanList = [SELECT Id FROM Loan__c];
-        System.assertEquals(2, postTaskLoanList.size());
-
-        deleteRecords.deleteAll = true;
-        deleteRecords.deleteTestcaseRecords();
-
-        postTaskLoanList = [SELECT Id FROM Loan__c];
-        System.assertEquals(1, postTaskLoanList.size());
-        Test.stopTest();
-    }
-
-    @isTest static void testResiEquipTestcaseDeletion() {
-
-        List<Residential_Equipment__c> preResiEquipList = [SELECT Id FROM Residential_Equipment__c];
-        System.assertEquals(3, preResiEquipList.size());
-
-        Test.startTest();
-        TestcaseRecordDeleter deleteRecords = new TestcaseRecordDeleter();
-        deleteRecords.deleteTestcaseRecords();
-
-//      Only one of the Test Equipments created was over two weeks old.
-        List<Residential_Equipment__c> postResiEquipList = [SELECT Id FROM Residential_Equipment__c];
-        System.assertEquals(2, postResiEquipList.size());
-
-        deleteRecords.deleteAll = true;
-        deleteRecords.deleteTestcaseRecords();
-
-        postResiEquipList = [SELECT Id FROM Residential_Equipment__c];
-        System.assertEquals(1, postResiEquipList.size());
         Test.stopTest();
     }
 
