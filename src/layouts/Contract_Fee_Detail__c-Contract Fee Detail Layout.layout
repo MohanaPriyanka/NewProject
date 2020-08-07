@@ -75,6 +75,17 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Acq_Anchor_Qualif_Investment_Grade__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Acq_Anchor_Qualif_Not_Investment_Grade__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Acquisition_Cust_Group_Residential__c</field>
             </layoutItems>
             <layoutItems>
@@ -91,10 +102,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Acquisition_Channels_Non_BCS_Acquired__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Acquisition_Channels_Closed_by_BCS__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
@@ -231,7 +238,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h3F000001yhH7</masterLabel>
+        <masterLabel>00h0a00000BFajF</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
