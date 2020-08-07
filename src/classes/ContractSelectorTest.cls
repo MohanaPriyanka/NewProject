@@ -40,4 +40,31 @@ public with sharing class ContractSelectorTest {
 
         System.assert(contracts.size() > 0);
     }
+
+    @IsTest public static void testGetCustomerContractsByAssignmentAgreement(){
+        Account clientAccount = new Account(Name = 'Client');
+        insert clientAccount;
+        Id rtAssign = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
+        Contract assignmentAgreement = new Contract(
+            Name = 'Assignment Agreement',
+            RecordTypeId = rtAssign,
+            AccountId = clientAccount.Id
+        );
+        insert assignmentAgreement;
+
+        List<Contract> contractList = [
+            SELECT Id, Assignment_Agreement__c
+            FROM Contract
+            WHERE Id != : assignmentAgreement.Id
+        ];
+        for (Contract cntr : contractList){
+            cntr.Assignment_Agreement__c = assignmentAgreement.Id;
+        }
+        update contractList;
+
+        List<Contract> contracts;
+        ContractSelector selector = new ContractSelector();
+        contracts = selector.getCustomerContractsByAssignmentAgreement(assignmentAgreement.Id);
+        System.assert(contracts.size() > 0);
+    }
 }
