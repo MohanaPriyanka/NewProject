@@ -3791,6 +3791,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TransferSheetService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UALSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>

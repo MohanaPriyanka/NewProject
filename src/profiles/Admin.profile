@@ -291,6 +291,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSQualificationService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSQualificationTestclass</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1223,6 +1227,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TransferSheetService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UALSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1420,6 +1428,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraPaymentMethodSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentPageController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
