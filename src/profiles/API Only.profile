@@ -203,6 +203,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSQualificationService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSSubscriptionEnroller</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -301,6 +305,10 @@
     <classAccesses>
         <apexClass>CommunitySolarCustomerPortalTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentService</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>CreateOrderandPaymentRequest</apexClass>
@@ -819,6 +827,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TransferSheetService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UASBSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -895,6 +907,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraDataQueryService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -912,6 +928,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraInvoiceServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentPageController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
