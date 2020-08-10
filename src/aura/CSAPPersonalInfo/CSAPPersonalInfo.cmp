@@ -50,13 +50,13 @@
 
           </legend>
           <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large" padding="around-small" size="12">
-           <div class="slds-text-align--center">
-            Please provide your contact information and billing address so we can verify your eligibility
-            for this community solar project and contact you regarding your application. We take privacy and security
-            seriously. Check out our
-             <b><lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" class="slds-text-color--weak" label="Privacy Policy" tooltip="Go to Privacy Policy"/></b>
-           for more details.
-           </div>
+            <div class="slds-text-align--center">
+              Please provide the applicant's contact information and address so we can verify eligibility
+              for this community solar project and contact the applicant regarding their application. We take privacy and security
+              seriously. Check out our
+              <b><lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" class="slds-text-color--weak" label="Privacy Policy" tooltip="Go to Privacy Policy"/></b>
+              for more details.
+            </div>
           </lightning:layoutItem>
           <form class="slds-form--stacked" autocomplete="off">
             <lightning:layout multipleRows="true">
@@ -105,8 +105,11 @@
             </lightning:layout>
             <lightning:layout multipleRows="true">
               <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
+                <label class="slds-form-element__label">Applicant Home Address</label>
+                <lightning:helptext content="This address will be used to perform a soft credit pull. Please ensure the address is associated with applicant."></lightning:helptext>
                 <lightning:input aura:id="field" name="leadHomeAddress"
-                                 label="Billing Address"
+                                 label="Applicant Home Address"
+                                 variant="label-hidden"
                                  value="{!v.lead.LASERCA__Home_Address__c}"
                                  required="true"/>
               </lightning:layoutItem>
@@ -181,8 +184,8 @@
       <aura:if isTrue="{!v.applicationType == 'Non-Residential'}">
         <div aria-labelledby="businessForm">
           <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
-            <legend id="businessForm" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-p-horizontal_large"> Tell us a bit about your Business or Organization </b>
+            <legend id="businessForm" class="slds-text-heading_medium slds-p-top_medium slds-text-align--center slds-align_absolute-center">
+              <b class="slds-p-horizontal_large"> Tell us a bit about your Business or Organization</b>
             </legend>
             <form class="slds-form--stacked">
               <lightning:layout multipleRows="true">
@@ -230,12 +233,12 @@
 
     <aura:if isTrue="{!v.page == 'NoProjects'}">
       <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
-      <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-        <b class="slds-section__title--large slds-p-horizontal_large">We're Sorry</b>
-      </legend>
-      <div class="slds-align--absolute-center slds-text-align--center ">
-        It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.
-      </div>
+        <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+          <b class="slds-section__title--large slds-p-horizontal_large">We're Sorry</b>
+        </legend>
+        <div class="slds-align--absolute-center slds-text-align--center ">
+          It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.
+        </div>
       </fieldset>
     </aura:if>
 
@@ -251,20 +254,20 @@
           </legend>
           <form class="slds-form--stacked">
             <div class="slds-p-horizontal--medium slds-p-bottom--medium slds-text-align--center">
-                <aura:if isTrue="{!v.lead.State == 'Massachusetts'}">
-                  Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
-                  (for National Grid customers) or
-                    <lightning:formattedUrl value="https://static1.squarespace.com/static/56fbfd2d37013b142d331d72/t/580fcb5a9de4bb7cf17a798b/1477430108492/RE_MA_Utility_Load_Zones_web.pdf" label="this map" tooltip="Go to Eversource Map"/>
-                    (for Eversource) to provide us with your Load Zone or Utility so we can see if we have solar projects that can service you.
-                  <aura:set attribute="else">
-                    <aura:if isTrue="{!v.lead.State == 'New York'}">
-                      Please select your electric utility from the list below. You can find this information on your utility bill.
-                      <aura:set attribute="else">
-                        Please select your electric utility or Load Zone from the list below. You can find this information on your utility bill.
-                      </aura:set>
-                    </aura:if>
-                  </aura:set>
-                </aura:if>
+              <aura:if isTrue="{!v.lead.State == 'Massachusetts'}">
+                Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
+                (for National Grid customers) or
+                <lightning:formattedUrl value="https://static1.squarespace.com/static/56fbfd2d37013b142d331d72/t/580fcb5a9de4bb7cf17a798b/1477430108492/RE_MA_Utility_Load_Zones_web.pdf" label="this map" tooltip="Go to Eversource Map"/>
+                (for Eversource) to provide us with your Load Zone or Utility so we can see if we have solar projects that can service you.
+                <aura:set attribute="else">
+                  <aura:if isTrue="{!v.lead.State == 'New York'}">
+                    Please select your electric utility from the list below. You can find this information on your utility bill.
+                    <aura:set attribute="else">
+                      Please select your electric utility or Load Zone from the list below. You can find this information on your utility bill.
+                    </aura:set>
+                  </aura:if>
+                </aura:set>
+              </aura:if>
             </div>
             <lightning:layout multipleRows="true" horizontalAlign="center">
               <aura:if isTrue="{!v.splitZones.length > 1}">
