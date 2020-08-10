@@ -493,6 +493,31 @@ IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quo
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Recurring_Billing_Timing__c</fullName>
+        <externalId>false</externalId>
+        <label>Recurring Billing Timing</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>In Arrears</fullName>
+                    <default>false</default>
+                    <label>In Arrears</label>
+                </value>
+                <value>
+                    <fullName>In Advance</fullName>
+                    <default>false</default>
+                    <label>In Advance</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Recurring_Escalator_Frequency__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>The frequency in which a recurring escalator is increased or decreased. For ex.) a fee that increases 2% annually</inlineHelpText>
