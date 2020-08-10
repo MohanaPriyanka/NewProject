@@ -172,6 +172,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Recurring_Billing_Timing__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Utilization_Adjustment_Type__c</field>
             </layoutItems>
             <layoutItems>
