@@ -90,6 +90,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Reacquisition_Start_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Sales_Charge__c</field>
             </layoutItems>
             <layoutItems>
@@ -99,10 +103,6 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Unique_ID__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Reacquisition_Start_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
