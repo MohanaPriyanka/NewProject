@@ -138,14 +138,20 @@ public with sharing class SharedSolarSystemsTest {
                 when 'getContractDetailFromContract' {
                     Contract_Fee_Detail__c cfdPTO = new Contract_Fee_Detail__c(
                         Contract__c = Util.getFakeId(Contract.SObjectType),
+                        Management_Fee__c = true,
+                        Management_Fee_Type__c = 'Recurring',
                         Management_Fee_Trigger__c = 'Project: PTO'
                     );
                     Contract_Fee_Detail__c cfdCustomerAssigned = new Contract_Fee_Detail__c(
                         Contract__c = Util.incrementFakeId(cfdPTO.Contract__c),
+                        Management_Fee__c = true,
+                        Management_Fee_Type__c = 'Recurring',
                         Management_Fee_Trigger__c = 'Project: First Customer Assignment Date'
                     );
                     Contract_Fee_Detail__c cfdFirstBilled = new Contract_Fee_Detail__c(
                         Contract__c = cfdCustomerAssigned.Contract__c,
+                        Management_Fee__c = true,
+                        Management_Fee_Type__c = 'Recurring',
                         Management_Fee_Trigger__c = 'Project: First Customer Bill Date'
                     );
 
