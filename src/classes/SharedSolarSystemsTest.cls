@@ -50,6 +50,59 @@ public with sharing class SharedSolarSystemsTest {
             }
         }
     }
+    @IsTest
+    private static void testUpdateManagementRevenueStartDate() {
+        SharedSolarSystems.contractFeeDetailSelector = (ContractFeeDetailSelector) Test.createStub(ContractFeeDetailSelector.class, new MockContractFeeDetailSelector());
+        Date ptoDate = Date.newInstance(2020,1,1);
+        Date codDate = Date.newInstance(2020,1,1);
+        Date assignmentDate = Date.newInstance(2020,1,1);
+        Date billDate = Date.newInstance(2020,2,1);
+        Shared_Solar_System__c ptoSystemWithPTOTrigger = new Shared_Solar_System__c(
+            Id = Util.getFakeId(Shared_Solar_System__c.SObjectType),
+            Name = 'PTO System With PTO Trigger',
+            Client_Management_Contract__c = Util.getFakeId(Contract.SObjectType),
+            Actual_PTO_Date_MANUAL__c = ptoDate
+        );
+        Shared_Solar_System__c codSystemWithPTOTrigger = new Shared_Solar_System__c(
+            Id = Util.incrementFakeId(ptoSystemWithPTOTrigger.Id),
+            Name = 'COD System With PTO Trigger',
+            Client_Management_Contract__c = Util.getFakeId(Contract.SObjectType),
+            Actual_COD_Date__c = codDate
+        );
+        Shared_Solar_System__c firstAssignAndBillSystemWithTrigger = new Shared_Solar_System__c(
+            Id = Util.incrementFakeId(codSystemWithPTOTrigger.Id),
+            Name = 'First Customer Assigned and Billed with Triggers',
+            Client_Management_Contract__c = Util.incrementFakeId(ptoSystemWithPTOTrigger.Client_Management_Contract__c),
+            Customer_Assignment_Date__c = assignmentDate,
+            First_Bill_Date__c = billDate
+        );
+        Shared_Solar_System__c systemWithNoManagementContract = new Shared_Solar_System__c(
+            Id = Util.incrementFakeId(firstAssignAndBillSystemWithTrigger.Id),
+            Name = 'No Management Contract',
+            Customer_Assignment_Date__c = assignmentDate,
+            First_Bill_Date__c = billDate
+        );
+        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{
+            ptoSystemWithPTOTrigger,
+            codSystemWithPTOTrigger,
+            firstAssignAndBillSystemWithTrigger,
+            systemWithNoManagementContract
+        };
+        try {
+            fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+                new List<SObjectType>{Shared_Solar_System__c.SObjectType},
+                new FFLibHelperTest.MockDML()
+            );
+            new SharedSolarSystems(sharedSolarSystems).updateManagementRevenueStartDate(uow);
+        } catch (Exception e) {
+            System.assert(false, e.getMessage() + '\n' + e.getStackTraceString());
+        }
+        System.assertEquals(ptoDate, ptoSystemWithPTOTrigger.Management_Revenue_Start_Date__c);
+        System.assertEquals(null, codSystemWithPTOTrigger.Management_Revenue_Start_Date__c);
+        System.assertEquals(DateUtil.min(assignmentDate, billDate), firstAssignAndBillSystemWithTrigger.Management_Revenue_Start_Date__c,
+            'If there are multiple management CFDs, we should evaluate all of them and choose the earlier date');
+        System.assertEquals(null, systemWithNoManagementContract.Management_Revenue_Start_Date__c);
+    }
 
     /*************
       *** MOCKS ***
@@ -76,5 +129,30 @@ public with sharing class SharedSolarSystemsTest {
             return null;
         }
     }
+    public class MockContractFeeDetailSelector extends MockProvider {
+        public MockContractFeeDetailSelector() {
+        }
 
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'getContractDetailFromContract' {
+                    Contract_Fee_Detail__c cfdPTO = new Contract_Fee_Detail__c(
+                        Contract__c = Util.getFakeId(Contract.SObjectType),
+                        Management_Fee_Trigger__c = 'Project: PTO'
+                    );
+                    Contract_Fee_Detail__c cfdCustomerAssigned = new Contract_Fee_Detail__c(
+                        Contract__c = Util.incrementFakeId(cfdPTO.Contract__c),
+                        Management_Fee_Trigger__c = 'Project: First Customer Assignment Date'
+                    );
+                    Contract_Fee_Detail__c cfdFirstBilled = new Contract_Fee_Detail__c(
+                        Contract__c = cfdCustomerAssigned.Contract__c,
+                        Management_Fee_Trigger__c = 'Project: First Customer Bill Date'
+                    );
+
+                    return new List<Contract_Fee_Detail__c>{cfdPTO, cfdCustomerAssigned, cfdFirstBilled};
+                }
+            }
+            return null;
+        }
+    }
 }

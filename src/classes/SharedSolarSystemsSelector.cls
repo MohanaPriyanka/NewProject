@@ -92,7 +92,8 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c, Maximum_Subscription_Capacity_kWDC__c,
                 Total_Capacity_Committed_Reserved__c,
                 Reserved_Anchor_Capacity__c, Name, Stage__c,
-                CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c
+                CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c,
+                Management_Revenue_Start_Date__c
             FROM Shared_Solar_System__c
         ];
     }
