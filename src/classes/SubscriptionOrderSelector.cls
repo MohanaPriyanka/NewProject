@@ -36,6 +36,7 @@ public inherited sharing class SubscriptionOrderSelector {
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_PTO_Date_MANUAL__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.First_Bill_Date__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
                 Contract_Fee_Detail__c,
                 Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c,
                 Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c,
