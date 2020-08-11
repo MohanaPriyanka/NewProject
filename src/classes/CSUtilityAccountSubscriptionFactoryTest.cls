@@ -412,7 +412,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c, Subsc_Annual_Cost_of_Electricity_Rollup__c,
                 Subscribed_Annual_kWhs_Rollup__c
             FROM Utility_Account_Log__c
-            ORDER BY Annual_Cost_of_Electricity__c DESC
+            ORDER BY Annual_kWh__c DESC
         ];
         return ualList;
     }
@@ -439,7 +439,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     public static void testSetMaximumSubscriptionCapacity() {
         useMocks(false);
         List<Shared_Solar_System__c> sssList = getSharedSolarSystems('SMART Community Solar');
-        Decimal maximumCapacitykWh = SharedSolarSystems.calculateMaximumkWh(sssList[0], null);
+        Decimal maximumCapacitykWh = SharedSolarSystems.calculateMaximumkWh(sssList[0]);
         System.assertEquals(32900, maximumCapacitykWh);
         Test.startTest();
         Shared_Solar_System__c sss = sssList[0];
@@ -452,7 +452,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             WHERE Id =: sss.Id
             LIMIT 1
         ];
-        Decimal maximumCapacitykWhAfter = SharedSolarSystems.calculateMaximumkWh(sssAfterUpdate, null);
+        Decimal maximumCapacitykWhAfter = SharedSolarSystems.calculateMaximumkWh(sssAfterUpdate);
         System.assertEquals(40000, maximumCapacitykWhAfter);
     }
     public static void setMaximumSubscriptionCost(Shared_Solar_System__c sss, Decimal maximumCost) {
@@ -640,6 +640,107 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
 
     }
     @IsTest
+    public static void testSizingMethodRateClassMultipleUALs() {
+        useMocks(true);
+        Product2 csProduct = [
+                SELECT Id, Name, Sizing_Method__c, Customer_Subscription_Type__c
+                FROM Product2
+                WHERE Name = 'SMART Community Solar'
+                LIMIT 1
+        ];
+        Lead lead = new Lead(
+                FirstName = 'Test',
+                LastName = 'Testcase',
+                Email = 'test@test.com',
+                Electricity_Provider__c = 'Eversource',
+                Utility_1__c = 'Eversource',
+                Load_Zone__c = 'WCMA',
+                Company = 'Test',
+                Status = 'Qualified',
+                Product_line__c = 'Community Solar',
+                Product__c = csProduct.Id,
+                Custom_ID__c = 'partner',
+                System_Assignment__c = 'Automatic - Assignment Order'
+        );
+        insert lead;
+        Utility_NMC_Tariff__c sizeRatio =  [
+                SELECT Id, Size_Ratio__c
+                FROM Utility_NMC_Tariff__c
+                WHERE Name = 'Eversource R2'
+                LIMIT 1
+        ];
+        Rate_Class__c rateClass = new Rate_Class__c(
+                Name = 'Eversource R1',
+                Utility_NMC_Tariff__c = sizeRatio.Id
+        );
+        insert rateClass;
+        Utility_Account_Log__c ualOne = new Utility_Account_Log__c(
+                Annual_kWh__c = 23000,
+                Name_on_Account__c = 'Sarah Renfro',
+                Name = 'Account 1',
+                Utility_Rate_Class__c = rateClass.Id,
+                Lead__c = lead.Id
+        );
+
+        Utility_Account_Log__c ualTwo = new Utility_Account_Log__c(
+                Annual_kWh__c = 2000,
+                Name_on_Account__c = 'Sarah Renfro',
+                Name = 'Account 2',
+                Utility_Rate_Class__c = rateClass.Id,
+                Lead__c = lead.Id
+        );
+        insert new List<Utility_Account_Log__c>{ualOne, ualTwo};
+
+        Product2 kWhProduct = [
+                SELECT Id, Sizing_Method__c, Name
+                FROM Product2
+                WHERE Name = 'SMART Community Solar'
+                LIMIT 1
+        ];
+        //Requery to mimic CSSubscriptionEnroller queries for UALs and SSSs
+        List<Utility_Account_Log__c> ualList = getUtilityAccountLogs();
+        List<Shared_Solar_System__c> sharedSolarSystems = getSharedSolarSystems('SMART Community Solar');
+        Integer counter = 1;
+        List<Opportunity> opportunities = new List<Opportunity>();
+        for (Shared_Solar_System__c sss : sharedSolarSystems) {
+            opportunities.add(new Opportunity(
+                    Name = 'Opp ' + counter,
+                    Shared_Solar_System__c = sss.Id,
+                    Product__c = kWhProduct.Id,
+                    StageName = 'New',
+                    CloseDate = System.today()
+            ));
+            ++counter;
+        }
+        insert opportunities;
+        System.assertEquals(2, opportunities.size());
+
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+                new List<Schema.SObjectType> {
+                        Utility_Account_Subscription__c.SObjectType,
+                        Subscription_Order__c.SObjectType
+                }
+        );
+
+        CSUtilityAccountSubscriptionFactory.generateSubscriptions(ualList, sharedSolarSystems, opportunities, uow);
+        List<SObject> uasMultiple = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
+        System.assertEquals(3, uasMultiple.size());
+        Utility_Account_Subscription__c uasMultiple0 = (Utility_Account_Subscription__c) uasMultiple[0];
+        Utility_Account_Subscription__c uasMultiple1 = (Utility_Account_Subscription__c) uasMultiple[1];
+        Utility_Account_Subscription__c uasMultiple2 = (Utility_Account_Subscription__c) uasMultiple[2];
+        System.assertEquals(sizeRatio.Id, uasMultiple0.Sizing_Method__c,
+                'UAS should be assigned the Sizing Method from the UALs Rate Class');
+        System.assertEquals(sizeRatio.Id, uasMultiple1.Sizing_Method__c,
+                'UAS should be assigned the Sizing Method from the UALs Rate Class');
+        System.assertEquals(sizeRatio.Id, uasMultiple2.Sizing_Method__c,
+                'UAS should be assigned the Sizing Method from the UALs Rate Class');
+
+        System.assertEquals(ualTwo.Id, uasMultiple2.Utility_Account_Log__c, 'UAS should be for the second UAL');
+        System.assertNotEquals(uasMultiple0.Opportunity__c, uasMultiple1.Opportunity__c, 'Subscriptions should be on separate Projects');
+        System.assertNotEquals(uasMultiple0.Opportunity__c, uasMultiple2.Opportunity__c, 'UAS for second UAL should be on second SSS');
+        System.assertEquals(uasMultiple1.Opportunity__c, uasMultiple2.Opportunity__c ,'UAS for second UAL should be on second SSS');
+    }
+    @IsTest
     public static void testSizingMethodProjectRatioSubscriptions() {
         useMocks(true);
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
@@ -712,7 +813,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             WHERE Product__r.Name = 'SMART Community Solar'
             LIMIT 1
         ];
-        Decimal maxKwh = SharedSolarSystems.calculateMaximumkWh(sss, ual);
+        Decimal maxKwh = SharedSolarSystems.calculateMaximumkWh(sss);
         System.assertEquals(32900, maxKwh,
             'Maximum kwh should be (SSS.MaxKWDC * Yield) for a Rate Class Ratio project when the UAL does not have a Rate Class');
         Rate_Class__c rateClass = [
@@ -724,7 +825,8 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         update ual;
         //Requery for the UAL to get relationships
         ual = getUtilityAccountLogs()[0];
-        maxKwh = SharedSolarSystems.calculateMaximumkWh(sss, ual);
+        maxKwh = SharedSolarSystems.calculateMaximumkWh(sss);
+        maxKwh = (maxKwh/rateClass.Utility_NMC_Tariff__r.Size_Ratio__c).setScale(2, RoundingMode.HALF_DOWN);
         //Maximum kWh Subscription = (25 * 1316)/1.5
         System.assertEquals(21933.33, maxKwh, 'Maximum kWh should be (SSS.MaxKWDC * Yield)/UAL.RateClass.SizeRatio for a Rate Class Ratio project');
     }
@@ -755,7 +857,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             LIMIT 1
         ];
         //Maximum kWh Subscription = (25 * 1316)/1.2
-        Decimal maxKwh = SharedSolarSystems.calculateMaximumkWh(sss, ual);
+        Decimal maxKwh = SharedSolarSystems.calculateMaximumkWh(sss);
         System.assertEquals(27416.67, maxKwh );
     }
     private static void useMocks(Boolean featureOn) {

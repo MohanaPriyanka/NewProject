@@ -27,7 +27,7 @@ public without sharing class CSOpportunityFactory {
                 if (remainingAccountCostToAllocate > 0) {
                     remainingAccountCostToAllocate -= annualElectricityCostAssigned;
                 }
-                Decimal annualElectricitykWhAssigned = Math.min(remainingAccountkWhToAllocate, SharedSolarSystems.calculateMaximumkWh(sss, null));
+                Decimal annualElectricitykWhAssigned = Math.min(remainingAccountkWhToAllocate, SharedSolarSystems.calculateMaximumkWh(sss));
                 if (remainingAccountkWhToAllocate > 0) {
                     remainingAccountkWhToAllocate -= annualElectricitykWhAssigned;
                 }
@@ -117,6 +117,7 @@ public without sharing class CSOpportunityFactory {
     @TestVisible
     private static Opportunity setDefaultOppFields(Lead lead, Opportunity opp) {
         opp.Lead__c = lead.Id;
+        opp.Acquired_By_Client_Closed_By_BlueWave__c = lead.Acquired_By_Client_Closed_By_BlueWave__c;
         opp.Application_Date__c = lead.Application__c;
         opp.Application_Type__c = lead.Application_Type__c;
         opp.Avidia_Checking_Account__c = lead.Avidia_Checking_Account__c;
