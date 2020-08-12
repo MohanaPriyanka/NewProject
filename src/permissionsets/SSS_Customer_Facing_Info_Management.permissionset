@@ -16,6 +16,11 @@
         <field>Shared_Solar_System__c.Project_Information_short__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Reacquisition_Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>SSS Customer Facing Info Management</label>
     <objectPermissions>
