@@ -232,11 +232,6 @@
             <actionType>StandardButton</actionType>
             <sortOrder>10</sortOrder>
         </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Utility_Account_Log__c.Recalculate_Subscriptions</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>11</sortOrder>
-        </platformActionListItems>
     </platformActionList>
     <relatedLists>
         <relatedList>RelatedFileList</relatedList>
