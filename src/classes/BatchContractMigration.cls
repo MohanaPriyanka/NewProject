@@ -4,21 +4,21 @@ public without sharing class BatchContractMigration implements Database.Batchabl
     @TestVisible
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
 
-    public List<Opportunity> opportunitiesToRun;
-    public Integer batchSize = 1;
+    @TestVisible
+    private List<Opportunity> opportunitiesToRun;
 
     public void execute(SchedulableContext sc) {
-        runBatch();
-    }
-
-    public void runBatch(){
-        if (opportunitiesToRun == null){
-            opportunitiesToRun = oppSelector.getCompleteOppsWithoutContracts();
+        if (Test.isRunningTest()) {
+            Database.executeBatch(new BatchContractMigration());
+        } else {
+            Database.executeBatch(new BatchContractMigration(), 1);
         }
-        Database.executeBatch(this, batchSize);
     }
 
     public List<SObject> start(Database.BatchableContext bc) {
+        if (opportunitiesToRun == null) {
+            opportunitiesToRun = oppSelector.getCompleteOppsWithoutContracts();
+        }
         return opportunitiesToRun;
     }
 
@@ -26,8 +26,8 @@ public without sharing class BatchContractMigration implements Database.Batchabl
         try {
             ContractMigrationService migrationService = new ContractMigrationService();
             migrationService.executeForOpps(scope);
-        } catch (Exception excep){
-            Logger.logNow('BatchContractMigration','execute',excep,JSON.serialize(scope),'ERROR');
+        } catch (Exception e){
+            Logger.logNow('BatchContractMigration','execute',e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serialize(scope), Logger.ERROR);
         }
     }
 
