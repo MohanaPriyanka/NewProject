@@ -34,17 +34,6 @@
         <senderType>DefaultWorkflowUser</senderType>
         <template>CS_Application_Email_Notifications/BW_Sales_Alert_50_kw_Left_in_System</template>
     </alerts>
-    <alerts>
-        <fullName>X75_Full_Email_Alert</fullName>
-        <description>75% Full Email Alert</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>jpentaleri@bluewavesolar.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderType>DefaultWorkflowUser</senderType>
-        <template>BFG_Internal_Alerts/X75_Notification_Internal</template>
-    </alerts>
     <fieldUpdates>
         <fullName>Close_SSS_on_Full</fullName>
         <field>Open__c</field>
