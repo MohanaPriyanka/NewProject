@@ -2934,36 +2934,6 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Disbursal_Due_Contract__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(and( text(StageName) = &quot;Complete&quot; ,TODAY()&gt;= Anticipated_Disbursal_Date_Contract__c , ISBLANK( Disbursal_1_Contract_Signature_Checkbox__c )) ,TRUE,FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXDisbursal Due (Contract)</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_Due_Mechanical_Completion__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(and( text(StageName) = &quot;Complete&quot; ,TODAY()&gt;= Anticipated_Disbursal_Date_Mechanical__c , ISBLANK(  Disbursal_2_Mechanical_Install_Checkbox__c  )) ,TRUE,FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXDisbursal Due (Mechanical Completion)</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_Due_System_Operation__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(and( text(StageName) = &quot;Complete&quot; ,TODAY()&gt;=  Anticipated_Disbursal_Date_Full__c  , ISBLANK( Disbursal_3_Full_Install_Checkbox__c )) ,TRUE,FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXDisbursal Due (Interconnect)</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Disbursal_Status__c</fullName>
         <externalId>false</externalId>
         <formula>IF( DOER_Solar_Loan__c = FALSE,
