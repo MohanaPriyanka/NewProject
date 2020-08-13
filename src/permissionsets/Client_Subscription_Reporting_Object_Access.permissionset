@@ -195,6 +195,11 @@
         <field>Client_Utility_Account_Subscription__c.kW_Allocation__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Reacquisition_Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Client Subscription Reporting Object Access</label>
     <objectPermissions>

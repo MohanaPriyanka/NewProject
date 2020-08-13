@@ -27,7 +27,7 @@ public without sharing class CSOpportunityFactory {
                 if (remainingAccountCostToAllocate > 0) {
                     remainingAccountCostToAllocate -= annualElectricityCostAssigned;
                 }
-                Decimal annualElectricitykWhAssigned = Math.min(remainingAccountkWhToAllocate, SharedSolarSystems.calculateMaximumkWh(sss, null));
+                Decimal annualElectricitykWhAssigned = Math.min(remainingAccountkWhToAllocate, SharedSolarSystems.calculateMaximumkWh(sss));
                 if (remainingAccountkWhToAllocate > 0) {
                     remainingAccountkWhToAllocate -= annualElectricitykWhAssigned;
                 }
