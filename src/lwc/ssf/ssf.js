@@ -175,8 +175,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         this.selectedUtility = JSON.parse(this.selectedUtility);
         getZipCodeCapacity(this.zipCodeInput, this.partnerId, this.selectedUtility.utilityId).then(
             (resolveResult) => {
-                console.log('resolveResult:');
-                console.log(resolveResult);
                 if(resolveResult.ficoUnderwriting) {
                     this.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
                 }
@@ -190,7 +188,16 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                 this.getBasicInfo = true;
             },
             (rejectResult) => {
-
+                insertLog({
+                    className: 'ssf',
+                    methodName: 'getZipCodeCapacity',
+                    message: JSON.stringify(rejectResult),
+                    severity: 'Error'
+                });
+                this.showSpinner = false;
+                this.showModal = false;
+                this.getZip = false;
+                this.getBasicInfo = true;
             }
         );
     }
