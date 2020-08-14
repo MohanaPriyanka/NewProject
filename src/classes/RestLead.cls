@@ -28,9 +28,11 @@ public without sharing class RestLead {
     public String continueApplicationLink;
     public List<RestPropertyAccount> propertyAccounts;
     public List<RestContentDocument> contentDocs;
+    public List<RestContentDocument> financialDocs;
     public String campaignId;
     public String referralName;
     public String referralEmail;
+    public String underwritingCriteria;
 
     public RestLead() {
     }
@@ -61,6 +63,7 @@ public without sharing class RestLead {
         this.campaignId = lead.Manual_Campaign_ID__c;
         this.referralName = lead.Referral_Name__c;
         this.referralEmail = lead.Referral_Email__c;
+        this.underwritingCriteria = lead.Underwriting_Criteria__c;
     }
 
     public void validateCreateFields() {
@@ -142,6 +145,7 @@ public without sharing class RestLead {
         if (fieldNames.contains('referralName')) baseLead.Referral_Name__c = this.referralName;
         if (fieldNames.contains('referralEmail')) baseLead.Referral_Email__c = this.referralEmail;
         if (fieldNames.contains('continueApplicationLink')) baseLead.Continue_Application_Link__c = this.continueApplicationLink;
+        if (fieldNames.contains('underwritingCriteria')) baseLead.Underwriting_Criteria__c = this.underwritingCriteria;
         if (fieldNames.contains('utilityId')) baseLead.Utility_relationship__c = this.utilityId;
         updateDerivedFields(new RestLead(baseLead), baseLead);
 
@@ -183,6 +187,7 @@ public without sharing class RestLead {
             Referral_Name__c = this.referralName,
             Referral_Email__c = this.referralEmail,
             Continue_Application_Link__c = this.continueApplicationLink,
+            Underwriting_Criteria__c = this.underwritingCriteria,
             Utility_relationship__c = this.utilityId
         );
         // Since:

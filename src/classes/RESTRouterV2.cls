@@ -78,7 +78,8 @@ global without sharing class RESTRouterV2 {
                 when '/zip-check' {
                     String zipCode = req.params.get('zipCode');
                     String partnerId = req.params.get('partnerId');
-                    controller.performZipCheck(zipCode, (partnerId==null?'':partnerId));
+                    String utilityId = req.params.get('utilityId');
+                    controller.performZipCheck(zipCode, (partnerId==null?'':partnerId), utilityId);
                 } when '/leads' {
                     String leadId = req.params.get('leadId');
                     String email = req.params.get('email');

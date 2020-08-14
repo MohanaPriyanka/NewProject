@@ -16,15 +16,42 @@
             <template if:false={resiApplicationType}>
                 <h6>Business Info<span class="blue-text">&nbsp;&gt;</span></h6>
                 <div class="form-section">
-                    <div class="input-group">
+                    <div class="input-group half">
                         <lightning-input name="businessName" value={restLead.businessName} class="slds-var-m-left_small slds-var-m-right_small" label="Name of Business or Organization" onchange={genericOnChange} required></lightning-input>
                     </div>
-                    <div class="input-group">
-                        <lightning-input name="businessTitle" value={restLead.businessTitle} class="slds-var-m-left_small slds-var-m-right_small"  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
-                    </div>
-                    <div class="input-group">
+                    <div class="input-group half">
                         <lightning-input name="businessPhone" value={restLead.businessPhone} class="slds-var-m-left_small slds-var-m-right_small"  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
                     </div>
+                    <div class="input-group half">
+                        <lightning-input name="businessTitle" value={restLead.businessTitle} class="slds-var-m-left_small slds-var-m-right_small"  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
+                    </div>
+                    <div class="input-group half">
+                        <template if:true={showUnderwritingOptions}>
+                            <lightning-combobox 
+                                    name="underwritingCriteria"
+                                    class="slds-var-m-bottom_small slds-var-m-left_small slds-var-m-right_small"
+                                    placeholder=""
+                                    label="Apply with Guarantor or Financial Documents?"
+                                    value={underwritingCriteria}
+                                    onchange={genericOnChange}
+                                    options={underwritingOptions}
+                                    required>
+                            </lightning-combobox>
+                        </template>
+                    </div>
+                    <template if:false={isFico}>
+                        <div class="input-group half"></div>
+                        <div class="input-group half">
+                            <div class="slds-var-m-left_small slds-var-m-right_small">
+                                <c-ssf-file-upload 
+                                        required
+                                        input-text="Upload Financial Documents"
+                                        category-type="Financial Review Documents"
+                                        onfileuploaded={handleFinancialDocsUpload}>
+                                </c-ssf-file-upload>
+                            </div>
+                        </div>
+                    </template>
                 </div>
             </template>
 
@@ -40,27 +67,27 @@
                     <lightning-input name="email" value={restLead.email} label="Email" onchange={genericOnChange} type="email" required disabled={resumedApp}></lightning-input>
                 </div>
                 <div class="input-group half">
-                    <template if:true={resiApplicationType}>
-                        <lightning-input name="mobilePhone" value={restLead.mobilePhone}  label="Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
-                    </template>
+                    <lightning-input name="mobilePhone" value={restLead.mobilePhone}  label="Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
                 </div>
-                <template if:false={sameHomeAddress}>
-                    <div class="input-group half">
-                        <lightning-input name="streetAddress" class="slds-var-m-bottom_small" label="Street" onchange={genericOnChange} value={restLead.streetAddress} required></lightning-input>
-                    </div>
-                    <div class="input-group half">
-                        <lightning-input name="city" class="slds-var-m-bottom_small" label="City" onchange={genericOnChange} value={restLead.city} required></lightning-input>
-                    </div>
-                    <div class="input-group half">
-                        <lightning-combobox name="state" class="slds-var-m-bottom_small slds-col" label="State" onchange={genericOnChange} options={stateOptions} placeholder="" value={restLead.state} required></lightning-combobox>
-                    </div>
-                    <div class="input-group half">
-                        <lightning-input name="zipCode" class="slds-var-m-bottom_small" label="Zip" onchange={genericOnChange} value={restLead.zipCode} required></lightning-input>
+                <template if:true={isFico}>
+                    <template if:false={sameHomeAddress}>
+                        <div class="input-group half">
+                            <lightning-input name="streetAddress" class="slds-var-m-bottom_small" label="Street" onchange={genericOnChange} value={restLead.streetAddress} required></lightning-input>
+                        </div>
+                        <div class="input-group half">
+                            <lightning-input name="city" class="slds-var-m-bottom_small" label="City" onchange={genericOnChange} value={restLead.city} required></lightning-input>
+                        </div>
+                        <div class="input-group half">
+                            <lightning-combobox name="state" class="slds-var-m-bottom_small slds-col" label="State" onchange={genericOnChange} options={stateOptions} placeholder="" value={restLead.state} required></lightning-combobox>
+                        </div>
+                        <div class="input-group half">
+                            <lightning-input name="zipCode" class="slds-var-m-bottom_small" label="Zip" onchange={genericOnChange} value={restLead.zipCode} required></lightning-input>
+                        </div>
+                    </template>
+                    <div class="input-group slds-var-m-top_small">
+                        <lightning-input class="slds-var-p-left_medium" type="checkbox" label="My home address is the same as the property address on my utility account" checked={sameHomeAddress} onchange={homeAddressToggle}></lightning-input>
                     </div>
                 </template>
-                <div class="input-group">
-                    <lightning-input class="slds-var-p-left_medium" type="checkbox" label="My home address is the same as the property address on my utility account" checked={sameHomeAddress} onchange={homeAddressToggle}></lightning-input>
-                </div>
             </div>
 
             <h6>Billing Info<span class="blue-text">&nbsp;&gt;</span></h6>
@@ -170,7 +197,34 @@
                                     </div>
                                     <div class="input-group">
                                         <template if:true={it.value.showUpload}>
-                                            <c-ssf-file-upload required input-text="Upload a copy of your utility bill" data-row-index={it.index} onfileuploaded={handleUpload}></c-ssf-file-upload>
+                                            <c-ssf-file-upload 
+                                                    required 
+                                                    has-help-text
+                                                    input-text="Upload a copy of your utility bill"
+                                                    category-type="Customer Utility Bill"
+                                                    data-row-index={it.index} 
+                                                    onfileuploaded={handleUtilityBillUpload}>
+                                                <div class="tooltip_text">
+                                                    <p>Why do we need your utility bill?</p>
+                                                    <p class="small slds-var-m-bottom_small">We collect images of your bill in order to ensure you receive the appropriate amount of credits. The image of your bill just needs to be legible. Otherwise, we have no preference on format.</p>
+                                                    <p>How can you provide it?</p>
+                                                    <p class="small">You can obtain the image through the following methods:</p>
+                                                    <ul class="slds-list_dotted slds-var-m-bottom_small">
+                                                        <li><p class="small">If you have a hard copy of your bill, you can take a picture of or scan the pages and upload the resulting images</p></li>
+                                                        <li><p class="small">You can take a screenshot of your bill and upload the resulting images</p></li>
+                                                        <li><p class="small">Some utilities allow you to download a pdf of your bill from your account online</p></li>
+                                                        <li><p class="small">Maybe there’s something else we haven’t thought of!</p></li>
+                                                    </ul>
+                                                    <p>What does it need to include?</p>
+                                                    <p class="small">Please make sure the bill you provide:</p>
+                                                    <ul class="slds-list_dotted slds-var-m-bottom_small">
+                                                        <li><p class="small">Is dated within the past 90 days</p></li>
+                                                        <li><p class="small">Has no payments over 2 months past due</p></li>
+                                                        <li><p class="small">Includes all pages of the bill (you can upload as many as 5 individual pages)</p></li>
+                                                    </ul>
+                                                    <p class="small">Remember that we’re here to help through chat, email or phone if you need it.</p>
+                                                </div>
+                                            </c-ssf-file-upload>
                                         </template>
                                     </div>
                                     <div class="input-group">

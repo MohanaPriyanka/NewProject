@@ -25,13 +25,14 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track getBasicInfo;
     @track getAgreements;
     @track hasCapacity;
-    @track utilities;
     @track utilityOptions;
     @track zipCodeInput;
     @track leadJSON;
     @track selectedProduct;
     @track selectedUtility;
     @track zipCodeResponse;
+    @track partnerId;
+    @track underwritingOptions = [];
     @track resiApplicationType = true;
     @wire(CurrentPageReference) pageRef;
     loc = '';
@@ -49,6 +50,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         if(this.pageRef && this.pageRef.state) {
             if(this.pageRef.state.partnerId) {
                 this.resiApplicationType = false;
+                this.partnerId = this.pageRef.state.partnerId;
             }
             if(this.pageRef.state.leadid) {
                 this.getZip = false;
@@ -169,10 +171,28 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     }
 
     proceedWithSelectedUtility() {
+        this.showSpinner = true;
         this.selectedUtility = JSON.parse(this.selectedUtility);
-        this.showModal = false;
-        this.getZip = false;
-        this.getBasicInfo = true;
+        getZipCodeCapacity(this.zipCodeInput, this.partnerId, this.selectedUtility.utilityId).then(
+            (resolveResult) => {
+                console.log('resolveResult:');
+                console.log(resolveResult);
+                if(resolveResult.ficoUnderwriting) {
+                    this.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
+                }
+                if(resolveResult.finDocsUnderwriting) {
+                    this.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
+                }
+                this.selectedUtility = resolveResult.utilities[0];
+                this.showSpinner = false;
+                this.showModal = false;
+                this.getZip = false;
+                this.getBasicInfo = true;
+            },
+            (rejectResult) => {
+
+            }
+        );
     }
 
     checkForSubmit(event) {
@@ -192,11 +212,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     submitZip() {
         this.showSpinner = true;
         this.spinnerMessage = 'Checking for projects...';
-        let partnerId;
-        if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
-            partnerId = this.pageRef.state.partnerId;
-        }
-        getZipCodeCapacity(this.zipCodeInput, partnerId).then(
+        getZipCodeCapacity(this.zipCodeInput, this.partnerId, null).then(
             (resolveResult) => {
                 this.showSpinner = false;
                 this.zipCodeResponse = resolveResult;
@@ -205,6 +221,12 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     this.selectedProduct = this.zipCodeResponse.products[0];
                     
                     if(this.zipCodeResponse.utilities && this.zipCodeResponse.utilities.length === 1) {
+                        if(this.zipCodeResponse.ficoUnderwriting) {
+                            this.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
+                        }
+                        if(this.zipCodeResponse.finDocsUnderwriting) {
+                            this.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
+                        }
                         this.selectedUtility = this.zipCodeResponse.utilities[0];
                         this.showModal = false;
                         this.getZip = false;

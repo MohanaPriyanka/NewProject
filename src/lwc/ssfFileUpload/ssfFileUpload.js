@@ -1,5 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 import { loadStyle } from 'lightning/platformResourceLoader';
+import formFactorName from '@salesforce/client/formFactor';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 import getDummyRecordId from  '@salesforce/apex/SimpleSignupFormController.getDummyRecordId';
 import unlinkDocsFromDummy from '@salesforce/apex/SimpleSignupFormController.unlinkDocsFromDummyRecord';
@@ -10,10 +11,14 @@ export default class SsfFileUpload extends LightningElement {
     @api inputText;
     @api index;
     @api recordId;
+    @api categoryType;
+    @api hasHelpText;
 
     @track showSpinner = false;
     @track success = false;
     @track isError = false;
+    @track isUtilityBill;
+    @track isPhone;
     @track documents = [];
     @track fileName;
     @track fileUrl;
@@ -29,11 +34,9 @@ export default class SsfFileUpload extends LightningElement {
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+        this.isPhone = (formFactorName === 'Small');
         if(!this.inputText) {
             this.inputText = 'Please select a file for upload.';
-        }
-        if(!this.categoryType) {
-            this.categoryType = 'Customer Utility Bill';
         }
         if(!this.recordId) {
             getDummyRecordId({ })
@@ -49,6 +52,7 @@ export default class SsfFileUpload extends LightningElement {
                     });
                 })
         }
+        this.isUtilityBill = (this.categoryType === 'Customer Utility Bill');
     }
 
     handleUploadFinished(event) {
@@ -91,13 +95,5 @@ export default class SsfFileUpload extends LightningElement {
 
     toggleHelp() {
         this.helpTextVisible = !this.helpTextVisible;
-    }
-
-    get getHelpClass() {
-        var classes = 'slds-popover slds-popover_tooltip slds-nubbin_left-top slds-text-align_left ms-help-popup-in-header';
-        if(this.helpTextVisible) {
-            return classes;
-        }
-        return classes + ' slds-hide';
     }
 }

@@ -16,16 +16,20 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api selectedUtility;
     @api resiApplicationType;
     @api selectedProduct;
+    @api underwritingOptions;
 
     @track restLead;
     @track propertyAccount;
-    @track showSpinner;
+    @track showSpinner = false;
     @track spinnerMessage;
     @track sameBillingAddress = true;
     @track sameHomeAddress = true;
     @track utilityAccountSection;
     @track stateOptions;
     @track isFileUpload;
+    @track isFico;
+    @track showUnderwritingOptions = false;
+    @track showAddress;
     utilityId; 
     utilityAccountCount = 0;
     resumedApp = false;
@@ -68,12 +72,31 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 applicationType: this.resiApplicationType ? 'Residential' : 'Non-Residential',
                 zipCode: this.zipinput,
                 productName: this.selectedProduct,
-                utilityId: this.utilityId
+                utilityId: this.utilityId,
+                financialDocs: []
             }
             this.propertyAccount = { 
                 billingPostalCode: this.resiApplicationType ? '' : this.zipinput, 
                 utilityAccountLogs: [] 
             };
+        }
+        
+        if(this.resiApplicationType) { 
+            this.showUnderwritingOptions = false;
+            this.isFico = true;
+            this.restLead.underwritingCriteria = 'FICO';
+        } else {
+            if(!this.underwritingOptions || this.underwritingOptions.length === 0) {
+                this.showUnderwritingOptions = false;
+                this.isFico = true;
+                this.restLead.underwritingCriteria = 'FICO';
+            } else if (this.underwritingOptions.length === 1) {
+                this.showUnderwritingOptions = false;
+                this.isFico = (this.underwritingOptions[0].value === 'FICO');
+                this.restLead.underwritingCriteria = this.underwritingOptions[0].value;
+            } else {
+                this.showUnderwritingOptions = true;
+            }
         }
 
         if(!this.restLead.partnerId) {
@@ -115,7 +138,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.restLead.businessPhone = 1231231234;
         }
         this.propertyAccount.utilityAccountLogs[0].utilityAccountNumber = '123';
-        this.propertyAccount.utilityAccountLogs[0].nameOnAccount = 'Peter testcase';
+        this.propertyAccount.utilityAccountLogs[0].nameOnAccount = 'Peter Testcase';
         this.propertyAccount.utilityAccountLogs[0].serviceStreet = '123 Main';
         this.propertyAccount.utilityAccountLogs[0].serviceState = 'MA';
         this.propertyAccount.utilityAccountLogs[0].serviceCity = 'Boston';
@@ -126,6 +149,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     // handle changes in form entries
     genericOnChange(event) {
         this.restLead[event.target.name] = event.target.value;
+
+        if(event.target.name === 'underwritingCriteria') {
+            this.isFico = (this.restLead.underwritingCriteria === 'FICO');
+        }
     }
 
     phoneOnChange(event) {
@@ -210,7 +237,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             inputCmp.reportValidity();
             return validSoFar && inputCmp.checkValidity();
         }, true);
-      
         if(this.isFileUpload) {
             this.propertyAccount.utilityAccountLogs.forEach(ual => {
                 if(!ual.utilityBills || ual.utilityBills.length === 0) {
@@ -264,7 +290,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         window.setTimeout(() => {
             this.spinnerMessage = 'We\'ll generate documents next.\r\nThis may take a minute, please stand by.';
         }, 6000);
-
+        
         if(!this.resumedApp) {
             this.createLead(this.restLead).then(
                 (resolveResult) => {
@@ -331,12 +357,21 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.dispatchEvent(evt);
     }
 
-    handleUpload(event) {
+    handleUtilityBillUpload(event) {
         let files = event.detail;
         let index = event.target.dataset.rowIndex;
         let ual = this.propertyAccount.utilityAccountLogs[index];
         files.forEach(file => {
             ual.utilityBills.push({
+                id: file
+            }); 
+        });
+    }
+
+    handleFinancialDocsUpload(event) {
+        let files = event.detail;
+        files.forEach(file => {
+            this.restLead.financialDocs.push({
                 id: file
             }); 
         });

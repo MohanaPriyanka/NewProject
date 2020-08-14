@@ -490,7 +490,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     private static void testPerformZipCheck() {
         useMocks();
         RestContext.response = new RestResponse();
-        controller.performZipCheck('12345', '');
+        controller.performZipCheck('12345', '', '');
         Boolean caughtException = false;
         try {
             RESTController.ResponseEnvelope envelope =
@@ -832,17 +832,24 @@ public with sharing class CSLeadsRESTControllerV2Test {
         );
         insert websiteLead;
 
-        ContentVersion contentVersion = new ContentVersion(
+        ContentVersion cvUtilBill = new ContentVersion(
             ContentLocation = 'S',
             VersionData = EncodingUtil.base64Decode('utility bill'),
             Title = 'UtilityBill.pdf',
             PathOnClient = '/UtilityBill.pdf'
         );
-        insert contentVersion;
+        ContentVersion cvFinDoc = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('financial document'),
+            Title = 'FinancialDocument.pdf',
+            PathOnClient = '/FinancialDocument.pdf'
+        );
+        insert new List<ContentVersion>{cvUtilBill, cvFinDoc};
         ContentDocumentSelector cds = new ContentDocumentSelector();
-        Id contentDocId = cds.getDocumentIdFromVersionId(contentVersion.Id);
+        Id contentDocIdUtil = cds.getDocumentIdFromVersionId(cvUtilBill.Id);
+        Id contentDocIdFin = cds.getDocumentIdFromVersionId(cvFinDoc.Id);
 
-        String jsonRequest = getPostLeadJson(contentDocId);
+        String jsonRequest = getPostLeadJson(contentDocIdFin, contentDocIdUtil);
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
         req.httpMethod = 'POST';
@@ -903,16 +910,29 @@ public with sharing class CSLeadsRESTControllerV2Test {
         // verify utilityBill response fields
         List<Object> responseUtilityBills = (List<Object>) responseUtilityAccountLog.get('utilityBills');
         Map<String, Object> responseUtilityBill = (Map<String, Object>) responseUtilityBills[0];
-        System.assertEquals(contentDocId, responseUtilityBill.get('id'), 'The request should have returned a valid content document ID for utility bill');
-        System.assertEquals(contentVersion.Id, responseUtilityBill.get('lastPublishedVersionId'), 'The request should have returned a valid content version ID for utility bill');
+        System.assertEquals(contentDocIdUtil, responseUtilityBill.get('id'), 'The request should have returned a valid content document ID for utility bill');
+        System.assertEquals(responseUtilityAccountLog.get('id'), responseUtilityBill.get('parentId'), 'The request should have returned a valid utility account log ID as the parent of this utility bill');
+        System.assertEquals(cvUtilBill.Id, responseUtilityBill.get('lastPublishedVersionId'), 'The request should have returned a valid content version ID for utility bill');
         System.assertEquals('UtilityBill.pdf', responseUtilityBill.get('title'), 'The request should have returned a valid content version ID for utility bill');
         System.assertNotEquals(null, responseUtilityBill.get('docLinkId'), 'The request should have returned a valid content document link ID for utility bill');
         System.assertNotEquals(null, responseUtilityBill.get('body'), 'The request should have returned a valid content document link ID for utility bill');
         System.assertNotEquals(null, responseUtilityBill.get('size'), 'The request should have returned a valid content document link ID for utility bill');
         System.assertNotEquals(null, responseUtilityBill.get('createdDate'), 'The request should have returned a valid content document link ID for utility bill');
+
+        // verify financialDocs response fields
+        List<Object> responseFinancialDocs = (List<Object>) responseLead.get('financialDocs');
+        Map<String, Object> responseFinancialDoc = (Map<String, Object>) responseFinancialDocs[0];
+        System.assertEquals(contentDocIdFin, responseFinancialDoc.get('id'), 'The request should have returned a valid content document ID for financial document');
+        System.assertEquals([SELECT Id FROM Financial_Underwriting_Document__c LIMIT 1].Id, responseFinancialDoc.get('parentId'), 'The request should have returned a valid financial underwriting document ID as the parent of this financial document');
+        System.assertEquals(cvFinDoc.Id, responseFinancialDoc.get('lastPublishedVersionId'), 'The request should have returned a valid content version ID for financial document');
+        System.assertEquals('FinancialDocument.pdf', responseFinancialDoc.get('title'), 'The request should have returned a valid content version ID for financial document');
+        System.assertNotEquals(null, responseFinancialDoc.get('docLinkId'), 'The request should have returned a valid content document link ID for financial document');
+        System.assertNotEquals(null, responseFinancialDoc.get('body'), 'The request should have returned a valid content document link ID for financial document');
+        System.assertNotEquals(null, responseFinancialDoc.get('size'), 'The request should have returned a valid content document link ID for financial document');
+        System.assertNotEquals(null, responseFinancialDoc.get('createdDate'), 'The request should have returned a valid content document link ID for financial document');
     }
 
-    private static String getPostLeadJson(Id contentDocId) {
+    private static String getPostLeadJson(Id finDocId, Id utilBillDocId) {
         return '{' +
             '"firstName": "System",' +
             '"lastName": "Testcase",' +
@@ -926,6 +946,9 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"eiaId": "1234",' +
             '"productName": "CS Product",' +
             '"campaignId": "0005500000",' +
+            '"financialDocs": [{' +
+            '   "id": "' + finDocId + '"' +
+            ' }],' +
             '"propertyAccounts": [{' +
             '   "billingStreet": "Test billing street",' +
             '   "billingCity": "Test billing city",' +
@@ -939,7 +962,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '       "servicePostalCode": "14472",' +
             '       "utilityAccountNumber": "555555",' +
             '       "utilityBills": [{' +
-            '           "id": "' + contentDocId + '"' +
+            '           "id": "' + utilBillDocId + '"' +
             '       }]' +
             '   }]' +
             '}]}';

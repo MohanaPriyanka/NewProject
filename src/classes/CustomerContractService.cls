@@ -3,6 +3,7 @@
  * Description: Service for the Contract object
  * Test: CustomerContractServiceTest
  */
+
  public without sharing class CustomerContractService {
     LeadSelector leadSelector = new LeadSelector();
     CustomerContractSelector customerContractSelector = new CustomerContractSelector();
@@ -14,49 +15,60 @@
         if(lead == null || lead.Accounts__r == null || lead.Accounts__r.isEmpty()) {
             throw new Util.BWException('Invalid lead; please make sure you have provided a valid lead ID and that the lead has at least one associated property account');
         }
+
+        Contract contract = setContractFields(lead);
+        contract.AccountId = lead.Accounts__r[0].Id;
+        
+        Boolean success = Util.insertAndLog(new List<sObject>{contract}, 'CustomerContractService', 'createContractFromLead');
+        if(success) {
+            return customerContractSelector.selectOne(contract.Id);
+        }
+
+        return null;
+    }
+
+
+    public Contract setContractFields(Lead lead) {
         Contract contract = new Contract();
         contract.Lead__c = lead.Id;
         contract.Product__c = lead.Product__c;
-
         contract.RecordTypeId = RECORD_TYPE_ID;
-
-        contract.AccountId = lead.Accounts__r[0].Id;
         contract.Generate_Review_Version__c = true;
+        
         if(lead.Product__r.Generic_Terms_Conga_Template__c != null) {
             contract.Contract_Type__c = 'Generic';
         } else {
             contract.Contract_Type__c = 'Project Specific';
         }
-        Database.SaveResult sr = database.insert(contract, false);
-        if(!sr.isSuccess()) {
-            for (Database.Error err : sr.getErrors()) {
-                Logger.logLater('CustomerContractService', 'createContractFromLead',
-                    'Database error ' + err.getStatusCode() + ': ' + err.getMessage() + ' on ' + err.getFields());
-            }
-            Logger.flushLogs();
-        } else {
-            return customerContractSelector.selectOne(sr.getId());
-        }
-        return null;
+
+        return contract;
     }
+
+
     public void regenerateDocuments(Id leadId) {
         List<Contract> contracts = customerContractSelector.selectByRelatedLead(leadId);
         for(Contract c : contracts) {
             c.Generate_Review_Version__c = true;
         }
-        Util.updateAndLog(contracts, 'SimpleSignupFormController', 'regenerateDocuments');
+        
+        Util.updateAndLog(contracts, 'CustomerContractService', 'regenerateDocuments');
     }
+
+
     public Boolean signCustomerContracts(Id leadId) {
         List<Contract> contracts = customerContractSelector.selectByRelatedLead(leadId);
         if(contracts == null || contracts.isEmpty()) {
             throw new Util.BWException('There are no existing contracts associated with lead id ' + leadId);
         }
+        
         for(Contract c : contracts) {
             c.Customer_Signature_Date_Time__c = Datetime.now();
             c.Generate_Signed_Version__c = true;
         }
+        
         return Util.updateAndLog(contracts, 'SimpleSignupFormController', 'signCustomerContracts');
     }
+
 
     public static Contract createForOpportunity(Opportunity opp, Contract parentContract) {
         return new Contract(
@@ -69,5 +81,4 @@
             Customer_Signature_Date_Time__c = parentContract.Customer_Signature_Date_Time__c
         );
     }
-
 }

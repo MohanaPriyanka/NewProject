@@ -108,7 +108,9 @@ public with sharing class CapacityServiceTest {
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'ACE Solar',
             Product__c = srecProduct.Id,
-            Maximum_Subscription_Capacity_kWDC__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Available_SMB_Underwriting_Method_FICO__c = true,
+            Available_SMB_Underwriting_Method_Docs__c = true);
 
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
             Service_Territory__c = 'NEMA',
@@ -125,7 +127,9 @@ public with sharing class CapacityServiceTest {
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'BlueWave Inside Sales',
             Product__c = srecProduct.Id,
-            Maximum_Subscription_Capacity_kWDC__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Available_SMB_Underwriting_Method_FICO__c = true,
+            Available_SMB_Underwriting_Method_Docs__c = false);
 
         Shared_Solar_System__c sss3 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
             Service_Territory__c = 'NEMA',
@@ -142,7 +146,9 @@ public with sharing class CapacityServiceTest {
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'BlueWave Inside Sales',
             Product__c = smartProduct.Id,
-            Maximum_Subscription_Capacity_kWDC__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Available_SMB_Underwriting_Method_FICO__c = false,
+            Available_SMB_Underwriting_Method_Docs__c = true);
 
         Shared_Solar_System__c sss4 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
             Service_Territory__c = 'NEMA',
@@ -159,7 +165,9 @@ public with sharing class CapacityServiceTest {
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'All',
             Product__c = smartProduct.Id,
-            Maximum_Subscription_Capacity_kWDC__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Available_SMB_Underwriting_Method_FICO__c = false,
+            Available_SMB_Underwriting_Method_Docs__c = false);
 
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4};
 
