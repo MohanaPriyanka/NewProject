@@ -9,8 +9,12 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     private static SubscriptionOrderSelector subscripOrderSelector = new SubscriptionOrderSelector();
     @TestVisible
     private static FeatureService featureService = new FeatureService();
+    private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+        new List<SObjectType>{Shared_Solar_System__c.SObjectType}
+    );
     public void execute(SchedulableContext sch) {
         Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
+        uow.registerWork(new Logger());
         updateSSS();
         Util.enableTrigger('Disable_SharedSolarSystemTrigger__c');
     }
@@ -33,22 +37,11 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         }
     }
     public void updateSSS() {
-        sssSelector = new SharedSolarSystemsSelector();
-        Map<Id, Shared_Solar_System__c> oldSSSMap = new Map<Id, Shared_Solar_System__c>();
-        List<Shared_Solar_System__c> newSSSList = sssSelector.getAllSSSes();
-        List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
-        for (Shared_Solar_System__c oldSSS : sssSelector.getAllSSSes()){
-            oldSSSMap.put(oldSSS.Id, oldSSS);
-        }
-        summarizeCapacity(newSSSList);
-        for (Shared_Solar_System__c newSSS : newSSSList){
-            if (newSSS.Reserved_capacity_kW_DC__c != oldSSSMap.get(newSSS.Id).Reserved_capacity_kW_DC__c ||
-                newSSS.Capacity_committed_kW_DC__c != oldSSSMap.get(newSSS.Id).Capacity_committed_kW_DC__c ||
-                newSSS.Anchor_capacity_reserved__c != oldSSSMap.get(newSSS.Id).Anchor_capacity_reserved__c){
-                sssToUpdateList.add(newSSS);
-            }
-        }
-        update sssToUpdateList;
+        List<Shared_Solar_System__c> allSSSes = sssSelector.getAllSSSes();
+        SharedSolarSystems systems = new SharedSolarSystems(allSSSes);
+        summarizeCapacity(allSSSes, uow);
+        systems.updateManagementRevenueStartDate(uow);
+        uow.commitWork();
     }
     public void uncheckApexContext(List<Shared_Solar_System__c> sssList) {
         List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
@@ -62,7 +55,11 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         }
         update sssToUpdateList;
     }
-    public void summarizeCapacity(List<Shared_Solar_System__c> sssList){
+    public void summarizeCapacityBeforeUpdate(List<Shared_Solar_System__c> sssList) {
+        summarizeCapacity(sssList, uow);
+        // Don't uow.commitWork() because this is intended to be called from beforeUpdate
+    }
+    private void summarizeCapacity(List<Shared_Solar_System__c> sssList, fflib_SObjectUnitOfWork uow) {
         uasSelector = new UASSelector();
         List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
         List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
@@ -88,16 +85,42 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             reservedCapacity = getCapacitySumOfUASList(reservedCapacityList,sss.Id);
             committedCapacity = getCapacitySumOfUASList(committedCapacityList,sss.Id);
             anchorCapacity = getCapacitySumOfUASList(anchorCapacityList,sss.Id);
-            sss.Reserved_capacity_kW_DC__c = String.valueOf(reservedCapacity);
-            sss.Capacity_committed_kW_DC__c = committedCapacity;
-            if (anchorCapacity == 0 && sss.Stage__c != 'Management') {
-                sss.Anchor_capacity_reserved__c = sss.Reserved_Anchor_Capacity__c;
-            } else {
-                sss.Anchor_capacity_reserved__c = anchorCapacity;
+
+            registerCapacityChanges(sss, uow, reservedCapacity, committedCapacity, anchorCapacity);
+        }
+    }
+
+    private void registerCapacityChanges(Shared_Solar_System__c sss, fflib_SObjectUnitOfWork uow,
+        Decimal reservedCapacity, Decimal committedCapacity, Decimal anchorCapacity) {
+        if (sss.Reserved_Capacity_kW_DC__c != String.valueOf(reservedCapacity)) {
+            sss.Reserved_Capacity_kW_DC__c = String.valueOf(reservedCapacity);
+            uow.registerDirty(sss, new List<SObjectField>{
+                Shared_Solar_System__c.Reserved_Capacity_kW_DC__c
+            });
+        }
+        if (sss.Capacity_Committed_kW_DC__c != committedCapacity) {
+            sss.Capacity_Committed_kW_DC__c = committedCapacity;
+            uow.registerDirty(sss, new List<SObjectField>{
+                Shared_Solar_System__c.Capacity_Committed_kW_DC__c
+            });
+        }
+        if (anchorCapacity == 0 && sss.Stage__c != 'Management') {
+            if (sss.Anchor_Capacity_Reserved__c != sss.Reserved_Anchor_Capacity__c) {
+                sss.Anchor_Capacity_Reserved__c = sss.Reserved_Anchor_Capacity__c;
+                uow.registerDirty(sss, new List<SObjectField>{
+                    Shared_Solar_System__c.Anchor_Capacity_Reserved__c
+                });
+            }
+        } else {
+            if (sss.Anchor_Capacity_Reserved__c != anchorCapacity) {
+                sss.Anchor_Capacity_Reserved__c = anchorCapacity;
+                uow.registerDirty(sss, new List<SObjectField>{
+                    Shared_Solar_System__c.Anchor_Capacity_Reserved__c
+                });
             }
         }
     }
-    private Decimal getCapacitySumOfUASList(List<Utility_Account_Subscription__c> uasList, Id sssId){
+    private Decimal getCapacitySumOfUASList(List<Utility_Account_Subscription__c> uasList, Id sssId) {
         Decimal summarizedCapacity = 0;
         Boolean subscriptionOrderFeature = featureService.isEnabled('Subscription_Orders');
         if (uasList.size() == 0) {
