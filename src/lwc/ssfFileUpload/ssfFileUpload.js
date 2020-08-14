@@ -33,6 +33,7 @@ export default class SsfFileUpload extends LightningElement {
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+
         this.isPhone = (formFactorName === 'Small');
         if(!this.inputText) {
             this.inputText = 'Please select a file for upload.';
@@ -85,10 +86,6 @@ export default class SsfFileUpload extends LightningElement {
     @api
     removeError() {
         this.isError = false;
-    }
-
-    showHelp() {
-        this.helpTextVisible = true;
     }
 
     hideHelp() {

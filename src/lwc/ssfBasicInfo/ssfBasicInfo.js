@@ -243,10 +243,25 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 if(!ual.utilityBills || ual.utilityBills.length === 0) {
                     allValid = false;
                     this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
-                        if(element.index === ual.index) {
+                        console.log('element category: ' + element.categoryType);
+                        console.log('element category === \'Customer Utility Bill\': ' + (element.categoryType === 'Customer Utility Bill'));
+                        console.log('element index: ' + element.index);
+                        console.log('ual index: ' + ual.index);
+                        console.log('element index === ual index: ' + (element.index === ual.index));
+                        if(element.categoryType === 'Customer Utility Bill' && element.index === ual.index) {
                             element.addError();
                         }
                     });
+                }
+            });
+        }
+        if(!this.resiApplicationType && !this.isFico && (!this.restLead.financialDocs || this.restLead.financialDocs.length ===0)) {
+            console.log('missing fin docs');
+            this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
+                if(element.categoryType === 'Financial Review Documents') {
+                    console.log('element');
+                    console.log(element);
+                    element.addError();
                 }
             });
         }
