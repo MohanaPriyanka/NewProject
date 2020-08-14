@@ -19,7 +19,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         public SSSSubscription(Shared_Solar_System__c sss) {
             this.sss = sss;
             this.sizingMethod = sss.Product__r.Sizing_Method__c;
-            this.maximumkWh = SharedSolarSystems.calculateMaximumkWh(sss, null);
+            this.maximumkWh = SharedSolarSystems.calculateMaximumkWh(sss);
             this.maximumCost = sss.Maximum_Subscription_Cost__c;
         }
     }
@@ -62,21 +62,24 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         } else {
             remainingUALCapacityToAllocate = ual.Proposed_kWh__c;
         }
-
         for (Opportunity opp : opportunities) {
             if (sssSubscriptionMap.containsKey((opp.Shared_Solar_System__c))) {
                 SSSSubscription sssSubscription = sssSubscriptionMap.get(opp.Shared_Solar_System__c);
-                Decimal sssRemainingSubscriptionCapacity = sssSubscription.maximumkWh;
+                Decimal sizeRatio = 1.0;
 
-                if (featureService.isEnabled('Sizing_Method') && sssSubscription.sizingMethod == 'Rate Class Ratio') {
-                    sssRemainingSubscriptionCapacity = SharedSolarSystems.calculateMaximumkWh(sssSubscription.sss, ual);
+                Decimal sssRemainingSubscriptionCapacity = sssSubscription.maximumkWh;
+                if (featureService.isEnabled('Sizing_Method') && sssSubscription.sizingMethod == 'Rate Class Ratio' && ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c != null ) {
+                    sizeRatio = ual.Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c;
+                    sssRemainingSubscriptionCapacity = (sssRemainingSubscriptionCapacity/sizeRatio).setScale(2, RoundingMode.HALF_DOWN);
                 }
                 Decimal annualElectricityCapacityAssigned = Math.min(remainingUALCapacityToAllocate, sssRemainingSubscriptionCapacity);
                 if (annualElectricityCapacityAssigned > 0) {
                     //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
                     sssRemainingSubscriptionCapacity -= annualElectricityCapacityAssigned;
+                    if (featureService.isEnabled('Sizing_Method') && sssSubscription.sizingMethod == 'Rate Class Ratio') {
+                        sssSubscription.maximumkWh = sssRemainingSubscriptionCapacity*sizeratio;
+                    }
                     sssSubscription.maximumkWh = sssRemainingSubscriptionCapacity;
-
                     remainingUALCapacityToAllocate -= annualElectricityCapacityAssigned;
                     Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
                         Name = ual.Name,
