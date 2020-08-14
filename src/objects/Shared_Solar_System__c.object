@@ -1137,8 +1137,9 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     </fields>
     <fields>
         <fullName>Management_Revenue_Start_Date__c</fullName>
+        <description>Previously entered/updated by Accounting, but automated with W-019836</description>
         <externalId>false</externalId>
-        <inlineHelpText>Accounting managed field for estimating project revenue. Manually entered/updated by Accounting.</inlineHelpText>
+        <inlineHelpText>Accounting managed field for estimating project revenue, set daily based on the Client Management Contract&apos;s &quot;Contract Fee Detail&quot; and associated date fields.</inlineHelpText>
         <label>Management Revenue Start Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
