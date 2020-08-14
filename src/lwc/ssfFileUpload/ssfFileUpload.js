@@ -13,6 +13,7 @@ export default class SsfFileUpload extends LightningElement {
     @api recordId;
     @api categoryType;
     @api hasHelpText;
+    @api acceptedFileTypes;
 
     @track showSpinner = false;
     @track success = false;
@@ -24,9 +25,7 @@ export default class SsfFileUpload extends LightningElement {
     @track fileUrl;
     @track helpTextVisible = false;
     
-    acceptedFileTypes = ['.png', '.jpg', '.jpeg', '.pdf'];
-
-
+    
     // a dummy record for the file upload is necessary for cases when the record to which the file should be attached
     // has not yet been created, and the relevant operations are taking place in the context of a site guest user.
     // many other methods of achieving this upload were attempted (including a custom file upload component),
@@ -37,6 +36,9 @@ export default class SsfFileUpload extends LightningElement {
         this.isPhone = (formFactorName === 'Small');
         if(!this.inputText) {
             this.inputText = 'Please select a file for upload.';
+        }
+        if(!this.acceptedFileTypes) {
+            this.acceptedFileTypes = ['.png', '.jpg', '.jpeg', '.pdf'];
         }
         if(!this.recordId) {
             getDummyRecordId({ })
@@ -95,5 +97,15 @@ export default class SsfFileUpload extends LightningElement {
 
     toggleHelp() {
         this.helpTextVisible = !this.helpTextVisible;
+    }
+
+    get tooltipClasses() {
+        let css = 'tooltip';
+        if(this.isUtilityBill) {
+            css += ' tooltip__utility';
+        } else {
+            css += ' tooltip__general';
+        }
+        return css;
     }
 }

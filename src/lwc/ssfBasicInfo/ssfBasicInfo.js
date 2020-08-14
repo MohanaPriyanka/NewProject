@@ -33,6 +33,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     utilityId; 
     utilityAccountCount = 0;
     resumedApp = false;
+    finDocFileTypes = ['.png', '.jpg', '.jpeg', '.pdf', '.zip'];
     @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {

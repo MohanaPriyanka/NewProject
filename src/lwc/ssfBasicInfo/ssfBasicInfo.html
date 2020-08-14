@@ -39,19 +39,6 @@
                             </lightning-combobox>
                         </template>
                     </div>
-                    <template if:false={isFico}>
-                        <div class="input-group half"></div>
-                        <div class="input-group half">
-                            <div class="slds-var-m-left_small slds-var-m-right_small">
-                                <c-ssf-file-upload 
-                                        required
-                                        input-text="Upload Financial Documents"
-                                        category-type="Financial Review Documents"
-                                        onfileuploaded={handleFinancialDocsUpload}>
-                                </c-ssf-file-upload>
-                            </div>
-                        </div>
-                    </template>
                 </div>
             </template>
 
@@ -195,7 +182,7 @@
                                                         required>
                                         </lightning-input>
                                     </div>
-                                    <div class="input-group">
+                                    <div class="input-group half">
                                         <template if:true={it.value.showUpload}>
                                             <c-ssf-file-upload 
                                                     required 
@@ -204,7 +191,7 @@
                                                     category-type="Customer Utility Bill"
                                                     data-row-index={it.index} 
                                                     onfileuploaded={handleUtilityBillUpload}>
-                                                <div class="tooltip_text">
+                                                <div>
                                                     <p>Why do we need your utility bill?</p>
                                                     <p class="small slds-var-m-bottom_small">We collect images of your bill in order to ensure you receive the appropriate amount of credits. The image of your bill just needs to be legible. Otherwise, we have no preference on format.</p>
                                                     <p>How can you provide it?</p>
@@ -227,6 +214,23 @@
                                             </c-ssf-file-upload>
                                         </template>
                                     </div>
+                                    <template if:true={it.last}>
+                                        <template if:false={isFico}>
+                                            <div class="input-group half">
+                                                <template if:false={isFico}>
+                                                    <c-ssf-file-upload 
+                                                            required
+                                                            has-help-text
+                                                            input-text="Upload Financial Documents"
+                                                            category-type="Financial Review Documents"
+                                                            accepted-file-types={finDocFileTypes}
+                                                            onfileuploaded={handleFinancialDocsUpload}>
+                                                            <p>Please provide three years of full company financial records.</p>
+                                                    </c-ssf-file-upload>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </template>
                                     <div class="input-group">
                                         <template if:true={it.last}>
                                             <div class="combo-button" title="Add another Utility Account" onclick={addAnotherUtilityAccount}>
