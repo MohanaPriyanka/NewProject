@@ -156,4 +156,28 @@ public class UASBSelectorTest {
 
         System.assertEquals(2,uasbList.size());
     }
+
+    @IsTest
+    public static void testDeleteUASBs() {
+
+        List<Utility_Account_Subscription__c> uasList = [
+                SELECT Id, Opportunity__r.AccountId
+                FROM Utility_Account_Subscription__c
+        ];
+
+        UASB__c uasb = new UASB__c(
+                Account__c = uasList[0].Opportunity__r.AccountId,
+                Externally_Serviced__c = true,
+                Zuora_Id__c = 'aaa1230002',
+                Utility_Account_Subscription__c = uasList[0].Id
+        );
+        insert uasb;
+        Util.enableTrigger('Disable_UASBTrigger__c');
+
+        try {
+            delete uasb;
+            System.assert(false, 'Expected delete of UASB to throw an error - UASB cannot be deleted when Zuora_Id is populated');
+        } catch (Exception e) {
+        }
+    }
 }
