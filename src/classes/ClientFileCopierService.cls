@@ -22,23 +22,27 @@ public without sharing class ClientFileCopierService {
     private static final String DISCLOSURE = 'Customer Disclosure Form';
     private static final String CREDIT_REPORT = 'Customer Credit Report';
 
-    private String checkInputType(String typeAsString){
-        if (typeAsString != CUSTOMER_AGREEMENT || typeAsString != DISCLOSURE || typeAsString != CREDIT_REPORT){
+    private void checkInputType(String typeAsString){
+        if (typeAsString != CUSTOMER_AGREEMENT && typeAsString != DISCLOSURE && typeAsString != CREDIT_REPORT){
             throw new Util.BWException('Unsupported Document Type: ' + typeAsString);
         }
-        return typeAsString;
     }
+
 
     @InvocableMethod(
         Label='InvocableClientFileCopier'
         Description='Takes list of 2 strings as parameters: AssignmentAgreementId and String ("Customer Agreement", "Customer Disclosure Form", or "Customer Credit Report")'
     )
-    public static List<Id> invocableFindAndCloneDocuments (List<List<String>> parameters){
+    public static List<Id> invocableFindAndCloneDocuments (List<CloneInputs> parameters){
         ClientFileCopierService service = new ClientFileCopierService();
-        String fileType = service.checkInputType(parameters[0][1]);
-        Id batchJobId = service.findAndCloneDocuments((Id)parameters[0][0],fileType);
+        String contractId = parameters[0].contractId;
+        String fileType = parameters[0].documentType;
+        service.checkInputType(fileType);
+        Id batchJobId = service.findAndCloneDocuments((Id) contractId, fileType);
         return new List<Id>{batchJobId};
     }
+
+
 
     public Id findAndCloneDocuments(Id assignmentAgreementId, String docType){
         Id folderId = createSupportingDocumentsFolder(assignmentAgreementId, docType);
@@ -187,5 +191,14 @@ public without sharing class ClientFileCopierService {
             cdl.ContentDocumentId = content.ContentDocumentId;
             uow.registerNew(cdl);
         }
+    }
+    
+    public class CloneInputs {
+        @InvocableVariable
+        public Id contractId;
+
+        @InvocableVariable(Description='"Customer Agreement", "Customer Disclosure Form", or "Customer Credit Report"')
+        public String documentType;
+        
     }
 }
