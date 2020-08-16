@@ -914,10 +914,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(responseUtilityAccountLog.get('id'), responseUtilityBill.get('parentId'), 'The request should have returned a valid utility account log ID as the parent of this utility bill');
         System.assertEquals(cvUtilBill.Id, responseUtilityBill.get('lastPublishedVersionId'), 'The request should have returned a valid content version ID for utility bill');
         System.assertEquals('UtilityBill.pdf', responseUtilityBill.get('title'), 'The request should have returned a valid content version ID for utility bill');
-        System.assertNotEquals(null, responseUtilityBill.get('docLinkId'), 'The request should have returned a valid content document link ID for utility bill');
-        System.assertNotEquals(null, responseUtilityBill.get('body'), 'The request should have returned a valid content document link ID for utility bill');
-        System.assertNotEquals(null, responseUtilityBill.get('size'), 'The request should have returned a valid content document link ID for utility bill');
-        System.assertNotEquals(null, responseUtilityBill.get('createdDate'), 'The request should have returned a valid content document link ID for utility bill');
+        assertContentDocs(responseUtilityBill);
 
         // verify financialDocs response fields
         List<Object> responseFinancialDocs = (List<Object>) responseLead.get('financialDocs');
@@ -926,10 +923,15 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals([SELECT Id FROM Financial_Underwriting_Document__c LIMIT 1].Id, responseFinancialDoc.get('parentId'), 'The request should have returned a valid financial underwriting document ID as the parent of this financial document');
         System.assertEquals(cvFinDoc.Id, responseFinancialDoc.get('lastPublishedVersionId'), 'The request should have returned a valid content version ID for financial document');
         System.assertEquals('FinancialDocument.pdf', responseFinancialDoc.get('title'), 'The request should have returned a valid content version ID for financial document');
-        System.assertNotEquals(null, responseFinancialDoc.get('docLinkId'), 'The request should have returned a valid content document link ID for financial document');
-        System.assertNotEquals(null, responseFinancialDoc.get('body'), 'The request should have returned a valid content document link ID for financial document');
-        System.assertNotEquals(null, responseFinancialDoc.get('size'), 'The request should have returned a valid content document link ID for financial document');
-        System.assertNotEquals(null, responseFinancialDoc.get('createdDate'), 'The request should have returned a valid content document link ID for financial document');
+        assertContentDocs(responseUtilityBill);
+    }
+
+
+    private static void assertContentDocs(Map<String, Object> doc) {
+        System.assertNotEquals(null, doc.get('docLinkId'), 'The request should have returned a valid content document link ID');
+        System.assertNotEquals(null, doc.get('body'), 'The request should have returned a valid body');
+        System.assertNotEquals(null, doc.get('size'), 'The request should have returned a valid size');
+        System.assertNotEquals(null, doc.get('createdDate'), 'The request should have returned a valid created date');
     }
 
     private static String getPostLeadJson(Id finDocId, Id utilBillDocId) {
