@@ -69,6 +69,17 @@
     <fields>
         <fullName>UnitPrice</fullName>
     </fields>
+    <fields>
+        <fullName>Utility__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Utility</label>
+        <referenceTo>Utility__c</referenceTo>
+        <relationshipLabel>Opportunity Product</relationshipLabel>
+        <relationshipName>Opportunity_Product</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
     <webLinks>
         <fullName>rcsfl__Send_SMS</fullName>
         <availability>online</availability>
