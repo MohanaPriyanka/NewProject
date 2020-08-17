@@ -8,7 +8,7 @@ public without sharing class ProductionToBillService implements Queueable, Datab
     @TestVisible
     private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
 
-    public enum OperationType {BILL, PAYMENT, CREDITMEMO, UNSERVICED_BILL, UNSERVICED_ADJUST}
+    public enum OperationType {BILL, PAYMENT, CREDITMEMO, DEBITMEMO, UNSERVICED_BILL, UNSERVICED_ADJUST}
     public OperationType opType;
     public Integer batchSize;
 
@@ -32,6 +32,8 @@ public without sharing class ProductionToBillService implements Queueable, Datab
             executeUnservicedBillJob();
         } else if (opType == OperationType.UNSERVICED_ADJUST){
             executeUnservicedAdjustJob();
+        } else if (opType == OperationType.DEBITMEMO) {
+            executeDebitMemoJob();
         }
     }
 
@@ -141,10 +143,37 @@ public without sharing class ProductionToBillService implements Queueable, Datab
             }
             if (externallyServicedAdjusts.size() == batchSize){
                 queueJob(OperationType.UNSERVICED_ADJUST);
+            } else {
+                queueJob(OperationType.DEBITMEMO);
             }
         } catch (Exception excep){
             String message = excep.getMessage() + '_' + excep.getStackTraceString() + '_' + JSON.serialize(externallyServicedAdjusts);
             Logger.logNow('ProductionToBillService', 'executeUnservicedAdjustJob', message);
+        }
+    }
+
+    private void executeDebitMemoJob() {
+        List<Journal_Entry__c> debitMemosToAttempt;
+        List<Journal_Entry__c> completedDebitMemos;
+        try {
+            batchSize = Math.min(batchSize, 50);
+            debitMemosToAttempt = journalEntrySelector.getEntriesWithoutProductionDetail(new List<String>{'DebitMemo'}, batchSize);
+
+            if (debitMemosToAttempt.size() > 0) {
+                ProductionDetailDebitMemoService debitMemoService = new ProductionDetailDebitMemoService();
+                debitMemoService.createProductionDetailFromDebitMemo(debitMemosToAttempt);
+                incompleteEntries.addAll(debitMemoService.incompleteEntries);
+                completedDebitMemos = debitMemoService.completedJEs;
+                markJournalEntriesAsComplete(completedDebitMemos);
+            }
+            if (debitMemosToAttempt.size() == batchSize || completedDebitMemos.size() != debitMemosToAttempt.size()) {
+                queueJob(OperationType.DEBITMEMO);
+            } else {
+                updateJournalEntriesReadyStatus(incompleteEntries, true);
+            }
+        } catch (Exception e) {
+            String message = e.getMessage() + '_' + e.getStackTraceString() + '_' + JSON.serialize(debitMemosToAttempt);
+            Logger.logNow('ProductionToBillService', 'executeDebitMemoJob', message);
         }
     }
 
