@@ -17,19 +17,19 @@
                 <h6>Business Info<span class="blue-text">&nbsp;&gt;</span></h6>
                 <div class="form-section">
                     <div class="input-group half">
-                        <lightning-input name="businessName" value={restLead.businessName} class="slds-var-m-left_small slds-var-m-right_small" label="Name of Business or Organization" onchange={genericOnChange} required></lightning-input>
+                        <lightning-input name="businessName" value={restLead.businessName} label="Name of Business or Organization" onchange={genericOnChange} required></lightning-input>
                     </div>
                     <div class="input-group half">
-                        <lightning-input name="businessPhone" value={restLead.businessPhone} class="slds-var-m-left_small slds-var-m-right_small"  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
+                        <lightning-input name="businessPhone" value={restLead.businessPhone}  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
                     </div>
                     <div class="input-group half">
-                        <lightning-input name="businessTitle" value={restLead.businessTitle} class="slds-var-m-left_small slds-var-m-right_small"  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
+                        <lightning-input name="businessTitle" value={restLead.businessTitle}  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
                     </div>
                     <div class="input-group half">
                         <template if:true={showUnderwritingOptions}>
                             <lightning-combobox 
                                     name="underwritingCriteria"
-                                    class="slds-var-m-bottom_small slds-var-m-left_small slds-var-m-right_small"
+                                    class="slds-var-m-bottom_small"
                                     placeholder=""
                                     label="Apply with Guarantor or Financial Documents?"
                                     value={underwritingCriteria}
