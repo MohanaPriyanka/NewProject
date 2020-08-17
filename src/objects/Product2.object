@@ -2294,6 +2294,17 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <active>true</active>
         <label>Client BD</label>
         <picklistValues>
+            <picklist>QuantityUnitOfMeasure</picklist>
+            <values>
+                <fullName>Each</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>kWh</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Family</picklist>
             <values>
                 <fullName>Community Solar</fullName>
@@ -2305,17 +2316,6 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
             </values>
             <values>
                 <fullName>Solar Loan</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>QuantityUnitOfMeasure</picklist>
-            <values>
-                <fullName>Each</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>kWh</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2325,6 +2325,17 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <active>true</active>
         <label>Default</label>
         <picklistValues>
+            <picklist>QuantityUnitOfMeasure</picklist>
+            <values>
+                <fullName>Each</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>kWh</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Family</picklist>
             <values>
                 <fullName>Community Solar</fullName>
@@ -2336,17 +2347,6 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
             </values>
             <values>
                 <fullName>Solar Loan</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>QuantityUnitOfMeasure</picklist>
-            <values>
-                <fullName>Each</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>kWh</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
