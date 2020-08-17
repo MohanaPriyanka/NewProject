@@ -642,7 +642,7 @@ Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c
     </fields>
     <fields>
         <fullName>Maximum_Annual_kWh__c</fullName>
-        <description>This is the maximum annual kwh that can be put on a single UAS. It is driven by the Maximum Subscription Capacity on the SSS and the UASes applied Sizing Method.</description>
+        <description>This is the maximum annual kwh that can be put on a single UAS. It is driven by the Maximum Subscription Capacity on the SSS and the UAS&apos;s applied Sizing Method.</description>
         <externalId>false</externalId>
         <formula>IF(
 AND($CustomMetadata.Custom_Feature_Enablement__mdt.Sizing_Method.Feature_is_Enabled__c, NOT(ISBLANK(Sizing_Method__c)), Sizing_Method__r.Size_Ratio__c &gt; 0),
@@ -650,7 +650,7 @@ Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c * Shared_Solar_Syst
 Shared_Solar_System__r.Expected_Yield_kWh_kW__c * Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This is the maximum annual kwh that can be put on a single UAS. It is driven by the Maximum Subscription Capacity on the SSS and the UASes applied Sizing Method.</inlineHelpText>
+        <inlineHelpText>This is the maximum annual kwh that can be put on a single UAS. It is driven by the Maximum Subscription Capacity on the SSS and the UAS&apos;s applied Sizing Method.</inlineHelpText>
         <label>Maximum Annual kWh</label>
         <precision>18</precision>
         <required>false</required>
