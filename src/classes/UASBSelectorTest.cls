@@ -178,6 +178,7 @@ public class UASBSelectorTest {
             delete uasb;
             System.assert(false, 'Expected delete of UASB to throw an error - UASB cannot be deleted when Zuora_Id is populated');
         } catch (Exception e) {
+            System.assert(e.getMessage().contains('Oops! This UASB cannot be deleted'), e.getMessage() + '\n' + e.getStackTraceString());
         }
     }
 }
