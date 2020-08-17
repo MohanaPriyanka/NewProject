@@ -35,6 +35,7 @@ public without sharing class UASSelector {
                 Utility_Account_Log__r.Name,
                 Utility_Account_Log__r.Account__c,
                 Utility_Account_Log__r.Account__r.Id,
+                Utility_Account_Log__r.Date_Utility_Account_Cancelled__c,
                 Utility_Account_Log__r.Account__r.Name,
                 Utility_Account_Log__r.Account__r.Send_Bills_Contact__c,
                 Utility_Account_Log__r.Account__r.Parent_Account__c

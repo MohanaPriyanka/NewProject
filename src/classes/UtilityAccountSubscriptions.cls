@@ -33,7 +33,7 @@ public inherited sharing class UtilityAccountSubscriptions {
     public void handleFinaledAccounts() {
         for (Utility_Account_Subscription__c uas : records) {
             uas.Next_Schedule_Z_Status__c = 'Inactive Subscription';
-            uas.Date_Removed_from_Project__c = Date.today();
+            uas.Date_Removed_from_Project__c = uas.Utility_Account_Log__r.Date_Utility_Account_Cancelled__c;
             // When we mark a utility account as finaled, we set it to transferring by default to pause the cancellation
             // process. Otherwise, this may trigger the opportunity to go to Cancelled and the Account CS Status to go to Closed.
             uas.Transferring_Subsc_to_Another_UAS__c = true;
