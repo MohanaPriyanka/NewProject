@@ -46341,18 +46341,6 @@
         <recordType>Opportunity.BFG_Community_Solar_Anchor</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.BFG</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.Finance</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Opportunity-Business Development</layout>
         <recordType>Opportunity.Business_Development</recordType>
     </layoutAssignments>
