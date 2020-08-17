@@ -9,6 +9,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
     private Map<String, String> depositAccountToClientMap;
     private List<Journal_Entry__c> entriesSafeToDelete;
     private List<Case> reconciliationItems;
+    
     private List<Journal_Entry__c> entriesToUpsert;
 
     public void execute(SchedulableContext ctx){
@@ -47,6 +48,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         public String PaymentMethod;
         public String ArchivedChargentData;
         public String AppliedRecordId;
+        public String Comments;
     }
 
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
@@ -216,6 +218,10 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             }
 
             if ((objectType == 'DebitMemo' && (ledger.reasonCode == 'Returned Payment' || ledger.reasonCode == 'Refund')) || objectType == 'PaymentPart') {
+                if (ledger.reasonCode == 'Returned Payment'){
+                    //Comments example: Original Payment 2c92a00b71c96bdf0171dfcabc4e34c7, PaymentPartItem 2c92a00a71c95c4a0171dfcaf46f5343
+                    entry.Returned_PaymentPart_Id__c = ledger.Comments.substringAfter('PaymentPartItem ');
+                }
                 if (ledger.ArchivedChargentData == null){
                     entry = setZuoraPaymentFields(ledger, entry);
                 } else {

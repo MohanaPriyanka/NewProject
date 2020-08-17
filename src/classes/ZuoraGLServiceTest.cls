@@ -176,13 +176,14 @@ public class ZuoraGLServiceTest {
         Test.stopTest();
 
         List<Journal_Entry__c> updatedJE = [
-            SELECT Id
+            SELECT Id, External_Id__c, Returned_PaymentPart_Id__c
             FROM Journal_Entry__c
             WHERE Object_Type__c = 'DebitMemo'
         ];
 
         System.assertEquals(0,originalJE.size());
         System.assertEquals(14,updatedJE.size());
+        System.assertEquals('2c92a00a71c95c4a0171dfcaf46f5343', updatedJE[13].Returned_PaymentPart_Id__c,  'Returned Debit Memo should store Comments from Zuora');
     }
 
     @IsTest
