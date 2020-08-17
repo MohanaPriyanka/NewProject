@@ -31,7 +31,7 @@ public inherited sharing class JournalEntrySelector {
     public List<Journal_Entry__c> getSFJournalEntriesFromExternalId(Set<String> externalIds){
         List<Journal_Entry__c> journalEntries = [
             SELECT Id, External_Id__c, Date__c, Amount__c, Project__c, Client__c, Customer_Account__c,
-                Paid_To_Client__c, Deposit_Account__c, Object_Type__c, Query_Type__c
+                Paid_To_Client__c, Deposit_Account__c, Object_Type__c, Query_Type__c, Applied_Record_Id__c
             FROM Journal_Entry__c
             WHERE External_Id__c IN : externalIds
         ];
@@ -40,8 +40,8 @@ public inherited sharing class JournalEntrySelector {
 
     public List<Journal_Entry__c> getEntriesWithoutProductionDetail(List<String> objectTypes, Integer batchSize){
         List<Journal_Entry__c> journalEntries = [
-            SELECT Id, External_Id__c, Date__c, Amount__c, Project__c, Client__c, Customer_Account__c,
-                Paid_To_Client__c, Deposit_Account__c, Applied_Record_Id__c, Reason_Code__c, Object_Type__c,
+            SELECT Id, External_Id__c, Date__c, Amount__c, Project__c, Client__c, Customer_Account__c, Paid_To_Client__c,
+                    Deposit_Account__c, Applied_Record_Id__c, Reason_Code__c, Object_Type__c, Returned_PaymentPart_Id__c,
                 (SELECT Id FROM Transfer_Parts__r)
             FROM Journal_Entry__c
             WHERE Object_Type__c IN : objectTypes
@@ -50,5 +50,15 @@ public inherited sharing class JournalEntrySelector {
             LIMIT : batchSize
         ];
         return journalEntries;
+
+
+    }
+
+    public Map<String, Journal_Entry__c> getEntriesMapByIds(Set<String> externalIds) {
+        Map<String, Journal_Entry__c> entryMap = new Map<String, Journal_Entry__c>();
+        for (Journal_Entry__c entry : [SELECT Id, Applied_Record_Id__c, External_Id__c FROM Journal_Entry__c WHERE External_Id__c IN :externalIds]) {
+            entryMap.put(entry.External_Id__c, entry);
+        }
+        return entryMap;
     }
 }

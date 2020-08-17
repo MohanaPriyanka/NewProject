@@ -9,9 +9,7 @@ public with sharing class JournalEntryService {
 
     public void markReadyForProductionDetail(List<Journal_Entry__c> entries) {
         for (Journal_Entry__c entry : entries) {
-            if (entry.Query_Type__c != 'PaymentPart_DM' && entry.Query_Type__c != 'DebitMemo'){
-                entry.Ready_for_Production_Detail__c = true;
-            }
+            entry.Ready_for_Production_Detail__c = true;
         }
     }
 
