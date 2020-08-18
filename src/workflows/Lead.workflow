@@ -33,18 +33,6 @@
         <template>Emails_to_Delete/Non_Partner_Prequal</template>
     </alerts>
     <alerts>
-        <fullName>BWOC_EnergySage_Lead_Alert</fullName>
-        <ccEmails>solarloans@bluewave-capital.com</ccEmails>
-        <description>BWOC EnergySage Lead Alert</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>jpentaleri@bluewavesolar.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderType>DefaultWorkflowUser</senderType>
-        <template>BFG_Internal_Alerts/EnergySage_Lead_Alert</template>
-    </alerts>
-    <alerts>
         <fullName>BlueWave_CS_Application_Receipt</fullName>
         <description>BlueWave - CS - Application Receipt</description>
         <protected>false</protected>
@@ -396,19 +384,6 @@
         <senderAddress>noreply@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>BFG_Internal_Alerts/NC_Pre_Qualified_Homeowner</template>
-    </alerts>
-    <alerts>
-        <fullName>Solar_Loans_Send</fullName>
-        <ccEmails>vcoloma@bluewave-capital.com</ccEmails>
-        <ccEmails>solarloans@bluewave-capital.com</ccEmails>
-        <description>Solar Loans - Send</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>jpentaleri@bluewavesolar.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderType>CurrentUser</senderType>
-        <template>BFG_Internal_Alerts/File_Upload_Form_Notification</template>
     </alerts>
     <alerts>
         <fullName>Solstice_CS_Application_Receipt</fullName>
@@ -1273,20 +1248,6 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <value>True</value>
         </criteriaItems>
         <description>Alerts Partner with text if a pre-approval credit check is denied</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>EnergySage Lead Alert</fullName>
-        <actions>
-            <name>BWOC_EnergySage_Lead_Alert</name>
-            <type>Alert</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Lead.EnergySage_Lead__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>

@@ -1,3 +1,0 @@
-The lead, {!Lead.Name} has been submitted through the EnergySage Preapproval application. Please check credit on this customer.
- 
-Link: https://na16.salesforce.com/{!Lead.Id}
