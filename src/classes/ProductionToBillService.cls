@@ -166,10 +166,8 @@ public without sharing class ProductionToBillService implements Queueable, Datab
                 completedDebitMemos = debitMemoService.completedJEs;
                 markJournalEntriesAsComplete(completedDebitMemos);
             }
-            if (debitMemosToAttempt.size() == batchSize || completedDebitMemos.size() != debitMemosToAttempt.size()) {
+            if (debitMemosToAttempt.size() == batchSize) {
                 queueJob(OperationType.DEBITMEMO);
-            } else {
-                updateJournalEntriesReadyStatus(incompleteEntries, true);
             }
         } catch (Exception e) {
             String message = e.getMessage() + '_' + e.getStackTraceString() + '_' + JSON.serialize(debitMemosToAttempt);
