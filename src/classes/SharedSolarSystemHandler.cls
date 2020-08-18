@@ -13,10 +13,14 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         new List<SObjectType>{Shared_Solar_System__c.SObjectType}
     );
     public void execute(SchedulableContext sch) {
-        Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
-        uow.registerWork(new Logger());
-        updateSSS();
-        Util.enableTrigger('Disable_SharedSolarSystemTrigger__c');
+        try {
+            Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
+            uow.registerWork(new Logger());
+            updateSSS();
+            Util.enableTrigger('Disable_SharedSolarSystemTrigger__c');
+        } catch (Exception e) {
+            Logger.logNow('SharedSolarSystemHandler', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
     }
     @AuraEnabled
     public static String updateStage(String sssToUpdate, String newStage) {
