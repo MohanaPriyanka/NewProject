@@ -82,15 +82,19 @@ public without sharing class ProductionDetailDebitMemoService {
 
         ProductionDetailBillService billService = new ProductionDetailBillService();
         billService.transferToDetailMap = productionDetailSelector.getTransferPartMap(transferIds);
+        Set<Id> failedDebitMemos = new Set<Id>();
         for (Journal_Entry__c entry : adjustmentDebitMemos) {
             List<Bill_Adjustment__c> adjustments = adjustMap.get(entry.External_Id__c);
             if (adjustments == null) {
-                Logger.logNow('ProductionDetailDebitMemoService', 'createProductionDetailsForAdjustments', 'DebitMemo for credit adjustment is not linked to SF Bill Adjustment: ' + entry.External_Id__c, Logger.WARN);
+                failedDebitMemos.add(entry.Id);
                 continue;
             }
             for (Bill_Adjustment__c sfAdjustment : adjustments) {
                 billService.createBillProductionDetail(sfAdjustment.Transfer__c, -entry.Amount__c, 'Payment', entry.Id);
             }
+        }
+        if (failedDebitMemos.size() > 0) {
+            Logger.logNow('ProductionDetailDebitMemoService', 'createProductionDetailsForAdjustments', 'DebitMemos for credit adjustments are not linked to SF Bill Adjustments: ' + JSON.serialize(failedDebitMemos), Logger.WARN);
         }
         productionDetailToInsert.addAll(billService.productionDetailToInsert);
     }
