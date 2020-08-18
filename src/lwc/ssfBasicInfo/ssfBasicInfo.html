@@ -189,7 +189,8 @@
                                                     has-help-text
                                                     input-text="Upload a copy of your utility bill"
                                                     category-type="Customer Utility Bill"
-                                                    index={it.index} 
+                                                    data-row-index={it.index}
+                                                    key={it.value.localid} 
                                                     onfileuploaded={handleUtilityBillUpload}>
                                                 <div>
                                                     <p>Why do we need your utility bill?</p>
