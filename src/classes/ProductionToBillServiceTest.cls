@@ -48,9 +48,6 @@ public with sharing class ProductionToBillServiceTest {
             WHERE Class__c = 'ProductionToBillService'
             AND Method__c = 'executeBillJob'
         ];
-        for (Error_Log__c e : afterLogs) {
-            System.debug('Error log: ' + e.Class__c + e.Method__c + e.Message__c);
-        }
         System.assert(afterLogs.size() > 0);
     }
 
@@ -76,9 +73,6 @@ public with sharing class ProductionToBillServiceTest {
             WHERE Class__c = 'ProductionToBillService'
             AND Method__c = 'executePaymentJob'
         ];
-        for (Error_Log__c e : afterLogs) {
-            System.debug('Error log: ' + e.Class__c + e.Method__c + e.Message__c);
-        }
         System.assert(afterLogs.size() > 0);
     }
 
@@ -104,9 +98,6 @@ public with sharing class ProductionToBillServiceTest {
             WHERE Class__c = 'ProductionToBillService'
             AND Method__c = 'executeCreditMemoJob'
         ];
-        for (Error_Log__c e : afterLogs) {
-            System.debug('Error log: ' + e.Class__c + e.Method__c + e.Message__c);
-        }
         System.assert(afterLogs.size() > 0);
     }
 
@@ -133,9 +124,6 @@ public with sharing class ProductionToBillServiceTest {
             WHERE Class__c = 'ProductionToBillService'
             AND Method__c LIKE 'executeUnserviced%'
         ];
-        for (Error_Log__c e : afterLogs) {
-            System.debug('Error log: ' + e.Class__c + e.Method__c + e.Message__c);
-        }
         System.assert(afterLogs.size() > 0);
     }
 
@@ -161,9 +149,6 @@ public with sharing class ProductionToBillServiceTest {
                 WHERE Class__c = 'ProductionToBillService'
                 AND Method__c = 'executeDebitMemoJob'
         ];
-        for (Error_Log__c e : afterLogs) {
-            System.debug('Error log: ' + e.Class__c + e.Method__c + e.Message__c);
-        }
         System.assert(afterLogs.size() > 0);
     }
 
@@ -1249,6 +1234,7 @@ public with sharing class ProductionToBillServiceTest {
     private static List<Journal_Entry__c> getDebitMemoJournalEntries() {
         Date mayBillDate = Date.newInstance(2019,05,20);
 
+        //Returned Payment -- should track to Invoice
         Journal_Entry__c entryOne = new Journal_Entry__c(
                 Id = 'a920a000000HuJoAAA',
                 Object_Type__c = 'DebitMemo',
@@ -1263,6 +1249,7 @@ public with sharing class ProductionToBillServiceTest {
                 Date__c = mayBillDate
         );
 
+        //Adjustment --- should track to Bill Adjustment
         Journal_Entry__c entryTwo = new Journal_Entry__c(
                 Id = 'a920a000000HuJoBBB',
                 Object_Type__c = 'DebitMemo',
@@ -1361,17 +1348,10 @@ public with sharing class ProductionToBillServiceTest {
 
     private static Map<String,List<Transfer_Part__c>> getBillPartByInvoice(){
         Map<String,List<Transfer_Part__c>> mapParts = new Map<String,List<Transfer_Part__c>>();
-        // Three invoiceItems, first two are distributed among 3 production periods
+        // Three invoiceItems, first distributed amond 2 production periods
+        // second is distributed among 3 production periods
         // last one is distributed among 1 production period
-        Transfer_Part__c partOne = new Transfer_Part__c(
-            Id = 'a8y0a000000Gu3rAAA',
-            Name = 'InvoiceOne_ProductionOne',
-            Production__c = 'a8u0a000000I4ETAA0',
-            Transfer__c = 'a900a000000GsOyAAK',
-            Journal_Entry__c = 'a920a000000HSfsAAG',
-            Amount__c = 100,
-            Type__c = 'Bill'
-        );
+
         Transfer_Part__c partTwo = new Transfer_Part__c(
             Id = 'a8y0a000000Gu3rBBB',
             Name = 'InvoiceOne_ProductionTwo',
@@ -1426,7 +1406,7 @@ public with sharing class ProductionToBillServiceTest {
             Amount__c = 123.34,
             Type__c = 'Bill'
         );
-        mapParts.put('2dd2c0fa6e3a9391016e3df87b1f687a', new List<Transfer_Part__c>{partOne, partTwo, partThree});
+        mapParts.put('2dd2c0fa6e3a9391016e3df87b1f687a', new List<Transfer_Part__c>{ partTwo, partThree});
         mapParts.put('2dd2c0fa6e3a9391016e3df87b1f687b',new List<Transfer_Part__c>{partFour, partFive, partSix});
         mapParts.put('2dd2c0fb6e3aa322016e3df698ff7e9f',new List<Transfer_Part__c>{partSeven});
         return mapParts;
