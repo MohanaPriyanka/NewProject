@@ -80,7 +80,7 @@ public without sharing class ProductionToBillService implements Queueable, Datab
 
     private void executeCreditMemoJob(){
         List<Journal_Entry__c> creditMemosToAttempt;
-        List<Journal_Entry__c> completedCreditMemos = new List<Journal_Entry__c>();
+        List<Journal_Entry__c> completedCreditMemos;
 
         try {
             /*
@@ -166,7 +166,7 @@ public without sharing class ProductionToBillService implements Queueable, Datab
                 completedDebitMemos = debitMemoService.completedJEs;
                 markJournalEntriesAsComplete(completedDebitMemos);
             }
-            if (debitMemosToAttempt.size() == batchSize || completedDebitMemos.size() != debitMemosToAttempt.size()) {
+            if (debitMemosToAttempt.size() == batchSize) {
                 queueJob(OperationType.DEBITMEMO);
             } else {
                 updateJournalEntriesReadyStatus(incompleteEntries, true);

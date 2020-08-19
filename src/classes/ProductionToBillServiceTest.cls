@@ -48,6 +48,9 @@ public with sharing class ProductionToBillServiceTest {
             WHERE Class__c = 'ProductionToBillService'
             AND Method__c = 'executeBillJob'
         ];
+        for (Error_Log__c e : afterLogs) {
+            System.debug('Error log: ' + e.Class__c + e.Method__c + e.Message__c);
+        }
         System.assert(afterLogs.size() > 0);
     }
 
@@ -73,6 +76,9 @@ public with sharing class ProductionToBillServiceTest {
             WHERE Class__c = 'ProductionToBillService'
             AND Method__c = 'executePaymentJob'
         ];
+        for (Error_Log__c e : afterLogs) {
+            System.debug('Error log: ' + e.Class__c + e.Method__c + e.Message__c);
+        }
         System.assert(afterLogs.size() > 0);
     }
 
@@ -98,6 +104,9 @@ public with sharing class ProductionToBillServiceTest {
             WHERE Class__c = 'ProductionToBillService'
             AND Method__c = 'executeCreditMemoJob'
         ];
+        for (Error_Log__c e : afterLogs) {
+            System.debug('Error log: ' + e.Class__c + e.Method__c + e.Message__c);
+        }
         System.assert(afterLogs.size() > 0);
     }
 
@@ -124,6 +133,9 @@ public with sharing class ProductionToBillServiceTest {
             WHERE Class__c = 'ProductionToBillService'
             AND Method__c LIKE 'executeUnserviced%'
         ];
+        for (Error_Log__c e : afterLogs) {
+            System.debug('Error log: ' + e.Class__c + e.Method__c + e.Message__c);
+        }
         System.assert(afterLogs.size() > 0);
     }
 
@@ -149,6 +161,9 @@ public with sharing class ProductionToBillServiceTest {
                 WHERE Class__c = 'ProductionToBillService'
                 AND Method__c = 'executeDebitMemoJob'
         ];
+        for (Error_Log__c e : afterLogs) {
+            System.debug('Error log: ' + e.Class__c + e.Method__c + e.Message__c);
+        }
         System.assert(afterLogs.size() > 0);
     }
 
