@@ -88,8 +88,11 @@ public without sharing class ProductionDetailDebitMemoService {
                 incompleteEntries.add(entry);
                 continue;
             }
+
             for (Bill_Adjustment__c sfAdjustment : adjustments) {
-                billService.createBillProductionDetail(sfAdjustment.Transfer__c, -entry.Amount__c, 'Payment', entry.Id);
+                if (sfAdjustment.Transfer__c != null) {
+                    billService.createBillProductionDetail(sfAdjustment.Transfer__c, -entry.Amount__c, 'Payment', entry.Id);
+                }
             }
         }
         productionDetailToInsert.addAll(billService.productionDetailToInsert);
