@@ -514,9 +514,28 @@ public with sharing class SharedSolarSystemHandlerTest {
             Management_Fee_Type__c = 'Recurring',
             Management_Fee_Trigger__c = 'Project: First Customer Bill Date'
         );
+        Contract_Fee_Detail__c managementPTOCFD = new Contract_Fee_Detail__c(
+            Contract__c = managementContract.Id,
+            Management_Fee__c = true,
+            Fee__c = 3702.14,
+            Fee_Unit__c = 'per MW',
+            Recurring_Frequency__c = 'Monthly',
+            Management_Fee_Type__c = 'Recurring',
+            Management_Fee_Trigger__c = 'Project: PTO'
+        );
+        Contract_Fee_Detail__c managementCODCFD = new Contract_Fee_Detail__c(
+            Contract__c = managementContract.Id,
+            Management_Fee__c = true,
+            Fee__c = 3702.14,
+            Fee_Unit__c = 'per MW',
+            Recurring_Frequency__c = 'Monthly',
+            Management_Fee_Type__c = 'Recurring',
+            Management_Fee_Trigger__c = 'Project: COD'
+        );
+
 
         insert new List<Contract_Fee_Detail__c>{
-            acq, reacq, managementAssignmentCFD, managementBillCFD
+            acq, reacq, managementAssignmentCFD, managementBillCFD, managementPTOCFD, managementCODCFD
         };
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Client_Acquisition_Contract__c, Client_Management_Contract__c
