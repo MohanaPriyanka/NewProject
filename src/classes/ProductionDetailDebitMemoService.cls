@@ -87,6 +87,7 @@ public without sharing class ProductionDetailDebitMemoService {
             List<Bill_Adjustment__c> adjustments = adjustMap.get(entry.External_Id__c);
             if (adjustments == null) {
                 failedDebitMemos.add(entry.Id);
+                incompleteEntries.add(entry);
                 continue;
             }
             for (Bill_Adjustment__c sfAdjustment : adjustments) {
