@@ -38,7 +38,8 @@ public inherited sharing class SharedSolarSystemsSelector {
         }
         loadZoneString = loadZoneString.left(loadZoneString.length() - 1); // strip off extra comma
         String query = 'SELECT Id, Name, Capacity_Available_to_be_Reserved__c, Product__r.Id, ' +
-            'Product__r.Name, Product__r.Customer_Subscription_Type__c, Sales_Partners__c ' +
+            'Product__r.Name, Product__r.Customer_Subscription_Type__c, Sales_Partners__c, ' +
+            'Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c ' +
             'FROM Shared_Solar_System__c ' +
             'WHERE Capacity_Available_to_be_Reserved__c > 0 ' +
             'AND Open__c = true ' +
@@ -92,7 +93,8 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c, Maximum_Subscription_Capacity_kWDC__c,
                 Total_Capacity_Committed_Reserved__c,
                 Reserved_Anchor_Capacity__c, Name, Stage__c,
-                CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c
+                CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c,
+                Management_Revenue_Start_Date__c, Customer_Assignment_Date__c, First_Bill_Date__c
             FROM Shared_Solar_System__c
         ];
     }
