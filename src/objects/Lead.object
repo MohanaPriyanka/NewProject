@@ -4124,6 +4124,33 @@ Monthly_Payment__c)</formula>
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Partner_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Field to relate the Partner Account to the Leads. Can be filtered to be the Account for the related Partner Record</description>
+        <externalId>false</externalId>
+        <label>Partner Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Leads (Partner Account)</relationshipLabel>
+        <relationshipName>Leads1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Partner_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Partner Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Leads (Partner Contact)</relationshipLabel>
+        <relationshipName>Leads2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Partner_Email__c</fullName>
         <externalId>false</externalId>
         <label>Partner Email</label>
@@ -7375,6 +7402,22 @@ SEMA = 13 -14</inlineHelpText>
         <label>My Unread Leads</label>
         <sharedTo>
             <group>Non_Partners</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>My_Leadspartnerportal</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>LEAD.STATE_CODE</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.STATUS</columns>
+        <columns>LEAD.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>LEAD.UNREAD</columns>
+        <filterScope>Everything</filterScope>
+        <label>My Leads (Partner)</label>
+        <sharedTo>
+            <allPartnerUsers></allPartnerUsers>
         </sharedTo>
     </listViews>
     <listViews>
