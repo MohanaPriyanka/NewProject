@@ -39264,6 +39264,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Subscription_Order__c.Client_Invoicing_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Subscription_Order__c.Size_Ratio__c</field>
         <readable>true</readable>
     </fieldPermissions>

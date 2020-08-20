@@ -345,6 +345,22 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Client_Invoicing_Fee__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+ ISPICKVAL(Contract_Fee_Detail__r.Fee_Unit__c, &quot;per W&quot;),
+ Contract_Fee_Detail__r.Fee__c * ( Approved_Change_in_Subscription__c * 1000),
+null)</formula>
+        <label>Client Invoicing Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
