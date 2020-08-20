@@ -28,9 +28,11 @@ public without sharing class RestLead {
     public String continueApplicationLink;
     public List<RestPropertyAccount> propertyAccounts;
     public List<RestContentDocument> contentDocs;
+    public List<RestContentDocument> financialDocs;
     public String campaignId;
     public String referralName;
     public String referralEmail;
+    public String underwritingCriteria;
 
     public RestLead() {
     }
@@ -61,6 +63,7 @@ public without sharing class RestLead {
         this.campaignId = lead.Manual_Campaign_ID__c;
         this.referralName = lead.Referral_Name__c;
         this.referralEmail = lead.Referral_Email__c;
+        this.underwritingCriteria = lead.Underwriting_Criteria__c;
     }
 
     public void validateCreateFields() {
@@ -142,6 +145,7 @@ public without sharing class RestLead {
         if (fieldNames.contains('referralName')) baseLead.Referral_Name__c = this.referralName;
         if (fieldNames.contains('referralEmail')) baseLead.Referral_Email__c = this.referralEmail;
         if (fieldNames.contains('continueApplicationLink')) baseLead.Continue_Application_Link__c = this.continueApplicationLink;
+        if (fieldNames.contains('underwritingCriteria')) baseLead.Underwriting_Criteria__c = this.underwritingCriteria;
         if (fieldNames.contains('utilityId')) baseLead.Utility_relationship__c = this.utilityId;
         updateDerivedFields(new RestLead(baseLead), baseLead);
 
@@ -183,6 +187,7 @@ public without sharing class RestLead {
             Referral_Name__c = this.referralName,
             Referral_Email__c = this.referralEmail,
             Continue_Application_Link__c = this.continueApplicationLink,
+            Underwriting_Criteria__c = this.underwritingCriteria,
             Utility_relationship__c = this.utilityId
         );
         // Since:
@@ -454,6 +459,7 @@ public without sharing class RestLead {
         public Id docLinkId;
         public String title;
         public String body;
+        public String fileCategory;
         public String publicUrl;
         public Decimal size;
         public Datetime createdDate;
@@ -488,7 +494,7 @@ public without sharing class RestLead {
                 VersionData = EncodingUtil.base64Decode(this.body),
                 ContentLocation = 'S',
                 PathOnClient = '/' + this.title,
-                File_Category__c = 'Customer Utility Bill'
+                File_Category__c = this.fileCategory
             );
         }
 
@@ -498,6 +504,29 @@ public without sharing class RestLead {
                 ShareType = 'V',
                 Visibility = 'AllUsers'
             );
+        }
+
+        public void validateCreateFields() {
+            Map<String, String> requiredFields = new Map<String, String>{
+                'title' => title, 'body' => body
+            };
+    
+            Util.validateStrings(requiredFields);
+            validateFileCategory();
+        }
+    
+    
+        private void validateFileCategory() {
+            List<String> validFileCategories = new List<String>();
+            Schema.DescribeFieldResult fieldResult = ContentVersion.File_Category__c.getDescribe();
+            // List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+            for(Schema.PicklistEntry pickListVal : fieldResult.getPicklistValues()){
+                validFileCategories.add(pickListVal.getLabel());
+            }
+            
+            if (!validFileCategories.contains(fileCategory)) {
+                throw new Util.BWException('An fileCategory of "' + fileCategory + '" is not of a supported type: ' + String.join(validFileCategories, ', '));
+            }
         }
     }
 }
