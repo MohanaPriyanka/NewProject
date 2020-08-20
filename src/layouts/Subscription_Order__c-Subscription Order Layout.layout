@@ -198,6 +198,10 @@
                 <behavior>Edit</behavior>
                 <field>Invoice_Date__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Client_Invoicing_Fee__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

@@ -29012,6 +29012,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Subscription_Order__c.Client_Invoicing_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>System_Bill__c.Account_Bill_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46527,10 +46532,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Subscription_Order__c-Subscription Order Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Subscription_Order__c-Subscription Order Layout</layout>
-        <recordType>Subscription_Order__c.Subscription_Orders</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Subscription_Order__c-System Change Order</layout>
