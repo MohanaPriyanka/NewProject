@@ -3859,7 +3859,7 @@ ISCHANGED(App_ID_WO_Manual__c)
     <validationRules>
         <fullName>Prevent_System_Size_Changes</fullName>
         <active>true</active>
-        <description>Prevents updates to yield or system size once project is in acq or management. Update should go through the SSSO approval process.</description>
+        <description>Prevents updates to yield or system size once project is in onboarding, acq or management. Update should go through the SSSO approval process.</description>
         <errorConditionFormula>AND(
  $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
 
@@ -3870,8 +3870,9 @@ ISCHANGED( Total_System_Size_kWh_DC__c)
 
 OR(
 ISPICKVAL(Stage__c,&quot;Management&quot;),
-ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
-), /*and it&apos;s being change to either Management or Acquisition*/
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+ISPICKVAL(Stage__c,&quot;Onboarding&quot;)
+), /*and it&apos;s being change to either Management, Acquisition, or Onboarding*/
 
  Apex_Context__c=false /*and the update is not being done in apex*/
 )</errorConditionFormula>
