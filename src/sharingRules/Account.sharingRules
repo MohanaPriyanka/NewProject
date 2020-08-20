@@ -56,8 +56,8 @@
         </sharedTo>
         <criteriaItems>
             <field>Type</field>
-            <operation>notEqual</operation>
-            <value>Investor</value>
+            <operation>equals</operation>
+            <value>Landowner,Scout,Profit Center,Financial Partner,Service Provider,Government Entity,Engineers of Record,QA/QC Consultants,EPC Account</value>
         </criteriaItems>
     </sharingCriteriaRules>
 </SharingRules>
