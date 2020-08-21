@@ -60,4 +60,22 @@
             <value>Landowner,Scout,Profit Center,Financial Partner,Service Provider,Government Entity,Engineers of Record,QA/QC Consultants,EPC Account</value>
         </criteriaItems>
     </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Investor_Accounts</fullName>
+        <accessLevel>Edit</accessLevel>
+        <accountSettings>
+            <caseAccessLevel>Edit</caseAccessLevel>
+            <contactAccessLevel>Edit</contactAccessLevel>
+            <opportunityAccessLevel>Edit</opportunityAccessLevel>
+        </accountSettings>
+        <label>Investor Accounts</label>
+        <sharedTo>
+            <group>Investor_Account_Access</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Type</field>
+            <operation>equals</operation>
+            <value>Investor</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
 </SharingRules>
