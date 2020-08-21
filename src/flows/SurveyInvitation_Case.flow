@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Populate_Case</name>
+        <label>Populate Case</label>
+        <locationX>501</locationX>
+        <locationY>435</locationY>
+        <assignmentItems>
+            <assignToReference>Survey_Invitation.Case__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.SubjectId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_SurveyInvitation</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Is_Case</name>
+        <label>Is Case</label>
+        <locationX>495</locationX>
+        <locationY>61</locationY>
+        <defaultConnectorLabel>No Case</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Case</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.SubjectEntityType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Case</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Survey_Invitation</targetReference>
+            </connector>
+            <label>Yes Case</label>
+        </rules>
+    </decisions>
+    <interviewLabel>SurveyInvitation Case {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SurveyInvitation Case</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Survey_Invitation</name>
+        <label>Survey Invitation</label>
+        <locationX>501</locationX>
+        <locationY>263</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Populate_Case</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>SurveyInvitation</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_SurveyInvitation</name>
+        <label>Update SurveyInvitation</label>
+        <locationX>501</locationX>
+        <locationY>617</locationY>
+        <inputReference>Survey_Invitation</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Is_Case</targetReference>
+        </connector>
+        <object>SurveySubject</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
