@@ -494,6 +494,7 @@ public without sharing class RestLead {
         public Id docLinkId;
         public String title;
         public String body;
+        public String fileCategory;
         public String publicUrl;
         public Decimal size;
         public Datetime createdDate;
@@ -528,7 +529,7 @@ public without sharing class RestLead {
                 VersionData = EncodingUtil.base64Decode(this.body),
                 ContentLocation = 'S',
                 PathOnClient = '/' + this.title,
-                File_Category__c = 'Customer Utility Bill'
+                File_Category__c = this.fileCategory
             );
         }
 
@@ -538,6 +539,29 @@ public without sharing class RestLead {
                 ShareType = 'V',
                 Visibility = 'AllUsers'
             );
+        }
+
+        public void validateCreateFields() {
+            Map<String, String> requiredFields = new Map<String, String>{
+                'title' => title, 'body' => body
+            };
+    
+            Util.validateStrings(requiredFields);
+            validateFileCategory();
+        }
+    
+    
+        private void validateFileCategory() {
+            List<String> validFileCategories = new List<String>();
+            Schema.DescribeFieldResult fieldResult = ContentVersion.File_Category__c.getDescribe();
+            // List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+            for(Schema.PicklistEntry pickListVal : fieldResult.getPicklistValues()){
+                validFileCategories.add(pickListVal.getLabel());
+            }
+            
+            if (!validFileCategories.contains(fileCategory)) {
+                throw new Util.BWException('An fileCategory of "' + fileCategory + '" is not of a supported type: ' + String.join(validFileCategories, ', '));
+            }
         }
     }
 }

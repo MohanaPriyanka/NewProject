@@ -18,7 +18,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api underwritingOptions;
 
     @track zipinput;
-    @track collectRateClass = true;
+    @track collectRateClass;
     @track selectedUtility;
     @track selectedProduct;
     @track rateClassOptions;
@@ -35,7 +35,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track utilityAccountSection;
     @track isFileUpload;
     @track isFico;
-    @track showUnderwritingOptions = true;
+    @track showUnderwritingOptions;
     @track showAddress;
     @track isPhone;
      
@@ -50,12 +50,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         
         if(this.zipCheckResponse) {
             this.zipCheckResponse = JSON.parse(this.zipCheckResponse);
+            this.collectRateClass = this.zipCheckResponse.collectRateClass;
             if(this.zipCheckResponse.zipCode) {
                 this.zipinput = this.zipCheckResponse.zipCode;
-            }
-
-            if(this.zipCheckResponse.collectRateClass) {
-                this.collectRateClass = this.zipCheckResponse.collectRateClass;
             }
 
             if(this.zipCheckResponse.products && this.zipCheckResponse.products.length > 0) {

@@ -44,8 +44,10 @@ public inherited sharing class RestZipCode {
 
     private Set<String> getRateClassNames(Set<Rate_Class__c> rateClasses) {
         Set<String> rateClassNames = new Set<String>();
-        for(Rate_Class__c rc : rateClasses) {
-            rateClassNames.add(rc.Name);
+        if(rateClasses != null) {
+            for(Rate_Class__c rc : rateClasses) {
+                rateClassNames.add(rc.Name);
+            }
         }
         return rateClassNames;
     }

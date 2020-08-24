@@ -37,8 +37,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         'Service_Address__c' => 'serviceStreet',
         'Service_City__c' => 'serviceCity',
         'Service_State__c' => 'serviceState',
-        'Service_Zip_Code__c' => 'servicePostalCode',
-        'Utility_Rate_Class__r.Name' => 'rateClass'
+        'Service_Zip_Code__c' => 'servicePostalCode'
     };
 
     @TestVisible private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
@@ -564,7 +563,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                         return true;
                     }
                 }
+                if(leadUAL.Utility_Rate_Class__r.Name != restUAL.get('rateClass')) {
+                    return true;
             }
+        }
         }
 
         return false;
@@ -638,12 +640,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     private void registerNewContentDocs(List<RestLead.RestContentDocument> requestContentDocuments, SObject linkedEntity) {
         for(RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
             if(requestContentDocument.id == null) {
-                requestContentDocument.body = String.escapeSingleQuotes(requestContentDocument.body);
-                Pattern myPattern = pattern.compile('^data:.+;base64,');
-                Matcher myMatcher = myPattern.matcher(requestContentDocument.body);
-                if(myMatcher.find()) {
-                    requestContentDocument.body = EncodingUtil.urlDecode(requestContentDocument.body, 'UTF-8');
-                }
+                requestContentDocument.validateCreateFields();
+                requestContentDocument.body = getContentBody(requestContentDocument.body);
                 ContentVersion newContentVersion = requestContentDocument.asContentVersionForInsert();
                 uow.registerNew(newContentVersion);
                 customWork.registerContentDocumentLinkInsert(linkedEntity, newContentVersion, 'V', 'AllUsers');
@@ -651,11 +649,23 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 ContentDocumentLink newContentLink = requestContentDocument.asContentDocLinkForInsert();
                 uow.registerNew(newContentLink, ContentDocumentLink.LinkedEntityId, linkedEntity);
             } else if(requestContentDocument.lastPublishedVersionId == null) {
+                requestContentDocument.validateCreateFields();
+                requestContentDocument.body = getContentBody(requestContentDocument.body);
                 ContentVersion newContentVersion = requestContentDocument.asContentVersionForInsert();
                 newContentVersion.ContentDocumentId = requestContentDocument.id;
                 uow.registerNew(newContentVersion);
             }
         }
+    }
+
+    private String getContentBody(String bodyInput) {
+        String retVal = String.escapeSingleQuotes(bodyInput);
+        Pattern myPattern = pattern.compile('^data:.+;base64,');
+        Matcher myMatcher = myPattern.matcher(bodyInput);
+        if(myMatcher.find()) {
+            bodyInput = bodyInput.replaceAll('data:.+;base64,', '');
+        }
+        return bodyInput;
     }
 
     private List<RestLead.RestContentDocument> compileLeadContentDocs(Id leadId, MultiMap contentDocLinksByLinkedEntityId, Boolean docsNewlyGenerated) {
