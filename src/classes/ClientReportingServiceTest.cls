@@ -344,23 +344,16 @@ public with sharing class ClientReportingServiceTest {
         System.assertEquals(opp.Name, clientUAS[0].Customer__c);
         System.assertEquals(300, clientUAS[0].Annual_Cost_of_Electricity_Future__c);
         System.assertEquals(opp.Shared_Solar_System__c, clientUAS[0].Shared_Solar_System__c);
+
         //Test an update to parent UAS
-        FeatureService featureService = new FeatureService();
-        if (featureService.isEnabled('Subscription_Orders')) {
-            //SUBSCRIPTION ORDER FEATURE ON
-            Subscription_Order__c soResize = new Subscription_Order__c(
-                Utility_Account_Subscription__c = uas.Id,
-                Type__c = 'Resize',
-                New_Annual_Cost__c = 500,
-                Approval_Status__c = 'Approved',
-                Effective_Date__c = System.now()
-            );
-            insert soResize;
-        } else {
-            //SUBSCRIPTION ORDER FEATURE OFF
-            uas.Subscribed_Annual_Cost_of_Electricity__c = 500;
-            update uas;
-        }
+        Subscription_Order__c soResize = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uas.Id,
+            Type__c = 'Resize',
+            New_Annual_Cost__c = 500,
+            Approval_Status__c = 'Approved',
+            Effective_Date__c = System.now()
+        );
+        insert soResize;
         List<Client_Utility_Account_Subscription__c> clientUASUpdate = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
         System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
         //Test update of Opp's SSS
@@ -423,9 +416,11 @@ public with sharing class ClientReportingServiceTest {
         Shared_Solar_System__c sss2 = [
             SELECT Id, Name
             FROM Shared_Solar_System__c
-            WHERE Id != :opps[1].Shared_Solar_System__c
+            WHERE Id != :opps[0].Shared_Solar_System__c
             LIMIT 1
         ];
+
+        System.assertNotEquals(opps[0].Shared_Solar_System__c, sss2.Id);
         opps[1].Shared_Solar_System__c = sss2.Id;
         update opps[1];
 

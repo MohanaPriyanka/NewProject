@@ -42,6 +42,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
             Opportunity opp = uasToOppMap.get(uas.Opportunity__c);
             uas.Shared_Solar_System__c = opp.Shared_Solar_System__c;
         }
+
     }
 
     public static void recalculateCommissionOnUpdate(List<Utility_Account_Subscription__c> uasList, Map<Id, Utility_Account_Subscription__c> oldMap){

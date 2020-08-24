@@ -179,23 +179,25 @@ public without sharing class ClientReportingService {
     //TODO: This method will be deprecated when the Subscription Order flag is turned on
     // When a SSS changes on an Opportunity, a new UAS will be created along with a new CUAS
     // therefore there is no need to update the SSS on the existing SSS
-    public static void updateClientUAS(Map<Id, Opportunity> oppMap, Map<Id, Opportunity> oldOppMap) {
-        Set<Id> oppsToUpdate = new Set<Id>();
-        for (Opportunity opp : oppMap.values()) {
-            if (opp.Shared_Solar_System__c != oldOppMap.get(opp.Id).Shared_Solar_System__c && !featureService.isEnabled('Subscription_Orders')) {
-                oppsToUpdate.add(opp.Id);
+    public static void updateClientUAS(List<Utility_Account_Subscription__c> uasList, Map<Id, Utility_Account_Subscription__c> oldMap) {
+        Set<Id> uasIds = new Set<Id>();
+        for (Utility_Account_Subscription__c uas : uasList) {
+            if (uas.Shared_Solar_System__c != oldMap.get(uas.Id).Shared_Solar_System__c) {
+                uasIds.add(uas.Id);
             }
         }
-        if (oppsToUpdate.size() > 0 ) {
-            List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByOppIds(oppsToUpdate);
+
+        if (uasIds.size() > 0) {
+            List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByUASIds(uasIds);
             if (clientUASList.size() > 0 ){
                 for (Client_Utility_Account_Subscription__c cUAS : clientUASList) {
-                    cUAS.Shared_Solar_System__c = oppMap.get(cUAS.Utility_Account_Subscription__r.Opportunity__c).Shared_Solar_System__c;
+                    cUAS.Shared_Solar_System__c = cUAS.Utility_Account_Subscription__r.Shared_Solar_System__c;
                 }
                 update clientUASList;
             }
         }
     }
+
     public static void insertClientALSS(List<Schedule_Z_Subscription__c> szsList) {
         List<Client_Allocation_Schedule_Subscription__c> clientALSSList = new List<Client_Allocation_Schedule_Subscription__c>();
         Set<Id> parentIds = new Set<Id>();
