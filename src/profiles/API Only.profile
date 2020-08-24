@@ -13278,6 +13278,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Underwriting_Criteria__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Unfinished_Lead__c</field>
         <readable>true</readable>
@@ -29125,6 +29130,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Availability__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Available_SMB_Underwriting_Method_Docs__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Available_SMB_Underwriting_Method_FICO__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

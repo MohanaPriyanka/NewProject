@@ -358,6 +358,17 @@
                 <behavior>Edit</behavior>
                 <field>Maximum_Subscription_Capacity_kWDC__c</field>
             </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Available_SMB_Underwriting_Method_FICO__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Available_SMB_Underwriting_Method_Docs__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
