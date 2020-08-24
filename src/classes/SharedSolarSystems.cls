@@ -12,7 +12,6 @@ public inherited sharing class SharedSolarSystems {
     private static ProductSelector productSelector = new ProductSelector();
     @TestVisible
     private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
-    private MultiMap contractsToManagementFeeTriggers = MultiMap.newSetInstance();
 
     public SharedSolarSystems(List<Shared_Solar_System__c> records) {
         this.records = records;
@@ -54,10 +53,12 @@ public inherited sharing class SharedSolarSystems {
         updateManagementRevenueStartDate(uow);
     }
     public void updateManagementRevenueStartDate(fflib_SObjectUnitOfWork uow) {
-        initContractsToManagementFeeTriggers();
+        MultiMap contractsToCFDs = getContractsToCFDs();
         for (Shared_Solar_System__c sss : records) {
-            List<Object> managementFeeTriggers = contractsToManagementFeeTriggers.getValues(sss.Client_Management_Contract__c);
-            Date managementRevenueStartDate = getRevenueStartDate(sss, managementFeeTriggers);
+            List<Object> untypedCFDs = contractsToCFDs.getValues(sss.Client_Management_Contract__c);
+            List<Contract_Fee_Detail__c> contractFeeDetails =
+                (List<Contract_Fee_Detail__c>) CollectionUtil.toTypedList(untypedCFDs, new List<Contract_Fee_Detail__c>());
+            Date managementRevenueStartDate = getRevenueStartDate(sss, contractFeeDetails);
             if (sss.Management_Revenue_Start_Date__c == null && managementRevenueStartDate != null) {
                 sss.Management_Revenue_Start_Date__c = managementRevenueStartDate;
                 uow.registerDirty(sss, new List<SObjectField>{Shared_Solar_System__c.Management_Revenue_Start_Date__c});
@@ -65,13 +66,13 @@ public inherited sharing class SharedSolarSystems {
         }
     }
 
-    private Date getRevenueStartDate(Shared_Solar_System__c sss, List<Object> managementFeeTriggers) {
-        if (managementFeeTriggers == null || managementFeeTriggers.size() == 0 || managementFeeTriggers[0] == '') {
+    private Date getRevenueStartDate(Shared_Solar_System__c sss, List<Contract_Fee_Detail__c> contractFeeDetails) {
+        if (contractFeeDetails == null || contractFeeDetails.size() == 0) {
             return null;
         }
         Date startDate;
-        for (Object managementFeeTrigger : managementFeeTriggers) {
-            switch on (String) managementFeeTrigger {
+        for (Contract_Fee_Detail__c cfd : contractFeeDetails) {
+            switch on cfd.Management_Fee_Trigger__c {
                 when 'Project: PTO' {
                     startDate = DateUtil.min(startDate, sss.Actual_PTO_Date_MANUAL__c);
                 } when 'Project: COD' {
@@ -80,11 +81,13 @@ public inherited sharing class SharedSolarSystems {
                     startDate = DateUtil.min(startDate, sss.Customer_Assignment_Date__c);
                 } when 'Project: First Customer Bill Date' {
                     startDate = DateUtil.min(startDate, sss.First_Bill_Date__c);
+                } when 'Contract: Effective Date' {
+                    startDate = DateUtil.min(startDate, cfd.Contract__r.StartDate);
                 } when else {
                     Logger.logLater(
                         'SharedSolarSystems',
                         'getRevenueStartDate',
-                        'Management Fee Trigger for system ' + sss.Id + ' not handled: ' + managementFeeTriggers[0],
+                        'Management Fee Trigger for system ' + sss.Id + ' not handled: ' + cfd,
                         Logger.ERROR
                     );
                 }
@@ -93,7 +96,8 @@ public inherited sharing class SharedSolarSystems {
         return startDate;
     }
 
-    private void initContractsToManagementFeeTriggers() {
+    private MultiMap getContractsToCFDs() {
+        MultiMap contractsToCFDs = MultiMap.newSetInstance();
         Set<Id> contractIds = new Set<Id>();
         for (Shared_Solar_System__c sss : records) {
             contractIds.add(sss.Client_Management_Contract__c);
@@ -101,9 +105,10 @@ public inherited sharing class SharedSolarSystems {
         List<Contract_Fee_Detail__c> contractFeeDetails = contractFeeDetailSelector.getContractDetailFromContract(contractIds);
         for (Contract_Fee_Detail__c cfd : contractFeeDetails) {
             if (cfd.Management_Fee__c && cfd.Management_Fee_Type__c == 'Recurring') {
-                contractsToManagementFeeTriggers.putValue(cfd.Contract__c, cfd.Management_Fee_Trigger__c);
+                contractsToCFDs.putValue(cfd.Contract__c, cfd);
             }
         }
+        return contractsToCFDs;
     }
 
 }
