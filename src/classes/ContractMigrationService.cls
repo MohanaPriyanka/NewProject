@@ -74,13 +74,13 @@ public without sharing class ContractMigrationService {
             } else {
                 Attachment fileAttach = attachmentMap.get(dsStatusId);
                 if (fileAttach == null){
-                    Logger.logLater('ContractMigrationService','No Attachment for DocuSign',dsStatusId);
+                    Logger.logLater('ContractMigrationService','No ' + documentNameContains + ' Attachment for DocuSign',dsStatusId);
                 } else {
                     convertAttachmentToFile(fileAttach, oppId);
                 }
             }
         }
-        insert fileToContractMap.values();
+        Util.insertSObjs(fileToContractMap.values());
         createContentDocumentLinks();
     }
 
