@@ -115,4 +115,12 @@ public class JournalEntrySelectorTest {
         List<Journal_Entry__c> entries = selector.getEntriesWithoutProductionDetail(objectTypes, 100);
         System.assertEquals(6,entries.size());
     }
+
+    @IsTest
+    public static void testGetEntriesMapByIds() {
+        JournalEntrySelector selector = new JournalEntrySelector();
+        Set<String> externalIds = new Set<String>{'2c92c0fa6e3a9391016e3df87b1f687a', '2c92c0fb6e3aa322016e3df698ff7e9f'};
+        Map<String, Journal_Entry__c> entries = selector.getEntriesMapByIds(externalIds);
+        System.assertEquals(2,entries.size());
+    }
 }

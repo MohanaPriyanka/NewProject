@@ -955,7 +955,6 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         }
         return res;
     }
-
     private static HttpResponse getDebitMemos(String endpoint) {
         HttpResponse res = getJSON();
         if (endpoint.contains('2c92c0fa6cbe34cb016cc13290452db4')) {
@@ -1217,7 +1216,6 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         }
         return res;
     }
-
     private static HttpResponse getDataQueryData(String endpoint) {
         HttpResponse res = getJSON();
         if (endpoint.contains('LINK_CONTAINS_RETURN_GL_OBJECT')) {
@@ -1321,6 +1319,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                     '"CustomerAccount":"BW-0013274","Amount":14.400000,' +
                     '"Gateway":"BCS Single Gateway",' +
                     '"AccountId":"2c92c0f86c858922016c8718952b7510",' +
+                    '"reasonCode":"Returned Payment",' +
+                    '"Comments":"Original Payment 2c92a00b71c96bdf0171dfcabc4e34c7, PaymentPartItem 2c92a00a71c95c4a0171dfcaf46f5343",' +
                     '"ExternalId":"2c92c0fa6c8aee2e016c92668a082a3f"}'
             );
         } else {

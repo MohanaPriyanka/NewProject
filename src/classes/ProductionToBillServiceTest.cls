@@ -128,6 +128,31 @@ public with sharing class ProductionToBillServiceTest {
     }
 
     @IsTest
+    public static void testQueueDebitMemoJob(){
+        useMocks();
+        List<Error_Log__c> beforeLogs = [
+                SELECT Class__c, Message__c
+                FROM Error_Log__c
+                WHERE Class__c = 'ProductionToBillService'
+                AND Method__c = 'executeDebitMemoJob'
+        ];
+        System.assertEquals(0,beforeLogs.size());
+
+        Test.startTest();
+        ProductionToBillService prodService = new ProductionToBillService();
+        prodService.queueJob(ProductionToBillService.OperationType.DEBITMEMO);
+        Test.stopTest();
+
+        List<Error_Log__c> afterLogs = [
+                SELECT Class__c, Message__c, Method__c
+                FROM Error_Log__c
+                WHERE Class__c = 'ProductionToBillService'
+                AND Method__c = 'executeDebitMemoJob'
+        ];
+        System.assert(afterLogs.size() > 0);
+    }
+
+    @IsTest
     public static void testFromInvoicesGetUsage(){
         /* 4 Customer Accounts, Across 2 Months:
             bw-00524: 1 Subscription to 1 project
@@ -444,6 +469,42 @@ public with sharing class ProductionToBillServiceTest {
     }
 
     @IsTest
+    public static void testCreateProductionDetailFromDebitMemos() {
+        useMocks();
+        List<Transfer_Part__c> beforeDebitMemos = [
+                SELECT Id
+                FROM Transfer_Part__c
+                WHERE Type__c = 'Payment'
+        ];
+
+        System.assertEquals(0,beforeDebitMemos.size());
+
+        List<Journal_Entry__c> debitMemoEntries = getDebitMemoJournalEntries();
+        ProductionDetailDebitMemoService service = new ProductionDetailDebitMemoService();
+        service.calculateProductionDetailFromDebitMemo(debitMemoEntries);
+
+        List<Transfer_Part__c> paymentParts = service.productionDetailToInsert;
+
+        System.assertEquals(5,paymentParts.size());
+
+        for (Transfer_Part__c part : paymentParts) {
+            switch on String.valueOf(part.Bill_Part__c) {
+                when 'a8y0a000000Gu3rBBB' {
+                    System.assertEquals(-120, part.Amount__c);
+                }
+                when 'a8y0a000000Gu3rCCC' {
+                    System.assertEquals(-1.87, part.Amount__c);
+                }
+                when else {
+                    //other debit memos are for adjustments - tested below in testAdjustmentPaymentFromDebitMemo
+                    continue;
+                }
+            }
+        }
+
+    }
+
+    @IsTest
     public static void testCreateProductionDetailFromInvoiceItems(){
         List<Journal_Entry__c> entries = getInvoiceItemJournalEntries();
 
@@ -643,6 +704,35 @@ public with sharing class ProductionToBillServiceTest {
     }
 
     @IsTest
+    public static void testAdjustmentPaymentFromDebitMemo(){
+        useMocks();
+        List<Transfer_Part__c> beforeDebitMemos = [
+                SELECT Id
+                FROM Transfer_Part__c
+                WHERE Type__c = 'Payment'
+        ];
+
+        System.assertEquals(0,beforeDebitMemos.size());
+
+        List<Journal_Entry__c> debitMemoEntries = getDebitMemoJournalEntries();
+        Set<String> adjustmentExternalIds = new Set<String>();
+        List<Journal_Entry__c> otherDebitMemos = new List<Journal_Entry__c>();
+
+        for (Journal_Entry__c entry : debitMemoEntries) {
+            if (entry.Reason_Code__c == 'BW Credit') {
+                adjustmentExternalIds.add(entry.External_Id__c);
+                otherDebitMemos.add(entry);
+            }
+        }
+
+        ProductionDetailDebitMemoService dmService = new ProductionDetailDebitMemoService();
+        dmService.createProductionDetailsForAdjustments(otherDebitMemos, adjustmentExternalIds);
+
+        List<Transfer_Part__c> paymentParts = dmService.productionDetailToInsert;
+        System.assertEquals(3, paymentParts.size());
+    }
+
+    @IsTest
     public static void testNegativeBillAmount(){
         String transferMapAsString = '{"a900a000000GsOyAAK":[' +
             '{"attributes":{"type":"Transfer_Part__c"},"Id":"a8y0a000000Gu3rAAA","Name":"InvoiceOne_ProductionOne","Production__c":"a8u0a000000I4ETAA0","Transfer__c":"a900a000000GsOyAAK","Transfer__r":{"attributes":{"type":"Transfer__c"},"Id":"a900a000000GsOyAAK","Billing_Method__c":"kWh","Transfer_kWh__c":22187},"Journal_Entry__c":"a920a000000HSfsAAG","kWh_Amount__c":10000,"Type__c":"Bill"},' +
@@ -750,6 +840,10 @@ public with sharing class ProductionToBillServiceTest {
 
         ProductionDetailCreditMemoService.productionDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
         ProductionDetailCreditMemoService.adjustmentSelector = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
+
+        ProductionDetailDebitMemoService.adjustmentSelector = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
+        ProductionDetailDebitMemoService.productionDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
+        ProductionDetailDebitMemoService.journalEntrySelector = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
     }
 
     public class MockGLSelector extends MockProvider {
@@ -768,6 +862,15 @@ public with sharing class ProductionToBillServiceTest {
                 }
                 when 'getEntriesWithoutProductionDetail' {
                     return entries;
+                }
+                when 'getEntriesMapByIds' {
+                    List<Journal_Entry__c> paymentEntries = getPaymentJournalEntries();
+                    Map<String, Journal_Entry__c> entryMap = new Map<String, Journal_Entry__c>();
+                    for (Journal_Entry__c entry : paymentEntries) {
+                        entryMap.put(entry.External_Id__c, entry );
+                    }
+
+                    return entryMap;
                 }
             }
             return null;
@@ -924,6 +1027,7 @@ public with sharing class ProductionToBillServiceTest {
                 '"2c92c0f86e3a939f016e3ceadda44909":[{"Id":"a0p0a000008ZZBuAAO", "Adjustment_Amount__c":10, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
                 '"2c92c0f96e3aa333016e3cf0484b601f":[{"Id":"a0p0a000008YSBuAAO", "Adjustment_Amount__c":10, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
                 '"2c92c0f86e3a939f016e3cebdda44909":[{"Id":"a0p0a000008YSCuAAO", "Adjustment_Amount__c":255.63, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
+                '"2c92a00a71c95c4a0171dfcaf46f5333":[{"Id":"a0p0a000008CCCuAAO", "Adjustment_Amount__c":221.87,"Zuora_Id__c":"2c92a00a71c95c4a0171dfcaf46f5333", "Discount__c":10,"Transfer__c":"a900a000000GqNBAA0"}],' +
                 '"2c92c0f86e3a939g016e3cebdda44909":[{"Id":"a0p0a000008AABuAAO", "Adjustment_Amount__c":10, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}],' +
                 '"2c92c0f86e3a939h016e3cebdda44909":[{"Id":"a0p0a000008BBBuAAO", "Adjustment_Amount__c":10, "Discount__c":10,"Transfer__c":"a900a000000GpNBAA0"}]' +
                 '}';
@@ -1073,6 +1177,7 @@ public with sharing class ProductionToBillServiceTest {
             Client__c = 'BW-0009470',
             Amount__c = 121.87,
             Applied_Record_Id__c = '2dd2c0fa6e3a9391016e3df87b1f687a',
+            External_Id__c = '2c92a00a71c95c4a0171dfcaf46f5343',
             Customer_Account__c = 'bw-00524',
             Date__c = mayBillDate
         );
@@ -1122,6 +1227,45 @@ public with sharing class ProductionToBillServiceTest {
         );
         List<Journal_Entry__c> entries = new List<Journal_Entry__c>{
             entryOne, entryTwo, entryThree, entryFive, entrySix
+        };
+        return entries;
+    }
+
+    private static List<Journal_Entry__c> getDebitMemoJournalEntries() {
+        Date mayBillDate = Date.newInstance(2019,05,20);
+
+        //Returned Payment -- should track to Invoice
+        Journal_Entry__c entryOne = new Journal_Entry__c(
+                Id = 'a920a000000HuJoAAA',
+                Object_Type__c = 'DebitMemo',
+                Query_Type__c = 'DebitMemo',
+                Project__c = 'SSS-000001',
+                Client__c = 'BW-0009470',
+                Amount__c = 121.87,
+                Applied_Record_Id__c = null,
+                Reason_Code__c = 'Returned Payment',
+                Returned_PaymentPart_Id__c = '2c92a00a71c95c4a0171dfcaf46f5343',
+                Customer_Account__c = 'bw-00524',
+                Date__c = mayBillDate
+        );
+
+        //Adjustment --- should track to Bill Adjustment
+        Journal_Entry__c entryTwo = new Journal_Entry__c(
+                Id = 'a920a000000HuJoBBB',
+                Object_Type__c = 'DebitMemo',
+                Query_Type__c = 'DebitMemo',
+                Project__c = 'SSS-000001',
+                Client__c = 'BW-0009470',
+                Amount__c = 221.87,
+                Applied_Record_Id__c = null,
+                Reason_Code__c = 'BW Credit',
+                Customer_Account__c = 'bw-00524',
+                External_Id__c = '2c92a00a71c95c4a0171dfcaf46f5333',
+                Date__c = mayBillDate
+        );
+
+        List<Journal_Entry__c> entries = new List<Journal_Entry__c>{
+                entryOne, entryTwo
         };
         return entries;
     }
@@ -1204,17 +1348,10 @@ public with sharing class ProductionToBillServiceTest {
 
     private static Map<String,List<Transfer_Part__c>> getBillPartByInvoice(){
         Map<String,List<Transfer_Part__c>> mapParts = new Map<String,List<Transfer_Part__c>>();
-        // Three invoiceItems, first two are distributed among 3 production periods
+        // Three invoiceItems, first distributed amond 2 production periods
+        // second is distributed among 3 production periods
         // last one is distributed among 1 production period
-        Transfer_Part__c partOne = new Transfer_Part__c(
-            Id = 'a8y0a000000Gu3rAAA',
-            Name = 'InvoiceOne_ProductionOne',
-            Production__c = 'a8u0a000000I4ETAA0',
-            Transfer__c = 'a900a000000GsOyAAK',
-            Journal_Entry__c = 'a920a000000HSfsAAG',
-            Amount__c = 100,
-            Type__c = 'Bill'
-        );
+
         Transfer_Part__c partTwo = new Transfer_Part__c(
             Id = 'a8y0a000000Gu3rBBB',
             Name = 'InvoiceOne_ProductionTwo',
@@ -1269,7 +1406,7 @@ public with sharing class ProductionToBillServiceTest {
             Amount__c = 123.34,
             Type__c = 'Bill'
         );
-        mapParts.put('2dd2c0fa6e3a9391016e3df87b1f687a', new List<Transfer_Part__c>{partOne, partTwo, partThree});
+        mapParts.put('2dd2c0fa6e3a9391016e3df87b1f687a', new List<Transfer_Part__c>{ partTwo, partThree});
         mapParts.put('2dd2c0fa6e3a9391016e3df87b1f687b',new List<Transfer_Part__c>{partFour, partFive, partSix});
         mapParts.put('2dd2c0fb6e3aa322016e3df698ff7e9f',new List<Transfer_Part__c>{partSeven});
         return mapParts;
