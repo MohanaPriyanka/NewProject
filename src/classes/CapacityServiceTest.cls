@@ -18,6 +18,20 @@ public with sharing class CapacityServiceTest {
         );
         insert new List<Utility__c>{eversource, nationalGrid};
 
+        Rate_Class__c everRateClass = new Rate_Class__c(
+            LDC_Rate_Class__c = 'abc',
+            LDC_Rate_Subclass__c = '123',
+            Name = 'Eversource Rate Class',
+            Utility__c = eversource.Id
+        );
+        Rate_Class__c natRateClass = new Rate_Class__c(
+            LDC_Rate_Class__c = 'abc',
+            LDC_Rate_Subclass__c = '123',
+            Name = 'National Grid Rate Class',
+            Utility__c = nationalGrid.Id
+        );
+        insert new List<Rate_Class__c>{everRateClass, natRateClass};
+
         Load_U__c everLZU = new Load_U__c (
             Name = '12345',
             LZ__c = 'SEMA',
@@ -206,6 +220,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(0, response.loadZones.size());
         System.assertEquals(0, response.products.size());
         System.assertEquals(0, response.sharedSolarSystems.size());
+        System.assertEquals(0, response.rateClasses.size());
         System.assertEquals(false, response.hasCapacity());
     }
 
@@ -219,6 +234,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(0, response.products.size());
         System.assertEquals(0, response.loadZones.size());
         System.assertEquals(0, response.sharedSolarSystems.size());
+        System.assertEquals(0, response.rateClasses.size());
         System.assertEquals(false, response.hasCapacity());
     }
 
@@ -232,6 +248,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(1, response.loadZones.size());
         System.assertEquals(1, response.products.size());
         System.assertEquals(1, response.sharedSolarSystems.size());
+        System.assertEquals(1, response.rateClasses.size());
         System.assertEquals(true, response.hasCapacity());
     }
 
@@ -245,6 +262,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(1, response.loadZones.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(2, response.sharedSolarSystems.size());
+        System.assertEquals(1, response.rateClasses.size());
         System.assertEquals(true, response.hasCapacity());
     }
 
@@ -259,6 +277,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(2, response.loadZoneNames.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(4, response.sharedSolarSystems.size());
+        System.assertEquals(2, response.rateClasses.size());
     }
 
     @IsTest
@@ -272,6 +291,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(2, response.loadZoneNames.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(4, response.sharedSolarSystems.size());
+        System.assertEquals(2, response.rateClasses.size());
         System.assertEquals(true, response.hasCapacity());
 
         response = service.findCapacityByZipcode('23456');
@@ -281,6 +301,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(1, response.loadZones.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(2, response.sharedSolarSystems.size());
+        System.assertEquals(1, response.rateClasses.size());
         System.assertEquals(true, response.hasCapacity());
     }
 
@@ -295,6 +316,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(2, response.loadZoneNames.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(4, response.sharedSolarSystems.size());
+        System.assertEquals(2, response.rateClasses.size());
         System.assertEquals(true, response.hasCapacity());
     }
 
@@ -314,6 +336,7 @@ public with sharing class CapacityServiceTest {
         System.assertNotEquals(0, response.loadZoneNames.size(), 'At least one load zone name should match the zip code and be returned');
         System.assertEquals(0, response.products.size(), 'Because the match Shared Solar System does not have any Sales Partners, no products should be returned');
         System.assertEquals(0, response.sharedSolarSystems.size(), 'Because the match Shared Solar System does not have any Sales Partners, no Shared Solar Systems should be returned');
+        System.assertNotEquals(0, response.rateClasses.size(), 'At least one rate class should be returned because at least one utility was returned');
         System.assertEquals(false, response.hasCapacity(), 'Because the match Shared Solar System does not have any Sales Partners, the response should indicate no available capacity');
     }
 

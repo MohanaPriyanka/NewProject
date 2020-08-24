@@ -111,28 +111,19 @@ public without sharing class SimpleSignupFormController {
     }
 
 
-    // used before we have a lead id and email, so no way to authenticate
     @AuraEnabled
-    public static RestZipCode.Utility getUtilityFromId(Id utilityId){
-        if(Schema.sObjectType.Utility__c.fields.Id.isAccessible() &&
-            Schema.sObjectType.Utility__c.fields.Name.isAccessible() &&
-            Schema.sObjectType.Utility__c.fields.Utility_Data_Collection_Mechanism__c.isAccessible()) {
-                Utility__c util = [SELECT Id, Name, Utility_Data_Collection_Mechanism__c FROM Utility__c WHERE Id = :utilityId LIMIT 1];
-                return new RestZipCode.Utility(util.Id, util.Name, util.Utility_Data_Collection_Mechanism__c);
+    public static Id getUtilityFromEiaId(Id leadId, String email, String eiaId){
+        try {
+            restControllerV3.validateAuthorization(leadId, email);
+        } catch (Util.AuthorizationBWException abwe) {
+            throw Util.createAuraExceptionWithMessage('The email (' + email + ') and leadId (' + leadId + ') provided did not match');
         }
 
-        return null;
-    }
-
-
-    // used before we have a lead id and email, so no way to authenticate
-    @AuraEnabled
-    public static RestZipCode.Utility getUtilityFromEiaId(String eiaId){
         if(Schema.sObjectType.Utility__c.fields.Id.isAccessible() &&
             Schema.sObjectType.Utility__c.fields.Name.isAccessible() &&
             Schema.sObjectType.Utility__c.fields.Utility_Data_Collection_Mechanism__c.isAccessible()) {
                 Utility__c util = [SELECT Id, Name, Utility_Data_Collection_Mechanism__c FROM Utility__c WHERE EIA_ID__c = :eiaId LIMIT 1];
-                return new RestZipCode.Utility(util.Id, util.Name, util.Utility_Data_Collection_Mechanism__c);
+                return util.Id;
         }
 
         return null;
