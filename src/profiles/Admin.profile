@@ -975,6 +975,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ProductionDetailDebitMemoService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionDetailPaymentService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProductionDetailSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -11458,6 +11466,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Journal_Entry__c.Ready_for_Production_Detail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Journal_Entry__c.Returned_PaymentPart_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

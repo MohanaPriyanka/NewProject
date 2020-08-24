@@ -70,7 +70,8 @@ public with sharing class ZuoraGLSelector {
                 'm.Gateway__c as Gateway, ' +
                 'm.Lockbox__c as Lockbox, ' +
                 'm.PaymentMethod__c as PaymentMethod, ' +
-                'm.ArchivedChargentData__c as ArchivedChargentData ' +
+                'm.ArchivedChargentData__c as ArchivedChargentData, ' +
+                'm.Comments as Comments ' +
                 'FROM DebitMemo m ' +
                 'INNER JOIN Account a ON m.accountid = a.Id';
 
