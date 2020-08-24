@@ -74,24 +74,24 @@ public without sharing class CapacityService {
                 zipcodeResponse.loadZoneNames
             );
         
+        zipcodeResponse.ficoUnderwriting = false;
+        zipcodeResponse.finDocsUnderwriting = false;
+        
         // Allowing null partnerNames to match to all systems, to support CSAP behavior
         for (Shared_Solar_System__c sharedSolarSystem: sharedSolarSystems) {
             if (partnerName == null ||
                 (sharedSolarSystem.Sales_Partners__c != null &&
                 (sharedSolarSystem.Sales_Partners__c.split(';').contains(partnerName) ||
                 sharedSolarSystem.Sales_Partners__c.split(';').contains('All')))) {
-                zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
-                zipcodeResponse.products.add(sharedSolarSystem.Product__r);
-            }
-            if(sharedSolarSystem.Available_SMB_Underwriting_Method_FICO__c) {
-                zipcodeResponse.ficoUnderwriting = true;
-            } else {
-                zipcodeResponse.ficoUnderwriting = false;
-            }
-            if(sharedSolarSystem.Available_SMB_Underwriting_Method_Docs__c) {
-                zipcodeResponse.finDocsUnderwriting = true;
-            } else {
-                zipcodeResponse.finDocsUnderwriting = false;
+                    zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
+                    zipcodeResponse.products.add(sharedSolarSystem.Product__r);
+
+                    if(sharedSolarSystem.Available_SMB_Underwriting_Method_FICO__c) {
+                        zipcodeResponse.ficoUnderwriting = true;
+                    }
+                    if(sharedSolarSystem.Available_SMB_Underwriting_Method_Docs__c) {
+                        zipcodeResponse.finDocsUnderwriting = true;
+                    }
             }
         }
     }
