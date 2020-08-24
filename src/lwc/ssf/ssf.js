@@ -96,8 +96,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     
                     if(resolveResult.utilityId) {
                         this.getZipCodeCapacity(resolveResult.utilityId, true);
-                    } else if(resolveResult.eiaId) {
-                        this.getUtilityByEIA(resolveResult.eiaId);
                     } else {
                         this.getZipCodeCapacity(null, false);
                     }
@@ -128,14 +126,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     }
                 }
             );
-    }
-
-    getUtilityByEIA(eiaId) {
-        getUtilByEIA({ leadId: this.leadId, email: this.email, eiaId: eiaId }).then(
-            (resolveResult) => {
-                this.getZipCodeCapacity(resolveResult, true);
-            }
-        )
     }
 
     renderedCallback() {

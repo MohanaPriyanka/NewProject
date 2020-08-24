@@ -255,28 +255,4 @@ public with sharing class SimpleSignupFormControllerTest {
         ContentDocument contentDoc = [SELECT OwnerId FROM ContentDocument WHERE Id = :docId LIMIT 1];
         System.assertNotEquals(backup.Id, contentDoc.OwnerId, 'Missing dummy record prevents method from reparenting uploaded file');
     }
-
-
-    @IsTest
-    private static void testGetUtilityByEIAId(){
-        User guest = [SELECT Id FROM User WHERE Alias = 'guest' LIMIT 1];
-        Lead lead = [SELECT Id, Email FROM Lead];
-        Utility__c util = new Utility__c(Name = 'Test Utility', Utility_Data_Collection_Mechanism__c = 'EDI', EIA_ID__c = '12345');
-        insert util;
-
-        Test.startTest();
-            System.runAs(guest){
-                Id utilityId = SimpleSignupFormController.getUtilityFromEiaId(lead.Id, lead.Email, '12345');
-                System.assertEquals(util.Id, utilityId, 'Returned utility ID should match ID of test utility');
-
-                Boolean exceptionThrown = false;
-                try {
-                    utilityId = SimpleSignupFormController.getUtilityFromEiaId(lead.Id, lead.Email, '99999');
-                } catch(System.QueryException qe) {
-                    exceptionThrown = true;
-                }
-                System.assert(exceptionThrown, 'Method should have thrown a query exception when a fake EIA ID was input.');
-            }
-        Test.stopTest();
-    }
 }

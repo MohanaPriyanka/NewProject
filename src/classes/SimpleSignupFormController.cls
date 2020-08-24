@@ -111,25 +111,6 @@ public without sharing class SimpleSignupFormController {
     }
 
 
-    @AuraEnabled
-    public static Id getUtilityFromEiaId(Id leadId, String email, String eiaId){
-        try {
-            restControllerV3.validateAuthorization(leadId, email);
-        } catch (Util.AuthorizationBWException abwe) {
-            throw Util.createAuraExceptionWithMessage('The email (' + email + ') and leadId (' + leadId + ') provided did not match');
-        }
-
-        if(Schema.sObjectType.Utility__c.fields.Id.isAccessible() &&
-            Schema.sObjectType.Utility__c.fields.Name.isAccessible() &&
-            Schema.sObjectType.Utility__c.fields.Utility_Data_Collection_Mechanism__c.isAccessible()) {
-                Utility__c util = [SELECT Id, Name, Utility_Data_Collection_Mechanism__c FROM Utility__c WHERE EIA_ID__c = :eiaId LIMIT 1];
-                return util.Id;
-        }
-
-        return null;
-    }
-
-
 
     /****************************************/
     /***          HELPER METHODS          ***/
