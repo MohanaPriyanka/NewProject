@@ -176,9 +176,7 @@ public without sharing class ClientReportingService {
         }
         insert clientUASList;
     }
-    //TODO: This method will be deprecated when the Subscription Order flag is turned on
-    // When a SSS changes on an Opportunity, a new UAS will be created along with a new CUAS
-    // therefore there is no need to update the SSS on the existing SSS
+
     public static void updateClientUAS(List<Utility_Account_Subscription__c> uasList, Map<Id, Utility_Account_Subscription__c> oldMap) {
         Set<Id> uasIds = new Set<Id>();
         for (Utility_Account_Subscription__c uas : uasList) {
