@@ -1,48 +1,52 @@
 <template>
-    <div style="width: 100%;">
+    <div style="width: 100%;" class="slds-var-m-bottom_small">
         <template if:false={success}>
-            <lightning-file-upload
-                label={inputText}
-                name="fileUploader"
-                accept={acceptedFileTypes}
-                record-id={recordId}
-                onuploadfinished={handleUploadFinished}
-                multiple>
-            </lightning-file-upload>
+            <div class="fileUploadWithHelp">
+                <lightning-file-upload
+                    label={inputText}
+                    name="fileUploader"
+                    accept={acceptedFileTypes}
+                    record-id={recordId}
+                    onuploadfinished={handleUploadFinished}
+                    multiple>
+                </lightning-file-upload>
+                <template if:false={isPhone}>
+                    <template if:true={hasHelpText}>
+                        <div class="help-icon" title="Click here for more information" onclick={toggleHelp}>
+                            <svg class="help-button__icon" aria-hidden="true">
+                                <use xlink:href="/_slds/icons/action-sprite/svg/symbols.svg#question_post_action"></use>
+                            </svg>
+                            <span class="slds-assistive-text">Click here for more information</span>
+                        </div>
+                        <template if:true={helpTextVisible} onclick={handleInteriorClick}>
+                            <div class={tooltipClasses} role="tooltip" id="help">
+                                <div class="slds-popover__body">
+                                    <slot></slot>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                </template>
+            </div> 
             <template if:true={isError}>
                 <div data-help-message="true" role="alert" class="slds-form-element__help slds-text-color_error">
-                    <p class="small">You must upload your utility bill before proceeding.</p>
+                    <p class="small">You must upload your {categoryType} before proceeding.</p>
                 </div>
             </template>
-
-        
-            <div style="width: 100%;" class="slds-text-align_right">
-                <lightning-button
-                    label="[more info]"
-                    variant="base"
-                    onclick={toggleHelp}>
-                </lightning-button>
-                <div if:true={helpTextVisible} class="slds-text-align_left">
-                    <p>Why do we need your utility bill?</p>
-                    <p class="small slds-var-m-bottom_small">We collect images of your bill in order to ensure you receive the appropriate amount of credits. The image of your bill just needs to be legible. Otherwise, we have no preference on format.</p>
-                    <p>How can you provide it?</p>
-                    <p class="small">You can obtain the image through the following methods:</p>
-                    <ul class="slds-list_dotted slds-var-m-bottom_small">
-                        <li><p class="small">If you have a hard copy of your bill, you can take a picture of or scan the pages and upload the resulting images</p></li>
-                        <li><p class="small">You can take a screenshot of your bill and upload the resulting images</p></li>
-                        <li><p class="small">Some utilities allow you to download a pdf of your bill from your account online</p></li>
-                        <li><p class="small">Maybe there’s something else we haven’t thought of!</p></li>
-                    </ul>
-                    <p>What does it need to include?</p>
-                    <p class="small">Please make sure the bill you provide:</p>
-                    <ul class="slds-list_dotted slds-var-m-bottom_small">
-                        <li><p class="small">Is dated within the past 90 days</p></li>
-                        <li><p class="small">Has no payments over 2 months past due</p></li>
-                        <li><p class="small">Includes all pages of the bill (you can upload as many as 5 individual pages)</p></li>
-                    </ul>
-                    <p class="small">Remember that we’re here to help through chat, email or phone if you need it.</p>
-                </div>
-            </div>        
+            <template if:true={isPhone}>
+                <template if:true={hasHelpText}>
+                    <div class="slds-text-align_right">
+                        <lightning-button
+                            label="[more info]"
+                            variant="base"
+                            onclick={toggleHelp}>
+                        </lightning-button>
+                        <div if:true={helpTextVisible} class="slds-text-align_left">
+                            <slot></slot>
+                        </div>
+                    </div>
+                </template>
+            </template>
         </template>
         <template if:true={success}>
             <div class="slds-var-m-around_small">
@@ -53,7 +57,7 @@
                     alternative-text="upload successful"
                     class="slds-var-m-right_x-small">
                 </lightning-icon>
-                <span><p>Utility Bills Uploaded Successfully!</p></span>
+                <span><p>{inputText}</p></span>
             </div>
         </template>
         <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
