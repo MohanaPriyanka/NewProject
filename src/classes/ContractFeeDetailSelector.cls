@@ -11,7 +11,8 @@ public inherited sharing class ContractFeeDetailSelector {
                 Acquisition_Cust_Group_Non_Residential__c, Acquisition_Sizing_Type_Downsizing__c,
                 Acquisition_Sizing_Type_Upsizing__c, Acquisition_Type_Acquisition__c, Acquisition_Type_Reacquisition__c,
                 Acq_Anchor_Qualif_Investment_Grade__c, Acq_Anchor_Qualif_Not_Investment_Grade__c, 
-                Fee__c, Fee_Unit__c, Management_Fee__c, Management_Fee_Type__c, Management_Fee_Trigger__c
+                Fee__c, Fee_Unit__c, Management_Fee__c, Management_Fee_Type__c, Management_Fee_Trigger__c,
+                Contract__r.StartDate
             FROM Contract_Fee_Detail__c
             WHERE Contract__c IN : contractIds
         ];
