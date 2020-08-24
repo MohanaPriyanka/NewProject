@@ -80,7 +80,7 @@ public without sharing class ContractMigrationService {
                 }
             }
         }
-        insert fileToContractMap.values();
+        Util.insertSObjs(fileToContractMap.values());
         createContentDocumentLinks();
     }
 
