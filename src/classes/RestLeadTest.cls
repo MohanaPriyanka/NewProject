@@ -119,8 +119,62 @@ public with sharing class RestLeadTest {
             invalidNonResidentialLead.validateCreateFields();
             System.assert(false, 'Validation should not pass');
         } catch (Exception e) {
-            System.assert(e.getMessage().containsIgnoreCase('businessName'), 'Should inform consumer that bsuinessName is invalid');
+            System.assert(e.getMessage().containsIgnoreCase('businessName'), 'Should inform consumer that businessName is invalid');
         }
     }
 
+    @IsTest
+    static void testUalRateClass(){
+        Utility__c utility1 = new Utility__c(Name = 'utility1');
+        Utility__c utility2 = new Utility__c(Name = 'utility2');
+        insert new List<Utility__c>{utility1, utility2};
+
+        Rate_Class__c rateClass1 = new Rate_Class__c(Name = 'rateClass', Utility__c = utility1.Id);
+        Rate_Class__c rateClass2 = new Rate_Class__c(Name = 'rateClass', Utility__c = utility2.Id);
+        insert new List<Rate_Class__c>{rateClass1, rateClass2};
+
+        Lead lead = validResidentialLead.asLead();
+        lead.Id = null;
+        insert lead;
+
+        Account propertyAccount = validPropertyAccount.asAccount(lead);
+        propertyAccount.Lead__c = lead.Id;
+        propertyAccount.Id = null;
+        insert propertyAccount;
+
+        validUtilityAccountLog.rateClass = 'rateClass';
+        Utility_Account_Log__c ual = validUtilityAccountLog.asUAL(propertyAccount);
+        System.assertNotEquals(null, ual.Utility_Rate_Class__c, 'asUAL() method should have returned either of the Rate Classes, as both match the name in the RestUtilityAccountLog');
+        
+        lead.Utility_relationship__c = utility2.Id;
+        update lead;
+        ual = validUtilityAccountLog.asUAL(propertyAccount);
+        System.assertEquals(rateClass2.Id, ual.Utility_Rate_Class__c, 'asUAL() method should have returned the Rate Class matching the Utility record on the lead');
+
+        ual.Utility_Rate_Class__c = rateClass1.Id;
+        insert ual;
+        rateClass1.Name = 'New Rate Class Name';
+        rateClass1.Utility__c = utility2.Id;
+        update rateClass1;
+        ual = new UALSelector().selectOne(ual.Id);
+        RestLead.RestUtilityAccountLog newRestUAL = new RestLead.RestUtilityAccountLog(ual);
+        System.assertEquals('New Rate Class Name', newRestUAL.rateClass, 'RestUAL should reflect new rate class name from input Utility Account Log');
+
+        newRestUAL.rateClass = null;
+        newRestUAL.mergeFields(new Set<String>{'rateClass'}, ual);
+        System.assertEquals(null, ual.Utility_Rate_Class__c, 'mergeFields() method should have cleared the value of the Utility_Rate_Class__c field on the Utility Account Log');
+
+        newRestUAL.rateClass = 'rateClass';
+        newRestUAL.mergeFields(new Set<String>{'rateClass'}, ual);
+        System.assertEquals(rateClass2.Id, ual.Utility_Rate_Class__c, 'mergeFields() method should have returned the Rate Class matching the name in the RestUtilityAccountLog');
+
+        lead.Utility_relationship__c = utility1.Id;
+        update lead;
+        ual.Utility_lookup__c = utility1.Id;
+        update ual;
+        newRestUAL.rateClass = 'New Rate Class Name';
+        newRestUAL.mergeFields(new Set<String>{'rateClass'}, ual);
+        List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c WHERE Class__c = 'RestLead.RestUtilityAccountLog' AND Method__c = 'updateRateClass'];
+        System.assert(!errorLogs.isEmpty(), 'An error log should have been created by the mergeFields() method, as there is no Rate Class matching both the name in the RestUtilityAccountLog and the Utility in the parent lead');
+    }
 }

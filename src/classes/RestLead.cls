@@ -373,6 +373,7 @@ public without sharing class RestLead {
         public String serviceCity;
         public String serviceState;
         public String servicePostalCode;
+        public String rateClass;
         public Decimal annualKWh;
         public Decimal annualCostOfElectricity;
         public List<RestContentDocument> utilityBills;
@@ -399,6 +400,7 @@ public without sharing class RestLead {
             this.serviceCity = ual.Service_City__c;
             this.serviceState = ual.Service_State__c;
             this.servicePostalCode = ual.Service_Zip_Code__c;
+            this.rateClass = ual.Utility_Rate_Class__r.Name;
             this.annualKWh = ual.Annual_kWh__c;
             this.annualCostOfElectricity = ual.Annual_Cost_of_Electricity__c;
         }
@@ -423,6 +425,10 @@ public without sharing class RestLead {
             if(!leadList.isEmpty()) {
                 ual.Utility_lookup__c = leadList[0].Utility_relationship__c;
             }
+
+            if(this.rateClass != null) {
+                updateRateClass(this.rateClass, ual);
+            }
             
             return ual;
         }
@@ -445,8 +451,37 @@ public without sharing class RestLead {
             if (fieldNames.contains('servicePostalCode')) baseUAL.Service_Zip_Code__c = this.servicePostalCode;
             if (fieldNames.contains('annualKWh')) baseUAL.Annual_kWh__c = this.annualKWh;
             if (fieldNames.contains('annualCostOfElectricity')) baseUAL.Annual_Cost_of_Electricity__c = this.annualCostOfElectricity;
+            
+            if(fieldNames.contains('rateClass')) {
+                if(this.rateClass == null) {
+                    baseUAL.Utility_Rate_Class__c = null;
+                } else {
+                    updateRateClass(this.rateClass, baseUAL);
+                }
+            }
     
             return baseUAL;
+        }
+
+        @SuppressWarnings('PMD.ApexCRUDViolation')
+        private void updateRateClass(String rateClass, Utility_Account_Log__c ual) {
+            RateClassesSelector rateClassesSelector = new RateClassesSelector();
+            List<Rate_Class__c> rateClasses = new List<Rate_Class__c>();
+            if(ual.Utility_lookup__c != null) {
+                rateClasses = rateClassesSelector.selectByNameAndUtility(rateClass, ual.Utility_lookup__c);
+            } else {
+                rateClasses = rateClassesSelector.selectByName(rateClass);
+            }
+            
+            if(!rateClasses.isEmpty()) {
+                ual.Utility_Rate_Class__c = rateClasses[0].Id;
+            } else {
+                String errorMessage = 'No Rate Classes found named ' + rateClass;
+                if(ual.Utility_lookup__c != null) {
+                    errorMessage += ' for Utility__c ID of ' + ual.Utility_lookup__c;
+                }
+                Logger.logNow('RestLead.RestUtilityAccountLog', 'updateRateClass', errorMessage);
+            }
         }
     }
 
