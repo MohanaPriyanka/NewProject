@@ -5198,6 +5198,10 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>DeferSharingCalculations</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>DelegatedTwoFactor</name>
     </userPermissions>
     <userPermissions>
@@ -5411,6 +5415,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewEventLogFiles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewPlatformEvents</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
