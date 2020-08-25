@@ -94,7 +94,8 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Total_Capacity_Committed_Reserved__c,
                 Reserved_Anchor_Capacity__c, Name, Stage__c,
                 CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c,
-                Management_Revenue_Start_Date__c
+                Management_Revenue_Start_Date__c, Customer_Assignment_Date__c, First_Bill_Date__c,
+                Actual_COD_Date__c, Actual_PTO_Date_MANUAL__c
             FROM Shared_Solar_System__c
         ];
     }
