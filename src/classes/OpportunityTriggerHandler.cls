@@ -31,7 +31,6 @@ public without sharing class OpportunityTriggerHandler {
             CSCancellationService.closeAccounts(acctsToCancel);
         }
         createPartnerCommission(oldMap, newMap);
-        ClientReportingService.updateClientUAS(newMap, oldMap);
         customerAssignmentService.updateAssignmentAgreements(oldMap, newMap);
     }
 
