@@ -37,8 +37,8 @@ public inherited sharing class SharedSolarSystemsSelector {
             loadZoneString += '\'' + String.escapeSingleQuotes(loadZone) +  '\',';
         }
         loadZoneString = loadZoneString.left(loadZoneString.length() - 1); // strip off extra comma
-        String query = 'SELECT Id, Name, Capacity_Available_to_be_Reserved__c, Product__r.Id, ' +
-            'Product__r.Name, Product__r.Customer_Subscription_Type__c, Sales_Partners__c, ' +
+        String query = 'SELECT Id, Name, Capacity_Available_to_be_Reserved__c, Product__r.Id, Product__r.Name, ' +
+            'Product__r.Customer_Subscription_Type__c, Product__r.Collect_Rate_Class_via_Application__c, Sales_Partners__c, ' +
             'Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c ' +
             'FROM Shared_Solar_System__c ' +
             'WHERE Capacity_Available_to_be_Reserved__c > 0 ' +
@@ -94,13 +94,12 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Total_Capacity_Committed_Reserved__c,
                 Reserved_Anchor_Capacity__c, Name, Stage__c,
                 CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c,
-
                 Management_Revenue_Start_Date__c, Customer_Assignment_Date__c, First_Bill_Date__c,
                 Actual_COD_Date__c, Actual_PTO_Date_MANUAL__c
-
             FROM Shared_Solar_System__c
         ];
     }
+
     public List<Shared_Solar_System__c> getSharedSolarSystemsForEnrollment() {
         return [
             SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
@@ -115,6 +114,7 @@ public inherited sharing class SharedSolarSystemsSelector {
             AND Capacity_Available_to_be_Reserved__c > 0
         ];
     }
+
     public List<Shared_Solar_System__c> selectSharedSolarSystemsForQualificationCheck(String productId, List<Id> utilityIds) {
         return [
                 SELECT Id, Name, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c,
@@ -127,6 +127,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 ORDER BY Assignment_Order__c
         ];
     }
+
     public List<Shared_Solar_System__c> getActiveSystemsWithSmallOfftakeUASes() {
         return [
             SELECT Id, (
