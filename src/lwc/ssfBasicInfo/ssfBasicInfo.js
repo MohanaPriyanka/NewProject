@@ -174,7 +174,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.restLead.businessPhone = 1231231234;
         }
         this.propertyAccount.utilityAccountLogs[0].utilityAccountNumber = '123';
-        this.propertyAccount.utilityAccountLogs[0].nameOnAccount = 'Peter testcase';
+        this.propertyAccount.utilityAccountLogs[0].nameOnAccount = 'Peter Testcase';
         this.propertyAccount.utilityAccountLogs[0].serviceStreet = '123 Main';
         this.propertyAccount.utilityAccountLogs[0].serviceState = 'MA';
         this.propertyAccount.utilityAccountLogs[0].serviceCity = 'Boston';

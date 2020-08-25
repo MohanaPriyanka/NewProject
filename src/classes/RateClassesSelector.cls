@@ -7,7 +7,7 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class RateClassesSelector {
     
-    public static List<Rate_Class__c> selectByUtilities(Set<Id> utilityIds) {
+    public List<Rate_Class__c> selectByUtilities(Set<Id> utilityIds) {
         return [
             SELECT Id, Name
             FROM Rate_Class__c

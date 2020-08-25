@@ -8,6 +8,7 @@
 
 
 public without sharing class CapacityService {
+    @TestVisible private RateClassesSelector rateClassSelector = new RateClassesSelector();
 
     // To support CSAP, which ignores Sales Partners when querying for systems
     public ZipcodeResponse findCapacityByZipcode(String zipcode) {
@@ -27,7 +28,7 @@ public without sharing class CapacityService {
         }
         zipcodeResponse.zipcode = zipcode;
         setUtilitiesAndLoadZones(zipcodeResponse, utilityId);
-        zipcodeResponse.rateClasses = new Set<Rate_Class__c>(RateClassesSelector.selectByUtilities(zipcodeResponse.utilityIds));
+        zipcodeResponse.rateClasses = new Set<Rate_Class__c>(rateClassSelector.selectByUtilities(zipcodeResponse.utilityIds));
         setProductsAndSharedSolarSystems(zipcodeResponse, getPartnerName(partnerId));
         return zipcodeResponse;
     }
@@ -86,12 +87,12 @@ public without sharing class CapacityService {
                 zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
                 zipcodeResponse.products.add(sharedSolarSystem.Product__r);
 
-            if(sharedSolarSystem.Available_SMB_Underwriting_Method_FICO__c) {
-                zipcodeResponse.ficoUnderwriting = true;
-            }
-            if(sharedSolarSystem.Available_SMB_Underwriting_Method_Docs__c) {
-                zipcodeResponse.finDocsUnderwriting = true;
-                    }
+                if(sharedSolarSystem.Available_SMB_Underwriting_Method_FICO__c) {
+                    zipcodeResponse.ficoUnderwriting = true;
+                }
+                if(sharedSolarSystem.Available_SMB_Underwriting_Method_Docs__c) {
+                    zipcodeResponse.finDocsUnderwriting = true;
+                }
             }
         }
     }
