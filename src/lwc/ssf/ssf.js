@@ -9,7 +9,6 @@ import { loadStyle } from 'lightning/platformResourceLoader';
 import { makeRequest } from 'c/httpRequestService';
 import { getZipCodeCapacity } from 'c/zipCodeService';
 import insertLog from '@salesforce/apex/Logger.insertLog';
-import getUtilByEIA from '@salesforce/apex/SimpleSignupFormController.getUtilityFromEiaId';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 
 export default class Ssf extends NavigationMixin(LightningElement) {
