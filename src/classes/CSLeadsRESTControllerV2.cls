@@ -360,7 +360,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         newLead.Continue_Application_Link__c = baseUrl + '?leadid=' + newLead.Id + '&email=' + newLead.Email + '&loc=' + APP_STATUS_TO_LOCATION.get('Started');
         newLead = leadService.updateLead(newLead);
 
-        
         if(requestLead.financialDocs != null) {
             for(RestLead.RestContentDocument contentDoc : requestLead.financialDocs) {
                 Financial_Underwriting_Document__c finDoc = new Financial_Underwriting_Document__c(Lead__c = newLead.Id);
@@ -563,7 +562,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                         return true;
                     }
                 }
+                if(leadUAL.Utility_Rate_Class__r.Name != restUAL.get('rateClass')) {
+                    return true;
             }
+        }
         }
 
         return false;
@@ -577,7 +579,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible
     private RestLead formatRestLeadFromLeadAndChildren(Lead leadToReturn, Boolean docsNewlyGenerated) {
         RestLead responseLead = new RestLead(leadToReturn);
-
+        
         // map UALs to their parent property accounts
         MultiMap ualsByPropertyAccountId = CollectionUtil.multiMapByField(leadToReturn.Utility_Account_Logs__r, Utility_Account_Log__c.Account__c);
         Set<Id> linkedEntityIdSet = new Set<Id>{leadToReturn.Id};

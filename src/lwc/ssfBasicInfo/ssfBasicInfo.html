@@ -135,6 +135,22 @@
                                                         required>
                                         </lightning-input>
                                     </div>
+                                    <template if:true={collectRateClass}>
+                                        <div class="input-group half">
+                                            <lightning-combobox key={it.value.localid}
+                                                                name="rateClass"
+                                                                data-row-index={it.index}
+                                                                class="slds-var-m-bottom_small slds-col"
+                                                                placeholder=""
+                                                                label="Utility Rate Class"
+                                                                value={it.value.rateClass}
+                                                                onchange={utilityAccountOnChange}
+                                                                options={rateClassOptions}
+                                                                required>
+                                            </lightning-combobox>
+                                        </div>
+                                        <template if:false={isPhone}><div class="input-group half"></div></template>
+                                    </template>
                                     <div class="input-group half">
                                         <lightning-input key={it.value.localid}
                                                         name="serviceStreet"
