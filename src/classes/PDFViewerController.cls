@@ -1,5 +1,6 @@
 public with sharing class PDFViewerController {
     @AuraEnabled(cacheable=true)
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static Map<ID, String> getRelatedFilesByRecordId(String recordId) {
         // Get record file IDs        
         List<ContentDocumentLink> files = [SELECT ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId = :recordId];
