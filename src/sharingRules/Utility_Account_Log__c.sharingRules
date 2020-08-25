@@ -1,44 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
     <sharingCriteriaRules>
-        <fullName>Arcadia</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Arcadia</label>
-        <sharedTo>
-            <group>Arcadia</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj0000003ScCY</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000GU46a</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Bigelow</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Bigelow</label>
-        <sharedTo>
-            <group>Bigelow</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000Eiayn</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj0000002GILP</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>BlueDot</fullName>
         <accessLevel>Edit</accessLevel>
         <label>BlueDot</label>
@@ -114,82 +76,6 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>Palmetto</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Palmetto</label>
-        <sharedTo>
-            <group>Palmetto</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000ElD0I</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj00000033P00</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Pinnacle_UAL</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Pinnacle UAL</label>
-        <sharedTo>
-            <group>Pinnacle_Energy</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000GVKWq</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj0000002IEd6</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Quest_UAL</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Quest_UAL</label>
-        <sharedTo>
-            <group>Quest_Energy_Solutions</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000DgJDw</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj0000001ZTZH</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Relay_UAL2</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Relay_UAL2</label>
-        <sharedTo>
-            <group>Relay_Power</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000Dh1ii</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj0000002Pr88</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>SOE2_UAL</fullName>
         <accessLevel>Edit</accessLevel>
         <label>SOE2_UAL</label>
@@ -225,57 +111,6 @@
             <field>Partner__c</field>
             <operation>equals</operation>
             <value>a0sj0000002Q3AB</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>SolarFive</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>SolarFive</label>
-        <sharedTo>
-            <group>SolarFive</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>a0s0a000001p4LQ</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Solstice_UAL</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Solstice_UAL</label>
-        <sharedTo>
-            <group>Solstice_Initiative</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000DgFKZ</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj0000001ZKfq</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>SunCity_Energy</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>SunCity Energy</label>
-        <sharedTo>
-            <group>SunCity_Energy</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000EjUK5</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj0000002GVw7</value>
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
