@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
     <sharingCriteriaRules>
-        <fullName>Arcadia_Partner</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Arcadia Partner</label>
-        <sharedTo>
-            <group>Arcadia</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>equals</operation>
-            <value>Arcadia Power</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>Avidia_Disbursals</fullName>
         <accessLevel>Edit</accessLevel>
         <description>This rule shares the partner records with Avidia so they can update disbursals due to a master detail realtionship between partnre and disbursal</description>
@@ -25,32 +12,6 @@
             <field>Name</field>
             <operation>notEqual</operation>
             <value>x</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Barbara_Cerullo</fullName>
-        <accessLevel>Read</accessLevel>
-        <label>Barbara Cerullo</label>
-        <sharedTo>
-            <group>Barbara_Cerullo</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>equals</operation>
-            <value>Barbara Cerullo</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Bigelow</fullName>
-        <accessLevel>Read</accessLevel>
-        <label>Bigelow</label>
-        <sharedTo>
-            <group>Bigelow</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>equals</operation>
-            <value>James Bigelow</value>
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
@@ -106,72 +67,6 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>Palmetto_Partner</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Palmetto Partner</label>
-        <sharedTo>
-            <group>Palmetto</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>equals</operation>
-            <value>Palmetto Solar</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Pinnacle_Energy</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Pinnacle Energy</label>
-        <sharedTo>
-            <group>Pinnacle_Energy</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>equals</operation>
-            <value>Pinnacle Energy</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Quest_Energy_Solutions</fullName>
-        <accessLevel>Read</accessLevel>
-        <label>Quest Energy Solutions</label>
-        <sharedTo>
-            <group>Quest_Energy_Solutions</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>equals</operation>
-            <value>Quest Energy Solutions</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Relay_Power</fullName>
-        <accessLevel>Read</accessLevel>
-        <label>Relay Power</label>
-        <sharedTo>
-            <group>Relay_Power</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>equals</operation>
-            <value>Relay Power</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>SolarFive</fullName>
-        <accessLevel>Read</accessLevel>
-        <description>This is for solar five&apos;s CS Account. Has to be separate from their RL one.</description>
-        <label>SolarFive</label>
-        <sharedTo>
-            <group>SolarFive</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>equals</operation>
-            <value>SolarFive</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>Solar_on_Earth</fullName>
         <accessLevel>Read</accessLevel>
         <label>Solar on Earth</label>
@@ -182,19 +77,6 @@
             <field>Name</field>
             <operation>equals</operation>
             <value>Solar on Earth</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Solstice_Initiative</fullName>
-        <accessLevel>Read</accessLevel>
-        <label>Solstice Initiative</label>
-        <sharedTo>
-            <group>Solstice_Initiative</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>equals</operation>
-            <value>Solstice Initiative</value>
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>

@@ -1,51 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
     <sharingCriteriaRules>
-        <fullName>Arcadia_DocuSign</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Arcadia DocuSign</label>
-        <sharedTo>
-            <group>Arcadia</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj0000003ScCY</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000GU46a</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Barbara_Cerullo</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Barbara Cerullo</label>
-        <sharedTo>
-            <group>Barbara_Cerullo</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000Ej11J</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Bigelow</fullName>
-        <accessLevel>Read</accessLevel>
-        <label>Bigelow</label>
-        <sharedTo>
-            <group>Bigelow</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000Eiayn</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>BlueDot</fullName>
         <accessLevel>Edit</accessLevel>
         <label>BlueDot</label>
@@ -180,44 +135,6 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>Palmetto_DocuSign</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Palmetto DocuSign</label>
-        <sharedTo>
-            <group>Palmetto</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj00000033P00</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000ElD0I</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Pinnacle_DocuSign</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Pinnacle DocuSign</label>
-        <sharedTo>
-            <group>Pinnacle_Energy</group>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000GVKWq</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>a0sj0000002IEd6</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>Powerhouse_DocuSign</fullName>
         <accessLevel>Edit</accessLevel>
         <label>Powerhouse DocuSign</label>
@@ -231,32 +148,6 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>Quest_DS</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Quest_DS</label>
-        <sharedTo>
-            <group>Quest_Energy_Solutions</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000DgJDw</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>RelayPower_DS</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>RelayPower_DS</label>
-        <sharedTo>
-            <group>Relay_Power</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000Dh1ii</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>SolWorks_DS</fullName>
         <accessLevel>Edit</accessLevel>
         <label>SolWorks_DS</label>
@@ -267,71 +158,6 @@
             <field>DS_Partner__c</field>
             <operation>equals</operation>
             <value>005j000000DhEyB</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>SolarFive</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>SolarFive</label>
-        <sharedTo>
-            <group>SolarFive</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>a0s0a000001p4LQ</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>SolarFive_DS</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>SolarFive_DS</label>
-        <sharedTo>
-            <group>Solar_Five</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000Dgjpj</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>SolaronEarth_DS</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>SolaronEarth_DS</label>
-        <sharedTo>
-            <group>Solar_on_Earth</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000DgFJC</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Solstice_DS</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Solstice_DS</label>
-        <sharedTo>
-            <group>Solstice_Initiative</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000DgFKZ</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>SunCity_Energy</fullName>
-        <accessLevel>Read</accessLevel>
-        <label>SunCity Energy</label>
-        <sharedTo>
-            <group>SunCity_Energy</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>DS_Partner__c</field>
-            <operation>equals</operation>
-            <value>005j000000EjUK5</value>
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
