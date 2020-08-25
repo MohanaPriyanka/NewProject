@@ -82,10 +82,8 @@
         <template if:true={getBasicInfo}>
             <c-ssf-basic-info 
                 lead-json={leadJSON} 
-                selected-utility={selectedUtility} 
-                zipinput={zipCodeInput} 
-                selected-product={selectedProduct} 
-                resi-application-type={resiApplicationType}
+                zip-check-response={zipCodeResponse} 
+                resi-application-type={resiApplicationType} 
                 underwriting-options={underwritingOptions}
                 onleadcreated={handleLeadCreation}>
             </c-ssf-basic-info>

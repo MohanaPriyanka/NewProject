@@ -8,29 +8,37 @@ import { getUSStateOptionsFull } from 'c/util';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { makeRequest } from 'c/httpRequestService';
 import { loadStyle } from 'lightning/platformResourceLoader';
+import formFactorName from '@salesforce/client/formFactor';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
-    @api zipinput;
     @api leadJson;
-    @api selectedUtility;
     @api resiApplicationType;
-    @api selectedProduct;
+    @api zipCheckResponse;
     @api underwritingOptions;
+
+    @track zipinput;
+    @track collectRateClass;
+    @track selectedUtility;
+    @track selectedProduct;
+    @track rateClassOptions;
+    @track utilityId;
 
     @track restLead;
     @track propertyAccount;
-    @track showSpinner = false;
+    @track stateOptions;
+
+    @track showSpinner;
     @track spinnerMessage;
     @track sameBillingAddress = true;
     @track sameHomeAddress = true;
     @track utilityAccountSection;
-    @track stateOptions;
     @track isFileUpload;
     @track isFico;
-    @track showUnderwritingOptions = false;
+    @track showUnderwritingOptions;
     @track showAddress;
-    utilityId; 
+    @track isPhone;
+     
     utilityAccountCount = 0;
     resumedApp = false;
     finDocFileTypes = ['.png', '.jpg', '.jpeg', '.pdf', '.zip'];
@@ -38,18 +46,45 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+        this.isPhone = (formFactorName === 'Small');
         
-        if(this.selectedUtility && this.selectedUtility.utilityId) {
-            this.utilityId = this.selectedUtility.utilityId;
+        if(this.zipCheckResponse) {
+            this.zipCheckResponse = JSON.parse(this.zipCheckResponse);
+            this.collectRateClass = this.zipCheckResponse.collectRateClass;
+            if(this.zipCheckResponse.zipCode) {
+                this.zipinput = this.zipCheckResponse.zipCode;
+            }
 
-            if(this.selectedUtility.dataCollectionMethod) {
-                this.isFileUpload = (this.selectedUtility.dataCollectionMethod !== 'EDI');
+            if(this.zipCheckResponse.products && this.zipCheckResponse.products.length > 0) {
+                this.selectedProduct = this.zipCheckResponse.products[0];
+            }
+
+            if(this.zipCheckResponse.utilities && this.zipCheckResponse.utilities.length > 0 && this.zipCheckResponse.utilities[0].utilityId) {
+                let selectedUtility = this.zipCheckResponse.utilities[0];
+                this.utilityId = selectedUtility.utilityId;
+    
+                if(selectedUtility.dataCollectionMethod) {
+                    this.isFileUpload = (selectedUtility.dataCollectionMethod !== 'EDI');
+                } else {
+                    this.isFileUpload = true;
+                }
             } else {
                 this.isFileUpload = true;
             }
-        } else {
-            this.isFileUpload = true;
+
+            if(this.zipCheckResponse.rateClasses && this.collectRateClass) {
+                if(this.zipCheckResponse.rateClasses.length === 0) {
+                    this.collectRateClass = false;
+                } else {
+                    this.rateClassOptions = this.zipCheckResponse.rateClasses.map(
+                        rateClass => {
+                            return {value: rateClass, label: rateClass};
+                        }
+                    );
+                }
+            }
         }
+
 
         // if a lead has already been created, have the form show existing values
         if(this.leadJson) {
@@ -238,6 +273,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             inputCmp.reportValidity();
             return validSoFar && inputCmp.checkValidity();
         }, true);
+        
         if(this.isFileUpload) {
             var uploadValid = true;
             this.propertyAccount.utilityAccountLogs.forEach(ual => {
