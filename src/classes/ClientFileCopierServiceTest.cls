@@ -172,10 +172,10 @@ public with sharing class ClientFileCopierServiceTest {
         MockOppSelector() {}
         public override Object handleMethodCall(MethodCall methodCall) {
             String oppAsString = '[' +
-                '{"Id":"0062f00000EllRvAAJ","Personal_Credit_Report_2__c":"a0Fj000000EYyV1EAL"},' +
-                '{"Id":"0062f00000EllRwAAJ","Personal_Credit_Report_2__c":"a0Fj000000EYyV2EAL"},' + // 2 UASes
-                '{"Id":"0062f00000EllRqAAJ","Personal_Credit_Report_2__c":"a0Fj000000EYyZ4EAL"},' +
-                '{"Id":"0062f00000EllRrAAJ","Personal_Credit_Report_2__c":"a0Fj000000EYyZ5EAL"}' +
+                '{"Id":"0062f00000EllRvAAJ","Personal_Credit_Report2__c":"a0Fj000000EYyV1EAL"},' +
+                '{"Id":"0062f00000EllRwAAJ","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL"},' + // 2 UASes
+                '{"Id":"0062f00000EllRqAAJ","Personal_Credit_Report2__c":"a0Fj000000EYyZ4EAL"},' +
+                '{"Id":"0062f00000EllRrAAJ","Personal_Credit_Report2__c":"a0Fj000000EYyZ5EAL"}' +
                 ']';
 
             switch on methodCall.stubbedMethodName {
