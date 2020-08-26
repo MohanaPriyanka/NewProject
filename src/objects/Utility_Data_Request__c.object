@@ -224,6 +224,19 @@ U=Customer receives supply from the Utility</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Case_Safe_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASESAFEID(Id  )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used by Boomi integration</inlineHelpText>
+        <label>Case Safe ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>City__c</fullName>
         <complianceGroup>PII</complianceGroup>
         <externalId>false</externalId>
@@ -409,6 +422,20 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Sender_Transaction_ID__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>Stores the transaction ID provided by ESG in the USGH response file</description>
+        <externalId>true</externalId>
+        <label>Sender Transaction ID</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
     </fields>
     <fields>
         <fullName>State__c</fullName>
