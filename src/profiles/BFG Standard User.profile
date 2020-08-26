@@ -57408,9 +57408,9 @@
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Account</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -66224,10 +66224,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>EditPublicDocuments</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>EditPublicFilters</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
