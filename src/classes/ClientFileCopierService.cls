@@ -43,7 +43,6 @@ public without sharing class ClientFileCopierService {
     }
 
 
-
     public Id findAndCloneDocuments(Id assignmentAgreementId, String docType){
         Id folderId = createSupportingDocumentsFolder(assignmentAgreementId, docType);
         Map<Id,Id> versionIdToParentId = getDocumentIds(assignmentAgreementId, docType);
@@ -77,6 +76,7 @@ public without sharing class ClientFileCopierService {
     private Map<Id,Id> getDocumentIds(Id assignmentAgreementId, String docType){
         Set<Id> parentRecordIds = new Set<Id>();
         List<ContentDocumentLink> docLinks;
+        Map<Id,Id> versionIdToParentId = new Map<Id, Id>();
 
         if (docType == CUSTOMER_AGREEMENT || docType == DISCLOSURE){
             List<Contract> contracts = contractSelector.getCustomerContractsByAssignmentAgreement(assignmentAgreementId);
@@ -86,12 +86,16 @@ public without sharing class ClientFileCopierService {
         } else if (docType == CREDIT_REPORT) {
             List<Opportunity> oppList = oppSelector.getCustomerOpportunitiesByAssignmentAgreement(assignmentAgreementId);
             for (Opportunity opp : oppList) {
-                parentRecordIds.add(opp.Personal_Credit_Report2__c);
+                if (opp.Personal_Credit_Report2__c != null) {
+                    parentRecordIds.add(opp.Personal_Credit_Report2__c);
+                }
             }
         }
-        docLinks = contentDocumentSelector.selectByLinkedEntitiesWithoutData(parentRecordIds);
-        Map<Id,Id> versionIdToParentId = compareFileNameAndType(docLinks,docType);
-        checkForMissingFiles(parentRecordIds, versionIdToParentId);
+        if (parentRecordIds.size() > 0) {
+            docLinks = contentDocumentSelector.selectByLinkedEntitiesWithoutData(parentRecordIds);
+            versionIdToParentId = compareFileNameAndType(docLinks,docType);
+            checkForMissingFiles(parentRecordIds, versionIdToParentId);
+        }
         return versionIdToParentId;
     }
 
@@ -192,13 +196,13 @@ public without sharing class ClientFileCopierService {
             uow.registerNew(cdl);
         }
     }
-    
+
     public class CloneInputs {
         @InvocableVariable
         public Id contractId;
 
         @InvocableVariable(Description='"Customer Agreement", "Customer Disclosure Form", or "Customer Credit Report"')
         public String documentType;
-        
+
     }
 }
