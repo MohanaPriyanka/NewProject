@@ -160,7 +160,8 @@ public without sharing class OpportunitiesSelector {
                 FROM Utility_Account_Subscription__c
                 WHERE Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c IN : entityIds
                 AND Next_Schedule_Z_Status__c = 'Active Subscription'
-                AND Opportunity__r.Assignment_Agreement__c = null
+                AND Opportunity__r.Assignment_Agreement__c = NULL
+                AND Opportunity__r.Customer_Group__c != 'Anchor'
                 AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.DeveloperName != 'Client_Account'
                 AND Opportunity__r.Account.Account_Temperature__c != 'Hot'
                 AND Opportunity__r.StageName = 'Complete'
