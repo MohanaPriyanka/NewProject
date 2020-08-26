@@ -203,6 +203,16 @@
                     <default>true</default>
                     <label>Waived Acquisition / Reacquisition Fee</label>
                 </value>
+                <value>
+                    <fullName>Adjustment for Resize Fee</fullName>
+                    <default>false</default>
+                    <label>Adjustment for Resize Fee</label>
+                </value>
+                <value>
+                    <fullName>Utilization Adjustment to Management Fee</fullName>
+                    <default>false</default>
+                    <label>Utilization Adjustment to Management Fee</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
