@@ -226,6 +226,8 @@
         <relatedList>Utility_Account_Subscription__c.Utility_Account_Log__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
         <fields>Request_Sent_Date__c</fields>
         <fields>Request_Status__c</fields>

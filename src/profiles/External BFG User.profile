@@ -31330,6 +31330,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Data_Request__c.Case_Safe_ID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Data_Request__c.City__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31392,6 +31397,11 @@
         <editable>false</editable>
         <field>Utility_Data_Request__c.Request_Status__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Sender_Transaction_ID__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
