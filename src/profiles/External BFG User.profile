@@ -47855,7 +47855,7 @@
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Utility__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
