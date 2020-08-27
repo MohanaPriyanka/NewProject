@@ -38,7 +38,8 @@ public inherited sharing class SharedSolarSystemsSelector {
         }
         loadZoneString = loadZoneString.left(loadZoneString.length() - 1); // strip off extra comma
         String query = 'SELECT Id, Name, Capacity_Available_to_be_Reserved__c, Product__r.Id, Product__r.Name, ' +
-            'Product__r.Customer_Subscription_Type__c, Product__r.Collect_Rate_Class_via_Application__c, Sales_Partners__c, ' +
+            'Product__r.Customer_Subscription_Type__c, Product__r.Collect_Rate_Class_via_Application__c, ' +
+            'Product__r.Disclosure_Form_Conga_Template__c, Sales_Partners__c,' +
             'Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c ' +
             'FROM Shared_Solar_System__c ' +
             'WHERE Capacity_Available_to_be_Reserved__c > 0 ' +
