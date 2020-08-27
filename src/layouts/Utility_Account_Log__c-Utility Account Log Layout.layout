@@ -174,16 +174,6 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>PrintableView</actionName>
-            <actionType>StandardButton</actionType>
-            <sortOrder>5</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Utility_Account_Log__c.Recalculate_Subscriptions</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>6</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
             <actionName>FeedItem.ContentPost</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>0</sortOrder>
@@ -208,6 +198,16 @@
             <actionType>StandardButton</actionType>
             <sortOrder>4</sortOrder>
         </platformActionListItems>
+        <platformActionListItems>
+            <actionName>PrintableView</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>5</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Utility_Account_Log__c.Recalculate_Subscriptions</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>6</sortOrder>
+        </platformActionListItems>
     </platformActionList>
     <relatedLists>
         <relatedList>RelatedFileList</relatedList>
@@ -224,6 +224,13 @@
         <fields>Shared_Solar_System__c</fields>
         <fields>Opportunity__c</fields>
         <relatedList>Utility_Account_Subscription__c.Utility_Account_Log__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Request_Sent_Date__c</fields>
+        <fields>Request_Status__c</fields>
+        <fields>Request_Recieved_Date__c</fields>
+        <relatedList>Utility_Data_Request__c.Utility_Account_Log__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
