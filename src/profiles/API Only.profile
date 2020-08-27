@@ -33123,6 +33123,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Supplier_Account_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Data_Request__c.Utility_Account_Log__c</field>
         <readable>true</readable>
@@ -33465,6 +33470,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility__c.Service_Territory__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Supplier_Account_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

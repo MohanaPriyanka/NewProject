@@ -452,6 +452,17 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Supplier_Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility__r.Supplier_Account_Number__c</formula>
+        <label>Supplier Account Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Utility_Account_Log__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
