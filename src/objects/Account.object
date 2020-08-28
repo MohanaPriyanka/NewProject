@@ -4591,6 +4591,45 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Account (Default)</label>
         <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>EPC Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineers of Record</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Government Entity</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Landowner</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>QA%2FQC Consultants</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Provider</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -5417,41 +5456,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>9</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Type</picklist>
-            <values>
-                <fullName>EPC Account</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineers of Record</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Government Entity</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Landowner</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>QA%2FQC Consultants</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Provider</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
