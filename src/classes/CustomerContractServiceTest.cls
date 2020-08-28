@@ -38,7 +38,7 @@
         Product2 product = new Product2(Id = lead.Product__c, Generic_Terms_Conga_Template__c = '12345');
         update product;
         CustomerContractService ccs = new CustomerContractService();
-        Contract contract = ccs.createContractFromLead(lead.Id);
+        Contract contract = ccs.createContractFromLead(lead.Id, 1);
 
         System.assertNotEquals(null, contract, 'Method should have created and returned a Contract record');
         System.assertEquals(lead.Id, contract.Lead__c, 'Contract lead__c should be the input lead');
@@ -46,6 +46,7 @@
         System.assertEquals(Schema.SObjectType.Contract.getRecordTypeInfosByDeveloperName().get('Customer_Contract').getRecordTypeId(), contract.RecordTypeId, 'Contract record type should be \"Customer Contract\"');
         System.assertEquals(lead.Accounts__r[0].Id, contract.AccountId, 'Contract accountid should reflect the oldest property account on the related lead');
         System.assertEquals('Generic', contract.Contract_Type__c, 'Contract type should be \"Generic\" because Product__c has an associated generic Conga template');
+        System.assert(!contract.Generate_Disclosure_Form__c, 'Contract should not generate a disclosure form, as the number of contract documents is 1');
     }
     
 
@@ -53,7 +54,7 @@
     static void testCreateContractFromLeadProjectSpecific(){
         Lead lead = [SELECT Id, Product__c, (SELECT Id FROM Accounts__r) FROM Lead LIMIT 1];
         CustomerContractService ccs = new CustomerContractService();
-        Contract contract = ccs.createContractFromLead(lead.Id);
+        Contract contract = ccs.createContractFromLead(lead.Id, 2);
 
         System.assertNotEquals(null, contract, 'Method should have created and returned a Contract record');
         System.assertEquals(lead.Id, contract.Lead__c, 'Contract lead__c should be the input lead');
@@ -61,6 +62,7 @@
         System.assertEquals(Schema.SObjectType.Contract.getRecordTypeInfosByDeveloperName().get('Customer_Contract').getRecordTypeId(), contract.RecordTypeId, 'Contract record type should be \"Customer Contract\"');
         System.assertEquals(lead.Accounts__r[0].Id, contract.AccountId, 'Contract accountid should reflect the oldest property account on the related lead');
         System.assertEquals('Project Specific', contract.Contract_Type__c, 'Contract type should be \"Project Specific\" because Product__c has an associated generic Conga template');
+        System.assert(contract.Generate_Disclosure_Form__c, 'Contract should generate a disclosure form, as the number of contract documents is 2');
     }
 
 
@@ -79,7 +81,7 @@
         Boolean expectedResult = false;
         try {
             CustomerContractService ccs = new CustomerContractService();
-            Contract contract = ccs.createContractFromLead(lead.Id);
+            Contract contract = ccs.createContractFromLead(lead.Id, 1);
             System.assert(false, 'Method should have thrown an error due to missing child Account');
         } catch(Util.BWException bwe) {
             expectedResult = true;
@@ -221,7 +223,7 @@
         Lead lead = [SELECT Id, Product__c, (SELECT Id FROM Accounts__r) FROM Lead LIMIT 1];
         
         CustomerContractService ccs = new CustomerContractService();
-        Contract parentContract = ccs.createContractFromLead(lead.Id);
+        Contract parentContract = ccs.createContractFromLead(lead.Id, null);
         parentContract.Customer_Signature_Date_Time__c = Date.today();
         update parentContract;
         
