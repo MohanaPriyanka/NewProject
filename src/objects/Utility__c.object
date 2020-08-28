@@ -129,6 +129,17 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Supplier_Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is used in the EDI integration. It is a number that is assigned to BlueWave by each utility. It is not required for all utilities.</inlineHelpText>
+        <label>Supplier Account Number</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Utility_DUNS_Number__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Used in the EDI integration as unique identifier for utilities</inlineHelpText>

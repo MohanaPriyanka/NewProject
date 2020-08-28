@@ -146,11 +146,11 @@
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
+        <fields>Request_Status__c</fields>
         <fields>Request_Sent_Date__c</fields>
         <fields>Request_Recieved_Date__c</fields>
         <fields>Utility_Name__c</fields>
         <fields>Customer_Name__c</fields>
-        <fields>Utility_DUNS__c</fields>
         <fields>Meter_Number__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
@@ -218,6 +218,19 @@ U=Customer receives supply from the Utility</inlineHelpText>
         <required>false</required>
         <securityClassification>Confidential</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Case_Safe_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASESAFEID(Id  )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used by Boomi integration</inlineHelpText>
+        <label>Case Safe ID</label>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -411,6 +424,20 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         </valueSet>
     </fields>
     <fields>
+        <fullName>Sender_Transaction_ID__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>Stores the transaction ID provided by ESG in the USGH response file</description>
+        <externalId>true</externalId>
+        <label>Sender Transaction ID</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>State__c</fullName>
         <complianceGroup>PII</complianceGroup>
         <externalId>false</externalId>
@@ -419,6 +446,17 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         <required>false</required>
         <securityClassification>Internal</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Supplier_Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility__r.Supplier_Account_Number__c</formula>
+        <label>Supplier Account Number</label>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
