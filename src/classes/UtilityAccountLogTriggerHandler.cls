@@ -12,6 +12,20 @@ public without sharing class UtilityAccountLogTriggerHandler {
         if (!uasesToFinal.isEmpty()) {
             CSCancellationService.processFinaledUtilityAccounts(uasesToFinal);
         }
+
+        List<Utility_Account_Log__c> ualsForRateClassUpdate = new List<Utility_Account_Log__c>();
+        Set<Id> leadIdSet = new Set<Id>();
+        Set<Id> rateClassIdSet = new Set<Id>();
+        for(Utility_Account_Log__c ual : newUALs) {
+            if(ual.Utility_Rate_Class__c != oldMap.get(ual.Id).Utility_Rate_Class__c) {
+                ualsForRateClassUpdate.add(ual);
+                leadIdSet.add(ual.Lead__c);
+                rateClassIdSet.add(ual.Utility_Rate_Class__c);
+            }
+        }
+        if(!ualsForRateClassUpdate.isEmpty()) {
+            updateRateClassOnContract(ualsForRateClassUpdate, leadIdSet, rateClassIdSet);
+        }
     }
 
     public static void updateProposedkWh(List<Utility_Account_Log__c> uals, Map<Id, Utility_Account_Log__c> oldUALsByIds) {
@@ -42,4 +56,56 @@ public without sharing class UtilityAccountLogTriggerHandler {
             }
         }
     }
+
+    private static void updateRateClassOnContract(List<Utility_Account_Log__c> ualList, Set<Id> leadIdSet, Set<Id> rateClassIdSet) {
+        Map<Id, Rate_Class__c> rateClassMap = new Map<Id, Rate_Class__c>([
+            SELECT Id, Suppress_Disclosure_Form__c
+            FROM Rate_Class__c
+            WHERE Id = :rateClassIdSet
+        ]);
+        Map<Id, Lead> leadMap = new Map<Id, Lead>([
+            SELECT Id, 
+                (SELECT Id, Generate_Disclosure_Form__c, Product__c, Product__r.Disclosure_Form_Conga_Template__c
+                FROM Contracts__r)
+            FROM Lead
+            WHERE Id = :leadIdSet
+        ]);
+
+        List<Contract> contractsForUpdate = new List<Contract>();
+        for(Utility_Account_Log__c ual : ualList) {
+            Lead associatedLead = leadMap.get(ual.Lead__c);
+            Rate_Class__c associatedRateClass;
+            if(rateClassMap.containsKey(ual.Utility_Rate_Class__c)) {
+                associatedRateClass = rateClassMap.get(ual.Utility_Rate_Class__c);
+            } else {
+                associatedRateClass = new Rate_Class__c();
+            }
+            for(Contract c : associatedLead.Contracts__r) {
+                if(c.Product__r != null) {
+                    c.Generate_Disclosure_Form__c = calculateGenerateDisclosureForm(c.Product__r.Disclosure_Form_Conga_Template__c, associatedRateClass.Suppress_Disclosure_Form__c);
+                } else {
+                    c.Generate_Disclosure_Form__c = calculateGenerateDisclosureForm(null, associatedRateClass.Suppress_Disclosure_Form__c);
+                }
+                contractsForUpdate.add(c);
+            }
+        }
+
+        if(!contractsForUpdate.isEmpty()) {
+            Util.updateAndLog(contractsForUpdate, 'UtilityAccountLogTriggerHandler', 'updateRateClassOnContract');
+        }
+    }
+
+    private static Boolean calculateGenerateDisclosureForm(String disclosureFormTemplate, Boolean suppressDisclosureForm) {
+        if(disclosureFormTemplate == null) {
+            return false;
+        }
+
+        if(suppressDisclosureForm == null || !suppressDisclosureForm) {
+            return true;
+        }
+
+        return false;
+    }
+
+
 }
