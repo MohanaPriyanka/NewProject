@@ -611,6 +611,9 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System_Properties__c sp = new System_Properties__c(Name = 'test', Default_CS_Partner__c = p1.Id);
         insert sp;
         
+        Rate_Class__c rateClass = new Rate_Class__c(Name = 'Rate Class 1');
+        insert rateClass;
+        
         RestLead requestLead = new RestLead();
         requestLead.firstName = 'Unit';
         requestLead.lastName = 'Testcase';
@@ -633,6 +636,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         requestUAL1.serviceState = 'NY';
         requestUAL1.servicePostalCode = '14472';
         requestUAL1.utilityAccountNumber = '555555';
+        requestUAL1.rateClass = 'Rate Class 1';
 
         requestAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>{requestUAL1};
         requestLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{requestAccount};
@@ -688,7 +692,16 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '                   "Service_Address__c": "Test service street",' +
             '                   "Service_City__c": "Test service city",' +
             '                   "Service_State__c": "NY",' +
-            '                   "Service_Zip_Code__c": "14472"' +
+            '                   "Service_Zip_Code__c": "14472",' +
+            '                   "Utility_Rate_Class__c": "' + rateClass.Id + '",' +
+            '                   "Utility_Rate_Class__r": {' +
+            '                       "attributes": {' +
+            '                           "type": "Rate_Class__c",' +
+            '                           "url": "/services/data/v48.0/sobjects/Rate_Class__c/' + rateClass.Id + '"' +
+            '                       },' +
+            '                       "Id": "' + rateClass.Id + '",' +
+            '                       "Name": "' + rateClass.Name + '"' +
+            '                   }' +
             '               }' +
             '           ]' +
             '   }' + 
@@ -763,6 +776,9 @@ public with sharing class CSLeadsRESTControllerV2Test {
         requestLead.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode = '00000';
         System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to servicePostalCode field');
         requestLead.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode = '14472';
+        requestLead.propertyAccounts[0].utilityAccountLogs[0].rateClass = 'Rate Class 2';
+        System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to rateClass field');
+        requestLead.propertyAccounts[0].utilityAccountLogs[0].rateClass = 'Rate Class 1';
         System.assert(!controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'No field differences; method should return false');
         
         RestLead.RestUtilityAccountLog requestUAL2 = new RestLead.RestUtilityAccountLog();

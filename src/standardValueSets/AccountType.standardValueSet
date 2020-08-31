@@ -46,4 +46,9 @@
         <default>false</default>
         <label>Profit Center</label>
     </standardValue>
+    <standardValue>
+        <fullName>Investor</fullName>
+        <default>false</default>
+        <label>Investor</label>
+    </standardValue>
 </StandardValueSet>

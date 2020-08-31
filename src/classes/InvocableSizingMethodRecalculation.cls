@@ -13,15 +13,19 @@
     https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_annotation_InvocableMethod.htm
 */
 
-public class InvocableSizingMethodRecalculation {
+public without sharing class InvocableSizingMethodRecalculation {
 
     @InvocableMethod(label='Change Sizing Method for Subscriptions')
     public static void recalculateSubscriptionWithSizingMethod(List<List<Utility_Account_Subscription__c>> uasList) {
-        FeatureService featureService = new FeatureService();
-        SubscriptionManagementService service = new SubscriptionManagementService();
-        List<Subscription_Order__c> soList =  service.createSystemChangeSubscriptionOrders(uasList[0], null);
-        if (featureService.isEnabled('Sizing_Method')) {
-            insert soList;
+        try {
+            FeatureService featureService = new FeatureService();
+            SubscriptionManagementService service = new SubscriptionManagementService();
+            List<Subscription_Order__c> soList =  service.createSystemChangeSubscriptionOrders(uasList[0], null);
+            if (featureService.isEnabled('Sizing_Method')) {
+                insert soList;
+            }
+        } catch (Exception e) {
+            Logger.logNow('InvocableSizingMethodRecalculation', 'recalculateSubscriptionWithSizingMethod', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         }
     }
 }

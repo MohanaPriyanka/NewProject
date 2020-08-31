@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Invoke_Subscription_Orders</name>
         <label>Invoke Subscription Orders</label>
-        <locationX>1361</locationX>
-        <locationY>241</locationY>
+        <locationX>1608</locationX>
+        <locationY>428</locationY>
         <actionName>InvocableSizingMethodRecalculation</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -23,7 +23,7 @@
     <assignments>
         <name>Add_UAS_to_RateClassUASes</name>
         <label>Add UAS to RateClassUASes</label>
-        <locationX>1148</locationX>
+        <locationX>1360</locationX>
         <locationY>714</locationY>
         <assignmentItems>
             <assignToReference>RateClassUASes</assignToReference>
@@ -39,7 +39,7 @@
     <assignments>
         <name>Update_UAS_Sizing_Method</name>
         <label>Update UAS Sizing Method</label>
-        <locationX>1023</locationX>
+        <locationX>1235</locationX>
         <locationY>714</locationY>
         <assignmentItems>
             <assignToReference>UAS.Sizing_Method__c</assignToReference>
@@ -62,12 +62,56 @@
         <choiceText>Update Rate Class</choiceText>
         <dataType>String</dataType>
     </choices>
+    <constants>
+        <name>subscriptionType_ElectricityCost</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Electricity Cost ($)</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <name>Check_if_UASes_to_Update</name>
+        <label>Check if UASes to Update</label>
+        <locationX>1449</locationX>
+        <locationY>243</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_UASes_to_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RateClassUASes</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Finish</targetReference>
+            </connector>
+            <label>No UASes to Update</label>
+        </rules>
+        <rules>
+            <name>UASes_to_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RateClassUASes</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_UASes</targetReference>
+            </connector>
+            <label>UASes to Update</label>
+        </rules>
+    </decisions>
     <decisions>
         <description>Check to see if the Opportunity&apos;s Product is &quot;Rate Class Rate&quot; or &quot;Project Rate&quot;</description>
         <name>Check_Sizing_Method</name>
         <label>Check Sizing Method</label>
-        <locationX>1008</locationX>
-        <locationY>463</locationY>
+        <locationX>1168</locationX>
+        <locationY>420</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Rate_Class_Rate</name>
@@ -86,7 +130,7 @@
         </rules>
         <rules>
             <name>Project_Rate</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>UAS.Opportunity__r.Product__r.Sizing_Method__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -103,7 +147,7 @@
     <decisions>
         <name>Recalculate_Options</name>
         <label>Recalculate Options</label>
-        <locationX>598</locationX>
+        <locationX>810</locationX>
         <locationY>59</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -127,7 +171,7 @@
     <loops>
         <name>UAS_Loop</name>
         <label>UAS Loop</label>
-        <locationX>1085</locationX>
+        <locationX>1297</locationX>
         <locationY>228</locationY>
         <assignNextValueToReference>UAS</assignNextValueToReference>
         <collectionReference>getUASes</collectionReference>
@@ -136,7 +180,7 @@
             <targetReference>Check_Sizing_Method</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Update_UASes</targetReference>
+            <targetReference>Check_if_UASes_to_Update</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -155,7 +199,7 @@
     <recordLookups>
         <name>getRateClassRecord</name>
         <label>getRateClass</label>
-        <locationX>753</locationX>
+        <locationX>965</locationX>
         <locationY>235</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -177,7 +221,7 @@
     <recordLookups>
         <name>getUAL</name>
         <label>getUAL</label>
-        <locationX>178</locationX>
+        <locationX>390</locationX>
         <locationY>50</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -197,7 +241,7 @@
     <recordLookups>
         <name>getUASes</name>
         <label>getUASes</label>
-        <locationX>303</locationX>
+        <locationX>515</locationX>
         <locationY>49</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -219,8 +263,8 @@
     <recordUpdates>
         <name>Update_UASes</name>
         <label>Update UASes</label>
-        <locationX>1215</locationX>
-        <locationY>231</locationY>
+        <locationX>1466</locationX>
+        <locationY>407</locationY>
         <connector>
             <targetReference>Invoke_Subscription_Orders</targetReference>
         </connector>
@@ -229,7 +273,7 @@
     <recordUpdates>
         <name>UpdateUAL</name>
         <label>UpdateUAL</label>
-        <locationX>903</locationX>
+        <locationX>1115</locationX>
         <locationY>233</locationY>
         <connector>
             <targetReference>UAS_Loop</targetReference>
@@ -253,8 +297,8 @@
     <screens>
         <name>ErrorScreen</name>
         <label>Error Screen</label>
-        <locationX>1371</locationX>
-        <locationY>461</locationY>
+        <locationX>1603</locationX>
+        <locationY>679</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -269,8 +313,8 @@
     <screens>
         <name>Finish</name>
         <label>Finish</label>
-        <locationX>1563</locationX>
-        <locationY>243</locationY>
+        <locationX>1859</locationX>
+        <locationY>256</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -289,7 +333,7 @@
 - Change SSS</description>
         <name>Recalculate_Subscriptions</name>
         <label>Recalculate Subscriptions</label>
-        <locationX>443</locationX>
+        <locationX>655</locationX>
         <locationY>54</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -411,7 +455,7 @@
     <screens>
         <name>Update_Rate_Class_Screen</name>
         <label>Update Rate Class Screen</label>
-        <locationX>623</locationX>
+        <locationX>835</locationX>
         <locationY>233</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
