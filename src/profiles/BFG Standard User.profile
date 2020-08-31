@@ -53648,6 +53648,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>dsfs__DocuSign_Status__c.BW_Envelope_Link__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>dsfs__DocuSign_Status__c.DS_Partner__c</field>
         <readable>true</readable>
