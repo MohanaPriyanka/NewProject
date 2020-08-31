@@ -206,11 +206,6 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>dcstuff__Schedulomatic9000</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>dsfs__DocuSign_For_Salesforce</application>
         <default>false</default>
         <visible>false</visible>
@@ -2677,35 +2672,11 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LightningForgotPasswordController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningForgotPasswordControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningLoginFormController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningLoginFormControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LightningReportsController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>LightningReportsControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningSelfRegisterController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningSelfRegisterControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -4261,34 +4232,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SLPAddCustomer</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPAlertsHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPAllCustomersHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPControllersTestclass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPCreditStatus</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPCustomerHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SLPUserHelper</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ScheduleZSubscriptionSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -4402,10 +4345,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SystemSettingsSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TaskHandlerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -9791,38 +9730,6 @@
     <classAccesses>
         <apexClass>datamask__ToolingAPIWSDLTest</apexClass>
         <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dcstuff__Dao</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dcstuff__Dao_Test</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dcstuff__MockHttpResponse</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dcstuff__SchedulableContextInterface9000</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dcstuff__SchedulableContextInterface9000_Test</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dcstuff__Scheduler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dcstuff__Scheduler_Test</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>dcstuff__TestUtils</apexClass>
-        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>dsfs__APIError</apexClass>
@@ -17799,11 +17706,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Parent_Account__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Partner_Account__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -26384,36 +26286,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Field_Trip__Object_Analysis__c.Field_Trip__isCustom__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>File_Uploaded__e.BodyUrl__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>File_Uploaded__e.ContentDocumentId__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>File_Uploaded__e.ContentVersionId__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>File_Uploaded__e.ShareType__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>File_Uploaded__e.Title__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>File_Uploaded__e.Visibility__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38809,11 +38681,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Resource__c.MPM4_BASE__Resource_Skill_Set__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Resource__c.MPM4_BASE__Resource_Teams__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -65493,76 +65360,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__AnonymousCode__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__AsyncApexJobId__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__BatchSize__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__Class__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__DailyEnd__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__End__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__ExecutionError__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__Flow__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__IsBatchable__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__IsDaily__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__IsSchedulable__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__NumberOfExecutions__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__RepeatInterval__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__RescheduleInterval__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>dsfs__CustomParameterMap__c.dsfs__Name__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -73240,61 +73037,6 @@
         <layout>API_Credential__c-API Credential Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Account_Default</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.BWC_Founders</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.BWC_Principals</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.BW_Founders</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.BW_Principals</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Client_Account</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Competitor_Account</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Executive_Team</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Landowner</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Parent_Account</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Partner_Account</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Property</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Residential_Loan</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>AccountBrand-Account BrandLayout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -73535,33 +73277,6 @@
         <layout>Consumption_Update__c-Coverage Update Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Bank_Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Community_Solar_Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Contact_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Partner_Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Project_Management_Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ContactPointAddress-Contact Point Address Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -73629,9 +73344,6 @@
     <layoutAssignments>
         <layout>Energy_Usage_Update__c-Production Update - RL</layout>
         <recordType>Energy_Usage_Update__c.Production_Update_RL</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>EnhancedLetterhead-Enhanced Letterhead Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Entity__c-BWC Business Entity Layout</layout>
@@ -74079,9 +73791,6 @@
         <layout>OpportunityLineItem-Opportunity Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>OpportunityLineItemSchedule-Line Item Schedule Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Opportunity_Change_History__c-Opportunity Change History Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -74351,9 +74060,6 @@
         <layout>SurveyInvitation-Survey Invitation Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>SurveySubject-Survey Subject Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>SurveyVersion-Survey Version Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -74418,9 +74124,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>User-User Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>UserAlt-Community User Profile Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>UserAppMenuItem-Application Layout</layout>
@@ -75598,15 +75301,6 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Field_Trip__Object_Analysis__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>File_Uploaded__e</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -79485,15 +79179,6 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
-        <object>dcstuff__SchedulomaticEntry__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
         <object>dsfs__CustomParameterMap__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -82385,10 +82070,6 @@
     <pageAccesses>
         <apexPage>datamask__ExecutionPrep</apexPage>
         <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>dcstuff__SchedulerHelper</apexPage>
-        <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>dsfs__AccountDocuSignActionLandingPage</apexPage>
@@ -85671,10 +85352,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>dcstuff__Schedul_o_matic_9000</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>dcstuff__SchedulomaticEntry__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
