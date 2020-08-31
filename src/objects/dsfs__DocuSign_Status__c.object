@@ -47,7 +47,6 @@
     <description>DocuSign Status is the foundation Custom Object for integration of DocuSign and Salesforce.</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
@@ -80,6 +79,18 @@ dsfs__Sent_Date_Time__c -  dsfs__Opportunity__r.CreatedDate)</formula>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>BW_Envelope_Link__c</fullName>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&quot;https://app.docusign.com/documents/details/&quot; &amp;  dsfs__DocuSign_Envelope_ID__c , &quot;Open in DocuSign&quot; )</formula>
+        <inlineHelpText>Opens the DocuSign envelope in a new window.</inlineHelpText>
+        <label>BW Envelope Link</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>DS_Partner__c</fullName>
