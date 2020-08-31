@@ -340,8 +340,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.propertyAccount.name = this.resiApplicationType ? `${this.restLead.firstName} ${this.restLead.lastName}` : this.restLead.businessName;
         this.restLead.propertyAccounts = [this.propertyAccount];
         this.restLead.numberOfContractDocs = this.getNumberOfDocs();
-        console.log('restlead:');
-        console.log(this.restLead);
 
         this.showSpinner = true;
         window.setTimeout(() => {

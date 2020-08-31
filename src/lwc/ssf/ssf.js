@@ -89,8 +89,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         makeRequest(calloutURI, 'GET', options)
             .then(
                 (resolveResult) => {
-                    console.log('resolveResult:')
-                    console.log(resolveResult);
                     this.leadJSON = JSON.stringify(resolveResult);
                     this.zipCodeInput = resolveResult.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
                     this.resiApplicationType = resolveResult.applicationType === 'Residential'; 
@@ -104,8 +102,6 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             )
             .catch(
                 (rejectResult) => {
-                    console.log('rejectResult:')
-                    console.log(rejectResult);
                     this.showSpinner = false;
                     let fail = typeof rejectResult === 'object' ? rejectResult : JSON.parse(rejectResult);
                     if(fail.errors && fail.errors[0].substr(0,21) === 'Invalid authorization') {
