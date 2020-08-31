@@ -416,9 +416,24 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Value1</fullName>
+                    <fullName>Sent</fullName>
                     <default>false</default>
-                    <label>Value1</label>
+                    <label>Sent</label>
+                </value>
+                <value>
+                    <fullName>Complete</fullName>
+                    <default>false</default>
+                    <label>Complete</label>
+                </value>
+                <value>
+                    <fullName>Pending</fullName>
+                    <default>true</default>
+                    <label>Pending</label>
+                </value>
+                <value>
+                    <fullName>Error</fullName>
+                    <default>false</default>
+                    <label>Error</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
