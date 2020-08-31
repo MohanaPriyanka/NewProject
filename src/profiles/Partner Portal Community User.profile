@@ -85351,10 +85351,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>dcstuff__Schedul_o_matic_9000</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>dsfs__DocuSign_Admin</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
