@@ -41,7 +41,7 @@ export default class SsfAgreements extends LightningElement {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         if (!this.lead && this.leadJson) {
             this.lead = JSON.parse(this.leadJson);
-            if(this.lead.contentDocs && this.lead.contentDocs.length === 2) {
+            if(this.lead.contentDocs && this.lead.contentDocs.length >= this.lead.numberOfContractDocs) {
                 this.postProcessContractDocs(this.lead.contentDocs);
             }
         }
@@ -229,10 +229,10 @@ export default class SsfAgreements extends LightningElement {
             this.spinnerMessage = 'This can take a minute';
         }, 1000);
         this.documentPollerId = window.setInterval(() => {
-            getContentDocumentLinksByLead({leadId: this.lead.id, email: this.lead.email, mostRecentDocsStr: JSON.stringify(this.lead.contentDocs)})
+            getContentDocumentLinksByLead({leadId: this.lead.id, email: this.lead.email, mostRecentContractGen: this.lead.mostRecentContractGen})
             .then(result => {
                 let docs = JSON.parse(result);
-                if (docs.length >= 2) {
+                if (docs.length >= this.lead.numberOfContractDocs) {
                     this.postProcessContractDocs(docs);
                 }
             })

@@ -33,6 +33,8 @@ public without sharing class RestLead {
     public String referralName;
     public String referralEmail;
     public String underwritingCriteria;
+    public Integer numberOfContractDocs;    // used in SSF only
+    public Datetime mostRecentContractGen;  // used in SSF only
 
     public RestLead() {
     }

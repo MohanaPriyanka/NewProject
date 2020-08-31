@@ -67,7 +67,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
                 response.statusCode = statusCode.badRequest;
             } else {
-                RestLead responseLead = formatRestLeadFromLeadAndChildren(leadToReturn, false);
+                RestLead responseLead = formatRestLeadFromLeadAndChildren(leadToReturn, false, null);
 
                 envelope.setData(responseLead);
                 response.statusCode = statusCode.ok;
@@ -167,6 +167,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Map<String, Object> requestLeadMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
         Id leadId = (Id)requestLeadMap.get('id');
         Lead existingLead = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
+        
 
         if (applicationValid(jsonRequest, response, existingLead)) {
             Savepoint sp = Database.setSavepoint();
@@ -181,7 +182,12 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 }
                 updateLeadApplicationStatus(leadId);
 
-                RestLead responseLead = formatRestLeadFromLeadAndChildren(leadId, regenerateDocs);
+                Integer numberOfDocs;
+                if(requestLeadMap.containsKey('numberOfContractDocs')) {
+                    numberOfDocs = (Integer)requestLeadMap.get('numberOfContractDocs');
+                }
+                RestLead responseLead = formatRestLeadFromLeadAndChildren(leadId, regenerateDocs, numberOfDocs);
+                responseLead.numberOfContractDocs = numberOfDocs;
                 envelope.setData(responseLead);
                 response.statusCode = statusCode.ok;
 
@@ -293,7 +299,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
         List<Contract> associatedContracts = customerContractSelector.selectByRelatedLead(associatedLead.Id);
         if(associatedContracts.isEmpty()) {
-            customerContractService.createContractFromLead(associatedLead.Id);
+            customerContractService.createContractFromLead(associatedLead.Id, null);
         }
 
         if (requestPropertyAccount.utilityAccountLogs != null && !requestPropertyAccount.utilityAccountLogs.isEmpty()) {
@@ -373,7 +379,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 Account newAccount = requestPropertyAccount.asAccount(newLead);
                 uow.registerNew(newAccount);
                 if(newLead.Product__c != null) {
-                    Contract c = CustomerContractService.setContractFields(newLead);
+                    Contract c = customerContractService.setContractFields(newLead, requestLead.numberOfContractDocs);
                     uow.registerNew(c, Contract.AccountId, newAccount);
                 }
                 if(requestPropertyAccount.utilityAccountLogs != null) {
@@ -384,7 +390,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         uow.commitWork();
         updateLeadApplicationStatus(newLead.Id);
-        envelope.setData(formatRestLeadFromLeadAndChildren(newLead.Id, true));
+        RestLead responseLead = formatRestLeadFromLeadAndChildren(newLead.Id, true, requestLead.numberOfContractDocs);
+        if(requestLead.numberOfContractDocs != null) {
+            responseLead.numberOfContractDocs = requestLead.numberOfContractDocs;
+        }
+        envelope.setData(responseLead);
         response.statusCode = statusCode.created;
     }
 
@@ -571,13 +581,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         return false;
     }
 
-    private RestLead formatRestLeadFromLeadAndChildren(Id leadId, Boolean docsNewlyGenerated) {
+    private RestLead formatRestLeadFromLeadAndChildren(Id leadId, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
         Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
-        return formatRestLeadFromLeadAndChildren(leadToReturn, docsNewlyGenerated);
+        return formatRestLeadFromLeadAndChildren(leadToReturn, docsNewlyGenerated, numberOfContractDocs);
     }
 
     @TestVisible
-    private RestLead formatRestLeadFromLeadAndChildren(Lead leadToReturn, Boolean docsNewlyGenerated) {
+    private RestLead formatRestLeadFromLeadAndChildren(Lead leadToReturn, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
         RestLead responseLead = new RestLead(leadToReturn);
         
         // map UALs to their parent property accounts
@@ -596,7 +606,19 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // get all related content docs and sort by linked entity
         List<ContentDocumentLink> cdls = contentSelector.selectByLinkedEntities(linkedEntityIdSet);
         MultiMap contentDocLinksByLinkedEntityId = CollectionUtil.multiMapByField(cdls, ContentDocumentLink.LinkedEntityId);
-        responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, contentDocLinksByLinkedEntityId, docsNewlyGenerated);
+        List<Object> leadCDLs = contentDocLinksByLinkedEntityId.getValues(leadToReturn.Id);
+        if(numberOfContractDocs == null || numberOfContractDocs == 0) {
+            numberOfContractDocs = 2;
+        }
+        
+        if(leadCDLs.isEmpty()) {
+            responseLead.mostRecentContractGen = Datetime.now();
+        } else if(docsNewlyGenerated) {
+            ContentDocumentLink cdl = (ContentDocumentLink) leadCDLs[0];
+            responseLead.mostRecentContractGen = cdl.ContentDocument.CreatedDate;
+        } else {
+            responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, leadCDLs, numberOfContractDocs);
+        }
 
         // compile the financial underwriting documents and their uploads
         List<RestLead.RestContentDocument> returnFinDocs = new List<RestLead.RestContentDocument>();
@@ -667,20 +689,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         return bodyInput;
     }
 
-    private List<RestLead.RestContentDocument> compileLeadContentDocs(Id leadId, MultiMap contentDocLinksByLinkedEntityId, Boolean docsNewlyGenerated) {
+    private List<RestLead.RestContentDocument> compileLeadContentDocs(Id leadId, List<Object> leadCDLs, Integer numberOfContractDocs) {
         List<RestLead.RestContentDocument> restContentDocs = new List<RestLead.RestContentDocument>();
-        List<Object> leadCDLs = contentDocLinksByLinkedEntityId.getValues(leadId);
-        if(!leadCDLs.isEmpty()) {
-            RestLead.RestContentDocument rcd0 = new RestLead.RestContentDocument((ContentDocumentLink) leadCDLs[0]);
-            rcd0.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd0.docLinkId);
-            restContentDocs.add(rcd0);
-
-            
-            if(!docsNewlyGenerated && leadCDLs.size() > 1) {
-                RestLead.RestContentDocument rcd1 = new RestLead.RestContentDocument((ContentDocumentLink) leadCDLs[1]);
-                rcd1.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd1.docLinkId);
-                restContentDocs.add(rcd1);
-            }
+        Integer docCount = Math.min(numberOfContractDocs, leadCDLs.size());
+        for(Integer i=1; i<=docCount; i++) {
+            RestLead.RestContentDocument rcd = new RestLead.RestContentDocument((ContentDocumentLink) leadCDLs[i]);
+            rcd.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd.docLinkId);
+            restContentDocs.add(rcd);
         }
         return restContentDocs;
     }

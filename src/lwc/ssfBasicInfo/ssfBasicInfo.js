@@ -27,6 +27,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track restLead;
     @track propertyAccount;
     @track stateOptions;
+    @track selectedRateClass;
 
     @track showSpinner;
     @track spinnerMessage;
@@ -78,7 +79,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 } else {
                     this.rateClassOptions = this.zipCheckResponse.rateClasses.map(
                         rateClass => {
-                            return {value: rateClass, label: rateClass};
+                            return {value: JSON.stringify(rateClass), label: rateClass.name};
                         }
                     );
                 }
@@ -107,7 +108,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.restLead = {
                 applicationType: this.resiApplicationType ? 'Residential' : 'Non-Residential',
                 zipCode: this.zipinput,
-                productName: this.selectedProduct,
+                productName: this.selectedProduct.name,
                 utilityId: this.utilityId,
                 financialDocs: []
             }
@@ -203,7 +204,15 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     }
 
     utilityAccountOnChange(event) {
-        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][event.target.name] = event.target.value;
+        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][event.target.name] = event.target.value;        
+    }
+
+    rateClassOnChange(event) {
+        let selectedRC = JSON.parse(event.target.value);
+        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex].rateClass = selectedRC.name;
+        if(event.target.dataset.rowIndex === 0) {
+            this.selectedRateClass = selectedRC;
+        }
     }
 
     propertyAccountOnChange(event) {
@@ -330,6 +339,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
         this.propertyAccount.name = this.resiApplicationType ? `${this.restLead.firstName} ${this.restLead.lastName}` : this.restLead.businessName;
         this.restLead.propertyAccounts = [this.propertyAccount];
+        this.restLead.numberOfContractDocs = this.getNumberOfDocs();
+        console.log('restlead:');
+        console.log(this.restLead);
 
         this.showSpinner = true;
         window.setTimeout(() => {
@@ -423,5 +435,17 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 id: file
             }); 
         });
+    }
+
+    getNumberOfDocs() {
+        if(!this.selectedProduct || !this.selectedProduct.standaloneDisclosureForm) {
+            return 1;
+        }
+
+        if(!this.selectedRateClass || !this.selectedRateClass.suppressDisclosureForm) {
+            return 2;
+        }
+
+        return 1;
     }
 }

@@ -179,7 +179,7 @@ public with sharing class SimpleSignupFormControllerTest {
         List<RestLead.RestContentDocument> retList = (List<RestLead.RestContentDocument>)JSON.deserialize(retStr, List<RestLead.RestContentDocument>.class);
         System.assertEquals(2, retList.size(), 'With no minimum start date, both CDLs should be returned');
 
-        retStr = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, JSON.serialize(new List<RestLead.RestContentDocument>{rcd2}));
+        retStr = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, Datetime.now().addDays(-1));
         retList = (List<RestLead.RestContentDocument>)JSON.deserialize(retStr, List<RestLead.RestContentDocument>.class);
         System.assertEquals(1, retList.size(), 'Only one CDL should be returned, as the other was created before the minimum start date');
         System.assertEquals(rcd1.id, retList[0].id, 'The CDL returned should be the one with the created date of today');

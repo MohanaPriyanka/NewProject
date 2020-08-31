@@ -44,6 +44,11 @@ public with sharing class CSLeadsRESTControllerV2Test {
             Name = 'CS Product'
         );
         insert product;
+
+        Rate_Class__c rateClass = new Rate_Class__c(
+            Name = 'Rate Class',
+            Utility__c = utilityWithEIA.Id
+        );
     }
 
 
