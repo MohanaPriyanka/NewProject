@@ -9727,10 +9727,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dcstuff__SchedulableContextInterface9000</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dcstuff__SchedulableContextInterface9000_Test</apexClass>
         <enabled>false</enabled>
     </classAccesses>
