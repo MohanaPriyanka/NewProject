@@ -64597,76 +64597,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__AnonymousCode__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__AsyncApexJobId__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__BatchSize__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__Class__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__DailyEnd__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__End__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__ExecutionError__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__Flow__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__IsBatchable__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__IsDaily__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__IsSchedulable__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__NumberOfExecutions__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__RepeatInterval__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>dcstuff__SchedulomaticEntry__c.dcstuff__RescheduleInterval__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>dsfs__CustomParameterMap__c.dsfs__Name__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -78542,15 +78472,6 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>datamask__Masking_Execution_Log__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>dcstuff__SchedulomaticEntry__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
