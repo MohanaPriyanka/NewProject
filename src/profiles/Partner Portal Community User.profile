@@ -4227,10 +4227,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SLPCreditStatus</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>SLPCustomerHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
