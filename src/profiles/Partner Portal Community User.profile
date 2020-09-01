@@ -84642,10 +84642,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>dcstuff__SchedulomaticEntry__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>dsfs__DocuSign_Admin</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
