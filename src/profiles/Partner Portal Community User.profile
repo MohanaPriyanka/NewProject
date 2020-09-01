@@ -72239,61 +72239,6 @@
         <layout>API_Credential__c-API Credential Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Account_Default</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.BWC_Founders</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.BWC_Principals</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.BW_Founders</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.BW_Principals</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Client_Account</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Competitor_Account</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Executive_Team</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Landowner</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Parent_Account</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Partner_Account</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Property</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Partner Portal Account Layout</layout>
-        <recordType>Account.Residential_Loan</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>AccountBrand-Account BrandLayout</layout>
     </layoutAssignments>
     <layoutAssignments>
