@@ -5596,6 +5596,22 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Partner_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Relates Opportunities to the Partner Account. Note that this is different from the Partner Object.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Relates Opportunities to the Partner Account. Note that this is different from the Partner Object.</inlineHelpText>
+        <label>Partner Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Opportunities (Partner Account)</relationshipLabel>
+        <relationshipName>Opportunities2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Partner_Additional_Email_2_of_2__c</fullName>
         <externalId>false</externalId>
         <label>Partner Additional Email (2 of 2)</label>
@@ -5643,6 +5659,20 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Partner_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Partner Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Opportunities (Partner Contact)</relationshipLabel>
+        <relationshipName>Opportunities2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Partner_Email_2__c</fullName>
@@ -9400,6 +9430,17 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <label>My Opportunities</label>
         <sharedTo>
             <group>Non_Partners</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>My_OpportunitiesPartnerPortal</fullName>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <label>My Opportunities (Partner)</label>
+        <sharedTo>
+            <allPartnerUsers></allPartnerUsers>
         </sharedTo>
     </listViews>
     <listViews>

@@ -136,6 +136,16 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Partner_Account_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contact.Account.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Partner Account Name</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Partner_ID__c</fullName>
         <externalId>false</externalId>
         <formula>Contact.Partner_Lookup__c</formula>
