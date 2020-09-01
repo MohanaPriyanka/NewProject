@@ -1826,6 +1826,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Mass Renewables</label>
                 </value>
                 <value>
+                    <fullName>NECS Energy</fullName>
+                    <default>false</default>
+                    <label>NECS Energy</label>
+                </value>
+                <value>
                     <fullName>New England Renewable Energy Group</fullName>
                     <default>false</default>
                     <label>New England Renewable Energy Group</label>
@@ -2625,81 +2630,6 @@ null)</formula>
         <active>true</active>
         <label>SSS - No PM Relationship</label>
         <picklistValues>
-            <picklist>Service_Territories__c</picklist>
-            <values>
-                <fullName>Bangor Hydro</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Capital</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Central</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Dunwoodie</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Genesee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Hudson Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Long Island</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Maine</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Maine Public Service</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Millwood</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mohawk Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>N%2EY%2EC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>North</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>West</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Sales_Partners__c</picklist>
             <values>
                 <fullName>360 Managed Services</fullName>
@@ -2834,6 +2764,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>NECS Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>New England Renewable Energy Group</fullName>
                 <default>false</default>
             </values>
@@ -2955,6 +2889,81 @@ null)</formula>
             </values>
             <values>
                 <fullName>Yeloha</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Service_Territories__c</picklist>
+            <values>
+                <fullName>Bangor Hydro</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dunwoodie</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hudson Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maine</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maine Public Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Millwood</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>N%2EY%2EC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
