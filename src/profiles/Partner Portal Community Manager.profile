@@ -206,11 +206,6 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>dcstuff__Schedulomatic9000</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>dsfs__DocuSign_For_Salesforce</application>
         <default>false</default>
         <visible>false</visible>
