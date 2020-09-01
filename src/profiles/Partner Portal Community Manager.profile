@@ -17782,11 +17782,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Partner_Account__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Partner_Logo__c</field>
         <readable>false</readable>
     </fieldPermissions>
