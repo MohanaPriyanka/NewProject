@@ -72993,9 +72993,6 @@
         <layout>OpportunityLineItem-Opportunity Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>OpportunityLineItemSchedule-Line Item Schedule Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Opportunity_Change_History__c-Opportunity Change History Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
