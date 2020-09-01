@@ -37922,11 +37922,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Resource__c.MPM4_BASE__Resource_Teams__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Resource__c.MPM4_BASE__User__c</field>
         <readable>false</readable>
     </fieldPermissions>
