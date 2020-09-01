@@ -73262,9 +73262,6 @@
         <layout>SurveyInvitation-Survey Invitation Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>SurveySubject-Survey Subject Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>SurveyVersion-Survey Version Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
