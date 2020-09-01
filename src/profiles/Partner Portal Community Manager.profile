@@ -9727,10 +9727,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dcstuff__Dao</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dcstuff__Dao_Test</apexClass>
         <enabled>false</enabled>
     </classAccesses>
