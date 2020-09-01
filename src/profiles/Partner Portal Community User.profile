@@ -73328,9 +73328,6 @@
         <layout>User-User Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>UserAlt-Community User Profile Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>UserAppMenuItem-Application Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
