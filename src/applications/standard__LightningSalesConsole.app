@@ -31,6 +31,96 @@
     <navType>Console</navType>
     <profileActionOverrides>
         <actionName>View</actionName>
+        <content>BFG_Opportunity_Page_Layout</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+        <type>Flexipage</type>
+        <profile>BFG Marketing User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>BFG_Opportunity_Page_Layout</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+        <type>Flexipage</type>
+        <profile>BFG Marketing User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>BFG_Opportunity_Page_Layout</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+        <type>Flexipage</type>
+        <profile>BFG Standard User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>BFG_Opportunity_Page_Layout</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+        <type>Flexipage</type>
+        <profile>BFG Standard User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>BFG_Opportunity_Page_Layout</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+        <type>Flexipage</type>
+        <profile>BW Technology</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>BFG_Opportunity_Page_Layout</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+        <type>Flexipage</type>
+        <profile>BW Technology</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>BFG_Opportunity_Page_Layout</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+        <type>Flexipage</type>
+        <profile>BWC Executive</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>BFG_Opportunity_Page_Layout</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+        <type>Flexipage</type>
+        <profile>BWC Executive</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>BFG_Opportunity_Page_Layout</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>BFG_Opportunity_Page_Layout</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Opportunity</pageOrSobjectType>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
         <content>Generic_Account_Record_Page</content>
         <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
@@ -113,6 +203,8 @@
     <tabs>et4ae5__IndividualEmailResult__c</tabs>
     <tabs>standard-LiveChatTranscript</tabs>
     <tabs>standard-LiveAgentSession</tabs>
+    <tabs>standard-ActionCadence</tabs>
+    <tabs>standard-WorkQueue</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>LightningSalesConsole_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -121,6 +213,9 @@
         </mappings>
         <mappings>
             <tab>standard-Account</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-ActionCadence</tab>
         </mappings>
         <mappings>
             <tab>standard-Campaign</tab>
@@ -148,6 +243,9 @@
         </mappings>
         <mappings>
             <tab>standard-Task</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-WorkQueue</tab>
         </mappings>
         <mappings>
             <tab>standard-home</tab>
