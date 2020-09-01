@@ -343,6 +343,11 @@
         <field>Transfer__c.Transferred_To__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UASB__c.Transfer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Production and Transfer Edit</label>
     <objectPermissions>
