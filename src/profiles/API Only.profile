@@ -8839,6 +8839,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Error_Log__c.Severity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Error_Log__c.Timestamp__c</field>
         <readable>true</readable>
     </fieldPermissions>
