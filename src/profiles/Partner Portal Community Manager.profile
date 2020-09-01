@@ -9727,10 +9727,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>dcstuff__Scheduler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dcstuff__Scheduler_Test</apexClass>
         <enabled>false</enabled>
     </classAccesses>
