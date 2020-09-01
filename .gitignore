@@ -318,6 +318,7 @@ src/package.xml
 # Docusign
 *dsfs__*
 !src/objects/dsfs__*
+!src/layouts/dsfs__*
 
 # Agile Accelerator
 *agf__*
