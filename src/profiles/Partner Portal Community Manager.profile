@@ -81261,10 +81261,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>dcstuff__SchedulerHelper</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>dsfs__AccountDocuSignActionLandingPage</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
