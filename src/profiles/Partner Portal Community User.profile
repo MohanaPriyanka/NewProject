@@ -72479,33 +72479,6 @@
         <layout>Consumption_Update__c-Coverage Update Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Bank_Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Community_Solar_Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Contact_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Partner_Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Contact-Partner Portal Contact Layout</layout>
-        <recordType>Contact.Project_Management_Contact</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ContactPointAddress-Contact Point Address Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
