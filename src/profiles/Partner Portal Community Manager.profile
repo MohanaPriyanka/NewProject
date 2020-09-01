@@ -4227,10 +4227,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SLPUserHelper</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ScheduleZSubscriptionSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
