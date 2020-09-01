@@ -72548,9 +72548,6 @@
         <recordType>Energy_Usage_Update__c.Production_Update_RL</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>EnhancedLetterhead-Enhanced Letterhead Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Entity__c-BWC Business Entity Layout</layout>
         <recordType>Entity__c.BWC_Business_Entity</recordType>
     </layoutAssignments>
