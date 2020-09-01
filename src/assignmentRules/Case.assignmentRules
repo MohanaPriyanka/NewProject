@@ -4,6 +4,20 @@
         <fullName>Switch</fullName>
         <active>true</active>
         <ruleEntry>
+            <assignedTo>Partner_Support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Partner Portal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Partner Care Case</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
             <assignedTo>CS_Inside_Sales</assignedTo>
             <assignedToType>Queue</assignedToType>
             <criteriaItems>
