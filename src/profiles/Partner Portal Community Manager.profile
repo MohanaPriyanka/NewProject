@@ -84642,10 +84642,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>dcstuff__Schedul_o_matic_9000</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>dcstuff__SchedulomaticEntry__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
