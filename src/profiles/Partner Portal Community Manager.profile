@@ -4227,10 +4227,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SLPAlertsHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>SLPAllCustomersHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
