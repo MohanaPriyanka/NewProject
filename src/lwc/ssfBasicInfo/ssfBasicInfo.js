@@ -22,14 +22,13 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track selectedUtility;
     @track selectedProduct;
     @track rateClassOptions;
-    @track rateClassMap;
+    @track rateClassObj;
     @track utilityId;
 
     @track restLead;
     @track propertyAccount;
     @track stateOptions;
     @track selectedRateClass;
-    @track rateClassObj;
 
     @track showSpinner;
     @track spinnerMessage;
