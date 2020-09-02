@@ -691,18 +691,23 @@ public with sharing class RESTRouterV2Test {
 
         ContentDocumentLink cdl = new ContentDocumentLink(
             ContentDocumentId = cvList[0].ContentDocumentId,
-            LinkedEntityId = lead.Id,
+            LinkedEntityId = lead.Contracts__r[0].Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
         ContentDocumentLink cdl2 = new ContentDocumentLink(
             ContentDocumentId = cvList[1].ContentDocumentId,
-            LinkedEntityId = lead.Id,
+            LinkedEntityId = lead.Contracts__r[0].Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
         insert new List<ContentDocumentLink>{cdl, cdl2};
-
+        ClientReportingService.uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType> {
+                Account.SObjectType
+            }
+        );
+    
         // </setup>
 
 
@@ -731,7 +736,7 @@ public with sharing class RESTRouterV2Test {
         assertLeadAndChildrenChanged(lead, returnedLead);
 
         System.assertEquals(null, returnedLead.contentDocs, 'No ContentDocumentLinks should be returned, as docs exist and changes were made to the lead');
-        System.assertEquals(Date.today(), returnedLead.mostRecentContractGen.date(), 'mostRecentContractGen should be returned, as docs exist and changes were made to the lead');
+        System.assertEquals(Date.today().addDays(-1), returnedLead.mostRecentContractGen.date(), 'mostRecentContractGen should be returned, as docs exist and changes were made to the lead');
     }
 
     private static String getApplicationJson(Id leadId, Id acctId, Id ualId) {

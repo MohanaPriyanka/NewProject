@@ -176,7 +176,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 for(Contract contract : existingLead.Contracts__r) {
                     contractIdSet.add(contract.Id);
                 }
-                List<ContentDocumentLink> existingDocs = contentSelector.selectByLinkedEntities(contractIdSet);
+                List<ContentDocumentLink> existingDocs = new List<ContentDocumentLink>();
+                if(!contractIdSet.isEmpty()) { 
+                    existingDocs = contentSelector.selectByLinkedEntities(contractIdSet);
+                }
+                
                 Boolean regenerateDocs = existingDocs.isEmpty() || existingDocs[0].ContentDocument.CreatedDate.date() < Date.today().addDays(ContentDocLinkPrivacyScheduler.minDaysInPast) || contractFieldsUpdated(jsonRequest, existingLead);
                 updateLeadAccountAndUALs(jsonRequest, existingLead);
                 uow.commitWork();
