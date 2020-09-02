@@ -354,7 +354,7 @@ IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quo
     <fields>
         <fullName>Fee_Unit__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>See Fee ($) field for numerator. Ie $/W, $/MW</inlineHelpText>
+        <inlineHelpText>See Fee ($) field for numerator. Ie $/W, $/MW (implicitly, per year)</inlineHelpText>
         <label>Fee Unit</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -385,7 +385,7 @@ IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quo
     <fields>
         <fullName>Fee__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>The $ value of the fee, see &quot;Fee Unit&quot; field for the denominator ($/W or $/MW or $/project)</inlineHelpText>
+        <inlineHelpText>The annual $ value of the fee, see &quot;Fee Unit&quot; field for the denominator ($/W year or $/MW year or $/project year)</inlineHelpText>
         <label>Fee ($)</label>
         <precision>18</precision>
         <required>false</required>
@@ -594,6 +594,20 @@ IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quo
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>If this CFD is specific to a SSS (not common), populate this field. Currently only supported for management contracts.</inlineHelpText>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Contract Fee Detail</relationshipLabel>
+        <relationshipName>Contract_Fee_Detail</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Utilization_Adjustment_Amount__c</fullName>

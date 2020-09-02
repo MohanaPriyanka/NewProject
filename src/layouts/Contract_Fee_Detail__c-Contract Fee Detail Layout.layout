@@ -211,6 +211,13 @@
                 <behavior>Edit</behavior>
                 <field>Project_Type_Acquisition_Management__c</field>
             </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Shared_Solar_System__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -255,6 +262,15 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Subscription_Order__c.Contract_Fee_Detail__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Effective_Date__c</fields>
+        <fields>Type__c</fields>
+        <fields>Amount__c</fields>
+        <relatedList>Client_Invoicing_Memo__c.Contract_Fee_Detail__c</relatedList>
+        <sortField>Effective_Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

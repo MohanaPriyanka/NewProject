@@ -103,6 +103,13 @@ public class ContractFeeDetailSelectorTest {
         ContractFeeDetailSelector selector = new ContractFeeDetailSelector();
         List<Contract_Fee_Detail__c> detail = selector.getContractDetailFromContract(idSet);
 
-        System.assertEquals(3,detail.size());
+        System.assertEquals(3,detail.size(), 'Expected testSetup to setup three CFDs, excluding contract C');
+    }
+
+    @IsTest
+    public static void testGetContractDetailsWithUtilizationAdjustment() {
+        ContractFeeDetailSelector selector = new ContractFeeDetailSelector();
+        List<Contract_Fee_Detail__c> detail = selector.getContractDetailsWithUtilizationAdjustment();
+        System.assertEquals(0,detail.size(), 'Just exercising the query, did not expect any results');
     }
 }
