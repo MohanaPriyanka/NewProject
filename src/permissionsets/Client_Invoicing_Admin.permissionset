@@ -321,4 +321,8 @@
         <object>Utility_Account_Subscription__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Calculate_Utilization_Fees</flow>
+    </flowAccesses>
 </PermissionSet>
