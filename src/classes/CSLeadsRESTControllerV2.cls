@@ -482,9 +482,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             RestLead.RestPropertyAccount requestPropertyAccount = requestPropertyAccounts[acctIndex];
             Account propAcct;
             if(existingAccountMap.containsKey(requestPropertyAccount.id)) {
-                System.debug('original acct: ' + existingAccountMap.get(requestPropertyAccount.id));
                 propAcct = requestPropertyAccount.mergeFields(accountMap.keySet(), existingAccountMap.get(requestPropertyAccount.id));
-                System.debug('updated acct: ' + propAcct);
                 uow.registerDirty(propAcct);
             } else {
                 requestPropertyAccount.validateCreateFields();
