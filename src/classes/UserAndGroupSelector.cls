@@ -42,4 +42,13 @@ public inherited sharing class UserAndGroupSelector {
             WHERE Id IN : userIds
         ]);
     }
+
+    public User getGuestUser() {
+        return [
+            SELECT Id
+            FROM User
+            WHERE Name = 'Apply Site Guest User'
+            LIMIT 1
+        ];
+    }
 }
