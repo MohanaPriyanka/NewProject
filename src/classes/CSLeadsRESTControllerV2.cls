@@ -53,6 +53,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     );
     private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
 
+    public static final Map<String, String> APP_STATUS_TO_LOCATION = new Map<String, String>{
+        'Started' => 'info',
+        'Customer Info Completed' => 'agree',
+        'Contracts Signed' => 'pay',
+        'Application Completed' => 'complete'
+    };
+
     
     public virtual void getLead(String leadId, String email) {
         RestResponse response = RestContext.response;
@@ -697,11 +704,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     private String getContentBody(String bodyInput) {
         String retVal = String.escapeSingleQuotes(bodyInput);
         Pattern myPattern = pattern.compile('^data:.+;base64,');
-        Matcher myMatcher = myPattern.matcher(bodyInput);
+        Matcher myMatcher = myPattern.matcher(retVal);
         if(myMatcher.find()) {
-            bodyInput = bodyInput.replaceAll('data:.+;base64,', '');
+            retVal = retVal.replaceAll('data:.+;base64,', '');
         }
-        return bodyInput;
+        return retVal;
     }
 
     private List<RestLead.RestContentDocument> compileLeadContentDocs(Id leadId, List<Object> contractCDLs, Integer numberOfContractDocs) {
@@ -714,14 +721,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return restContentDocs;
     }
-
-
-    public static final Map<String, String> APP_STATUS_TO_LOCATION = new Map<String, String>{
-        'Started' => 'info',
-        'Customer Info Completed' => 'agree',
-        'Contracts Signed' => 'pay',
-        'Application Completed' => 'complete'
-    };
 
 
     @SuppressWarnings('PMD.ApexOpenRedirect')

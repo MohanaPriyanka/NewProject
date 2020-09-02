@@ -173,7 +173,6 @@ public with sharing class SimpleSignupFormControllerTest {
         ContentDocumentSelector docSelector = new ContentDocumentSelector();
         List<ContentDocumentLink> cdlList = docSelector.selectByLinkedEntity(testLead.Contracts__r[0].Id);
         RestLead.RestContentDocument rcd1 = new RestLead.RestContentDocument(cdlList[0]);   // most recent
-        RestLead.RestContentDocument rcd2 = new RestLead.RestContentDocument(cdlList[1]);   // oldest
 
         String retStr = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, null);
         List<RestLead.RestContentDocument> retList = (List<RestLead.RestContentDocument>)JSON.deserialize(retStr, List<RestLead.RestContentDocument>.class);

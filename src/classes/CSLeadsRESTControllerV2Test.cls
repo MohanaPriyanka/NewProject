@@ -8,6 +8,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     private static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
     private static MockLeadService mockLeadService;
+    @TestVisible private static String SAMPLE_EMAIL = 'email@invalid.com';
 
     public static void useMocks () {
         mockLeadService = new MockLeadService();
@@ -44,11 +45,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
             Name = 'CS Product'
         );
         insert product;
-
-        Rate_Class__c rateClass = new Rate_Class__c(
-            Name = 'Rate Class',
-            Utility__c = utilityWithEIA.Id
-        );
     }
 
 
@@ -403,7 +399,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         String error = String.valueOf(errors.get(0));
 
         System.assertEquals(400, RestContext.response.statusCode, 'We currently only support 1 propertyAccount');
-        System.assert(error.contains('only <=1 propertyAccount per lead is supported'));
+        System.assert(error.contains('only <=1 propertyAccount per lead is supported'), 'Returned error message should match error of too many property accounts');
 
     }
 
@@ -900,8 +896,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
         Map<String, Object> requestPropertyAccount = (Map<String,Object>) requestPropertyAccounts[0];
         List<Object> requestUtilityAccountLogs = (List<Object>) requestPropertyAccount.get('utilityAccountLogs');
         Map<String, Object> requestUtilityAccountLog = (Map<String,Object>) requestUtilityAccountLogs[0];
-        List<Object> requestUtilityBills = (List<Object>) requestUtilityAccountLog.get('utilityBills');
-        Map<String, Object> requestUtilityBill = (Map<String, Object>) requestUtilityBills[0];
 
         
         String jsonResponse = response.responseBody.toString();
@@ -913,7 +907,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
         // verify lead request/response fields
         System.assertNotEquals(responseLead.get('id'), null, 'id should be set on POST response');
-        System.assertEquals(websiteLead.Id, responseLead.get('id'));
+        System.assertEquals(websiteLead.Id, responseLead.get('id'), 'returned id should match that of the website lead');
         for (String key : requestLead.keySet()) {
             if (requestLead.get(key) instanceof String) {
                 System.assertEquals(requestLead.get(key), responseLead.get(key), 'The requested ' + key + ' is expected to match the actual response');
@@ -1240,8 +1234,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     /*************
      *** MOCKS ***
      *************/
-    @TestVisible
-    private static String SAMPLE_EMAIL = 'email@invalid.com';
     
     @TestVisible
     private class MockLeadService extends MockProvider {

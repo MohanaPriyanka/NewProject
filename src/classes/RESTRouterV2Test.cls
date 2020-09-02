@@ -283,11 +283,6 @@ public with sharing class RESTRouterV2Test {
 
         response = RestContext.response;
         System.assertEquals(200, response.statusCode, 'Properly formed GET request should succeed');
-        jsonResponse = response.responseBody.toString();
-        responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
-
-
     }
 
     /** Property Accounts **/
@@ -402,8 +397,8 @@ public with sharing class RESTRouterV2Test {
 
         System.assertEquals(200, response.statusCode, 'Properly formed PATCH should succeed');
 
-        System.assertEquals('mock-zuoraId', responsePropertyAccount.get('zuoraPaymentRefId'));
-        System.assertEquals('2019-01-05T19:00:00.000Z', responsePropertyAccount.get('zuoraPaymentRefIdExpirationDate'));
+        System.assertEquals('mock-zuoraId', responsePropertyAccount.get('zuoraPaymentRefId'), 'Returned zuoraPaymentRefId should match the input zuoraPaymentRefId from the patch request');
+        System.assertEquals('2019-01-05T19:00:00.000Z', responsePropertyAccount.get('zuoraPaymentRefIdExpirationDate'), 'Returned zuoraPaymentRefIdExpirationDate should match the input zuoraPaymentRefIdExpirationDate from the patch request');
 
     }
 
@@ -527,7 +522,7 @@ public with sharing class RESTRouterV2Test {
 
         System.assertEquals(200, response.statusCode, 'Properly formed PATCH should succeed');
 
-        System.assertEquals(8000, responseUAL.get('annualKWh'));
+        System.assertEquals(8000, responseUAL.get('annualKWh'), 'New annualKWh should match input annualKWh in patch request');
 
     }
 
