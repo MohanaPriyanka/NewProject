@@ -172,7 +172,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         if (applicationValid(jsonRequest, response, existingLead)) {
             Savepoint sp = Database.setSavepoint();
             try {
-                List<ContentDocumentLink> existingDocs = contentSelector.selectByLinkedEntity(existingLead.Id);
+                Set<Id> contractIdSet = new Set<Id>();
+                for(Contract contract : existingLead.Contracts__r) {
+                    contractIdSet.add(contract.Id);
+                }
+                List<ContentDocumentLink> existingDocs = contentSelector.selectByLinkedEntities(contractIdSet);
                 Boolean regenerateDocs = existingDocs.isEmpty() || existingDocs[0].ContentDocument.CreatedDate.date() < Date.today().addDays(ContentDocLinkPrivacyScheduler.minDaysInPast) || contractFieldsUpdated(jsonRequest, existingLead);
                 updateLeadAccountAndUALs(jsonRequest, existingLead);
                 uow.commitWork();
@@ -478,7 +482,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             RestLead.RestPropertyAccount requestPropertyAccount = requestPropertyAccounts[acctIndex];
             Account propAcct;
             if(existingAccountMap.containsKey(requestPropertyAccount.id)) {
+                System.debug('original acct: ' + existingAccountMap.get(requestPropertyAccount.id));
                 propAcct = requestPropertyAccount.mergeFields(accountMap.keySet(), existingAccountMap.get(requestPropertyAccount.id));
+                System.debug('updated acct: ' + propAcct);
                 uow.registerDirty(propAcct);
             } else {
                 requestPropertyAccount.validateCreateFields();
@@ -613,6 +619,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         for(Contract contract : leadToReturn.Contracts__r) {
             contractCDLs.addAll(contentDocLinksByLinkedEntityId.getValues(contract.Id));
         }
+        
         if(numberOfContractDocs == null || numberOfContractDocs == 0) {
             numberOfContractDocs = 2;
         }

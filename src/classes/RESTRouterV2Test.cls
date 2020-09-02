@@ -548,8 +548,8 @@ public with sharing class RESTRouterV2Test {
         ContentVersion cv2 = new ContentVersion(
             ContentLocation = 'S',
             VersionData = EncodingUtil.base64Decode('CSA body'),
-            Title = 'Community Solar Agreement.pdf.pdf',
-            PathOnClient = '/Community Solar Agreement.pdf.pdf'
+            Title = 'Community Solar Agreement.pdf',
+            PathOnClient = '/Community Solar Agreement.pdf'
         );
         insert new List<ContentVersion>{cv,cv2};
         List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
@@ -559,13 +559,13 @@ public with sharing class RESTRouterV2Test {
 
         ContentDocumentLink cdl = new ContentDocumentLink(
             ContentDocumentId = cvList[0].ContentDocumentId,
-            LinkedEntityId = lead.Id,
+            LinkedEntityId = lead.Contracts__r[0].Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
         ContentDocumentLink cdl2 = new ContentDocumentLink(
             ContentDocumentId = cvList[1].ContentDocumentId,
-            LinkedEntityId = lead.Id,
+            LinkedEntityId = lead.Contracts__r[0].Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
@@ -580,7 +580,8 @@ public with sharing class RESTRouterV2Test {
         req.addHeader('Content-Type', 'application/json');
 
         CSLeadsRESTControllerV2 ctrl = new CSLeadsRESTControllerV2();
-        RestLead restLead = ctrl.formatRestLeadFromLeadAndChildren(lead, false);
+        RestLead restLead = ctrl.formatRestLeadFromLeadAndChildren(lead.Id, false, 2);
+        System.debug('restLead: ' + restLead);
         String applicationJson = JSON.serialize(restLead);
         req.requestBody = Blob.valueOf(applicationJson);
 
@@ -594,6 +595,8 @@ public with sharing class RESTRouterV2Test {
         String jsonResponse = response.responseBody.toString();
         Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         RestLead returnedLead = (RestLead) JSON.deserialize(JSON.serialize(patchResponseEnvelope.get('data')), RestLead.class);
+        System.debug('returnedLead: ' + returnedLead);
+        System.debug('returnedLead.contentDocs: ' + returnedLead.contentDocs);
         System.assertEquals(lead.Id, returnedLead.id, 'The lead returned should be the same one created during setup');
         System.assertEquals(1, returnedLead.propertyAccounts.size(), 'One property account should be returned');
         System.assertEquals(lead.Accounts__r[0].Id, returnedLead.propertyAccounts[0].id, 'The property account returned should be the same one created during setup');
@@ -658,6 +661,11 @@ public with sharing class RESTRouterV2Test {
         );
         insert ual;
 
+        CustomerContractService ccs = new CustomerContractService();
+        Contract c = ccs.setContractFields(l, 2);
+        c.AccountId = a.Id;
+        insert c;
+
         LeadSelector leadSelector = new LeadSelector();
         return leadSelector.selectOneWithPropertiesAndUtilities(l.Id);
     }
@@ -666,7 +674,7 @@ public with sharing class RESTRouterV2Test {
     private static void testPatchApplicationSuccessRegenDocs() {
         // <setup>
         Lead lead = createLead();
-        
+        System.debug('original lead: ' + lead);
         ContentVersion cv = new ContentVersion(
             ContentLocation = 'S',
             VersionData = EncodingUtil.base64Decode('SDF body'),
@@ -676,8 +684,8 @@ public with sharing class RESTRouterV2Test {
         ContentVersion cv2 = new ContentVersion(
             ContentLocation = 'S',
             VersionData = EncodingUtil.base64Decode('CSA body'),
-            Title = 'Community Solar Agreement.pdf.pdf',
-            PathOnClient = '/Community Solar Agreement.pdf.pdf'
+            Title = 'Community Solar Agreement.pdf',
+            PathOnClient = '/Community Solar Agreement.pdf'
         );
         insert new List<ContentVersion>{cv,cv2};
         List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
@@ -724,11 +732,11 @@ public with sharing class RESTRouterV2Test {
         String jsonResponse = response.responseBody.toString();
         Map<String, Object> patchResponseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         RestLead returnedLead = (RestLead) JSON.deserialize(JSON.serialize(patchResponseEnvelope.get('data')), RestLead.class);
+        System.debug('returned lead: ' + returnedLead);
         assertLeadAndChildrenChanged(lead, returnedLead);
 
-        System.assertEquals(1, returnedLead.contentDocs.size(), 'One ContentDocumentLink should be returned, as docs exist and changes were made to the lead');
-        RestLead.RestContentDocument updatedContentDoc = returnedLead.contentDocs[0];
-        System.assertEquals(cdl.Id, updatedContentDoc.docLinkId, 'Response should be the CDL for the most recent doc, as docs exist and changes were made to the lead');
+        System.assertEquals(null, returnedLead.contentDocs, 'No ContentDocumentLinks should be returned, as docs exist and changes were made to the lead');
+        System.assertEquals(Date.today(), returnedLead.mostRecentContractGen.date(), 'mostRecentContractGen should be returned, as docs exist and changes were made to the lead');
     }
 
     private static String getApplicationJson(Id leadId, Id acctId, Id ualId) {
