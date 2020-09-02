@@ -7480,6 +7480,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contract.Generate_Disclosure_Form__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract.Generate_Review_Version__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -26626,6 +26631,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Rate_Class__c.LDC_Rate_Subclass__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Rate_Class__c.Suppress_Disclosure_Form__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -50557,6 +50567,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>EditPublicDocuments</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EditPublicFilters</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
