@@ -257,6 +257,8 @@ export default class SsfAgreements extends LightningElement {
         this.contractDocuments = contracts;
         var disclosurePosition;
         for (let c in contracts) {
+            contracts[c].first = false;
+            
             if(contracts[c].title.endsWith('.pdf')) {
                 contracts[c].title = contracts[c].title.slice(0,-4);
             }
@@ -268,10 +270,11 @@ export default class SsfAgreements extends LightningElement {
                 disclosurePosition = c;
             }
         }
-
+        
         if(disclosurePosition) {
             contracts = contracts.splice(0, 0, contracts.splice(disclosurePosition, 1)[0]);
         }
+        this.contractDocuments[0].first = true;
     }
 
     filePreview(event) {

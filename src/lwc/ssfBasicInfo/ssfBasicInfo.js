@@ -22,12 +22,14 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track selectedUtility;
     @track selectedProduct;
     @track rateClassOptions;
+    @track rateClassMap;
     @track utilityId;
 
     @track restLead;
     @track propertyAccount;
     @track stateOptions;
     @track selectedRateClass;
+    @track rateClassObj;
 
     @track showSpinner;
     @track spinnerMessage;
@@ -73,15 +75,19 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 this.isFileUpload = true;
             }
 
-            if(this.zipCheckResponse.rateClasses && this.collectRateClass) {
-                if(this.zipCheckResponse.rateClasses.length === 0) {
-                    this.collectRateClass = false;
-                } else {
-                    this.rateClassOptions = this.zipCheckResponse.rateClasses.map(
-                        rateClass => {
-                            return {value: JSON.stringify(rateClass), label: rateClass.name};
-                        }
-                    );
+            if(this.zipCheckResponse.rateClasses) {
+                this.rateClassObj = Object.fromEntries(this.zipCheckResponse.rateClasses.map(
+                    rateClass => ([rateClass.name, rateClass])
+                ));
+
+                if(this.collectRateClass) {
+                    if(this.zipCheckResponse.rateClasses.length === 0) {
+                        this.collectRateClass = false;
+                    } else {
+                        this.rateClassOptions = this.zipCheckResponse.rateClasses.map(
+                            rateClass => ({ value: rateClass.name, label: rateClass.name })
+                        );
+                    }
                 }
             }
         }
@@ -98,6 +104,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                     this.propertyAccount.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
                     this.propertyAccount.utilityAccountLogs[i].doNotDelete = true;
                     this.propertyAccount.utilityAccountLogs[i].showUpload = (this.isFileUpload && (!this.propertyAccount.utilityAccountLogs[i].utilityBills || this.propertyAccount.utilityAccountLogs[i].utilityBills.length === 0));
+                    
+                    if(i==0) {
+                        this.selectedRateClass = this.rateClassObj[this.propertyAccount.utilityAccountLogs[i].rateClass];
+                    }
                 }
             }
             this.sameBillingAddress = this.propertyAccount.billingStreet == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
@@ -208,10 +218,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     }
 
     rateClassOnChange(event) {
-        let selectedRC = JSON.parse(event.target.value);
-        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex].rateClass = selectedRC.name;
-        if(event.target.dataset.rowIndex === 0) {
-            this.selectedRateClass = selectedRC;
+        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex].rateClass = event.target.value;
+        if(event.target.dataset.rowIndex == 0) {
+            this.selectedRateClass = this.rateClassObj[event.target.value];
         }
     }
 
@@ -277,7 +286,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     }
 
     applicationValid() {
-        var allValid = [...this.template.querySelectorAll('lightning-input')]
+        var allValid = [...this.template.querySelectorAll('lightning-input'), ...this.template.querySelectorAll('lightning-combobox')]
         .reduce((validSoFar, inputCmp) => {
             inputCmp.reportValidity();
             return validSoFar && inputCmp.checkValidity();
@@ -439,11 +448,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if(!this.selectedProduct || !this.selectedProduct.standaloneDisclosureForm) {
             return 1;
         }
-
         if(!this.selectedRateClass || !this.selectedRateClass.suppressDisclosureForm) {
             return 2;
         }
-
         return 1;
     }
 }

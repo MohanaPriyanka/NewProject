@@ -581,7 +581,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         return false;
     }
 
-    private RestLead formatRestLeadFromLeadAndChildren(Id leadId, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
+    public RestLead formatRestLeadFromLeadAndChildren(Id leadId, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
         Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
         return formatRestLeadFromLeadAndChildren(leadToReturn, docsNewlyGenerated, numberOfContractDocs);
     }
@@ -593,6 +593,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // map UALs to their parent property accounts
         MultiMap ualsByPropertyAccountId = CollectionUtil.multiMapByField(leadToReturn.Utility_Account_Logs__r, Utility_Account_Log__c.Account__c);
         Set<Id> linkedEntityIdSet = new Set<Id>{leadToReturn.Id};
+        for(Contract contract : leadToReturn.Contracts__r) {
+            linkedEntityIdSet.add(contract.Id);
+        }
         for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
             linkedEntityIdSet.add(finUnderwriteDoc.Id);
         }
@@ -606,18 +609,21 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // get all related content docs and sort by linked entity
         List<ContentDocumentLink> cdls = contentSelector.selectByLinkedEntities(linkedEntityIdSet);
         MultiMap contentDocLinksByLinkedEntityId = CollectionUtil.multiMapByField(cdls, ContentDocumentLink.LinkedEntityId);
-        List<Object> leadCDLs = contentDocLinksByLinkedEntityId.getValues(leadToReturn.Id);
+        List<Object> contractCDLs = new List<Object>();
+        for(Contract contract : leadToReturn.Contracts__r) {
+            contractCDLs.addAll(contentDocLinksByLinkedEntityId.getValues(contract.Id));
+        }
         if(numberOfContractDocs == null || numberOfContractDocs == 0) {
             numberOfContractDocs = 2;
         }
         
-        if(leadCDLs.isEmpty()) {
+        if(contractCDLs.isEmpty()) {
             responseLead.mostRecentContractGen = Datetime.now();
         } else if(docsNewlyGenerated) {
-            ContentDocumentLink cdl = (ContentDocumentLink) leadCDLs[0];
+            ContentDocumentLink cdl = (ContentDocumentLink) contractCDLs[0];
             responseLead.mostRecentContractGen = cdl.ContentDocument.CreatedDate;
         } else {
-            responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, leadCDLs, numberOfContractDocs);
+            responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, contractCDLs, numberOfContractDocs);
         }
 
         // compile the financial underwriting documents and their uploads
@@ -689,11 +695,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         return bodyInput;
     }
 
-    private List<RestLead.RestContentDocument> compileLeadContentDocs(Id leadId, List<Object> leadCDLs, Integer numberOfContractDocs) {
+    private List<RestLead.RestContentDocument> compileLeadContentDocs(Id leadId, List<Object> contractCDLs, Integer numberOfContractDocs) {
         List<RestLead.RestContentDocument> restContentDocs = new List<RestLead.RestContentDocument>();
-        Integer docCount = Math.min(numberOfContractDocs, leadCDLs.size());
-        for(Integer i=1; i<=docCount; i++) {
-            RestLead.RestContentDocument rcd = new RestLead.RestContentDocument((ContentDocumentLink) leadCDLs[i]);
+        Integer docCount = Math.min(numberOfContractDocs, contractCDLs.size());
+        for(Integer i=0; i<docCount; i++) {
+            RestLead.RestContentDocument rcd = new RestLead.RestContentDocument((ContentDocumentLink) contractCDLs[i]);
             rcd.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd.docLinkId);
             restContentDocs.add(rcd);
         }
