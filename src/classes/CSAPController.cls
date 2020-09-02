@@ -541,8 +541,11 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static List<Utility_Account_Log__c> saveUtilityAccountLogList(List<Utility_Account_Log__c> ualList) {
         upsert ualList;
+        UtilityAccountLogs uals = new UtilityAccountLogs(ualList);
+        uals.createUALSharesForGuestUser();
         return ualList;
     }
+
 
     @AuraEnabled
     public static void saveUtilityAccountLog(Utility_Account_Log__c ual) {
