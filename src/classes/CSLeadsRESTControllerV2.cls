@@ -3,7 +3,7 @@
  * Description: REST Controller for sending CS Leads to Salesforce
  * Test: CSLeadsRESTControllerV2Test
  */
-
+@SuppressWarnings('PMD.TooManyFields')
 public virtual without sharing class CSLeadsRESTControllerV2 extends RESTController {
     @TestVisible private LeadService leadService = new LeadService();
     @TestVisible private AccountService accountService = new AccountService();

@@ -847,7 +847,6 @@ public with sharing class RESTRouterV2Test {
     public static void testGetWithException() {
         RESTRouterV2.controller = (CSLeadsRESTControllerV2) Test.createStub(CSLeadsRESTControllerV2.class, new MockCSLeadsRESTControllerV2());
 
-        String zipCode = '12345';
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/zip-check';
         req.addParameter('zipCode', 'exception');

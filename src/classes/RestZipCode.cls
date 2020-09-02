@@ -3,6 +3,7 @@
  * Tested By: CSLeadsRESTControllerV2Test
  */
 
+@SuppressWarnings('PMD.ExcessivePublicCount')
 public inherited sharing class RestZipCode {
     public String zipCode;
     public Boolean hasCapacity;

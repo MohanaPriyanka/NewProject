@@ -81,7 +81,7 @@
         Boolean expectedResult = false;
         try {
             CustomerContractService ccs = new CustomerContractService();
-            Contract contract = ccs.createContractFromLead(lead.Id, 1);
+            ccs.createContractFromLead(lead.Id, 1);
             System.assert(false, 'Method should have thrown an error due to missing child Account');
         } catch(Util.BWException bwe) {
             expectedResult = true;
