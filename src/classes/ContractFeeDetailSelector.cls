@@ -18,4 +18,13 @@ public inherited sharing class ContractFeeDetailSelector {
         ];
         return cfdList;
     }
+
+    public List<Contract_Fee_Detail__c> getContractDetailsWithUtilizationAdjustment() {
+        return [
+            SELECT Id, Contract__c, Utilization_Adjustment_Type__c, Utilization_Adjustment_Amount__c,
+                Utilization_Adjustment_Floor__c, Utilization_Adjustment_Multiplier__c, Fee__c, Fee_Unit__c
+            FROM Contract_Fee_Detail__c
+            WHERE Utilization_Adjustment_Type__c != NULL
+        ];
+    }
 }
