@@ -111,6 +111,15 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Effective_Date__c</fields>
+        <fields>Type__c</fields>
+        <fields>Amount__c</fields>
+        <relatedList>Client_Invoicing_Memo__c.Production_Detail__c</relatedList>
+        <sortField>Effective_Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
