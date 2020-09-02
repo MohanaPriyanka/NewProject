@@ -832,6 +832,15 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Generate_Disclosure_Form__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Generate Disclosure Form</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Generate_Review_Version__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
