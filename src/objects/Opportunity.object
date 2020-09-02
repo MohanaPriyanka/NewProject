@@ -9216,6 +9216,23 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </sharedTo>
     </listViews>
     <listViews>
+        <fullName>Complete_ApplicationsPartnrPortal</fullName>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>CS_Capacity_Allocated__c</columns>
+        <columns>Shared_Solar_System__c</columns>
+        <columns>Product__c</columns>
+        <columns>OPPORTUNITY.CREATED_DATE</columns>
+        <columns>Contract_Close_Date__c</columns>
+        <columns>Email__c</columns>
+        <columns>UtilityMapper__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>Complete Applications</label>
+        <sharedTo>
+            <allPartnerUsers></allPartnerUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>Consumer_Loan_Active_Opportunities</fullName>
         <booleanFilter>1 AND 3 AND (2 OR 4)</booleanFilter>
         <columns>Date_of_Application__c</columns>
