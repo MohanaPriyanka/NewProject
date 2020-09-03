@@ -1,9 +1,15 @@
-@isTest
+@IsTest
 public class ProductionDetailSelectorTest {
-    @testSetup
+    @TestSetup
     public static void setupTestData() {
         // Don't need to test Allocation Schedule Population or transfer part creation:
-        Util.DisableTrigger('Disable_TransferTrigger__c');
+        Util.disableTrigger('Disable_TransferTrigger__c');
+
+        Date today = System.today();
+        Date lastMonthStart = Date.newInstance(today.year(),today.month()-1,1);
+        Date lastMonthEnd = Date.newInstance(today.year(),today.month(),-1);
+        Date lastMonthBilling = Date.newInstance(today.year(),today.month()-1,20);
+        Date twoMonthsAgoBilling = Date.newInstance(today.year(),today.month()-2,20);
 
         Journal_Entry__c entryOne = new Journal_Entry__c(
             Object_Type__c = 'InvoiceItem',
@@ -13,7 +19,7 @@ public class ProductionDetailSelectorTest {
             Amount__c = 252.73,
             External_Id__c = '2c92c0fa6e3a9391016e3df87b1f687a',
             Customer_Account__c = 'bw-00524',
-            Date__c = Date.newInstance(2019,05,20)
+            Date__c = twoMonthsAgoBilling
         );
         Journal_Entry__c entryTwo = new Journal_Entry__c(
             Object_Type__c = 'InvoiceItem',
@@ -23,55 +29,63 @@ public class ProductionDetailSelectorTest {
             Amount__c = 135.06,
             External_Id__c = '2c92c0fa6e3a9391016e3e30d48066d2',
             Customer_Account__c = 'bw-00524',
-            Date__c = Date.newInstance(2019,06,20)
+            Date__c = lastMonthBilling
         );
         insert new List<Journal_Entry__c>{entryOne, entryTwo};
 
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
             Name = 'Test Project',
-            Billing_Method__c = 'NMC'
+            Billing_Method__c = 'kWh'
         );
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(
-            Name = 'Test Project',
+            Name = 'Test Project 2',
             Billing_Method__c = 'NMC'
         );
-        insert sss1;
-        insert sss2;
+        insert new List<Shared_Solar_System__c>{sss1, sss2};
 
         Production__c productionOne = new Production__c(
             Name = 'Production A',
             Shared_Solar_System__c = sss1.Id,
-            Production_kWh__c = 15000,
+            Production_kWh__c = 126218,
             Credits_Generated__c = 8000,
-            Start_Date__c = Date.newInstance(2019, 6, 1),
-            End_Date__c = Date.newInstance(2019, 6, 29)
+            Start_Date__c = lastMonthStart,
+            End_Date__c = lastMonthEnd
         );
         Production__c productionTwo = new Production__c(
             Name = 'Production B',
             Shared_Solar_System__c = sss1.Id,
             Production_kWh__c = 15000,
             Credits_Generated__c = 8000,
-            Start_Date__c = Date.newInstance(2019, 6, 1),
-            End_Date__c = Date.newInstance(2019, 6, 29)
+            Start_Date__c = lastMonthStart,
+            End_Date__c = lastMonthEnd
         );
         Production__c productionThree = new Production__c(
             Name = 'Production C',
             Shared_Solar_System__c = sss2.Id,
             Production_kWh__c = 15000,
             Credits_Generated__c = 8000,
-            Start_Date__c = Date.newInstance(2019, 6, 1),
-            End_Date__c = Date.newInstance(2019, 6, 29)
+            Start_Date__c = lastMonthStart,
+            End_Date__c = lastMonthEnd
         );
         insert new List<Production__c>{productionOne, productionTwo, productionThree};
+
+        Bill_Period__c billPeriod = new Bill_Period__c(
+            Name = 'sssA - August 2016',
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = lastMonthStart
+        );
+        insert billPeriod;
 
         Transfer__c transferOne = new Transfer__c(
             Name = 'TransferA',
             Transfer_Type__c = 'Main',
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 1000,
-            Attempted_kWh_Transfer__c = 19000,
-            Transfer_Amount__c = 1000,
-            Date_of_Transfer__c = Date.newInstance(2019, 6, 4)
+            Attempted_kWh_Transfer__c = 126218,
+            Transfer_Amount__c = 122924,
+            Date_of_Transfer__c = lastMonthStart + 4,
+            Bill_Period__c = billPeriod.Id,
+            Default_Credit_Value__c = .07660100
         );
         Transfer__c transferTwo = new Transfer__c(
             Name = 'TransferB',
@@ -80,7 +94,9 @@ public class ProductionDetailSelectorTest {
             Attempted_Transfer__c = 1000,
             Attempted_kWh_Transfer__c = 19000,
             Transfer_Amount__c = 1000,
-            Date_of_Transfer__c = Date.newInstance(2019, 6, 4)
+            Date_of_Transfer__c = lastMonthStart + 4,
+            Bill_Period__c = billPeriod.Id,
+            Default_Credit_Value__c = .07660100
         );
         Transfer__c transferThree = new Transfer__c(
             Name = 'TransferC',
@@ -89,7 +105,7 @@ public class ProductionDetailSelectorTest {
             Attempted_Transfer__c = 1000,
             Attempted_kWh_Transfer__c = 19000,
             Transfer_Amount__c = 2000,
-            Date_of_Transfer__c = Date.newInstance(2019, 6, 4)
+            Date_of_Transfer__c = lastMonthStart + 4
         );
         insert new List<Transfer__c>{transferOne, transferTwo, transferThree};
 
@@ -109,7 +125,8 @@ public class ProductionDetailSelectorTest {
             Transfer__c = transferOne.Id,
             Production__c = productionOne.Id,
             Type__c = 'Transfer',
-            Amount__c = 1000
+            Amount__c = 1000,
+            kWh_Amount__c = 122924
         );
         Transfer_Part__c transferPartTwo = new Transfer_Part__c(
             Transfer__c = transferTwo.Id,
@@ -295,5 +312,13 @@ public class ProductionDetailSelectorTest {
 
         System.assertEquals(50.12,paymentMap.get(entries[0].Id));
         System.assertEquals(100.24,paymentMap.get(entries[1].Id));
+    }
+
+    @IsTest
+    public static void testGetProductionDetailsByContract() {
+        Map<Id, Contract> contractMap = new Map<Id, Contract>([SELECT Id FROM Contract]);
+        List<Transfer_Part__c> productionDetails =
+            new ProductionDetailSelector().getRecentUtilizationChangesByContract(contractMap.keySet());
+        System.assertEquals(0, productionDetails.size());
     }
 }

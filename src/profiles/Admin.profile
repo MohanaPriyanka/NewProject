@@ -423,6 +423,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ClientInvoicingUtilizationService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientInvoicingUtilizationServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ClientReportObjectSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -492,6 +500,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ContentService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContractFeeDetailSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContractFeeDetailSelectorTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -680,6 +696,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ImageScrollerControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableClientUtilization</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -7554,7 +7574,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Client_Invoicing_Memo__c.Contract_Fee_Detail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Client_Invoicing_Memo__c.Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Client_Invoicing_Memo__c.Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Client_Invoicing_Memo__c.Production_Detail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Client_Invoicing_Memo__c.Shared_Solar_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9250,6 +9290,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract_Fee_Detail__c.Recurring_Frequency__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Shared_Solar_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
