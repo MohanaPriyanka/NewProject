@@ -39,4 +39,10 @@ public with sharing class UserAndGroupSelectorTest {
         List<User> users = selector.getUsersFromId(new Set<Id>{oneUser.Id});
         System.assertNotEquals(null, users);
     }
+
+    @IsTest
+    private static void testGetGuestUser() {
+        User guestUser = selector.getGuestUser();
+        System.assertNotEquals(null, guestUser);
+    }
 }
