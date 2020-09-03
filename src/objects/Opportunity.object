@@ -1419,7 +1419,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <fullName>CS_Capacity_Allocated__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Rolls up from Future Customer Subscription (KW DC) on Utility Account Subscriptions after Recalculate Subscription button is run. Used in Docusign.</inlineHelpText>
-        <label>Future Customer Subscription (kW DC)</label>
+        <label>Customer Subscription (kW DC)</label>
         <precision>9</precision>
         <required>false</required>
         <scale>4</scale>
@@ -9213,6 +9213,23 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <label>Community Solar - Quality Check</label>
         <sharedTo>
             <group>BFG</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Complete_ApplicationsPartnrPortal</fullName>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>CS_Capacity_Allocated__c</columns>
+        <columns>Shared_Solar_System__c</columns>
+        <columns>Product__c</columns>
+        <columns>OPPORTUNITY.CREATED_DATE</columns>
+        <columns>Contract_Close_Date__c</columns>
+        <columns>Email__c</columns>
+        <columns>UtilityMapper__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>Complete Applications</label>
+        <sharedTo>
+            <allPartnerUsers></allPartnerUsers>
         </sharedTo>
     </listViews>
     <listViews>
