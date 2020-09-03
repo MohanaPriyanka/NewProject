@@ -68,29 +68,33 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
         List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
         List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
-        Set<Id> sssIds = new Set<Id>();
+        Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>();
         Decimal reservedCapacity = 0;
         Decimal committedCapacity = 0;
         Decimal anchorCapacity = 0;
         for (Shared_Solar_System__c sss : sssList){
-            sssIds.add(sss.Id);
+            sssMap.put(sss.Id, sss);
         }
-        List<Utility_Account_Subscription__c> relatedUAS = uasSelector.selectActiveUASBySSS(sssIds);
-        for (Utility_Account_Subscription__c uas : relatedUAS) {
-            if (!isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete'){
-                committedCapacityList.add(uas);
-            } else if (!isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)){
-                reservedCapacityList.add(uas);
-            } else if (isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
-                anchorCapacityList.add(uas);
-            }
-        }
-        for (Shared_Solar_System__c sss : sssList) {
-            reservedCapacity = getCapacitySumOfUASList(reservedCapacityList,sss.Id);
-            committedCapacity = getCapacitySumOfUASList(committedCapacityList,sss.Id);
-            anchorCapacity = getCapacitySumOfUASList(anchorCapacityList,sss.Id);
+        List<Utility_Account_Subscription__c> activeUASes = uasSelector.selectActiveUASBySSS(sssMap.keySet());
+        MultiMap activeUASesBySSS = CollectionUtil.multiMapByField(activeUASes, Utility_Account_Subscription__c.Shared_Solar_System__c);
 
-            registerCapacityChanges(sss, uow, reservedCapacity, committedCapacity, anchorCapacity);
+        for (Object sssId : activeUASesBySSS.keySet()) {
+            for (Object uasObj : activeUASesBySSS.getValues(sssId) ) {
+                Utility_Account_Subscription__c uas = (Utility_Account_Subscription__c)uasObj;
+                if (!isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete'){
+                    committedCapacityList.add(uas);
+                } else if (!isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)){
+                    reservedCapacityList.add(uas);
+                } else if (isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
+                    anchorCapacityList.add(uas);
+                }
+            }
+
+            reservedCapacity = getCapacitySumOfUASList(reservedCapacityList, (Id)sssId);
+            committedCapacity = getCapacitySumOfUASList(committedCapacityList, (Id)sssId);
+            anchorCapacity = getCapacitySumOfUASList(anchorCapacityList, (Id) sssId);
+
+            registerCapacityChanges(sssMap.get((Id)sssId), uow, reservedCapacity, committedCapacity, anchorCapacity);
         }
     }
 
