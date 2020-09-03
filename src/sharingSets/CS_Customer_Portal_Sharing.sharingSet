@@ -31,6 +31,6 @@
         <userField>Contact.Account</userField>
     </accessMappings>
     <name>CS Customer Portal Sharing</name>
-    <profiles>Community Solar Community User</profiles>
+    <profiles>community solar community user</profiles>
     <profiles>customer community plus login user</profiles>
 </SharingSet>

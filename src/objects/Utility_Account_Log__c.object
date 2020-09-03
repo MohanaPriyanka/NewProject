@@ -815,6 +815,10 @@
     <pluralLabel>Utility Account Logs</pluralLabel>
     <searchLayouts />
     <sharingModel>Read</sharingModel>
+    <sharingReasons>
+        <fullName>Guest_User_Access__c</fullName>
+        <label>Guest User Access</label>
+    </sharingReasons>
     <visibility>Public</visibility>
     <webLinks>
         <fullName>New_Customer_Care_Case</fullName>

@@ -82,4 +82,17 @@ public inherited sharing class ProductionDetailSelector {
         ];
         return detailList;
     }
+
+    public List<Transfer_Part__c> getRecentUtilizationChangesByContract(Set<Id> managementContractIds) {
+        return [
+            SELECT Id, Change_in_Utilization__c, Production__r.Shared_Solar_System__c,
+                Production__r.Shared_Solar_System__r.Client_Management_Contract__c, Production__r.Shared_Solar_System__r.Name,
+                Production__r.Shared_Solar_System__r.Serviced_Capacity__c, Transfer__r.Bill_Period__r.Bill_Date__c,
+            (SELECT Id FROM Client_Invoicing_Memos__r)
+            FROM Transfer_Part__c
+            WHERE Production__r.Shared_Solar_System__r.Client_Management_Contract__c IN :managementContractIds
+            AND Transfer__r.Bill_Period__r.Bill_Date__c = LAST_N_DAYS:365
+            AND Change_in_Utilization__c != 0
+        ];
+    }
 }

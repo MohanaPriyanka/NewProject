@@ -582,6 +582,20 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Assignment_Agreement_Template__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The Assignment Agreement template that is used  by Conga when generating the assignment agreement document.</inlineHelpText>
+        <label>Assignment Agreement Template</label>
+        <referenceTo>APXTConga4__Conga_Template__c</referenceTo>
+        <relationshipLabel>Accounts</relationshipLabel>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Autopay_Date_Last_Enrolled__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>The last day someone opted in to Autopay</inlineHelpText>
