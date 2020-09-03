@@ -4,7 +4,7 @@ public without sharing class FilesUnitOfWorkHelper implements fflib_SObjectUnitO
         cdl_records = new List<CDLCreator>();
     }
 
-    public void registerContentDocumentLinkInsert(Utility_Account_Log__c linkedEntity, ContentVersion contentVersion, String sharing, String visibility) {
+    public void registerContentDocumentLinkInsert(SObject linkedEntity, ContentVersion contentVersion, String sharing, String visibility) {
         CDLCreator creator = new CDLCreator();
         creator.contentVersion = contentVersion;
         creator.linkedEntity = linkedEntity; 

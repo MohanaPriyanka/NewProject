@@ -137,6 +137,20 @@ false
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Assignment_Agreement_Template_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE
+(
+BlueWave_Entity__r.Assignment_Agreement_Template__c,
+Account.Assignment_Agreement_Template__c
+)</formula>
+        <label>Assignment Agreement Template Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Assignment_Agreement__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -827,6 +841,15 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <externalId>false</externalId>
         <inlineHelpText>Generates the Countersigned version of the contract for SSF applicants, and emails it to the customer.</inlineHelpText>
         <label>Generate Countersigned Version</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Generate_Disclosure_Form__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Generate Disclosure Form</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -3114,6 +3137,49 @@ COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. 
 &amp;serverUrl={!API.Partner_Server_URL_290}
 &amp;id={!Contract.Id}</url>
         <width>900</width>
+    </webLinks>
+    <webLinks>
+        <fullName>Copy_Client_Files_Button</fullName>
+        <availability>online</availability>
+        <description>Button to use the Client File Download flow in an Assignment Agreement Contract.</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Copy Client Files</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/flow/Client_File_Download?recordId={!Contract.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Generate_Assignment_Document</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Generate Assignment Document</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/apex/APXTConga4__Conga_Composer
+?serverUrl={!API.Partner_Server_URL_370}
+&amp;id={!Contract.Id}
+&amp;QueryId=[UAS]{!Environment.VAR_AssignmentAgreementUASQuery}
+&amp;TemplateId={!Contract.Assignment_Agreement_Template_Id__c}</url>
     </webLinks>
     <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>

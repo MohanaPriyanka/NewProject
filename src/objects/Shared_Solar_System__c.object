@@ -1157,8 +1157,9 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     </fields>
     <fields>
         <fullName>Management_Revenue_Start_Date__c</fullName>
+        <description>Previously entered/updated by Accounting, but automated with W-019836</description>
         <externalId>false</externalId>
-        <inlineHelpText>Accounting managed field for estimating project revenue. Manually entered/updated by Accounting.</inlineHelpText>
+        <inlineHelpText>Accounting managed field for estimating project revenue, set daily based on the Client Management Contract&apos;s &quot;Contract Fee Detail&quot; and associated date fields.</inlineHelpText>
         <label>Management Revenue Start Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -1823,6 +1824,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Mass Renewables</fullName>
                     <default>false</default>
                     <label>Mass Renewables</label>
+                </value>
+                <value>
+                    <fullName>NECS Energy</fullName>
+                    <default>false</default>
+                    <label>NECS Energy</label>
                 </value>
                 <value>
                     <fullName>New England Renewable Energy Group</fullName>
@@ -2624,81 +2630,6 @@ null)</formula>
         <active>true</active>
         <label>SSS - No PM Relationship</label>
         <picklistValues>
-            <picklist>Service_Territories__c</picklist>
-            <values>
-                <fullName>Bangor Hydro</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Capital</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Central</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Dunwoodie</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Genesee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Hudson Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Long Island</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Maine</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Maine Public Service</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Millwood</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mohawk Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>N%2EY%2EC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>North</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>West</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Sales_Partners__c</picklist>
             <values>
                 <fullName>360 Managed Services</fullName>
@@ -2833,6 +2764,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>NECS Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>New England Renewable Energy Group</fullName>
                 <default>false</default>
             </values>
@@ -2954,6 +2889,81 @@ null)</formula>
             </values>
             <values>
                 <fullName>Yeloha</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Service_Territories__c</picklist>
+            <values>
+                <fullName>Bangor Hydro</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dunwoodie</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hudson Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maine</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maine Public Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Millwood</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>N%2EY%2EC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3858,7 +3868,7 @@ ISCHANGED(App_ID_WO_Manual__c)
     <validationRules>
         <fullName>Prevent_System_Size_Changes</fullName>
         <active>true</active>
-        <description>Prevents updates to yield or system size once project is in acq or management. Update should go through the SSSO approval process.</description>
+        <description>Prevents updates to yield or system size once project is in onboarding, acq or management. Update should go through the SSSO approval process.</description>
         <errorConditionFormula>AND(
  $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
 
@@ -3869,8 +3879,9 @@ ISCHANGED( Total_System_Size_kWh_DC__c)
 
 OR(
 ISPICKVAL(Stage__c,&quot;Management&quot;),
-ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
-), /*and it&apos;s being change to either Management or Acquisition*/
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+ISPICKVAL(Stage__c,&quot;Onboarding&quot;)
+), /*and it&apos;s being change to either Management, Acquisition, or Onboarding*/
 
  Apex_Context__c=false /*and the update is not being done in apex*/
 )</errorConditionFormula>

@@ -6,4 +6,9 @@
         <default>false</default>
         <label>Each</label>
     </standardValue>
+    <standardValue>
+        <fullName>kWh</fullName>
+        <default>false</default>
+        <label>kWh</label>
+    </standardValue>
 </StandardValueSet>

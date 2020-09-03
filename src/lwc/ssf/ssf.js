@@ -9,8 +9,6 @@ import { loadStyle } from 'lightning/platformResourceLoader';
 import { makeRequest } from 'c/httpRequestService';
 import { getZipCodeCapacity } from 'c/zipCodeService';
 import insertLog from '@salesforce/apex/Logger.insertLog';
-import getUtilById from '@salesforce/apex/SimpleSignupFormController.getUtilityFromId';
-import getUtilByEIA from '@salesforce/apex/SimpleSignupFormController.getUtilityFromEiaId';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 
 export default class Ssf extends NavigationMixin(LightningElement) {
@@ -24,14 +22,13 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track enterEmail;
     @track getBasicInfo;
     @track getAgreements;
-    @track hasCapacity;
-    @track utilities;
     @track utilityOptions;
     @track zipCodeInput;
     @track leadJSON;
-    @track selectedProduct;
     @track selectedUtility;
     @track zipCodeResponse;
+    @track partnerId;
+    @track underwritingOptions = [];
     @track resiApplicationType = true;
     @wire(CurrentPageReference) pageRef;
     loc = '';
@@ -49,6 +46,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         if(this.pageRef && this.pageRef.state) {
             if(this.pageRef.state.partnerId) {
                 this.resiApplicationType = false;
+                this.partnerId = this.pageRef.state.partnerId;
             }
             if(this.pageRef.state.leadid) {
                 this.getZip = false;
@@ -69,7 +67,9 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             } else if(this.pageRef.state.zip) {
                 this.getZip = true;
                 this.zipCodeInput = this.pageRef.state.zip;
-                this.submitZip();
+                this.showSpinner = true;
+                this.spinnerMessage = 'Checking for projects...';
+                this.getZipCodeCapacity(null, false);
             } else {
                 this.getZip = true;
             }
@@ -91,37 +91,19 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                 (resolveResult) => {
                     this.leadJSON = JSON.stringify(resolveResult);
                     this.zipCodeInput = resolveResult.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
-                    this.resiApplicationType = resolveResult.applicationType === 'Residential';
-                    this.selectedProduct = resolveResult.productName;
+                    this.resiApplicationType = resolveResult.applicationType === 'Residential'; 
                     
                     if(resolveResult.utilityId) {
-                        return getUtilById({ utilityId: resolveResult.utilityId });
-                    } else if(resolveResult.eiaId) {
-                        return getUtilByEIA({ eiaId: resolveResult.eiaId });
+                        this.getZipCodeCapacity(resolveResult.utilityId, true);
                     } else {
-                        this.submitZip();
-                    }
-                }
-            )
-            .then(
-                (utilResult) => {
-                    this.selectedUtility = utilResult;
-                    this.showSpinner = false;                  
-                    this.enterEmail = false;
-                    if(this.loc == 'pay') {
-                        this.dispatchEvent(new CustomEvent('consentscomplete', { detail: JSON.parse(this.leadJSON) }));
-                    } else if(this.loc == 'agree') {
-                        this.getAgreements = true;
-                        this.getBasicInfo = false;
-                    } else {
-                        this.getBasicInfo = true;
+                        this.getZipCodeCapacity(null, false);
                     }
                 }
             )
             .catch(
                 (rejectResult) => {
                     this.showSpinner = false;
-                    let fail = JSON.parse(rejectResult);
+                    let fail = typeof rejectResult === 'object' ? rejectResult : JSON.parse(rejectResult);
                     if(fail.errors && fail.errors[0].substr(0,21) === 'Invalid authorization') {
                         this.dispatchEvent(new ShowToastEvent({
                             title: 'Authentication Failure',
@@ -169,48 +151,36 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     }
 
     proceedWithSelectedUtility() {
-        this.selectedUtility = JSON.parse(this.selectedUtility);
-        this.showModal = false;
-        this.getZip = false;
-        this.getBasicInfo = true;
-    }
-
-    checkForSubmit(event) {
-        if (event.which === 13) {
-            const inputBox = this.template.querySelector('lightning-input');
-            inputBox.reportValidity();
-            if(inputBox.checkValidity()) {
-                if(this.getZip) {
-                    this.submitZip();
-                } else if(this.enterEmail) {
-                    this.getLead();
-                }
-            }
-        }
-    }
-
-    submitZip() {
         this.showSpinner = true;
-        this.spinnerMessage = 'Checking for projects...';
-        let partnerId;
-        if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
-            partnerId = this.pageRef.state.partnerId;
-        }
-        getZipCodeCapacity(this.zipCodeInput, partnerId).then(
+        this.selectedUtility = JSON.parse(this.selectedUtility);
+        this.getZipCodeCapacity(this.selectedUtility.utilityId, false);
+    }
+
+    getZipCodeCapacity(utilityId, setLocation) {
+        getZipCodeCapacity(this.zipCodeInput, this.partnerId, utilityId).then(
             (resolveResult) => {
                 this.showSpinner = false;
-                this.zipCodeResponse = resolveResult;
-                if (this.zipCodeResponse.hasCapacity && this.zipCodeResponse.products.length >= 1) {
-                    // Just picking the first one - could be a picklist if we found multiple products (SREC/SMART)
-                    this.selectedProduct = this.zipCodeResponse.products[0];
-                    
-                    if(this.zipCodeResponse.utilities && this.zipCodeResponse.utilities.length === 1) {
-                        this.selectedUtility = this.zipCodeResponse.utilities[0];
+                this.zipCodeResponse = JSON.stringify(resolveResult);
+                if (resolveResult.hasCapacity && resolveResult.products.length >= 1) {
+                    if(resolveResult.utilities && resolveResult.utilities.length === 1) {
+                        if(resolveResult.ficoUnderwriting) {
+                            this.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
+                        }
+                        if(resolveResult.finDocsUnderwriting) {
+                            this.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
+                        }
+                        this.selectedUtility = resolveResult.utilities[0];
                         this.showModal = false;
                         this.getZip = false;
-                        this.getBasicInfo = true;
-                    } else if(this.zipCodeResponse.utilities && this.zipCodeResponse.utilities.length > 1) {
-                        this.utilityOptions = this.zipCodeResponse.utilities.map(
+                        this.enterEmail = false;
+
+                        if(setLocation) {
+                            this.setLocation();
+                        } else {
+                            this.getBasicInfo = true;
+                        }
+                    } else if(resolveResult.utilities && resolveResult.utilities.length > 1) {
+                        this.utilityOptions = resolveResult.utilities.map(
                             utility => {
                                 return {value: JSON.stringify(utility), label: utility.name};
                             }
@@ -231,7 +201,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                 this.showSpinner = false;
                 insertLog({
                     className: 'ssf',
-                    methodName: 'submitZip',
+                    methodName: 'getZipCodeCapacity',
                     message: JSON.stringify(rejectResult),
                     severity: 'Error'
                 });
@@ -243,6 +213,35 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                 this.dispatchEvent(evt);
             }
         );
+    }
+
+    setLocation() {
+        if(this.loc == 'pay') {
+            this.dispatchEvent(new CustomEvent('consentscomplete', { detail: JSON.parse(this.leadJSON) }));
+        } else if(this.loc == 'agree') {
+            this.getAgreements = true;
+            this.getBasicInfo = false;
+        } else {
+            this.getBasicInfo = true;
+        }
+    }
+
+    checkForSubmit(event) {
+        if (event.which === 13) {
+            const inputBox = this.template.querySelector('lightning-input');
+            inputBox.reportValidity();
+            if(inputBox.checkValidity()) {
+                if(this.getZip) {
+                    this.getZipCodeCapacity(null, false);
+                } else if(this.enterEmail) {
+                    this.getLead();
+                }
+            }
+        }
+    }
+
+    submitZip(event) {
+        this.getZipCodeCapacity(null, false);
     }
 
     handleLeadCreation(event) {

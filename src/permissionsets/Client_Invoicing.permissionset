@@ -8,7 +8,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Client_Invoicing_Memo__c.Contract_Fee_Detail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Invoicing_Memo__c.Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Client_Invoicing_Memo__c.Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Invoicing_Memo__c.Production_Detail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Invoicing_Memo__c.Shared_Solar_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -138,6 +158,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Recurring_Billing_Timing__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract_Fee_Detail__c.Recurring_Escalator_Frequency__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -149,6 +174,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract_Fee_Detail__c.Recurring_Frequency__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Shared_Solar_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

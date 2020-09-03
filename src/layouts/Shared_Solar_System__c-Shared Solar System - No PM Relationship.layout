@@ -109,6 +109,10 @@
                 <behavior>Readonly</behavior>
                 <field>Unique_ID__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Reacquisition_Start_Date__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -769,6 +773,23 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Capacity_Snapshot__c.Shared_Solar_System__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Type__c</fields>
+        <fields>Effective_Date__c</fields>
+        <fields>Amount__c</fields>
+        <relatedList>Client_Invoicing_Memo__c.Shared_Solar_System__c</relatedList>
+        <sortField>Effective_Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Utilization_Adjustment_Type__c</fields>
+        <fields>Utilization_Adjustment_Amount__c</fields>
+        <fields>Utilization_Adjustment_Floor__c</fields>
+        <fields>Utilization_Adjustment_Multiplier__c</fields>
+        <relatedList>Contract_Fee_Detail__c.Shared_Solar_System__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

@@ -92,7 +92,7 @@ public without sharing class ClientInvoicingFeeWaiveService {
     private void waiveFeeBasedOnProjectAttrition(Subscription_Order__c order){
         Decimal maxPercentOfProjectToWaive = order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c;
         // No need to waive negative fees (ie, credits to client)
-        if (maxPercentOfProjectToWaive == null || order.Approved_Change_in_Subscription__c < 0){
+        if (maxPercentOfProjectToWaive == null || order.Approved_Change_in_Subscription__c <= 0){
             return;
         }
         maxPercentOfProjectToWaive = maxPercentOfProjectToWaive/100;

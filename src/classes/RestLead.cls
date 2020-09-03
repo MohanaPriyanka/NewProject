@@ -28,9 +28,11 @@ public without sharing class RestLead {
     public String continueApplicationLink;
     public List<RestPropertyAccount> propertyAccounts;
     public List<RestContentDocument> contentDocs;
+    public List<RestContentDocument> financialDocs;
     public String campaignId;
     public String referralName;
     public String referralEmail;
+    public String underwritingCriteria;
 
     public RestLead() {
     }
@@ -61,6 +63,7 @@ public without sharing class RestLead {
         this.campaignId = lead.Manual_Campaign_ID__c;
         this.referralName = lead.Referral_Name__c;
         this.referralEmail = lead.Referral_Email__c;
+        this.underwritingCriteria = lead.Underwriting_Criteria__c;
     }
 
     public void validateCreateFields() {
@@ -142,6 +145,7 @@ public without sharing class RestLead {
         if (fieldNames.contains('referralName')) baseLead.Referral_Name__c = this.referralName;
         if (fieldNames.contains('referralEmail')) baseLead.Referral_Email__c = this.referralEmail;
         if (fieldNames.contains('continueApplicationLink')) baseLead.Continue_Application_Link__c = this.continueApplicationLink;
+        if (fieldNames.contains('underwritingCriteria')) baseLead.Underwriting_Criteria__c = this.underwritingCriteria;
         if (fieldNames.contains('utilityId')) baseLead.Utility_relationship__c = this.utilityId;
         updateDerivedFields(new RestLead(baseLead), baseLead);
 
@@ -183,6 +187,7 @@ public without sharing class RestLead {
             Referral_Name__c = this.referralName,
             Referral_Email__c = this.referralEmail,
             Continue_Application_Link__c = this.continueApplicationLink,
+            Underwriting_Criteria__c = this.underwritingCriteria,
             Utility_relationship__c = this.utilityId
         );
         // Since:
@@ -368,6 +373,7 @@ public without sharing class RestLead {
         public String serviceCity;
         public String serviceState;
         public String servicePostalCode;
+        public String rateClass;
         public Decimal annualKWh;
         public Decimal annualCostOfElectricity;
         public List<RestContentDocument> utilityBills;
@@ -394,6 +400,7 @@ public without sharing class RestLead {
             this.serviceCity = ual.Service_City__c;
             this.serviceState = ual.Service_State__c;
             this.servicePostalCode = ual.Service_Zip_Code__c;
+            this.rateClass = ual.Utility_Rate_Class__r.Name;
             this.annualKWh = ual.Annual_kWh__c;
             this.annualCostOfElectricity = ual.Annual_Cost_of_Electricity__c;
         }
@@ -418,6 +425,10 @@ public without sharing class RestLead {
             if(!leadList.isEmpty()) {
                 ual.Utility_lookup__c = leadList[0].Utility_relationship__c;
             }
+
+            if(this.rateClass != null) {
+                updateRateClass(this.rateClass, ual);
+            }
             
             return ual;
         }
@@ -440,8 +451,37 @@ public without sharing class RestLead {
             if (fieldNames.contains('servicePostalCode')) baseUAL.Service_Zip_Code__c = this.servicePostalCode;
             if (fieldNames.contains('annualKWh')) baseUAL.Annual_kWh__c = this.annualKWh;
             if (fieldNames.contains('annualCostOfElectricity')) baseUAL.Annual_Cost_of_Electricity__c = this.annualCostOfElectricity;
+            
+            if(fieldNames.contains('rateClass')) {
+                if(this.rateClass == null) {
+                    baseUAL.Utility_Rate_Class__c = null;
+                } else {
+                    updateRateClass(this.rateClass, baseUAL);
+                }
+            }
     
             return baseUAL;
+        }
+
+        @SuppressWarnings('PMD.ApexCRUDViolation')
+        private void updateRateClass(String rateClass, Utility_Account_Log__c ual) {
+            RateClassesSelector rateClassesSelector = new RateClassesSelector();
+            List<Rate_Class__c> rateClasses = new List<Rate_Class__c>();
+            if(ual.Utility_lookup__c != null) {
+                rateClasses = rateClassesSelector.selectByNameAndUtility(rateClass, ual.Utility_lookup__c);
+            } else {
+                rateClasses = rateClassesSelector.selectByName(rateClass);
+            }
+            
+            if(!rateClasses.isEmpty()) {
+                ual.Utility_Rate_Class__c = rateClasses[0].Id;
+            } else {
+                String errorMessage = 'No Rate Classes found named ' + rateClass;
+                if(ual.Utility_lookup__c != null) {
+                    errorMessage += ' for Utility__c ID of ' + ual.Utility_lookup__c;
+                }
+                Logger.logNow('RestLead.RestUtilityAccountLog', 'updateRateClass', errorMessage);
+            }
         }
     }
 
@@ -454,6 +494,7 @@ public without sharing class RestLead {
         public Id docLinkId;
         public String title;
         public String body;
+        public String fileCategory;
         public String publicUrl;
         public Decimal size;
         public Datetime createdDate;
@@ -488,7 +529,7 @@ public without sharing class RestLead {
                 VersionData = EncodingUtil.base64Decode(this.body),
                 ContentLocation = 'S',
                 PathOnClient = '/' + this.title,
-                File_Category__c = 'Customer Utility Bill'
+                File_Category__c = this.fileCategory
             );
         }
 
@@ -498,6 +539,29 @@ public without sharing class RestLead {
                 ShareType = 'V',
                 Visibility = 'AllUsers'
             );
+        }
+
+        public void validateCreateFields() {
+            Map<String, String> requiredFields = new Map<String, String>{
+                'title' => title, 'body' => body
+            };
+    
+            Util.validateStrings(requiredFields);
+            validateFileCategory();
+        }
+    
+    
+        private void validateFileCategory() {
+            List<String> validFileCategories = new List<String>();
+            Schema.DescribeFieldResult fieldResult = ContentVersion.File_Category__c.getDescribe();
+            // List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+            for(Schema.PicklistEntry pickListVal : fieldResult.getPicklistValues()){
+                validFileCategories.add(pickListVal.getLabel());
+            }
+            
+            if (!validFileCategories.contains(fileCategory)) {
+                throw new Util.BWException('An fileCategory of "' + fileCategory + '" is not of a supported type: ' + String.join(validFileCategories, ', '));
+            }
         }
     }
 }

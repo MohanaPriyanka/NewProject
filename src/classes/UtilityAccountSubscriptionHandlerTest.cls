@@ -46,7 +46,26 @@ public class UtilityAccountSubscriptionHandlerTest {
             Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25);
 
-        insert sss1;
+        Shared_Solar_System__c sss2 = new Shared_Solar_System__c(Name = 'Project B',
+            Service_Territory__c = 'SEMA',
+            Service_Territories__c = 'SEMA',
+            Open__c = true,
+            Client_Account__c = clientAccount.Id,
+            Utility_NMC_Tariff__c = eversizeNMC.Id,
+            Billing_Method__c = 'NMC',
+            Reserved_Capacity_kW_DC__c = '10',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c = 1000,
+            Utility__c = ngrid.Id,
+            Credit_Score_Requirement__c = 300,
+            Assignment_Order__c = '1',
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Sales_Partners__c = 'All',
+            Maximum_Subscription_Capacity_kWDC__c = 25);
+
+        insert new List<Shared_Solar_System__c>{sss1, sss2};
 
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
@@ -225,7 +244,63 @@ public class UtilityAccountSubscriptionHandlerTest {
         //Will now be populated because UAS has opportunity now
         System.assertNotEquals(null, checkUAS.Shared_Solar_System__c);
         System.assertEquals(opp.Shared_Solar_System__c, checkUAS.Shared_Solar_System__c);
+    }
 
+    @IsTest
+    public static void testChangeOpportunity() {
+        List<Opportunity> opps = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Opportunity
+            ORDER BY Name
+        ];
+
+        Utility_Account_Log__c ual = [
+            SELECT Id
+            FROM Utility_Account_Log__c
+            ORDER BY Name
+            LIMIT 1
+        ];
+
+        Utility_Account_Subscription__c uas =
+            new Utility_Account_Subscription__c(Name = '0000234',
+                Utility_Account_Log__c = ual.Id,
+                Opportunity__c = opps[0].Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+        insert uas;
+
+        uas = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = : uas.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals(opps[0].Shared_Solar_System__c, uas.Shared_Solar_System__c);
+
+        // Change Opportunity - therefore SSS changes
+        Shared_Solar_System__c sss2 = [
+            SELECT Id FROM Shared_Solar_System__c
+            WHERE Name = 'Project B'
+            LIMIT 1
+        ];
+        opps[1].Shared_Solar_System__c = sss2.Id;
+        update opps[1];
+
+        uas.Opportunity__c = opps[1].Id;
+        update uas;
+
+        uas = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = : uas.id
+            LIMIT 1
+        ];
+
+        System.assertNotEquals(null, uas.Shared_Solar_System__c);
+        System.assertEquals(sss2.Id, uas.Shared_Solar_System__c);
     }
 
     @IsTest

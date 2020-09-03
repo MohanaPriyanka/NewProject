@@ -44,11 +44,14 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         new List<Schema.SObjectType> {
             ContentVersion.SObjectType,
             Lead.SObjectType,
+            Financial_Underwriting_Document__c.SObjectType,
             Account.SObjectType,
+            Contract.SObjectType,
             Utility_Account_Log__c.SObjectType,
             ContentDocumentLink.SObjectType
         }
     );
+    private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
 
     
     public virtual void getLead(String leadId, String email) {
@@ -244,6 +247,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
 
         if (validRequest) {
+            uow.registerWork(customWork);
             insertLeadAccountAndUALs(requestLead, response);
         }
         envelope.setJSONResponse(response);
@@ -339,9 +343,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
     }
 
-    public virtual void performZipCheck(String zipCode, String partnerId) {
+    public virtual void performZipCheck(String zipCode, String partnerId, String utilityId) {
         RestResponse response = RestContext.response;
-        RestZipCode zipCodeResponse = new RestZipCode(capacityService.findCapacityByZipcode(zipCode, partnerId));
+        RestZipCode zipCodeResponse = new RestZipCode(capacityService.findCapacityByZipcode(zipCode, partnerId, utilityId));
         envelope.setData(zipCodeResponse);
         envelope.setJSONResponse(response);
     }
@@ -355,21 +359,30 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         
         newLead.Continue_Application_Link__c = baseUrl + '?leadid=' + newLead.Id + '&email=' + newLead.Email + '&loc=' + APP_STATUS_TO_LOCATION.get('Started');
         newLead = leadService.updateLead(newLead);
+
+        if(requestLead.financialDocs != null) {
+            for(RestLead.RestContentDocument contentDoc : requestLead.financialDocs) {
+                Financial_Underwriting_Document__c finDoc = new Financial_Underwriting_Document__c(Lead__c = newLead.Id);
+                uow.registerNew(finDoc);
+                registerNewContentDocs(new List<RestLead.RestContentDocument>{contentDoc}, finDoc);
+            }
+        }
         
         if (requestLead.propertyAccounts != null) {            
             for(RestLead.RestPropertyAccount requestPropertyAccount : requestLead.propertyAccounts) {
                 Account newAccount = requestPropertyAccount.asAccount(newLead);
                 uow.registerNew(newAccount);
+                if(newLead.Product__c != null) {
+                    Contract c = CustomerContractService.setContractFields(newLead);
+                    uow.registerNew(c, Contract.AccountId, newAccount);
+                }
                 if(requestPropertyAccount.utilityAccountLogs != null) {
                     registerNewUALs(requestPropertyAccount.utilityAccountLogs, newAccount);
                 }
             }
-            uow.commitWork();
 
-            if(newLead.Product__c != null) {
-                customerContractService.createContractFromLead(newLead.Id);
-            }
         }
+        uow.commitWork();
         updateLeadApplicationStatus(newLead.Id);
         envelope.setData(formatRestLeadFromLeadAndChildren(newLead.Id, true));
         response.statusCode = statusCode.created;
@@ -394,7 +407,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             Utility_Account_Log__c newUal = requestUtilityAccountLog.asUAL(propertyAccount);
             uow.registerNew(newUal, Utility_Account_Log__c.Account__c, propertyAccount);
             if(requestUtilityAccountLog.utilityBills != null) {
-                registerNewUtilityBills(requestUtilityAccountLog.utilityBills, newUal);
+                registerNewContentDocs(requestUtilityAccountLog.utilityBills, newUal);
             }
         }
     }
@@ -489,7 +502,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             
             if(requestUtilityAccountLog.utilityBills != null && !requestUtilityAccountLog.utilityBills.isEmpty()) {
                 List<RestLead.RestContentDocument> requestContentDocuments = requestUtilityAccountLog.utilityBills;
-                registerNewUtilityBills(requestContentDocuments, ual);
+                registerNewContentDocs(requestContentDocuments, ual);
             }
         }
     }
@@ -549,7 +562,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                         return true;
                     }
                 }
+                if(leadUAL.Utility_Rate_Class__r.Name != restUAL.get('rateClass')) {
+                    return true;
             }
+        }
         }
 
         return false;
@@ -563,10 +579,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible
     private RestLead formatRestLeadFromLeadAndChildren(Lead leadToReturn, Boolean docsNewlyGenerated) {
         RestLead responseLead = new RestLead(leadToReturn);
-
+        
         // map UALs to their parent property accounts
         MultiMap ualsByPropertyAccountId = CollectionUtil.multiMapByField(leadToReturn.Utility_Account_Logs__r, Utility_Account_Log__c.Account__c);
         Set<Id> linkedEntityIdSet = new Set<Id>{leadToReturn.Id};
+        for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
+            linkedEntityIdSet.add(finUnderwriteDoc.Id);
+        }
         for(Object accountId : ualsByPropertyAccountId.keySet()) {
             for(Object ualObj : ualsByPropertyAccountId.getValues((Id) accountId)) {
                 Utility_Account_Log__c ual = (Utility_Account_Log__c) ualObj;
@@ -578,6 +597,17 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         List<ContentDocumentLink> cdls = contentSelector.selectByLinkedEntities(linkedEntityIdSet);
         MultiMap contentDocLinksByLinkedEntityId = CollectionUtil.multiMapByField(cdls, ContentDocumentLink.LinkedEntityId);
         responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, contentDocLinksByLinkedEntityId, docsNewlyGenerated);
+
+        // compile the financial underwriting documents and their uploads
+        List<RestLead.RestContentDocument> returnFinDocs = new List<RestLead.RestContentDocument>();
+        for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
+            for(Object cdl : contentDocLinksByLinkedEntityId.getValues(finUnderwriteDoc.Id)) {
+                RestLead.RestContentDocument returnContentDoc = new RestLead.RestContentDocument((ContentDocumentLink) cdl);
+                returnContentDoc.parentId = finUnderwriteDoc.Id;
+                returnFinDocs.add(returnContentDoc);
+            }
+        }
+        responseLead.financialDocs = returnFinDocs;
         
         // compile the property accounts, uals, and utility bill uploads
         List<RestLead.RestPropertyAccount> returnPropertyAccounts = new List<RestLead.RestPropertyAccount>();
@@ -606,17 +636,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         return responseLead;
     }
 
-    private void registerNewUtilityBills(List<RestLead.RestContentDocument> requestContentDocuments, Utility_Account_Log__c linkedEntity) {
-        FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
-        uow.registerWork(customWork);
+    private void registerNewContentDocs(List<RestLead.RestContentDocument> requestContentDocuments, SObject linkedEntity) {
         for(RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
             if(requestContentDocument.id == null) {
-                requestContentDocument.body = String.escapeSingleQuotes(requestContentDocument.body);
-                Pattern myPattern = pattern.compile('^data:.+;base64,');
-                Matcher myMatcher = myPattern.matcher(requestContentDocument.body);
-                if(myMatcher.find()) {
-                    requestContentDocument.body = EncodingUtil.urlDecode(requestContentDocument.body, 'UTF-8');
-                }
+                requestContentDocument.validateCreateFields();
+                requestContentDocument.body = getContentBody(requestContentDocument.body);
                 ContentVersion newContentVersion = requestContentDocument.asContentVersionForInsert();
                 uow.registerNew(newContentVersion);
                 customWork.registerContentDocumentLinkInsert(linkedEntity, newContentVersion, 'V', 'AllUsers');
@@ -624,6 +648,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 ContentDocumentLink newContentLink = requestContentDocument.asContentDocLinkForInsert();
                 uow.registerNew(newContentLink, ContentDocumentLink.LinkedEntityId, linkedEntity);
             } else if(requestContentDocument.lastPublishedVersionId == null) {
+                requestContentDocument.validateCreateFields();
+                requestContentDocument.body = getContentBody(requestContentDocument.body);
                 ContentVersion newContentVersion = requestContentDocument.asContentVersionForInsert();
                 newContentVersion.ContentDocumentId = requestContentDocument.id;
                 uow.registerNew(newContentVersion);
@@ -631,21 +657,31 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
     }
 
+    private String getContentBody(String bodyInput) {
+        String retVal = String.escapeSingleQuotes(bodyInput);
+        Pattern myPattern = pattern.compile('^data:.+;base64,');
+        Matcher myMatcher = myPattern.matcher(bodyInput);
+        if(myMatcher.find()) {
+            bodyInput = bodyInput.replaceAll('data:.+;base64,', '');
+        }
+        return bodyInput;
+    }
+
     private List<RestLead.RestContentDocument> compileLeadContentDocs(Id leadId, MultiMap contentDocLinksByLinkedEntityId, Boolean docsNewlyGenerated) {
         List<RestLead.RestContentDocument> restContentDocs = new List<RestLead.RestContentDocument>();
-            List<Object> leadCDLs = contentDocLinksByLinkedEntityId.getValues(leadId);
-            if(!leadCDLs.isEmpty()) {
-                RestLead.RestContentDocument rcd0 = new RestLead.RestContentDocument((ContentDocumentLink) leadCDLs[0]);
-                rcd0.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd0.docLinkId);
-                restContentDocs.add(rcd0);
+        List<Object> leadCDLs = contentDocLinksByLinkedEntityId.getValues(leadId);
+        if(!leadCDLs.isEmpty()) {
+            RestLead.RestContentDocument rcd0 = new RestLead.RestContentDocument((ContentDocumentLink) leadCDLs[0]);
+            rcd0.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd0.docLinkId);
+            restContentDocs.add(rcd0);
 
-                
-                if(!docsNewlyGenerated && leadCDLs.size() > 1) {
-                    RestLead.RestContentDocument rcd1 = new RestLead.RestContentDocument((ContentDocumentLink) leadCDLs[1]);
-                    rcd1.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd1.docLinkId);
-                    restContentDocs.add(rcd1);
-                }
+            
+            if(!docsNewlyGenerated && leadCDLs.size() > 1) {
+                RestLead.RestContentDocument rcd1 = new RestLead.RestContentDocument((ContentDocumentLink) leadCDLs[1]);
+                rcd1.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd1.docLinkId);
+                restContentDocs.add(rcd1);
             }
+        }
         return restContentDocs;
     }
 

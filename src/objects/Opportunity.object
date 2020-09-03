@@ -1419,7 +1419,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <fullName>CS_Capacity_Allocated__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Rolls up from Future Customer Subscription (KW DC) on Utility Account Subscriptions after Recalculate Subscription button is run. Used in Docusign.</inlineHelpText>
-        <label>Future Customer Subscription (kW DC)</label>
+        <label>Customer Subscription (kW DC)</label>
         <precision>9</precision>
         <required>false</required>
         <scale>4</scale>
@@ -2932,36 +2932,6 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_Due_Contract__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(and( text(StageName) = &quot;Complete&quot; ,TODAY()&gt;= Anticipated_Disbursal_Date_Contract__c , ISBLANK( Disbursal_1_Contract_Signature_Checkbox__c )) ,TRUE,FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXDisbursal Due (Contract)</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_Due_Mechanical_Completion__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(and( text(StageName) = &quot;Complete&quot; ,TODAY()&gt;= Anticipated_Disbursal_Date_Mechanical__c , ISBLANK(  Disbursal_2_Mechanical_Install_Checkbox__c  )) ,TRUE,FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXDisbursal Due (Mechanical Completion)</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_Due_System_Operation__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(and( text(StageName) = &quot;Complete&quot; ,TODAY()&gt;=  Anticipated_Disbursal_Date_Full__c  , ISBLANK( Disbursal_3_Full_Install_Checkbox__c )) ,TRUE,FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXDisbursal Due (Interconnect)</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Disbursal_Status__c</fullName>
@@ -5626,6 +5596,22 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Partner_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Relates Opportunities to the Partner Account. Note that this is different from the Partner Object.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Relates Opportunities to the Partner Account. Note that this is different from the Partner Object.</inlineHelpText>
+        <label>Partner Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Opportunities (Partner Account)</relationshipLabel>
+        <relationshipName>Opportunities2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Partner_Additional_Email_2_of_2__c</fullName>
         <externalId>false</externalId>
         <label>Partner Additional Email (2 of 2)</label>
@@ -5673,6 +5659,20 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Partner_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Partner Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Opportunities (Partner Contact)</relationshipLabel>
+        <relationshipName>Opportunities2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Partner_Email_2__c</fullName>
@@ -9216,6 +9216,23 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </sharedTo>
     </listViews>
     <listViews>
+        <fullName>Complete_ApplicationsPartnrPortal</fullName>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>CS_Capacity_Allocated__c</columns>
+        <columns>Shared_Solar_System__c</columns>
+        <columns>Product__c</columns>
+        <columns>OPPORTUNITY.CREATED_DATE</columns>
+        <columns>Contract_Close_Date__c</columns>
+        <columns>Email__c</columns>
+        <columns>UtilityMapper__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>Complete Applications</label>
+        <sharedTo>
+            <allPartnerUsers></allPartnerUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>Consumer_Loan_Active_Opportunities</fullName>
         <booleanFilter>1 AND 3 AND (2 OR 4)</booleanFilter>
         <columns>Date_of_Application__c</columns>
@@ -9430,6 +9447,17 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <label>My Opportunities</label>
         <sharedTo>
             <group>Non_Partners</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>My_OpportunitiesPartnerPortal</fullName>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <label>My Opportunities (Partner)</label>
+        <sharedTo>
+            <allPartnerUsers></allPartnerUsers>
         </sharedTo>
     </listViews>
     <listViews>
@@ -10258,15 +10286,6 @@ ISPICKVAL(Underwriting_Criteria__c,&quot;&quot;)
 )</errorConditionFormula>
         <errorDisplayField>Underwriting_Criteria__c</errorDisplayField>
         <errorMessage>For anchor opportunities, you must set the Underwriting Criteria field to Investment Grade or Financial Review before setting the stage to Complete</errorMessage>
-    </validationRules>
-    <validationRules>
-        <fullName>Discount</fullName>
-        <active>true</active>
-        <errorConditionFormula>ISPICKVAL( NMCPA__c , &quot;Floating Discount&quot;) &amp;&amp;
-
-ISBLANK(Discount_Percentage__c)= True</errorConditionFormula>
-        <errorDisplayField>Discount_Percentage__c</errorDisplayField>
-        <errorMessage>Since the NMCPA/PPA type is a Floating Discount, the percentage of the discount must be recorded.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Escalator_Rate</fullName>

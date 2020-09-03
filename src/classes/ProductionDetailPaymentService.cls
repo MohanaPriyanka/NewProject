@@ -36,29 +36,45 @@ public without sharing class ProductionDetailPaymentService implements Database.
             if (paymentAmount <= 0){
                 continue;
             }
-            Decimal invoicePartPayments = Util.nullToZero(partToPaymentMap.get(invoicePart.Id));
-            Decimal invoicePartBalance = invoicePart.Amount__c - invoicePartPayments;
-            if (invoicePartBalance <= 0){
-                continue;
+
+            Decimal applicationAmount;
+            if (paymentEntry.Object_Type__c == 'DebitMemo') {
+                applicationAmount = Math.min(invoicePart.Amount__c, paymentAmount);
+            } else  {
+                Decimal invoicePartPayments = Util.nullToZero(partToPaymentMap.get(invoicePart.Id));
+                Decimal invoicePartBalance = invoicePart.Amount__c - invoicePartPayments;
+                if (invoicePartBalance <= 0){
+                    continue;
+                }
+                applicationAmount = Math.min(invoicePartBalance, paymentAmount);
+                invoicePartPayments += applicationAmount;
+                partToPaymentMap.put(invoicePart.Id, invoicePartPayments);
             }
-            Decimal applicationAmount = Math.min(invoicePartBalance, paymentAmount);
+
             productionDetailToInsert.add(createCollectionProductionDetail(paymentEntry,invoicePart,applicationAmount));
             paymentAmount -= applicationAmount;
-            invoicePartPayments += applicationAmount;
-            partToPaymentMap.put(invoicePart.Id, invoicePartPayments);
+
+
         }
     }
 
     private Transfer_Part__c createCollectionProductionDetail(Journal_Entry__c paymentEntry, Transfer_Part__c invoicePart, Decimal applicationAmount){
         Transfer_Part__c payPart = new Transfer_Part__c(
-            Name = 'Collection Item',
-            Production__c = invoicePart.Production__c,
-            Transfer__c = invoicePart.Transfer__c,
-            Bill_Part__c = invoicePart.Id,
-            Journal_Entry__c = paymentEntry.Id,
-            Type__c = 'Payment',
-            Amount__c = applicationAmount
+                Name = 'Collection Item',
+                Production__c = invoicePart.Production__c,
+                Transfer__c = invoicePart.Transfer__c,
+                Bill_Part__c = invoicePart.Id,
+                Journal_Entry__c = paymentEntry.Id,
+                Type__c = 'Payment',
+                Amount__c = applicationAmount
         );
+
+        // Returned payments create (-) production details to cancel existing payment record
+        if (paymentEntry.Object_Type__c == 'DebitMemo' && paymentEntry.Reason_Code__c == 'Returned Payment') {
+            payPart.Name = 'Returned Payment';
+            payPart.Amount__c = -applicationAmount;
+        }
         return payPart;
+
     }
 }

@@ -154,6 +154,21 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
+        <fullName>Assignment_Agreement_Template__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The Assignment Agreement template that will be used by Conga to generate the document. This field overrides the template field on the Client Account.</inlineHelpText>
+        <label>Assignment Agreement Template</label>
+        <referenceTo>APXTConga4__Conga_Template__c</referenceTo>
+        <relationshipLabel>Entities</relationshipLabel>
+        <relationshipName>Entities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Client_Account__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

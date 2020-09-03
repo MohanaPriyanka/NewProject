@@ -32,6 +32,10 @@
                 <behavior>Edit</behavior>
                 <field>Account__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utility_Data_Collection_Mechanism__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
@@ -163,6 +167,15 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Meter_Reading_Schedule__c.Utility_lookup__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>Product2</fields>
+        <fields>Quantity</fields>
+        <fields>UnitPrice</fields>
+        <fields>ServiceDate</fields>
+        <fields>Description</fields>
+        <fields>HasSchedule</fields>
+        <relatedList>OpportunityLineItem.Utility__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

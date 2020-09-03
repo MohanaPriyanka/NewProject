@@ -344,23 +344,16 @@ public with sharing class ClientReportingServiceTest {
         System.assertEquals(opp.Name, clientUAS[0].Customer__c);
         System.assertEquals(300, clientUAS[0].Annual_Cost_of_Electricity_Future__c);
         System.assertEquals(opp.Shared_Solar_System__c, clientUAS[0].Shared_Solar_System__c);
+
         //Test an update to parent UAS
-        FeatureService featureService = new FeatureService();
-        if (featureService.isEnabled('Subscription_Orders')) {
-            //SUBSCRIPTION ORDER FEATURE ON
-            Subscription_Order__c soResize = new Subscription_Order__c(
-                Utility_Account_Subscription__c = uas.Id,
-                Type__c = 'Resize',
-                New_Annual_Cost__c = 500,
-                Approval_Status__c = 'Approved',
-                Effective_Date__c = System.now()
-            );
-            insert soResize;
-        } else {
-            //SUBSCRIPTION ORDER FEATURE OFF
-            uas.Subscribed_Annual_Cost_of_Electricity__c = 500;
-            update uas;
-        }
+        Subscription_Order__c soResize = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uas.Id,
+            Type__c = 'Resize',
+            New_Annual_Cost__c = 500,
+            Approval_Status__c = 'Approved',
+            Effective_Date__c = System.now()
+        );
+        insert soResize;
         List<Client_Utility_Account_Subscription__c> clientUASUpdate = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
         System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
         //Test update of Opp's SSS
@@ -373,14 +366,14 @@ public with sharing class ClientReportingServiceTest {
         opp.Shared_Solar_System__c = sss2.Id;
         update opp;
         Test.stopTest();
-       List<Utility_Account_Subscription__c> uasList = [
+        List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Shared_Solar_System_Name__c, Shared_Solar_System__r.Name, Next_Schedule_Z_Status__c, Subscription_Comment_c__c
             FROM Utility_Account_Subscription__c
             WHERE Name = :uas.Name
         ];
         Set<Id> uasIds = new Set<Id>();
         for (Utility_Account_Subscription__c uasUpdate : uasList) {
-           uasIds.add(uasUpdate.Id);
+            uasIds.add(uasUpdate.Id);
         }
         List<Client_Utility_Account_Subscription__c> clientUASUpdate2 = ClientReportObjectSelector.getClientUASesByUASIds(uasIds);
         for (Client_Utility_Account_Subscription__c cuas : clientUASUpdate2) {
@@ -398,6 +391,45 @@ public with sharing class ClientReportingServiceTest {
         delete uas;
         List<Client_Utility_Account_Subscription__c> clientUASDelete = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
         System.assertEquals(0, clientUASDelete.size());
+    }
+
+    @IsTest
+    public static void testClientUASOppChange() {
+        Utility_Account_Log__c ual = [SELECT Id FROM Utility_Account_Log__c LIMIT 1];
+        List<Opportunity> opps = [SELECT Id, Name, Shared_Solar_System__c, Shared_Solar_System__r.Name, NMC_Tariff__c
+        FROM Opportunity LIMIT 2];
+        Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
+            Name = '123456',
+            Utility_Account_Log__c = ual.Id,
+            Next_Schedule_Z_Status__c = 'Active Subscription',
+            Sizing_Method__c = opps[0].NMC_Tariff__c,
+            Opportunity__c = opps[0].Id,
+            Subscribed_Annual_Cost_of_Electricity__c = 300,
+            calculated_annual_cost_of_electricity__c = 300);
+        insert uas;
+        Test.startTest();
+        List<Client_Utility_Account_Subscription__c> clientUAS = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
+        System.assertEquals(opps[0].Name, clientUAS[0].Customer__c);
+        System.assertEquals(300, clientUAS[0].Annual_Cost_of_Electricity_Future__c);
+        System.assertEquals(opps[0].Shared_Solar_System__c, clientUAS[0].Shared_Solar_System__c);
+
+        Shared_Solar_System__c sss2 = [
+            SELECT Id, Name
+            FROM Shared_Solar_System__c
+            WHERE Id != :opps[0].Shared_Solar_System__c
+            LIMIT 1
+        ];
+
+        System.assertNotEquals(opps[0].Shared_Solar_System__c, sss2.Id);
+        opps[1].Shared_Solar_System__c = sss2.Id;
+        update opps[1];
+
+        //Test update of UASes Opportunity
+        uas.Opportunity__c = opps[1].Id;
+        update uas;
+        Test.stopTest();
+        List<Client_Utility_Account_Subscription__c> clientUASUpdate = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
+        System.assertEquals(sss2.Id, clientUASUpdate[0].Shared_Solar_System__c);
     }
     @IsTest
     public static void testClientALSS() {

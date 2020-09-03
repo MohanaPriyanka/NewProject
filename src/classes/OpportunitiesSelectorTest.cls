@@ -135,6 +135,38 @@ public with sharing class OpportunitiesSelectorTest {
     }
 
     @IsTest
+    public static void testGetCustomerOpportunitiesByAssignmentAgreement(){
+        Account clientAccount = new Account(Name = 'Client');
+        insert clientAccount;
+        Id rtAssign = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
+        Contract assignmentAgreement = new Contract(
+            Name = 'Assignment Agreement',
+            RecordTypeId = rtAssign,
+            AccountId = clientAccount.Id
+        );
+        insert assignmentAgreement;
+        Contract customerContract = new Contract(
+            Name = 'Customer Contract',
+            AccountId = clientAccount.Id,
+            Assignment_Agreement__c = assignmentAgreement.Id
+        );
+        insert customerContract;
+
+        List<Opportunity> opportunityList = [
+            SELECT ContractId
+            FROM Opportunity
+        ];
+        for (Opportunity opp : opportunityList){
+            opp.ContractId = customerContract.Id;
+        }
+        update opportunityList;
+
+        OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+        List<Opportunity> oppList = oppSelector.getCustomerOpportunitiesByAssignmentAgreement(assignmentAgreement.Id);
+        System.assert(oppList.size() > 0);
+    }
+
+    @IsTest
     public static void testSelectFirstCustomerSignedDateByAssignmentAgreementOFF() {
         Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Customer_Contract_Object'=>false};
         OpportunitiesSelector.featureService =

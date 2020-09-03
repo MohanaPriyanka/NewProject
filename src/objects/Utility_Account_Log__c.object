@@ -42,6 +42,15 @@
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Default</fullName>
+        <fields>Name</fields>
+        <fields>Lead__c</fields>
+        <fields>Opportunity__c</fields>
+        <fields>Account__c</fields>
+        <fields>Utility_Rate_Class__c</fields>
+        <label>Default</label>
+    </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
@@ -806,6 +815,10 @@
     <pluralLabel>Utility Account Logs</pluralLabel>
     <searchLayouts />
     <sharingModel>Read</sharingModel>
+    <sharingReasons>
+        <fullName>Guest_User_Access__c</fullName>
+        <label>Guest User Access</label>
+    </sharingReasons>
     <visibility>Public</visibility>
     <webLinks>
         <fullName>New_Customer_Care_Case</fullName>
@@ -825,15 +838,5 @@
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
         <url>/500/e?&amp;RecordType=012j00000000HA8&amp;ent=Case&amp;cas14=Customer Care Case&amp;CF00Nj000000BVHR9_lkid={!Utility_Account_Log__c.Id}&amp;CF00Nj000000BVHR9={!Utility_Account_Log__c.Name}&amp;CF00Nj000000ARyea_lktp={!Utility_Account_Log__c.OpportunityId__c}&amp;CF00Nj000000ARyea={!Utility_Account_Log__c.Opportunity__c}&amp;00Nj000000BVAYr=Utility Account Data Inaccurate or Missing&amp;cas11=Web</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Recalculate_Subscriptions</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>XXRecalculate Subscriptions</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>window.location = &apos;/apex/RecalculateUALCost?id={!Utility_Account_Log__c.Id}&apos;;</url>
     </webLinks>
 </CustomObject>

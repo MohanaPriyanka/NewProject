@@ -124,6 +124,16 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <type>Percent</type>
     </fields>
     <fields>
+        <fullName>Collect_Rate_Class_via_Application__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Used on Maine applications to calculate savings estimate on disclosure form.</description>
+        <externalId>false</externalId>
+        <label>Collect Rate Class via Application</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Conga_Template_Id_s__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>These are the Conga Template record IDs that are used to generate docs in SSF. If there are multiple, they should be separate with a comma and no spaces.</inlineHelpText>
@@ -2289,6 +2299,68 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         </filters>
         <label>MSLP</label>
     </listViews>
+    <recordTypes>
+        <fullName>Client_BD</fullName>
+        <active>true</active>
+        <label>Client BD</label>
+        <picklistValues>
+            <picklist>QuantityUnitOfMeasure</picklist>
+            <values>
+                <fullName>Each</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>kWh</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Family</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Default</fullName>
+        <active>true</active>
+        <label>Default</label>
+        <picklistValues>
+            <picklist>QuantityUnitOfMeasure</picklist>
+            <values>
+                <fullName>Each</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>kWh</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Family</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
     <searchLayouts>
         <customTabListAdditionalFields>PRODUCT2.NAME</customTabListAdditionalFields>
         <customTabListAdditionalFields>PRODUCT2.CUSTOMER_PRODUCT_ID</customTabListAdditionalFields>

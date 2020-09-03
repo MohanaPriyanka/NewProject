@@ -207,7 +207,8 @@
         <fullName>Acquisition_Cust_Group_Anchor__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>True if this fee is valid for customers with the Customer Group = Anchor</inlineHelpText>
+        <inlineHelpText>True if this fee is valid for customers with the Customer Group = Anchor.
+Small offtake (ie, Residential and Non-Residential Customer Groups) can be labeled as &quot;non-Demand Customers&quot; and Anchors can be labeled as &quot;Demand Customers&quot; in client contracts.</inlineHelpText>
         <label>Acquisition Cust. Group: Anchor</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -217,7 +218,8 @@
         <fullName>Acquisition_Cust_Group_Non_Residential__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>True if this fee is valid for customers with the Customer Group = Non-Residential</inlineHelpText>
+        <inlineHelpText>True if valid fee for customers with Customer Group = Non-Residential.
+Small offtake (ie, Residential and Non-Residential Customer Groups) can be labeled as &quot;non-Demand Customers&quot; and Anchors can be labeled as &quot;Demand Customers&quot; in client contracts.</inlineHelpText>
         <label>Acquisition Cust. Group: Non-Residential</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -227,7 +229,8 @@
         <fullName>Acquisition_Cust_Group_Public_Offtake__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>True if this fee is valid for customers with the Customer Group = Public Offtake</inlineHelpText>
+        <inlineHelpText>True if valid fee for customers with the Customer Group = Public Offtake.
+Small offtake (ie, Residential and Non-Residential Customer Groups) can be labeled as &quot;non-Demand Customers&quot; and Anchors can be labeled as &quot;Demand Customers&quot; in client contracts.</inlineHelpText>
         <label>Acquisition Cust. Group: Public Offtake</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -237,7 +240,8 @@
         <fullName>Acquisition_Cust_Group_Residential__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>True if this fee is valid for customers with the Customer Group = Residential</inlineHelpText>
+        <inlineHelpText>True if valid fee for customers with the Customer Group = Residential.
+Small offtake (ie, Residential and Non-Residential Customer Groups) can be labeled as &quot;non-Demand Customers&quot; and Anchors can be labeled as &quot;Demand Customers&quot; in client contracts.</inlineHelpText>
         <label>Acquisition Cust. Group: Residential</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -350,7 +354,7 @@ IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quo
     <fields>
         <fullName>Fee_Unit__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>See Fee ($) field for numerator. Ie $/W, $/MW</inlineHelpText>
+        <inlineHelpText>See Fee ($) field for numerator. Ie $/W, $/MW (implicitly, per year)</inlineHelpText>
         <label>Fee Unit</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -381,7 +385,7 @@ IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quo
     <fields>
         <fullName>Fee__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>The $ value of the fee, see &quot;Fee Unit&quot; field for the denominator ($/W or $/MW or $/project)</inlineHelpText>
+        <inlineHelpText>The annual $ value of the fee, see &quot;Fee Unit&quot; field for the denominator ($/W year or $/MW year or $/project year)</inlineHelpText>
         <label>Fee ($)</label>
         <precision>18</precision>
         <required>false</required>
@@ -493,6 +497,31 @@ IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quo
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Recurring_Billing_Timing__c</fullName>
+        <externalId>false</externalId>
+        <label>Recurring Billing Timing</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>In Arrears</fullName>
+                    <default>false</default>
+                    <label>In Arrears</label>
+                </value>
+                <value>
+                    <fullName>In Advance</fullName>
+                    <default>false</default>
+                    <label>In Advance</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Recurring_Escalator_Frequency__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>The frequency in which a recurring escalator is increased or decreased. For ex.) a fee that increases 2% annually</inlineHelpText>
@@ -565,6 +594,20 @@ IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quo
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>If this CFD is specific to a SSS (not common), populate this field. Currently only supported for management contracts.</inlineHelpText>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Contract Fee Detail</relationshipLabel>
+        <relationshipName>Contract_Fee_Detail</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Utilization_Adjustment_Amount__c</fullName>

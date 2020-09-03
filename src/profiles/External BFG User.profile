@@ -214,6 +214,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSQualificationService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSSubscriptionEnroller</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -303,6 +307,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CommunitySolarCustomerPortalTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContractFeeDetailSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -519,7 +531,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>Logger</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>MapPCRtoLeadHandler</apexClass>
@@ -595,6 +607,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>PCRTradeAccountHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PDFViewerController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PDFViewerControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -702,11 +722,19 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SharedSolarSystems</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SharedSolarSystemsSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SharedSolarSystemsSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SharedSolarSystemsTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -759,6 +787,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TransferPartServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TransferSheetService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -826,6 +858,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraInvoiceAsyncService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -839,6 +875,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraInvoiceServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentPageController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1527,6 +1567,11 @@
         <editable>false</editable>
         <field>Account.Apt_Suite__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Assignment_Agreement_Template__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -7340,6 +7385,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contract.Assignment_Agreement_Template_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract.Assignment_Agreement__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -7436,6 +7486,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.Generate_Countersigned_Version__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Generate_Disclosure_Form__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8036,6 +8091,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Energy_Usage_Update__c.Year__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Entity__c.Assignment_Agreement_Template__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11902,6 +11962,16 @@
         <editable>false</editable>
         <field>Lead.PartnerAccountId</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Partner_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Partner_Contact__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -22700,21 +22770,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Disbursal_Due_Contract__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Disbursal_Due_Mechanical_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Disbursal_Due_System_Operation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Disbursal_Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -23455,6 +23510,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Partner_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.Partner_Additional_Email_2_of_2__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -23472,6 +23532,11 @@
         <editable>true</editable>
         <field>Opportunity.Partner_Commission_Invoice_Number__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Partner_Contact__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -24311,6 +24376,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>OpportunityLineItem.TotalPrice</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>OpportunityLineItem.Utility__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -26580,6 +26650,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Rate_Class__c.Suppress_Disclosure_Form__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Rate_Class__c.Utility__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -27629,7 +27704,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Schedule_Z__c.Applied_to_Production_Starting__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -28084,7 +28159,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Management_Revenue_Start_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -28206,6 +28281,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Public__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Reacquisition_Start_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -28981,6 +29061,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Submittals__c.Submittal_No__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Client_Invoicing_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30300,6 +30385,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>User.Partner_Account_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>User.Partner_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31290,6 +31380,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Data_Request__c.Case_Safe_ID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Data_Request__c.City__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31355,7 +31450,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Data_Request__c.Sender_Transaction_ID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Data_Request__c.State__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Supplier_Account_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31662,6 +31767,11 @@
         <editable>false</editable>
         <field>Utility__c.Service_Territory__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Supplier_Account_Number__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43044,6 +43154,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>dsfs__DocuSign_Status__c.BW_Envelope_Link__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>dsfs__DocuSign_Status__c.DS_Partner__c</field>
         <readable>true</readable>
@@ -45956,6 +46071,10 @@
         <layout>Entity__c-BWC Project Entity Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Entity__c-BWC Project Entity Layout</layout>
+        <recordType>Entity__c.BWC_Project_Entity</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Entity__c-BWC SE Project Entity Layout</layout>
         <recordType>Entity__c.BWC_SE_Project_Entity</recordType>
     </layoutAssignments>
@@ -46255,18 +46374,6 @@
         <recordType>Opportunity.BFG_Community_Solar_Anchor</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.BFG</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.Finance</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Opportunity-Business Development</layout>
         <recordType>Opportunity.Business_Development</recordType>
     </layoutAssignments>
@@ -46383,6 +46490,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>PricebookEntry-Price Book Entry Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Product2-Client BD</layout>
+        <recordType>Product2.Client_BD</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Product2-Product Layout</layout>
@@ -46508,10 +46619,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Subscription_Order__c-Subscription Order Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Subscription_Order__c-Subscription Order Layout</layout>
-        <recordType>Subscription_Order__c.Subscription_Orders</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Subscription_Order__c-System Change Order</layout>
@@ -46744,18 +46851,18 @@
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Account</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Account_Bill__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -46915,9 +47022,9 @@
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Contract</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -47451,6 +47558,15 @@
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Milestone__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
@@ -47755,9 +47871,9 @@
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>UASB__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -47818,7 +47934,7 @@
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Utility__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -49545,6 +49661,16 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Partner_Task__c.Parent_Partner_Task</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Product2.Client_BD</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Product2.Default</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

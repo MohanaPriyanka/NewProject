@@ -165,6 +165,31 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Contract_Fee_Detail__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to calculate Utilization Adjustments</inlineHelpText>
+        <label>Contract Fee Detail</label>
+        <referenceTo>Contract_Fee_Detail__c</referenceTo>
+        <relationshipLabel>Client Invoicing Memos</relationshipLabel>
+        <relationshipName>Client_Invoicing_Memos</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Details__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped inputs, set by automation when calculating the amount</inlineHelpText>
+        <label>Details</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
         <fullName>Effective_Date__c</fullName>
         <externalId>false</externalId>
         <label>Effective Date</label>
@@ -172,6 +197,34 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Production_Detail__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to calculate Utilization Adjustments</inlineHelpText>
+        <label>Production Detail</label>
+        <referenceTo>Transfer_Part__c</referenceTo>
+        <relationshipLabel>Client Invoicing Memos</relationshipLabel>
+        <relationshipName>Client_Invoicing_Memos</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for Utilization Adjustments to Management Fees, populated by the Utilization Adjustment flow</inlineHelpText>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Client Invoicing Memos</relationshipLabel>
+        <relationshipName>Client_Invoicing_Memos</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Subscription_Order__c</fullName>
@@ -202,6 +255,16 @@
                     <fullName>Waived Acquisition / Reacquisition Fee</fullName>
                     <default>true</default>
                     <label>Waived Acquisition / Reacquisition Fee</label>
+                </value>
+                <value>
+                    <fullName>Adjustment for Resize Fee</fullName>
+                    <default>false</default>
+                    <label>Adjustment for Resize Fee</label>
+                </value>
+                <value>
+                    <fullName>Utilization Adjustment to Management Fee</fullName>
+                    <default>false</default>
+                    <label>Utilization Adjustment to Management Fee</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

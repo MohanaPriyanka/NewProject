@@ -22,7 +22,17 @@ public inherited sharing class ContentDocumentSelector {
             SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate, 
             ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData
             FROM ContentDocumentLink
-            WHERE LinkedEntityId = :entityIds
+            WHERE LinkedEntityId IN :entityIds
+            ORDER BY ContentDocument.CreatedDate DESC
+        ];
+    }
+
+    public List<ContentDocumentLink> selectByLinkedEntitiesWithoutData(Set<Id> entityIds) {
+        return [
+            SELECT Id, LinkedEntityId, ContentDocumentId,
+                ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId IN :entityIds
             ORDER BY ContentDocument.CreatedDate DESC
         ];
     }

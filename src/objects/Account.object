@@ -582,6 +582,20 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Assignment_Agreement_Template__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The Assignment Agreement template that is used  by Conga when generating the assignment agreement document.</inlineHelpText>
+        <label>Assignment Agreement Template</label>
+        <referenceTo>APXTConga4__Conga_Template__c</referenceTo>
+        <relationshipLabel>Accounts</relationshipLabel>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Autopay_Date_Last_Enrolled__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>The last day someone opted in to Autopay</inlineHelpText>
@@ -4591,6 +4605,45 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Account (Default)</label>
         <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>EPC Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineers of Record</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Government Entity</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Landowner</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>QA%2FQC Consultants</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Provider</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -5417,41 +5470,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>9</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Type</picklist>
-            <values>
-                <fullName>EPC Account</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineers of Record</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Government Entity</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Landowner</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>QA%2FQC Consultants</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Provider</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

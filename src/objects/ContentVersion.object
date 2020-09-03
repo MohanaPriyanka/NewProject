@@ -66,6 +66,11 @@
                     <label>Transfer Sheet</label>
                 </value>
                 <value>
+                    <fullName>Financial Review Documents</fullName>
+                    <default>false</default>
+                    <label>Financial Review Documents</label>
+                </value>
+                <value>
                     <fullName>Customer Bill</fullName>
                     <default>false</default>
                     <isActive>false</isActive>

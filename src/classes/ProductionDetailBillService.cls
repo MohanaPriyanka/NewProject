@@ -171,6 +171,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
 
     public void queueJob(ProductionToBillService.OperationType operation){
         ProductionToBillService billJob = new ProductionToBillService();
+        billJob.batchSize = 50;
         billJob.opType = operation;
         System.enqueueJob(billJob);
     }

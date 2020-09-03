@@ -95,7 +95,6 @@ public without sharing class OpportunitiesSelector {
             AND AccountId IN : accountIds
         ];
     }
-
     public List<Opportunity> selectByIdWithApprovedCommissionPayment(Set<Id> opportunityIds) {
         return [
             SELECT Id, StageName, Product_Line__c,  Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
@@ -106,7 +105,6 @@ public without sharing class OpportunitiesSelector {
             WHERE Id IN : opportunityIds
         ];
     }
-
     public List<Opportunity> getOppsFromSSS(Set<Id> sssIds) {
         return [
             SELECT Id, Name,
@@ -125,12 +123,10 @@ public without sharing class OpportunitiesSelector {
         ]);
         return oppMap;
     }
-
     public Map<Id, Date> selectFirstCustomerSignedDateByAssignmentAgreement(Set<Id> contractIds) {
         //Contract and Assignment Agreement relationships depend on the Customer Contract Object Feature Flag
         //FLAG OFF --> Opportunity.Assignment Agreement == contractIds
         //FLAG ON --> Opportunity.Contract.Assignment Agreement == contractIds
-
         List<AggregateResult> oppResults = [
             SELECT Shared_Solar_System__r.Id sssId,
                 MIN(Assignment_Agreement__r.CompanySignedDate) firstDateOFF,
@@ -141,7 +137,6 @@ public without sharing class OpportunitiesSelector {
             AND Shared_Solar_System__r.Customer_Assignment_Date__c = NULL
             GROUP BY Shared_Solar_System__r.Id
         ];
-
         Map<Id, Date> firstCustomerDateMap = new Map<Id, Date>();
         Boolean customerContractFeature = featureService.isEnabled('Customer_Contract_Object');
         for (AggregateResult ar : oppResults) {
@@ -153,9 +148,6 @@ public without sharing class OpportunitiesSelector {
         }
         return firstCustomerDateMap;
     }
-
-
-
    // Invocable methods can have at most one input parameter and its data type must be a List of primitive data types
     @InvocableMethod(Label='selectOpportunitiesForClientAssignment' Description='Gets Opp without Assignment Agreement for a list of entities')
     public static List<List<Opportunity>> selectOpportunitiesForClientAssignment(List<List<String>> inputParameters){
@@ -168,7 +160,8 @@ public without sharing class OpportunitiesSelector {
                 FROM Utility_Account_Subscription__c
                 WHERE Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c IN : entityIds
                 AND Next_Schedule_Z_Status__c = 'Active Subscription'
-                AND Opportunity__r.Assignment_Agreement__c = null
+                AND Opportunity__r.Assignment_Agreement__c = NULL
+                AND Opportunity__r.Customer_Group__c != 'Anchor'
                 AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.DeveloperName != 'Client_Account'
                 AND Opportunity__r.Account.Account_Temperature__c != 'Hot'
                 AND Opportunity__r.StageName = 'Complete'
@@ -176,7 +169,6 @@ public without sharing class OpportunitiesSelector {
         ];
         return new List<List<Opportunity>>{opportunities};
     }
-
     public List<Opportunity> getCompleteOppsWithoutContracts() {
         return [
             SELECT Id, AccountId,
@@ -192,4 +184,13 @@ public without sharing class OpportunitiesSelector {
             AND ContractId = null
         ];
     }
+
+    public List<Opportunity> getCustomerOpportunitiesByAssignmentAgreement(Id assignmentAgreementId) {
+        return [
+            SELECT Id, Name, Personal_Credit_Report2__c
+            FROM Opportunity
+            WHERE Contract.Assignment_Agreement__c = : assignmentAgreementId
+        ];
+    }
+
 }

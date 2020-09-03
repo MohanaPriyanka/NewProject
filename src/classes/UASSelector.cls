@@ -35,6 +35,7 @@ public without sharing class UASSelector {
                 Utility_Account_Log__r.Name,
                 Utility_Account_Log__r.Account__c,
                 Utility_Account_Log__r.Account__r.Id,
+                Utility_Account_Log__r.Date_Utility_Account_Cancelled__c,
                 Utility_Account_Log__r.Account__r.Name,
                 Utility_Account_Log__r.Account__r.Send_Bills_Contact__c,
                 Utility_Account_Log__r.Account__r.Parent_Account__c
@@ -170,5 +171,23 @@ public without sharing class UASSelector {
             }
         }
         return oppToUASSummaryMap;
+    }
+
+    public List<Utility_Account_Subscription__c> getUASesForAssignmentAgreement(Id assignmentAgreementId) {
+        return [
+            SELECT Id,
+                Name,
+                Opportunity__c,
+                Opportunity__r.Id,
+                Opportunity__r.Shared_Solar_System__r.Name,
+                Opportunity__r.Name,
+                Opportunity__r.ContractId,
+                Opportunity__r.Contract.Assignment_Agreement__c,
+                Opportunity__r.Personal_Credit_Report2__c,
+                Utility_Account_Log__r.Name
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Contract.Assignment_Agreement__c = : assignmentAgreementId
+            AND Next_Schedule_Z_Status__c = 'Active Subscription'
+        ];
     }
 }

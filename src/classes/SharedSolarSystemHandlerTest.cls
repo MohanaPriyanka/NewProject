@@ -456,7 +456,12 @@ public with sharing class SharedSolarSystemHandlerTest {
             AccountId = account.Id,
             RecordTypeId = clientRT.Id
         );
-        insert contractA;
+        Contract managementContract = new Contract(
+            Name = 'Management Contract',
+            AccountId = account.Id,
+            RecordTypeId = clientRT.Id
+        );
+        insert new List<Contract>{managementContract, contractA};
         Contract_Fee_Detail__c acq = new Contract_Fee_Detail__c(
             Contract__c = contractA.Id,
             Acquisition_Channels_BCS_Acquired__c = true,
@@ -491,8 +496,53 @@ public with sharing class SharedSolarSystemHandlerTest {
             Acquisition_Type_Reacquisition__c = true,
             Fee__c = 0.20
         );
+        Contract_Fee_Detail__c managementAssignmentCFD = new Contract_Fee_Detail__c(
+            Contract__c = managementContract.Id,
+            Management_Fee__c = true,
+            Fee__c = 3702.14,
+            Fee_Unit__c = 'per MW',
+            Recurring_Frequency__c = 'Monthly',
+            Management_Fee_Type__c = 'Recurring',
+            Management_Fee_Trigger__c = 'Project: First Customer Assignment Date'
+        );
+        Contract_Fee_Detail__c managementBillCFD = new Contract_Fee_Detail__c(
+            Contract__c = managementContract.Id,
+            Management_Fee__c = true,
+            Fee__c = 3702.14,
+            Fee_Unit__c = 'per MW',
+            Recurring_Frequency__c = 'Monthly',
+            Management_Fee_Type__c = 'Recurring',
+            Management_Fee_Trigger__c = 'Project: First Customer Bill Date'
+        );
+        Contract_Fee_Detail__c managementPTOCFD = new Contract_Fee_Detail__c(
+            Contract__c = managementContract.Id,
+            Management_Fee__c = true,
+            Fee__c = 3702.14,
+            Fee_Unit__c = 'per MW',
+            Recurring_Frequency__c = 'Monthly',
+            Management_Fee_Type__c = 'Recurring',
+            Management_Fee_Trigger__c = 'Project: PTO'
+        );
+        Contract_Fee_Detail__c managementCODCFD = new Contract_Fee_Detail__c(
+            Contract__c = managementContract.Id,
+            Management_Fee__c = true,
+            Fee__c = 3702.14,
+            Fee_Unit__c = 'per MW',
+            Recurring_Frequency__c = 'Monthly',
+            Management_Fee_Type__c = 'Recurring',
+            Management_Fee_Trigger__c = 'Project: COD'
+        );
+        Contract_Fee_Detail__c managementContractEffectiveCFD = new Contract_Fee_Detail__c(
+            Contract__c = managementContract.Id,
+            Management_Fee__c = true,
+            Fee__c = 3702.14,
+            Fee_Unit__c = 'per MW',
+            Recurring_Frequency__c = 'Monthly',
+            Management_Fee_Type__c = 'Recurring',
+            Management_Fee_Trigger__c = 'Contract: Effective Date'
+        );
         insert new List<Contract_Fee_Detail__c>{
-            acq, reacq
+            acq, reacq, managementAssignmentCFD, managementBillCFD, managementPTOCFD, managementCODCFD, managementContractEffectiveCFD
         };
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Client_Acquisition_Contract__c, Client_Management_Contract__c
@@ -500,7 +550,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         ];
         for (Shared_Solar_System__c sss : sssList){
             sss.Client_Acquisition_Contract__c = contractA.Id;
-            sss.Client_Management_Contract__c = contractA.Id;
+            sss.Client_Management_Contract__c = managementContract.Id;
         }
         update sssList;
     }
@@ -844,6 +894,25 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertNotEquals(startingMaxCapacitykWDC, sss1.Maximum_Subscription_Capacity_kWDC__c,
             'Expected the trigger to update Max Subscription Capacity kW DC with system size change');
     }
+    @IsTest
+    public static void testExecute() {
+        createContractTestRecords();
+        try {
+            Test.startTest();
+            System.schedule('Test SSS Update', '0 0 0 * * ? *', new SharedSolarSystemHandler());
+            Test.stopTest();
+            System.assert(true, 'Schedule should run without exception');
+        } catch (Exception e) {
+            System.assert(false, 'Did not expect this exception:\n' + e.getMessage() + '\n' + e.getStackTraceString());
+        }
+        List<Error_Log__c> errorLogs = [
+            SELECT Class__c, Method__c, Severity__c, Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(0, errorLogs.size(), errorLogs);
+    }
+
     private static void useMocks(Boolean featureOn) {
 
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockCustomFeatureSelector(featureOn));

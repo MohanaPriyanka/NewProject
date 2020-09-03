@@ -8,13 +8,18 @@
 
 
 public without sharing class CapacityService {
+    @TestVisible private RateClassesSelector rateClassSelector = new RateClassesSelector();
 
     // To support CSAP, which ignores Sales Partners when querying for systems
     public ZipcodeResponse findCapacityByZipcode(String zipcode) {
-        return findCapacityByZipcode(zipcode, null);
+        return findCapacityByZipcode(zipcode, null, null);
     }
 
     public ZipcodeResponse findCapacityByZipcode(String zipcode, String partnerId) {
+        return findCapacityByZipcode(zipcode, partnerId, null);
+    }
+
+    public ZipcodeResponse findCapacityByZipcode(String zipcode, String partnerId, String utilityId) {
         ZipcodeResponse zipcodeResponse = new ZipcodeResponse();
         // get first 5 characters incase a Zip+4 was sent
         zipcode = zipcode.left(5);
@@ -22,11 +27,10 @@ public without sharing class CapacityService {
             return zipcodeResponse;
         }
         zipcodeResponse.zipcode = zipcode;
-        setUtilitiesAndLoadZones(zipcodeResponse);
+        setUtilitiesAndLoadZones(zipcodeResponse, utilityId);
+        zipcodeResponse.rateClasses = new Set<Rate_Class__c>(rateClassSelector.selectByUtilities(zipcodeResponse.utilityIds));
         setProductsAndSharedSolarSystems(zipcodeResponse, getPartnerName(partnerId));
-
         return zipcodeResponse;
-
     }
 
     // A null partner name should find all systems to support CSAP, blank should get the default partner
@@ -48,18 +52,19 @@ public without sharing class CapacityService {
         return PartnerSelector.selectDefaultCSPartner().Name;
     }
 
-    public void setUtilitiesAndLoadZones(ZipcodeResponse zipcodeResponse) {
+    public void setUtilitiesAndLoadZones(ZipcodeResponse zipcodeResponse, Id utilityId) {
         String zipcode = zipcodeResponse.zipcode;
         List<ZipCode_Utility_Junction__c> zipcodeUtilities = ZipcodeUtilitiesSelector.selectZipcodeUtilitiesAndLoadzones(zipcode);
 
         for (ZipCode_Utility_Junction__c zipCodeUtility : zipcodeUtilities) {
-            zipcodeResponse.utilities.add(zipCodeUtility.Utility__r);
-            zipcodeResponse.utilityIds.add(zipCodeUtility.Utility__r.Id);
+            if(utilityId == null || zipCodeUtility.Utility__r.Id == utilityId) {
+                zipcodeResponse.utilities.add(zipCodeUtility.Utility__r);
+                zipcodeResponse.utilityIds.add(zipCodeUtility.Utility__r.Id);
 
-            
-            List<String> allZones = zipCodeUtility.Load_Zone_Utility__r.LZ__c.split('/');
-            zipcodeResponse.loadZones.add(zipCodeUtility.Load_Zone_Utility__r);
-            zipcodeResponse.loadZoneNames.addAll(allZones);
+                List<String> allZones = zipCodeUtility.Load_Zone_Utility__r.LZ__c.split('/');
+                zipcodeResponse.loadZones.add(zipCodeUtility.Load_Zone_Utility__r);
+                zipcodeResponse.loadZoneNames.addAll(allZones);
+            }
         }
     }
 
@@ -69,6 +74,10 @@ public without sharing class CapacityService {
                 zipcodeResponse.utilityIds,
                 zipcodeResponse.loadZoneNames
             );
+
+        zipcodeResponse.ficoUnderwriting = false;
+        zipcodeResponse.finDocsUnderwriting = false;
+        
         // Allowing null partnerNames to match to all systems, to support CSAP behavior
         for (Shared_Solar_System__c sharedSolarSystem: sharedSolarSystems) {
             if (partnerName == null ||
@@ -77,6 +86,13 @@ public without sharing class CapacityService {
                 sharedSolarSystem.Sales_Partners__c.split(';').contains('All')))) {
                 zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
                 zipcodeResponse.products.add(sharedSolarSystem.Product__r);
+
+                if(sharedSolarSystem.Available_SMB_Underwriting_Method_FICO__c) {
+                    zipcodeResponse.ficoUnderwriting = true;
+                }
+                if(sharedSolarSystem.Available_SMB_Underwriting_Method_Docs__c) {
+                    zipcodeResponse.finDocsUnderwriting = true;
+                }
             }
         }
     }
@@ -87,8 +103,11 @@ public without sharing class CapacityService {
         public Set<Load_U__c> loadZones = new Set<Load_U__c>();
         public Set<Product2> products = new Set<Product2>();
         public Set<Shared_Solar_System__c> sharedSolarSystems = new Set<Shared_Solar_System__c>();
+        public Set<Rate_Class__c> rateClasses = new Set<Rate_Class__c>();
         public Set<Id> utilityIds = new Set<Id>();
         public Set<String> loadZoneNames = new Set<String>();
+        public Boolean ficoUnderwriting;
+        public Boolean finDocsUnderwriting;
 
         public Boolean hasCapacity() {
             return (
@@ -97,6 +116,15 @@ public without sharing class CapacityService {
                     && loadZones.size() >= 1
                     && utilities.size() >= 1
             );
+        }
+
+        public Boolean collectRateClass() {
+            for(Product2 prod : products) {
+                if(prod.Collect_Rate_Class_via_Application__c) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

@@ -6,16 +6,24 @@
 public inherited sharing class RestZipCode {
     public String zipCode;
     public Boolean hasCapacity;
+    public Boolean collectRateClass;
     public Set<Utility> utilities;
     public Set<String> loadZones;
     public Set<String> products;
+    public Set<String> rateClasses;
+    public Boolean ficoUnderwriting;
+    public Boolean finDocsUnderwriting;
 
     public RestZipCode(CapacityService.ZipcodeResponse response) {
         this.zipCode = response.zipcode;
         this.hasCapacity = response.hasCapacity();
+        this.collectRateClass = response.collectRateClass();
         this.utilities = getUtilities(response.utilities);
         this.loadZones = response.loadZoneNames;
         this.products = getProductNames(response.products);
+        this.rateClasses = getRateClassNames(response.rateClasses);
+        this.ficoUnderwriting = response.ficoUnderwriting;
+        this.finDocsUnderwriting = response.finDocsUnderwriting;
     }
 
     private Set<Utility> getUtilities(Set<Utility__c> utilitySobjs) {
@@ -32,6 +40,16 @@ public inherited sharing class RestZipCode {
             productNames.add(product2.Name);
         }
         return productNames;
+    }
+
+    private Set<String> getRateClassNames(Set<Rate_Class__c> rateClasses) {
+        Set<String> rateClassNames = new Set<String>();
+        if(rateClasses != null) {
+            for(Rate_Class__c rc : rateClasses) {
+                rateClassNames.add(rc.Name);
+            }
+        }
+        return rateClassNames;
     }
 
     public class Utility {

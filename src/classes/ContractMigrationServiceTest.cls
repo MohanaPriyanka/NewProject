@@ -88,8 +88,7 @@ public with sharing class ContractMigrationServiceTest {
         Test.startTest();
             BatchContractMigration batchJob = new BatchContractMigration();
             batchJob.opportunitiesToRun = oppList;
-        	batchJob.batchSize = 50;
-            batchJob.runBatch();
+            Database.executeBatch(batchJob, 50);
         Test.stopTest();
 
         List<Contract> contracts = [
@@ -103,22 +102,11 @@ public with sharing class ContractMigrationServiceTest {
 
     @IsTest
     public static void testScheduledJob() {
-        // 6 Opps, with 5 DS and 4 attachments (2 Opps should log error for missing data)
-        List<Account> accounts = new List<Account>([SELECT Id FROM Account WHERE Name LIKE '%Customer%']);
-        Contract assignAgree = [SELECT Id FROM Contract LIMIT 1];
-        Product2 normalCSProduct = [SELECT Id FROM Product2 LIMIT 1];
-
-        List<Opportunity> oppList = getOpportunityMocks(accounts,assignAgree.Id,normalCSProduct.Id);
-        System.assertEquals(6,oppList.size());
-
         Test.startTest();
             BatchContractMigration batchJob = new BatchContractMigration();
-            batchJob.opportunitiesToRun = oppList;
-            batchJob.batchSize = 50;
-            Datetime dt = Datetime.now().addMinutes(2);
-            String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-            System.schedule('testContractMigration',cronExpress,batchJob);
+            System.schedule('testContractMigration', '0 0 0 * * ? *', batchJob);
         Test.stopTest();
+        System.assert(true, 'Should not have thrown an exception when executing the schedule. The batch is tested in testBatchJob');
     }
 
     private static void useMocks() {

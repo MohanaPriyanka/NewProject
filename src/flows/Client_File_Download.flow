@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Include_Contracts</name>
+        <label>Include Contracts</label>
+        <locationX>473</locationX>
+        <locationY>321</locationY>
+        <actionName>ClientFileCopierService</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Disclosures_Decision</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Fault_Screen</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>contractId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>documentType</name>
+            <value>
+                <elementReference>contracts_choice</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Include_Disclosures</name>
+        <label>Include Disclosures</label>
+        <locationX>471</locationX>
+        <locationY>539</locationY>
+        <actionName>ClientFileCopierService</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>PCRs_Decision</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Fault_Screen</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>contractId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>documentType</name>
+            <value>
+                <elementReference>disclosure_forms_choice</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Include_PCRs</name>
+        <label>Include PCRs</label>
+        <locationX>468</locationX>
+        <locationY>749</locationY>
+        <actionName>ClientFileCopierService</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Complete_Screen</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Fault_Screen</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>contractId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>documentType</name>
+            <value>
+                <elementReference>PCRs_choice</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <choices>
+        <name>contracts_choice</name>
+        <choiceText>Customer Agreements</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>Contracts_Lookup_Value</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <name>disclosure_forms_choice</name>
+        <choiceText>Customer Disclosure Forms</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>Disclosures_Lookup_Value</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <name>PCRs_choice</name>
+        <choiceText>Customer Credit Reports</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>PCRs_Lookup_Value</elementReference>
+        </value>
+    </choices>
+    <constants>
+        <name>Contracts_Lookup_Value</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Customer Agreement</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>Disclosures_Lookup_Value</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Customer Disclosure Form</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>PCRs_Lookup_Value</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Customer Credit Report</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <name>Contracts_Decision</name>
+        <label>Contracts Decision</label>
+        <locationX>696</locationX>
+        <locationY>201</locationY>
+        <defaultConnector>
+            <targetReference>Disclosures_Decision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Contracts No</defaultConnectorLabel>
+        <rules>
+            <name>Contracts_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>choice_Customer_Agreements</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Include_Contracts</targetReference>
+            </connector>
+            <label>Contracts Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Disclosures_Decision</name>
+        <label>Disclosures Decision</label>
+        <locationX>696</locationX>
+        <locationY>409</locationY>
+        <defaultConnector>
+            <targetReference>PCRs_Decision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Disclosures No</defaultConnectorLabel>
+        <rules>
+            <name>Disclosures_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>choice_Customer_Disclosure_Forms</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Include_Disclosures</targetReference>
+            </connector>
+            <label>Disclosures Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>PCRs_Decision</name>
+        <label>PCRs Decision</label>
+        <locationX>697</locationX>
+        <locationY>629</locationY>
+        <defaultConnector>
+            <targetReference>Complete_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>PCRs No</defaultConnectorLabel>
+        <rules>
+            <name>PCRs_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>choice_Customer_Credit_Reports</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Include_PCRs</targetReference>
+            </connector>
+            <label>PCRs Yes</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Client File Download {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Client File Download</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>Complete_Screen</name>
+        <label>Complete Screen</label>
+        <locationX>704</locationX>
+        <locationY>839</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Complete_Message</name>
+            <fieldText>&lt;p&gt;All set! Please use the Mass Download Files component to create a zip file.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Fault_Screen</name>
+        <label>Fault Screen</label>
+        <locationX>152</locationX>
+        <locationY>539</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>fault_occurred</name>
+            <fieldText>&lt;pre class=&quot;ql-syntax&quot; spellcheck=&quot;false&quot;&gt;{!$Flow.FaultMessage}
+&lt;/pre&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Type_Selection</name>
+        <label>Type Selection</label>
+        <locationX>704</locationX>
+        <locationY>51</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Contracts_Decision</targetReference>
+        </connector>
+        <fields>
+            <name>choice_Customer_Agreements</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Customer Agreements</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>choice_Customer_Disclosure_Forms</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Customer Disclosure Forms</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>choice_Customer_Credit_Reports</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Customer Credit Reports</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>207</locationX>
+        <locationY>99</locationY>
+        <connector>
+            <targetReference>Type_Selection</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>contract</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contract</objectType>
+    </variables>
+    <variables>
+        <name>PCR</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>LASERCA__Personal_Credit_Report__c</objectType>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

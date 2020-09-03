@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AnalyticsSettings xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alwaysGenPreviews>false</alwaysGenPreviews>
+    <analyticsAdoptionMetadata>false</analyticsAdoptionMetadata>
+    <canAccessAnalyticsViaAPI>true</canAccessAnalyticsViaAPI>
+    <canAnnotateDashboards>false</canAnnotateDashboards>
+    <canEnableLiveMetrics>false</canEnableLiveMetrics>
+    <canEnableSavedView>true</canEnableSavedView>
+    <canExploreDataConversationally>false</canExploreDataConversationally>
+    <canShareAppsWithCommunities>true</canShareAppsWithCommunities>
+    <canSubscribeDashboardWidgets>false</canSubscribeDashboardWidgets>
+    <canViewThumbnailAssets>false</canViewThumbnailAssets>
+    <enableAnalyticsSharingEnable>true</enableAnalyticsSharingEnable>
     <enableAutoCompleteCombo>true</enableAutoCompleteCombo>
     <enableDashboardComponentSnapshot>true</enableDashboardComponentSnapshot>
     <enableDashboardFlexiTable>true</enableDashboardFlexiTable>
+    <enableDataBlending>false</enableDataBlending>
     <enableEmailReportsToPortalUsers>true</enableEmailReportsToPortalUsers>
+    <enableFirebirdEditor>false</enableFirebirdEditor>
     <enableFloatingReportHeaders>true</enableFloatingReportHeaders>
     <enableInsights>true</enableInsights>
     <enableLightningReportBuilder>true</enableLightningReportBuilder>
     <enableLotusNotesImages>false</enableLotusNotesImages>
     <enableMassEnableReportBuilder>true</enableMassEnableReportBuilder>
     <enableNewChartsEngine>true</enableNewChartsEngine>
+    <enableOrgHasWatchlistEnabled>false</enableOrgHasWatchlistEnabled>
+    <enableQueryLiveConnectors>false</enableQueryLiveConnectors>
     <enableRemoveFooterForRepDisplay>false</enableRemoveFooterForRepDisplay>
     <enableRemoveFooterFromRepExp>true</enableRemoveFooterFromRepExp>
-    <enableReportFieldToFieldPref>true</enableReportFieldToFieldPref>
-    <enableReportUniqueRowCountPref>true</enableReportUniqueRowCountPref>
+    <enableReportNotificationsEnable>true</enableReportNotificationsEnable>
+    <enableS1AnalyticsEclairEnable>true</enableS1AnalyticsEclairEnable>
+    <enableS3OutputConnector>false</enableS3OutputConnector>
     <enableSFXJoinedReportsEnable>false</enableSFXJoinedReportsEnable>
+    <enableSubscriptionAttachmentPref>false</enableSubscriptionAttachmentPref>
     <enableUseOldChartsLookAndFeel>false</enableUseOldChartsLookAndFeel>
+    <enableWaveRecordNavigation>false</enableWaveRecordNavigation>
     <enableWaveReplication>false</enableWaveReplication>
     <enableWaveSharingInheritance>false</enableWaveSharingInheritance>
     <enableWaveTemplate>false</enableWaveTemplate>
     <enableWaveTrendedDatasetCleanup>true</enableWaveTrendedDatasetCleanup>
+    <replaceBlankMeasuresWithNulls>false</replaceBlankMeasuresWithNulls>
+    <turnOnTimeZones>false</turnOnTimeZones>
 </AnalyticsSettings>

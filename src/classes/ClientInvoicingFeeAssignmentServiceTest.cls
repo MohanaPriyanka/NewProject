@@ -327,7 +327,6 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '"Opportunity__c":"0063F00000MVO8EQAX",' +
             '"Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
             '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO",' +
-            '"Client_Management_Contract__c":"8003F000000KNC9QAO",' +
             '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
             '"Opportunity__r":{"Id":"0063F00000MVO8EQAX","Customer_Group__c":"Residential",' +
             '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
