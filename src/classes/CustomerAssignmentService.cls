@@ -49,7 +49,18 @@ public without sharing class CustomerAssignmentService {
         return sosWithUpdatedAssignmentAgreements;
     }
 
-    public void updateAssignmentAgreements(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
+    //when invoice date on AA is populated, need to populate it on all subscription orders
+    private void setInvoiceDateOnSubscriptionOrdersByBatch(Set<Id> invoicedAAIds, Map<Id, Contract> assignmentAgreementMap) {
+        List<Subscription_Order__c> subscriptionOrdersToUpdate = subscriptionOrderSelector.getSubscriptionOrdersByAssignmentAgreement(invoicedAAIds);
+        for (Subscription_Order__c so : subscriptionOrdersToUpdate) {
+            so.Invoice_Date__c = assignmentAgreementMap.get(so.Client_Assignment_Agreement__c).Date_Invoiced__c;
+        }
+
+        GenericBatchDMLOperation batchSOs = new GenericBatchDMLOperation(subscriptionOrdersToUpdate, 'Update');
+        Database.executeBatch(batchSOs);
+    }
+
+    public void assignSOsAssignmentAgreement(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
         if (!featureService.isEnabled('Customer_Contract_Object')) {
             return;
         }
@@ -76,18 +87,27 @@ public without sharing class CustomerAssignmentService {
         return contractsToAssignmentAgreementMap;
     }
 
-    public void signedAssignmentAgreement(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
+    public void updatedAssignmentAgreement(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
         Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
-        Set<Id> contractIds = new Set<Id>();
+        Set<Id> signedAAIds = new Set<Id>();
+        Set<Id> invoicedAAIds = new Set<Id>();
         for (Contract aa : newMap.values()) {
             if (aa.RecordTypeId == aaTypeId && (aa.CompanySignedDate != null && oldMap.get(aa.Id).CompanySignedDate == null)) {
-                contractIds.add(aa.Id);
+                signedAAIds.add(aa.Id);
+            }
+            if (aa.RecordTypeId == aaTypeId && aa.Date_Invoiced__c != null &&
+                aa.Date_Invoiced__c != oldMap.get(aa.Id).Date_Invoiced__c) {
+                invoicedAAIds.add(aa.Id);
             }
         }
 
-        if (contractIds.size() > 0 ) {
-            List<Shared_Solar_System__c> sssList = populateFirstCustomerAssignmentDate(contractIds);
+        if (signedAAIds.size() > 0 ) {
+            List<Shared_Solar_System__c> sssList = populateFirstCustomerAssignmentDate(signedAAIds);
             Util.updateSObjs(sssList);
+        }
+
+        if (invoicedAAIds.size() > 0) {
+            setInvoiceDateOnSubscriptionOrdersByBatch(invoicedAAIds, newMap);
         }
     }
 

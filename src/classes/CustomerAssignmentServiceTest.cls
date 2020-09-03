@@ -33,6 +33,12 @@ public with sharing class CustomerAssignmentServiceTest {
     private static String signedAssignmentAgreementOldMap = '{' +
         '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","CompanySignedDate": ' + null + '}' + //not signed
         '}';
+    private static String invoicedAssignmentAgreementNewMap = '{' +
+        '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","Date_Invoiced__c":"2020-03-19"}' + //invoiced
+        '}';
+    private static String invoicedAssignmentAgreementOldMap = '{' +
+        '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","Date_Invoiced__c": ' + null + '}' + //not invoiced
+        '}';
 
     @IsTest
     private static void testFindOppsWithUpdatedAgreements() {
@@ -100,10 +106,25 @@ public with sharing class CustomerAssignmentServiceTest {
             (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
 
         CustomerAssignmentService service = new CustomerAssignmentService();
-        service.signedAssignmentAgreement(oldContractMap, newContractMap);
+        service.updatedAssignmentAgreement(oldContractMap, newContractMap);
 
         List<Shared_Solar_System__c> sssToUpdate = (List<Shared_Solar_System__c>) Util.objectsUpdatedIfMockingDML;
         System.assertEquals(2, sssToUpdate.size());
+    }
+
+    @IsTest
+    private static void testInvoicedAssignmentAgreement() {
+        Map<Id, Contract> oldContractMap = (Map<Id, Contract>) JSON.deserialize(invoicedAssignmentAgreementOldMap, Map<Id, Contract>.class);
+        Map<Id, Contract> newContractMap = (Map<Id, Contract>) JSON.deserialize(invoicedAssignmentAgreementNewMap, Map<Id, Contract>.class);
+        CustomerAssignmentService.subscriptionOrderSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
+
+        Test.startTest();
+        CustomerAssignmentService service = new CustomerAssignmentService();
+        service.updatedAssignmentAgreement(oldContractMap, newContractMap);
+        Test.stopTest();
+
+        //TODO: what assertions can I make? SOs are not real records so batch will not actually update records
+
     }
 
     @IsTest
@@ -119,7 +140,7 @@ public with sharing class CustomerAssignmentServiceTest {
         Map<Id, Contract> oldContractMap = (Map<Id, Contract>) JSON.deserialize(oldContractMapJson, Map<Id, Contract>.class);
         Map<Id, Contract> newContractMap = (Map<Id, Contract>) JSON.deserialize(newContractMapJson, Map<Id, Contract>.class);
 
-        customerAssignmentService.updateAssignmentAgreements(oldContractMap, newContractMap);
+        customerAssignmentService.assignSOsAssignmentAgreement(oldContractMap, newContractMap);
         List<Subscription_Order__c> subscriptionOrdersToUpdate = (List<Subscription_Order__c>) Util.objectsUpdatedIfMockingDML;
 
         System.assertEquals(3, subscriptionOrdersToUpdate.size(), 'Expected to update three orders');
@@ -183,6 +204,22 @@ public with sharing class CustomerAssignmentServiceTest {
                         '{"Id":"a9W0v0000000003AAA",' +
                         '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
                         '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3B2AAK","Opportunity__r":{"Id":"006000000000003AAA","ContractId":"800000000000000"}}}' +
+                        ']';
+                    return (List<Subscription_Order__c>) System.JSON.deserialize(json, List<Subscription_Order__c>.class);
+                } when 'getSubscriptionOrdersByAssignmentAgreement' {
+                    String json = '[' +
+                        '{"Id":"a9W0v0000000000AAA",' +
+                        '"Client_Assignment_Agreement__c":"800000000000000AAA",' +
+                        '"Date_Invoiced__c": ' + null +
+                        '},' +
+                        '{"Id":"a9W0v0000000002AAA",' +
+                        '"Client_Assignment_Agreement__c":"800000000000000AAA",' +
+                        '"Date_Invoiced__c": ' + null +
+                        '},' +
+                        '{"Id":"a9W0v0000000003AAA",' +
+                        '"Client_Assignment_Agreement__c":"800000000000000AAA",' +
+                        '"Date_Invoiced__c": ' + null +
+                        '}' +
                         ']';
                     return (List<Subscription_Order__c>) System.JSON.deserialize(json, List<Subscription_Order__c>.class);
                 }
