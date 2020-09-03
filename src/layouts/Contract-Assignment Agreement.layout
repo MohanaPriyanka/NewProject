@@ -150,6 +150,11 @@
             <actionType>StandardButton</actionType>
             <sortOrder>13</sortOrder>
         </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Copy_Client_Files_Button</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>14</sortOrder>
+        </platformActionListItems>
     </platformActionList>
     <relatedContent>
         <relatedContentItems>
