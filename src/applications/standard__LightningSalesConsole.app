@@ -113,6 +113,8 @@
     <tabs>et4ae5__IndividualEmailResult__c</tabs>
     <tabs>standard-LiveChatTranscript</tabs>
     <tabs>standard-LiveAgentSession</tabs>
+    <tabs>standard-ActionCadence</tabs>
+    <tabs>standard-WorkQueue</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>LightningSalesConsole_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -121,6 +123,9 @@
         </mappings>
         <mappings>
             <tab>standard-Account</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-ActionCadence</tab>
         </mappings>
         <mappings>
             <tab>standard-Campaign</tab>
@@ -148,6 +153,9 @@
         </mappings>
         <mappings>
             <tab>standard-Task</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-WorkQueue</tab>
         </mappings>
         <mappings>
             <tab>standard-home</tab>
