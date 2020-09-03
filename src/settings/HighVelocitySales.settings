@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <HighVelocitySalesSettings xmlns="http://soap.sforce.com/2006/04/metadata">
-    <enableACAutoSendEmail>false</enableACAutoSendEmail>
-    <enableACSkipWeekends>false</enableACSkipWeekends>
-    <enableEngagementWaveAnalyticsPref>false</enableEngagementWaveAnalyticsPref>
-    <enableHighVelocitySalesSetup>false</enableHighVelocitySalesSetup>
+    <enableACAutoSendEmail>true</enableACAutoSendEmail>
+    <enableACSkipWeekends>true</enableACSkipWeekends>
+    <enableDispositionCategory>false</enableDispositionCategory>
+    <enableEngagementWaveAnalyticsPref>true</enableEngagementWaveAnalyticsPref>
+    <enableHighVelocitySales>true</enableHighVelocitySales>
+    <enableHighVelocitySalesSetup>true</enableHighVelocitySalesSetup>
 </HighVelocitySalesSettings>
