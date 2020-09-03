@@ -7360,6 +7360,23 @@ SEMA = 13 -14</inlineHelpText>
         </sharedTo>
     </listViews>
     <listViews>
+        <fullName>Incomplete_ApplicationsPartnerPoral</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>Continue_Application_Link__c</columns>
+        <columns>LEAD.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Application_Complete_Date__c</field>
+            <operation>equals</operation>
+        </filters>
+        <label>Incomplete Applications</label>
+        <sharedTo>
+            <allPartnerUsers></allPartnerUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>Leads_with_Credit_Pulled</fullName>
         <booleanFilter>(1 OR 2) AND 3 AND 4</booleanFilter>
         <columns>FULL_NAME</columns>
