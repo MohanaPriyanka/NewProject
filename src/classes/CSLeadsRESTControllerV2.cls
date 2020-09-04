@@ -596,12 +596,12 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         return false;
     }
 
-    public RestLead formatRestLeadFromLeadAndChildren(Id leadId, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
+    @TestVisible
+    private RestLead formatRestLeadFromLeadAndChildren(Id leadId, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
         Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
         return formatRestLeadFromLeadAndChildren(leadToReturn, docsNewlyGenerated, numberOfContractDocs);
     }
 
-    @TestVisible
     private RestLead formatRestLeadFromLeadAndChildren(Lead leadToReturn, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
         RestLead responseLead = new RestLead(leadToReturn);
         
@@ -683,8 +683,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     private void registerNewContentDocs(List<RestLead.RestContentDocument> requestContentDocuments, SObject linkedEntity) {
         for(RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
             if(requestContentDocument.id == null) {
+                requestContentDocument.body = String.escapeSingleQuotes(requestContentDocument.body);
                 requestContentDocument.validateCreateFields();
-                requestContentDocument.body = getContentBody(requestContentDocument.body);
                 ContentVersion newContentVersion = requestContentDocument.asContentVersionForInsert();
                 uow.registerNew(newContentVersion);
                 customWork.registerContentDocumentLinkInsert(linkedEntity, newContentVersion, 'V', 'AllUsers');
@@ -692,23 +692,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 ContentDocumentLink newContentLink = requestContentDocument.asContentDocLinkForInsert();
                 uow.registerNew(newContentLink, ContentDocumentLink.LinkedEntityId, linkedEntity);
             } else if(requestContentDocument.lastPublishedVersionId == null) {
+                requestContentDocument.body = String.escapeSingleQuotes(requestContentDocument.body);
                 requestContentDocument.validateCreateFields();
-                requestContentDocument.body = getContentBody(requestContentDocument.body);
                 ContentVersion newContentVersion = requestContentDocument.asContentVersionForInsert();
                 newContentVersion.ContentDocumentId = requestContentDocument.id;
                 uow.registerNew(newContentVersion);
             }
         }
-    }
-
-    private String getContentBody(String bodyInput) {
-        String retVal = String.escapeSingleQuotes(bodyInput);
-        Pattern myPattern = pattern.compile('^data:.+;base64,');
-        Matcher myMatcher = myPattern.matcher(retVal);
-        if(myMatcher.find()) {
-            retVal = retVal.replaceAll('data:.+;base64,', '');
-        }
-        return retVal;
     }
 
     private List<RestLead.RestContentDocument> compileLeadContentDocs(Id leadId, List<Object> contractCDLs, Integer numberOfContractDocs) {
