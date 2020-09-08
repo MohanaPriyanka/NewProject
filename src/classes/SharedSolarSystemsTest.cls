@@ -105,8 +105,10 @@ public with sharing class SharedSolarSystemsTest {
         } catch (Exception e) {
             System.assert(false, e.getMessage() + '\n' + e.getStackTraceString());
         }
-        System.assertEquals(ptoDate, ptoSystemWithPTOTrigger.Management_Revenue_Start_Date__c);
-        System.assertEquals(null, codSystemWithPTOTrigger.Management_Revenue_Start_Date__c);
+        System.assertEquals(ptoDate, ptoSystemWithPTOTrigger.Management_Revenue_Start_Date__c,
+            'The mock should return a CFD with a PTO trigger for a system with a PTO date');
+        System.assertEquals(null, codSystemWithPTOTrigger.Management_Revenue_Start_Date__c,
+            'A system with a COD date and no PTO date should not have a CFD with that trigger');
         System.assertEquals(DateUtil.min(assignmentDate, billDate), firstAssignAndBillSystemWithTrigger.Management_Revenue_Start_Date__c,
             'If there are multiple management CFDs, we should evaluate all of them and choose the earlier date');
         System.assertEquals(null, systemWithNoManagementContract.Management_Revenue_Start_Date__c,
