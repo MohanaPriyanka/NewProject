@@ -27155,6 +27155,16 @@ IsConverted,
         <errorMessage>Please enter in a loan amount on the lead record.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>No_Credit_Check</fullName>
+        <active>true</active>
+        <description>If the Underwriting Method is Financial Review, you cannot perform a soft credit pull.</description>
+        <errorConditionFormula>AND(
+  ISPICKVAL(Underwriting_Criteria__c, &apos;Financial Review&apos;),
+  Soft_Pull_Credit_Report__c
+)</errorConditionFormula>
+        <errorMessage>This lead&apos;s underwriting method is financial review; you cannot perform a credit check. Please uncheck the Soft Pull Credit Report box.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Prevent_Hard_Pulls_for_CS</fullName>
         <active>true</active>
         <errorConditionFormula>AND(

@@ -141,7 +141,8 @@ public without sharing class LeadSelector {
                 Utility_relationship__r.Name, 
                 Terms_Conditions__c, 
                 Zuora_Payment_Ref_Id__c,
-                Zuora_Payment_Ref_Id_Expiration_Date__c
+                Zuora_Payment_Ref_Id_Expiration_Date__c,
+                (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             WHERE Id = :leadIds
         ];
@@ -152,6 +153,7 @@ public without sharing class LeadSelector {
         String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Product__r.Name, Customer_Signed_Date__c, Utility_relationship__r.EIA_ID__c, Underwriting_Criteria__c';
         query += ', (SELECT ' + String.join(apiPropertyAccountFields, ', ') + ' FROM Accounts__r)';
         query += ', (SELECT ' + String.join(apiUtilityAccountFields, ', ') + ', Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name FROM Utility_Account_Logs__r)';
+        query += ', (SELECT Id FROM Contracts__r)';
         query += ', (SELECT Id FROM Underwrite_Financial_Documents__r)';
         query += ' FROM Lead WHERE Id = :leadId LIMIT 1';
         return Database.query(String.escapeSingleQuotes(query));

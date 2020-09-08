@@ -61,7 +61,9 @@ public class LeadTriggerHandlerTest {
             Product__c = csProduct.Id,
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Capacity_kWDC__c = 25
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Available_SMB_Underwriting_Method_Docs__c = true, 
+            Available_SMB_Underwriting_Method_FICO__c = true
         );
 
         
@@ -77,35 +79,42 @@ public class LeadTriggerHandlerTest {
                                             
         insert newSalesTeam;
         
-        Lead lead = (Lead)TestFactory.createSObject(new Lead(LastName = 'Chan',
-                                                             FirstName = 'Joey',
-                                                             Email = 'test@email.com',
-                                                             Electricity_Provider__c = 'National Grid',
-                                                             Utility_relationship__c = nationalGrid.Id,
-                                                             LoadZone__c = 'WCMA',
-                                                             LeadSource = 'CSAP',
-                                                             Company = 'Cloud Jedi',
-                                                             Status = 'Qualified',
-                                                             Partner_Lookup__c = partner.Id,
-                                                             Product_Line__c = 'Community Solar',
-                                                             Product__c = csProduct.Id,
-                                                             Custom_ID__c = 'partner',
-                                                             System_Assignment__c = 'Automatic - Assignment Order'));
+        Lead lead = (Lead)TestFactory.createSObject(
+            new Lead(
+                LastName = 'Chan',
+                FirstName = 'Joey',
+                Email = 'test@email.com',
+                Electricity_Provider__c = 'National Grid',
+                Utility_relationship__c = nationalGrid.Id,
+                LoadZone__c = 'WCMA',
+                LeadSource = 'CSAP',
+                Company = 'Cloud Jedi',
+                Status = 'Qualified',
+                Partner_Lookup__c = partner.Id,
+                Product_Line__c = 'Community Solar',
+                Product__c = csProduct.Id,
+                Custom_ID__c = 'partner',
+                System_Assignment__c = 'Automatic - Assignment Order',
+                Underwriting_Criteria__c = 'FICO'
+            )
+        );
         insert lead;
         
-        Lead lead2 = new Lead (LastName = 'Jordan',
-                                     FirstName = 'Pentaleri',
-                                     Email = 'test@email.com',
-                                     Electricity_Provider__c = 'National Grid',
-                                     Utility_relationship__c = nationalGrid.Id,
-                                     LoadZone__c = 'WCMA',
-                                     LeadSource = 'CSAP',
-                                     Company = 'Cloud Jedi',
-                                     Status = 'Qualified',
-                                     Partner_Lookup__c = partner.Id,
-                                     Product_Line__c = 'Community Solar',
-                                     Product__c = csProduct.Id,
-                                     System_Assignment__c = 'Automatic - Assignment Order');
+        Lead lead2 = new Lead (
+            LastName = 'Jordan',
+            FirstName = 'Pentaleri',
+            Email = 'test@email.com',
+            Electricity_Provider__c = 'National Grid',
+            Utility_relationship__c = nationalGrid.Id,
+            LoadZone__c = 'WCMA',
+            LeadSource = 'CSAP',
+            Company = 'Cloud Jedi',
+            Status = 'Qualified',
+            Partner_Lookup__c = partner.Id,
+            Product_Line__c = 'Community Solar',
+            Product__c = csProduct.Id,
+            System_Assignment__c = 'Automatic - Assignment Order',
+            Underwriting_Criteria__c = 'FICO');
         insert lead2;
 
         LASERCA__Personal_Credit_Report__c pcr = (LASERCA__Personal_Credit_Report__c)TestFactory.createSObject(new LASERCA__Personal_Credit_Report__c(
@@ -516,7 +525,6 @@ public class LeadTriggerHandlerTest {
             Name = 'National Grid',
             Number_of_Decimal_Places__c = 2
         );
-
         insert new List<Utility__c>{eversource, nationalGrid};
 
         Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
@@ -551,10 +559,9 @@ public class LeadTriggerHandlerTest {
             SELECT Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kWDC__c
             FROM Shared_Solar_System__c
             WHERE Id = :sss1.Id
-
         ];
-        System.assertEquals(25, sssCheck.Maximum_Subscription_Capacity_kWDC__c);
-        System.assertEquals(6006, sssCheck.Maximum_Subscription_Cost__c);
+        System.assertEquals(25, sssCheck.Maximum_Subscription_Capacity_kWDC__c, 'SSS should have a Maximum_Subscription_Capacity_kWDC__c of 25');
+        System.assertEquals(6006, sssCheck.Maximum_Subscription_Cost__c, 'SSS should have a Maximum_Subscription_Cost__c of 6006');
 
         Partner__c partner = new Partner__c(Name = 'BlueWave Customer Care');
         insert partner;
@@ -586,7 +593,8 @@ public class LeadTriggerHandlerTest {
             Product__c = csProduct.Id,
             Custom_ID__c = 'partner',
             System_Assignment__c = 'Automatic - Assignment Order',
-            Parent_Account__c = parentAccount.Id
+            Parent_Account__c = parentAccount.Id,
+            Underwriting_Criteria__c = 'Past Payment History'
         );
         Lead additionalProperty = primaryProperty.clone();
         additionalProperty.Utility_relationship__c = nationalGrid.Id;
@@ -623,15 +631,6 @@ public class LeadTriggerHandlerTest {
             Autopay_Only__c = true
         );
         insert new List<ChargentOrders__ChargentOrder__c>{newACHOrder1, newACHOrder2};
-
-        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
-            LASERCA__Lead__c = primaryProperty.Id,
-            LASERCA__Credit_Score_TransUnion__c = '720'
-        );
-        insert pcr;
-        primaryProperty.Personal_Credit_Report__c = pcr.Id;
-        additionalProperty.Personal_Credit_Report__c = pcr.Id;
-        update new List<Lead>{primaryProperty, additionalProperty};
 
         // kW DC = Annual Cost / NMC Rate / Yield
         Utility_Account_Log__c ual1 = new Utility_Account_Log__c(
@@ -671,9 +670,8 @@ public class LeadTriggerHandlerTest {
 
         List<Opportunity> opps = [SELECT Id FROM Opportunity];
         List<Utility_Account_Subscription__c> uases = [SELECT Id FROM Utility_Account_Subscription__c];
-        // There should be no opps or uases to start
-        System.assertEquals(0, opps.size());
-        System.assertEquals(0, uases.size());
+        System.assertEquals(0, opps.size(), 'There should be no opps to start');
+        System.assertEquals(0, uases.size(), 'There should be no uases to start');
 
         Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
@@ -686,9 +684,9 @@ public class LeadTriggerHandlerTest {
         Test.stopTest();
 
         List<Lead> eversourceLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_relationship__r.Name = 'Eversource'];
-        System.assertEquals(1, eversourceLeads.size());
-
-        // 2 opps for the Eversource lead (one for each SSS)
+        System.assertEquals(1, eversourceLeads.size(), 'There should be one Eversource lead');
+        
+        
         opps = [
             SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c, ACH_Bank_Routing_Number__c,
                 CC_Account_Number__c, ACH_Account_Number__c, CC_Card_Type__c, Lead__c, Product__c, ContractId, 
@@ -698,16 +696,16 @@ public class LeadTriggerHandlerTest {
             WHERE Shared_Solar_System__r.Utility__r.Name = 'Eversource'
             AND AccountId =: eversourceLeads[0].ConvertedAccountId
         ];
-        System.assertEquals(2, opps.size());
+        System.assertEquals(2, opps.size(), 'Lead conversion should have produced two Opportunities for Eversource, one for each SSS');
 
         for (Opportunity opp : opps) {
             if (opp.ACH_Bank_Name__c != null) {
                 //from ACHOrder1
-                System.assertEquals('*****6789', opp.ACH_Bank_Routing_Number__c);
-                System.assertEquals('******7890', opp.ACH_Account_Number__c);
+                System.assertEquals('*****6789', opp.ACH_Bank_Routing_Number__c, 'Opp ACH_Bank_Routing_Number__c should match the value input on the Chargent Order');
+                System.assertEquals('******7890', opp.ACH_Account_Number__c, 'Opp ACH_Account_Number__c should match the value input on the Chargent Order');
             } else if (opp.CC_Card_Type__c != null) {
                 //from ACHOrder2
-                System.assertEquals('************1234', opp.CC_Account_Number__c);
+                System.assertEquals('************1234', opp.CC_Account_Number__c, 'Opp CC_Account_Number__c should match the value input on the Chargent Order');
             }
 
             System.assertNotEquals(contract.Id, opp.ContractId, 'A new Contract should have been created for each Opportunity');
@@ -730,18 +728,17 @@ public class LeadTriggerHandlerTest {
             GROUP BY Opportunity__r.AccountId
         ];
 
-        // Should be a 25kW, 10kW and 5kW UAS, for a total of 35
-        System.assertEquals(3, uasAggregate[0].get('num'));
-
+        
+        System.assertEquals(3, uasAggregate[0].get('num'), 'Should be three UASes created by lead conversion');
         FeatureService featureService = new FeatureService();
         if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(35, ((Decimal) uasAggregate[0].get('kwTotal')).setScale(0));
-            System.assertEquals(25.013378, uasAggregate[0].get('kwMaximum'));
-            System.assertEquals(5, ((Decimal) uasAggregate[0].get('kwMinimum')).setScale(0));
+            System.assertEquals(35, ((Decimal) uasAggregate[0].get('kwTotal')).setScale(0), 'Should be a 25kW, 10kW and 5kW UAS created by lead conversion, for a kwTotal of 35 when subscription orders are active');
+            System.assertEquals(25.013378, uasAggregate[0].get('kwMaximum'), 'Should be a 25kW, 10kW and 5kW UAS created by lead conversion, for a kwMaximum of 25.013378 when subscription orders are active');
+            System.assertEquals(5, ((Decimal) uasAggregate[0].get('kwMinimum')).setScale(0), 'Should be a 25kW, 10kW and 5kW UAS created by lead conversion, for a kwMinimum of 5 when subscription orders are active');
         } else {
-            System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0));
-            System.assertEquals(25, uasAggregate[0].get('maximum'));
-            System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+            System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0), 'Should be a 25kW, 10kW and 5kW UAS created by lead conversion, for a total of 35 when subscription orders are NOT active');
+            System.assertEquals(25, uasAggregate[0].get('maximum'), 'Should be a 25kW, 10kW and 5kW UAS created by lead conversion, for a maximum of 25 when subscription orders are NOT active');
+            System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0), 'Should be a 25kW, 10kW and 5kW UAS created by lead conversion, for a minimum of 5 when subscription orders are NOT active');
         }
 
         List<ChargentOrders__ChargentOrder__c> primaryPropOrders = [
@@ -750,24 +747,24 @@ public class LeadTriggerHandlerTest {
             FROM ChargentOrders__ChargentOrder__c
             WHERE ChargentOrders__Account__c = : eversourceLeads[0].ConvertedAccountId
         ];
-        System.assertEquals(1, primaryPropOrders.size());
+        System.assertEquals(1, primaryPropOrders.size(), 'There should be one Chargent Order for the primary property account');
         for (ChargentOrders__ChargentOrder__c chOrder : primaryPropOrders) {
-            System.assertEquals(newACHOrder1.ChargentOrders__Billing_Email__c, chOrder.ChargentOrders__Billing_Email__c);
-            System.assertEquals(newACHOrder1.ChargentOrders__Bank_Name__c, chOrder.ChargentOrders__Bank_Name__c);
-            System.assertEquals(newACHOrder1.ChargentOrders__Bank_Account_Name__c, chOrder.ChargentOrders__Bank_Account_Name__c);
+            System.assertEquals(newACHOrder1.ChargentOrders__Billing_Email__c, chOrder.ChargentOrders__Billing_Email__c, 'The ChargentOrders__Billing_Email__c of the primary property Chargent Order should match that of the Chargent Order attached to the primary property lead');
+            System.assertEquals(newACHOrder1.ChargentOrders__Bank_Name__c, chOrder.ChargentOrders__Bank_Name__c, 'The ChargentOrders__Bank_Name__c of the primary property Chargent Order should match that of the Chargent Order attached to the primary property lead');
+            System.assertEquals(newACHOrder1.ChargentOrders__Bank_Account_Name__c, chOrder.ChargentOrders__Bank_Account_Name__c, 'The ChargentOrders__Bank_Account_Name__c of the primary property Chargent Order should match that of the Chargent Order attached to the primary property lead');
         }
 
         List<Lead> ngridLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_relationship__r.Name = 'National Grid'];
-        System.assertEquals(1, ngridLeads.size());
+        System.assertEquals(1, ngridLeads.size(), 'There should be one National Grid lead');
 
-        // Just 1 opp for NGrid since there's only one system
+        
         opps = [
             SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c, ContractId
             FROM Opportunity
             WHERE Shared_Solar_System__r.Utility__r.Name = 'National Grid'
             AND AccountId =: ngridLeads[0].ConvertedAccountId
         ];
-        System.assertEquals(1, opps.size());
+        System.assertEquals(1, opps.size(), 'There should only be 1 opp for NGrid since there\'s only one SSS for National Grid');
         System.assertEquals(contract2.Id, opps[0].ContractId, 'This Opportunity should have been assigned the parent Contract, not had a new one created');
         
 
@@ -781,16 +778,16 @@ public class LeadTriggerHandlerTest {
             WHERE Opportunity__r.AccountId =: ngridLeads[0].ConvertedAccountId
             GROUP BY Opportunity__r.AccountId
         ];
-        // Just one 25kW UAS
-        System.assertEquals(1, uasAggregate[0].get('num'));
+        
+        System.assertEquals(1, uasAggregate[0].get('num'), 'There should just be one 25kW UAS');
         if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(25, ((Decimal) uasAggregate[0].get('kwTotal')).setScale(0));
-            System.assertEquals(25.013378, uasAggregate[0].get('kwMaximum'));
-            System.assertEquals(25, ((Decimal) uasAggregate[0].get('kwMinimum')).setScale(0));
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('kwTotal')).setScale(0), 'Should be one 25kW UAS created by lead conversion, for a kwTotal of 25 when subscription orders are active');
+            System.assertEquals(25.013378, uasAggregate[0].get('kwMaximum'), 'Should be one 25kW UAS created by lead conversion, for a kwMaximum of 25.013378 when subscription orders are active');
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('kwMinimum')).setScale(0), 'Should be one 25kW UAS created by lead conversion, for a kwMinimum of 25 when subscription orders are active');
         } else {
-            System.assertEquals(25, ((Decimal) uasAggregate[0].get('total')).setScale(0));
-            System.assertEquals(25, uasAggregate[0].get('maximum'));
-            System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('total')).setScale(0), 'Should be one 25kW UAS created by lead conversion, for a total of 25 when subscription orders are NOT active');
+            System.assertEquals(25, uasAggregate[0].get('maximum'), 'Should be one 25kW UAS created by lead conversion, for a maximum of 25 when subscription orders are NOT active');
+            System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0), 'Should be one 25kW UAS created by lead conversion, for a minimum of 25 when subscription orders are NOT active');
         }
 
         List<ChargentOrders__ChargentOrder__c> additionalPropOrders = [
@@ -800,11 +797,11 @@ public class LeadTriggerHandlerTest {
             WHERE ChargentOrders__Account__c = : ngridLeads[0].ConvertedAccountId
         ];
 
-        System.assertEquals(1, additionalPropOrders.size());
+        System.assertEquals(1, additionalPropOrders.size(), 'There should be one Chargent Order for the additional property account');
         for (ChargentOrders__ChargentOrder__c chOrder : additionalPropOrders) {
-            System.assertEquals(newACHOrder2.ChargentOrders__Billing_Email__c, chOrder.ChargentOrders__Billing_Email__c);
-            System.assertEquals(newACHOrder2.ChargentOrders__Bank_Name__c, chOrder.ChargentOrders__Bank_Name__c);
-            System.assertEquals(newACHOrder2.ChargentOrders__Bank_Account_Name__c, chOrder.ChargentOrders__Bank_Account_Name__c);
+            System.assertEquals(newACHOrder2.ChargentOrders__Billing_Email__c, chOrder.ChargentOrders__Billing_Email__c, 'The ChargentOrders__Billing_Email__c of the additional property Chargent Order should match that of the Chargent Order attached to the additional property lead');
+            System.assertEquals(newACHOrder2.ChargentOrders__Bank_Name__c, chOrder.ChargentOrders__Bank_Name__c, 'The ChargentOrders__Bank_Name__c of the additional property Chargent Order should match that of the Chargent Order attached to the additional property lead');
+            System.assertEquals(newACHOrder2.ChargentOrders__Bank_Account_Name__c, chOrder.ChargentOrders__Bank_Account_Name__c, 'The ChargentOrders__Bank_Account_Name__c of the additional property Chargent Order should match that of the Chargent Order attached to the additional property lead');
         }
     }
 
@@ -1039,7 +1036,9 @@ public class LeadTriggerHandlerTest {
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
             Maximum_Subscription_Capacity_kWDC__c = 25,
-            Sales_Partners__c = 'All'
+            Sales_Partners__c = 'All',
+            Available_SMB_Underwriting_Method_Docs__c = true, 
+            Available_SMB_Underwriting_Method_FICO__c = true
         );
         return sss1;
     }

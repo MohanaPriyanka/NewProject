@@ -231,6 +231,58 @@ private class CSQualificationTestclass {
         insert crLog;
     }
 
+
+    @IsTest
+    private static void testFinancialReviewQualification() {
+        Lead lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c
+                     FROM Lead LIMIT 1];
+        
+        CSQualificationService qualService = new CSQualificationService();
+        String newStatus = qualService.underwriteWithFinancialReview(lead);
+        System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as there are no Financial Underwriting Document records associated with the lead.');
+
+        Financial_Underwriting_Document__c fud = new Financial_Underwriting_Document__c(Lead__c = lead.Id);
+        insert fud;
+        lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
+                    (SELECT Id FROM Underwrite_Financial_Documents__r)
+                FROM Lead LIMIT 1];
+        newStatus = qualService.underwriteWithFinancialReview(lead);
+        System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as the lead\'s child Financial Underwriting Document record has no files attached.');
+
+        ContentVersion cvFinDoc = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('financial document'),
+            Title = 'FinancialDocument.pdf',
+            PathOnClient = '/FinancialDocument.pdf',
+            File_Category__c = 'Financial Review Documents'
+        );
+        insert cvFinDoc;
+        ContentDocumentSelector cds = new ContentDocumentSelector();
+        Id contentDocIdFin = cds.getDocumentIdFromVersionId(cvFinDoc.Id);
+        ContentDocumentLink cdl = new ContentDocumentLink(
+            ContentDocumentId = contentDocIdFin,
+            ShareType = 'V',
+            Visibility = 'AllUsers',
+            LinkedEntityId = fud.Id
+        );
+        insert cdl;
+        lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
+                    (SELECT Id FROM Underwrite_Financial_Documents__r)
+                FROM Lead LIMIT 1];
+        newStatus = qualService.underwriteWithFinancialReview(lead);
+        System.assertEquals('Qualified', newStatus, 'The lead status should be Qualified, as the lead\'s child Financial Underwriting Document record has files attached and there is a matching SSS.');
+
+        Utility__c newUtility = [SELECT Id FROM Utility__c WHERE Name = 'Central Hudson Gas and Electric' LIMIT 1];
+        lead.Utility_relationship__c = newUtility.Id;
+        update lead;
+        lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
+                    (SELECT Id FROM Underwrite_Financial_Documents__r)
+                FROM Lead LIMIT 1];
+        newStatus = qualService.underwriteWithFinancialReview(lead);
+        System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as there is no open SSS matching the lead\'s utility.');
+    }
+
+
     @IsTest
     public static void testQualificationWidgetWithInputs() {
         List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();

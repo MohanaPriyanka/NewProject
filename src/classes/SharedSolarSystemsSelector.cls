@@ -38,7 +38,8 @@ public inherited sharing class SharedSolarSystemsSelector {
         }
         loadZoneString = loadZoneString.left(loadZoneString.length() - 1); // strip off extra comma
         String query = 'SELECT Id, Name, Capacity_Available_to_be_Reserved__c, Product__r.Id, Product__r.Name, ' +
-            'Product__r.Customer_Subscription_Type__c, Product__r.Collect_Rate_Class_via_Application__c, Sales_Partners__c, ' +
+            'Product__r.Customer_Subscription_Type__c, Product__r.Collect_Rate_Class_via_Application__c, ' +
+            'Product__r.Disclosure_Form_Conga_Template__c, Sales_Partners__c,' +
             'Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c ' +
             'FROM Shared_Solar_System__c ' +
             'WHERE Capacity_Available_to_be_Reserved__c > 0 ' +
@@ -108,7 +109,8 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Utility__r.Number_of_Decimal_Places__c,
                 Expected_Yield_kWh_kW__c, Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,
                 Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
-                BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c, Total_System_Size_kWh_DC__c
+                BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c, Total_System_Size_kWh_DC__c,
+                Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c
             FROM Shared_Solar_System__c
             WHERE Open__c = TRUE
             AND Capacity_Available_to_be_Reserved__c > 0

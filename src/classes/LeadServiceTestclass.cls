@@ -108,7 +108,9 @@ public class LeadServiceTestclass {
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'BlueWave Test Partner',
             Maximum_Subscription_Capacity_kWDC__c = 25,
-            Billing_Method__c = 'kWh'
+            Billing_Method__c = 'kWh',
+            Available_SMB_Underwriting_Method_Docs__c = true, 
+            Available_SMB_Underwriting_Method_FICO__c = true
         );
 
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(
@@ -128,7 +130,9 @@ public class LeadServiceTestclass {
             Assemblage_Count__c = 1,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Sales_Partners__c = 'All',
-            Billing_Method__c = 'NMC'
+            Billing_Method__c = 'NMC',
+            Available_SMB_Underwriting_Method_Docs__c = true, 
+            Available_SMB_Underwriting_Method_FICO__c = true
         );
         insert new List<Shared_Solar_System__c>{
             sss1, sss2

@@ -8,6 +8,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     private static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
     private static MockLeadService mockLeadService;
+    @TestVisible private static final String SAMPLE_EMAIL = 'email@invalid.com';
 
     public static void useMocks () {
         mockLeadService = new MockLeadService();
@@ -18,6 +19,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.capacityService = (CapacityService) Test.createStub(CapacityService.class, new MockCapacityService());
         controller.duplicateService = (CSLeadsDuplicateService) Test.createStub(CSLeadsDuplicateService.class , new MockDuplicateService(false));
         controller.uow = (fflib_SObjectUnitOfWork) Test.createStub(fflib_SObjectUnitOfWork.class, new MockUOW());
+        controller.qualificationService = (CSQualificationService) Test.createStub(CSQualificationService.class, new MockQualificationService());
 
         controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new MockLeadSelector());
         controller.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
@@ -91,11 +93,22 @@ public with sharing class CSLeadsRESTControllerV2Test {
     @IsTest
     private static void testPatchLeadSuccess() {
         useMocks();
-        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00" }';
+        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00", "underwritingCriteria": "FICO" }';
         controller.patchLead(jsonRequest);
 
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-        System.assertEquals(true, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should be done when the application is complete');
+        System.assertEquals(true, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should be done for FICO leads when the application is complete');
+    }
+
+    @IsTest
+    private static void testPatchLeadSuccessNoCreditPull() {
+        useMocks();
+        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00", "underwritingCriteria": "Financial Review" }';
+        controller.patchLead(jsonRequest);
+
+        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
+        System.assertEquals(false, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should NOT be done for Financial Review leads');
+        System.assertEquals('Qualified', mockLeadService.getLastUpdatedLead().Status, 'Lead status should be populated by CSQualificationService when Financial Review leads are completed.');
     }
 
     @IsTest
@@ -398,7 +411,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         String error = String.valueOf(errors.get(0));
 
         System.assertEquals(400, RestContext.response.statusCode, 'We currently only support 1 propertyAccount');
-        System.assert(error.contains('only <=1 propertyAccount per lead is supported'));
+        System.assert(error.contains('only <=1 propertyAccount per lead is supported'), 'Returned error message should match error of too many property accounts');
 
     }
 
@@ -895,8 +908,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
         Map<String, Object> requestPropertyAccount = (Map<String,Object>) requestPropertyAccounts[0];
         List<Object> requestUtilityAccountLogs = (List<Object>) requestPropertyAccount.get('utilityAccountLogs');
         Map<String, Object> requestUtilityAccountLog = (Map<String,Object>) requestUtilityAccountLogs[0];
-        List<Object> requestUtilityBills = (List<Object>) requestUtilityAccountLog.get('utilityBills');
-        Map<String, Object> requestUtilityBill = (Map<String, Object>) requestUtilityBills[0];
 
         
         String jsonResponse = response.responseBody.toString();
@@ -908,7 +919,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
         // verify lead request/response fields
         System.assertNotEquals(responseLead.get('id'), null, 'id should be set on POST response');
-        System.assertEquals(websiteLead.Id, responseLead.get('id'));
+        System.assertEquals(websiteLead.Id, responseLead.get('id'), 'returned id should match that of the website lead');
         for (String key : requestLead.keySet()) {
             if (requestLead.get(key) instanceof String) {
                 System.assertEquals(requestLead.get(key), responseLead.get(key), 'The requested ' + key + ' is expected to match the actual response');
@@ -947,7 +958,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         ContentDocumentSelector cds = new ContentDocumentSelector();
         Id contentDocIdUtil = cds.getDocumentIdFromVersionId(cvUtilBill.Id);
     
-        String financialDocs = '"financialDocs": [{ "title": "FinancialDocument.pdf", "body": "data:text/plain;base64,ZmluYW5jaWFsIGRvY3M=", "fileCategory": "Financial Review Documents" }]';
+        String financialDocs = '"financialDocs": [{ "title": "FinancialDocument.pdf", "body": "ZmluYW5jaWFsIGRvY3M=", "fileCategory": "Financial Review Documents" }]';
         String utilityBills = '"utilityBills": [{ "id": "' + contentDocIdUtil + '" }]';
         String jsonRequest = getPostLeadJson(financialDocs, utilityBills);
         RestRequest req = new RestRequest();
@@ -960,7 +971,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         RestContext.response = new RestResponse();
 
         RESTRouterV2.postRequest();
-
+        
         RestResponse response = RestContext.response;
         String jsonResponse = response.responseBody.toString();
         Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
@@ -1235,8 +1246,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     /*************
      *** MOCKS ***
      *************/
-    @TestVisible
-    private static String SAMPLE_EMAIL = 'email@invalid.com';
     
     @TestVisible
     private class MockLeadService extends MockProvider {
@@ -1526,6 +1535,18 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
         public override Object handleMethodCall(MethodCall methodCall) {
             return null;
+        }
+    }
+
+    private class MockQualificationService implements StubProvider {
+        public MockQualificationService() {}
+        public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
+            List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
+                if(stubbedMethodName == 'underwriteWithFinancialReview') {
+                    return 'Qualified';
+                }
+
+                return null;
         }
     }
 
