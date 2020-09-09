@@ -72,6 +72,7 @@ public without sharing class UtilityAccountLogTriggerHandler {
                 Boolean generateDisclosureForm = calculateGenerateDisclosureForm(c.Product__r, associatedLead.Utility_Account_Logs__r);
                 if(c.Generate_Disclosure_Form__c != generateDisclosureForm) {
                     c.Generate_Disclosure_Form__c = generateDisclosureForm;
+                    c.Generate_Review_Version__c = true;
                     contractsForUpdate.add(c);
                 }
             }
