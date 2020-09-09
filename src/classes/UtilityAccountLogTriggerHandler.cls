@@ -13,18 +13,15 @@ public without sharing class UtilityAccountLogTriggerHandler {
             CSCancellationService.processFinaledUtilityAccounts(uasesToFinal);
         }
 
-        List<Utility_Account_Log__c> ualsForRateClassUpdate = new List<Utility_Account_Log__c>();
         Set<Id> leadIdSet = new Set<Id>();
-        Set<Id> rateClassIdSet = new Set<Id>();
         for(Utility_Account_Log__c ual : newUALs) {
             if(ual.Utility_Rate_Class__c != oldMap.get(ual.Id).Utility_Rate_Class__c) {
-                ualsForRateClassUpdate.add(ual);
                 leadIdSet.add(ual.Lead__c);
-                rateClassIdSet.add(ual.Utility_Rate_Class__c);
             }
         }
-        if(!ualsForRateClassUpdate.isEmpty()) {
-            updateRateClassOnContract(ualsForRateClassUpdate, leadIdSet, rateClassIdSet);
+        
+        if(!leadIdSet.isEmpty()) {
+            updateRateClassOnContract(leadIdSet);
         }
     }
 
@@ -57,36 +54,26 @@ public without sharing class UtilityAccountLogTriggerHandler {
         }
     }
 
-    private static void updateRateClassOnContract(List<Utility_Account_Log__c> ualList, Set<Id> leadIdSet, Set<Id> rateClassIdSet) {
-        Map<Id, Rate_Class__c> rateClassMap = new Map<Id, Rate_Class__c>([
-            SELECT Id, Suppress_Disclosure_Form__c
-            FROM Rate_Class__c
-            WHERE Id = :rateClassIdSet
-        ]);
-        Map<Id, Lead> leadMap = new Map<Id, Lead>([
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    private static void updateRateClassOnContract(Set<Id> leadIdSet) {
+        List<Lead> leadList = [
             SELECT Id, 
                 (SELECT Id, Generate_Disclosure_Form__c, Product__c, Product__r.Disclosure_Form_Conga_Template__c
-                FROM Contracts__r)
+                FROM Contracts__r),
+                (SELECT Id, Utility_Rate_Class__c, Utility_Rate_Class__r.Suppress_Disclosure_Form__c
+                FROM Utility_Account_Logs__r)
             FROM Lead
             WHERE Id = :leadIdSet
-        ]);
-
+        ];
+        
         List<Contract> contractsForUpdate = new List<Contract>();
-        for(Utility_Account_Log__c ual : ualList) {
-            Lead associatedLead = leadMap.get(ual.Lead__c);
-            Rate_Class__c associatedRateClass;
-            if(rateClassMap.containsKey(ual.Utility_Rate_Class__c)) {
-                associatedRateClass = rateClassMap.get(ual.Utility_Rate_Class__c);
-            } else {
-                associatedRateClass = new Rate_Class__c();
-            }
+        for(Lead associatedLead : leadList) {
             for(Contract c : associatedLead.Contracts__r) {
-                if(c.Product__r != null) {
-                    c.Generate_Disclosure_Form__c = calculateGenerateDisclosureForm(c.Product__r.Disclosure_Form_Conga_Template__c, associatedRateClass.Suppress_Disclosure_Form__c);
-                } else {
-                    c.Generate_Disclosure_Form__c = calculateGenerateDisclosureForm(null, associatedRateClass.Suppress_Disclosure_Form__c);
+                Boolean generateDisclosureForm = calculateGenerateDisclosureForm(c.Product__r, associatedLead.Utility_Account_Logs__r);
+                if(c.Generate_Disclosure_Form__c != generateDisclosureForm) {
+                    c.Generate_Disclosure_Form__c = generateDisclosureForm;
+                    contractsForUpdate.add(c);
                 }
-                contractsForUpdate.add(c);
             }
         }
 
@@ -95,17 +82,32 @@ public without sharing class UtilityAccountLogTriggerHandler {
         }
     }
 
-    private static Boolean calculateGenerateDisclosureForm(String disclosureFormTemplate, Boolean suppressDisclosureForm) {
-        if(disclosureFormTemplate == null) {
+
+    private static Boolean calculateGenerateDisclosureForm(Product2 product, List<Utility_Account_Log__c> ualList) {
+        if(product == null || product.Disclosure_Form_Conga_Template__c == null) {
             return false;
         }
+        
+        Boolean allSuppress = true;
+        Boolean allNull = true;
+        for(Utility_Account_Log__c ual : ualList) {
+            if(ual.Utility_Rate_Class__c != null) {
+                allNull = false;
+            }
+            if(ual.Utility_Rate_Class__c == null || !ual.Utility_Rate_Class__r.Suppress_Disclosure_Form__c) {
+                allSuppress = false;
+            }
+        }
 
-        if(suppressDisclosureForm == null || !suppressDisclosureForm) {
+        if(allNull) {
             return true;
         }
 
-        return false;
-    }
+        if(allSuppress) {
+            return false;
+        }
 
+        return true;
+    }
 
 }

@@ -315,12 +315,21 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             return 1;
         }
 
-        const ual = lead.propertyAccounts[0].utilityAccountLogs[0];
-        if(capacity.rateClasses && capacity.rateClasses.length > 0 && ual.rateClass) {
+        if(capacity.rateClasses && capacity.rateClasses.length > 0) {
             const rateClassObj = Object.fromEntries(capacity.rateClasses.map(
                 rateClass => ([rateClass.name, rateClass])
             ));
-            if(rateClassObj.hasOwnProperty(ual.rateClass) && rateClassObj[ual.rateClass].suppressDisclosureForm) {
+
+            let allSuppress = true;
+            lead.propertyAccounts.forEach(propAcct => {
+                propAcct.forEach(ual => {
+                    if(!ual.rateClass || !rateClassObj.hasOwnProperty(ual.rateClass) || !rateClassObj[ual.rateClass].suppressDisclosureForm) {
+                        allSuppress = false;
+                    }
+                });
+            });
+
+            if(allSuppress) {
                 return 1;
             }
         }

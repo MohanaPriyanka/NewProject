@@ -28,7 +28,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track restLead;
     @track propertyAccount;
     @track stateOptions;
-    @track selectedRateClass;
+    @track selectedRateClasses = [];
 
     @track showSpinner;
     @track spinnerMessage;
@@ -104,8 +104,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                     this.propertyAccount.utilityAccountLogs[i].doNotDelete = true;
                     this.propertyAccount.utilityAccountLogs[i].showUpload = (this.isFileUpload && (!this.propertyAccount.utilityAccountLogs[i].utilityBills || this.propertyAccount.utilityAccountLogs[i].utilityBills.length === 0));
                     
-                    if(i==0) {
-                        this.selectedRateClass = this.rateClassObj[this.propertyAccount.utilityAccountLogs[i].rateClass];
+                    if(this.propertyAccount.utilityAccountLogs[i].rateClass) {
+                        this.selectedRateClasses.push(this.rateClassObj[this.propertyAccount.utilityAccountLogs[i].rateClass]);
                     }
                 }
             }
@@ -218,9 +218,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     rateClassOnChange(event) {
         this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex].rateClass = event.target.value;
-        if(event.target.dataset.rowIndex == 0) {
-            this.selectedRateClass = this.rateClassObj[event.target.value];
-        }
+        this.selectedRateClasses.push(this.rateClassObj[event.target.value]);
     }
 
     propertyAccountOnChange(event) {
@@ -447,9 +445,22 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if(!this.selectedProduct || !this.selectedProduct.standaloneDisclosureForm) {
             return 1;
         }
-        if(!this.selectedRateClass || !this.selectedRateClass.suppressDisclosureForm) {
+
+        if(this.selectedRateClasses.length === 0) {
             return 2;
         }
-        return 1;
+
+        let allSuppress = true;
+        this.selectedRateClasses.forEach(rateClass => {
+            if(!rateClass.suppressDisclosureForm) {
+                allSuppress = false;
+            }
+        });
+
+        if(allSuppress) {
+            return 1;
+        }
+
+        return 2;
     }
 }
