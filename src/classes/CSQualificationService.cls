@@ -57,8 +57,6 @@ public without sharing class CSQualificationService {
             List<LASERCA__Personal_Credit_Report__c> updatePCRs = new List<LASERCA__Personal_Credit_Report__c>();
             for (LASERCA__Personal_Credit_Report__c pcr : completedPCRs) {
                 Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
-
-                String result = 'Unqualified';
                 Decimal creditScore = 0;
 
                 //Handle No Match Leads and set credit score to 9999
@@ -232,6 +230,7 @@ public without sharing class CSQualificationService {
         }
     }
 
+    @SuppressWarnings('PMD.ExcessiveParameterList')
     @AuraEnabled
     public static List<QualificationMatch> getQualificationMatches(String product, String partner, String zipCode, String fico, String utility) {
         QualificationInput input = new QualificationInput(product, partner, zipCode, fico, utility);

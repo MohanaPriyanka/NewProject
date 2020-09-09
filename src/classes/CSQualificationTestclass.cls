@@ -155,9 +155,9 @@ private class CSQualificationTestclass {
         ];
 
 
-        System.assertEquals('Qualified', checkLead.Status);
-        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c);
-        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c );
+        System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
+        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
+        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 700');
     }
 
     @IsTest
@@ -177,9 +177,9 @@ private class CSQualificationTestclass {
             WHERE Id = :lead.Id
         ];
 
-        System.assertEquals('Unqualified', checkLead.Status);
-        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c);
-        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c );
+        System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
+        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
+        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 700');
     }
 
     @IsTest
@@ -195,9 +195,9 @@ private class CSQualificationTestclass {
             WHERE Id = :lead.Id
         ];
 
-        System.assertEquals('Qualified', checkLead.Status);
-        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c);
-        System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c );
+        System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
+        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
+        System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 9999');
 
     }
 
@@ -305,8 +305,8 @@ private class CSQualificationTestclass {
 
         allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
 
-        System.assertEquals(1, allMatches.size());
-        System.assertEquals(true, allMatches[0].completeMatch);
+        System.assertEquals(1, allMatches.size(), 'There should be one qualification match');
+        System.assert(allMatches[0].completeMatch, 'The qualification match should be a complete match');
     }
 
     @IsTest
@@ -334,13 +334,13 @@ private class CSQualificationTestclass {
 
         allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
 
-        System.assertEquals(1, allMatches.size());
-        System.assertEquals(false, allMatches[0].completeMatch);
-        System.assertEquals(true, allMatches[0].hasPartner);
-        System.assertEquals(true, allMatches[0].isOpen);
-        System.assertEquals(true, allMatches[0].hasCapacity);
-        System.assertEquals(true, allMatches[0].hasLZ);
-        System.assertEquals(false, allMatches[0].minFICO);
+        System.assertEquals(1, allMatches.size(), 'There should be one qualification match');
+        System.assert(!allMatches[0].completeMatch, 'The qualification match should NOT be a complete match because the FICO score is too low');
+        System.assert(allMatches[0].hasPartner, 'hasPartner should be true for the qualification match');
+        System.assert(allMatches[0].isOpen, 'isOpen should be true for the qualification match');
+        System.assert(allMatches[0].hasCapacity, 'hasCapacity should be true for the qualification match');
+        System.assert(allMatches[0].hasLZ, 'hasLZ should be true for the qualification match');
+        System.assert(!allMatches[0].minFICO, 'minFICO should be false for the qualification match because the FICO score is too low');
     }
 
     @IsTest
@@ -364,7 +364,7 @@ private class CSQualificationTestclass {
         String utilityId;
 
         allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
-        System.assertEquals(0, allMatches.size());
+        System.assertEquals(0, allMatches.size(), 'There should be no qualification matches');
     }
 
 
