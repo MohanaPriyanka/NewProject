@@ -314,34 +314,45 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
     <fields>
         <fullName>Fee_Summary__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(OR(Acquisition_Type_Acquisition__c,Acquisition_Type_Reacquisition__c, Management_Fee__c),
-&quot;This $&quot; 
-&amp;TEXT(Fee__c) 
-&amp;&quot;/&quot;
-&amp;TEXT(Fee_Unit__c) 
-&amp;&quot; &quot;
-&amp;IF(Acquisition_Type_Acquisition__c,IF(Acquisition_Type_Reacquisition__c,&quot;acquisition and reacquisition&quot;,&quot;acquisition&quot;),IF(Acquisition_Type_Reacquisition__c,&quot;reacquisition&quot;, TEXT(Management_Fee_Type__c) &amp; &quot; management&quot;))
-&amp;&quot; fee is valid for &quot;
-&amp;IF(OR(Acquisition_Type_Acquisition__c,Acquisition_Type_Reacquisition__c),&quot; customer opportunity group(s): {&quot;
-&amp;IF(Acquisition_Cust_Group_Anchor__c,&quot;Anchor, &quot;,&quot;&quot;)
-&amp;IF(Acquisition_Cust_Group_Public_Offtake__c,&quot;Public Offtake, &quot;,&quot;&quot;)
-&amp;IF(Acquisition_Cust_Group_Residential__c,&quot;Residential, &quot;,&quot;&quot;)
-&amp;IF(Acquisition_Cust_Group_Non_Residential__c,&quot;Non-Residential&quot;,&quot;&quot;)
-&amp;&quot;} where customers were acquired by &quot;
-&amp;IF(Acquisition_Channels_BCS_Acquired__c,IF(Acquisition_Channels_Non_BCS_Acquired__c,&quot;BCS or the Client&quot;,&quot;BCS&quot;),IF(Acquisition_Type_Reacquisition__c,&quot;the client&quot;,&quot;&quot;))
-&amp;&quot; and is valid when a customer &quot;
-&amp;IF(Acquisition_Sizing_Type_Upsizing__c,IF(Acquisition_Sizing_Type_Downsizing__c,&quot;increases or decreases&quot;,&quot;increases&quot;),IF(Acquisition_Sizing_Type_Downsizing__c,&quot;decreases&quot;,&quot;&quot;))
-&amp;&quot; in size (kW) &quot;,
-IF(Project_Capacity_Group_Anchor__c,IF(Project_Capacity_Group_Non_Anchor__c,&quot;anchor and small offtake capacity&quot;,&quot;anchor capacity&quot;),IF(Project_Capacity_Group_Non_Anchor__c,&quot;small offtake capacity&quot;,&quot;&quot;))
-)
-&amp;&quot; on &quot; 
-&amp;IF(Project_Type_Acquisition_Management__c,&quot;Acquisition &amp; Management&quot;,IF( Project_Type_Management_Only__c,&quot;Management-Only&quot;,&quot;&quot;))
-&amp;&quot; projects&quot; 
-&amp;&quot;, beginning on &quot; &amp; TEXT(Management_Fee_Trigger__c) &amp; &quot; date&quot;
-&amp;IF(ISPICKVAL(Management_Fee_Type__c,&quot;Recurring&quot;),
-&quot;. It is charged &quot; &amp; TEXT(Recurring_Frequency__c),&quot;&quot;)
-&amp;IF(ISBLANK(Recurring_Escalator__c),&quot;&quot;, &quot; with a &quot; &amp; TEXT(Recurring_Escalator_Frequency__c) 
-&amp; &quot; escalator of &quot; &amp; TEXT(Recurring_Escalator__c*100) &amp; &quot;%&quot;)
+        <formula>IF(OR(Acquisition_Type_Acquisition__c, Acquisition_Type_Reacquisition__c, Management_Fee__c),
+   &quot;This $&quot;&amp;TEXT(Fee__c)&amp;&quot;/&quot;&amp;TEXT(Fee_Unit__c) 
+   &amp;&quot; &quot;
+   &amp;IF(Acquisition_Type_Acquisition__c,
+       IF(Acquisition_Type_Reacquisition__c,&quot;acquisition and reacquisition&quot;,&quot;acquisition&quot;),
+       IF(Acquisition_Type_Reacquisition__c,&quot;reacquisition&quot;, TEXT(Management_Fee_Type__c) &amp; &quot; management&quot;))
+   &amp;&quot; fee is valid for &quot;
+   &amp;IF(OR(Acquisition_Type_Acquisition__c, Acquisition_Type_Reacquisition__c),
+       /* Acq and Reacq */
+       &quot; customer opportunity group(s): {&quot;
+       &amp;IF(Acquisition_Cust_Group_Anchor__c, &quot;Anchor, &quot;, &quot;&quot;)
+       &amp;IF(Acquisition_Cust_Group_Public_Offtake__c, &quot;Public Offtake, &quot;, &quot;&quot;)
+       &amp;IF(Acquisition_Cust_Group_Residential__c, &quot;Residential, &quot;, &quot;&quot;)
+       &amp;IF(Acquisition_Cust_Group_Non_Residential__c, &quot;Non-Residential&quot;, &quot;&quot;)
+       &amp;&quot;} where customers were acquired by &quot;
+       &amp;IF(Acquisition_Channels_BCS_Acquired__c,
+           IF(Acquisition_Channels_Non_BCS_Acquired__c, &quot;BCS or the Client&quot;, &quot;BCS&quot;),
+           IF(Acquisition_Type_Reacquisition__c, &quot;the client&quot;, &quot;&quot;))
+       &amp;&quot; and is valid when a customer &quot;
+       &amp;IF(Acquisition_Sizing_Type_Upsizing__c,
+           IF(Acquisition_Sizing_Type_Downsizing__c, &quot;increases or decreases&quot;, &quot;increases&quot;),
+           IF(Acquisition_Sizing_Type_Downsizing__c, &quot;decreases&quot;, &quot;&quot;))
+       &amp;&quot; in size (kW) &quot;,
+       /* Management */
+       IF(ISBLANK(Shared_Solar_System__c),
+          IF(Project_Capacity_Group_Anchor__c,
+             IF(Project_Capacity_Group_Non_Anchor__c, &quot;anchor and small offtake capacity&quot;, &quot;anchor capacity&quot;),
+             IF(Project_Capacity_Group_Non_Anchor__c, &quot;small offtake capacity&quot;, &quot;&quot;))
+          &amp;&quot; on &quot; 
+          &amp;IF(Project_Type_Acquisition_Management__c,
+              &quot;Acquisition &amp; Management&quot;,
+              IF( Project_Type_Management_Only__c, &quot;Management-Only&quot;, &quot;&quot;))
+          &amp;&quot; projects&quot;,
+          Shared_Solar_System__r.Name)   
+       &amp;&quot;, beginning on &quot; &amp; TEXT(Management_Fee_Trigger__c) &amp; &quot; date&quot;
+       &amp;IF(ISPICKVAL(Management_Fee_Type__c,&quot;Recurring&quot;), &quot;. It is charged &quot; &amp; TEXT(Recurring_Frequency__c),&quot;&quot;)
+       &amp;IF(ISBLANK(Recurring_Escalator__c),&quot;&quot;, &quot; with a &quot; &amp; TEXT(Recurring_Escalator_Frequency__c) 
+       &amp; &quot; escalator of &quot; &amp; TEXT(Recurring_Escalator__c*100) &amp; &quot;%&quot;)
+   )
 ,&quot;Choose a fee type&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Fee Summary</label>

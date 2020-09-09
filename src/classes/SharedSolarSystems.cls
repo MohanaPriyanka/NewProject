@@ -72,25 +72,36 @@ public inherited sharing class SharedSolarSystems {
         }
         Date startDate;
         for (Contract_Fee_Detail__c cfd : contractFeeDetails) {
-            switch on cfd.Management_Fee_Trigger__c {
-                when 'Project: PTO' {
-                    startDate = DateUtil.min(startDate, sss.Actual_PTO_Date_MANUAL__c);
-                } when 'Project: COD' {
-                    startDate = DateUtil.min(startDate, sss.Actual_COD_Date__c);
-                } when 'Project: First Customer Assignment Date' {
-                    startDate = DateUtil.min(startDate, sss.Customer_Assignment_Date__c);
-                } when 'Project: First Customer Bill Date' {
-                    startDate = DateUtil.min(startDate, sss.First_Bill_Date__c);
-                } when 'Contract: Effective Date' {
-                    startDate = DateUtil.min(startDate, cfd.Contract__r.StartDate);
-                } when else {
-                    Logger.logLater(
-                        'SharedSolarSystems',
-                        'getRevenueStartDate',
-                        'Management Fee Trigger for system ' + sss.Id + ' not handled: ' + cfd,
-                        Logger.ERROR
-                    );
-                }
+            if (cfd.Shared_Solar_System__c == null) {
+                startDate = getStartDateForCFD(cfd, startDate, sss);
+            } else if (cfd.Shared_Solar_System__c == sss.Id) {
+                return getStartDateForCFD(cfd, null, sss);
+            } else {
+                // must be cfd.SSS != sss.Id, so we can skip it
+            }
+        }
+        return startDate;
+    }
+
+    private Date getStartDateForCFD(Contract_Fee_Detail__c cfd, Date startDate, Shared_Solar_System__c sss) {
+        switch on cfd.Management_Fee_Trigger__c {
+            when 'Project: PTO' {
+                startDate = DateUtil.min(startDate, sss.Actual_PTO_Date_MANUAL__c);
+            } when 'Project: COD' {
+                startDate = DateUtil.min(startDate, sss.Actual_COD_Date__c);
+            } when 'Project: First Customer Assignment Date' {
+                startDate = DateUtil.min(startDate, sss.Customer_Assignment_Date__c);
+            } when 'Project: First Customer Bill Date' {
+                startDate = DateUtil.min(startDate, sss.First_Bill_Date__c);
+            } when 'Contract: Effective Date' {
+                startDate = DateUtil.min(startDate, cfd.Contract__r.StartDate);
+            } when else {
+                Logger.logLater(
+                    'SharedSolarSystems',
+                    'getRevenueStartDate',
+                    'Management Fee Trigger for system ' + sss.Id + ' not handled: ' + cfd,
+                    Logger.ERROR
+                );
             }
         }
         return startDate;
