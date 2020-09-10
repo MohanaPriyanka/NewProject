@@ -33,12 +33,6 @@ public with sharing class CustomerAssignmentServiceTest {
     private static String signedAssignmentAgreementOldMap = '{' +
         '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","CompanySignedDate": ' + null + '}' + //not signed
         '}';
-    private static String invoicedAssignmentAgreementNewMap = '{' +
-        '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","Date_Invoiced__c":"2020-03-19"}' + //invoiced
-        '}';
-    private static String invoicedAssignmentAgreementOldMap = '{' +
-        '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","Date_Invoiced__c": ' + null + '}' + //not invoiced
-        '}';
 
     @IsTest
     private static void testFindOppsWithUpdatedAgreements() {

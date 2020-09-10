@@ -46,10 +46,7 @@ public without sharing class CustomerAssignmentService {
         }
 
         if (invoicedAAIds.size() > 0) {
-            //return batch Id?
-            // return subscription orders being updated
             List<Subscription_Order__c> soUpdateList = setInvoiceDateOnSubscriptionOrders(invoicedAAIds, newMap);
-            //call to GenericDatabase
             batchSOUpdate(soUpdateList);
         }
     }
@@ -82,9 +79,6 @@ public without sharing class CustomerAssignmentService {
         return sosWithUpdatedAssignmentAgreements;
     }
 
-    //when invoice date on AA is populated, need to populate it on all subscription orders
-    // can we move the selector outside of this method so that we dont have to mock?
-    // also move databaseExecute batch out
     @TestVisible
     private List<Subscription_Order__c> setInvoiceDateOnSubscriptionOrders(Set<Id> invoicedAAIds, Map<Id, Contract> assignmentAgreementMap) {
         List<Subscription_Order__c> subscriptionOrdersToUpdate = subscriptionOrderSelector.getSubscriptionOrdersByAssignmentAgreement(invoicedAAIds);
