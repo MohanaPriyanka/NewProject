@@ -66,7 +66,7 @@ public with sharing class CustomerAssignmentServiceTest {
         Map<Id, Opportunity> oldOppMap = (Map<Id, Opportunity>) JSON.deserialize(oldOppMapJson, Map<Id, Opportunity>.class);
         Map<Id, Opportunity> newOppMap = (Map<Id, Opportunity>) JSON.deserialize(newOppMapJson, Map<Id, Opportunity>.class);
 
-        customerAssignmentService.updateAssignmentAgreements(oldOppMap, newOppMap);
+        customerAssignmentService.updateSOSAssignmentAgreementFromOpp(oldOppMap, newOppMap);
         List<Subscription_Order__c> subscriptionOrdersToUpdate = (List<Subscription_Order__c>) Util.objectsUpdatedIfMockingDML;
 
         System.assertEquals(3, subscriptionOrdersToUpdate.size(), 'Expected to update three orders');
@@ -106,25 +106,98 @@ public with sharing class CustomerAssignmentServiceTest {
             (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
 
         CustomerAssignmentService service = new CustomerAssignmentService();
-        service.updatedAssignmentAgreement(oldContractMap, newContractMap);
+        service.afterUpdateAssignmentAgreements(oldContractMap, newContractMap);
 
         List<Shared_Solar_System__c> sssToUpdate = (List<Shared_Solar_System__c>) Util.objectsUpdatedIfMockingDML;
         System.assertEquals(2, sssToUpdate.size());
     }
 
     @IsTest
-    private static void testInvoicedAssignmentAgreement() {
-        Map<Id, Contract> oldContractMap = (Map<Id, Contract>) JSON.deserialize(invoicedAssignmentAgreementOldMap, Map<Id, Contract>.class);
-        Map<Id, Contract> newContractMap = (Map<Id, Contract>) JSON.deserialize(invoicedAssignmentAgreementNewMap, Map<Id, Contract>.class);
+    private static void testSetInvoiceDateOnSubscriptionOrders() {
         CustomerAssignmentService.subscriptionOrderSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
+        Contract assignmentAgreement1 = new Contract(
+            Id = '800000000000000AAA',
+            Date_Invoiced__c = System.today()
+        );
+
+        Map<Id, Contract> assigmentAgreementMap = new Map<Id, Contract>{assignmentAgreement1.Id => assignmentAgreement1};
+        List<Subscription_Order__c> sOrders = new CustomerAssignmentService().setInvoiceDateOnSubscriptionOrders(assigmentAgreementMap.keySet(), assigmentAgreementMap);
+
+        System.assertEquals(3, sOrders.size(), 'Mocked query should return 3 Subscription Orders for Update');
+        for (Subscription_Order__c so : sOrders) {
+            System.assertEquals(System.today(), so.Invoice_Date__c, 'Invoice Date should be populated with date from Assignment Agreement');
+        }
+    }
+
+    @IsTest
+    private static void systemTestInvoicedAssignmentAgreements() {
+        Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
+
+        Account clientAccount = new Account(
+            Name = 'Client Account'
+        );
+        insert clientAccount;
+
+        Contract invoicedAA = new Contract(
+            RecordTypeId = aaTypeId,
+            AccountId = clientAccount.Id
+        );
+
+        Contract invoicedAA2 = new Contract(
+            RecordTypeId = aaTypeId,
+            AccountId = clientAccount.Id,
+            Date_Invoiced__c = System.today()
+        );
+
+        insert new List<Contract>{invoicedAA, invoicedAA2};
+
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Name = 'Utility Account'
+        );
+        insert ual;
+        Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
+            Name = 'Utility Account Subscription',
+            Utility_Account_Log__c = ual.Id
+        );
+        insert uas;
+
+        Subscription_Order__c so1 = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uas.Id,
+            Client_Assignment_Agreement__c = invoicedAA.Id
+        );
+        Subscription_Order__c so2 = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uas.Id,
+            Client_Assignment_Agreement__c = invoicedAA.Id
+        );
+        Subscription_Order__c so3 = new Subscription_Order__c(
+            Utility_Account_Subscription__c =uas.Id,
+            Client_Assignment_Agreement__c = invoicedAA2.Id
+        );
+
+        insert new List<Subscription_Order__c> {so1, so2, so3};
+
+        //Update should populate Invoiced on 2 SOs
+        invoicedAA.Date_Invoiced__c = System.today();
+        //Setting Date_Invoiced to null should not cause changes on SOs
+        invoicedAA2.Date_Invoiced__c = null;
 
         Test.startTest();
-        CustomerAssignmentService service = new CustomerAssignmentService();
-        service.updatedAssignmentAgreement(oldContractMap, newContractMap);
+        update new List<Contract>{invoicedAA, invoicedAA2};
         Test.stopTest();
 
-        //TODO: what assertions can I make? SOs are not real records so batch will not actually update records
+        List<Subscription_Order__c> sOrders = [
+            SELECT Id, Invoice_Date__c, Client_Assignment_Agreement__c
+            FROM Subscription_Order__c
+        ];
 
+        System.assertEquals(3, sOrders.size(), 'Total of 3 SO records');
+        for (Subscription_Order__c so : sOrders) {
+            if (so.Client_Assignment_Agreement__c == invoicedAA.Id) {
+                System.assertEquals(System.today(), so.Invoice_Date__c, 'Invoice Date should be populated with invoiceAA date');
+            } else {
+                System.assertEquals(null, so.Invoice_Date__c, 'Invoice Date should not be populated for invoicedAA2');
+            }
+        }
     }
 
     @IsTest
