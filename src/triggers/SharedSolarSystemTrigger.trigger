@@ -12,7 +12,7 @@ trigger SharedSolarSystemTrigger on Shared_Solar_System__c (before insert, after
             sharedSolarSystems.calculateMaximumSubscriptionCapacityForSMART();
             sharedSolarSystems.updateManagementRevenueStartDateBeforeTrigger();
         } when BEFORE_UPDATE {
-            sharedSolarSystemHandler.summarizeCapacityBeforeUpdate(Trigger.new);
+            sharedSolarSystemHandler.summarizeCapacityBeforeUpdate(Trigger.newMap);
             sharedSolarSystems.calculateMaximumSubscriptionCapacityForSMART();
             sharedSolarSystems.updateManagementRevenueStartDateBeforeTrigger();
         } when AFTER_UPDATE {
