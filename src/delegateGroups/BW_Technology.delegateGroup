@@ -104,6 +104,8 @@
     <permissionSets>Conga</permissionSets>
     <permissionSets>View and Edit Converted Leads</permissionSets>
     <permissionSets>SSN Field Access</permissionSets>
+    <permissionSets>Sales Analytics Admin</permissionSets>
+    <permissionSets>Sales Analytics User</permissionSets>
     <permissionSets>Set Audit Fields on Record Creation</permissionSets>
     <permissionSets>Disable Loan Originations &amp; Enable CS</permissionSets>
     <permissionSets>AccessToModifyCSPortal</permissionSets>
@@ -189,9 +191,17 @@
     <permissionSets>Anchor Management</permissionSets>
     <permissionSets>Campaign Read Access</permissionSets>
     <permissionSets>CS Financial Doc Visibility</permissionSets>
+    <permissionSets>Returned Payments</permissionSets>
+    <permissionSets>Opportunity Product Management</permissionSets>
+    <permissionSets>High Velocity Sales Cadence Creator</permissionSets>
+    <permissionSets>High Velocity Sales User</permissionSets>
+    <permissionSets>Einstein Analytics for Sales Cloud HVS</permissionSets>
+    <permissionSets>CS Billing Admin</permissionSets>
     <permissionSets>Production and Transfer Read</permissionSets>
     <permissionSets>Customer Contract Mgmt</permissionSets>
+    <permissionSets>Client Case Sharing</permissionSets>
     <permissionSets>Production and Transfer Edit</permissionSets>
+    <permissionSets>Customer Assignment Agreement Management</permissionSets>
     <permissionSets>Client Invoicing</permissionSets>
     <permissionSets>Client Invoicing Admin</permissionSets>
     <permissionSets>Lightning</permissionSets>
