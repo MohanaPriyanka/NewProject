@@ -10270,10 +10270,9 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
     <validationRules>
         <fullName>Anchor_Underwriting_Criteria</fullName>
         <active>true</active>
-        <errorConditionFormula>AND(OR(ISPICKVAL(Underwriting_Criteria__c,&quot;Investment-Grade&quot;),
-       ISPICKVAL(Underwriting_Criteria__c,&quot;Financial Review&quot;)),
+        <errorConditionFormula>AND(ISPICKVAL(Underwriting_Criteria__c,&quot;Investment-Grade&quot;),
     NOT(ISPICKVAL(Customer_Group__c,&quot;Anchor&quot;))
-    )</errorConditionFormula>
+)</errorConditionFormula>
         <errorMessage>Only Anchors can be marked with underwriting criteria = Investment Grade or Financial Review</errorMessage>
     </validationRules>
     <validationRules>
