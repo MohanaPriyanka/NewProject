@@ -15,3 +15,7 @@
     text-align: center;
     top: calc(50% + 2em);
 }
+
+.auraPlaceholder.spin, .spinner {
+    background: unset !important;
+}
