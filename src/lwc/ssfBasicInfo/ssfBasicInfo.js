@@ -22,11 +22,13 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track selectedUtility;
     @track selectedProduct;
     @track rateClassOptions;
+    @track rateClassObj;
     @track utilityId;
 
     @track restLead;
     @track propertyAccount;
     @track stateOptions;
+    @track selectedRateClasses = [];
 
     @track showSpinner;
     @track spinnerMessage;
@@ -38,6 +40,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track showUnderwritingOptions;
     @track showAddress;
     @track isPhone;
+    @track helpTextVisible;
      
     utilityAccountCount = 0;
     resumedApp = false;
@@ -47,6 +50,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         this.isPhone = (formFactorName === 'Small');
+        console.log('isPhone? ' + this.isPhone);
         
         if(this.zipCheckResponse) {
             this.zipCheckResponse = JSON.parse(this.zipCheckResponse);
@@ -72,15 +76,19 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 this.isFileUpload = true;
             }
 
-            if(this.zipCheckResponse.rateClasses && this.collectRateClass) {
-                if(this.zipCheckResponse.rateClasses.length === 0) {
-                    this.collectRateClass = false;
-                } else {
-                    this.rateClassOptions = this.zipCheckResponse.rateClasses.map(
-                        rateClass => {
-                            return {value: rateClass, label: rateClass};
-                        }
-                    );
+            if(this.zipCheckResponse.rateClasses) {
+                this.rateClassObj = Object.fromEntries(this.zipCheckResponse.rateClasses.map(
+                    rateClass => ([rateClass.name, rateClass])
+                ));
+
+                if(this.collectRateClass) {
+                    if(this.zipCheckResponse.rateClasses.length === 0) {
+                        this.collectRateClass = false;
+                    } else {
+                        this.rateClassOptions = this.zipCheckResponse.rateClasses.map(
+                            rateClass => ({ value: rateClass.name, label: rateClass.name })
+                        );
+                    }
                 }
             }
         }
@@ -97,6 +105,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                     this.propertyAccount.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
                     this.propertyAccount.utilityAccountLogs[i].doNotDelete = true;
                     this.propertyAccount.utilityAccountLogs[i].showUpload = (this.isFileUpload && (!this.propertyAccount.utilityAccountLogs[i].utilityBills || this.propertyAccount.utilityAccountLogs[i].utilityBills.length === 0));
+                    
+                    if(this.propertyAccount.utilityAccountLogs[i].rateClass) {
+                        this.selectedRateClasses.push(this.rateClassObj[this.propertyAccount.utilityAccountLogs[i].rateClass]);
+                    }
                 }
             }
             this.sameBillingAddress = this.propertyAccount.billingStreet == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
@@ -107,7 +119,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.restLead = {
                 applicationType: this.resiApplicationType ? 'Residential' : 'Non-Residential',
                 zipCode: this.zipinput,
-                productName: this.selectedProduct,
+                productName: this.selectedProduct.name,
                 utilityId: this.utilityId,
                 financialDocs: []
             }
@@ -203,7 +215,12 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     }
 
     utilityAccountOnChange(event) {
-        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][event.target.name] = event.target.value;
+        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][event.target.name] = event.target.value;        
+    }
+
+    rateClassOnChange(event) {
+        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex].rateClass = event.target.value;
+        this.selectedRateClasses.push(this.rateClassObj[event.target.value]);
     }
 
     propertyAccountOnChange(event) {
@@ -268,7 +285,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     }
 
     applicationValid() {
-        var allValid = [...this.template.querySelectorAll('lightning-input')]
+        var allValid = [...this.template.querySelectorAll('lightning-input'), ...this.template.querySelectorAll('lightning-combobox')]
         .reduce((validSoFar, inputCmp) => {
             inputCmp.reportValidity();
             return validSoFar && inputCmp.checkValidity();
@@ -330,6 +347,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
         this.propertyAccount.name = this.resiApplicationType ? `${this.restLead.firstName} ${this.restLead.lastName}` : this.restLead.businessName;
         this.restLead.propertyAccounts = [this.propertyAccount];
+        this.restLead.numberOfContractDocs = this.getNumberOfDocs();
 
         this.showSpinner = true;
         window.setTimeout(() => {
@@ -423,5 +441,44 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 id: file
             }); 
         });
+    }
+
+    getNumberOfDocs() {
+        if(!this.selectedProduct || !this.selectedProduct.standaloneDisclosureForm) {
+            return 1;
+        }
+
+        if(this.selectedRateClasses.length === 0) {
+            return 2;
+        }
+
+        let allSuppress = true;
+        this.selectedRateClasses.forEach(rateClass => {
+            if(!rateClass.suppressDisclosureForm) {
+                allSuppress = false;
+            }
+        });
+
+        if(allSuppress) {
+            return 1;
+        }
+
+        return 2;
+    }
+
+    toggleHelp() {
+        this.helpTextVisible = !this.helpTextVisible;
+    }
+
+    get underwritingHelpText() {
+        return '<p>The FICO underwriting option is only available for a select group of customers. Please select the financial review option if the applicant’s annual cost exceeds the amount below for their utility and rate class.' + 
+            '<ul>' +
+            '   <li>CMP – Small Commercial: $55,000</li>' +
+            '   <li>CMP – Medium Commercial: $55,000</li>' +
+            '   <li>Versant Bangor Hydro – Small Commercial: $60,000</li>' +
+            '   <li>Versant Bangor Hydro – Medium Commercial: $60,000</li>' +
+            '   <li>Versant Maine Public – Small Commercial: $50,000</li>' +
+            '   <li>Versant Maine Public – Medium Commercial: $50,000</li>' +
+            '</ul></p>';
     }
 }
