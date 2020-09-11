@@ -4,11 +4,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     @TestVisible
     private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     @TestVisible
-    private static UASSelector uasSelector = new UASSelector();
-    @TestVisible
     private static SubscriptionOrderSelector subscripOrderSelector = new SubscriptionOrderSelector();
-    @TestVisible
-    private static FeatureService featureService = new FeatureService();
     private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<SObjectType>{Shared_Solar_System__c.SObjectType}
     );
@@ -41,8 +37,8 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         }
     }
     public void updateSSS() {
-        List<Shared_Solar_System__c> allSSSes = sssSelector.getAllSSSes();
-        SharedSolarSystems systems = new SharedSolarSystems(allSSSes);
+        Map<Id, Shared_Solar_System__c> allSSSes = sssSelector.getAllSSSMap();
+        SharedSolarSystems systems = new SharedSolarSystems(allSSSes.values());
         summarizeCapacity(allSSSes, uow);
         systems.updateManagementRevenueStartDate(uow);
         uow.commitWork();
@@ -59,36 +55,34 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         }
         update sssToUpdateList;
     }
-    public void summarizeCapacityBeforeUpdate(List<Shared_Solar_System__c> sssList) {
-        summarizeCapacity(sssList, uow);
+    public void summarizeCapacityBeforeUpdate(Map<Id, Shared_Solar_System__c> sssMap) {
+        summarizeCapacity(sssMap, uow);
         // Don't uow.commitWork() because this is intended to be called from beforeUpdate
     }
-    private void summarizeCapacity(List<Shared_Solar_System__c> sssList, fflib_SObjectUnitOfWork uow) {
-        uasSelector = new UASSelector();
-        List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
-        List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
-        List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
-        Set<Id> sssIds = new Set<Id>();
-        Decimal reservedCapacity = 0;
-        Decimal committedCapacity = 0;
-        Decimal anchorCapacity = 0;
-        for (Shared_Solar_System__c sss : sssList){
-            sssIds.add(sss.Id);
-        }
-        List<Utility_Account_Subscription__c> relatedUAS = uasSelector.selectActiveUASBySSS(sssIds);
-        for (Utility_Account_Subscription__c uas : relatedUAS) {
-            if (!isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete'){
-                committedCapacityList.add(uas);
-            } else if (!isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)){
-                reservedCapacityList.add(uas);
-            } else if (isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
-                anchorCapacityList.add(uas);
+    private void summarizeCapacity(Map<Id, Shared_Solar_System__c> sssMap, fflib_SObjectUnitOfWork uow) {
+        //Requerying the sss loses any changes from beforeUpdate - still need to reference sssMap for updated record below
+        List<Shared_Solar_System__c> sssWithActiveUASes = sssSelector.getSSSWithActiveUASes(sssMap.values());
+        for (Shared_Solar_System__c activeSSS : sssWithActiveUASes) {
+            Shared_Solar_System__c sss = sssMap.get(activeSSS.Id);
+            List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
+            List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
+            List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
+            Decimal reservedCapacity = 0;
+            Decimal committedCapacity = 0;
+            Decimal anchorCapacity = 0;
+
+            for (Utility_Account_Subscription__c uas : activeSSS.Utility_Account_Subscriptions__r) {
+                if (!isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete'){
+                    committedCapacityList.add(uas);
+                } else if (!isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)){
+                    reservedCapacityList.add(uas);
+                } else if (isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
+                    anchorCapacityList.add(uas);
+                }
             }
-        }
-        for (Shared_Solar_System__c sss : sssList) {
-            reservedCapacity = getCapacitySumOfUASList(reservedCapacityList,sss.Id);
-            committedCapacity = getCapacitySumOfUASList(committedCapacityList,sss.Id);
-            anchorCapacity = getCapacitySumOfUASList(anchorCapacityList,sss.Id);
+            reservedCapacity = sumCapacity(reservedCapacityList);
+            committedCapacity = sumCapacity(committedCapacityList);
+            anchorCapacity = sumCapacity(anchorCapacityList);
 
             registerCapacityChanges(sss, uow, reservedCapacity, committedCapacity, anchorCapacity);
         }
@@ -124,23 +118,10 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             }
         }
     }
-    private Decimal getCapacitySumOfUASList(List<Utility_Account_Subscription__c> uasList, Id sssId) {
+    private Decimal sumCapacity(List<Utility_Account_Subscription__c> uasList) {
         Decimal summarizedCapacity = 0;
-        Boolean subscriptionOrderFeature = featureService.isEnabled('Subscription_Orders');
-        if (uasList.size() == 0) {
-            return summarizedCapacity;
-        }
         for (Utility_Account_Subscription__c uas : uasList) {
-            if (subscriptionOrderFeature) {
-                if (uas.Opportunity__r.Shared_Solar_System__c == sssId && uas.Future_Customer_Subscription_KWDC_Rollup__c != 0) {
-                    summarizedCapacity += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                }
-            } else {
-                if (uas.Opportunity__r.Shared_Solar_System__c == sssId
-                    && uas.Customer_Subscription_KW_DC__c != null) {
-                    summarizedCapacity += uas.Customer_Subscription_KW_DC__c;
-                }
-            }
+            summarizedCapacity += Util.nullToZero(uas.Future_Customer_Subscription_KWDC_Rollup__c);
         }
         return summarizedCapacity;
     }
