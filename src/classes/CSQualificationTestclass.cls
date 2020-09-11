@@ -155,9 +155,9 @@ private class CSQualificationTestclass {
         ];
 
 
-        System.assertEquals('Qualified', checkLead.Status);
-        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c);
-        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c );
+        System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
+        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
+        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 700');
     }
 
     @IsTest
@@ -177,9 +177,9 @@ private class CSQualificationTestclass {
             WHERE Id = :lead.Id
         ];
 
-        System.assertEquals('Unqualified', checkLead.Status);
-        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c);
-        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c );
+        System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
+        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
+        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 700');
     }
 
     @IsTest
@@ -195,9 +195,9 @@ private class CSQualificationTestclass {
             WHERE Id = :lead.Id
         ];
 
-        System.assertEquals('Qualified', checkLead.Status);
-        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c);
-        System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c );
+        System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
+        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
+        System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 9999');
 
     }
 
@@ -231,6 +231,58 @@ private class CSQualificationTestclass {
         insert crLog;
     }
 
+
+    @IsTest
+    private static void testFinancialReviewQualification() {
+        Lead lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c
+                     FROM Lead LIMIT 1];
+        
+        CSQualificationService qualService = new CSQualificationService();
+        String newStatus = qualService.underwriteWithFinancialReview(lead);
+        System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as there are no Financial Underwriting Document records associated with the lead.');
+
+        Financial_Underwriting_Document__c fud = new Financial_Underwriting_Document__c(Lead__c = lead.Id);
+        insert fud;
+        lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
+                    (SELECT Id FROM Underwrite_Financial_Documents__r)
+                FROM Lead LIMIT 1];
+        newStatus = qualService.underwriteWithFinancialReview(lead);
+        System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as the lead\'s child Financial Underwriting Document record has no files attached.');
+
+        ContentVersion cvFinDoc = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('financial document'),
+            Title = 'FinancialDocument.pdf',
+            PathOnClient = '/FinancialDocument.pdf',
+            File_Category__c = 'Financial Review Documents'
+        );
+        insert cvFinDoc;
+        ContentDocumentSelector cds = new ContentDocumentSelector();
+        Id contentDocIdFin = cds.getDocumentIdFromVersionId(cvFinDoc.Id);
+        ContentDocumentLink cdl = new ContentDocumentLink(
+            ContentDocumentId = contentDocIdFin,
+            ShareType = 'V',
+            Visibility = 'AllUsers',
+            LinkedEntityId = fud.Id
+        );
+        insert cdl;
+        lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
+                    (SELECT Id FROM Underwrite_Financial_Documents__r)
+                FROM Lead LIMIT 1];
+        newStatus = qualService.underwriteWithFinancialReview(lead);
+        System.assertEquals('Qualified', newStatus, 'The lead status should be Qualified, as the lead\'s child Financial Underwriting Document record has files attached and there is a matching SSS.');
+
+        Utility__c newUtility = [SELECT Id FROM Utility__c WHERE Name = 'Central Hudson Gas and Electric' LIMIT 1];
+        lead.Utility_relationship__c = newUtility.Id;
+        update lead;
+        lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
+                    (SELECT Id FROM Underwrite_Financial_Documents__r)
+                FROM Lead LIMIT 1];
+        newStatus = qualService.underwriteWithFinancialReview(lead);
+        System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as there is no open SSS matching the lead\'s utility.');
+    }
+
+
     @IsTest
     public static void testQualificationWidgetWithInputs() {
         List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
@@ -253,8 +305,8 @@ private class CSQualificationTestclass {
 
         allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
 
-        System.assertEquals(1, allMatches.size());
-        System.assertEquals(true, allMatches[0].completeMatch);
+        System.assertEquals(1, allMatches.size(), 'There should be one qualification match');
+        System.assert(allMatches[0].completeMatch, 'The qualification match should be a complete match');
     }
 
     @IsTest
@@ -282,13 +334,13 @@ private class CSQualificationTestclass {
 
         allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
 
-        System.assertEquals(1, allMatches.size());
-        System.assertEquals(false, allMatches[0].completeMatch);
-        System.assertEquals(true, allMatches[0].hasPartner);
-        System.assertEquals(true, allMatches[0].isOpen);
-        System.assertEquals(true, allMatches[0].hasCapacity);
-        System.assertEquals(true, allMatches[0].hasLZ);
-        System.assertEquals(false, allMatches[0].minFICO);
+        System.assertEquals(1, allMatches.size(), 'There should be one qualification match');
+        System.assert(!allMatches[0].completeMatch, 'The qualification match should NOT be a complete match because the FICO score is too low');
+        System.assert(allMatches[0].hasPartner, 'hasPartner should be true for the qualification match');
+        System.assert(allMatches[0].isOpen, 'isOpen should be true for the qualification match');
+        System.assert(allMatches[0].hasCapacity, 'hasCapacity should be true for the qualification match');
+        System.assert(allMatches[0].hasLZ, 'hasLZ should be true for the qualification match');
+        System.assert(!allMatches[0].minFICO, 'minFICO should be false for the qualification match because the FICO score is too low');
     }
 
     @IsTest
@@ -312,7 +364,7 @@ private class CSQualificationTestclass {
         String utilityId;
 
         allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
-        System.assertEquals(0, allMatches.size());
+        System.assertEquals(0, allMatches.size(), 'There should be no qualification matches');
     }
 
 

@@ -108,7 +108,9 @@ public class LeadServiceTestclass {
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'BlueWave Test Partner',
             Maximum_Subscription_Capacity_kWDC__c = 25,
-            Billing_Method__c = 'kWh'
+            Billing_Method__c = 'kWh',
+            Available_SMB_Underwriting_Method_Docs__c = true, 
+            Available_SMB_Underwriting_Method_FICO__c = true
         );
 
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(
@@ -128,7 +130,9 @@ public class LeadServiceTestclass {
             Assemblage_Count__c = 1,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Sales_Partners__c = 'All',
-            Billing_Method__c = 'NMC'
+            Billing_Method__c = 'NMC',
+            Available_SMB_Underwriting_Method_Docs__c = true, 
+            Available_SMB_Underwriting_Method_FICO__c = true
         );
         insert new List<Shared_Solar_System__c>{
             sss1, sss2
@@ -225,8 +229,8 @@ public class LeadServiceTestclass {
         ];
 
         //LeadDispatcher should send lead to LeadTriggerHandler where LoadZone and Utliity are set using UtilityLoadZoneService
-        System.assertEquals('Hudson Valley' , lead.LoadZone__c);
-        System.assertEquals('NYS Electric and Gas', lead.Utility_relationship__r.Name);
+        System.assertEquals('Hudson Valley' , lead.LoadZone__c, 'UtilityLoadZoneService should have set lead.LoadZone__c = \'Hudson Valley\'');
+        System.assertEquals('NYS Electric and Gas', lead.Utility_relationship__r.Name, 'UtilityLoadZoneService should have set lead.Utility_relationship__c to the NYS Electric & Gas utility');
 
     }
 
@@ -246,9 +250,9 @@ public class LeadServiceTestclass {
 
         List<Account> propAccounts = [SELECT Id, Name, Lead__c, RecordType.Name FROM Account WHERE Lead__c = :switchLead.Id];
 
-        System.assertNotEquals(null, propAccounts);
-        System.assertEquals('Switch Comp', propAccounts[0].Name);
-        System.assertEquals('Property', propAccounts[0].RecordType.Name);
+        System.assertNotEquals(null, propAccounts, 'Property accounts should have been created');
+        System.assertEquals('Switch Comp', propAccounts[0].Name, 'Property account name should match company name of lead');
+        System.assertEquals('Property', propAccounts[0].RecordType.Name, 'Property account should have the Property record type');
 
     }
 
@@ -275,9 +279,9 @@ public class LeadServiceTestclass {
             WHERE Lead__c = :switchLead.Id
         ];
 
-        System.assertNotEquals(null, ualList);
-        System.assertEquals(propertyAccount.Name, ualList[0].Name_on_Account__c);
-        System.assertEquals(switchLead.Utility_relationship__c, ualList[0].Utility_lookup__c);
+        System.assertNotEquals(null, ualList, 'Utility Account Logs should have been created');
+        System.assertEquals(propertyAccount.Name, ualList[0].Name_on_Account__c, 'UAL Name on Account should match name of parent property account');
+        System.assertEquals(switchLead.Utility_relationship__c, ualList[0].Utility_lookup__c, 'UAL utility should match utility on parent lead');
     }
 
     @IsTest
@@ -322,8 +326,8 @@ public class LeadServiceTestclass {
             LIMIT 1
         ];
 
-        System.assertNotEquals(null, convertedLead);
-        System.assertNotEquals(null, convertedLead.ConvertedAccountId);
+        System.assertNotEquals(null, convertedLead, 'Lead should have been converted');
+        System.assertNotEquals(null, convertedLead.ConvertedAccountId, 'Converted lead should have a ConvertedAccountId');
 
         Account convertedAccount = [
             SELECT Id, Owner.Name, RecordType.Name
@@ -359,24 +363,24 @@ public class LeadServiceTestclass {
         ];
 
         //test converted account = parent account
-        System.assertEquals('Parent Account', convertedAccount.RecordType.Name);
-        System.assertEquals('API', convertedAccount.Owner.Name);
+        System.assertEquals('Parent Account', convertedAccount.RecordType.Name, 'Converted account should have a record type of Parent Account');
+        System.assertEquals('API', convertedAccount.Owner.Name, 'Converted account should be owned by API user');
 
         //Test property's parent account
-        System.assertEquals(convertedAccount.Id, propAcct.Parent_Account__c);
-        System.assertEquals(contact.Id, propAcct.Send_Bills_Contact__c);
-        System.assertEquals('Community Solar', contact.Product_Line__c);
+        System.assertEquals(convertedAccount.Id, propAcct.Parent_Account__c, 'Property account should be the converted account');
+        System.assertEquals(contact.Id, propAcct.Send_Bills_Contact__c, 'Property account Send Bills Contact should be the converted contact');
+        System.assertEquals('Community Solar', contact.Product_Line__c, 'Converted contact should be assigned to the Community Solar product line');
 
-        System.assertEquals(1, oppList.size());
-        System.assertEquals('Albany Post Rd Solar Farm', oppList[0].Shared_Solar_System__r.Name);
-        System.assertEquals(convertedLead.Personal_Credit_Report__c, oppList[0].Personal_Credit_Report2__c);
+        System.assertEquals(1, oppList.size(), 'Lead conversion should have produced a single opportunity');
+        System.assertEquals('Albany Post Rd Solar Farm', oppList[0].Shared_Solar_System__r.Name, 'Opportunity should be assigned an SSS with the same utility as the converted lead');
+        System.assertEquals(convertedLead.Personal_Credit_Report__c, oppList[0].Personal_Credit_Report2__c, 'Opportunity should be assigned the same personal credit report as the converted lead');
         System.assert(oppList[0].OpportunityContactRoles.size() > 0, 'Verify if the Opportunity Contact Roles got created.');
-        System.assertEquals('QC In Process', oppList[0].StageName);
+        System.assertEquals('QC In Process', oppList[0].StageName, 'Opportunity stage name should be QC In Progress');
 
         //test uas creation
-        System.assertNotEquals(null, uasList);
-        System.assertEquals(1, uasList.size());
-        System.assertEquals(ual.Id, uasList[0].Utility_Account_Log__c);
+        System.assertNotEquals(null, uasList, 'UAS should have been created on lead conversion');
+        System.assertEquals(1, uasList.size(), 'One UAS should have been created on lead conversion');
+        System.assertEquals(ual.Id, uasList[0].Utility_Account_Log__c, 'UAS should be assigned the Utility Account Log of the converted lead');
     }
 
     @IsTest
@@ -421,8 +425,8 @@ public class LeadServiceTestclass {
             LIMIT 1
         ];
 
-        System.assertNotEquals(null, convertedLead);
-        System.assertNotEquals(null, convertedLead.ConvertedAccountId);
+        System.assertNotEquals(null, convertedLead, 'Lead should have been converted');
+        System.assertNotEquals(null, convertedLead.ConvertedAccountId, 'Converted lead should have a ConvertedAccountId');
 
         Account convertedAccount = [
             SELECT Id, Owner.Name, RecordType.Name
@@ -466,31 +470,30 @@ public class LeadServiceTestclass {
 
 
         //test converted account = parent account
-        System.assertEquals('Parent Account', convertedAccount.RecordType.Name);
-        System.assertEquals('API', convertedAccount.Owner.Name);
+        System.assertEquals('Parent Account', convertedAccount.RecordType.Name, 'Converted account should have a record type of Parent Account');
+        System.assertEquals('API', convertedAccount.Owner.Name, 'Converted account should be owned by API user');
 
         //Test property's parent account
-        System.assertEquals(convertedAccount.Id, propAcct.Parent_Account__c);
-        System.assertEquals(contact.Id, propAcct.Send_Bills_Contact__c);
-        System.assertEquals('Community Solar', contact.Product_Line__c);
+        System.assertEquals(convertedAccount.Id, propAcct.Parent_Account__c, 'Property account should be the converted account');
+        System.assertEquals(contact.Id, propAcct.Send_Bills_Contact__c, 'Property account Send Bills Contact should be the converted contact');
+        System.assertEquals('Community Solar', contact.Product_Line__c, 'Converted contact should be assigned to the Community Solar product line');
 
-        System.assertEquals(1, oppList.size());
-        System.assertEquals('Albany Post Rd Solar Farm', oppList[0].Shared_Solar_System__r.Name);
-        System.assertEquals(convertedLead.Personal_Credit_Report__c, oppList[0].Personal_Credit_Report2__c);
+        System.assertEquals(1, oppList.size(), 'Lead conversion should have produced a single opportunity');
+        System.assertEquals('Albany Post Rd Solar Farm', oppList[0].Shared_Solar_System__r.Name, 'Opportunity should be assigned an SSS with the same utility as the converted lead');
+        System.assertEquals(convertedLead.Personal_Credit_Report__c, oppList[0].Personal_Credit_Report2__c, 'Opportunity should be assigned the same personal credit report as the converted lead');
         System.assert(oppList[0].OpportunityContactRoles.size() > 0, 'Verify if the Opportunity Contact Roles got created.');
-        System.assertEquals('QC In Process', oppList[0].StageName);
+        System.assertEquals('QC In Process', oppList[0].StageName, 'Opportunity stage name should be QC In Progress');
 
         //test uas creation
-        System.assertNotEquals(null, uasList);
-        System.assertEquals(1, uasList.size());
-        System.assertEquals(ual.Id, uasList[0].Utility_Account_Log__c);
+        System.assertNotEquals(null, uasList, 'UAS should have been created on lead conversion');
+        System.assertEquals(1, uasList.size(), 'One UAS should have been created on lead conversion');
+        System.assertEquals(ual.Id, uasList[0].Utility_Account_Log__c, 'UAS should be assigned the Utility Account Log of the converted lead');
 
         //test susbscription order creation
-        System.assertNotEquals(null, subscriptionOrders);
-        System.assertEquals(1, subscriptionOrders.size());
-        System.assertEquals(uasList[0].Id, subscriptionOrders[0].Utility_Account_Subscription__c);
-        System.assertNotEquals(null, subscriptionOrders[0].Approved_Change_in_Subscription__c);
-
+        System.assertNotEquals(null, subscriptionOrders, 'Subscription orders should have been created on lead conversion');
+        System.assertEquals(1, subscriptionOrders.size(), 'One subscription order should have been created on lead conversion');
+        System.assertEquals(uasList[0].Id, subscriptionOrders[0].Utility_Account_Subscription__c, 'Subscription order should be assigned the UAS of the new opportunity');
+        System.assertNotEquals(null, subscriptionOrders[0].Approved_Change_in_Subscription__c, 'Subscription order\'s Approved_Change_in_Subscription__c should not be null');
     }
 
     @IsTest
@@ -523,10 +526,10 @@ public class LeadServiceTestclass {
             lc.setConvertedStatus('Qualified');
             lc.setDoNotCreateOpportunity(true);
 
-            Database.LeadConvertResult lcr = Database.convertLead(lc, false);
+            Database.convertLead(lc, false);
         } catch(Exception e) {
             Boolean expectedException = e.getMessage().contains('No Annual Usage populated on UALs. Please enter usage before converting')? true : false;
-            System.assertEquals(expectedException, true);
+            System.assert(expectedException, 'Expected the lead conversion to fail due to missing Annual Usage on UALs');
         }
 
         Lead failedLead = [
@@ -536,8 +539,8 @@ public class LeadServiceTestclass {
             LIMIT 1
         ];
 
-        System.assertEquals(false, failedLead.IsConverted);
-        System.assertEquals(null, failedLead.ConvertedAccountId);
+        System.assertEquals(false, failedLead.IsConverted, 'Expected the lead conversion to fail due to missing Annual Usage on UALs, but lead was converted');
+        System.assertEquals(null, failedLead.ConvertedAccountId, 'Expected the lead conversion to fail due to missing Annual Usage on UALs, but lead was converted and ConvertedAccountId was populated');
 
         List<Opportunity> oppList = [
             SELECT Id, Shared_Solar_System__r.Name, StageName, Personal_Credit_Report2__c
@@ -552,8 +555,8 @@ public class LeadServiceTestclass {
             LIMIT 1
         ];
 
-        System.assertEquals(0, oppList.size());
-        System.assertEquals(0, uasList.size());
+        System.assertEquals(0, oppList.size(), 'Expected the lead conversion to fail due to missing Annual Usage on UALs, but opportunity was created');
+        System.assertEquals(0, uasList.size(), 'Expected the lead conversion to fail due to missing Annual Usage on UALs, but UASes were created');
     }
 
 

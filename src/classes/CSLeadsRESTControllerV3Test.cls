@@ -40,7 +40,8 @@ public with sharing class CSLeadsRESTControllerV3Test {
         String jsonRequest = '{' +
             '"id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", ' +
             '"email": "'+ CSLeadsRESTControllerV2Test.SAMPLE_EMAIL +'",' +
-            '"applicationCompleteDate": "2019-01-01T01:00"' +
+            '"applicationCompleteDate": "2019-01-01T01:00",' +
+            '"underwritingCriteria": "FICO"' +
             '}';
         controller.patchLead(jsonRequest);
 
