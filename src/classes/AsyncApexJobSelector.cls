@@ -3,7 +3,7 @@
  * Description: Can extend fflib_SObjectSelector
  * Test: AsyncApexJobSelector
  *************************************************************************************/
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class AsyncApexJobSelector {
 
     /**
