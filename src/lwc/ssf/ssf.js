@@ -169,6 +169,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                         if(resolveResult.finDocsUnderwriting) {
                             this.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
                         }
+                        
                         this.selectedUtility = resolveResult.utilities[0];
                         this.showModal = false;
                         this.getZip = false;
@@ -216,11 +217,15 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     }
 
     setLocation() {
-        if(this.loc == 'pay') {
-            this.dispatchEvent(new CustomEvent('consentscomplete', { detail: JSON.parse(this.leadJSON) }));
-        } else if(this.loc == 'agree') {
-            this.getAgreements = true;
-            this.getBasicInfo = false;
+        if(this.validateBasicInfoCompleted()) {
+            if(this.loc == 'pay') {
+                this.dispatchEvent(new CustomEvent('consentscomplete', { detail: JSON.parse(this.leadJSON) }));
+            } else if(this.loc == 'agree') {
+                this.getAgreements = true;
+                this.getBasicInfo = false;
+            } else {
+                this.getBasicInfo = true;
+            }
         } else {
             this.getBasicInfo = true;
         }
@@ -257,6 +262,82 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         });
         this.dispatchEvent(consentsCompleteEvent);
     }
+
+    validateBasicInfoCompleted() {
+        const capacity = JSON.parse(this.zipCodeResponse);
+        if(!capacity.zipCode) {
+            return false;
+        }
+        if(!capacity.products || capacity.products.length === 0) {
+            return false;
+        }
+        if(!capacity.utilities || capacity.utilities.length !== 1) {
+            return false;
+        }
+
+        let lead = JSON.parse(this.leadJSON);
+        if(!lead.firstName || !lead.lastName || !lead.email || !lead.productName 
+           || (lead.applicationType != 'Residential' && lead.applicationType != 'Non-Residential')) {
+                return false;
+        }
+        if(lead.applicationType != 'Residential' && (!lead.businessName || !lead.businessTitle)) {
+            return false;
+        }
+        if(!lead.propertyAccounts || lead.propertyAccounts.length === 0) {
+            return false;
+        }
+        for(let i=0; i<lead.propertyAccounts.length; i++) {
+            const propertyAccount = lead.propertyAccounts[i];
+            if(!propertyAccount.billingStreet || !propertyAccount.billingCity || !propertyAccount.billingState || !propertyAccount.billingPostalCode) {
+                return false;
+            }
+            if(!propertyAccount.utilityAccountLogs || propertyAccount.utilityAccountLogs.length == 0) {
+                return false;
+            }
+            for(let j=0; j<propertyAccount.utilityAccountLogs.length; j++) {
+                const ual = propertyAccount.utilityAccountLogs[j];
+                if(!ual.nameOnAccount || !ual.serviceStreet || !ual.serviceCity || !ual.serviceState || !ual.servicePostalCode) {
+                    return false;
+                }
+            }
+        }
+        
+        if(!lead.numberOfContractDocs) {
+            lead.numberOfContractDocs = this.getNumberOfDocsForExistingLead(lead, capacity);
+            this.leadJSON = JSON.stringify(lead);
+        }
+        
+        return true;
+    }
+
+    getNumberOfDocsForExistingLead(lead, capacity) {
+        if(capacity.products[0].standaloneDisclosureForm === false) {
+            return 1;
+        }
+
+        if(capacity.rateClasses && capacity.rateClasses.length > 0) {
+            const rateClassObj = Object.fromEntries(capacity.rateClasses.map(
+                rateClass => ([rateClass.name, rateClass])
+            ));
+
+            let allSuppress = true;
+            lead.propertyAccounts.forEach(propAcct => {
+                propAcct.forEach(ual => {
+                    if(!ual.rateClass || !rateClassObj.hasOwnProperty(ual.rateClass) || !rateClassObj[ual.rateClass].suppressDisclosureForm) {
+                        allSuppress = false;
+                    }
+                });
+            });
+
+            if(allSuppress) {
+                return 1;
+            }
+        }
+
+        return 2;
+    }
+
+
 
     // ///////////////////////////////////
     //      STYLING

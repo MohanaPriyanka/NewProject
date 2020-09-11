@@ -283,11 +283,6 @@ public with sharing class RESTRouterV2Test {
 
         response = RestContext.response;
         System.assertEquals(200, response.statusCode, 'Properly formed GET request should succeed');
-        jsonResponse = response.responseBody.toString();
-        responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
-
-
     }
 
     /** Property Accounts **/
@@ -402,8 +397,8 @@ public with sharing class RESTRouterV2Test {
 
         System.assertEquals(200, response.statusCode, 'Properly formed PATCH should succeed');
 
-        System.assertEquals('mock-zuoraId', responsePropertyAccount.get('zuoraPaymentRefId'));
-        System.assertEquals('2019-01-05T19:00:00.000Z', responsePropertyAccount.get('zuoraPaymentRefIdExpirationDate'));
+        System.assertEquals('mock-zuoraId', responsePropertyAccount.get('zuoraPaymentRefId'), 'Returned zuoraPaymentRefId should match the input zuoraPaymentRefId from the patch request');
+        System.assertEquals('2019-01-05T19:00:00.000Z', responsePropertyAccount.get('zuoraPaymentRefIdExpirationDate'), 'Returned zuoraPaymentRefIdExpirationDate should match the input zuoraPaymentRefIdExpirationDate from the patch request');
 
     }
 
@@ -527,7 +522,7 @@ public with sharing class RESTRouterV2Test {
 
         System.assertEquals(200, response.statusCode, 'Properly formed PATCH should succeed');
 
-        System.assertEquals(8000, responseUAL.get('annualKWh'));
+        System.assertEquals(8000, responseUAL.get('annualKWh'), 'New annualKWh should match input annualKWh in patch request');
 
     }
 
@@ -548,8 +543,8 @@ public with sharing class RESTRouterV2Test {
         ContentVersion cv2 = new ContentVersion(
             ContentLocation = 'S',
             VersionData = EncodingUtil.base64Decode('CSA body'),
-            Title = 'Community Solar Agreement.pdf.pdf',
-            PathOnClient = '/Community Solar Agreement.pdf.pdf'
+            Title = 'Community Solar Agreement.pdf',
+            PathOnClient = '/Community Solar Agreement.pdf'
         );
         insert new List<ContentVersion>{cv,cv2};
         List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
@@ -559,13 +554,13 @@ public with sharing class RESTRouterV2Test {
 
         ContentDocumentLink cdl = new ContentDocumentLink(
             ContentDocumentId = cvList[0].ContentDocumentId,
-            LinkedEntityId = lead.Id,
+            LinkedEntityId = lead.Contracts__r[0].Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
         ContentDocumentLink cdl2 = new ContentDocumentLink(
             ContentDocumentId = cvList[1].ContentDocumentId,
-            LinkedEntityId = lead.Id,
+            LinkedEntityId = lead.Contracts__r[0].Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
@@ -580,7 +575,7 @@ public with sharing class RESTRouterV2Test {
         req.addHeader('Content-Type', 'application/json');
 
         CSLeadsRESTControllerV2 ctrl = new CSLeadsRESTControllerV2();
-        RestLead restLead = ctrl.formatRestLeadFromLeadAndChildren(lead, false);
+        RestLead restLead = ctrl.formatRestLeadFromLeadAndChildren(lead.Id, false, 2);
         String applicationJson = JSON.serialize(restLead);
         req.requestBody = Blob.valueOf(applicationJson);
 
@@ -658,6 +653,11 @@ public with sharing class RESTRouterV2Test {
         );
         insert ual;
 
+        CustomerContractService ccs = new CustomerContractService();
+        Contract c = ccs.setContractFields(l, 2);
+        c.AccountId = a.Id;
+        insert c;
+
         LeadSelector leadSelector = new LeadSelector();
         return leadSelector.selectOneWithPropertiesAndUtilities(l.Id);
     }
@@ -666,7 +666,6 @@ public with sharing class RESTRouterV2Test {
     private static void testPatchApplicationSuccessRegenDocs() {
         // <setup>
         Lead lead = createLead();
-        
         ContentVersion cv = new ContentVersion(
             ContentLocation = 'S',
             VersionData = EncodingUtil.base64Decode('SDF body'),
@@ -676,8 +675,8 @@ public with sharing class RESTRouterV2Test {
         ContentVersion cv2 = new ContentVersion(
             ContentLocation = 'S',
             VersionData = EncodingUtil.base64Decode('CSA body'),
-            Title = 'Community Solar Agreement.pdf.pdf',
-            PathOnClient = '/Community Solar Agreement.pdf.pdf'
+            Title = 'Community Solar Agreement.pdf',
+            PathOnClient = '/Community Solar Agreement.pdf'
         );
         insert new List<ContentVersion>{cv,cv2};
         List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
@@ -687,18 +686,23 @@ public with sharing class RESTRouterV2Test {
 
         ContentDocumentLink cdl = new ContentDocumentLink(
             ContentDocumentId = cvList[0].ContentDocumentId,
-            LinkedEntityId = lead.Id,
+            LinkedEntityId = lead.Contracts__r[0].Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
         ContentDocumentLink cdl2 = new ContentDocumentLink(
             ContentDocumentId = cvList[1].ContentDocumentId,
-            LinkedEntityId = lead.Id,
+            LinkedEntityId = lead.Contracts__r[0].Id,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
         insert new List<ContentDocumentLink>{cdl, cdl2};
-
+        ClientReportingService.uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType> {
+                Account.SObjectType
+            }
+        );
+    
         // </setup>
 
 
@@ -726,9 +730,8 @@ public with sharing class RESTRouterV2Test {
         RestLead returnedLead = (RestLead) JSON.deserialize(JSON.serialize(patchResponseEnvelope.get('data')), RestLead.class);
         assertLeadAndChildrenChanged(lead, returnedLead);
 
-        System.assertEquals(1, returnedLead.contentDocs.size(), 'One ContentDocumentLink should be returned, as docs exist and changes were made to the lead');
-        RestLead.RestContentDocument updatedContentDoc = returnedLead.contentDocs[0];
-        System.assertEquals(cdl.Id, updatedContentDoc.docLinkId, 'Response should be the CDL for the most recent doc, as docs exist and changes were made to the lead');
+        System.assertEquals(null, returnedLead.contentDocs, 'No ContentDocumentLinks should be returned, as docs exist and changes were made to the lead');
+        System.assertEquals(Date.today().addDays(-1), returnedLead.mostRecentContractGen.date(), 'mostRecentContractGen should be returned, as docs exist and changes were made to the lead');
     }
 
     private static String getApplicationJson(Id leadId, Id acctId, Id ualId) {
@@ -844,7 +847,6 @@ public with sharing class RESTRouterV2Test {
     public static void testGetWithException() {
         RESTRouterV2.controller = (CSLeadsRESTControllerV2) Test.createStub(CSLeadsRESTControllerV2.class, new MockCSLeadsRESTControllerV2());
 
-        String zipCode = '12345';
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/zip-check';
         req.addParameter('zipCode', 'exception');
