@@ -8,7 +8,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     private static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
     private static MockLeadService mockLeadService;
-    @TestVisible private static String SAMPLE_EMAIL = 'email@invalid.com';
+    @TestVisible private static final String SAMPLE_EMAIL = 'email@invalid.com';
 
     public static void useMocks () {
         mockLeadService = new MockLeadService();
@@ -19,6 +19,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.capacityService = (CapacityService) Test.createStub(CapacityService.class, new MockCapacityService());
         controller.duplicateService = (CSLeadsDuplicateService) Test.createStub(CSLeadsDuplicateService.class , new MockDuplicateService(false));
         controller.uow = (fflib_SObjectUnitOfWork) Test.createStub(fflib_SObjectUnitOfWork.class, new MockUOW());
+        // controller.qualificationService = (CSQualificationService) Test.createStub(CSQualificationService.class, new MockQualificationService());
 
         controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new MockLeadSelector());
         controller.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
@@ -92,12 +93,24 @@ public with sharing class CSLeadsRESTControllerV2Test {
     @IsTest
     private static void testPatchLeadSuccess() {
         useMocks();
-        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00" }';
+        // String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00", "underwritingCriteria": "FICO" }';
+        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00"}';
         controller.patchLead(jsonRequest);
 
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-        System.assertEquals(true, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should be done when the application is complete');
+        System.assertEquals(true, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should be done for FICO leads when the application is complete');
     }
+
+    // @IsTest
+    // private static void testPatchLeadSuccessNoCreditPull() {
+    //     useMocks();
+    //     String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00", "underwritingCriteria": "Financial Review" }';
+    //     controller.patchLead(jsonRequest);
+
+    //     System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
+    //     System.assertEquals(false, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should NOT be done for Financial Review leads');
+    //     System.assertEquals('Qualified', mockLeadService.getLastUpdatedLead().Status, 'Lead status should be populated by CSQualificationService when Financial Review leads are completed.');
+    // }
 
     @IsTest
     private static void testPatchLeadStreetAddress() {
@@ -946,7 +959,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
         ContentDocumentSelector cds = new ContentDocumentSelector();
         Id contentDocIdUtil = cds.getDocumentIdFromVersionId(cvUtilBill.Id);
     
-        String financialDocs = '"financialDocs": [{ "title": "FinancialDocument.pdf", "body": "data:text/plain;base64,ZmluYW5jaWFsIGRvY3M=", "fileCategory": "Financial Review Documents" }]';
+        String financialDocs = '"financialDocs": [{ "title": "FinancialDocument.pdf", "body": "ZmluYW5jaWFsIGRvY3M=", "fileCategory": "Financial Review Documents" }]';
+        // String financialDocs = '"financialDocs": [{ "title": "FinancialDocument.pdf", "body": "data:text/plain;base64,ZmluYW5jaWFsIGRvY3M=", "fileCategory": "Financial Review Documents" }]';
         String utilityBills = '"utilityBills": [{ "id": "' + contentDocIdUtil + '" }]';
         String jsonRequest = getPostLeadJson(financialDocs, utilityBills);
         RestRequest req = new RestRequest();
@@ -959,7 +973,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         RestContext.response = new RestResponse();
 
         RESTRouterV2.postRequest();
-
+        System.debug('error logs: ' + [SELECT Id, Class__c, Method__c, Message__c FROM Error_Log__c]);
         RestResponse response = RestContext.response;
         String jsonResponse = response.responseBody.toString();
         Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
@@ -1525,5 +1539,17 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return null;
         }
     }
+
+    // private class MockQualificationService implements StubProvider {
+    //     public MockQualificationService() {}
+    //     public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
+    //         List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
+    //             if(stubbedMethodName == 'underwriteWithFinancialReview') {
+    //                 return 'Qualified';
+    //             }
+
+    //             return null;
+    //     }
+    // }
 
 }
