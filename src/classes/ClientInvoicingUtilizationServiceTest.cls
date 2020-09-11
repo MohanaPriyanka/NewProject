@@ -63,7 +63,7 @@ public with sharing class ClientInvoicingUtilizationServiceTest {
         Test.startTest();
         ClientInvoicingUtilizationService.UtilizationFeeInput utilizationFeeInput =
             new ClientInvoicingUtilizationService.UtilizationFeeInput(cfd, productionDetail);
-        System.assertEquals(-429.35, utilizationFeeInput.getUtilizationFee(),
+        System.assertEquals(-429.35, utilizationFeeInput.utilizationFee,
             'Expected the fee to be capped at half of the management fee because of the 50% floor');
         Test.stopTest();
     }
@@ -78,7 +78,7 @@ public with sharing class ClientInvoicingUtilizationServiceTest {
         Test.startTest();
         ClientInvoicingUtilizationService.UtilizationFeeInput utilizationFeeInput =
             new ClientInvoicingUtilizationService.UtilizationFeeInput(cfd, productionDetail);
-        System.assertEquals(-100, utilizationFeeInput.getUtilizationFee(),
+        System.assertEquals(-100, utilizationFeeInput.utilizationFee,
             'Expected the fee to be 2 * $50');
         Test.stopTest();
     }
@@ -93,7 +93,7 @@ public with sharing class ClientInvoicingUtilizationServiceTest {
         Test.startTest();
         ClientInvoicingUtilizationService.UtilizationFeeInput utilizationFeeInput =
             new ClientInvoicingUtilizationService.UtilizationFeeInput(cfd, productionDetail);
-        System.assertEquals(5000, utilizationFeeInput.getUtilizationFee(),
+        System.assertEquals(5000, utilizationFeeInput.utilizationFee,
             'Expected the fee to be 100 * $50');
         Test.stopTest();
     }
@@ -110,6 +110,34 @@ public with sharing class ClientInvoicingUtilizationServiceTest {
         }
     }
 
+    @IsTest
+    public static void testGetCfdForProductionDetail() {
+        List<Contract_Fee_Detail__c> contractFeeDetails = new List<Contract_Fee_Detail__c>();
+        Contract_Fee_Detail__c cfd1 = getContractFeeDetail();
+        cfd1.Shared_Solar_System__c = Util.getFakeId(Shared_Solar_System__c.SObjectType);
+        contractFeeDetails.add(cfd1);
+        Contract_Fee_Detail__c cfd2 = getContractFeeDetail();
+        cfd2.Shared_Solar_System__c = Util.incrementFakeId(cfd1.Shared_Solar_System__c);
+        contractFeeDetails.add(cfd2);
+        Contract_Fee_Detail__c cfd3 = getContractFeeDetail();
+        contractFeeDetails.add(cfd3);
+        MultiMap cfdsByContract = CollectionUtil.multiMapByField(contractFeeDetails, Contract_Fee_Detail__c.Contract__c);
+
+        Transfer_Part__c sss1ProductionDetail = getProductionDetail(100, cfd1.Shared_Solar_System__c);
+        Transfer_Part__c sss2ProductionDetail = getProductionDetail(100, cfd2.Shared_Solar_System__c);
+        Transfer_Part__c sss3ProductionDetail = getProductionDetail(100, Util.incrementFakeId(cfd2.Shared_Solar_System__c));
+
+        Test.startTest();
+        ClientInvoicingUtilizationService utilizationService = new ClientInvoicingUtilizationService();
+        System.assertEquals(cfd1, utilizationService.getCfdForProductionDetail(cfdsByContract, sss1ProductionDetail),
+            'Expected CFD1 because of the SSS filter');
+        System.assertEquals(cfd2, utilizationService.getCfdForProductionDetail(cfdsByContract, sss2ProductionDetail),
+            'Expected CFD2 because of the SSS filter');
+        System.assertEquals(cfd3, utilizationService.getCfdForProductionDetail(cfdsByContract, sss3ProductionDetail),
+            'Expected CFD3 because there is no SSS filter');
+        Test.stopTest();
+    }
+
     private static Contract_Fee_Detail__c getContractFeeDetail() {
         Contract_Fee_Detail__c cfd = new Contract_Fee_Detail__c(
             Management_Fee__c = true,
@@ -117,19 +145,25 @@ public with sharing class ClientInvoicingUtilizationServiceTest {
             Fee__c = 10790,
             Fee_Unit__c = 'per MW',
             Utilization_Adjustment_Multiplier__c = 2,
-            Utilization_Adjustment_Floor__c = 50
+            Utilization_Adjustment_Floor__c = 50,
+            Contract__c = Util.getFakeId(Contract.SObjectType)
         );
         return cfd;
     }
 
     private static Transfer_Part__c getProductionDetail(Decimal changeInUtilization) {
+        return getProductionDetail(changeInUtilization, Util.getFakeId(Shared_Solar_System__c.SObjectType));
+    }
+    private static Transfer_Part__c getProductionDetail(Decimal changeInUtilization, Id sssId) {
         Map<SObjectField, Object> sssValues = new Map<SObjectField, Object>{
-            Shared_Solar_System__c.Id => Util.getFakeId(Shared_Solar_System__c.SObjectType),
+            Shared_Solar_System__c.Id => sssId,
             Shared_Solar_System__c.Name => 'Test Project',
-            Shared_Solar_System__c.Serviced_Capacity__c => 955
+            Shared_Solar_System__c.Serviced_Capacity__c => 955,
+            Shared_Solar_System__c.Client_Management_Contract__c => Util.getFakeId(Contract.SObjectType)
         };
         Map<SObjectField, Object> productionValues = new Map<SObjectField, Object>{
-            Production__c.Id => Util.getFakeId(Production__c.SObjectType)
+            Production__c.Id => Util.getFakeId(Production__c.SObjectType),
+            Production__c.Shared_Solar_System__c => sssId
         };
         Map<SObjectField, Object> productionDetailValues = new Map<SObjectField, Object>{
             Transfer_Part__c.Id => Util.getFakeId(Transfer_Part__c.SObjectType),
@@ -138,8 +172,8 @@ public with sharing class ClientInvoicingUtilizationServiceTest {
         sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class, sssValues);
         sfab_FabricatedSObject fabbedProduction = new sfab_FabricatedSObject(Production__c.class, productionValues);
         sfab_FabricatedSObject fabbedProductionDetail = new sfab_FabricatedSObject(Transfer_Part__c.class, productionDetailValues);
-        fabbedProductionDetail.setParent('Production__r', fabbedProduction);
         fabbedProduction.setParent('Shared_Solar_System__r', fabbedSSS);
+        fabbedProductionDetail.setParent('Production__r', fabbedProduction);
         Transfer_Part__c productionDetail = (Transfer_Part__c) fabbedProductionDetail.toSObject();
         return productionDetail;
     }
