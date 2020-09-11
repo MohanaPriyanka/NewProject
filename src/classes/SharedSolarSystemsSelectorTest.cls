@@ -224,14 +224,14 @@ public with sharing class SharedSolarSystemsSelectorTest {
     }
 
     
-    @IsTest public static void testGetAllSSSes(){
+    @IsTest public static void testGetAllSSSMap(){
         SharedSolarSystemsSelector selector = new SharedSolarSystemsSelector();
-        List<Shared_Solar_System__c> sssList = selector.getAllSSSes();
-        System.assert(sssList.size() > 0);
+        Map<Id, Shared_Solar_System__c> sssMap = selector.getAllSSSMap();
+        System.assert(sssMap.size() > 0);
     }
 
     @IsTest
-    public static void testGeSharedSolarSystemsForEnrollment() {
+    public static void testGetSharedSolarSystemsForEnrollment() {
         SharedSolarSystemsSelector selector = new SharedSolarSystemsSelector();
         List<Shared_Solar_System__c> sssList = selector.getSharedSolarSystemsForEnrollment();
         System.assertEquals(4, sssList.size());
@@ -240,5 +240,11 @@ public with sharing class SharedSolarSystemsSelectorTest {
     @IsTest
     private static void testGetActiveSystemsWithSmallOfftakeUASes() {
         System.assertEquals(0, new SharedSolarSystemsSelector().getActiveSystemsWithSmallOfftakeUASes().size());
+    }
+
+    @IsTest
+    private static void testGetSSSWithActiveUASes() {
+        List<Shared_Solar_System__c> sssList = (new Map<Id, Shared_Solar_System__c>([SELECT Id FROM Shared_Solar_System__c])).values();
+        System.assertEquals(5, new SharedSolarSystemsSelector().getSSSWithActiveUASes(sssList).size());
     }
 }
