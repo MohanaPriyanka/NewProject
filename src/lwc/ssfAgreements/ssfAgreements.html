@@ -67,7 +67,16 @@
         <lightning-input name="csAgreement" checked={csAgreement} type="checkbox" label="Check to Sign Community Solar Agreement and CS Disclosure" onchange={csAgreementChecked}></lightning-input>
       </p>
       <p class="small slds-var-m-around_small">
-        By checking this box, entering my email address in the Email field below, and clicking the "Continue" button, I acknowledge that I have reviewed and agree to the <b><a href="javascript:void(0);"><span style="color:blue" data-id={csAgreementDocumentId} onclick={filePreview}>Community Solar Agreement</span></a></b> and <b><a href="javascript:void(0);"><span style="color:blue" data-id={disclosureDocumentId} onclick={filePreview}>Solar Disclosure Form</span></a></b> as well as BlueWave's <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b>. I understand that by doing so, I am providing my electronic signature and signing the agreements linked above as electronic records, signature is subject to the additional terms and conditions described here
+        <span>By checking this box, entering my email address in the Email field below, and clicking the "Continue" button, I acknowledge that I have reviewed and agree to the </span>
+        <template iterator:it={contractDocuments}>
+            <span key={it.value.id}>
+                <template if:false={it.value.first}> and </template>
+                <b><a key={it.value.id} href="javascript:void(0);">
+                    <span style="color:blue" key={it.value.id} data-id={it.value.id} onclick={filePreview}>{it.value.title}</span>
+                </a></b>
+            </span>
+        </template>
+        <span> as well as BlueWave's <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b>. I understand that by doing so, I am providing my electronic signature and signing the agreements linked above as electronic records, signature is subject to the additional terms and conditions described here</span>
         <template if:true={moreCSAgreement}>
           <span>. I am also granting BlueWave permission to contact me via the phone number provided on this application. I also acknowledge that this is an application only and consummation of this transaction does not occur upon the placement of my electronic signature on this contract; rather consummation occurs (meaning that there is an executed agreement between BlueWave and me) after BlueWave verifies my eligibility, approves the document that I have electronically signed, and returns the contract to me with its countersignature.</span>
           <span onclick={showLessCSAgreement} style="text-decoration:underline;color:blue">[Show less]</span>
