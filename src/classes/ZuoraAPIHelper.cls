@@ -33,10 +33,22 @@ public with sharing class ZuoraAPIHelper {
     public static Long getCalloutSecondsRemaining() {
         return (maxCalloutMillis - calloutMillis)/1000;
     }
+    /* everytime an http request is made to zuora the endpoint needs to be set this way
+       use this method to avoid duplicating standard zuora request code.
+     */
+    private static HttpRequest zuoraEndpointRequest(String method, String endpoint){
+        Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
+        HttpRequest request = new HttpRequest();
+        request.setTimeout(60000); // Set a 60 second timeout (default is 10) to avoid recovering from read timed out
+        request.setMethod(method);
+        request.setEndpoint(zuoraSetting.API_Endpoint_URL__c + endpoint);
+        return request;
+    }
+    /*
+    Methods that call send Http request effect the number of callouts and should be checked with this logic.
+     */
+    private static void calloutCheck(String endpoint){
 
-    // Not addressing this because the method already has many dependencies.
-    @SuppressWarnings('PMD.ExcessiveParameterList')
-    public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody, Boolean flush) {
         // Since there is a 120 second cumulative timeout for callouts, abort if we don't have a 15 second cushion left
         // (which is arbitrary). Starting the transaction and having Salesforce abort it may end up an with finished or
         // aborted transaction in Zuora
@@ -49,18 +61,17 @@ public with sharing class ZuoraAPIHelper {
             throw new Util.BWException('Not starting ' + endpoint + ' because ' + numberCalloutsForZuoraNamespace +
                 ' callouts of ' + maxCalloutsForZuoraNamespace + ' have been consumed');
         }
-        Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
-        HttpRequest request = new HttpRequest();
-        request.setTimeout(60000); // Set a 60 second timeout (default is 10) to avoid recovering from read timed out
-        request.setMethod(method);
-        request.setEndpoint(zuoraSetting.API_Endpoint_URL__c + endpoint);
+    }
+    // Not addressing this because the method already has many dependencies.
+    @SuppressWarnings('PMD.ExcessiveParameterList')
+    public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody, Boolean flush) {
+        calloutCheck(endpoint);
+        HttpRequest request = zuoraEndpointRequest(method,endpoint);
         request.setHeader('Content-Type', 'application/json');
         request.setHeader('Accept', 'application/json');
         request.setHeader('zuora-version', '224.0'); // Version 224.0 includes settlement object (credit memos, etc)
         if (jsonBody != null) {
-            String jsonString = JSON.serialize(jsonBody, true);
-            jsonString = jsonString.replace('_Zcustom','__c');
-            jsonString = jsonString.replace('_Zreserved','');
+            String jsonString = cleanObject(jsonBody);
             request.setBody(jsonString);
         }
         return sendHttpRequest(request, endpoint, flush, true);
@@ -247,6 +258,12 @@ public with sharing class ZuoraAPIHelper {
         return saveResults;
     }
 
+    private static String cleanObject(Object genericObject){
+        String jsonString = JSON.serialize(genericObject, true);
+        jsonString = jsonString.replace('_Zcustom','__c');
+        jsonString = jsonString.replace('_Zreserved','');
+        return jsonString;
+    }
     public static String cleanJSON(String json) {
         return json.replace('__c', '_Zcustom')
             .replace('"currency" :', '"currency_Zreserved" :')
@@ -273,11 +290,9 @@ public with sharing class ZuoraAPIHelper {
         }
     }
 
-    public static HttpResponse callURLEncodedEndpoint(String method, String endpoint, String urlBody) {
-        Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
-        HttpRequest request = new HttpRequest();
-        request.setMethod(method);
-        request.setEndpoint(zuoraSetting.API_Endpoint_URL__c + endpoint);
+    private static HttpResponse callURLEncodedEndpoint(String method, String endpoint, String urlBody) {
+        calloutCheck(endpoint);
+        HttpRequest request = zuoraEndpointRequest(method,endpoint);
         request.setHeader('Content-Type', 'application/x-www-form-urlencoded');
         if (urlBody != null) {
             request.setBody(urlBody);
@@ -288,18 +303,14 @@ public with sharing class ZuoraAPIHelper {
     // Not addressing this because the method already has dependencies.
     @SuppressWarnings('PMD.ExcessiveParameterList')
     public static HttpResponse callJSONEndpointWithOAuth(String method, String endpoint, Object jsonBody, Boolean flush) {
+        calloutCheck(endpoint);
         String zAuthToken = ZuoraAPIHelper.generateOAuthToken();
-        Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
-        HttpRequest request = new HttpRequest();
-        request.setMethod(method);
-        request.setEndpoint(zuoraSetting.API_Endpoint_URL__c + endpoint);
+        HttpRequest request = zuoraEndpointRequest(method,endpoint);
         request.setHeader('Authorization', 'Bearer ' + zAuthToken);
         request.setHeader('Content-Type', 'application/json');
 
         if (jsonBody != null) {
-            String jsonString = JSON.serialize(jsonBody, true);
-            jsonString = jsonString.replace('_Zcustom','__c');
-            jsonString = jsonString.replace('_Zreserved','');
+            String jsonString = cleanObject(jsonBody);
             request.setBody(jsonString);
         }
         return sendHttpRequest(request, endpoint, flush, false);
