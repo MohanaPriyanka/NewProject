@@ -5,8 +5,6 @@
 public with sharing class SharedSolarSystemHandlerTest {
     @TestSetup
     public static void setupData() {
-
-        useMocks(true);
         Test.startTest();
 
         Utility__c eversource = new Utility__c(
@@ -586,14 +584,9 @@ public with sharing class SharedSolarSystemHandlerTest {
             WHERE Id = :sss.Id
             LIMIT 1
         ];
-        //Feature flag is used in validation rule
-        FeatureService featureService = new FeatureService();
-        Boolean featureOn = featureService.isEnabled('Subscription_Orders');
-        if (featureOn) {
-            System.assertEquals(48, sss.Total_System_Size_kWh_DC__c);
-        } else {
-            System.assertEquals(80, sss.Total_System_Size_kWh_DC__c);
-        }
+
+        System.assertEquals(48, sss.Total_System_Size_kWh_DC__c);
+
         //Set Apex_Context to true to bypass validation rule
         sss.Apex_Context__c = true;
         sss.Total_System_Size_kWh_DC__c = 80;
@@ -641,14 +634,9 @@ public with sharing class SharedSolarSystemHandlerTest {
         // 2 UASes:  6.1538 , 0.2308 = 6.3846
         // 1 Anchor: 23.0769
         // Subscription Orders use the rounded version of the subscription
-        FeatureService featureService = new FeatureService();
-        if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(6.384,originalSSS.Capacity_Committed_kW_DC__c);
-            System.assertEquals(23.0784,originalSSS.Anchor_capacity_reserved__c);
-        } else {
-            System.assertEquals(6.3846,originalSSS.Capacity_Committed_kW_DC__c);
-            System.assertEquals(23.0769,originalSSS.Anchor_capacity_reserved__c);
-        }
+
+        System.assertEquals(6.384,originalSSS.Capacity_Committed_kW_DC__c);
+        System.assertEquals(23.0784,originalSSS.Anchor_capacity_reserved__c);
 
         Utility_Account_Subscription__c selectedUAS = [
             SELECT Utility_Account_Log__c,
@@ -664,7 +652,6 @@ public with sharing class SharedSolarSystemHandlerTest {
             LIMIT 1
         ];
         // Increase one subscription:
-        if (featureService.isEnabled('Subscription_Orders')) {
             Subscription_Order__c resize = new Subscription_Order__c(
                 Utility_Account_Subscription__c = selectedUAS.Id,
                 New_Annual_kWh__c = 12000,
@@ -673,10 +660,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Effective_Date__c = System.now()
             );
             insert resize;
-        } else {
-            selectedUAS.Annual_kwh_subscription_future__c = 12000;
-            update selectedUAS;
-        }
+
         Test.startTest();
         SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
         handler.updateSSS();
@@ -688,13 +672,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             LIMIT 1
         ];
 
-        if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(9.4624,sssUpdated.Capacity_Committed_kW_DC__c);
-            System.assertEquals(23.0784,sssUpdated.Anchor_capacity_reserved__c);
-        } else {
-            System.assertEquals(9.4616,sssUpdated.Capacity_Committed_kW_DC__c);
-            System.assertEquals(23.0769,sssUpdated.Anchor_capacity_reserved__c);
-        }
+        System.assertEquals(9.4624,sssUpdated.Capacity_Committed_kW_DC__c);
+        System.assertEquals(23.0784,sssUpdated.Anchor_capacity_reserved__c);
     }
     @IsTest
     public static void testDifferentStatuses() {
@@ -729,22 +708,16 @@ public with sharing class SharedSolarSystemHandlerTest {
             }
         }
 
-        FeatureService featureService = new FeatureService();
-        if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(6.3840,sumComplete);
-            System.assertEquals(24.8608,sumReserved);
-            System.assertEquals(9.5392,sumOther);
-            sumReserved = sumReserved.setScale(6);
-        } else {
-            System.assertEquals(6.3846,sumComplete);
-            System.assertEquals(24.8616,sumReserved);
-            System.assertEquals(9.5385,sumOther);
-        }
+        System.assertEquals(6.3840,sumComplete);
+        System.assertEquals(24.8608,sumReserved);
+        System.assertEquals(9.5392,sumOther);
+        sumReserved = sumReserved.setScale(6);
+
 
         System.assertEquals(4, countComplete + countReserved);
         Test.startTest();
-            SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
-            handler.updateSSS();
+        SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
+        handler.updateSSS();
         Test.stopTest();
         Shared_Solar_System__c sssUpdated = [
             SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c, Reserved_capacity_kW_DC__c
@@ -789,13 +762,8 @@ public with sharing class SharedSolarSystemHandlerTest {
         //SSS2 does have anchors --> Anchor Capacity should be sum of anchor opps
         System.assertEquals(7, checkSSS[0].Reserved_Anchor_Capacity__c);
         System.assertEquals(7, checkSSS[0].Anchor_Capacity_Reserved__c);
+        System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
 
-        FeatureService featureService = new FeatureService();
-        if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
-        } else {
-            System.assertEquals(23.0769, checkSSS[1].Anchor_Capacity_Reserved__c);
-        }
 
         checkSSS[0].Open__c = false;
         checkSSS[1].Open__c = false;
@@ -815,12 +783,8 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertEquals('Management', checkSSS[0].Stage__c);
         System.assertEquals(0, checkSSS[0].Anchor_Capacity_Reserved__c);
         System.assertEquals('Management', checkSSS[1].Stage__c);
-
-        if (featureService.isEnabled('Subscription_Orders')) {
-            System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
-        } else {
-            System.assertEquals(23.0769, checkSSS[1].Anchor_Capacity_Reserved__c);
-        }
+        System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
+        
     }
     @IsTest
     public static void testReacqStartDateChange(){
@@ -911,28 +875,5 @@ public with sharing class SharedSolarSystemHandlerTest {
             WHERE Severity__c = :Logger.ERROR
         ];
         System.assertEquals(0, errorLogs.size(), errorLogs);
-    }
-
-    private static void useMocks(Boolean featureOn) {
-
-        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockCustomFeatureSelector(featureOn));
-    }
-    public class MockCustomFeatureSelector extends MockProvider {
-        private Boolean featureOn;
-        public MockCustomFeatureSelector(Boolean featureOn) {
-            this.featureOn = featureOn;
-        }
-        public override Object handleMethodCall(MethodCall methodCall) {
-            switch on methodCall.stubbedMethodName{
-                when 'getCustomFeature' {
-                    Custom_Feature_Enablement__mdt feature = new Custom_Feature_Enablement__mdt(
-                        Feature_is_Enabled__c = featureOn
-                    );
-                    return feature;
-                }
-            }
-            return null;
-        }
-
     }
 }
