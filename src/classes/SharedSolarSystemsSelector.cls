@@ -87,8 +87,9 @@ public inherited sharing class SharedSolarSystemsSelector {
         }
         return bwIdToSSSMap;
     }
-    public List<Shared_Solar_System__c> getAllSSSes() {
-        return [
+
+    public Map<Id, Shared_Solar_System__c> getAllSSSMap() {
+        return new Map<Id, Shared_Solar_System__c>([
             SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
                 Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c, Maximum_Subscription_Capacity_kWDC__c,
                 Total_Capacity_Committed_Reserved__c,
@@ -97,7 +98,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Management_Revenue_Start_Date__c, Customer_Assignment_Date__c, First_Bill_Date__c,
                 Actual_COD_Date__c, Actual_PTO_Date_MANUAL__c
             FROM Shared_Solar_System__c
-        ];
+        ]);
     }
 
     public List<Shared_Solar_System__c> getSharedSolarSystemsForEnrollment() {
@@ -139,6 +140,21 @@ public inherited sharing class SharedSolarSystemsSelector {
             )
             FROM Shared_Solar_System__c
             WHERE Stage__c IN ('Acquisition', 'Management')
+        ];
+    }
+
+    public List<Shared_Solar_System__c> getSSSWithActiveUASes(List<Shared_Solar_System__c> sssList) {
+        return [
+            SELECT Id, Name, Reserved_Capacity_kW_DC__c, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
+                Stage__c, (
+                SELECT Id, Customer_Group__c, Opportunity__r.Customer_Sub_Group__c, Shared_Solar_System__r.Name,
+                    Future_Customer_Subscription_KWDC_Rollup__c, Customer_Subscription_KW_DC__c, Opportunity_Stage__c
+                FROM Utility_Account_Subscriptions__r
+                WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
+                AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0)
+            )
+            FROM Shared_Solar_System__c
+            WHERE Id IN :sssList
         ];
     }
 }

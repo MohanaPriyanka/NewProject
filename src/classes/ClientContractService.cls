@@ -18,7 +18,7 @@ public without sharing class ClientContractService {
     }
 
     public void setActiveContractsOnAllSSSes() {
-        setActiveContractsOnSSS(sharedSolarSystemsSelector.getAllSSSes());
+        setActiveContractsOnSSS(sharedSolarSystemsSelector.getAllSSSMap().values());
     }
 
     private void setActiveContractsOnSSS(List<Shared_Solar_System__c> sharedSolarSystems) {
