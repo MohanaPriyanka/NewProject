@@ -35,103 +35,59 @@ public without sharing class ClientInvoicingUtilizationService {
         return memosToInsert;
     }
 
+    @TestVisible
     private Contract_Fee_Detail__c getCfdForProductionDetail(MultiMap cfdsByContract, Transfer_Part__c productionDetail) {
         List<Contract_Fee_Detail__c> contractFeeDetails = new List<Contract_Fee_Detail__c>();
         CollectionUtil.toTypedList(cfdsByContract.getValues(productionDetail.Production__r.Shared_Solar_System__r.Client_Management_Contract__c), contractFeeDetails);
-        if (contractFeeDetails.size() != 1) {
+        Contract_Fee_Detail__c cfd;
+        for (Contract_Fee_Detail__c contractFeeDetail : contractFeeDetails) {
+            if (contractFeeDetail.Shared_Solar_System__c == null && cfd == null) {
+                cfd = contractFeeDetail;
+            } else if (contractFeeDetail.Shared_Solar_System__c == productionDetail.Production__r.Shared_Solar_System__c) {
+                cfd = contractFeeDetail;
+            }
+        }
+        if (cfd == null) {
             Logger.logLater(
                 'ClientInvoicingUtilizationService',
-                'createMemosForUtilizationAdjustments',
-                'Skipping Production Detail because of unexpected contract fee details : ' + productionDetail.Id + '\n' + contractFeeDetails,
+                'getCfdForProductionDetail',
+                'Skipping Production Detail because we there were no contract fee details : ' + productionDetail.Id + '\n' + contractFeeDetails,
                 Logger.ERROR
             );
-            return null;
         }
-        Contract_Fee_Detail__c cfd = contractFeeDetails[0];
         return cfd;
     }
 
     @TestVisible
     private class UtilizationFeeInput {
-        private Decimal changeInUtilization;
-        private String utilizationAdjustmentType;
-        private Decimal managementFee;
-        private String managementFeeUnits;
-        private Decimal monthlyManagementFeeDollars;
-        private Decimal utilizationAdjustmentMultiplier;
-        private Decimal utilizationAdjustmentAmount;
-        private Decimal utilizationAdjustmentFloor;
-        private Decimal floorDollars;
-        private Decimal servicedCapacity;
-        private Id contractFeeDetailId;
         private Id productionDetailId;
         private Id sharedSolarSystemId;
+        private Decimal servicedCapacity;
         private String sharedSolarSystemName;
+        private Decimal changeInUtilization;
+        @TestVisible
         private Decimal utilizationFee;
         private Date billDate;
+        private ContractFeeDetail contractFeeDetail;
 
         @TestVisible
         private UtilizationFeeInput(Contract_Fee_Detail__c cfd, Transfer_Part__c productionDetail) {
             changeInUtilization = productionDetail.Change_in_Utilization__c/100;
-            utilizationAdjustmentType = cfd.Utilization_Adjustment_Type__c;
-            managementFee = cfd.Fee__c;
-            managementFeeUnits = cfd.Fee_Unit__c;
-            utilizationAdjustmentMultiplier = cfd.Utilization_Adjustment_Multiplier__c; // a true multiplier, not a percent
-            utilizationAdjustmentAmount = cfd.Utilization_Adjustment_Amount__c;
-            if (cfd.Utilization_Adjustment_Floor__c != null) {
-                utilizationAdjustmentFloor = cfd.Utilization_Adjustment_Floor__c/100;
-            }
             servicedCapacity = productionDetail.Production__r.Shared_Solar_System__r.Serviced_Capacity__c;
-            contractFeeDetailId = cfd.Id;
             productionDetailId = productionDetail.Id;
             sharedSolarSystemId = productionDetail.Production__r.Shared_Solar_System__c;
             sharedSolarSystemName = productionDetail.Production__r.Shared_Solar_System__r.Name;
             billDate = productionDetail.Transfer__r.Bill_Period__r.Bill_Date__c;
+            this.contractFeeDetail = new ContractFeeDetail(cfd, servicedCapacity);
 
-            switch on managementFeeUnits {
-                when 'per W' {
-                    monthlyManagementFeeDollars = managementFee * 1000 * servicedCapacity / 12; //  $/W * 1000W/kW * kW = $
-                } when 'per MW' {
-                    monthlyManagementFeeDollars = managementFee / 1000 * servicedCapacity / 12; //  $/MW * 1MW/1000kW * kW = $
-                } when 'per project' {
-                    monthlyManagementFeeDollars = managementFee * servicedCapacity / 12 ;
-                } when else {
-                    throw new Util.BWException('UtilizationFeeInput, fee Units not recognized for CFD: ' + JSON.serialize(cfd));
-                }
-            }
-            monthlyManagementFeeDollars = monthlyManagementFeeDollars.setScale(2);
-            if (utilizationAdjustmentFloor != null) {
-                floorDollars = -(utilizationAdjustmentFloor * monthlyManagementFeeDollars).setScale(2);
-            }
-
-            utilizationFee = getUtilizationFee().setScale(2);
-        }
-
-        @TestVisible
-        private Decimal getUtilizationFee() {
-            Decimal utilizationFee = 0;
-            switch on utilizationAdjustmentType {
-                when 'Multiplier (%)' {
-                    utilizationFee = changeInUtilization * monthlyManagementFeeDollars * utilizationAdjustmentMultiplier;
-                } when 'Amount ($)' {
-                    // Since for every 1% in utilization change, we decrease by the utilization adjustment amount, we
-                    // need to bring the changeInUtilization (e.g. .02 back up to a percent)
-                    utilizationFee = changeInUtilization * 100 * utilizationAdjustmentAmount;
-                } when else {
-                    throw new Util.BWException('UtilizationFeeService, Utilization Adjustment Type not recognized: ' + utilizationAdjustmentType);
-                }
-            }
-            if (utilizationAdjustmentFloor != null) {
-                utilizationFee = Math.max(floorDollars, utilizationFee);
-            }
-            return utilizationFee;
+            utilizationFee = contractFeeDetail.getUtilizationFee(changeInUtilization).setScale(2);
         }
 
         private Client_Invoicing_Memo__c registerClientInvoicingMemo() {
             Client_Invoicing_Memo__c memo = new Client_Invoicing_Memo__c(
                 Shared_Solar_System__c = sharedSolarSystemId,
                 Production_Detail__c = productionDetailId,
-                Contract_Fee_Detail__c = contractFeeDetailId,
+                Contract_Fee_Detail__c = contractFeeDetail.contractFeeDetailId,
                 Amount__c = utilizationFee,
                 Type__c = 'Utilization Adjustment to Management Fee',
                 Effective_Date__c = billDate,
