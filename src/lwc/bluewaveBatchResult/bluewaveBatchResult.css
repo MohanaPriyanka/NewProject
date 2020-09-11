@@ -1,0 +1,17 @@
+.box {
+    min-height: 300px;
+    background-color: #ffffff;
+    border-radius: 25px;
+}
+
+.box .slds-spinner_container {
+    background-color: unset !important;
+}
+
+.spinner::after {
+    position: absolute;
+    content: 'Please wait while your request is processed. This may take a moment...';
+    width: 100%;
+    text-align: center;
+    top: calc(50% + 2em);
+}
