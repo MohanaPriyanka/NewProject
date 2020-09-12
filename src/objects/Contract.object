@@ -3139,26 +3139,6 @@ COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. 
         <width>900</width>
     </webLinks>
     <webLinks>
-        <fullName>Copy_Client_Files_Button</fullName>
-        <availability>online</availability>
-        <description>Button to use the Client File Download flow in an Assignment Agreement Contract.</description>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Copy Client Files</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/flow/Client_File_Download?recordId={!Contract.Id}</url>
-    </webLinks>
-    <webLinks>
         <fullName>Generate_Assignment_Document</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
