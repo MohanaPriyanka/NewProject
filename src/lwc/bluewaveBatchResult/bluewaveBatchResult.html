@@ -1,0 +1,27 @@
+<!--
+ - Created by Jeff Parlin on 9/8/2020.
+ -->
+
+<!-- Bluewave Batch Result -->
+<template>
+  <div class="box slds-is-relative">
+    <!-- Initial display, show loading spinner with message -->
+    <template if:true={showLoadingSpinner}>
+      <lightning-spinner class="spinner" size="medium" variant="brand"></lightning-spinner>
+    </template>
+
+    <!-- Display once all batches have processed -->
+    <template if:false={showLoadingSpinner}>
+      <h1 class={messageStyle}>{message}</h1>
+      <lightning-datatable
+        data={batchesHandled}
+        columns={columns}
+        key-field="Id"
+        show-row-number-column
+        sorted-by="Id"
+        hide-checkbox-column
+        class="slds-p-around_medium"
+      ></lightning-datatable>
+    </template>
+  </div>
+</template>
