@@ -107,23 +107,6 @@ public with sharing class CustomerAssignmentServiceTest {
     }
 
     @IsTest
-    private static void testSetInvoiceDateOnSubscriptionOrders() {
-        CustomerAssignmentService.subscriptionOrderSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
-        Contract assignmentAgreement1 = new Contract(
-            Id = '800000000000000AAA',
-            Date_Invoiced__c = System.today()
-        );
-
-        Map<Id, Contract> assigmentAgreementMap = new Map<Id, Contract>{assignmentAgreement1.Id => assignmentAgreement1};
-        List<Subscription_Order__c> sOrders = new CustomerAssignmentService().setInvoiceDateOnSubscriptionOrders(assigmentAgreementMap.keySet(), assigmentAgreementMap);
-
-        System.assertEquals(3, sOrders.size(), 'Mocked query should return 3 Subscription Orders for Update');
-        for (Subscription_Order__c so : sOrders) {
-            System.assertEquals(System.today(), so.Invoice_Date__c, 'Invoice Date should be populated with date from Assignment Agreement');
-        }
-    }
-
-    @IsTest
     private static void systemTestInvoicedAssignmentAgreements() {
         Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
 
