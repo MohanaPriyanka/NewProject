@@ -753,6 +753,20 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Contract_Assignment_Entity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contract Assignment Entity</label>
+        <referenceTo>Entity__c</referenceTo>
+        <relationshipLabel>Shared Solar Systems (Contract Assignment Entity)</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Contracts_Needed_to_COD__c</fullName>
         <externalId>false</externalId>
         <formula>kW_needed_to_hit_payment_threshold__c  /  Average_Subscription_Size__c</formula>

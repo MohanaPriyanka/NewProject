@@ -181,6 +181,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Contract_Assignment_Entity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Picklist__c</field>
             </layoutItems>
             <layoutItems>
