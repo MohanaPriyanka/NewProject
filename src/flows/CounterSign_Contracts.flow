@@ -4,8 +4,8 @@
         <description>Formats the record collection variable so that it can be used in SOQL queries.</description>
         <name>AddQuotes_Contracts</name>
         <label>AddQuotes_Contracts</label>
-        <locationX>497</locationX>
-        <locationY>217</locationY>
+        <locationX>51</locationX>
+        <locationY>684</locationY>
         <actionName>AddQuotesToFields</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -25,8 +25,8 @@
     <actionCalls>
         <name>ExecuteSOQL_Contracts</name>
         <label>ExecuteSOQL_Contracts</label>
-        <locationX>535</locationX>
-        <locationY>40</locationY>
+        <locationX>51</locationX>
+        <locationY>835</locationY>
         <actionName>ExecuteSOQL</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -50,8 +50,8 @@
     <actionCalls>
         <name>ExecuteSOQL_Opportunities</name>
         <label>ExecuteSOQL_Opportunities</label>
-        <locationX>155</locationX>
-        <locationY>55</locationY>
+        <locationX>48</locationX>
+        <locationY>243</locationY>
         <actionName>ExecuteSOQL</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -75,8 +75,8 @@
     <actionCalls>
         <name>extractContracts</name>
         <label>extractContracts</label>
-        <locationX>401</locationX>
-        <locationY>67</locationY>
+        <locationX>51</locationX>
+        <locationY>540</locationY>
         <actionName>ExtractStringsFromCollection</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -109,8 +109,8 @@
     <assignments>
         <name>Assign_AddOppToList</name>
         <label>Assign_AddOppToList</label>
-        <locationX>740</locationX>
-        <locationY>364</locationY>
+        <locationX>441</locationX>
+        <locationY>548</locationY>
         <assignmentItems>
             <assignToReference>socv_OpportunitiesUpdateList</assignToReference>
             <operator>Add</operator>
@@ -125,8 +125,8 @@
     <assignments>
         <name>Assign_Opportunites</name>
         <label>Assign_Opportunites</label>
-        <locationX>616</locationX>
-        <locationY>363</locationY>
+        <locationX>225</locationX>
+        <locationY>548</locationY>
         <assignmentItems>
             <assignToReference>loopvar_Opportunites.StageName</assignToReference>
             <operator>Assign</operator>
@@ -148,8 +148,8 @@
     <assignments>
         <name>Contract_Assignment</name>
         <label>Contract Assignment</label>
-        <locationX>849</locationX>
-        <locationY>327</locationY>
+        <locationX>580</locationX>
+        <locationY>549</locationY>
         <assignmentItems>
             <assignToReference>loopvar_Contracts.Status</assignToReference>
             <operator>Assign</operator>
@@ -178,8 +178,8 @@
     <assignments>
         <name>Contract_Assignment_0</name>
         <label>Contract Assignment</label>
-        <locationX>940</locationX>
-        <locationY>327</locationY>
+        <locationX>791</locationX>
+        <locationY>549</locationY>
         <assignmentItems>
             <assignToReference>socv_ContractUpdateList</assignToReference>
             <operator>Add</operator>
@@ -196,8 +196,8 @@
     <loops>
         <name>Loop_Contracts</name>
         <label>Loop_Contracts</label>
-        <locationX>859</locationX>
-        <locationY>29</locationY>
+        <locationX>692</locationX>
+        <locationY>835</locationY>
         <assignNextValueToReference>loopvar_Contracts</assignNextValueToReference>
         <collectionReference>socv_Contracts</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -211,8 +211,8 @@
     <loops>
         <name>Loop_Opportunites</name>
         <label>Loop_Opportunites</label>
-        <locationX>671</locationX>
-        <locationY>28</locationY>
+        <locationX>331</locationX>
+        <locationY>835</locationY>
         <assignNextValueToReference>loopvar_Opportunites</assignNextValueToReference>
         <collectionReference>socv_SelectedOpportuniites</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -230,6 +230,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -239,8 +245,8 @@
     <recordUpdates>
         <name>update_Contracts</name>
         <label>update_Contracts</label>
-        <locationX>1112</locationX>
-        <locationY>31</locationY>
+        <locationX>1031</locationX>
+        <locationY>831</locationY>
         <connector>
             <targetReference>update_Opportunities</targetReference>
         </connector>
@@ -249,8 +255,8 @@
     <recordUpdates>
         <name>update_Opportunities</name>
         <label>update_Opportunities</label>
-        <locationX>1289</locationX>
-        <locationY>31</locationY>
+        <locationX>1031</locationX>
+        <locationY>623</locationY>
         <connector>
             <targetReference>scr_End</targetReference>
         </connector>
@@ -260,8 +266,8 @@
     <screens>
         <name>scr_End</name>
         <label>scr_End</label>
-        <locationX>1411</locationX>
-        <locationY>27</locationY>
+        <locationX>1031</locationX>
+        <locationY>427</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -276,8 +282,8 @@
     <screens>
         <name>scr_SelectOpps</name>
         <label>scr_SelectOpps</label>
-        <locationX>291</locationX>
-        <locationY>51</locationY>
+        <locationX>51</locationX>
+        <locationY>401</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -335,6 +341,78 @@
                     <stringValue>5</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>column03_fieldName</name>
+                <value>
+                    <stringValue>Customer_Group__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column03_label</name>
+                <value>
+                    <stringValue>Customer Group</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column04_fieldName</name>
+                <value>
+                    <stringValue>Contract_Status__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column04_label</name>
+                <value>
+                    <stringValue>Customer Signature Status</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column05_fieldName</name>
+                <value>
+                    <stringValue>All_QC_Boxes_True__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column05_label</name>
+                <value>
+                    <stringValue>All QC Boxes True?</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column06_fieldName</name>
+                <value>
+                    <stringValue>Quality_Check_Status__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column06_label</name>
+                <value>
+                    <stringValue>QC Approval Status</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column07_fieldName</name>
+                <value>
+                    <stringValue>ContractId </stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column07_label</name>
+                <value>
+                    <stringValue>Contract ID</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column08_fieldName</name>
+                <value>
+                    <stringValue>Comments__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column08_label</name>
+                <value>
+                    <stringValue>Comments</stringValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>socv_SelectedOpportuniites</assignToReference>
@@ -355,14 +433,14 @@
             <targetReference>ExecuteSOQL_Opportunities</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>SOQL_Contracts</name>
         <text>SELECT Id,Name,Status FROM Contract WHERE Id IN ({!var_ContractIdList})</text>
     </textTemplates>
     <textTemplates>
         <name>SOQL_Opportunities</name>
-        <text>select id,Name, StageName, ContractId from Opportunity where Product_Line__c=&apos;Community Solar&apos; and Contract.Generate_Countersigned_Version__c=false and StageName=&apos;Pending BlueWave Signature&apos; and Customer_Group__c!=null and ContractId!=null</text>
+        <text>select id,Name, StageName, ContractId, All_QC_Boxes_True__c, Customer_Group__c, Contract_Status__c, Quality_Check_Status__c, Comments__c from Opportunity where Product_Line__c=&apos;Community Solar&apos; and Contract.Generate_Countersigned_Version__c=false and StageName=&apos;Pending BlueWave Signature&apos; and Customer_Group__c!=null and ContractId!=null</text>
     </textTemplates>
     <variables>
         <name>loopvar_Contracts</name>
