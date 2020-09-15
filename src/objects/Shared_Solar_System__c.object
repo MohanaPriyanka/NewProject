@@ -755,7 +755,9 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
     <fields>
         <fullName>Contract_Assignment_Entity__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
+        <description>Set manually by Client Ops and used in the Assignment Agreement flow for the Client Entity field on an AA. Sometimes the same as the Project Entity, but not always.</description>
         <externalId>false</externalId>
+        <inlineHelpText>Set manually by Client Ops and used in the Assignment Agreement flow for the Client Entity field on an AA. Sometimes the same as the Project Entity, but not always.</inlineHelpText>
         <label>Contract Assignment Entity</label>
         <referenceTo>Entity__c</referenceTo>
         <relationshipLabel>Shared Solar Systems (Contract Assignment Entity)</relationshipLabel>
