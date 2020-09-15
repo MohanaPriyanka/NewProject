@@ -196,7 +196,6 @@
     <permissionSets>Customer Contract Mgmt</permissionSets>
     <permissionSets>Client Case Sharing</permissionSets>
     <permissionSets>Production and Transfer Edit</permissionSets>
-    <permissionSets>Customer Assignment Agreement Management</permissionSets>
     <permissionSets>Client Invoicing</permissionSets>
     <permissionSets>Client Invoicing Admin</permissionSets>
     <permissionSets>Production and Transfer Read</permissionSets>
