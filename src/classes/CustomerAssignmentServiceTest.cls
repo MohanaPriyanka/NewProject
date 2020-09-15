@@ -100,7 +100,7 @@ public with sharing class CustomerAssignmentServiceTest {
             (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
 
         CustomerAssignmentService service = new CustomerAssignmentService();
-        service.afterUpdateAssignmentAgreements(oldContractMap, newContractMap);
+        service.updateSignedAssignmentAgreements(oldContractMap, newContractMap);
 
         List<Shared_Solar_System__c> sssToUpdate = (List<Shared_Solar_System__c>) Util.objectsUpdatedIfMockingDML;
         System.assertEquals(2, sssToUpdate.size());

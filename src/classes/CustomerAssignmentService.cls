@@ -26,28 +26,34 @@ public without sharing class CustomerAssignmentService {
         Util.updateSObjs(sosWithUpdatedAssignmentAgreements);
     }
 
-    public void afterUpdateAssignmentAgreements(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
+    public void updateInvoicedSubscriptionOrders(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
         Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
-        Set<Id> signedAAIds = new Set<Id>();
         Set<Id> invoicedAAIds = new Set<Id>();
         for (Contract aa : newMap.values()) {
-            if (aa.RecordTypeId == aaTypeId && (aa.CompanySignedDate != null && oldMap.get(aa.Id).CompanySignedDate == null)) {
-                signedAAIds.add(aa.Id);
-            }
             if (aa.RecordTypeId == aaTypeId && aa.Date_Invoiced__c != null &&
                 aa.Date_Invoiced__c != oldMap.get(aa.Id).Date_Invoiced__c) {
                 invoicedAAIds.add(aa.Id);
             }
         }
 
-        if (signedAAIds.size() > 0 ) {
-            List<Shared_Solar_System__c> sssList = populateFirstCustomerAssignmentDate(signedAAIds);
-            Util.updateSObjs(sssList);
-        }
-
         if (invoicedAAIds.size() > 0) {
             List<Subscription_Order__c> soUpdateList = setInvoiceDateOnSubscriptionOrders(invoicedAAIds, newMap);
             batchSOUpdate(soUpdateList);
+        }
+    }
+
+    public void updateSignedAssignmentAgreements(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
+        Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
+        Set<Id> signedAAIds = new Set<Id>();
+        for (Contract aa : newMap.values()) {
+            if (aa.RecordTypeId == aaTypeId && (aa.CompanySignedDate != null && oldMap.get(aa.Id).CompanySignedDate == null)) {
+                signedAAIds.add(aa.Id);
+            }
+        }
+
+        if (signedAAIds.size() > 0 ) {
+            List<Shared_Solar_System__c> sssList = populateFirstCustomerAssignmentDate(signedAAIds);
+            Util.updateSObjs(sssList);
         }
     }
 
