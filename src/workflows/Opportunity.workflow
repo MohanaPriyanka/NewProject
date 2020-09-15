@@ -892,6 +892,26 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
+        <fullName>CS - Contract Pending Stage</fullName>
+        <actions>
+            <name>Opp_Stage_to_Contract_Pending</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Opportunity.Contract_Status__c</field>
+            <operation>equals</operation>
+            <value>Sent</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>notEqual</operation>
+            <value>Complete</value>
+        </criteriaItems>
+        <description>Sets the Stage to Contract Pending when the customer recipient status = sent, unless the Opportunity is already complete.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
         <fullName>CS - Partner - Opportunity Complete Notification</fullName>
         <actions>
             <name>CS_Partner_Contract_Complete</name>

@@ -3159,7 +3159,8 @@ COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. 
 ?serverUrl={!API.Partner_Server_URL_370}
 &amp;id={!Contract.Id}
 &amp;QueryId=[UAS]{!Environment.VAR_AssignmentAgreementUASQuery}
-&amp;TemplateId={!Contract.Assignment_Agreement_Template_Id__c}</url>
+&amp;TemplateId={!Contract.Assignment_Agreement_Template_Id__c}
+&amp;DefaultPDF=1</url>
     </webLinks>
     <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>
