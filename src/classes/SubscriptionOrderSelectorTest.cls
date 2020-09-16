@@ -136,4 +136,31 @@ public inherited sharing class SubscriptionOrderSelectorTest {
         System.assertEquals(7.518472,uasToAssignedCapacityMap.get(uases[1].Id));
         System.assertEquals(25.013378,uasToAssignedCapacityMap.get(uases[2].Id));
     }
+
+    @IsTest
+    private static void testGetSubscriptionOrdersByAssignmentAgreement() {
+        Account clientAccount = new Account(Name = 'Client Account');
+        insert clientAccount;
+
+        RecordType aaType = [SELECT Id FROM RecordType WHERE Name = 'Assignment Agreement' LIMIT 1];
+
+        Contract contractA = new Contract(
+            Name = 'Assignment Agreement',
+            AccountId = clientAccount.Id,
+            RecordTypeId = aaType.Id
+        );
+        insert contractA;
+
+        List<Subscription_Order__c> orders = [
+            SELECT Id, Utility_Account_Subscription__c, Approved_Change_in_Subscription__c
+            FROM Subscription_Order__c
+        ];
+        for (Subscription_Order__c order : orders){
+            order.Client_Assignment_Agreement__c = contractA.Id;
+        }
+        update orders;
+        SubscriptionOrderSelector selector = new SubscriptionOrderSelector();
+        List<Subscription_Order__c> checkOrders = selector.getSubscriptionOrdersByAssignmentAgreement(new Set<Id> {contractA.Id});
+        System.assertEquals(17, checkOrders.size());
+    }
 }

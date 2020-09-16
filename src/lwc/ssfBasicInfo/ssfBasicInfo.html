@@ -26,7 +26,7 @@
                         <lightning-input name="businessTitle" value={restLead.businessTitle}  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
                     </div>
                     <div class="input-group half">
-                        <template if:true={showUnderwritingOptions}>
+                        <div if:true={showUnderwritingOptions} class="fieldWithHelp">
                             <lightning-combobox 
                                     name="underwritingCriteria"
                                     class="slds-var-m-bottom_small"
@@ -37,6 +37,33 @@
                                     options={underwritingOptions}
                                     required>
                             </lightning-combobox>
+                            <template if:false={isPhone}>
+                                <div class="help-icon" title="Click here for more information" onclick={toggleHelp}>
+                                    <svg class="help-button__icon" aria-hidden="true">
+                                        <use xlink:href="/_slds/icons/action-sprite/svg/symbols.svg#question_post_action"></use>
+                                    </svg>
+                                    <span class="slds-assistive-text">Click here for more information</span>
+                                </div>
+                                <template if:true={helpTextVisible} onclick={handleInteriorClick}>
+                                    <div class="tooltip tooltip__underwriting-field" role="tooltip" id="help">
+                                        <div class="slds-popover__body">
+                                            <lightning-formatted-rich-text value={underwritingHelpText}></lightning-formatted-rich-text>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+                        <template if:true={isPhone}>
+                            <div class="slds-text-align_right">
+                                <lightning-button
+                                    label="[more info]"
+                                    variant="base"
+                                    onclick={toggleHelp}>
+                                </lightning-button>
+                                <div if:true={helpTextVisible} class="slds-text-align_left">
+                                    <lightning-formatted-rich-text value={underwritingHelpText}></lightning-formatted-rich-text>
+                                </div>
+                            </div>
                         </template>
                     </div>
                 </div>
