@@ -33,6 +33,8 @@ public without sharing class RestLead {
     public String referralName;
     public String referralEmail;
     public String underwritingCriteria;
+    public Integer numberOfContractDocs;    // used in SSF only
+    public Datetime mostRecentContractGen;  // used in SSF only
 
     public RestLead() {
     }
@@ -554,7 +556,6 @@ public without sharing class RestLead {
         private void validateFileCategory() {
             List<String> validFileCategories = new List<String>();
             Schema.DescribeFieldResult fieldResult = ContentVersion.File_Category__c.getDescribe();
-            // List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
             for(Schema.PicklistEntry pickListVal : fieldResult.getPicklistValues()){
                 validFileCategories.add(pickListVal.getLabel());
             }

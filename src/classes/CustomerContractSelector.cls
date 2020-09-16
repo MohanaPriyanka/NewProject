@@ -18,7 +18,7 @@ public inherited sharing class CustomerContractSelector {
     public List<Contract> selectAll(Set<Id> contractIds) {
         Id recordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByDeveloperName().get('Customer_Contract').getRecordTypeId();
         return [
-            SELECT Id, Lead__c, Product__c, RecordTypeId, AccountId, Contract_Type__c
+            SELECT Id, Lead__c, Product__c, RecordTypeId, AccountId, Contract_Type__c, Generate_Disclosure_Form__c
             FROM Contract
             WHERE Id = :contractIds AND RecordTypeId = :recordTypeId
         ];

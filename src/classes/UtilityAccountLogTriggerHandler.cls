@@ -12,6 +12,17 @@ public without sharing class UtilityAccountLogTriggerHandler {
         if (!uasesToFinal.isEmpty()) {
             CSCancellationService.processFinaledUtilityAccounts(uasesToFinal);
         }
+
+        Set<Id> leadIdSet = new Set<Id>();
+        for(Utility_Account_Log__c ual : newUALs) {
+            if(ual.Utility_Rate_Class__c != oldMap.get(ual.Id).Utility_Rate_Class__c) {
+                leadIdSet.add(ual.Lead__c);
+            }
+        }
+        
+        if(!leadIdSet.isEmpty()) {
+            updateRateClassOnContract(leadIdSet);
+        }
     }
 
     public static void updateProposedkWh(List<Utility_Account_Log__c> uals, Map<Id, Utility_Account_Log__c> oldUALsByIds) {
@@ -42,4 +53,62 @@ public without sharing class UtilityAccountLogTriggerHandler {
             }
         }
     }
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    private static void updateRateClassOnContract(Set<Id> leadIdSet) {
+        List<Lead> leadList = [
+            SELECT Id, 
+                (SELECT Id, Generate_Disclosure_Form__c, Product__c, Product__r.Disclosure_Form_Conga_Template__c
+                FROM Contracts__r),
+                (SELECT Id, Utility_Rate_Class__c, Utility_Rate_Class__r.Suppress_Disclosure_Form__c
+                FROM Utility_Account_Logs__r)
+            FROM Lead
+            WHERE Id = :leadIdSet
+        ];
+        
+        List<Contract> contractsForUpdate = new List<Contract>();
+        for(Lead associatedLead : leadList) {
+            for(Contract c : associatedLead.Contracts__r) {
+                Boolean generateDisclosureForm = calculateGenerateDisclosureForm(c.Product__r, associatedLead.Utility_Account_Logs__r);
+                if(c.Generate_Disclosure_Form__c != generateDisclosureForm) {
+                    c.Generate_Disclosure_Form__c = generateDisclosureForm;
+                    c.Generate_Review_Version__c = true;
+                    contractsForUpdate.add(c);
+                }
+            }
+        }
+
+        if(!contractsForUpdate.isEmpty()) {
+            Util.updateAndLog(contractsForUpdate, 'UtilityAccountLogTriggerHandler', 'updateRateClassOnContract');
+        }
+    }
+
+
+    private static Boolean calculateGenerateDisclosureForm(Product2 product, List<Utility_Account_Log__c> ualList) {
+        if(product == null || product.Disclosure_Form_Conga_Template__c == null) {
+            return false;
+        }
+        
+        Boolean allSuppress = true;
+        Boolean allNull = true;
+        for(Utility_Account_Log__c ual : ualList) {
+            if(ual.Utility_Rate_Class__c != null) {
+                allNull = false;
+            }
+            if(ual.Utility_Rate_Class__c == null || !ual.Utility_Rate_Class__r.Suppress_Disclosure_Form__c) {
+                allSuppress = false;
+            }
+        }
+
+        if(allNull) {
+            return true;
+        }
+
+        if(allSuppress) {
+            return false;
+        }
+
+        return true;
+    }
+
 }

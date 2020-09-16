@@ -23,22 +23,17 @@ public without sharing class SimpleSignupFormController {
     
 
     @AuraEnabled
-    public static String getContentDocumentLinksByLead(Id leadId, String email, String mostRecentDocsStr) {
+    public static String getContentDocumentLinksByLead(Id leadId, String email, Datetime mostRecentContractGen) {
         try {
             restControllerV3.validateAuthorization(leadId, email);
         } catch (Util.AuthorizationBWException abwe) {
             throw Util.createAuraExceptionWithMessage('The email (' + email + ') and leadId (' + leadId + ') provided did not match');
         }
 
-        List<RestLead.RestContentDocument> mostRecentDocs = new List<RestLead.RestContentDocument>();
-        if(String.isNotBlank(mostRecentDocsStr)) {
-            mostRecentDocs = (List<RestLead.RestContentDocument>)JSON.deserialize(mostRecentDocsStr, List<RestLead.RestContentDocument>.class);
-        }
-
         List<Contract> contracts = customerContractSelector.selectByRelatedLead(leadId);
         List<ContentDocumentLink> cdlList = new List<ContentDocumentLink>();
-        if(mostRecentDocs!=null && !mostRecentDocs.isEmpty()) {
-            cdlList = contentDocumentSelector.getContractsAfterDateByLinkedEntity(contracts[0].Id, mostRecentDocs[0].createdDate);
+        if(mostRecentContractGen != null) {
+            cdlList = contentDocumentSelector.getContractsAfterDateByLinkedEntity(contracts[0].Id, mostRecentContractGen);
         } else {
             cdlList = contentDocumentSelector.selectByLinkedEntity(contracts[0].Id);
         }

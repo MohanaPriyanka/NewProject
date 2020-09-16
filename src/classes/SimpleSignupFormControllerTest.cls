@@ -173,13 +173,12 @@ public with sharing class SimpleSignupFormControllerTest {
         ContentDocumentSelector docSelector = new ContentDocumentSelector();
         List<ContentDocumentLink> cdlList = docSelector.selectByLinkedEntity(testLead.Contracts__r[0].Id);
         RestLead.RestContentDocument rcd1 = new RestLead.RestContentDocument(cdlList[0]);   // most recent
-        RestLead.RestContentDocument rcd2 = new RestLead.RestContentDocument(cdlList[1]);   // oldest
 
         String retStr = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, null);
         List<RestLead.RestContentDocument> retList = (List<RestLead.RestContentDocument>)JSON.deserialize(retStr, List<RestLead.RestContentDocument>.class);
         System.assertEquals(2, retList.size(), 'With no minimum start date, both CDLs should be returned');
 
-        retStr = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, JSON.serialize(new List<RestLead.RestContentDocument>{rcd2}));
+        retStr = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, Datetime.now().addDays(-1));
         retList = (List<RestLead.RestContentDocument>)JSON.deserialize(retStr, List<RestLead.RestContentDocument>.class);
         System.assertEquals(1, retList.size(), 'Only one CDL should be returned, as the other was created before the minimum start date');
         System.assertEquals(rcd1.id, retList[0].id, 'The CDL returned should be the one with the created date of today');
