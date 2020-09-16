@@ -31,7 +31,7 @@ public without sharing class OpportunityTriggerHandler {
             CSCancellationService.closeAccounts(acctsToCancel);
         }
         createPartnerCommission(oldMap, newMap);
-        customerAssignmentService.updateAssignmentAgreements(oldMap, newMap);
+        customerAssignmentService.updateSOSAssignmentAgreementFromOpp(oldMap, newMap);
     }
 
     public void queueNMCTariffChange(List<Opportunity> oppList, Map<Id, Opportunity> oldMap) {
