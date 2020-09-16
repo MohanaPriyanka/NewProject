@@ -10,13 +10,13 @@
 
     public static final Id RECORD_TYPE_ID = Schema.SObjectType.Contract.getRecordTypeInfosByDeveloperName().get('Customer_Contract').getRecordTypeId();
 
-    public Contract createContractFromLead(Id leadId) {
+    public Contract createContractFromLead(Id leadId, Integer numberOfContractDocs) {
         Lead lead = leadSelector.selectOneForContractCreation(leadId);
         if(lead == null || lead.Accounts__r == null || lead.Accounts__r.isEmpty()) {
             throw new Util.BWException('Invalid lead; please make sure you have provided a valid lead ID and that the lead has at least one associated property account');
         }
 
-        Contract contract = setContractFields(lead);
+        Contract contract = setContractFields(lead, numberOfContractDocs);
         contract.AccountId = lead.Accounts__r[0].Id;
         
         Boolean success = Util.insertAndLog(new List<sObject>{contract}, 'CustomerContractService', 'createContractFromLead');
@@ -28,12 +28,13 @@
     }
 
 
-    public Contract setContractFields(Lead lead) {
+    public Contract setContractFields(Lead lead, Integer numberOfContractDocs) {
         Contract contract = new Contract();
         contract.Lead__c = lead.Id;
         contract.Product__c = lead.Product__c;
         contract.RecordTypeId = RECORD_TYPE_ID;
         contract.Generate_Review_Version__c = true;
+        contract.Generate_Disclosure_Form__c = (numberOfContractDocs == 2);
         
         if(lead.Product__r.Generic_Terms_Conga_Template__c != null) {
             contract.Contract_Type__c = 'Generic';
