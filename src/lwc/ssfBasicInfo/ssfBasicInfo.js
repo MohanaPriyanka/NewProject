@@ -40,6 +40,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track showUnderwritingOptions;
     @track showAddress;
     @track isPhone;
+    @track helpTextVisible;
      
     utilityAccountCount = 0;
     resumedApp = false;
@@ -49,6 +50,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         this.isPhone = (formFactorName === 'Small');
+        console.log('isPhone? ' + this.isPhone);
         
         if(this.zipCheckResponse) {
             this.zipCheckResponse = JSON.parse(this.zipCheckResponse);
@@ -462,5 +464,21 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
 
         return 2;
+    }
+
+    toggleHelp() {
+        this.helpTextVisible = !this.helpTextVisible;
+    }
+
+    get underwritingHelpText() {
+        return '<p>The FICO underwriting option is only available for a select group of customers. Please select the financial review option if the applicant’s annual cost exceeds the amount below for their utility and rate class.' + 
+            '<ul>' +
+            '   <li>CMP – Small Commercial: $55,000</li>' +
+            '   <li>CMP – Medium Commercial: $55,000</li>' +
+            '   <li>Versant Bangor Hydro – Small Commercial: $60,000</li>' +
+            '   <li>Versant Bangor Hydro – Medium Commercial: $60,000</li>' +
+            '   <li>Versant Maine Public – Small Commercial: $50,000</li>' +
+            '   <li>Versant Maine Public – Medium Commercial: $50,000</li>' +
+            '</ul></p>';
     }
 }
