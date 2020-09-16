@@ -122,7 +122,8 @@ public with sharing class SubscriptionSizingTestclass {
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'All',
-            Maximum_Subscription_Capacity_kWDC__c = 25
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Available_SMB_Underwriting_Method_FICO__c = true
         );
 
         Shared_Solar_System__c kwhSSS = new Shared_Solar_System__c(
@@ -143,7 +144,8 @@ public with sharing class SubscriptionSizingTestclass {
             Expected_Yield_kWh_kW__c = 1316,
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'All',
-            Maximum_Subscription_Capacity_kWDC__c = 25
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Available_SMB_Underwriting_Method_FICO__c = true
         );
 
         Shared_Solar_System__c kwhSSSTwo = new Shared_Solar_System__c(
@@ -164,7 +166,8 @@ public with sharing class SubscriptionSizingTestclass {
             Expected_Yield_kWh_kW__c = 1316,
             Assemblage_Count__c = 1,
             Sales_Partners__c = 'All',
-            Maximum_Subscription_Capacity_kWDC__c = 25
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Available_SMB_Underwriting_Method_FICO__c = true
         );
         //max kwh subscription = 25*1316 = 32900
         insert new List<Shared_Solar_System__c>{costSSS, kwhSSS, kwhSSSTwo};
