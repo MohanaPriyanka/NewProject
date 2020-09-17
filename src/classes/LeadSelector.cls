@@ -141,7 +141,8 @@ public without sharing class LeadSelector {
                 Utility_relationship__r.Name, 
                 Terms_Conditions__c, 
                 Zuora_Payment_Ref_Id__c,
-                Zuora_Payment_Ref_Id_Expiration_Date__c
+                Zuora_Payment_Ref_Id_Expiration_Date__c,
+                (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             WHERE Id = :leadIds
         ];

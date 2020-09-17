@@ -12,6 +12,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible private CapacityService capacityService = new CapacityService();
     @TestVisible private CustomerContractService customerContractService = new CustomerContractService();
     @TestVisible private ContentService contentService = new ContentService();
+    @TestVisible private CSQualificationService qualificationService = new CSQualificationService();
 
     @TestVisible protected LeadSelector leadSelector = new LeadSelector();
     @TestVisible private AccountsSelector accountsSelector = new AccountsSelector();
@@ -98,8 +99,12 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 response.statusCode = statusCode.badRequest;
             } else {
                 if (requestLead.applicationCompleteDate != null && leadToUpdate.Application_Complete_Date__c == null) {
+                    if(requestLead.underwritingCriteria == 'FICO') {
                     //pull credit, only once; on first time the app complete date is set
                     leadToUpdate.Soft_Pull_Credit_Report__c = true;
+                    } else if(requestLead.underwritingCriteria == 'Financial Review') {
+                        leadToUpdate.Status = qualificationService.underwriteWithFinancialReview(leadToUpdate);
+                    }
                     List<Account> propertyAccounts =  accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id> {requestLead.Id});
                     ZuoraAccountService.createAccounts(propertyAccounts);
                 }

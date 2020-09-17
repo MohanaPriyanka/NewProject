@@ -21,8 +21,7 @@ public without sharing class CSOpportunityFactory {
         Integer oppCounter = 1;
 
         for (Shared_Solar_System__c sss : availableSSS) {
-            if (Integer.valueOf(lead.LASER_Credit_Score__c) >= sss.Credit_Score_Requirement__c &&
-                (remainingAccountCostToAllocate > 0 || remainingAccountkWhToAllocate > 0)) {
+            if (remainingAccountCostToAllocate > 0 || remainingAccountkWhToAllocate > 0) {
                 Decimal annualElectricityCostAssigned = Math.min(remainingAccountCostToAllocate, sss.Maximum_Subscription_Cost__c);
                 if (remainingAccountCostToAllocate > 0) {
                     remainingAccountCostToAllocate -= annualElectricityCostAssigned;

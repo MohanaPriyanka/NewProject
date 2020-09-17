@@ -115,7 +115,7 @@ public without sharing class CSSubscriptionEnroller {
                 }
             }
         }
-
+        
         try {
             uow.commitWork();
         } catch(Exception ex) {
@@ -223,9 +223,9 @@ public without sharing class CSSubscriptionEnroller {
         ChargentOrders__ChargentOrder__c chargentOrder = leadIdToLeadWithChildren.get(lead.Id).Chargent_Orders__r.isEmpty() ? null : leadIdToLeadWithChildren.get(lead.Id).Chargent_Orders__r[0];
         List<Shared_Solar_System__c> availableSSS = getSortedSharedSolarSystems(lead);
         leadIdToAvailableSSS.put(lead.Id, availableSSS);
+        
         //Need to pass the property Account here (not converted Account)
         List<Opportunity> oppListToCreate = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, chargentOrder, annualTotals, propertyAccountId);
-        
         leadOppsMap.put(lead.Id, oppListToCreate);
         for(Opportunity opp : oppListToCreate) {
             List<Contract> leadContracts = leadIdToLeadWithChildren.get(lead.Id).Contracts__r;
@@ -282,7 +282,13 @@ public without sharing class CSSubscriptionEnroller {
                 sss.Service_Territories__c.contains(lead.LoadZone__c) &&
                 sss.Sales_Partners__c != null &&
                 (sss.Sales_Partners__c.contains('All') || sss.Sales_Partners__c.contains(lead.Partner_Name__c)) &&
-                (lead.Product__c == null || sss.Product__c == lead.Product__c)) {
+                (lead.Product__c == null || sss.Product__c == lead.Product__c) &&
+                (
+                    (lead.Underwriting_Criteria__c == 'FICO' && sss.Available_SMB_Underwriting_Method_FICO__c && Decimal.valueOf(lead.LASER_Credit_Score__c) >= sss.Credit_Score_Requirement__c)
+                    || (lead.Underwriting_Criteria__c == 'Financial Review' && sss.Available_SMB_Underwriting_Method_Docs__c)
+                    || (lead.Underwriting_Criteria__c != 'FICO' && lead.Underwriting_Criteria__c != 'Financial Review')
+                )
+            ) {
                     sssWrappers.add(new SSSWrapper(sss, lead.System_Assignment__c));
             }
         }
