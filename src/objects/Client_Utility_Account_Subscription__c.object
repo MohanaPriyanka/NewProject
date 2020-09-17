@@ -13,6 +13,35 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Agreement_Activated_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISNULL(Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c)), 
+Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__r.ActivatedDate, 
+IF(NOT(ISNULL(Utility_Account_Subscription__r.Opportunity__r.Assignment_Agreement__c)), 
+Utility_Account_Subscription__r.Opportunity__r.Assignment_Agreement__r.ActivatedDate, 
+null))</formula>
+        <label>Agreement Activated Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Agreement_Client_Entity__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISNULL(Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c)), 
+Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__r.BlueWave_Entity__c, 
+IF(NOT(ISNULL(Utility_Account_Subscription__r.Opportunity__r.Assignment_Agreement__c)), 
+Utility_Account_Subscription__r.Opportunity__r.Assignment_Agreement__r.BlueWave_Entity__c, 
+null))</formula>
+        <label>Agreement Client Entity</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Annual_Cost_of_Electricity_Future__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
