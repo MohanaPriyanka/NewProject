@@ -640,7 +640,7 @@
         <fullName>Application_Status__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Where the potential customer is in the application process</inlineHelpText>
-        <label>Application Status</label>
+        <label>Internal Application Status</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
@@ -4136,6 +4136,51 @@ Monthly_Payment__c)</formula>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Partner_Application_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Application Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Additional Signature Required</fullName>
+                    <default>false</default>
+                    <label>Additional Signature Required</label>
+                </value>
+                <value>
+                    <fullName>Application Started</fullName>
+                    <default>false</default>
+                    <label>Application Started</label>
+                </value>
+                <value>
+                    <fullName>Awaiting Information Requested</fullName>
+                    <default>false</default>
+                    <label>Awaiting Information Requested</label>
+                </value>
+                <value>
+                    <fullName>Complete</fullName>
+                    <default>false</default>
+                    <label>Complete</label>
+                </value>
+                <value>
+                    <fullName>Expired/Unqualified</fullName>
+                    <default>false</default>
+                    <label>Expired/Unqualified</label>
+                </value>
+                <value>
+                    <fullName>Under Review</fullName>
+                    <default>false</default>
+                    <label>Under Review</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Partner_Contact__c</fullName>
