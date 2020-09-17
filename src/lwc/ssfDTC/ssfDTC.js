@@ -1,5 +1,5 @@
 /**
- * Created by PeterYao on 2/24/2020.
+ * Created by lindsayholmes_gearscrm on 2020-09-14.
  */
 
 import { LightningElement, api, track, wire} from 'lwc';
@@ -12,7 +12,7 @@ import insertLog from '@salesforce/apex/Logger.insertLog';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 import { validateBasicInfoCompleted, getNumberOfDocsForExistingLead } from 'c/ssfShared';
 
-export default class Ssf extends NavigationMixin(LightningElement) {
+export default class SsfDTC extends NavigationMixin(LightningElement) {
     @api leadId;
     @api email;
 
@@ -39,7 +39,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
-        
+
         if(this.pageRef && this.pageRef.state) {
             if(this.pageRef.state.partnerId) {
                 this.resiApplicationType = false;
@@ -57,7 +57,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             if(this.pageRef.state.mock) {
                 this.mock = this.pageRef.state.mock;
             }
-
+            
             if(this.pageRef.state.leadid) {
                 this.leadId = this.pageRef.state.leadid;
                 if(this.pageRef.state.loc) {

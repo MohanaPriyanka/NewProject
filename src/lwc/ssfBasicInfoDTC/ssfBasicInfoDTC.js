@@ -1,8 +1,8 @@
 /**
- * Created by PeterYao on 2/24/2020.
+ * Created by lindsayholmes_gearscrm on 2020-09-14.
  */
 
-import {LightningElement, track, api} from 'lwc';
+import { LightningElement, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { getUSStateOptionsFull } from 'c/util';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -36,8 +36,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track selectedRateClasses = [];
 
     @track showSpinner;
-    @track spinnerMessage;
     @track sameBillingAddress = true;
+    @track sameHomeAddress = true;
     @track utilityAccountSection;
     @track isFileUpload;
     @track isFico;
@@ -114,11 +114,12 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 }
             }
             this.sameBillingAddress = this.propertyAccount.billingStreet == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
+            this.sameHomeAddress = this.restLead.streetAddress == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
         } 
         // if no lead exists, set default values for restLead and propertyAccount
         else {
             this.restLead = getNewRestLead(this);
-            
+
             this.propertyAccount = getNewRestPropertyAccount(this);
         }
         
@@ -224,6 +225,11 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.sameBillingAddress = event.target.checked;
     }
 
+    homeAddressToggle(event) {
+        this.sameHomeAddress = event.target.checked;
+
+    }
+
     addAnotherUtilityAccount() {
         if (!this.lastUtilityAccountValid()) {
             return;
@@ -304,18 +310,16 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     // submit form
     submitApplication() {
+        console.log('valid? ' + this.applicationValid())
         if (!this.applicationValid()) {
             return;
         }
-        
+
         setRemainingFields(this, false);
+        console.log('restlead returned: ');
+        console.log(this.restLead);
+
         this.showSpinner = true;
-        window.setTimeout(() => {
-            this.spinnerMessage = 'Saving your application';
-        }, 3000);
-        window.setTimeout(() => {
-            this.spinnerMessage = 'We\'ll generate documents next.\r\nThis may take a minute, please stand by.';
-        }, 6000);
         
         if(!this.resumedApp) {
             this.createLead(this.restLead).then(
@@ -403,6 +407,28 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         });
     }
 
+    getNumberOfDocs() {
+        if(!this.selectedProduct || !this.selectedProduct.standaloneDisclosureForm) {
+            return 1;
+        }
+
+        if(this.selectedRateClasses.length === 0) {
+            return 2;
+        }
+
+        let allSuppress = true;
+        this.selectedRateClasses.forEach(rateClass => {
+            if(!rateClass.suppressDisclosureForm) {
+                allSuppress = false;
+            }
+        });
+
+        if(allSuppress) {
+            return 1;
+        }
+
+        return 2;
+    }
 
     toggleHelp() {
         this.helpTextVisible = !this.helpTextVisible;

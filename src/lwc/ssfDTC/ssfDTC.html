@@ -1,5 +1,5 @@
 <!--
- - Created by PeterYao on 2/24/2020.
+ - Created by lindsayholmes_gearscrm on 2020-09-14.
  -->
 
 <!-- SimpleSignupForm -->
@@ -10,7 +10,7 @@
                 <div class="slds-size_1-of-1">
                     <div class="slds-text-align_center">
                         <h4 class="slds-var-p-bottom_medium">
-                            Please enter the applicant's email address to retrieve their application:
+                            Please enter your email address to retrieve your application:
                         </h4>
                         <p>
                             Email Address
@@ -31,15 +31,15 @@
             </div>
         </template>
         <template if:true={getZip}>
-            <c-ssf-zip-check
+            <c-ssf-zip-check-d-t-c
                 resi-application-type={resiApplicationType} 
                 partner-id={partnerId}
                 zip-code-input={zipCodeInput}
                 oncapacitycheckcomplete={handleCapacityCheckComplete}>
-            </c-ssf-zip-check>
+            </c-ssf-zip-check-d-t-c>
         </template>
         <template if:true={getBasicInfo}>
-            <c-ssf-basic-info 
+            <c-ssf-basic-info-d-t-c
                 lead-json={leadJSON} 
                 zip-check-response={zipCodeResponse} 
                 resi-application-type={resiApplicationType} 
@@ -49,10 +49,10 @@
                 campaign-id={campaignId}
                 mock={mock}
                 onleadcreated={handleLeadCreation}>
-            </c-ssf-basic-info>
+            </c-ssf-basic-info-d-t-c>
         </template>
         <template if:true={getAgreements}>
-            <c-ssf-agreements lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements>
+            <c-ssf-agreements-d-t-c lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements-d-t-c>
         </template>
         <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
     </div>

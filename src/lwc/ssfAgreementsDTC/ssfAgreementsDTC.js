@@ -1,14 +1,14 @@
 /**
- * Created by PeterYao on 2/24/2020.
+ * Created by lindsayholmes_gearscrm on 2020-09-14.
  */
 
 import { LightningElement, track, api } from 'lwc';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 import { connCallback, rendCallback, disclosureChecked_shared, creditCheckChecked_shared, csAgreementChecked_shared, filePreview_shared, 
-         showDisclosureApproval_shared, showCreditCheckApproval_shared, showCSAgreementApproval_shared, continueAgreement_shared } from 'c/ssfAgreementsShared';
+    showDisclosureApproval_shared, showCreditCheckApproval_shared, showCSAgreementApproval_shared, continueAgreement_shared } from 'c/ssfAgreementsShared';
 
-export default class SsfAgreements extends LightningElement {
+export default class SsfAgreementsDTC extends LightningElement {
     @api leadJson;
     lead;
     @track disclosures;
@@ -33,8 +33,8 @@ export default class SsfAgreements extends LightningElement {
     documentPollerId;
     documentPollerTimeoutId;
     mostRecentDocDate;
-    
-    
+
+
     get supportsDataUri() {
         var navua = window.navigator.userAgent.toLowerCase();
         // trident = IE
