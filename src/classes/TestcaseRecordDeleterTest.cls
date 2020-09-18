@@ -331,8 +331,9 @@ public class TestcaseRecordDeleterTest {
         System.assertEquals(13, postTaskOppList.size());
         Test.stopTest();
     }
-    
+
     @IsTest static void testClientUASTestcaseDeletion() {
+        //Positive case where testcase is in name on account
         Account newAcct = new Account(Name = 'Tester testcase');
         insert newAcct;
         Utility_Account_Log__c ual =
@@ -359,22 +360,68 @@ public class TestcaseRecordDeleterTest {
             CreatedDate = System.today().addDays(-30)
         );
         insert cuas;
+
+        //Negative testcase where testcase is not in name on account
+        Account newAcct2 = new Account(Name = 'NegativeDemo');
+        insert newAcct2;
+        Utility_Account_Log__c ual2 =
+            new Utility_Account_Log__c(Name = '8675307',
+                Account__c = newAcct2.Id,
+                Name_on_Account__c = 'Scotty',
+                CreatedDate = System.today().addDays(-30));
+
+        insert ual2;
+
+        Utility_Account_Subscription__c uas2 = new Utility_Account_Subscription__c(
+            Name = '987453211',
+            Utility_Account_Log__c = ual2.Id,
+            CreatedDate = System.today().addDays(-30)
+        );
+        insert uas2;
+
+        Client_Utility_Account_Subscription__c cuas2 = new Client_Utility_Account_Subscription__c(
+            Name = '999777996',
+            Utility_Account_Subscription__c = uas2.Id,
+            Shared_Solar_System__c = sssOne.Id,
+            CreatedDate = System.today().addDays(-30)
+        );
+        insert cuas2;
+
         Test.startTest();
         List<Client_Utility_Account_Subscription__c> cuass = [SELECT Id,Name FROM Client_Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '999777999'];
         List<Utility_Account_Subscription__c> uass = [SELECT Id,Name FROM Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '987453210'];
         List<Utility_Account_Log__c> uals = [SELECT Id,Name FROM Utility_Account_Log__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '8675309'];
-        System.assertEquals(1, cuass.size());
-        System.assertEquals(1, uass.size());
-        System.assertEquals(1, uals.size());
+
+        List<Client_Utility_Account_Subscription__c> cuass2 = [SELECT Id,Name FROM Client_Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '999777996'];
+        List<Utility_Account_Subscription__c> uass2 = [SELECT Id,Name FROM Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '987453211'];
+        List<Utility_Account_Log__c> uals2 = [SELECT Id,Name FROM Utility_Account_Log__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '8675307'];
+        String initmsg = 'Verifying that test data was inserted';
+
+        System.assertEquals(1, cuass.size(),initmsg);
+        System.assertEquals(1, uass.size(),initmsg);
+        System.assertEquals(1, uals.size(),initmsg);
+        System.assertEquals(1, cuass2.size(),initmsg);
+        System.assertEquals(1, uass2.size(),initmsg);
+        System.assertEquals(1, uals2.size(),initmsg);
 
         TestcaseRecordDeleter deleteRecords = new TestcaseRecordDeleter();
         deleteRecords.deleteTestcaseRecords();
         cuass = [SELECT Id,Name FROM Client_Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '999777999'];
         uass = [SELECT Id,Name FROM Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '987453210'];
         uals = [SELECT Id,Name FROM Utility_Account_Log__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '8675309'];
-        System.assertEquals(0, cuass.size());
-        System.assertEquals(0, uass.size());
-        System.assertEquals(0, uals.size());
+
+        cuass2 = [SELECT Id,Name FROM Client_Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '999777996'];
+        uass2 = [SELECT Id,Name FROM Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '987453211'];
+        uals2 = [SELECT Id,Name FROM Utility_Account_Log__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '8675307'];
+
+        String postDelpos = 'Verifies that records with \'Testcase\' were deleted';
+        String postDelneg = 'Verifies that records without \'Testcase\' were not deleted';
+        System.assertEquals(0, cuass.size(),postDelpos);
+        System.assertEquals(0, uass.size(),postDelpos);
+        System.assertEquals(0, uals.size(),postDelpos);
+        System.assertEquals(1, cuass2.size(),postDelneg);
+        System.assertEquals(1, uass2.size(),postDelneg);
+        System.assertEquals(1, uals2.size(),postDelneg);
         Test.stopTest();
     }
     @IsTest static void testUASTestcaseDeletion() {
@@ -421,7 +468,7 @@ public class TestcaseRecordDeleterTest {
         Util.enableTrigger('Disable_Client_Objects_Trigger__c');
 
         List<Utility_Account_Subscription__c> preTaskUASList = [SELECT Id FROM Utility_Account_Subscription__c];
-        System.assertEquals(10, preTaskUASList.size());
+        System.assertEquals(10, preTaskUASList.size(),'Verifies that 10 records were created for uals');
         List<Client_Utility_Account_Subscription__c> cUASToInsert = new List<Client_Utility_Account_Subscription__c>();
 
         for (Utility_Account_Subscription__c uas : preTaskUASList) {
@@ -435,7 +482,7 @@ public class TestcaseRecordDeleterTest {
         insert cUASToInsert;
 
         List<Client_Utility_Account_Subscription__c> preTaskClientUASList = [SELECT Id FROM Client_Utility_Account_Subscription__c];
-        System.assertEquals(10, preTaskClientUASList.size());
+        System.assertEquals(10, preTaskClientUASList.size(),'Verifies that 10 records were inserted for client uals');
 
         Test.startTest();
         TestcaseRecordDeleter deleteRecords = new TestcaseRecordDeleter();
@@ -445,10 +492,10 @@ public class TestcaseRecordDeleterTest {
 
 //      The task should only delete the 5 of the 10 UASes.
         List<Utility_Account_Subscription__c> postTaskUASList = [SELECT Id FROM Utility_Account_Subscription__c];
-        System.assertEquals(5, postTaskUASList.size());
+        System.assertEquals(5, postTaskUASList.size(),'Verifies that 5 records were deleted from uals');
 
         List<Client_Utility_Account_Subscription__c> postTaskClientUASList = [SELECT Id FROM Client_Utility_Account_Subscription__c];
-        System.assertEquals(5, postTaskClientUASList.size());
+        System.assertEquals(5, postTaskClientUASList.size(),'Verifies that 5 records were deleted from client uals');
     }
 
     @isTest static void testAccountTestcaseDeletion() {
@@ -665,7 +712,7 @@ public class TestcaseRecordDeleterTest {
 
     @IsTest static void testPCRTestcaseDeletion() {
         List<LASERCA__Personal_Credit_Report__c> preTaskPCRList = [SELECT Id FROM LASERCA__Personal_Credit_Report__c];
-        System.assertEquals(3, preTaskPCRList.size());
+        System.assertEquals(3, preTaskPCRList.size(),'Verifying that 3 pcrs were created');
 
         Test.startTest();
         TestcaseRecordDeleter deleteRecords = new TestcaseRecordDeleter();
@@ -673,13 +720,13 @@ public class TestcaseRecordDeleterTest {
 
 //      Only one PCR is over two weeks old.
         List<LASERCA__Personal_Credit_Report__c> postTaskPCRList = [SELECT Id FROM LASERCA__Personal_Credit_Report__c];
-        System.assertEquals(2, postTaskPCRList.size());
+        System.assertEquals(2, postTaskPCRList.size(),'Verifying that the single pcr over 2 weeks old is deleted.');
 
         deleteRecords.deleteAll = true;
         deleteRecords.deleteTestcaseRecords();
 
         postTaskPCRList = [SELECT Id FROM LASERCA__Personal_Credit_Report__c];
-        System.assertEquals(0, postTaskPCRList.size());
+        System.assertEquals(0, postTaskPCRList.size(),'Verifying that all records are deleted after deleteAll is toggled');
         Test.stopTest();
     }
 
