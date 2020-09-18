@@ -1,0 +1,83 @@
+<!--
+ - Created by lindsayholmes_gearscrm on 2020-09-14.
+ -->
+
+<template>
+    <div class="page-container">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-1">
+                <div class="slds-text-align_center">
+                    <h1 class="slds-var-p-around_medium">
+                        Let's see if community solar is available in your area!
+                    </h1>
+                    <h2 class="slds-var-p-bottom_large">
+                        Enter your zip code and property type to find out!
+                    </h2>
+                    <div class="slds-align_absolute-center zip-container" onkeyup={checkForSubmit}>
+                        <lightning-input name="zipCodeInput"
+                                        label="Zip Code"
+                                        variant="label-hidden"
+                                        value={zipCodeInput}
+                                        onchange={genericOnChange}
+                                        type="text"
+                                        pattern="[0-9]{5}"
+                                        class="input_center"
+                                        message-when-pattern-mismatch="Please enter your 5 digit ZIP code">
+                        </lightning-input>
+                    </div>
+
+                    <div class="icon-button-group-parent">
+                        <div class="icon-button-group-container">
+                            <div class={getResiButtonStyle} onclick={applicationTypeOnChangeResi}>
+                                <div class="icon-container">
+                                    <div class="icon">
+                                        <img src={resiIconUrl} class="icon">
+                                        <p class="icon">My Home</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class={getBizButtonStyle} onclick={applicationTypeOnChangeBiz}>
+                                <div class="icon-container">
+                                    <div class="icon">
+                                        <img src={bizIconUrl} class="icon">
+                                        <p class="icon">A Business</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick={submitZip}>Check Availability</button>
+                </div>
+            </div>
+        </div>
+        
+        <template if:true={showModal}>
+            <div class={getContainerStyle}></div>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__content modal_content" id="modal-content-id-1">
+                        <div class="slds-text-align_center">
+                            <h4>It looks like there are multiple utility providers in your zip code.</h4>
+                            <h4>Which one is yours?</h4>
+                        </div>
+                        <div class="center fit radio slds-text-align_left slds-var-m-top_small slds-var-m-bottom_x-large">
+                            <lightning-radio-group
+                                name='selectedUtility'
+                                options={utilityOptions}
+                                value={selectedUtility}
+                                onchange={genericOnChange}
+                                variant="label-hidden"
+                                message-when-value-missing="Please select your utility provider before proceeding."
+                                required></lightning-radio-group>
+                        </div>
+                        <div class="slds-text-align_right slds-var-m-top_xx-large">
+                            <button class="btn-inverse small slds-var-m-right_small" onclick={closeModal}>Cancel</button>
+                            <button class="btn small" onclick={proceedWithSelectedUtility}>Save</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+        <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
+    </div>
+</template>

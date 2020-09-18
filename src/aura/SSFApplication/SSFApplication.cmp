@@ -24,10 +24,10 @@
                     Subscribe Now, Pay Later!
                 </p>
                 <p class="slds-var-p-around_medium">
-                    <span style="font-weight: bold; font-family: sans-serif">You will not be charged anything now.</span> We will send you a statement before we charge your card.
+                    Please provide payment information below to enroll in autopay. <span style="font-weight: bold; font-family: sans-serif">The applicant will not be charged anything now.</span> We will send a statement before we charge a card.
                 </p>
                 <p class="slds-var-p-left_medium slds-var-p-right_medium">
-                    <span style="font-size: smaller">If you use a card for payment, a $1 temporary hold may show up on your card statement and will disappear within a few days.</span>
+                    <span style="font-size: smaller">If using a card for payment, a $1 temporary hold may show up on the applicant's card statement and will disappear within a few days. The applicant will not be charged for credit card processing fees.</span>
                 </p>
                 <div class="slds-var-p-around_medium">
                     <div class="slds-var-p-bottom_small">
@@ -49,15 +49,12 @@
         </aura:if>
         <aura:if isTrue="{!v.showComplete}">
             <div style="max-width: 640px">
-                <p class="slds-var-p-around_medium slds-text-align_center slds-text-heading_large">
-                    Application Complete!
+                <p class="slds-var-p-around_medium slds-text-align_center">
+                    The Community Solar application is now complete and under final review.
                 </p>
                 <p class="slds-var-p-around_medium slds-text-align_center">
-                    Your Community Solar application is now complete and under final review!
-                </p>
-                <p class="slds-var-p-around_medium slds-text-align_center">
-                    We sent a copy of your agreement(s) to the email address provided in the application. If your application is approved based on our eligibility requirements, we will email you the final signed agreement along with other important information about your subscription.
-                    Stay tuned, and thank you for choosing BlueWave Community Solar!
+                    We sent a copy of the agreement(s) to the email address provided in the application. If the application is approved based on our eligibility requirements, we will email a final signed agreement along with other important information about the subscription. Processing the application may take up to 24 hours. 
+                    Stay tuned and thank you for choosing BlueWave Community Solar.
                 </p>
             </div>
         </aura:if>
