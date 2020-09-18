@@ -5,7 +5,7 @@
 @IsTest
 public class TestcaseRecordDeleterTest {
     @TestSetup public static void setupData() {
-        Product2 srecProduct = new Product2( Name = 'Market Price - $10 Fee',
+        Product2 srecProduct = new Product2(Name = 'Market Price - $10 Fee',
             Family = 'Solar Loan',
             Product_Type__c = 'SREC',
             State__c = 'MA',
@@ -20,8 +20,8 @@ public class TestcaseRecordDeleterTest {
         BSST__c salesRep = new BSST__c(Name = 'Joe Bob', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@Sales.com');
         insert salesRep;
 
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(   Name = 'SREC',
+        ChargentBase__Gateway__c chGateway =
+            new ChargentBase__Gateway__c(Name = 'SREC',
                 ChargentBase__Merchant_ID__c = '235986',
                 ChargentBase__Available_Payment_Methods__c = 'eCheck',
                 ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
@@ -71,43 +71,51 @@ public class TestcaseRecordDeleterTest {
             ChargentOrders__Gateway__c = chGateway.Id,
             ChargentOrders__Credit_Amount__c = 0,
             SREC_Status__c = '');
-        insert new List<ChargentOrders__ChargentOrder__c>{alreadyReady, orderOne, orderTwo, orderThree};
+        insert new List<ChargentOrders__ChargentOrder__c>{
+            alreadyReady, orderOne, orderTwo, orderThree
+        };
 
-        Lead leadOne = new Lead (   FirstName = 'One',
+        Lead leadOne = new Lead (FirstName = 'One',
             LastName = 'Testcase',
             Company = 'Company one');
-        Lead leadTwo = new Lead (   FirstName = 'Two',
+        Lead leadTwo = new Lead (FirstName = 'Two',
             LastName = 'Testcase',
             Company = 'Company two');
-        Lead leadThree = new Lead ( FirstName = 'Three',
+        Lead leadThree = new Lead (FirstName = 'Three',
             LastName = 'Testcase',
             Company = 'Company three');
-        insert new List<Lead>{leadOne, leadTwo, leadThree};
+        insert new List<Lead>{
+            leadOne, leadTwo, leadThree
+        };
 
         Account accountOne = new Account(Name = 'AccountOne');
         Account accountTwo = new Account(Name = 'AccountTwo');
         Account accountThree = new Account(Name = 'AccountThree');
-        insert new List<Account>{accountOne, accountTwo, accountThree};
+        insert new List<Account>{
+            accountOne, accountTwo, accountThree
+        };
 
-        Opportunity oppOne = new Opportunity (  Name = 'OppOne',
+        Opportunity oppOne = new Opportunity (Name = 'OppOne',
             AccountId = accountOne.Id,
             Email__c = 'jpentaleri@bluewavesolar.com',
             SREC_Product__c = srecProduct.Id,
             StageName = 'Complete',
             CloseDate = Date.today().addYears(-1));
-        Opportunity oppTwo = new Opportunity (  Name = 'OppTwo',
+        Opportunity oppTwo = new Opportunity (Name = 'OppTwo',
             AccountId = accountTwo.Id,
             Email__c = 'jpentaleri@bluewavesolar.com',
             SREC_Product__c = srecProduct.Id,
             StageName = 'Complete',
             CloseDate = Date.today().addYears(-1));
-        Opportunity oppThree = new Opportunity (  Name = 'OppThree',
+        Opportunity oppThree = new Opportunity (Name = 'OppThree',
             AccountId = accountThree.Id,
             Email__c = 'jpentaleri@bluewavesolar.com',
             SREC_Product__c = srecProduct.Id,
             StageName = 'Complete',
             CloseDate = Date.today().addYears(-1));
-        insert new List<Opportunity>{oppOne, oppTwo, oppThree};
+        insert new List<Opportunity>{
+            oppOne, oppTwo, oppThree
+        };
 
         LASERCA__Personal_Credit_Report__c pcrOne = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadOne.Id,
@@ -129,7 +137,7 @@ public class TestcaseRecordDeleterTest {
 
     @IsTest static void testLeadTestcaseDeletion() {
         List<Lead> testLeads = new List<Lead>();
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Lead testLead = new Lead (FirstName = 'NewLead' + i,
                 LastName = 'Testcase',
                 Company = 'CompanyOther',
@@ -137,7 +145,7 @@ public class TestcaseRecordDeleterTest {
                 Status = 'Qualified');
             testLeads.add(testLead);
         }
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Lead testLead = new Lead (FirstName = 'NewLead' + i,
                 LastName = 'Persist',
                 Company = 'CompanyOther',
@@ -147,7 +155,7 @@ public class TestcaseRecordDeleterTest {
         }
 
 //      The following set of 5 Leads are the only ones that should be deleted
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Date dateTwoWeeksAgo = System.today().addDays(-30);
             Lead testLead = new Lead (FirstName = 'OldLead' + i,
                 LastName = 'Testcase',
@@ -157,7 +165,7 @@ public class TestcaseRecordDeleterTest {
                 Status = 'Qualified');
             testLeads.add(testLead);
         }
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Date dateTwoWeeksAgo = System.today().addDays(-30);
             Lead testLead = new Lead (FirstName = 'OldLead' + i,
                 LastName = 'Persist',
@@ -198,7 +206,7 @@ public class TestcaseRecordDeleterTest {
         insert partner2;
 
         List<Contact> testContacts = new List<Contact>();
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Contact testContact = new Contact (FirstName = 'NewContact' + i,
                 LastName = 'Testcase',
                 Partner_Lookup__c = partner1.Id,
@@ -206,7 +214,7 @@ public class TestcaseRecordDeleterTest {
             testContacts.add(testContact);
         }
 
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Contact testContact = new Contact (FirstName = 'NewContact' + i,
                 LastName = 'Testcase',
                 Partner_Lookup__c = partner2.Id,
@@ -214,7 +222,7 @@ public class TestcaseRecordDeleterTest {
             testContacts.add(testContact);
         }
 
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Contact testContact = new Contact (FirstName = 'NewContact' + i,
                 LastName = 'Persist',
                 Email = 'NewPersistEmail' + i + '@bluewavesolar.com');
@@ -222,7 +230,7 @@ public class TestcaseRecordDeleterTest {
         }
 
 //      The following set of 5 Leads are the only ones that should be deleted
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Date dateTwoWeeksAgo = System.today().addDays(-30);
             Contact testContact = new Contact (FirstName = 'OldContact' + i,
                 LastName = 'Testcase',
@@ -232,7 +240,7 @@ public class TestcaseRecordDeleterTest {
             testContacts.add(testContact);
         }
 
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Date dateTwoWeeksAgo = System.today().addDays(-30);
             Contact testContact = new Contact (FirstName = 'OldContact' + i,
                 LastName = 'Testcase',
@@ -242,7 +250,7 @@ public class TestcaseRecordDeleterTest {
             testContacts.add(testContact);
         }
 
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Date dateTwoWeeksAgo = System.today().addDays(-30);
             Contact testContact = new Contact (FirstName = 'OldContact' + i,
                 LastName = 'Persist',
@@ -273,14 +281,14 @@ public class TestcaseRecordDeleterTest {
     @isTest static void testOpportunityTestcaseDeletion() {
         List<Opportunity> testOpportunities = new List<Opportunity>();
         Date today = System.today();
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Opportunity testOpportunity = new Opportunity (Name = 'NewContact' + i + ' Testcase',
                 CloseDate = today,
                 StageName = 'New');
             testOpportunities.add(testOpportunity);
         }
 
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Opportunity testOpportunity = new Opportunity (Name = 'NewContact' + i + ' Persist',
                 CloseDate = today,
                 StageName = 'New');
@@ -289,14 +297,14 @@ public class TestcaseRecordDeleterTest {
 
 //      The following set of 5 Leads are the only ones that should be deleted
         Date dateTwoWeeksAgo = System.today().addDays(-30);
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Opportunity testOpportunity = new Opportunity (Name = 'NewContact' + i + ' Testcase',
                 CloseDate = dateTwoWeeksAgo,
                 StageName = 'New');
             testOpportunities.add(testOpportunity);
         }
 
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Opportunity testOpportunity = new Opportunity (Name = 'NewContact' + i + ' Persist',
                 CloseDate = dateTwoWeeksAgo,
                 StageName = 'New');
@@ -323,8 +331,53 @@ public class TestcaseRecordDeleterTest {
         System.assertEquals(13, postTaskOppList.size());
         Test.stopTest();
     }
+    
+    @IsTest static void testClientUASTestcaseDeletion() {
+        Account newAcct = new Account(Name = 'Tester testcase');
+        insert newAcct;
+        Utility_Account_Log__c ual =
+            new Utility_Account_Log__c(Name = '8675309',
+                Account__c = newAcct.Id,
+                Name_on_Account__c = 'Tiffany testcase',
+                CreatedDate = System.today().addDays(-30));
 
-    @isTest static void testUASTestcaseDeletion() {
+        insert ual;
+
+        Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
+            Name = '987453210',
+            Utility_Account_Log__c = ual.Id,
+            CreatedDate = System.today().addDays(-30)
+        );
+        insert uas;
+        Shared_Solar_System__c sssOne = new Shared_Solar_System__c(Name = 'demo testcase system');
+        insert sssOne;
+
+        Client_Utility_Account_Subscription__c cuas = new Client_Utility_Account_Subscription__c(
+            Name = '999777999',
+            Utility_Account_Subscription__c = uas.Id,
+            Shared_Solar_System__c = sssOne.Id,
+            CreatedDate = System.today().addDays(-30)
+        );
+        insert cuas;
+        Test.startTest();
+        List<Client_Utility_Account_Subscription__c> cuass = [SELECT Id,Name FROM Client_Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '999777999'];
+        List<Utility_Account_Subscription__c> uass = [SELECT Id,Name FROM Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '987453210'];
+        List<Utility_Account_Log__c> uals = [SELECT Id,Name FROM Utility_Account_Log__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '8675309'];
+        System.assertEquals(1, cuass.size());
+        System.assertEquals(1, uass.size());
+        System.assertEquals(1, uals.size());
+
+        TestcaseRecordDeleter deleteRecords = new TestcaseRecordDeleter();
+        deleteRecords.deleteTestcaseRecords();
+        cuass = [SELECT Id,Name FROM Client_Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '999777999'];
+        uass = [SELECT Id,Name FROM Utility_Account_Subscription__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '987453210'];
+        uals = [SELECT Id,Name FROM Utility_Account_Log__c WHERE CreatedDate < LAST_N_DAYS:28 AND Name = '8675309'];
+        System.assertEquals(0, cuass.size());
+        System.assertEquals(0, uass.size());
+        System.assertEquals(0, uals.size());
+        Test.stopTest();
+    }
+    @IsTest static void testUASTestcaseDeletion() {
         Util.disableTrigger('Disable_Client_Objects_Trigger__c');
         Account newAcct = new Account(Name = 'AccountName');
         insert newAcct;
@@ -348,7 +401,7 @@ public class TestcaseRecordDeleterTest {
         insert notTestOpportunity;
 
         List<Utility_Account_Subscription__c> testUASes = new List<Utility_Account_Subscription__c>();
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Utility_Account_Subscription__c testUAS = new Utility_Account_Subscription__c (
                 Name = '0000-1' + i,
                 Utility_Account_Log__c = ual.Id,
@@ -356,7 +409,7 @@ public class TestcaseRecordDeleterTest {
             );
             testUASes.add(testUAS);
         }
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Utility_Account_Subscription__c testUAS = new Utility_Account_Subscription__c (
                 Name = '0000-1' + i,
                 Utility_Account_Log__c = ual.Id,
@@ -371,7 +424,7 @@ public class TestcaseRecordDeleterTest {
         System.assertEquals(10, preTaskUASList.size());
         List<Client_Utility_Account_Subscription__c> cUASToInsert = new List<Client_Utility_Account_Subscription__c>();
 
-        for (Utility_Account_Subscription__c uas : preTaskUASList){
+        for (Utility_Account_Subscription__c uas : preTaskUASList) {
             Client_Utility_Account_Subscription__c cUAS = new Client_Utility_Account_Subscription__c(
                 Utility_Account_Subscription__c = uas.Id,
                 Shared_Solar_System__c = sssOne.Id,
@@ -385,9 +438,9 @@ public class TestcaseRecordDeleterTest {
         System.assertEquals(10, preTaskClientUASList.size());
 
         Test.startTest();
-            TestcaseRecordDeleter deleteRecords = new TestcaseRecordDeleter();
-            deleteRecords.deleteAll = true;
-            deleteRecords.deleteTestcaseRecords();
+        TestcaseRecordDeleter deleteRecords = new TestcaseRecordDeleter();
+        deleteRecords.deleteAll = true;
+        deleteRecords.deleteTestcaseRecords();
         Test.stopTest();
 
 //      The task should only delete the 5 of the 10 UASes.
@@ -401,13 +454,13 @@ public class TestcaseRecordDeleterTest {
     @isTest static void testAccountTestcaseDeletion() {
         List<Account> testAccounts = new List<Account>();
         Date today = System.today();
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Account testAccount = new Account (Name = 'NewContact' + i + ' Testcase',
                 CreatedDate = today);
             testAccounts.add(testAccount);
         }
 
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Account testAccount = new Account (Name = 'NewContact' + i + ' Persist',
                 CreatedDate = today);
             testAccounts.add(testAccount);
@@ -415,13 +468,13 @@ public class TestcaseRecordDeleterTest {
 
 //      The following set of 5 Leads are the only ones that should be deleted
         Date dateTwoWeeksAgo = System.today().addDays(-30);
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Account testAccount = new Account (Name = 'NewContact' + i + ' Testcase',
                 CreatedDate = dateTwoWeeksAgo);
             testAccounts.add(testAccount);
         }
 
-        for(Integer i = 0; i<5; i++){
+        for (Integer i = 0; i < 5; i++) {
             Account testAccount = new Account (Name = 'NewContact' + i + ' Persist',
                 CreatedDate = dateTwoWeeksAgo);
             testAccounts.add(testAccount);
@@ -466,7 +519,7 @@ public class TestcaseRecordDeleterTest {
 
         Load_U__c everLZU = new Load_U__c (Name = '02633',
             LZ__c = 'SEMA',
-            Town__c= 'Medfield');
+            Town__c = 'Medfield');
         insert everLZU;
 
         ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
@@ -495,29 +548,29 @@ public class TestcaseRecordDeleterTest {
             RecordTypeId = parentAccountRT);
         insert accountParent2;
 
-        Contact contactA = new Contact( FirstName = 'Contact',
+        Contact contactA = new Contact(FirstName = 'Contact',
             LastName = 'A',
             AccountId = accountParent.Id);
         insert contactA;
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Community Solar Community User'];
 
         User userRecord = new User(
             FirstName = 'Jordan',
-            Lastname ='Testcase',
+            Lastname = 'Testcase',
             Alias = 'xxx234',
             Email = 'jpentaleri@bluewavesolar.com',
-            Emailencodingkey ='UTF-8',
-            Languagelocalekey ='en_US',
-            Localesidkey ='en_US',
+            Emailencodingkey = 'UTF-8',
+            Languagelocalekey = 'en_US',
+            Localesidkey = 'en_US',
             Profileid = profileRecord.Id,
-            Country ='United States',
+            Country = 'United States',
             IsActive = true,
             ContactId = contactA.Id,
-            Timezonesidkey='America/Los_Angeles',
-            Username='testBillCreationandPay@bluewavesolar.com');
+            Timezonesidkey = 'America/Los_Angeles',
+            Username = 'testBillCreationandPay@bluewavesolar.com');
         Util.insertSobj(userRecord);
 
-        ChargentBase__Gateway__c chGateway  =
+        ChargentBase__Gateway__c chGateway =
             new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
                 ChargentBase__Merchant_ID__c = '235986',
                 ChargentBase__Available_Payment_Methods__c = 'eCheck',
@@ -543,7 +596,7 @@ public class TestcaseRecordDeleterTest {
                 Reserved_Capacity_kW_DC__c = '0',
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c  = 996,
+                Total_System_Size_kW_AC__c = 996,
                 Credit_Score_Requirement__c = 200,
                 Assignment_order__c = '2',
                 Client_Account__c = clientAccount2.Id,
@@ -565,7 +618,9 @@ public class TestcaseRecordDeleterTest {
             Parent_Account__c = accountParent2.Id);
         Account accountC = new Account(name = 'Account c',
             Parent_Account__c = accountParent2.Id);
-        insert new List<Account>{accountA, accountB};
+        insert new List<Account>{
+            accountA, accountB
+        };
 
         Date twoWeeksAgo = System.today().addDays(-30);
 
@@ -586,7 +641,9 @@ public class TestcaseRecordDeleterTest {
                 Annual_Cost_of_Electricity__c = 10000,
                 Name_on_Account__c = 'UAL Persist');
 
-        insert new List<Utility_Account_Log__c>{ualog, ualog2, ualog3};
+        insert new List<Utility_Account_Log__c>{
+            ualog, ualog2, ualog3
+        };
 
         List<Utility_Account_Log__c> preUALList = [SELECT Id FROM Utility_Account_Log__c];
         System.assertEquals(3, preUALList.size());
@@ -629,7 +686,7 @@ public class TestcaseRecordDeleterTest {
     @IsTest static void testDeleteAccountsFromSFDCAndZuora() {
         List<Account> testAccounts = new List<Account>();
         Date dateTwoWeeksAgo = System.today().addDays(-30);
-        for (Integer i = 0; i<5; i++) {
+        for (Integer i = 0; i < 5; i++) {
             Account testAccount = new Account(
                 Name = 'NewContact' + i + ' Testcase',
                 CreatedDate = dateTwoWeeksAgo,
