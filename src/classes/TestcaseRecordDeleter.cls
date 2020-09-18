@@ -21,7 +21,7 @@ public without sharing virtual class TestcaseRecordDeleter implements Schedulabl
             Logger.flushLogs();
         }
     }
-    
+
     public void deleteTestcaseRecords() {
         // Finds and deletes accounts from Zuora
         System.enqueueJob(new TestcaseRecordAsyncDeleter());
@@ -32,16 +32,20 @@ public without sharing virtual class TestcaseRecordDeleter implements Schedulabl
             createdDateFilter = '';
             closedDateFilter = '';
         }
+        //query order matters, if Client_Utility_Account_Subscription is not removed first, then there will be issues
+        //with deleting test data.
         List<String> queries = new List<String>{
-            'SELECT Id, Name_on_Account__c FROM Utility_Account_Log__c WHERE (Name_on_Account__c like \'%Testcase%\' ' + createdDateFilter + ' )',
-            'SELECT Id, First_Name_from_Lead__c, Last_Name_from_Lead__c FROM LASERCA__Personal_Credit_Report__c WHERE (Last_Name_from_Lead__c like \'%Testcase%\' ' + createdDateFilter + ')',
+            'SELECT Id FROM Client_Utility_Account_Subscription__c WHERE (Utility_Account_Subscription__r.Name_on_Account_From_Log__c LIKE \'%Testcase%\' ' + createdDateFilter + ') ',
             'SELECT Id FROM Client_Utility_Account_Subscription__c WHERE (Utility_Account_Subscription__r.Opportunity__r.Name like \'%Testcase%\' ' + createdDateFilter + ')',
             'SELECT Id FROM Utility_Account_Subscription__c WHERE (Opportunity__r.Name like \'%Testcase%\' ' + createdDateFilter + ')',
+            'SELECT Id, Name_on_Account__c FROM Utility_Account_Log__c WHERE (Name_on_Account__c like \'%Testcase%\' ' + createdDateFilter + ' )',
+            'SELECT Id, First_Name_from_Lead__c, Last_Name_from_Lead__c FROM LASERCA__Personal_Credit_Report__c WHERE (Last_Name_from_Lead__c like \'%Testcase%\' ' + createdDateFilter + ')',
             'SELECT Id, Name FROM Opportunity WHERE (Name like \'%Testcase%\' ' + closedDateFilter + ')',
             'SELECT Id, FirstName, LastName FROM Contact WHERE (LastName = \'Testcase\' ' + createdDateFilter + ') AND Partner_Lookup__r.Name != \'Bluewave Inside Sales\' AND Name != \'BlueWave Testcase\'',
             'SELECT Id, FirstName, LastName FROM Lead WHERE (LastName = \'Testcase\' ' + createdDateFilter + ')',
             'SELECT Id, Name FROM Account WHERE (Zuora_Id__c = NULL AND Name like \'%Testcase%\' ' + createdDateFilter + ')'
         };
+
 
         List<SObject> sobjects = new List<SObject>();
         Integer recordsProcessed = 0;
