@@ -280,6 +280,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Contract_Assignment_Entity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Contracts_Needed_to_COD__c</field>
         <readable>true</readable>
