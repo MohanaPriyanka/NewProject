@@ -1,0 +1,59 @@
+<!--
+ - Created by lindsayholmes_gearscrm on 2020-09-14.
+ -->
+
+<!-- SimpleSignupForm -->
+<template>
+    <div class="page-container">
+        <template if:true={getEmail}>
+            <div class="slds-grid slds-wrap slds-var-p-around_large">
+                <div class="slds-size_1-of-1">
+                    <div class="slds-text-align_center">
+                        <h4 class="slds-var-p-bottom_medium">
+                            Please enter your email address to retrieve your application:
+                        </h4>
+                        <p>
+                            Email Address
+                        </p>
+                        <div class="slds-align_absolute-center slds-var-p-top_x-small" style="width: 70%;" onkeyup={checkForSubmit}>
+                            <lightning-input name="email"
+                                    label="Email Address"
+                                    variant="label-hidden"
+                                    value={email}
+                                    onchange={genericOnChange}
+                                    type="email"
+                                    class="slds-var-m-bottom_large">
+                            </lightning-input>
+                        </div>
+                        <button class="btn slds-var-m-horizontal_small" onclick={getLead}>Resume Application</button>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template if:true={getZip}>
+            <c-ssf-zip-check-d-t-c
+                resi-application-type={resiApplicationType} 
+                partner-id={partnerId}
+                zip-code-input={zipCodeInput}
+                oncapacitycheckcomplete={handleCapacityCheckComplete}>
+            </c-ssf-zip-check-d-t-c>
+        </template>
+        <template if:true={getBasicInfo}>
+            <c-ssf-basic-info-d-t-c
+                lead-json={leadJSON} 
+                zip-check-response={zipCodeResponse} 
+                resi-application-type={resiApplicationType} 
+                underwriting-options={underwritingOptions}
+                partner-id={partnerId}
+                sales-rep-id={salesRepId}
+                campaign-id={campaignId}
+                mock={mock}
+                onleadcreated={handleLeadCreation}>
+            </c-ssf-basic-info-d-t-c>
+        </template>
+        <template if:true={getAgreements}>
+            <c-ssf-agreements-d-t-c lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements-d-t-c>
+        </template>
+        <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
+    </div>
+</template>
