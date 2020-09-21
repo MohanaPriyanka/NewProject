@@ -13,18 +13,6 @@
         <template>RS_Application_Email_Notifications/RS_PreQualification_App_Reciept</template>
     </alerts>
     <alerts>
-        <fullName>Application_Receipt_Prequal_DOER</fullName>
-        <description>Application Receipt - Prequal DOER</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>DOER/RS_DOER_PreQualification_App_Reciept</template>
-    </alerts>
-    <alerts>
         <fullName>BWOC_Alert_non_partner_preapproval_lead</fullName>
         <ccEmails>salesops@bluewavesolar.com</ccEmails>
         <description>BWOC Alert - non partner preapproval lead</description>
@@ -121,30 +109,6 @@
         <template>DOER/DOER_Please_Complete_CoApplicant_Form</template>
     </alerts>
     <alerts>
-        <fullName>FICO_Disclosure_Joint_App</fullName>
-        <description>FICO Disclosure Joint App</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Co_Applicant_Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>RS_Application_Email_Notifications/FICO_Disclosure_Co_App</template>
-    </alerts>
-    <alerts>
-        <fullName>FICO_Disclosure_Main_App</fullName>
-        <description>FICO Disclosure Main App</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>RS_Application_Email_Notifications/FICO_Disclosure</template>
-    </alerts>
-    <alerts>
         <fullName>Lead_Assignment_Notification</fullName>
         <description>Lead Assignment Notification</description>
         <protected>false</protected>
@@ -154,19 +118,6 @@
         <senderAddress>noreply@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
-    </alerts>
-    <alerts>
-        <fullName>Lead_DOER_Co_Applicant_Credit_Denial_Email</fullName>
-        <ccEmails>solarloans@bluewavesolar.com, Solarloans@avidiabank.com</ccEmails>
-        <description>Lead - DOER - Co Applicant Credit Denial Email</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>m.desai@avidiabank.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>DOER/DOER_Co_App_Customer_Credit_Denial</template>
     </alerts>
     <alerts>
         <fullName>Lead_DOER_Credit_Denial_Email</fullName>
@@ -184,15 +135,6 @@
         <senderAddress>customercare@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>DOER/DOER_Customer_Credit_Denial</template>
-    </alerts>
-    <alerts>
-        <fullName>NC_Pre_Qualified_Homeowner</fullName>
-        <ccEmails>PartnerSupport@bluewavesolar.com</ccEmails>
-        <description>NC Pre-Qualified Homeowner</description>
-        <protected>false</protected>
-        <senderAddress>noreply@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>BFG_Internal_Alerts/NC_Pre_Qualified_Homeowner</template>
     </alerts>
     <alerts>
         <fullName>Non_Partner_Installer_Email_Alert</fullName>
@@ -350,19 +292,6 @@
         <senderAddress>customercare@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>DOER/RS_DOER_PreQualification_Approval</template>
-    </alerts>
-    <alerts>
-        <fullName>RS_Send_Co_App_Credit_Denial_Email1</fullName>
-        <ccEmails>solarloans@bluewavesolar.com</ccEmails>
-        <description>RS Send Co App Credit Denial Email</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Co_Applicant_Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>RS_Application_Email_Notifications/RS_Customer_Co_App_Credit_Denial</template>
     </alerts>
     <alerts>
         <fullName>RS_Send_Credit_Denial_Email</fullName>
