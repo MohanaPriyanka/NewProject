@@ -36,7 +36,7 @@ public without sharing class UserStoryPromoter implements Schedulable {
         String testLevel = addStoriesToPromotion(storiesToPromote, promotion);
 
         String apiKey = Util.getSystemPropertyString('Copado_API_Key__c');
-        String endpoint ='https://copado.herokuapp.com/json/v1/webhook/promotions/' + promotion.Id + '/process?' +
+        String endpoint ='https://app-api.copa.do/json/v1/webhook/promotions/' + promotion.Id + '/process?' +
             'testLevel='+testLevel+'&' +
             'api_key='+apiKey+'&' +
             'deploymentName='+promotion.Name+'+to+prod+via+Apex';
