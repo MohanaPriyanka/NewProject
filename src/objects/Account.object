@@ -15396,7 +15396,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <searchResultsAdditionalFields>Total_Outstanding_Balance__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Account_Number__c</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <validationRules>
         <fullName>Cancel_Large_Offtake_Manually</fullName>
         <active>true</active>
