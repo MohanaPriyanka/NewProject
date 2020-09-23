@@ -113,7 +113,6 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
             FROM Utility_Account_Log__Share
             WHERE RowCause = 'Guest_User_Access__c'
         ];
-
         System.assertEquals(3, shareRecords.size(), 'Expected 3 sharing records to have been created');
     }
 
@@ -143,11 +142,11 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
             System.assert(!contract.Generate_Disclosure_Form__c, 'No matter what the rate class is, Generate_Disclosure_Form__c should always be false when the product\'s Disclosure_Form_Conga_Template__c is null');
 
 
+
             ual.Utility_Rate_Class__c = rateClass1.Id;
             update ual;
             contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
             System.assert(!contract.Generate_Disclosure_Form__c, 'No matter what the rate class is, Generate_Disclosure_Form__c should always be false when the product\'s Disclosure_Form_Conga_Template__c is null');
-
 
             // product.Disclosure_Form_Conga_Template__c != null
             product0.Disclosure_Form_Conga_Template__c = 'abc123';
@@ -159,14 +158,12 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
             contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
             System.assert(contract.Generate_Disclosure_Form__c, 'When the product\'s Disclosure_Form_Conga_Template__c is not null and the rate class is null, Generate_Disclosure_Form__c should be true');
 
-
             // rate class.Suppress_Disclosure_Form__c = true
             //  ==> contract.Generate_Disclosure_Form__c = false
             ual.Utility_Rate_Class__c = rateClass1.Id;
             update ual;
             contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
             System.assert(!contract.Generate_Disclosure_Form__c, 'When the rate class\'s Suppress_Disclosure_Form__c is true, Generate_Disclosure_Form__c should be false');
-
 
             // rate class.Suppress_Disclosure_Form__c = false
             //  ==> contract.Generate_Disclosure_Form__c = true
@@ -175,5 +172,6 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
             contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
             System.assert(contract.Generate_Disclosure_Form__c, 'When the rate class\'s Suppress_Disclosure_Form__c is false, Generate_Disclosure_Form__c should be true');
         Test.stopTest();
+
     }
 }
