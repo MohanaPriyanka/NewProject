@@ -63,14 +63,13 @@ public without sharing class CSQualificationService {
             //Handle No Match Leads and set credit score to 9999
             if (pcr.LASERCA__Credit_Score__c != null) {
                 creditScore = Decimal.valueOf(pcr.LASERCA__Credit_Score__c);
+                closeReportMissingCases(lead);
             } else {
                 pcr.LASERCA__Credit_Score_TransUnion__c = '9999';
                 pcr.LASERCA__Credit_Score__c = '9999';
                 creditScore = 9999;
                 updatePCRs.add(pcr);
-                //TODO:create case on no match
                 System.enqueueJob(new CreateCaseOnNoMatch(lead));
-                //createCaseOnNoMatch(lead);
             }
 
             //Check if lead is qualified
@@ -242,12 +241,21 @@ public without sharing class CSQualificationService {
         input.createQualificationList();
         return input.qualificationMatches;
     }
-
+    public static void closeReportMissingCases(Lead lead) {
+        List<Case> cases = new CaseSelector().selectOpenCasesFromLeadId(lead.Id);
+        if (cases.size() > 0) {
+            for (Case c : cases) {
+                c.Status = 'Closed';
+            }
+            update cases;
+        }
+    }
     public class CreateCaseOnNoMatch implements Queueable {
         private Lead lead;
         public CreateCaseOnNoMatch(Lead lead) {
             this.lead = new LeadSelector().selectOne(lead.Id);
         }
+
         public void execute(QueueableContext context) {
             if (new CaseSelector().selectOpenCasesFromLeadId(lead.Id).size() == 0) {
                 CaseFactory caseFactory = new CaseFactory();
