@@ -2,20 +2,25 @@
  * Created by PeterYao on 2/24/2020.
  */
 
-import {LightningElement, track, api, wire} from 'lwc';
-import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
+import {LightningElement, track, api} from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import { getUSStateOptionsFull } from 'c/util';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { makeRequest } from 'c/httpRequestService';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import formFactorName from '@salesforce/client/formFactor';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
+import { getFinDocFileTypes, getUnderwritingHelpText, getNewRestLead, getNewRestPropertyAccount, getNewRestUtilityAccountLog, validateUtilityAccountLog, setRemainingFields } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api leadJson;
     @api resiApplicationType;
     @api zipCheckResponse;
     @api underwritingOptions;
+    @api partnerId;
+    @api salesRepId;
+    @api campaignId;
+    @api mock;
 
     @track zipinput;
     @track collectRateClass;
@@ -33,7 +38,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track showSpinner;
     @track spinnerMessage;
     @track sameBillingAddress = true;
-    @track sameHomeAddress = true;
     @track utilityAccountSection;
     @track isFileUpload;
     @track isFico;
@@ -44,13 +48,11 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
      
     utilityAccountCount = 0;
     resumedApp = false;
-    finDocFileTypes = ['.png', '.jpg', '.jpeg', '.pdf', '.zip'];
-    @wire(CurrentPageReference) pageRef;
+    finDocFileTypes = getFinDocFileTypes();
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         this.isPhone = (formFactorName === 'Small');
-        console.log('isPhone? ' + this.isPhone);
         
         if(this.zipCheckResponse) {
             this.zipCheckResponse = JSON.parse(this.zipCheckResponse);
@@ -112,21 +114,12 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 }
             }
             this.sameBillingAddress = this.propertyAccount.billingStreet == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
-            this.sameHomeAddress = this.restLead.streetAddress == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
         } 
         // if no lead exists, set default values for restLead and propertyAccount
         else {
-            this.restLead = {
-                applicationType: this.resiApplicationType ? 'Residential' : 'Non-Residential',
-                zipCode: this.zipinput,
-                productName: this.selectedProduct.name,
-                utilityId: this.utilityId,
-                financialDocs: []
-            }
-            this.propertyAccount = { 
-                billingPostalCode: this.resiApplicationType ? '' : this.zipinput, 
-                utilityAccountLogs: [] 
-            };
+            this.restLead = getNewRestLead(this);
+            
+            this.propertyAccount = getNewRestPropertyAccount(this);
         }
         
         if(this.resiApplicationType) { 
@@ -148,15 +141,15 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
 
         if(!this.restLead.partnerId) {
-            this.restLead.partnerId = this.pageRef && this.pageRef.state && this.pageRef.state.partnerId ? this.pageRef.state.partnerId : null;
+            this.restLead.partnerId = this.partnerId;
         }
 
         if(!this.restLead.salesRepId) {
-            this.restLead.salesRepId = this.pageRef && this.pageRef.state && this.pageRef.state.salesRepId ? this.pageRef.state.salesRepId : null;
+            this.restLead.salesRepId = this.salesRepId;
         }
 
         if(!this.restLead.campaignId) {
-            this.restLead.campaignId = this.pageRef && this.pageRef.state && this.pageRef.state.campaignId ? this.pageRef.state.campaignId : null;
+            this.restLead.campaignId = this.campaignId;
         }
 
         // if there are no utility accounts, add an empty one so the form will show fields to enter data
@@ -171,7 +164,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if (!this.stateOptions) {
             this.stateOptions = getUSStateOptionsFull();
         }
-        if (this.pageRef && this.pageRef.state && this.pageRef.state.mock) {
+        if (this.mock) {
             this.mockData();
         }
     }
@@ -231,11 +224,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.sameBillingAddress = event.target.checked;
     }
 
-    homeAddressToggle(event) {
-        this.sameHomeAddress = event.target.checked;
-
-    }
-
     addAnotherUtilityAccount() {
         if (!this.lastUtilityAccountValid()) {
             return;
@@ -246,15 +234,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     addUtilityAccount() {
         this.utilityAccountCount++;
-        this.propertyAccount.utilityAccountLogs.push({
-            localid:this.utilityAccountCount,
-            name: `Utility Account ${this.utilityAccountCount}`,
-            servicePostalCode: this.zipinput,
-            utilityId: this.utilityId,
-            doNotDelete: false,
-            showUpload: this.isFileUpload,
-            utilityBills: []
-        });
+        this.propertyAccount.utilityAccountLogs.push(getNewRestUtilityAccountLog(this));
         setTimeout(() => this.utilityAccountSection = this.utilityAccountCount);
     }
 
@@ -272,12 +252,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     // perform validations
     lastUtilityAccountValid() {
         let index = this.utilityAccountCount - 1;
-        if (this.propertyAccount.utilityAccountLogs[index] &&
-            this.propertyAccount.utilityAccountLogs[index].utilityAccountNumber &&
-            this.propertyAccount.utilityAccountLogs[index].serviceStreet &&
-            this.propertyAccount.utilityAccountLogs[index].serviceState &&
-            this.propertyAccount.utilityAccountLogs[index].serviceCity &&
-            this.propertyAccount.utilityAccountLogs[index].servicePostalCode) {
+        if(validateUtilityAccountLog(this.propertyAccount.utilityAccountLogs[index])) {
             return true;
         }
         this.showWarningToast('Warning', 'Please complete this utility account before adding another');
@@ -332,23 +307,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if (!this.applicationValid()) {
             return;
         }
-
-        if (this.sameBillingAddress) {
-            this.propertyAccount.billingStreet = this.propertyAccount.utilityAccountLogs[0].serviceStreet;
-            this.propertyAccount.billingCity = this.propertyAccount.utilityAccountLogs[0].serviceCity;
-            this.propertyAccount.billingState = this.propertyAccount.utilityAccountLogs[0].serviceState;
-            this.propertyAccount.billingPostalCode = this.propertyAccount.utilityAccountLogs[0].servicePostalCode;
-        }
-        if (this.sameHomeAddress) {
-            this.restLead.streetAddress = this.propertyAccount.utilityAccountLogs[0].serviceStreet;
-            this.restLead.city = this.propertyAccount.utilityAccountLogs[0].serviceCity;
-            this.restLead.state = this.propertyAccount.utilityAccountLogs[0].serviceState;
-            this.restLead.zipCode = this.propertyAccount.utilityAccountLogs[0].servicePostalCode;
-        }
-        this.propertyAccount.name = this.resiApplicationType ? `${this.restLead.firstName} ${this.restLead.lastName}` : this.restLead.businessName;
-        this.restLead.propertyAccounts = [this.propertyAccount];
-        this.restLead.numberOfContractDocs = this.getNumberOfDocs();
-
+        
+        setRemainingFields(this, false);
         this.showSpinner = true;
         window.setTimeout(() => {
             this.spinnerMessage = 'Saving your application';
@@ -443,42 +403,12 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         });
     }
 
-    getNumberOfDocs() {
-        if(!this.selectedProduct || !this.selectedProduct.standaloneDisclosureForm) {
-            return 1;
-        }
-
-        if(this.selectedRateClasses.length === 0) {
-            return 2;
-        }
-
-        let allSuppress = true;
-        this.selectedRateClasses.forEach(rateClass => {
-            if(!rateClass.suppressDisclosureForm) {
-                allSuppress = false;
-            }
-        });
-
-        if(allSuppress) {
-            return 1;
-        }
-
-        return 2;
-    }
 
     toggleHelp() {
         this.helpTextVisible = !this.helpTextVisible;
     }
 
     get underwritingHelpText() {
-        return '<p>The FICO underwriting option is only available for a select group of customers. Please select the financial review option if the applicant’s annual cost exceeds the amount below for their utility and rate class.' + 
-            '<ul>' +
-            '   <li>CMP – Small Commercial: $55,000</li>' +
-            '   <li>CMP – Medium Commercial: $55,000</li>' +
-            '   <li>Versant Bangor Hydro – Small Commercial: $60,000</li>' +
-            '   <li>Versant Bangor Hydro – Medium Commercial: $60,000</li>' +
-            '   <li>Versant Maine Public – Small Commercial: $50,000</li>' +
-            '   <li>Versant Maine Public – Medium Commercial: $50,000</li>' +
-            '</ul></p>';
+        return getUnderwritingHelpText();
     }
 }

@@ -117,17 +117,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     }
 
-    // @IsTest
-    // private static void testPatchLeadSuccessNoCreditPull() {
-    //     useMocks();
-    //     String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00", "underwritingCriteria": "Financial Review" }';
-    //     controller.patchLead(jsonRequest);
-
-    //     System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-    //     System.assertEquals(false, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should NOT be done for Financial Review leads');
-    //     System.assertEquals('Qualified', mockLeadService.getLastUpdatedLead().Status, 'Lead status should be populated by CSQualificationService when Financial Review leads are completed.');
-    // }
-
     @IsTest
     private static void testPatchLeadStreetAddress() {
         useMocks();
@@ -976,9 +965,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
         Id contentDocIdUtil = cds.getDocumentIdFromVersionId(cvUtilBill.Id);
     
         String financialDocs = '"financialDocs": [{ "title": "FinancialDocument.pdf", "body": "ZmluYW5jaWFsIGRvY3M=", "fileCategory": "Financial Review Documents" }]';
-
-        // String financialDocs = '"financialDocs": [{ "title": "FinancialDocument.pdf", "body": "data:text/plain;base64,ZmluYW5jaWFsIGRvY3M=", "fileCategory": "Financial Review Documents" }]';
-
         String utilityBills = '"utilityBills": [{ "id": "' + contentDocIdUtil + '" }]';
         String jsonRequest = getPostLeadJson(financialDocs, utilityBills);
         RestRequest req = new RestRequest();

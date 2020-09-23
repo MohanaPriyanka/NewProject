@@ -8,6 +8,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Partner_Application_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.ACH_Account_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -34,6 +39,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Acquired_By_Client_Closed_By_BlueWave__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Application_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
