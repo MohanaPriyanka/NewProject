@@ -366,6 +366,24 @@ private class CSQualificationTestclass {
         allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
         System.assertEquals(0, allMatches.size(), 'There should be no qualification matches');
     }
+    @IsTest
+    public static void testNoMatchCaseCreation(){
+
+        Lead switchLead = [
+            SELECT Id,Name,Parent_Account__c
+            FROM Lead
+            LIMIT 1
+        ];
+
+        System.assertEquals(0,new CaseSelector().selectOpenCasesFromLeadId(switchLead.Id).size(),'There should be no open cases for ' +
+            'this lead before enqueuing');
+        Test.startTest();
+        System.enqueueJob(new CSQualificationService.CreateCaseOnNoMatch(switchLead));
+        System.enqueueJob(new CSQualificationService.CreateCaseOnNoMatch(switchLead));
+        Test.stopTest();
+        System.assertEquals(1,new CaseSelector().selectOpenCasesFromLeadId(switchLead.Id).size(),'If a case already ' +
+            'exists another should not be created. There should only be 1 open case at a time.');
+    }
 
 
 }
