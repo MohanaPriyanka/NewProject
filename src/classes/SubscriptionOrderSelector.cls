@@ -103,4 +103,12 @@ public inherited sharing class SubscriptionOrderSelector {
         }
         return uasIdToSumSoMap;
     }
+
+    public List<Subscription_Order__c> getSubscriptionOrdersByAssignmentAgreement(Set<Id> assignmentAgreementIds) {
+        return [
+            SELECT Id, Client_Assignment_Agreement__c, Invoice_Date__c
+            FROM Subscription_Order__c
+            WHERE Client_Assignment_Agreement__c IN :assignmentAgreementIds
+        ];
+    }
 }
