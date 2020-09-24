@@ -5,6 +5,12 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     private static SubscriptionOrderSelector subscripOrderSelector = new SubscriptionOrderSelector();
 
     private MultiMap contractToFeeDetailMap;
+    @TestVisible
+    private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+        new List<SObjectType> {
+            Subscription_Order__c.SObjectType
+        }
+    );
 
     private virtual class FeeQualification {
         private Boolean acquisition;
@@ -26,6 +32,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     }
 
     private class SubscriptionOrder extends FeeQualification {
+        private Id contractFeeDetailId;
         private SubscriptionOrder(Subscription_Order__c subOrder) {
             String partnerType = subOrder.Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name;
             Date reacqStartDate = subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c;
@@ -48,6 +55,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.upsizing = subOrder.Approved_Change_in_Subscription__c >= 0;
             this.acquisition = reacqStartDate == null || reacqStartDate > subOrder.Effective_Date__c;
             this.reacquisition = !acquisition;
+            this.contractFeeDetailId = subOrder.Contract_Fee_Detail__c;
         }
 
         private Boolean matches(ContractFeeDetail feeDetail){
@@ -115,12 +123,6 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
     }
 
-    public fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
-        new List<SObjectType> {
-            Subscription_Order__c.SObjectType
-        }
-    );
-
     @Future
     public static void setSubOrderContractFeeDetailInFuture(Set<Id> subscriptionOrderIds){
         ClientInvoicingFeeAssignmentService feeJob = new ClientInvoicingFeeAssignmentService();
@@ -155,47 +157,47 @@ public without sharing class ClientInvoicingFeeAssignmentService {
                 SubscriptionOrder feeQualifier = new SubscriptionOrder(subOrder);
                 subOrdersAsFeeQualifications.add(feeQualifier);
                 contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c);
+                contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c);
             }
         }
 
         List<Contract_Fee_Detail__c> feeDetailList = contractFeeDetailSelector.getContractDetailFromContract(contractIds);
         contractToFeeDetailMap = convertContractFeeListToFeeDetailMap(feeDetailList);
-        matchSubscriptionOrderToFee(subOrdersAsFeeQualifications,contractToFeeDetailMap);
+        for (SubscriptionOrder subOrder : subOrdersAsFeeQualifications) {
+            matchSubscriptionOrderToFee(subOrder, contractToFeeDetailMap);
+        }
     }
 
-    private void matchSubscriptionOrderToFee(List<SubscriptionOrder> subscriptionOrders,
-                                             MultiMap contractToFeeDetailMap){
-        for (SubscriptionOrder subOrder : subscriptionOrders){
-            Set<Object> contractDetails = new Set<Object>();
-            // Max 2 contracts per Subscription Order (1 Acq, 1 Mgmt)
-            for (Id contractId : subOrder.contractIds){
-                contractDetails.addAll(contractToFeeDetailMap.getValues(contractId));
+    private void matchSubscriptionOrderToFee(SubscriptionOrder subOrder,
+                                             MultiMap contractToFeeDetailMap) {
+        List<ContractFeeDetail> contractDetails = getContractFeeDetailsFromContracts(subOrder, contractToFeeDetailMap);
+        Subscription_Order__c orderToUpdate;
+        for (ContractFeeDetail feeDetail : contractDetails) {
+            if (!subOrder.matches(feeDetail) || subOrder.contractFeeDetailId == feeDetail.recordId) {
+                continue;
             }
-            Integer matchCount = 0;
-            Subscription_Order__c orderToUpdate;
-
-            for (Object feeDetailObj : contractDetails){
-                ContractFeeDetail feeDetail = (ContractFeeDetail)feeDetailObj;
-                if (subOrder.matches(feeDetail)){
-                    orderToUpdate = new Subscription_Order__c(
-                        Id = subOrder.recordId,
-                        Contract_Fee_Detail__c = feeDetail.recordId
-                    );
-                    matchCount += 1;
-                }
-            }
-            if (matchCount == 1){
-                uow.registerDirty(orderToUpdate);
-            } else if (matchCount == 0){
-                Logger.logLater('ClientInvoicingFeeAssignmentService','matchSubscriptionOrderToFee','No matches found : ' + JSON.serialize(subOrder),'INFO');
+            if (orderToUpdate != null) {
+                Logger.logLater('ClientInvoicingFeeAssignmentService','matchSubscriptionOrderToFee','Multiple matches found : ' + JSON.serialize(subOrder), Logger.ERROR);
             } else {
+                orderToUpdate = new Subscription_Order__c(
+                    Id = subOrder.recordId,
+                    Contract_Fee_Detail__c = feeDetail.recordId
+                );
                 uow.registerDirty(orderToUpdate);
-                Logger.logLater('ClientInvoicingFeeAssignmentService','matchSubscriptionOrderToFee','Multiple matches found : ' + JSON.serialize(subOrder),'INFO');
             }
         }
     }
 
-    private MultiMap convertContractFeeListToFeeDetailMap(List<Contract_Fee_Detail__c> contractFeeDetail){
+    private List<ContractFeeDetail> getContractFeeDetailsFromContracts(SubscriptionOrder subOrder, MultiMap contractToFeeDetailMap) {
+        List<ContractFeeDetail> contractDetails = new List<ContractFeeDetail>();
+        // Max 2 contracts per Subscription Order (1 Acq, 1 Mgmt)
+        for (Id contractId : subOrder.contractIds) {
+            CollectionUtil.toTypedList(contractToFeeDetailMap.getValues(contractId), contractDetails);
+        }
+        return contractDetails;
+    }
+
+    private MultiMap convertContractFeeListToFeeDetailMap(List<Contract_Fee_Detail__c> contractFeeDetail) {
         MultiMap feeDetailMap = MultiMap.newListInstance();
 
         for (Contract_Fee_Detail__c feeDetail : contractFeeDetail){
@@ -212,7 +214,8 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             subOrder.Approved_Change_in_Subscription__c != null &&
             subOrder.Effective_Date__c != null &&
             subOrder.Utility_Account_Subscription__r.Shared_Solar_System__c != null &&
-            subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c != null) {
+            (subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c != null ||
+                subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c != null)) {
             return true;
         } else {
             Logger.logLater('ClientInvoicingFeeAssignmentService', 'hasRequiredFieldsForAcquisition', 'SO did not have fields for acquisition: ' + JSON.serialize(subOrder), Logger.DEBUG);

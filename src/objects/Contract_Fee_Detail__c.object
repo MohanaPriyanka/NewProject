@@ -682,10 +682,42 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         </valueSet>
     </fields>
     <fields>
+        <fullName>Waive_Reacq_Fee_After_Initial_Period__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies that reacquisition fees should be waived up to a Max Project % (which could be blank) for Subscription Orders effective after the initial period.</inlineHelpText>
+        <label>Waive Reacq Fee After Initial Period</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Waive_Reacq_Fee_In_Initial_Period__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies that reacquisition fees should be waived up to a Max Project % (which could be blank) for Subscription Orders effective before the initial period.</inlineHelpText>
+        <label>Waive Reacq Fee In Initial Period</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Waive_Reacq_Fee_Max_In_Period__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Reacquisition fees will be waived until X% (annually) of the project (calculated by summing SOs with waived fee CIMs) has been reacquired in the initial period. If blank, all SOs will get CIMs to waive fees (potentially more than 100% of the project).</inlineHelpText>
+        <label>Waive Reacq Fee: Max % In Period</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
         <fullName>Waive_Reacquisition_Fee_Max_Project__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Reacquisition fees will be waived until X% of the project has been reacquired</inlineHelpText>
-        <label>Waive Reacquisition Fee: Max Project %</label>
+        <inlineHelpText>Reacquisition fees will be waived until X% (annually) of the project (calculated by summing SOs with waived fee CIMs) has been reacquired after the initial period. If blank, all SOs will get CIMs to waive fees (potentially more than 100% of the project).</inlineHelpText>
+        <label>Waive Reacq Fee: Max % After Period</label>
         <precision>7</precision>
         <required>false</required>
         <scale>4</scale>
@@ -697,8 +729,8 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <fullName>Waive_Reacquisition_Fee_Number_Months__c</fullName>
         <defaultValue>0</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Number of months after the project date that reacquisition fees are waived (ie, 18 months after COD)  Must be populated at same time as field Waive Reacquisition Fee: Project Date</inlineHelpText>
-        <label>Waive Reacquisition Fee: # of Months</label>
+        <inlineHelpText>Must be populated at same time as field Waive Reacq Fee:Initial Period Milestone. The milestone + # of Months defines the end of the initial period, allowing us to waive fees before or after that initial period. Could be 0 but not blank.</inlineHelpText>
+        <label>Waive Reacq Fee: # of Months</label>
         <precision>3</precision>
         <required>false</required>
         <scale>0</scale>
@@ -710,8 +742,8 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
     <fields>
         <fullName>Waive_Reacquisition_Fee_Project_Date__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Must be populated at same time as field Waive Reacquisition Fee: # of Months. Date that reacquisition fees should start to be waived (ie, 18 months after COD)</inlineHelpText>
-        <label>Waive Reacquisition Fee: Project Date</label>
+        <inlineHelpText>Must be populated at same time as field Waive Reacq Fee: # of Months. The milestone + # of Months defines the end of the initial period, allowing us to waive fees before or after that initial period.</inlineHelpText>
+        <label>Waive Reacq Fee:Initial Period Milestone</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>

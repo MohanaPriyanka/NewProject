@@ -47,7 +47,8 @@ public with sharing class ClientInvoicingMemoSelectorTest {
             Client_Invoicing_Memo__c memo = new Client_Invoicing_Memo__c(
                 Subscription_Order__c = order.Id,
                 Effective_Date__c = System.today(),
-                Amount__c = -10
+                Amount__c = -10,
+                Type__c = 'Waived Acquisition / Reacquisition Fee'
             );
             memosToInsert.add(memo);
         }
@@ -66,12 +67,12 @@ public with sharing class ClientInvoicingMemoSelectorTest {
         for (Shared_Solar_System__c sss : sssList){
             sssIdSet.add(sss.Id);
         }
-        System.assert(sssIdSet.size() > 0);
+        System.assert(sssIdSet.size() > 0, 'Expected at least two SSSes in this test but got ' + sssIdSet.size());
 
         ClientInvoicingMemoSelector selector = new ClientInvoicingMemoSelector();
-        Map<Id,Decimal> kwMap = selector.getWaivedFeesBySSS(sssIdSet);
+        MultiMap kwMap = selector.getWaivedFeesBySSS(sssIdSet);
 
-        System.assertEquals(20,kwMap.get(sssList[0].Id));
-        System.assertEquals(20,kwMap.get(sssList[1].Id));
+        System.assertEquals(2,kwMap.getValues(sssList[0].Id).size(), 'Expected test setup to create two fee waive CIMs for Test SSS One');
+        System.assertEquals(2,kwMap.getValues(sssList[1].Id).size(), 'Expected test setup to create two fee waive CIMs for Test SSS Two');
     }
 }

@@ -1,291 +1,382 @@
-@isTest
+@IsTest
 public class ClientInvoicingFeeWaiveServiceTest {
+    @TestSetup
+    public static void setupData() {
+        SharedSolarSystemHandlerTest.setupData();
+    }
+
     @IsTest
-    private static void testSetSubscriptionOrderAcquisitionFee() {
+    private static void systemTest() {
+        Account account = [SELECT Id FROM Account LIMIT 1];
+        RecordType clientRT = [SELECT Id FROM RecordType WHERE Name = 'Client Contract' LIMIT 1];
+        Contract contractA = new Contract(
+            Name = 'Client Contract A',
+            AccountId = account.Id,
+            RecordTypeId = clientRT.Id,
+            StartDate = System.today()
+        );
+        insert contractA;
+        Contract_Fee_Detail__c cfd = new Contract_Fee_Detail__c(
+            Contract__c = contractA.Id,
+            Fee__c = 0.10,
+            Acquisition_Type_Reacquisition__c = true,
+            Waive_Reacquisition_Fee_Project_Date__c = 'Contract: Effective Date',
+            Waive_Reacquisition_Fee_Number_Months__c = 0,
+            Waive_Reacq_Fee_After_Initial_Period__c = true,
+            Acquisition_Cust_Group_Residential__c = true,
+            Acquisition_Channels_BCS_Acquired__c = false,
+            Acquisition_Channels_Non_BCS_Acquired__c = true,
+            Acquisition_Sizing_Type_Upsizing__c = true
+        );
+        insert cfd;
+
+        Shared_Solar_System__c sss = [
+            SELECT Id, (SELECT Id FROM Opportunities__r LIMIT 1)
+            FROM Shared_Solar_System__c
+            WHERE Name = 'SSS 1'
+            LIMIT 1
+        ];
+        sss.Client_Management_Contract__c = contractA.Id;
+        sss.Reacquisition_Start_Date__c = System.today().addYears(-1);
+        update sss;
+
+        Utility_Account_Subscription__c uas = [
+            SELECT Id
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__c = :sss.Opportunities__r[0].Id
+            LIMIT 1
+        ];
+
+        Subscription_Order__c so = new Subscription_Order__c(
+            Effective_Date__c = System.today(),
+            Utility_Account_Subscription__c = uas.Id,
+            Approval_Status__c = 'Approved',
+            New_Annual_kWh__c = 4800,
+            Previous_Annual_kwh__c = 0
+        );
+        Test.startTest();
+        insert so;
+        Test.stopTest();
+
+        Client_Invoicing_Memo__c cim = [
+            SELECT Id
+            FROM Client_Invoicing_Memo__c
+            WHERE Subscription_Order__c = :so.Id
+            LIMIT 1
+        ];
+        System.assertNotEquals(null, cim,
+            'Expected to create a CIM since we are in the initial period. ' +
+                'Contract Start Date: ' + contractA.StartDate + ' SO Effective Date: ' + so.Effective_Date__c);
+    }
+
+    @IsTest
+    private static void testWaiveForProjectDates() {
         ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService(null);
-        useMocks();
-        List<Subscription_Order__c> orders = getSubscriptionOrderMocks();
-        System.assertEquals(13,orders.size());
+        service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
+            Client_Invoicing_Memo__c.SObjectType
+        });
+        Subscription_Order__c so = getSubscriptionOrder();
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: COD';
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = System.today();
+        Client_Invoicing_Memo__c cim = service.waiveFeeBasedOnDate(so);
+        System.assertNotEquals(null, cim,
+            'Expected to get an Client Invoicing Memo for Project COD to be waived in the initial period');
+        System.assertEquals(-so.Approved_Change_in_Subscription__c * so.Contract_Fee_Detail__r.Fee__c * 1000, cim.Amount__c,
+            'Expected to waive the full amount of the SO change since there is no cap');
 
-        service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType> {Client_Invoicing_Memo__c.SObjectType});
-        service.setFeesToWaive(orders);
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = null;
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(null, cim,
+            'Did not expect to waive the SO because there is no COD Date');
 
-        List<Client_Invoicing_Memo__c> memosToInsert = (List<Client_Invoicing_Memo__c>)
-            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'Client_Invoicing_Memo__c');
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: PTO';
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_PTO_Date_MANUAL__c = System.today();
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertNotEquals(null, cim,
+            'Expected to get an Client Invoicing Memo for Project PTO to be waived in the initial period');
+        System.assertEquals(-so.Approved_Change_in_Subscription__c * so.Contract_Fee_Detail__r.Fee__c * 1000, cim.Amount__c,
+            'Expected to waive the full amount of the SO change since there is no cap');
 
-        for (Client_Invoicing_Memo__c memo : memosToInsert) {
-            String subOrderIdAsString = memo.Subscription_Order__c;
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_PTO_Date_MANUAL__c = null;
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(null, cim,
+            'Did no expect to get an Client Invoicing Memo for Project PTO to be waived in the initial period');
 
-            // All subscription orders are 12 kW with a $0.10/W, so expect $-120 for a fully waived fee
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Contract: Effective Date';
+        so.Contract_Fee_Detail__r.Contract__r.StartDate = System.today();
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertNotEquals(null, cim,
+            'Expected to get an Client Invoicing Memo for Contract Effective Date to be waived in the initial period');
+        System.assertEquals(-so.Approved_Change_in_Subscription__c * so.Contract_Fee_Detail__r.Fee__c * 1000, cim.Amount__c,
+            'Expected to waive the full amount of the SO change since there is no cap');
 
-            switch on subOrderIdAsString {
-                when 'a9W3F000000A1P6UAK' {
-                    System.assertEquals(-1200,memo.Amount__c,'Expected this fee to be waived with a COD Date Filter');
-                }
-                when 'a9W3F000000A1P7UAK' {
-                    System.assert(false,'Did not expect this fee to be waived with a COD Date Filter');
-                }
-                when 'a9W3F000000A2P7UAK' {
-                    System.assertEquals(-1200,memo.Amount__c,'Expected this fee to be waived with a PTO Date Filter');
-                }
-                when 'a9W3F000000A2P6UAK' {
-                    System.assert(false,'Did not expect this fee to be waived with a PTO Date Filter');
-                }
-                when 'a9W3F000000A1P8UAK' {
-                    System.assertEquals(-1200,memo.Amount__c,'Expected this fee to be waived with a First Bill Date Filter');
-                }
-                when 'a9W3F000000A1P9UAK' {
-                    System.assert(false,'Did not expect this fee to be waived with a First Bill Date Filter');
-                }
-                when 'a9W3F000000A1Q9UAK' {
-                    System.assert(false,'Did not expect this fee to be waived with a Contract Effective Date Filter');
-                }
-                when 'a9W3F000000A1R9UAK' {
-                    System.assertEquals(-1200,memo.Amount__c,'Expected this fee to be waived with a Contract Effective Date Filter');
-                }
-                when 'a9W3F000000A1S9UAK' {
-                    System.assertEquals(-1200,memo.Amount__c,'Expected this fee to be waived because it is under the 5% project max');
-                }
-                when 'a9W3F000000A1T9UAK' {
-                    // Only 9.24 kW left before hitting 5% cap, so only partially waived:
-                    System.assertEquals(-923.57,memo.Amount__c, 'Expected this fee to be waived because it is under the 5% project max');
-                }
-                when 'a9W3F000000A1U7UAK' {
-                    System.assert(false,'Did not expect this fee to be waived because it is over the 5% project max');
-                }
-                when 'a9W3F000000A2U7UAK' {
-                    System.assert(false,'Did not expect this fee to be waived because it is over the 5% project max');
-                }
-                when 'a9W3F000000A1P8NNN' {
-                    // 18kW Assigned to Client Agreement with $0.09/W Fee = $162
-                    System.assertEquals(-1620,memo.Amount__c,'Expected this fee to be waived with a Customer Assignment Date Filter');
-                }
-            }
-        }
-        System.assertEquals(7,memosToInsert.size());
+        so.Contract_Fee_Detail__r.Contract__r.StartDate = null;
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(null, cim,
+            'Did not expect to get an Client Invoicing Memo for Contract Effective Date if the contract has no Start Date');
+
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: First Customer Bill Date';
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.First_Bill_Date__c = System.today();
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertNotEquals(null, cim,
+            'Expected to get an Client Invoicing Memo for First Customer Bill Date to be waived in the initial period');
+        System.assertEquals(-so.Approved_Change_in_Subscription__c * so.Contract_Fee_Detail__r.Fee__c * 1000, cim.Amount__c,
+            'Expected to waive the full amount of the SO change since there is no cap');
+
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.First_Bill_Date__c = null;
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(null, cim,
+            'Did not expect to get an Client Invoicing Memo for First Customer Bill Date if first bill date is null');
+
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Fee not Charged';
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(null, cim,
+            'Did not expect to get an Client Invoicing Memo for Fee not Charged');
+
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: First Customer Assignment Date';
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(null, cim,
+            'Did not expect to get an Client Invoicing Memo for First Customer Assignment Date ' +
+                '(that is global picklist option used when setting the Revenue Start Date on a SSS)');
     }
 
-    private static void useMocks() {
-        ClientInvoicingFeeWaiveService.assignmentService = (ClientInvoicingFeeAssignmentService) Test.createStub(ClientInvoicingFeeAssignmentService.class, new MockFeeAssignment());
-        ClientInvoicingFeeWaiveService.clientInvoicingMemoSelector = (ClientInvoicingMemoSelector) Test.createStub(ClientInvoicingMemoSelector.class, new MockClientInvoicingMemoSelector());
-        ClientInvoicingFeeWaiveService.subscriptionOrderSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
+    @IsTest
+    private static void testWaiveForInitialPeriod() {
+        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService(null);
+        service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
+            Client_Invoicing_Memo__c.SObjectType
+        });
+        Subscription_Order__c so = getSubscriptionOrder();
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: COD';
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = System.today();
+        Client_Invoicing_Memo__c cim = service.waiveFeeBasedOnDate(so);
+
+        so.Approved_Change_in_Subscription__c = -12;
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(null, cim,
+            'Should not get a fee waive for reductions');
+
+        so.Approved_Change_in_Subscription__c = 12;
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = false;
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(null, cim,
+            'Should not get a fee waive in the initial period if the CFD does not enable that option');
+
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = DateUtil.convertGmtToDate(so.Effective_Date__c.addMonths(-1));
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(null, cim,
+            'Should not get a fee waive because the SO is one day after the initial period. ' +
+                'SSS COD: ' + so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c +
+                'SO Effective: ' + so.Effective_Date__c);
+
+        so.Effective_Date__c = so.Effective_Date__c.addDays(-1);
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertNotEquals(null, cim,
+            'Should get a fee waive because the SO is at the end of the initial period. ' +
+                'SSS COD: ' + so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c +
+                'SO Effective: ' + so.Effective_Date__c);
+        System.assertEquals(-so.Approved_Change_in_Subscription__c * so.Contract_Fee_Detail__r.Fee__c * 1000, cim.Amount__c,
+            'Expected to waive the full amount of the SO change since there is no cap');
+
     }
 
-    public class MockClientInvoicingMemoSelector extends MockProvider {
-        public MockClientInvoicingMemoSelector() {
-        }
+    @IsTest
+    private static void testWaiveWithMaxProjectPercentCap() {
+        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService(null);
+        service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
+            Client_Invoicing_Memo__c.SObjectType
+        });
+        Subscription_Order__c so = getSubscriptionOrder();
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: COD';
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c = true;
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c = 5;
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = DateUtil.convertGmtToDate(System.today());
+        so.Effective_Date__c = DateUtil.convertGmtToDate(System.today().addMonths(1));
+        Id sssId = Util.getFakeId(Shared_Solar_System__c.SObjectType);
 
-        public override Object handleMethodCall(MethodCall methodCall) {
-            String queryData = '{"a1J3F00000122b7UAA":39.76434,"a1J3F00000122b8UAA":101.788544}';
+        service.sssIdToTotalWaivedkWMap = MultiMap.newListInstance();
+        Client_Invoicing_Memo__c cim = service.waiveFeeBasedOnDate(so);
+        System.assertNotEquals(null, cim,
+            'Should get a fee waive because the SO is after the initial period. ' +
+                'SSS COD: ' + so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c +
+                'SO Effective: ' + so.Effective_Date__c);
+        System.assertEquals(-so.Approved_Change_in_Subscription__c * so.Contract_Fee_Detail__r.Fee__c * 1000, cim.Amount__c,
+            'Expected to waive the full amount of the SO change since there have not been any other fees waived yet');
 
-            Map<Id,Decimal> sssToWaivedAmountMap = (Map<Id,Decimal>) JSON.deserialize(queryData, Map<Id,Decimal>.class);
+        service.sssIdToTotalWaivedkWMap = MultiMap.newListInstance();
+        ClientInvoicingMemo existingClientInvoicingMemoInThisAnnualPeriod = new ClientInvoicingMemo(
+            sssId,
+            so.Effective_Date__c,
+            (so.Utility_Account_Subscription__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c * 5/100) - 1
+        );
+        service.sssIdToTotalWaivedkWMap.putValue(sssId, existingClientInvoicingMemoInThisAnnualPeriod);
 
-            switch on methodCall.stubbedMethodName {
-                when 'getWaivedFeesBySSS' {
-                    return sssToWaivedAmountMap;
-                }
-            }
-            return null;
-        }
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(-1 * so.Contract_Fee_Detail__r.Fee__c * 1000, cim.Amount__c,
+            'Expected to waive just 1 kW since that is what is left under the 5% cap');
+        System.assert(so.Utility_Account_Subscription__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c * 5/100 > so.Approved_Change_in_Subscription__c,
+            'The total system size capped at 5% is ' + so.Utility_Account_Subscription__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c * 5/100 +
+                ' which is less than the change amount of ' + so.Approved_Change_in_Subscription__c);
+
+        so.Effective_Date__c = so.Effective_Date__c.addYears(1);
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(-so.Approved_Change_in_Subscription__c * so.Contract_Fee_Detail__r.Fee__c * 1000, cim.Amount__c,
+            'A SO in the next annual period should get fully waived');
+        System.assertEquals(3, service.sssIdToTotalWaivedkWMap.getValues(sssId).size(),
+            'We expect to find the existingClientInvoicingMemoInThisAnnualPeriod, the one that is for 1 kW, and the fully waived one just created');
+        System.assertEquals(so.Effective_Date__c.addYears(-1), ((ClientInvoicingMemo) service.sssIdToTotalWaivedkWMap.getValues(sssId)[1]).effectiveDate,
+            'The previously created invoice memo should be from the previous year');
+
     }
 
-    public class MockSubscriptionOrderSelector extends MockProvider {
-        public MockSubscriptionOrderSelector() {
-        }
+    @IsTest
+    private static void testWaiveByCustomerAssignment() {
+        ClientInvoicingFeeAssignmentService assignmentService =
+            (ClientInvoicingFeeAssignmentService) Test.createStub(ClientInvoicingFeeAssignmentService.class, new MockAssignmentService());
 
-        public override Object handleMethodCall(MethodCall methodCall) {
-            String queryData = '{"a1d3F0000017AA1QAM":18,"a1d3F0000014EV1QAM":5.345}';
+        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService(assignmentService);
+        service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
+            Client_Invoicing_Memo__c.SObjectType
+        });
+        // Since System Change Rounded is not writable, we have to set it when creating the SO...
+        Subscription_Order__c so = getSubscriptionOrderWithSystemChangeRounded(25);
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Customer: Assignment Date';
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c = true;
 
-            Map<Id,Decimal> uasToAssignedCapacityMap = (Map<Id,Decimal>) JSON.deserialize(queryData, Map<Id,Decimal>.class);
+        Client_Invoicing_Memo__c cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(null, cim,
+            'Should have not gotten an invoicing memo since the system change on the order is not 0');
 
-            switch on methodCall.stubbedMethodName {
-                when 'getSubscriptionOrdersAssignedToClient' {
-                    return uasToAssignedCapacityMap;
-                }
-            }
-            return null;
-        }
+        so = getSubscriptionOrderWithSystemChangeRounded(0);
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Customer: Assignment Date';
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
+        so.Approved_Change_in_Subscription__c = -12;
+        service.uasToAssignedCapacityMap = new Map<Id, Decimal>();
+        Decimal subscriptionSizeAtTimeOfAssignment = -so.Approved_Change_in_Subscription__c * 2;
+        service.uasToAssignedCapacityMap.put(Util.getFakeId(Utility_Account_Subscription__c.SObjectType), subscriptionSizeAtTimeOfAssignment);
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertNotEquals(null, cim,
+            'Should have gotten an invoicing memo since the system change on the order goes to 0');
+        System.assertEquals(-subscriptionSizeAtTimeOfAssignment * .10 * 1000, cim.Amount__c,
+            'Expected the invoicing memo to be based on the size at time of Assignment, not the latest Approved Change in Subscription');
+
+        so = getSubscriptionOrderWithSystemChangeRounded(0);
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Customer: Assignment Date';
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = false;
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c = true;
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c = 5;
+        so.Effective_Date__c = so.Utility_Account_Subscription__r.Opportunity__r.Assignment_Agreement__r.CustomerSignedDate.addMonths(1);
+        so.Approved_Change_in_Subscription__c = -12;
+
+        Id sssId = Util.getFakeId(Shared_Solar_System__c.SObjectType);
+        service.sssIdToTotalWaivedkWMap = MultiMap.newListInstance();
+        ClientInvoicingMemo existingClientInvoicingMemoInThisAnnualPeriod = new ClientInvoicingMemo(
+            sssId,
+            so.Effective_Date__c,
+            (so.Utility_Account_Subscription__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c * 5/100) - 1
+        );
+        service.sssIdToTotalWaivedkWMap.putValue(sssId, existingClientInvoicingMemoInThisAnnualPeriod);
+
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assertEquals(-1 * so.Contract_Fee_Detail__r.Fee__c * 1000, cim.Amount__c,
+            'Expected to waive just 1 kW since that is what is left under the 5% cap');
+
     }
 
-    public class MockFeeAssignment extends MockProvider {
-        public MockFeeAssignment() {
-        }
+    private static Subscription_Order__c getSubscriptionOrder() {
+        return getSubscriptionOrderWithSystemChangeRounded(25);
+    }
+    private static Subscription_Order__c getSubscriptionOrderWithSystemChangeRounded(Decimal systemChangeRounded) {
+        Date today = System.today();
+        Map<SObjectField, Object> subscriptionOrderValues = new Map<SObjectField, Object> {
+            Subscription_Order__c.Id => Util.getFakeId(Subscription_Order__c.SObjectType),
+            Subscription_Order__c.Effective_Date__c => today,
+            Subscription_Order__c.Utility_Account_Subscription__c => Util.getFakeId(Utility_Account_Subscription__c.SObjectType),
+            Subscription_Order__c.Approved_Change_in_Subscription__c => 12,
+            Subscription_Order__c.System_Change_kW_DC_Rounded__c => systemChangeRounded
+        };
+        sfab_FabricatedSObject fabbedSO = new sfab_FabricatedSObject(Subscription_Order__c.class, subscriptionOrderValues);
+        Map<SObjectField, Object> cfdValues = new Map<SObjectField, Object> {
+            Contract_Fee_Detail__c.Fee__c => .10,
+            Contract_Fee_Detail__c.Acquisition_Type_Acquisition__c => false,
+            Contract_Fee_Detail__c.Acquisition_Type_Reacquisition__c => true,
+            Contract_Fee_Detail__c.Waive_Reacquisition_Fee_Project_Date__c => 'Project: COD',
+            Contract_Fee_Detail__c.Waive_Reacquisition_Fee_Number_Months__c => 2,
+            Contract_Fee_Detail__c.Waive_Reacq_Fee_In_Initial_Period__c => true,
+            Contract_Fee_Detail__c.Waive_Reacq_Fee_After_Initial_Period__c => false,
+            Contract_Fee_Detail__c.Waive_Reacquisition_Fee_Max_Project__c => null
+        };
+        sfab_FabricatedSObject fabbedCFD = new sfab_FabricatedSObject(Contract_Fee_Detail__c.class, cfdValues);
+        fabbedSO.setParent('Contract_Fee_Detail__r', fabbedCFD);
+        Map<SObjectField, Object> contractValues = new Map<SObjectField, Object> {
+            Contract.StartDate => Date.newInstance(2020,5,1)
+        };
+        sfab_FabricatedSObject fabbedContract = new sfab_FabricatedSObject(Contract.class, contractValues);
+        fabbedCFD.setParent('Contract__r', fabbedContract);
+        Map<SObjectField, Object> uasValues = new Map<SObjectField, Object> {
+            Utility_Account_Subscription__c.Id => Util.getFakeId(Utility_Account_Subscription__c.SObjectType),
+            Utility_Account_Subscription__c.Opportunity__c => Util.getFakeId(Opportunity.SObjectType),
+            Utility_Account_Subscription__c.Shared_Solar_System__c => Util.getFakeId(Shared_Solar_System__c.SObjectType)
+        };
+        sfab_FabricatedSObject fabbedUAS = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class, uasValues);
+        fabbedSO.setParent('Utility_Account_Subscription__r', fabbedUAS);
+        Map<SObjectField, Object> sssValues = new Map<SObjectField, Object> {
+            Shared_Solar_System__c.Id => Util.getFakeId(Shared_Solar_System__c.SObjectType),
+            Shared_Solar_System__c.Client_Acquisition_Contract__c => Util.getFakeId(Contract.SObjectType),
+            Shared_Solar_System__c.Client_Management_Contract__c => Util.incrementFakeId(Util.getFakeId(Contract.SObjectType)),
+            Shared_Solar_System__c.Total_System_Size_kWh_DC__c => 1220
+        };
+        sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class, sssValues);
+        fabbedUAS.setParent('Shared_Solar_System__r', fabbedSSS);
+        Map<SObjectField, Object> opportunityValues = new Map<SObjectField, Object> {
+            Opportunity.Id => Util.getFakeId(Opportunity.SObjectType),
+            Opportunity.Customer_Group__c => 'Residential',
+            Opportunity.Partner_tag_lookup__c => Util.getFakeId(Partner__c.SObjectType)
+        };
+        sfab_FabricatedSObject fabbedOpp = new sfab_FabricatedSObject(Opportunity.class, opportunityValues);
+        Map<SObjectField, Object> assignmentAgreementValues = new Map<SObjectField, Object> {
+            Contract.Id => Util.getFakeId(Contract.SObjectType),
+            Contract.CustomerSignedDate => today
+        };
+        sfab_FabricatedSObject fabbedAA = new sfab_FabricatedSObject(Contract.class, assignmentAgreementValues);
+        fabbedOpp.setParent('Assignment_Agreement__r', fabbedAA);
+        fabbedUAS.setParent('Opportunity__r', fabbedOpp);
+        Map<SObjectField, Object> partnerTagValues = new Map<SObjectField, Object> {
+            Partner__c.Id => Util.getFakeId(Partner__c.SObjectType)
+        };
+        sfab_FabricatedSObject fabbedPartnerTag = new sfab_FabricatedSObject(Partner__c.class, partnerTagValues);
+        fabbedOpp.setParent('Partner_tag_lookup__r', fabbedPartnerTag);
+        Map<SObjectField, Object> accountValues = new Map<SObjectField, Object> {
+            Account.Id => Util.getFakeId(Account.SObjectType)
+        };
+        sfab_FabricatedSObject fabbedAccount = new sfab_FabricatedSObject(Account.class, accountValues);
+        fabbedPartnerTag.setParent('Account__r', fabbedAccount);
+        Map<SObjectField, Object> recordTypeValues = new Map<SObjectField, Object> {
+            RecordType.Name => 'Partner Account'
+        };
+        sfab_FabricatedSObject fabbedRecordType = new sfab_FabricatedSObject(RecordType.class, recordTypeValues);
+        fabbedAccount.setParent('RecordType', fabbedRecordType);
+        return (Subscription_Order__c) fabbedSO.toSObject();
+    }
 
+    public class MockAssignmentService extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'getCancellationFee' {
-                    return 0.09;
+                    return .10;
                 }
             }
             return null;
         }
     }
 
-    public static List<Subscription_Order__c> getSubscriptionOrderMocks(){
-        Date today = System.Today();
-        Date sixMonthsAgo = today.addMonths(-6);
-        Date fourMonthsAgo = today.addMonths(-4);
-        Date monthFromToday = today.addMonths(1);
-
-        String queryData = '[' +
-            '{"Id":"a9W3F000000A1P6UAK","Effective_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Utility_Account_Subscription__c":"a1d3F0000013EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":8,"Waive_Reacquisition_Fee_Project_Date__c":"Project: COD","Waive_Reacquisition_Fee_Max_Project__c":null},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000013EV1QAM",' +
-            '"Opportunity__c":"0063F00000MVO8EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"'+ String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
-            '"Opportunity__r":{"Id":"0063F00000MVO8EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A1P7UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000014EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":2,"Waive_Reacquisition_Fee_Project_Date__c":"Project: COD","Waive_Reacquisition_Fee_Max_Project__c":null},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000014EV1QAM",' +
-            '"Opportunity__c":"0063F00000MVO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
-            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A2P6UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000013EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":2,"Waive_Reacquisition_Fee_Project_Date__c":"Project: PTO","Waive_Reacquisition_Fee_Max_Project__c":null},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000013EV1QAM",' +
-            '"Opportunity__c":"0063F00000AAO8EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
-            '"Opportunity__r":{"Id":"0063F00000AAO8EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A2P7UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000014EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":8,"Waive_Reacquisition_Fee_Project_Date__c":"Project: PTO","Waive_Reacquisition_Fee_Max_Project__c":null},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000014EV1QAM",' +
-            '"Opportunity__c":"0063F00000MVO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A1P8UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000015EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":6,"Waive_Reacquisition_Fee_Project_Date__c":"Project: First Customer Bill Date","Waive_Reacquisition_Fee_Max_Project__c":null},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000015EV1QAM",' +
-            '"Opportunity__c":"0063F00000MXO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MXO9EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A1P9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":0,"Waive_Reacquisition_Fee_Project_Date__c":"Project: First Customer Bill Date","Waive_Reacquisition_Fee_Max_Project__c":null},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000016EV1QAM",' +
-            '"Opportunity__c":"0063F00000MWO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KHH9QAO","Client_Management_Contract__c":"8003F000000KHH9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A1Q9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"'+ String.valueOf(fourMonthsAgo) + '"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":1,"Waive_Reacquisition_Fee_Project_Date__c":"Contract: Effective Date","Waive_Reacquisition_Fee_Max_Project__c":null},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000016EV1QAM",' +
-            '"Opportunity__c":"0063F00000MWO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KHH9QAO","Client_Management_Contract__c":"8003F000000KHH9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Non-Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A1R9UAK","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000016EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"'+ String.valueOf(fourMonthsAgo) + '"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":7,"Waive_Reacquisition_Fee_Project_Date__c":"Contract: Effective Date","Waive_Reacquisition_Fee_Max_Project__c":null},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000016EV1QAM",' +
-            '"Opportunity__c":"0063F00000MWO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Non-Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A1S9UAK","Effective_Date__c":"'+ String.valueOf(today) + '","Utility_Account_Subscription__c":"a1d3F0000017EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":null,"Waive_Reacquisition_Fee_Project_Date__c":null,"Waive_Reacquisition_Fee_Max_Project__c":5},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000017EV1QAM",' +
-            '"Opportunity__c":"0063F00000NWO9EQAX","Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Non-Residential","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A1T9UAK","Effective_Date__c":"'+ String.valueOf(today) +  '","Utility_Account_Subscription__c":"a1d3F0000018EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":null,"Waive_Reacquisition_Fee_Project_Date__c":null,"Waive_Reacquisition_Fee_Max_Project__c":5},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000018EV1QAM",' +
-            '"Opportunity__c":"0063F00000XQO9EQAX","Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000NWO9EQAX","Customer_Group__c":"Anchor","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000xxIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y7WrnQAF","RecordType":{"Name":"Client Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A1U7UAK","Effective_Date__c":"'+ String.valueOf(today) + '","Utility_Account_Subscription__c":"a1d3F0000019EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":null,"Waive_Reacquisition_Fee_Project_Date__c":null,"Waive_Reacquisition_Fee_Max_Project__c":5},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000019EV1QAM",' +
-            '"Opportunity__c":"0063F00000XQO9EAAA","Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Anchor","Customer_Sub_Group__c":"Public Offtake","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A1P8NNN","Effective_Date__c":"'+ String.valueOf(today) +'","Utility_Account_Subscription__c":"a1d3F0000017AA1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":0,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":12,"Waive_Reacquisition_Fee_Project_Date__c":"Customer: Assignment Date","Waive_Reacquisition_Fee_Max_Project__c":null},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000016EV1QAM",' +
-            '"Opportunity__c":"0063F00000MWO9EQAX","Shared_Solar_System__c":"a1J3F00000122b8UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KHH9QAO","Client_Management_Contract__c":"8003F000000KHH9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":null},' +
-            '"Opportunity__r":{"Id":"0063F00000MWO9EQAX","Customer_Group__c":"Residential","Assignment_Agreement__r":{"CustomerSignedDate":"' + String.valueOf(sixMonthsAgo) +'"},' +
-            '"Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}},' +
-            '{"Id":"a9W3F000000A2U7UAK","Effective_Date__c":"'+ String.valueOf(today) + '","Utility_Account_Subscription__c":"a1d3F0000019EV1QAM",' +
-            '"Approved_Change_in_Subscription__c":12.00,"System_Change_kW_DC_Rounded__c":25,"Contract_Fee_Detail__r":{"Fee__c":0.10,"Contract__r":{"StartDate":"2020-05-01"},' +
-            '"Acquisition_Type_Reacquisition__c":true, "Waive_Reacquisition_Fee_Number_Months__c":null,"Waive_Reacquisition_Fee_Project_Date__c":null,"Waive_Reacquisition_Fee_Max_Project__c":5},' +
-            '"Utility_Account_Subscription__r":{"Id":"a1d3F0000025EV1QAM",' +
-            '"Opportunity__c":"0063F00000ZZO9EAAA","Shared_Solar_System__c":"a1J3F00000122b7UAA",' +
-            '"Shared_Solar_System__r":{"Client_Acquisition_Contract__c":"8003F000000KMD9QAO","Client_Management_Contract__c":"8003F000000KNC9QAO",' +
-            '"Total_System_Size_kWh_DC__c":1220,' +
-            '"Actual_COD_Date__c":"'+ String.valueOf(sixMonthsAgo) +'","Actual_PTO_Date_MANUAL__c":"' + String.valueOf(sixMonthsAgo) + '","First_Bill_Date__c":"'+ String.valueOf(fourMonthsAgo) + '",' +
-            '"Reacquisition_Start_Date__c":"' + String.valueOf(monthFromToday) + '"},' +
-            '"Opportunity__r":{"Id":"0063F00000ZZO9EAAA","Customer_Group__c":"Anchor","Customer_Sub_Group__c":"Public Offtake","Partner_tag_lookup__c":"a0s3F000000thIBQAY","Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
-            '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +
-            '}}}'+
-            ']';
-        return (List<Subscription_Order__c>) JSON.deserialize(queryData, List<Subscription_Order__c>.class);
-    }
 }

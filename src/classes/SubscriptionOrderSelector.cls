@@ -39,9 +39,11 @@ public inherited sharing class SubscriptionOrderSelector {
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
                 Contract_Fee_Detail__c,
                 Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c,
-                Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c,
-                Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c,
                 Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c,
+                Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c,
+                Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c,
+                Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c,
+                Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c,
                 Contract_Fee_Detail__r.Fee__c,
                 Contract_Fee_Detail__r.Contract__r.StartDate
             FROM Subscription_Order__c
@@ -84,7 +86,7 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c = false
         ]);
     }
-    public Map<Id,Decimal> getSubscriptionOrdersAssignedToClient(Set<Id> uasIds){
+    public Map<Id,Decimal>  getSubscriptionOrdersAssignedToClient(Set<Id> uasIds){
         Map<Id,Decimal> uasIdToSumSoMap = new Map<Id,Decimal>();
         List<AggregateResult> aggResults = [
             SELECT SUM(Approved_Change_in_Subscription__c) sumApprovedKW,
@@ -100,13 +102,5 @@ public inherited sharing class SubscriptionOrderSelector {
             uasIdToSumSoMap.put((Id)aggregateResult.get('uasId'),(Decimal)aggregateResult.get('sumApprovedKW'));
         }
         return uasIdToSumSoMap;
-    }
-
-    public List<Subscription_Order__c> getSubscriptionOrdersByAssignmentAgreement(Set<Id> assignmentAgreementIds) {
-        return [
-            SELECT Id, Client_Assignment_Agreement__c, Invoice_Date__c
-            FROM Subscription_Order__c
-            WHERE Client_Assignment_Agreement__c IN :assignmentAgreementIds
-            ];
     }
 }

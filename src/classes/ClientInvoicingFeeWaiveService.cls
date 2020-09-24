@@ -1,47 +1,49 @@
+/*
+Tested By: ClientInvoicingFeeWaiveServiceTest
+ */
 public without sharing class ClientInvoicingFeeWaiveService {
     @TestVisible
     private static ClientInvoicingMemoSelector clientInvoicingMemoSelector = new ClientInvoicingMemoSelector();
     @TestVisible
     private static SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
-
-    private Map<Id,Decimal> sssIdToTotalWaivedkWMap;
+    @TestVisible
+    private MultiMap sssIdToTotalWaivedkWMap;
+    @TestVisible
     private Map<Id,Decimal> uasToAssignedCapacityMap;
-
-    public static ClientInvoicingFeeAssignmentService assignmentService;
+    @TestVisible
+    private static ClientInvoicingFeeAssignmentService assignmentService;
 
     @TestVisible
     private fflib_SObjectUnitOfWork uow;
 
-    public ClientInvoicingFeeWaiveService(ClientInvoicingFeeAssignmentService assignment){
+    public ClientInvoicingFeeWaiveService(ClientInvoicingFeeAssignmentService assignment) {
         assignmentService = assignment;
     }
 
-    public void waiveFeesIfNecessary(List<Subscription_Order__c> subOrders, fflib_SObjectUnitOfWork uowParam){
+    public void waiveFeesIfNecessary(List<Subscription_Order__c> subOrders, fflib_SObjectUnitOfWork uowParam) {
         uow = uowParam;
         setFeesToWaive(subOrders);
     }
 
-    public void setFeesToWaive(List<Subscription_Order__c> subOrders){
+    public void setFeesToWaive(List<Subscription_Order__c> subOrders) {
         queryData(subOrders);
-        for (Subscription_Order__c order : subOrders){
-            if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c){
+        for (Subscription_Order__c order : subOrders) {
+            if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c) {
                 waiveFeeBasedOnDate(order);
-                waiveFeeBasedOnProjectAttrition(order);
             }
         }
     }
 
-    private void queryData(List<Subscription_Order__c> subOrders){
+    private void queryData(List<Subscription_Order__c> subOrders) {
         Set<Id> sssIds = new Set<Id>();
         Set<Id> uasIds = new Set<Id>();
 
-        for (Subscription_Order__c order : subOrders){
-            if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c
-                && order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c != null){
+        for (Subscription_Order__c order : subOrders) {
+            if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c) {
+                uasIds.add(order.Utility_Account_Subscription__c);
+            }
+            if (order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c != null) {
                 sssIds.add(order.Utility_Account_Subscription__r.Shared_Solar_System__c);
-                uasIds.add(order.Utility_Account_Subscription__c);
-            } else if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c){
-                uasIds.add(order.Utility_Account_Subscription__c);
             }
         }
 
@@ -49,15 +51,15 @@ public without sharing class ClientInvoicingFeeWaiveService {
         uasToAssignedCapacityMap = subscriptionOrderSelector.getSubscriptionOrdersAssignedToClient(uasIds);
     }
 
-    private void waiveFeeBasedOnDate(Subscription_Order__c order){
+    @TestVisible
+    private Client_Invoicing_Memo__c waiveFeeBasedOnDate(Subscription_Order__c order) {
         Integer numberOfMonths = (Integer)order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c;
         String sssDateType = order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c;
 
-        if (numberOfMonths == null || sssDateType == null){
-            return;
-        }
-
         Date milestoneDate = getMilestoneDate(order,sssDateType);
+        if (numberOfMonths == null || milestoneDate == null) {
+            return null;
+        }
         milestoneDate = milestoneDate.addMonths(numberOfMonths);
 
         /* Allow negative subscription orders for Customer: Assignment Date guarantees because we don't use the SO
@@ -66,52 +68,113 @@ public without sharing class ClientInvoicingFeeWaiveService {
            Otherwise, there is no need to waive a negative fee.
         */
 
-        if (sssDateType == 'Customer: Assignment Date'){
-            waiveFeeBasedOnCustomerDate(order,milestoneDate);
+        if (sssDateType == 'Customer: Assignment Date') {
+            return waiveFeeBasedOnCustomerDate(order,milestoneDate);
         } else if (order.Approved_Change_in_Subscription__c > 0) {
-            waiveFeeBasedOnProjectDate(order,milestoneDate);
+            return waiveFeeBasedOnProjectDate(order,milestoneDate);
+        }
+        return null;
+    }
+
+    private Client_Invoicing_Memo__c waiveFeeBasedOnCustomerDate(Subscription_Order__c order, Date milestoneDate) {
+        if (order.System_Change_kW_DC_Rounded__c != 0) {
+            return null;
+        }
+        Decimal assignmentAgreementSize = uasToAssignedCapacityMap.get(order.Utility_Account_Subscription__c);
+        if (order.Effective_Date__c < milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c) {
+            return waiveFeeBasedOnCustomerDate(order, milestoneDate, null, assignmentAgreementSize);
+        } else if (order.Effective_Date__c >= milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c) {
+            return waiveFeeBasedOnCustomerDate(order, milestoneDate, order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c, assignmentAgreementSize);
+        }
+        return null;
+    }
+
+    private Client_Invoicing_Memo__c waiveFeeBasedOnCustomerDate(Subscription_Order__c order, Date milestoneDate, Decimal maxPercentOfProjectToWaive, Decimal assignmentAgreementSize) {
+        if (maxPercentOfProjectToWaive == null) {
+            return createInvoiceMemo(order, -assignmentAgreementSize * 1000 * assignmentService.getCancellationFee(order));
+        } else {
+            return createInvoiceMemoUnderMaxPercent(maxPercentOfProjectToWaive, assignmentAgreementSize, order, milestoneDate);
         }
     }
 
-    private void waiveFeeBasedOnCustomerDate(Subscription_Order__c order, Date milestoneDate){
-        if (order.System_Change_kW_DC_Rounded__c == 0 && order.Effective_Date__c <= milestoneDate){
-            Decimal reacFee = assignmentService.getCancellationFee(order);
-            Decimal assignmentAgreementSize = uasToAssignedCapacityMap.get(order.Utility_Account_Subscription__c);
-            Decimal amountToWaive = -1 * (assignmentAgreementSize*1000) * reacFee;
-            createInvoiceMemo(order, amountToWaive);
+    private Client_Invoicing_Memo__c waiveFeeBasedOnProjectDate(Subscription_Order__c order, Date milestoneDate) {
+        if (order.Effective_Date__c < milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c) {
+            // We don't handle Max % of Project in the initial period right now, because that includes logic includes an annual clause
+            // that is only applicable after the milestone date
+            return waiveFeeBasedOnProjectDate(order, milestoneDate, null);
+        } else if (order.Effective_Date__c >= milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c) {
+            return waiveFeeBasedOnProjectDate(order, milestoneDate, order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c);
         }
+        return null;
     }
 
-    private void waiveFeeBasedOnProjectDate(Subscription_Order__c order, Date milestoneDate){
-        if (order.Effective_Date__c <= milestoneDate) {
-            Decimal amountToWaive = -1 * (order.Approved_Change_in_Subscription__c*1000) * order.Contract_Fee_Detail__r.Fee__c;
-            createInvoiceMemo(order, amountToWaive);
-        }
-    }
-
-    private void waiveFeeBasedOnProjectAttrition(Subscription_Order__c order){
-        Decimal maxPercentOfProjectToWaive = order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c;
+    private Client_Invoicing_Memo__c waiveFeeBasedOnProjectDate(Subscription_Order__c order, Date milestoneDate, Decimal maxPercentOfProjectToWaive) {
         // No need to waive negative fees (ie, credits to client)
-        if (maxPercentOfProjectToWaive == null || order.Approved_Change_in_Subscription__c <= 0){
-            return;
+        if (order.Approved_Change_in_Subscription__c <= 0) {
+            return null;
         }
-        maxPercentOfProjectToWaive = maxPercentOfProjectToWaive/100;
-        Id sssId = order.Utility_Account_Subscription__r.Shared_Solar_System__c;
-
-        Decimal totalSystemSize = order.Utility_Account_Subscription__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
-        Decimal feesAlreadyWaived = Util.nullToZero(sssIdToTotalWaivedkWMap.get(sssId));
-
-        Decimal kwLeftToWaive = Math.max((maxPercentOfProjectToWaive * totalSystemSize) - feesAlreadyWaived,0);
-        Decimal kWToWaive = Math.min(kwLeftToWaive,order.Approved_Change_in_Subscription__c);
-
-        sssIdToTotalWaivedkWMap.put(sssId, feesAlreadyWaived + kWToWaive);
-
-        if (kWToWaive > 0){
-            createInvoiceMemo(order, -1 * order.Contract_Fee_Detail__r.Fee__c * (kWToWaive*1000));
+        if (maxPercentOfProjectToWaive == null) {
+            return createInvoiceMemo(order, -order.Contract_Fee_Detail__r.Fee__c * order.Approved_Change_in_Subscription__c * 1000);
+        } else {
+            return createInvoiceMemoUnderMaxPercent(maxPercentOfProjectToWaive, order.Approved_Change_in_Subscription__c, order, milestoneDate);
         }
     }
 
-    private Date getMilestoneDate(Subscription_Order__c order, String milestoneDateType){
+    private Client_Invoicing_Memo__c createInvoiceMemoUnderMaxPercent(Decimal maxPercentOfProjectToWaive, Decimal maxKwToWaive, Subscription_Order__c order, Date milestoneDate) {
+        maxPercentOfProjectToWaive = maxPercentOfProjectToWaive / 100;
+        Id sssId = order.Utility_Account_Subscription__r.Shared_Solar_System__c;
+        Decimal totalSystemSize = order.Utility_Account_Subscription__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
+        List<ClientInvoicingMemo> clientInvoicingMemosForSSS = new List<ClientInvoicingMemo>();
+        CollectionUtil.toTypedList(sssIdToTotalWaivedkWMap.getValues(sssId), clientInvoicingMemosForSSS);
+        Decimal kwAlreadyWaived = calculateTotalkWDCWaivedForAnnualPeriod(
+            clientInvoicingMemosForSSS,
+            milestoneDate,
+            DateUtil.convertGmtToDate(order.Effective_Date__c)
+        );
+        Decimal kwLeftToWaive = Math.max((maxPercentOfProjectToWaive * totalSystemSize) - kwAlreadyWaived, 0);
+        Decimal kWToWaive = Math.min(kwLeftToWaive, maxKwToWaive);
+        if (kWToWaive > 0) {
+            sssIdToTotalWaivedkWMap.putValue(sssId, new ClientInvoicingMemo(sssId, order.Effective_Date__c, kWToWaive));
+            return createInvoiceMemo(order, -1 * order.Contract_Fee_Detail__r.Fee__c * (kWToWaive * 1000));
+        }
+        return null;
+    }
+
+    /*
+    Milestone Date: 4/1/2020 (e.g. COD + 18 Months)
+    SO Effective Date: 5/1/2020
+    Project % within 4/1/2020 -> 4/1/2021
+
+    Milestone Date: 4/1/2020 (e.g. COD + 18 Months)
+    SO Effective Date: 1/1/2022
+    Project % within 4/1/2021 -> 3/30/2022
+     */
+    private Decimal calculateTotalkWDCWaivedForAnnualPeriod(List<ClientInvoicingMemo> waivedFees, Date milestoneDate, Date effectiveDate) {
+        if (effectiveDate < milestoneDate) {
+            return 0;
+        }
+        Date startDate = milestoneDate;
+        Date endDate = milestoneDate.addMonths(12);
+        while (true) {
+            if (startDate <= effectiveDate && effectiveDate < endDate) {
+                break;
+            }
+            startDate = startDate.addMonths(12);
+            endDate = endDate.addMonths(12);
+        }
+        Decimal totalWaivedkWDC = 0;
+        for (ClientInvoicingMemo clientInvoicingMemo : waivedFees) {
+            if (startDate <= clientInvoicingMemo.effectiveDate && clientInvoicingMemo.effectiveDate < endDate) {
+                totalWaivedkWDC += clientInvoicingMemo.approvedChangeInSubscription;
+            }
+        }
+        return totalWaivedkWDC;
+    }
+
+    private Date getMilestoneDate(Subscription_Order__c order, String milestoneDateType) {
+        if (milestoneDateType == null) {
+            return null;
+        }
         Date milestoneDate;
         Boolean feeCharged = true;
 
@@ -120,10 +183,10 @@ public without sharing class ClientInvoicingFeeWaiveService {
                 milestoneDate = order.Contract_Fee_Detail__r.Contract__r.StartDate;
             }
             when 'Project: PTO' {
-                milestoneDate = order.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c;
+                milestoneDate = order.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_PTO_Date_MANUAL__c;
             }
             when 'Project: COD' {
-                milestoneDate = order.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_PTO_Date_MANUAL__c;
+                milestoneDate = order.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c;
             }
             when 'Project: First Customer Bill Date' {
                 milestoneDate = order.Utility_Account_Subscription__r.Shared_Solar_System__r.First_Bill_Date__c;
@@ -147,7 +210,7 @@ public without sharing class ClientInvoicingFeeWaiveService {
                 );
             }
         }
-        if (feeCharged && milestoneDate == null){
+        if (feeCharged && milestoneDate == null) {
             Logger.logLater(
                 'ClientInvoicingFeeAssignmentService',
                 'Null SSS Date for Client Invoicing, with type: ',
@@ -157,12 +220,13 @@ public without sharing class ClientInvoicingFeeWaiveService {
         return milestoneDate;
     }
 
-    private void createInvoiceMemo(Subscription_Order__c order, Decimal amount){
+    private Client_Invoicing_Memo__c createInvoiceMemo(Subscription_Order__c order, Decimal amount) {
         Client_Invoicing_Memo__c memo = new Client_Invoicing_Memo__c(
             Subscription_Order__c = order.Id,
             Amount__c = amount.setScale(2, RoundingMode.HALF_UP),
             Effective_Date__c = System.today()
         );
         uow.registerNew(memo);
+        return memo;
     }
 }
