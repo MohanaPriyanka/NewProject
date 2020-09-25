@@ -208,6 +208,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Waive_Reacq_Fee_After_Initial_Period__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Waive_Reacq_Fee_In_Initial_Period__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Waive_Reacq_Fee_Max_In_Period__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract_Fee_Detail__c.Waive_Reacquisition_Fee_Max_Project__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -246,6 +261,10 @@
         <field>Subscription_Order__c.NetSuite_Invoice__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Calculate_Utilization_Fees</flow>
+    </flowAccesses>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Client Invoicing Admin</label>
     <license>Salesforce</license>
@@ -321,8 +340,4 @@
         <object>Utility_Account_Subscription__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-    <flowAccesses>
-        <enabled>true</enabled>
-        <flow>Calculate_Utilization_Fees</flow>
-    </flowAccesses>
 </PermissionSet>

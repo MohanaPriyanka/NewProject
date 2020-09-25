@@ -132,7 +132,12 @@
                 <field>Waive_Reacquisition_Fee_Number_Months__c</field>
             </layoutItems>
             <layoutItems>
-                <emptySpace>true</emptySpace>
+                <behavior>Edit</behavior>
+                <field>Waive_Reacq_Fee_In_Initial_Period__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Waive_Reacq_Fee_After_Initial_Period__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
