@@ -4,7 +4,7 @@
         <name>Invoke_Sizing_Method_SOs</name>
         <label>Invoke Sizing Method SOs</label>
         <locationX>1534</locationX>
-        <locationY>1466</locationY>
+        <locationY>1774</locationY>
         <actionName>InvocableSizingMethodRecalculation</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -23,8 +23,8 @@
     <assignments>
         <name>aassgnSet_New_Resize_Subscriptions</name>
         <label>Set New Resize Subscriptions</label>
-        <locationX>1210</locationX>
-        <locationY>578</locationY>
+        <locationX>1456</locationX>
+        <locationY>1033</locationY>
         <assignmentItems>
             <assignToReference>var_newAnnualCost</assignToReference>
             <operator>Assign</operator>
@@ -48,7 +48,7 @@
         <name>Add_SOs_to_List</name>
         <label>Add SOs to List</label>
         <locationX>806</locationX>
-        <locationY>1114</locationY>
+        <locationY>1422</locationY>
         <assignmentItems>
             <assignToReference>socv_SO</assignToReference>
             <operator>Add</operator>
@@ -70,8 +70,8 @@
     <assignments>
         <name>Add_UAS_to_List</name>
         <label>Add UAS to List</label>
-        <locationX>1531</locationX>
-        <locationY>983</locationY>
+        <locationX>1997</locationX>
+        <locationY>1122</locationY>
         <assignmentItems>
             <assignToReference>socv_UAS</assignToReference>
             <operator>Add</operator>
@@ -87,7 +87,7 @@
         <name>assgn_Transfer_Variable_Assignment</name>
         <label>Transfer Variable Assignment</label>
         <locationX>275</locationX>
-        <locationY>665</locationY>
+        <locationY>973</locationY>
         <assignmentItems>
             <assignToReference>sov_Transfer.Sum_of_Old_Subscriptions__c</assignToReference>
             <operator>Assign</operator>
@@ -117,8 +117,8 @@
         <description>Assign inputs to sov for subscription orders.</description>
         <name>AssgnAdd_Resize_SO_to_List</name>
         <label>Add Resize SO to List</label>
-        <locationX>1215</locationX>
-        <locationY>896</locationY>
+        <locationX>1482</locationX>
+        <locationY>1297</locationY>
         <assignmentItems>
             <assignToReference>socv_SO</assignToReference>
             <operator>Add</operator>
@@ -134,7 +134,7 @@
         <name>assgnAdd_Transfer_to_List</name>
         <label>Add Transfer to List</label>
         <locationX>401</locationX>
-        <locationY>667</locationY>
+        <locationY>975</locationY>
         <assignmentItems>
             <assignToReference>socv_Transfer</assignToReference>
             <operator>Add</operator>
@@ -149,8 +149,8 @@
     <assignments>
         <name>assgnAdd_UAS_and_SO_to_List</name>
         <label>Add UAS and SO to List</label>
-        <locationX>988</locationX>
-        <locationY>835</locationY>
+        <locationX>1255</locationX>
+        <locationY>1141</locationY>
         <assignmentItems>
             <assignToReference>socv_UAS</assignToReference>
             <operator>Add</operator>
@@ -172,8 +172,8 @@
     <assignments>
         <name>assgnAdd_UAS_to_List</name>
         <label>Add UASs to List</label>
-        <locationX>791</locationX>
-        <locationY>665</locationY>
+        <locationX>1058</locationX>
+        <locationY>971</locationY>
         <assignmentItems>
             <assignToReference>socv_UAS</assignToReference>
             <operator>Add</operator>
@@ -195,8 +195,8 @@
     <assignments>
         <name>assgnCancellation_Variables_0_0</name>
         <label>Cancellation Variable Assigment</label>
-        <locationX>988</locationX>
-        <locationY>685</locationY>
+        <locationX>1255</locationX>
+        <locationY>991</locationY>
         <assignmentItems>
             <assignToReference>sovUAS.Next_Schedule_Z_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -253,8 +253,8 @@
     <assignments>
         <name>AssgnResizing_Variables_0</name>
         <label>Resizing Variables Assignment</label>
-        <locationX>1214</locationX>
-        <locationY>731</locationY>
+        <locationX>1481</locationX>
+        <locationY>1164</locationY>
         <assignmentItems>
             <assignToReference>sov_SubscriptionOrder.Utility_Account_Subscription__c</assignToReference>
             <operator>Assign</operator>
@@ -304,8 +304,8 @@
     <assignments>
         <name>assgnSet_New_Cancellation_Subscription</name>
         <label>Set New Cancellation Subscription</label>
-        <locationX>995</locationX>
-        <locationY>505</locationY>
+        <locationX>1262</locationX>
+        <locationY>811</locationY>
         <assignmentItems>
             <assignToReference>var_newAnnualCost</assignToReference>
             <operator>Assign</operator>
@@ -328,7 +328,7 @@
         <name>assgnSet_New_Transfer_Subscriptions</name>
         <label>Set New Transfer Subscriptions</label>
         <locationX>405</locationX>
-        <locationY>492</locationY>
+        <locationY>800</locationY>
         <assignmentItems>
             <assignToReference>var_newAnnualCost</assignToReference>
             <operator>Assign</operator>
@@ -364,8 +364,8 @@
     <assignments>
         <name>assgnSO_Variables_Assignment</name>
         <label>SO Variables Assignment</label>
-        <locationX>795</locationX>
-        <locationY>978</locationY>
+        <locationX>1062</locationX>
+        <locationY>1284</locationY>
         <assignmentItems>
             <assignToReference>sov_SubscriptionOrder.Utility_Account_Subscription__c</assignToReference>
             <operator>Assign</operator>
@@ -415,8 +415,8 @@
     <assignments>
         <name>assgnTransfer_To_SO_Variable_Assignment</name>
         <label>Transfer To SO Variable Assignment</label>
-        <locationX>794</locationX>
-        <locationY>818</locationY>
+        <locationX>1061</locationX>
+        <locationY>1124</locationY>
         <assignmentItems>
             <assignToReference>sov_SOTransferTo.Utility_Account_Subscription__c</assignToReference>
             <operator>Assign</operator>
@@ -466,8 +466,8 @@
     <assignments>
         <name>assgnUAS_Variable_Assignment</name>
         <label>UAS Variable Assignment</label>
-        <locationX>668</locationX>
-        <locationY>666</locationY>
+        <locationX>935</locationX>
+        <locationY>972</locationY>
         <assignmentItems>
             <assignToReference>sovUAS.Transferred_To__c</assignToReference>
             <operator>Assign</operator>
@@ -504,7 +504,7 @@
         <name>Assign_Error_Log</name>
         <label>Assign Error Log</label>
         <locationX>458</locationX>
-        <locationY>1637</locationY>
+        <locationY>1945</locationY>
         <assignmentItems>
             <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -541,7 +541,7 @@
         <name>Assign_Error_Log_0</name>
         <label>Assign Error Log</label>
         <locationX>353</locationX>
-        <locationY>1636</locationY>
+        <locationY>1944</locationY>
         <assignmentItems>
             <assignToReference>socv_ErrorLog</assignToReference>
             <operator>Add</operator>
@@ -557,8 +557,8 @@
         <description>Assigns the UAS as the Flow Record, so that it can be referenced in error logs.</description>
         <name>Assign_FlowRecord</name>
         <label>Assign_FlowRecord</label>
-        <locationX>582</locationX>
-        <locationY>258</locationY>
+        <locationX>849</locationX>
+        <locationY>564</locationY>
         <assignmentItems>
             <assignToReference>$Flow.CurrentRecord</assignToReference>
             <operator>Assign</operator>
@@ -573,8 +573,8 @@
     <assignments>
         <name>Assign_Sizing_Method</name>
         <label>Assign Sizing Method</label>
-        <locationX>1526</locationX>
-        <locationY>670</locationY>
+        <locationX>1992</locationX>
+        <locationY>809</locationY>
         <assignmentItems>
             <assignToReference>sovUAS.Sizing_Method__c</assignToReference>
             <operator>Assign</operator>
@@ -603,10 +603,69 @@
         </value>
     </choices>
     <decisions>
+        <description>Checks to make sure the UAS has the information necessary for a UAS to be successfully created.</description>
+        <name>dec_MissingInfo</name>
+        <label>dec_MissingInfo</label>
+        <locationX>842</locationX>
+        <locationY>270</locationY>
+        <defaultConnector>
+            <targetReference>dec_MissingInfo_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Missing_Opportunity_or_SSS</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>sovUAS.Opportunity__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sovUAS.Shared_Solar_System__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scr_MissingInformation</targetReference>
+            </connector>
+            <label>Missing Opportunity or SSS</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Checks to make sure the UAS has the information necessary for a UAS to be successfully created.</description>
+        <name>dec_MissingInfo_0</name>
+        <label>dec_MissingInfo</label>
+        <locationX>1014</locationX>
+        <locationY>277</locationY>
+        <defaultConnector>
+            <targetReference>Assign_FlowRecord</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Missing_Sizing_Method_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sovUAS.Sizing_Method__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scr_MissingSizingMethod</targetReference>
+            </connector>
+            <label>Missing Sizing Method</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>dec_Type</name>
         <label>Type Decision</label>
-        <locationX>899</locationX>
-        <locationY>262</locationY>
+        <locationX>1166</locationX>
+        <locationY>568</locationY>
         <defaultConnector>
             <targetReference>scr_UnsupportedType</targetReference>
         </defaultConnector>
@@ -676,7 +735,7 @@
         <name>dec_Type_0</name>
         <label>Type Decision</label>
         <locationX>1162</locationX>
-        <locationY>1447</locationY>
+        <locationY>1755</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Cancellation_0</name>
@@ -727,8 +786,8 @@
     <decisions>
         <name>Resize_Type_Decision</name>
         <label>Resize Type Decision</label>
-        <locationX>1360</locationX>
-        <locationY>356</locationY>
+        <locationX>1627</locationX>
+        <locationY>662</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Annual_Usage</name>
@@ -770,6 +829,21 @@
         <picklistField>Type__c</picklistField>
         <picklistObject>Subscription_Order__c</picklistObject>
     </dynamicChoiceSets>
+    <formulas>
+        <name>formula_MissingSizingMethod</name>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!sovUAS.Sizing_Method__c})</expression>
+    </formulas>
+    <formulas>
+        <name>formula_MissingSSS</name>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!sovUAS.Shared_Solar_System__c})</expression>
+    </formulas>
+    <formulas>
+        <name>formula_NullOpportunity</name>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!sovUAS.Opportunity__c})</expression>
+    </formulas>
     <formulas>
         <name>formula_RunningUserID</name>
         <dataType>String</dataType>
@@ -823,8 +897,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <recordCreates>
         <name>Create_Transfer</name>
         <label>Create Transfer</label>
-        <locationX>552</locationX>
-        <locationY>665</locationY>
+        <locationX>819</locationX>
+        <locationY>971</locationY>
         <connector>
             <targetReference>assgnUAS_Variable_Assignment</targetReference>
         </connector>
@@ -837,7 +911,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <name>SO_Creation</name>
         <label>SO Creation</label>
         <locationX>1171</locationX>
-        <locationY>1287</locationY>
+        <locationY>1595</locationY>
         <connector>
             <targetReference>dec_Type_0</targetReference>
         </connector>
@@ -849,8 +923,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <recordLookups>
         <name>Get_Transferred_To_UAS</name>
         <label>Get Transferred To UAS</label>
-        <locationX>680</locationX>
-        <locationY>493</locationY>
+        <locationX>947</locationX>
+        <locationY>799</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>scrTransfer_Inputs_0</targetReference>
@@ -875,10 +949,10 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <name>Get_UAS</name>
         <label>Get_UAS</label>
         <locationX>401</locationX>
-        <locationY>260</locationY>
+        <locationY>568</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Assign_FlowRecord</targetReference>
+            <targetReference>dec_MissingInfo</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -897,12 +971,14 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <queriedFields>Transferred_To__c</queriedFields>
         <queriedFields>Future_Customer_Subscription_KWDC_Rollup__c</queriedFields>
         <queriedFields>Sizing_Method__c</queriedFields>
+        <queriedFields>Opportunity__c</queriedFields>
+        <queriedFields>Shared_Solar_System__c</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_Sizing_Method</name>
         <label>Update Sizing Method</label>
-        <locationX>1525</locationX>
-        <locationY>835</locationY>
+        <locationX>1991</locationX>
+        <locationY>974</locationY>
         <connector>
             <targetReference>Add_UAS_to_List</targetReference>
         </connector>
@@ -912,7 +988,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <name>Update_UAS</name>
         <label>Update UAS</label>
         <locationX>908</locationX>
-        <locationY>1444</locationY>
+        <locationY>1752</locationY>
         <connector>
             <targetReference>Success_0</targetReference>
         </connector>
@@ -925,7 +1001,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <name>Error</name>
         <label>Error</label>
         <locationX>138</locationX>
-        <locationY>1650</locationY>
+        <locationY>1958</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -938,10 +1014,75 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>scr_MissingInformation</name>
+        <label>scr_MissingInformation</label>
+        <locationX>849</locationX>
+        <locationY>50</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>txt_MissingInfo</name>
+            <fieldText>&lt;p&gt;The UAS you are trying to resize is missing some required information. See below:&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>txt_Opportunity</name>
+            <fieldText>&lt;ul&gt;&lt;li&gt;The Opportunity lookup on the UAS is blank. Please exit this screen, populate it with the correct opportunity and then restart the Subscription Order flow.&lt;/li&gt;&lt;/ul&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>formula_NullOpportunity</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>txt_SSS</name>
+            <fieldText>&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;The  Shared Solar System lookup on the UAS is blank. Please exit this screen, populate it with the correct Shared Solar System and then restart the Subscription Order flow.&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>formula_MissingSSS</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>scr_MissingSizingMethod</name>
+        <label>scr_MissingSizingMethod</label>
+        <locationX>1992</locationX>
+        <locationY>269</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>scrSizing_Method_Lookup</targetReference>
+        </connector>
+        <fields>
+            <name>txt_MissingSizingRatio</name>
+            <fieldText>&lt;p&gt;This UAS is missing a Sizing Method, which is required in order to create a new Subscription Order. By clicking Next, you will be able to assign a Sizing Method. You will not be able to log a Subscription Order until a Sizing Method has been chosen.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>scr_UnsupportedType</name>
         <label>Unsupported Type</label>
-        <locationX>913</locationX>
-        <locationY>50</locationY>
+        <locationX>1180</locationX>
+        <locationY>356</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -956,8 +1097,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <screens>
         <name>scrResize_Inputs</name>
         <label>Resize Inputs</label>
-        <locationX>1210</locationX>
-        <locationY>446</locationY>
+        <locationX>1458</locationX>
+        <locationY>777</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1036,8 +1177,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <screens>
         <name>scrResize_Type</name>
         <label>scrResize_Type</label>
-        <locationX>1209</locationX>
-        <locationY>260</locationY>
+        <locationX>1476</locationX>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1064,8 +1205,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <screens>
         <name>scrSizing_Method_Lookup</name>
         <label>Sizing Method Lookup</label>
-        <locationX>1530</locationX>
-        <locationY>515</locationY>
+        <locationX>1996</locationX>
+        <locationY>654</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1118,7 +1259,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <name>scrSO_Review</name>
         <label>SO Review</label>
         <locationX>1169</locationX>
-        <locationY>1048</locationY>
+        <locationY>1356</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1157,7 +1298,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <name>scrSO_Review_0</name>
         <label>SO Review</label>
         <locationX>280</locationX>
-        <locationY>498</locationY>
+        <locationY>806</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1180,8 +1321,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <screens>
         <name>scrTransfer_Inputs</name>
         <label>Transfer Inputs</label>
-        <locationX>840</locationX>
-        <locationY>493</locationY>
+        <locationX>1107</locationX>
+        <locationY>799</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1239,8 +1380,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <screens>
         <name>scrTransfer_Inputs_0</name>
         <label>Transfer Inputs</label>
-        <locationX>545</locationX>
-        <locationY>493</locationY>
+        <locationX>812</locationX>
+        <locationY>799</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1294,8 +1435,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <screens>
         <name>SO_Input_0</name>
         <label>Subscription Order Input</label>
-        <locationX>745</locationX>
-        <locationY>260</locationY>
+        <locationX>1012</locationX>
+        <locationY>566</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1334,7 +1475,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <name>Success_0</name>
         <label>Success</label>
         <locationX>1147</locationX>
-        <locationY>1712</locationY>
+        <locationY>2020</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1347,8 +1488,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>246</locationX>
-        <locationY>260</locationY>
+        <locationX>19</locationX>
+        <locationY>553</locationY>
         <connector>
             <targetReference>Get_UAS</targetReference>
         </connector>
@@ -1358,7 +1499,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <name>Error_Log</name>
         <label>Error Log</label>
         <locationX>243</locationX>
-        <locationY>1641</locationY>
+        <locationY>1949</locationY>
         <connector>
             <targetReference>Error</targetReference>
         </connector>
