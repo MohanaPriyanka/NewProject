@@ -103,14 +103,14 @@ public without sharing class ClientInvoicingFeeWaiveService {
         if (order.Effective_Date__c < milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c) {
             // We don't handle Max % of Project in the initial period right now, because that includes logic includes an annual clause
             // that is only applicable after the milestone date
-            return waiveFeeBasedOnProjectDate(order, milestoneDate, null);
+            return createInvoiceMemoBasedOnProjectDate(order, milestoneDate, null);
         } else if (order.Effective_Date__c >= milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c) {
-            return waiveFeeBasedOnProjectDate(order, milestoneDate, order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c);
+            return createInvoiceMemoBasedOnProjectDate(order, milestoneDate, order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c);
         }
         return null;
     }
 
-    private Client_Invoicing_Memo__c waiveFeeBasedOnProjectDate(Subscription_Order__c order, Date milestoneDate, Decimal maxPercentOfProjectToWaive) {
+    private Client_Invoicing_Memo__c createInvoiceMemoBasedOnProjectDate(Subscription_Order__c order, Date milestoneDate, Decimal maxPercentOfProjectToWaive) {
         // No need to waive negative fees (ie, credits to client)
         if (order.Approved_Change_in_Subscription__c <= 0) {
             return null;
