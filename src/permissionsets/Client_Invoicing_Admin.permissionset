@@ -246,6 +246,10 @@
         <field>Subscription_Order__c.NetSuite_Invoice__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Calculate_Utilization_Fees</flow>
+    </flowAccesses>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Client Invoicing Admin</label>
     <license>Salesforce</license>
@@ -321,8 +325,4 @@
         <object>Utility_Account_Subscription__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-    <flowAccesses>
-        <enabled>true</enabled>
-        <flow>Calculate_Utilization_Fees</flow>
-    </flowAccesses>
 </PermissionSet>
