@@ -71,7 +71,7 @@ public without sharing class ClientInvoicingFeeWaiveService {
         if (sssDateType == 'Customer: Assignment Date') {
             return waiveFeeBasedOnCustomerDate(order,milestoneDate);
         } else if (order.Approved_Change_in_Subscription__c > 0) {
-            return waiveFeeBasedOnProjectDate(order,milestoneDate);
+            return waiveFeeBasedOnProjectDateBeforeOrAfterMilestone(order,milestoneDate);
         }
         return null;
     }
@@ -82,14 +82,16 @@ public without sharing class ClientInvoicingFeeWaiveService {
         }
         Decimal assignmentAgreementSize = uasToAssignedCapacityMap.get(order.Utility_Account_Subscription__c);
         if (order.Effective_Date__c < milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c) {
-            return waiveFeeBasedOnCustomerDate(order, milestoneDate, null, assignmentAgreementSize);
+            // We don't handle Max % of Project in the initial period right now, because that includes logic includes an annual clause
+            // that is only applicable after the milestone date
+            return createInvoiceMemoBasedOnCustomerDate(order, milestoneDate, null, assignmentAgreementSize);
         } else if (order.Effective_Date__c >= milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c) {
-            return waiveFeeBasedOnCustomerDate(order, milestoneDate, order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c, assignmentAgreementSize);
+            return createInvoiceMemoBasedOnCustomerDate(order, milestoneDate, order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c, assignmentAgreementSize);
         }
         return null;
     }
 
-    private Client_Invoicing_Memo__c waiveFeeBasedOnCustomerDate(Subscription_Order__c order, Date milestoneDate, Decimal maxPercentOfProjectToWaive, Decimal assignmentAgreementSize) {
+    private Client_Invoicing_Memo__c createInvoiceMemoBasedOnCustomerDate(Subscription_Order__c order, Date milestoneDate, Decimal maxPercentOfProjectToWaive, Decimal assignmentAgreementSize) {
         if (maxPercentOfProjectToWaive == null) {
             return createInvoiceMemo(order, -assignmentAgreementSize * 1000 * assignmentService.getCancellationFee(order));
         } else {
@@ -97,7 +99,7 @@ public without sharing class ClientInvoicingFeeWaiveService {
         }
     }
 
-    private Client_Invoicing_Memo__c waiveFeeBasedOnProjectDate(Subscription_Order__c order, Date milestoneDate) {
+    private Client_Invoicing_Memo__c waiveFeeBasedOnProjectDateBeforeOrAfterMilestone(Subscription_Order__c order, Date milestoneDate) {
         if (order.Effective_Date__c < milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c) {
             // We don't handle Max % of Project in the initial period right now, because that includes logic includes an annual clause
             // that is only applicable after the milestone date
@@ -141,13 +143,20 @@ public without sharing class ClientInvoicingFeeWaiveService {
     }
 
     /*
-    Milestone Date: 4/1/2020 (e.g. COD + 18 Months)
-    SO Effective Date: 5/1/2020
-    Project % within 4/1/2020 -> 4/1/2021
+      This handles contract terms like: "After the first eighteen (18) months of the Term, AES shall pay BCS-CM
+      $0.09/W DC as the Customer Replacement Fee only for any Customers replaced beyond the first 5% of total Customer
+      capacity lost (whether by way of termination, cancellation, and/or expiration) for the Generating Facility in
+       any given year, including during any extension of the Term. "
 
-    Milestone Date: 4/1/2020 (e.g. COD + 18 Months)
-    SO Effective Date: 1/1/2022
-    Project % within 4/1/2021 -> 3/30/2022
+      "Any given year" is left up to interpretation, we interpret it as the we months after the initial period ends
+      that the SO is in. For instance:
+      Milestone Date: 4/1/2020 (e.g. COD + 18 Months)
+      SO Effective Date: 5/1/2020
+      The year to evaluate the total kW already waived: 4/1/2020 -> 4/1/2021
+
+      Milestone Date: 4/1/2020 (e.g. COD + 18 Months)
+      SO Effective Date: 1/1/2022
+      The year to evaluate the total kW already waived: 4/1/2021 -> 3/30/2022
      */
     private Decimal calculateTotalkWDCWaivedForAnnualPeriod(List<ClientInvoicingMemo> waivedFees, Date milestoneDate, Date effectiveDate) {
         if (effectiveDate < milestoneDate) {

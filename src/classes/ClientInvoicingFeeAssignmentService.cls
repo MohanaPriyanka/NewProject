@@ -153,7 +153,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         Set<Id> contractIds = new Set<Id>();
 
         for (Subscription_Order__c subOrder : subOrders) {
-            if (hasRequiredFieldsForAcquisition(subOrder)) {
+            if (hasRequiredFieldsForAssignment(subOrder)) {
                 SubscriptionOrder feeQualifier = new SubscriptionOrder(subOrder);
                 subOrdersAsFeeQualifications.add(feeQualifier);
                 contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c);
@@ -208,7 +208,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         return feeDetailMap;
     }
 
-    private Boolean hasRequiredFieldsForAcquisition(Subscription_Order__c subOrder){
+    private Boolean hasRequiredFieldsForAssignment(Subscription_Order__c subOrder){
         if (subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != null &&
             subOrder.Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name != null &&
             subOrder.Approved_Change_in_Subscription__c != null &&
@@ -218,7 +218,6 @@ public without sharing class ClientInvoicingFeeAssignmentService {
                 subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c != null)) {
             return true;
         } else {
-            Logger.logLater('ClientInvoicingFeeAssignmentService', 'hasRequiredFieldsForAcquisition', 'SO did not have fields for acquisition: ' + JSON.serialize(subOrder), Logger.DEBUG);
             return false;
         }
     }
