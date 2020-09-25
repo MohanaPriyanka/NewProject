@@ -6,59 +6,50 @@ import { LightningElement, api, track, wire} from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
 import { loadStyle } from 'lightning/platformResourceLoader';
-import { getZipCodeCapacity } from 'c/zipCodeService';
 import { makeRequest } from 'c/httpRequestService';
+import { getZipCodeCapacity } from 'c/zipCodeService';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
-import { validateBasicInfoCompleted, getNumberOfDocsForExistingLead } from 'c/ssfShared';
 
 export default class Ssf extends NavigationMixin(LightningElement) {
     @api leadId;
     @api email;
 
-    @track resiApplicationType = true;
-    @track partnerId;
-    @track zipCodeInput;
-
-    @track zipCodeResponse;
-    @track leadJSON;
-    @track underwritingOptions = [];
-    @track salesRepId;
-    @track campaignId;
-    @track mock;
-
-    @track getEmail;
+    @track showSpinner = false;
+    @track showModal = false;
+    @track spinnerMessage;
     @track getZip;
+    @track enterEmail;
     @track getBasicInfo;
     @track getAgreements;
-
-    @track showSpinner = false;
-    @track spinnerMessage;
+    @track utilityOptions;
+    @track zipCodeInput;
+    @track leadJSON;
+    @track selectedUtility;
+    @track zipCodeResponse;
+    @track partnerId;
+    @track underwritingOptions = [];
+    @track resiApplicationType = true;
     @wire(CurrentPageReference) pageRef;
     loc = '';
 
+    resiIconUrl = staticResourceFolder + '/Icon_House.png';
+    bizIconUrl = staticResourceFolder + '/Icon_City.png';
+
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
-        
+
+        if (!this.utilityOptions) {
+            this.utilityOptions = [];
+        }
+
         if(this.pageRef && this.pageRef.state) {
             if(this.pageRef.state.partnerId) {
                 this.resiApplicationType = false;
                 this.partnerId = this.pageRef.state.partnerId;
             }
-
-            if(this.pageRef.state.salesRepId) {
-                this.salesRepId = this.pageRef.state.salesRepId;
-            }
-
-            if(this.pageRef.state.campaignId) {
-                this.campaignId = this.pageRef.state.campaignId;
-            }
-
-            if(this.pageRef.state.mock) {
-                this.mock = this.pageRef.state.mock;
-            }
-
             if(this.pageRef.state.leadid) {
+                this.getZip = false;
                 this.leadId = this.pageRef.state.leadid;
                 if(this.pageRef.state.loc) {
                     this.loc = this.pageRef.state.loc;
@@ -68,19 +59,22 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                     if(!this.leadJSON) {
                         this.getLead();
                     } else {
-                        this.showBasicInfoPage();
+                        this.getBasicInfo = true;
                     }
                 } else {
-                    this.showEnterEmailPage();
+                    this.enterEmail = true;
                 }
             } else if(this.pageRef.state.zip) {
+                this.getZip = true;
                 this.zipCodeInput = this.pageRef.state.zip;
-                this.showGetZipCodeCapacityPage();
+                this.showSpinner = true;
+                this.spinnerMessage = 'Checking for projects...';
+                this.getZipCodeCapacity(null, false);
             } else {
-                this.showGetZipCodeCapacityPage();
+                this.getZip = true;
             }
         } else {
-            this.showGetZipCodeCapacityPage();
+            this.getZip = true;
         }
     }
 
@@ -97,8 +91,13 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                 (resolveResult) => {
                     this.leadJSON = JSON.stringify(resolveResult);
                     this.zipCodeInput = resolveResult.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
-                    this.resiApplicationType = resolveResult.applicationType === 'Residential';
-                    this.getZipCodeCapacity(resolveResult.utilityId, true);
+                    this.resiApplicationType = resolveResult.applicationType === 'Residential'; 
+                    
+                    if(resolveResult.utilityId) {
+                        this.getZipCodeCapacity(resolveResult.utilityId, true);
+                    } else {
+                        this.getZipCodeCapacity(null, false);
+                    }
                 }
             )
             .catch(
@@ -128,22 +127,75 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             );
     }
 
+    renderedCallback() {
+        const inputBox = this.template.querySelector('lightning-input');
+        if (inputBox && !this.showModal) {
+            inputBox.focus();
+        }
+    }
+
+    genericOnChange(event) {
+        this[event.target.name] = event.target.value;
+    }
+
+    applicationTypeOnChangeResi() {
+        this.resiApplicationType = true;
+    }
+    
+    applicationTypeOnChangeBiz() {
+        this.resiApplicationType = false;
+    }
+
+    closeModal() {
+        this.showModal = false;
+    }
+
+    proceedWithSelectedUtility() {
+        this.showSpinner = true;
+        this.selectedUtility = JSON.parse(this.selectedUtility);
+        this.getZipCodeCapacity(this.selectedUtility.utilityId, false);
+    }
+
     getZipCodeCapacity(utilityId, setLocation) {
         getZipCodeCapacity(this.zipCodeInput, this.partnerId, utilityId).then(
             (resolveResult) => {
                 this.showSpinner = false;
                 this.zipCodeResponse = JSON.stringify(resolveResult);
-                if(resolveResult.ficoUnderwriting) {
-                    this.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
-                }
-                if(resolveResult.finDocsUnderwriting) {
-                    this.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
-                }
+                if (resolveResult.hasCapacity && resolveResult.products.length >= 1) {
+                    if(resolveResult.utilities && resolveResult.utilities.length === 1) {
+                        if(resolveResult.ficoUnderwriting) {
+                            this.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
+                        }
+                        if(resolveResult.finDocsUnderwriting) {
+                            this.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
+                        }
+                        
+                        this.selectedUtility = resolveResult.utilities[0];
+                        this.showModal = false;
+                        this.getZip = false;
+                        this.enterEmail = false;
 
-                if(setLocation) {
-                    this.setLocation();
+                        if(setLocation) {
+                            this.setLocation();
+                        } else {
+                            this.getBasicInfo = true;
+                        }
+                    } else if(resolveResult.utilities && resolveResult.utilities.length > 1) {
+                        this.utilityOptions = resolveResult.utilities.map(
+                            utility => {
+                                return {value: JSON.stringify(utility), label: utility.name};
+                            }
+                        );
+                        this.getZip = true;
+                        this.showModal = true;
+                    }
                 } else {
-                    this.showBasicInfoPage();
+                    const evt = new ShowToastEvent({
+                        title: 'Sorry, your zip code is not eligible for service at this time',
+                        message: 'Please check later',
+                        variant: 'warning'
+                    });
+                    this.dispatchEvent(evt);
                 }
             },
             (rejectResult) => {
@@ -165,102 +217,151 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     }
 
     setLocation() {
-        if(validateBasicInfoCompleted(this.zipCodeResponse, this.leadJSON)) {
+        if(this.validateBasicInfoCompleted()) {
             if(this.loc == 'pay') {
-                this.showPaymentPage(JSON.parse(this.leadJSON));
+                this.dispatchEvent(new CustomEvent('consentscomplete', { detail: JSON.parse(this.leadJSON) }));
             } else if(this.loc == 'agree') {
-                let lead = JSON.parse(this.leadJSON);
-                if(!lead.numberOfContractDocs) {
-                    const capacity = JSON.parse(this.zipCodeResponse);
-                    lead.numberOfContractDocs = getNumberOfDocsForExistingLead(lead, capacity);
-                    this.leadJSON = JSON.stringify(lead);
-                }
-                this.showAgreementsPage();
+                this.getAgreements = true;
+                this.getBasicInfo = false;
             } else {
-                this.showBasicInfoPage();
+                this.getBasicInfo = true;
             }
         } else {
-            this.showBasicInfoPage();
+            this.getBasicInfo = true;
         }
     }
 
-
-
-    // ///////////////////////////////////
-    //      EVENT HANDLING
-    // ///////////////////////////////////
     checkForSubmit(event) {
         if (event.which === 13) {
             const inputBox = this.template.querySelector('lightning-input');
             inputBox.reportValidity();
             if(inputBox.checkValidity()) {
-                this.getLead();
+                if(this.getZip) {
+                    this.getZipCodeCapacity(null, false);
+                } else if(this.enterEmail) {
+                    this.getLead();
+                }
             }
         }
     }
 
-    genericOnChange(event) {
-        this[event.target.name] = event.target.value;
-    }
-
-    handleCapacityCheckComplete(event) {
-        this.zipCodeResponse = event.detail.zipCodeResponse;
-        this.underwritingOptions = event.detail.underwritingOptions;
-        this.resiApplicationType = event.detail.resiApplicationType;
-        this.showBasicInfoPage();
+    submitZip(event) {
+        this.getZipCodeCapacity(null, false);
     }
 
     handleLeadCreation(event) {
         this.leadJSON = JSON.stringify(event.detail);
-        this.showAgreementsPage();
+        this.getAgreements = true;
+        this.getBasicInfo = false;
+        this.enterEmail = false;
     }
 
     handleConsentsComplete(event) {
-        this.showPaymentPage(event.detail);
-    }
-
-
-
-    // ///////////////////////////////////
-    //      PAGE DISPLAY HANDLING
-    // ///////////////////////////////////
-    showEnterEmailPage() {
-        this.getEmail = true;
-        this.getZip = false;
-        this.getBasicInfo = false;
-        this.getAgreements = false;
-    }
-
-    showGetZipCodeCapacityPage() {
-        this.getEmail = false;
-        this.getZip = true;
-        this.getBasicInfo = false;
-        this.getAgreements = false;
-    }
-
-    showBasicInfoPage() {
-        this.getEmail = false;
-        this.getZip = false;
-        this.getBasicInfo = true;
-        this.getAgreements = false;
-    }
-
-    showAgreementsPage() {
-        this.getEmail = false;
-        this.getZip = false;
-        this.getBasicInfo = false;
-        this.getAgreements = true;
-    }
-
-    showPaymentPage(lead) {
-        this.getEmail = false;
-        this.getZip = false;
-        this.getBasicInfo = false;
-        this.getAgreements = false;
-        
         const consentsCompleteEvent = new CustomEvent('consentscomplete', {
-            detail: lead
+            detail: event.detail
         });
         this.dispatchEvent(consentsCompleteEvent);
+    }
+
+    validateBasicInfoCompleted() {
+        const capacity = JSON.parse(this.zipCodeResponse);
+        if(!capacity.zipCode) {
+            return false;
+        }
+        if(!capacity.products || capacity.products.length === 0) {
+            return false;
+        }
+        if(!capacity.utilities || capacity.utilities.length !== 1) {
+            return false;
+        }
+
+        let lead = JSON.parse(this.leadJSON);
+        if(!lead.firstName || !lead.lastName || !lead.email || !lead.productName 
+           || (lead.applicationType != 'Residential' && lead.applicationType != 'Non-Residential')) {
+                return false;
+        }
+        if(lead.applicationType != 'Residential' && (!lead.businessName || !lead.businessTitle)) {
+            return false;
+        }
+        if(!lead.propertyAccounts || lead.propertyAccounts.length === 0) {
+            return false;
+        }
+        for(let i=0; i<lead.propertyAccounts.length; i++) {
+            const propertyAccount = lead.propertyAccounts[i];
+            if(!propertyAccount.billingStreet || !propertyAccount.billingCity || !propertyAccount.billingState || !propertyAccount.billingPostalCode) {
+                return false;
+            }
+            if(!propertyAccount.utilityAccountLogs || propertyAccount.utilityAccountLogs.length == 0) {
+                return false;
+            }
+            for(let j=0; j<propertyAccount.utilityAccountLogs.length; j++) {
+                const ual = propertyAccount.utilityAccountLogs[j];
+                if(!ual.nameOnAccount || !ual.serviceStreet || !ual.serviceCity || !ual.serviceState || !ual.servicePostalCode) {
+                    return false;
+                }
+            }
+        }
+        
+        if(!lead.numberOfContractDocs) {
+            lead.numberOfContractDocs = this.getNumberOfDocsForExistingLead(lead, capacity);
+            this.leadJSON = JSON.stringify(lead);
+        }
+        
+        return true;
+    }
+
+    getNumberOfDocsForExistingLead(lead, capacity) {
+        if(capacity.products[0].standaloneDisclosureForm === false) {
+            return 1;
+        }
+
+        if(capacity.rateClasses && capacity.rateClasses.length > 0) {
+            const rateClassObj = Object.fromEntries(capacity.rateClasses.map(
+                rateClass => ([rateClass.name, rateClass])
+            ));
+
+            let allSuppress = true;
+            lead.propertyAccounts.forEach(propAcct => {
+                propAcct.utilityAccountLogs.forEach(ual => {
+                    if(!ual.rateClass || !rateClassObj.hasOwnProperty(ual.rateClass) || !rateClassObj[ual.rateClass].suppressDisclosureForm) {
+                        allSuppress = false;
+                    }
+                });
+            });
+
+            if(allSuppress) {
+                return 1;
+            }
+        }
+
+        return 2;
+    }
+
+
+
+    // ///////////////////////////////////
+    //      STYLING
+    // ///////////////////////////////////
+    get getContainerStyle() {
+        if(this.showModal || this.showSpinner) {
+            return 'slds-backdrop slds-backdrop_open';
+        }
+        return '';
+    }
+
+    get getResiButtonStyle() {
+        let style = 'icon-button';
+        if(this.resiApplicationType) {
+            style += ' selected';
+        }
+        return style;
+    }
+
+    get getBizButtonStyle() {
+        let style = 'icon-button';
+        if(!this.resiApplicationType) {
+            style += ' selected';
+        }
+        return style;
     }
 }
