@@ -180,12 +180,19 @@ public without sharing class ClientInvoicingFeeWaiveService {
         return totalWaivedkWDC;
     }
 
+    /**
+     * Calculates the milestone date (if populated) for a Subscription Order.
+     * @param order The subscription order for which the milestone date should be calculated. Depending on the milestoneDateType,
+     * needs to have related Contract, SSS, or Assignment Agreement fields.
+     * @param milestoneDateType An option from Contract_Fee_Detail__c.Waive_Reacquisition_Fee_Project_Date__c
+     *
+     * @return The milestone date for this Subscription Order, or null if the milestone date has not been reached yet.
+     */
     private Date getMilestoneDate(Subscription_Order__c order, String milestoneDateType) {
         if (milestoneDateType == null) {
             return null;
         }
         Date milestoneDate;
-        Boolean feeCharged = true;
 
         switch on milestoneDateType {
             when 'Contract: Effective Date' {
@@ -203,11 +210,8 @@ public without sharing class ClientInvoicingFeeWaiveService {
             when 'Customer: Assignment Date' {
                 milestoneDate = order.Utility_Account_Subscription__r.Opportunity__r.Assignment_Agreement__r.CustomerSignedDate;
             }
-            when 'Fee not Charged' {
-                feeCharged = false;
-            }
-            when null {
-                feeCharged = false;
+            when 'Fee not Charged', null {
+                // There's no milestone date to set
             }
             when else {
                 // As of June 2020, only 'Project: First Customer Assignment Date' isn't handled, since we don't have
@@ -218,13 +222,6 @@ public without sharing class ClientInvoicingFeeWaiveService {
                     milestoneDateType
                 );
             }
-        }
-        if (feeCharged && milestoneDate == null) {
-            Logger.logLater(
-                'ClientInvoicingFeeAssignmentService',
-                'Null SSS Date for Client Invoicing, with type: ',
-                milestoneDateType + 'and SSS: ' + order.Utility_Account_Subscription__r.Shared_Solar_System__c + 'SO: ' + order.Id
-            );
         }
         return milestoneDate;
     }
