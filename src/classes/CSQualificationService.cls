@@ -69,8 +69,11 @@ public without sharing class CSQualificationService {
                 pcr.LASERCA__Credit_Score__c = '9999';
                 creditScore = 9999;
                 updatePCRs.add(pcr);
-                System.enqueueJob(new CreateCaseOnNoMatch(lead));
+                CaseFactory noMatchFactory  = new CaseFactory();
+                noMatchFactory.setLead(lead);
+                System.enqueueJob(noMatchFactory);
             }
+
 
             //Check if lead is qualified
             lead.Status = checkCSQualification(lead, sharedSolarSystems, creditScore);
@@ -241,35 +244,14 @@ public without sharing class CSQualificationService {
         input.createQualificationList();
         return input.qualificationMatches;
     }
+
     public static void closeReportMissingCases(Lead lead) {
-        List<Case> cases = new CaseSelector().selectOpenCasesFromLeadId(lead.Id);
+        List<Case> cases = new CaseSelector().selectOpenNoMatchCasesFromLead(lead);
         if (cases.size() > 0) {
             for (Case c : cases) {
                 c.Status = 'Closed';
             }
             update cases;
-        }
-    }
-    public class CreateCaseOnNoMatch implements Queueable {
-        private Lead lead;
-        public CreateCaseOnNoMatch(Lead lead) {
-            this.lead = new LeadSelector().selectOne(lead.Id);
-        }
-
-        public void execute(QueueableContext context) {
-            if (new CaseSelector().selectOpenCasesFromLeadId(lead.Id).size() == 0) {
-                CaseFactory caseFactory = new CaseFactory();
-                Case insertCase = caseFactory.getCase('Customer_Care');
-                insertCase.Lead_Lookup__c = lead.Id;
-                insertCase.Product_Line__c = 'Community Solar';
-                insertCase.AccountId = lead.Parent_Account__c;
-                insertCase.Category__c = 'QC';
-                insertCase.Sale_Status__c = 'Pre-Sale';
-                insertCase.Subject = lead.Name + ' - Credit Score does not qualify';
-                insertCase.Description = lead.Name + ' - Credit score does not qualify, please provide a passing credit report or ' +
-                    'we will send adverse action notice to customer.';
-                insert insertCase;
-            }
         }
     }
 }

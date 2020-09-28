@@ -192,7 +192,9 @@ private class CSQualificationTestclass {
     public static void testNoPCRMatch() {
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
 
+        Test.startTest();
         pullCreditForLead(lead.Id, false);
+        Test.stopTest();
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
@@ -204,6 +206,8 @@ private class CSQualificationTestclass {
         System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
         System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 9999');
+        System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size(), '9999 credit score ' +
+            'implies no match, therefore a no match case should be created.');
 
     }
 
@@ -381,24 +385,6 @@ private class CSQualificationTestclass {
         allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
         System.assertEquals(0, allMatches.size(), 'There should be no qualification matches');
     }
-    @IsTest
-    public static void testNoMatchCaseCreation() {
-
-        Lead switchLead = [
-            SELECT Id,Name,Parent_Account__c
-            FROM Lead
-            LIMIT 1
-        ];
-
-        System.assertEquals(0, new CaseSelector().selectOpenCasesFromLeadId(switchLead.Id).size(), 'There should be no open cases for ' +
-            'this lead before enqueuing');
-        Test.startTest();
-        System.enqueueJob(new CSQualificationService.CreateCaseOnNoMatch(switchLead));
-        System.enqueueJob(new CSQualificationService.CreateCaseOnNoMatch(switchLead));
-        Test.stopTest();
-        System.assertEquals(1, new CaseSelector().selectOpenCasesFromLeadId(switchLead.Id).size(), 'If a case already ' +
-            'exists another should not be created. There should only be 1 open case at a time.');
-    }
 
     @IsTest
     public static void closeReportMissingCasesTest() {
@@ -408,16 +394,17 @@ private class CSQualificationTestclass {
             LIMIT 1
         ];
 
-        System.assertEquals(0, new CaseSelector().selectOpenCasesFromLeadId(switchLead.Id).size(), 'There should be no open cases for ' +
+        System.assertEquals(0, new CaseSelector().selectOpenNoMatchCasesFromLead(switchLead).size(), 'There should be no open cases for ' +
             'this lead before enqueuing');
         Test.startTest();
-        System.enqueueJob(new CSQualificationService.CreateCaseOnNoMatch(switchLead));
+        CaseFactory testCaseFactory = new CaseFactory();
+        testCaseFactory.setLead(switchLead);
+        System.enqueueJob(testCaseFactory);
         Test.stopTest();
-        System.assertEquals(1, new CaseSelector().selectOpenCasesFromLeadId(switchLead.Id).size(), 'Verifies that a case was added');
-
+        System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(switchLead).size(), 'If a case already ' +
+            'exists another should not be created. There should only be 1 open case at a time.');
         CSQualificationService.closeReportMissingCases(switchLead);
-        System.assertEquals(0, new CaseSelector().selectOpenCasesFromLeadId(switchLead.Id).size(), 'After open cases are closed' +
+        System.assertEquals(0, new CaseSelector().selectOpenNoMatchCasesFromLead(switchLead).size(), 'After open cases are closed' +
             'the case selector should not return anything.');
     }
-
 }
