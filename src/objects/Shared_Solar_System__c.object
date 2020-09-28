@@ -1822,6 +1822,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Hale Reservation</label>
                 </value>
                 <value>
+                    <fullName>Infinity Marketing, LLC</fullName>
+                    <default>false</default>
+                    <label>Infinity Marketing, LLC</label>
+                </value>
+                <value>
                     <fullName>Invaleon Technologies Corporation</fullName>
                     <default>false</default>
                     <label>Invaleon Technologies Corporation</label>
@@ -1915,6 +1920,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Resonant Energy</fullName>
                     <default>false</default>
                     <label>Resonant Energy</label>
+                </value>
+                <value>
+                    <fullName>Retail Group Inc dba Voyager Power</fullName>
+                    <default>false</default>
+                    <label>Retail Group Inc dba Voyager Power</label>
                 </value>
                 <value>
                     <fullName>ReVision Energy</fullName>
@@ -2764,6 +2774,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Infinity Marketing%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Invaleon Technologies Corporation</fullName>
                 <default>false</default>
             </values>
@@ -2845,6 +2859,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>Resonant Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Retail Group Inc dba Voyager Power</fullName>
                 <default>false</default>
             </values>
             <values>
