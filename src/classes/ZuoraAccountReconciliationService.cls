@@ -92,8 +92,9 @@ public with sharing class ZuoraAccountReconciliationService {
                 Logger.logLater(
                     'ZuoraAccountReconciliationService',
                     'getZuoraAccountsWithVariances',
-                    'Did not find a zuora account for ' + zuoraAccount.Id +
-                        ' (or maybe that account does not have any Complete opportunities to reconcile against)',
+                    'Did not find a Salesforce Account for Zuora Id ' + zuoraAccount.Id + '. ' +
+                        'Or the corresponding Salesforce account does not have any Complete opportunities to reconcile against, ' +
+                        'in which case someone from the QC team should review',
                     Logger.ERROR);
                 continue;
             }
