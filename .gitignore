@@ -325,6 +325,7 @@ src/package.xml
 /src/aura/ADM_*
 /src/lwc/adm*
 !src/objects/agf__*
+!src/layouts/agf__*
 
 # Metadata search
 *MetaDataSearch__*
