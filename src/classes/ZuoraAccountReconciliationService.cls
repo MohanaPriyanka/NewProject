@@ -76,6 +76,13 @@ public with sharing class ZuoraAccountReconciliationService {
         }
     }
 
+    /**
+     * Finds any variances (per hasReconciliationVariance) between the list of ZuoraAccounts and the Salesforce Accounts
+     * @param zuoraAccounts List of ZuoraAccounts to reconcile
+     * @param zuoraIdToSFDCAccountMap Map of Zuora Id to Salesforce Accounts to reconcile
+     * @see ZuoraAPI.ZuoraAccount.hasReconciliationVariance
+     * @return List of ZuoraAccounts with variances resolved to update in Zuora
+     */
     @TestVisible
     private List<ZuoraAPI.ZuoraAccount> getZuoraAccountsWithVariances(List<ZuoraAPI.ZuoraAccount> zuoraAccounts, Map<String, Map<String, Object>> zuoraIdToSFDCAccountMap) {
         List<ZuoraAPI.ZuoraAccount> zuoraAccountsToUpdate = new List<ZuoraAPI.ZuoraAccount>();
@@ -85,7 +92,8 @@ public with sharing class ZuoraAccountReconciliationService {
                 Logger.logLater(
                     'ZuoraAccountReconciliationService',
                     'getZuoraAccountsWithVariances',
-                    'Did not find a zuora account for ' + zuoraAccount.Id,
+                    'Did not find a zuora account for ' + zuoraAccount.Id +
+                        ' (or maybe that account does not have any Complete opportunities to reconcile against)',
                     Logger.ERROR);
                 continue;
             }
