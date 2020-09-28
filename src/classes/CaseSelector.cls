@@ -5,6 +5,6 @@
 public without sharing class CaseSelector {
 
     public List<Case> selectOpenNoMatchCasesFromLead(Lead lead) {
-        return [SELECT Id FROM Case WHERE Lead_Lookup__c = :lead.Id AND IsClosed = FALSE AND Sub_Category__c = 'No Match'];
+        return [SELECT Id FROM Case WHERE Lead_Lookup__c = :lead.Id AND IsClosed = FALSE AND QC_Case_Subject__c = 'No FICO Match'];
     }
 }

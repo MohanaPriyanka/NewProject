@@ -15,7 +15,7 @@ public with sharing class CaseSelectorTest {
         insert lead;
         Case openTestCase = new CaseFactory().getCase('Customer_Care');
         openTestCase.Lead_Lookup__c = lead.Id;
-        openTestCase.Sub_Category__c = 'No Match';
+        openTestCase.QC_Case_Subject__c = 'No FICO Match';
         Case closedTestCase = new CaseFactory().getCase('Customer_Care');
         closedTestCase.Lead_Lookup__c = lead.Id;
         closedTestCase.Status = 'Closed';

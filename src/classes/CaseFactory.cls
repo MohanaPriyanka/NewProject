@@ -109,7 +109,7 @@ public without sharing class CaseFactory implements Queueable {
             Case newCcCase = getCase('Customer_Care');
             newCcCase.Lead_Lookup__c = lead.Id;
             newCcCase.Disable_Followup_Email__c = true;
-            newCcCase.Sub_Category__c = 'No Match';
+            newCcCase.QC_Case_Subject__c = 'No FICO Match';
             newCcCase.Product_Line__c = 'Community Solar';
             newCcCase.AccountId = lead.Parent_Account__c;
             newCcCase.Category__c = 'QC';
