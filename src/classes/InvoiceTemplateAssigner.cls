@@ -105,6 +105,14 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
         return zAccount;
     }
 
+    /**
+     * Queries Salesforce to get the appropriate Bill Message (based on the Salesforce Account's invoice message fields
+     * and CS_Bill_Setting__c, and Invoice Template (based on Autopay, Anchor, and Brand Key) for the list of accounts.
+     * @param accountsToAssign List of Accounts to update in Zuora
+     * @param invoiceTemplates List of Invoice Templates in Salesforce to assign
+     *
+     * @return List of ZuoraAccounts with Bill Message and Invoice template set
+     */
     public List<ZuoraAPI.ZuoraAccount> assignTemplates(List<Account> accountsToAssign, List<zqu__InvoiceTemplate__c> invoiceTemplates){
         TemplateKey templateKey;
 
@@ -127,7 +135,7 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
                 }
             }
             if (zAccount.InvoiceTemplateId == null){
-                Logger.logLater('InvoiceTemplateAssigner','Cannot find template','Account:' + String.valueOf(account.Id)+ ' ' + String.valueOf(templateKey), Logger.ERROR);
+                Logger.logLater('InvoiceTemplateAssigner','Cannot find template','Account: ' + account.Name + '('+ account.Id + ')\n' + String.valueOf(templateKey), Logger.ERROR);
             }
         }
         return accountsToUpdate.values();
