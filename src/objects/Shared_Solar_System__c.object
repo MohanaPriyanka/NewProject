@@ -1867,6 +1867,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Next Step Living</label>
                 </value>
                 <value>
+                    <fullName>Open Door Energy Group</fullName>
+                    <default>false</default>
+                    <label>Open Door Energy Group</label>
+                </value>
+                <value>
                     <fullName>Palmetto Solar</fullName>
                     <default>false</default>
                     <label>Palmetto Solar</label>
@@ -1940,6 +1945,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>RGS Energy</fullName>
                     <default>false</default>
                     <label>RGS Energy</label>
+                </value>
+                <value>
+                    <fullName>Satori Energy</fullName>
+                    <default>false</default>
+                    <label>Satori Energy</label>
                 </value>
                 <value>
                     <fullName>Solar Five</fullName>
@@ -2810,6 +2820,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Open Door Energy Group</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Palmetto Solar</fullName>
                 <default>false</default>
             </values>
@@ -2867,6 +2881,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>RevoluSun</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Satori Energy</fullName>
                 <default>false</default>
             </values>
             <values>
