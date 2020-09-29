@@ -1613,6 +1613,11 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <default>false</default>
                     <label>Upload utility bill without overdue payments</label>
                 </value>
+                <value>
+                    <fullName>No FICO Match</fullName>
+                    <default>false</default>
+                    <label>No FICO Match</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -3785,6 +3790,89 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <active>true</active>
         <businessProcess>Customer Care Case</businessProcess>
         <label>Customer Care</label>
+        <picklistValues>
+            <picklist>QC_Case_Subject__c</picklist>
+            <values>
+                <fullName>Adjust subscription%2C %3E25kW</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Change account %23 on contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Change load zone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Change to commercial</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Check Comments About Sizing section</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Check contract%2C handwritten</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit report did not match customer%27s name%2C attach credit check for right customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit report is missing%2C Upload correct credit report</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Custom%27s credit was denied %2C change stage to unqualified</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer email missing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Load zone missing on utility bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No FICO Match</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription adjustment needed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Too few years at location</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Too few years in business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upload Green Button Data</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upload complete contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upload complete utility bill to utility Account Log</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upload utility bill without overdue payments</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
