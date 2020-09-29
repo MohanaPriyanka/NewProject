@@ -1705,6 +1705,11 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <label>Bug</label>
                 </value>
                 <value>
+                    <fullName>Enhancement</fullName>
+                    <default>false</default>
+                    <label>Enhancement</label>
+                </value>
+                <value>
                     <fullName>Data Update</fullName>
                     <default>false</default>
                     <label>Data Update</label>
@@ -1713,26 +1718,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <fullName>Duplicate</fullName>
                     <default>false</default>
                     <label>Duplicate</label>
-                </value>
-                <value>
-                    <fullName>Enhanced Code</fullName>
-                    <default>false</default>
-                    <label>Enhanced Code</label>
-                </value>
-                <value>
-                    <fullName>Enhanced Config</fullName>
-                    <default>false</default>
-                    <label>Enhanced Config</label>
-                </value>
-                <value>
-                    <fullName>Fix Code</fullName>
-                    <default>false</default>
-                    <label>Fix Code</label>
-                </value>
-                <value>
-                    <fullName>Fix Config</fullName>
-                    <default>false</default>
-                    <label>Fix Config</label>
                 </value>
                 <value>
                     <fullName>Modify Access</fullName>
@@ -1773,6 +1758,30 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <fullName>User Error</fullName>
                     <default>false</default>
                     <label>User Error</label>
+                </value>
+                <value>
+                    <fullName>Enhanced Code</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Enhanced Code</label>
+                </value>
+                <value>
+                    <fullName>Enhanced Config</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Enhanced Config</label>
+                </value>
+                <value>
+                    <fullName>Fix Code</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Fix Code</label>
+                </value>
+                <value>
+                    <fullName>Fix Config</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Fix Config</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -4708,6 +4717,41 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Product Support</businessProcess>
         <label>Technology Support</label>
         <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Bug</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Enhancement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer an Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User Error</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Origin</picklist>
             <values>
                 <fullName>Email</fullName>
@@ -5059,37 +5103,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>User didn%27t attend training</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Resolution__c</picklist>
-            <values>
-                <fullName>Bug</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Data Update</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Duplicate</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Modify Access</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>No Longer an Issue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Question</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>User Error</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

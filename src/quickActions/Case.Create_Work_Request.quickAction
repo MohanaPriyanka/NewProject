@@ -21,7 +21,7 @@
         <field>Requested_By__c</field>
         <formula>Case.ContactEmail</formula>
     </fieldOverrides>
-    <label>Create Work</label>
+    <label>Create User Story</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
         <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
@@ -45,11 +45,6 @@
                 <emptySpace>false</emptySpace>
                 <field>agf__Scrum_Team__c</field>
                 <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>agf__Severity_Level__c</field>
-                <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
