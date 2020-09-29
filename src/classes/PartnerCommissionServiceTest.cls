@@ -14,7 +14,7 @@ public class PartnerCommissionServiceTest {
             2 opportunities already have pending payments (which should update instead of insert)
         */
         System.assertEquals(10,pendingComm.opportunitiesToRun.size());
-        for (Opportunity opp : pendingComm.opportunitiesToRun){
+        for (Opportunity opp : pendingComm.opportunitiesToRun) {
             System.assertEquals(null,opp.CS_Capacity_Allocated__c);
             System.assertEquals(null,opp.Commission_Structure__c);
         }

@@ -137,12 +137,23 @@ public class PartnerCommissionHandler{
         PartnerCommissionHandler.calculatePartnerCommission(opportunityIds);
     }
 
+    @InvocableMethod(Label='CommissionStructureChange' Description='Receives opportunity that is having a Commission Structure update' )
+    public static void invokeCommissionStructureChange(List<Id> opportunityList ) {
+        Set<Id> opportunityIds = new Set<Id>(opportunityList);
+        calculatePartnerCommission(opportunityIds);
+    }
+
     @Future
     public static void calculatePartnerCommission(Set<Id> opportunityIds){
         try {
             List<Opportunity> opportunitiesPendingCommission = new List<Opportunity>();
-            for (Opportunity opportunity : oppSelector.selectByIdWithApprovedCommissionPayment(opportunityIds)){
-                if (opportunity.Commission_Payments__r.size() == 0 && readyForContractExecutionCommission(opportunity)){
+            for (Opportunity opportunity : oppSelector.selectByIdWithCommissionPayment(opportunityIds)){
+                if (opportunity.Commission_Payments__r.size() == 0 && readyForContractExecutionCommission(opportunity)) {
+                    //if no contract execution, need to create one
+                    opportunitiesPendingCommission.add(opportunity);
+                } else if (opportunity.Commission_Payments__r.size() != 0 && checkForPendingCommissionPayment(opportunity.Commission_Payments__r) &&
+                    readyForContractExecutionCommission(opportunity)) {
+                    //if pending commission, need to update
                     opportunitiesPendingCommission.add(opportunity);
                 }
             }
@@ -159,13 +170,23 @@ public class PartnerCommissionHandler{
         }
     }
 
+    @TestVisible
+    private static Boolean checkForPendingCommissionPayment(List<Commission_Payment__c> commissionPayments) {
+        for (Commission_Payment__c cp : commissionPayments) {
+            if (cp.Status__c == 'Pending Approval') {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static Boolean readyForContractExecutionCommission(Opportunity opp){
         return (opp.StageName == 'Complete'
-                && opp.Product_Line__c == 'Community Solar'
-                && opp.Partner_tag_lookup__c != null
-                && opp.Partner_tag_lookup__r.Name != 'Placeholder Partner'
-                && opp.Partner_tag_lookup__r.Name != 'Bluewave Test Partner'
-                && opp.Partner_tag_lookup__r.Name != 'BlueWave Inside Sales');
+            && opp.Product_Line__c == 'Community Solar'
+            && opp.Partner_tag_lookup__c != null
+            && opp.Partner_tag_lookup__r.Name != 'Placeholder Partner'
+            && opp.Partner_tag_lookup__r.Name != 'Bluewave Test Partner'
+            && opp.Partner_tag_lookup__r.Name != 'BlueWave Inside Sales');
     }
 
     private static void callPartnerCommissionService(List<Opportunity> oppList, PartnerCommissionService.CommissionType type){

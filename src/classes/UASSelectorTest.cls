@@ -138,7 +138,7 @@ public with sharing class UASSelectorTest {
             oppIds.add(opp.Id);
         }
         UASSelector selector = new UASSelector();
-        Map<Id,Decimal> summaryMap = selector.getUASSummaryByOpportunity(oppIds,false);
+        Map<Id,Decimal> summaryMap = selector.getUASSummaryByOpportunity(oppIds);
         System.assert(summaryMap.values().size() > 0);
     }
 

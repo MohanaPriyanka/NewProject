@@ -226,34 +226,6 @@ public class PartnerCommissionHandlerTest {
     }
 
     @IsTest
-    private static void testUASTriggers(){
-        Util.disableAllTriggers();
-        UtilityAccountSubscriptionHandlerTest.setupData();
-        Util.enableAllTriggers();
-
-        Utility_Account_Subscription__c uas = [
-            SELECT Id, Opportunity__c
-            FROM Utility_Account_Subscription__c
-            WHERE Name = '0000234'
-            LIMIT 1
-        ];
-
-        Opportunity newOpp = [
-            SELECT Id, Partner_tag_lookup__c, Product__c
-            FROM Opportunity
-            WHERE Id != : uas.Opportunity__c
-            LIMIT 1
-        ];
-
-        Test.startTest();
-            System.assertEquals(0,UtilityAccountSubscriptionHandler.partnerCommissionHandler.queuedIds.size());
-            uas.Opportunity__c = newOpp.Id;
-            update uas;
-            System.assertEquals(2,UtilityAccountSubscriptionHandler.partnerCommissionHandler.queuedIds.size());
-        Test.stopTest();
-    }
-
-    @IsTest
     private static void testWithoutAnyRows(){
         Account propertyOne = new Account(name = 'Account Property');
         insert propertyOne;
@@ -271,6 +243,7 @@ public class PartnerCommissionHandlerTest {
         ];
         System.assertEquals(0,logs.size());
     }
+
 
     @IsTest
     private static void testQueueCalculatePartnerCommission(){
