@@ -102,6 +102,7 @@ global without sharing class RESTRouterV2 {
         RestContext.response.statusCode = statusCode;
         String errorMessage = 'Error: ' + e.getMessage() + '\n' + e.getStackTraceString();
         errorMessage += '. Request: ' + RestContext.request;
+        errorMessage += '\n\nRequest Body: ' + RestContext.request.requestBody.toString();
         Logger.logNow('RESTRouterV2', methodName, errorMessage, 'Error');
     }
 
