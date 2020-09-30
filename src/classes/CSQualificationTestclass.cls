@@ -31,7 +31,7 @@ private class CSQualificationTestclass {
         partner.Default_Sales_Rep__c = salesRep.Id;
         update partner;
 
-        Product2 vderProduct = new Product2( Name = 'VDER',
+        Product2 vderProduct = new Product2(Name = 'VDER',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Program__c = 'VDER - Community Solar',
@@ -55,20 +55,24 @@ private class CSQualificationTestclass {
             Number_of_Decimal_Places__c = 2,
             EIA_ID__c = '5678'
         );
-        insert new List<Utility__c>{nyseg, central};
+        insert new List<Utility__c>{
+            nyseg, central
+        };
 
         Load_U__c loadZone = new Load_U__c (
             Name = '12345',
             LZ__c = 'Hudson Valley',
-            Town__c= 'Albany'
+            Town__c = 'Albany'
         );
 
 
-        Load_U__c loadZone2  = new Load_U__c(
-                Name = '56789',
-                LZ__c = 'Mohawk Valley'
+        Load_U__c loadZone2 = new Load_U__c(
+            Name = '56789',
+            LZ__c = 'Mohawk Valley'
         );
-        insert new List<Load_U__c>{loadZone, loadZone2};
+        insert new List<Load_U__c>{
+            loadZone, loadZone2
+        };
 
         ZipCode_Utility_Junction__c junction1 = new ZipCode_Utility_Junction__c(
             Load_Zone_Utility__c = loadZone.Id,
@@ -80,19 +84,21 @@ private class CSQualificationTestclass {
             Utility__c = central.Id
         );
         ZipCode_Utility_Junction__c junction3 = new ZipCode_Utility_Junction__c(
-                Load_Zone_Utility__c = loadZone2.Id,
-                Utility__c = central.Id
+            Load_Zone_Utility__c = loadZone2.Id,
+            Utility__c = central.Id
         );
 
-        insert new List<ZipCode_Utility_Junction__c>{junction1, junction2, junction3};
+        insert new List<ZipCode_Utility_Junction__c>{
+            junction1, junction2, junction3
+        };
 
-        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(   Name = 'Albany Post Rd',
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'Albany Post Rd',
             Service_Territory__c = 'Hudson Valley',
             Service_Territories__c = 'Hudson Valley',
             Open__c = true,
             Reserved_Capacity_kW_DC__c = '10',
             Total_System_Size_kWh_DC__c = 1445.86,
-            Total_System_Size_kW_AC__c  = 996,
+            Total_System_Size_kW_AC__c = 996,
             Utility__c = nyseg.Id,
             Public__c = true,
             Stage__c = 'Acquisition',
@@ -105,7 +111,7 @@ private class CSQualificationTestclass {
             Maximum_Subscription_Capacity_kWDC__c = 25);
         insert sss1;
 
-        Lead resiLead =  new Lead(
+        Lead resiLead = new Lead(
             FirstName = 'Switch',
             LastName = 'Testcase',
             Email = 'test@email.com',
@@ -121,7 +127,7 @@ private class CSQualificationTestclass {
             State = BlueWaveParent.convertAbbreviationToState('NY'),
             PostalCode = '12345',
             Parcel_Zip__c = '12345',
-            Application_Source_Phase_1__c ='Switch without Partner',
+            Application_Source_Phase_1__c = 'Switch without Partner',
             LeadSource = 'Switch',
             Product_line__c = 'Community Solar',
             Product__c = vderProduct.Id,
@@ -186,7 +192,9 @@ private class CSQualificationTestclass {
     public static void testNoPCRMatch() {
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
 
+        Test.startTest();
         pullCreditForLead(lead.Id, false);
+        Test.stopTest();
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
@@ -198,6 +206,8 @@ private class CSQualificationTestclass {
         System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
         System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 9999');
+        System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size(), '9999 credit score ' +
+            'implies no match, therefore a no match case should be created.');
 
     }
 
@@ -234,18 +244,23 @@ private class CSQualificationTestclass {
 
     @IsTest
     private static void testFinancialReviewQualification() {
-        Lead lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c
-                     FROM Lead LIMIT 1];
-        
+        Lead lead = [
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c
+            FROM Lead
+            LIMIT 1
+        ];
+
         CSQualificationService qualService = new CSQualificationService();
         String newStatus = qualService.underwriteWithFinancialReview(lead);
         System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as there are no Financial Underwriting Document records associated with the lead.');
 
         Financial_Underwriting_Document__c fud = new Financial_Underwriting_Document__c(Lead__c = lead.Id);
         insert fud;
-        lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
-                    (SELECT Id FROM Underwrite_Financial_Documents__r)
-                FROM Lead LIMIT 1];
+        lead = [
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
+            FROM Lead
+            LIMIT 1
+        ];
         newStatus = qualService.underwriteWithFinancialReview(lead);
         System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as the lead\'s child Financial Underwriting Document record has no files attached.');
 
@@ -266,18 +281,22 @@ private class CSQualificationTestclass {
             LinkedEntityId = fud.Id
         );
         insert cdl;
-        lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
-                    (SELECT Id FROM Underwrite_Financial_Documents__r)
-                FROM Lead LIMIT 1];
+        lead = [
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
+            FROM Lead
+            LIMIT 1
+        ];
         newStatus = qualService.underwriteWithFinancialReview(lead);
         System.assertEquals('Qualified', newStatus, 'The lead status should be Qualified, as the lead\'s child Financial Underwriting Document record has files attached and there is a matching SSS.');
 
         Utility__c newUtility = [SELECT Id FROM Utility__c WHERE Name = 'Central Hudson Gas and Electric' LIMIT 1];
         lead.Utility_relationship__c = newUtility.Id;
         update lead;
-        lead = [SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
-                    (SELECT Id FROM Underwrite_Financial_Documents__r)
-                FROM Lead LIMIT 1];
+        lead = [
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
+            FROM Lead
+            LIMIT 1
+        ];
         newStatus = qualService.underwriteWithFinancialReview(lead);
         System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as there is no open SSS matching the lead\'s utility.');
     }
@@ -287,14 +306,14 @@ private class CSQualificationTestclass {
     public static void testQualificationWidgetWithInputs() {
         List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
         Lead switchLead = [
-                SELECT Id, Product__c, Parcel_Zip__c
-                FROM Lead
-                LIMIT 1
+            SELECT Id, Product__c, Parcel_Zip__c
+            FROM Lead
+            LIMIT 1
         ];
         Partner__c partner = [
-                SELECT Id
-                FROM Partner__c
-                LIMIT 1
+            SELECT Id
+            FROM Partner__c
+            LIMIT 1
         ];
 
         String productId = switchLead.Product__c;
@@ -310,21 +329,21 @@ private class CSQualificationTestclass {
     }
 
     @IsTest
-    public static void testQualificationWidgetHalfMatch(){
+    public static void testQualificationWidgetHalfMatch() {
         //We expect to still see the SSS returned as a potential match but completeMatch is False
         // because the fico is not eligible for the project
 
         Partner__c partner = [
-                SELECT Id
-                FROM Partner__c
-                LIMIT 1
+            SELECT Id
+            FROM Partner__c
+            LIMIT 1
         ];
 
         List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
         Lead switchLead = [
-                SELECT Id, Product__c, Parcel_Zip__c
-                FROM Lead
-                LIMIT 1
+            SELECT Id, Product__c, Parcel_Zip__c
+            FROM Lead
+            LIMIT 1
         ];
         String productId = switchLead.Product__c;
         String partnerId = partner.Id;
@@ -347,14 +366,14 @@ private class CSQualificationTestclass {
     public static void testQualificationWidgetNoMatch() {
         List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
         Lead switchLead = [
-                SELECT Id, Product__c, Parcel_Zip__c
-                FROM Lead
-                LIMIT 1
+            SELECT Id, Product__c, Parcel_Zip__c
+            FROM Lead
+            LIMIT 1
         ];
         Partner__c partner = [
-                SELECT Id
-                FROM Partner__c
-                LIMIT 1
+            SELECT Id
+            FROM Partner__c
+            LIMIT 1
         ];
 
         String productId = switchLead.Product__c;
@@ -367,5 +386,25 @@ private class CSQualificationTestclass {
         System.assertEquals(0, allMatches.size(), 'There should be no qualification matches');
     }
 
+    @IsTest
+    public static void closeReportMissingCasesTest() {
+        Lead switchLead = [
+            SELECT Id,Name,Parent_Account__c
+            FROM Lead
+            LIMIT 1
+        ];
 
+        System.assertEquals(0, new CaseSelector().selectOpenNoMatchCasesFromLead(switchLead).size(), 'There should be no open cases for ' +
+            'this lead before enqueuing');
+        Test.startTest();
+        CaseFactory testCaseFactory = new CaseFactory();
+        testCaseFactory.setLead(switchLead);
+        System.enqueueJob(testCaseFactory);
+        Test.stopTest();
+        System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(switchLead).size(), 'If a case already ' +
+            'exists another should not be created. There should only be 1 open case at a time.');
+        CSQualificationService.closeReportMissingCases(switchLead);
+        System.assertEquals(0, new CaseSelector().selectOpenNoMatchCasesFromLead(switchLead).size(), 'After open cases are closed' +
+            'the case selector should not return anything.');
+    }
 }
