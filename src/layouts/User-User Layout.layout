@@ -62,6 +62,10 @@
                 <behavior>Edit</behavior>
                 <field>Pause_Round_Robin__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Default_Org_Credential_ID__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>

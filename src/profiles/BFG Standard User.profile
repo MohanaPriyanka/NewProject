@@ -39768,6 +39768,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Default__mdt.Default_Build__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Default__mdt.Default_Copado_Project_ID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Task.ActivityDate</field>
         <readable>true</readable>
@@ -40696,6 +40706,11 @@
         <editable>false</editable>
         <field>User.Client_Brand_Key__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>User.Default_Org_Credential_ID__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -57250,6 +57265,9 @@
         <layout>System_Bill__c-System Bill Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>System_Default__mdt-System Default Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Task-Customer Care Task</layout>
         <recordType>Task.Customer_Care_Task</recordType>
     </layoutAssignments>
@@ -57361,7 +57379,15 @@
         <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>agf__ADM_Work__c-agf__Bug Layout</layout>
+        <layout>agf__ADM_Work__c-BW Bug</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Work__c-BW Bug</layout>
+        <recordType>agf__ADM_Work__c.agf__Bug</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Work__c-agf__User Story</layout>
+        <recordType>agf__ADM_Work__c.agf__User_Story</recordType>
     </layoutAssignments>
     <objectPermissions>
         <allowCreate>false</allowCreate>

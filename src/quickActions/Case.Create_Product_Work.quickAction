@@ -24,11 +24,6 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>agf__Details_and_Steps_to_Reproduce__c</field>
-                <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
                 <field>agf__Additional_Details__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
@@ -44,19 +39,14 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>agf__Scrum_Team__c</field>
-                <uiBehavior>Required</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>agf__Found_in_Build__c</field>
+                <field>agf__Product_Tag__c</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
         <quickActionLayoutColumns/>
     </quickActionLayout>
     <standardLabel>NewRecordType</standardLabel>
-    <successMessage>Work item created!</successMessage>
+    <successMessage>New bug created!</successMessage>
     <targetObject>agf__ADM_Work__c</targetObject>
     <targetParentField>Case__c</targetParentField>
     <targetRecordType>agf__ADM_Work__c.agf__Bug</targetRecordType>
