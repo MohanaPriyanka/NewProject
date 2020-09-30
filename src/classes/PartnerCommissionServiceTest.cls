@@ -12,10 +12,11 @@ public class PartnerCommissionServiceTest {
             10 Opportunities, across 2 partners, 2 products. 1 partner/product combination does not have
             an Active commission structure record, so we expect 1 opportunity to create a case for follow up.
             2 opportunities already have pending payments (which should update instead of insert)
+            1 opportunity already has CS_Capacity_Allocated__c populated and should not be updated
         */
+
         System.assertEquals(10,pendingComm.opportunitiesToRun.size());
         for (Opportunity opp : pendingComm.opportunitiesToRun) {
-            System.assertEquals(null,opp.CS_Capacity_Allocated__c);
             System.assertEquals(null,opp.Commission_Structure__c);
         }
 
@@ -55,6 +56,10 @@ public class PartnerCommissionServiceTest {
             System.assertNotEquals(null,opp.CS_Capacity_Allocated__c);
             if (opp.Commission_Structure__c == null){
                 countOfNullCommissionStructure += 1;
+            }
+            if (opp.Id == '0063K000003pyqPQAQ') {
+                // Once UASSummary is populated on Opportunity, should not change
+                System.assertEquals(15, opp.CS_Capacity_Allocated__c);
             }
         }
         System.assertEquals(1, countOfNullCommissionStructure);
@@ -117,8 +122,8 @@ public class PartnerCommissionServiceTest {
             '{"Id":"0063K000003pyqLQAQ","StageName":"Complete","Name":"Justin Jenkins","AccountId":"0013K000006yKHGQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCMQAY","Account":{"Id":"0013K000006yKHGQA2","Account_Number__c":"BW-0035453"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"}},' +
             '{"Id":"0063K000003pyqNQAQ","StageName":"Complete","Name":"Cobie Croft","AccountId":"0013K000006yKHIQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Account":{"Id":"0013K000006yKHIQA2","Account_Number__c":"BW-0035455"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"}},' +
             '{"Id":"0063K000003pyqOQAQ","StageName":"Complete","Name":"Ridwan Conner","AccountId":"0013K000006yKHJQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCMQAY","Account":{"Id":"0013K000006yKHJQA2","Account_Number__c":"BW-0035456"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"}},' +
-            '{"Id":"0063K000003pyqPQAQ","StageName":"Complete","Name":"Margaux Maldonado","AccountId":"0013K000006yKHKQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Account":{"Id":"0013K000006yKHKQA2","Account_Number__c":"BW-0035457"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"}},' +
-            '{"Id":"0063K000003pyqQQAQ","StageName":"Complete","Name":"Conor Schmitt","AccountId":"0013K000006yKHLQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCMQAY","Account":{"Id":"0013K000006yKHLQA2","Account_Number__c":"BW-0035458"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"}},' +
+        '{"Id":"0063K000003pyqPQAQ","StageName":"Complete","Name":"Margaux Maldonado","CS_Capacity_Allocated__c": "15.0", "AccountId":"0013K000006yKHKQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Account":{"Id":"0013K000006yKHKQA2","Account_Number__c":"BW-0035457"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"}},' +
+            '{"Id":"0063K000003pyqQQAQ","StageName":"Complete","Name":"Conor Schmitt", "AccountId":"0013K000006yKHLQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCMQAY","Account":{"Id":"0013K000006yKHLQA2","Account_Number__c":"BW-0035458"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"}},' +
             '{"Id":"0063K000003pyqRQAQ","StageName":"Complete","Name":"Akbar Boyce","AccountId":"0013K000006yKHMQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Account":{"Id":"0013K000006yKHMQA2","Account_Number__c":"BW-0035459"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"}},' +
             '{"Id":"0063K000003pyqSQAQ","StageName":"Complete","Name":"Viaan Faulkner","AccountId":"0013K000006yKHNQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCMQAY","Account":{"Id":"0013K000006yKHNQA2","Account_Number__c":"BW-0035460"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"}}' +
             ']';
@@ -192,8 +197,8 @@ public class PartnerCommissionServiceTest {
 
         public override Object handleMethodCall(MethodCall methodCall) {
             String queryData = '[' +
-                '{"Id":"a4v3K0000000HLKQA2","Opportunity__c":"0063K000003pyqPQAQ"},' +
-                '{"Id":"a4v3K0000000HMSQA2","Opportunity__c":"0063K000003pyqQQAQ"}' +
+                '{"Id":"a4v3K0000000HLKQA2","Opportunity__c":"0063K000003pyqPQAQ", "Future_Customer_Subscription_kW_DC__c": "15.0"},' +
+                '{"Id":"a4v3K0000000HMSQA2","Opportunity__c":"0063K000003pyqQQAQ", "Future_Customer_Subscription_kW_DC__c": "25.0"}' +
                 ']';
             switch on methodCall.stubbedMethodName {
                 when 'getPendingCommissionPayments' {

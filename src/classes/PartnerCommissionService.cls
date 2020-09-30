@@ -47,12 +47,12 @@ public without sharing class PartnerCommissionService{
 
     @TestVisible
     private void calculateCommissionRecords(PendingCommission pendingCommission){
-        /*
+        /**
             We only set opportunity fields CS_Capacity_Allocated__c & Commission_Structure__c
             when Opportunity is set to Complete and we calculate the contract execution commission.
             They should not change after the contract execution commission record has been created as those fields
             will be used to calculate other commission types (first bill, first pay, etc)
-        */
+        **/
         if (pendingCommission.typeOfCommission == CommissionType.CONTRACTEXECUTION){
             populateContractExecutionMaps(pendingCommission.opportunitiesToRun);
             setOpportunityFields(pendingCommission.opportunitiesToRun);
@@ -79,25 +79,35 @@ public without sharing class PartnerCommissionService{
                     'Could not find a partner invoice for ' + String.valueOf(opp.Partner_tag_lookup__c));
                 continue;
             }
-            if (pendingCommission.typeOfCommission == CommissionType.CONTRACTEXECUTION && oppToExistingContractExecutionPaymentMap.get(opp.Id) != null) {
-                Commission_Payment__c pendingPayment = oppToExistingContractExecutionPaymentMap.get(opp.Id);
-                pendingPayment.Commission_Structure__c = opp.Commission_Structure__c;
-                pendingPayment.Amount_Due__c = commissionAmount;
-                uow.registerDirty(pendingPayment);
-            } else {
-                Commission_Payment__c newPayment = new Commission_Payment__c(
-                    Amount_Due__c = commissionAmount.setScale(2,RoundingMode.HALF_UP),
-                    Commission_Structure__c = opp.Commission_Structure__c,
-                    Due_Date__c = dueDate,
-                    Due_to_Accounting__c = dueToAccountingDate,
-                    Invoice__c = partnerInvoice.Id,
-                    Name = (opp.Partner_tag_lookup__r.Name + ' - ' + opp.Name + ' - ' + commissionPaymentType).LEFT(80),
-                    Opportunity__c = opp.Id,
-                    Status__c = 'Pending Approval',
-                    Commission_Type__c = commissionPaymentType
-                );
-                uow.registerNew(newPayment);
-            }
+            Commission_Payment__c newPayment = new Commission_Payment__c(
+                Amount_Due__c = commissionAmount.setScale(2,RoundingMode.HALF_UP),
+                Commission_Structure__c = opp.Commission_Structure__c,
+                Due_Date__c = dueDate,
+                Due_to_Accounting__c = dueToAccountingDate,
+                Invoice__c = partnerInvoice.Id,
+                Name = (opp.Partner_tag_lookup__r.Name + ' - ' + opp.Name + ' - ' + commissionPaymentType).LEFT(80),
+                Opportunity__c = opp.Id,
+                Status__c = 'Pending Approval',
+                Commission_Type__c = commissionPaymentType
+            );
+            upsertCommissionPayments(newPayment, pendingCommission.typeOfCommission);
+        }
+    }
+
+    private void upsertCommissionPayments(Commission_Payment__c newPayment, CommissionType type){
+        Commission_Payment__c existingContractExecutionPayment;
+        if (type == CommissionType.CONTRACTEXECUTION) {
+            existingContractExecutionPayment = oppToExistingContractExecutionPaymentMap.get(newPayment.Opportunity__c);
+        }
+        if (existingContractExecutionPayment == null){
+            uow.registerNew(newPayment);
+        } else if (existingContractExecutionPayment != null
+            && (existingContractExecutionPayment.Amount_Due__c != newPayment.Amount_Due__c
+            || existingContractExecutionPayment.Commission_Structure__c != newPayment.Commission_Structure__c)){
+            newPayment.Id = existingContractExecutionPayment.Id;
+            uow.registerDirty(newPayment);
+        } else {
+            // update not required because commission amount and structure is the same
         }
     }
 
@@ -205,35 +215,24 @@ public without sharing class PartnerCommissionService{
 
     private void setOpportunityFields(List<Opportunity> opportunities){
         for (Opportunity opportunity : opportunities){
-            if (needsOpportunityFields(opportunity, 'UASSummary')) {
-                setUASSummary(opportunity);
-            }
-            if (needsOpportunityFields(opportunity, 'CommissionStructure')) {
-                setActiveCommissionStructure(opportunity);
-            }
+            setUASSummary(opportunity);
+            setActiveCommissionStructure(opportunity);
         }
-    }
-
-    //Populate the opportunity fields only once (when Opp is set to Complete)
-    private static Boolean needsOpportunityFields(Opportunity opp, String type) {
-        if (type == 'CommissionStructure') {
-            return opp.Commission_Structure__c == null;
-        } else if (type == 'UASSummary') {
-            return (opp.CS_Capacity_Allocated__c == 0 || opp.CS_Capacity_Allocated__c == null);
-        }
-        return false;
     }
 
     private void setUASSummary(Opportunity opportunity){
         Decimal uasSummary = oppToUASSummaryMap.get(opportunity.Id);
-        if (uasSummary == null){
+        if (uasSummary == null ){
             Logger.logLater(
                 'PartnerCommissionService',
                 'setUASSummary',
                 'Could not get UAS summmary for opp: ' + String.valueOf(opportunity.Id) + 'and map: ' + JSON.serialize(oppToUASSummaryMap),
                 'INFO'
             );
-        } else if (opportunity.CS_Capacity_Allocated__c == null || opportunity.CS_Capacity_Allocated__c != uasSummary){
+            return;
+        }
+
+        if (opportunity.CS_Capacity_Allocated__c == null || opportunity.CS_Capacity_Allocated__c == 0){
             opportunity.CS_Capacity_Allocated__c = uasSummary;
             uow.registerDirty(opportunity);
         }
