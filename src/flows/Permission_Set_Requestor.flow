@@ -123,6 +123,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -325,8 +331,8 @@
     <screens>
         <name>Permission_Requestor</name>
         <label>Permission Requestor</label>
-        <locationX>188</locationX>
-        <locationY>52</locationY>
+        <locationX>238</locationX>
+        <locationY>180</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -403,6 +409,10 @@
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>varRelatedCase</assignToReference>
+                <name>recordId</name>
+            </outputParameters>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
@@ -449,6 +459,10 @@
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>varRelatedWork</assignToReference>
+                <name>recordId</name>
+            </outputParameters>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
@@ -479,7 +493,13 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <startElementReference>Permission_Requestor</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Permission_Requestor</targetReference>
+        </connector>
+    </start>
     <status>Active</status>
     <variables>
         <name>varApprovalQueueId</name>

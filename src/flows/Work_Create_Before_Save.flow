@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Set_Default_Build_0</name>
+        <label>Set Default Build</label>
+        <locationX>490</locationX>
+        <locationY>541</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.agf__Found_in_Build__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Default_Build.Default_Build__c</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>Record_Type</name>
+        <label>What record type is this for?</label>
+        <locationX>622</locationX>
+        <locationY>301</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Bug</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>012j0000000uhASAAY</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Default_Build</targetReference>
+            </connector>
+            <label>Bug</label>
+        </rules>
+    </decisions>
+    <description>Fires before a Work Record is created</description>
+    <interviewLabel>Work: Create, Before Save {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Work: Create, Before Save</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Default_Build</name>
+        <label>Get Default Build</label>
+        <locationX>490</locationX>
+        <locationY>421</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Default_Build_0</targetReference>
+        </connector>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>System_Defaults</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>System_Default__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>496</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Record_Type</targetReference>
+        </connector>
+        <object>agf__ADM_Work__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
