@@ -45,14 +45,18 @@ public without sharing class PartnerCommissionService{
         Logger.flushLogs();
     }
 
-    @TestVisible
-    private void calculateCommissionRecords(PendingCommission pendingCommission){
         /**
             We only set opportunity fields CS_Capacity_Allocated__c & Commission_Structure__c
             when Opportunity is set to Complete and we calculate the contract execution commission.
             They should not change after the contract execution commission record has been created as those fields
             will be used to calculate other commission types (first bill, first pay, etc)
+
+            @param PendingCommission Wrapper object for all Opportunities that either need Commission Payments created or
+            updated AND the type of Commission (Contract Execution, First Bill Sent, or First Bill Paid)
         **/
+    @TestVisible
+    private void calculateCommissionRecords(PendingCommission pendingCommission){
+
         if (pendingCommission.typeOfCommission == CommissionType.CONTRACTEXECUTION){
             populateContractExecutionMaps(pendingCommission.opportunitiesToRun);
             setOpportunityFields(pendingCommission.opportunitiesToRun);
@@ -79,7 +83,7 @@ public without sharing class PartnerCommissionService{
                     'Could not find a partner invoice for ' + String.valueOf(opp.Partner_tag_lookup__c));
                 continue;
             }
-            Commission_Payment__c newPayment = new Commission_Payment__c(
+            Commission_Payment__c payment = new Commission_Payment__c(
                 Amount_Due__c = commissionAmount.setScale(2,RoundingMode.HALF_UP),
                 Commission_Structure__c = opp.Commission_Structure__c,
                 Due_Date__c = dueDate,
@@ -90,22 +94,27 @@ public without sharing class PartnerCommissionService{
                 Status__c = 'Pending Approval',
                 Commission_Type__c = commissionPaymentType
             );
-            upsertCommissionPayments(newPayment, pendingCommission.typeOfCommission);
+            upsertCommissionPayments(payment, pendingCommission.typeOfCommission);
         }
     }
 
-    private void upsertCommissionPayments(Commission_Payment__c newPayment, CommissionType type){
+    /**
+        Ensures that we only update and insert Commission Payments that register a change
+        @param payment Commission Payment that will either be inserted as new payment or update a Pending payment
+        @param type Commission Payment type
+    **/
+    private void upsertCommissionPayments(Commission_Payment__c payment, CommissionType type){
         Commission_Payment__c existingContractExecutionPayment;
         if (type == CommissionType.CONTRACTEXECUTION) {
-            existingContractExecutionPayment = oppToExistingContractExecutionPaymentMap.get(newPayment.Opportunity__c);
+            existingContractExecutionPayment = oppToExistingContractExecutionPaymentMap.get(payment.Opportunity__c);
         }
         if (existingContractExecutionPayment == null){
-            uow.registerNew(newPayment);
+            uow.registerNew(payment);
         } else if (existingContractExecutionPayment != null
-            && (existingContractExecutionPayment.Amount_Due__c != newPayment.Amount_Due__c
-            || existingContractExecutionPayment.Commission_Structure__c != newPayment.Commission_Structure__c)){
-            newPayment.Id = existingContractExecutionPayment.Id;
-            uow.registerDirty(newPayment);
+            && (existingContractExecutionPayment.Amount_Due__c != payment.Amount_Due__c
+            || existingContractExecutionPayment.Commission_Structure__c != payment.Commission_Structure__c)){
+            payment.Id = existingContractExecutionPayment.Id;
+            uow.registerDirty(payment);
         } else {
             // update not required because commission amount and structure is the same
         }
@@ -114,8 +123,8 @@ public without sharing class PartnerCommissionService{
     private Boolean missingRequiredFields(Opportunity opp){
         return (
             opp.CS_Capacity_Allocated__c == null ||
-            opp.Commission_Structure__c == null ||
-            opp.Partner_tag_lookup__c == null
+                opp.Commission_Structure__c == null ||
+                opp.Partner_tag_lookup__c == null
         );
     }
 
@@ -165,7 +174,7 @@ public without sharing class PartnerCommissionService{
             if (partnerProductKeyToCommissionMap.containsKey(partnerProductKey)){
                 Logger.logLater('PartnerCommissionService','populateCommissionStructureMap',
                     'More than one active commission structure record was found for ' +
-                    'partner: ' + structure.Partner__c + ' and product: ' + structure.Product__c,
+                        'partner: ' + structure.Partner__c + ' and product: ' + structure.Product__c,
                     'INFO');
                 continue;
             }

@@ -58,7 +58,8 @@ public class PartnerCommissionServiceTest {
                 countOfNullCommissionStructure += 1;
             }
             if (opp.Id == '0063K000003pyqPQAQ') {
-                System.assertEquals(15, opp.CS_Capacity_Allocated__c, 'CS Capacity Allocated should only be populated once on Status Complete');
+                // Once UASSummary is populated on Opportunity, should not change
+                System.assertEquals(15, opp.CS_Capacity_Allocated__c);
             }
         }
         System.assertEquals(1, countOfNullCommissionStructure);
