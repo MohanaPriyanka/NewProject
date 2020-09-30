@@ -277,7 +277,7 @@ public class PartnerCommissionHandlerTest {
         Util.enableAllTriggers();
 
         Test.startTest();
-        PartnerCommissionHandler.calculatePartnerCommission(new Set<Id>{oppOne.Id});
+        PartnerCommissionHandler.invokeCommissionStructureChange(new List<Id>{oppOne.Id});
         Test.stopTest();
 
         List<Commission_Payment__c> commissionPayments = [
@@ -355,7 +355,7 @@ public class PartnerCommissionHandlerTest {
         update oppOne;
 
         Test.startTest();
-        PartnerCommissionHandler.calculatePartnerCommission(new Set<Id>{oppOne.Id});
+        PartnerCommissionHandler.invokeCommissionStructureChange(new List<Id>{oppOne.Id});
         Test.stopTest();
 
         List<Commission_Payment__c> commissionPayments = [

@@ -137,12 +137,20 @@ public class PartnerCommissionHandler{
         PartnerCommissionHandler.calculatePartnerCommission(opportunityIds);
     }
 
-    @InvocableMethod(Label='CommissionStructureChange' Description='Receives opportunity that is having a Commission Structure update' )
+    @InvocableMethod(
+        Label='CommissionStructureChange'
+        Description='Receives opportunity that is having a Commission Structure update from Change Commission Structure flow' )
     public static void invokeCommissionStructureChange(List<Id> opportunityList ) {
         Set<Id> opportunityIds = new Set<Id>(opportunityList);
         calculatePartnerCommission(opportunityIds);
     }
 
+    /**
+            Future method that filters opportunities that have undergone a milestone change to ensure they are equipped
+            for appropriate Commission Payment.
+
+           @param opportunityIds Opportunities that have experienced some milestone change that requires a Partner Commission
+       **/
     @Future
     public static void calculatePartnerCommission(Set<Id> opportunityIds){
         try {

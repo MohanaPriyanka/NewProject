@@ -45,15 +45,15 @@ public without sharing class PartnerCommissionService{
         Logger.flushLogs();
     }
 
-        /**
-            We only set opportunity fields CS_Capacity_Allocated__c & Commission_Structure__c
-            when Opportunity is set to Complete and we calculate the contract execution commission.
-            They should not change after the contract execution commission record has been created as those fields
-            will be used to calculate other commission types (first bill, first pay, etc)
+    /**
+        We only set opportunity fields CS_Capacity_Allocated__c & Commission_Structure__c
+        when Opportunity is set to Complete and we calculate the contract execution commission.
+        They should not change after the contract execution commission record has been created as those fields
+        will be used to calculate other commission types (first bill, first pay, etc)
 
-            @param PendingCommission Wrapper object for all Opportunities that either need Commission Payments created or
-            updated AND the type of Commission (Contract Execution, First Bill Sent, or First Bill Paid)
-        **/
+        @param PendingCommission Wrapper object for all Opportunities that either need Commission Payments created or
+        updated AND the type of Commission (Contract Execution, First Bill Sent, or First Bill Paid)
+    **/
     @TestVisible
     private void calculateCommissionRecords(PendingCommission pendingCommission){
 
@@ -241,7 +241,8 @@ public without sharing class PartnerCommissionService{
             return;
         }
 
-        if (opportunity.CS_Capacity_Allocated__c == null || opportunity.CS_Capacity_Allocated__c == 0){
+        if ((opportunity.CS_Capacity_Allocated__c == null || opportunity.CS_Capacity_Allocated__c == 0) &&
+            opportunity.CS_Capacity_Allocated__c != uasSummary){
             opportunity.CS_Capacity_Allocated__c = uasSummary;
             uow.registerDirty(opportunity);
         }
