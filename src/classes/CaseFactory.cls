@@ -5,7 +5,7 @@
  */
 
 
-public without sharing class CaseFactory {
+public without sharing class CaseFactory implements Queueable {
     public static RecordType customerCare;
     public static RecordType productSupport;
     public static OrgWideEmailAddress customerCareEmail;
@@ -14,13 +14,17 @@ public without sharing class CaseFactory {
     public static Group collectionsQueue;
     public static Group dataOpsQueue;
     public static Case newCase;
-
+    private Lead lead;
     public CaseFactory() {
         queryForRecordTypesAndQueues();
     }
+    public void setLead(Lead lead){
+        this.lead = new LeadSelector().selectOne(lead.Id);
+    }
+
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    public void queryForRecordTypesAndQueues(){
+    public void queryForRecordTypesAndQueues() {
         if (customerCare == null || productSupport == null) {
             List<RecordType> caseRecordTypes = [
                 SELECT Id, Name
@@ -47,7 +51,7 @@ public without sharing class CaseFactory {
             ];
         }
 
-        if (collectionsQueue == null || customerCareQueue == null || productQueue == null){
+        if (collectionsQueue == null || customerCareQueue == null || productQueue == null) {
             List<Group> assignmentGroups = [
                 SELECT Id, DeveloperName
                 FROM Group
@@ -66,10 +70,15 @@ public without sharing class CaseFactory {
             }
         }
     }
-
+    /**
+     * This method creates a new case and sets defaults for owner, record type id, and record type
+     * @param type The desired record type of the case.
+     *
+     * @return new case
+     */
     public Case getCase(String type) {
         newCase = new Case();
-        if (type == 'Product_Support') {
+        if (type == 'Product_Support' ) {
             newCase.RecordTypeId = productSupport.Id;
             newCase.RecordType = productSupport;
             newCase.OwnerId = productQueue.Id;
@@ -89,5 +98,33 @@ public without sharing class CaseFactory {
             newCase.OwnerId = dataOpsQueue.Id;
         }
         return newCase;
+    }
+    /**
+     * This method inserts a case when a leads credit report comes back as a no match.
+     * @param lead The lead that the no match credit report case will be made for.
+     */
+    public void insertNoMatchCreditReportCase(Lead lead) {
+        if (new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size() == 0) {
+            queryForRecordTypesAndQueues();
+            Case newCcCase = getCase('Customer_Care');
+            newCcCase.Lead_Lookup__c = lead.Id;
+            newCcCase.Disable_Followup_Email__c = true;
+            newCcCase.QC_Case_Subject__c = 'No FICO Match';
+            newCcCase.Product_Line__c = 'Community Solar';
+            newCcCase.AccountId = lead.Parent_Account__c;
+            newCcCase.Category__c = 'QC';
+            newCcCase.Sale_Status__c = 'Pre-Sale';
+            newCcCase.Subject = lead.Name + ' - No Match Credit Report';
+            newCcCase.Description = lead.Name + ' - This is a no match Personal Credit Report,' +
+                ' please provide more information.';
+            insert newCcCase;
+        }
+    }
+    /**
+     * This method is used to insert asynchronous cases.
+     * @param param1 Unused by method, but is required for queueable interface
+     */
+    public void execute(QueueableContext param1) {
+        insertNoMatchCreditReportCase(this.lead);
     }
 }
