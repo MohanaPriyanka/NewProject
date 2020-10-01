@@ -27,8 +27,8 @@ public without sharing class SubscriptionManagementService implements Queueable{
             changeNMCTariff(oppIdsWithChangedNMCTariff);
         }
         if (oppIdsWithChangedSSS != null && featureService.isEnabled('Subscription_Orders')) {
-            transferSubscriptionsOnSSSChange();
             try {
+                transferSubscriptionsOnSSSChange();
                 //Upsert UASes - for deactivating a uas, update; for inserting new uas, insert
                 upsert upsertUASes;
                 for (CSUtilityAccountSubscriptionFactory.UASOrder uasOrder : uasOrders){
@@ -188,6 +188,10 @@ public without sharing class SubscriptionManagementService implements Queueable{
         return approvedSSSOs;
     }
 
+    /**
+     * When the SSS on an Opportunity changes, the existing subscription must be zeroed (via SO) and set to Inactive. A clone is
+     * then created with the same subscription (via SO) and assigned to the new SSS.
+     */
     @TestVisible
     private void transferSubscriptionsOnSSSChange() {
         //Get all createable fields for Active Subscriptions - if we add more fields later, this query will still grab them
@@ -196,7 +200,10 @@ public without sharing class SubscriptionManagementService implements Queueable{
         for (Utility_Account_Subscription__c uas : uasList) {
             Utility_Account_Subscription__c cloneUAS = uas.clone(false, true, false, false );
             cloneUAS.Shared_Solar_System__c = oppMap.get(uas.Opportunity__c).Shared_Solar_System__c;
-            cloneUAS.Subscription_Comment_c__c = 'UAS created after SSS was changed on Opportunity; ' + cloneUAS.Subscription_Comment_c__c;
+            String comments = 'UAS created as transfer from  ' + uas.Shared_Solar_System__r.Name + 'to ' +
+                oppMap.get(uas.Opportunity__c).Shared_Solar_System__r.Name + '; ' +
+                (cloneUAS.Subscription_Comment_c__c != NULL ? cloneUAS.Subscription_Comment_c__c : '' );
+                cloneUAS.Subscription_Comment_c__c = (comments.length() >= 255 ?  comments.substring(0, 255) : comments);
             upsertUASes.add(cloneUAS);
             CSUtilityAccountSubscriptionFactory.UASOrder uasOrder = new CSUtilityAccountSubscriptionFactory.UASOrder();
             uasOrder.uas = cloneUAS;
