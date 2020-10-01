@@ -304,6 +304,11 @@ public class PartnerCommissionHandlerTest {
             FROM Opportunity
             LIMIT 1
         ];
+        Partner__c partner = [
+            SELECT Id
+            FROM Partner__c
+            LIMIT 1
+        ];
 
         Commission_Structure__c commissionOne = new Commission_Structure__c(
             Name = 'Commission Structure One',
@@ -326,6 +331,17 @@ public class PartnerCommissionHandlerTest {
         );
         update oppOne;
 
+        Invoice__c invoice = new Invoice__c(
+            Name = 'Test Invoice',
+            Partner__c = partner.Id,
+            Status__c = 'Submitted to Accounting',
+            Due_Date__c = System.today().addMonths(3),
+            Due_to_Accounting__c = System.today().addMonths(4),
+            Product_Line__c = 'Community Solar',
+            Invoice_Type__c = 'Direct'
+        );
+        insert invoice;
+
         Commission_Payment__c cp = new Commission_Payment__c(
             Amount_Due__c = 100,
             Commission_Structure__c = commissionOne.Id,
@@ -333,7 +349,8 @@ public class PartnerCommissionHandlerTest {
             Due_Date__c = System.today(),
             Name = 'Test Commission Payment',
             Commission_Type__c = 'Contract Execution',
-            Status__c = 'Pending Approval'
+            Status__c = 'Pending Approval',
+            Invoice__c = invoice.Id
         );
         insert cp;
 
