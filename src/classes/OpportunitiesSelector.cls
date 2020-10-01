@@ -158,7 +158,7 @@ public without sharing class OpportunitiesSelector {
             WHERE Id IN (
                 SELECT Opportunity__c
                 FROM Utility_Account_Subscription__c
-                WHERE Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c IN : entityIds
+                WHERE Opportunity__r.Shared_Solar_System__r.Contract_Assignment_Entity__c IN : entityIds
                 AND Next_Schedule_Z_Status__c = 'Active Subscription'
                 AND Opportunity__r.Assignment_Agreement__c = NULL
                 AND Opportunity__r.Customer_Group__c != 'Anchor'
