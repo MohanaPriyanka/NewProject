@@ -10,7 +10,15 @@ import { makeRequest } from 'c/httpRequestService';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import formFactorName from '@salesforce/client/formFactor';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
-import { getFinDocFileTypes, getUnderwritingHelpText, getNewRestLead, getNewRestPropertyAccount, getNewRestUtilityAccountLog, validateUtilityAccountLog, setRemainingFields } from 'c/ssfBasicInfoShared';
+import { getFinDocFileTypes,
+         getUnderwritingHelpText,
+         getNewRestLead,
+         getNewRestPropertyAccount,
+         getNewRestUtilityAccountLog,
+         validateUtilityAccountLog,
+         setRemainingFields,
+         setComponentUnderwritingVals,
+         handleUnderwritingChange} from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api leadJson;
@@ -29,23 +37,21 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track rateClassOptions;
     @track rateClassObj;
     @track utilityId;
-
     @track restLead;
     @track propertyAccount;
     @track stateOptions;
     @track selectedRateClasses = [];
-
     @track showSpinner;
     @track sameBillingAddress = true;
     @track sameHomeAddress = true;
     @track utilityAccountSection;
     @track isFileUpload;
-    @track isFico;
     @track showUnderwritingOptions;
     @track showAddress;
     @track isPhone;
     @track helpTextVisible;
-     
+
+    isFico = true;
     utilityAccountCount = 0;
     resumedApp = false;
     finDocFileTypes = getFinDocFileTypes();
@@ -95,7 +101,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             }
         }
 
-
         // if a lead has already been created, have the form show existing values
         if(this.leadJson) {
             this.resumedApp = true;
@@ -119,27 +124,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         // if no lead exists, set default values for restLead and propertyAccount
         else {
             this.restLead = getNewRestLead(this);
-
             this.propertyAccount = getNewRestPropertyAccount(this);
         }
-        
-        if(this.resiApplicationType) { 
-            this.showUnderwritingOptions = false;
-            this.isFico = true;
-            this.restLead.underwritingCriteria = 'FICO';
-        } else {
-            if(!this.underwritingOptions || this.underwritingOptions.length === 0) {
-                this.showUnderwritingOptions = false;
-                this.isFico = true;
-                this.restLead.underwritingCriteria = 'FICO';
-            } else if (this.underwritingOptions.length === 1) {
-                this.showUnderwritingOptions = false;
-                this.isFico = (this.underwritingOptions[0].value === 'FICO');
-                this.restLead.underwritingCriteria = this.underwritingOptions[0].value;
-            } else {
-                this.showUnderwritingOptions = true;
-            }
-        }
+
+        setComponentUnderwritingVals(this, this.resiApplicationType);
 
         if(!this.restLead.partnerId) {
             this.restLead.partnerId = this.partnerId;
@@ -187,13 +175,14 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.propertyAccount.utilityAccountLogs[0].servicePostalCode = this.zipinput;
     }
 
-
     // handle changes in form entries
     genericOnChange(event) {
         this.restLead[event.target.name] = event.target.value;
 
-        if(event.target.name === 'underwritingCriteria') {
-            this.isFico = (this.restLead.underwritingCriteria === 'FICO');
+        if (event.target.name === 'underwritingCriteria') {
+            // need to handle applicant's selection on underwriting field, either FICO or Financial Documents
+            this.isFico = event.target.value === 'FICO';
+            handleUnderwritingChange(this);
         }
     }
 
@@ -254,7 +243,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
     }
 
-
     // perform validations
     lastUtilityAccountValid() {
         let index = this.utilityAccountCount - 1;
@@ -306,7 +294,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         });
         return true;
     }
-
 
     // submit form
     submitApplication() {

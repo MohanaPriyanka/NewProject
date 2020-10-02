@@ -48,11 +48,16 @@
                 sales-rep-id={salesRepId}
                 campaign-id={campaignId}
                 mock={mock}
-                onleadcreated={handleLeadCreation}>
+                onleadcreated={handleLeadCreation}
+                onunderwritingchange={setUnderwritingMethod}>
             </c-ssf-basic-info-d-t-c>
         </template>
         <template if:true={getAgreements}>
-            <c-ssf-agreements-d-t-c lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements-d-t-c>
+            <c-ssf-agreements-d-t-c
+                lead-json={leadJSON}
+                onconsentscomplete={handleConsentsComplete}
+                is-fico={isFico}>
+            </c-ssf-agreements-d-t-c>
         </template>
         <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
     </div>

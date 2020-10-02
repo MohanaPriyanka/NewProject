@@ -5,7 +5,6 @@
 const getFinDocFileTypes = () => {
     return ['.png', '.jpg', '.jpeg', '.pdf', '.zip'];
 }
-
 const getUnderwritingHelpText = () => {
     return '<p>The FICO underwriting option is only available for a select group of customers. Please select the financial review option if the applicant’s annual cost exceeds the amount below for their utility and rate class.' + 
     '<ul>' +
@@ -18,68 +17,31 @@ const getUnderwritingHelpText = () => {
     '</ul></p>';
 }
 
-// set cmp values on underwriting based on if a residential or biz app to control cmp behavior
-const setComponentUnderwritingVals = (component, residentialApplication) => {
-
-    if (residentialApplication) {
-        component.showUnderwritingOptions = false;
-        component.restLead.underwritingCriteria = 'FICO';
-    }
-    else {
-        // no underwriting options provided in zip check
-        if (!component.underwritingOptions || component.underwritingOptions.length === 0) {
-            component.showUnderwritingOptions = false;
-            component.restLead.underwritingCriteria = 'FICO';
-        }
-        // one underwriting option provided in zip check
-        else if (component.underwritingOptions.length === 1) {
-            let option = component.underwritingOptions[0].value;
-            component.showUnderwritingOptions = false;
-            component.restLead.underwritingCriteria = option;
-            component.isFico = option === 'FICO';
-        }
-        // more than one underwriting option provided in zip check
-        else {
-            // We want "Apply with Guarantor or Financial Documents?" to appear for biz apps in ssfBasicInfo page
-            component.showUnderwritingOptions = true;
-        }
-    }
-
-    handleUnderwritingChange(component);
-}
-
-// notify parent ssf/ssfDTC of underwriting option to pass to ssfAgreements/ssfAgreementsDTC
-const handleUnderwritingChange = (component) => {
-    const isFico = component.isFico;
-    const underwritingChangeEvent = new CustomEvent('underwritingchange', {detail: isFico});
-    component.dispatchEvent(underwritingChangeEvent);
-}
-
-const getNewRestLead = (component) => {
+const getNewRestLead = (appType, zipCode, productName, utilityId) => {
     return {
-        applicationType: component.resiApplicationType ? 'Residential' : 'Non-Residential',
-        zipCode: component.zipinput,
-        productName: component.selectedProduct.name,
-        utilityId: component.utilityId,
+        applicationType: appType,
+        zipCode: zipCode,
+        productName: productName,
+        utilityId: utilityId,
         financialDocs: []
     }
 }
 
-const getNewRestPropertyAccount = (component) => {
-    return {
-        billingPostalCode: component.resiApplicationType ? '' : component.zipinput, 
+const getNewRestPropertyAccount = (isResiAppType, zipCode) => {
+    return { 
+        billingPostalCode: isResiAppType ? '' : zipCode, 
         utilityAccountLogs: [] 
     }
 }
 
-const getNewRestUtilityAccountLog = (component) => {
+const getNewRestUtilityAccountLog = (ualCount, zipCode, utilityId, isFileUpload) => {
     return {
-        localid: component.utilityAccountCount,
-        name: `Utility Account ${component.utilityAccountCount}`,
-        servicePostalCode: component.zipinput,
-        utilityId: component.utilityId,
+        localid: ualCount,
+        name: `Utility Account ${ualCount}`,
+        servicePostalCode: zipCode,
+        utilityId: utilityId,
         doNotDelete: false,
-        showUpload: component.isFileUpload,
+        showUpload: isFileUpload,
         utilityBills: []
     }
 }
@@ -98,16 +60,18 @@ const validateUtilityAccountLog = (utilityAccountLog) => {
 }
 
 
-const setRemainingFields = (component, sameHomeAddress) => {
-    if (component.sameBillingAddress) {
-        component.propertyAccount = matchBillingAddress(component.propertyAccount);
+const setRemainingFields = (restLead, propertyAccount, sameBillingAddress, sameHomeAddress, isResiAppType, product, rateClasses) => {
+    if (sameBillingAddress) {
+        propertyAccount = matchBillingAddress(propertyAccount);
     }
     if (sameHomeAddress) {
-        component.restLead = matchHomeAddress(component.restLead, component.propertyAccount);
+        restLead = matchHomeAddress(restLead, propertyAccount);
     }
-    component.propertyAccount.name = component.resiApplicationType ? `${component.restLead.firstName} ${component.restLead.lastName}` : component.restLead.businessName;
-    component.restLead.propertyAccounts = [component.propertyAccount];
-    component.restLead.numberOfContractDocs = getNumberOfContractDocs(component.restLead, component.selectedProduct, component.selectedRateClasses);
+    propertyAccount.name = isResiAppType ? `${restLead.firstName} ${restLead.lastName}` : restLead.businessName;
+    restLead.propertyAccounts = [propertyAccount];
+    restLead.numberOfContractDocs = getNumberOfContractDocs(restLead, product, rateClasses);
+    
+    return restLead;
 }
 
 export {  
@@ -117,9 +81,7 @@ export {
     getNewRestPropertyAccount,
     getNewRestUtilityAccountLog,
     validateUtilityAccountLog,
-    setRemainingFields,
-    setComponentUnderwritingVals,
-    handleUnderwritingChange
+    setRemainingFields
 }
 
 
@@ -154,7 +116,7 @@ function getNumberOfContractDocs(lead, product, rateClasses) {
 
         let allSuppress = true;
         lead.propertyAccounts.forEach(propAcct => {
-            propAcct.utilityAccountLogs.forEach(ual => {
+            propAcct.forEach(ual => {
                 if(!ual.rateClass || !rateClassObj.hasOwnProperty(ual.rateClass) || !rateClassObj[ual.rateClass].suppressDisclosureForm) {
                     allSuppress = false;
                 }

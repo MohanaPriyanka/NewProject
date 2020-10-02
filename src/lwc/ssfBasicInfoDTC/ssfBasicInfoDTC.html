@@ -28,14 +28,14 @@
                     <div class="input-group half">
                         <div if:true={showUnderwritingOptions} class="fieldWithHelp">
                             <lightning-combobox 
-                                    name="underwritingCriteria"
-                                    class="slds-var-m-bottom_small"
-                                    placeholder=""
-                                    label="Apply with Guarantor or Financial Documents?"
-                                    value={underwritingCriteria}
-                                    onchange={genericOnChange}
-                                    options={underwritingOptions}
-                                    required>
+                                name="underwritingCriteria"
+                                class="slds-var-m-bottom_small"
+                                placeholder=""
+                                label="Apply with Guarantor or Financial Documents?"
+                                value={underwritingCriteria}
+                                onchange={genericOnChange}
+                                options={underwritingOptions}
+                                required>
                             </lightning-combobox>
                             <template if:false={isPhone}>
                                 <div class="help-icon" title="Click here for more information" onclick={toggleHelp}>
@@ -265,13 +265,13 @@
                                             <div class="input-group half">
                                                 <template if:false={isFico}>
                                                     <c-ssf-file-upload 
-                                                            required
-                                                            has-help-text
-                                                            input-text="Upload Financial Documents"
-                                                            category-type="Financial Review Documents"
-                                                            accepted-file-types={finDocFileTypes}
-                                                            onfileuploaded={handleFinancialDocsUpload}>
-                                                            <p>Please provide three years of full company financial records.</p>
+                                                        required
+                                                        has-help-text
+                                                        input-text="Upload Financial Documents"
+                                                        category-type="Financial Review Documents"
+                                                        accepted-file-types={finDocFileTypes}
+                                                        onfileuploaded={handleFinancialDocsUpload}>
+                                                        <p>Please provide three years of full company financial records including total assets, total liabilities, and net income.</p>
                                                     </c-ssf-file-upload>
                                                 </template>
                                             </div>
