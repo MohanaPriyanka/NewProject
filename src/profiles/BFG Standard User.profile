@@ -9116,11 +9116,11 @@
     </classAccesses>
     <classAccesses>
         <apexClass>flowcomponents__LightningLookupController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>flowcomponents__LightningLookupControllerTest</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>flowmagic__FlowPicklistConfig</apexClass>
