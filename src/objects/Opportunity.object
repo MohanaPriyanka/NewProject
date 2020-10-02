@@ -9244,6 +9244,22 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </sharedTo>
     </listViews>
     <listViews>
+        <fullName>Completed_Partner_applications</fullName>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>Email__c</columns>
+        <columns>ACCOUNT.SITE</columns>
+        <columns>Community_Solar_State__c</columns>
+        <columns>Phone_Number__c</columns>
+        <columns>Application_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Application_Status__c</field>
+            <operation>equals</operation>
+            <value>Complete</value>
+        </filters>
+        <label>Complete applications</label>
+    </listViews>
+    <listViews>
         <fullName>Consumer_Loan_Active_Opportunities</fullName>
         <booleanFilter>1 AND 3 AND (2 OR 4)</booleanFilter>
         <columns>Date_of_Application__c</columns>
