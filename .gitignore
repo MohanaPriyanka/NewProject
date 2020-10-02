@@ -286,6 +286,8 @@ src/package.xml
 #like for example:
 *copado__*
 !src/objects/copado__*
+!src/layouts/copado__*
+
 
 # Conga
 *APXTConga4__*
