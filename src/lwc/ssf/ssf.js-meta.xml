@@ -5,6 +5,6 @@
     <targets>
         <target>lightningCommunity__Page</target>
     </targets>
-    <description>Simple Signup Form</description>
+    <description>Simple Signup Form - Partner Version</description>
     <masterLabel>SimpleSignupForm</masterLabel>
 </LightningComponentBundle>

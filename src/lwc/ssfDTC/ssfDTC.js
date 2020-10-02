@@ -19,23 +19,23 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
     @track resiApplicationType = true;
     @track partnerId;
     @track zipCodeInput;
-
     @track zipCodeResponse;
     @track leadJSON;
     @track underwritingOptions = [];
     @track salesRepId;
     @track campaignId;
     @track mock;
-
     @track getEmail;
     @track getZip;
     @track getBasicInfo;
     @track getAgreements;
-
     @track showSpinner = false;
     @track spinnerMessage;
+
     @wire(CurrentPageReference) pageRef;
+
     loc = '';
+    isFico;
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
@@ -184,8 +184,6 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
         }
     }
 
-
-
     // ///////////////////////////////////
     //      EVENT HANDLING
     // ///////////////////////////////////
@@ -219,7 +217,9 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
         this.showPaymentPage(event.detail);
     }
 
-
+    setUnderwritingMethod(event) {
+        this.isFico = event.detail;
+    }
 
     // ///////////////////////////////////
     //      PAGE DISPLAY HANDLING

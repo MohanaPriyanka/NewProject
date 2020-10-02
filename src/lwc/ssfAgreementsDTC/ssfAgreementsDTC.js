@@ -1,5 +1,5 @@
 /**
- * Created by PeterYao on 2/24/2020.
+ * Created by lindsayholmes_gearscrm on 2020-09-14.
  */
 
 import { LightningElement, track, api } from 'lwc';
@@ -17,7 +17,7 @@ import { connCallback,
          continueAgreement_shared,
          getCreditCheckLabel } from 'c/ssfAgreementsShared';
 
-export default class SsfAgreements extends LightningElement {
+export default class SsfAgreementsDTC extends LightningElement {
     @api leadJson;
     @api isFico;
 
