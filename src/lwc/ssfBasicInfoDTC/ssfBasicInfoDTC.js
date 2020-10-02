@@ -216,14 +216,12 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     homeAddressToggle(event) {
         this.sameHomeAddress = event.target.checked;
-
     }
 
     addAnotherUtilityAccount() {
         if (!this.lastUtilityAccountValid()) {
             return;
         }
-        
         this.addUtilityAccount();
     }
 
@@ -295,20 +293,19 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         return true;
     }
 
-    // submit form
+    // upsert Lead into Salesforce, submit form
     submitApplication() {
-        console.log('valid? ' + this.applicationValid())
+
+        // if application invalid, cease upsert
         if (!this.applicationValid()) {
             return;
         }
 
-        setRemainingFields(this, false);
-        console.log('restlead returned: ');
-        console.log(this.restLead);
-
+        // set remaining fields on restLead, including some address fields
+        setRemainingFields(this, this.sameHomeAddress);
         this.showSpinner = true;
         
-        if(!this.resumedApp) {
+        if (!this.resumedApp) {
             this.createLead(this.restLead).then(
                 (resolveResult) => {
                     this.dispatchEvent(new CustomEvent('leadcreated', { detail: resolveResult }));
@@ -326,7 +323,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                     this.showWarningToast('Sorry, we ran into a technical problem!', message);
                 }
             );
-        } else {
+        }
+        else {
             this.patchApplication(this.restLead).then(
                 (resolveResult) => {
                     this.dispatchEvent(new CustomEvent('leadcreated', { detail: resolveResult }));
