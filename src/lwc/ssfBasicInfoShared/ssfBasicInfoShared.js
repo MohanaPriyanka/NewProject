@@ -97,12 +97,11 @@ const validateUtilityAccountLog = (utilityAccountLog) => {
     return false;
 }
 
-
-const setRemainingFields = (component, sameHomeAddress) => {
+const setRemainingFields = (component, sameHomeAddressAsFirstUA) => {
     if (component.sameBillingAddress) {
         component.propertyAccount = matchBillingAddress(component.propertyAccount);
     }
-    if (sameHomeAddress) {
+    if (sameHomeAddressAsFirstUA) {
         component.restLead = matchHomeAddress(component.restLead, component.propertyAccount);
     }
     component.propertyAccount.name = component.resiApplicationType ? `${component.restLead.firstName} ${component.restLead.lastName}` : component.restLead.businessName;

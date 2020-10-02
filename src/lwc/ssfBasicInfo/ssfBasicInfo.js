@@ -217,7 +217,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if (!this.lastUtilityAccountValid()) {
             return;
         }
-        
         this.addUtilityAccount();
     }
 
@@ -289,22 +288,26 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         return true;
     }
 
-    // submit form
+    // upsert Lead into Salesforce, submit form
     submitApplication() {
+
+        // if application invalid, cease upsert
         if (!this.applicationValid()) {
             return;
         }
-        
+
+        // set remaining fields on restLead, including some address fields
         setRemainingFields(this, false);
         this.showSpinner = true;
+
         window.setTimeout(() => {
-            this.spinnerMessage = 'Saving your application';
+            this.spinnerMessage = 'Saving the application';
         }, 3000);
         window.setTimeout(() => {
             this.spinnerMessage = 'We\'ll generate documents next.\r\nThis may take a minute, please stand by.';
         }, 6000);
         
-        if(!this.resumedApp) {
+        if (!this.resumedApp) {
             this.createLead(this.restLead).then(
                 (resolveResult) => {
                     this.dispatchEvent(new CustomEvent('leadcreated', { detail: resolveResult }));
@@ -322,7 +325,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                     this.showWarningToast('Sorry, we ran into a technical problem!', message);
                 }
             );
-        } else {
+        }
+        else {
             this.patchApplication(this.restLead).then(
                 (resolveResult) => {
                     this.dispatchEvent(new CustomEvent('leadcreated', { detail: resolveResult }));
