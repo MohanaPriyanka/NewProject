@@ -178,7 +178,7 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <inlineHelpText>True if this fee is valid for customers acquired by BCS</inlineHelpText>
-        <label>Acquisition Channels: BCS Acquired</label>
+        <label>Acq Channels: BCS Acquired</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -188,7 +188,7 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <inlineHelpText>When lead is acquired by Client but Closed by BlueWave</inlineHelpText>
-        <label>Acquisition Channels: Closed by BCS</label>
+        <label>Acq Channels: Client Acquired/BCS Closed</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -198,7 +198,7 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <inlineHelpText>True if this fee is valid for customers who were not acquired by BCS</inlineHelpText>
-        <label>Acquisition Channels: Non-BCS Acquired</label>
+        <label>Acq Channels: Non-BCS Acquired</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -764,6 +764,30 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
     <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
+        <fullName>CFD_Checkbox_Acquisition</fullName>
+        <active>true</active>
+        <description>A CFD can only have one Fee Type selected, so “Acquisition Type: Acquisition” can only be checked if “Management Fee” and “Acquisition Type: Reacquisition” are not selected.</description>
+        <errorConditionFormula>AND(Acquisition_Type_Acquisition__c, OR(Acquisition_Type_Reacquisition__c, Management_Fee__c))</errorConditionFormula>
+        <errorDisplayField>Acquisition_Type_Acquisition__c</errorDisplayField>
+        <errorMessage>You can only have one Fee Type selected for a Contract Fee Detail object.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>CFD_Checkbox_Management_Fee</fullName>
+        <active>true</active>
+        <description>A CFD can only have one Fee Type selected, so “Management Fee” can only be checked if “Acquisition Type: Acquisition” and “Acquisition Type: Reacquisition” are not selected.</description>
+        <errorConditionFormula>AND(Management_Fee__c, OR(Acquisition_Type_Acquisition__c, Acquisition_Type_Reacquisition__c))</errorConditionFormula>
+        <errorDisplayField>Management_Fee__c</errorDisplayField>
+        <errorMessage>You can only have one Fee Type selected for a Contract Fee Detail object.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>CFD_Checkbox_Reacquisition</fullName>
+        <active>true</active>
+        <description>A CFD can only have one Fee Type selected, so “Acquisition Type: Reacquisition” can only be checked if “Management Fee” and “Acquisition Type: Acquisition” are not selected.</description>
+        <errorConditionFormula>AND(Acquisition_Type_Reacquisition__c, OR(Acquisition_Type_Acquisition__c, Management_Fee__c))</errorConditionFormula>
+        <errorDisplayField>Acquisition_Type_Reacquisition__c</errorDisplayField>
+        <errorMessage>You can only have one Fee Type selected for a Contract Fee Detail object.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Do_not_populate_acq_fee_fields_if_mgmt</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
@@ -808,6 +832,14 @@ Management_Fee__c
 )
 )</errorConditionFormula>
         <errorMessage>You must set the fee type to be either Acquisition, Reacquisition or Management</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Non_BCS_Acquired_If_BCS_Closed</fullName>
+        <active>true</active>
+        <description>The &quot;Acq Channels: Non-BCS Acquired&quot; field must be checked if &quot;Acq Channels: Client Acquired/BCS Closed&quot; is going to be checked.</description>
+        <errorConditionFormula>NOT(Acquisition_Channels_Non_BCS_Acquired__c)</errorConditionFormula>
+        <errorDisplayField>Acquisition_Channels_Closed_by_BCS__c</errorDisplayField>
+        <errorMessage>&quot;Acq Channels: Non-BCS Acquired&quot; must be checked if &quot;Acq Channels: Client Acquired/BCS Closed&quot; is going to be checked.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Recurring_Field_Must_be_Populated_Togeth</fullName>
