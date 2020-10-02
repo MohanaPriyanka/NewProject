@@ -368,6 +368,10 @@ src/package.xml
 !src/objects/tfa__*
 
 
+#If we want to promote page layout changes for installed pacakges, we can't ignore them.
+!src/layouts/*
+
+
 #profiles and permission sets are complex Files. If your Org's 
 #metadata and Git are in sync, you can track incremental changes on 
 #Profiles and Permission sets using Copado "commit files" functionality.
