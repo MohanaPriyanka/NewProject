@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Create_Commission_Payment</name>
         <label>Create Commission Payment</label>
-        <locationX>821</locationX>
-        <locationY>560</locationY>
+        <locationX>905</locationX>
+        <locationY>301</locationY>
         <actionName>PartnerCommissionHandler</actionName>
         <actionType>apex</actionType>
         <inputParameters>
@@ -15,26 +15,72 @@
         </inputParameters>
     </actionCalls>
     <assignments>
+        <name>Add_Error_Log</name>
+        <label>Add Error Log</label>
+        <locationX>920</locationX>
+        <locationY>583</locationY>
+        <assignmentItems>
+            <assignToReference>sovc_ErrorLogs</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sov_ErrorLog</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Call_Error_Log_Flow</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assign_Commission_Structure_Id</name>
         <label>Assign Commission Structure Id</label>
-        <locationX>548</locationX>
-        <locationY>251</locationY>
+        <locationX>602</locationX>
+        <locationY>302</locationY>
         <assignmentItems>
             <assignToReference>getOpportunity.Commission_Structure__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>commissionStructureId</elementReference>
+                <elementReference>lookupCS.selectedValue</elementReference>
             </value>
         </assignmentItems>
         <connector>
             <targetReference>Update_Opportunity</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Create_Error_Log</name>
+        <label>Create Error Log</label>
+        <locationX>751</locationX>
+        <locationY>576</locationY>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Timestamp__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Message__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>errorMessageText</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Error_Log</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Check_CP_Status</name>
         <label>Check CP Status</label>
-        <locationX>369</locationX>
-        <locationY>797</locationY>
+        <locationX>395</locationX>
+        <locationY>536</locationY>
         <defaultConnector>
             <targetReference>Loop_Commission_Payments</targetReference>
         </defaultConnector>
@@ -60,8 +106,8 @@
     <loops>
         <name>Loop_Commission_Payments</name>
         <label>Loop Commission Payments</label>
-        <locationX>174</locationX>
-        <locationY>705</locationY>
+        <locationX>184</locationX>
+        <locationY>511</locationY>
         <collectionReference>Get_Commission_Payments</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -93,8 +139,8 @@
     <recordLookups>
         <name>Get_Commission_Payments</name>
         <label>Get Commission Payments</label>
-        <locationX>120</locationX>
-        <locationY>515</locationY>
+        <locationX>180</locationX>
+        <locationY>360</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_Commission_Payments</targetReference>
@@ -113,8 +159,8 @@
     <recordLookups>
         <name>getOpportunity</name>
         <label>getOpportunity</label>
-        <locationX>67</locationX>
-        <locationY>248</locationY>
+        <locationX>173</locationX>
+        <locationY>196</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Commission_Payments</targetReference>
@@ -133,19 +179,38 @@
     <recordUpdates>
         <name>Update_Opportunity</name>
         <label>Update Opportunity</label>
-        <locationX>599</locationX>
-        <locationY>559</locationY>
+        <locationX>756</locationX>
+        <locationY>303</locationY>
         <connector>
             <targetReference>Create_Commission_Payment</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Create_Error_Log</targetReference>
+        </faultConnector>
         <inputReference>getOpportunity</inputReference>
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
+        <name>ErrorLogScreen</name>
+        <label>ErrorLogScreen</label>
+        <locationX>1214</locationX>
+        <locationY>605</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>errorText</name>
+            <fieldText>&lt;p&gt;There was an issue changing the Commission Structure for this Opportunity. BizApps has been notified. &lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>errorScreen</name>
         <label>errorScreen</label>
-        <locationX>580</locationX>
-        <locationY>836</locationY>
+        <locationX>354</locationX>
+        <locationY>660</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -160,8 +225,8 @@
     <screens>
         <name>scr_Choose_Commission_Structure</name>
         <label>Choose Commission Structure</label>
-        <locationX>380</locationX>
-        <locationY>249</locationY>
+        <locationX>444</locationX>
+        <locationY>300</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -221,6 +286,24 @@
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Call_Error_Log_Flow</name>
+        <label>Call Error Log Flow</label>
+        <locationX>1080</locationX>
+        <locationY>599</locationY>
+        <connector>
+            <targetReference>ErrorLogScreen</targetReference>
+        </connector>
+        <flowName>Error_Log_Creation</flowName>
+        <inputAssignments>
+            <name>socv_ErrorLog</name>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <textTemplates>
+        <name>errorMessageText</name>
+        <text>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Flow: Change Commission Structure&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Record: {!$Flow.CurrentRecord}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Message: {!$Flow.FaultMessage}&lt;/span&gt;&lt;/p&gt;</text>
+    </textTemplates>
     <variables>
         <name>booleanHasApprovedCP</name>
         <dataType>Boolean</dataType>
@@ -260,5 +343,21 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>sov_ErrorLog</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Error_Log__c</objectType>
+    </variables>
+    <variables>
+        <name>sovc_ErrorLogs</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Error_Log__c</objectType>
     </variables>
 </Flow>
