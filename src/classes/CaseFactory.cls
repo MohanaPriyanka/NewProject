@@ -15,6 +15,8 @@ public without sharing class CaseFactory implements Queueable {
     public static Group dataOpsQueue;
     public static Case newCase;
     private Lead lead;
+
+    private String queueType;
     public CaseFactory() {
         queryForRecordTypesAndQueues();
     }
@@ -22,6 +24,9 @@ public without sharing class CaseFactory implements Queueable {
         this.lead = new LeadSelector().selectOne(lead.Id);
     }
 
+    public void setQueueType(String queueType){
+        this.queueType = queueType;
+    }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void queryForRecordTypesAndQueues() {
@@ -121,10 +126,35 @@ public without sharing class CaseFactory implements Queueable {
         }
     }
     /**
-     * This method is used to insert asynchronous cases.
+    * This method inserts a case when a leads credit report comes back as a low match.
+    * @param lead The lead that the low match credit report case will be made for.
+    */
+    public void insertLowMatchCreditReportCase(Lead lead){
+        if (new CaseSelector().selectOpenLowMatchCasesFromLead(lead).size() == 0) {
+            queryForRecordTypesAndQueues();
+            Case newCcCase = getCase('Customer_Care');
+            newCcCase.Lead_Lookup__c = lead.Id;
+            newCcCase.QC_Case_Subject__c = 'Low FICO Match';
+            newCcCase.Product_Line__c = 'Community Solar';
+            newCcCase.AccountId = lead.Parent_Account__c;
+            newCcCase.Category__c = 'QC';
+            newCcCase.Sale_Status__c = 'Pre-Sale';
+            newCcCase.Subject = lead.Name + ' - Low Match Credit Report';
+            newCcCase.Description = lead.Name+' - Credit score does not qualify, ' +
+                'please provide a passing credit report or we will send adverse action notice to customer';
+            insert newCcCase;
+        }
+    }
+    /**
+     * This method is used to insert asynchronous cases based on queueType.
      * @param param1 Unused by method, but is required for queueable interface
      */
     public void execute(QueueableContext param1) {
-        insertNoMatchCreditReportCase(this.lead);
+        if(this.queueType =='No FICO Match'){
+            insertNoMatchCreditReportCase(this.lead);
+        }
+        if(this.queueType == 'Low FICO Match'){
+            insertLowMatchCreditReportCase(this.lead);
+        }
     }
 }
