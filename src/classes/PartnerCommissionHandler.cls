@@ -98,13 +98,13 @@ public class PartnerCommissionHandler{
         Set<String> accountsToCheck = new Set<String>();
 
         for (Opportunity opp : oppsWithoutInvoiceCommission){
-            if (readyForContractExecutionCommission(opp)){
+            if (isCompleteCSOppWithPartner(opp)){
                 accountsToCheck.add(opp.Account.Account_Number__c);
                 allOpsToCheck.add(opp);
             }
         }
         for (Opportunity opp : oppsWithoutPaymentCommission){
-            if (readyForContractExecutionCommission(opp)){
+            if (isCompleteCSOppWithPartner(opp)){
                 accountsToCheck.add(opp.Account.Account_Number__c);
                 allOpsToCheck.add(opp);
             }
@@ -137,12 +137,27 @@ public class PartnerCommissionHandler{
         PartnerCommissionHandler.calculatePartnerCommission(opportunityIds);
     }
 
+    @InvocableMethod(
+        Label='CommissionStructureChange'
+        Description='Receives opportunity that is having a Commission Structure update from Change Commission Structure flow' )
+    public static void invokeCommissionStructureChange(List<Id> opportunityList ) {
+        Set<Id> opportunityIds = new Set<Id>(opportunityList);
+        calculatePartnerCommission(opportunityIds);
+    }
+
+    /**
+            Future method that filters opportunities that have undergone a milestone change to ensure they are equipped
+            for appropriate Commission Payment.
+
+           @param opportunityIds Opportunities that have experienced some milestone change that requires a Partner Commission
+       **/
     @Future
     public static void calculatePartnerCommission(Set<Id> opportunityIds){
         try {
             List<Opportunity> opportunitiesPendingCommission = new List<Opportunity>();
-            for (Opportunity opportunity : oppSelector.selectByIdWithApprovedCommissionPayment(opportunityIds)){
-                if (opportunity.Commission_Payments__r.size() == 0 && readyForContractExecutionCommission(opportunity)){
+            for (Opportunity opportunity : oppSelector.selectByIdWithCommissionPayment(opportunityIds)){
+                if (isCompleteCSOppWithPartner(opportunity) &&
+                    (opportunity.Commission_Payments__r.isEmpty() || hasPendingCommissionPayment(opportunity.Commission_Payments__r) )) {
                     opportunitiesPendingCommission.add(opportunity);
                 }
             }
@@ -159,13 +174,23 @@ public class PartnerCommissionHandler{
         }
     }
 
-    public static Boolean readyForContractExecutionCommission(Opportunity opp){
+    @TestVisible
+    private static Boolean hasPendingCommissionPayment(List<Commission_Payment__c> commissionPayments) {
+        for (Commission_Payment__c cp : commissionPayments) {
+            if (cp.Status__c == 'Pending Approval') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Boolean isCompleteCSOppWithPartner(Opportunity opp){
         return (opp.StageName == 'Complete'
-                && opp.Product_Line__c == 'Community Solar'
-                && opp.Partner_tag_lookup__c != null
-                && opp.Partner_tag_lookup__r.Name != 'Placeholder Partner'
-                && opp.Partner_tag_lookup__r.Name != 'Bluewave Test Partner'
-                && opp.Partner_tag_lookup__r.Name != 'BlueWave Inside Sales');
+            && opp.Product_Line__c == 'Community Solar'
+            && opp.Partner_tag_lookup__c != null
+            && opp.Partner_tag_lookup__r.Name != 'Placeholder Partner'
+            && opp.Partner_tag_lookup__r.Name != 'Bluewave Test Partner'
+            && opp.Partner_tag_lookup__r.Name != 'BlueWave Inside Sales');
     }
 
     private static void callPartnerCommissionService(List<Opportunity> oppList, PartnerCommissionService.CommissionType type){

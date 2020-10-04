@@ -668,6 +668,16 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Invoices</pluralLabel>
+    <recordTypes>
+        <fullName>Client_Invoice</fullName>
+        <active>true</active>
+        <label>Client Invoice</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Partner_Invoice</fullName>
+        <active>true</active>
+        <label>Partner Invoice</label>
+    </recordTypes>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

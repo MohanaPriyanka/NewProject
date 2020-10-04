@@ -1429,8 +1429,8 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
     <fields>
         <fullName>CS_Capacity_Allocated__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Rolls up from Future Customer Subscription (KW DC) on Utility Account Subscriptions after Recalculate Subscription button is run. Used in Docusign.</inlineHelpText>
-        <label>Customer Subscription (kW DC)</label>
+        <inlineHelpText>Sum of Future Customer Subscription (KW DC) on Utility Account Subscriptions when Opportunity is set to Complete. Used in Docusign.</inlineHelpText>
+        <label>Customer Subscription kW DC at Complete</label>
         <precision>9</precision>
         <required>false</required>
         <scale>4</scale>
