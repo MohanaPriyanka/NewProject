@@ -5471,6 +5471,17 @@ window.open(&apos;/003?rlid=RelatedContactList&amp;id={!Case.AccountId}&apos;,&a
         <url>/flow/Client_Case_Sharing?var_CaseID={!Case.Id}</url>
     </webLinks>
     <webLinks>
+        <fullName>Update_CasePartnerPortal</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Submit for Review</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/flow/Partner_Case_Flow?var_CaseId={!Case.Id}&amp;retURL={!Case.Id}</url>
+    </webLinks>
+    <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>
         <availability>online</availability>
         <description>This button will initiate a DocuSign Envelope that is linked to the Case</description>

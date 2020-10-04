@@ -9,7 +9,7 @@
         <description>Check for null</description>
         <name>Is_there_a_Sales_Rep</name>
         <label>Is there a Sales Rep</label>
-        <locationX>445</locationX>
+        <locationX>695</locationX>
         <locationY>51</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -47,7 +47,7 @@
         <description>Check for null</description>
         <name>Is_there_Partner</name>
         <label>Is there  Partner</label>
-        <locationX>284</locationX>
+        <locationX>534</locationX>
         <locationY>56</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -112,7 +112,7 @@
     <recordCreates>
         <name>Create_Case</name>
         <label>Create CS QC Case</label>
-        <locationX>915</locationX>
+        <locationX>1165</locationX>
         <locationY>39</locationY>
         <assignRecordIdToReference>sov_Case.Id</assignRecordIdToReference>
         <connector>
@@ -155,6 +155,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Lead_Lookup__c</field>
+            <value>
+                <elementReference>sovOpportunity.Lead__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>OwnerId</field>
             <value>
                 <elementReference>Lookup_Queue_Id.Id</elementReference>
@@ -164,6 +170,12 @@
             <field>Product_Line__c</field>
             <value>
                 <stringValue>Community Solar</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>QC_Case_Subject__c</field>
+            <value>
+                <elementReference>Case_Type</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -201,7 +213,7 @@
     <recordLookups>
         <name>Get_Contact_for_Partner</name>
         <label>Get Contact for Partner</label>
-        <locationX>608</locationX>
+        <locationX>858</locationX>
         <locationY>312</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -222,7 +234,7 @@
     <recordLookups>
         <name>GetAccountforPartner</name>
         <label>Get Account for Partner</label>
-        <locationX>298</locationX>
+        <locationX>548</locationX>
         <locationY>304</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -249,7 +261,7 @@
     <recordLookups>
         <name>Lookup_Opportunity</name>
         <label>Lookup Opportunity</label>
-        <locationX>140</locationX>
+        <locationX>390</locationX>
         <locationY>53</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -269,11 +281,12 @@
         <queriedFields>Partner_tag_lookup__c</queriedFields>
         <queriedFields>BS_Sales_ID__c</queriedFields>
         <queriedFields>Name</queriedFields>
+        <queriedFields>Lead__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Lookup_Queue_Id</name>
         <label>Lookup Queue Id</label>
-        <locationX>760</locationX>
+        <locationX>1010</locationX>
         <locationY>40</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -294,7 +307,7 @@
     <recordUpdates>
         <name>Update_Opp_Status</name>
         <label>Update Opp Status</label>
-        <locationX>1095</locationX>
+        <locationX>1345</locationX>
         <locationY>36</locationY>
         <filters>
             <field>Id</field>
@@ -314,7 +327,7 @@
     <screens>
         <name>Create_New_QC_Task</name>
         <label>Create New QC Task</label>
-        <locationX>603</locationX>
+        <locationX>853</locationX>
         <locationY>38</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
