@@ -149,14 +149,13 @@ public without sharing class UASSelector {
         return Database.query(String.escapeSingleQuotes(soql));
     }
 
-    public Map<Id,Decimal> getUASSummaryByOpportunity(Set<Id> oppIds, Boolean useSubscriptionOrders) {
+    public Map<Id,Decimal> getUASSummaryByOpportunity(Set<Id> oppIds) {
         Map<Id,Decimal> oppToUASSummaryMap = new Map<Id,Decimal>();
 
         List<AggregateResult> uasSummary = [
             SELECT COUNT(Id) numberOfRecords,
                 Opportunity__c opportunityId,
-                SUM(Future_Customer_Subscription_KWDC_Rollup__c) postSubOrderkWSize,
-                SUM(Customer_Subscription_KW_DC__c) preSubOrderkWSize
+                SUM(Future_Customer_Subscription_KWDC_Rollup__c) kWTotal
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c IN : oppIds
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
@@ -164,11 +163,7 @@ public without sharing class UASSelector {
         ];
         for (AggregateResult uasAgg : uasSummary){
             Id opportunityId = (Id)uasAgg.get('opportunityId');
-            if (useSubscriptionOrders) {
-                oppToUASSummaryMap.put(opportunityId,(Decimal)uasAgg.get('postSubOrderkWSize'));
-            } else {
-                oppToUASSummaryMap.put(opportunityId,(Decimal)uasAgg.get('preSubOrderkWSize'));
-            }
+            oppToUASSummaryMap.put(opportunityId,(Decimal)uasAgg.get('kWTotal'));
         }
         return oppToUASSummaryMap;
     }

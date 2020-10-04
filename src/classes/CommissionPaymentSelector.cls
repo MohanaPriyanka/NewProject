@@ -9,7 +9,7 @@ public inherited sharing class CommissionPaymentSelector {
             FROM Commission_Payment__c
             WHERE Opportunity__c IN : oppIds
             AND Commission_Type__c = : type
-            AND Status__c != 'Approved'
+            AND Status__c = 'Pending Approval'
             ORDER BY CreatedDate
         ];
         return commissionPayments;

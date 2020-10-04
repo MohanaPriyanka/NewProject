@@ -61,4 +61,10 @@
         <label>Closed</label>
         <closed>true</closed>
     </standardValue>
+    <standardValue>
+        <fullName>Under Review</fullName>
+        <default>false</default>
+        <label>Under Review</label>
+        <closed>false</closed>
+    </standardValue>
 </StandardValueSet>

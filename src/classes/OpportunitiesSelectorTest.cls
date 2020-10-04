@@ -114,7 +114,7 @@ public with sharing class OpportunitiesSelectorTest {
         ];
         Set<Id> oppIds = new Set<Id>{opp.Id};
         OpportunitiesSelector selector = new OpportunitiesSelector();
-        System.assert(selector.selectByIdWithApprovedCommissionPayment(oppIds).size() > 0);
+        System.assert(selector.selectByIdWithCommissionPayment(oppIds).size() > 0);
     }
 
     @IsTest

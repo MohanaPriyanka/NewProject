@@ -226,34 +226,6 @@ public class PartnerCommissionHandlerTest {
     }
 
     @IsTest
-    private static void testUASTriggers(){
-        Util.disableAllTriggers();
-        UtilityAccountSubscriptionHandlerTest.setupData();
-        Util.enableAllTriggers();
-
-        Utility_Account_Subscription__c uas = [
-            SELECT Id, Opportunity__c
-            FROM Utility_Account_Subscription__c
-            WHERE Name = '0000234'
-            LIMIT 1
-        ];
-
-        Opportunity newOpp = [
-            SELECT Id, Partner_tag_lookup__c, Product__c
-            FROM Opportunity
-            WHERE Id != : uas.Opportunity__c
-            LIMIT 1
-        ];
-
-        Test.startTest();
-            System.assertEquals(0,UtilityAccountSubscriptionHandler.partnerCommissionHandler.queuedIds.size());
-            uas.Opportunity__c = newOpp.Id;
-            update uas;
-            System.assertEquals(2,UtilityAccountSubscriptionHandler.partnerCommissionHandler.queuedIds.size());
-        Test.stopTest();
-    }
-
-    @IsTest
     private static void testWithoutAnyRows(){
         Account propertyOne = new Account(name = 'Account Property');
         insert propertyOne;
@@ -271,6 +243,152 @@ public class PartnerCommissionHandlerTest {
         ];
         System.assertEquals(0,logs.size());
     }
+
+    @IsTest
+    private static void testAssignCommissionStructure() {
+        Util.disableAllTriggers();
+        UtilityAccountSubscriptionHandlerTest.setupData();
+
+        List<Opportunity> opportunities = [
+            SELECT Id, Partner_tag_lookup__c, Product__c
+            FROM Opportunity
+        ];
+        System.assertEquals(2,opportunities.size());
+
+        //No commission structure assigned at Complete
+        Opportunity oppOne = new Opportunity(
+            Id = opportunities[0].Id,
+            Product_Line__c = 'Community Solar',
+            StageName = 'Complete',
+            CS_Capacity_Allocated__c = 15.00
+        );
+        update oppOne;
+
+        Commission_Structure__c commissionOne = new Commission_Structure__c(
+            Name = 'Commission Structure One',
+            Partner__c = opportunities[0].Partner_tag_lookup__c,
+            Product__c = opportunities[0].Product__c,
+            Active__c = true,
+            Cents_kW_DC_Up_Front__c = 0.10,
+            Cents_kW_DC_First_Bill__c = 0.23,
+            Cents_kW_DC_First_Bill_Paid__c = 0.11
+        );
+        insert commissionOne;
+        Util.enableAllTriggers();
+
+        Test.startTest();
+        PartnerCommissionHandler.invokeCommissionStructureChange(new List<Id>{oppOne.Id});
+        Test.stopTest();
+
+        List<Commission_Payment__c> commissionPayments = [
+            SELECT Id, Opportunity__c, Commission_Structure__c, Future_Customer_Subscription_kW_DC__c,
+                Commission_Type__c, Status__c
+            FROM Commission_Payment__c
+            WHERE Opportunity__c = :oppOne.Id
+        ];
+
+        System.assertEquals(1, commissionPayments.size() );
+        System.assertEquals(commissionPayments[0].Commission_Structure__c, commissionOne.Id);
+        System.assertEquals(commissionPayments[0].Future_Customer_Subscription_kW_DC__c, 15.00);
+        System.assertEquals(commissionPayments[0].Commission_Type__c, 'Contract Execution' );
+        System.assertEquals(commissionPayments[0].Status__c, 'Pending Approval' );
+    }
+
+    @IsTest
+    private static void testChangeCommissionStructure() {
+        Util.disableAllTriggers();
+        UtilityAccountSubscriptionHandlerTest.setupData();
+
+        List<Opportunity> opportunities = [
+            SELECT Id, Partner_tag_lookup__c, Product__c
+            FROM Opportunity
+            LIMIT 1
+        ];
+        Partner__c partner = [
+            SELECT Id
+            FROM Partner__c
+            LIMIT 1
+        ];
+
+        Commission_Structure__c commissionOne = new Commission_Structure__c(
+            Name = 'Commission Structure One',
+            Partner__c = opportunities[0].Partner_tag_lookup__c,
+            Product__c = opportunities[0].Product__c,
+            Active__c = true,
+            Cents_kW_DC_Up_Front__c = 0.10,
+            Cents_kW_DC_First_Bill__c = 0.23,
+            Cents_kW_DC_First_Bill_Paid__c = 0.11
+        );
+        insert commissionOne;
+
+        //No commission structure assigned at Complete
+        Opportunity oppOne = new Opportunity(
+            Id = opportunities[0].Id,
+            Product_Line__c = 'Community Solar',
+            StageName = 'Complete',
+            CS_Capacity_Allocated__c = 15.00,
+            Commission_Structure__c = commissionOne.Id
+        );
+        update oppOne;
+
+        Invoice__c invoice = new Invoice__c(
+            Name = 'Test Invoice',
+            Partner__c = partner.Id,
+            Status__c = 'Submitted to Accounting',
+            Due_Date__c = System.today().addMonths(3),
+            Due_to_Accounting__c = System.today().addMonths(4),
+            Product_Line__c = 'Community Solar',
+            Invoice_Type__c = 'Direct'
+        );
+        insert invoice;
+
+        Commission_Payment__c cp = new Commission_Payment__c(
+            Amount_Due__c = 100,
+            Commission_Structure__c = commissionOne.Id,
+            Opportunity__c = oppOne.Id,
+            Due_Date__c = System.today(),
+            Name = 'Test Commission Payment',
+            Commission_Type__c = 'Contract Execution',
+            Status__c = 'Pending Approval',
+            Invoice__c = invoice.Id
+        );
+        insert cp;
+
+        commissionOne.Active__c = false;
+        update commissionOne;
+
+        Commission_Structure__c commissionTwo = new Commission_Structure__c(
+            Name = 'Commission Structure Two',
+            Partner__c = opportunities[0].Partner_tag_lookup__c,
+            Product__c = opportunities[0].Product__c,
+            Active__c = true,
+            Cents_kW_DC_Up_Front__c = 0.10,
+            Cents_kW_DC_First_Bill__c = 0.23,
+            Cents_kW_DC_First_Bill_Paid__c = 0.11
+        );
+        insert commissionTwo;
+
+        oppOne.Commission_Structure__c = commissionTwo.Id;
+        update oppOne;
+
+        Test.startTest();
+        PartnerCommissionHandler.invokeCommissionStructureChange(new List<Id>{oppOne.Id});
+        Test.stopTest();
+
+        List<Commission_Payment__c> commissionPayments = [
+            SELECT Id, Opportunity__c, Commission_Structure__c, Future_Customer_Subscription_kW_DC__c,
+                Commission_Type__c, Status__c
+            FROM Commission_Payment__c
+            WHERE Opportunity__c = :oppOne.Id
+        ];
+
+        System.assertEquals(1, commissionPayments.size() );
+        System.assertEquals(commissionPayments[0].Commission_Structure__c, commissionTwo.Id);
+        System.assertEquals(commissionPayments[0].Future_Customer_Subscription_kW_DC__c, 15.00);
+        System.assertEquals(commissionPayments[0].Commission_Type__c, 'Contract Execution' );
+        System.assertEquals(commissionPayments[0].Status__c, 'Pending Approval' );
+    }
+
 
     @IsTest
     private static void testQueueCalculatePartnerCommission(){

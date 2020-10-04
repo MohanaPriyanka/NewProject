@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customButtons>Update_CasePartnerPortal</customButtons>
     <excludeButtons>CaseHierarchy</excludeButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
@@ -89,8 +90,16 @@
     </miniLayout>
     <platformActionList>
         <actionListContext>Record</actionListContext>
+        <platformActionListItems>
+            <actionName>Update_CasePartnerPortal</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>0</sortOrder>
+        </platformActionListItems>
     </platformActionList>
     <quickActionList/>
+    <relatedLists>
+        <relatedList>RelatedCommentsList</relatedList>
+    </relatedLists>
     <relatedLists>
         <relatedList>RelatedEmailMessageList</relatedList>
     </relatedLists>
@@ -105,7 +114,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h2C000000SPaI</masterLabel>
+        <masterLabel>00h3F000000UKpF</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
