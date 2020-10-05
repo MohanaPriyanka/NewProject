@@ -27,6 +27,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
             changeNMCTariff(oppIdsWithChangedNMCTariff);
         }
         if (oppIdsWithChangedSSS != null && featureService.isEnabled('Subscription_Orders')) {
+            transferSubscriptionsOnSSSChange();
             try {
                 transferSubscriptionsOnSSSChange();
                 //Upsert UASes - for deactivating a uas, update; for inserting new uas, insert
@@ -200,7 +201,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         for (Utility_Account_Subscription__c uas : uasList) {
             Utility_Account_Subscription__c cloneUAS = uas.clone(false, true, false, false );
             cloneUAS.Shared_Solar_System__c = oppMap.get(uas.Opportunity__c).Shared_Solar_System__c;
-            String comments = 'UAS created as transfer from  ' + uas.Shared_Solar_System__r.Name + 'to ' +
+            String comments = 'UAS created as transfer from  ' + uas.Shared_Solar_System__r.Name + ' to ' +
                 oppMap.get(uas.Opportunity__c).Shared_Solar_System__r.Name + '; ' +
                 (cloneUAS.Subscription_Comment_c__c != NULL ? cloneUAS.Subscription_Comment_c__c : '' );
                 cloneUAS.Subscription_Comment_c__c = (comments.length() >= 255 ?  comments.substring(0, 255) : comments);
