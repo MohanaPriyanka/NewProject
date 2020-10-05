@@ -16,7 +16,6 @@
     <aura:attribute name="utility" type="Object"/>
     <aura:attribute name="rateClasses" type="Object[]"/>
     <aura:attribute name="partnerApp" type="Boolean"/>
-<!--    <aura:attribute name="dummyRecordId" type="String"/>-->
     <lightning:notificationsLibrary aura:id="notifLib"/>
 
     <aura:set attribute="STAGENAME" value="NAV_Energy_Information"/>

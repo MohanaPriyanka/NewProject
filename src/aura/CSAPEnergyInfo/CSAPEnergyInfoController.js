@@ -28,17 +28,6 @@
             if (lead.Product__c) {
                 $A.enqueueAction(action);
             }
-
-            // var dummyAction = component.get("c.getDummyRecordId");
-            // dummyAction.setCallback(this, function(dummyResp) {
-            //     if (dummyResp.getState() === "SUCCESS") {
-            //         component.set('v.dummyRecordId', dummyResp.getReturnValue());
-            //     } else {
-            //         helper.logError("CSAPEnergyInfoController", "getDummyRecordId", dummyResp.getError(), lead);
-            //     }
-            // });
-            // $A.enqueueAction(dummyAction);
-
             var utilityAction = component.get("c.getUtility");
             var utilId = lead.Utility_relationship__c;
             utilityAction.setParams({"utilityId" : utilId});
