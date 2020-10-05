@@ -28,6 +28,17 @@
             if (lead.Product__c) {
                 $A.enqueueAction(action);
             }
+
+            // var dummyAction = component.get("c.getDummyRecordId");
+            // dummyAction.setCallback(this, function(dummyResp) {
+            //     if (dummyResp.getState() === "SUCCESS") {
+            //         component.set('v.dummyRecordId', dummyResp.getReturnValue());
+            //     } else {
+            //         helper.logError("CSAPEnergyInfoController", "getDummyRecordId", dummyResp.getError(), lead);
+            //     }
+            // });
+            // $A.enqueueAction(dummyAction);
+
             var utilityAction = component.get("c.getUtility");
             var utilId = lead.Utility_relationship__c;
             utilityAction.setParams({"utilityId" : utilId});
@@ -153,8 +164,34 @@
         var result = checkCmp.get("v.value");
         component.set("v.sameAddress", result );
     },
-    handleUploadFinished : function (component, event, helper) {
-        var uploadedFiles = event.getParam("files");
-        event.getSource().set("v.label", uploadedFiles.length + " file(s) uploaded.");
+
+    /**
+     * Method that captures event thrown by csapFileUpload. Receives documentIds{index, docs[]} where the index
+     * refers to the ual from ualList[index] that the documents need to be reparented to
+     * @param component
+     * @param event
+     */
+    handleUtilityBillUpload : function(component, event) {
+        var documentIds = event.getParam('documentIds');
+        var index = documentIds.index;
+        var docs = documentIds.docs;
+
+        var ualList = component.get("v.ualList");
+        var ual = ualList[index];
+        var action = component.get("c.attachFilesLWC");
+
+        action.setParams({
+            documents : docs,
+            ualId : ual.Id
+        });
+
+        action.setCallback(this, function(response) {
+            var state = response.getState();
+            if (state !== "SUCCESS") {
+                helper.logError("CSAPEnergyInfoController", "attachFiles",
+                    'Error attaching Utility Bill Files to UAL: ' + response.errorCode + ' errorMessage: ' + response.errorMessage, response);
+            }
+        });
+        $A.enqueueAction(action);
     }
 })

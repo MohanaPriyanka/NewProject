@@ -4,7 +4,7 @@
  * Test: CSAPControllerTest, DocuSignHelperTest, LeadTriggerHandlerTest
  *************************************************************************************/
 public without sharing class CSAPController {
-    
+
 
     public class SSSResult {
         // at the time of adding this, we only have a single SREC and SMART product, we we need not handle multiple ysstems with differen SREC and SMART Products.
@@ -20,7 +20,7 @@ public without sharing class CSAPController {
     public static Lead getLead(Id leadId, String email) {
         List<Lead> leadList  = [
             SELECT Id, Personal_Credit_Report__c, CSAP_Stage__c, FirstName, LastName, Email, Phone, MobilePhone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
-                    Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c, 
+                    Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
                     Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
                     Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                     Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_1__c, Application_Source_Phase_2__c,
@@ -236,7 +236,7 @@ public without sharing class CSAPController {
             }
         }
 
-        
+
         if (lead.Parent_Account__c == null) {
             lead = setupParentAccount(lead, customerPartner);
         }
@@ -535,30 +535,13 @@ public without sharing class CSAPController {
         CapacityService service = new CapacityService();
         CapacityService.ZipcodeResponse capacityServiceResponse = service.findCapacityByZipcode(zipcode);
         return capacityServiceResponse.hasCapacity();
-        
+
     }
 
     @AuraEnabled
     public static List<Utility_Account_Log__c> saveUtilityAccountLogList(List<Utility_Account_Log__c> ualList) {
         upsert ualList;
-        UtilityAccountLogs uals = new UtilityAccountLogs(ualList);
-        uals.createUALSharesForGuestUser();
         return ualList;
-    }
-
-
-    @AuraEnabled
-    public static void saveUtilityAccountLog(Utility_Account_Log__c ual) {
-        upsert ual;
-
-        List<Attachment> utilityBills = [
-            SELECT Name, Body, ContentType, Description
-            FROM Attachment
-            WHERE ParentId = : ual.Lead__c
-            AND Description LIKE '%electric bill%'
-        ];
-
-        Util.reparentAttachments(utilityBills, ual.Id);
     }
 
     @AuraEnabled
@@ -711,4 +694,31 @@ public without sharing class CSAPController {
     public static Boolean zuoraPaymentPageEnabled() {
         return ZuoraAPIHelper.zuoraPaymentPageEnabled();
     }
+
+    /**
+     * Method called from CSAP to attach Utility Bill documents to the appropriate Utility Account Log. This method
+     * is called by an event that thrown by a custom LWC (csapFileUpload)
+     * @param documents Array of document Ids to be used to create ContentDocumentLinks
+     * @param ualId Id of Utility Account Log that will be parent of documents
+     */
+    @AuraEnabled
+    public static void attachFilesLWC(List<String> documents, Id ualId) {
+        List<ContentDocumentLink> newLinks = new List<ContentDocumentLink>();
+        for (String docId : documents) {
+            newLinks.add(createContentDocumentLink(ualId, docId));
+        }
+
+        insert newlinks;
+    }
+
+    @TestVisible
+    private static ContentDocumentLink createContentDocumentLink(Id linkedEntityId, Id contentDocumentId) {
+        ContentDocumentLink newLink = new ContentDocumentLink(
+            LinkedEntityId = linkedEntityId,
+            ContentDocumentId = contentDocumentId,
+            ShareType = 'V'
+        );
+        return newLink;
+    }
+
 }
