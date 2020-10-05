@@ -172,17 +172,16 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
 
     setLocation() {
         if (validateBasicInfoCompleted(this.zipCodeResponse, this.leadJSON)) {
-            if (this.loc == 'pay') {
+            if (this.loc === 'pay') {
                 this.showPaymentPage(JSON.parse(this.leadJSON));
             }
-            else if (this.loc == 'agree') {
+            else if (this.loc === 'agree') {
                 let lead = JSON.parse(this.leadJSON);
                 if (!lead.numberOfContractDocs) {
                     const capacity = JSON.parse(this.zipCodeResponse);
                     lead.numberOfContractDocs = getNumberOfDocsForExistingLead(lead, capacity);
                     this.leadJSON = JSON.stringify(lead);
                 }
-                // set isFico
                 this.showAgreementsPage();
             }
             else {
