@@ -837,7 +837,7 @@ Management_Fee__c
         <fullName>Non_BCS_Acquired_If_BCS_Closed</fullName>
         <active>true</active>
         <description>The &quot;Acq Channels: Non-BCS Acquired&quot; field must be checked if &quot;Acq Channels: Client Acquired/BCS Closed&quot; is going to be checked.</description>
-        <errorConditionFormula>NOT(Acquisition_Channels_Non_BCS_Acquired__c)</errorConditionFormula>
+        <errorConditionFormula>AND(Acquisition_Channels_Closed_by_BCS__c, NOT(Acquisition_Channels_Non_BCS_Acquired__c))</errorConditionFormula>
         <errorDisplayField>Acquisition_Channels_Closed_by_BCS__c</errorDisplayField>
         <errorMessage>&quot;Acq Channels: Non-BCS Acquired&quot; must be checked if &quot;Acq Channels: Client Acquired/BCS Closed&quot; is going to be checked.</errorMessage>
     </validationRules>
