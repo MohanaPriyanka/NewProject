@@ -12,17 +12,17 @@
                         <h4 class="slds-var-p-bottom_medium">
                             Please enter the applicant's email address to retrieve their application:
                         </h4>
-                        <p>
-                            Email Address
-                        </p>
-                        <div class="slds-align_absolute-center slds-var-p-top_x-small" style="width: 70%;" onkeyup={checkForSubmit}>
-                            <lightning-input name="email"
-                                    label="Email Address"
-                                    variant="label-hidden"
-                                    value={email}
-                                    onchange={genericOnChange}
-                                    type="email"
-                                    class="slds-var-m-bottom_large">
+                        <p>Email Address</p>
+                        <div class="slds-align_absolute-center slds-var-p-top_x-small"
+                             style="width: 70%;" onkeyup={checkForSubmit}>
+                            <lightning-input
+                                name="email"
+                                label="Email Address"
+                                variant="label-hidden"
+                                value={email}
+                                onchange={genericOnChange}
+                                type="email"
+                                class="slds-var-m-bottom_large">
                             </lightning-input>
                         </div>
                         <button class="btn slds-var-m-horizontal_small" onclick={getLead}>Resume Application</button>
