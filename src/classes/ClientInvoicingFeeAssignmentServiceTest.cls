@@ -44,7 +44,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 }
                 when 'a9W3F000000A1P8UAK' {
                     System.assertEquals(
-                        'a123F000001VLE7GGG',
+                        'a123F000001VLE7AAA',
                         feeDetailIdAsString,
                         message + 'bcs acquired, residential, downsizing, reacq start date is null'
                     );
@@ -88,7 +88,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                     System.assertEquals(
                         'a123F000001VLE7CCC',
                         feeDetailIdAsString,
-                        message + 'bcs acquired, public offtake, upsizing, reacq start date is null'
+                        message + 'bcs acquired, anchor, public offtake, upsizing, reacq start date is null'
                     );
                 }
                 when 'a9W3F000000A2U7UAK' {
@@ -102,13 +102,14 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                     System.assertEquals(
                         'a123F000001VLE7GGG',
                         feeDetailIdAsString,
-                        message + 'bcs acquired, anchor, downsizing, reacq start date is null'
+                        message + 'bcs acquired, non-investment grade anchor, downsizing, reacq start date is null'
                     );
                 }
                 when 'a9W3F000000A5P7UAK' {
-                    System.assertEquals('a123F000001VLE7III',
-                            feeDetailIdAsString,
-                            message + 'client acquired, bcs closed'
+                    System.assertEquals(
+                        'a123F000001VLE7III',
+                        feeDetailIdAsString,
+                        message + 'client acquired, bcs closed'
                     );
                 }
                 when else {
@@ -116,7 +117,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 }
             }
         }
-        System.assertEquals(13,ordersToUpdate.size());
+        System.assertEquals(14,ordersToUpdate.size());
     }
     @IsTest
     private static void testGetCancellationRate (){
@@ -239,25 +240,25 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Type_Reacquisition__c = true,
                 Fee__c = 0.15
             );
-            Contract_Fee_Detail__c downsizingAll = new Contract_Fee_Detail__c(
+             Contract_Fee_Detail__c anchorDownsizing = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7GGG',
                 Contract__c = '8003F000000KNC9QAO',
                 Acquisition_Channels_BCS_Acquired__c = true,
-                Acquisition_Channels_Non_BCS_Acquired__c = true,
+                Acquisition_Channels_Non_BCS_Acquired__c = false,
                 Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = true,
-                Acquisition_Cust_Group_Public_Offtake__c = true,
-                Acquisition_Cust_Group_Residential__c = true,
-                Acquisition_Cust_Group_Non_Residential__c = true,
-                Acq_Anchor_Qualif_Investment_Grade__c = true,
+                Acquisition_Cust_Group_Public_Offtake__c = false,
+                Acquisition_Cust_Group_Residential__c = false,
+                Acquisition_Cust_Group_Non_Residential__c = false,
+                Acq_Anchor_Qualif_Investment_Grade__c = false,
                 Acq_Anchor_Qualif_Not_Investment_Grade__c = true,
                 Acquisition_Sizing_Type_Downsizing__c = true,
                 Acquisition_Sizing_Type_Upsizing__c = false,
                 Acquisition_Type_Acquisition__c = true,
-                Acquisition_Type_Reacquisition__c = true,
+                Acquisition_Type_Reacquisition__c = false,
                 Fee__c = 0.16
             );
-            Contract_Fee_Detail__c sameRateForAll = new Contract_Fee_Detail__c(
+             Contract_Fee_Detail__c sameRateForAll = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7HHH',
                 Contract__c = '8003F000000KHH9QAO',
                 Acquisition_Channels_BCS_Acquired__c = true,
@@ -294,7 +295,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             List<Contract_Fee_Detail__c> cfdList = new List<Contract_Fee_Detail__c>{
                 acqBcsAcquiredNonAnchor, acqNonBcsAcquiredNonAnchor, acqClientClosedBCS, acqAnchor,
                 reacqBcsAcquiredNonAnchor, reacqNonBcsAcquiredNonAnchor, reacqAnchor,
-                downsizingAll, sameRateForAll
+                anchorDownsizing, sameRateForAll
             };
             switch on methodCall.stubbedMethodName {
                 when 'getContractDetailFromContract' {
@@ -472,6 +473,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
 
             '"Opportunity__r":{"Id":"0063F00000MVO9EQAX","Customer_Group__c":"Anchor","Customer_Sub_Group__c":"Public Offtake",' +
             '"Acquired_By_Client_Closed_By_BlueWave__c" : "false",' +
+            '"Underwriting_Criteria__c" : "Investment-Grade",' +
             '"Partner_tag_lookup__c":"a0s3F000000thIBQAY",' +
             '"Partner_tag_lookup__r":{"Id":"a0s3F000000thIBQAY", ' +
             '"Account__r":{"Id":"0013F00000Y6WrnQAF","RecordType":{"Name":"Partner Account"}}}' +

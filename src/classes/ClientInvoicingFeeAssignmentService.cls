@@ -1,3 +1,6 @@
+/*
+  Tested By: ClientInvoicingFeeAssignmentServiceTest, ClientInvoicingFeeWaiveServiceTest
+ */
 public without sharing class ClientInvoicingFeeAssignmentService {
     @TestVisible
     private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
@@ -62,7 +65,6 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             return (this.customerGroupMatches(feeDetail) &&
                 this.acqChannelMatches(feeDetail) &&
                 this.anchorQualifierMatches(feeDetail) &&
-                this.sizingMethodMatches(feeDetail) &&
                 this.acquisitionTypeMatches(feeDetail)
             );
         }
@@ -92,12 +94,6 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             return (this.closedByBCS == feeDetail.closedByBCS &&
                     (this.bcsAcquired && feeDetail.bcsAcquired ||
                 this.notBCSAcquired && feeDetail.notBCSAcquired)
-            );
-        }
-
-        private Boolean sizingMethodMatches(ContractFeeDetail feeDetail){
-            return (this.upsizing && feeDetail.upsizing ||
-                this.downsizing && feeDetail.downsizing
             );
         }
     }
@@ -168,8 +164,8 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
     }
 
-    private void matchSubscriptionOrderToFee(SubscriptionOrder subOrder,
-                                             MultiMap contractToFeeDetailMap) {
+    @TestVisible
+    private Subscription_Order__c matchSubscriptionOrderToFee(SubscriptionOrder subOrder, MultiMap contractToFeeDetailMap) {
         List<ContractFeeDetail> contractDetails = getContractFeeDetailsFromContracts(subOrder, contractToFeeDetailMap);
         Subscription_Order__c orderToUpdate;
         for (ContractFeeDetail feeDetail : contractDetails) {
@@ -186,6 +182,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
                 uow.registerDirty(orderToUpdate);
             }
         }
+        return orderToUpdate;
     }
 
     private List<ContractFeeDetail> getContractFeeDetailsFromContracts(SubscriptionOrder subOrder, MultiMap contractToFeeDetailMap) {
