@@ -1618,6 +1618,11 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <default>false</default>
                     <label>No FICO Match</label>
                 </value>
+                <value>
+                    <fullName>Low FICO Match</fullName>
+                    <default>false</default>
+                    <label>Low FICO Match</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -3843,6 +3848,10 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Load zone missing on utility bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Low FICO Match</fullName>
                 <default>false</default>
             </values>
             <values>

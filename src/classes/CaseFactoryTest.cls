@@ -96,7 +96,7 @@ public with sharing class CaseFactoryTest {
         RecordType customerCare = [
             SELECT Id, Name
             FROM RecordType
-            Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
+            WHERE SobjectType = 'Case' AND DeveloperName = 'Customer_Care'
             LIMIT 1
         ];
 
@@ -186,12 +186,37 @@ public with sharing class CaseFactoryTest {
         CaseFactory testFactory= new CaseFactory();
         CaseFactory testFactory2= new CaseFactory();
         testFactory.setLead(switchLead);
+        testFactory.setQueueType('No FICO Match');
         testFactory2.setLead(switchLead);
+        testFactory2.setQueueType('No FICO Match');
         System.enqueueJob(testFactory);
         System.enqueueJob(testFactory2);
         Test.stopTest();
         System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(switchLead).size(), 'If a case already ' +
             'exists another should not be created. There should only be 1 open case at a time.');
     }
+    @IsTest
+    public static void testLowMatchCaseCreation() {
 
+        Lead switchLead = [
+            SELECT Id,Name,Parent_Account__c
+            FROM Lead
+            LIMIT 1
+        ];
+
+        System.assertEquals(0, new CaseSelector().selectOpenLowMatchCasesFromLead(switchLead).size(), 'There should be no open cases for ' +
+            'this lead before enqueuing');
+        Test.startTest();
+        CaseFactory testFactory= new CaseFactory();
+        CaseFactory testFactory2= new CaseFactory();
+        testFactory.setLead(switchLead);
+        testFactory.setQueueType('Low FICO Match');
+        testFactory2.setLead(switchLead);
+        testFactory2.setQueueType('Low FICO Match');
+        System.enqueueJob(testFactory);
+        System.enqueueJob(testFactory2);
+        Test.stopTest();
+        System.assertEquals(1, new CaseSelector().selectOpenLowMatchCasesFromLead(switchLead).size(), 'If a case already ' +
+            'exists another should not be created. There should only be 1 open case at a time.');
+    }
 }

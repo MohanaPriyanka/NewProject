@@ -18,7 +18,8 @@ import { getFinDocFileTypes,
          validateUtilityAccountLog,
          setRemainingFields,
          setComponentUnderwritingVals,
-         handleUnderwritingChange } from 'c/ssfBasicInfoShared';
+         handleUnderwritingChange
+} from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api leadJson;
@@ -60,39 +61,41 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         this.isPhone = (formFactorName === 'Small');
         
-        if(this.zipCheckResponse) {
+        if (this.zipCheckResponse) {
             this.zipCheckResponse = JSON.parse(this.zipCheckResponse);
             this.collectRateClass = this.zipCheckResponse.collectRateClass;
-            if(this.zipCheckResponse.zipCode) {
+            if (this.zipCheckResponse.zipCode) {
                 this.zipinput = this.zipCheckResponse.zipCode;
             }
 
-            if(this.zipCheckResponse.products && this.zipCheckResponse.products.length > 0) {
+            if (this.zipCheckResponse.products && this.zipCheckResponse.products.length > 0) {
                 this.selectedProduct = this.zipCheckResponse.products[0];
             }
 
-            if(this.zipCheckResponse.utilities && this.zipCheckResponse.utilities.length > 0 && this.zipCheckResponse.utilities[0].utilityId) {
+            if (this.zipCheckResponse.utilities && this.zipCheckResponse.utilities.length > 0 && this.zipCheckResponse.utilities[0].utilityId) {
                 let selectedUtility = this.zipCheckResponse.utilities[0];
                 this.utilityId = selectedUtility.utilityId;
     
                 if(selectedUtility.dataCollectionMethod) {
                     this.isFileUpload = (selectedUtility.dataCollectionMethod !== 'EDI');
-                } else {
+                }
+                else {
                     this.isFileUpload = true;
                 }
-            } else {
+            }
+            else {
                 this.isFileUpload = true;
             }
 
-            if(this.zipCheckResponse.rateClasses) {
+            if (this.zipCheckResponse.rateClasses) {
                 this.rateClassObj = Object.fromEntries(this.zipCheckResponse.rateClasses.map(
                     rateClass => ([rateClass.name, rateClass])
                 ));
-
-                if(this.collectRateClass) {
-                    if(this.zipCheckResponse.rateClasses.length === 0) {
+                if (this.collectRateClass) {
+                    if (this.zipCheckResponse.rateClasses.length === 0) {
                         this.collectRateClass = false;
-                    } else {
+                    }
+                    else {
                         this.rateClassOptions = this.zipCheckResponse.rateClasses.map(
                             rateClass => ({ value: rateClass.name, label: rateClass.name })
                         );
@@ -118,7 +121,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                     }
                 }
             }
-            this.sameBillingAddress = this.propertyAccount.billingStreet == this.propertyAccount.utilityAccountLogs[0].serviceStreet;
+            this.sameBillingAddress = this.propertyAccount.billingStreet === this.propertyAccount.utilityAccountLogs[0].serviceStreet;
         } 
         // if no lead exists, set default values for restLead and propertyAccount
         else {
@@ -126,22 +129,24 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.propertyAccount = getNewRestPropertyAccount(this);
         }
 
-        setComponentUnderwritingVals(this, this.resiApplicationType);
+        // set component underwriting values
+        setComponentUnderwritingVals(this);
 
-        if(!this.restLead.partnerId) {
+        if (!this.restLead.partnerId) {
             this.restLead.partnerId = this.partnerId;
         }
 
-        if(!this.restLead.salesRepId) {
+        if (!this.restLead.salesRepId) {
             this.restLead.salesRepId = this.salesRepId;
         }
 
-        if(!this.restLead.campaignId) {
+        if (!this.restLead.campaignId) {
             this.restLead.campaignId = this.campaignId;
         }
 
         // if there are no utility accounts, add an empty one so the form will show fields to enter data
-        if(this.propertyAccount && this.propertyAccount.utilityAccountLogs && this.propertyAccount.utilityAccountLogs.length === 0) {
+        if (this.propertyAccount && this.propertyAccount.utilityAccountLogs
+            && this.propertyAccount.utilityAccountLogs.length === 0) {
             this.addUtilityAccount();
         }
         // set the values to properly display the utility portion of the form
@@ -163,7 +168,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.restLead.email = 'pyao@bluewavesolar.com';
         if (this.resiApplicationType) {
             this.restLead.mobilePhone = 1231231234;
-        } else {
+        }
+        else {
             this.restLead.businessPhone = 1231231234;
         }
         this.propertyAccount.utilityAccountLogs[0].utilityAccountNumber = '123';
