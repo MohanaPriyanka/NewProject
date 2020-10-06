@@ -88,33 +88,6 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
         System.assertEquals(ual.Annual_kWh__c, ualAfterUpdate.Annual_kWh__c);
         System.assertEquals(ual.Proposed_kWh__c, ualAfterUpdate.Proposed_kWh__c);
     }
-    @IsTest
-    private static void testCreateUALSharesForGuestUser() {
-        Utility_Account_Log__c ualA = new Utility_Account_Log__c(
-            Annual_kWh__c = 1000,
-            Proposed_kWh__c = 1234,
-            Name_on_Account__c = 'Primary A'
-        );
-        Utility_Account_Log__c ualB = new Utility_Account_Log__c(
-            Annual_kWh__c = 1000,
-            Proposed_kWh__c = 1234,
-            Name_on_Account__c = 'Primary B'
-        );
-        Utility_Account_Log__c ualC = new Utility_Account_Log__c(
-            Annual_kWh__c = 1000,
-            Proposed_kWh__c = 1234,
-            Name_on_Account__c = 'Primary C'
-        );
-        insert new List<Utility_Account_Log__c>{ualA, ualB, ualC};
-        UtilityAccountLogs ualList = new UtilityAccountLogs(new List<Utility_Account_Log__c> {ualA, ualB, ualC});
-        ualList.createUALSharesForGuestUser();
-        List<Utility_Account_Log__Share> shareRecords = [
-            SELECT Id, RowCause, AccessLevel
-            FROM Utility_Account_Log__Share
-            WHERE RowCause = 'Guest_User_Access__c'
-        ];
-        System.assertEquals(3, shareRecords.size(), 'Expected 3 sharing records to have been created');
-    }
 
     @IsTest
     private static void testRateClassUpdate() {
