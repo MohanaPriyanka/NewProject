@@ -184,6 +184,14 @@
                 <behavior>Edit</behavior>
                 <field>Client_Assignment_Agreement__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Potential_Client_Invoicing_Fee__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Include_Downsizing_in_AA_Invoice__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
