@@ -347,10 +347,13 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
     <fields>
         <fullName>Client_Invoicing_Fee__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(
- ISPICKVAL(Contract_Fee_Detail__r.Fee_Unit__c, &quot;per W&quot;),
- Contract_Fee_Detail__r.Fee__c * ( Approved_Change_in_Subscription__c * 1000),
-null)</formula>
+        <formula>IF(OR(Contract_Fee_Detail__r.Acquisition_Sizing_Type_Downsizing__c,
+      Approved_Change_in_Subscription__c &gt; 0),
+   Potential_Client_Invoicing_Fee__c,
+   IF(Include_Downsizing_in_AA_Invoice__c,
+      Potential_Client_Invoicing_Fee__c,
+      NULL))</formula>
+        <inlineHelpText>The fee (or credit) to charge the client for this Subscription Order. Can be offset by related Client Invoicing Memos.</inlineHelpText>
         <label>Client Invoicing Fee</label>
         <precision>18</precision>
         <required>false</required>
@@ -425,6 +428,16 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Include_Downsizing_in_AA_Invoice__c</fullName>
+        <externalId>false</externalId>
+        <formula>AND(Approved_Change_in_Subscription__c &lt; 0, NOT(ISBLANK(Client_Assignment_Agreement__c)))</formula>
+        <inlineHelpText>Used to credit the client for negative subscription changes if the Subscription Order is included in an assignment agreement (opposed to after assignment when only some clients are credited for downsizing)</inlineHelpText>
+        <label>Include Downsizing in AA Invoice</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Invoice_Date__c</fullName>
         <externalId>false</externalId>
         <label>Invoice Date</label>
@@ -472,6 +485,23 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Potential_Client_Invoicing_Fee__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+ISPICKVAL(Contract_Fee_Detail__r.Fee_Unit__c, &quot;per W&quot;),
+Contract_Fee_Detail__r.Fee__c * ( Approved_Change_in_Subscription__c * 1000),
+null)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Multiplies CFD Fee by the Approved Change in Subscription, but unused if this is a downsizing Subscription Order created post-assignment, with a CFD that doesn&apos;t allow for downsizing.</inlineHelpText>
+        <label>Potential Client Invoicing Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Previous_Annual_Cost__c</fullName>

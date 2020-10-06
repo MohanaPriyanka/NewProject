@@ -145,7 +145,7 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
@@ -290,6 +290,7 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
     <fields>
         <fullName>Contract__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>The related Client Contract</inlineHelpText>
         <label>Contract</label>
         <lookupFilter>
             <active>true</active>
@@ -306,6 +307,7 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <relationshipName>Contract_Fee_Detail</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
@@ -757,6 +759,7 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
     <nameField>
         <displayFormat>CFD-{000000}</displayFormat>
         <label>Contract Fee Detail Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
