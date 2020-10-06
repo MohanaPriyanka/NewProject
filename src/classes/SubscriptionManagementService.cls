@@ -27,7 +27,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
             changeNMCTariff(oppIdsWithChangedNMCTariff);
         }
         if (oppIdsWithChangedSSS != null && featureService.isEnabled('Subscription_Orders')) {
-            transferSubscriptionsOnSSSChange();
             try {
                 transferSubscriptionsOnSSSChange();
                 //Upsert UASes - for deactivating a uas, update; for inserting new uas, insert
