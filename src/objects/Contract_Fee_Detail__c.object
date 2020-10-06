@@ -290,6 +290,7 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
     <fields>
         <fullName>Contract__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>The related Client Contract</inlineHelpText>
         <label>Contract</label>
         <lookupFilter>
             <active>true</active>
@@ -306,6 +307,7 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <relationshipName>Contract_Fee_Detail</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
