@@ -10,7 +10,10 @@ import { getZipCodeCapacity } from 'c/zipCodeService';
 import { makeRequest } from 'c/httpRequestService';
 import insertLog from '@salesforce/apex/Logger.insertLog';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
-import { validateBasicInfoCompleted, getNumberOfDocsForExistingLead } from 'c/ssfShared';
+import { validateBasicInfoCompleted,
+         getNumberOfDocsForExistingLead,
+         onResumeSetIsFico
+} from 'c/ssfShared';
 
 export default class SsfDTC extends NavigationMixin(LightningElement) {
     @api leadId;
@@ -35,51 +38,52 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
     @wire(CurrentPageReference) pageRef;
 
     loc = '';
-    isFico;
+    isFico = true;
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
 
-        if(this.pageRef && this.pageRef.state) {
-            if(this.pageRef.state.partnerId) {
+        if (this.pageRef && this.pageRef.state) {
+            if (this.pageRef.state.partnerId) {
                 this.resiApplicationType = false;
                 this.partnerId = this.pageRef.state.partnerId;
             }
-
-            if(this.pageRef.state.salesRepId) {
+            if (this.pageRef.state.salesRepId) {
                 this.salesRepId = this.pageRef.state.salesRepId;
             }
-
-            if(this.pageRef.state.campaignId) {
+            if (this.pageRef.state.campaignId) {
                 this.campaignId = this.pageRef.state.campaignId;
             }
-
-            if(this.pageRef.state.mock) {
+            if (this.pageRef.state.mock) {
                 this.mock = this.pageRef.state.mock;
             }
-            
-            if(this.pageRef.state.leadid) {
+            if (this.pageRef.state.leadid) {
                 this.leadId = this.pageRef.state.leadid;
-                if(this.pageRef.state.loc) {
+                if (this.pageRef.state.loc) {
                     this.loc = this.pageRef.state.loc;
                 }
-                if(this.pageRef.state.email) {
+                if (this.pageRef.state.email) {
                     this.email = this.pageRef.state.email;
-                    if(!this.leadJSON) {
+                    if (!this.leadJSON) {
                         this.getLead();
-                    } else {
+                    }
+                    else {
                         this.showBasicInfoPage();
                     }
-                } else {
+                }
+                else {
                     this.showEnterEmailPage();
                 }
-            } else if(this.pageRef.state.zip) {
+            }
+            else if (this.pageRef.state.zip) {
                 this.zipCodeInput = this.pageRef.state.zip;
                 this.showGetZipCodeCapacityPage();
-            } else {
+            }
+            else {
                 this.showGetZipCodeCapacityPage();
             }
-        } else {
+        }
+        else {
             this.showGetZipCodeCapacityPage();
         }
     }
@@ -93,39 +97,41 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
         };
         
         makeRequest(calloutURI, 'GET', options)
-            .then(
-                (resolveResult) => {
-                    this.leadJSON = JSON.stringify(resolveResult);
-                    this.zipCodeInput = resolveResult.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
-                    this.resiApplicationType = resolveResult.applicationType === 'Residential';
-                    this.getZipCodeCapacity(resolveResult.utilityId, true);
+        .then(
+            (resolveResult) => {
+                this.leadJSON = JSON.stringify(resolveResult);
+                this.zipCodeInput = resolveResult.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
+                this.resiApplicationType = resolveResult.applicationType === 'Residential';
+                this.getZipCodeCapacity(resolveResult.utilityId, true);
+                onResumeSetIsFico(this, resolveResult, this.resiApplicationType);
+            }
+        )
+        .catch(
+            (rejectResult) => {
+                this.showSpinner = false;
+                let fail = typeof rejectResult === 'object' ? rejectResult : JSON.parse(rejectResult);
+                if (fail.errors && fail.errors[0].substr(0,21) === 'Invalid authorization') {
+                    this.dispatchEvent(new ShowToastEvent({
+                        title: 'Authentication Failure',
+                        message: 'The email address you provided does not match the application on file.',
+                        variant: 'warning'
+                    }));
                 }
-            )
-            .catch(
-                (rejectResult) => {
-                    this.showSpinner = false;
-                    let fail = typeof rejectResult === 'object' ? rejectResult : JSON.parse(rejectResult);
-                    if(fail.errors && fail.errors[0].substr(0,21) === 'Invalid authorization') {
-                        this.dispatchEvent(new ShowToastEvent({
-                            title: 'Authentication Failure',
-                            message: 'The email address you provided does not match the application on file.',
-                            variant: 'warning'
-                        }));
-                    } else {
-                        insertLog({
-                            className: 'ssf',
-                            methodName: 'getLead',
-                            message: rejectResult,
-                            severity: 'Error'
-                        });
-                        this.dispatchEvent(new ShowToastEvent({
-                            title: 'Sorry, we ran into a technical problem',
-                            message: 'Please contact Customer Care for help',
-                            variant: 'warning'
-                        }));
-                    }
+                else {
+                    insertLog({
+                        className: 'ssf',
+                        methodName: 'getLead',
+                        message: rejectResult,
+                        severity: 'Error'
+                    });
+                    this.dispatchEvent(new ShowToastEvent({
+                        title: 'Sorry, we ran into a technical problem',
+                        message: 'Please contact Customer Care for help',
+                        variant: 'warning'
+                    }));
                 }
-            );
+            }
+        );
     }
 
     getZipCodeCapacity(utilityId, setLocation) {
@@ -133,16 +139,16 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
             (resolveResult) => {
                 this.showSpinner = false;
                 this.zipCodeResponse = JSON.stringify(resolveResult);
-                if(resolveResult.ficoUnderwriting) {
+                if (resolveResult.ficoUnderwriting) {
                     this.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
                 }
-                if(resolveResult.finDocsUnderwriting) {
+                if (resolveResult.finDocsUnderwriting) {
                     this.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
                 }
-
-                if(setLocation) {
+                if (setLocation) {
                     this.setLocation();
-                } else {
+                }
+                else {
                     this.showBasicInfoPage();
                 }
             },
@@ -165,21 +171,24 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
     }
 
     setLocation() {
-        if(validateBasicInfoCompleted(this.zipCodeResponse, this.leadJSON)) {
-            if(this.loc == 'pay') {
+        if (validateBasicInfoCompleted(this.zipCodeResponse, this.leadJSON)) {
+            if (this.loc === 'pay') {
                 this.showPaymentPage(JSON.parse(this.leadJSON));
-            } else if(this.loc == 'agree') {
+            }
+            else if (this.loc === 'agree') {
                 let lead = JSON.parse(this.leadJSON);
-                if(!lead.numberOfContractDocs) {
+                if (!lead.numberOfContractDocs) {
                     const capacity = JSON.parse(this.zipCodeResponse);
                     lead.numberOfContractDocs = getNumberOfDocsForExistingLead(lead, capacity);
                     this.leadJSON = JSON.stringify(lead);
                 }
                 this.showAgreementsPage();
-            } else {
+            }
+            else {
                 this.showBasicInfoPage();
             }
-        } else {
+        }
+        else {
             this.showBasicInfoPage();
         }
     }

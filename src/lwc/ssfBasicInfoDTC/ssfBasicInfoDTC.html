@@ -1,29 +1,49 @@
 <!--
  - Created by lindsayholmes_gearscrm on 2020-09-14.
  -->
-
-<!-- Simple Signup Form Basic Info -->
+<!-- Simple Signup Form Basic Info: DTC version -->
 <template>
     <template if:false={showSpinner}>
         <div class="form">
+            <!-- HEADER TEXT -->
             <h1 class="form-header">
                 Great news! There is community solar available in your area.<br/>
             </h1>
             <h1 class="form-subheader">
                 Tell us a little more about your property.
             </h1>
-            
+
+            <!-- SMB APP FIELDS -->
             <template if:false={resiApplicationType}>
                 <h6>Business Info<span class="blue-text">&nbsp;&gt;</span></h6>
                 <div class="form-section">
                     <div class="input-group half">
-                        <lightning-input name="businessName" value={restLead.businessName} label="Name of Business or Organization" onchange={genericOnChange} required></lightning-input>
+                        <lightning-input
+                          name="businessName"
+                          value={restLead.businessName}
+                          label="Name of Business or Organization"
+                          onchange={genericOnChange}
+                          required>
+                        </lightning-input>
                     </div>
                     <div class="input-group half">
-                        <lightning-input name="businessPhone" value={restLead.businessPhone}  label="Business Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
+                        <lightning-input
+                          name="businessPhone"
+                          value={restLead.businessPhone}
+                          label="Business Phone"
+                          onchange={phoneOnChange}
+                          type="tel"
+                          required>
+                        </lightning-input>
                     </div>
                     <div class="input-group half">
-                        <lightning-input name="businessTitle" value={restLead.businessTitle}  label="Job Title or Organizational Affiliation" onchange={genericOnChange} required></lightning-input>
+                        <lightning-input
+                          name="businessTitle"
+                          value={restLead.businessTitle}
+                          label="Job Title or Organizational Affiliation"
+                          onchange={genericOnChange}
+                          required>
+                        </lightning-input>
                     </div>
                     <div class="input-group half">
                         <div if:true={showUnderwritingOptions} class="fieldWithHelp">
@@ -32,7 +52,7 @@
                                 class="slds-var-m-bottom_small"
                                 placeholder=""
                                 label="Apply with Guarantor or Financial Documents?"
-                                value={underwritingCriteria}
+                                value={restLead.underwritingCriteria}
                                 onchange={genericOnChange}
                                 options={underwritingOptions}
                                 required>
@@ -69,67 +89,168 @@
                 </div>
             </template>
 
+            <!-- CONTACT INFO -->
             <h6>Contact Info<span class="blue-text">&nbsp;&gt;</span></h6>
             <div class="form-section">
                 <div class="input-group half">
-                    <lightning-input name="firstName" value={restLead.firstName} label="First Name" onchange={genericOnChange} required></lightning-input>
+                    <lightning-input
+                      name="firstName"
+                      value={restLead.firstName}
+                      label="First Name"
+                      onchange={genericOnChange}
+                      required>
+                    </lightning-input>
                 </div>
                 <div class="input-group half">
-                    <lightning-input name="lastName" value={restLead.lastName} label="Last Name" onchange={genericOnChange} required></lightning-input>
+                    <lightning-input
+                      name="lastName"
+                      value={restLead.lastName}
+                      label="Last Name"
+                      onchange={genericOnChange}
+                      required>
+                    </lightning-input>
                 </div>
                 <div class="input-group half">
-                    <lightning-input name="email" value={restLead.email} label="Email" onchange={genericOnChange} type="email" required disabled={resumedApp}></lightning-input>
+                    <lightning-input
+                      name="email"
+                      value={restLead.email}
+                      label="Email"
+                      onchange={genericOnChange}
+                      type="email"
+                      required
+                      disabled={resumedApp}>
+                    </lightning-input>
                 </div>
                 <div class="input-group half">
-                    <lightning-input name="mobilePhone" value={restLead.mobilePhone}  label="Phone" onchange={phoneOnChange} type="tel" required></lightning-input>
+                    <lightning-input
+                      name="mobilePhone"
+                      value={restLead.mobilePhone}
+                      label="Phone"
+                      onchange={phoneOnChange}
+                      type="tel"
+                      required>
+                    </lightning-input>
                 </div>
                 <template if:true={isFico}>
                     <template if:false={sameHomeAddress}>
                         <div class="input-group half">
-                            <lightning-input name="streetAddress" class="slds-var-m-bottom_small" label="Street" onchange={genericOnChange} value={restLead.streetAddress} required></lightning-input>
+                            <lightning-input
+                              name="streetAddress"
+                              class="slds-var-m-bottom_small"
+                              label="Street"
+                              onchange={genericOnChange}
+                              value={restLead.streetAddress}
+                              required>
+                            </lightning-input>
                         </div>
                         <div class="input-group half">
-                            <lightning-input name="city" class="slds-var-m-bottom_small" label="City" onchange={genericOnChange} value={restLead.city} required></lightning-input>
+                            <lightning-input
+                              name="city"
+                              class="slds-var-m-bottom_small"
+                              label="City"
+                              onchange={genericOnChange}
+                              value={restLead.city}
+                              required>
+                            </lightning-input>
                         </div>
                         <div class="input-group half">
-                            <lightning-combobox name="state" class="slds-var-m-bottom_small slds-col" label="State" onchange={genericOnChange} options={stateOptions} placeholder="" value={restLead.state} required></lightning-combobox>
+                            <lightning-combobox
+                              name="state"
+                              class="slds-var-m-bottom_small slds-col"
+                              label="State"
+                              onchange={genericOnChange}
+                              options={stateOptions}
+                              placeholder=""
+                              value={restLead.state}
+                              required>
+                            </lightning-combobox>
                         </div>
                         <div class="input-group half">
-                            <lightning-input name="zipCode" class="slds-var-m-bottom_small" label="Zip" onchange={genericOnChange} value={restLead.zipCode} required></lightning-input>
+                            <lightning-input
+                              name="zipCode"
+                              class="slds-var-m-bottom_small"
+                              label="Zip"
+                              onchange={genericOnChange}
+                              value={restLead.zipCode}
+                              required>
+                            </lightning-input>
                         </div>
                     </template>
                     <div class="input-group slds-var-m-top_small">
-                        <lightning-input class="slds-var-p-left_medium" type="checkbox" label="My home address is the same as the property address on my utility account" checked={sameHomeAddress} onchange={homeAddressToggle}></lightning-input>
+                        <lightning-input
+                          class="slds-var-p-left_medium"
+                          type="checkbox"
+                          label="My home address is the same as the property address on my utility account"
+                          checked={sameHomeAddress}
+                          onchange={homeAddressToggle}>
+                        </lightning-input>
                     </div>
                 </template>
             </div>
 
+            <!-- BILLING INFO -->
             <h6>Billing Info<span class="blue-text">&nbsp;&gt;</span></h6>
             <div class="form-section">
                 <template if:false={sameBillingAddress}>
                     <div class="input-group half">
-                        <lightning-input name="billingStreet" class="slds-var-m-bottom_small" label="Billing Street" field-level-help="This is the address your BlueWave bill will be sent to." onchange={propertyAccountOnChange} value={propertyAccount.billingStreet} required></lightning-input>
+                        <lightning-input
+                          name="billingStreet"
+                          class="slds-var-m-bottom_small"
+                          label="Billing Street"
+                          field-level-help="This is the address your BlueWave bill will be sent to."
+                          onchange={propertyAccountOnChange}
+                          value={propertyAccount.billingStreet}
+                          required>
+                        </lightning-input>
                     </div>
                     <div class="input-group half">
-                        <lightning-input name="billingCity" class="slds-var-m-bottom_small" label="City" onchange={propertyAccountOnChange} value={propertyAccount.billingCity} required></lightning-input>
+                        <lightning-input
+                          name="billingCity"
+                          class="slds-var-m-bottom_small"
+                          label="City"
+                          onchange={propertyAccountOnChange}
+                          value={propertyAccount.billingCity}
+                          required>
+                        </lightning-input>
                     </div>
                     <div class="input-group half">
-                        <lightning-combobox name="billingState" class="slds-var-m-bottom_small slds-col" label="State" onchange={propertyAccountOnChange} options={stateOptions} placeholder="" value={propertyAccount.billingState} required></lightning-combobox>
+                        <lightning-combobox
+                          name="billingState"
+                          class="slds-var-m-bottom_small slds-col"
+                          label="State"
+                          onchange={propertyAccountOnChange}
+                          options={stateOptions}
+                          placeholder=""
+                          value={propertyAccount.billingState}
+                          required>
+                        </lightning-combobox>
                     </div>
                     <div class="input-group half">
-                        <lightning-input name="billingPostalCode" class="slds-var-m-bottom_small" label="Zip" onchange={propertyAccountOnChange} value={propertyAccount.billingPostalCode} required></lightning-input>
+                        <lightning-input
+                          name="billingPostalCode"
+                          class="slds-var-m-bottom_small"
+                          label="Zip"
+                          onchange={propertyAccountOnChange}
+                          value={propertyAccount.billingPostalCode}
+                          required>
+                        </lightning-input>
                     </div>
                 </template>
                 <div class="input-group">
-                    <lightning-input class="slds-var-p-left_medium" type="checkbox" label="My billing address is the same as the property address on my utility account" checked={sameBillingAddress} onchange={billingAddressToggle}></lightning-input>
+                    <lightning-input
+                      class="slds-var-p-left_medium"
+                      type="checkbox"
+                      label="My billing address is the same as the property address on my utility account"
+                      checked={sameBillingAddress}
+                      onchange={billingAddressToggle}>
+                    </lightning-input>
                 </div>
             </div>
-            
+
+            <!-- UTILITY ACCOUNTS -->
             <h6>Utility Accounts<span class="blue-text">&nbsp;&gt;</span></h6>
             <div class="form-section-accordion">
-                <lightning-accordion
-                    allow-multiple-sections-open
-                    active-section-name={utilityAccountSection}>
+                <lightning-accordion allow-multiple-sections-open active-section-name={utilityAccountSection}>
                         <template iterator:it={propertyAccount.utilityAccountLogs}>
                             <lightning-accordion-section key={it.value.localid} name={it.value.localid} label={it.value.name}>
                                 <template if:false={it.first}>
@@ -141,102 +262,109 @@
                                 </template>
                                 <div class="form-section accordion" key={it.value.localid}>
                                     <div class="input-group half">
-                                        <lightning-input key={it.value.localid}
-                                                        data-row-index={it.index}
-                                                        name="utilityAccountNumber"
-                                                        class="slds-var-m-bottom_small slds-col"
-                                                        label="Utility Account Number"
-                                                        field-level-help="Please ensure the utility account number exactly matches what's found on your utility bill."
-                                                        value={it.value.utilityAccountNumber}
-                                                        onchange={utilityAccountOnChange}
-                                                        required>
+                                        <lightning-input
+                                            key={it.value.localid}
+                                            data-row-index={it.index}
+                                            name="utilityAccountNumber"
+                                            class="slds-var-m-bottom_small slds-col"
+                                            label="Utility Account Number"
+                                            field-level-help="Please ensure the utility account number exactly matches what's found on your utility bill."
+                                            value={it.value.utilityAccountNumber}
+                                            onchange={utilityAccountOnChange}
+                                            required>
                                         </lightning-input>
                                     </div>
                                     <div class="input-group half">
-                                        <lightning-input key={it.value.localid}
-                                                        name="nameOnAccount"
-                                                        data-row-index={it.index}
-                                                        class="slds-var-m-bottom_small"
-                                                        label="Name on Account"
-                                                        value={it.value.nameOnAccount}
-                                                        onchange={utilityAccountOnChange}
-                                                        required>
+                                        <lightning-input
+                                            key={it.value.localid}
+                                            name="nameOnAccount"
+                                            data-row-index={it.index}
+                                            class="slds-var-m-bottom_small"
+                                            label="Name on Account"
+                                            value={it.value.nameOnAccount}
+                                            onchange={utilityAccountOnChange}
+                                            required>
                                         </lightning-input>
                                     </div>
                                     <template if:true={collectRateClass}>
                                         <div class="input-group half">
-                                            <lightning-combobox key={it.value.localid}
-                                                                name="rateClass"
-                                                                data-row-index={it.index}
-                                                                class="slds-var-m-bottom_small slds-col"
-                                                                placeholder=""
-                                                                label="Utility Rate Class"
-                                                                value={it.value.rateClass}
-                                                                onchange={rateClassOnChange}
-                                                                options={rateClassOptions}
-                                                                required>
+                                            <lightning-combobox
+                                                key={it.value.localid}
+                                                name="rateClass"
+                                                data-row-index={it.index}
+                                                class="slds-var-m-bottom_small slds-col"
+                                                placeholder=""
+                                                label="Utility Rate Class"
+                                                value={it.value.rateClass}
+                                                onchange={rateClassOnChange}
+                                                options={rateClassOptions}
+                                                required>
                                             </lightning-combobox>
                                         </div>
                                         <template if:false={isPhone}><div class="input-group half"></div></template>
                                     </template>
                                     <div class="input-group half">
-                                        <lightning-input key={it.value.localid}
-                                                        name="serviceStreet"
-                                                        data-row-index={it.index}
-                                                        class="slds-var-m-bottom_small"
-                                                        label="Service Street Address"
-                                                        field-level-help="Please ensure the service street address exactly matches what's found on your utility bill."
-                                                        value={it.value.serviceStreet}
-                                                        onchange={utilityAccountOnChange}
-                                                        required>
+                                        <lightning-input
+                                            key={it.value.localid}
+                                            name="serviceStreet"
+                                            data-row-index={it.index}
+                                            class="slds-var-m-bottom_small"
+                                            label="Service Street Address"
+                                            field-level-help="Please ensure the service street address exactly matches what's found on your utility bill."
+                                            value={it.value.serviceStreet}
+                                            onchange={utilityAccountOnChange}
+                                            required>
                                         </lightning-input>
                                     </div>
                                     <div class="input-group half">
-                                        <lightning-input key={it.value.localid}
-                                                        name="serviceCity"
-                                                        data-row-index={it.index}
-                                                        class="slds-var-m-bottom_small"
-                                                        label="City"
-                                                        value={it.value.serviceCity}
-                                                        onchange={utilityAccountOnChange}
-                                                        required>
+                                        <lightning-input
+                                            key={it.value.localid}
+                                            name="serviceCity"
+                                            data-row-index={it.index}
+                                            class="slds-var-m-bottom_small"
+                                            label="City"
+                                            value={it.value.serviceCity}
+                                            onchange={utilityAccountOnChange}
+                                            required>
                                         </lightning-input>
                                     </div>
                                     <div class="input-group half">
-                                        <lightning-combobox key={it.value.localid}
-                                                            name="serviceState"
-                                                            data-row-index={it.index}
-                                                            class="slds-var-m-bottom_small slds-col"
-                                                            placeholder=""
-                                                            label="State"
-                                                            value={it.value.serviceState}
-                                                            onchange={utilityAccountOnChange}
-                                                            options={stateOptions}
-                                                            required>
+                                        <lightning-combobox
+                                            key={it.value.localid}
+                                            name="serviceState"
+                                            data-row-index={it.index}
+                                            class="slds-var-m-bottom_small slds-col"
+                                            placeholder=""
+                                            label="State"
+                                            value={it.value.serviceState}
+                                            onchange={utilityAccountOnChange}
+                                            options={stateOptions}
+                                            required>
                                         </lightning-combobox>
                                     </div>
                                     <div class="input-group half">
-                                        <lightning-input type="select" key={it.value.localid}
-                                                        name="servicePostalCode"
-                                                        data-row-index={it.index}
-                                                        class="slds-var-m-bottom_small"
-                                                        label="Zip"
-                                                        value={it.value.servicePostalCode}
-                                                        onchange={utilityAccountOnChange}
-                                                        disabled
-                                                        required>
+                                        <lightning-input
+                                            type="select" key={it.value.localid}
+                                            name="servicePostalCode"
+                                            data-row-index={it.index}
+                                            class="slds-var-m-bottom_small"
+                                            label="Zip"
+                                            value={it.value.servicePostalCode}
+                                            onchange={utilityAccountOnChange}
+                                            disabled
+                                            required>
                                         </lightning-input>
                                     </div>
                                     <div class="input-group half">
                                         <template if:true={it.value.showUpload}>
                                             <c-ssf-file-upload 
-                                                    required 
-                                                    has-help-text
-                                                    input-text="Upload a copy of your utility bill"
-                                                    category-type="Customer Utility Bill"
-                                                    data-row-index={it.index}
-                                                    key={it.value.localid} 
-                                                    onfileuploaded={handleUtilityBillUpload}>
+                                                required
+                                                has-help-text
+                                                input-text="Upload a copy of your utility bill"
+                                                category-type="Customer Utility Bill"
+                                                data-row-index={it.index}
+                                                key={it.value.localid}
+                                                onfileuploaded={handleUtilityBillUpload}>
                                                 <div>
                                                     <p>Why do we need your utility bill?</p>
                                                     <p class="small slds-var-m-bottom_small">We collect images of your bill in order to ensure you receive the appropriate amount of credits. The image of your bill just needs to be legible. Otherwise, we have no preference on format.</p>
@@ -293,7 +421,8 @@
                         </template>
                 </lightning-accordion>
             </div>
-            
+
+            <!-- OTHER INFO -->
             <h6>Other Info<span class="blue-text">&nbsp;&gt;</span></h6>
             <div class="form-section">
                 <p class="slds-var-m-around_small">
@@ -306,7 +435,7 @@
                 </p>
             </div>
 
-
+            <!-- FOOTER -->
             <p class="slds-var-m-around_small">
                 We take privacy and security seriously. Check out our <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b> for more details. By clicking continue, you understand and agree that someone from BlueWave may contact you using the email and phone number provided.
             </p>
@@ -315,6 +444,8 @@
             </div>
         </div>
     </template>
+
+    <!-- LOADING SPINNER / WAITING ROOM -->
     <template if:true={showSpinner}>
         <c-ssf-waiting-room></c-ssf-waiting-room>
     </template>

@@ -19,9 +19,11 @@ const getUnderwritingHelpText = () => {
 }
 
 // set cmp values on underwriting based on if a residential or biz app to control cmp behavior
-const setComponentUnderwritingVals = (component, residentialApplication) => {
+const setComponentUnderwritingVals = (component) => {
 
-    if (residentialApplication) {
+    const isResiApplication = component.resiApplicationType;
+
+    if (isResiApplication) {
         component.showUnderwritingOptions = false;
         component.restLead.underwritingCriteria = 'FICO';
     }
@@ -109,6 +111,32 @@ const setRemainingFields = (component, sameHomeAddressAsFirstUA) => {
     component.restLead.numberOfContractDocs = getNumberOfContractDocs(component.restLead, component.selectedProduct, component.selectedRateClasses);
 }
 
+const getNumberOfContractDocs = (lead, product, rateClasses) => {
+    if (product.standaloneDisclosureForm === false) {
+        return 1;
+    }
+    if (rateClasses && rateClasses.length > 0) {
+        const rateClassObj = Object.fromEntries(rateClasses.map(
+            rateClass => ([rateClass.name, rateClass])
+        ));
+
+        let allSuppress = true;
+        lead.propertyAccounts.forEach(propAcct => {
+            propAcct.utilityAccountLogs.forEach(ual => {
+                if (!ual.rateClass || !rateClassObj.hasOwnProperty(ual.rateClass)
+                    || !rateClassObj[ual.rateClass].suppressDisclosureForm) {
+                    allSuppress = false;
+                }
+            });
+        });
+
+        if (allSuppress) {
+            return 1;
+        }
+    }
+    return 2;
+}
+
 export {  
     getFinDocFileTypes,
     getUnderwritingHelpText,
@@ -118,9 +146,9 @@ export {
     validateUtilityAccountLog,
     setRemainingFields,
     setComponentUnderwritingVals,
-    handleUnderwritingChange
+    handleUnderwritingChange,
+    getNumberOfContractDocs
 }
-
 
 // ///////////////////////////////////
 //      Helper Methods
@@ -139,31 +167,4 @@ function matchHomeAddress(restLead, propertyAccount) {
     restLead.state = propertyAccount.utilityAccountLogs[0].serviceState;
     restLead.zipCode = propertyAccount.utilityAccountLogs[0].servicePostalCode;
     return restLead;
-}
-
-function getNumberOfContractDocs(lead, product, rateClasses) {
-    if(product.standaloneDisclosureForm === false) {
-        return 1;
-    }
-
-    if(rateClasses && rateClasses.length > 0) {
-        const rateClassObj = Object.fromEntries(rateClasses.map(
-            rateClass => ([rateClass.name, rateClass])
-        ));
-
-        let allSuppress = true;
-        lead.propertyAccounts.forEach(propAcct => {
-            propAcct.utilityAccountLogs.forEach(ual => {
-                if(!ual.rateClass || !rateClassObj.hasOwnProperty(ual.rateClass) || !rateClassObj[ual.rateClass].suppressDisclosureForm) {
-                    allSuppress = false;
-                }
-            });
-        });
-
-        if(allSuppress) {
-            return 1;
-        }
-    }
-
-    return 2;
 }
