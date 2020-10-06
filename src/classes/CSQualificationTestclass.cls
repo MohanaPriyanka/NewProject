@@ -399,6 +399,7 @@ private class CSQualificationTestclass {
         Test.startTest();
         CaseFactory testCaseFactory = new CaseFactory();
         testCaseFactory.setLead(switchLead);
+        testCaseFactory.setQueueType('No FICO Match');
         System.enqueueJob(testCaseFactory);
         Test.stopTest();
         System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(switchLead).size(), 'If a case already ' +
