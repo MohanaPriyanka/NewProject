@@ -32,10 +32,14 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         private List<Id> contractIds;
         private Id recordId;
         private Decimal amount;
+        @TestVisible
+        private Id sharedSolarSystemId;
     }
 
+    @TestVisible
     private class SubscriptionOrder extends FeeQualification {
         private Id contractFeeDetailId;
+        @TestVisible
         private SubscriptionOrder(Subscription_Order__c subOrder) {
             String partnerType = subOrder.Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name;
             Date reacqStartDate = subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c;
@@ -59,6 +63,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.acquisition = reacqStartDate == null || reacqStartDate > subOrder.Effective_Date__c;
             this.reacquisition = !acquisition;
             this.contractFeeDetailId = subOrder.Contract_Fee_Detail__c;
+            this.sharedSolarSystemId = subOrder.Utility_Account_Subscription__r.Shared_Solar_System__c;
         }
 
         private Boolean matches(ContractFeeDetail feeDetail){
@@ -116,6 +121,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.acquisition = feeDetail.Acquisition_Type_Acquisition__c;
             this.reacquisition = feeDetail.Acquisition_Type_Reacquisition__c;
             this.amount = feeDetail.Fee__c;
+            this.sharedSolarSystemId = feeDetail.Shared_Solar_System__c;
         }
     }
 
@@ -164,25 +170,67 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
     }
 
+    /**
+     * Registers a Subscription Order with a CFD update with this service's UOW.
+     * @param subscriptionOrder The Subscription Order to get assigned a Contract Fee Detail
+     * @param contractToFeeDetailMap A MultiMap of Contract Ids to CFDs, to be used to find potential CFDs for that SO
+     *
+     * @return A Subscription Order with a potentially populated CFD
+     */
     @TestVisible
-    private Subscription_Order__c matchSubscriptionOrderToFee(SubscriptionOrder subOrder, MultiMap contractToFeeDetailMap) {
-        List<ContractFeeDetail> contractDetails = getContractFeeDetailsFromContracts(subOrder, contractToFeeDetailMap);
+    private Subscription_Order__c matchSubscriptionOrderToFee(SubscriptionOrder subscriptionOrder, MultiMap contractToFeeDetailMap) {
+        List<ContractFeeDetail> contractFeeDetails = getContractFeeDetailsFromContracts(subscriptionOrder, contractToFeeDetailMap);
         Subscription_Order__c orderToUpdate;
-        for (ContractFeeDetail feeDetail : contractDetails) {
-            if (!subOrder.matches(feeDetail) || subOrder.contractFeeDetailId == feeDetail.recordId) {
+        MultiMap multiMapForDuplicateCFDCheck = MultiMap.newListInstance();
+        for (ContractFeeDetail cfd : contractFeeDetails) {
+            if (!subscriptionOrder.matches(cfd) || subscriptionOrder.contractFeeDetailId == cfd.recordId) {
                 continue;
             }
-            if (orderToUpdate != null) {
-                Logger.logLater('ClientInvoicingFeeAssignmentService','matchSubscriptionOrderToFee','Multiple matches found : ' + JSON.serialize(subOrder), Logger.ERROR);
-            } else {
-                orderToUpdate = new Subscription_Order__c(
-                    Id = subOrder.recordId,
-                    Contract_Fee_Detail__c = feeDetail.recordId
+            orderToUpdate = handleMatchingCFD(orderToUpdate, subscriptionOrder, cfd, multiMapForDuplicateCFDCheck);
+        }
+        if (orderToUpdate != null) {
+            uow.registerDirty(orderToUpdate);
+        }
+        for (Object sharedSolarSystemId : multiMapForDuplicateCFDCheck.keySet()) {
+            if (multiMapForDuplicateCFDCheck.getValues(sharedSolarSystemId).size() > 1) {
+                Logger.logLater(
+                    'ClientInvoicingFeeAssignmentService',
+                    'matchSubscriptionOrderToFee',
+                    'Multiple CFDs found for SO:\n' + JSON.serialize(subscriptionOrder),
+                    Logger.ERROR
                 );
-                uow.registerDirty(orderToUpdate);
             }
         }
         return orderToUpdate;
+    }
+
+    /**
+     * Initializes or updates the subscriptionOrderSObj with the matching CFD, honoring the Shared Solar System override on the CFD.
+     * @param subscriptionOrderSObj The Subscription Order SObject used to update the SO with a CFD.
+     * @param subscriptionOrder The apex class that represents the Subscription Order SObject to be compared to the CFD
+     * @param cfd The apex class that represents the Contract Fee Detail SObject to be compared to the SO
+     * @param multiMapForDuplicateCFDCheck A MultiMap used to report if there are duplicate CFDs (with SSS specifications and without)
+     * @returns The subscriptionOrderSObj, which might be initialized to a new SO.
+     */
+    private Subscription_Order__c handleMatchingCFD(Subscription_Order__c subscriptionOrderSObj, SubscriptionOrder subscriptionOrder,
+        ContractFeeDetail cfd, MultiMap multiMapForDuplicateCFDCheck) {
+        multiMapForDuplicateCFDCheck.putValue(cfd.sharedSolarSystemId, cfd);
+        if (subscriptionOrderSObj == null) {
+            // This must be the first matching CFD, so we'll assign it to the SO independent of whether there's a
+            // SSS override or not.
+            subscriptionOrderSObj = new Subscription_Order__c(
+                Id = subscriptionOrder.recordId,
+                Contract_Fee_Detail__c = cfd.recordId
+            );
+        } else if (cfd.sharedSolarSystemId != null && cfd.sharedSolarSystemId == subscriptionOrder.sharedSolarSystemId) {
+            // There's already a CFD that matches this SO, but it could be one that didn't have a SSS override.
+            // Because this CFD is SSS specific and it matches the SO's SSS, we'll use it.
+            subscriptionOrderSObj.Contract_Fee_Detail__c = cfd.recordId;
+        } else {
+            // The feeDetail must have a null or not matching SSS. Because there's already a CFD assigned to the SO (either a SSS
+            // specific one or a duplicate), we'll skip assigning this.
+        }
+        return subscriptionOrderSObj;
     }
 
     private List<ContractFeeDetail> getContractFeeDetailsFromContracts(SubscriptionOrder subOrder, MultiMap contractToFeeDetailMap) {
@@ -194,6 +242,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         return contractDetails;
     }
 
+    @TestVisible
     private MultiMap convertContractFeeListToFeeDetailMap(List<Contract_Fee_Detail__c> contractFeeDetail) {
         MultiMap feeDetailMap = MultiMap.newListInstance();
 

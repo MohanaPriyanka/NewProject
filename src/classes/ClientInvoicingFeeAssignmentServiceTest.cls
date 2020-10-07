@@ -1,5 +1,96 @@
-@isTest
+@IsTest
 public class ClientInvoicingFeeAssignmentServiceTest {
+    @IsTest
+    private static void testCFDsSpecificToSSSes() {
+        ClientInvoicingFeeAssignmentService assignmentService = new ClientInvoicingFeeAssignmentService();
+
+        Contract_Fee_Detail__c defaultSSS = new Contract_Fee_Detail__c(
+            Id = Util.getFakeId(Contract_Fee_Detail__c.SObjectType),
+            Contract__c = Util.getFakeId(Contract.SObjectType),
+            Acquisition_Channels_BCS_Acquired__c = true,
+            Acquisition_Cust_Group_Residential__c = true,
+            Acquisition_Sizing_Type_Upsizing__c = true,
+            Acquisition_Type_Acquisition__c = true,
+            Fee__c = 0.10
+        );
+        Contract_Fee_Detail__c sssSpecific = new Contract_Fee_Detail__c(
+            Id = Util.incrementFakeId(defaultSSS.Id),
+            Contract__c = Util.getFakeId(Contract.SObjectType),
+            Shared_Solar_System__c = Util.getFakeId(Shared_Solar_System__c.SObjectType),
+            Acquisition_Channels_BCS_Acquired__c = true,
+            Acquisition_Cust_Group_Residential__c = true,
+            Acquisition_Sizing_Type_Upsizing__c = true,
+            Acquisition_Type_Acquisition__c = true,
+            Fee__c = 10
+        );
+        Contract_Fee_Detail__c duplicateSSSSpecific = new Contract_Fee_Detail__c(
+            Id = Util.incrementFakeId(defaultSSS.Id),
+            Contract__c = Util.getFakeId(Contract.SObjectType),
+            Shared_Solar_System__c = Util.getFakeId(Shared_Solar_System__c.SObjectType),
+            Acquisition_Channels_BCS_Acquired__c = true,
+            Acquisition_Cust_Group_Residential__c = true,
+            Acquisition_Sizing_Type_Upsizing__c = true,
+            Acquisition_Type_Acquisition__c = true,
+            Fee__c = 10
+        );
+        Contract_Fee_Detail__c otherSSSSpecific = new Contract_Fee_Detail__c(
+            Id = Util.incrementFakeId(sssSpecific.Id),
+            Contract__c = Util.getFakeId(Contract.SObjectType),
+            Shared_Solar_System__c = Util.incrementFakeId(sssSpecific.Shared_Solar_System__c),
+            Acquisition_Channels_BCS_Acquired__c = true,
+            Acquisition_Cust_Group_Residential__c = true,
+            Acquisition_Sizing_Type_Upsizing__c = true,
+            Acquisition_Type_Acquisition__c = true,
+            Fee__c = 10
+        );
+
+        ClientInvoicingFeeAssignmentService.SubscriptionOrder subscriptionOrder =
+            new ClientInvoicingFeeAssignmentService.SubscriptionOrder(getSubscriptionOrder());
+        Subscription_Order__c subscriptionOrderWithCFD;
+
+        MultiMap nullSSSFeeDetailMap =
+            assignmentService.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS});
+        subscriptionOrderWithCFD =
+            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder, nullSSSFeeDetailMap);
+        System.assertEquals(defaultSSS.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
+            'Since there are no system specific CFDs, we expect the SO to match the non-system specific one'
+        );
+
+        MultiMap nullSSSAndMatchingSSSFeeDetailMap =
+            assignmentService.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific});
+        System.assertEquals(sssSpecific.Shared_Solar_System__c, subscriptionOrder.sharedSolarSystemId,
+            'The test setup should have a SSS-specific CFD and a SO specifying that system');
+        subscriptionOrderWithCFD =
+            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder, nullSSSAndMatchingSSSFeeDetailMap);
+        System.assertEquals(sssSpecific.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
+            'Expected to get an SO to update with the SSS-Specific CFD'
+        );
+
+        MultiMap nullSSSAndOtherSSSFeeDetailMap =
+            assignmentService.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, otherSSSSpecific});
+        subscriptionOrderWithCFD =
+            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder, nullSSSAndOtherSSSFeeDetailMap);
+        System.assertEquals(defaultSSS.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
+            'There is another SSS-specific CFD, but not the SSS that is on the SO, so the match should use the default CFD'
+        );
+
+        System.assertEquals(null, Logger.logs, 'There should be no logs before matching with duplicates');
+        MultiMap allCFDsIncludingDuplicatesMap =
+            assignmentService.convertContractFeeListToFeeDetailMap(
+                new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific, otherSSSSpecific, duplicateSSSSpecific}
+            );
+        subscriptionOrderWithCFD =
+            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder, allCFDsIncludingDuplicatesMap);
+        System.assert(
+            sssSpecific.Id == subscriptionOrderWithCFD.Contract_Fee_Detail__c ||
+                duplicateSSSSpecific.Id == subscriptionOrderWithCFD.Contract_Fee_Detail__c,
+            'We should have selected one of the SSS specific CFDs for this SO'
+        );
+        System.assertEquals(1, Logger.logs.size(), 'There should be a single list of messages for matchSubscriptionOrderToFee');
+        System.assertEquals(1, Logger.logs.values()[0].size(), 'There should just be one log later message for duplicate CFDs found');
+        System.assert(Logger.logs.values()[0][0].message.contains('Multiple CFDs found for SO'), Logger.logs.values()[0][0].message);
+    }
+
     @IsTest
     private static void testSetSubscriptionOrderAcquisitionFee() {
         useMocks();
@@ -525,5 +616,55 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             '}}}' +
             ']';
         return (List<Subscription_Order__c>) JSON.deserialize(queryData, List<Subscription_Order__c>.class);
+    }
+
+    private static Subscription_Order__c getSubscriptionOrder() {
+        Date today = System.today();
+        Map<SObjectField, Object> subscriptionOrderValues = new Map<SObjectField, Object> {
+            Subscription_Order__c.Id => Util.getFakeId(Subscription_Order__c.SObjectType),
+            Subscription_Order__c.Effective_Date__c => today,
+            Subscription_Order__c.Utility_Account_Subscription__c => Util.getFakeId(Utility_Account_Subscription__c.SObjectType),
+            Subscription_Order__c.Approved_Change_in_Subscription__c => 12,
+            Subscription_Order__c.System_Change_kW_DC_Rounded__c => 25
+        };
+        sfab_FabricatedSObject fabbedSO = new sfab_FabricatedSObject(Subscription_Order__c.class, subscriptionOrderValues);
+        Map<SObjectField, Object> uasValues = new Map<SObjectField, Object> {
+            Utility_Account_Subscription__c.Id => Util.getFakeId(Utility_Account_Subscription__c.SObjectType),
+            Utility_Account_Subscription__c.Opportunity__c => Util.getFakeId(Opportunity.SObjectType),
+            Utility_Account_Subscription__c.Shared_Solar_System__c => Util.getFakeId(Shared_Solar_System__c.SObjectType)
+        };
+        sfab_FabricatedSObject fabbedUAS = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class, uasValues);
+        fabbedSO.setParent('Utility_Account_Subscription__r', fabbedUAS);
+        Map<SObjectField, Object> sssValues = new Map<SObjectField, Object> {
+            Shared_Solar_System__c.Id => Util.getFakeId(Shared_Solar_System__c.SObjectType),
+            Shared_Solar_System__c.Client_Acquisition_Contract__c => Util.getFakeId(Contract.SObjectType),
+            Shared_Solar_System__c.Client_Management_Contract__c => Util.incrementFakeId(Util.getFakeId(Contract.SObjectType)),
+            Shared_Solar_System__c.Total_System_Size_kWh_DC__c => 1220
+        };
+        sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class, sssValues);
+        fabbedUAS.setParent('Shared_Solar_System__r', fabbedSSS);
+        Map<SObjectField, Object> opportunityValues = new Map<SObjectField, Object> {
+            Opportunity.Id => Util.getFakeId(Opportunity.SObjectType),
+            Opportunity.Customer_Group__c => 'Residential',
+            Opportunity.Partner_tag_lookup__c => Util.getFakeId(Partner__c.SObjectType)
+        };
+        sfab_FabricatedSObject fabbedOpp = new sfab_FabricatedSObject(Opportunity.class, opportunityValues);
+        fabbedUAS.setParent('Opportunity__r', fabbedOpp);
+        Map<SObjectField, Object> partnerTagValues = new Map<SObjectField, Object> {
+            Partner__c.Id => Util.getFakeId(Partner__c.SObjectType)
+        };
+        sfab_FabricatedSObject fabbedPartnerTag = new sfab_FabricatedSObject(Partner__c.class, partnerTagValues);
+        fabbedOpp.setParent('Partner_tag_lookup__r', fabbedPartnerTag);
+        Map<SObjectField, Object> accountValues = new Map<SObjectField, Object> {
+            Account.Id => Util.getFakeId(Account.SObjectType)
+        };
+        sfab_FabricatedSObject fabbedAccount = new sfab_FabricatedSObject(Account.class, accountValues);
+        fabbedPartnerTag.setParent('Account__r', fabbedAccount);
+        Map<SObjectField, Object> recordTypeValues = new Map<SObjectField, Object> {
+            RecordType.Name => 'Partner Account'
+        };
+        sfab_FabricatedSObject fabbedRecordType = new sfab_FabricatedSObject(RecordType.class, recordTypeValues);
+        fabbedAccount.setParent('RecordType', fabbedRecordType);
+        return (Subscription_Order__c) fabbedSO.toSObject();
     }
 }
