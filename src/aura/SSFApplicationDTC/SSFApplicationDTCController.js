@@ -61,7 +61,8 @@
         let restLead = {
             id: component.get('v.lead.id'),
             email: component.get('v.lead.email'),
-            applicationCompleteDate: new Date()
+            applicationCompleteDate: new Date(),
+            underwritingCriteria: component.get('v.lead.underwritingCriteria')
         };
 
         helper.savePaymentMethodToAccount(propertyAccount).then(
