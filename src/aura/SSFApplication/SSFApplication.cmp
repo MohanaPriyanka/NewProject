@@ -2,7 +2,7 @@
  - Created by peteryao on 3/5/20.
  -->
 
-<aura:component description="SSFApplication" implements="forceCommunity:availableForAllPageTypes" access="global" controller="SSFAuraController">
+<aura:component description="SSFApplication" implements="forceCommunity:availableForAllPageTypes" access="global" controller="SimpleSignupFormController">
   <aura:attribute name="getInfo" type="Boolean"/>
   <aura:attribute name="getPayment" type="Boolean"/>
   <aura:attribute name="showComplete" type="Boolean"/>
