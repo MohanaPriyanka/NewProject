@@ -371,6 +371,8 @@ src/package.xml
 #If we want to promote page layout changes for installed pacakges, we can't ignore them.
 !src/layouts/*
 
+#If we want to promote setting changes for installed pacakges, we can't ignore them.
+!src/settings/*
 
 #profiles and permission sets are complex Files. If your Org's 
 #metadata and Git are in sync, you can track incremental changes on 
