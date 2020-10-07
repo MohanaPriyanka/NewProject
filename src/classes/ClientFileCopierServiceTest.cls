@@ -134,6 +134,22 @@ public with sharing class ClientFileCopierServiceTest {
         // 4 Opportunities, 1 of which has 2 UASes
         System.assertEquals(5,afterFiles.size());
     }
+    @IsTest
+    public static void testCreateSupportingDocumentsFolder(){
+        useMocks(true);
+        Contract assignmentAgreement = [
+            SELECT Id
+            FROM Contract
+            WHERE Name = 'Assignment Agreement'
+            LIMIT 1
+        ];
+        Test.startTest();
+        ClientFileCopierService service = new ClientFileCopierService();
+        service.findAndCloneDocuments(assignmentAgreement.Id,'Customer Agreement');
+        Test.stopTest();
+        Supporting_Document_Folder__c folder = [SELECT Name, Id,Type__c FROM Supporting_Document_Folder__c LIMIT 1];
+        System.assertEquals('Customer Agreement',folder.Name,'Folder name should be the same as the type passed through the docType param');
+    }
 
     private static void useMocks(Boolean returnContractDocs) {
         ClientFileCopierService.contractSelector = (ContractSelector) Test.createStub(ContractSelector.class, new MockContractSelector());
