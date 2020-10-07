@@ -56,6 +56,17 @@
         component.set('v.getInfo', false);
         component.set('v.getPayment', false);
         component.set('v.showComplete', true);
+    },
+
+    logError : function(component, cmpName, methodName, message) {
+        var action = component.get("c.log");
+        action.setParams({
+            "className": cmpName,
+            "methodName": methodName,
+            "message": message,
+            "severity": "Error"
+        });
+        $A.enqueueAction(action);
     }
 
 });

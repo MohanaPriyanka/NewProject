@@ -28,7 +28,7 @@ public with sharing class SimpleSignupFormControllerTest {
             Product__c = product.Id
         );
         insert lead;
-        
+
         Account propertyAccount = new Account(
             Lead__c = lead.Id,
             Name = 'test account'
@@ -239,7 +239,7 @@ public with sharing class SimpleSignupFormControllerTest {
     }
 
 
-    @IsTest 
+    @IsTest
     private static void testUnlinkDocsMissingDummyRecord() {
         User backup = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
         List<ContentDocumentLink> existingCdlList = [SELECT Id, ContentDocumentId, ContentDocument.OwnerId FROM ContentDocumentLink WHERE LinkedEntityId IN (SELECT Id FROM Contract)];
@@ -253,5 +253,30 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assert(!errors.isEmpty(), 'Missing dummy record, should have caused method to create Error Log records');
         ContentDocument contentDoc = [SELECT OwnerId FROM ContentDocument WHERE Id = :docId LIMIT 1];
         System.assertNotEquals(backup.Id, contentDoc.OwnerId, 'Missing dummy record prevents method from reparenting uploaded file');
+    }
+
+    @IsTest
+    static void testLog() {
+        Integer expectedLogVolume = 1;
+        String testClassName = 'testClass';
+        String testMethodName = 'testMethod';
+        String testMessage = 'testMessage';
+
+        // Run Test
+        Test.startTest();
+        SimpleSignupFormController.log(testClassName, testMethodName, testMessage, 'Error');
+        Test.stopTest();
+
+        // Verify Test
+        Error_Log__c[] logs = [
+            SELECT Method__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c =: testClassName
+        ];
+        system.debug(logs);
+        system.assertEquals(expectedLogVolume,logs.size(),'Expected '+ expectedLogVolume +' logs, received '+logs.size());
+        system.assertEquals(testMethodName,logs[0].Method__c, 'Log retrieved contains incorrect Method__c');
+        system.assertEquals(testMessage,logs[0].Message__c, 'Log retrieved contains incorrect Message__c');
+
     }
 }
