@@ -9,7 +9,6 @@ public without sharing class SimpleSignupFormController {
     private static CSLeadsRESTControllerV3 restControllerV3 = new CSLeadsRESTControllerV3();
     private static ContentService contentService = new ContentService();
 
-
     @AuraEnabled
     public static String getContentDistributionById(Id leadId, String email, Id documentId) {
         try {
@@ -20,7 +19,6 @@ public without sharing class SimpleSignupFormController {
 
         return contentDocumentSelector.getPublicDistributionLinkByDocId(documentId);
     }
-    
 
     @AuraEnabled
     public static String getContentDocumentLinksByLead(Id leadId, String email, Datetime mostRecentContractGen) {
@@ -48,7 +46,6 @@ public without sharing class SimpleSignupFormController {
         return JSON.serialize(returnRcd);
     }
 
-
     // used before we have a lead id and email, so no way to authenticate
     @AuraEnabled(cacheable=true)
     public static String getDummyRecordId(){
@@ -61,7 +58,6 @@ public without sharing class SimpleSignupFormController {
 
         return null;
     }
-
 
     // used before we have a lead id and email, so no way to authenticate
     @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -105,12 +101,25 @@ public without sharing class SimpleSignupFormController {
         return 'OK';
     }
 
+    /**
+     * @param className     Class/component where failure occurred
+     * @param methodName    Method where failure occurred
+     * @param message       Error message or stack trace
+     * @param severity      Severity (e.g. 'Error', 'Warn', 'Debug', etc.)
+     * <p>
+     *     See Logger.logNow() for more information
+     *
+     *     @author Jeff Parlin
+     */
+    @AuraEnabled
+    public static void log(String className, String methodName, String message, String severity) {
+        Logger.logNow(className, methodName, message, severity);
+    }
 
 
     /****************************************/
     /***          HELPER METHODS          ***/
     /****************************************/
-    
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private static Id getReparentUserId() {
@@ -129,7 +138,6 @@ public without sharing class SimpleSignupFormController {
         return null;
     }
 
-
     @SuppressWarnings('PMD.ApexCRUDViolation')
     @TestVisible
     private static void changeOwnerOfUpload(Set<Id> docIds, Id ownerId){
@@ -140,5 +148,4 @@ public without sharing class SimpleSignupFormController {
         }
         update newDocs;
     }
-
 }
