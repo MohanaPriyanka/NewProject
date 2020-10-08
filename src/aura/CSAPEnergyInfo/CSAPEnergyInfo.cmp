@@ -271,7 +271,7 @@
                                             </c:csapFileUpload>
                                     </lightning:layoutItem>
                                 </lightning:layout>
-                                <aura:if isTrue="{!_index + 1 == v.ualList.length}">
+                                <aura:if isTrue="{!idx + 1 == v.ualList.length}">
                                     <div class="slds-clearfix slds-p-top_medium">
                                         <div class="slds-float_left">
                                         </div>
