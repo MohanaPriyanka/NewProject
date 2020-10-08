@@ -73,4 +73,20 @@ private class RateClassesSelectorTest {
         System.assertEquals(1, response.size(), 'Method should have returned one Rate Class, as both match the input utility but only one matches the input name');
         System.assertEquals(rateClass1.Id, response[0].Id, 'Method should have returned the Rate Class that matched both the input name and the input utility');
     }
+    
+    @IsTest
+    static void testSelectWithEDI(){
+        Rate_Class__c testRateClass1 = new Rate_Class__c(Name = 'testRateClass1', EDI_Rate_Class__c = 'testEDI1');
+        Rate_Class__c testRateClass2 = new Rate_Class__c(Name = 'testRateClass2', EDI_Rate_Class__c = '');
+        Rate_Class__c testRateClass3 = new Rate_Class__c(Name = 'testRateClass3', EDI_Rate_Class__c = NULL);
+        insert new List<Rate_Class__c>{testRateClass1, testRateClass2, testRateClass3};
+
+        Map<String, Rate_Class__c> response1 = controller.selectWithEDI();
+        List<Rate_Class__c> response1Values = response1.values();
+
+        System.assert(response1.containsKey('testEDI1'), 'testRateClass1 with a non-null EDI_Rate_Class value should be in the Map created by the selectWithEDI method.');
+        System.assert(!response1Values.contains(testRateClass2), 'testRateClass2 with a blank EDI_Rate_Class value should not be in the Map created by the selectWithEDI method.');
+        System.assert(!response1Values.contains(testRateClass3), 'testRateClass3 with a null EDI_Rate_Class value should not be in the Map created by the selectWithEDI method.');
+
+    }
 }

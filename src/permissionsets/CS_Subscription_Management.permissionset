@@ -167,6 +167,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Rate_Class__c.EDI_Rate_Class__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Rate_Class__c.Suppress_Disclosure_Form__c</field>
         <readable>true</readable>
     </fieldPermissions>

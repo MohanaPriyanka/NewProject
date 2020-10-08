@@ -33,4 +33,21 @@ public inherited sharing class RateClassesSelector {
             ORDER BY Name
         ];
     }
+    
+    public Map<String, Rate_Class__c> selectWithEDI() {
+        Map<String, Rate_Class__c> rateClassEDIMap = new Map<String, Rate_Class__c>();
+
+        List<Rate_Class__c> rateClassWithEDI = [
+            SELECT Id, Name, EDI_Rate_Class__c, Utility__c 
+            FROM Rate_Class__c 
+            WHERE EDI_Rate_Class__c != NULL
+        ];
+
+        for(Rate_Class__c rateClass : rateClassWithEDI) {
+            rateClassEDIMap.put(rateClass.EDI_Rate_Class__c, rateClass);
+        }
+        
+        return rateClassEDIMap;
+    }
+    
 }

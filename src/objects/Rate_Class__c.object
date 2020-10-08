@@ -54,6 +54,19 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
+        <fullName>EDI_Rate_Class__c</fullName>
+        <description>Used by the UtilityDataRequestService to populate the &quot;Rate Class&quot; lookup on a Utility Data Request Period, where this field matches the &quot;Rate Class&quot; text field on the Utility Data Request Period.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used by the UtilityDataRequestService to populate the &quot;Rate Class&quot; lookup on a Utility Data Request Period, where this field matches the &quot;Rate Class&quot; text field on the Utility Data Request Period.</inlineHelpText>
+        <label>EDI Rate Class</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>LDC_Rate_Class__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Used in the EDI integration as part of the unique identifier for rate classes</inlineHelpText>
