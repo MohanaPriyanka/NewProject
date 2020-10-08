@@ -45,9 +45,9 @@ public without sharing class ClientFileCopierService {
 
     public Id findAndCloneDocuments(Id assignmentAgreementId, String docType){
         Id folderId = createSupportingDocumentsFolder(assignmentAgreementId, docType);
-        Map<Id,Id> versionIdToParentId = getDocumentIds(assignmentAgreementId, docType);
-        Map<Id,List<String>> parentIdToFileNames = getFileNames(assignmentAgreementId, docType);
-        return startBatchCloneJob(versionIdToParentId,folderId,parentIdToFileNames);
+        Map<Id,Id> versionIdToLinkedEntityId = getDocumentIds(assignmentAgreementId, docType);
+        Map<Id,List<String>> linkedEntityIdToFileNames = getFileNames(assignmentAgreementId, docType);
+        return startBatchCloneJob(versionIdToLinkedEntityId,folderId,linkedEntityIdToFileNames);
     }
 
     private Map<Id,List<String>> getFileNames(Id assignmentAgreementId, String docTypeAsString){
@@ -76,7 +76,7 @@ public without sharing class ClientFileCopierService {
     private Map<Id,Id> getDocumentIds(Id assignmentAgreementId, String docType){
         Set<Id> parentRecordIds = new Set<Id>();
         List<ContentDocumentLink> docLinks;
-        Map<Id,Id> versionIdToParentId = new Map<Id, Id>();
+        Map<Id,Id> versionIdToLinkedEntityId = new Map<Id, Id>();
 
         if (docType == CUSTOMER_AGREEMENT || docType == DISCLOSURE){
             List<Contract> contracts = contractSelector.getCustomerContractsByAssignmentAgreement(assignmentAgreementId);
@@ -93,23 +93,23 @@ public without sharing class ClientFileCopierService {
         }
         if (parentRecordIds.size() > 0) {
             docLinks = contentDocumentSelector.selectByLinkedEntitiesWithoutData(parentRecordIds);
-            versionIdToParentId = compareFileNameAndType(docLinks,docType);
-            checkForMissingFiles(parentRecordIds, versionIdToParentId);
+            versionIdToLinkedEntityId = compareFileNameAndType(docLinks,docType);
+            checkForMissingFiles(parentRecordIds, versionIdToLinkedEntityId);
         }
-        return versionIdToParentId;
+        return versionIdToLinkedEntityId;
     }
 
     private Map<Id,Id> compareFileNameAndType(List<ContentDocumentLink> docLinks, String docType){
-        Map<Id,Id> versionIdToParentId = new Map<Id,Id>();
+        Map<Id,Id> versionIdToLinkedEntityId = new Map<Id,Id>();
         for (ContentDocumentLink link : docLinks){
             Boolean customerAgreement = docType == CUSTOMER_AGREEMENT  && link.ContentDocument.LatestPublishedVersion.Title.contains('Agreement');
             Boolean disclosure = docType == DISCLOSURE && link.ContentDocument.LatestPublishedVersion.Title.contains('Disclosure');
             Boolean creditReport = docType == CREDIT_REPORT;
             if (customerAgreement || disclosure || creditReport){
-                versionIdToParentId.put(link.ContentDocument.LatestPublishedVersionId, link.LinkedEntityId);
+                versionIdToLinkedEntityId.put(link.ContentDocument.LatestPublishedVersionId, link.LinkedEntityId);
             }
         }
-        return versionIdToParentId;
+        return versionIdToLinkedEntityId;
     }
 
     private void checkForMissingFiles(Set<Id> parentRecordIds, Map<Id,Id> versionIdToParentId){
@@ -134,15 +134,16 @@ public without sharing class ClientFileCopierService {
     private Id createSupportingDocumentsFolder(Id assignmentAgreementId, String docType){
         Supporting_Document_Folder__c folder = new Supporting_Document_Folder__c(
             Type__c = docType + 's',
-            Name = docType,
+            Name = docType + 's',
             Assignment_Agreement__c = assignmentAgreementId
         );
         insert folder;
         return folder.Id;
     }
 
-    private Id startBatchCloneJob(Map<Id,Id> versionIdToParentId, Id newFolderId, Map<Id,List<String>> parentIdToFileNames){
-        BatchClientFileCopierService batchJob = new BatchClientFileCopierService(versionIdToParentId,newFolderId, parentIdToFileNames);
+    private Id startBatchCloneJob(Map<Id,Id> versionIdToLinkedEntityId, Id newFolderId, Map<Id,List<String>> linkedEntityIdToFileNames){
+        BatchClientFileCopierService batchJob =
+            new BatchClientFileCopierService(versionIdToLinkedEntityId, newFolderId, linkedEntityIdToFileNames);
         if (Test.isRunningTest()){
             // Don't have to worry about data storage of big files during tests, but only want to call it once:
             return Database.executeBatch(batchJob,200);
@@ -151,22 +152,29 @@ public without sharing class ClientFileCopierService {
         }
     }
 
-    public List<ContentVersion> cloneFiles(List<Id> scopeIds, Map<Id,Id> versionIdToParentId, Map<Id,List<String>> parentIdToFileNames){
-        Map<Id,ContentVersion> filesWithData = contentVersionSelector.selectByIdWithData(versionIdToParentId.keySet());
+    /**
+     * @param versionIds List of Content Version Ids (scoped to avoid heap limits)
+     * @param versionIdToLinkedEntityId Map of all Content Version Ids to their corresponding Linked Entity Id
+     * @param linkedEntityIdToFormattedFileNames Map of all Linked Entity Ids to a filename in the format:
+     *  SSS Name - Document Type - Customer Name - Utility Account Number
+     *
+     * @return List of cloned ContentVersion
+     */
+    public List<ContentVersion> cloneFiles(List<Id> versionIds, Map<Id,Id> versionIdToLinkedEntityId, Map<Id,List<String>> linkedEntityIdToFormattedFileNames){
+        Map<Id,ContentVersion> filesWithData = contentVersionSelector.selectByIdWithData(new Set<Id>(versionIds));
         List<ContentVersion> clonedFilesToInsert = new List<ContentVersion>();
 
         // parentId is a PCR or Contract Id, depending on the document type.
         // fileNames is the list of file names to create, generated from a list of UASes. 1 fileName per UAS
-        for (Id versionId : scopeIds){
-            Id parentId = versionIdToParentId.get(versionId);
-            List<String> fileNames = parentIdToFileNames.get(parentId);
+        for (Id versionId : versionIds){
+            Id parentId = versionIdToLinkedEntityId.get(versionId);
+            List<String> fileNames = linkedEntityIdToFormattedFileNames.get(parentId);
             ContentVersion file = filesWithData.get(versionId);
             if (fileNames != null && file != null){
                 for (String fileName : fileNames){
                     clonedFilesToInsert.add(cloneContentVersion(file, fileName));
                 }
             }
-
         }
         return clonedFilesToInsert;
     }
