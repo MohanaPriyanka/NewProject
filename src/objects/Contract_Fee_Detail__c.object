@@ -325,7 +325,8 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
    &amp;&quot; fee is valid for &quot;
    &amp;IF(OR(Acquisition_Type_Acquisition__c, Acquisition_Type_Reacquisition__c),
        /* Acq and Reacq */
-       &quot; customer opportunity group(s): {&quot;
+       IF(NOT(ISBLANK(Shared_Solar_System__c)), &quot; customers on &quot; &amp; Shared_Solar_System__r.Name &amp; &quot; and&quot;,&quot;&quot;)
+       &amp;&quot; customer opportunity group(s): {&quot;
        &amp;IF(Acquisition_Cust_Group_Anchor__c, &quot;Anchor, &quot;, &quot;&quot;)
        &amp;IF(Acquisition_Cust_Group_Public_Offtake__c, &quot;Public Offtake, &quot;, &quot;&quot;)
        &amp;IF(Acquisition_Cust_Group_Residential__c, &quot;Residential, &quot;, &quot;&quot;)
@@ -612,12 +613,13 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <fullName>Shared_Solar_System__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>If this CFD is specific to a SSS (not common), populate this field. Currently only supported for management contracts.</inlineHelpText>
+        <inlineHelpText>Used to make this CFD specific to a SSS when the ClientInvoicingFeeAssignmentService assigns a CFD to a Subscription Order when the SO is approved.</inlineHelpText>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
         <relationshipLabel>Contract Fee Detail</relationshipLabel>
         <relationshipName>Contract_Fee_Detail</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
