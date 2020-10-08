@@ -42,9 +42,11 @@
         component.set('v.spinnerMessage', 'Completing your application');
         if (!paymentPageResponse || !paymentPageResponse.paymentMethod ||
             !paymentPageResponse.paymentMethod.CreatedDate || !paymentPageResponse.paymentMethod.Id) {
-            helper.logError("SSFApplicationController", "onPaymentMethodComplete", JSON.stringify(event.getParams()), component.get("v.lead"));
-            helper.showFinalPage(component);
-            return;
+                let message = 'Payment page response: ' + JSON.stringify(paymentPageResponse) + '\n\nv.lead: '
+                            + component.get("v.lead");
+                helper.logError(component, 'SSFApplicationController', 'onPaymentMethodComplete', message);
+                helper.showFinalPage(component);
+                return;
         }
 
         // Because we don't get the payment method expiration date back from Zuora, we need to calculate it ourselves
@@ -61,7 +63,8 @@
         let restLead = {
             id: component.get('v.lead.id'),
             email: component.get('v.lead.email'),
-            applicationCompleteDate: new Date()
+            applicationCompleteDate: new Date(),
+            underwritingCriteria: component.get('v.lead.underwritingCriteria')
         };
 
         helper.savePaymentMethodToAccount(propertyAccount).then(
@@ -71,17 +74,20 @@
                         helper.showFinalPage(component);
                     },
                     (rejectResult) => {
-                        helper.logError("SSFApplicationController", "onPaymentMethodComplete", JSON.stringify(rejectResult), component.get("v.lead"));
+                        let message = 'Lead sent by PATCH to server: ' + JSON.stringify(restLead)
+                                      + '\n\n' + 'Callback received from server: ' + JSON.stringify(rejectResult);
+                        helper.logError(component, 'SSFApplicationController', 'helper.finishApplication', message);
                         helper.showFinalPage(component);
                     }
                 );
             },
             (rejectResult) => {
-                helper.logError("SSFApplicatioNController", "onPaymentMethodComplete", JSON.stringify(rejectResult), component.get("v.lead"));
+                let message = 'propertyAccount sent to server: ' + JSON.stringify(propertyAccount)
+                              + '\n\n' + 'Callback received from server: ' + JSON.stringify(rejectResult);
+                helper.logError(component, 'SSFApplicationController', 'helper.savePaymentMethodToAccount', message);
                 helper.showFinalPage(component);
             }
         );
-
     },
 
     showComplete: function(component, event, helper) {
