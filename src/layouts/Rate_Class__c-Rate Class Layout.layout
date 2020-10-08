@@ -18,6 +18,10 @@
                 <behavior>Edit</behavior>
                 <field>Utility_NMC_Tariff__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>EDI_Rate_Class__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

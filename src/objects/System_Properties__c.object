@@ -273,6 +273,14 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Disable_UtilityDataRequestTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable UtilityDataRequestTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disable_ZInvoiceTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
