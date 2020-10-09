@@ -134,6 +134,7 @@ public without sharing class ClientFileCopierService {
     private Id createSupportingDocumentsFolder(Id assignmentAgreementId, String docType){
         Supporting_Document_Folder__c folder = new Supporting_Document_Folder__c(
             Type__c = docType + 's',
+            Name = docType + 's',
             Assignment_Agreement__c = assignmentAgreementId
         );
         insert folder;
