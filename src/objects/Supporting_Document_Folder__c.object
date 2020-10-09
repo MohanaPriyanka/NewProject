@@ -208,10 +208,9 @@
     </fields>
     <label>Supporting Document Folder</label>
     <nameField>
-        <displayFormat>SDF-{00000000}</displayFormat>
         <label>Supporting Document Folder Name</label>
         <trackHistory>false</trackHistory>
-        <type>AutoNumber</type>
+        <type>Text</type>
     </nameField>
     <pluralLabel>Supporting Document Folders</pluralLabel>
     <searchLayouts />

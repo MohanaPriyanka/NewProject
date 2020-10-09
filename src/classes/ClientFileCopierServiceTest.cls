@@ -27,29 +27,29 @@ public with sharing class ClientFileCopierServiceTest {
         List<Supporting_Document_Folder__c> beforeFolders = [
             SELECT Id
             FROM Supporting_Document_Folder__c
-            WHERE Assignment_Agreement__c = : assignmentAgreement.Id
+            WHERE Assignment_Agreement__c = :assignmentAgreement.Id
         ];
-        System.assertEquals(0,beforeFolders.size());
+        System.assertEquals(0, beforeFolders.size());
 
         Test.startTest();
-            ClientFileCopierService service = new ClientFileCopierService();
-            service.findAndCloneDocuments(assignmentAgreement.Id,'Customer Agreement');
+        ClientFileCopierService service = new ClientFileCopierService();
+        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Agreement');
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
             SELECT Id
             FROM Supporting_Document_Folder__c
-            WHERE Assignment_Agreement__c = : assignmentAgreement.Id
+            WHERE Assignment_Agreement__c = :assignmentAgreement.Id
         ];
-        System.assertEquals(1,afterFolders.size());
+        System.assertEquals(1, afterFolders.size());
 
         List<ContentDocumentLink> afterFiles = [
             SELECT Id
             FROM ContentDocumentLink
-            WHERE LinkedEntityId = : afterFolders[0].Id
+            WHERE LinkedEntityId = :afterFolders[0].Id
         ];
         // 7 Contracts, 1 doesn't have any files, 2 others have 2 UASes each = 7 - 1 + 2 = 8
-        System.assertEquals(8,afterFiles.size());
+        System.assertEquals(8, afterFiles.size());
 
         List<Error_Log__c> logs = [
             SELECT Id
@@ -72,29 +72,29 @@ public with sharing class ClientFileCopierServiceTest {
         List<Supporting_Document_Folder__c> beforeFolders = [
             SELECT Id
             FROM Supporting_Document_Folder__c
-            WHERE Assignment_Agreement__c = : assignmentAgreement.Id
+            WHERE Assignment_Agreement__c = :assignmentAgreement.Id
         ];
-        System.assertEquals(0,beforeFolders.size());
+        System.assertEquals(0, beforeFolders.size());
 
         Test.startTest();
-            ClientFileCopierService service = new ClientFileCopierService();
-            service.findAndCloneDocuments(assignmentAgreement.Id,'Customer Disclosure Form');
+        ClientFileCopierService service = new ClientFileCopierService();
+        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Disclosure Form');
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
             SELECT Id
             FROM Supporting_Document_Folder__c
-            WHERE Assignment_Agreement__c = : assignmentAgreement.Id
+            WHERE Assignment_Agreement__c = :assignmentAgreement.Id
         ];
-        System.assertEquals(1,afterFolders.size());
+        System.assertEquals(1, afterFolders.size());
 
         List<ContentDocumentLink> afterFiles = [
             SELECT Id
             FROM ContentDocumentLink
-            WHERE LinkedEntityId = : afterFolders[0].Id
+            WHERE LinkedEntityId = :afterFolders[0].Id
         ];
         // 7 Contracts, 2 of which have a disclosure form attachment, 1 of which has 2 UASes
-        System.assertEquals(3,afterFiles.size());
+        System.assertEquals(3, afterFiles.size());
     }
 
     @IsTest
@@ -110,37 +110,52 @@ public with sharing class ClientFileCopierServiceTest {
         List<Supporting_Document_Folder__c> beforeFolders = [
             SELECT Id
             FROM Supporting_Document_Folder__c
-            WHERE Assignment_Agreement__c = : assignmentAgreement.Id
+            WHERE Assignment_Agreement__c = :assignmentAgreement.Id
         ];
-        System.assertEquals(0,beforeFolders.size());
+        System.assertEquals(0, beforeFolders.size());
 
         Test.startTest();
-            ClientFileCopierService service = new ClientFileCopierService();
-            service.findAndCloneDocuments(assignmentAgreement.Id,'Customer Credit Report');
+        ClientFileCopierService service = new ClientFileCopierService();
+        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Credit Report');
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
             SELECT Id
             FROM Supporting_Document_Folder__c
-            WHERE Assignment_Agreement__c = : assignmentAgreement.Id
+            WHERE Assignment_Agreement__c = :assignmentAgreement.Id
         ];
-        System.assertEquals(1,afterFolders.size());
+        System.assertEquals(1, afterFolders.size());
 
         List<ContentDocumentLink> afterFiles = [
             SELECT Id
             FROM ContentDocumentLink
-            WHERE LinkedEntityId = : afterFolders[0].Id
+            WHERE LinkedEntityId = :afterFolders[0].Id
         ];
         // 4 Opportunities, 1 of which has 2 UASes
-        System.assertEquals(5,afterFiles.size());
+        System.assertEquals(5, afterFiles.size());
     }
-
+    @IsTest
+    public static void testCreateSupportingDocumentsFolder() {
+        useMocks(true);
+        Contract assignmentAgreement = [
+            SELECT Id
+            FROM Contract
+            WHERE Name = 'Assignment Agreement'
+            LIMIT 1
+        ];
+        Test.startTest();
+        ClientFileCopierService service = new ClientFileCopierService();
+        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Agreement');
+        Test.stopTest();
+        Supporting_Document_Folder__c folder = [SELECT Name, Id,Type__c FROM Supporting_Document_Folder__c LIMIT 1];
+        System.assertEquals('Customer Agreements', folder.Name, 'Folder name should be the same as the type passed through the docType param with a trailing s.');
+    }
     private static void useMocks(Boolean returnContractDocs) {
         ClientFileCopierService.contractSelector = (ContractSelector) Test.createStub(ContractSelector.class, new MockContractSelector());
         ClientFileCopierService.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
         ClientFileCopierService.uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         ClientFileCopierService.contentVersionSelector = (ContentVersionSelector) Test.createStub(ContentVersionSelector.class, new MockContentVersionSelector());
-        if (returnContractDocs){
+        if (returnContractDocs) {
             ClientFileCopierService.contentDocumentSelector = (ContentDocumentSelector) Test.createStub(ContentDocumentSelector.class, new MockContentDocumentContractSelector());
         } else {
             ClientFileCopierService.contentDocumentSelector = (ContentDocumentSelector) Test.createStub(ContentDocumentSelector.class, new MockContentDocumentOpportunitySelector());
@@ -148,7 +163,8 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockContractSelector extends MockProvider {
-        MockContractSelector() {}
+        MockContractSelector() {
+        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String contractsAsString = '[' +
                 '{"Id":"8002f000000GebbAAC"},' + // has no files
@@ -161,7 +177,7 @@ public with sharing class ClientFileCopierServiceTest {
 
             switch on methodCall.stubbedMethodName {
                 when 'getCustomerContractsByAssignmentAgreement' {
-                    return (List<Contract>)JSON.deserialize(contractsAsString, List<Contract>.class);
+                    return (List<Contract>) JSON.deserialize(contractsAsString, List<Contract>.class);
                 }
             }
             return null;
@@ -169,7 +185,8 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockOppSelector extends MockProvider {
-        MockOppSelector() {}
+        MockOppSelector() {
+        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String oppAsString = '[' +
                 '{"Id":"0062f00000EllRvAAJ","Personal_Credit_Report2__c":"a0Fj000000EYyV1EAL"},' +
@@ -180,7 +197,7 @@ public with sharing class ClientFileCopierServiceTest {
 
             switch on methodCall.stubbedMethodName {
                 when 'getCustomerOpportunitiesByAssignmentAgreement' {
-                    return (List<Opportunity>)JSON.deserialize(oppAsString, List<Opportunity>.class);
+                    return (List<Opportunity>) JSON.deserialize(oppAsString, List<Opportunity>.class);
                 }
             }
             return null;
@@ -188,7 +205,8 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockContentDocumentOpportunitySelector extends MockProvider {
-        MockContentDocumentOpportunitySelector() {}
+        MockContentDocumentOpportunitySelector() {
+        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String docLinkAsString = '[' +
                 '{"Id":"06A2f000009rUqOEAU","LinkedEntityId":"a0Fj000000EYyZ5EAL","ContentDocumentId":"0692f000001g4u2AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001eitDAAQ","LatestPublishedVersion":{"Title":"LASERCA_FileName"}}},' +
@@ -199,7 +217,7 @@ public with sharing class ClientFileCopierServiceTest {
 
             switch on methodCall.stubbedMethodName {
                 when 'selectByLinkedEntitiesWithoutData' {
-                    return (List<ContentDocumentLink>)JSON.deserialize(docLinkAsString, List<ContentDocumentLink>.class);
+                    return (List<ContentDocumentLink>) JSON.deserialize(docLinkAsString, List<ContentDocumentLink>.class);
                 }
             }
             return null;
@@ -207,7 +225,8 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockContentDocumentContractSelector extends MockProvider {
-        MockContentDocumentContractSelector() {}
+        MockContentDocumentContractSelector() {
+        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String docLinkAsString = '[' +
                 '{"Id":"06A2f000004rUrQEAU","LinkedEntityId":"8002f000000GevzAAC","ContentDocumentId":"0692f000001g9v4AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Title":"Credit Allocation Agreement"}}},' +
@@ -222,7 +241,7 @@ public with sharing class ClientFileCopierServiceTest {
 
             switch on methodCall.stubbedMethodName {
                 when 'selectByLinkedEntitiesWithoutData' {
-                    return (List<ContentDocumentLink>)JSON.deserialize(docLinkAsString, List<ContentDocumentLink>.class);
+                    return (List<ContentDocumentLink>) JSON.deserialize(docLinkAsString, List<ContentDocumentLink>.class);
                 }
             }
             return null;
@@ -230,7 +249,8 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockUASSelector extends MockProvider {
-        MockUASSelector() {}
+        MockUASSelector() {
+        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String uasesAsString = '[' +
                 '{"Id":"a1d2f000000FYqDAAW","Name":"0002340","Opportunity__c":"0062f00000EllRvAAJ","Opportunity__r":{"Name":"Joshua Phillips","Personal_Credit_Report2__c":"a0Fj000000EYyV1EAL","ContractId":"8002f000000GevzAAC","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8002f000000GevzAAC","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0000234"}},' +
@@ -253,7 +273,7 @@ public with sharing class ClientFileCopierServiceTest {
 
             switch on methodCall.stubbedMethodName {
                 when 'getUASesForAssignmentAgreement' {
-                    return (List<Utility_Account_Subscription__c>)JSON.deserialize(uasesAsString, List<Utility_Account_Subscription__c>.class);
+                    return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasesAsString, List<Utility_Account_Subscription__c>.class);
                 }
             }
             return null;
@@ -261,7 +281,8 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockContentVersionSelector extends MockProvider {
-        MockContentVersionSelector() {}
+        MockContentVersionSelector() {
+        }
         public override Object handleMethodCall(MethodCall methodCall) {
             ContentVersion fileOne = new ContentVersion(Id = '0682f000001giuFAAQ', ContentDocumentId = '0692f000001g9v4AAA', VersionData = Blob.valueOf('textBody'));
             ContentVersion fileTwo = new ContentVersion(Id = '0682f000001giuAAAQ', ContentDocumentId = '0692f000001g9uzAAA', VersionData = Blob.valueOf('textBody'));
@@ -276,19 +297,19 @@ public with sharing class ClientFileCopierServiceTest {
             ContentVersion fileTwentyTwo = new ContentVersion(Id = '0682f000001jitDAAQ', ContentDocumentId = '0692f000001g8u2AAA', VersionData = Blob.valueOf('textBody'));
             ContentVersion fileTwentyThree = new ContentVersion(Id = '0682f000001kitDAAQ', ContentDocumentId = '0692f000001g0u2AAA', VersionData = Blob.valueOf('textBody'));
 
-            Map<Id,ContentVersion> cvMap = new Map<Id,ContentVersion>();
-            cvMap.put(fileOne.Id,fileOne);
-            cvMap.put(fileTwo.Id,fileTwo);
-            cvMap.put(fileThree.Id,fileThree);
-            cvMap.put(fileFour.Id,fileFour);
-            cvMap.put(fileFive.Id,fileFive);
-            cvMap.put(fileSix.Id,fileSix);
-            cvMap.put(fileSeven.Id,fileSeven);
-            cvMap.put(fileTweleve.Id,fileTweleve);
-            cvMap.put(fileEighteen.Id,fileEighteen);
-            cvMap.put(fileNineteen.Id,fileNineteen);
-            cvMap.put(fileTwentyTwo.Id,fileTwentyTwo);
-            cvMap.put(fileTwentyThree.Id,fileTwentyThree);
+            Map<Id, ContentVersion> cvMap = new Map<Id, ContentVersion>();
+            cvMap.put(fileOne.Id, fileOne);
+            cvMap.put(fileTwo.Id, fileTwo);
+            cvMap.put(fileThree.Id, fileThree);
+            cvMap.put(fileFour.Id, fileFour);
+            cvMap.put(fileFive.Id, fileFive);
+            cvMap.put(fileSix.Id, fileSix);
+            cvMap.put(fileSeven.Id, fileSeven);
+            cvMap.put(fileTweleve.Id, fileTweleve);
+            cvMap.put(fileEighteen.Id, fileEighteen);
+            cvMap.put(fileNineteen.Id, fileNineteen);
+            cvMap.put(fileTwentyTwo.Id, fileTwentyTwo);
+            cvMap.put(fileTwentyThree.Id, fileTwentyThree);
 
             switch on methodCall.stubbedMethodName {
                 when 'selectByIdWithData' {
