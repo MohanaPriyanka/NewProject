@@ -1322,55 +1322,86 @@ public with sharing class CSAPControllerTest {
         System.assertEquals('NAV_Energy_Information', residentialLead.CSAP_Stage__c);
     }
 
+
     @IsTest
-    public static void testLeadAttachmentsMovedToUAL() {
+    public static void testAttachFilesLWC() {
         Lead residentialLead = getLeadForTest();
         insert residentialLead;
 
-        Attachment bill = new Attachment(
-            Name = 'file.pdf',
-            Body = Blob.valueOf('body'),
-            ParentId = residentialLead.Id,
-            Description = 'Electric Bill'
-        );
-        Attachment notBill = new Attachment(
-            Name = 'file.pdf',
-            Body = Blob.valueOf('body'),
-            ParentId = residentialLead.Id,
-            Description = 'Other Document'
+        String filesContent = 'Utility Bill Upload';
+        ContentVersion bill = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode(filesContent),
+            Title = 'UtilityBill.pdf',
+            PathOnClient = '/UtilityBill.pdf'
         );
 
-        insert new List<Attachment>{bill, notBill};
+        ContentVersion bill2 = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode(filesContent),
+            Title = 'UtilityBill2.pdf',
+            PathOnClient = '/UtilityBill2.pdf'
+        );
 
-        Utility_Account_Log__c utilityAccountLog = new Utility_Account_Log__c(
-            Name = 'testLeadAttachmentsMovedToUAL',
+        ContentVersion bill3 = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode(filesContent),
+            Title = 'UtilityBill3.pdf',
+            PathOnClient = '/UtilityBill3.pdf'
+        );
+
+        insert new List<ContentVersion>{bill, bill2, bill3};
+
+        List<ContentVersion> contentVersions = [
+            SELECT Id, ContentDocumentId, ContentDocument.ContentSize
+            FROM ContentVersion
+            ORDER BY Title
+        ];
+
+        List<String> documentIdsBill1 = new List<String>{contentVersions[0].ContentDocumentId,
+            contentVersions[1].ContentDocumentId};
+        List<String> documentIdsBill2 = new List<String>{contentVersions[2].ContentDocumentId};
+
+        System.assertEquals(3, contentVersions.size());
+
+
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Name = 'UAL Test 1',
             Lead__c = residentialLead.Id
         );
+        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
+            Name = 'UAL Test 2',
+            Lead__c = residentialLead.Id
+        );
+        insert new List<Utility_Account_Log__c>{ual, ual2} ;
 
-        CSAPController.saveUtilityAccountLog(utilityAccountLog);
-
-        Utility_Account_Log__c ual = [
-            SELECT Id, Lead__c
-            FROM Utility_Account_Log__c
-            WHERE Name = 'testLeadAttachmentsMovedToUAL'
+        List<ContentDocumentLink> ualDocLinks = [
+            SELECT Id, LinkedEntityId, ContentDocumentId
+            FROM ContentDocumentLink
+            WHERE (LinkedEntityId = :ual.Id
+            OR LinkedEntityId = :ual2.Id)
         ];
 
-        List<Attachment> leadAttachments = [
-            SELECT Name, Description
-            FROM Attachment
-            WHERE ParentId = : ual.Lead__c
-        ];
+        System.assertEquals(0, ualDocLinks.size());
 
-        List<Attachment> ualAttachments = [
-            SELECT Name, Description
-            FROM Attachment
-            WHERE ParentId = : ual.Id
-        ];
+        CSAPController.attachFilesLWC(documentIdsBill1, ual.Id);
+        CSAPController.attachFilesLWC(documentIdsBill2, ual2.Id);
 
-        System.assertEquals(1, leadAttachments.size());
-        System.assertEquals('Other Document', leadAttachments[0].Description);
-        System.assertEquals(1, ualAttachments.size());
-        System.assertEquals('Electric Bill', ualAttachments[0].Description);
+
+        List<ContentDocumentLink> ualOneDocLinks = [
+            SELECT Id, LinkedEntityId, ContentDocumentId
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = :ual.Id
+        ];
+        System.assertEquals(2, ualOneDocLinks.size(), '2 Utility Bills should now be linked to the UAL');
+
+        List<ContentDocumentLink> ualTwoDocLinks = [
+            SELECT Id, LinkedEntityId, ContentDocumentId
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = :ual2.Id
+        ];
+        System.assertEquals(1, ualTwoDocLinks.size(), 'One Utility Bill should now be linked to the UAL');
+
     }
 
     @IsTest

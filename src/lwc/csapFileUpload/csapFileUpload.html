@@ -1,0 +1,34 @@
+<template>
+    <div style="width: 100%;" class="slds-var-m-bottom_small">
+        <template if:false={success}>
+            <div class="fileUploadWithHelp">
+                <lightning-file-upload
+                    label={inputText}
+                    name="fileUploader"
+                    accept={acceptedFileTypes}
+                    record-id={recordId}
+                    onuploadfinished={handleUploadFinished}
+                    multiple>
+                </lightning-file-upload>
+            </div> 
+            <template if:true={isError}>
+                <div data-help-message="true" role="alert" class="slds-form-element__help slds-text-color_error">
+                    <p class="small">You must upload your {categoryType} before proceeding.</p>
+                </div>
+            </template>
+        </template>
+        <template if:true={success}>
+            <div class="slds-var-m-around_small">
+                <lightning-icon 
+                    icon-name="utility:success"
+                    variant="success"
+                    size="x-small"
+                    alternative-text="upload successful"
+                    class="slds-var-m-right_x-small">
+                </lightning-icon>
+                <span><p>{inputText}</p></span>
+            </div>
+        </template>
+        <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
+    </div>
+</template>
