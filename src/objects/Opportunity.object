@@ -10744,7 +10744,7 @@ newwindow.focus();</url>
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>/flow/CS_QC_Task_Flow?varOppID={!Opportunity.Id}&amp;retURL=home/home.jsp</url>
+        <url>/flow/CS_QC_Task_Flow?varOppID={!Opportunity.Id}&amp;retURL={!Opportunity.Id}</url>
     </webLinks>
     <webLinks>
         <fullName>Send_Contract_Click_to_Sign</fullName>
