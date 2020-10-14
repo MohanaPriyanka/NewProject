@@ -66,7 +66,6 @@ public without sharing class CaseFactory implements Queueable {
                 OR DeveloperName = 'Data_Ops'OR DeveloperName = 'Product_Support')
                 ORDER BY DeveloperName
             ];
-
             if (assignmentGroups.size() != 5) {
                 Logger.logNow('CaseFactory', 'constructor', 'Missing Groups for assignment. Available Groups: ' + assignmentGroups);
             } else {
