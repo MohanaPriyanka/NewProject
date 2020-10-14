@@ -17,65 +17,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         schedulePostSandboxJob();
         System.enqueueJob(new PostSandboxRefresher.CSRecordLoader(new PostSandboxRefresher.CSDataSetting(24)));
     }
-    static Map<String, Map<String, Object>> objectConditionals =
-        new Map<String, Map <String, Object>>{
-            'Lead' => new Map<String, Object>{
-                'isConverted' => false
-            }
-        };
-    public class RecordUpdater implements Queueable {
-        String soql;
-        Map<String, Object> conditionals;
-        List<String> emailFields;
-        public RecordUpdater(String soql, Map<String, Object> conditionals, List<String> emailFields) {
-            this.soql = soql;
-            this.conditionals = conditionals;
-            this.emailFields = emailFields;
-        }
-        public void execute(QueueableContext context) {
-            List<SObject> records = new List<SObject>();
-            // Iterate over queried SObject records
-            for (SObject record : Database.query(soql)) {
-                // Skip records that do not match specified conditons
-                if (!checkConditions(record, conditionals)) {
-                    continue;
-                }
-                // Iterate over Email fields found on SObject and invalidate values
-                for (String field : emailFields) {
-                    String email = (String) record.get(field);
-                    if (String.isEmpty(email)) {
-                        continue;
-                    }
-                    record.put(field, email.replaceAll('@', '--at--') + '@disabled.disabled');
-                }
-                records.add(record);
-            }
-            if (records.size() > 0) {
-                Database.executeBatch(new GenericBatchDMLOperation(records, 'Update'));
-            }
-        }
-    }
-    private static Boolean checkConditions(SObject record, Map<String, Object> conditionals) {
-        for (String field : conditionals.keySet()) {
-            Object value = record.get(field);
-            Object condition = conditionals.get(field);
-            if (value != condition) {
-                return false;
-            }
-        }
-        return true;
-    }
-    private static String getSOQL(String objectTypeName, List<String> fieldList) {
-        List<String> conditionals = new List<String>();
-        for (String field : fieldList) {
-            conditionals.add(field + ' != null');
-        }
-        String soql = 'SELECT {!fieldList} FROM {!objectTypeName} WHERE {!conditionals}';
-        return soql
-            .replace('{!fieldList}', String.join(fieldList, ','))
-            .replace('{!objectTypeName}', objectTypeName)
-            .replace('{!conditionals}', String.join(conditionals, ' OR '));
-    }
     @TestVisible
     private static void updateLetterStreamToTestConfig() {
         if (!Util.isSandboxOrTest()) {
@@ -116,25 +57,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     }
     @TestVisible
     private static void setupBWTestPartner() {
-        Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
-            Total_Capital__c = 10000000,
-            Investor__c = 'The Bank',
-            Pool_Type__c = 'Revolving Credit Line');
-        insert capitalPool;
-        Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c(
-            Name = 'Avidia 1',
-            Tranche_Cap__c = 1000000,
-            Tranche_Type__c = 'Standard',
-            State__c = 'MA',
-            Stage__c = 'Open',
-            Loan_Data__c = capitalPool.id);
-        insert loanTrancheMA;
-        Loan_Traunch__c loanTranchePending = new Loan_Traunch__c(
-            Name = 'Tranche Assignment Pending',
-            Tranche_Type__c = 'Holding',
-            Stage__c = 'Closed',
-            Loan_Data__c = capitalPool.id);
-        insert loanTranchePending;
         Partner__c partner = new Partner__c(Name = 'BlueWave Test Partner');
         insert partner;
         BSST__c salesRep = new BSST__c(Name = 'Joe Bob', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@bluewavesolar.com.test');
@@ -154,6 +76,8 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             Enable_CS_Application_in_Portal__c = true,
             Community_Solar_Application_Type__c = 'CSAP');
         insert partnerAccount;
+        partner.Account__c = partnerAccount.Id;
+        update partnerAccount;
         Contact execContact = new Contact(  FirstName='Joe',
             LastName='Bob',
             AccountId = partnerAccount.Id,
@@ -175,14 +99,27 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             throw new Util.BWException('Don\'t update DocuSign config in production this way');
         }
         List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
-        if (systemProperties.size() > 0) {
-            systemProperties[0].DocuSign_API_Account_ID__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
-            systemProperties[0].DocuSign_Customer_Care_User__c = 'pyao@bluewavesolar.com';
-            systemProperties[0].DocuSign_Guest_User__c = 'pyao@bluewave-capital.com';
-            systemProperties[0].DocuSign_Guest_User_Credential__c = '137Newbury';
-            systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
-            update systemProperties[0];
+        if (systemProperties.isEmpty()) {
+            return;
         }
+        systemProperties[0].DocuSign_API_Account_ID__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
+        systemProperties[0].DocuSign_Customer_Care_User__c = 'pyao@bluewavesolar.com';
+        systemProperties[0].DocuSign_Guest_User__c = 'pyao@bluewave-capital.com';
+        systemProperties[0].DocuSign_Guest_User_Credential__c = '137Newbury';
+        systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
+        update systemProperties[0];
+
+        List<Product2> docuSignEnabledProducts = [
+            SELECT Id
+            FROM Product2
+            WHERE Contract_Docusign_Template__c != NULL
+        ];
+        for (Product2 product2 : docuSignEnabledProducts) {
+            // All products will point to a valid template in the demo docusign environment so DocuSign will at least
+            // produce some document by default
+            product2.Contract_Docusign_Template__c = 'e03c7f33-0754-4abb-9d8e-42a46923e512';
+        }
+        update docuSignEnabledProducts;
     }
     /*
      CS Record Loader loads community solar records for testing. Currently, bill numbers aren't advanced
@@ -210,6 +147,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                 Class__c = 'Class 2',
                 Value_of_Net_Metering_Credit__c = 0.1848,
                 Current_Billing_Rate__c = true,
+                Size_Ratio__c = 1,
                 CreatedDate = csDataDate
             );
             Utility_NMC_Tariff__c ngridbillNMC = new Utility_NMC_Tariff__c(
@@ -218,6 +156,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                 Class__c = 'Class 2',
                 Value_of_Net_Metering_Credit__c = 0.1848,
                 Current_Billing_Rate__c = true,
+                Size_Ratio__c = 1,
                 CreatedDate = csDataDate
             );
             Utility_NMC_Tariff__c ngridsizeNMC = new Utility_NMC_Tariff__c(
@@ -226,21 +165,30 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                 Class__c = 'Class 2',
                 Value_of_Net_Metering_Credit__c = 0.1848,
                 Sizing_Rate__c = true,
+                Size_Ratio__c = 1,
                 CreatedDate = csDataDate
             );
-            CS_Bill_Setting__c csBillSetting = new CS_Bill_Setting__c(
-                Default_Bill_Message_for_Autopay__c = '<b>Go paperless today!</b><br>If you haven’t already, sign up for ' +
-                    'paperless billing! Contact our customer support team using the contact info at the bottom of your ' +
-                    'bill. Thank you for doing your part to protect the planet and create a better future for your community.',
-                Default_Bill_Message_for_Non_Autopay__c = '<b>Payment Instructions</b><br>Please note our payment address ' +
-                    'and payee name in the Payment Details section of your bill. You now only need to send us a single ' +
-                    'check made payable to:<br><br>BCS Customer Management<br>111 Huntington Ave., Suite 650,<br>Boston, MA 02199',
-                CreatedDate = csDataDate
-            );
-            insert csBillSetting;
             insert new List<Utility_NMC_Tariff__c>{
                 everbillNMC, ngridsizeNMC, ngridbillNMC
             };
+            List<CS_Bill_Setting__c> billSettings = [SELECT Id FROM CS_Bill_Setting__c];
+            if (billSettings.isEmpty()) {
+                CS_Bill_Setting__c csBillSetting = new CS_Bill_Setting__c(
+                    Default_Bill_Message_for_Autopay__c = '<b>Go paperless today!</b><br>If you haven’t already, sign up for ' +
+                        'paperless billing! Contact our customer support team using the contact info at the bottom of your ' +
+                        'bill. Thank you for doing your part to protect the planet and create a better future for your community.',
+                    Default_Bill_Message_for_Non_Autopay__c = '<b>Payment Instructions</b><br>Please note our payment address ' +
+                        'and payee name in the Payment Details section of your bill. You now only need to send us a single ' +
+                        'check made payable to:<br><br>BCS Customer Management<br>111 Huntington Ave., Suite 650,<br>Boston, MA 02199',
+                    CreatedDate = csDataDate
+                );
+                insert csBillSetting;
+            }
+
+            List<Custom_File_Upload_Share__c> fileUploadShares = [SELECT Id FROM Custom_File_Upload_Share__c];
+            if (fileUploadShares.isEmpty()) {
+                insert new Custom_File_Upload_Share__c(Name = 'Apply Site');
+            }
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.SolarSystemHelper(csDataSetting));
             }
@@ -252,57 +200,9 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             this.csDataSetting = csDataSetting;
         }
         public void execute(QueueableContext context) {
-            Product2 normalCSProduct = new Product2(
-                Name = 'BlueWave SMART',
-                Family = 'Community Solar',
-                Product_Type__c = 'Community Solar',
-                Program__c = 'SMART - Community Solar',
-                Customer_Subscription_Type__c = 'kWh',
-                State__c = 'MA',
-                ProductCode = 'CS - BlueWave - 10%',
-                IsActive = true,
-                zqu__SKU__c = '1234',
-                Lender_of_Record__c = 'BlueWave',
-                NMC_Discount__c = 10,
-                Annual_kWh_Maximum__c = 100000000,
-                NM_Rate_Floor__c = 0,
-                Credit_Minimum__c = '200',
-                Monthly_Late_Fee__c = 1,
-                Cancellation_Paragraph_Two__c = '<br>Per Massachusetts utility and state regulations, project capacity ' +
-                    'allocation forms can only be filed up to two times per year; therefore, it may take up to six ' +
-                    'months for your subscription to stop receiving solar credits. During this time, you will remain ' +
-                    'responsible for paying for all solar credits transferred to your account. Once the utility removes ' +
-                    'your subscription, we will notify you via email.</br>'
-            );
-            Product2 normalSRECProduct = new Product2(
-                Name = 'BlueWave SREC',
-                Family = 'Community Solar',
-                Product_Type__c = 'Community Solar',
-                Program__c = 'SREC - Community Solar',
-                Customer_Subscription_Type__c = 'Electricity Cost ($)',
-                State__c = 'MA',
-                ProductCode = 'CS - BlueWave - 10%',
-                IsActive = true,
-                zqu__SKU__c = '5678',
-                Lender_of_Record__c = 'BlueWave',
-                NMC_Discount__c = 10,
-                Annual_kWh_Maximum__c = 100000000,
-                NM_Rate_Floor__c = 0,
-                Credit_Minimum__c = '200',
-                Monthly_Late_Fee__c = 1,
-                Cancellation_Paragraph_Two__c = '<br>Per Massachusetts utility and state regulations, project capacity ' +
-                    'allocation forms can only be filed up to two times per year; therefore, it may take up to six ' +
-                    'months for your subscription to stop receiving solar credits. During this time, you will remain ' +
-                    'responsible for paying for all solar credits transferred to your account. Once the utility removes ' +
-                    'your subscription, we will notify you via email.</br>',
-                Cancellation_Paragraph_Three__c = '<i><br>Please note, per the terms of your contract, you may be charged ' +
-                    'an early termination fee to cancel your community solar subscription, unless you provide a replacement ' +
-                    'customer. Please refer to your contract for more details.</br></i>'
-            );
-            insert new List<Product2>{
-                normalCSProduct,
-                normalSRECProduct
-            };
+            Product2 normalCSProduct = [SELECT Id FROM Product2 WHERE ProductCode = 'CS-MA-7' LIMIT 1];
+            Product2 normalSRECProduct = [SELECT Id FROM Product2 WHERE ProductCode = 'CS-MA-8' LIMIT 1];
+
             Utility_NMC_Tariff__c eversizeNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'Eversource SEMA Class 2' LIMIT 1];
             Utility_NMC_Tariff__c nationalGridNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'National Grid WCMA Class 2 Billing Rate' LIMIT 1];
             Account clientAccount = new Account(Name = 'Test Client', CreatedDate = csDataDate);
@@ -634,7 +534,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             Date today = Date.today();
             Date threeMonthsAgo = today.addMonths(-3);
             Date twoMonthsAgo = today.addMonths(-2);
-            Date oneMonthAgo = today.addMonths(-1);
             Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
                 Name = '2016 - sssA',
                 Shared_Solar_System__c = sssList[0].Id,
@@ -744,7 +643,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                 ORDER BY Name DESC
             ];
             Date today = Date.today();
-            Date threeMonthsAgo = today.addMonths(-3);
             Date twoMonthsAgo = today.addMonths(-2);
             Date oneMonthAgo = today.addMonths(-1);
             Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssA'];
@@ -838,8 +736,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                 ORDER BY Name DESC
             ];
             Date today = Date.today();
-            Date threeMonthsAgo = today.addMonths(-3);
-            Date twoMonthsAgo = today.addMonths(-2);
             Date oneMonthAgo = today.addMonths(-1);
             Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssA'];
             Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssB'];
@@ -1020,7 +916,8 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         List<Opportunity> opportunities = insertOpportunities(names, propertyAccounts, sssList, sssIndex);
         insertSubscriptions(names, uals, opportunities);
     }
-    private static List<Account> insertAccountsAndContacts(List<Name> names) {
+    @TestVisible
+    private static List<Account> insertAccountsAndContacts(List<PostSandboxRefresher.Name> names) {
         User api = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
         List<Account> parentAccounts = new List<Account>();
         for (Integer i = 0; i < names.size(); i++) {
@@ -1044,7 +941,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         insert propertyAccounts;
         return propertyAccounts;
     }
-    private static List<Utility_Account_Log__c> insertUtilityAccountLogs(List<Name> names, List<Account> propertyAccounts) {
+    private static List<Utility_Account_Log__c> insertUtilityAccountLogs(List<PostSandboxRefresher.Name> names, List<Account> propertyAccounts) {
         List<Utility_Account_Log__c> uals = new List<Utility_Account_Log__c>();
         for (Integer i = 0; i < names.size(); i++) {
             if (i == 0) {
@@ -1057,7 +954,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         insert uals;
         return uals;
     }
-    private static List<Opportunity> insertOpportunities(List<Name> names, List<Account> propertyAccounts, List<Shared_Solar_System__c> sssList, Integer sssIndex) {
+    private static List<Opportunity> insertOpportunities(List<PostSandboxRefresher.Name> names, List<Account> propertyAccounts, List<Shared_Solar_System__c> sssList, Integer sssIndex) {
         List<Opportunity> opportunities = new List<Opportunity>();
         for (Integer i = 0; i < names.size(); i++) {
             if (i == 0) {
@@ -1070,7 +967,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         insert setOpportunityPartner(opportunities);
         return opportunities;
     }
-    private static void insertSubscriptions(List<Name> names, List<Utility_Account_Log__c> uals, List<Opportunity> opportunities) {
+    private static void insertSubscriptions(List<PostSandboxRefresher.Name> names, List<Utility_Account_Log__c> uals, List<Opportunity> opportunities) {
         List<Utility_Account_Subscription__c> subscriptions = new List<Utility_Account_Subscription__c>();
         for (Integer i = 0; i < names.size(); i++) {
             if (i == 0) {
@@ -1085,34 +982,33 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     public static void deleteCSRecords() {
         if (Util.isSandboxOrTest()) {
             Util.disableAllTriggers();
-            delete [SELECT Id FROM CS_Bill_Setting__c];
-            delete [SELECT Id FROM ChargentOrders__Transaction__c];
-            delete [SELECT Id FROM ChargentOrders__ChargentOrder__c];
-            delete [SELECT Id FROM Transfer_Part__c];
-            delete [SELECT Id FROM Transfer__c];
-            delete [SELECT Id FROM Utility_Account_Bill__c];
-            delete [SELECT Id FROM Account_Bill__c];
-            delete [SELECT Id FROM System_Bill__c];
-            delete [SELECT Id FROM UASB__c];
-            delete [SELECT Id FROM Bill_Period__c];
-            delete [SELECT Id FROM Production__c];
-            delete [SELECT Id FROM Client_Allocation_Schedule_Subscription__c];
-            delete [SELECT Id FROM Client_Utility_Account_Subscription__c];
-            delete [SELECT Id FROM Schedule_Z_Subscription__c];
-            delete [SELECT Id FROM Schedule_Z__c];
-            delete [SELECT Id FROM Utility_Account_Subscription__c];
-            delete [SELECT Id FROM Utility_Account_Log__c];
-            delete [SELECT Id FROM Opportunity];
-            delete [SELECT Id FROM Case];
-            delete [SELECT Id FROM Contact];
-            delete [SELECT Id FROM Account];
-            delete [SELECT Id FROM ChargentBase__Gateway__c];
-            delete [SELECT Id FROM Shared_Solar_System__c];
-            delete [SELECT Id FROM Utility__c];
-            delete [SELECT Id FROM Entity__c];
-            delete [SELECT Id FROM Utility_NMC_Tariff__c];
-            delete [SELECT Id FROM Load_U__c];
-            delete [SELECT Id FROM Product2 WHERE ProductCode = 'CS - BlueWave - 10%'];
+            delete [SELECT Id FROM CS_Bill_Setting__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM ChargentOrders__Transaction__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM ChargentOrders__ChargentOrder__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Transfer_Part__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Transfer__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Utility_Account_Bill__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Account_Bill__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM System_Bill__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM UASB__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Bill_Period__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Production__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Client_Allocation_Schedule_Subscription__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Client_Utility_Account_Subscription__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Schedule_Z_Subscription__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Schedule_Z__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Utility_Account_Subscription__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Utility_Account_Log__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Opportunity WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Case WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Contact WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Account WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM ChargentBase__Gateway__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Shared_Solar_System__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Utility__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Entity__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Utility_NMC_Tariff__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Load_U__c WHERE CreatedDate = :csDataDate];
             Util.enableAllTriggers();
         }
     }
