@@ -11,10 +11,5 @@
         <minorNumber>55</minorNumber>
         <namespace>ChargentOrders</namespace>
     </packageVersions>
-    <packageVersions>
-        <majorNumber>9</majorNumber>
-        <minorNumber>23</minorNumber>
-        <namespace>zqu</namespace>
-    </packageVersions>
     <status>Active</status>
 </ApexClass>
