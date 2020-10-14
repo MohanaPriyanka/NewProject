@@ -46,6 +46,57 @@ private class PostSandboxRefresherTest {
         }
         insert contactList;
         insert leadList;
+        Product2 normalCSProduct = new Product2(
+            Name = 'BlueWave SMART',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            Program__c = 'SMART - Community Solar',
+            Customer_Subscription_Type__c = 'kWh',
+            State__c = 'MA',
+            ProductCode = 'CS-MA-7',
+            IsActive = true,
+            zqu__SKU__c = '1234',
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Credit_Minimum__c = '200',
+            Monthly_Late_Fee__c = 1,
+            Cancellation_Paragraph_Two__c = '<br>Per Massachusetts utility and state regulations, project capacity ' +
+                'allocation forms can only be filed up to two times per year; therefore, it may take up to six ' +
+                'months for your subscription to stop receiving solar credits. During this time, you will remain ' +
+                'responsible for paying for all solar credits transferred to your account. Once the utility removes ' +
+                'your subscription, we will notify you via email.</br>'
+        );
+        Product2 normalSRECProduct = new Product2(
+            Name = 'BlueWave SREC',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            Program__c = 'SREC - Community Solar',
+            Customer_Subscription_Type__c = 'Electricity Cost ($)',
+            State__c = 'MA',
+            ProductCode = 'CS-MA-8',
+            IsActive = true,
+            zqu__SKU__c = '5678',
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Credit_Minimum__c = '200',
+            Monthly_Late_Fee__c = 1,
+            Cancellation_Paragraph_Two__c = '<br>Per Massachusetts utility and state regulations, project capacity ' +
+                'allocation forms can only be filed up to two times per year; therefore, it may take up to six ' +
+                'months for your subscription to stop receiving solar credits. During this time, you will remain ' +
+                'responsible for paying for all solar credits transferred to your account. Once the utility removes ' +
+                'your subscription, we will notify you via email.</br>',
+            Cancellation_Paragraph_Three__c = '<i><br>Please note, per the terms of your contract, you may be charged ' +
+                'an early termination fee to cancel your community solar subscription, unless you provide a replacement ' +
+                'customer. Please refer to your contract for more details.</br></i>'
+        );
+        insert new List<Product2>{
+            normalCSProduct,
+            normalSRECProduct
+        };
     }
     @IsTest
     static public void testLetterStreamSetup() {
@@ -178,9 +229,13 @@ private class PostSandboxRefresherTest {
     }
     @IsTest
     static void testDeleteCSRecords() {
+        PostSandboxRefresher.Name fooBar = new PostSandboxRefresher.Name('Foo', 'Bar', 1);
+        PostSandboxRefresher.insertAccountsAndContacts(new List<PostSandboxRefresher.Name>{fooBar});
+        List<Account> accounts = [SELECT Id FROM Account WHERE CreatedDate = :PostSandboxRefresher.csDataDate];
+        System.assertEquals(2, accounts.size(), 'Expected two accounts to be created, parent and property');
         PostSandboxRefresher.deleteCSRecords();
-        List<Account> accounts = [SELECT Id FROM Account];
-        System.assertEquals(0, accounts.size());
+        accounts = [SELECT Id FROM Account WHERE CreatedDate = :PostSandboxRefresher.csDataDate];
+        System.assertEquals(0, accounts.size(), 'deleteCSRecords should have deleted the accounts that were created');
     }
     @IsTest
     static void testPartnerSetup() {

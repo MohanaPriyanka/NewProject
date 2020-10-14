@@ -51,6 +51,13 @@ public without sharing class ClientInvoicingFeeWaiveService {
         uasToAssignedCapacityMap = subscriptionOrderSelector.getSubscriptionOrdersAssignedToClient(uasIds);
     }
 
+    /**
+     * If appropriate, registers a new Client Invoicing Memo with the service's Unit of Work to waive an acquisition fee.
+     * Assumes the subscription order is associated with a Reacquisition CFD.
+     * @param order The subscription order to evaluate for a waived reacquisition fee
+     *
+     * @return The new Client Invoicing Memo that was registered with the service's Unit of Work
+     */
     @TestVisible
     private Client_Invoicing_Memo__c waiveFeeBasedOnDate(Subscription_Order__c order) {
         Integer numberOfMonths = (Integer)order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c;
@@ -68,7 +75,7 @@ public without sharing class ClientInvoicingFeeWaiveService {
            Otherwise, there is no need to waive a negative fee.
         */
 
-        if (sssDateType == 'Customer: Assignment Date') {
+        if (sssDateType == 'Customer: Assignment Date' || sssDateType == 'Project: Estimated COD or Customer: Assignment Date') {
             return waiveFeeBasedOnCustomerDate(order,milestoneDate);
         } else if (order.Approved_Change_in_Subscription__c > 0) {
             return waiveFeeBasedOnProjectDateBeforeOrAfterMilestone(order,milestoneDate);
@@ -208,7 +215,14 @@ public without sharing class ClientInvoicingFeeWaiveService {
                 milestoneDate = order.Utility_Account_Subscription__r.Shared_Solar_System__r.First_Bill_Date__c;
             }
             when 'Customer: Assignment Date' {
-                milestoneDate = order.Utility_Account_Subscription__r.Opportunity__r.Assignment_Agreement__r.CustomerSignedDate;
+                milestoneDate = order.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__r.CustomerSignedDate;
+            }
+            when 'Project: Estimated COD or Customer: Assignment Date' {
+                milestoneDate = DateUtil.max(
+                    order.Contract_Fee_Detail__r.Waive_Reacq_Fee_Estimated_COD__c,
+                    order.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__r.CustomerSignedDate
+                );
+
             }
             when 'Fee not Charged', null {
                 // There's no milestone date to set
