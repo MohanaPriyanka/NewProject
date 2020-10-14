@@ -213,6 +213,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Waive_Reacq_Fee_Estimated_COD__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract_Fee_Detail__c.Waive_Reacq_Fee_In_Initial_Period__c</field>
         <readable>true</readable>
     </fieldPermissions>
