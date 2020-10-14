@@ -3882,11 +3882,16 @@ ISBLANK(Product__c),
 ISBLANK(Utility_NMC_Tariff__c),
 ISBLANK(Utility__c),
 ISBLANK(Service_Territories__c),
-ISBLANK(Service_Territories__c),
-ISBLANK(Maximum_Subscription_Cost__c ),
-Maximum_Subscription_Cost__c = 0,
-ISBLANK(Maximum_Subscription_Capacity_kWDC__c),
-Maximum_Subscription_Capacity_kWDC__c= 0,
+
+
+AND(ISPICKVAL(Product__r.Customer_Subscription_Type__c,&quot;kWh&quot;), OR(ISBLANK(Maximum_Subscription_Capacity_kWDC__c),
+Maximum_Subscription_Capacity_kWDC__c= 0)),
+
+AND(ISPICKVAL(Product__r.Customer_Subscription_Type__c, &quot;Electricity Cost ($)&quot;), 
+OR(ISBLANK(Maximum_Subscription_Cost__c ),
+Maximum_Subscription_Cost__c = 0)), 
+
+
 ISBLANK(Credit_Score_Requirement__c),
 Credit_Score_Requirement__c = 0,
 AND(Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c)
