@@ -133,6 +133,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Waive_Reacq_Fee_Estimated_COD__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Waive_Reacquisition_Fee_Number_Months__c</field>
             </layoutItems>
             <layoutItems>

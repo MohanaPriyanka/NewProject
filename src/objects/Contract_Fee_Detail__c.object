@@ -696,6 +696,17 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Waive_Reacq_Fee_Estimated_COD__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Only used for the &quot;Project: Estimated COD or Customer: Assignment Date&quot; Initial Period Milestone option. Should match the date in the contract and distinct from the SSS&apos;s Estimated COD which can change.</inlineHelpText>
+        <label>Waive Reacq Fee: Estimated COD</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Waive_Reacq_Fee_In_Initial_Period__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -837,6 +848,14 @@ Management_Fee__c
 )
 )</errorConditionFormula>
         <errorMessage>You must set the fee type to be either Acquisition, Reacquisition or Management</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>No_Downsizing_if_Waiving_Fees</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( Acquisition_Sizing_Type_Downsizing__c , 
+     OR( Waive_Reacq_Fee_In_Initial_Period__c ,  
+         Waive_Reacq_Fee_After_Initial_Period__c ))</errorConditionFormula>
+        <errorMessage>Selecting Downsizing AND enabling one of the Fee Waive options will give the client double credit for cancellations (credit for the downsizing to 0 and a waived reacq fee). Check with Biz Apps to do this.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Non_BCS_Acquired_If_BCS_Closed</fullName>
