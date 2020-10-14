@@ -13,6 +13,7 @@ public without sharing class CaseFactory implements Queueable {
     public static Group productQueue;
     public static Group collectionsQueue;
     public static Group dataOpsQueue;
+    public static Group customerQCQueue;
     public static Case newCase;
     private Lead lead;
 
@@ -56,22 +57,23 @@ public without sharing class CaseFactory implements Queueable {
             ];
         }
 
-        if (collectionsQueue == null || customerCareQueue == null || productQueue == null) {
+        if (collectionsQueue == null || customerCareQueue == null || productQueue == null || customerQCQueue == null) {
             List<Group> assignmentGroups = [
                 SELECT Id, DeveloperName
                 FROM Group
                 WHERE Type = 'Queue'
-                AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care' OR DeveloperName = 'Collections' OR DeveloperName = 'Data_Ops')
+                AND (DeveloperName = 'Collections' OR DeveloperName = 'Customer_Care' OR DeveloperName = 'Customer_QC'
+                OR DeveloperName = 'Data_Ops'OR DeveloperName = 'Product_Support')
                 ORDER BY DeveloperName
             ];
-
-            if (assignmentGroups.size() != 4) {
+            if (assignmentGroups.size() != 5) {
                 Logger.logNow('CaseFactory', 'constructor', 'Missing Groups for assignment. Available Groups: ' + assignmentGroups);
             } else {
                 collectionsQueue = assignmentGroups[0];
                 customerCareQueue = assignmentGroups[1];
-                dataOpsQueue = assignmentGroups[2];
-                productQueue = assignmentGroups[3];
+                customerQCQueue = assignmentGroups[2];
+                dataOpsQueue = assignmentGroups[3];
+                productQueue = assignmentGroups[4];
             }
         }
     }
@@ -96,6 +98,10 @@ public without sharing class CaseFactory implements Queueable {
             newCase.RecordTypeId = customerCare.Id;
             newCase.RecordType = customerCare;
             newCase.OwnerId = collectionsQueue.Id;
+        } else if (type == 'Customer_QC') {
+            newCase.RecordTypeId = customerCare.Id;
+            newCase.RecordType = customerCare;
+            newCase.OwnerId = customerQCQueue.Id;
         } else if (type == 'Data_Ops') {
             // Data Ops uses the customer care record type
             newCase.RecordTypeId = customerCare.Id;
@@ -111,13 +117,14 @@ public without sharing class CaseFactory implements Queueable {
     public void insertNoMatchCreditReportCase(Lead lead) {
         if (new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size() == 0) {
             queryForRecordTypesAndQueues();
-            Case newCcCase = getCase('Customer_Care');
+            Case newCcCase = getCase('Customer_QC');
             newCcCase.Lead_Lookup__c = lead.Id;
             newCcCase.Disable_Followup_Email__c = true;
             newCcCase.QC_Case_Subject__c = 'No FICO Match';
             newCcCase.Product_Line__c = 'Community Solar';
             newCcCase.AccountId = lead.Parent_Account__c;
             newCcCase.Category__c = 'QC';
+            newCcCase.Case_Type__c = '3rd Party';
             newCcCase.Sale_Status__c = 'Pre-Sale';
             newCcCase.Subject = lead.Name + ' - No Match Credit Report';
             newCcCase.Description = lead.Name + ' - This is a no match Personal Credit Report,' +
@@ -132,13 +139,14 @@ public without sharing class CaseFactory implements Queueable {
     public void insertLowMatchCreditReportCase(Lead lead){
         if (new CaseSelector().selectOpenLowMatchCasesFromLead(lead).size() == 0) {
             queryForRecordTypesAndQueues();
-            Case newCcCase = getCase('Customer_Care');
+            Case newCcCase = getCase('Customer_QC');
             newCcCase.Lead_Lookup__c = lead.Id;
             newCcCase.QC_Case_Subject__c = 'Low FICO Match';
             newCcCase.Product_Line__c = 'Community Solar';
             newCcCase.AccountId = lead.Parent_Account__c;
             newCcCase.Category__c = 'QC';
             newCcCase.Sale_Status__c = 'Pre-Sale';
+            newCcCase.Case_Type__c = '3rd Party';
             newCcCase.Subject = lead.Name + ' - Low Match Credit Report';
             newCcCase.Description = lead.Name+' - Credit score does not qualify, ' +
                 'please provide a passing credit report or we will send adverse action notice to customer';
