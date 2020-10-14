@@ -1187,6 +1187,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContactSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContactSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ContentService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3103,6 +3111,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PartnerAccountSSSTriggerHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PartnerAccountSSSTriggerHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PartnerCommissionHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3124,6 +3140,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>PartnerHealthBatchTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PartnerSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PartnerSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3456,6 +3480,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UserHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UserTriggerHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UserTriggerHandlerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -10380,6 +10412,11 @@
         <editable>false</editable>
         <field>Account.Declared_Bankruptcy__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Default_Sales_Rep__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -34697,6 +34734,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Account_Shared_Solar_System__c.Compound_Key__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Partner_Alert_Filter__c.Acknowledged__c</field>
         <readable>true</readable>
@@ -34760,6 +34802,11 @@
         <editable>true</editable>
         <field>Partner_Alert__c.Sales_Representative__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Data_Model_Setting__mdt.Use_New_Data_Model__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -57111,10 +57158,16 @@
         <layout>PartnerMarketingBudget-Partner Marketing Budget Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Partner_Account_Shared_Solar_System__c-Partner Account Shared Solar System Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Partner_Alert_Filter__c-Partner Alert Filter Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner_Alert__c-Partner Alert Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Partner_Data_Model_Setting__mdt-Partner Data Model Setting Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner_Health__c-Partner Health Layout</layout>
@@ -57256,6 +57309,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Snapshot_Report_Object__c-Landowner Last Contact Object Layout</layout>
@@ -59076,6 +59133,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>PartnerMarketingBudget</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Partner_Account_Shared_Solar_System__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

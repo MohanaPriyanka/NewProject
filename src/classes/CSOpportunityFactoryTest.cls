@@ -242,7 +242,7 @@ public without sharing class CSOpportunityFactoryTest {
                 Application_Type__c, Avidia_Checking_Account__c, Business_Title__c, Customer_Referral__c, Customer_Type__c,
                 Customer_Type_Formula__c, LeadSource, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
-                Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c,
+                Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c, Partner_Account__c, Partner_Contact__c, 
                 Partner_Email__c, Personal_Credit_Report__c, Phone2__c, Product_Line__c, Referral_Email__c, bs_Sales_ID__c,
                 Security_Type__c, LoadZone__c, System_Assignment__c, Utility__c, OwnerId, Loan_System_Information__c, Underwriting_Criteria__c
             FROM Lead
@@ -392,7 +392,7 @@ public without sharing class CSOpportunityFactoryTest {
                 Application_Type__c, Avidia_Checking_Account__c, Business_Title__c, Customer_Referral__c, Customer_Type__c,
                 Customer_Type_Formula__c, LeadSource, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
-                Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c,
+                Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c, Partner_Account__c, Partner_Contact__c, 
                 Partner_Email__c, Personal_Credit_Report__c, Phone2__c, Product_Line__c, Referral_Email__c, bs_Sales_ID__c,
                 Security_Type__c, LoadZone__c, System_Assignment__c, Utility__c, OwnerId, Loan_System_Information__c, Underwriting_Criteria__c
             FROM Lead
@@ -535,7 +535,7 @@ public without sharing class CSOpportunityFactoryTest {
                 Application_Type__c, Avidia_Checking_Account__c, Business_Title__c, Customer_Referral__c, Customer_Type__c,
                 Customer_Type_Formula__c, LeadSource, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
-                Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c,
+                Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c, Partner_Account__c, Partner_Contact__c, 
                 Partner_Email__c, Personal_Credit_Report__c, Phone2__c, Product_Line__c, Referral_Email__c, bs_Sales_ID__c,
                 Security_Type__c, LoadZone__c, System_Assignment__c, Utility__c, OwnerId, Loan_System_Information__c, Underwriting_Criteria__c
             FROM Lead

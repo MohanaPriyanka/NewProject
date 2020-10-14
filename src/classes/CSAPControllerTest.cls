@@ -48,7 +48,8 @@ public with sharing class CSAPControllerTest {
 
         Partner__c partner2 = new Partner__c(
             Name = 'Mass Renewables',
-            Email__c = 'massRenewables@test.com');
+            Email__c = 'massRenewables@test.com',
+            Account__c = accountRecord2.Id);
         insert partner2;
 
         TestFactory.setDefaultCSPartner(partner2.Id);
@@ -165,14 +166,13 @@ public with sharing class CSAPControllerTest {
                                                                     Assemblage_Count__c = 1,
                                                                     Sales_Partners__c = 'All',
                                                                     Product__c = smartProduct.Id,
-                                                                    Maximum_Subscription_Capacity_kWDC__c = 25,
-                                                                    Available_SMB_Underwriting_Method_FICO__c = true);
+                                                                    Maximum_Subscription_Capacity_kWDC__c = 25);
         insert sss1;
         Test.stopTest();
     }
 
     public static Lead getLeadForTest() {
-        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Mass Renewables' LIMIT 1];
+        Partner__c partner = [SELECT Id, Account__c FROM Partner__c WHERE Name = 'Mass Renewables' LIMIT 1];
 
         Lead lead = new Lead(
             FirstName = 'Tester',
@@ -187,6 +187,7 @@ public with sharing class CSAPControllerTest {
             LASERCA__Home_Zip__c = '02052',
             Parcel_Zip__c = '02052',
             Partner_Lookup__c = partner.Id,
+            Partner_Account__c = partner.Account__c,
             System_Assignment__c = 'Automatic - COD Date/Available Capacity',
             Status = 'Ready for Credit Check',
             Electricity_Provider__c = 'Eversource',
@@ -217,7 +218,7 @@ public with sharing class CSAPControllerTest {
     }
 
     @IsTest static void testEmailCSAPApplication() {
-        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Partner__c partner = [SELECT Id, Account__c FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
         Contact contactPartner = [SELECT Id FROM Contact WHERE Lastname = 'SWAIN' LIMIT 1];
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
@@ -259,6 +260,7 @@ public with sharing class CSAPControllerTest {
                 Personal_Credit_Report__c = leadToInsert.Personal_Credit_Report__c,
                 Parent_Account__c = leadToInsert.Parent_Account__c,
                 Partner_Lookup__c = leadToInsert.Partner_Lookup__c,
+                Partner_Account__c = leadToInsert.Partner_Account__c,
                 Customer_Referral__c = leadToInsert.Customer_Referral__c,
                 bs_Sales_ID__c = leadToInsert.bs_Sales_ID__c,
                 Email = leadToInsert.Email,
@@ -288,7 +290,7 @@ public with sharing class CSAPControllerTest {
                 Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, OwnerId, Product_line__c, Application_Source_Phase_1__c,
-                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, Partner_Account__c, bs_Sales_ID__c, Date_of_Application__c
             FROM Lead
             WHERE Email = 'testymctesterson@tester.com'];
 
@@ -300,6 +302,7 @@ public with sharing class CSAPControllerTest {
         for (Lead lead : leads) {
             System.assertEquals(lead.Id, CSAPController.getLead(lead.Id, lead.Email).Id);
             System.assertEquals(partner.Id, CSAPController.getLead(lead.Id, lead.Email).Partner_Lookup__c);
+            System.assertEquals(partner.Account__c, CSAPController.getLead(lead.Id, lead.Email).Partner_Account__c);
             System.assertEquals(salesRep.Id, CSAPController.getLead(lead.Id, lead.Email).bs_Sales_ID__c);
             System.assertEquals(referralContact.Id, CSAPController.getLead(lead.Id, lead.Email).Customer_Referral__c);
             if (lead.Application_Type__c == 'Residential') {
@@ -500,11 +503,12 @@ public with sharing class CSAPControllerTest {
 
         //system properties should have the partner that we set up in test data
         System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
-        Partner__c defaultPartner = [ SELECT Id, Email__c, Default_Sales_Rep__c FROM Partner__c WHERE Id = :sysProp.Default_CS_Partner__c];
+        Partner__c defaultPartner = [ SELECT Id, Email__c, Default_Sales_Rep__c, Account__c FROM Partner__c WHERE Id = :sysProp.Default_CS_Partner__c];
         BSST__c defaultSalesRep = [ SELECT Id FROM BSST__c WHERE Id = :defaultPartner.Default_Sales_Rep__c];
 
         //Check to see if the lead was assigned to the default partner in System Properties
         System.assertEquals(defaultPartner.Id, defaultLead.Partner_Lookup__c);
+        System.assertEquals(defaultPartner.Account__c, defaultLead.Partner_Account__c);
         System.assertEquals(defaultSalesRep.Id, defaultLead.Bs_Sales_ID__c);
         System.assertEquals(customerContact.Id, defaultLead.Customer_Referral__c);
 
@@ -565,9 +569,18 @@ public with sharing class CSAPControllerTest {
     @IsTest static void testSLPortalCSAPApplication() {
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
+        Account account = new Account(
+            Name = 'Solar Installer',
+            State_Market__c = 'MA',
+            Enable_CS_Application_in_Portal__c = true,
+            Community_Solar_Application_Type__c = 'CSAP'
+        );
+        insert account;
+
         Partner__c partner = new Partner__c(
             Name = 'Solar Installer',
-            Email__c = 'test@test.com');
+            Email__c = 'test@test.com',
+            Account__c = account.Id);
         insert partner;
 
         BSST__c salesRep = new BSST__c(
@@ -578,14 +591,6 @@ public with sharing class CSAPControllerTest {
 
         partner.Default_Sales_Rep__c = salesRep.Id;
         update partner;
-
-        Account account = new Account(
-            Name = 'Solar Installer',
-            State_Market__c = 'MA',
-            Enable_CS_Application_in_Portal__c = true,
-            Community_Solar_Application_Type__c = 'CSAP'
-        );
-        insert account;
 
         Contact contact = new Contact(
             FirstName = 'Test',
@@ -629,13 +634,14 @@ public with sharing class CSAPControllerTest {
                 Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                 Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c,
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
-                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, Partner_Account__c, bs_Sales_ID__c, Date_of_Application__c
             FROM Lead
             WHERE Email = 'testymctesterson@tester.com'];
         //Check upserted Lead, Contact and Account records
         System.assertEquals(lead.Id, CSAPController.getLead(lead.Id, lead.Email).Id);
         // The lead's partner should be the same partner that is running the CSAP (not the default partner)
         System.assertEquals(partner.Id, CSAPController.getLead(lead.Id, lead.Email).Partner_Lookup__c);
+        System.assertEquals(partner.Account__c, CSAPController.getLead(lead.Id, lead.Email).Partner_Account__c);
 
         List<Contact> contactList = [
             SELECT Id, FirstName, LastName, Email, Phone, AccountId, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, MobilePhone, Product_Line__c
@@ -723,7 +729,7 @@ public with sharing class CSAPControllerTest {
                 Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Product_line__c,
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, Utility_relationship__c, Personal_Credit_Report__c,
-                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, Partner_Account__c, bs_Sales_ID__c, Date_of_Application__c
             FROM Lead
             WHERE Email = 'testymctesterson@tester.com'
             LIMIT 1
@@ -894,7 +900,7 @@ public with sharing class CSAPControllerTest {
                 Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, LASER_Credit_Score__c,
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, LoadZone__c, Product_line__c, Utility_relationship__c,
-                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral__c,
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, Partner_Account__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral__c,
                 Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c , Confirm_Utility__c, Continue_Application_Link__c
             FROM Lead
             WHERE Id = :lead.Id];
@@ -1026,7 +1032,7 @@ public with sharing class CSAPControllerTest {
                 Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, LASER_Credit_Score__c,
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, LoadZone__c, Product_line__c, Utility_relationship__c,
-                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral__c,
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, Partner_Account__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral__c,
                 Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c
             FROM Lead
             WHERE Id = :lead.Id];

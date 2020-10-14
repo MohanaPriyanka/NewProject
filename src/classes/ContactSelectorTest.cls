@@ -56,4 +56,28 @@ public with sharing class ContactSelectorTest {
         System.assertEquals(2, checkContacts.size());
         System.assertEquals(parent.Id, checkContacts[0].AccountId);
     }
+
+    @IsTest
+    private static void testSelectContactBySalesRepId() {
+        Partner__c partner = new Partner__c(
+            Name = 'Test Partner',
+            Email__c = 'test@email.com'
+        );
+        insert partner;
+
+        BSST__c salesTeam = new BSST__c(
+            Partner__c = partner.Id
+        );
+        insert salesTeam;
+
+        Contact salesRep = new Contact(
+            FirstName = 'Test',
+            LastName = 'Rep',
+            Sales_Representative__c = salesTeam.Id
+        );
+        insert salesRep;
+
+        Contact returnedSalesRep = ContactSelector.selectContactBySalesRepId(salesTeam.Id);
+        System.assertEquals(salesRep.Id, returnedSalesRep.Id, 'Expected a sales rep Contact to be returned');
+    }
 }
