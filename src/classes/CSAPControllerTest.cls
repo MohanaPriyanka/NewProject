@@ -166,7 +166,8 @@ public with sharing class CSAPControllerTest {
                                                                     Assemblage_Count__c = 1,
                                                                     Sales_Partners__c = 'All',
                                                                     Product__c = smartProduct.Id,
-                                                                    Maximum_Subscription_Capacity_kWDC__c = 25);
+                                                                    Maximum_Subscription_Capacity_kWDC__c = 25,
+                                                                    Available_SMB_Underwriting_Method_FICO__c = true);
         insert sss1;
         Test.stopTest();
     }
