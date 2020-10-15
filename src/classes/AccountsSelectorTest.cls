@@ -130,4 +130,17 @@ public with sharing class AccountsSelectorTest {
         Map<String,Account> acctMap = selector.selectByBlueWaveId(new Set<String>{acct.Account_Number__c});
         System.assertEquals(accountOne.Id,acctMap.get(acct.Account_Number__c).Id);
     }
+
+    @IsTest
+    public static void testSelectDefaultPartnerAccount() {
+        Account partnerAccount = new Account(
+            Name = 'Default Partner Account'
+        );
+        insert partnerAccount;
+        TestFactory.setDefaultPartnerAccount(partnerAccount.Id);
+        Test.startTest();
+        Account defaultPartnerAccount = AccountsSelector.selectDefaultPartnerAccount();
+        Test.stopTest();
+        System.assertEquals(partnerAccount.Id, defaultPartnerAccount.Id, 'Expected the default partner Account to be returned');
+    }
 }
