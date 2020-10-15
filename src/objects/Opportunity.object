@@ -1095,18 +1095,6 @@ false
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Available_Capital_in_Tranche__c</fullName>
-        <externalId>false</externalId>
-        <label>Available Capital in Tranche</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Available_System_Capacity_kW_DC__c</fullName>
         <externalId>false</externalId>
         <label>Available System Capacity (kW DC)</label>
@@ -1530,18 +1518,6 @@ Annual_Consumption_kWh__c * 0.2287,
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Calculated_DOER_Loan_Class__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(value( Personal_Credit_Report2__r.LASERCA__Credit_Score_TransUnion__c) &gt;=720,&quot;A&quot;,if(value(Personal_Credit_Report2__r.LASERCA__Credit_Score_TransUnion__c )&gt;680,&quot;B&quot;,&quot;C&quot;))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Calculated DOER Loan Class</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Calculated_Subscription_Size__c</fullName>
         <externalId>false</externalId>
         <formula>if( 
@@ -1624,18 +1600,6 @@ Null)))</formula>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Capital_Expense__c</fullName>
-        <externalId>false</externalId>
-        <label>Principal 2</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Channel_Partner_Account__c</fullName>
@@ -3762,20 +3726,6 @@ IF(or(ISBLANK(Annual_Independent_Income__c), income_based_loan_support__c = Fals
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>IO_Loan_Term__c</fullName>
-        <externalId>false</externalId>
-        <formula>Number_of_Periods_Months__c + 12</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>IO + Loan Term</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>IRBD_Rate__c</fullName>
         <defaultValue>0.0189</defaultValue>
         <description>This is the post-buy-down rate to the customer</description>
@@ -4639,18 +4589,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Fee_1_Description__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(NOT(ISNULL(Product__r.Loan_Fee_1_Description__c)),Product__r.Loan_Fee_1_Description__c,NULL)</formula>
-        <inlineHelpText>Description of Loan Fee 1</inlineHelpText>
-        <label>Loan Fee 1 Description</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Loan_Fee_1__c</fullName>
@@ -8776,20 +8714,6 @@ NULL
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>loan_traunch__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Loan Tranche</label>
-        <referenceTo>Loan_Traunch__c</referenceTo>
-        <relationshipLabel>Opportunities</relationshipLabel>
-        <relationshipName>Opportunities</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>maturity_date_text__c</fullName>
         <description>8/23/17: Added &quot;(e)&quot; to signify an estimated date.
 Uses the components of the Maturity_Date2__c formula - broken up to get under the formula size limit.</description>
@@ -8976,7 +8900,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>Loan_Principle__c</columns>
         <columns>Loan_Amount_Financed__c</columns>
-        <columns>loan_traunch__c</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
         <columns>Community_Solar_State__c</columns>
         <filterScope>Everything</filterScope>
