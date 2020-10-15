@@ -151,7 +151,7 @@ private class CSQualificationTestclass {
     public static void testCheckCSQualification() {
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
 
-        pullCreditForLead(lead.Id, true);
+        pullCreditForLead(lead.Id, 'High FICO');
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
@@ -174,7 +174,7 @@ private class CSQualificationTestclass {
         lead.Utility_relationship__c = central.Id;
         update lead;
 
-        pullCreditForLead(lead.Id, true);
+        pullCreditForLead(lead.Id, 'High FICO');
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
@@ -193,7 +193,7 @@ private class CSQualificationTestclass {
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
 
         Test.startTest();
-        pullCreditForLead(lead.Id, false);
+        pullCreditForLead(lead.Id, 'No Match');
         Test.stopTest();
 
         Lead checkLead = [
@@ -210,15 +210,40 @@ private class CSQualificationTestclass {
             'implies no match, therefore a no match case should be created.');
 
     }
+    @IsTest
+    public static void testLowFico() {
+        Lead lead = [SELECT Id, Name FROM Lead LIMIT 1];
 
-    public static void pullCreditForLead(Id leadId, Boolean match) {
+        Test.startTest();
+        pullCreditForLead(lead.Id, 'Low FICO');
+        Test.stopTest();
+
+        Lead checkLead = [
+            SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Personal_Credit_Report__r.Approval_Status__c
+            FROM Lead
+            WHERE Id = :lead.Id
+        ];
+
+        System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be Unqualified');
+        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
+        System.assertEquals('Declined', checkLead.Personal_Credit_Report__r.Approval_Status__c, 'PCR should be declined because FICO lower than 680');
+        System.assertEquals('200', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 200');
+        System.assertEquals(1, new CaseSelector().selectOpenLowMatchCasesFromLead(lead).size(), 'Low credit score ' +
+            'requires AAN action, therefore a low FICO case should be created.');
+    }
+
+    public static void pullCreditForLead(Id leadId, String type) {
 
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadId
         );
-        if (match) {
+        if (type == 'High FICO') {
             pcr.LASERCA__Credit_Score__c = '700';
             pcr.LASERCA__Credit_Score_TransUnion__c = '700';
+        } else if (type == 'Low FICO') {
+            pcr.LASERCA__Credit_Score__c = '200';
+            pcr.LASERCA__Credit_Score_TransUnion__c = '200';
         }
         insert pcr;
 
@@ -233,7 +258,7 @@ private class CSQualificationTestclass {
             LASERCA__Personal_Credit_Report__c = pcr.Id
         );
 
-        if (match) {
+        if (type == 'No Match') {
             crLog.LASERCA__Status__c = 'Error';
         } else {
             crLog.LASERCA__Status__c = 'Completed';
