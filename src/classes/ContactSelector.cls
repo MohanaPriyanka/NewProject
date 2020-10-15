@@ -3,7 +3,7 @@
  * Tested By: ContactSelectorTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public with sharing class ContactSelector {
+public inherited sharing class ContactSelector {
     // Don't get Account Address fields with this query, since the Account related to the contact is the Parent account,
     // not the property account
     public List<Contact> getContactsWithZuoraContacts(Set<Id> contactIds) {
@@ -29,5 +29,18 @@ public with sharing class ContactSelector {
             FROM Contact
             WHERE AccountId IN : parentAccountIds
         ];
+    }
+
+    public static Contact selectContactBySalesRepId(String salesRepId) {
+        if (String.isBlank(salesRepId)) {
+            return null;
+        }
+        List<Contact> contacts = [
+            SELECT Id
+            FROM Contact
+            WHERE Sales_Representative__c = :salesRepId
+            LIMIT 1
+        ];
+        return contacts.size() > 0 ? contacts[0] : null;
     }
 }

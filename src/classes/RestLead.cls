@@ -36,6 +36,9 @@ public without sharing class RestLead {
     public Integer numberOfContractDocs;    // used in SSF only
     public Datetime mostRecentContractGen;  // used in SSF only
 
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
+
     public RestLead() {
     }
 
@@ -221,23 +224,55 @@ public without sharing class RestLead {
             newLead.Application_Source_Phase_1__c = 'Switch without Partner';
         }
 
-        Partner__c customerPartner = new Partner__c();
-        try {
-            customerPartner = PartnerSelector.selectPartnerByPartnerId(restLead.partnerId);
-        } catch (Exception e) {
-            customerPartner = PartnerSelector.selectDefaultCSPartner();
-            if (restLead.partnerId != null) {
-                Logger.logNow('CSLeadsRESTControllerV2', 'asLead', 'Partner not found with Id ' + restLead.partnerId + ' for Lead: ' + newLead.Id);
+        if (!featureService.isEnabled('Switch_New_Partner_Data_Model')) {
+            Partner__c customerPartner = new Partner__c();
+            try {
+                customerPartner = PartnerSelector.selectPartnerByPartnerId(restLead.partnerId);
+            } catch (Exception e) {
+                customerPartner = PartnerSelector.selectDefaultCSPartner();
+                if (restLead.partnerId != null) {
+                    Logger.logNow('CSLeadsRESTControllerV2', 'asLead', 'Partner not found with Id ' + restLead.partnerId + ' for Lead: ' + newLead.Id);
+                }
             }
-        }
 
-        newLead.Partner_Lookup__c = customerPartner.Id;
-        newLead.Partner_Email__c = customerPartner.Email__c;
+            newLead.Partner_Lookup__c = customerPartner.Id;
+            newLead.Partner_Account__c = customerPartner.Account__c;
+            newLead.Partner_Email__c = customerPartner.Email__c;
 
-        if (restLead.salesRepId != null) {
-            newLead.bs_Sales_ID__c = restLead.salesRepId;
-        } else if (customerPartner.Default_Sales_Rep__c != null) {
-            newLead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
+            if (String.isNotBlank(restLead.salesRepId)) {
+                newLead.bs_Sales_ID__c = restLead.salesRepId;
+            } else if (customerPartner.Default_Sales_Rep__c != null) {
+                newLead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
+            }
+
+            if (String.isNotBlank(newLead.BS_Sales_ID__c)) {
+                Contact partnerContact = ContactSelector.selectContactBySalesRepId(newLead.BS_Sales_ID__c);
+                if (partnerContact != null) {
+                    newLead.Partner_Contact__c = partnerContact.Id;
+                }
+            }
+        } else {
+            Account partnerAccount;
+
+            if (String.isNotEmpty(restLead.partnerId)) {
+                partnerAccount = AccountsSelector.selectPartnerAccount(restLead.partnerId);
+                if (partnerAccount == null) {
+                    Logger.logNow('RestLead', 'updateDerivedFields', 'Partner Account not found with Id ' + restLead.partnerId + ' for Lead: ' + newLead.Id);
+                    partnerAccount = AccountsSelector.selectDefaultPartnerAccount();                    
+                }
+            } else {
+                partnerAccount = AccountsSelector.selectDefaultPartnerAccount();
+            }
+
+            if (partnerAccount != null) {
+                newLead.Partner_Account__c = partnerAccount.Id;
+            }
+
+            if (String.isNotBlank(restLead.salesRepId)) {
+                newLead.Partner_Contact__c = restLead.salesRepId;
+            } else if (partnerAccount != null) {
+                newLead.Partner_Contact__c = partnerAccount.Default_Sales_Rep__c;
+            }
         }
 
         if (restLead.applicationType == 'Residential') {
@@ -422,7 +457,7 @@ public without sharing class RestLead {
                 Annual_kWh__c = annualKWh,
                 Annual_Cost_of_Electricity__c = annualCostOfElectricity
             );
-            
+
             List<Lead> leadList = [SELECT Utility_relationship__c FROM Lead WHERE Id = :propertyAccount.Lead__c];
             if(!leadList.isEmpty()) {
                 ual.Utility_lookup__c = leadList[0].Utility_relationship__c;
@@ -453,7 +488,7 @@ public without sharing class RestLead {
             if (fieldNames.contains('servicePostalCode')) baseUAL.Service_Zip_Code__c = this.servicePostalCode;
             if (fieldNames.contains('annualKWh')) baseUAL.Annual_kWh__c = this.annualKWh;
             if (fieldNames.contains('annualCostOfElectricity')) baseUAL.Annual_Cost_of_Electricity__c = this.annualCostOfElectricity;
-            
+    
             if(fieldNames.contains('rateClass')) {
                 if(this.rateClass == null) {
                     baseUAL.Utility_Rate_Class__c = null;
@@ -461,7 +496,7 @@ public without sharing class RestLead {
                     updateRateClass(this.rateClass, baseUAL);
                 }
             }
-    
+
             return baseUAL;
         }
 
@@ -551,8 +586,7 @@ public without sharing class RestLead {
             Util.validateStrings(requiredFields);
             validateFileCategory();
         }
-    
-    
+
         private void validateFileCategory() {
             List<String> validFileCategories = new List<String>();
             Schema.DescribeFieldResult fieldResult = ContentVersion.File_Category__c.getDescribe();

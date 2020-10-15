@@ -1601,6 +1601,19 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
         </valueSet>
     </fields>
     <fields>
+        <fullName>Default_Sales_Rep__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Default Sales Rep</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Accounts (Default Sales Rep)</relationshipLabel>
+        <relationshipName>Partner_Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Description</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
