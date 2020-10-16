@@ -19,7 +19,7 @@ public without sharing class CSOpportunityFactory {
         Decimal remainingAccountkWhToAllocate = annualTotals.kWh;
         List<Opportunity> oppListToCreate = new List<Opportunity>();
         Integer oppCounter = 1;
-
+		
         for (Shared_Solar_System__c sss : availableSSS) {
             if (remainingAccountCostToAllocate > 0 || remainingAccountkWhToAllocate > 0) {
                 Decimal annualElectricityCostAssigned = Math.min(remainingAccountCostToAllocate, sss.Maximum_Subscription_Cost__c);
@@ -141,6 +141,8 @@ public without sharing class CSOpportunityFactory {
         opp.Parcel_ZIp__c = lead.Parcel_Zip__c;
         opp.Partner_Email__c = lead.Partner_Email__c;
         opp.Partner_tag_lookup__c = lead.Partner_lookup__c;
+        opp.Partner_Account__c = lead.Partner_Account__c;
+        opp.Partner_Contact__c = lead.Partner_Contact__c;
         opp.Personal_Credit_Report2__c = lead.Personal_Credit_Report__c;
         opp.Product_Line__c = lead.Product_Line__c;
         opp.Project_Assignment__c = lead.System_Assignment__c;

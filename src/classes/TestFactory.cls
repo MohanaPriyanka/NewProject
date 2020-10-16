@@ -183,6 +183,18 @@ public class TestFactory {
 		}
 	}
 
+	public static void setDefaultPartnerAccount(String accountId) {
+		List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+		if (systemProperties.size() > 0) {
+			systemProperties[0].Default_Partner_Account__c = accountId;
+			update systemProperties[0];
+		} else {
+			System_Properties__c property = new System_Properties__c(Name = 'System');
+			property.Default_Partner_Account__c = accountId;
+			insert property;
+		}
+	}
+
 	public static void insertLetterStreamSettings() {
 		insert new LetterStream_Settings__c(
 			Name = 'Test',

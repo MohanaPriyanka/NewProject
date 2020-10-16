@@ -7,7 +7,7 @@
 public without sharing class PartnerSelector {
     public static Partner__c selectPartnerByPartnerId(String partnerId) {
         return [
-            SELECT Id, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Email__c, Name
+            SELECT Id, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Email__c, Name, Account__c
             FROM Partner__c
             WHERE Id = :partnerId
         ];
@@ -18,7 +18,7 @@ public without sharing class PartnerSelector {
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (systemProperties.size() > 0 ) {
             defaultCSPartner = [
-                SELECT Id, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Email__c, Name
+                SELECT Id, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Email__c, Name, Account__c
                 FROM Partner__c
                 WHERE Id = :systemProperties[0].Default_CS_Partner__c
                 LIMIT 1

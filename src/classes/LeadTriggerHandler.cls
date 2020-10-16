@@ -36,6 +36,8 @@ public without sharing class LeadTriggerHandler {
         'lived_residence_six_months__c'=>'Lived_at_residence_more_than_six_months__c',
         'MobilePhone'=>'Customer_Phone__c',
         'OwnerId'=>'OwnerId',
+        'Partner_Account__c' => 'Partner_Account__c',
+        'Partner_Contact__c' => 'Partner_Contact__c',
         'Partner_Email__c'=>'Partner_Email__c',
         'Partner_Lookup__c'=>'Partner_tag_lookup__c',
         'Partner_Tag__c'=>'Partner_Tag__c',
@@ -218,6 +220,8 @@ public without sharing class LeadTriggerHandler {
         Boolean returnNull = true;
         Opportunity opp = new Opportunity(Id = newLead.ConvertedOpportunityId);
         for (String field : leadToOppConvertMap.keySet()) {
+            System.debug(field + ' (new):' + newLead.get(field));
+            System.debug(field + ' (old):' + oldLead.get(field));
             if (newLead.get(field) != oldLead.get(field)) {
                 opp.put(leadToOppConvertMap.get(field), newLead.get(field));
                 returnNull=false;
