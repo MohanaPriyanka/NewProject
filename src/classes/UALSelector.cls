@@ -1,6 +1,6 @@
 /**
  * Created by jlugo on 2019-07-10.
- * Tested by system tests in RESTRouterV2Test.
+ * Tested by: UtilityDataRequestServiceTest, and system tests in RESTRouterV2Test
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UALSelector {
@@ -30,6 +30,19 @@ public without sharing class UALSelector {
             FROM Utility_Account_Log__c
             WHERE Lead__c = :leadIds
         ]);
+    }
+    
+    public Utility_Account_Log__c selectByUDR(Utility_Data_Request__c udr) {
+        Set<Id> udrUALId = new Set<Id>();
+        udrUALId.add(udr.Utility_Account_Log__c);
+        
+        Utility_Account_Log__c ual = [
+            SELECT Id, Utility_Rate_Class__c
+            FROM Utility_Account_Log__c
+            WHERE Id IN :(udrUALId)
+        ];
+        
+        return ual;
     }
 
 }
