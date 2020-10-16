@@ -3733,6 +3733,20 @@ Monthly_Payment__c)</formula>
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Moodys_RiskCalc__c</fullName>
+        <description>Used for tracking Moody&apos;s RiskCalc score</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for tracking Moody&apos;s RiskCalc score</inlineHelpText>
+        <label>Moodys RiskCalc</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>More_than_five_years_industry_experience__c</fullName>
         <externalId>false</externalId>
         <label>More than five years industry experience</label>

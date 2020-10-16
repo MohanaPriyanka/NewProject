@@ -3,6 +3,7 @@
     <customButtons>Check_Loadzone</customButtons>
     <customButtons>LASER_Credit_Access_Custom</customButtons>
     <excludeButtons>Clone</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>FindDup</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
@@ -159,6 +160,10 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Credit_Approval_Status2__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Moodys_RiskCalc__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

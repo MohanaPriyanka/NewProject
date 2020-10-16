@@ -960,6 +960,11 @@
         <field>LASERCA__Personal_Credit_Report__c.Time_Pulled__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Moodys_RiskCalc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Underwriting Permission</label>
     <objectPermissions>
