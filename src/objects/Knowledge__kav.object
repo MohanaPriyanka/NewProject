@@ -228,6 +228,6 @@
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <startsWith>Vowel</startsWith>
 </CustomObject>
