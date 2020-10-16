@@ -78,6 +78,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Acquisition_Cust_Group_Not_Specified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract_Fee_Detail__c.Acquisition_Cust_Group_Public_Offtake__c</field>
         <readable>true</readable>
     </fieldPermissions>
