@@ -1,9 +1,8 @@
 /*************************************************************************************
- * Created By: peteryao on 10/24/19  
- * Description: Promotes User Stories to production on schedule.
+ * Created By: peteryao on 10/24/19
+ * @description Promotes User Stories to production on schedule.
  * Test: UserStoryPromoterTest
  *************************************************************************************/
-
 public without sharing class UserStoryPromoter implements Schedulable {
     @TestVisible
     private CopadoSelector copadoSelector = new CopadoSelector();
@@ -14,6 +13,10 @@ public without sharing class UserStoryPromoter implements Schedulable {
     private Id sourceCredential;
     private Id project;
 
+    /**
+     * @description Finds User Stories marked ready to promote, that don't have a promotion in progress, and promotes them
+     * @param context SchedulableContext (unused)
+     */
     public void execute(SchedulableContext context) {
         try {
             createPromotionFromStories();
@@ -22,7 +25,8 @@ public without sharing class UserStoryPromoter implements Schedulable {
         }
     }
 
-    public void createPromotionFromStories() {
+    @TestVisible
+    private void createPromotionFromStories() {
         List<copado__User_Story__c> storiesToPromote = new List<copado__User_Story__c>();
         for (copado__User_Story__c userStory : copadoSelector.getUserStoriesToPromote()) {
             if (userStory.copado__Promoted_User_Stories__r.size() == 0) {
@@ -39,7 +43,7 @@ public without sharing class UserStoryPromoter implements Schedulable {
         String endpoint ='https://app-api.copa.do/json/v1/webhook/promotions/' + promotion.Id + '/process?' +
             'testLevel='+testLevel+'&' +
             'api_key='+apiKey+'&' +
-            'deploymentName='+promotion.Name+'+to+prod+via+Apex';
+            'deploymentName='+promotion.Name+'+to+prod+via+Apex @gitDepth=10000';
         UserStoryPromoter.startPromotion(endpoint);
         Logger.flushLogs();
     }
@@ -104,6 +108,10 @@ public without sharing class UserStoryPromoter implements Schedulable {
         storiesToPromote.add(userStory);
     }
 
+    /**
+     * @description POSTs the URL as a future method (since callouts are not supported in a scheduled context)
+     * @param url The URL to post
+     */
     @Future(Callout=true)
     public static void startPromotion(String url) {
         HttpRequest request = new HttpRequest();
@@ -119,7 +127,7 @@ public without sharing class UserStoryPromoter implements Schedulable {
         Logger.flushLogs();
     }
 
-    public class WebhookResponse {
+    private class WebhookResponse {
         public String ok;
         public String copadoJobId;
         public String status;
