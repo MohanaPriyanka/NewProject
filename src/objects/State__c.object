@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>State object used to store information about Utility Account annual usage estimates</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Avg_Annual_Resi_kWh__c</fullName>
+        <description>Stores Utility Account annual usage estimates</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Stores Utility Account annual usage estimates</inlineHelpText>
+        <label>Avg Annual Resi kWh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>State_Abbreviation__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Name = &quot;Alabama&quot;, &quot;AL&quot;, 
+IF(Name = &quot;Alaska&quot;, &quot;AK&quot;, 
+IF(Name = &quot;Arizona&quot;, &quot;AZ&quot;, 
+IF(Name = &quot;Arkansas&quot;, &quot;AR&quot;, 
+IF(Name = &quot;California&quot;, &quot;CA&quot;, 
+IF(Name = &quot;Colorado&quot;, &quot;CO&quot;, 
+IF(Name = &quot;Connecticut&quot;, &quot;CT&quot;, 
+IF(Name = &quot;Delaware&quot;, &quot;DE&quot;, 
+IF(Name = &quot;Florida&quot;, &quot;FL&quot;, 
+IF(Name = &quot;Georgia&quot;, &quot;GA&quot;, 
+IF(Name = &quot;Hawaii&quot;, &quot;HI&quot;, 
+IF(Name = &quot;Idaho&quot;, &quot;ID&quot;, 
+IF(Name = &quot;Illinois&quot;, &quot;IL&quot;, 
+IF(Name = &quot;Indiana&quot;, &quot;IN&quot;, 
+IF(Name = &quot;Iowa&quot;, &quot;IA&quot;, 
+IF(Name = &quot;Kansas&quot;, &quot;KS&quot;, 
+IF(Name = &quot;Kentucky&quot;, &quot;KY&quot;, 
+IF(Name = &quot;Louisiana&quot;, &quot;LA&quot;, 
+IF(Name = &quot;Maine&quot;, &quot;ME&quot;, 
+IF(Name = &quot;Maryland&quot;, &quot;MD&quot;, 
+IF(Name = &quot;Massachusetts&quot;, &quot;MA&quot;, 
+IF(Name = &quot;Michigan&quot;, &quot;MI&quot;, 
+IF(Name = &quot;Minnesota&quot;, &quot;MN&quot;, 
+IF(Name = &quot;Mississippi&quot;, &quot;MS&quot;, 
+IF(Name = &quot;Missouri&quot;, &quot;MO&quot;, 
+IF(Name = &quot;Montana&quot;, &quot;MT&quot;, 
+IF(Name = &quot;Nebraska&quot;, &quot;NE&quot;, 
+IF(Name = &quot;Nevada&quot;, &quot;NV&quot;, 
+IF(Name = &quot;New Hampshire&quot;, &quot;NH&quot;, 
+IF(Name = &quot;New Jersey&quot;, &quot;NJ&quot;, 
+IF(Name = &quot;New Mexico&quot;, &quot;NM&quot;, 
+IF(Name = &quot;New York&quot;, &quot;NY&quot;, 
+IF(Name = &quot;North Carolina&quot;, &quot;NC&quot;, 
+IF(Name = &quot;North Dakota&quot;, &quot;ND&quot;, 
+IF(Name = &quot;Ohio&quot;, &quot;OH&quot;, 
+IF(Name = &quot;Oklahoma&quot;, &quot;OK&quot;, 
+IF(Name = &quot;Oregon&quot;, &quot;OR&quot;, 
+IF(Name = &quot;Pennsylvania&quot;, &quot;PA&quot;, 
+IF(Name = &quot;Rhode Island&quot;, &quot;RI&quot;, 
+IF(Name = &quot;South Carolina&quot;, &quot;SC&quot;, 
+IF(Name = &quot;South Dakota&quot;, &quot;SD&quot;, 
+IF(Name = &quot;Tennessee&quot;, &quot;TN&quot;, 
+IF(Name = &quot;Texas&quot;, &quot;TX&quot;, 
+IF(Name = &quot;Utah&quot;, &quot;UT&quot;, 
+IF(Name = &quot;Vermont&quot;, &quot;VT&quot;, 
+IF(Name = &quot;Virginia&quot;, &quot;VA&quot;, 
+IF(Name = &quot;Washington&quot;, &quot;WA&quot;, 
+IF(Name = &quot;West Virginia&quot;, &quot;WV&quot;, 
+IF(Name = &quot;Wisconsin&quot;, &quot;WI&quot;, 
+IF(Name = &quot;Wyoming&quot;, &quot;WY&quot;, null))))))))))))))))))))))))))))))))))))))))))))))))))</formula>
+        <label>State Abbreviation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>State</label>
+    <nameField>
+        <label>State Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>States</pluralLabel>
+    <searchLayouts />
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

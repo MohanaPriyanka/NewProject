@@ -41313,6 +41313,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.X4_month_sizing_method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Product2.zqu__Allow_Feature_Changes__c</field>
         <readable>true</readable>
@@ -44834,6 +44839,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>State__c.Avg_Annual_Resi_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>State__c.State_Abbreviation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Study_Option__c.Cost__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -47630,6 +47645,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Data_Request__c.Address_Line_2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Annual_kWh__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -67197,6 +67217,9 @@
         <layout>State_Registration__c-State Registration Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>State__c-State Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Study_Option__c-Report Option Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -69756,6 +69779,15 @@
         <modifyAllRecords>true</modifyAllRecords>
         <object>State_Registration__c</object>
         <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>State__c</object>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
