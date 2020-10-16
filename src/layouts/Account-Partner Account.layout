@@ -2,8 +2,7 @@
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <customButtons>Send_Storage_Application</customButtons>
     <customButtons>Manage_Access_to_Products</customButtons>
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>DisableCustomerPortalAccount</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -71,6 +70,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Installation_Experience_by_Storage_Type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Default_Sales_Rep__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -558,17 +561,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Requested_By__c</fields>
-        <fields>OWNER.LAST_NAME</fields>
-        <fields>Requested_Delivery_Date__c</fields>
-        <relatedList>Product_Group_Assignment__c.Account__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>Project_Finance__c.Account__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <relatedList>Related_Contract_Parties__c.Account__c</relatedList>
     </relatedLists>
     <relatedLists>
@@ -579,6 +571,11 @@
         <fields>LEAD.COMPANY</fields>
         <fields>LEAD.PHONE</fields>
         <relatedList>Lead.Partner_Account__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Shared_Solar_System__c.NAME</fields>
+        <relatedList>Partner_Account_Shared_Solar_System__c.Partner_Account__c</relatedList>
     </relatedLists>
     <relatedObjects>ParentId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>

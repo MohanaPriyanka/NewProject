@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Used to control which partner data model to use.</description>
+    <fields>
+        <fullName>Use_New_Data_Model__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>If checked, the system will use the new data model of partners and sales teams being represented as Accounts and Contacts respectively.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Use New Data Model</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>Partner Data Model Setting</label>
+    <pluralLabel>Partner Data Model Settings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

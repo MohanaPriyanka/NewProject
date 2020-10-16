@@ -61,6 +61,19 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Default_Partner_Account__c</fullName>
+        <description>ID for the default partner Account.
+Sandbox: BlueWave Test Partner
+Production: BlueWave Inside Sales</description>
+        <externalId>false</externalId>
+        <label>Default Partner Account</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Disable_AccountTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

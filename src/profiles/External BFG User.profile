@@ -966,10 +966,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>testTraunchCapitalMetrics</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>utilityAccountLogConversionHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -22231,11 +22227,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Available_Capital_in_Tranche__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.Available_System_Capacity_kW_DC__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -22371,11 +22362,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Calculated_DOER_Loan_Class__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Calculated_Subscription_Size__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -22397,11 +22383,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Capacity_Alarm__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Capital_Expense__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23060,11 +23041,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.IO_Loan_Term__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.IRBD_Rate__c</field>
         <readable>true</readable>
@@ -23258,11 +23234,6 @@
         <editable>true</editable>
         <field>Opportunity.Loan_Amount_Verified__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Loan_Fee_1_Description__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -24373,11 +24344,6 @@
         <editable>false</editable>
         <field>Opportunity.kWh_confirmed__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.loan_traunch__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>

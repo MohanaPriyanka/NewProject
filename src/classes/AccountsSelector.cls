@@ -190,4 +190,28 @@ public without sharing class AccountsSelector {
         }
         return bwIdToAccountMap;
     }
+
+    public static Account selectPartnerAccount(String accountId) {
+        List<Account> accounts = [
+            SELECT Id, Default_Sales_Rep__c
+            FROM Account
+            WHERE Id = :accountId
+        ];
+        return accounts.size() > 0 ? accounts[0] : null;
+    }
+
+    public static Account selectDefaultPartnerAccount() {
+        List<Account> accounts;
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.size() > 0 ) {
+            accounts = [
+                SELECT Id, Default_Sales_Rep__c
+                FROM Account
+                WHERE Id = :systemProperties[0].Default_Partner_Account__c
+            ];
+        } else {
+            Logger.logNow('AccountSelector', 'selectDefaultPartnerAccount', 'No Default Partner Account stored in System Properties');
+        }
+        return accounts != null && accounts.size() > 0 ? accounts[0] : null;
+    }
 }
