@@ -224,6 +224,19 @@ U=Customer receives supply from the Utility</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Annual_kWh__c</fullName>
+        <externalId>false</externalId>
+        <label>Annual kWh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Case_Safe_ID__c</fullName>
         <externalId>false</externalId>
         <formula>CASESAFEID(Id  )</formula>

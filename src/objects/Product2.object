@@ -2200,6 +2200,28 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
     </fields>
+    <fields>
+        <fullName>X4_month_sizing_method__c</fullName>
+        <description>Used in UDR trigger to select which value to use in Annual kWh calculation</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used in UDR trigger to select which value to use in Annual kWh calculation</inlineHelpText>
+        <label>&gt;4 month sizing method</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>State Average Annual Usage</fullName>
+                    <default>false</default>
+                    <label>State Average Annual Usage</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
     <listViews>
         <fullName>Adjustable_Rate_Products</fullName>
         <columns>PRODUCT2.NAME</columns>
