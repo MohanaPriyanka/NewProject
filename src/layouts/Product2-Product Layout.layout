@@ -352,6 +352,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>X4_month_sizing_method__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Default_Business_Usage__c</field>
             </layoutItems>
             <layoutItems>

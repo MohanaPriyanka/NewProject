@@ -342,7 +342,7 @@ QD=Quantity Delivered</inlineHelpText>
         <description>Utility rate code as found in the tariff. (This code can be used to retrieve rates from a utility&apos;s web site.)</description>
         <externalId>false</externalId>
         <inlineHelpText>Utility rate code as found in the tariff. (This code can be used to retrieve rates from a utility&apos;s web site.)</inlineHelpText>
-        <label>Rate Class</label>
+        <label>Rate Class Name</label>
         <length>30</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
