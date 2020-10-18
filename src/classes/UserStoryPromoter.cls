@@ -114,17 +114,22 @@ public without sharing class UserStoryPromoter implements Schedulable {
      */
     @Future(Callout=true)
     public static void startPromotion(String url) {
-        HttpRequest request = new HttpRequest();
-        request.setMethod('POST');
-        request.setEndpoint(url);
-        Logger.logLater('UserStoryPromoter', 'startPromotion', url, Logger.FINE);
-        HttpResponse response = new Http().send(request);
-        WebhookResponse webhookResponse = (WebhookResponse) JSON.deserialize(response.getBody(), WebhookResponse.class);
-        Logger.logLater('UserStoryPromoter', 'startPromotion', response.getBody(), Logger.FINE);
-        if (webhookResponse.error != null) {
-            Logger.logLater('UserStoryPromoter', 'startPromotion', response.getBody(), Logger.ERROR);
+        try {
+            HttpRequest request = new HttpRequest();
+            request.setMethod('POST');
+            request.setEndpoint(url);
+            Logger.logLater('UserStoryPromoter', 'startPromotion', url, Logger.FINE);
+            HttpResponse response = new Http().send(request);
+            WebhookResponse webhookResponse = (WebhookResponse) JSON.deserialize(response.getBody(), WebhookResponse.class);
+            Logger.logLater('UserStoryPromoter', 'startPromotion', response.getBody(), Logger.FINE);
+            if (webhookResponse.error != null) {
+                Logger.logLater('UserStoryPromoter', 'startPromotion', response.getBody(), Logger.ERROR);
+            }
+        } catch (Exception e) {
+            Logger.logLater('UserStoryPromoter', 'startPromotion', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        } finally {
+            Logger.flushLogs();
         }
-        Logger.flushLogs();
     }
 
     private class WebhookResponse {
