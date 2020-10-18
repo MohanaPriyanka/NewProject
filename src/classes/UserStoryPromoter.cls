@@ -43,7 +43,7 @@ public without sharing class UserStoryPromoter implements Schedulable {
         String endpoint ='https://app-api.copa.do/json/v1/webhook/promotions/' + promotion.Id + '/process?' +
             'testLevel='+testLevel+'&' +
             'api_key='+apiKey+'&' +
-            'deploymentName='+promotion.Name+'+to+prod+via+Apex @gitDepth=10000';
+            'deploymentName='+promotion.Name+'+to+prod+via+Apex+@gitDepth%3D10000';
         UserStoryPromoter.startPromotion(endpoint);
         Logger.flushLogs();
     }
