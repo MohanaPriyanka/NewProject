@@ -203,16 +203,6 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
-                <componentName>runtime_sales_cadence:cadenceStepsCard</componentName>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentName>lightningInbox:sendLaterListContainer</componentName>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
                 <componentInstanceProperties>
                     <name>hideHeader</name>
                     <value>false</value>
