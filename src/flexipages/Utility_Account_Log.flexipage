@@ -237,7 +237,7 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>displayTitle</name>
-                    <value>false</value>
+                    <value>true</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>fieldsToAlwaysDisplay</name>
