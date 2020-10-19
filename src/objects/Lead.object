@@ -4153,6 +4153,7 @@ Monthly_Payment__c)</formula>
     </fields>
     <fields>
         <fullName>Partner_Application_Status__c</fullName>
+        <description>This field will display to partners in the partner portal</description>
         <externalId>false</externalId>
         <label>Application Status</label>
         <required>false</required>
@@ -4164,14 +4165,19 @@ Monthly_Payment__c)</formula>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Additional Signature Required</fullName>
-                    <default>false</default>
-                    <label>Additional Signature Required</label>
-                </value>
-                <value>
                     <fullName>Application Started</fullName>
                     <default>false</default>
                     <label>Application Started</label>
+                </value>
+                <value>
+                    <fullName>Under Review</fullName>
+                    <default>false</default>
+                    <label>Under Review</label>
+                </value>
+                <value>
+                    <fullName>Additional Signature Required</fullName>
+                    <default>false</default>
+                    <label>Additional Signature Required</label>
                 </value>
                 <value>
                     <fullName>Awaiting Information Requested</fullName>
@@ -4179,19 +4185,14 @@ Monthly_Payment__c)</formula>
                     <label>Awaiting Information Requested</label>
                 </value>
                 <value>
-                    <fullName>Complete</fullName>
-                    <default>false</default>
-                    <label>Complete</label>
-                </value>
-                <value>
                     <fullName>Expired/Unqualified</fullName>
                     <default>false</default>
                     <label>Expired/Unqualified</label>
                 </value>
                 <value>
-                    <fullName>Under Review</fullName>
+                    <fullName>Complete</fullName>
                     <default>false</default>
-                    <label>Under Review</label>
+                    <label>Complete</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -7130,6 +7131,23 @@ SEMA = 13 -14</inlineHelpText>
         <unique>false</unique>
     </fields>
     <listViews>
+        <fullName>Additional_information_or_Signature_need</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>LEAD.STATE_CODE</columns>
+        <columns>LEAD.PHONE</columns>
+        <columns>Application__c</columns>
+        <columns>Partner_Application_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Partner_Application_Status__c</field>
+            <operation>equals</operation>
+            <value>Additional Signature Required,Awaiting Information Requested</value>
+        </filters>
+        <label>Additional info or Signature needed</label>
+    </listViews>
+    <listViews>
         <fullName>All_DOER_Unqualified_Leads</fullName>
         <columns>FULL_NAME</columns>
         <columns>LEAD.STATUS</columns>
@@ -7419,6 +7437,23 @@ SEMA = 13 -14</inlineHelpText>
         </sharedTo>
     </listViews>
     <listViews>
+        <fullName>Expired_or_Unqualified</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>LEAD.STATE_CODE</columns>
+        <columns>LEAD.PHONE</columns>
+        <columns>Application__c</columns>
+        <columns>Partner_Application_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Partner_Application_Status__c</field>
+            <operation>equals</operation>
+            <value>Expired/Unqualified</value>
+        </filters>
+        <label>Expired or Unqualified</label>
+    </listViews>
+    <listViews>
         <fullName>Incomplete_ApplicationsPartnerPoral</fullName>
         <columns>FULL_NAME</columns>
         <columns>LEAD.COMPANY</columns>
@@ -7558,6 +7593,23 @@ SEMA = 13 -14</inlineHelpText>
         <sharedTo>
             <group>Avidia_Lending</group>
         </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Partner_Application_started</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>LEAD.STATE_CODE</columns>
+        <columns>LEAD.PHONE</columns>
+        <columns>Application__c</columns>
+        <columns>Partner_Application_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Partner_Application_Status__c</field>
+            <operation>equals</operation>
+            <value>Application Started</value>
+        </filters>
+        <label>Application started</label>
     </listViews>
     <listViews>
         <fullName>RL_Unqualified_Leads_non_DOER</fullName>
@@ -7722,6 +7774,23 @@ SEMA = 13 -14</inlineHelpText>
             <value>Test</value>
         </filters>
         <label>Testcase</label>
+    </listViews>
+    <listViews>
+        <fullName>Under_Review</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>LEAD.STATE_CODE</columns>
+        <columns>LEAD.PHONE</columns>
+        <columns>Application__c</columns>
+        <columns>Partner_Application_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Partner_Application_Status__c</field>
+            <operation>equals</operation>
+            <value>Under Review</value>
+        </filters>
+        <label>Under Review</label>
     </listViews>
     <listViews>
         <fullName>Unreviewed_Leads</fullName>
