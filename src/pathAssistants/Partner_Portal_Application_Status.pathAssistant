@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>Lead</entityName>
+    <fieldName>Partner_Application_Status__c</fieldName>
+    <masterLabel>Partner Portal Application Status</masterLabel>
+    <pathAssistantSteps>
+        <info>&lt;table class=&quot;ql-table-blob&quot; border=&quot;0&quot; style=&quot;width: 549pt;&quot; width=&quot;732&quot;&gt;&lt;tbody&gt;&lt;tr height=&quot;20&quot; style=&quot;height: 15.0pt;&quot;&gt;&lt;td colspan=&quot;1&quot; rowspan=&quot;1&quot; height=&quot;20&quot; width=&quot;732&quot; style=&quot;height: 15.0pt; width: 549pt;&quot;&gt;BlueWave has sent additional contract(s) for the customer to sign.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</info>
+        <picklistValueName>Additional Signature Required</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;Application has been started with a customer.&lt;/p&gt;</info>
+        <picklistValueName>Application Started</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;BlueWave has requested additional information before the application can be finalized.&lt;/p&gt;</info>
+        <picklistValueName>Awaiting Information Requested</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;BlueWave has set up the customer&amp;#39;s account.&lt;/p&gt;</info>
+        <picklistValueName>Complete</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;BlueWave is reviewing the application.&lt;/p&gt;</info>
+        <picklistValueName>Under Review</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>BFG_Community_Solar</recordTypeName>
+</PathAssistant>
