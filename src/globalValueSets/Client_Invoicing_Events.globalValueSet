@@ -35,6 +35,47 @@
         <default>false</default>
         <label>Customer: Assignment Date</label>
     </customValue>
+    <customValue>
+        <fullName>Project: Estimated COD or Customer: Assignment Date</fullName>
+        <default>false</default>
+        <label>Project: Estimated COD or Customer: Assignment Date</label>
+    </customValue>
+    <customValue>
+        <fullName>PTO</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>PTO</label>
+    </customValue>
+    <customValue>
+        <fullName>First Bill</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>First Bill</label>
+    </customValue>
+    <customValue>
+        <fullName>First Customer Bill Date</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>First Customer Bill Date</label>
+    </customValue>
+    <customValue>
+        <fullName>First Customer Assignment Date</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>First Customer Assignment Date</label>
+    </customValue>
+    <customValue>
+        <fullName>COD</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>COD</label>
+    </customValue>
+    <customValue>
+        <fullName>Contract Effective Date</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Contract Effective Date</label>
+    </customValue>
     <masterLabel>Client Invoicing Events</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
