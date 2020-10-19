@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
 public class ClientInvoicingFeeAssignmentServiceTest {
     @IsTest
@@ -11,6 +12,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             Acquisition_Cust_Group_Residential__c = true,
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
+            Acquisition_Cust_Group_Not_Specified__c = true,
             Fee__c = 0.10
         );
         Contract_Fee_Detail__c sssSpecific = new Contract_Fee_Detail__c(
@@ -21,6 +23,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             Acquisition_Cust_Group_Residential__c = true,
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
+            Acquisition_Cust_Group_Not_Specified__c = true,
             Fee__c = 10
         );
         Contract_Fee_Detail__c duplicateSSSSpecific = new Contract_Fee_Detail__c(
@@ -31,6 +34,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             Acquisition_Cust_Group_Residential__c = true,
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
+            Acquisition_Cust_Group_Not_Specified__c = true,
             Fee__c = 10
         );
         Contract_Fee_Detail__c otherSSSSpecific = new Contract_Fee_Detail__c(
@@ -41,6 +45,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             Acquisition_Cust_Group_Residential__c = true,
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
+            Acquisition_Cust_Group_Not_Specified__c = true,
             Fee__c = 10
         );
 
@@ -223,13 +228,67 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         System.assertEquals(0.15,service.getCancellationFee(ordersToRun[3]), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
         System.assertEquals(0.14,service.getCancellationFee(ordersToRun[4]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
     }
+    @IsTest
+    private static void testMatchingLogic() {
+        ClientInvoicingFeeAssignmentService.SubscriptionOrder so = new ClientInvoicingFeeAssignmentService.SubscriptionOrder();
+        setDefaultBooleans(so);
+        ClientInvoicingFeeAssignmentService.ContractFeeDetail cfd = new ClientInvoicingFeeAssignmentService.ContractFeeDetail();
+        setDefaultBooleans(cfd);
+
+        so.residential = true;
+        so.acquisition = true;
+        so.closedByBCS = true;
+        so.bcsAcquired = true;
+        so.publicOfftake = false;
+        so.notPublicOfftake = true;
+
+        cfd.residential = true;
+        cfd.acquisition = true;
+        cfd.closedByBCS = true;
+        cfd.bcsAcquired = true;
+        cfd.publicOfftake = false;
+        cfd.notPublicOfftake = true;
+        System.assert(so.matches(cfd), 'Simple Acquisition SO and CFD should match');
+
+        so.publicOfftake = true;
+        so.notPublicOfftake = false;
+        System.assert(!so.matches(cfd),
+            'SOs are usually not public offtake. ' +
+                'This should no longer match the CFD, since the CFD does not apply to public offtake or not public offtake');
+
+        cfd.publicOfftake = true;
+        cfd.notPublicOfftake = true;
+        System.assert(so.matches(cfd),
+            'The Not Public Offtake checkbox is checked by default on CFD, and a validation requires that,' +
+                ' or the Public Offtake checkbox, or both, to be checked, so this should match now');
+
+        so.residential = false;
+        so.anchor = true;
+        so.publicOfftake = false;
+        so.notPublicOfftake = true;
+        so.investmentGradeAnchor = false;
+        so.notInvestmentGradeAnchor = true;
+
+        cfd.anchor = true;
+        cfd.publicOfftake = false;
+        cfd.notPublicOfftake = true;
+        cfd.investmentGradeAnchor = false;
+        cfd.notInvestmentGradeAnchor = true;
+        System.assert(so.matches(cfd),
+            'A non-investment grade anchor SO should match a non-investment grade anchor CFD');
+
+        so.investmentGradeAnchor = true;
+        so.notInvestmentGradeAnchor = false;
+        System.assert(!so.matches(cfd),
+            'An investment grade anchor SO should NOT match a non-investment grade anchor CFD');
+
+    }
     private static void useMocks() {
         ClientInvoicingFeeAssignmentService.contractFeeDetailSelector = (ContractFeeDetailSelector) Test.createStub(ContractFeeDetailSelector.class, new MockFeeDetailSelector());
         ClientInvoicingFeeAssignmentService.subscripOrderSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
     }
-    public class MockFeeDetailSelector extends MockProvider {
-        public MockFeeDetailSelector() {
-        }
+    private class MockFeeDetailSelector extends MockProvider {
+        @SuppressWarnings('PMD.ApexDoc')
         public override Object handleMethodCall(MethodCall methodCall) {
             Contract_Fee_Detail__c acqBcsAcquiredNonAnchor = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7AAA',
@@ -239,6 +298,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = false,
                 Acquisition_Cust_Group_Public_Offtake__c = false,
+                Acquisition_Cust_Group_Not_Specified__c = true,
                 Acquisition_Cust_Group_Residential__c = true,
                 Acquisition_Cust_Group_Non_Residential__c = true,
                 Acquisition_Sizing_Type_Downsizing__c = false,
@@ -255,6 +315,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = false,
                 Acquisition_Cust_Group_Public_Offtake__c = false,
+                Acquisition_Cust_Group_Not_Specified__c = true,
                 Acquisition_Cust_Group_Residential__c = true,
                 Acquisition_Cust_Group_Non_Residential__c = true,
                 Acquisition_Sizing_Type_Downsizing__c = false,
@@ -271,6 +332,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = true,
                 Acquisition_Cust_Group_Public_Offtake__c = true,
+                Acquisition_Cust_Group_Not_Specified__c = true,
                 Acquisition_Cust_Group_Residential__c = false,
                 Acquisition_Cust_Group_Non_Residential__c = false,
                 Acq_Anchor_Qualif_Investment_Grade__c = true,
@@ -289,6 +351,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = true,
                 Acquisition_Cust_Group_Public_Offtake__c = true,
+                Acquisition_Cust_Group_Not_Specified__c = false,
                 Acquisition_Cust_Group_Residential__c = false,
                 Acquisition_Cust_Group_Non_Residential__c = false,
                 Acq_Anchor_Qualif_Investment_Grade__c = true,
@@ -307,6 +370,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = false,
                 Acquisition_Cust_Group_Public_Offtake__c = false,
+                Acquisition_Cust_Group_Not_Specified__c = true,
                 Acquisition_Cust_Group_Residential__c = true,
                 Acquisition_Cust_Group_Non_Residential__c = true,
                 Acquisition_Sizing_Type_Downsizing__c = false,
@@ -323,6 +387,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = false,
                 Acquisition_Cust_Group_Public_Offtake__c = false,
+                Acquisition_Cust_Group_Not_Specified__c = true,
                 Acquisition_Cust_Group_Residential__c = true,
                 Acquisition_Cust_Group_Non_Residential__c = true,
                 Acquisition_Sizing_Type_Downsizing__c = false,
@@ -339,7 +404,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = true,
                 Acquisition_Cust_Group_Public_Offtake__c = false,
-                Acquisition_Cust_Group_Residential__c = false,
+                 Acquisition_Cust_Group_Not_Specified__c = true,
+                 Acquisition_Cust_Group_Residential__c = false,
                 Acquisition_Cust_Group_Non_Residential__c = false,
                 Acq_Anchor_Qualif_Investment_Grade__c = false,
                 Acq_Anchor_Qualif_Not_Investment_Grade__c = true,
@@ -349,7 +415,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Type_Reacquisition__c = false,
                 Fee__c = 0.16
             );
-             Contract_Fee_Detail__c sameRateForAll = new Contract_Fee_Detail__c(
+            Contract_Fee_Detail__c sameRateForAll = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7HHH',
                 Contract__c = '8003F000000KHH9QAO',
                 Acquisition_Channels_BCS_Acquired__c = true,
@@ -357,6 +423,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Channels_Closed_by_BCS__c = false,
                 Acquisition_Cust_Group_Anchor__c = true,
                 Acquisition_Cust_Group_Public_Offtake__c = true,
+                Acquisition_Cust_Group_Not_Specified__c = true,
                 Acquisition_Cust_Group_Residential__c = true,
                 Acquisition_Cust_Group_Non_Residential__c = true,
                 Acq_Anchor_Qualif_Investment_Grade__c = true,
@@ -375,6 +442,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Channels_Closed_by_BCS__c = true,
                 Acquisition_Cust_Group_Anchor__c = false,
                 Acquisition_Cust_Group_Public_Offtake__c = false,
+                Acquisition_Cust_Group_Not_Specified__c = true,
                 Acquisition_Cust_Group_Residential__c = true,
                 Acquisition_Cust_Group_Non_Residential__c = true,
                 Acquisition_Sizing_Type_Downsizing__c = false,
@@ -396,9 +464,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             return null;
         }
     }
-    public class MockSubscriptionOrderSelector extends MockProvider {
-        public MockSubscriptionOrderSelector() {
-        }
+    private class MockSubscriptionOrderSelector extends MockProvider {
+        @SuppressWarnings('PMD.ApexDoc')
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'selectByIds' {
@@ -408,8 +475,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             return null;
         }
     }
-    public static List<Subscription_Order__c> getSubscriptionOrderMocks(){
-        Date today = System.Today();
+    private static List<Subscription_Order__c> getSubscriptionOrderMocks(){
+        Date today = System.today();
         Date monthFromToday = today.addMonths(1);
         Date monthAgo = today.addMonths(-1);
         String queryData = '[' +
@@ -666,5 +733,22 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         sfab_FabricatedSObject fabbedRecordType = new sfab_FabricatedSObject(RecordType.class, recordTypeValues);
         fabbedAccount.setParent('RecordType', fabbedRecordType);
         return (Subscription_Order__c) fabbedSO.toSObject();
+    }
+
+    private static void setDefaultBooleans(ClientInvoicingFeeAssignmentService.FeeQualification feeQualification) {
+        feeQualification.acquisition = false;
+        feeQualification.reacquisition = false;
+        feeQualification.bcsAcquired = false;
+        feeQualification.notBCSAcquired = false;
+        feeQualification.closedByBCS = false;
+        feeQualification.anchor = false;
+        feeQualification.publicOfftake = false;
+        feeQualification.notPublicOfftake = false;
+        feeQualification.residential = false;
+        feeQualification.nonResidential = false;
+        feeQualification.investmentGradeAnchor = false;
+        feeQualification.notInvestmentGradeAnchor = false;
+        feeQualification.downsizing = false;
+        feeQualification.upsizing = false;
     }
 }

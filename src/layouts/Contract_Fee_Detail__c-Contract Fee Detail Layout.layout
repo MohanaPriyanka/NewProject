@@ -75,15 +75,22 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Acquisition_Cust_Group_Public_Offtake__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Acq_Anchor_Qualif_Investment_Grade__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Acq_Anchor_Qualif_Not_Investment_Grade__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Acquisition_Cust_Group_Public_Offtake__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Acquisition_Cust_Group_Not_Specified__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
