@@ -1,4 +1,5 @@
-/*
+/**
+  @description Assigns Contract Fee Details to a Subscription Order, and generates Client Invoicing Memos, if necessary
   Tested By: ClientInvoicingFeeAssignmentServiceTest, ClientInvoicingFeeWaiveServiceTest
  */
 public without sharing class ClientInvoicingFeeAssignmentService {
@@ -15,19 +16,35 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
     );
 
+    @TestVisible
     private virtual class FeeQualification {
+        @TestVisible
         private Boolean acquisition;
+        @TestVisible
         private Boolean reacquisition;
+        @TestVisible
         private Boolean bcsAcquired;
+        @TestVisible
         private Boolean notBCSAcquired;
+        @TestVisible
         private Boolean closedByBCS;
+        @TestVisible
         private Boolean anchor;
+        @TestVisible
         private Boolean publicOfftake;
+        @TestVisible
+        private Boolean notPublicOfftake;
+        @TestVisible
         private Boolean residential;
+        @TestVisible
         private Boolean nonResidential;
+        @TestVisible
         private Boolean investmentGradeAnchor;
+        @TestVisible
         private Boolean notInvestmentGradeAnchor;
+        @TestVisible
         private Boolean downsizing;
+        @TestVisible
         private Boolean upsizing;
         private List<Id> contractIds;
         private Id recordId;
@@ -39,6 +56,10 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     @TestVisible
     private class SubscriptionOrder extends FeeQualification {
         private Id contractFeeDetailId;
+        @SuppressWarnings('PMD.EmptyStatementBlock')
+        @TestVisible
+        private SubscriptionOrder() {
+        }
         @TestVisible
         private SubscriptionOrder(Subscription_Order__c subOrder) {
             String partnerType = subOrder.Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name;
@@ -54,6 +75,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.notBCSAcquired = partnerType == 'Client Account';
             this.anchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Anchor';
             this.publicOfftake = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake';
+            this.notPublicOfftake = !publicOfftake;
             this.residential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Residential';
             this.nonResidential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Non-Residential';
             this.investmentGradeAnchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Underwriting_Criteria__c == 'Investment-Grade';
@@ -66,44 +88,55 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.sharedSolarSystemId = subOrder.Utility_Account_Subscription__r.Shared_Solar_System__c;
         }
 
-        private Boolean matches(ContractFeeDetail feeDetail){
+        @TestVisible
+        private Boolean matches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail){
             return (this.customerGroupMatches(feeDetail) &&
+                this.customerSubGroupMatches(feeDetail) &&
                 this.acqChannelMatches(feeDetail) &&
                 this.anchorQualifierMatches(feeDetail) &&
                 this.acquisitionTypeMatches(feeDetail)
             );
         }
 
-        private Boolean acquisitionTypeMatches(ContractFeeDetail feeDetail){
+        private Boolean acquisitionTypeMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail){
             return (this.acquisition && feeDetail.acquisition ||
                 this.reacquisition && feeDetail.reacquisition
             );
         }
 
-        private Boolean customerGroupMatches(ContractFeeDetail feeDetail){
+        private Boolean customerGroupMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail){
             return (this.anchor && feeDetail.anchor ||
-                this.publicOfftake && feeDetail.publicOfftake ||
                 this.residential && feeDetail.residential ||
                 this.nonResidential && feeDetail.nonResidential
             );
         }
 
-        private Boolean anchorQualifierMatches(ContractFeeDetail feeDetail){
+        private Boolean customerSubGroupMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail) {
+            return (this.publicOfftake && feeDetail.publicOfftake ||
+                this.notPublicOfftake && feeDetail.notPublicOfftake);
+        }
+
+        private Boolean anchorQualifierMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail) {
             return (!this.anchor ||
-                    (this.investmentGradeAnchor && feeDetail.investmentGradeAnchor ||
+                (this.investmentGradeAnchor && feeDetail.investmentGradeAnchor ||
                     this.notInvestmentGradeAnchor && feeDetail.notInvestmentGradeAnchor)
             );
         }
 
-        private Boolean acqChannelMatches(ContractFeeDetail feeDetail){
+        private Boolean acqChannelMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail) {
             return (this.closedByBCS == feeDetail.closedByBCS &&
-                    (this.bcsAcquired && feeDetail.bcsAcquired ||
-                this.notBCSAcquired && feeDetail.notBCSAcquired)
+                (this.bcsAcquired && feeDetail.bcsAcquired ||
+                    this.notBCSAcquired && feeDetail.notBCSAcquired)
             );
         }
     }
 
+    @TestVisible
     private class ContractFeeDetail extends FeeQualification {
+        @SuppressWarnings('PMD.EmptyStatementBlock')
+        @TestVisible
+        private ContractFeeDetail() {
+        }
         private ContractFeeDetail(Contract_Fee_Detail__c feeDetail) {
             this.recordId = feeDetail.Id;
             this.contractIds = new List<Id>{feeDetail.Contract__c};
@@ -112,6 +145,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             this.notBCSAcquired = feeDetail.Acquisition_Channels_Non_BCS_Acquired__c;
             this.anchor = feeDetail.Acquisition_Cust_Group_Anchor__c;
             this.publicOfftake = feeDetail.Acquisition_Cust_Group_Public_Offtake__c;
+            this.notPublicOfftake = feeDetail.Acquisition_Cust_Group_Not_Specified__c;
             this.residential = feeDetail.Acquisition_Cust_Group_Residential__c;
             this.nonResidential = feeDetail.Acquisition_Cust_Group_Non_Residential__c;
             this.investmentGradeAnchor = feeDetail.Acq_Anchor_Qualif_Investment_Grade__c;
@@ -125,12 +159,20 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
     }
 
+    /**
+     * @description Future method to assign CFDs and generate CIMs outside of the SO approval transaction
+     * @param subscriptionOrderIds Set of Subscription Order Ids to assign
+     */
     @Future
     public static void setSubOrderContractFeeDetailInFuture(Set<Id> subscriptionOrderIds){
         ClientInvoicingFeeAssignmentService feeJob = new ClientInvoicingFeeAssignmentService();
         feeJob.setSubOrderContractFeeDetail(subscriptionOrderIds);
     }
 
+    /**
+     * @description Instance method to assign CFDs and generate CIMs for use in anonymous apex
+     * @param subscriptionOrderIds Set of Subscription Order Ids to assign
+     */
     public void setSubOrderContractFeeDetail(Set<Id> subscriptionOrderIds){
         try {
             List<Subscription_Order__c> queriedSOs = subscripOrderSelector.selectByIds(subscriptionOrderIds);
@@ -150,6 +192,10 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
     }
 
+    /**
+     * @description Finds a matching CFD for each Subscription Order and registers the SO for update
+     * @param subOrders List of Subscription Orders to get assigned to a CFD
+     */
     public void setSubscriptionOrderAcquisitionFee(List<Subscription_Order__c> subOrders){
         List<SubscriptionOrder> subOrdersAsFeeQualifications = new List<SubscriptionOrder>();
         Set<Id> contractIds = new Set<Id>();
@@ -171,18 +217,17 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     }
 
     /**
-     * Registers a Subscription Order with a CFD update with this service's UOW.
+     * @description Registers a Subscription Order with a CFD update with this service's UOW.
      * @param subscriptionOrder The Subscription Order to get assigned a Contract Fee Detail
      * @param contractToFeeDetailMap A MultiMap of Contract Ids to CFDs, to be used to find potential CFDs for that SO
-     *
      * @return A Subscription Order with a potentially populated CFD
      */
     @TestVisible
     private Subscription_Order__c matchSubscriptionOrderToFee(SubscriptionOrder subscriptionOrder, MultiMap contractToFeeDetailMap) {
-        List<ContractFeeDetail> contractFeeDetails = getContractFeeDetailsFromContracts(subscriptionOrder, contractToFeeDetailMap);
+        List<ClientInvoicingFeeAssignmentService.ContractFeeDetail> contractFeeDetails = getContractFeeDetailsFromContracts(subscriptionOrder, contractToFeeDetailMap);
         Subscription_Order__c orderToUpdate;
         MultiMap multiMapForDuplicateCFDCheck = MultiMap.newListInstance();
-        for (ContractFeeDetail cfd : contractFeeDetails) {
+        for (ClientInvoicingFeeAssignmentService.ContractFeeDetail cfd : contractFeeDetails) {
             if (!subscriptionOrder.matches(cfd) || subscriptionOrder.contractFeeDetailId == cfd.recordId) {
                 continue;
             }
@@ -205,15 +250,15 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     }
 
     /**
-     * Initializes or updates the subscriptionOrderSObj with the matching CFD, honoring the Shared Solar System override on the CFD.
+     * @description Initializes or updates the subscriptionOrderSObj with the matching CFD, honoring the Shared Solar System override on the CFD.
      * @param subscriptionOrderSObj The Subscription Order SObject used to update the SO with a CFD.
      * @param subscriptionOrder The apex class that represents the Subscription Order SObject to be compared to the CFD
      * @param cfd The apex class that represents the Contract Fee Detail SObject to be compared to the SO
      * @param multiMapForDuplicateCFDCheck A MultiMap used to report if there are duplicate CFDs (with SSS specifications and without)
-     * @returns The subscriptionOrderSObj, which might be initialized to a new SO.
+     * @return The subscriptionOrderSObj, which might be initialized to a new SO.
      */
     private Subscription_Order__c handleMatchingCFD(Subscription_Order__c subscriptionOrderSObj, SubscriptionOrder subscriptionOrder,
-        ContractFeeDetail cfd, MultiMap multiMapForDuplicateCFDCheck) {
+        ClientInvoicingFeeAssignmentService.ContractFeeDetail cfd, MultiMap multiMapForDuplicateCFDCheck) {
         multiMapForDuplicateCFDCheck.putValue(cfd.sharedSolarSystemId, cfd);
         if (subscriptionOrderSObj == null) {
             // This must be the first matching CFD, so we'll assign it to the SO independent of whether there's a
@@ -226,14 +271,13 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             // There's already a CFD that matches this SO, but it could be one that didn't have a SSS override.
             // Because this CFD is SSS specific and it matches the SO's SSS, we'll use it.
             subscriptionOrderSObj.Contract_Fee_Detail__c = cfd.recordId;
-        } else {
-            // The feeDetail must have a null or not matching SSS. Because there's already a CFD assigned to the SO (either a SSS
-            // specific one or a duplicate), we'll skip assigning this.
         }
+        // Otherwise, the feeDetail must have a null or not matching SSS. Because there's already a CFD assigned to the SO (either a SSS
+        // specific one or a duplicate), we'll skip assigning this.
         return subscriptionOrderSObj;
     }
 
-    private List<ContractFeeDetail> getContractFeeDetailsFromContracts(SubscriptionOrder subOrder, MultiMap contractToFeeDetailMap) {
+    private List<ClientInvoicingFeeAssignmentService.ContractFeeDetail> getContractFeeDetailsFromContracts(SubscriptionOrder subOrder, MultiMap contractToFeeDetailMap) {
         List<ContractFeeDetail> contractDetails = new List<ContractFeeDetail>();
         // Max 2 contracts per Subscription Order (1 Acq, 1 Mgmt)
         for (Id contractId : subOrder.contractIds) {
@@ -268,9 +312,12 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
     }
 
+    /**
+     * @description Returns the upsizing reacquisition fee is relevant for this customer type (ie, the fee at which a customer will be replaced)
+     * @param order The Subscription Order for which this gets the cancellation fee
+     * @return Cancellation Rate for the Subscription Order
+     */
     public Decimal getCancellationFee(Subscription_Order__c order){
-        // Returns the upsizing reacquisition fee is relevant for this customer type
-        // (ie, the fee at which a customer will be replaced)
         SubscriptionOrder subOrder = new SubscriptionOrder(order);
         subOrder.upsizing = true;
         subOrder.downsizing = false;

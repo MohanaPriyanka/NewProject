@@ -226,12 +226,23 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Acquisition_Cust_Group_Not_Specified__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>True if this CFD applies to Opportunities without a Customer Group specified (typically the case)</inlineHelpText>
+        <label>Acq Cust. Sub-Group: Not Specified</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Acquisition_Cust_Group_Public_Offtake__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>True if valid fee for customers with the Customer Group = Public Offtake.
-Small offtake (ie, Residential and Non-Residential Customer Groups) can be labeled as &quot;non-Demand Customers&quot; and Anchors can be labeled as &quot;Demand Customers&quot; in client contracts.</inlineHelpText>
-        <label>Acquisition Cust. Group: Public Offtake</label>
+        <inlineHelpText>True if this CFD is valid for customers with the Customer Sub-Group = Public Offtake.</inlineHelpText>
+        <label>Acq Cust. Sub-Group: Public Offtake</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -880,6 +891,25 @@ NOT(ISPICKVAL(Recurring_Frequency__c,&quot;&quot;))
 )</errorConditionFormula>
         <errorDisplayField>Management_Fee_Type__c</errorDisplayField>
         <errorMessage>If this fee is recurring, you must populate the recurring frequency field. You can&apos;t populate recurring frequency without also setting the fee type to recurring</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Specify_Public_Offtake_or_Not</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND (OR (Acquisition_Type_Acquisition__c,
+         Acquisition_Type_Reacquisition__c ),
+     NOT(Acquisition_Cust_Group_Public_Offtake__c ),
+     NOT(Acquisition_Cust_Group_Not_Specified__c))</errorConditionFormula>
+        <errorDisplayField>Acquisition_Cust_Group_Not_Specified__c</errorDisplayField>
+        <errorMessage>For Acquisition and Reacquisition CFDs, specify whether it should apply to Public Offtake or customers without a Customer Sub-Group (specified on the Opportunity), or both</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Specify_Underwriting_For_Anchors</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( Acquisition_Cust_Group_Anchor__c , 
+     NOT( Acq_Anchor_Qualif_Investment_Grade__c ),
+     NOT( Acq_Anchor_Qualif_Not_Investment_Grade__c ))</errorConditionFormula>
+        <errorDisplayField>Acquisition_Cust_Group_Anchor__c</errorDisplayField>
+        <errorMessage>For this anchor CFD, please specify whether it applies to Investment Grade or Non-Investment Grade customers, or both (otherwise, it won&apos;t apply to any anchors).</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Utilization_Amount_Type_Match</fullName>
