@@ -232,6 +232,11 @@
         <fields>Request_Sent_Date__c</fields>
         <fields>Request_Status__c</fields>
         <fields>Request_Recieved_Date__c</fields>
+        <fields>Customer_Name__c</fields>
+        <fields>Address_Line_1__c</fields>
+        <fields>Address_Line_2__c</fields>
+        <fields>City__c</fields>
+        <fields>Zip_Code__c</fields>
         <relatedList>Utility_Data_Request__c.Utility_Account_Log__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
