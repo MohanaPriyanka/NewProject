@@ -1877,6 +1877,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Palmetto Solar</label>
                 </value>
                 <value>
+                    <fullName>Partner Energy Group</fullName>
+                    <default>false</default>
+                    <label>Partner Energy Group</label>
+                </value>
+                <value>
                     <fullName>Pinnacle Energy</fullName>
                     <default>false</default>
                     <label>Pinnacle Energy</label>
