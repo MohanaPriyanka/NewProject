@@ -193,7 +193,7 @@ const validateBasicInfoCompleted = (capacity, lead, loc) => {
 
     // First verify that capacity exists and we have all required fields
     const hasCapacity = capacity.hasCapacity && !!capacity.products && capacity.products.length !== 0;
-    const hasUtilities = !!capacity.utilities && capacity.utilities.length === 1;
+    const hasUtilities = !!capacity.utilities && !!lead.utilityId;
     const hasCapacityZip = !!capacity.zipCode;
 
     if (!hasCapacity || !hasUtilities || !hasCapacityZip) {
