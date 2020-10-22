@@ -102,6 +102,7 @@ public without sharing class LeadSelector {
                 City, 
                 Company, 
                 Continue_Application_Link__c,
+                Contract_eSign_Link__c,
                 CreatedDate,
                 Customer_Referral__c, 
                 Customer_Signed_Date__c, 
@@ -149,7 +150,6 @@ public without sharing class LeadSelector {
             WHERE Id = :leadIds
         ];
     }
-    
 
     public Lead selectOneWithPropertiesAndUtilities(Id leadId) {
         String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Product__r.Name, Customer_Signed_Date__c, Utility_relationship__r.EIA_ID__c, Underwriting_Criteria__c';
@@ -161,14 +161,12 @@ public without sharing class LeadSelector {
         return Database.query(String.escapeSingleQuotes(query));
     }
 
-
     public List<Lead> selectForMerge(Set<Id> leadIds) {
         String fields = String.join(apiLeadFields, ', ');
         String query = 'SELECT ' + fields + ' FROM Lead ' + ' WHERE Id IN :leadIds ORDER BY CreatedDate ASC';
         List<Lead> leadList = Database.query(String.escapeSingleQuotes(query));
         return leadList;
     }
-
 
     public Lead selectOneForContractCreation(Id leadId) {
         List<Lead> leads = [
@@ -184,10 +182,9 @@ public without sharing class LeadSelector {
         return leads[0];
     }
 
-
     public Lead selectOneForStatusUpdate(Id leadId) {
         List<Lead> leads = [
-            SELECT Id, Application_Complete_Date__c, Application_Status__c, Continue_Application_Link__c,
+            SELECT Id, Application_Complete_Date__c, Application_Status__c, Continue_Application_Link__c, Contract_eSign_Link__c,
                 (SELECT Id FROM Accounts__r),
                 (SELECT Id, Utility_lookup__r.Utility_Data_Collection_Mechanism__c FROM Utility_Account_Logs__r),
                 (SELECT Id, Customer_Signature_Date_Time__c FROM Contracts__r)
@@ -195,10 +192,22 @@ public without sharing class LeadSelector {
             WHERE Id = :leadId
         ];
 
-        if(leads.isEmpty()) {
+        if (leads.isEmpty()) {
             return null;
         }
 
         return leads[0];
     }
+
+    public List<Lead> selectForUDRCreation(List<Id> leadIds) {
+        List<Lead> leads = [
+            SELECT Id, Utility_relationship__r.Utility_Data_Collection_Mechanism__c,
+                (SELECT Id, Name, Utility_lookup__c, Utility_lookup__r.Name, Utility_lookup__r.Utility_DUNS_Number__c
+                 FROM Utility_Account_Logs__r)
+            FROM Lead
+            WHERE Id =: new Set<Id>(leadIds)
+        ];
+        return leads;
+    }
+
 }

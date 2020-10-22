@@ -84,41 +84,67 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
         envelope.setJSONResponse(response);
     }
-    
+
+    /**
+     * Called by (Aura) SSFApplication/SSFApplicationDTC on SSF application completion
+     * <br><br>
+     * Sets return envelope data to pass back to UI
+     * @param jsonRequest Incoming PATCH request body
+     */
     public virtual void patchLead(String jsonRequest) {
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         RestResponse response = RestContext.response;
-
         Lead leadToUpdate = leadSelector.selectOne(requestLead.id);
+        Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
+        Boolean applicationNowComplete = false;
+
         if (leadToUpdate == null) {
             response.statusCode = statusCode.notFound;
-        } else {
-            Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
-            if (requestMap.size() <= 1) { // if == 1, then only has "id", which is not enough fields for a PATCH
-                envelope.addError('Request did not include correct fields to update');
-                response.statusCode = statusCode.badRequest;
-            } else {
-                if (requestLead.applicationCompleteDate != null && leadToUpdate.Application_Complete_Date__c == null) {
-                    if(requestLead.underwritingCriteria == 'FICO') {
-                    //pull credit, only once; on first time the app complete date is set
-                    leadToUpdate.Soft_Pull_Credit_Report__c = true;
-                    } else if(requestLead.underwritingCriteria == 'Financial Review') {
-                        leadToUpdate.Status = qualificationService.underwriteWithFinancialReview(leadToUpdate);
-                    }
-                    List<Account> propertyAccounts =  accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id> {requestLead.Id});
-                    ZuoraAccountService.createAccounts(propertyAccounts);
-                }
-                requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
-                
-                Lead lead = leadService.updateLead(leadToUpdate);
-                updateLeadApplicationStatus(lead.Id);
+            envelope.setJSONResponse(response);
+            return;
+        }
 
-                // TODO: should eventually respond with full data structure to UI (e.g. include property accts and UALs).  Maybe when unit-of-work is implemented?
-                RestLead responseLead = new RestLead(lead);
-                envelope.setData(responseLead);
-                response.statusCode = statusCode.ok;
+        if (requestMap.size() <= 1) { // if == 1, then only has "id", which is not enough fields for a PATCH
+            envelope.addError('Request did not include correct fields to update');
+            response.statusCode = statusCode.badRequest;
+            envelope.setJSONResponse(response);
+            return;
+        }
+
+        // Handle Application Complete state
+        if (requestLead.applicationCompleteDate != null && leadToUpdate.Application_Complete_Date__c == null) {
+            applicationNowComplete = true;
+
+            if (requestLead.underwritingCriteria == 'FICO') {
+                // pull credit, only once; on first time the app complete date is set
+                leadToUpdate.Soft_Pull_Credit_Report__c = true;
+            } else if (requestLead.underwritingCriteria == 'Financial Review') {
+                leadToUpdate.Status = qualificationService.underwriteWithFinancialReview(leadToUpdate);
             }
         }
+
+        // Update Lead with fields from PATCH
+        requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
+        Lead lead = leadService.updateLead(leadToUpdate);
+
+        // Check & Update "Application Status" if necessary
+        updateLeadApplicationStatus(lead.Id);
+
+        // Handle other non-Lead database changes if the application is newly marked as "Application Complete"
+        // Placed last because we want to ensure Lead properly updates before queueing other object changes
+        if (applicationNowComplete) {
+            // Insert Zuora Contacts and update Property Account with a Zuora Id as system
+            List<Account> propertyAccounts = accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{requestLead.Id});
+            ZuoraAccountService.createAccounts(propertyAccounts);
+
+            // Assess Utility_Data_Request__c (UDR) Creation
+            //UtilityDataRequestService.create(new List<Id>{requestLead.Id});
+        }
+
+        // Set return envelope
+        RestLead responseLead = new RestLead(lead);
+        envelope.setData(responseLead);
+        response.statusCode = statusCode.ok;
         envelope.setJSONResponse(response);
     }
 
@@ -179,17 +205,16 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Map<String, Object> requestLeadMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
         Id leadId = (Id)requestLeadMap.get('id');
         Lead existingLead = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
-        
 
         if (applicationValid(jsonRequest, response, existingLead)) {
             Savepoint sp = Database.setSavepoint();
             try {
                 Set<Id> contractIdSet = new Set<Id>();
-                for(Contract contract : existingLead.Contracts__r) {
+                for (Contract contract : existingLead.Contracts__r) {
                     contractIdSet.add(contract.Id);
                 }
                 List<ContentDocumentLink> existingDocs = new List<ContentDocumentLink>();
-                if(!contractIdSet.isEmpty()) { 
+                if (!contractIdSet.isEmpty()) {
                     existingDocs = contentSelector.selectByLinkedEntities(contractIdSet);
                 }
                 
@@ -197,20 +222,19 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 updateLeadAccountAndUALs(jsonRequest, existingLead);
                 uow.commitWork();
                 
-                if(regenerateDocs) {
+                if (regenerateDocs) {
                     customerContractService.regenerateDocuments(leadId);
                 }
                 updateLeadApplicationStatus(leadId);
 
                 Integer numberOfDocs;
-                if(requestLeadMap.containsKey('numberOfContractDocs')) {
+                if (requestLeadMap.containsKey('numberOfContractDocs')) {
                     numberOfDocs = (Integer)requestLeadMap.get('numberOfContractDocs');
                 }
                 RestLead responseLead = formatRestLeadFromLeadAndChildren(leadId, regenerateDocs, numberOfDocs);
                 responseLead.numberOfContractDocs = numberOfDocs;
                 envelope.setData(responseLead);
                 response.statusCode = statusCode.ok;
-
             } catch (Util.BWException bwe) {
                 envelope.addError(bwe.getMessage());
                 response.statusCode = statusCode.badRequest;
@@ -376,18 +400,19 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         envelope.setJSONResponse(response);
     }
 
-
-    /********************   HELPER METHODS  ********************/
     private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
         Lead newLead = requestLead.asLead();
         newLead = leadService.insertLead(newLead);
         newLead = duplicateService.checkLeadDuplicates(newLead);
-        
-        newLead.Continue_Application_Link__c = baseUrl + '?leadid=' + newLead.Id + '&email=' + newLead.Email + '&loc=' + APP_STATUS_TO_LOCATION.get('Started');
+
+        // Set continue application links
+        String applicationStatus = getApplicationStatus(newLead);
+        setContinueApplicationLinks(newLead, applicationStatus);
+
         newLead = leadService.updateLead(newLead);
 
-        if(requestLead.financialDocs != null) {
-            for(RestLead.RestContentDocument contentDoc : requestLead.financialDocs) {
+        if (requestLead.financialDocs != null) {
+            for (RestLead.RestContentDocument contentDoc : requestLead.financialDocs) {
                 Financial_Underwriting_Document__c finDoc = new Financial_Underwriting_Document__c(Lead__c = newLead.Id);
                 uow.registerNew(finDoc);
                 registerNewContentDocs(new List<RestLead.RestContentDocument>{contentDoc}, finDoc);
@@ -395,25 +420,28 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         
         if (requestLead.propertyAccounts != null) {            
-            for(RestLead.RestPropertyAccount requestPropertyAccount : requestLead.propertyAccounts) {
+            for (RestLead.RestPropertyAccount requestPropertyAccount : requestLead.propertyAccounts) {
                 Account newAccount = requestPropertyAccount.asAccount(newLead);
                 uow.registerNew(newAccount);
-                if(newLead.Product__c != null) {
+                if (newLead.Product__c != null) {
                     Contract c = customerContractService.setContractFields(newLead, requestLead.numberOfContractDocs);
                     uow.registerNew(c, Contract.AccountId, newAccount);
                 }
-                if(requestPropertyAccount.utilityAccountLogs != null) {
+                if (requestPropertyAccount.utilityAccountLogs != null) {
                     registerNewUALs(requestPropertyAccount.utilityAccountLogs, newAccount);
                 }
             }
-
         }
+
         uow.commitWork();
+
         updateLeadApplicationStatus(newLead.Id);
         RestLead responseLead = formatRestLeadFromLeadAndChildren(newLead.Id, true, requestLead.numberOfContractDocs);
-        if(requestLead.numberOfContractDocs != null) {
+
+        if (requestLead.numberOfContractDocs != null) {
             responseLead.numberOfContractDocs = requestLead.numberOfContractDocs;
         }
+
         envelope.setData(responseLead);
         response.statusCode = statusCode.created;
     }
@@ -425,18 +453,22 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         requestLead.mergeFields(requestLeadMap.keySet(), existingLead);
         uow.registerDirty(existingLead);
 
-        if(requestLead.propertyAccounts != null && !requestLead.propertyAccounts.isEmpty()) {
+        if (requestLead.propertyAccounts != null && !requestLead.propertyAccounts.isEmpty()) {
             List<RestLead.RestPropertyAccount> requestPropertyAccounts = requestLead.propertyAccounts;
             List<Object> requestAccountList = (List<Object>)requestLeadMap.get('propertyAccounts');
             updateAccount(existingLead, requestPropertyAccounts, requestAccountList);
         }
     }
 
-    private void registerNewUALs(List<RestLead.RestUtilityAccountLog> requestUtilityAccountLogs, Account propertyAccount) {
-        for(RestLead.RestUtilityAccountLog requestUtilityAccountLog : requestUtilityAccountLogs) {
+    /**
+     * @param reqUALs Utility Account Log's (UAL) to insert
+     * @param propertyAccount Parent Property Account to which the UALs belong
+     */
+    private void registerNewUALs(List<RestLead.RestUtilityAccountLog> reqUALs, Account propertyAccount) {
+        for (RestLead.RestUtilityAccountLog requestUtilityAccountLog : reqUALs) {
             Utility_Account_Log__c newUal = requestUtilityAccountLog.asUAL(propertyAccount);
             uow.registerNew(newUal, Utility_Account_Log__c.Account__c, propertyAccount);
-            if(requestUtilityAccountLog.utilityBills != null) {
+            if (requestUtilityAccountLog.utilityBills != null) {
                 registerNewContentDocs(requestUtilityAccountLog.utilityBills, newUal);
             }
         }
@@ -717,44 +749,76 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         return restContentDocs;
     }
 
-
+    /**
+     * Updates Lead Application Status based on Lead criteria and specific logic.
+     * <br>
+     * Operates similar to a Trigger on Lead.
+     *
+     * @param leadId Lead to update
+     */
     @SuppressWarnings('PMD.ApexOpenRedirect')
     public void updateLeadApplicationStatus(Id leadId) {
         Lead lead = leadSelector.selectOneForStatusUpdate(leadId);
         String status = getApplicationStatus(lead);
-        if(lead.Application_Status__c != status) {
+        if (lead.Application_Status__c != status) {
             lead.Application_Status__c = status;
-
-            if(lead.Continue_Application_Link__c != null) {
-                PageReference url = new PageReference(lead.Continue_Application_Link__c);
-                url.getParameters().put('loc', APP_STATUS_TO_LOCATION.get(status));
-                lead.Continue_Application_Link__c = url.getUrl();
-            } else {
-                lead.Continue_Application_Link__c = baseUrl + '?leadid=' + lead.Id + '&email=' + lead.Email + '&loc=' + APP_STATUS_TO_LOCATION.get('Started');
-            }
-            
+            setContinueApplicationLinks(lead, status);
             Util.updateAndLog(new List<SObject>{lead}, 'CSLeadsRESTControllerV2', 'updateLeadApplicationStatus');
         }
     }
 
+    public void setContinueApplicationLinks(Lead lead, String applicationStatus) {
+        String location = APP_STATUS_TO_LOCATION.get(applicationStatus);
+
+        // Set Continue Application Link
+        if (lead.Continue_Application_Link__c != null) {
+            PageReference url = new PageReference(lead.Continue_Application_Link__c);
+
+            // Set new location parameter based on where in the application the customer is
+            url.getParameters().put('loc', location);
+
+            // Ensure partnerId is filled in
+            if (url.getParameters().get('partnerId') == null) {
+                url.getParameters().put('partnerId', lead.Partner_Lookup__c);
+            }
+
+            lead.Continue_Application_Link__c = url.getUrl();
+        } else {
+            lead.Continue_Application_Link__c =
+                baseUrl +
+                '?leadid=' + lead.Id +
+                '&email=' + lead.Email +
+                '&loc=' + location +
+                '&partnerId=' + lead.Partner_Lookup__c;
+        }
+
+        // Set Contract Re-Sign (Agree page) link, if empty and ever needed later (W-020708)
+        if (lead.Contract_eSign_Link__c	== null) {
+            lead.Contract_eSign_Link__c =
+                baseUrl +
+                '?leadid=' + lead.Id +
+                '&email=' + lead.Email +
+                '&loc=' + 'agree' +
+                '&partnerId=' + lead.Partner_Lookup__c;
+        }
+    }
 
     public String getApplicationStatus(Lead lead) {
-        if(lead.Application_Complete_Date__c != null) {
+        if (lead.Application_Complete_Date__c != null) {
             return 'Application Completed';
         }
 
         Boolean contractsSigned = true;
-        for(Contract contract : lead.Contracts__r) {
-            if(contract.Customer_Signature_Date_Time__c == null) {
+        for (Contract contract : lead.Contracts__r) {
+            if (contract.Customer_Signature_Date_Time__c == null) {
                 contractsSigned = false;
                 break;
             }
         }
-        if(!lead.Contracts__r.isEmpty() && contractsSigned) {
+        if (!lead.Contracts__r.isEmpty() && contractsSigned) {
             return 'Contracts Signed';
         }
-
-        if(!lead.Accounts__r.isEmpty() && !lead.Utility_Account_Logs__r.isEmpty()) {
+        if (!lead.Accounts__r.isEmpty() && !lead.Utility_Account_Logs__r.isEmpty()) {
             return getUALStatus(lead.Utility_Account_Logs__r);
         }
 
