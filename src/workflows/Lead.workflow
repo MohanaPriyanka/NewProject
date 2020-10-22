@@ -1189,7 +1189,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <name>Conga_Trigger_Review_Contract_Generae</name>
             <type>OutboundMessage</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <description>Previous logic:
 AND( Product_line__c=&quot;Community Solar&quot;, ISPICKVAL(LeadSource,&quot;Switch&quot;), ISBLANK(Customer_Signed_Date__c), NOT(ISBLANK(Product__c)), $User.LastName!=&quot;Originations&quot; )
 Logic moved into POST lead API</description>
@@ -1202,7 +1202,7 @@ Logic moved into POST lead API</description>
             <name>Conga_Trigger_Review_Contract_Generae</name>
             <type>OutboundMessage</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND(  Product_line__c=&quot;Community Solar&quot;,   ISPICKVAL(LeadSource,&quot;Switch&quot;),  ISBLANK(PRIORVALUE(Customer_Signed_Date__c)),   NOT(ISBLANK(Customer_Signed_Date__c)),  NOT(ISBLANK(Product__c)),   $User.LastName!=&quot;Originations&quot; )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
