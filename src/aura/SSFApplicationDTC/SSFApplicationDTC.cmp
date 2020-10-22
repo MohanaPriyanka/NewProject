@@ -1,8 +1,4 @@
-<!--
- - Created by lindsayholmes_gearscrm on 2020-09-14.
- -->
-
- <aura:component description="SSFApplication" implements="forceCommunity:availableForAllPageTypes" access="global" controller="SimpleSignupFormController">
+<aura:component description="SSFApplication" implements="forceCommunity:availableForAllPageTypes" access="global" controller="SimpleSignupFormController">
     <aura:attribute name="getInfo" type="Boolean"/>
     <aura:attribute name="getPayment" type="Boolean"/>
     <aura:attribute name="showComplete" type="Boolean"/>
@@ -16,7 +12,7 @@
     <div class="slds-align_absolute-center slds-var-p-bottom_x-large ssf-container">
         <c:LightningErrorHandler/>
         <aura:if isTrue="{!v.getInfo}">
-            <c:ssfDTC onconsentscomplete="{!c.handleConsents}" onallcomplete="{!c.showComplete}"/>
+            <c:ssfDTC onconsentscomplete="{!c.handleConsents}"/>
         </aura:if>
         <aura:if isTrue="{!v.getPayment}">
             <div>
