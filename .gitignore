@@ -377,6 +377,10 @@ src/package.xml
 #If we want to promote custom metadata changes for installed pacakges, we can't ignore them.
 !src/customMetadata/*
 
+#If we want to promote custom application changes for installed pacakges, we can't ignore them.
+!src/CustomApplication/*
+
+
 #profiles and permission sets are complex Files. If your Org's 
 #metadata and Git are in sync, you can track incremental changes on 
 #Profiles and Permission sets using Copado "commit files" functionality.
