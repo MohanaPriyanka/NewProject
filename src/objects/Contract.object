@@ -267,13 +267,13 @@ Account.Assignment_Agreement_Template__c
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Template_ID_Countersigned__c +
-&quot;&amp;qvar0id={!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNCONTRACT}?pv0=&quot; + Id +
-&quot;&amp;queryid=[ResiSig]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNRESISIG}?pv1={QVar0},[Opp]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNOPP}?pv1={QVar0},[UAS]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNUAS}?pv1={QVar0},[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNBIZ}?pv1={QVar0},[Resi]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNRESI}?pv1={QVar0}&quot; +
+&quot;&amp;qvar0id=a271D000000IwtgQAC?pv0=&quot; + Id +
+&quot;&amp;queryid=[ResiSig]a271D000000IwtfQAC?pv1={QVar0},[Opp]a271D000000IwthQAC?pv1={QVar0},[UAS]a271D000000IwtkQAC?pv1={QVar0},[Biz]a271D000000IwtiQAC?pv1={QVar0},[Resi]a271D000000IwtfQAC?pv1={QVar0},[NonGuarantor]{!Environment.SSF_Contract_Query_Countersign_NonResiSig}?pv1={QVar0},[SSS]{!Environment.Conga_Query_SSF_Contract_SSS}?pv2=&quot; +  Lead__r.Utility_relationship__r.Id +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;defaultpdf=1&quot; +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;apdf=0&quot; +
-&quot;&amp;emailtemplateid=00X0a000000j75n&quot; +
+&quot;&amp;emailtemplateid={!Environment.Conga_emailtemplate_SSFCountersigned}&quot; +
 &quot;&amp;emailtoid=&quot; + Account.Send_Bills_Contact__r.Id +
 &quot;&amp;emailrelatedtoid={QVar0}&quot; +
 &quot;&amp;emailfromid=0D20a0000004K0P&quot; +
@@ -295,7 +295,7 @@ Account.Assignment_Agreement_Template__c
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Template__c +
-&quot;&amp;queryid=[UAL]{!Environment.VAR_QUERY_SSFCONTRACT_UAL}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_BIZ}?pv1=&quot; + Lead__r.Id + &quot;,[Lead]{!Environment.VAR_QUERY_SSFCONTRACT_LEAD}?pv1=&quot; + Lead__r.Id +
+&quot;&amp;queryid=[UAL]a271D000000IwtZQAS?pv1=&quot; + Lead__r.Id + &quot;,[Biz]a271D000000IwtaQAC?pv1=&quot; + Lead__r.Id + &quot;,[Lead]a271D000000IwtdQAC?pv1=&quot; + Lead__r.Id + &quot;,[SSS]{!Environment.Conga_Query_SSF_Contract_SSS}?pv2=&quot; + Lead__r.Utility_relationship__r.Id +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;APDF=0&quot; +
@@ -319,7 +319,7 @@ Account.Assignment_Agreement_Template__c
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Template__c +
-&quot;&amp;queryid=[CustSig]{!Environment.VAR_QUERY_SSFCONTRACT_CUSTSIG}?pv0=&quot; + Id + &quot;,[BizSig]{!Environment.VAR_QUER_SSFCONTRACT_BIZSIG}?pv0=&quot; + Id + &quot;,[UAL]{!Environment.VAR_QUERY_SSFCONTRACT_UAL}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_BIZ}?pv1=&quot; + Lead__r.Id + &quot;,[Lead]{!Environment.VAR_QUERY_SSFCONTRACT_LEAD}?pv1=&quot; + Lead__r.Id + &quot;,[ResiSig]{!Environment.VAR_CONGA_QUERY_SSFCONTRACT_ResiSig}?pv0=&quot; + Id +
+&quot;&amp;queryid=[CustSig]a271D000000IwtbQAC?pv0=&quot; + Id + &quot;,[BizSig]a271D000000IwtcQAC?pv0=&quot; + Id + &quot;,[UAL]a271D000000IwtZQAS?pv1=&quot; + Lead__r.Id + &quot;,[Biz]a271D000000IwtaQAC?pv1=&quot; + Lead__r.Id + &quot;,[Lead]a271D000000IwtdQAC?pv1=&quot; + Lead__r.Id + &quot;,[ResiSig]a271D000000IwteQAC?pv0=&quot; + Id + &quot;,[NonGuarantor]{!Environment.Conga_SSF_Query_ReviewSign_NonResiSig}?pv0&quot; + Id + &quot;,[SSS]{!Environment.Conga_Query_SSF_Contract_SSS}?pv2=&quot; +  Lead__r.Utility_relationship__r.Id +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;APDF=0&quot; +
@@ -349,12 +349,18 @@ Account.Assignment_Agreement_Template__c
 
 &quot;[Terms and Conditions]&quot;&amp;Product__r.Generic_Terms_Template_Countersigned__c,
 
+IF( 
+Generate_Disclosure_Form__c=true
+,
+
 &quot;[Community Solar Agreement]&quot;&amp;Product__r.Project_Specific_Template_Countersigned__c&amp;
-IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&quot;&amp;&quot;[Solar Disclosure Form]&quot;&amp;Product__r.Disclosure_Template_Countersigned__c
+IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&quot;&amp;&quot;[Solar Disclosure Form]&quot;&amp;Product__r.Disclosure_Template_Countersigned__c)
+,
+
+&quot;[Community Solar Agreement]&quot;&amp;Product__r.Project_Specific_Template_Countersigned__c
 
 )
 )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Conga Template ID (Countersigned)</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -365,12 +371,21 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Conga_Template__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
- ISPICKVAL(Contract_Type__c,&quot;Generic&quot;),
+ISPICKVAL(Contract_Type__c,&quot;Generic&quot;)
+,
 
-&quot;[Terms and Conditions]&quot;&amp;Product__r.Generic_Terms_Conga_Template__c,
+&quot;[Terms and Conditions]&quot;&amp;Product__r.Generic_Terms_Conga_Template__c
+,
+
+IF( 
+Generate_Disclosure_Form__c=true
+,
 
 &quot;[Community Solar Agreement]&quot;&amp;Product__r.Project_Specific_Conga_Template__c&amp;
-IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&quot;&amp;&quot;[Solar Disclosure Form]&quot;&amp;Product__r.Disclosure_Form_Conga_Template__c
+IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&quot;&amp;&quot;[Solar Disclosure Form]&quot;&amp;Product__r.Disclosure_Form_Conga_Template__c)
+,
+
+&quot;[Community Solar Agreement]&quot;&amp;Product__r.Project_Specific_Conga_Template__c
 
 )
 )</formula>

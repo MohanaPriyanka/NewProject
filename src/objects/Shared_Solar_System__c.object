@@ -1029,6 +1029,20 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Expected_Yield_MW__c</fullName>
+        <description>This field is used in the Maine customer contract used in SSF. It converts the expected yield kW to MW by dividing by 1000.</description>
+        <externalId>false</externalId>
+        <formula>Expected_Yield_kWh_kW__c/1000</formula>
+        <label>Expected Yield (MW)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Expected_Yield_kWh_kW__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>How much energy (kWh) is produced for every kW of project capacity. If yield increases, every kW of the project will produce more energy, and need more CS offtakers to use that capacity</inlineHelpText>
@@ -2296,6 +2310,20 @@ Total_System_Size_kWh_DC__c
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Committed Capacity + Reserved Capacity</inlineHelpText>
         <label>Total Capacity Committed/Reserved</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_System_Size_MW_DC__c</fullName>
+        <description>This is used in the Conga Template for the Maine customer contract used in SSF. It converts the kW DC system size to MW by dividing it by 1000.</description>
+        <externalId>false</externalId>
+        <formula>Total_System_Size_kWh_DC__c/1000</formula>
+        <label>Total System Size MW DC</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
