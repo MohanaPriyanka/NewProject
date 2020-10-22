@@ -250,6 +250,13 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         cfd.notPublicOfftake = true;
         System.assert(so.matches(cfd), 'Simple Acquisition SO and CFD should match');
 
+        cfd.sharedSolarSystemId = Util.getFakeId(Shared_Solar_System__c.SObjectType);
+        System.assert(so.matches(cfd), 'CFD should match SO if they both have the same system');
+
+        cfd.sharedSolarSystemId = Util.incrementFakeId(cfd.sharedSolarSystemId);
+        System.assert(!so.matches(cfd), 'CFD should not match SO if they do not have the same system');
+
+        cfd.sharedSolarSystemId = null;
         so.publicOfftake = true;
         so.notPublicOfftake = false;
         System.assert(!so.matches(cfd),
@@ -750,5 +757,6 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         feeQualification.notInvestmentGradeAnchor = false;
         feeQualification.downsizing = false;
         feeQualification.upsizing = false;
+        feeQualification.sharedSolarSystemId = Util.getFakeId(Shared_Solar_System__c.SObjectType);
     }
 }

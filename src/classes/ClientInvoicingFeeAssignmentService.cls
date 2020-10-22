@@ -94,7 +94,8 @@ public without sharing class ClientInvoicingFeeAssignmentService {
                 this.customerSubGroupMatches(feeDetail) &&
                 this.acqChannelMatches(feeDetail) &&
                 this.anchorQualifierMatches(feeDetail) &&
-                this.acquisitionTypeMatches(feeDetail)
+                this.acquisitionTypeMatches(feeDetail) &&
+                this.sssMatches(feeDetail)
             );
         }
 
@@ -128,6 +129,11 @@ public without sharing class ClientInvoicingFeeAssignmentService {
                 (this.bcsAcquired && feeDetail.bcsAcquired ||
                     this.notBCSAcquired && feeDetail.notBCSAcquired)
             );
+        }
+
+        private Boolean sssMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail) {
+            return (this.sharedSolarSystemId == feeDetail.sharedSolarSystemId ||
+                feeDetail.sharedSolarSystemId == null);
         }
     }
 

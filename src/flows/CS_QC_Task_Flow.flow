@@ -9,14 +9,14 @@
         <description>Check for null</description>
         <name>Is_there_a_Sales_Rep</name>
         <label>Is there a Sales Rep</label>
-        <locationX>695</locationX>
-        <locationY>51</locationY>
+        <locationX>826</locationX>
+        <locationY>346</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Rep_not_null_0</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>sovOpportunity.BS_Sales_ID__c</leftValueReference>
+                <leftValueReference>varSalesPersonID</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -31,7 +31,7 @@
             <name>Rep_is_Null_0</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>sovOpportunity.BS_Sales_ID__c</leftValueReference>
+                <leftValueReference>varSalesPersonID</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -44,17 +44,17 @@
         </rules>
     </decisions>
     <decisions>
-        <description>Check for null</description>
-        <name>Is_there_Partner</name>
-        <label>Is there  Partner</label>
-        <locationX>534</locationX>
-        <locationY>56</locationY>
+        <description>If started from opportunity, Check for null partner value</description>
+        <name>Is_there_Partner_Opp</name>
+        <label>Is there Partner - Opp</label>
+        <locationX>629</locationX>
+        <locationY>353</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Partner_not_null</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>sovOpportunity.Partner_tag_lookup__c</leftValueReference>
+                <leftValueReference>varPartnerID</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -69,7 +69,7 @@
             <name>Partner_is_Null</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>sovOpportunity.Partner_tag_lookup__c</leftValueReference>
+                <leftValueReference>varPartnerID</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -81,6 +81,33 @@
             <label>Partner = Null</label>
         </rules>
     </decisions>
+    <decisions>
+        <description>Determine whether flow has been launched from button on Opportunity or Lead object</description>
+        <name>Launched_from_Opportunity_or_Lead</name>
+        <label>Launched from Opportunity or Lead</label>
+        <locationX>164</locationX>
+        <locationY>393</locationY>
+        <defaultConnector>
+            <targetReference>Lookup_Opportunity</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Launched from Opportunity</defaultConnectorLabel>
+        <rules>
+            <name>Launched_from_Lead</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varOppID</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Lookup_Lead</targetReference>
+            </connector>
+            <label>Launched from Lead</label>
+        </rules>
+    </decisions>
+    <description>Start from Lead or Opportunity</description>
     <dynamicChoiceSets>
         <name>picklist_QCType</name>
         <dataType>Picklist</dataType>
@@ -112,8 +139,8 @@
     <recordCreates>
         <name>Create_Case</name>
         <label>Create CS QC Case</label>
-        <locationX>1165</locationX>
-        <locationY>39</locationY>
+        <locationX>1302</locationX>
+        <locationY>344</locationY>
         <assignRecordIdToReference>sov_Case.Id</assignRecordIdToReference>
         <connector>
             <targetReference>Update_Opp_Status</targetReference>
@@ -157,7 +184,7 @@
         <inputAssignments>
             <field>Lead_Lookup__c</field>
             <value>
-                <elementReference>sovOpportunity.Lead__c</elementReference>
+                <elementReference>varLeadID</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -173,12 +200,6 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>QC_Case_Subject__c</field>
-            <value>
-                <elementReference>Case_Type</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>RecordTypeId</field>
             <value>
                 <stringValue>012j00000000HA8AAM</stringValue>
@@ -187,7 +208,7 @@
         <inputAssignments>
             <field>Related_Opportunity__c</field>
             <value>
-                <elementReference>sovOpportunity.Id</elementReference>
+                <elementReference>varOppID</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -213,8 +234,8 @@
     <recordLookups>
         <name>Get_Contact_for_Partner</name>
         <label>Get Contact for Partner</label>
-        <locationX>858</locationX>
-        <locationY>312</locationY>
+        <locationX>928</locationX>
+        <locationY>118</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_New_QC_Task</targetReference>
@@ -223,7 +244,7 @@
             <field>Sales_Representative__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>sovOpportunity.BS_Sales_ID__c</elementReference>
+                <elementReference>varSalesPersonID</elementReference>
             </value>
         </filters>
         <object>Contact</object>
@@ -234,8 +255,8 @@
     <recordLookups>
         <name>GetAccountforPartner</name>
         <label>Get Account for Partner</label>
-        <locationX>548</locationX>
-        <locationY>304</locationY>
+        <locationX>730</locationX>
+        <locationY>618</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Is_there_a_Sales_Rep</targetReference>
@@ -244,7 +265,7 @@
             <field>Partner__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>sovOpportunity.Partner_tag_lookup__c</elementReference>
+                <elementReference>varPartnerID</elementReference>
             </value>
         </filters>
         <filters>
@@ -259,13 +280,40 @@
         <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordLookups>
+        <description>If started from Lead, get Lead details</description>
+        <name>Lookup_Lead</name>
+        <label>Lookup Lead</label>
+        <locationX>301</locationX>
+        <locationY>132</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_there_Partner_Opp</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varLeadID</elementReference>
+            </value>
+        </filters>
+        <object>Lead</object>
+        <outputAssignments>
+            <assignToReference>varPartnerID</assignToReference>
+            <field>Partner_Lookup__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>varSalesPersonID</assignToReference>
+            <field>bs_Sales_ID__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>Lookup_Opportunity</name>
         <label>Lookup Opportunity</label>
-        <locationX>390</locationX>
-        <locationY>53</locationY>
+        <locationX>301</locationX>
+        <locationY>646</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Is_there_Partner</targetReference>
+            <targetReference>Is_there_Partner_Opp</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -275,19 +323,20 @@
             </value>
         </filters>
         <object>Opportunity</object>
-        <outputReference>sovOpportunity</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>StageName</queriedFields>
-        <queriedFields>Partner_tag_lookup__c</queriedFields>
-        <queriedFields>BS_Sales_ID__c</queriedFields>
-        <queriedFields>Name</queriedFields>
-        <queriedFields>Lead__c</queriedFields>
+        <outputAssignments>
+            <assignToReference>varSalesPersonID</assignToReference>
+            <field>BS_Sales_ID__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>varPartnerID</assignToReference>
+            <field>Partner_tag_lookup__c</field>
+        </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>Lookup_Queue_Id</name>
         <label>Lookup Queue Id</label>
-        <locationX>1010</locationX>
-        <locationY>40</locationY>
+        <locationX>1158</locationX>
+        <locationY>344</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_Case</targetReference>
@@ -305,15 +354,39 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>Update_Opp_Status</name>
-        <label>Update Opp Status</label>
-        <locationX>1345</locationX>
-        <locationY>36</locationY>
+        <description>If Flow launched from Lead, update the Lead Application Status field to &quot;Awaiting Information Requested&quot;</description>
+        <name>Update_Lead_Application_Status</name>
+        <label>Update Lead Application Status</label>
+        <locationX>1440</locationX>
+        <locationY>497</locationY>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>sovOpportunity.Id</elementReference>
+                <elementReference>varLeadID</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Partner_Application_Status__c</field>
+            <value>
+                <stringValue>Awaiting Information Requested</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Lead</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Opp_Status</name>
+        <label>Update Opp Status</label>
+        <locationX>1440</locationX>
+        <locationY>344</locationY>
+        <connector>
+            <targetReference>Update_Lead_Application_Status</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varOppID</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -327,8 +400,8 @@
     <screens>
         <name>Create_New_QC_Task</name>
         <label>Create New QC Task</label>
-        <locationX>853</locationX>
-        <locationY>38</locationY>
+        <locationX>1024</locationX>
+        <locationY>343</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -337,7 +410,7 @@
         </connector>
         <fields>
             <name>textNewQCCase</name>
-            <fieldText>&lt;p&gt;Insert the information about the new QC Case. Creating a QC Case this way will set the Opportunity Status to Information Requested. If you do not want to change the Opportunity stage, create a task manually. &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The product line, Opportunity, and other relevant information will automatically be filled in on the Case. Click Finish to create the Case&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Insert the information about the new QC Case. Creating a QC Case this way will set the Status of the Lead or Opportunity record you are creating the case for to &lt;b&gt;Information Requested&lt;/b&gt;. If you do not want to change the Opportunity stage, create a task manually.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The product line, Opportunity or lead, and other relevant information will automatically be filled in on the Case. Click Finish to create the Case&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -360,9 +433,9 @@
     </screens>
     <start>
         <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationY>36</locationY>
         <connector>
-            <targetReference>Lookup_Opportunity</targetReference>
+            <targetReference>Launched_from_Opportunity_or_Lead</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -399,10 +472,42 @@
         <objectType>Opportunity</objectType>
     </variables>
     <variables>
+        <name>varLaunchObject</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Lead id passed into flow when started from button on Lead page</description>
+        <name>varLeadID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Opportunity id passed into flow when started from button on Opportunity page</description>
         <name>varOppID</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Store PartnerID from Lead or Opportunity</description>
+        <name>varPartnerID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Store SalesPersonID from Lead or Opp</description>
+        <name>varSalesPersonID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

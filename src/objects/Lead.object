@@ -27901,6 +27901,26 @@ if ({!ISBLANK( Lead.Co_App_Adverse_Credit_Notice_1__c )}) {
 &amp;cas11=Web</url>
     </webLinks>
     <webLinks>
+        <fullName>New_QC_Case</fullName>
+        <availability>online</availability>
+        <description>Create a Case and set Partner Application Status to Awaiting Information Requested</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>New QC Case</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/flow/CS_QC_Task_Flow?varLeadID={!Lead.Id}&amp;retURL={!Lead.Id}</url>
+    </webLinks>
+    <webLinks>
         <fullName>Request_Customer_Information</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
