@@ -295,7 +295,7 @@ Account.Assignment_Agreement_Template__c
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Template__c +
-&quot;&amp;queryid=[UAL]a271D000000IwtZQAS?pv1=&quot; + Lead__r.Id + &quot;,[Biz]a271D000000IwtaQAC?pv1=&quot; + Lead__r.Id + &quot;,[Lead]a271D000000IwtdQAC?pv1=&quot; + Lead__r.Id + &quot;,[SSS]{!Environment.Conga_Query_SSF_Contract_SSS}?pv2=&quot; + Lead__r.Utility_relationship__r.Id +
+&quot;&amp;queryid=[UAL]{!Environment.VAR_QUERY_SSFCONTRACT_UAL}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_BIZ}?pv1=&quot; + Lead__r.Id + &quot;,[Lead]{!Environment.VAR_QUERY_SSFCONTRACT_LEAD}?pv1=&quot; + Lead__r.Id + &quot;,[SSS]{!Environment.Conga_Query_SSF_Contract_SSS}?pv2=&quot; + Lead__r.Utility_relationship__r.Id +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;APDF=0&quot; +
@@ -319,7 +319,7 @@ Account.Assignment_Agreement_Template__c
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Template__c +
-&quot;&amp;queryid=[CustSig]a271D000000IwtbQAC?pv0=&quot; + Id + &quot;,[BizSig]a271D000000IwtcQAC?pv0=&quot; + Id + &quot;,[UAL]a271D000000IwtZQAS?pv1=&quot; + Lead__r.Id + &quot;,[Biz]a271D000000IwtaQAC?pv1=&quot; + Lead__r.Id + &quot;,[Lead]a271D000000IwtdQAC?pv1=&quot; + Lead__r.Id + &quot;,[ResiSig]a271D000000IwteQAC?pv0=&quot; + Id + &quot;,[NonGuarantor]{!Environment.Conga_SSF_Query_ReviewSign_NonResiSig}?pv0&quot; + Id + &quot;,[SSS]{!Environment.Conga_Query_SSF_Contract_SSS}?pv2=&quot; +  Lead__r.Utility_relationship__r.Id +
+&quot;&amp;queryid=[CustSig]{!Environment.VAR_QUERY_SSFCONTRACT_CUSTSIG}?pv0=&quot; + Id + &quot;,[BizSig]{!Environment.VAR_QUER_SSFCONTRACT_BIZSIG}?pv0=&quot; + Id + &quot;,[UAL]{!Environment.VAR_QUERY_SSFCONTRACT_UAL}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_BIZ}?pv1=&quot; + Lead__r.Id + &quot;,[Lead]{!Environment.VAR_QUERY_SSFCONTRACT_LEAD}?pv1=&quot; + Lead__r.Id + &quot;,[ResiSig]{!Environment.VAR_CONGA_QUERY_SSFCONTRACT_ResiSig}?pv0=&quot; + Id + &quot;,[NonGuarantor]{!Environment.Conga_SSF_Query_ReviewSign_NonResiSig}?pv0&quot; + Id + &quot;,[SSS]{!Environment.Conga_Query_SSF_Contract_SSS}?pv2=&quot; +  Lead__r.Utility_relationship__r.Id +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;APDF=0&quot; +
