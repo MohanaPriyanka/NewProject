@@ -1032,7 +1032,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <fullName>Expected_Yield_MW__c</fullName>
         <description>This field is used in the Maine customer contract used in SSF. It converts the expected yield kW to MW by dividing by 1000.</description>
         <externalId>false</externalId>
-        <formula>Expected_Yield_kWh_kW__c/1000</formula>
+        <formula>Expected_Yield_kWh_kW__c* Total_System_Size_kWh_DC__c /1000</formula>
         <label>Expected Yield (MW)</label>
         <precision>18</precision>
         <required>false</required>
