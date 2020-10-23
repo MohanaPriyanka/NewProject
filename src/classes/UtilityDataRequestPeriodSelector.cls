@@ -10,7 +10,8 @@ public inherited sharing class UtilityDataRequestPeriodSelector {
         
         List<Utility_Data_Request_Period__c> udrpList = [
             SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c, Rate_Class_Lookup__r.Id,
-            Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c
+            Rate_Subclass__c, Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
+            Quantity__c, Measurement_Unit__c
             FROM Utility_Data_Request_Period__c 
             WHERE Utility_Data_Request__c IN :udrIdSet
             ORDER BY Utility_Data_Request__c ASC, Service_Start_Date__c DESC
@@ -19,4 +20,19 @@ public inherited sharing class UtilityDataRequestPeriodSelector {
         return udrpList;
     }
     
+    public List<Utility_Data_Request_Period__c> selectWithKHByUDR(List<Utility_Data_Request__c> udrList) {
+        
+        List<Utility_Data_Request_Period__c> udrpList = [
+            SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c, Rate_Class_Lookup__r.Id,
+            Rate_Subclass__c, Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c, 
+            Quantity__c, Measurement_Unit__c
+            FROM Utility_Data_Request_Period__c 
+            WHERE Utility_Data_Request__c IN :(udrList)
+            AND Measurement_Unit__c ='KH'
+            ORDER BY Utility_Data_Request__c ASC, Service_Start_Date__c DESC
+        ];
+        
+        return udrpList;
+    }
+     
 }
