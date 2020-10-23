@@ -64,10 +64,10 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         private SubscriptionOrder(Subscription_Order__c subOrder) {
             String partnerType = subOrder.Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name;
             Date reacqStartDate = subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c;
-            List<Id> contractIds = new List<Id>{
+            List<Id> contractIds = new List<Id>(new Set<Id>{
                 subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c,
                 subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c
-            };
+            });
             this.recordId = subOrder.Id;
             this.contractIds = contractIds;
             this.closedByBCS = subOrder.Utility_Account_Subscription__r.Opportunity__r.Acquired_By_Client_Closed_By_BlueWave__c;
