@@ -267,7 +267,7 @@ Account.Assignment_Agreement_Template__c
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Template_ID_Countersigned__c +
-&quot;&amp;qvar0id=a271D000000IwtgQAC?pv0=&quot; + Id +
+&quot;&amp;qvar0id={!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNCONTRACT}?pv0=&quot; + Id +
 &quot;&amp;queryid=[ResiSig]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNRESI}?pv1={QVar0},[Opp]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNOPP}?pv1={QVar0},[UAS]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNUAS}?pv1={QVar0},[Biz]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNBIZ}?pv1={QVar0},[Resi]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNRESI}?pv1={QVar0},[NonGuarantor]{!Environment.SSF_Contract_Query_Countersign_NonResiSig}?pv1={QVar0},[SSS]{!Environment.Conga_Query_SSF_Contract_SSS}?pv2=&quot; +  Lead__r.Utility_relationship__r.Id +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;defaultpdf=1&quot; +
