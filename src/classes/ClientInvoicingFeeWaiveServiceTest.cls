@@ -38,6 +38,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
             LIMIT 1
         ];
         sss.Client_Management_Contract__c = contractA.Id;
+        sss.Client_Acquisition_Contract__c = contractA.Id;
         sss.Reacquisition_Start_Date__c = System.today().addYears(-1);
         update sss;
 
@@ -68,6 +69,9 @@ public class ClientInvoicingFeeWaiveServiceTest {
         System.assertNotEquals(null, cim,
             'Expected to create a CIM since we are in the initial period. ' +
                 'Contract Start Date: ' + contractA.StartDate + ' SO Effective Date: ' + so.Effective_Date__c);
+
+        List<Error_Log__c> errorLogs = [SELECT Message__c FROM Error_Log__c];
+        System.assert(errorLogs.isEmpty(), errorLogs);
     }
 
     @IsTest
