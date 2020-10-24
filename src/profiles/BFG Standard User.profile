@@ -41770,7 +41770,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility_Data_Request_Period__c.Measurement_Significance_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
