@@ -41,6 +41,10 @@
                 <behavior>Edit</behavior>
                 <field>Sender_Transaction_ID__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Usage_Sender_Transaction_Id__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
