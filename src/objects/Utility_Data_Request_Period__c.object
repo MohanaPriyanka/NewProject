@@ -255,6 +255,18 @@ EN=Estimated Period</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Measurement_Significance_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Measurement Significance Code</label>
+        <length>3</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Measurement_Unit__c</fullName>
         <description>AJ=Adjusted Kilowatt Demand
 HH=Hundred Cubic Feet (CCF)

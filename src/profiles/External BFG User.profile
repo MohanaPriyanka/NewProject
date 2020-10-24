@@ -31345,6 +31345,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Data_Request_Period__c.Measurement_Significance_Code__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Data_Request_Period__c.Measurement_Unit__c</field>
         <readable>true</readable>
     </fieldPermissions>
