@@ -257,6 +257,7 @@ EN=Estimated Period</inlineHelpText>
     <fields>
         <fullName>Measurement_Significance_Code__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Indicates what type of measurement this UDRP is for. We only care about records that have 51 when rolling up annual kWh numbers.</inlineHelpText>
         <label>Measurement Significance Code</label>
         <length>3</length>
         <required>false</required>

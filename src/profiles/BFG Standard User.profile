@@ -41932,7 +41932,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Data_Request__c.Usage_Sender_Transaction_Id__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
