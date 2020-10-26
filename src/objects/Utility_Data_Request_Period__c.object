@@ -218,6 +218,55 @@ EN=Estimated Period</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Measurement_Significance_Code_Reference__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(Measurement_Significance_Code__c ,
+&quot;41&quot;,&quot;Off Peak&quot;,
+&quot;42&quot;,&quot;On Peak&quot;,
+&quot;43&quot;,&quot;Intermediate/Shoulder&quot;,
+&quot;45&quot;,&quot;Summer On Peak&quot;,
+&quot;49&quot;,&quot;Winter On Peak&quot;,
+&quot;50&quot;,&quot;Winter Mid Peak&quot;,
+&quot;51&quot;,&quot;Totalizer/Total/ Readings Cross Summer &amp; Winter&quot;,
+&quot;57&quot;,&quot;Summer&quot;,
+&quot;58&quot;,&quot;Winter&quot;,
+&quot;73&quot;,&quot;Summer Off Peak&quot;,
+&quot;74&quot;,&quot;Summer Mid Peak&quot;,
+&quot;75&quot;,&quot;Winter Off Peak&quot;,
+&quot;84&quot;,&quot;High Tension On Peak Energy&quot;,
+&quot;85&quot;,&quot;High Tension Off Peak Energy&quot;,
+&quot;86&quot;,&quot;Low Tension On Peak Energy&quot;,
+&quot;87&quot;,&quot;Low Tension Off Peak Energy&quot;,
+&quot;88&quot;,&quot;Low Tension Total Energy&quot;,
+&quot;89&quot;,&quot;Low Tension Primary Demand&quot;,
+&quot;90&quot;,&quot;Low Tension Secondary Demand&quot;,
+&quot;91&quot;,&quot;Low Tension Transmission Demand&quot;,
+&quot;92&quot;,&quot;High Tension Total Energy&quot;,
+&quot;93&quot;,&quot;High Tension Primary Demand&quot;,
+&quot;93&quot;,&quot;Previous&quot;,
+&quot;94&quot;,&quot;High Tension Transmission Demand&quot;,
+&quot;NH&quot;,&quot;No Historical Usage&quot;,
+&quot;&quot;)</formula>
+        <label>Measurement Significance Code Reference</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Measurement_Significance_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Measurement Significance Code</label>
+        <length>3</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Measurement_Unit__c</fullName>
         <description>AJ=Adjusted Kilowatt Demand
 HH=Hundred Cubic Feet (CCF)

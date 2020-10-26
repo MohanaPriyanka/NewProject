@@ -506,6 +506,20 @@ Complete - All data received and updated</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Usage_Sender_Transaction_Id__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>Used to store the sender transaction ID for the Usage History Data returned from ESG. This ID is different from the Parent Transaction ID</description>
+        <externalId>true</externalId>
+        <label>Usage Sender Transaction Id</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>Utility_Account_Log__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
