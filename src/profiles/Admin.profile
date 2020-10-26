@@ -859,14 +859,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MarketingInventoryItemOrderHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>MarketingInventoryTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MessagingService</apexClass>
         <enabled>true</enabled>
     </classAccesses>

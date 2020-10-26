@@ -1347,22 +1347,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CopadoSelector</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CopadoSelectorTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CopadoService</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CopadoServiceTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CreateOrderandPaymentRequest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3327,14 +3311,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MarketingInventoryItemOrderHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>MarketingInventoryTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MessagingService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3908,14 +3884,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UserHandlerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UserStoryPromoter</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UserStoryPromoterTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
