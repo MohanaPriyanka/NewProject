@@ -1701,6 +1701,17 @@ IF(ISBLANK(Customer_Signed_Date__c),&quot;&amp;qmode=SalesforceFile&quot;,
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Contract_eSign_Link__c</fullName>
+        <description>Link that points to the loc=agree page for SSF, if Contract Re-Signs are ever necessary for a customer.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Link that points to the loc=agree page for SSF, if Contract Re-Signs are ever necessary for a customer.</inlineHelpText>
+        <label>Contract eSign Link</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
         <fullName>Credit_Approval_Based_on_Criteria__c</fullName>
         <externalId>false</externalId>
         <formula>IF(Personal_Credit_Report__c == null, null,

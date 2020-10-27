@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>SSF: Contract Re-Sign</name>
+    <style>none</style>
+    <subject>BlueWave Community Solar: Contract Resignature Needed</subject>
+    <textOnly>Hi {!Lead.FirstName},
+ 
+Thank you for submitting an application and expressing interest in a BlueWave Community Solar subscription!
+ 
+We have reviewed your application and one of the following occurred:
+
+   - Addition/Removal of a utility account
+   - Typo in utility account number or application fields
+   - Change in service address
+
+To update the contract with the correct information, please click the link below and input your email address to sign the updated contract.
+
+{!Lead.Contract_eSign_Link__c}
+ 
+The link guides you to a contract where you check off boxes and agree to the terms of a community solar subscription. Once you input your email address, you have signed the contract and will receive a copy of the agreement in your inbox. Once enrolled to receive credits from a solar project, you will also receive a copy of the fully executed contract at the provided email address.
+ 
+Let us know if you have any further questions and thank you for joining the BlueWave family!
+ 
+Sincerely,
+BlueWave Customer Support</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
