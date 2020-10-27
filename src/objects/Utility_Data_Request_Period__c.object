@@ -435,6 +435,18 @@ QD=Quantity Delivered</inlineHelpText>
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Used_in_Annual_kWh_Calculation__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>True if this UDRP is used in the UDR Annual kWh calculation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>True if this UDRP is used in the UDR Annual kWh calculation.</inlineHelpText>
+        <label>Used in Annual kWh Calculation</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Utility_Data_Request__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

@@ -6,6 +6,9 @@
 @IsTest
 private class UtilityDataRequestServiceTest {
     
+    @TestVisible
+    private static UtilityDataRequestPeriodSelector udrpSelector = new UtilityDataRequestPeriodSelector();
+    
     private static Utility_Data_Request__c getTestUDR(String customerName) {
         return [
             SELECT Id, Request_Status__c, Customer_Name__c, State__c, Utility__c, Annual_kWh__c,
@@ -26,7 +29,8 @@ private class UtilityDataRequestServiceTest {
     private static Utility_Data_Request_Period__c getTestUDRP(String rateSubclass) {
         return [
             SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c, 
-            Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c
+            Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
+            Used_In_Annual_kWh_Calculation__c
             FROM Utility_Data_Request_Period__c 
             WHERE Rate_Subclass__c = :rateSubclass
         ];
@@ -35,7 +39,8 @@ private class UtilityDataRequestServiceTest {
     private static List<Utility_Data_Request_Period__c> getTestUDRPList(Id udrId) {
         return [
             SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c, 
-            Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c
+            Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
+            Used_In_Annual_kWh_Calculation__c
             FROM Utility_Data_Request_Period__c 
             WHERE Utility_Data_Request__c = :udrId
         ];
@@ -192,7 +197,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP1',
             Service_Start_Date__c = Date.newInstance(2020, 5, 10),
             Measurement_Unit__c ='KH',
-            Quantity__c = 25
+            Quantity__c = 25,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP2 = new Utility_Data_Request_Period__c(
@@ -201,7 +208,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP2',
             Service_Start_Date__c = Date.newInstance(2020, 7, 7),
             Measurement_Unit__c ='KH',
-            Quantity__c = 101
+            Quantity__c = 101,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP3 = new Utility_Data_Request_Period__c(
@@ -210,7 +219,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP3',
             Service_Start_Date__c = Date.newInstance(2020, 10, 12),
             Measurement_Unit__c ='KH',
-            Quantity__c = 6914
+            Quantity__c = 6914,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP4 = new Utility_Data_Request_Period__c(
@@ -219,7 +230,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP4',
             Service_Start_Date__c = Date.newInstance(2020, 9, 15),
             Measurement_Unit__c ='KH',
-            Quantity__c = 50
+            Quantity__c = 50,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP5 = new Utility_Data_Request_Period__c(
@@ -228,7 +241,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP5',
             Service_Start_Date__c = Date.newInstance(2020, 2, 1),
             Measurement_Unit__c ='KH',
-            Quantity__c = 7003
+            Quantity__c = 7003,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP6 = new Utility_Data_Request_Period__c(
@@ -237,7 +252,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP6',
             Service_Start_Date__c = Date.newInstance(2020, 9, 14),
             Measurement_Unit__c ='KH',
-            Quantity__c = 1234
+            Quantity__c = 1234,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP7 = new Utility_Data_Request_Period__c(
@@ -246,7 +263,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP7',
             Service_Start_Date__c = Date.newInstance(2020, 9, 1),
             Measurement_Unit__c ='KH',
-            Quantity__c = 12099
+            Quantity__c = 12099,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP8 = new Utility_Data_Request_Period__c(
@@ -255,7 +274,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP8',
             Service_Start_Date__c = Date.newInstance(2019, 5, 20),
             Measurement_Unit__c ='KH',
-            Quantity__c = 4387
+            Quantity__c = 4387,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP9 = new Utility_Data_Request_Period__c(
@@ -264,7 +285,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP9',
             Service_Start_Date__c = Date.newInstance(2020, 5, 20),
             Measurement_Unit__c ='KH',
-            Quantity__c = 999
+            Quantity__c = 999,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP10 = new Utility_Data_Request_Period__c(
@@ -273,7 +296,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP10',
             Service_Start_Date__c = Date.newInstance(2020, 8, 28),
             Measurement_Unit__c ='KH',
-            Quantity__c = 9757
+            Quantity__c = 9757,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP11 = new Utility_Data_Request_Period__c(
@@ -282,7 +307,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP11',
             Service_Start_Date__c = Date.newInstance(2020, 10, 3),
             Measurement_Unit__c ='KH',
-            Quantity__c = 6789
+            Quantity__c = 6789,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP12 = new Utility_Data_Request_Period__c(
@@ -291,7 +318,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP12',
             Service_Start_Date__c = Date.newInstance(2019, 2, 22),
             Measurement_Unit__c ='KH',
-            Quantity__c = 8311
+            Quantity__c = 8311,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP13 = new Utility_Data_Request_Period__c(
@@ -300,7 +329,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP13',
             Service_Start_Date__c = Date.newInstance(2020, 9, 10),
             Measurement_Unit__c ='KH',
-            Quantity__c = 11111
+            Quantity__c = 11111,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP14 = new Utility_Data_Request_Period__c(
@@ -309,7 +340,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP14',
             Service_Start_Date__c = Date.newInstance(2020, 8, 3),
             Measurement_Unit__c ='KH',
-            Quantity__c = 53977
+            Quantity__c = 53977,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP15 = new Utility_Data_Request_Period__c(
@@ -318,7 +351,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP15',
             Service_Start_Date__c = Date.newInstance(2020, 7, 10),
             Measurement_Unit__c ='KH',
-            Quantity__c = 2525
+            Quantity__c = 2525,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP16 = new Utility_Data_Request_Period__c(
@@ -327,7 +362,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP16',
             Service_Start_Date__c = Date.newInstance(2020, 6, 28),
             Measurement_Unit__c ='KH',
-            Quantity__c = 9222
+            Quantity__c = 9222,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP17 = new Utility_Data_Request_Period__c(
@@ -336,7 +373,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP17',
             Service_Start_Date__c = Date.newInstance(2020, 5, 2),
             Measurement_Unit__c ='KH',
-            Quantity__c = 88
+            Quantity__c = 88,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP18 = new Utility_Data_Request_Period__c(
@@ -345,7 +384,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP18',
             Service_Start_Date__c = Date.newInstance(2020, 4, 17),
             Measurement_Unit__c ='KH',
-            Quantity__c = 417
+            Quantity__c = 417,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP19 = new Utility_Data_Request_Period__c(
@@ -354,7 +395,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP19',
             Service_Start_Date__c = Date.newInstance(2020, 3, 20),
             Measurement_Unit__c ='KH',
-            Quantity__c = 4399
+            Quantity__c = 4399,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP20 = new Utility_Data_Request_Period__c(
@@ -363,7 +406,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP20',
             Service_Start_Date__c = Date.newInstance(2020, 2, 19),
             Measurement_Unit__c ='KH',
-            Quantity__c = 2019
+            Quantity__c = 2019,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP21 = new Utility_Data_Request_Period__c(
@@ -372,7 +417,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP21',
             Service_Start_Date__c = Date.newInstance(2020, 1, 1),
             Measurement_Unit__c ='KH',
-            Quantity__c = 334455
+            Quantity__c = 334455,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP22 = new Utility_Data_Request_Period__c(
@@ -381,7 +428,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP22',
             Service_Start_Date__c = Date.newInstance(2020, 1, 2),
             Measurement_Unit__c ='KH',
-            Quantity__c = 19788
+            Quantity__c = 19788,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP23 = new Utility_Data_Request_Period__c(
@@ -390,7 +439,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP23',
             Service_Start_Date__c = Date.newInstance(2019, 2, 19),
             Measurement_Unit__c ='KH',
-            Quantity__c = 764655
+            Quantity__c = 764655,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         Utility_Data_Request_Period__c testUDRP24 = new Utility_Data_Request_Period__c(
@@ -399,7 +450,9 @@ private class UtilityDataRequestServiceTest {
             Rate_Subclass__c = 'testUDRP24',
             Service_Start_Date__c = Date.newInstance(2020, 4, 27),
             Measurement_Unit__c ='KH',
-            Quantity__c = 42789
+            Quantity__c = 42789,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
         );
         
         List<Utility_Data_Request_Period__c> testUDRPList = new List<Utility_Data_Request_Period__c>{
@@ -443,8 +496,8 @@ private class UtilityDataRequestServiceTest {
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
         System.assertEquals(1, errorLogs.size());
         
-        System.assert(errorLogs[0].Message__c.contains('Null Rate Class on UDRP'));
-        System.assert(errorLogs[0].Message__c.contains('No matching Rate Class record with an EDI Rate Class for the Rate Class text on UDRP '));
+        System.assert(errorLogs[0].Message__c.contains('Null Rate Class on'));
+        System.assert(errorLogs[0].Message__c.contains('No matching Rate Class record with an EDI Rate Class for the Rate Class text on'));
         
     }
     
@@ -505,7 +558,7 @@ private class UtilityDataRequestServiceTest {
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
         System.assertEquals(2, errorLogs.size());
         
-        System.assert(errorLogs[1].Message__c.contains('Null Rate_Class_Lookup__c value for most recent UDRP related to UDR'));
+        System.assert(errorLogs[1].Message__c.contains('Null Rate_Class_Lookup__c value for most recent UDRP related to'));
         
     }
     
@@ -562,6 +615,17 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals(487579, updatedTestUDR5.Annual_kWh__c, 'UDR5 has 14 UDRPs and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the 12 most recent UDRP.Quantity__c values.'
                             + 'In this case the answer should be 487579.');
+        
+        List<Utility_Data_Request__c> updatedTestUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5};
+        List<Utility_Data_Request_Period__c> testUDRPList= udrpSelector.selectWithKHByUDR(updatedTestUDRList);
+        
+        for(Utility_Data_Request_Period__c udrp : testUDRPList) {
+            if(udrp.Rate_Subclass__c == 'testUDRP7' || udrp.Rate_Subclass__c == 'testUDRP12' || udrp.Rate_Subclass__c == 'testUDRP23') {
+                System.assertEquals(false, udrp.Used_in_Annual_kWh_Calculation__c, 'Not used in kWh calculation, should be false.');
+            } else {
+                System.assertEquals(true, udrp.Used_in_Annual_kWh_Calculation__c, 'Used in kWh Calculation, should be true.');
+            }
+        }
     }
     
 }
