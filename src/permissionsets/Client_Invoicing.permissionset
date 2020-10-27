@@ -341,6 +341,22 @@
         <field>Subscription_Order__c.Potential_Client_Invoicing_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Client_Invoicing_Generate_Invoice</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Client_Invoicing_Add_SO_or_CIM_to_Invoice</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Client_Invoicing_Remove_CIM_from_Invoice</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Client_Invoicing_Remove_SO_From_Invoice</flow>
+    </flowAccesses>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Client Invoicing</label>
     <license>Salesforce</license>
