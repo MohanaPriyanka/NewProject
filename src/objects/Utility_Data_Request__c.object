@@ -226,6 +226,7 @@ U=Customer receives supply from the Utility</inlineHelpText>
     <fields>
         <fullName>Annual_kWh__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>This is the rolled up kWh quantity value from UDRP&apos;s.</inlineHelpText>
         <label>Annual kWh</label>
         <precision>18</precision>
         <required>false</required>

@@ -34995,6 +34995,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request_Period__c.Used_in_Annual_kWh_Calculation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Data_Request_Period__c.Utility_Data_Request__c</field>
         <readable>true</readable>
