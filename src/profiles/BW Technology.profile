@@ -3936,6 +3936,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UtilityDataRequestPeriodSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UtilityDataRequestService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -47628,6 +47632,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Data_Request_Period__c.Service_Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request_Period__c.Used_in_Annual_kWh_Calculation__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

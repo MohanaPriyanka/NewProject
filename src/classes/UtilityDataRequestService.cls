@@ -61,9 +61,9 @@ public without sharing class UtilityDataRequestService {
                 udrp.Rate_Class_Lookup__c = rateClassWithEDIMap.get(udrp.Rate_Class__c).Id;
                 updatedUDRPList.add(udrp);
             } else if(udrp.Rate_Class__c == null) {
-                Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'Null Rate Class on UDRP' + udrp.Name);
+                Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'Null Rate Class on ' + udrp.Name);
             } else {
-                Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'No matching Rate Class record with an EDI Rate Class for the Rate Class text on UDRP ' + udrp.Name);
+                Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'No matching Rate Class record with an EDI Rate Class for the Rate Class text on ' + udrp.Name);
             }
         }
         
@@ -93,7 +93,7 @@ public without sharing class UtilityDataRequestService {
                 tempUAL.Utility_Rate_Class__c = tempUDRPList[0].Rate_Class_Lookup__r.Id;
                 updatedUALList.add(tempUAL);
             } else {
-                Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUAL', 'Null Rate_Class_Lookup__c value for most recent UDRP related to UDR ' + udr.Name);
+                Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUAL', 'Null Rate_Class_Lookup__c value for most recent UDRP related to ' + udr.Name);
             }
         }
         
@@ -166,10 +166,12 @@ public without sharing class UtilityDataRequestService {
         if (numUDRP >= 12) {
             for (Integer i=0; i<12; i++) {
                 kWh = kWh + udrpList[i].Quantity__c;
+                udrpList[i].Used_In_Annual_kWh_Calculation__c = true;
             }
         } else if (numUDRP < 12 && numUDRP >= 4) {
             for (Integer i=0; i<numUDRP; i++) {
                 kWh = kWh + udrpList[i].Quantity__c;
+                udrpList[i].Used_In_Annual_kWh_Calculation__c = true;
             }
             kWh = (kWh/4)*12;
         } else if (numUDRP < 4 && numUDRP > 0) { 
@@ -177,6 +179,7 @@ public without sharing class UtilityDataRequestService {
             if (customerType == 'Residential' && customerType!= null) {
                 for(Integer i=0; i<numUDRP; i++) {
                 	kWh = kWh + udrpList[i].Quantity__c;
+                    udrpList[i].Used_In_Annual_kWh_Calculation__c = true;
             	}
             	kWh = (kWh/4)*12;
             } else if (customerType != 'Residential' && customerType != null){
@@ -187,6 +190,7 @@ public without sharing class UtilityDataRequestService {
                 }
             }
         }
+        update udrpList;
         return kWh;
     }
     
