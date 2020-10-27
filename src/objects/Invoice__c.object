@@ -157,6 +157,21 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Related Client Account for Client Invoices</inlineHelpText>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Invoices</relationshipLabel>
+        <relationshipName>Invoices</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Added_to_Paper_Bill_Queue__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -209,6 +224,17 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Effective_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date on or before which Subscription Orders and Client Invoicing Memos need to be effective for the Invoice Generation flow to pull in</inlineHelpText>
+        <label>Effective Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Email_Sent__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -216,6 +242,15 @@
         <label>Email Sent</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Invoice_Auto_Number__c</fullName>
+        <displayFormat>INV-{00000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Invoice Auto Number</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
     </fields>
     <fields>
         <fullName>LetterStreamJob__c</fullName>
@@ -229,6 +264,28 @@
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Line_Item_Total__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total from Invoice Line Items</inlineHelpText>
+        <label>Line Item Total</label>
+        <summarizedField>Invoice_Line_Item__c.Amount__c</summarizedField>
+        <summaryForeignKey>Invoice_Line_Item__c.Invoice__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Notes</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
     </fields>
     <fields>
         <fullName>Ready_for_Email_Send__c</fullName>
@@ -267,6 +324,47 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Draft</fullName>
+                    <default>false</default>
+                    <label>Draft</label>
+                </value>
+                <value>
+                    <fullName>Received &gt;&gt; QC</fullName>
+                    <default>false</default>
+                    <label>Received &gt;&gt; QC</label>
+                </value>
+                <value>
+                    <fullName>QC Complete &gt;&gt; Submit to Accounting</fullName>
+                    <default>false</default>
+                    <label>QC Complete &gt;&gt; Submit to Accounting</label>
+                </value>
+                <value>
+                    <fullName>Submitted to Accounting</fullName>
+                    <default>false</default>
+                    <label>Submitted to Accounting</label>
+                </value>
+                <value>
+                    <fullName>Rejected</fullName>
+                    <default>false</default>
+                    <label>Rejected</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Zuora__Account__c</fullName>
@@ -672,6 +770,17 @@
         <fullName>Client_Invoice</fullName>
         <active>true</active>
         <label>Client Invoice</label>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted to Accounting</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Partner_Invoice</fullName>
