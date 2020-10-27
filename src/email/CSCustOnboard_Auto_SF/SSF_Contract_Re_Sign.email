@@ -115,23 +115,31 @@
                               </tr>
                               <tr>
                                 <td align="left" class="" valign="top">
-                                  <table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; border-top: 0px; border-right: 0px; border-bottom: 1px solid transparent; border-left: 0px; " class="slot-styling"><tr><td style="padding: 0px 10px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 18px 5px 5px; " class="stylingblock-content-wrapper camarker-inner"><span style="font-size:15px;"><span style="font-family:arial,helvetica,sans-serif;">Hey BlueWaver,&nbsp;</span></span><h1 style="color: rgb(51, 52, 52); font-size: 15px; font-style: normal; font-weight: bold; line-height: 150%;">
- <span style="font-size:15px;"><span style="font-family:arial,helvetica,sans-serif;">Our energy future starts with you.</span></span></h1><span style="font-size:15px;"><span style="font-family:arial,helvetica,sans-serif;">Thanks for choosing BlueWave as your community solar provider and supporting local solar energy.<br>
+                                  <table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; border-top: 0px; border-right: 0px; border-bottom: 1px solid transparent; border-left: 0px; " class="slot-styling"><tr><td style="padding: 0px 10px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 18px 5px 5px; " class="stylingblock-content-wrapper camarker-inner"><span style="font-size:15px;">
+<span style="font-family:arial,helvetica,sans-serif;">Hi {!Lead.FirstName},&nbsp;</span>
+</span>
+<h1 style="color: rgb(51, 52, 52); font-size: 15px; font-style: normal; font-weight: bold; line-height: 150%;">
+<span style="font-size:15px;"></span></h1><span style="font-size:15px;">
+<span style="font-family:arial,helvetica,sans-serif;">Thank you for submitting an application and expressing interest in a BlueWave Community Solar subscription!<br>
 <br>
-BlueWave is requesting re-signature of your contracts due to changes incurred. We need you to review your Community Solar agreements.<br>
+<b>We have reviewed your application and one of the following occurred:</b><br>
+<ul>
+  <li>Addition/Removal of a utility account</li>
+  <li>Typo in utility account number or application fields</li>
+  <li>Change in service address</li>
+</ul>
+To update the contract with the correct information, please click the link below and input your email address to sign the updated contract.
 <br>
-Please click <a alias="resume" conversion="false" data-linkto="https://" href="{!Opportunity.Survey_URL__c}" style="color:#387CDF;text-decoration:underline;" title="resume">here</a> to return to your application for re-signature.&nbsp;</span></span><br>
 <br>
-<b>Have Questions?&nbsp;</b><br>
-Our Customer Care Team is here to help. Call 844.786.4100 or email&nbsp;<a alias="Customer Care Email" conversion="true" data-linkto="mailto:" href="mailto:customercare@bluewavesolar.com?subject=" style="color: rgb(56, 124, 223);" title="customercare@bluewavesolar.com ">customercare@bluewavesolar.com&nbsp;</a>to speak with a member of our Customer Care team.&nbsp;</span></td></tr></table></td></tr></table>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td align="left" class="" valign="top">
-                                  <table cellpadding="0" cellspacing="0" width="100%" class="slot-styling" style="min-width: 100%; "><tr><td class="stylingblock-content-margin-cell" style="padding: 14px 14px 14px 3px; "><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; border-top: 0px; border-right: 0px; border-bottom: 1px solid transparent; border-left: 0px; " class="slot-styling"><tr><td style="padding: 4px 5px 10px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 5px; " class="stylingblock-content-wrapper camarker-inner"><div style="line-height: 100%;">
- <span style="color:#333434;"><span style="font-size:15px;"><span style="font-family:arial,helvetica,sans-serif;">Thanks for joining the Wave, we're happy you're here.</span></span></span></div><div style="line-height: 100%;">
- <br>
- <span style="font-size:15px;"><span style="color:#333434;"><span style="font-family:arial,helvetica,sans-serif;">- All of us here at BlueWave&nbsp;</span></span></span></div></td></tr></table></td></tr></table></td></tr></table>
+<table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="center"><table border="0" cellspacing="0" cellpadding="0"><tr><td class="innertd buttonblock" bgcolor="#387CDF" style=" border-radius: 30px; -moz-border-radius: 30px; -webkit-border-radius: 30px; background-color: #387CDF;"><a target="_blank" class="buttonstyles" style=" font-size: 16px; font-family: Arial, helvetica, sans-serif; color: #FFFFFF; text-align: center; text-decoration: none; display: block; background-color: #387CDF; border: 2px solid transparent; padding: 11px; border-radius: 30px; -moz-border-radius: 30px; -webkit-border-radius: 30px;" href="{!Lead.Contract_eSign_Link__c}" title="Re-Sign Contracts" alias="Contracts" conversion="true" data-linkto="https://">Click Here</a></td></tr></table></td></tr></table></td></tr></table>
+<br>
+The link guides you to a contract where you check off boxes and agree to the terms of a community solar subscription. Once you input your email address, you have signed the contract and will receive a copy of the agreement in your inbox. Once enrolled to receive credits from a solar project, you will also receive a copy of the fully executed contract at the provided email address.<br>
+<br>
+Let us know if you have any further questions and thank you for joining the BlueWave family!<br><br>
+Sincerely,<br>
+BlueWave Customer Support
+<br><br>
+</span></td></tr></table></td></tr></table>
                                 </td>
                               </tr>
                               <tr>

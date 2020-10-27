@@ -151,30 +151,43 @@ const updateServerConsentsSigned = async (component) => {
 }
 
 const postProcessContractDocs = (component, contracts) => {
+    let tcTitle = 'Terms and Conditions';
+    let csaTitle = 'Community Solar Agreement';
+    let disclosureTitle = 'Solar Disclosure Form';
+    let csAgreementLoaded = false;
+    let disclosureLoaded = false;
+    let tempContracts = [];
+    let parsedContracts = [];
+
     window.clearInterval(component.documentPollerId);
     window.clearTimeout(component.documentPollerTimeoutId);
+
+    // Contract files received from server are in order of CREATED DATE DESC, so newest first
+    // ... in the case of multiples of the same doc found, only include the first (which is latest created)
+    contracts.forEach(contract => {
+        if (contract.title.endsWith('.pdf')) {
+            contract.title = contract.title.slice(0,-4);
+        }
+        if (contract.title === tcTitle || contract.title === csaTitle) {
+            if (!csAgreementLoaded) {
+                csAgreementLoaded = true;
+                component.csAgreementDocumentId = contract.id;
+                tempContracts.push(contract); // Push into temporary array
+            }
+        }
+        else if (contract.title === disclosureTitle) {
+            if (!disclosureLoaded) {
+                disclosureLoaded = true;
+                contract.first = true; // Disclosure should be in first position
+                component.disclosureDocumentId = contract.id;
+                parsedContracts.push(contract); // Add to first position of array
+            }
+        }
+    });
+
+    // Add all documents back into single array, and set component variable with result
+    component.contractDocuments = parsedContracts.concat(tempContracts);
     component.showSpinner = false;
-    component.contractDocuments = contracts;
-    var disclosurePosition;
-    for (let c in contracts) {
-        contracts[c].first = false;
-
-        if (contracts[c].title.endsWith('.pdf')) {
-            contracts[c].title = contracts[c].title.slice(0,-4);
-        }
-        if (contracts[c].title === 'Terms and Conditions' || contracts[c].title === 'Community Solar Agreement') {
-            component.csAgreementDocumentId = contracts[c].id;
-        }
-        if (contracts[c].title === 'Solar Disclosure Form') {
-            component.disclosureDocumentId = contracts[c].id;
-            disclosurePosition = c;
-        }
-    }
-
-    if (disclosurePosition) {
-        contracts = contracts.splice(0, 0, contracts.splice(disclosurePosition, 1)[0]);
-    }
-    component.contractDocuments[0].first = true;
 }
 
 const getContractDocuments = (component) => {

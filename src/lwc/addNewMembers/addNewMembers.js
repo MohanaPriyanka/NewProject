@@ -11,8 +11,8 @@
 import {LightningElement, api, track, wire} from 'lwc';
 
 import Search from '@salesforce/label/c.sremailSearchMembers';
-import For from '@salesforce/label/c.fbc_For';
-import TooManyResultsMessage from '@salesforce/label/c.fbc_TooManyResultsMessage';
+import For from '@salesforce/label/c.fsc_For';
+import TooManyResultsMessage from '@salesforce/label/c.fsc_TooManyResultsMessage';
 import NoSearchResultsMessage from '@salesforce/label/c.sremailNoSearchResultsMessage';
 
 
