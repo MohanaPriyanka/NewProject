@@ -3,7 +3,7 @@
  * Description: Used to query shared solar systems
  * Test: SharedSolarSystemSelectorTest
  */
-@SuppressWarnings('PMD.ApexCRUDViolation')
+@SuppressWarnings('PMD.ApexCRUDViolation,PMD.ApexDoc')
 public inherited sharing class SharedSolarSystemsSelector {
     public Shared_Solar_System__c selectOne(Id sssId) {
         List<Shared_Solar_System__c> sssList = this.selectAll(new Set<Id>{sssId});
@@ -15,7 +15,8 @@ public inherited sharing class SharedSolarSystemsSelector {
     public List<Shared_Solar_System__c> selectAll(Set<Id> sssIds) {
         return [
             SELECT Id, Apex_Context__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c,
-                CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c
+                CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c,
+                Client_Account__c, Client_Account__r.Name
             FROM Shared_Solar_System__c
             WHERE Id IN :sssIds
         ];

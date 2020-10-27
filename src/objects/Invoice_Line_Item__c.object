@@ -141,102 +141,95 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Default</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Default</fullName>
+        <fields>Name</fields>
+        <fields>Invoice__c</fields>
+        <fields>Amount__c</fields>
+        <label>Default</label>
+    </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
-    <enableActivities>true</enableActivities>
+    <description>Details that roll up to an Invoice object, used for Client Invoicing</description>
+    <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
-    <enableHistory>true</enableHistory>
+    <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
-    <enableSearch>true</enableSearch>
+    <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
         <fullName>Amount__c</fullName>
         <externalId>false</externalId>
         <label>Amount</label>
-        <precision>18</precision>
+        <precision>12</precision>
         <required>false</required>
         <scale>2</scale>
-        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Contract_Fee_Detail__c</fullName>
+        <fullName>Assignment_Agreement_Contract__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>Used to calculate Utilization Adjustments</inlineHelpText>
-        <label>Contract Fee Detail</label>
-        <referenceTo>Contract_Fee_Detail__c</referenceTo>
-        <relationshipLabel>Client Invoicing Memos</relationshipLabel>
-        <relationshipName>Client_Invoicing_Memos</relationshipName>
+        <inlineHelpText>Assignment Agreement, set by the Generate Invoice flow, if this Invoice Line Item is applicable to an assignment.</inlineHelpText>
+        <label>Assignment Agreement Contract</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Invoice Line Items</relationshipLabel>
+        <relationshipName>Invoice_Line_Items</relationshipName>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Client_Invoicing_Memo__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Related Client Invoicing Memo (if applicable), set when the Invoice Line Item is created through the Generate Invoice flow</inlineHelpText>
+        <label>Client Invoicing Memo</label>
+        <referenceTo>Client_Invoicing_Memo__c</referenceTo>
+        <relationshipLabel>Invoice Line Items</relationshipLabel>
+        <relationshipName>Invoice_Line_Items</relationshipName>
+        <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Details__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Stamped inputs, set by automation when calculating the amount</inlineHelpText>
+        <inlineHelpText>Values stamped by the Generate Invoice flow used for debugging or historical purposes</inlineHelpText>
         <label>Details</label>
         <length>32768</length>
-        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>5</visibleLines>
     </fields>
     <fields>
-        <fullName>Effective_Date__c</fullName>
+        <fullName>Invoice__c</fullName>
         <externalId>false</externalId>
-        <label>Effective Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
+        <label>Invoice</label>
+        <referenceTo>Invoice__c</referenceTo>
+        <relationshipLabel>Invoice Line Items</relationshipLabel>
+        <relationshipName>Invoice_Line_Items</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Invoice_Line_Item__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <inlineHelpText>Populated when the Generate Invoice flow creates a new invoice and pulls this record in. Used to tell if this record has been included in an invoice</inlineHelpText>
-        <label>Invoice Line Item</label>
-        <referenceTo>Invoice_Line_Item__c</referenceTo>
-        <relationshipLabel>Client Invoicing Memos</relationshipLabel>
-        <relationshipName>Client_Invoicing_Memos</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Production_Detail__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <inlineHelpText>Used to calculate Utilization Adjustments</inlineHelpText>
-        <label>Production Detail</label>
-        <referenceTo>Transfer_Part__c</referenceTo>
-        <relationshipLabel>Client Invoicing Memos</relationshipLabel>
-        <relationshipName>Client_Invoicing_Memos</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Shared_Solar_System__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>Used for Utilization Adjustments to Management Fees, populated by the Utilization Adjustment flow</inlineHelpText>
+        <inlineHelpText>Set when the Generate Invoice flow creates Invoice Line Items</inlineHelpText>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
-        <relationshipLabel>Client Invoicing Memos</relationshipLabel>
-        <relationshipName>Client_Invoicing_Memos</relationshipName>
+        <relationshipLabel>Invoice Line Items</relationshipLabel>
+        <relationshipName>Invoice_Line_Items</relationshipName>
         <required>false</required>
-        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -244,54 +237,23 @@
         <fullName>Subscription_Order__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
+        <inlineHelpText>Related Subscription Order (if applicable), set when the Invoice Line Item is created through the Generate Invoice flow</inlineHelpText>
         <label>Subscription Order</label>
         <referenceTo>Subscription_Order__c</referenceTo>
-        <relationshipLabel>Client Invoicing Memos</relationshipLabel>
-        <relationshipName>Client_Invoicing_Memos</relationshipName>
+        <relationshipLabel>Invoice Line Items</relationshipLabel>
+        <relationshipName>Invoice_Line_Items</relationshipName>
         <required>false</required>
-        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
-    <fields>
-        <fullName>Type__c</fullName>
-        <externalId>false</externalId>
-        <label>Type</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Waived Acquisition / Reacquisition Fee</fullName>
-                    <default>true</default>
-                    <label>Waived Acquisition / Reacquisition Fee</label>
-                </value>
-                <value>
-                    <fullName>Adjustment for Resize Fee</fullName>
-                    <default>false</default>
-                    <label>Adjustment for Resize Fee</label>
-                </value>
-                <value>
-                    <fullName>Utilization Adjustment to Management Fee</fullName>
-                    <default>false</default>
-                    <label>Utilization Adjustment to Management Fee</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <label>Client Invoicing Memo</label>
+    <label>Invoice Line Item</label>
     <nameField>
-        <displayFormat>CIM-{000000}</displayFormat>
-        <label>Client Invoicing Memo Name</label>
-        <trackHistory>false</trackHistory>
+        <displayFormat>ILI-{0000}</displayFormat>
+        <label>Invoice Line Item Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Client Invoicing Memos</pluralLabel>
+    <pluralLabel>Invoice Line Items</pluralLabel>
     <searchLayouts />
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
