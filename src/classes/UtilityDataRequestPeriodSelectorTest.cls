@@ -23,21 +23,24 @@ public class UtilityDataRequestPeriodSelectorTest {
             Utility_Data_Request__c = testUDR1.Id, 
             Rate_Class__c = 'Test EDI Rate Class 2',
             Rate_Subclass__c = 'testUDRP1',
-            Service_Start_Date__c = Date.newInstance(2019, 11, 3)
+            Service_Start_Date__c = Date.newInstance(2019, 11, 3),
+            Measurement_Unit__c ='KH'
         );
         
         Utility_Data_Request_Period__c testUDRP2 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR1.Id, 
             Rate_Class__c = 'Test EDI Rate Class 2',
             Rate_Subclass__c = 'testUDRP2',
-            Service_Start_Date__c = Date.newInstance(2020, 7, 1)
+            Service_Start_Date__c = Date.newInstance(2020, 7, 1),
+            Measurement_Unit__c ='KH'
         );
         
         Utility_Data_Request_Period__c testUDRP3 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR1.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
             Rate_Subclass__c = 'testUDRP3',
-            Service_Start_Date__c = Date.newInstance(2020, 9, 14)
+            Service_Start_Date__c = Date.newInstance(2020, 9, 14),
+            Measurement_Unit__c ='KH'
         );
         
         List<Utility_Data_Request_Period__c> testUDRPList = new List<Utility_Data_Request_Period__c>{testUDRP1, testUDRP2, testUDRP3};

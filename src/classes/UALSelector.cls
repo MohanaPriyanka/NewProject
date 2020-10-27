@@ -37,7 +37,9 @@ public without sharing class UALSelector {
         udrUALId.add(udr.Utility_Account_Log__c);
         
         Utility_Account_Log__c ual = [
-            SELECT Id, Utility_Rate_Class__c
+            SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
+            Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
+            Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name
             FROM Utility_Account_Log__c
             WHERE Id IN :(udrUALId)
         ];

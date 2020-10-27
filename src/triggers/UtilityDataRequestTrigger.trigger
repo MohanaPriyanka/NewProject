@@ -3,8 +3,7 @@
  * 
  * Tested by: UtilityDataRequestServiceTest
  */
-
-trigger UtilityDataRequestTrigger on Utility_Data_Request__c (after update) {
+trigger UtilityDataRequestTrigger on Utility_Data_Request__c (after update, before update) {
     if (Util.isDisabled('Disable_UtilityDataRequestTrigger__c')) {
         return;
     }
@@ -13,7 +12,10 @@ trigger UtilityDataRequestTrigger on Utility_Data_Request__c (after update) {
     
     switch on Trigger.operationType {
         when AFTER_UPDATE {
-            udrService.updateUDRP(Trigger.oldMap, Trigger.new);
+            udrService.afterStatusUpdatedToComplete(Trigger.oldMap, Trigger.new);
+        }
+        when BEFORE_UPDATE {
+            udrService.beforeStatusUpdatedToComplete(Trigger.oldMap, Trigger.new, Trigger.newMap);
         }
     }
 

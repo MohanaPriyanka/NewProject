@@ -418,6 +418,10 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
     <fields>
         <fullName>Request_Status__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Pending - Not sent to data provider
+Sent - Awaiting response from data provider
+Data Received - Data has been returned, but UDR update is not complete
+Complete - All data received and updated</inlineHelpText>
         <label>Request Status</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -429,9 +433,19 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
+                    <fullName>Pending</fullName>
+                    <default>true</default>
+                    <label>Pending</label>
+                </value>
+                <value>
                     <fullName>Sent</fullName>
                     <default>false</default>
                     <label>Sent</label>
+                </value>
+                <value>
+                    <fullName>Data Received</fullName>
+                    <default>false</default>
+                    <label>Data Received</label>
                 </value>
                 <value>
                     <fullName>Complete</fullName>
@@ -439,14 +453,15 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
                     <label>Complete</label>
                 </value>
                 <value>
-                    <fullName>Pending</fullName>
-                    <default>true</default>
-                    <label>Pending</label>
-                </value>
-                <value>
                     <fullName>Error</fullName>
                     <default>false</default>
                     <label>Error</label>
+                </value>
+                <value>
+                    <fullName>Value1</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Value1</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -489,6 +504,20 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Usage_Sender_Transaction_Id__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>Used to store the sender transaction ID for the Usage History Data returned from ESG. This ID is different from the Parent Transaction ID</description>
+        <externalId>true</externalId>
+        <label>Usage Sender Transaction Id</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
     </fields>
     <fields>
         <fullName>Utility_Account_Log__c</fullName>

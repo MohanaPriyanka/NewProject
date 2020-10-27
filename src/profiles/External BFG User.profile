@@ -546,14 +546,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MarketingInventoryItemOrderHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>MarketingInventoryTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MessagingService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -924,6 +916,14 @@
     <classAccesses>
         <apexClass>customIdSwapOppTestClass</apexClass>
         <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>flowcomponents__LightningLookupController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>flowcomponents__LightningLookupControllerTest</apexClass>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>helperclass2</apexClass>
@@ -31367,6 +31367,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Data_Request_Period__c.Measurement_Significance_Code_Reference__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request_Period__c.Measurement_Significance_Code__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Data_Request_Period__c.Measurement_Unit__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31529,6 +31539,11 @@
         <editable>false</editable>
         <field>Utility_Data_Request__c.Supplier_Account_Number__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Usage_Sender_Transaction_Id__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
