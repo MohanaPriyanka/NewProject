@@ -3,7 +3,8 @@
     <active>true</active>
     <allowRecall>true</allowRecall>
     <allowedSubmitters>
-        <type>owner</type>
+        <submitter>CEO</submitter>
+        <type>roleSubordinatesInternal</type>
     </allowedSubmitters>
     <approvalPageFields>
         <field>Name</field>
@@ -11,13 +12,20 @@
         <field>Reason_For_Adjustment__c</field>
         <field>UASB__c</field>
         <field>Account_Bill__c</field>
-        <field>Owner</field>
     </approvalPageFields>
     <approvalStep>
         <allowDelegate>false</allowDelegate>
         <assignedApprover>
             <approver>
+                <name>garreola@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <approver>
                 <name>mreid@bluewavesolar.com</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>tlennox@bluewavesolar.com</name>
                 <type>user</type>
             </approver>
             <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
@@ -62,12 +70,13 @@
         </action>
     </initialSubmissionActions>
     <label>Accounting Adjustment Approval</label>
+    <processOrder>1</processOrder>
     <recallActions>
         <action>
             <name>Set_Approval_Status_To_Unapproved</name>
             <type>FieldUpdate</type>
         </action>
     </recallActions>
-    <recordEditability>AdminOnly</recordEditability>
+    <recordEditability>AdminOrCurrentApprover</recordEditability>
     <showApprovalHistory>true</showApprovalHistory>
 </ApprovalProcess>
