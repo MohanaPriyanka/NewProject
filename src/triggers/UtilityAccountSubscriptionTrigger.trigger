@@ -28,7 +28,6 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
         } when AFTER_UPDATE {
             CSCancellationService.handleOpportunitiesRemovedFromProject(Trigger.oldMap, Trigger.newMap);
             ClientReportingService.updateClientUAS(Trigger.new, Trigger.oldMap);
-            //want to rollup opportunity's subscriptions - via
         }
     }
 }
