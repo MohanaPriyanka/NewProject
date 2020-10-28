@@ -231,7 +231,7 @@ public with sharing class ClientInvoiceGeneratorTest {
                 when 'commitWork' {
                     return null;
                 } when 'generateLineItemFromCIM' {
-
+                    return null;
                 }
             }
             return null;
