@@ -18,7 +18,7 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
         } when BEFORE_UPDATE {
             UtilityAccountSubscriptionHandler.assignSSSBeforeUpdate(Trigger.new, Trigger.oldMap);
         } when BEFORE_DELETE {
-            subscriptionManagementService.onDeleteSubscriptionOrders(null, Trigger.oldMap);
+            subscriptionManagementService.publishSubscriptionOrderChangeEventsOnDelete(null, Trigger.oldMap);
             ClientReportingService.deleteClientUAS(Trigger.old);
         } when AFTER_INSERT {
             ClientReportingService.insertClientUAS(Trigger.new);

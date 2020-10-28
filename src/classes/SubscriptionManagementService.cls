@@ -253,7 +253,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         * @param subscriptionOrders deleted subscription orders from SOTrigger
         * @param deletedUASMap deleted UASes from UASTrigger
     */
-    public void onDeleteSubscriptionOrders(List<Subscription_Order__c> subscriptionOrders, Map<Id, Utility_Account_Subscription__c> deletedUASMap) {
+    public void publishSubscriptionOrderChangeEventsOnDelete(List<Subscription_Order__c> subscriptionOrders, Map<Id, Utility_Account_Subscription__c> deletedUASMap) {
         Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>();
         if (deletedUASMap == null) {
             uasMap = UASSelector.getUASMap(new Set<Id>{subscriptionOrders[0].Utility_Account_Subscription__c});

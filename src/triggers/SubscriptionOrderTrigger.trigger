@@ -1,7 +1,7 @@
 /**
  * Created by SarahRenfro on 11/14/2019.
  *
- * Tested By: SubscriptionManagementServiceTest, SubscriptionSizingTestclass
+ * Tested By: SubscriptionManagementServiceTest
  */
 trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, after update, after insert, before delete) {
     if (Util.isDisabled('Disable_SubscriptionOrder_Trigger__c')) {
@@ -17,7 +17,7 @@ trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, after 
         } when AFTER_UPDATE {
             subscriptionManagementService.checkSOApproval(Trigger.new, Trigger.oldMap);
         } when BEFORE_DELETE {
-            subscriptionManagementService.onDeleteSubscriptionOrders(Trigger.old, null);
+            subscriptionManagementService.publishSubscriptionOrderChangeEventsOnDelete(Trigger.old, null);
         }
     }
 }
