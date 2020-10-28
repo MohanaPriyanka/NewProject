@@ -132,7 +132,7 @@
             <targetReference>Add_Subscription_Order_to_Invoice</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>newInvoiceLineItem</name>
         <dataType>SObject</dataType>
