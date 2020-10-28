@@ -83,7 +83,6 @@ public without sharing class UtilityAccountLogTriggerHandler {
         }
     }
 
-
     private static Boolean calculateGenerateDisclosureForm(Product2 product, List<Utility_Account_Log__c> ualList) {
         if(product == null || product.Disclosure_Form_Conga_Template__c == null) {
             return false;
@@ -111,4 +110,31 @@ public without sharing class UtilityAccountLogTriggerHandler {
         return true;
     }
 
+    /**
+     * @description Strips dashes and leading 0's from Utility Account Numbers and sets in a new text field, for duplicate
+     * purposes
+     * @param utilityAccountLogs Before-Insert/Update list of Utility Account Logs
+     */
+    public static void setCleanedUtilityAccountNumberBeforeSave(List<Utility_Account_Log__c> utilityAccountLogs) {
+        for (Utility_Account_Log__c utilityAccountLog : utilityAccountLogs) {
+            utilityAccountLog.Cleaned_Utility_Account_Number__c = cleanUtilityAccountNumber(utilityAccountLog.Name);
+        }
+    }
+
+    @TestVisible
+    private static String cleanUtilityAccountNumber(String utilityAccountNumber) {
+        if (utilityAccountNumber == null) {
+            return null;
+        }
+        String cleaned = utilityAccountNumber.remove('-').remove(' ');
+        return stripLeadingCharacter(cleaned, '0');
+    }
+
+    private static String stripLeadingCharacter(String dirtyString, String stringToStrip) {
+        Integer indexOfNonSpace = dirtyString.indexOfAnyBut(stringToStrip);
+        if (indexOfNonSpace != -1) {
+            return dirtyString.substring(dirtyString.indexOfAnyBut(stringToStrip));
+        }
+        return '';
+    }
 }
