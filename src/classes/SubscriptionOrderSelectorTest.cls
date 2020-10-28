@@ -163,4 +163,22 @@ public inherited sharing class SubscriptionOrderSelectorTest {
         List<Subscription_Order__c> checkOrders = selector.getSubscriptionOrdersByAssignmentAgreement(new Set<Id> {contractA.Id});
         System.assertEquals(17, checkOrders.size());
     }
+
+    @IsTest
+    private static void testGetUninvoicedByClientAccount() {
+        Map<Id, Account> accountMap = new Map<Id, Account>([SELECT Id FROM Account]);
+        SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
+        List<AggregateResult> aggregateResults =
+            subscriptionOrderSelector.getUninvoicedByClientAccount(new List<Id>(accountMap.keySet()), System.now());
+        System.assertNotEquals(null, aggregateResults, 'Expected to get aggregate results back (even if empty)');
+    }
+
+    @IsTest
+    private static void testGetUninvoicedBySSS() {
+        List<Shared_Solar_System__c> sharedSolarSystems = [SELECT Id FROM Shared_Solar_System__c];
+        SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
+        List<Subscription_Order__c> subscriptionOrders =
+            subscriptionOrderSelector.getUninvoicedBySSS(sharedSolarSystems, System.now());
+        System.assertNotEquals(null, subscriptionOrders, 'Expected to get a list of subscription orders (even if empty)');
+    }
 }

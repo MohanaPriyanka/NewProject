@@ -448,6 +448,21 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Invoice_Line_Item__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Populated when the Generate Invoice flow creates a new invoice and pulls this record in. Used to tell if this record has been included in an invoice</inlineHelpText>
+        <label>Invoice Line Item</label>
+        <referenceTo>Invoice_Line_Item__c</referenceTo>
+        <relationshipLabel>Subscription Orders</relationshipLabel>
+        <relationshipName>Subscription_Orders</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>NetSuite_Invoice__c</fullName>
         <externalId>false</externalId>
         <label>NetSuite Invoice #</label>
@@ -879,8 +894,9 @@ NOT(ISCHANGED( Approved_Change_in_Subscription__c)),
 NOT(ISCHANGED( Allocation_Schedule_Subscription__c)),
 NOT(ISCHANGED( Contract_Fee_Detail__c)),
 NOT(ISCHANGED( Client_Assignment_Agreement__c)),
-NOT(ISCHANGED(  NetSuite_Invoice__c )),
-NOT(ISCHANGED(  Invoice_Date__c ))
+NOT(ISCHANGED( NetSuite_Invoice__c )),
+NOT(ISCHANGED( Invoice_Date__c )),
+NOT(ISCHANGED( Invoice_Line_Item__c ))
 )</errorConditionFormula>
         <errorDisplayField>Approval_Status__c</errorDisplayField>
         <errorMessage>Once a Subscription Order is Approved, it cannot be edited. To update a customers subscription, please log a new Subscription Order.</errorMessage>
