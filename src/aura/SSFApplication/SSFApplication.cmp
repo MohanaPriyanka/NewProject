@@ -1,22 +1,18 @@
-<!--
- - Created by peteryao on 3/5/20.
- -->
-
 <aura:component description="SSFApplication" implements="forceCommunity:availableForAllPageTypes" access="global" controller="SimpleSignupFormController">
-  <aura:attribute name="getInfo" type="Boolean"/>
-  <aura:attribute name="getPayment" type="Boolean"/>
-  <aura:attribute name="showComplete" type="Boolean"/>
-  <aura:attribute name="userSelectedPaymentMethod" default="Credit Card" type="String"/>
-  <aura:attribute name="spinnerMessage" type="String"/>
-  <aura:attribute name="showSpinner" type="Boolean"/>
-  <aura:attribute name="lead" type="Object"/>
-  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-  <aura:handler event="c:ZuoraPaymentPageComplete" action="{!c.onPaymentMethodComplete}"/>
+    <aura:attribute name="getInfo" type="Boolean"/>
+    <aura:attribute name="getPayment" type="Boolean"/>
+    <aura:attribute name="showComplete" type="Boolean"/>
+    <aura:attribute name="userSelectedPaymentMethod" default="Credit Card" type="String"/>
+    <aura:attribute name="spinnerMessage" type="String"/>
+    <aura:attribute name="showSpinner" type="Boolean"/>
+    <aura:attribute name="lead" type="Object"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:ZuoraPaymentPageComplete" action="{!c.onPaymentMethodComplete}"/>
 
     <div class="slds-align_absolute-center slds-var-p-bottom_x-large ssf-container">
         <c:LightningErrorHandler/>
         <aura:if isTrue="{!v.getInfo}">
-            <c:ssf onconsentscomplete="{!c.handleConsents}" onallcomplete="{!c.showComplete}"/>
+            <c:ssf onconsentscomplete="{!c.handleConsents}"/>
         </aura:if>
         <aura:if isTrue="{!v.getPayment}">
             <div>
@@ -36,8 +32,8 @@
                     <div class="slds-var-p-bottom_small" style="max-width: 200px">
                         <ui:inputSelect class="slds-input"
                                         value="{!v.userSelectedPaymentMethod}">
-                            <ui:inputSelectOption label="Credit Card/Debit Card" text="Credit Card"/>
                             <ui:inputSelectOption label="Bank Account" text="ACH"/>
+                            <ui:inputSelectOption label="Credit Card/Debit Card" text="Credit Card"/>
                         </ui:inputSelect>
                     </div>
                     <div>
