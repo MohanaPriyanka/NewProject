@@ -67479,6 +67479,10 @@
         <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>agf__ADM_Work__c-BW Bug</layout>
+        <recordType>agf__ADM_Work__c.agf__Bug</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>agf__ADM_Work__c-agf__Bug Layout</layout>
     </layoutAssignments>
     <objectPermissions>
