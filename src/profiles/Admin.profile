@@ -34407,7 +34407,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Product_Tariff__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -34515,7 +34515,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_Account_Log__c.Utility_NMC_Tariff__c</field>
         <readable>true</readable>
     </fieldPermissions>
