@@ -23,8 +23,8 @@
     <assignments>
         <name>aassgnSet_New_Resize_Subscriptions</name>
         <label>Set New Resize Subscriptions</label>
-        <locationX>1456</locationX>
-        <locationY>1033</locationY>
+        <locationX>1460</locationX>
+        <locationY>953</locationY>
         <assignmentItems>
             <assignToReference>var_newAnnualCost</assignToReference>
             <operator>Assign</operator>
@@ -117,8 +117,8 @@
         <description>Assign inputs to sov for subscription orders.</description>
         <name>AssgnAdd_Resize_SO_to_List</name>
         <label>Add Resize SO to List</label>
-        <locationX>1482</locationX>
-        <locationY>1297</locationY>
+        <locationX>1471</locationX>
+        <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>socv_SO</assignToReference>
             <operator>Add</operator>
@@ -253,8 +253,8 @@
     <assignments>
         <name>AssgnResizing_Variables_0</name>
         <label>Resizing Variables Assignment</label>
-        <locationX>1481</locationX>
-        <locationY>1164</locationY>
+        <locationX>1467</locationX>
+        <locationY>1103</locationY>
         <assignmentItems>
             <assignToReference>sov_SubscriptionOrder.Utility_Account_Subscription__c</assignToReference>
             <operator>Assign</operator>
@@ -586,6 +586,22 @@
             <targetReference>Update_Sizing_Method</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Set_Available_Capacity</name>
+        <label>Set Available Capacity</label>
+        <locationX>400</locationX>
+        <locationY>269</locationY>
+        <assignmentItems>
+            <assignToReference>availableCapacity</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sovUAS.Opportunity__r.Available_kW_DC__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>dec_MissingInfo</targetReference>
+        </connector>
+    </assignments>
     <choices>
         <name>choice_AnnualUsage</name>
         <choiceText>Annual Usage (Cost or kWh)</choiceText>
@@ -874,9 +890,22 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
 )</expression>
     </formulas>
     <formulas>
-        <name>formula_TransferredAnnualCostChange</name>
-        <dataType>Currency</dataType>
-        <expression>{!var_TransferredNewAnnualCost}-{!sov_UASTransferTo.Annual_Cost_Future_Rollup__c}</expression>
+        <description>New Usage - Old Usage</description>
+        <name>formulaChangeInUsage</name>
+        <dataType>Number</dataType>
+        <expression>IF(CONTAINS({!sovUAS.Subscription_Type__c}, &quot;kWh&quot;),
+{!scrvarNew_Annual_kWh} - {!sovUAS.Annual_kWh_Subscription_Future_Rollup__c}, 
+{!scrvarNew_Annual_Cost} - {!sovUAS.Annual_Cost_Future_Rollup__c})</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>formulaMaximumUsage</name>
+        <dataType>Number</dataType>
+        <expression>IF(CONTAINS({!sovUAS.Subscription_Type__c}, &quot;kWh&quot;), 
+/* kWh Calculation */
+ {!sovUAS.Annual_kWh_Subscription_Future_Rollup__c} + ROUND( ({!availableCapacity}*{!sovUAS.Shared_Solar_System__r.Expected_Yield_kWh_kW__c})/{!sovUAS.Sizing_Method__r.Size_Ratio__c},4), 
+/* Cost Calculation */
+{!sovUAS.Annual_Cost_Future_Rollup__c} + ROUND( {!availableCapacity}* {!sovUAS.Shared_Solar_System__r.Expected_Yield_kWh_kW__c} *  {!sovUAS.Sizing_Method__r.Value_of_NMC__c},4))</expression>
         <scale>2</scale>
     </formulas>
     <interviewLabel>User Subscription Order Creation {!$Flow.CurrentDateTime}</interviewLabel>
@@ -885,6 +914,12 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <name>BuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -952,7 +987,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <locationY>568</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>dec_MissingInfo</targetReference>
+            <targetReference>Set_Available_Capacity</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -1097,7 +1132,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <screens>
         <name>scrResize_Inputs</name>
         <label>Resize Inputs</label>
-        <locationX>1458</locationX>
+        <locationX>1459</locationX>
         <locationY>777</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1107,7 +1142,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         </connector>
         <fields>
             <name>txtAnnual_Cost_Sizing</name>
-            <fieldText>&lt;p&gt;Enter the new Annual Cost ($) that you would like this subscription to have. For example, if the current Annual Cost is $1,000, and they are being resized to $800, enter $800.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For reference, the Utility Account Subscription currently has a Future Annual Cost of {!sovUAS.Annual_Cost_Future_Rollup__c}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Enter the new Annual Cost ($) that you would like this subscription to have. For example, if the current Annual Cost is $1,000, and they are being resized to $800, enter $800.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For reference:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Current Annual Cost: &lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;{!sovUAS.Annual_Cost_Future_Rollup__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Maximum Annual Cost: &lt;/b&gt;{!formulaMaximumUsage}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;(Maximum Annual Cost is based on the Opportunity&apos;s Available Capacity - so as not to exceed Subscription maximums)&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -1140,7 +1175,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         </fields>
         <fields>
             <name>txt_AnnualkWh_Sizing</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Enter the new Annual kWh that you would like this subscription to have. For example, if the current Annual kWh is 1,000, and they are being resized to 800, enter 800.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;For reference, the Utility Account Subscription currently as a Future Annual kWh of {!sovUAS.Annual_kWh_Subscription_Future_Rollup__c}.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Enter the new Annual kWh that you would like this subscription to have. For example, if the current Annual kWh is 1,000, and they are being resized to 800, enter 800.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For reference:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Current Annual kWh: &lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!sovUAS.Annual_kWh_Subscription_Future_Rollup__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Maximum Annual kWh: &lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!formulaMaximumUsage}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;(Maximum Annual kWh is based on the Opportunity&apos;s Available Capacity - so as not to exceed Subscription maximums)&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -1177,8 +1212,8 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     <screens>
         <name>scrResize_Type</name>
         <label>scrResize_Type</label>
-        <locationX>1476</locationX>
-        <locationY>566</locationY>
+        <locationX>1460</locationX>
+        <locationY>567</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1266,6 +1301,42 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <connector>
             <targetReference>SO_Creation</targetReference>
         </connector>
+        <fields>
+            <name>txtExceedMaximumWarning</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(240, 0, 0);&quot;&gt;WARNING: &lt;/b&gt;&lt;span style=&quot;color: rgb(240, 0, 0);&quot;&gt;Based on the inputs given, the related Opportunity will exceed its Maximum kW DC Subscription of {!sovUAS.Opportunity__r.Maximum_kW_Subscription__c}.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>(1 AND 2) OR (3 AND 4)</conditionLogic>
+                <conditions>
+                    <leftValueReference>scrvarNew_Annual_Cost</leftValueReference>
+                    <operator>GreaterThan</operator>
+                    <rightValue>
+                        <elementReference>formulaMaximumUsage</elementReference>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>sovUAS.Subscription_Type__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Electricity Cost ($)</stringValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>sovUAS.Subscription_Type__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>kWh</stringValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>scrvarNew_Annual_kWh</leftValueReference>
+                    <operator>GreaterThan</operator>
+                    <rightValue>
+                        <elementReference>formulaMaximumUsage</elementReference>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
         <fields>
             <name>scrReviewDisplay</name>
             <fieldText>&lt;p&gt;You selected &lt;b style=&quot;font-size: 14px; background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!formula_TextnewAnnualSubscription}&lt;/b&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt; &lt;/b&gt;as the new subscription amount for this UAS.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;To do that, we&apos;ll create a new Subscription Order&lt;b style=&quot;font-size: 14px;&quot;&gt; &lt;/b&gt;with the type:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;{!pcklst_Subscription_Order_Type}&lt;/b&gt;&lt;/p&gt;</fieldText>
@@ -1525,6 +1596,14 @@ Message: {!$Flow.FaultMessage}</text>
         <name>varErrorMessage</name>
         <text>&lt;p&gt;An Error Occurred in the User Subscription Order Creation Flow:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
     </textTemplates>
+    <variables>
+        <name>availableCapacity</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
     <variables>
         <name>socv_ErrorLog</name>
         <dataType>SObject</dataType>

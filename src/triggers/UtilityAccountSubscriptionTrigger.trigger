@@ -18,6 +18,7 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
         } when BEFORE_UPDATE {
             UtilityAccountSubscriptionHandler.assignSSSBeforeUpdate(Trigger.new, Trigger.oldMap);
         } when BEFORE_DELETE {
+            subscriptionManagementService.onDeleteSubscriptionOrders(null, Trigger.oldMap);
             ClientReportingService.deleteClientUAS(Trigger.old);
         } when AFTER_INSERT {
             ClientReportingService.insertClientUAS(Trigger.new);
@@ -27,6 +28,7 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
         } when AFTER_UPDATE {
             CSCancellationService.handleOpportunitiesRemovedFromProject(Trigger.oldMap, Trigger.newMap);
             ClientReportingService.updateClientUAS(Trigger.new, Trigger.oldMap);
+            //want to rollup opportunity's subscriptions - via
         }
     }
 }

@@ -214,6 +214,7 @@ public with sharing class SubscriptionSizingTestclass {
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
             Product__c = kwhProduct.Id,
+            Total_Subscribed_kW_DC__c = 6.998400,
             CloseDate = System.today()
         );
 
@@ -224,6 +225,7 @@ public with sharing class SubscriptionSizingTestclass {
             StageName = 'Complete',
             Customer_Group__c = 'Residential',
             Product__c = kwhProduct.Id,
+            Total_Subscribed_kW_DC__c = 17.496000,
             CloseDate = System.today()
         );
 
@@ -285,6 +287,15 @@ public with sharing class SubscriptionSizingTestclass {
             Annual_kwh_subscription_future__c = 14345
         );
 
+        Utility_Account_Subscription__c uasB2 = new Utility_Account_Subscription__c(
+            Name = '0000222BBB',
+            Utility_Account_Log__c = ualB.Id,
+            Opportunity__c =  opportunityB.Id,
+            Sizing_Method__c = kwhSizingMethodR1.Id,
+            Next_Schedule_Z_Status__c = 'Active Subscription',
+            Annual_kwh_subscription_future__c = 5000
+        );
+
         Utility_Account_Subscription__c uasC = new Utility_Account_Subscription__c(
             Name = '0000333',
             Utility_Account_Log__c = ualC.Id,
@@ -303,7 +314,172 @@ public with sharing class SubscriptionSizingTestclass {
             Subscribed_Annual_Cost_of_Electricity__c = 720.75
         );
 
-        insert new List<Utility_Account_Subscription__c> {uasA, uasB, uasC, uasD};
+        insert new List<Utility_Account_Subscription__c> {uasA, uasB, uasB2, uasC, uasD};
+    }
+
+    @IsTest
+    public static void testDeleteUASForOpportunityTotalSubscriptions() {
+        Opportunity opp = [
+            SELECT Id, Total_Subscribed_kW_DC__c
+            FROM Opportunity
+            WHERE Name = 'Ashley Smith'
+            LIMIT 1
+        ];
+        // Manually setting the Total Subscribed KW DC in testSetup above - can only run Test.start and stop once per
+        // transaction for platform events
+        System.assertNotEquals(0, opp.Total_Subscribed_kW_DC__c);
+        System.debug('Total subscribed; ' + opp.Total_Subscribed_kW_DC__c);
+
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Id = :opp.Id
+            LIMIT 1
+        ];
+
+        Test.startTest();
+        delete uas;
+        Test.stopTest();
+
+        opp = [
+            SELECT Id, Total_Subscribed_kW_DC__c
+            FROM Opportunity
+            WHERE Name = 'Ashley Smith'
+            LIMIT 1
+        ];
+        System.assertEquals(0, opp.Total_Subscribed_kW_DC__c, 'Opportunity sum of subscriptions should be reevaluated after UAS is deleted');
+    }
+
+    @IsTest
+    public static void testDeleteSubscriptionOrderForOpportunitySubscriptions() {
+        Opportunity opp = [
+            SELECT Id, Total_Subscribed_kW_DC__c
+            FROM Opportunity
+            WHERE Name = 'Ashley Smith'
+            LIMIT 1
+        ];
+        // Manually setting the Total Subscribed KW DC in testSetup above - can only run Test.start and stop once per
+        // transaction for platform events
+        System.assertNotEquals(0, opp.Total_Subscribed_kW_DC__c);
+
+
+        List<Subscription_Order__c> soList = [
+            SELECT Id, Utility_Account_Subscription__r.Opportunity__r.Id
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__r.Opportunity__r.Id = :opp.Id
+        ];
+        System.assertEquals(1, soList.size());
+
+        Test.startTest();
+        delete soList;
+        Test.stopTest();
+
+        opp = [
+            SELECT Id, Total_Subscribed_kW_DC__c
+            FROM Opportunity
+            WHERE Name = 'Ashley Smith'
+            LIMIT 1
+        ];
+        System.assertEquals(0, opp.Total_Subscribed_kW_DC__c, 'Opportunity sum of subscriptions should be reevaluated after SO is deleted');
+    }
+
+    @IsTest
+    public static void testSumOpportunitySubscriptions() {
+        Opportunity opp = [
+            SELECT Id, Total_Subscribed_kW_DC__c
+            FROM Opportunity
+            WHERE Name = 'Ashley Smith'
+            LIMIT 1
+        ];
+        // Manually setting the Total Subscribed KW DC in testSetup above - can only run Test.start and stop once per
+        // transaction for platform events
+        System.assertEquals(6.998400, opp.Total_Subscribed_kW_DC__c);
+
+
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Id = :opp.Id
+            LIMIT 1
+        ];
+        Subscription_Order__c so = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uas.Id,
+            Type__c = 'Resize',
+            Effective_Date__c = System.now(),
+            Approval_Status__c = 'Approved',
+            New_Annual_kWh__c = 10000
+        );
+
+        Test.startTest();
+        insert so;
+        Test.stopTest();
+
+        List<Subscription_Order__c> soList = [
+            SELECT Id, Utility_Account_Subscription__r.Opportunity__r.Id, System_Change_kW_DC_Rounded__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__r.Opportunity__r.Id = :opp.Id
+        ];
+
+        opp = [
+            SELECT Id, Total_Subscribed_kW_DC__c
+            FROM Opportunity
+            WHERE Name = 'Ashley Smith'
+            LIMIT 1
+        ];
+        System.assertEquals(2, soList.size(), 'Resize Subscription Order should be inserted');
+        System.assertEquals(9.3312, opp.Total_Subscribed_kW_DC__c,'Opportunity Total Subscribed kW DC should be updated via ' +
+            'Subscription_Order_Change_Event');
+
+    }
+    @IsTest
+    public static void testMultipleOpportunitySubscriptions() {
+        Opportunity opp = [
+            SELECT Id, Total_Subscribed_kW_DC__c
+            FROM Opportunity
+            WHERE Name = 'Stephen Ward'
+            LIMIT 1
+        ];
+
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c, Name
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__c = :opp.Id
+            ORDER BY Name
+        ];
+
+        System.assertEquals(2, uasList.size());
+
+        Subscription_Order__c so = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uasList[0].Id,
+            Type__c = 'Resize',
+            Effective_Date__c = System.now(),
+            Approval_Status__c = 'Approved',
+            New_Annual_kWh__c = 10000
+        );
+
+        Test.startTest();
+        insert so;
+        Test.stopTest();
+
+        opp = [
+            SELECT Id, Total_Subscribed_kW_DC__c
+            FROM Opportunity
+            WHERE Name = 'Stephen Ward'
+            LIMIT 1
+        ];
+
+        uasList = [
+            SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c, Name
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__c = :opp.Id
+            AND Next_Schedule_Z_Status__c = 'Active Subscription'
+            ORDER BY Name
+        ];
+
+        System.assertEquals(2, uasList.size(), 'Opportunity has 2 Active Subscriptions');
+        Decimal sumUASes = uasList[0].Future_Customer_Subscription_KWDC_Rollup__c + uasList[1].Future_Customer_Subscription_KWDC_Rollup__c;
+        System.assertEquals(sumUASes, opp.Total_Subscribed_kW_DC__c, 'Opportunity Total Subscribed KW DC should sum all' +
+            'active subscriptions');
     }
 
     @IsTest
