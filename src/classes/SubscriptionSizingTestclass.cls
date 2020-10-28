@@ -328,7 +328,6 @@ public with sharing class SubscriptionSizingTestclass {
         // Manually setting the Total Subscribed KW DC in testSetup above - can only run Test.start and stop once per
         // transaction for platform events
         System.assertNotEquals(0, opp.Total_Subscribed_kW_DC__c);
-        System.debug('Total subscribed; ' + opp.Total_Subscribed_kW_DC__c);
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c
