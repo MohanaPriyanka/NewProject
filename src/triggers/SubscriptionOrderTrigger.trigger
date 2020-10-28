@@ -1,7 +1,7 @@
 /**
  * Created by SarahRenfro on 11/14/2019.
  *
- * Tested By: SubscriptionManagementServiceTest
+ * Tested By: SubscriptionManagementServiceTest, SubscriptionSizingTestclass
  */
 trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, after update, after insert, before delete) {
     if (Util.isDisabled('Disable_SubscriptionOrder_Trigger__c')) {
