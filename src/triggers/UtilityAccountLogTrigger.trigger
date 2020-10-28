@@ -5,13 +5,18 @@
  */
 
 
-trigger UtilityAccountLogTrigger on Utility_Account_Log__c (before update, after update) {
+trigger UtilityAccountLogTrigger on Utility_Account_Log__c (before insert, before update, after update) {
     if (Util.isDisabled('Disable_UtilityAccountLogTrigger__c')) {
         return;
     }
-    if (Trigger.isUpdate && Trigger.isBefore) {
-        UtilityAccountLogTriggerHandler.updateProposedkWh(Trigger.new, Trigger.oldMap);
-    } else if (Trigger.isUpdate && Trigger.isAfter) {
-        UtilityAccountLogTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.new);
+    switch on Trigger.operationType {
+        when BEFORE_INSERT {
+            UtilityAccountLogTriggerHandler.setCleanedUtilityAccountNumberBeforeSave(Trigger.new);
+        } when BEFORE_UPDATE {
+            UtilityAccountLogTriggerHandler.setCleanedUtilityAccountNumberBeforeSave(Trigger.new);
+            UtilityAccountLogTriggerHandler.updateProposedkWh(Trigger.new, Trigger.oldMap);
+        } when AFTER_UPDATE {
+            UtilityAccountLogTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.new);
+        }
     }
 }

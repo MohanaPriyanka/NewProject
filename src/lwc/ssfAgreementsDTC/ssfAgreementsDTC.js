@@ -1,20 +1,16 @@
-/**
- * Created by lindsayholmes_gearscrm on 2020-09-14.
- */
-
 import { LightningElement, track, api } from 'lwc';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
-import { connCallback,
-         rendCallback,
-         disclosureChecked_shared,
-         creditCheckChecked_shared,
-         csAgreementChecked_shared,
-         filePreview_shared,
-         showDisclosureApproval_shared,
-         showCreditCheckApproval_shared,
-         showCSAgreementApproval_shared,
-         continueAgreement_shared,
+import { onLoad,
+         onRender,
+         disclosureSigned,
+         creditCheckSigned,
+         communitySolarAgreementSigned,
+         displayDocument,
+         showDisclosureApproval,
+         showCreditCheckApproval,
+         showCSAgreementApproval,
+         consentsComplete,
          getCreditCheckLabel } from 'c/ssfAgreementsShared';
 
 export default class SsfAgreementsDTC extends LightningElement {
@@ -47,12 +43,9 @@ export default class SsfAgreementsDTC extends LightningElement {
     mostRecentDocDate;
 
     get supportsDataUri() {
-        var navua = window.navigator.userAgent.toLowerCase();
         // trident = IE
-        if(navua.indexOf("trident") > -1 || navua.indexOf("edge") > -1) {
-            return false;
-        }
-        return true;
+        const navua = window.navigator.userAgent.toLowerCase();
+        return !(navua.indexOf("trident") > -1 || navua.indexOf("edge") > -1);
     };
 
     get creditCheckLabel() {
@@ -61,11 +54,11 @@ export default class SsfAgreementsDTC extends LightningElement {
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css')
-        connCallback(this);
+        onLoad(this);
     }
 
     renderedCallback() {
-        rendCallback(this);
+        onRender(this);
     }
 
     hideContractDocument(event) {
@@ -73,11 +66,11 @@ export default class SsfAgreementsDTC extends LightningElement {
     }
 
     disclosureChecked(event) {
-        disclosureChecked_shared(this, event);
+        disclosureSigned(this, event);
     }
 
     creditCheckChecked(event) {
-        creditCheckChecked_shared(this, event);
+        creditCheckSigned(this, event);
     }
 
     showLessCreditCheck(event) {
@@ -89,11 +82,11 @@ export default class SsfAgreementsDTC extends LightningElement {
     }
 
     csAgreementChecked(event) {
-        csAgreementChecked_shared(this, event);
+        communitySolarAgreementSigned(this, event);
     }
 
     filePreview(event) {
-        filePreview_shared(this, event);
+        displayDocument(this, event);
     }
 
     showLessCSAgreement(event) {
@@ -105,15 +98,15 @@ export default class SsfAgreementsDTC extends LightningElement {
     }
 
     showDisclosureApproval(event) {
-        showDisclosureApproval_shared(this);
+        showDisclosureApproval(this);
     }
 
     showCreditCheckApproval(event) {
-        showCreditCheckApproval_shared(this);
+        showCreditCheckApproval(this);
     }
 
     showCSAgreementApproval(event) {
-        showCSAgreementApproval_shared(this);
+        showCSAgreementApproval(this);
     }
 
     checkForSubmit(event) {
@@ -127,6 +120,6 @@ export default class SsfAgreementsDTC extends LightningElement {
     }
 
     continueAgreement(event) {
-        continueAgreement_shared(this);
+        consentsComplete(this);
     }
 }

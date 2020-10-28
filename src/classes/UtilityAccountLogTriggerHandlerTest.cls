@@ -145,6 +145,28 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
             contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
             System.assert(contract.Generate_Disclosure_Form__c, 'When the rate class\'s Suppress_Disclosure_Form__c is false, Generate_Disclosure_Form__c should be true');
         Test.stopTest();
+    }
 
+    @IsTest
+    private static void testCleanUtilityAccountNumber() {
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Name = '001234-0000',
+            Name_on_Account__c = 'Primary 1'
+        );
+        insert ual;
+        Utility_Account_Log__c ualRetrieved = [
+            SELECT Id, Cleaned_Utility_Account_Number__c
+            FROM Utility_Account_Log__c
+            WHERE Id = :ual.Id
+        ];
+        System.assertEquals('12340000', ualRetrieved.Cleaned_Utility_Account_Number__c);
+
+        System.assertEquals('12340000', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('0-0-12340000-'));
+        System.assertEquals('', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('0000'));
+        System.assertEquals('', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('   '));
+        System.assertEquals('10000', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber(' 10000'));
+        System.assertEquals('10000', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber(' -010000'));
+        System.assertEquals('1234', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('1234'));
+        System.assertEquals('123456789', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('1234 56 789'));
     }
 }
