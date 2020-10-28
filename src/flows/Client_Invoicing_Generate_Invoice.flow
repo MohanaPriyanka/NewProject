@@ -136,6 +136,7 @@
         <expression>DATETIMEVALUE(TEXT(DATE(YEAR(TODAY()),MONTH(TODAY()),1)) + &apos; 03:59:59&apos;)</expression>
     </formulas>
     <interviewLabel>Client {!$Flow.CurrentDateTime}</interviewLabel>
+    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Client Invoicing: Generate Invoice</label>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -396,7 +397,7 @@
             <targetReference>Provide_Effective_Date</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>clientAccount</name>
         <dataType>String</dataType>
