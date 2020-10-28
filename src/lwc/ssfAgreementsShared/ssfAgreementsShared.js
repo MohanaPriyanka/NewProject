@@ -178,15 +178,19 @@ const postProcessContractDocs = (component, contracts) => {
         else if (contract.title === disclosureTitle) {
             if (!disclosureLoaded) {
                 disclosureLoaded = true;
-                contract.first = true; // Disclosure should be in first position
                 component.disclosureDocumentId = contract.id;
                 parsedContracts.push(contract); // Add to first position of array
             }
         }
     });
 
+    // Combine contracts (with disclosure first, if found)
+    // Mark first contract document with "first" attribute for markup on ssfAgreements to properly display language
+    parsedContracts = parsedContracts.concat(tempContracts);
+    parsedContracts[0].first = true;
+
     // Add all documents back into single array, and set component variable with result
-    component.contractDocuments = parsedContracts.concat(tempContracts);
+    component.contractDocuments = parsedContracts;
     component.showSpinner = false;
 }
 
