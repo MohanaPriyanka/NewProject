@@ -10,7 +10,7 @@
         <matchingRule>Utility_Account_Log</matchingRule>
         <objectMapping xsi:nil="true"/>
     </duplicateRuleMatchRules>
-    <isActive>false</isActive>
+    <isActive>true</isActive>
     <masterLabel>Utility Account Log</masterLabel>
     <operationsOnInsert>Report</operationsOnInsert>
     <operationsOnUpdate>Report</operationsOnUpdate>
