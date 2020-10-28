@@ -3324,7 +3324,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SObjectController2</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SObjectController2Test</apexClass>
