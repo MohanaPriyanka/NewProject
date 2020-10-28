@@ -167,5 +167,6 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
         System.assertEquals('10000', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber(' 10000'));
         System.assertEquals('10000', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber(' -010000'));
         System.assertEquals('1234', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('1234'));
+        System.assertEquals('123456789', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('1234 56 789'));
     }
 }
