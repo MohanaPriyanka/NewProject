@@ -126,10 +126,8 @@ public without sharing class UtilityAccountLogTriggerHandler {
         if (utilityAccountNumber == null) {
             return null;
         }
-        String cleaned = utilityAccountNumber.remove('-');
-        cleaned = stripLeadingCharacter(cleaned, ' ');
-        cleaned = stripLeadingCharacter(cleaned, '0');
-        return cleaned;
+        String cleaned = utilityAccountNumber.remove('-').remove(' ');
+        return stripLeadingCharacter(cleaned, '0');
     }
 
     private static String stripLeadingCharacter(String dirtyString, String stringToStrip) {
