@@ -301,7 +301,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
      * @param changeEvents Subscription Order Change Events with Opportunity Ids to evaluate
      */
     public void handleSubscriptionOrderChangeEvents(List<Subscription_Order_Change_Event__e> changeEvents) {
-        System.debug('Retrieved change event to handle ' + changeEvents[0]);
         Set<Id> oppIds = new Set<Id>();
         for (Subscription_Order_Change_Event__e event : changeEvents) {
             oppIds.add(event.Opportunity_Id__c);
