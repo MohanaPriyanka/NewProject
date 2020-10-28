@@ -46921,6 +46921,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility_Account_Log__c.Cleaned_Utility_Account_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_Account_Log__c.Comments_About_Sizings__c</field>
         <readable>true</readable>
     </fieldPermissions>
