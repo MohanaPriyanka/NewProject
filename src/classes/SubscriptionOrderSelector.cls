@@ -3,7 +3,7 @@
  *
  * Tested By: SubscriptionManagementServiceTestclass, SubscriptionOrderSelectorTest
  */
-@SuppressWarnings('PMD.ApexCRUDViolation,PMD.ApexDoc')
+@SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public inherited sharing class SubscriptionOrderSelector {
     public List<Subscription_Order__c> selectByIds(Set<Id> soIds) {
         return [
@@ -23,9 +23,10 @@ public inherited sharing class SubscriptionOrderSelector {
                 Utility_Number_of_Decimal_Places__c,
                 Approved_Change_in_Subscription__c,
                 Effective_Date__c,
-                Client_Invoicing_Fee__c,
-                Client_Assignment_Agreement__c,
+                Client_Invoicing_Fee__c,	              
+                Client_Assignment_Agreement__c,	
                 Invoice_Line_Item__c,
+                Utility_Account_Subscription__r.Opportunity__r.Id,
                 Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
                 Utility_Account_Subscription__r.Opportunity__r.Customer_Sub_Group__c,
                 Utility_Account_Subscription__r.Opportunity__r.Underwriting_Criteria__c,
@@ -117,42 +118,41 @@ public inherited sharing class SubscriptionOrderSelector {
             WHERE Client_Assignment_Agreement__c IN :assignmentAgreementIds
         ];
     }
+    public List<AggregateResult> getUninvoicedByClientAccount(List<Id> clientAccountIds, Datetime effectiveDate) {	
+        return [	
+            SELECT Utility_Account_Subscription__r.Shared_Solar_System__c Id,	
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Name SSSNAME,	
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__r.Name ENTITYNAME,	
+                Client_Assignment_Agreement__c  ASSIGNMENTAGREEMENT,	
+                SUM(Client_Invoicing_Fee__c) TOTAL,	
+                COUNT(Id) NUM	
+            FROM Subscription_Order__c	
+            WHERE Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c IN :clientAccountIds	
+            AND Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'	
+            AND Invoice_Line_Item__c = NULL	
+            AND Effective_Date__c <= :effectiveDate	
+            AND Client_Invoicing_Fee__c != NULL	
+            AND Client_Invoicing_Fee__c != 0	
+            GROUP BY Utility_Account_Subscription__r.Shared_Solar_System__c,	
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Name,	
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__r.Name,	
+                Client_Assignment_Agreement__c	
+        ];	
+    }	
 
-    public List<AggregateResult> getUninvoicedByClientAccount(List<Id> clientAccountIds, Datetime effectiveDate) {
-        return [
-            SELECT Utility_Account_Subscription__r.Shared_Solar_System__c Id,
-                Utility_Account_Subscription__r.Shared_Solar_System__r.Name SSSNAME,
-                Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__r.Name ENTITYNAME,
-                Client_Assignment_Agreement__c  ASSIGNMENTAGREEMENT,
-                SUM(Client_Invoicing_Fee__c) TOTAL,
-                COUNT(Id) NUM
-            FROM Subscription_Order__c
-            WHERE Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c IN :clientAccountIds
-            AND Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'
-            AND Invoice_Line_Item__c = NULL
-            AND Effective_Date__c <= :effectiveDate
-            AND Client_Invoicing_Fee__c != NULL
-            AND Client_Invoicing_Fee__c != 0
-            GROUP BY Utility_Account_Subscription__r.Shared_Solar_System__c,
-                Utility_Account_Subscription__r.Shared_Solar_System__r.Name,
-                Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__r.Name,
-                Client_Assignment_Agreement__c
-        ];
-    }
-
-    public List<Subscription_Order__c> getUninvoicedBySSS(List<Shared_Solar_System__c> sharedSolarSystems, Datetime effectiveDate) {
-        return [
-            SELECT Id, Client_Invoicing_Fee__c, Utility_Account_Subscription__r.Shared_Solar_System__c,
-                Contract_Fee_Detail__c, Contract_Fee_Detail__r.Fee__c, Client_Assignment_Agreement__c,
-                Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c, Approved_Change_in_Subscription__c,
-                Contract_Fee_Detail__r.Acquisition_Type_Acquisition__c, Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c
-            FROM Subscription_Order__c
-            WHERE Utility_Account_Subscription__r.Shared_Solar_System__c IN :sharedSolarSystems
-            AND Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'
-            AND Invoice_Line_Item__c = NULL
-            AND Effective_Date__c <= :effectiveDate
-            AND Client_Invoicing_Fee__c != NULL
-            AND Client_Invoicing_Fee__c != 0
-        ];
+    public List<Subscription_Order__c> getUninvoicedBySSS(List<Shared_Solar_System__c> sharedSolarSystems, Datetime effectiveDate) {	
+        return [	
+            SELECT Id, Client_Invoicing_Fee__c, Utility_Account_Subscription__r.Shared_Solar_System__c,	
+                Contract_Fee_Detail__c, Contract_Fee_Detail__r.Fee__c, Client_Assignment_Agreement__c,	
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c, Approved_Change_in_Subscription__c,	
+                Contract_Fee_Detail__r.Acquisition_Type_Acquisition__c, Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c	
+            FROM Subscription_Order__c	
+            WHERE Utility_Account_Subscription__r.Shared_Solar_System__c IN :sharedSolarSystems	
+            AND Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'	
+            AND Invoice_Line_Item__c = NULL	
+            AND Effective_Date__c <= :effectiveDate	
+            AND Client_Invoicing_Fee__c != NULL	
+            AND Client_Invoicing_Fee__c != 0	
+        ];	
     }
 }
