@@ -55,12 +55,12 @@ public without sharing class UtilityDataRequestService {
         Map<String, Rate_Class__c> rateClassWithEDIMap = rateClassesSelector.selectWithEDI();
         
         for(Utility_Data_Request_Period__c udrp : udrpList) {
-            if(udrp.Rate_Class__c != null 
-               && rateClassWithEDIMap.containsKey(udrp.Rate_Class__c) 
-               && udrp.Utility_Data_Request__r.Utility__c == rateClassWithEDIMap.get(udrp.Rate_Class__c).Utility__c){
-                udrp.Rate_Class_Lookup__c = rateClassWithEDIMap.get(udrp.Rate_Class__c).Id;
+            if(udrp.Rate_Subclass__c != null 
+               && rateClassWithEDIMap.containsKey(udrp.Rate_Subclass__c) 
+               && udrp.Utility_Data_Request__r.Utility__c == rateClassWithEDIMap.get(udrp.Rate_Subclass__c).Utility__c){
+                udrp.Rate_Class_Lookup__c = rateClassWithEDIMap.get(udrp.Rate_Subclass__c).Id;
                 updatedUDRPList.add(udrp);
-            } else if(udrp.Rate_Class__c == null) {
+            } else if(udrp.Rate_Subclass__c == null) {
                 Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'Null Rate Class on ' + udrp.Name);
             } else {
                 Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'No matching Rate Class record with an EDI Rate Class for the Rate Class text on ' + udrp.Name);
