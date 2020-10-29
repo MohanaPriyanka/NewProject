@@ -1766,6 +1766,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>BlueWave Test Partner</label>
                 </value>
                 <value>
+                    <fullName>Bold Coast Energy</fullName>
+                    <default>false</default>
+                    <label>Bold Coast Energy</label>
+                </value>
+                <value>
                     <fullName>Boston Solar</fullName>
                     <default>false</default>
                     <label>Boston Solar</label>
@@ -1896,6 +1901,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Partner Energy Group</label>
                 </value>
                 <value>
+                    <fullName>Pine Tree Solar</fullName>
+                    <default>false</default>
+                    <label>Pine Tree Solar</label>
+                </value>
+                <value>
                     <fullName>Pinnacle Energy</fullName>
                     <default>false</default>
                     <label>Pinnacle Energy</label>
@@ -1999,6 +2009,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>South Mountain Solar</fullName>
                     <default>false</default>
                     <label>South Mountain Solar</label>
+                </value>
+                <value>
+                    <fullName>Sprague Energy</fullName>
+                    <default>false</default>
+                    <label>Sprague Energy</label>
                 </value>
                 <value>
                     <fullName>Summit Energy</fullName>
@@ -2761,6 +2776,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Bold Coast Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Boston Solar</fullName>
                 <default>false</default>
             </values>
@@ -2865,6 +2884,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Pine Tree Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Pinnacle Energy</fullName>
                 <default>false</default>
             </values>
@@ -2946,6 +2969,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>South Mountain Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sprague Energy</fullName>
                 <default>false</default>
             </values>
             <values>
