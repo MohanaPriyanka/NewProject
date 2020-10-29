@@ -226,12 +226,13 @@ U=Customer receives supply from the Utility</inlineHelpText>
     <fields>
         <fullName>Annual_kWh__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>This is the rolled up kWh quantity value from UDRP&apos;s.</inlineHelpText>
         <label>Annual kWh</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -401,7 +402,7 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         <label>Request Recieved Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
     </fields>
@@ -411,7 +412,7 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         <label>Request Sent Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
     </fields>
@@ -425,7 +426,7 @@ Complete - All data received and updated</inlineHelpText>
         <label>Request Status</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -514,7 +515,7 @@ Complete - All data received and updated</inlineHelpText>
         <length>30</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>true</unique>

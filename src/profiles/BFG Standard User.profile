@@ -41938,6 +41938,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Data_Request_Period__c.Used_in_Annual_kWh_Calculation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Data_Request_Period__c.Utility_Data_Request__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -42044,7 +42049,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Data_Request__c.Usage_Sender_Transaction_Id__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
