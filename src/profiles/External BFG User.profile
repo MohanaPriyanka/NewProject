@@ -50390,6 +50390,10 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>State__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>System_Bill__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>

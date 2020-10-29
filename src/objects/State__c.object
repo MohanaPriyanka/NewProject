@@ -229,6 +229,11 @@ IF(Name = &quot;Wyoming&quot;, &quot;WY&quot;, null)))))))))))))))))))))))))))))
         <unique>false</unique>
     </fields>
     <label>State</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>State Name</label>
         <trackHistory>false</trackHistory>
