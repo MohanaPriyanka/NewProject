@@ -5,6 +5,7 @@
     <customButtons>Check_Loadzone</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <excludeButtons>XClean</excludeButtons>
@@ -351,6 +352,7 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
+
             <actionName>New_QC_Case</actionName>
             <actionType>CustomButton</actionType>
             <sortOrder>12</sortOrder>
@@ -359,6 +361,7 @@
             <actionName>Lead.Email_Contract_Re_Sign_Link</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>13</sortOrder>
+
         </platformActionListItems>
         <platformActionListItems>
             <actionName>SendEmail</actionName>
@@ -366,6 +369,8 @@
             <sortOrder>11</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
+
+
             <actionName>Lead.Log_a_Call</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>0</sortOrder>
@@ -405,6 +410,7 @@
             <actionType>QuickAction</actionType>
             <sortOrder>7</sortOrder>
         </platformActionListItems>
+
         <platformActionListItems>
             <actionName>Edit</actionName>
             <actionType>StandardButton</actionType>
@@ -420,6 +426,7 @@
             <actionType>StandardButton</actionType>
             <sortOrder>10</sortOrder>
         </platformActionListItems>
+
     </platformActionList>
     <quickActionList>
         <quickActionListItems>
