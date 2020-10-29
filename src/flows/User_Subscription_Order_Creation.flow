@@ -1142,7 +1142,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         </connector>
         <fields>
             <name>txtAnnual_Cost_Sizing</name>
-            <fieldText>&lt;p&gt;Enter the new Annual Cost ($) that you would like this subscription to have. For example, if the current Annual Cost is $1,000, and they are being resized to $800, enter $800.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For reference:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Current Annual Cost: &lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;{!sovUAS.Annual_Cost_Future_Rollup__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Maximum Annual Cost: &lt;/b&gt;{!formulaMaximumUsage}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;(Maximum Annual Cost is based on the Opportunity&apos;s Available Capacity - so as not to exceed Subscription maximums)&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Enter the new Annual Cost ($) that you would like this subscription to have. For example, if the current Annual Cost is $1,000, and they are being resized to $800, enter $800.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For reference:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Current Annual Cost: &lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!sovUAS.Annual_Cost_Future_Rollup__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Maximum Annual Cost: &lt;/b&gt;{!formulaMaximumUsage}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Note: Maximum Annual Cost is based on the Opportunity&apos;s Available Capacity - so as not to exceed Subscription maximums. Maximums do not apply to Anchors. &lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -1175,7 +1175,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         </fields>
         <fields>
             <name>txt_AnnualkWh_Sizing</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Enter the new Annual kWh that you would like this subscription to have. For example, if the current Annual kWh is 1,000, and they are being resized to 800, enter 800.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For reference:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Current Annual kWh: &lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!sovUAS.Annual_kWh_Subscription_Future_Rollup__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Maximum Annual kWh: &lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!formulaMaximumUsage}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;(Maximum Annual kWh is based on the Opportunity&apos;s Available Capacity - so as not to exceed Subscription maximums)&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Enter the new Annual kWh that you would like this subscription to have. For example, if the current Annual kWh is 1,000, and they are being resized to 800, enter 800.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For reference:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Current Annual kWh: &lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;{!sovUAS.Annual_kWh_Subscription_Future_Rollup__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;UAS&apos;s Maximum Annual kWh: &lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;{!formulaMaximumUsage}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Note: Maximum Annual kWh is based on the Opportunity&apos;s Available Capacity - so as not to exceed Subscription maximums. Maximums do not apply to Anchors&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -1306,7 +1306,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
             <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(240, 0, 0);&quot;&gt;WARNING: &lt;/b&gt;&lt;span style=&quot;color: rgb(240, 0, 0);&quot;&gt;Based on the inputs given, the related Opportunity will exceed its Maximum kW DC Subscription of {!sovUAS.Opportunity__r.Maximum_kW_Subscription__c}.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
-                <conditionLogic>(1 AND 2) OR (3 AND 4)</conditionLogic>
+                <conditionLogic>((1 AND 2) OR (3 AND 4)) AND 5</conditionLogic>
                 <conditions>
                     <leftValueReference>scrvarNew_Annual_Cost</leftValueReference>
                     <operator>GreaterThan</operator>
@@ -1333,6 +1333,13 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
                     <operator>GreaterThan</operator>
                     <rightValue>
                         <elementReference>formulaMaximumUsage</elementReference>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>sovUAS.Opportunity__r.Customer_Group__c</leftValueReference>
+                    <operator>NotEqualTo</operator>
+                    <rightValue>
+                        <stringValue>Anchor</stringValue>
                     </rightValue>
                 </conditions>
             </visibilityRule>
