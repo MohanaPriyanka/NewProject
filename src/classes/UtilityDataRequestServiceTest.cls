@@ -9,51 +9,6 @@ private class UtilityDataRequestServiceTest {
     @TestVisible
     private static UtilityDataRequestPeriodSelector udrpSelector = new UtilityDataRequestPeriodSelector();
     
-    private static Utility_Data_Request__c getTestUDR(String customerName) {
-        return [
-            SELECT Id, Request_Status__c, Customer_Name__c, State__c, Utility__c, Annual_kWh__c,
-            Utility_Account_Log__c, Utility_Account_Log__r.Utility_Rate_Class__c 
-            FROM Utility_Data_Request__c 
-            WHERE Customer_Name__c = :customerName
-        ];
-    }
-    
-    private static Utility_Account_Log__c getTestUAL(Id ualId) {
-        return [
-            SELECT Id, Name_on_Account__c, Utility_Rate_Class__c, Annual_kWh__c
-            FROM Utility_Account_Log__c
-            WHERE Id = :ualId
-        ];
-    }
-    
-    private static Utility_Data_Request_Period__c getTestUDRP(String rateSubclass) {
-        return [
-            SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c, 
-            Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
-            Used_In_Annual_kWh_Calculation__c
-            FROM Utility_Data_Request_Period__c 
-            WHERE Rate_Subclass__c = :rateSubclass
-        ];
-    }
-    
-    private static List<Utility_Data_Request_Period__c> getTestUDRPList(Id udrId) {
-        return [
-            SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c, 
-            Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
-            Used_In_Annual_kWh_Calculation__c
-            FROM Utility_Data_Request_Period__c 
-            WHERE Utility_Data_Request__c = :udrId
-        ];
-    }
-    
-    private static Rate_Class__c getTestRateClass(String name) {
-        return [
-            SELECT Id, Name, EDI_Rate_Class__c, Utility__c
-            FROM Rate_Class__c 
-            WHERE Name = :name
-        ];
-    }
-    
     @TestSetup
     public static void setupData() {
         
@@ -65,7 +20,9 @@ private class UtilityDataRequestServiceTest {
 		TestFactory.setDefaultCSPartner(testPartner.Id);
         
         Utility__c testUtility = new Utility__c(
-            Name = 'testUtility'
+            Name = 'testUtility',
+            Utility_DUNS_Number__c = '1234567890',
+            Utility_Data_Collection_Mechanism__c = 'EDI'
         );
         insert testUtility;
         
@@ -86,7 +43,8 @@ private class UtilityDataRequestServiceTest {
         	Customer_type__c = 'Commercial',
             LastName = 'testLead1',
             Company = 'testBlueWave1',
-            Partner_Lookup__c = testPartner.Id
+            Partner_Lookup__c = testPartner.Id,
+            Utility_relationship__c = testUtility.Id
         );
         
         Lead resiLead = new Lead(
@@ -103,7 +61,8 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c testUAL1 = new Utility_Account_Log__c(
             Service_State__c = 'Georgia',
             Lead__c = resiLead.Id,
-            Name_on_Account__c = 'testUAL1'
+            Name_on_Account__c = 'testUAL1',
+            Utility_lookup__c = testUtility.Id
         );
         
         Utility_Account_Log__c testUAL2 = new Utility_Account_Log__c(
@@ -461,7 +420,70 @@ private class UtilityDataRequestServiceTest {
             testUDRP17, testUDRP18, testUDRP19, testUDRP20, testUDRP21, testUDRP22, testUDRP23, testUDRP24};
         insert testUDRPList;
     }
-    
+
+    private static Utility_Data_Request__c getTestUDR(String customerName) {
+        return [
+            SELECT Id, Request_Status__c, Customer_Name__c, State__c, Utility__c, Annual_kWh__c,
+                Utility_Account_Log__c, Utility_Account_Log__r.Utility_Rate_Class__c
+            FROM Utility_Data_Request__c
+            WHERE Customer_Name__c = :customerName
+        ];
+    }
+
+    private static Utility_Account_Log__c getTestUAL(Id ualId) {
+        return [
+            SELECT Id, Name, Name_on_Account__c, Utility_Rate_Class__c, Annual_kWh__c
+            FROM Utility_Account_Log__c
+            WHERE Id = :ualId
+        ];
+    }
+
+    private static Utility_Data_Request_Period__c getTestUDRP(String rateSubclass) {
+        return [
+            SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c,
+                Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
+                Used_In_Annual_kWh_Calculation__c
+            FROM Utility_Data_Request_Period__c
+            WHERE Rate_Subclass__c = :rateSubclass
+        ];
+    }
+
+    private static List<Utility_Data_Request_Period__c> getTestUDRPList(Id udrId) {
+        return [
+            SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c,
+                Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
+                Used_In_Annual_kWh_Calculation__c
+            FROM Utility_Data_Request_Period__c
+            WHERE Utility_Data_Request__c = :udrId
+        ];
+    }
+
+    private static Rate_Class__c getTestRateClass(String name) {
+        return [
+            SELECT Id, Name, EDI_Rate_Class__c, Utility__c
+            FROM Rate_Class__c
+            WHERE Name = :name
+        ];
+    }
+
+    private static Lead getTestLead(String lastName) {
+        return [
+            SELECT Id,
+                (SELECT Id, Name, Utility_lookup__c, Utility_lookup__r.Utility_DUNS_Number__c, Utility_lookup__r.Name
+                FROM Utility_Account_Logs__r)
+            FROM Lead
+            WHERE LastName = 'testLead1'];
+        // <<<< add UAL field
+    }
+
+    private static Integer udrCount(Id ualId) {
+        return [
+            SELECT COUNT()
+            FROM Utility_Data_Request__c
+            WHERE Utility_Account_Log__c =: ualId
+        ];
+    }
+
     @IsTest
     static void updateStatusToComplete() {
         List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
@@ -626,6 +648,70 @@ private class UtilityDataRequestServiceTest {
                 System.assertEquals(true, udrp.Used_in_Annual_kWh_Calculation__c, 'Used in kWh Calculation, should be true.');
             }
         }
+    }
+
+    @IsTest
+    static void testUDRGenerationNoMatch() {
+        // Retrieve data
+        Lead lead = getTestLead('testLead1');
+        Utility_Account_Log__c ualForLead = lead.Utility_Account_Logs__r;
+        Integer udrCount = udrCount(ualForLead.id);
+
+        Test.startTest();
+            UtilityDataRequestService.create(new List<String>{lead.id});
+        Test.stopTest();
+
+        // Check database to confirm no extra UDRs were generated for this UAL
+        Integer udrCountNow = udrCount(ualForLead.id);
+
+        // Test lead already has one UDR already created (via @TestSetup method)
+        // No new UDRs should have been created for this lead/UAL
+        System.assertEquals(udrCount, udrCountNow, 'UDR generated when it should not have been. Duplicate UDR!');
+    }
+
+    @IsTest
+    static void testUDRGeneration() {
+        LeadSelector leadSelector = new LeadSelector();
+
+        // Build data scenario
+        Id utilityId = [SELECT Id FROM Utility__c WHERE Name = 'testUtility'].Id;
+        Lead lead = new Lead (
+            Product__c = [SELECT Id FROM Product2 WHERE Name = 'testProduct'].Id,
+            Customer_type__c = 'Commercial',
+            LastName = 'testLead1',
+            Company = 'testBlueWave1',
+            Utility_relationship__c = utilityId
+        );
+        insert lead;
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Service_State__c = 'Georgia',
+            Lead__c = lead.Id,
+            Name_on_Account__c = 'testUAL1',
+            Utility_lookup__c = utilityId
+        );
+        insert ual;
+
+        Test.startTest();
+            System.assertEquals(0, udrCount(ual.Id), 'UDRs prior to create() method run should be 0');
+            UtilityDataRequestService.create(new List<String>{lead.Id});
+        Test.stopTest();
+
+        // Check results... Should have generated a new UDR with appropriate field vals, and updated UAL
+        List<Utility_Data_Request__c> udrs = [
+            SELECT Id, Account_Number__c, Utility__c, Utility_DUNS__c, Utility_Name__c, Request_Status__c
+            FROM Utility_Data_Request__c
+            WHERE Utility_Account_Log__c =: ual.Id
+        ];
+        ual = leadSelector.selectForUDRCreation(new List<Id>{lead.Id}).get(lead.Id)[0];
+
+        System.assert(!udrs.isEmpty(), 'No UDRs found after running create()');
+        System.assertEquals(1, udrCount(ual.Id), '1 UDR should have been generated for UAL missing UDR');
+        System.assertEquals(ual.Name, udrs[0].Account_Number__c, 'Incorrect name for generated UDR');
+        System.assertEquals(ual.Utility_lookup__c, udrs[0].Utility__c, 'Incorrect utility for generated UDR');
+        System.assertEquals(ual.Utility_lookup__r.Utility_DUNS_Number__c, udrs[0].Utility_DUNS__c, 'Incorrect DUNS number for generated UDR');
+        System.assertEquals(ual.Utility_lookup__r.Name, udrs[0].Utility_Name__c, 'Incorrect utility name for generated UDR');
+        System.assertEquals('Pending', udrs[0].Request_Status__c, 'Incorrect status for newly-generated UDR');
+        System.assertEquals('Pending Utility Data', ual.QC_Status__c, 'UAL status incorrect for pending UDR');
     }
     
 }

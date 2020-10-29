@@ -47,4 +47,20 @@ public without sharing class UALSelector {
         return ual;
     }
 
+    public Set<Id> selectUalsWithoutUdrs (Set<Id> uals) {
+        Set<Id> ualsWithoutUdrs = new Set<Id>(uals);
+
+        for (AggregateResult aggRes : [
+            SELECT COUNT(Id) numUDRS, Utility_Account_Log__c ualId
+            FROM Utility_Data_Request__c
+            WHERE Utility_Account_Log__c IN : uals
+            GROUP BY Utility_Account_Log__c
+        ]) {
+            // Rows in aggregate query indicate one or more UDR exists for UAL
+            ualsWithoutUdrs.remove((Id) aggRes.get('ualId'));
+        }
+
+        return ualsWithoutUdrs;
+    }
+
 }

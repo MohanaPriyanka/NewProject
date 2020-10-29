@@ -5,73 +5,97 @@
  * 
  */
 
+@SuppressWarnings('ApexDocValidation')
 public without sharing class UtilityDataRequestService {
-    
-    @TestVisible
-    private static RateClassesSelector rateClassesSelector = new RateClassesSelector();
-    @TestVisible
-    private static UtilityDataRequestPeriodSelector udrpSelector = new UtilityDataRequestPeriodSelector();
-    @TestVisible
-    private static UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
-    @TestVisible
-    private static UALSelector ualSelector = new UALSelector();
-    @TestVisible
-    private static StateSelector stateSelector = new StateSelector();
-        
-    @SupressWarnings('PMD.ApexCRUDViolation')    
-    public void afterStatusUpdatedToComplete(Map<Id,Utility_Data_Request__c> oldUDRMap, List<Utility_Data_Request__c> udrList) {
-        
-        Set<Id> udrIds = new Set<Id>();
-        List<Utility_Data_Request__c> udrRecords = new List<Utility_Data_Request__c>();
-        
-        //Only want to update the Rate Classes if the Status updated from something else to Complete
-        //Loops through the new udrList and takes the UDRs where the status updated to Complete
+
+    @TestVisible private static RateClassesSelector rateClassesSelector = new RateClassesSelector();
+    @TestVisible private static UtilityDataRequestPeriodSelector udrpSelector = new UtilityDataRequestPeriodSelector();
+    @TestVisible private static UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
+    @TestVisible private static UALSelector ualSelector = new UALSelector();
+    @TestVisible private static StateSelector stateSelector = new StateSelector();
+    @TestVisible private static LeadSelector leadSelector = new LeadSelector();
+
+    /**
+     * Handler method for when UDR records are returned from Boomi as 'Complete'
+     * <p></p>
+     * Handles related UDRP and UAL modifications
+     * @param oldUDRMap Trigger.old
+     * @param udrList Trigger.new
+     */
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public void afterStatusUpdatedToComplete(Map<Id, Utility_Data_Request__c> oldUDRMap, List<Utility_Data_Request__c> udrList) {
+        Map<Id,Utility_Data_Request__c> udrs = new Map<Id,Utility_Data_Request__c>();
+
         for (Utility_Data_Request__c udr : udrList) {
             if (udr.Request_Status__c == 'Complete' && oldUDRMap.get(udr.Id).Request_Status__c != 'Complete') {
-                udrIds.add(udr.Id);
-                udrRecords.add(udr);
+                udrs.put(udr.Id,udr);
             }
         }
-        
-        if(udrIds.size() > 0 && udrIds.size() == udrRecords.size()) {
-            List<Utility_Data_Request_Period__c> updatedUDRPRateClassList = populateRateClassOnUDRP(udrIds);
-            update updatedUDRPRateClassList;
-            List<Utility_Account_Log__c> updatedUALRateClassList = populateRateClassOnUAL(udrRecords);
-            update updatedUALRateClassList;
+
+        if (!udrs.isEmpty()) {
+            onCompleteHandleUDRP(udrs.keySet());
+            onCompleteHandleUAL(udrs.values());
         }
-        
     }
-    
+
+    private void onCompleteHandleUDRP (Set<Id> udrIds) {
+        // Only want to update the Rate Classes if the Status updated from something else to Complete
+        List<Utility_Data_Request_Period__c> updatedUDRPRateClassList = populateRateClassOnUDRP(udrIds);
+
+        update updatedUDRPRateClassList;
+    }
+
+    private void onCompleteHandleUAL(List<Utility_Data_Request__c> udrRecords) {
+        List<Utility_Account_Log__c> ualsToUpdate = populateRateClassOnUAL(udrRecords);
+        setUALAddressFromUDR(ualsToUpdate);
+        setUALComplete(ualsToUpdate);
+
+        update ualsToUpdate;
+    }
+
+    private void setUALComplete(List<Utility_Account_Log__c> uals) {
+        for (Utility_Account_Log__c ual : uals) {
+            //ual.QC_Status__c = 'Complete';
+        }
+    }
+
+    private void setUALAddressFromUDR(List<Utility_Account_Log__c> uals) {
+        for (Utility_Account_Log__c ual : uals) {
+            // TODO: check name, if UDR matches UAL, update address on UAL with address from UDR
+        }
+    }
+
     /**
      * @description Populates the UDRP.Rate_Class_Lookup__c where 
      * the Rate Class object's EDI_Rate_Class__c text matches the UDRP's Rate_Class__c text.
      * 
      */
     private List<Utility_Data_Request_Period__c> populateRateClassOnUDRP(Set<Id> udrIdSet) {
-        
+
         List<Utility_Data_Request_Period__c> updatedUDRPList = new List<Utility_Data_Request_Period__c>();
-        
+
         List<Utility_Data_Request_Period__c> udrpList = udrpSelector.selectByUDR(udrIdSet);
         Map<String, Rate_Class__c> rateClassWithEDIMap = rateClassesSelector.selectWithEDI();
-        
-        for(Utility_Data_Request_Period__c udrp : udrpList) {
-            if(udrp.Rate_Class__c != null 
-               && rateClassWithEDIMap.containsKey(udrp.Rate_Class__c) 
-               && udrp.Utility_Data_Request__r.Utility__c == rateClassWithEDIMap.get(udrp.Rate_Class__c).Utility__c){
+
+        for (Utility_Data_Request_Period__c udrp : udrpList) {
+            if (udrp.Rate_Class__c != null
+                && rateClassWithEDIMap.containsKey(udrp.Rate_Class__c)
+                && udrp.Utility_Data_Request__r.Utility__c == rateClassWithEDIMap.get(udrp.Rate_Class__c).Utility__c)
+            {
                 udrp.Rate_Class_Lookup__c = rateClassWithEDIMap.get(udrp.Rate_Class__c).Id;
                 updatedUDRPList.add(udrp);
-            } else if(udrp.Rate_Class__c == null) {
+            } else if (udrp.Rate_Class__c == null) {
                 Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'Null Rate Class on ' + udrp.Name);
             } else {
                 Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'No matching Rate Class record with an EDI Rate Class for the Rate Class text on ' + udrp.Name);
             }
         }
-        
+
         Logger.flushLogs();
-        
+
         return updatedUDRPList;
     }
-    
+
     /**
      * @description Populates the UAL.Utility_Rate_Class__c (lookup to Rate Class) with 
      * the most recent UDRP's Rate_Class_Lookup__c where the Rate_Class_Lookup__c is not null.
@@ -80,41 +104,41 @@ public without sharing class UtilityDataRequestService {
      */
     private List<Utility_Account_Log__c> populateRateClassOnUAL(List<Utility_Data_Request__c> udrRecords) {
         List<Utility_Account_Log__c> updatedUALList = new List<Utility_Account_Log__c>();
-        
+
         for (Utility_Data_Request__c udr : udrRecords) {
-            
+
             Set<Id> tempUDRId = new Set<Id>();
             tempUDRId.add(udr.Id);
-            
+
             List<Utility_Data_Request_Period__c> tempUDRPList = udrpSelector.selectByUDR(tempUDRId);
             Utility_Account_Log__c tempUAL = ualSelector.selectByUDR(udr);
-            
-            if(tempUDRPList[0].Rate_Class_Lookup__c != null && udr.Utility_Account_Log__c != null) {
+
+            if (tempUDRPList[0].Rate_Class_Lookup__c != null && udr.Utility_Account_Log__c != null) {
                 tempUAL.Utility_Rate_Class__c = tempUDRPList[0].Rate_Class_Lookup__r.Id;
                 updatedUALList.add(tempUAL);
             } else {
                 Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUAL', 'Null Rate_Class_Lookup__c value for most recent UDRP related to ' + udr.Name);
             }
         }
-        
+
         Logger.flushLogs();
-        
+
         return updatedUALList;
     }
-    
+
     /**
      * @description Populates the UDR.Annual_kWh and the UAL.Annual_kWh with the value calculated in the getAnnualkWh method.
      * Only want to update where the UDR Request Status is being updated to Complete from something else.
      */
-    @SupressWarnings('PMD.ApexCRUDViolation')    
-    public void beforeStatusUpdatedToComplete(Map<Id,Utility_Data_Request__c> oldUDRMap, List<Utility_Data_Request__c> newUDRList, Map<Id,Utility_Data_Request__c> newUDRMap) {
-        //Need to create a map of UDR Ids to a list of UDRPs related to that UDR where the measurement unit is 'KH'
-        Map<Id, List<Utility_Data_Request_Period__c>> udrMapToUDRP = new Map<Id, List<Utility_Data_Request_Period__c>>();
-        List<Utility_Data_Request_Period__c> udrpList = udrpSelector.selectWithKHByUDR(newUDRList);
-        
-        for(Utility_Data_Request_Period__c udrp : udrpList) {
-            if(udrMapToUDRP.keySet().contains(udrp.Utility_Data_Request__c)) {
-                udrMapToUDRP.get(udrp.Utility_Data_Request__c).add(udrp);
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public void beforeStatusUpdatedToComplete(Map<Id, Utility_Data_Request__c> oldUDRMap, List<Utility_Data_Request__c> newUDRList, Map<Id, Utility_Data_Request__c> newUDRMap) {
+    //Need to create a map of UDR Ids to a list of UDRPs related to that UDR where the measurement unit is 'KH'
+    Map<Id, List<Utility_Data_Request_Period__c>> udrMapToUDRP = new Map<Id, List<Utility_Data_Request_Period__c>>();
+    List<Utility_Data_Request_Period__c> udrpList = udrpSelector.selectWithKHByUDR(newUDRList);
+
+        for (Utility_Data_Request_Period__c udrp : udrpList) {
+            if (udrMapToUDRP.keySet().contains(udrp.Utility_Data_Request__c)) {
+            udrMapToUDRP.get(udrp.Utility_Data_Request__c).add(udrp);
             } else {
                 List<Utility_Data_Request_Period__c> tempUDRPList = new List<Utility_Data_Request_Period__c>();
                 tempUDRPList.add(udrp);
@@ -192,6 +216,62 @@ public without sharing class UtilityDataRequestService {
         }
         update udrpList;
         return kWh;
+    }
+
+    /**
+     * Assesses if UDRs should be generated for passed-in lead ids based on Utility Data Collection Mechanism
+     * <p></p>
+     * If mechanism warrants UDR creation, this method loops through all UALs to determine if UDRs need inserted
+     * <p></p>
+     * This method will NOT generate UDRs if any existing are found and related to UALs
+     * @param leadIds Leads to check for UDR creation
+     * @author Jeff Parlin 10-28-20
+     */
+    @Future
+    public static void create (List<String> leadIds) {
+        List<Utility_Data_Request__c> newUDRs = new List<Utility_Data_Request__c>();
+        Map<Id,Utility_Account_Log__c> uals = new Map<Id,Utility_Account_Log__c>();
+
+        Map<Id,List<Utility_Account_Log__c>> leadToUALMap = leadSelector.selectForUDRCreation(leadIds);
+        for (Id leadId : leadToUALMap.keySet()) {
+            for (Utility_Account_Log__c ual : leadToUALMap.get(leadId)) {
+                uals.put(ual.Id, ual);
+            }
+        }
+
+        if (uals.isEmpty()) {
+            return;
+        }
+
+        Set<Id> ualsWithoutUdrs = ualSelector.selectUalsWithoutUdrs(uals.keySet());
+        for (Id ualId : ualsWithoutUdrs) {
+            Utility_Account_Log__c ual = uals.get(ualId);
+            newUDRs.add(constructNewUDR(ual));
+            ual.QC_Status__c = 'Pending Utility Data';
+        }
+
+        try {
+            insert newUDRs;
+            update uals.values();
+        } catch (Exception e) {
+            Logger.logNow(
+                'UtilityDataRequestService',
+                'create (@future)',
+                'Unable to create UDRs or update UALs for Leads: '+leadIds.toString()+'\n\n'+e.getMessage(),
+                'Error'
+            );
+        }
+    }
+
+    private static Utility_Data_Request__c constructNewUDR(Utility_Account_Log__c ual) {
+        return new Utility_Data_Request__c(
+            Account_Number__c       = ual.Name,
+            Utility__c              = ual.Utility_lookup__c,
+            Utility_DUNS__c         = ual.Utility_lookup__r.Utility_DUNS_Number__c,
+            Utility_Name__c         = ual.Utility_lookup__r.Name,
+            Utility_Account_Log__c  = ual.Id,
+            Request_Status__c       = 'Pending'
+        );
     }
     
 }
