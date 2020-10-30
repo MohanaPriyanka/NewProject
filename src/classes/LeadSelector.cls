@@ -199,29 +199,4 @@ public without sharing class LeadSelector {
         return leads[0];
     }
 
-    /**
-     * @param leadIds Lead ids to query lead and UALs for
-     * @return Returns map of Lead to related UALs intended for UDR creation (for supported Utilities)
-     */
-    public Map<Id,List<Utility_Account_Log__c>> selectForUDRCreation(List<Id> leadIds) {
-        Map<Id,List<Utility_Account_Log__c>> returnMap = new Map<Id,List<Utility_Account_Log__c>>();
-
-        List<Lead> leads = [
-            SELECT Id, Utility_relationship__r.Utility_Data_Collection_Mechanism__c,
-                (SELECT Id, Name, Utility_lookup__c, Utility_lookup__r.Name, Utility_lookup__r.Utility_DUNS_Number__c,
-                        QC_Status__c
-                 FROM Utility_Account_Logs__r)
-            FROM Lead
-            WHERE Id =: new Set<Id>(leadIds) AND Utility_relationship__r.Utility_Data_Collection_Mechanism__c = 'EDI'
-        ];
-
-        for (Lead lead : leads) {
-            returnMap.put(lead.Id,lead.Utility_Account_Logs__r);
-        }
-
-        return returnMap;
-    }
-
-
-
 }

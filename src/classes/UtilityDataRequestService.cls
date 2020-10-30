@@ -13,7 +13,6 @@ public without sharing class UtilityDataRequestService {
     @TestVisible private static UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
     @TestVisible private static UALSelector ualSelector = new UALSelector();
     @TestVisible private static StateSelector stateSelector = new StateSelector();
-    @TestVisible private static LeadSelector leadSelector = new LeadSelector();
 
     /**
      * Handler method for when UDR records are returned from Boomi as 'Complete'
@@ -34,7 +33,7 @@ public without sharing class UtilityDataRequestService {
 
         if (!udrs.isEmpty()) {
             onCompleteHandleUDRP(udrs.keySet());
-            onCompleteHandleUAL(udrs.values());
+            onCompleteHandleUAL(udrs);
         }
     }
 
@@ -45,23 +44,23 @@ public without sharing class UtilityDataRequestService {
         update updatedUDRPRateClassList;
     }
 
-    private void onCompleteHandleUAL(List<Utility_Data_Request__c> udrRecords) {
-        List<Utility_Account_Log__c> ualsToUpdate = populateRateClassOnUAL(udrRecords);
-        setUALAddressFromUDR(ualsToUpdate);
-        setUALComplete(ualsToUpdate);
-
-        update ualsToUpdate;
-    }
-
-    private void setUALComplete(List<Utility_Account_Log__c> uals) {
-        for (Utility_Account_Log__c ual : uals) {
-            //ual.QC_Status__c = 'Complete';
+    private void onCompleteHandleUAL(Map<Id,Utility_Data_Request__c> udrRecords) {
+        List<Utility_Account_Log__c> ualsToUpdate = populateRateClassOnUAL(udrRecords.values());
+        for (Utility_Account_Log__c ual : ualsToUpdate) {
+            // future state:
+            // ual.QC_Status__c = 'Complete';
+            // ual.previous address = ual.address
+            // ual.address = UDR.address
+            // ual.previous name = ual.name
+            // ual.name = udr.name
         }
-    }
 
-    private void setUALAddressFromUDR(List<Utility_Account_Log__c> uals) {
-        for (Utility_Account_Log__c ual : uals) {
-            // TODO: check name, if UDR matches UAL, update address on UAL with address from UDR
+        try {
+            update ualsToUpdate;
+        } catch (Exception e) {
+            String message = 'Unable to create update UALs on completion of UDRs: '
+                + udrRecords.keySet().toString() + '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
+            Logger.logNow('UtilityDataRequestService', 'onCompleteHandleUAL', message, 'Error');
         }
     }
 
@@ -121,8 +120,6 @@ public without sharing class UtilityDataRequestService {
             }
         }
 
-        Logger.flushLogs();
-
         return updatedUALList;
     }
 
@@ -132,9 +129,9 @@ public without sharing class UtilityDataRequestService {
      */
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void beforeStatusUpdatedToComplete(Map<Id, Utility_Data_Request__c> oldUDRMap, List<Utility_Data_Request__c> newUDRList, Map<Id, Utility_Data_Request__c> newUDRMap) {
-    //Need to create a map of UDR Ids to a list of UDRPs related to that UDR where the measurement unit is 'KH'
-    Map<Id, List<Utility_Data_Request_Period__c>> udrMapToUDRP = new Map<Id, List<Utility_Data_Request_Period__c>>();
-    List<Utility_Data_Request_Period__c> udrpList = udrpSelector.selectWithKHByUDR(newUDRList);
+        //Need to create a map of UDR Ids to a list of UDRPs related to that UDR where the measurement unit is 'KH'
+        Map<Id, List<Utility_Data_Request_Period__c>> udrMapToUDRP = new Map<Id, List<Utility_Data_Request_Period__c>>();
+        List<Utility_Data_Request_Period__c> udrpList = udrpSelector.selectWithKHByUDR(newUDRList);
 
         for (Utility_Data_Request_Period__c udrp : udrpList) {
             if (udrMapToUDRP.keySet().contains(udrp.Utility_Data_Request__c)) {
@@ -221,45 +218,32 @@ public without sharing class UtilityDataRequestService {
     /**
      * Assesses if UDRs should be generated for passed-in lead ids based on Utility Data Collection Mechanism
      * <p></p>
-     * If mechanism warrants UDR creation, this method loops through all UALs to determine if UDRs need inserted
-     * <p></p>
      * This method will NOT generate UDRs if any existing are found and related to UALs
      * @param leadIds Leads to check for UDR creation
      * @author Jeff Parlin 10-28-20
      */
     @Future
     public static void create (List<String> leadIds) {
-        List<Utility_Data_Request__c> newUDRs = new List<Utility_Data_Request__c>();
-        Map<Id,Utility_Account_Log__c> uals = new Map<Id,Utility_Account_Log__c>();
+        UALSelector ualSelector = new UALSelector();
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+            new List<Schema.SObjectType> {Utility_Data_Request__c.SObjectType, Utility_Account_Log__c.SObjectType}
+        );
 
-        Map<Id,List<Utility_Account_Log__c>> leadToUALMap = leadSelector.selectForUDRCreation(leadIds);
-        for (Id leadId : leadToUALMap.keySet()) {
-            for (Utility_Account_Log__c ual : leadToUALMap.get(leadId)) {
-                uals.put(ual.Id, ual);
+        List<Utility_Account_Log__c> uals = ualSelector.selectUalsWithoutUdrs(leadIds);
+        for (Utility_Account_Log__c ual : uals) {
+            if (ual.Utility_Data_Requests__r.isEmpty()) {
+                uow.registerNew(constructNewUDR(ual));
+                ual.QC_Status__c = 'Pending Utility Data';
+                uow.registerDirty(ual);
             }
         }
 
-        if (uals.isEmpty()) {
-            return;
-        }
-
-        Set<Id> ualsWithoutUdrs = ualSelector.selectUalsWithoutUdrs(uals.keySet());
-        for (Id ualId : ualsWithoutUdrs) {
-            Utility_Account_Log__c ual = uals.get(ualId);
-            newUDRs.add(constructNewUDR(ual));
-            ual.QC_Status__c = 'Pending Utility Data';
-        }
-
         try {
-            insert newUDRs;
-            update uals.values();
+            uow.commitWork();
         } catch (Exception e) {
-            Logger.logNow(
-                'UtilityDataRequestService',
-                'create (@future)',
-                'Unable to create UDRs or update UALs for Leads: '+leadIds.toString()+'\n\n'+e.getMessage(),
-                'Error'
-            );
+            String message = 'Unable to create UDRs or update UALs for Leads: '
+                + leadIds.toString() + '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
+            Logger.logNow('UtilityDataRequestService', 'create (@future)', message, 'Error');
         }
     }
 
