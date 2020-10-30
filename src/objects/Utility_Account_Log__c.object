@@ -571,6 +571,38 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>QC_Status__c</fullName>
+        <description>Status of Utility Data Request for automated data collection (e.g. EDI) on this Utility Account</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Status of Utility Data Request for automated data collection (e.g. EDI) on this Utility Account</inlineHelpText>
+        <label>QC Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pending Utility Data</fullName>
+                    <default>false</default>
+                    <label>Pending Utility Data</label>
+                </value>
+                <value>
+                    <fullName>Complete</fullName>
+                    <default>false</default>
+                    <label>Complete</label>
+                </value>
+                <value>
+                    <fullName>Pending BW Review</fullName>
+                    <default>false</default>
+                    <label>Pending BW Review</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>RNY__c</fullName>
         <description>Checked during QC for National Grid NY if an account is RNY.</description>
         <externalId>false</externalId>

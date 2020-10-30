@@ -114,7 +114,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             } else if (requestLead.underwritingCriteria == 'Financial Review') {
                 leadToUpdate.Status = qualificationService.underwriteWithFinancialReview(leadToUpdate);
             }
-            
+
             // Send Zuora callout
             List<Account> propertyAccounts = accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{requestLead.Id});
             ZuoraAccountService.createAccounts(propertyAccounts);
@@ -130,7 +130,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Handle other non-Lead database changes if the application is newly marked as "Application Complete"
         // Placed last because we want to ensure Lead properly updates before queueing other object changes
         if (applicationNowComplete) {
-            //UtilityDataRequestService.create(new List<Id>{requestLead.id});
+            UtilityDataRequestService.create(new List<Id>{requestLead.id});
         }
 
         // Set return envelope
