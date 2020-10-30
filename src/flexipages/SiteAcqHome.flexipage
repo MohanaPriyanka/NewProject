@@ -70,7 +70,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>richTextValue</name>
-                    <value>&lt;p&gt;&lt;a href=&quot;https://bluewavesolar--afd1.lightning.force.com/lightning/r/Report/00O0a000004ziOmEAI/view&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;font-size: 14px;&quot;&gt;Communication - READY for Letter 1&lt;/a&gt;&lt;/p&gt;</value>
+                    <value>&lt;p&gt;&lt;a href=&quot;/lightning/r/Report/00O0a000004ziOmEAI/view&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;font-size: 14px;&quot;&gt;Communication - READY for Letter 1&lt;/a&gt;&lt;/p&gt;</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:richText</componentName>
             </componentInstance>
