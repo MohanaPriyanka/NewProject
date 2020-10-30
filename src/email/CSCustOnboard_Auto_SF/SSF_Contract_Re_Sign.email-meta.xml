@@ -5,26 +5,41 @@
     <name>SSF: Contract Re-Sign</name>
     <style>none</style>
     <subject>BlueWave Community Solar: Contract Resignature Needed</subject>
-    <textOnly>Hi {!Lead.FirstName},
- 
-Thank you for submitting an application and expressing interest in a BlueWave Community Solar subscription!
- 
-We have reviewed your application and one of the following occurred:
+    <textOnly>Hey BlueWaver,  Our energy future starts with you.Thanks for choosing BlueWave as your community solar provider and supporting local solar energy. Your BlueWave Community Solar agreement is now fully executed!
 
-   - Addition/Removal of a utility account
-   - Typo in utility account number or application fields
-   - Change in service address
+BlueWave would like to learn more about your community solar subscription experience. Your feedback is very important to help us improve the shopping experience for other community solar customers.
 
-To update the contract with the correct information, please click the link below and input your email address to sign the updated contract.
+This survey will only take about 3 minutes to complete.
 
-{!Lead.Contract_eSign_Link__c}
- 
-The link guides you to a contract where you check off boxes and agree to the terms of a community solar subscription. Once you input your email address, you have signed the contract and will receive a copy of the agreement in your inbox. Once enrolled to receive credits from a solar project, you will also receive a copy of the fully executed contract at the provided email address.
- 
-Let us know if you have any further questions and thank you for joining the BlueWave family!
- 
-Sincerely,
-BlueWave Customer Support</textOnly>
+We&apos;re on a mission to revolutionize energy with simple, powerful solar solutions -- and that revolution starts with you! Thank you for being here.
+
+Take the Survey
+
+
+Please see below for more information about how BlueWave Community Solar works and helps you save on your monthly utility bill.
+
+How do BlueWave Community Solar savings work?
+Your savings will come in the form of bill credits.
+
+So, what&apos;s a bill credit? The community solar farm you&apos;re subscribed to will produce energy which will feed into the electric grid for distribution to you utility. Your subscription entitles you to benefit from some of that energy production through deductions on your monthly electrical utility bill. Bill credits, or &apos;credits&apos;, represent the portion of energy your community solar subscription has produced.
+
+What happens after credits appear on your utility bill?
+BlueWave will then send you a monthly bill for the credits that were deducted from your monthly utility bill, at a {!Opportunity.Discount__c}% discount.
+
+For example: if your farm generates $100 worth of credits, you will see a $100 deduction on your utility bill, and then receive a BlueWave bill for ${!Opportunity.Discount__c*-100+100}. That {!Opportunity.Discount__c}% savings, or in this case, ${!Opportunity.Discount__c}, is the benefit you get from your subscription!
+
+What will timing look like once credits start rolling?
+Once your community solar farm begins generating electricity, your credits will start appearing on your electricity bill each month.
+
+Have Questions?
+Our Customer Care Team is here to help. Call 844.786.4100 or email customercare@bluewavesolar.com to speak with a member of our Customer Care team.
+
+Thanks for joining the Wave, we&apos;re happy you&apos;re here.
+
+- All of us here at BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>
