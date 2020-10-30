@@ -33,7 +33,6 @@ public class MessagingService {
         Messaging.SendEmailResult[] result = sendEmailTemplate(ee);
         for (Messaging.SendEmailResult rr : result) {
             if (!rr.isSuccess()) {
-                Logger.logNow('MessagingService', 'createAndSendDymamicTemplateEmail', 'Failed to send email: ' + rr.getErrors());
                 return false;
             }
         }
