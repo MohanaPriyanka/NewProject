@@ -35,7 +35,8 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
                         'RecordTypeId, Total_Outstanding_Balance_Merge__c, ' +
                         'Total_Billed__c, Client_Brand_Key__c, ' +
                         'Collection_Call_Today__c, Collection_Email_To_Fire_Today__c, ' +
-                        'Max_Overdue_Due_Date_Merge__c ' +
+                        'Max_Overdue_Due_Date_Merge__c, ' +
+                        'Collection_Email_Text__c ' +
                         'FROM Account ' +
                         'WHERE Total_Outstanding_Balance_Merge__c > 1 ' +
                         'AND Send_Bills_Contact__c != null ' +
@@ -47,7 +48,6 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
     }
     
     public void execute(Database.BatchableContext bc, List<Account> scope){
-        Decimal outstandingbalance;
         List<Messaging.SingleEmailMessage> emailsToSend =  new List<Messaging.SingleEmailMessage>();
         List<Case> caseToInsertList = new List<Case>();
         templateMap = new Map<String, String>();
@@ -71,33 +71,36 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
             if (contactid != null && act.Collection_Email_To_Fire_Today__c) {
                 Date todaysDate = system.today();
                 Date sendBillReminderDate = act.Max_Overdue_Due_Date_Merge__c - 3;
-                String email;
                 String htmlBody;
                 String fullName = act.Name;
                 String subject = 'Your BlueWave account is ' + act.Days_Past_Due__c + ' days past due';
                 String dollar = String.valueof(act.Total_Outstanding_Balance_Merge__c);
                 String balance = '$' + dollar;
                 String templateKey = '';
+                String customText = (act.Collection_Email_Text__c); 
+                String days = String.valueof((act.Days_Past_Due__c).setScale(0));
 
                 if (sendBillReminderDate == todaysDate){
                     templateKey = 'Bill_Late_3DayReminder_' + act.Client_Brand_Key__c;
                     htmlBody = getTemplate(templateKey, act);
                     subject = 'Your Community Solar Bill Is Almost Due';
                 } else {
-                    templateKey = 'Bill_Late_' + (act.Days_Past_Due__c).setScale(0) + '_' + act.Client_Brand_Key__c;
+                    templateKey = 'Bill_Late_' +  act.Client_Brand_Key__c;
                     htmlBody = getTemplate(templateKey, act);
                     subject = 'Your Community Solar Is ' + (act.Days_Past_Due__c).setScale(0) + ' Days Past Due';
                 }
-                if (fullName != null && balance != null){
-                    htmlBody = htmlBody.replace('{!Account.Name}', fullName);
-                    htmlBody = htmlBody.replace('{!Account.Total_Outstanding_Balance_Merge__c}', balance);
+                if (fullName != null && balance != null && act.Days_Past_Due__c != null && customText != null){
+                    htmlBody = htmlBody.replace('{{{Recipient.Name}}}', fullName);
+                    htmlBody = htmlBody.replace('{{{Recipient.Total_Outstanding_Balance_Merge}}}', balance);
+                    htmlBody = htmlBody.replace('{{{Recipient.Days_Past_Due}}}', days );
+                    htmlBody = htmlBody.replace('{{{Recipient.Custom_Email_Text}}}', customText);
                 }
                 if (htmlBody != null && htmlBody != 'DONOTSEND'){
                     Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
                     mail.setHtmlBody(htmlBody);
                     mail.setOrgWideEmailAddressId(owa.Id);
-                    String[] ccAddresses = new String[] {'compliance@bluewavesolar.com'};
-                    mail.setccAddresses(ccAddresses);
+                  /*  String[] ccAddresses = new String[] {'compliance@bluewavesolar.com'}; 
+                    mail.setccAddresses(ccAddresses);*/
                     mail.setSubject(subject);
                     mail.setTargetObjectId(contactId);
                     emailsToSend.add(mail);
@@ -149,9 +152,9 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
                             + '  Apex Errors: ' + job.NumberOfErrors 
                             + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed;
 
-        List<String> postJobEmailAddresses = new List<String>{'product@bluewavesolar.com' , 'communitysolar@bluewavesolar.com'};   
+    List<String> postJobEmailAddresses = new List<String>{/*'product@bluewavesolar.com' , 'communitysolar@bluewavesolar.com'*/'jbattles@bluewavesolar.com'};   
         if (!Test.isRunningTest()){
-            MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Bill Email Send Processing Complete', postJobEmailAddresses);
+            MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Collections Email Send Processing Complete', postJobEmailAddresses);
         }
     }  
 }

@@ -1137,6 +1137,20 @@ Days_Past_Due__c = 90)</formula>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Collection_Email_Text__c</fullName>
+        <description>This text is used in the collection email templates.</description>
+        <externalId>false</externalId>
+        <formula>IF(Days_Past_Due__c &lt;=31, 
+&quot;As a reminder, there are no fees for one time OR recurring auto-payments made through our portal!&quot;,
+&quot;Per your community solar agreement, BlueWave reserves the right to cancel your agreement at any point after your account becomes ten days past due.&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Collection Email Text</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Collection_Email_To_Fire_Today__c</fullName>
         <externalId>false</externalId>
         <formula>OR(
