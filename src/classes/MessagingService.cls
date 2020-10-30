@@ -33,6 +33,7 @@ public class MessagingService {
         Messaging.SendEmailResult[] result = sendEmailTemplate(ee);
         for (Messaging.SendEmailResult rr : result) {
             if (!rr.isSuccess()) {
+                Logger.logNow('MessagingService', 'createAndSendDymamicTemplateEmail', 'Failed to send email: ' + rr.getErrors());
                 return false;
             }
         }
@@ -110,7 +111,8 @@ public class MessagingService {
         emailsSent = emails.clone();
         try {
             sendEmailResults = Messaging.sendEmail(emails, false);
-        } catch (EmailException ee) {Logger.logNow('MessagingService', 'sendEmail', ee.getMessage());}
+        } catch (EmailException ee) {
+            Logger.logNow('MessagingService', 'sendEmail', ee.getMessage());}
         return sendEmailResults;
     }
 
