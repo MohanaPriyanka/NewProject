@@ -3,7 +3,7 @@
  * Description: Can extend fflib_SObjectSelector
  * Test: OpportunitiesSelectorTest
  *************************************************************************************/
-@SuppressWarnings('PMD.ApexCRUDViolation')
+@SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public without sharing class OpportunitiesSelector {
     @TestVisible
     private static FeatureService featureService = new FeatureService();
@@ -193,4 +193,19 @@ public without sharing class OpportunitiesSelector {
         ];
     }
 
+
+    public Map<Id, Decimal> getAggregateOpportunitySubscriptions(Set<Id> oppIds) {
+        List<AggregateResult> oppResults = [
+            SELECT Opportunity__r.Id oppId, SUM(Future_Customer_Subscription_KWDC_Rollup__c) total
+            FROM Utility_Account_Subscription__c
+            WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
+            AND Opportunity__r.Id IN :oppIds
+            GROUP BY Opportunity__r.Id
+        ];
+        Map<Id, Decimal> oppSubscriptionMap = new Map<Id, Decimal>();
+        for (AggregateResult ar : oppResults) {
+            oppSubscriptionMap.put((Id) ar.get('oppId'), (Decimal) ar.get('total') );
+        }
+        return oppSubscriptionMap;
+    }
 }

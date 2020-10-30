@@ -265,4 +265,16 @@ public with sharing class OpportunitiesSelectorTest {
 
         System.assertEquals(17, oppList.size());
     }
+
+    @IsTest
+    public static void testGetAggregateOpportunitySubscriptions() {
+        Opportunity opp = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Opportunity
+            LIMIT 1
+        ];
+        Set<Id> oppIds = new Set<Id>{opp.Id};
+        OpportunitiesSelector selector = new OpportunitiesSelector();
+        System.assert(selector.getAggregateOpportunitySubscriptions(oppIds).size() > 0);
+    }
 }

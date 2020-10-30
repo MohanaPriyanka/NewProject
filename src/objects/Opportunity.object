@@ -1095,6 +1095,21 @@ false
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Available_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Maximum_kW_Subscription__c - Total_Subscribed_kW_DC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Remaining kW available for Opportunity (Maximum kW - Total Subscribed)</inlineHelpText>
+        <label>Available kW DC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Average_Debt_to_Income_Before__c</fullName>
         <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
@@ -4880,6 +4895,21 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Maximum_kW_Subscription__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Maximum kW Subscription from related Shared Solar System</inlineHelpText>
+        <label>Maximum kW DC Subscription</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Mechanical_Install_Date_From_RE__c</fullName>
         <externalId>false</externalId>
         <label>Mechanical Install Date (From RE)</label>
@@ -8134,6 +8164,20 @@ DOER_Solar_Loan__c ==TRUE,(( Monthly_Payment__c *   Product__r.Loan_Term__c )+( 
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Subscribed_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Active UAS Subscriptions</inlineHelpText>
+        <label>Total Subscribed kW DC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>

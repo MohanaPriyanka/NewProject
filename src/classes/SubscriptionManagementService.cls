@@ -167,6 +167,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
 
         List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
         update updateSOs;
+        publishSubscriptionOrderChangeEvents(updateSOs);
 
         try {
             ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(approvedSOs);
@@ -177,6 +178,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 JSON.serialize(approvedSOs);
             Logger.logNow('SubscriptionManagementService', 'checkSOApproval', errorMessage);
         }
+
     }
     public List<Shared_Solar_System_Order__c> checkSSSOApproval(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         List<Shared_Solar_System_Order__c> approvedSSSOs = new List<Shared_Solar_System_Order__c>();
@@ -187,6 +189,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         }
         return approvedSSSOs;
     }
+
 
     /**
      * When the SSS on an Opportunity changes, the existing subscription must be zeroed (via SO) and set to Inactive. A clone is
@@ -203,7 +206,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
             String comments = 'UAS created as transfer from  ' + uas.Shared_Solar_System__r.Name + ' to ' +
                 oppMap.get(uas.Opportunity__c).Shared_Solar_System__r.Name + '; ' +
                 (cloneUAS.Subscription_Comment_c__c != NULL ? cloneUAS.Subscription_Comment_c__c : '' );
-                cloneUAS.Subscription_Comment_c__c = (comments.length() >= 255 ?  comments.substring(0, 255) : comments);
+            cloneUAS.Subscription_Comment_c__c = (comments.length() >= 255 ?  comments.substring(0, 255) : comments);
             upsertUASes.add(cloneUAS);
             CSUtilityAccountSubscriptionFactory.UASOrder uasOrder = new CSUtilityAccountSubscriptionFactory.UASOrder();
             uasOrder.uas = cloneUAS;
@@ -242,9 +245,84 @@ public without sharing class SubscriptionManagementService implements Queueable{
         return zeroedSOs;
     }
 
-/*****************************************************************************************************
- * TEST ONLY METHOD TO CREATE SUBSCRIPTION ORDERS EVERY TIME A UAS IS INSERTED IN A TEST SETUP METHOD
- *****************************************************************************************************/
+    /**
+        * @description In order to get the related Opportunity from the deleted Subscription Orders and UASes, we have to query
+        * for the related UAS (as the relationships for the deleted record have already been removed). Method publishes
+        * platform event for Opportunity to reevaluate subscription totals
+        *
+        * @param subscriptionOrders deleted subscription orders from SOTrigger
+        * @param deletedUASMap deleted UASes from UASTrigger
+    */
+    public void publishSubscriptionOrderChangeEventsOnDelete(List<Subscription_Order__c> subscriptionOrders, Map<Id, Utility_Account_Subscription__c> deletedUASMap) {
+        Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>();
+        if (deletedUASMap == null) {
+            uasMap = UASSelector.getUASMap(new Set<Id>{subscriptionOrders[0].Utility_Account_Subscription__c});
+        } else {
+            uasMap = deletedUASMap;
+        }
+
+        Set<Id> oppIds = new Set<Id>();
+        for (Utility_Account_Subscription__c uas : uasMap.values()) {
+            oppIds.add(uas.Opportunity__c);
+        }
+        
+        List<Subscription_Order_Change_Event__e> changeEvents = new List<Subscription_Order_Change_Event__e>();
+        for (Id oppId : oppIds) {
+            Subscription_Order_Change_Event__e event = new Subscription_Order_Change_Event__e(
+                Opportunity_Id__c = oppId
+            );
+            changeEvents.add(event);
+        }
+        EventBus.publish(changeEvents);
+    }
+
+    /**
+     * @description Method called to publish a platform event when a subscription order is approved (ie inserted because
+     * all subscription orders are inserted as approved). Platform event is passed the Opportunity Id.
+     *
+     * @param subscriptionOrders Set of Opportunity Ids from Subscription Orders that have been approved
+     */
+    public void publishSubscriptionOrderChangeEvents(List<Subscription_Order__c> subscriptionOrders) {
+        List<Subscription_Order_Change_Event__e> changeEvents = new List<Subscription_Order_Change_Event__e>();
+
+        for (Subscription_Order__c so : subscriptionOrders) {
+            Subscription_Order_Change_Event__e event = new Subscription_Order_Change_Event__e(
+                Opportunity_Id__c = so.Utility_Account_Subscription__r.Opportunity__r.Id
+            );
+            changeEvents.add(event);
+        }
+        EventBus.publish(changeEvents);
+    }
+
+    /**
+     * @description The Subscription Order Change Event is a platform event that is published to asynchronously summarize
+     * an Opportunity's total active subscriptions
+     *
+     * @param changeEvents Subscription Order Change Events with Opportunity Ids to evaluate
+     */
+    public void handleSubscriptionOrderChangeEvents(List<Subscription_Order_Change_Event__e> changeEvents) {
+        Set<Id> oppIds = new Set<Id>();
+        for (Subscription_Order_Change_Event__e event : changeEvents) {
+            oppIds.add(event.Opportunity_Id__c);
+        }
+        Map<Id, Decimal> oppSubscriptionMap = oppSelector.getAggregateOpportunitySubscriptions(oppIds);
+        List<Opportunity> oppsToUpdate = new List<Opportunity>();
+
+        for (Id oppId : oppIds) {
+            Decimal sumSubscriptions = (oppSubscriptionMap.get(oppId) == null ? 0 : oppSubscriptionMap.get(oppId) );
+            Opportunity opp = new Opportunity(
+                Id = oppId,
+                Total_Subscribed_kW_DC__c = sumSubscriptions
+            );
+            oppsToUpdate.add(opp);
+        }
+
+        update oppsToUpdate;
+    }
+
+    /*****************************************************************************************************
+     * TEST ONLY METHOD TO CREATE SUBSCRIPTION ORDERS EVERY TIME A UAS IS INSERTED IN A TEST SETUP METHOD
+     *****************************************************************************************************/
     public void insertSubscriptionOrdersForTests(List<Utility_Account_Subscription__c> uasList) {
         List<Subscription_Order__c> soList = createSubscriptionOrdersForTests(uasList);
         insert soList;
