@@ -742,7 +742,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertNotEquals('Success',responseTwo);
     }
     @IsTest
-    public static void testReservedAnchorCapacity(){
+    public static void testReservedAnchorCapacity() {
         List<Shared_Solar_System__c> sssList = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c
             FROM Shared_Solar_System__c
@@ -753,17 +753,33 @@ public with sharing class SharedSolarSystemHandlerTest {
         update sssList[0];
         List<Shared_Solar_System__c> checkSSS = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
-                Capacity_Available_to_be_Reserved__c, Total_Capacity_Committed_Reserved__c, Total_System_Size_kWh_DC__c
+                Capacity_Available_to_be_Reserved__c, Total_System_Size_kWh_DC__c, Pending_Anchor_Capacity__c,
+            (
+                SELECT Future_Customer_Subscription_KWDC_Rollup__c, Opportunity_Stage__c
+                FROM Utility_Account_Subscriptions__r
+                WHERE Customer_Group__c = 'Anchor'
+                OR Opportunity__r.Customer_Sub_Group__c = 'Public Offtake'
+            )
             FROM Shared_Solar_System__c
             ORDER BY Name
             LIMIT 2
         ];
         //SSS1 does NOT have anchors but the Reserved Anchor Capacity field is populated
         //SSS2 does have anchors --> Anchor Capacity should be sum of anchor opps
-        System.assertEquals(7, checkSSS[0].Reserved_Anchor_Capacity__c);
-        System.assertEquals(7, checkSSS[0].Anchor_Capacity_Reserved__c);
-        System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
-
+        System.assertEquals(7, checkSSS[0].Reserved_Anchor_Capacity__c,
+            'The Manual input for reserved anchor and public offtake capacity is set explicitly');
+        System.assertEquals(0, checkSSS[0].Utility_Account_Subscriptions__r.size(),
+            'Did not expect any anchor UASes for SSS1');
+        System.assertEquals(0, checkSSS[0].Anchor_Capacity_Reserved__c,
+            'Anchor_Capacity_Reserved__c is always the sum of all anchor subscriptions');
+        System.assertEquals(1, checkSSS[1].Utility_Account_Subscriptions__r.size(),
+            'Expected an anchor UAS for SSS2');
+        System.assertEquals(checkSSS[1].Utility_Account_Subscriptions__r[0].Opportunity_Stage__c, 'Complete',
+            'Expected a Complete opportunity to be counted toward Anchor_Capacity_Reserved (Committed Anchor Capacity)');
+        System.assertEquals(checkSSS[1].Utility_Account_Subscriptions__r[0].Future_Customer_Subscription_KWDC_Rollup__c, checkSSS[1].Anchor_Capacity_Reserved__c,
+            'Expected Anchor_Capacity_Reserved__c to be set to the UAS rollup');
+        System.assertEquals(0, checkSSS[1].Pending_Anchor_Capacity__c,
+            'Expected no capacity in Pending');
 
         checkSSS[0].Open__c = false;
         checkSSS[1].Open__c = false;
