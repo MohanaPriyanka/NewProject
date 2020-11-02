@@ -61,36 +61,40 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     }
     private void summarizeCapacity(Map<Id, Shared_Solar_System__c> sssMap, fflib_SObjectUnitOfWork uow) {
         //Requerying the sss loses any changes from beforeUpdate - still need to reference sssMap for updated record below
-        List<Shared_Solar_System__c> sssWithActiveUASes = sssSelector.getSSSWithActiveUASes(sssMap.values());
-        for (Shared_Solar_System__c activeSSS : sssWithActiveUASes) {
-            Shared_Solar_System__c sss = sssMap.get(activeSSS.Id);
-            List<Utility_Account_Subscription__c> pendingSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
-            List<Utility_Account_Subscription__c> committedSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
-            List<Utility_Account_Subscription__c> committedAnchorCapacityList = new List<Utility_Account_Subscription__c>();
-            List<Utility_Account_Subscription__c> pendingAnchorCapacityList = new List<Utility_Account_Subscription__c>();
-            Decimal pendingSmallCSCapacity = 0;
-            Decimal committedSmallCSCapacity = 0;
-            Decimal pendingAnchorCapacity = 0;
-            Decimal committedAnchorCapacity = 0;
-
-            for (Utility_Account_Subscription__c uas : activeSSS.Utility_Account_Subscriptions__r) {
-                if (!isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete'){
-                    committedSmallCSCapacityList.add(uas);
-                } else if (!isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
-                    pendingSmallCSCapacityList.add(uas);
-                } else if (isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete') {
-                    committedAnchorCapacityList.add(uas);
-                } else if (isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
-                    pendingAnchorCapacityList.add(uas);
-                }
-            }
-            pendingSmallCSCapacity = sumCapacity(pendingSmallCSCapacityList);
-            committedSmallCSCapacity = sumCapacity(committedSmallCSCapacityList);
-            pendingAnchorCapacity = sumCapacity(pendingAnchorCapacityList);
-            committedAnchorCapacity = sumCapacity(committedAnchorCapacityList);
-
-            registerCapacityChanges(sss, uow, pendingSmallCSCapacity, committedSmallCSCapacity, pendingAnchorCapacity, committedAnchorCapacity);
+        List<Shared_Solar_System__c> sssesWithActiveUASes = sssSelector.getSSSWithActiveUASes(sssMap.values());
+        for (Shared_Solar_System__c sssWithActiveUASes : sssesWithActiveUASes) {
+            Shared_Solar_System__c sssToUpdate = sssMap.get(sssWithActiveUASes.Id);
+            summarizeCapacityForSSS(sssWithActiveUASes, sssToUpdate, uow);
         }
+    }
+
+    private void summarizeCapacityForSSS(Shared_Solar_System__c sssWithActiveUASes, Shared_Solar_System__c sssToUpdate, fflib_SObjectUnitOfWork uow) {
+        List<Utility_Account_Subscription__c> pendingSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> committedSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> committedAnchorCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> pendingAnchorCapacityList = new List<Utility_Account_Subscription__c>();
+        Decimal pendingSmallCSCapacity = 0;
+        Decimal committedSmallCSCapacity = 0;
+        Decimal pendingAnchorCapacity = 0;
+        Decimal committedAnchorCapacity = 0;
+
+        for (Utility_Account_Subscription__c uas : sssWithActiveUASes.Utility_Account_Subscriptions__r) {
+            if (!isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete') {
+                committedSmallCSCapacityList.add(uas);
+            } else if (!isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
+                pendingSmallCSCapacityList.add(uas);
+            } else if (isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete') {
+                committedAnchorCapacityList.add(uas);
+            } else if (isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
+                pendingAnchorCapacityList.add(uas);
+            }
+        }
+        pendingSmallCSCapacity = sumCapacity(pendingSmallCSCapacityList);
+        committedSmallCSCapacity = sumCapacity(committedSmallCSCapacityList);
+        pendingAnchorCapacity = sumCapacity(pendingAnchorCapacityList);
+        committedAnchorCapacity = sumCapacity(committedAnchorCapacityList);
+
+        registerCapacityChanges(sssToUpdate, uow, pendingSmallCSCapacity, committedSmallCSCapacity, pendingAnchorCapacity, committedAnchorCapacity);
     }
 
     private void registerCapacityChanges(
