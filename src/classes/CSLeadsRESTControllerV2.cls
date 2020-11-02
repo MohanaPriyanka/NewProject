@@ -758,13 +758,18 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
         ee.emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
         ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
-        ee.subjectLine = 'Application Completed for ' + lead.Name;
         ee.addressList = new List<String>{lead.Partner_Email__c};
-        MessagingService.ReplacementText partnerName = new MessagingService.ReplacementText('{!Lead.Partner_Name__c}', lead.Partner_Account__r.Name);
+        ee.subjectLine = 'Application Completed for ' + lead.Name;
+        MessagingService.ReplacementText partnerName = new MessagingService.ReplacementText('{!Lead.Partner_Account__r}', lead.Partner_Account__r.Name);
         MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.Name}', lead.Name);
         ee.replacementTexts = new List<MessagingService.ReplacementText>{partnerName, leadName};
         ee.sobjectId = lead.Id;
 
-        MessagingService.sendEmailTemplate(ee);
+        try {
+            MessagingService.sendEmailTemplate(ee);
+        } catch (Exception e) {
+            Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
+                '; ' + e.getStackTraceString());
+        }
     }
 }
