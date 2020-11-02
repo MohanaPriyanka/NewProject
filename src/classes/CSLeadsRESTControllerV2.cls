@@ -747,6 +747,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         return 'Started';
     }
 
+    /**
+     * @description Future method to send an email to the related Partner when the customer has completed their SSF
+     * Application
+     * @param leadId Id for Lead that has completed the application
+     */
     @Future
     public static void createAndSendCSPartnerEmail(Id leadId) {
         Lead lead = new LeadSelector().selectOne(leadId);

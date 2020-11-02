@@ -3,7 +3,7 @@
  * Description:
  * Test: LeadSelectorTest
  *************************************************************************************/
-@SuppressWarnings('PMD.ApexCRUDViolation')
+@SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public without sharing class LeadSelector {
     public List<String> apiLeadFields = new List<String>{
         'FirstName',

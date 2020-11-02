@@ -4,7 +4,7 @@
  * Tested By: FeatureServiceTest
  */
 
-@SuppressWarnings('PMD.ApexCRUDViolation')
+@SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public inherited sharing class FeatureSelector {
 
     public Custom_Feature_Enablement__mdt getCustomFeature(String developerName) {
