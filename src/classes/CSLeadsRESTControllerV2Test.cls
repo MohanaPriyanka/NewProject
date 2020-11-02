@@ -1256,13 +1256,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
         );
         insert partnerAccount;
 
-        Partner__c p1 = new Partner__c(
-            Name = 'Partner test',
-            Account__c = partnerAccount.Id,
-            Email__c = 'partner@testcase.com'
-            );
-        insert new List<Partner__c>{p1};
-
         Lead leadToUpdate = new Lead (
             FirstName = 'Other',
             LastName = 'Testcase',
