@@ -684,10 +684,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 baseUrl +
                 '?leadid=' + lead.Id +
                 '&email=' + lead.Email +
-
                 '&partnerId=' + lead.Partner_Lookup__c +
                 '&loc=' + location;
-
         }
         // Set Contract Re-Sign (Agree page) link, if empty and ever needed later (W-020708)
         if (lead.Contract_eSign_Link__c	== null) {
@@ -695,10 +693,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 baseUrl +
                 '?leadid=' + lead.Id +
                 '&email=' + lead.Email +
-
                 '&partnerId=' + lead.Partner_Lookup__c +
                 '&loc=' + location;
-
         }
     }
     public String getApplicationStatus(Lead lead) {
@@ -752,24 +748,23 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     @Future
-    private static void createAndSendCSPartnerEmail(Id leadId) {
+    public static void createAndSendCSPartnerEmail(Id leadId) {
         Lead lead = new LeadSelector().selectOne(leadId);
-        System_Default__mdt systemDefault = [
-            SELECT Id, Application_Complete_Email_Template__c
-            FROM System_Default__mdt
-            WHERE DeveloperName = 'System_Defaults'
-        ];
+        System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
         if (systemDefault.Application_Complete_Email_Template__c == null) {
             return;
         }
-        String emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
-        String orgWideEmail = MessagingService.getCustomerCareEmail().Address;
-        String subjectLine = 'Application Completed for ' + lead.Name;
-        List<String> addressList = new List<String>{lead.Partner_Email__c};
-        // templateField: ??
-        // replaceText: ??
 
-        MessagingService.createAndSendDynamicTemplateEmail(emailTemplateName, orgWideEmail, subjectLine, addressList, null, null);
+        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
+        ee.emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
+        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
+        ee.subjectLine = 'Application Completed for ' + lead.Name;
+        ee.addressList = new List<String>{lead.Partner_Email__c};
+        MessagingService.ReplacementText partnerName = new MessagingService.ReplacementText('{!Lead.Partner_Name__c}', lead.Partner_Account__r.Name);
+        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.Name}', lead.Name);
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{partnerName, leadName};
+        ee.sobjectId = lead.Id;
 
+        MessagingService.sendEmailTemplate(ee);
     }
 }
