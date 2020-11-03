@@ -154,11 +154,10 @@ const verifyUtilityAccountEntry = (cmp, event, eventField) => {
     if (ualNumChangeValidate || ualNumReentryChangeValidate) {
         if (ualNum !== ualNumReentry) {
             ualNumReentryInputElement.setCustomValidity('The Utility Account Numbers you entered do not match');
-            ualNumReentryInputElement.reportValidity();
         } else {
             ualNumReentryInputElement.setCustomValidity('');
-            ualNumReentryInputElement.reportValidity();
         }
+        ualNumReentryInputElement.reportValidity();
     }
 }
 
