@@ -620,7 +620,7 @@
     <fields>
         <fullName>Capacity_Available_to_be_Reserved__c</fullName>
         <externalId>false</externalId>
-        <formula>if( Anchor_Capacity_Reserved__c &gt;0,  Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Total_Capacity_Committed_Reserved__c, Total_CS_Capacity_kW_DC_Formula__c -  Total_Capacity_Committed_Reserved__c)</formula>
+        <formula>Total_CS_Capacity_kW_DC_Formula__c  - (VALUE(Reserved_Capacity_kW_DC__c) + Capacity_Committed_kW_DC__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Small CS Capacity not yet committed or pending; Result of Reserved Small CS Capacity - (Committed and Pending Small CS Capacity)</inlineHelpText>
         <label>Available Small CS Capacity</label>
@@ -1512,10 +1512,9 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Project_Capacity_Available_kW_DC__c</fullName>
         <externalId>false</externalId>
-        <formula>if( Anchor_Capacity_Reserved__c &gt;0, Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Capacity_Committed_kW_DC__c, 
-Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
+        <formula>Total_System_Size_kWh_DC__c -  Anchor_CS_Capacity_Committed__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Capacity remaining on the project; Result of Total System Size - Total Capacity Committed</inlineHelpText>
+        <inlineHelpText>Capacity remaining on the project; Result of Total System Size - Total Committed Capacity</inlineHelpText>
         <label>Total Capacity not yet Committed</label>
         <precision>18</precision>
         <required>false</required>
@@ -2349,9 +2348,8 @@ Total_System_Size_kWh_DC__c
     <fields>
         <fullName>Total_CS_Capacity_kW_DC_Formula__c</fullName>
         <externalId>false</externalId>
-        <formula>Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Capacity set aside for Small CS subscriptions; Result of Total System Size - Reserved Anchor Capacity</inlineHelpText>
+        <formula>Total_System_Size_kWh_DC__c - BLANKVALUE(Reserved_Anchor_Capacity__c, Anchor_Capacity_Reserved__c)</formula>
+        <inlineHelpText>Capacity set aside for Small CS subscriptions (Total System Size - Reserved Anchor Capacity). If Reserved Anchor Capacity is blank, we use the Committed Anchor Capacity instead</inlineHelpText>
         <label>Reserved Small CS Capacity</label>
         <precision>18</precision>
         <required>false</required>
