@@ -75,7 +75,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
                 String fullName = act.Name;
                 String subject = 'Your BlueWave account is ' + act.Days_Past_Due__c + ' days past due';
                 String dollar = String.valueof(act.Total_Outstanding_Balance_Merge__c);
-                String balance = '$' + dollar;
+                String balance = formatMoney(act.Total_Outstanding_Balance_Merge__c);
                 String templateKey = '';
                 String customText = (act.Collection_Email_Text__c); 
                 String days = String.valueof((act.Days_Past_Due__c).setScale(0));
@@ -99,8 +99,6 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
                     Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
                     mail.setHtmlBody(htmlBody);
                     mail.setOrgWideEmailAddressId(owa.Id);
-                  /*  String[] ccAddresses = new String[] {'compliance@bluewavesolar.com'}; 
-                    mail.setccAddresses(ccAddresses);*/
                     mail.setSubject(subject);
                     mail.setTargetObjectId(contactId);
                     emailsToSend.add(mail);
@@ -141,20 +139,20 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
         return caseToInsertList;
     }
 
-    public void finish(Database.BatchableContext bc){
-        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, 
-                            JobItemsProcessed,
-                            TotalJobItems, CreatedBy.Email
-                            FROM AsyncApexJob
-                            WHERE Id = :bc.getJobId()];
-
-        String emailBody = 'Collections Emails Have been Processed Job Id: '+ job.Id 
-                            + '  Apex Errors: ' + job.NumberOfErrors 
-                            + '  Total Jobs Processed (groups of 10): ' + job.JobItemsProcessed;
-
-    List<String> postJobEmailAddresses = new List<String>{/*'product@bluewavesolar.com' , 'communitysolar@bluewavesolar.com'*/'jbattles@bluewavesolar.com'};   
-        if (!Test.isRunningTest()){
-            MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Collections Email Send Processing Complete', postJobEmailAddresses);
+    public void finish(Database.BatchableContext bc){   
+    } 
+   
+    @TestVisible
+    private static String formatMoney(Decimal originalDecimal) {
+        String decimalAsString = '$' + originalDecimal.format();
+        if (!decimalAsString.contains('.')) {
+            return decimalAsString + '.00';
+        } else {
+            Integer decimalPointIndex = decimalAsString.indexOf('.');
+            if (decimalAsString.length() - decimalPointIndex < 3) {
+                return decimalAsString + '0';
+            }
         }
-    }  
+        return decimalAsString;
+    } 
 }
