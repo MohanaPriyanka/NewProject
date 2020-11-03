@@ -74,7 +74,6 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
                 String htmlBody;
                 String fullName = act.Name;
                 String subject = 'Your BlueWave account is ' + act.Days_Past_Due__c + ' days past due';
-                String dollar = String.valueof(act.Total_Outstanding_Balance_Merge__c);
                 String balance = formatMoney(act.Total_Outstanding_Balance_Merge__c);
                 String templateKey = '';
                 String customText = (act.Collection_Email_Text__c); 
@@ -140,7 +139,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
     }
 
     public void finish(Database.BatchableContext bc){   
-    } 
+    }  
    
     @TestVisible
     private static String formatMoney(Decimal originalDecimal) {
