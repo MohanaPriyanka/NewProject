@@ -9,51 +9,6 @@ private class UtilityDataRequestServiceTest {
     @TestVisible
     private static UtilityDataRequestPeriodSelector udrpSelector = new UtilityDataRequestPeriodSelector();
     
-    private static Utility_Data_Request__c getTestUDR(String customerName) {
-        return [
-            SELECT Id, Request_Status__c, Customer_Name__c, State__c, Utility__c, Annual_kWh__c,
-            Utility_Account_Log__c, Utility_Account_Log__r.Utility_Rate_Class__c 
-            FROM Utility_Data_Request__c 
-            WHERE Customer_Name__c = :customerName
-        ];
-    }
-    
-    private static Utility_Account_Log__c getTestUAL(Id ualId) {
-        return [
-            SELECT Id, Name_on_Account__c, Utility_Rate_Class__c, Annual_kWh__c
-            FROM Utility_Account_Log__c
-            WHERE Id = :ualId
-        ];
-    }
-    
-    private static Utility_Data_Request_Period__c getTestUDRP(String udrp) {
-        return [
-            SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c, 
-            Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
-            Rate_Subclass__c, Used_In_Annual_kWh_Calculation__c, Load_Profile_Description__c
-            FROM Utility_Data_Request_Period__c 
-            WHERE Load_Profile_Description__c = :udrp
-        ];
-    }
-    
-    private static List<Utility_Data_Request_Period__c> getTestUDRPList(Id udrId) {
-        return [
-            SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c, 
-            Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
-            Rate_Subclass__c, Used_In_Annual_kWh_Calculation__c, Load_Profile_Description__c
-            FROM Utility_Data_Request_Period__c 
-            WHERE Utility_Data_Request__c = :udrId
-        ];
-    }
-    
-    private static Rate_Class__c getTestRateClass(String name) {
-        return [
-            SELECT Id, Name, EDI_Rate_Class__c, Utility__c
-            FROM Rate_Class__c 
-            WHERE Name = :name
-        ];
-    }
-    
     @TestSetup
     public static void setupData() {
         
@@ -65,7 +20,9 @@ private class UtilityDataRequestServiceTest {
 		TestFactory.setDefaultCSPartner(testPartner.Id);
         
         Utility__c testUtility = new Utility__c(
-            Name = 'testUtility'
+            Name = 'testUtility',
+            Utility_DUNS_Number__c = '1234567890',
+            Utility_Data_Collection_Mechanism__c = 'EDI'
         );
         insert testUtility;
         
@@ -86,7 +43,8 @@ private class UtilityDataRequestServiceTest {
         	Customer_type__c = 'Commercial',
             LastName = 'testLead1',
             Company = 'testBlueWave1',
-            Partner_Lookup__c = testPartner.Id
+            Partner_Lookup__c = testPartner.Id,
+            Utility_relationship__c = testUtility.Id
         );
         
         Lead resiLead = new Lead(
@@ -103,7 +61,8 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c testUAL1 = new Utility_Account_Log__c(
             Service_State__c = 'Georgia',
             Lead__c = resiLead.Id,
-            Name_on_Account__c = 'testUAL1'
+            Name_on_Account__c = 'testUAL1',
+            Utility_lookup__c = testUtility.Id
         );
         
         Utility_Account_Log__c testUAL2 = new Utility_Account_Log__c(
@@ -194,8 +153,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP1 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR1.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP1',
+            Rate_Subclass__c = 'testUDRP1',
             Service_Start_Date__c = Date.newInstance(2020, 5, 10),
             Measurement_Unit__c ='KH',
             Quantity__c = 25,
@@ -206,8 +164,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP2 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR1.Id, 
             Rate_Class__c = 'Test EDI Rate Class 2',
-            Rate_Subclass__c = 'Test EDI Rate Class 2',
-            Load_Profile_Description__c = 'testUDRP2',
+            Rate_Subclass__c = 'testUDRP2',
             Service_Start_Date__c = Date.newInstance(2020, 7, 7),
             Measurement_Unit__c ='KH',
             Quantity__c = 101,
@@ -218,8 +175,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP3 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR1.Id, 
             Rate_Class__c = 'Test EDI Rate Class 2',
-            Rate_Subclass__c = 'Test EDI Rate Class 2',
-            Load_Profile_Description__c = 'testUDRP3',
+            Rate_Subclass__c = 'testUDRP3',
             Service_Start_Date__c = Date.newInstance(2020, 10, 12),
             Measurement_Unit__c ='KH',
             Quantity__c = 6914,
@@ -229,9 +185,8 @@ private class UtilityDataRequestServiceTest {
         
         Utility_Data_Request_Period__c testUDRP4 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR1.Id, 
-            Rate_Class__c = null,
-            Rate_Subclass__c = null,
-            Load_Profile_Description__c = 'testUDRP4',
+            Rate_Class__c = Null,
+            Rate_Subclass__c = 'testUDRP4',
             Service_Start_Date__c = Date.newInstance(2020, 9, 15),
             Measurement_Unit__c ='KH',
             Quantity__c = 50,
@@ -242,8 +197,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP5 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR1.Id, 
             Rate_Class__c = 'Nonexistent/Misspelled EDI',
-            Rate_Subclass__c = 'Nonexistent/Misspelled EDI',
-            Load_Profile_Description__c = 'testUDRP5',
+            Rate_Subclass__c = 'testUDRP5',
             Service_Start_Date__c = Date.newInstance(2020, 2, 1),
             Measurement_Unit__c ='KH',
             Quantity__c = 7003,
@@ -254,8 +208,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP6 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR2.Id, 
             Rate_Class__c = 'Test EDI Rate Class 2',
-            Rate_Subclass__c = 'Test EDI Rate Class 2',
-            Load_Profile_Description__c = 'testUDRP6',
+            Rate_Subclass__c = 'testUDRP6',
             Service_Start_Date__c = Date.newInstance(2020, 9, 14),
             Measurement_Unit__c ='KH',
             Quantity__c = 1234,
@@ -266,8 +219,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP7 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR3.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP7',
+            Rate_Subclass__c = 'testUDRP7',
             Service_Start_Date__c = Date.newInstance(2020, 9, 1),
             Measurement_Unit__c ='KH',
             Quantity__c = 12099,
@@ -278,8 +230,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP8 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR4.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP8',
+            Rate_Subclass__c = 'testUDRP8',
             Service_Start_Date__c = Date.newInstance(2019, 5, 20),
             Measurement_Unit__c ='KH',
             Quantity__c = 4387,
@@ -290,8 +241,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP9 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR4.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP9',
+            Rate_Subclass__c = 'testUDRP9',
             Service_Start_Date__c = Date.newInstance(2020, 5, 20),
             Measurement_Unit__c ='KH',
             Quantity__c = 999,
@@ -302,8 +252,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP10 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR4.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP10',
+            Rate_Subclass__c = 'testUDRP10',
             Service_Start_Date__c = Date.newInstance(2020, 8, 28),
             Measurement_Unit__c ='KH',
             Quantity__c = 9757,
@@ -314,8 +263,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP11 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP11',
+            Rate_Subclass__c = 'testUDRP11',
             Service_Start_Date__c = Date.newInstance(2020, 10, 3),
             Measurement_Unit__c ='KH',
             Quantity__c = 6789,
@@ -326,8 +274,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP12 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP12',
+            Rate_Subclass__c = 'testUDRP12',
             Service_Start_Date__c = Date.newInstance(2019, 2, 22),
             Measurement_Unit__c ='KH',
             Quantity__c = 8311,
@@ -338,8 +285,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP13 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP13',
+            Rate_Subclass__c = 'testUDRP13',
             Service_Start_Date__c = Date.newInstance(2020, 9, 10),
             Measurement_Unit__c ='KH',
             Quantity__c = 11111,
@@ -350,8 +296,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP14 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP14',
+            Rate_Subclass__c = 'testUDRP14',
             Service_Start_Date__c = Date.newInstance(2020, 8, 3),
             Measurement_Unit__c ='KH',
             Quantity__c = 53977,
@@ -362,8 +307,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP15 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP15',
+            Rate_Subclass__c = 'testUDRP15',
             Service_Start_Date__c = Date.newInstance(2020, 7, 10),
             Measurement_Unit__c ='KH',
             Quantity__c = 2525,
@@ -373,9 +317,8 @@ private class UtilityDataRequestServiceTest {
         
         Utility_Data_Request_Period__c testUDRP16 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
-            Rate_Class__c = 'EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP16',
+            Rate_Class__c = 'Test EDI Rate Class 1',
+            Rate_Subclass__c = 'testUDRP16',
             Service_Start_Date__c = Date.newInstance(2020, 6, 28),
             Measurement_Unit__c ='KH',
             Quantity__c = 9222,
@@ -386,8 +329,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP17 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP17',
+            Rate_Subclass__c = 'testUDRP17',
             Service_Start_Date__c = Date.newInstance(2020, 5, 2),
             Measurement_Unit__c ='KH',
             Quantity__c = 88,
@@ -398,8 +340,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP18 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP18',
+            Rate_Subclass__c = 'testUDRP18',
             Service_Start_Date__c = Date.newInstance(2020, 4, 17),
             Measurement_Unit__c ='KH',
             Quantity__c = 417,
@@ -410,8 +351,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP19 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP19',
+            Rate_Subclass__c = 'testUDRP19',
             Service_Start_Date__c = Date.newInstance(2020, 3, 20),
             Measurement_Unit__c ='KH',
             Quantity__c = 4399,
@@ -422,8 +362,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP20 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP20',
+            Rate_Subclass__c = 'testUDRP20',
             Service_Start_Date__c = Date.newInstance(2020, 2, 19),
             Measurement_Unit__c ='KH',
             Quantity__c = 2019,
@@ -433,9 +372,8 @@ private class UtilityDataRequestServiceTest {
         
         Utility_Data_Request_Period__c testUDRP21 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
-            Rate_Class__c = 'EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP21',
+            Rate_Class__c = 'Test EDI Rate Class 1',
+            Rate_Subclass__c = 'testUDRP21',
             Service_Start_Date__c = Date.newInstance(2020, 1, 1),
             Measurement_Unit__c ='KH',
             Quantity__c = 334455,
@@ -446,8 +384,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP22 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP22',
+            Rate_Subclass__c = 'testUDRP22',
             Service_Start_Date__c = Date.newInstance(2020, 1, 2),
             Measurement_Unit__c ='KH',
             Quantity__c = 19788,
@@ -457,9 +394,8 @@ private class UtilityDataRequestServiceTest {
         
         Utility_Data_Request_Period__c testUDRP23 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
-            Rate_Class__c = 'Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP23',
+            Rate_Class__c = 'Test EDI Rate Class 1',
+            Rate_Subclass__c = 'testUDRP23',
             Service_Start_Date__c = Date.newInstance(2019, 2, 19),
             Measurement_Unit__c ='KH',
             Quantity__c = 764655,
@@ -470,8 +406,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request_Period__c testUDRP24 = new Utility_Data_Request_Period__c(
             Utility_Data_Request__c = testUDR5.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
-            Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP24',
+            Rate_Subclass__c = 'testUDRP24',
             Service_Start_Date__c = Date.newInstance(2020, 4, 27),
             Measurement_Unit__c ='KH',
             Quantity__c = 42789,
@@ -485,7 +420,69 @@ private class UtilityDataRequestServiceTest {
             testUDRP17, testUDRP18, testUDRP19, testUDRP20, testUDRP21, testUDRP22, testUDRP23, testUDRP24};
         insert testUDRPList;
     }
-    
+
+    private static Utility_Data_Request__c getTestUDR(String customerName) {
+        return [
+            SELECT Id, Request_Status__c, Customer_Name__c, State__c, Utility__c, Annual_kWh__c,
+                Utility_Account_Log__c, Utility_Account_Log__r.Utility_Rate_Class__c
+            FROM Utility_Data_Request__c
+            WHERE Customer_Name__c = :customerName
+        ];
+    }
+
+    private static Utility_Account_Log__c getTestUAL(Id ualId) {
+        return [
+            SELECT Id, Name, Name_on_Account__c, Utility_Rate_Class__c, Annual_kWh__c
+            FROM Utility_Account_Log__c
+            WHERE Id = :ualId
+        ];
+    }
+
+    private static Utility_Data_Request_Period__c getTestUDRP(String rateSubclass) {
+        return [
+            SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c,
+                Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
+                Used_In_Annual_kWh_Calculation__c
+            FROM Utility_Data_Request_Period__c
+            WHERE Rate_Subclass__c = :rateSubclass
+        ];
+    }
+
+    private static List<Utility_Data_Request_Period__c> getTestUDRPList(Id udrId) {
+        return [
+            SELECT Id, Name, Utility_Data_Request__c, Rate_Class__c, Rate_Class_Lookup__c, Service_Start_Date__c,
+                Utility_Data_Request__r.Utility__c, Utility_Data_Request__r.Utility_Account_Log__r.Utility_Rate_Class__c,
+                Used_In_Annual_kWh_Calculation__c
+            FROM Utility_Data_Request_Period__c
+            WHERE Utility_Data_Request__c = :udrId
+        ];
+    }
+
+    private static Rate_Class__c getTestRateClass(String name) {
+        return [
+            SELECT Id, Name, EDI_Rate_Class__c, Utility__c
+            FROM Rate_Class__c
+            WHERE Name = :name
+        ];
+    }
+
+    private static Lead getTestLead(String lastName) {
+        return [
+            SELECT Id,
+                (SELECT Id, Name, Utility_lookup__c, Utility_lookup__r.Utility_DUNS_Number__c, Utility_lookup__r.Name
+                FROM Utility_Account_Logs__r)
+            FROM Lead
+            WHERE LastName = 'testLead1'];
+    }
+
+    private static Integer udrCount(Id ualId) {
+        return [
+            SELECT COUNT()
+            FROM Utility_Data_Request__c
+            WHERE Utility_Account_Log__c =: ualId
+        ];
+    }
+
     @IsTest
     static void updateStatusToComplete() {
         List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
@@ -559,8 +556,8 @@ private class UtilityDataRequestServiceTest {
         List<Utility_Data_Request_Period__c> testUDRPList = getTestUDRPList(testUDR2.Id);
         
         System.assertEquals(testUDRPList[0].Rate_Class_Lookup__c, Null, 
-                            'testUDRP6 is related to testUDR2, whose status was already Complete before the update,' 
-                            + ' so the EDI_Rate_Class should still be null becuase the status did not update to complete,');
+            'testUDRP6 is related to testUDR2, whose status was already Complete before the update,'
+            + ' so the EDI_Rate_Class should still be null becuase the status did not update to complete,');
     }
     
     @IsTest
@@ -576,14 +573,12 @@ private class UtilityDataRequestServiceTest {
         testUDR1.Request_Status__c = 'Complete';
         update testUDR1;
         
-        System.assertEquals(Null, testUDR1.Utility_Account_Log__r.Utility_Rate_Class__c, 
-                            'The most recent UDRP has a null Rate Class Lookup, so the "Rate Class" (Utility_Rate_Class__c) on the UAL should still be null');
+        System.assertEquals(null, testUDR1.Utility_Account_Log__r.Utility_Rate_Class__c,
+            'The most recent UDRP has a null Rate Class, so the Utility_Rate_Class__c on  UAL should still be null'
+        );
         
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
-        System.assertEquals(2, errorLogs.size());
-        
-        System.assert(errorLogs[1].Message__c.contains('Null Rate_Class_Lookup__c value for most recent UDRP related to'));
-        
+        System.assert(!errorLogs.isEmpty(), 'Error logs should have generated for this transaction');
     }
     
     @IsTest
@@ -644,12 +639,76 @@ private class UtilityDataRequestServiceTest {
         List<Utility_Data_Request_Period__c> testUDRPList= udrpSelector.selectWithKHByUDR(updatedTestUDRList);
         
         for(Utility_Data_Request_Period__c udrp : testUDRPList) {
-            if(udrp.Load_Profile_Description__c == 'testUDRP7' || udrp.Load_Profile_Description__c == 'testUDRP12' || udrp.Load_Profile_Description__c == 'testUDRP23') {
-                System.assertEquals(false, udrp.Used_in_Annual_kWh_Calculation__c, 'UDRP not used in kWh calculation, should be false.');
+            if(udrp.Rate_Subclass__c == 'testUDRP7' || udrp.Rate_Subclass__c == 'testUDRP12' || udrp.Rate_Subclass__c == 'testUDRP23') {
+                System.assertEquals(false, udrp.Used_in_Annual_kWh_Calculation__c, 'Not used in kWh calculation, should be false.');
             } else {
-                System.assertEquals(true, udrp.Used_in_Annual_kWh_Calculation__c, 'UDRP used in kWh Calculation, should be true.');
+                System.assertEquals(true, udrp.Used_in_Annual_kWh_Calculation__c, 'Used in kWh Calculation, should be true.');
             }
         }
+    }
+
+    @IsTest
+    static void testUDRGenerationNoMatch() {
+        // Retrieve data
+        Lead lead = getTestLead('testLead1');
+        Utility_Account_Log__c ualForLead = lead.Utility_Account_Logs__r;
+        Integer udrCount = udrCount(ualForLead.Id);
+
+        Test.startTest();
+            UtilityDataRequestService.create(new List<String>{lead.Id});
+        Test.stopTest();
+
+        // Check database to confirm no extra UDRs were generated for this UAL
+        Integer udrCountNow = udrCount(ualForLead.Id);
+
+        // Test lead already has one UDR already created (via @TestSetup method)
+        // No new UDRs should have been created for this lead/UAL
+        System.assertEquals(udrCount, udrCountNow, 'UDR generated when it should not have been. Duplicate UDR!');
+    }
+
+    @IsTest
+    static void testUDRGeneration() {
+        // Build data scenario
+        Id utilityId = [SELECT Id FROM Utility__c WHERE Name = 'testUtility'].Id;
+        Lead lead = new Lead (
+            Product__c = [SELECT Id FROM Product2 WHERE Name = 'testProduct'].Id,
+            Customer_type__c = 'Commercial',
+            LastName = 'testLead1',
+            Company = 'testBlueWave1',
+            Utility_relationship__c = utilityId
+        );
+        insert lead;
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Service_State__c = 'Georgia',
+            Lead__c = lead.Id,
+            Name_on_Account__c = 'testUAL1',
+            Utility_lookup__c = utilityId
+        );
+        insert ual;
+
+        Test.startTest();
+            System.assertEquals(0, udrCount(ual.Id), 'UDRs prior to create() method run should be 0');
+            UtilityDataRequestService.create(new List<String>{lead.Id});
+        Test.stopTest();
+
+        // Check results... Should have generated a new UDR with appropriate field vals, and updated UAL
+        List<Utility_Data_Request__c> udrs = [
+            SELECT Id, Account_Number__c, Utility__c, Utility_DUNS__c, Utility_Name__c, Request_Status__c,
+                Utility_Account_Log__r.Name, Utility_Account_Log__r.Utility_lookup__c,
+                Utility_Account_Log__r.Utility_lookup__r.Name, Utility_Account_Log__r.Utility_lookup__r.Utility_DUNS_Number__c,
+                Utility_Account_Log__r.QC_Status__c
+            FROM Utility_Data_Request__c
+            WHERE Utility_Account_Log__c =: ual.Id
+        ];
+
+        System.assert(!udrs.isEmpty(), 'No UDRs found after running create()');
+        System.assertEquals(1, udrCount(ual.Id), '1 UDR should have been generated for UAL missing UDR');
+        System.assertEquals(udrs[0].Utility_Account_Log__r.Name, udrs[0].Account_Number__c, 'Incorrect name for generated UDR');
+        System.assertEquals(udrs[0].Utility_Account_Log__r.Utility_lookup__c, udrs[0].Utility__c, 'Incorrect utility for generated UDR');
+        System.assertEquals(udrs[0].Utility_Account_Log__r.Utility_lookup__r.Utility_DUNS_Number__c, udrs[0].Utility_DUNS__c, 'Incorrect DUNS number for generated UDR');
+        System.assertEquals(udrs[0].Utility_Account_Log__r.Utility_lookup__r.Name, udrs[0].Utility_Name__c, 'Incorrect utility name for generated UDR');
+        System.assertEquals('Pending', udrs[0].Request_Status__c, 'Incorrect status for newly-generated UDR');
+        System.assertEquals('Pending Utility Data', udrs[0].Utility_Account_Log__r.QC_Status__c, 'UAL status incorrect for pending UDR');
     }
     
 }
