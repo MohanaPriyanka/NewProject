@@ -757,6 +757,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Lead lead = new LeadSelector().selectOne(leadId);
         System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
         if (systemDefault.Application_Complete_Email_Template__c == null) {
+            Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail',
+                'No email template found in System Default custom metadata.', Logger.WARN);
             return;
         }
 
