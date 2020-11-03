@@ -177,7 +177,7 @@
     <fields>
         <fullName>Actual_Credits_Flowing_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Actual Utility NMC to Customer Date</label>
+        <label>Actual First Credit Transfer to Customer</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -211,7 +211,7 @@
     <fields>
         <fullName>Actual_Utility_NMC_Transfer_to_Host_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Actual Utility NMC to Host Account Date</label>
+        <label>Actual Credit Generation Start Date</label>
         <required>false</required>
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -236,8 +236,8 @@
         <externalId>false</externalId>
         <formula>Capacity_Committed_kW_DC__c +  Anchor_Capacity_Reserved__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Anchor Capacity + Committed Capacity</inlineHelpText>
-        <label>Anchor and CS Capacity Committed</label>
+        <inlineHelpText>Sum of all subscriptions (Anchor and Small CS)</inlineHelpText>
+        <label>Total Committed Capacity</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -249,8 +249,8 @@
     <fields>
         <fullName>Anchor_Capacity_Reserved__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Capacity of system with anchor subscriptions.</inlineHelpText>
-        <label>Anchor Capacity</label>
+        <inlineHelpText>Sum of all Anchor Subscriptions</inlineHelpText>
+        <label>Committed Anchor Capacity</label>
         <precision>12</precision>
         <required>false</required>
         <scale>2</scale>
@@ -397,6 +397,21 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Available_Anchor_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Reserved_Anchor_Capacity__c - Anchor_CS_Capacity_Committed__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Anchor Capacity not yet committed; Result of Reserved Anchor Capacity - Anchor/CS Capacity Committed</inlineHelpText>
+        <label>Available Anchor Capacity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -607,8 +622,8 @@
         <externalId>false</externalId>
         <formula>if( Anchor_Capacity_Reserved__c &gt;0,  Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Total_Capacity_Committed_Reserved__c, Total_CS_Capacity_kW_DC_Formula__c -  Total_Capacity_Committed_Reserved__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Total System Size - (Committed + Reserved Capacity) - (Anchor Capacity)</inlineHelpText>
-        <label>Capacity Available to be Reserved(kW DC)</label>
+        <inlineHelpText>Small CS Capacity not yet committed or pending; Result of Reserved Small CS Capacity - (Committed and Pending Small CS Capacity)</inlineHelpText>
+        <label>Available Small CS Capacity</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -620,8 +635,8 @@
     <fields>
         <fullName>Capacity_Committed_kW_DC__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of non-anchor customer subscriptions subscribed to this project. Customers are &quot;committed&quot; to project (Opportunity Stage = Complete and UAS Next Schedule Z Status = Active)</inlineHelpText>
-        <label>Committed Capacity (kW DC)</label>
+        <inlineHelpText>Sum of Complete Small CS Subscriptions</inlineHelpText>
+        <label>Committed Small CS Capacity</label>
         <precision>8</precision>
         <required>false</required>
         <scale>2</scale>
@@ -884,7 +899,7 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
     <fields>
         <fullName>Est_Utility_NMC_Transfer_to_Host_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Est Utility NMC to Host Account Date</label>
+        <label>Est Credit Generation Start Date</label>
         <required>false</required>
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -896,7 +911,7 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <description>If this field is filled in, it will override the formula in the Est Utility NMC to Customer Date field on the shared solar system record.</description>
         <externalId>false</externalId>
         <inlineHelpText>If this field is filled in, it will override the formula in the Est Utility NMC to Customer Date field on the shared solar system record.</inlineHelpText>
-        <label>Est Utility NMC to Customer Override</label>
+        <label>Est First Credit Transfer to Customer</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1300,7 +1315,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <externalId>false</externalId>
         <formula>Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>NMC Value</label>
+        <label>Credit Value</label>
         <precision>18</precision>
         <required>false</required>
         <scale>4</scale>
@@ -1423,6 +1438,20 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <type>Percent</type>
     </fields>
     <fields>
+        <fullName>Pending_Anchor_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of New, Pending, or QC in Process Anchor subscriptions</inlineHelpText>
+        <label>Pending Anchor Capacity</label>
+        <precision>11</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Picklist__c</fullName>
         <description>This is the name of the entity that we are servicing a shared solar system on behalf of.</description>
         <externalId>false</externalId>
@@ -1486,9 +1515,8 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <formula>if( Anchor_Capacity_Reserved__c &gt;0, Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Capacity_Committed_kW_DC__c, 
 Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Total System Size - (Committed Capacity) - (Anchor Capacity) 
-** Does not include reserved capacity</inlineHelpText>
-        <label>Capacity not yet Committed (kW DC)</label>
+        <inlineHelpText>Capacity remaining on the project; Result of Total System Size - Total Capacity Committed</inlineHelpText>
+        <label>Total Capacity not yet Committed</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -1596,6 +1624,20 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Reserved_Anchor_Capacity_Percent__c</fullName>
+        <externalId>false</externalId>
+        <formula>Reserved_Anchor_Capacity__c /  Total_System_Size_kWh_DC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Reserved Anchor Capacity / Total System Size, used for information only (to compare to contracts that might specify an Anchor %). Change the Reserved Anchor Capacity value or the Total System Size to change this percentage.</inlineHelpText>
+        <label>Reserved Anchor Capacity %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
         <fullName>Reserved_Anchor_Capacity__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Manual input for reserved anchor and public offtake capacity when under Onboarding or Acquisition stage</inlineHelpText>
@@ -1626,7 +1668,8 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Reserved_Capacity_kW_DC__c</fullName>
         <externalId>false</externalId>
-        <label>Reserved Capacity (kW DC)</label>
+        <inlineHelpText>Sum of New, Pending, or QC in Process Small CS subscriptions</inlineHelpText>
+        <label>Pending Small CS Capacity</label>
         <length>11</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -2308,8 +2351,8 @@ Total_System_Size_kWh_DC__c
         <externalId>false</externalId>
         <formula>Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Calculated field; formula = Total System Size (kW DC) - Anchor Capacity</inlineHelpText>
-        <label>CS Small Offtake Capacity (kW DC)</label>
+        <inlineHelpText>Capacity set aside for Small CS subscriptions; Result of Total System Size - Reserved Anchor Capacity</inlineHelpText>
+        <label>Reserved Small CS Capacity</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>

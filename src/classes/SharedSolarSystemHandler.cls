@@ -61,61 +61,73 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     }
     private void summarizeCapacity(Map<Id, Shared_Solar_System__c> sssMap, fflib_SObjectUnitOfWork uow) {
         //Requerying the sss loses any changes from beforeUpdate - still need to reference sssMap for updated record below
-        List<Shared_Solar_System__c> sssWithActiveUASes = sssSelector.getSSSWithActiveUASes(sssMap.values());
-        for (Shared_Solar_System__c activeSSS : sssWithActiveUASes) {
-            Shared_Solar_System__c sss = sssMap.get(activeSSS.Id);
-            List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
-            List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
-            List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
-            Decimal reservedCapacity = 0;
-            Decimal committedCapacity = 0;
-            Decimal anchorCapacity = 0;
-
-            for (Utility_Account_Subscription__c uas : activeSSS.Utility_Account_Subscriptions__r) {
-                if (!isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete'){
-                    committedCapacityList.add(uas);
-                } else if (!isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)){
-                    reservedCapacityList.add(uas);
-                } else if (isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
-                    anchorCapacityList.add(uas);
-                }
-            }
-            reservedCapacity = sumCapacity(reservedCapacityList);
-            committedCapacity = sumCapacity(committedCapacityList);
-            anchorCapacity = sumCapacity(anchorCapacityList);
-
-            registerCapacityChanges(sss, uow, reservedCapacity, committedCapacity, anchorCapacity);
+        List<Shared_Solar_System__c> sssesWithActiveUASes = sssSelector.getSSSWithActiveUASes(sssMap.values());
+        for (Shared_Solar_System__c sssWithActiveUASes : sssesWithActiveUASes) {
+            Shared_Solar_System__c sssToUpdate = sssMap.get(sssWithActiveUASes.Id);
+            summarizeCapacityForSSS(sssWithActiveUASes, sssToUpdate, uow);
         }
     }
 
-    private void registerCapacityChanges(Shared_Solar_System__c sss, fflib_SObjectUnitOfWork uow,
-        Decimal reservedCapacity, Decimal committedCapacity, Decimal anchorCapacity) {
-        if (sss.Reserved_Capacity_kW_DC__c != String.valueOf(reservedCapacity)) {
-            sss.Reserved_Capacity_kW_DC__c = String.valueOf(reservedCapacity);
+    private void summarizeCapacityForSSS(Shared_Solar_System__c sssWithActiveUASes, Shared_Solar_System__c sssToUpdate, fflib_SObjectUnitOfWork uow) {
+        List<Utility_Account_Subscription__c> pendingSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> committedSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> committedAnchorCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> pendingAnchorCapacityList = new List<Utility_Account_Subscription__c>();
+        Decimal pendingSmallCSCapacity = 0;
+        Decimal committedSmallCSCapacity = 0;
+        Decimal pendingAnchorCapacity = 0;
+        Decimal committedAnchorCapacity = 0;
+
+        for (Utility_Account_Subscription__c uas : sssWithActiveUASes.Utility_Account_Subscriptions__r) {
+            if (!isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete') {
+                committedSmallCSCapacityList.add(uas);
+            } else if (!isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
+                pendingSmallCSCapacityList.add(uas);
+            } else if (isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete') {
+                committedAnchorCapacityList.add(uas);
+            } else if (isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
+                pendingAnchorCapacityList.add(uas);
+            }
+        }
+        pendingSmallCSCapacity = sumCapacity(pendingSmallCSCapacityList);
+        committedSmallCSCapacity = sumCapacity(committedSmallCSCapacityList);
+        pendingAnchorCapacity = sumCapacity(pendingAnchorCapacityList);
+        committedAnchorCapacity = sumCapacity(committedAnchorCapacityList);
+
+        registerCapacityChanges(sssToUpdate, uow, pendingSmallCSCapacity, committedSmallCSCapacity, pendingAnchorCapacity, committedAnchorCapacity);
+    }
+
+    private void registerCapacityChanges(
+        Shared_Solar_System__c sss,
+        fflib_SObjectUnitOfWork uow,
+        Decimal pendingSmallCSCapacity,
+        Decimal committedSmallCSCapacity,
+        Decimal pendingAnchorCapacity,
+        Decimal committedAnchorCapacity)
+    {
+        if (sss.Reserved_Capacity_kW_DC__c != String.valueOf(pendingSmallCSCapacity)) {
+            sss.Reserved_Capacity_kW_DC__c = String.valueOf(pendingSmallCSCapacity);
             uow.registerDirty(sss, new List<SObjectField>{
                 Shared_Solar_System__c.Reserved_Capacity_kW_DC__c
             });
         }
-        if (sss.Capacity_Committed_kW_DC__c != committedCapacity) {
-            sss.Capacity_Committed_kW_DC__c = committedCapacity;
+        if (sss.Capacity_Committed_kW_DC__c != committedSmallCSCapacity) {
+            sss.Capacity_Committed_kW_DC__c = committedSmallCSCapacity;
             uow.registerDirty(sss, new List<SObjectField>{
                 Shared_Solar_System__c.Capacity_Committed_kW_DC__c
             });
         }
-        if (anchorCapacity == 0 && sss.Stage__c != 'Management') {
-            if (sss.Anchor_Capacity_Reserved__c != sss.Reserved_Anchor_Capacity__c) {
-                sss.Anchor_Capacity_Reserved__c = sss.Reserved_Anchor_Capacity__c;
-                uow.registerDirty(sss, new List<SObjectField>{
-                    Shared_Solar_System__c.Anchor_Capacity_Reserved__c
-                });
-            }
-        } else {
-            if (sss.Anchor_Capacity_Reserved__c != anchorCapacity) {
-                sss.Anchor_Capacity_Reserved__c = anchorCapacity;
-                uow.registerDirty(sss, new List<SObjectField>{
-                    Shared_Solar_System__c.Anchor_Capacity_Reserved__c
-                });
-            }
+        if (sss.Pending_Anchor_Capacity__c != pendingAnchorCapacity) {
+            sss.Pending_Anchor_Capacity__c = pendingAnchorCapacity;
+            uow.registerDirty(sss, new List<SObjectField>{
+                Shared_Solar_System__c.Pending_Anchor_Capacity__c
+            });
+        }
+        if (sss.Anchor_Capacity_Reserved__c != committedAnchorCapacity) {
+            sss.Anchor_Capacity_Reserved__c = committedAnchorCapacity;
+            uow.registerDirty(sss, new List<SObjectField>{
+                Shared_Solar_System__c.Anchor_Capacity_Reserved__c
+            });
         }
     }
     private Decimal sumCapacity(List<Utility_Account_Subscription__c> uasList) {
