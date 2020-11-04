@@ -93,26 +93,42 @@ public with sharing class CSLeadsRESTControllerV2Test {
      *******************/
 
     @IsTest
-    private static void testPatchLeadSuccess() {
+    private static void testPullCreditOnContractSignature() {
         useMocks();
+        Util.mockDML = true;
 
-        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00", "underwritingCriteria": "FICO" }';
+        Id leadId = '00Q000000000666';
+        controller.updateLeadApplicationStatus(leadId);
 
-        controller.patchLead(jsonRequest);
-
-        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-        System.assertEquals(true, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should be done for FICO leads when the application is complete');
-
+        System.assertNotEquals(null, Util.objectsUpdatedIfMockingDML);
+        List<Lead> updatedLeads = (List<Lead>) Util.objectsUpdatedIfMockingDML;
+        for (Lead checkLead : updatedLeads) {
+            System.assertEquals(true, checkLead.Soft_Pull_Credit_Report__c);
+        }
     }
 
     @IsTest
-    private static void testPatchLeadSuccessNoCreditPull() {
+    private static void testDontPullCreditForFinancialDocs() {
+        useMocks();
+        Util.mockDML = true;
+
+        Id leadId = '00Q000000000555';
+        controller.updateLeadApplicationStatus(leadId);
+
+        System.assertNotEquals(null, Util.objectsUpdatedIfMockingDML);
+        List<Lead> updatedLeads = (List<Lead>) Util.objectsUpdatedIfMockingDML;
+        for (Lead checkLead : updatedLeads) {
+            System.assertEquals(false, checkLead.Soft_Pull_Credit_Report__c);
+        }
+    }
+
+    @IsTest
+    private static void testPatchLeadSuccessFinancialDocs() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00", "underwritingCriteria": "Financial Review" }';
         controller.patchLead(jsonRequest);
 
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-        System.assertEquals(false, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should NOT be done for Financial Review leads');
         System.assertEquals('Qualified', mockLeadService.getLastUpdatedLead().Status, 'Lead status should be populated by CSQualificationService when Financial Review leads are completed.');
 
     }
@@ -126,19 +142,16 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
         System.assertEquals('123 Patched Street', mockLeadService.getLastUpdatedLead().Street, 'Street should be updated when streetAddress is PATCHed.');
         System.assertEquals('123 Patched Street', mockLeadService.getLastUpdatedLead().LASERCA__Home_Address__c, 'LASERCA Home Address should be updated when streetAddress is PATCHed.');
-        System.assertEquals(false, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should only be updated if the field being updated is app compl date');
     }
 
     @IsTest
     private static void testPatchLeadCreditPullOnce() {
         useMocks();
-        // ID of ...999 is an ID with an existing app date of Jan 1 2017 in the mock svc
-        String jsonRequest = '{ "id": "00Q000000000999", "applicationCompleteDate": "2019-11-18T01:00" }';
-        controller.patchLead(jsonRequest);
+        Util.mockDML = true;
 
-        // when patching a lead that already has an application complete date, don't try to pull credit again
-        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-        System.assertEquals(false, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should not be done if the app complete date has been previously set');
+        Id leadId = '00Q000000000444';
+        controller.updateLeadApplicationStatus(leadId);
+        System.assertEquals(null, Util.objectsUpdatedIfMockingDML, 'Application Status is the same and therefore does not require an update');
     }
 
     @IsTest
@@ -847,7 +860,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(200, RestContext.response.statusCode, 'PATCH contract should not throw an error when a valid lead id is provided');
     }
 
-
     /********************
      *** SYSTEM TESTS ***
      ********************/
@@ -1248,6 +1260,37 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals('complete', url.getParameters().get('loc'), 'Because Application Status is Application Completed, Continue Application Link loc param should be complete');
     }
 
+    @IsTest
+    private static void testPartnerEmailSendApplicationComplete(){
+
+        Account partnerAccount = new Account(
+            Name = 'Partner Account'
+        );
+        insert partnerAccount;
+
+        Lead leadToUpdate = new Lead (
+            FirstName = 'Other',
+            LastName = 'Testcase',
+            Email = 'test@invalid.bluewavesolar.com',
+            Company = 'System Testcase',
+            LeadSource = 'Switch',
+            Partner_Account__c = partnerAccount.Id,
+            Partner_Email__c = 'partner@testcase.com'
+        );
+        insert leadToUpdate;
+
+        Test.startTest();
+        CSLeadsRESTControllerV2.createAndSendCSPartnerEmail(leadToUpdate.Id);
+        Test.stopTest();
+
+        //Check email template ID in Custom Metadata System Defaults
+        // Unable to mock due to @Future methods being static
+        System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
+        if (systemDefault.Application_Complete_Email_Template__c != null) {
+            System.assertEquals(1, MessagingService.emailsSent.size(), 'Application Complete email should be sent to Partner');
+        }
+    }
+
 
     /*************
      *** MOCKS ***
@@ -1274,6 +1317,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return (Lead) updateCalls.get(updateCalls.size() - 1).listOfArgs.get(0);
         }
     }
+
 
     @TestVisible
     private class MockLeadSelector implements StubProvider {
@@ -1322,6 +1366,43 @@ public with sharing class CSLeadsRESTControllerV2Test {
                         '   }' +  
                         '}';
                         return (Lead)JSON.deserialize(leadMapJson, Lead.class);
+                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000666' ||
+                        String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000555' ||
+                        String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000444') {
+                        //lead with contracts
+                        String leadMapJson = '{ ' +
+                            '   "attributes": {' +
+                            '       "type": "Lead",' +
+                            '       "url": "/services/data/v48.0/sobjects/Lead/00Q000000000666"' +
+                            '   },' +
+                            '   "Email": "' + SAMPLE_EMAIL + '",' +
+                            '   "Id": "00Q000000000666",' +
+                            '   "Customer_Signed_Date__c": "2020-07-22T00:00:00Z",' +
+                            '   "Underwriting_Criteria__c": "FICO", ' +
+                            '   "Contracts__r": {' +
+                            '       "totalSize": 1,' +
+                            '       "done": true,' +
+                            '       "records": ' +
+                            '           [' +
+                            '               {' +
+                            '                   "attributes": {' +
+                            '                       "type": "Contract",' +
+                            '                       "url": "/services/data/v48.0/sobjects/Contract/800000000000999"' +
+                            '                   },' +
+                            '                   "Lead__c": "00Q000000000666",' +
+                            '                   "Customer_Signature_Date_Time__c": "2020-07-22T00:00:00Z", ' +
+                            '                   "Id": "800000000000999"' +
+                            '               }' +
+                            '           ]' +
+                            '   }' +
+                            '}';
+                        Lead lead = (Lead)JSON.deserialize(leadMapJson, Lead.class);
+                        if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000555'){
+                            lead.Underwriting_Criteria__c = 'Financial Review';
+                        } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000444') {
+                            lead.Application_Status__c = 'Contracts Signed';
+                        }
+                        return lead;
                     }
                 }
                 if(stubbedMethodName == 'selectOneWithPropertiesAndUtilities') {
