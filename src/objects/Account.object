@@ -2681,6 +2681,16 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Partner_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Partner Email</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Partner_Logo__c</fullName>
         <externalId>false</externalId>
         <formula>IF(ISBLANK(Partner__r.Logo__c),&quot;Go to the partner object and load a document Id to the Logo field&quot;,
