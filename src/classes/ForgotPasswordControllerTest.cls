@@ -3,14 +3,30 @@
  */
 @IsTest public with sharing class ForgotPasswordControllerTest {
     @IsTest public static void testForgotPasswordControllerInvalidUser() {
-    	// Instantiate a new controller with all parameters in the page
-    	ForgotPasswordController controller = new ForgotPasswordController();
-    	controller.username = 'test@salesforce.com';
-    
-    	System.assertEquals(null, controller.forgotPassword()); 
-        System.assertEquals(controller.ERRORMSGSTRING, controller.errorMsg);
+        User guest = [
+            SELECT Id, IsActive, Username, Email, Profile.Name
+            FROM User
+            WHERE Name LIKE '%Guest%'
+            AND IsActive = TRUE
+            AND Profile.Name = 'BlueWave Member Portal Profile'
+            LIMIT 1
+        ];
+        System.runAs(guest) {
+            // Instantiate a new controller with all parameters in the page
+            ForgotPasswordController controller = new ForgotPasswordController();
+            controller.username = 'test@salesforce.com';
 
-        controller.send();
+            System.assertEquals(null, controller.forgotPassword());
+            System.assertEquals(controller.ERRORMSGSTRING, controller.errorMsg);
+
+            controller.send();
+        }
+        List<Case> passwordCase = [
+            SELECT Id
+            FROM Case
+            WHERE Subject LIKE 'Please help setup%'
+        ];
+        System.assertEquals(1, passwordCase.size(), 'Expected the ForgotPassword page to create a case to get help');
     }
 
     @IsTest public static void testForgotPasswordControllerValidUser() {
