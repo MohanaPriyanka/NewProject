@@ -31,6 +31,12 @@ private class FeatureServiceTest {
         Custom_Feature_Enablement__mdt checkFeature = featureSelector.getCustomFeature('Subscription_Orders');
         System.assertNotEquals(null, checkFeature);
     }
+    @IsTest
+    public static void testSystemDefaults() {
+        FeatureSelector featureSelector = new FeatureSelector();
+        System_Default__mdt checkSystemDefault = featureSelector.getSystemDefaults();
+        System.assertNotEquals(null, checkSystemDefault);
+    }
 
     @IsTest
     public static void testFeatureServiceMock() {
