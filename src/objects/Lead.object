@@ -7635,8 +7635,12 @@ SEMA = 13 -14</inlineHelpText>
         <columns>LEAD.STATE_CODE</columns>
         <columns>LEAD.PHONE</columns>
         <columns>Application__c</columns>
-        <columns>Partner_Application_Status__c</columns>
         <filterScope>Everything</filterScope>
+        <filters>
+            <field>LEAD.LEAD_SOURCE</field>
+            <operation>equals</operation>
+            <value>Switch,CSAP</value>
+        </filters>
         <filters>
             <field>Partner_Application_Status__c</field>
             <operation>equals</operation>

@@ -27862,6 +27862,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Partner_Application_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Partner_Contact__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -78421,10 +78426,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>AccessCMC</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>AccessContentBuilder</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
