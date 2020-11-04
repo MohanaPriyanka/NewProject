@@ -266,6 +266,7 @@ public without sharing class RestLead {
 
             if (partnerAccount != null) {
                 newLead.Partner_Account__c = partnerAccount.Id;
+                newLead.Partner_Email__c = partnerAccount.Partner_Email__c;
             }
 
             if (String.isNotBlank(restLead.salesRepId)) {
