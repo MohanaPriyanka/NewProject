@@ -87,6 +87,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Product__c = normalCSProduct.Id,
             Utility_NMC_Tariff__c = everbillNMC.Id,
             Maximum_Subscription_Capacity_kWDC__c = 25,
+            Reserved_Anchor_Capacity__c = 5,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 48,
@@ -106,6 +107,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Client_Account__c = clientAccount.Id,
             Product__c = normalCSProduct.Id,
             Utility_NMC_Tariff__c = everbillNMC.Id,
+            Reserved_Anchor_Capacity__c = 20,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 32,
@@ -124,6 +126,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Client_Account__c = clientAccount.Id,
             Product__c = normalCSProduct.Id,
             Utility_NMC_Tariff__c = everbillNMC.Id,
+            Reserved_Anchor_Capacity__c = 100,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
@@ -181,7 +184,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                     'SEMA', 'NEMA'
                 }
             );
-        System.assertEquals(3, eversourceSharedSolarSystems.size());
+        System.assertEquals(3, eversourceSharedSolarSystems.size(), 'Expected 3 Eversource systems with capacity but got: ' + eversourceSharedSolarSystems);
         List<Shared_Solar_System__c> ngAndEversourceSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
                 new Set<Id>{
@@ -789,7 +792,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         String response = SharedSolarSystemHandler.updateStage(checkSSS[0].Id,'Management');
         System.assertEquals('Success', response);
         String responseTwo = SharedSolarSystemHandler.updateStage(checkSSS[1].Id,'Management');
-        System.assertEquals('Success', responseTwo);
+        System.assertEquals('Success', responseTwo, checkSSS[1]);
         checkSSS = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c
             FROM Shared_Solar_System__c
