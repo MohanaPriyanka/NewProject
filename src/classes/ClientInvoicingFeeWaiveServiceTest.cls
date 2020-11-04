@@ -154,10 +154,11 @@ public class ClientInvoicingFeeWaiveServiceTest {
             Client_Invoicing_Memo__c.SObjectType
         });
         Subscription_Order__c so = getSubscriptionOrder();
+        so.Effective_Date__c = Date.newInstance(2020,10,1);
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: COD';
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
-        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = System.today();
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = Date.newInstance(2020,10,1);
         Client_Invoicing_Memo__c cim = service.waiveFeeBasedOnDate(so);
 
         so.Approved_Change_in_Subscription__c = -12;
@@ -172,14 +173,14 @@ public class ClientInvoicingFeeWaiveServiceTest {
             'Should not get a fee waive in the initial period if the CFD does not enable that option');
 
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
-        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = DateUtil.convertGmtToDate(so.Effective_Date__c.addMonths(-1));
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = Date.newInstance(2020,9,1);
         cim = service.waiveFeeBasedOnDate(so);
         System.assertEquals(null, cim,
             'Should not get a fee waive because the SO is one day after the initial period. ' +
                 'SSS COD: ' + so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c +
                 'SO Effective: ' + so.Effective_Date__c);
 
-        so.Effective_Date__c = so.Effective_Date__c.addDays(-1);
+        so.Effective_Date__c = Date.newInstance(2020,9,30);
         cim = service.waiveFeeBasedOnDate(so);
         System.assertNotEquals(null, cim,
             'Should get a fee waive because the SO is at the end of the initial period. ' +
