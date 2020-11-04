@@ -278,6 +278,21 @@
                                 <div class="input-group half">
                                     <lightning-input
                                         key={it.value.localid}
+                                        data-row-index={it.index}
+                                        data-ual-number-reentry-index={it.index}
+                                        onpaste={preventDefaultEvent}
+                                        name="utilityAccountNumberReentry"
+                                        class="slds-var-m-bottom_small slds-col"
+                                        label="Re-Enter Utility Account Number"
+                                        field-level-help="Please re-enter the applicant's Utility Account Number for verification purposes."
+                                        value={it.value.utilityAccountNumberReentry}
+                                        onchange={utilityAccountOnChange}
+                                        required>
+                                    </lightning-input>
+                                </div>
+                                <div class="input-group half">
+                                    <lightning-input
+                                        key={it.value.localid}
                                         name="nameOnAccount"
                                         data-row-index={it.index}
                                         class="slds-var-m-bottom_small"

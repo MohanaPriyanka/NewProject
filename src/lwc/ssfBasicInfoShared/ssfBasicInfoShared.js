@@ -137,6 +137,46 @@ const getNumberOfContractDocs = (lead, product, rateClasses) => {
     return 2;
 }
 
+const verifyUtilityAccountEntry = (cmp, event, eventField) => {
+    // Retrieve DOM element for UA# re-entry field
+    const index = event.target.dataset.rowIndex;
+    let ualNumReentryInputElement = cmp.template.querySelector(`[data-ual-number-reentry-index="${index}"]`);
+
+    // Retrieve current stored values for input fields
+    const ualNum = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumber.replace('-','');
+    const ualNumReentry = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumberReentry.replace('-','');
+
+    // Retrieve state booleans... assess if we want to run validation in real-time
+    const ualNumChangeValidate = eventField === 'utilityAccountNumber' && !!ualNumReentry;
+    const ualNumReentryChangeValidate = eventField === 'utilityAccountNumberReentry' && !!ualNum;
+
+    // Set or clear error state on Re-entry field if conditions we are monitoring are subject to validation
+    if (ualNumChangeValidate || ualNumReentryChangeValidate) {
+        if (ualNum !== ualNumReentry) {
+            ualNumReentryInputElement.setCustomValidity('The Utility Account Numbers you entered do not match');
+        } else {
+            ualNumReentryInputElement.setCustomValidity('');
+        }
+        ualNumReentryInputElement.reportValidity();
+    }
+}
+
+const matchBillingAddress = (propertyAccount) => {
+    propertyAccount.billingStreet = propertyAccount.utilityAccountLogs[0].serviceStreet;
+    propertyAccount.billingCity = propertyAccount.utilityAccountLogs[0].serviceCity;
+    propertyAccount.billingState = propertyAccount.utilityAccountLogs[0].serviceState;
+    propertyAccount.billingPostalCode = propertyAccount.utilityAccountLogs[0].servicePostalCode;
+    return propertyAccount;
+}
+
+const matchHomeAddress = (restLead, propertyAccount) => {
+    restLead.streetAddress = propertyAccount.utilityAccountLogs[0].serviceStreet;
+    restLead.city = propertyAccount.utilityAccountLogs[0].serviceCity;
+    restLead.state = propertyAccount.utilityAccountLogs[0].serviceState;
+    restLead.zipCode = propertyAccount.utilityAccountLogs[0].servicePostalCode;
+    return restLead;
+}
+
 export {  
     getFinDocFileTypes,
     getUnderwritingHelpText,
@@ -147,24 +187,6 @@ export {
     setRemainingFields,
     setComponentUnderwritingVals,
     handleUnderwritingChange,
-    getNumberOfContractDocs
-}
-
-// ///////////////////////////////////
-//      Helper Methods
-// ///////////////////////////////////
-function matchBillingAddress(propertyAccount) {
-    propertyAccount.billingStreet = propertyAccount.utilityAccountLogs[0].serviceStreet;
-    propertyAccount.billingCity = propertyAccount.utilityAccountLogs[0].serviceCity;
-    propertyAccount.billingState = propertyAccount.utilityAccountLogs[0].serviceState;
-    propertyAccount.billingPostalCode = propertyAccount.utilityAccountLogs[0].servicePostalCode;
-    return propertyAccount;
-}
-
-function matchHomeAddress(restLead, propertyAccount) {
-    restLead.streetAddress = propertyAccount.utilityAccountLogs[0].serviceStreet;
-    restLead.city = propertyAccount.utilityAccountLogs[0].serviceCity;
-    restLead.state = propertyAccount.utilityAccountLogs[0].serviceState;
-    restLead.zipCode = propertyAccount.utilityAccountLogs[0].servicePostalCode;
-    return restLead;
+    getNumberOfContractDocs,
+    verifyUtilityAccountEntry
 }
