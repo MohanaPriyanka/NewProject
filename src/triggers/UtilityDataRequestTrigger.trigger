@@ -8,14 +8,14 @@ trigger UtilityDataRequestTrigger on Utility_Data_Request__c (after update, befo
         return;
     }
     
-    UtilityDataRequestService udrService = new UtilityDataRequestService();
+    UtilityDataRequestService udrService = new UtilityDataRequestService(Trigger.oldMap, Trigger.newMap);
     
     switch on Trigger.operationType {
-        when AFTER_UPDATE {
-            udrService.afterStatusUpdatedToComplete(Trigger.oldMap, Trigger.new);
-        }
         when BEFORE_UPDATE {
-            udrService.beforeStatusUpdatedToComplete(Trigger.oldMap, Trigger.new, Trigger.newMap);
+            udrService.beforeStatusUpdatedToComplete();
+        }
+        when AFTER_UPDATE {
+            udrService.afterStatusUpdatedToComplete();
         }
     }
 

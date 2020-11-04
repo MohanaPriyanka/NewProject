@@ -3972,10 +3972,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>UtilityDataRequestPeriodSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>UtilityDataRequestService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
