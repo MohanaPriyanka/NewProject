@@ -1,7 +1,8 @@
 /**
  * An apex page controller that exposes the site forgot password functionality
+ * Tested By: ForgotPasswordControllerTest
  */
-public with sharing class ForgotPasswordController {
+public without sharing class ForgotPasswordController {
     public String ERRORMSGSTRING {get; set;}
     public String EMAILSENT {get; set;}
     public String username {get; set;}   
@@ -42,7 +43,7 @@ public with sharing class ForgotPasswordController {
         // Define the email
         Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
  
-        // Sets the paramaters of the email
+        // Sets the parameters of the email
         if (subject == '') {
             subject = 'Please help setup: ' + username;
         }
