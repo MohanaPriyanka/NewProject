@@ -402,9 +402,9 @@
     <fields>
         <fullName>Available_Anchor_Capacity__c</fullName>
         <externalId>false</externalId>
-        <formula>Reserved_Anchor_Capacity__c - Anchor_CS_Capacity_Committed__c</formula>
+        <formula>Reserved_Anchor_Capacity__c - Anchor_Capacity_Reserved__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Anchor Capacity not yet committed; Result of Reserved Anchor Capacity - Anchor/CS Capacity Committed</inlineHelpText>
+        <inlineHelpText>Anchor Capacity not yet committed; Result of Reserved Anchor Capacity - Committed Anchor Capacity</inlineHelpText>
         <label>Available Anchor Capacity</label>
         <precision>18</precision>
         <required>false</required>
