@@ -1248,6 +1248,37 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals('complete', url.getParameters().get('loc'), 'Because Application Status is Application Completed, Continue Application Link loc param should be complete');
     }
 
+    @IsTest
+    private static void testPartnerEmailSendApplicationComplete(){
+
+        Account partnerAccount = new Account(
+            Name = 'Partner Account'
+        );
+        insert partnerAccount;
+
+        Lead leadToUpdate = new Lead (
+            FirstName = 'Other',
+            LastName = 'Testcase',
+            Email = 'test@invalid.bluewavesolar.com',
+            Company = 'System Testcase',
+            LeadSource = 'Switch',
+            Partner_Account__c = partnerAccount.Id,
+            Partner_Email__c = 'partner@testcase.com'
+        );
+        insert leadToUpdate;
+
+        Test.startTest();
+        CSLeadsRESTControllerV2.createAndSendCSPartnerEmail(leadToUpdate.Id);
+        Test.stopTest();
+
+        //Check email template ID in Custom Metadata System Defaults
+        // Unable to mock due to @Future methods being static
+        System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
+        if (systemDefault.Application_Complete_Email_Template__c != null) {
+            System.assertEquals(1, MessagingService.emailsSent.size(), 'Application Complete email should be sent to Partner');
+        }
+    }
+
 
     /*************
      *** MOCKS ***

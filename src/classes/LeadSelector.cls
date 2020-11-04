@@ -3,7 +3,7 @@
  * Description:
  * Test: LeadSelectorTest
  *************************************************************************************/
-@SuppressWarnings('PMD.ApexCRUDViolation')
+@SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public without sharing class LeadSelector {
     public List<String> apiLeadFields = new List<String>{
         'FirstName',
@@ -123,6 +123,8 @@ public without sharing class LeadSelector {
                 Parcel_Zip__c,
                 Parent_Account__c,
                 Partner_Email__c, 
+                Partner_Account__c,
+                Partner_Account__r.Name,
                 Partner_Lookup__c, 
                 Partner_Lookup__r.Id, 
                 Phone, 
