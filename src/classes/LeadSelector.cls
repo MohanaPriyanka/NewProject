@@ -201,15 +201,4 @@ public without sharing class LeadSelector {
         return leads[0];
     }
 
-    public List<Lead> selectForUDRCreation(List<Id> leadIds) {
-        List<Lead> leads = [
-            SELECT Id, Utility_relationship__r.Utility_Data_Collection_Mechanism__c,
-                (SELECT Id, Name, Utility_lookup__c, Utility_lookup__r.Name, Utility_lookup__r.Utility_DUNS_Number__c
-                 FROM Utility_Account_Logs__r)
-            FROM Lead
-            WHERE Id =: new Set<Id>(leadIds)
-        ];
-        return leads;
-    }
-
 }
