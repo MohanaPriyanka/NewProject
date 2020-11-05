@@ -3972,10 +3972,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>UtilityDataRequestPeriodSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>UtilityDataRequestService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -47048,6 +47044,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Proposed_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Log__c.QC_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -108,7 +108,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             } else if (requestLead.underwritingCriteria == 'Financial Review') {
                 leadToUpdate.Status = qualificationService.underwriteWithFinancialReview(leadToUpdate);
             }
-
             // Send Zuora callout
             List<Account> propertyAccounts = accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{requestLead.Id});
             ZuoraAccountService.createAccounts(propertyAccounts);
@@ -121,8 +120,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Handle other non-Lead database changes if the application is newly marked as "Application Complete"
         // Placed last because we want to ensure Lead properly updates before queueing other object changes
         if (applicationNowComplete) {
-            //UtilityDataRequestService.create(new List<Id>{requestLead.id});
-            createAndSendCSPartnerEmail(lead.Id);
+
+            UtilityDataRequestService.create(new List<Id>{requestLead.id});
+ 			createAndSendCSPartnerEmail(lead.Id);
         }
         // Set return envelope
         RestLead responseLead = new RestLead(lead);
@@ -130,7 +130,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         response.statusCode = statusCode.ok;
         envelope.setJSONResponse(response);
     }
-
     public virtual void patchPropertyAccount(String jsonRequest) {
         RestLead.RestPropertyAccount requestAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
         RestResponse response = RestContext.response;
@@ -660,7 +659,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             Util.updateAndLog(new List<SObject>{lead}, 'CSLeadsRESTControllerV2', 'updateLeadApplicationStatus');
         }
     }
-
     /**
      * Sets links on Lead to access application in SSF at a later state
      * @param lead Lead to set links for
@@ -668,7 +666,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
      */
     public void setContinueApplicationLinks(Lead lead, String applicationStatus) {
         String location = APP_STATUS_TO_LOCATION.get(applicationStatus);
-
         // Set Continue Application Link
         if (lead.Continue_Application_Link__c != null) {
             PageReference url = new PageReference(lead.Continue_Application_Link__c);
@@ -746,7 +743,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return 'Started';
     }
-
     /**
      * @description Future method to send an email to the related Partner when the customer has completed their SSF
      * Application
@@ -761,7 +757,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 'No email template found in System Default custom metadata.', Logger.WARN);
             return;
         }
-
         MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
         ee.emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
         ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
@@ -771,7 +766,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.Name}', lead.Name);
         ee.replacementTexts = new List<MessagingService.ReplacementText>{partnerName, leadName};
         ee.sobjectId = lead.Id;
-
         try {
             MessagingService.sendEmailTemplate(ee);
         } catch (Exception e) {
