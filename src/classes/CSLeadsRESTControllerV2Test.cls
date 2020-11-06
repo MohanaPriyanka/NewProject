@@ -103,7 +103,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertNotEquals(null, Util.objectsUpdatedIfMockingDML);
         List<Lead> updatedLeads = (List<Lead>) Util.objectsUpdatedIfMockingDML;
         for (Lead checkLead : updatedLeads) {
-            System.assertEquals(true, checkLead.Soft_Pull_Credit_Report__c);
+            System.assertEquals(true, checkLead.Soft_Pull_Credit_Report__c, 'Credit should be pulled after Contracts have been signed');
         }
     }
 
@@ -118,7 +118,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertNotEquals(null, Util.objectsUpdatedIfMockingDML);
         List<Lead> updatedLeads = (List<Lead>) Util.objectsUpdatedIfMockingDML;
         for (Lead checkLead : updatedLeads) {
-            System.assertEquals(false, checkLead.Soft_Pull_Credit_Report__c);
+            System.assertEquals(false, checkLead.Soft_Pull_Credit_Report__c, 'Credit should not be pulled when Underwriting Criteria = Fincancial Docs');
         }
     }
 
@@ -860,6 +860,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(200, RestContext.response.statusCode, 'PATCH contract should not throw an error when a valid lead id is provided');
     }
 
+
     /********************
      *** SYSTEM TESTS ***
      ********************/
@@ -1326,10 +1327,9 @@ public with sharing class CSLeadsRESTControllerV2Test {
             WHERE Category__c = 'QC'
         ];
 
-        System.assertEquals(1, qcCase.size());
-        System.assertEquals('No FICO Match', qcCase[0].QC_Case_Subject__c);
+        System.assertEquals(1, qcCase.size(), 'QC Case is created for completed applications that still have a No Match PCR');
+        System.assertEquals('No FICO Match', qcCase[0].QC_Case_Subject__c, 'No FICO Match QC case should be created');
     }
-
 
 
     /*************
@@ -1357,7 +1357,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return (Lead) updateCalls.get(updateCalls.size() - 1).listOfArgs.get(0);
         }
     }
-
 
     @TestVisible
     private class MockLeadSelector implements StubProvider {

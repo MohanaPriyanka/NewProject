@@ -216,4 +216,30 @@ public without sharing class LeadSelector {
         return leads;
     }
 
+    public static Map<Id, Lead> getLeadMap(List<Id> leadIds) {
+        return new Map<Id, Lead>([
+            SELECT Id,
+                Company,
+                Electricity_Provider__c,
+                LASERCA__Home_Address__c,
+                LASERCA__Home_City__c,
+                LASERCA__Home_State__c,
+                LASERCA__Home_Zip__c,
+                LeadSource,
+                LoadZone__c,
+                OwnerId, Product__c,
+                Partner_Lookup__r.Name,
+                Partner_Account__c,
+                Partner_Account__r.Name,
+                Partner_Name__c,
+                Product_line__c,
+                Status,
+                Utility_relationship__c,
+                Utility_relationship__r.Id,
+                Utility_relationship__r.Name
+            FROM Lead
+            WHERE Id IN :leadIds
+            AND Product_line__c = 'Community Solar'
+        ]);
+    }
 }
