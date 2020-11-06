@@ -1291,6 +1291,46 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
     }
 
+    @IsTest
+    private static void testCreateQCCaseForNoMatch() {
+        Lead leadToUpdate = new Lead (
+            FirstName = 'Other',
+            LastName = 'Testcase',
+            Email = 'test@invalid.bluewavesolar.com',
+            Company = 'System Testcase',
+            LeadSource = 'Switch',
+            Partner_Email__c = 'partner@testcase.com'
+        );
+        insert leadToUpdate;
+
+        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
+            LASERCA__Lead__c = leadToUpdate.Id,
+            LASERCA__Credit_Score__c = '9999',
+            LASERCA__Credit_Score_TransUnion__c = '9999'
+        );
+        insert pcr;
+
+        leadToUpdate.Personal_Credit_Report__c = pcr.Id;
+        update leadToUpdate;
+        leadToUpdate = new LeadSelector().selectOne(leadToUpdate.Id);
+
+        CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
+
+        Test.startTest();
+        controller.createQCCaseForNoMatchPCR(leadToUpdate);
+        Test.stopTest();
+
+        List<Case> qcCase = [
+            SELECT Id, QC_Case_Subject__c, Category__c
+            FROM Case
+            WHERE Category__c = 'QC'
+        ];
+
+        System.assertEquals(1, qcCase.size());
+        System.assertEquals('No FICO Match', qcCase[0].QC_Case_Subject__c);
+    }
+
+
 
     /*************
      *** MOCKS ***

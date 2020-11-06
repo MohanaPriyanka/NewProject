@@ -69,10 +69,12 @@ public without sharing class CSQualificationService {
                 pcr.LASERCA__Credit_Score__c = '9999';
                 creditScore = 9999;
                 updatePCRs.add(pcr);
-                CaseFactory noMatchFactory  = new CaseFactory();
-                noMatchFactory.setLead(lead);
-                noMatchFactory.setQueueType('No FICO Match');
-                System.enqueueJob(noMatchFactory);
+                if (lead.LeadSource == 'CSAP') { 
+                    CaseFactory noMatchFactory  = new CaseFactory();
+                    noMatchFactory.setLead(lead);
+                    noMatchFactory.setQueueType('No FICO Match');
+                    System.enqueueJob(noMatchFactory);
+                }
             }
 
             if(pcr.Approval_Status__c =='Declined'){

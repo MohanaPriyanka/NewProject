@@ -120,6 +120,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         if (applicationNowComplete) {
            // UtilityDataRequestService.create(new List<Id>{requestLead.id});
             createAndSendCSPartnerEmail(lead.Id);
+            createQCCaseForNoMatchPCR(lead);
         }
         // Set return envelope
         RestLead responseLead = new RestLead(lead);
@@ -766,12 +767,17 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     public static void createAndSendCSPartnerEmail(Id leadId) {
         Lead lead = new LeadSelector().selectOne(leadId);
         System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
-        if (systemDefault.Application_Complete_Email_Template__c == null) {
-            Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail',
-                'No email template found in System Default custom metadata.', Logger.WARN);
+        if (Test.isRunningTest() && lead == null) {
+            //For tests that are using mocks, the lead cannot be mocked in a future method - we therefore exit the method
             return;
         }
-
+        if (systemDefault.Application_Complete_Email_Template__c == null || lead.Partner_Email__c == null) {
+            Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail',
+                'Email was not sent to Partner for lead: ' + lead.Id + '; First confirm ' +
+                    'that there is an email template found in System Default custom metadata. ' +
+                    'Then confirm the lead is populated with a Partner Email.', Logger.WARN);
+            return;
+        }
         MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
         ee.emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
         ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
@@ -783,5 +789,15 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         ee.sobjectId = lead.Id;
 
         MessagingService.sendEmailTemplate(ee);
+    }
+
+    @TestVisible
+    private void createQCCaseForNoMatchPCR(Lead lead) {
+        if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {
+            CaseFactory noMatchFactory  = new CaseFactory();
+            noMatchFactory.setLead(lead);
+            noMatchFactory.setQueueType('No FICO Match');
+            System.enqueueJob(noMatchFactory);
+        }
     }
 }
