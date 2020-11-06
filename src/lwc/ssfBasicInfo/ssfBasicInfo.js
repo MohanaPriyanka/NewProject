@@ -18,7 +18,8 @@ import { getFinDocFileTypes,
          validateUtilityAccountLog,
          setRemainingFields,
          setComponentUnderwritingVals,
-         handleUnderwritingChange
+         handleUnderwritingChange,
+         verifyUtilityAccountEntry
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -109,20 +110,24 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.resumedApp = true;
             this.restLead = JSON.parse(this.leadJson);
             this.propertyAccount = this.restLead.propertyAccounts[0];
-            if(this.propertyAccount.utilityAccountLogs) {
-                for(let i=0; i < this.propertyAccount.utilityAccountLogs.length; i++) {
-                    this.propertyAccount.utilityAccountLogs[i].localid = i+1;
-                    this.propertyAccount.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
-                    this.propertyAccount.utilityAccountLogs[i].doNotDelete = true;
-                    this.propertyAccount.utilityAccountLogs[i].showUpload = (this.isFileUpload && (!this.propertyAccount.utilityAccountLogs[i].utilityBills || this.propertyAccount.utilityAccountLogs[i].utilityBills.length === 0));
-                    
-                    if(this.propertyAccount.utilityAccountLogs[i].rateClass) {
-                        this.selectedRateClasses.push(this.rateClassObj[this.propertyAccount.utilityAccountLogs[i].rateClass]);
+            if (this.propertyAccount.utilityAccountLogs) {
+                let account = this.propertyAccount;
+                for (let i=0; i < account.utilityAccountLogs.length; i++) {
+                    account.utilityAccountLogs[i].localid = i+1;
+                    account.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
+                    account.utilityAccountLogs[i].doNotDelete = true;
+                    account.utilityAccountLogs[i].showUpload = this.isFileUpload &&
+                       (!account.utilityAccountLogs[i].utilityBills || account.utilityAccountLogs[i].utilityBills.length === 0);
+                    account.utilityAccountLogs[i].utilityAccountNumberReentry = account.utilityAccountLogs[i].utilityAccountNumber;
+
+                    if (account.utilityAccountLogs[i].rateClass) {
+                        this.selectedRateClasses.push(this.rateClassObj[account.utilityAccountLogs[i].rateClass]);
                     }
                 }
             }
             this.sameBillingAddress = this.propertyAccount.billingStreet === this.propertyAccount.utilityAccountLogs[0].serviceStreet;
-        } 
+            this.sameHomeAddress = this.restLead.streetAddress === this.propertyAccount.utilityAccountLogs[0].serviceStreet;
+        }
         // if no lead exists, set default values for restLead and propertyAccount
         else {
             this.restLead = getNewRestLead(this);
@@ -202,8 +207,16 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
     }
 
+    preventDefaultEvent(event) {
+        event.preventDefault();
+    }
+
     utilityAccountOnChange(event) {
-        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][event.target.name] = event.target.value;        
+        let eventField = event.target.name;
+        this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][eventField] = event.target.value;
+        if (eventField === 'utilityAccountNumber' || eventField === 'utilityAccountNumberReentry') {
+            verifyUtilityAccountEntry(this, event, eventField);
+        }
     }
 
     rateClassOnChange(event) {
