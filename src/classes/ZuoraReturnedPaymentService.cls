@@ -3,15 +3,84 @@
  * Tested by: ZuoraReturnedPaymentServiceTest
  */
 
-public with sharing class ZuoraReturnedPaymentService {
+public with sharing class ZuoraReturnedPaymentService implements Queueable, Database.AllowsCallouts {
+    @TestVisible private static FeatureService featureService = new FeatureService();
+    @TestVisible private static ZuoraPaymentSelector paymentSelector = new ZuoraPaymentSelector();
+    private static ZuoraPaymentMethodSelector paymentMethodSelector = new ZuoraPaymentMethodSelector();
+    private Zuora__PaymentMethod__c payMethod;
+    @TestVisible private List<Id> paymentIdsToReturn;
+    @TestVisible private static ZuoraReturnedPaymentService chainedReturnedPaymentService;
+
+    /**
+     * @description Default constructor
+     */
+    public ZuoraReturnedPaymentService() {
+    }
+
+    /**
+     * @description Constructor used when returning multiple payments
+     * @param returnedPaymentIds List of Salesforce payment Ids to return
+     */
+    public ZuoraReturnedPaymentService(List<Id> returnedPaymentIds) {
+        this.paymentIdsToReturn = returnedPaymentIds;
+    }
+
+    /**
+     * @description To avoid callout limits when returning payments in bulk, returns the first payment in paymentsToReturn
+     * and then queues itself to return the rest
+     * @param context QueueableContext
+     */
+    public void execute(QueueableContext context) {
+        if (paymentIdsToReturn.isEmpty()) {
+            return;
+        }
+
+        try {
+            PaymentReturnResult result = performReturn(paymentIdsToReturn[0]);
+            if (!result.success) {
+                Logger.logLater('ZuoraReturnedPaymentService', 'execute', 'Coulpd not return paymentId ' + paymentIdsToReturn[0] + '\n', Logger.ERROR);
+            }
+        } catch (Exception e) {
+            Logger.logLater('ZuoraReturnedPaymentService', 'execute', e.getMessage() + '\n' + e.getStackTraceString() + '\n' + paymentIdsToReturn, Logger.ERROR);
+        } finally {
+            Logger.flushLogs();
+        }
+
+        paymentIdsToReturn.remove(0);
+        ZuoraReturnedPaymentService paymentServiceToQueue = new ZuoraReturnedPaymentService(paymentIdsToReturn);
+        if (!paymentIdsToReturn.isEmpty() && !Test.isRunningTest()) {
+            System.enqueueJob(paymentServiceToQueue);
+        } else {
+            chainedReturnedPaymentService = paymentServiceToQueue;
+        }
+
+    }
+
+    /**
+     * @description Reverses payments that are found to be returned by leaving the payment as applied, but creating a
+     * new debit memo with the current effective date. Will affect aging, since the original payment is left applied.
+     * @param salesforcePaymentId Salesforce Payment Id to return
+     * @return result of the return, suitable for displaying to user
+     */
+    public PaymentReturnResult performReturn(Id salesforcePaymentId) {
+        List<Zuora__Payment__c> paymentsToReturn = paymentSelector.selectById(new Set<Id>{salesforcePaymentId});
+        if (paymentsToReturn.size() != 1) {
+            ZuoraReturnedPaymentService.PaymentReturnResult paymentReturnResult =
+                new ZuoraReturnedPaymentService.PaymentReturnResult();
+            paymentReturnResult.message = 'Expected a single Zuora Payment record to reverse';
+            paymentReturnResult.success = false;
+            return paymentReturnResult;
+        }
+        Zuora__Payment__c paymentToReturn = paymentsToReturn[0];
+        ZuoraAPI.Payment zuoraPayment = checkIfPaymentIsAlreadyReturned(paymentToReturn.Zuora__EXT_ID__c);
+        PaymentReturnResult paymentReturnResult = executeMarkPaymentAsReturned(zuoraPayment, paymentToReturn);
+        insertCaseForReturns(paymentToReturn);
+        Logger.flushLogs();
+        return paymentReturnResult;
+    }
+
     @TestVisible
-    private static FeatureService featureService = new FeatureService();
-    public Zuora__PaymentMethod__c payMethod;
-
-    // Used to reverse payments that are found to be returned by leaving the payment as applied, but creating a new
-    // debit memo with the current effective date. Will affect aging, since the original payment is left applied.
-
-    public ZuoraAPI.Payment checkIfPaymentIsAlreadyReturned(String paymentId) {
+    private ZuoraAPI.Payment checkIfPaymentIsAlreadyReturned(String paymentId) {
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/payments/' + paymentId, null, false);
         ZuoraAPI.Payment payment = (ZuoraAPI.Payment) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.Payment.class);
         // Response status can be Approved, Declined, Error, RETURNED, Voided for history, or blank for payments just coming from Zuora
@@ -22,7 +91,13 @@ public with sharing class ZuoraReturnedPaymentService {
         return payment;
     }
 
-    public List<ZuoraAPI.DebitMemo> convertPaymentToDebitMemos(ZuoraAPI.Payment payment) {
+    /**
+     * @description Converts each payment part items of a single payment into debit memos that can then be created and posted in Zuora
+     * @param payment the payment for which debit memos should be created
+     * @return List of DebitMemos that can be created and posted in Zuora
+     */
+    @TestVisible
+    private List<ZuoraAPI.DebitMemo> convertPaymentToDebitMemos(ZuoraAPI.Payment payment) {
         HttpResponse response;
         ZuoraAPI.OrderBySubscriptionOwner subscription;
         if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
@@ -119,7 +194,7 @@ public with sharing class ZuoraReturnedPaymentService {
         debitMemo.Gateway_Zcustom = gatewayNameFromIdMap.get(payment.gatewayId);
         debitMemo.Lockbox_Zcustom = payment.Lockbox_zcustom;
 
-        List<Zuora__PaymentMethod__c> methods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(new List<String>{payment.PaymentMethodId});
+        List<Zuora__PaymentMethod__c> methods = paymentMethodSelector.getSFRecordFromZuoraId(new List<String>{payment.paymentMethodId});
         if (methods.size() > 0){
             payMethod = methods[0];
             debitMemo.PaymentMethod_Zcustom = payMethod.Zuora__Type__c;
@@ -127,7 +202,11 @@ public with sharing class ZuoraReturnedPaymentService {
         return debitMemo;
     }
 
-    public void markPaymentReturned(String paymentId) {
+    /**
+     * @description Updates the Zuora payment's Response Status to be "Returned"
+     * @param paymentId The Zuora Id of the Payment to mark returned
+     */
+    private void markPaymentReturned(String paymentId) {
         ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
         payment.ResponseStatus_Zcustom = 'Returned';
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/payments/' + paymentId, payment, false);
@@ -137,7 +216,13 @@ public with sharing class ZuoraReturnedPaymentService {
         }
     }
 
-    public Boolean removePaymentMethodFromAccount(Zuora__Payment__c returnedPayment) {
+    /**
+     * @description Updates the Zuora account to remove the payment method as default for the payment provided
+     * @param returnedPayment A payment (presumably with a payment method that does not work)
+     * @return True, if the payment method was removed from the account
+     */
+    @TestVisible
+    private Boolean removePaymentMethodFromAccount(Zuora__Payment__c returnedPayment) {
         String zuoraAcctId = returnedPayment.Zuora__BillingAccount__r.Zuora__Zuora_Id__c;
         Boolean paymentMethodUpdateNeeded = false;
         ZuoraAccountSelector selector = new ZuoraAccountSelector();
@@ -159,7 +244,14 @@ public with sharing class ZuoraReturnedPaymentService {
         return paymentMethodUpdateNeeded;
     }
 
-    public Case createCaseForReturns(Zuora__Payment__c zuoraPayment) {
+    /**
+     * @description Creates a case for Customer Care related to a returned payment
+     * @param zuoraPayment The payment related to the case
+     * @return A case ready to be inserted
+     */
+    public Case insertCaseForReturns(Zuora__Payment__c zuoraPayment) {
+        List<Zuora__PaymentMethod__c> paymentMethods =
+            paymentMethodSelector.getSFRecordFromZuoraId(new List<String>{zuoraPayment.Zuora__PaymentMethodId__c});
         CaseFactory caseFactory = new CaseFactory();
         Case newCase = caseFactory.getCase('Customer_Care');
         newCase.Subject = 'Customer Transaction Marked as Returned';
@@ -171,16 +263,18 @@ public with sharing class ZuoraReturnedPaymentService {
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
         newCase.AccountId = zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__c;
-        if (payMethod != null){
-            newCase.Zuora_Payment_Method__c = payMethod.Id;
+        if (paymentMethods.size() == 1) {
+            newCase.Zuora_Payment_Method__c = paymentMethods[0].Id;
         } else {
-            Logger.logLater('ZuoraReturnedPaymentService','getPaymentMethod',String.valueOf(zuoraPayment));
+            Logger.logLater('ZuoraReturnedPaymentService','getPaymentMethod','When creating a returned payment case, expected one payment method for this payment but got ' +
+                paymentMethods.size() + '\n' + JSON.serializePretty(zuoraPayment));
         }
 
+        insert newCase;
         return newCase;
     }
 
-    public Map<String, String> gatewayNameFromGatewayIdMap(){
+    private Map<String, String> gatewayNameFromGatewayIdMap(){
         Map<String, String> gatewayIdNameMap = new Map<String, String>();
         GatewaySelector gatewaySelector = new GatewaySelector();
         List<Zuora__PaymentGateway__c> zuoraGateways = gatewaySelector.getAllZuoraGateways();
@@ -192,5 +286,41 @@ public with sharing class ZuoraReturnedPaymentService {
             );
         }
         return gatewayIdNameMap;
+    }
+
+    private PaymentReturnResult executeMarkPaymentAsReturned(ZuoraAPI.Payment zuoraPayment, Zuora__Payment__c sfPayment) {
+        PaymentReturnResult paymentReturnResult = new PaymentReturnResult();
+        try {
+            List<ZuoraAPI.DebitMemo> debitMemos = convertPaymentToDebitMemos(zuoraPayment);
+            if (ZuoraAPIHelper.getCalloutsRemaining() < 2*debitMemos.size() + 1) {
+                throw new Util.FatalBWException('Not enough callouts remaining to create and post debit memos and mark ' +
+                    'the payment as returned: ' + JSON.serialize(debitMemos));
+            }
+            ZuoraCreditDebitMemoService.createAndPostDebitMemos(debitMemos);
+            markPaymentReturned(sfPayment.Zuora__EXT_ID__c);
+            paymentReturnResult.debitMemos = debitMemos;
+            paymentReturnResult.success = true;
+            removePaymentMethodFromAccount(sfPayment);
+        } catch (Exception e) {
+            String message = 'Failed reversing payment ' + sfPayment.Id + ':\n' + e.getMessage() + '\n' + e.getStackTraceString();
+            Logger.logLater(
+                'ZuoraController',
+                'reverseReturnedPayment',
+                message,
+                Logger.ERROR
+            );
+            paymentReturnResult.message = message;
+            paymentReturnResult.success = false;
+        }
+        return paymentReturnResult;
+    }
+
+    public class PaymentReturnResult {
+        @AuraEnabled
+        public List<ZuoraAPI.DebitMemo> debitMemos;
+        @AuraEnabled
+        public Boolean success;
+        @AuraEnabled
+        public String message;
     }
 }
