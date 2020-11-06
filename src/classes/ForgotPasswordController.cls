@@ -57,7 +57,8 @@ public without sharing class ForgotPasswordController {
             passwordCase.Subject = subject;
             passwordCase.Description = description;
             passwordCase.Product_Line__c = 'Community Solar';
-            passwordCase.Category__c = 'Portal Support';
+            passwordCase.Category__c = 'Portal Issue';
+            passwordCase.Sale_Status__c = 'Post-sale';
             passwordCase.Origin = 'Web';
             insert passwordCase;
         } catch (Exception e) {
