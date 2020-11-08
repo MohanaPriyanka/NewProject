@@ -606,31 +606,31 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request__c updatedTestUDR4 = getTestUDR('testUDR4');
         Utility_Data_Request__c updatedTestUDR5 = getTestUDR('testUDR5');
         
-        System.assertEquals(42279, testUAL1.Annual_kWh__c, 'UAL1 is related to UDR1,' 
-                            + ' which has 5 UDRPs so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by 4 and multiplied by 12.'
-                            + 'In this case the answer should be 42279.');
+        System.assertEquals(33823.2, testUAL1.Annual_kWh__c, 'UAL1 is related to UDR1,' 
+                            + ' which has 5 UDRPs so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
+                            + 'In this case the answer should be 33823.2.');
         System.assertEquals(1234, testUAL3.Annual_kWh__c, 'UAL3 is related to UDR3,' 
                             + ' which has 1 UDRP, it is a non-Residential customer, and the Product.X4_month_sizing_method__c == State Average Annual Usage, ' 
                             + 'so the Annual kWh should be the related State Avg Annual Resi kWh.'
                             + 'In this case the answer should be 1234 since the test State Avg Annual Resi kWh is 1234.');
-        System.assertEquals(45429, testUAL4.Annual_kWh__c, 'UAL4 is related to UDR4,' 
+        System.assertEquals(60572, testUAL4.Annual_kWh__c, 'UAL4 is related to UDR4,' 
                             + ' which has 3 UDRPs and is a Residential customer, ' 
-                            + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by 4 and multiplied by 12.'
-                            + 'In this case the answer should be 45429.');
+                            + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
+                            + 'In this case the answer should be 60572.');
         System.assertEquals(487579, testUAL5.Annual_kWh__c, 'UAL5 is related to UDR5,' 
                             + ' which has 14 UDRPs and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the 12 most recent UDRP.Quantity__c values.'
                             + 'In this case the answer should be 487579.');
         
-        System.assertEquals(42279, updatedTestUDR1.Annual_kWh__c, 'UDR1 has 5 UDRPs so the Annual kWh should be ' 
-                            + 'the sum of the UDRP.Quantity__c values multiplied by 4 and divided by 12.'
-                            + 'In this case the answer should be 42279.');
+        System.assertEquals(33823.2, updatedTestUDR1.Annual_kWh__c, 'UDR1 has 5 UDRPs so the Annual kWh should be ' 
+                            + 'the sum of the UDRP.Quantity__c values multiplied by the number of months and divided by 12.'
+                            + 'In this case the answer should be 33823.2.');
         System.assertEquals(1234, updatedTestUDR3.Annual_kWh__c, 'UDR3 has 1 UDRPs, it is a non-Residential customer, and the Product.X4_month_sizing_method__c == State Average Annual Usage' 
                             + 'so the Annual kWh should be the related State Avg Annual Resi kWh.'
                             + 'In this case the answer should be 1234 since the test State Avg Annual Resi kWh is 1234.');
-        System.assertEquals(45429, updatedTestUDR4.Annual_kWh__c, 'UDR4 has 3 UDRPs and is a Residential customer, ' 
-                            + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by 4 and multiplied by 12.'
-                            + 'In this case the answer should be 45429.');
+        System.assertEquals(60572, updatedTestUDR4.Annual_kWh__c, 'UDR4 has 3 UDRPs and is a Residential customer, ' 
+                            + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
+                            + 'In this case the answer should be 60572.');
         System.assertEquals(487579, updatedTestUDR5.Annual_kWh__c, 'UDR5 has 14 UDRPs and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the 12 most recent UDRP.Quantity__c values.'
                             + 'In this case the answer should be 487579.');
