@@ -45,7 +45,7 @@ public without sharing class CSQualificationService {
             return;
         }
 
-            Map<Id, Lead> leadMap = getLeadMap(leadIds);
+            Map<Id, Lead> leadMap = LeadSelector.getLeadMap(leadIds);
 
         if (leadMap.isEmpty()){
             return;
@@ -69,10 +69,12 @@ public without sharing class CSQualificationService {
                 pcr.LASERCA__Credit_Score__c = '9999';
                 creditScore = 9999;
                 updatePCRs.add(pcr);
-                CaseFactory noMatchFactory  = new CaseFactory();
-                noMatchFactory.setLead(lead);
-                noMatchFactory.setQueueType('No FICO Match');
-                System.enqueueJob(noMatchFactory);
+                if (lead.LeadSource == 'CSAP') {
+                    CaseFactory noMatchFactory  = new CaseFactory();
+                    noMatchFactory.setLead(lead);
+                    noMatchFactory.setQueueType('No FICO Match');
+                    System.enqueueJob(noMatchFactory);
+                }
             }
 
             if(pcr.Approval_Status__c =='Declined'){
@@ -133,18 +135,6 @@ public without sharing class CSQualificationService {
 
         return 'Unqualified';
     }
-
-    private static Map<Id, Lead> getLeadMap(List<Id> leadIds) {
-        return new Map<Id, Lead>(
-        [
-            SELECT Id, Utility_relationship__r.Id, Utility_relationship__r.Name, Utility_relationship__c, LoadZone__c, Partner_Name__c, Status,
-                Company, Product_line__c, Electricity_Provider__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
-                LASERCA__Home_State__c, LASERCA__Home_Zip__c, OwnerId, Product__c, Partner_Lookup__r.Name
-            FROM Lead
-            WHERE Id IN :leadIds
-            AND Product_line__c = 'Community Solar'
-        ]);
-        }
 
     private static List<Shared_Solar_System__c> getSharedSolarSystems() {
         return [
