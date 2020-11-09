@@ -115,8 +115,8 @@ const validateServiceZipCode = (cmp, event) => {
     }
 
     if (fieldsToDisplayError.length !== 0) {
-        let error = `Invalid Zip Code or Zip Code not in the same Utility area as the previously-entered Zip Code ${zipCodeInput}. 
-            Please enter a Zip Code in the same Utility area as ${zipCodeInput} or restart your application.`;
+        let error = `Invalid ZIP Code or ZIP Code not in the same Utility area as the previously-entered ZIP Code ${zipCodeInput}. 
+            Please enter a ZIP Code in the same Utility area as ${zipCodeInput} or restart your application.`;
         fieldsToDisplayError.forEach(fieldElement => {
             fieldElement.setCustomValidity(error);
             fieldElement.reportValidity();
