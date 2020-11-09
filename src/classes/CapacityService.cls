@@ -31,9 +31,6 @@ public without sharing class CapacityService {
         zipcodeResponse.rateClasses = new Set<Rate_Class__c>(rateClassSelector.selectByUtilities(zipcodeResponse.utilityIds));
         setProductsAndSharedSolarSystems(zipcodeResponse, getPartnerName(partnerId));
         setZipCodesServedInUtilityTerritory(zipcodeResponse);
-
-        Logger.logNow('capacityservice','findcapacitybyzipcode',JSON.serialize(zipcodeResponse));
-
         return zipcodeResponse;
     }
 
