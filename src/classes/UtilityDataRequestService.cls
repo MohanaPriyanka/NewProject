@@ -229,7 +229,7 @@ public without sharing class UtilityDataRequestService {
                 kWh = kWh + udrpList[i].Quantity__c;
                 udrpList[i].Used_In_Annual_kWh_Calculation__c = true;
             }
-            kWh = (kWh/4)*12;
+            kWh = (kWh/numUDRP)*12;
         } else if (numUDRP < 4 && numUDRP > 0) { 
             String customerType = udr.Utility_Account_Log__r.Lead__r.Customer_type__c;
             if (customerType == 'Residential' && customerType!= null) {
@@ -237,7 +237,7 @@ public without sharing class UtilityDataRequestService {
                 	kWh = kWh + udrpList[i].Quantity__c;
                     udrpList[i].Used_In_Annual_kWh_Calculation__c = true;
             	}
-            	kWh = (kWh/4)*12;
+            	kWh = (kWh/numUDRP)*12;
             } else if (customerType != 'Residential' && customerType != null){
                 String sizingMethod = udr.Utility_Account_Log__r.Lead__r.Product__r.X4_month_sizing_method__c;
                 if (sizingMethod == 'State Average Annual Usage') {
