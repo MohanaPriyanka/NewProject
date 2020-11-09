@@ -350,9 +350,8 @@ public with sharing class CapacityServiceTest {
         System.assertEquals('ACE Solar', sharedSolarSystems[0].Sales_Partners__c,
             'Expected the system for 12345 to only be available for ACE Solar');
         System.assertEquals(true, response.hasCapacity(), 'Expected to find capacity if not looking by partner (for CSAP)');
-        List<Error_Log__c> errorLogs = [SELECT Message__c,Method__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
-        system.debug(errorLogs);
 
+        List<Error_Log__c> errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
         System.assertEquals(0, errorLogs.size(), 'Expected to start with no error logs');
         response = service.findCapacityByZipcode('12345', Util.getFakeId(Partner__c.SObjectType));
         System.assertEquals(0, response.sharedSolarSystems.size());
