@@ -4,12 +4,8 @@
     <objectMapping>
         <inputObject>Lead</inputObject>
         <mappingFields>
-            <inputField>Annual_Electricity_Cost__c</inputField>
-            <outputField>Annual_Electricity_Cost__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>LASERCA__Birthdate__c</inputField>
-            <outputField>Date_of_Birth__c</outputField>
+            <inputField>Community_Solar_apt_suite__c</inputField>
+            <outputField>Apt_Suite__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>Comunity_solar_city__c</inputField>
@@ -32,8 +28,24 @@
             <outputField>Electricity_Provider__c</outputField>
         </mappingFields>
         <mappingFields>
+            <inputField>LASERCA__Birthdate__c</inputField>
+            <outputField>Date_of_Birth__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Business_Phone__c</inputField>
+            <outputField>Business_Phone__c</outputField>
+        </mappingFields>
+        <mappingFields>
             <inputField>LASERCA__Credit_Bureau__c</inputField>
             <outputField>Credit_Bureau__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Annual_Electricity_Cost__c</inputField>
+            <outputField>Annual_Electricity_Cost__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Moody_s_Risk_Calc__c</inputField>
+            <outputField>Moody_s_Risk_Calc__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>Parent_Account__c</inputField>
@@ -42,10 +54,6 @@
         <mappingFields>
             <inputField>Product_Line_Account_Map__c</inputField>
             <outputField>Product_Line__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Community_Solar_apt_suite__c</inputField>
-            <outputField>Apt_Suite__c</outputField>
         </mappingFields>
         <outputObject>Account</outputObject>
     </objectMapping>

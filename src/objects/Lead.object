@@ -3924,6 +3924,20 @@ Monthly_Payment__c)</formula>
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Moody_s_Risk_Calc__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Score returned from Moody&apos;s Rrisk Calc engine</inlineHelpText>
+        <label>Moody&apos;s Risk Calc</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Moody_s_Ratings</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Moodys_RiskCalc__c</fullName>
         <description>Used for tracking Moody&apos;s RiskCalc score</description>
         <externalId>false</externalId>
