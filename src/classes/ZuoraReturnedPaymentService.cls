@@ -249,7 +249,7 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
      * @param zuoraPayment The payment related to the case
      * @return A case ready to be inserted
      */
-    public Case insertCaseForReturns(Zuora__Payment__c zuoraPayment) {
+    private Case insertCaseForReturns(Zuora__Payment__c zuoraPayment) {
         List<Zuora__PaymentMethod__c> paymentMethods =
             paymentMethodSelector.getSFRecordFromZuoraId(new List<String>{zuoraPayment.Zuora__PaymentMethodId__c});
         CaseFactory caseFactory = new CaseFactory();
