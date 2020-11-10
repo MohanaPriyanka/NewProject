@@ -56,6 +56,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         'Contracts Signed' => 'pay',
         'Application Completed' => 'complete'
     };
+
     public virtual void getLead(String leadId, String email) {
         RestResponse response = RestContext.response;
         if(leadId == null || email == null) {
@@ -76,6 +77,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     /**
      * Called by (Aura) SSFApplication/SSFApplicationDTC on SSF application completion
      * <br><br>
@@ -130,6 +132,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         response.statusCode = statusCode.ok;
         envelope.setJSONResponse(response);
     }
+
     public virtual void patchPropertyAccount(String jsonRequest) {
         RestLead.RestPropertyAccount requestAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
         RestResponse response = RestContext.response;
@@ -151,6 +154,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     public virtual void patchUtilityAccountLog(String jsonRequest) {
         RestLead.RestUtilityAccountLog requestUAL = (RestLead.RestUtilityAccountLog) JSON.deserialize(jsonRequest, RestLead.RestUtilityAccountLog.class);
         RestResponse response = RestContext.response;
@@ -170,6 +174,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     public virtual void patchApplication(String jsonRequest) {
         RestResponse response = RestContext.response;
         Map<String, Object> requestLeadMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
@@ -213,6 +218,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     public virtual void patchContract(String jsonRequest) {
         Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
         RestResponse response = RestContext.response;
@@ -238,6 +244,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     public virtual void postLead(String jsonRequest) {
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         RestResponse response = RestContext.response;
@@ -262,6 +269,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     public virtual void postPropertyAccount(String jsonRequest) {
         RestLead.RestPropertyAccount requestPropertyAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
         RestResponse response = RestContext.response;
@@ -304,6 +312,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         response.statusCode = statusCode.created;
         envelope.setJSONResponse(response);
     }
+
     public virtual void postUtilityAccountLog(String jsonRequest) {
         RestLead.RestUtilityAccountLog restUtilityAccountLog = (RestLead.RestUtilityAccountLog) JSON.deserialize(jsonRequest, RestLead.RestUtilityAccountLog.class);
         RestResponse response = RestContext.response;
@@ -332,12 +341,14 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         response.statusCode = statusCode.created;
         envelope.setJSONResponse(response);
     }
+
     public virtual void performZipCheck(String zipCode, String partnerId, String utilityId) {
         RestResponse response = RestContext.response;
         RestZipCode zipCodeResponse = new RestZipCode(capacityService.findCapacityByZipcode(zipCode, partnerId, utilityId));
         envelope.setData(zipCodeResponse);
         envelope.setJSONResponse(response);
     }
+
     private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
         Lead newLead = requestLead.asLead();
         newLead = leadService.insertLead(newLead);
@@ -375,6 +386,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         envelope.setData(responseLead);
         response.statusCode = statusCode.created;
     }
+
     private void updateLeadAccountAndUALs(String jsonRequest, Lead existingLead) {
         Map<String, Object> requestLeadMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
@@ -386,6 +398,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             updateAccount(existingLead, requestPropertyAccounts, requestAccountList);
         }
     }
+
     /**
      * @param reqUALs Utility Account Log's (UAL) to insert
      * @param propertyAccount Parent Property Account to which the UALs belong
@@ -399,6 +412,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             }
         }
     }
+
     private List<RestLead.RestUtilityAccountLog> insertUALs(Account newPropertyAccount, List<RestLead.RestUtilityAccountLog> restUtilityAccountLogs) {
         List<Utility_Account_Log__c> ualsToInsert = new List<Utility_Account_Log__c>();
         for (RestLead.RestUtilityAccountLog requestUtilityAccountLog : restUtilityAccountLogs) {
@@ -411,6 +425,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return ualsToReturn;
     }
+
     private Boolean applicationValid(String jsonRequest, RestResponse response, Lead existingLead) {
         RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
         Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
@@ -439,6 +454,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return true;
     }
+
     private void updateAccount(Lead lead, List<RestLead.RestPropertyAccount> requestPropertyAccounts, List<Object> requestAccountList) {
         Map<Id, Utility_Account_Log__c> existingUtilityAccountLogMap = ualSelector.selectAllByLeadMap(new Set<Id>{lead.Id});
         Map<Id, Account> existingAccountMap = accountsSelector.selectPropertyAccountsByLeadIdsMap(new Set<Id>{lead.Id});
@@ -461,6 +477,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             }
         }
     }
+
     private void updateUtilityAccountLogs(Account propertyAccount, List<RestLead.RestUtilityAccountLog> requestUtilityAccountLogs, List<Object> requestUALList, Map<Id, Utility_Account_Log__c> existingUtilityAccountLogMap) {
         for(Integer ualIndex = 0; ualIndex < requestUtilityAccountLogs.size(); ualIndex++) {
             Map<String, Object> ualMap = (Map<String, Object>) requestUALList[ualIndex];
@@ -482,6 +499,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             }
         }
     }
+
     @TestVisible
     private Boolean contractFieldsUpdated(String jsonRequest, Lead existingLead) {
         RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
@@ -509,6 +527,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return checkUALsForChanges(requestMap, existingLead);
     }
+
     private Boolean checkUALsForChanges(Map<String, Object> requestMap, Lead existingLead) {
         List<Object> accountList = (List<Object>)requestMap.get('propertyAccounts');
         Map<String, Object> accountMap = (Map<String, Object>)accountList.get(0);
@@ -539,11 +558,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return false;
     }
+
     @TestVisible
     private RestLead formatRestLeadFromLeadAndChildren(Id leadId, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
         Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
         return formatRestLeadFromLeadAndChildren(leadToReturn, docsNewlyGenerated, numberOfContractDocs);
     }
+
     private RestLead formatRestLeadFromLeadAndChildren(
         Lead leadToReturn, Boolean docsNewlyGenerated, Integer numberOfContractDocs)
     {
@@ -612,6 +633,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         responseLead.propertyAccounts = returnPropertyAccounts;
         return responseLead;
     }
+
     private void registerNewContentDocs(List<RestLead.RestContentDocument> requestContentDocuments, SObject linkedEntity) {
         for(RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
             if(requestContentDocument.id == null) {
@@ -632,6 +654,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             }
         }
     }
+
     private List<RestLead.RestContentDocument> compileLeadContentDocs(Id leadId, List<Object> contractCDLs, Integer numberOfContractDocs) {
         List<RestLead.RestContentDocument> restContentDocs = new List<RestLead.RestContentDocument>();
         Integer docCount = Math.min(numberOfContractDocs, contractCDLs.size());
@@ -642,6 +665,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return restContentDocs;
     }
+
     /**
      * Updates Lead Application Status based on Lead criteria and specific logic.
      * <br>
@@ -659,6 +683,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             Util.updateAndLog(new List<SObject>{lead}, 'CSLeadsRESTControllerV2', 'updateLeadApplicationStatus');
         }
     }
+
     /**
      * Sets links on Lead to access application in SSF at a later state
      * @param lead Lead to set links for
@@ -691,9 +716,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 '?leadid=' + lead.Id +
                 '&email=' + lead.Email +
                 '&partnerId=' + lead.Partner_Lookup__c +
-                '&loc=' + location;
+                '&loc=agree';
         }
     }
+
     public String getApplicationStatus(Lead lead) {
         if (lead.Application_Complete_Date__c != null) {
             return 'Application Completed';
@@ -713,6 +739,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return 'Started';
     }
+
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private String getUALStatus(List<Utility_Account_Log__c> ualList) {
         List<Id> ualIds = new List<Id>();
@@ -743,6 +770,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return 'Started';
     }
+
     /**
      * @description Future method to send an email to the related Partner when the customer has completed their SSF
      * Application
