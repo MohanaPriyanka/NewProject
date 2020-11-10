@@ -46,7 +46,6 @@ public with sharing class CSLeadsRESTControllerV3Test {
         controller.patchLead(jsonRequest);
 
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-        System.assertEquals(true, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should be done when the application is complete');
     }
 
     @IsTest

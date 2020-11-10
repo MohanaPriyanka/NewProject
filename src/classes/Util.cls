@@ -81,6 +81,11 @@ public without sharing class Util {
 
     private enum DatabaseOperation {DBINSERT, DBUPDATE}
     public static Boolean updateAndLog(List<SObject> sobjs, String classname, String method) {
+        if (mockDML) {
+            objectsUpdatedIfMockingDML = sobjs;
+            return true;
+        }
+        
         return databaseOperationAndLog(DatabaseOperation.DBUPDATE, sobjs, classname, method);
     }
     public static Boolean insertAndLog(List<SObject> sobjs, String classname, String method) {
