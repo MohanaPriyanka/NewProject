@@ -783,9 +783,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
         ee.addressList = new List<String>{lead.Partner_Email__c};
         ee.subjectLine = 'Application Completed for ' + lead.Name;
-        MessagingService.ReplacementText partnerName = new MessagingService.ReplacementText('{!Lead.Partner_Account__r}', lead.Partner_Account__r.Name);
-        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.Name}', lead.Name);
-        ee.replacementTexts = new List<MessagingService.ReplacementText>{partnerName, leadName};
+        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
         ee.sobjectId = lead.Id;
 
         try {
