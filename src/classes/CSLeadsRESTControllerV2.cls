@@ -102,10 +102,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Handle Application Complete state
         if (requestLead.applicationCompleteDate != null && leadToUpdate.Application_Complete_Date__c == null) {
             applicationNowComplete = true;
-            if (requestLead.underwritingCriteria == 'FICO') {
-                // pull credit, only once; on first time the app complete date is set
-                leadToUpdate.Soft_Pull_Credit_Report__c = true;
-            } else if (requestLead.underwritingCriteria == 'Financial Review') {
+            if (requestLead.underwritingCriteria == 'Financial Review') {
                 leadToUpdate.Status = qualificationService.underwriteWithFinancialReview(leadToUpdate);
             }
             // Send Zuora callout
@@ -121,8 +118,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Placed last because we want to ensure Lead properly updates before queueing other object changes
         if (applicationNowComplete) {
 
+
             UtilityDataRequestService.create(new List<Id>{requestLead.id});
  			createAndSendCSPartnerEmail(lead.Id);
+            createQCCaseForNoMatchPCR(lead);
         }
         // Set return envelope
         RestLead responseLead = new RestLead(lead);
@@ -655,8 +654,20 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         String status = getApplicationStatus(lead);
         if (lead.Application_Status__c != status) {
             lead.Application_Status__c = status;
+            pullCreditForSignedLead(lead, status);
             setContinueApplicationLinks(lead, status);
             Util.updateAndLog(new List<SObject>{lead}, 'CSLeadsRESTControllerV2', 'updateLeadApplicationStatus');
+        }
+    }
+    /**
+     * Separate method to potentially be used by SSF directly when resolving "No Match" credit reports
+     *
+     * @param lead Lead to be updated
+     * @param status String to check if Contracts have been signed by customer (ie Contracts Signed);
+     */
+    private void pullCreditForSignedLead(Lead lead, String status) {
+        if (status == 'Contracts Signed' && lead.Underwriting_Criteria__c == 'FICO') {
+            lead.Soft_Pull_Credit_Report__c = true;
         }
     }
     /**
@@ -743,6 +754,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return 'Started';
     }
+
+
     /**
      * @description Future method to send an email to the related Partner when the customer has completed their SSF
      * Application
@@ -752,9 +765,16 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     public static void createAndSendCSPartnerEmail(Id leadId) {
         Lead lead = new LeadSelector().selectOne(leadId);
         System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
-        if (systemDefault.Application_Complete_Email_Template__c == null) {
+        if (Test.isRunningTest() && lead == null) {
+            //For tests that are using mocks, the lead cannot be mocked in a future method - we therefore exit the method
+            return;
+        }
+        if (systemDefault.Application_Complete_Email_Template__c == null || lead.Partner_Email__c == null) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail',
-                'No email template found in System Default custom metadata.', Logger.WARN);
+                'Email was not sent to Partner for lead: ' + lead.Id + '; First confirm ' +
+                    'that there is an email template found in System Default custom metadata. ' +
+                    'Then confirm the lead is populated with a Partner Email.', Logger.WARN);
+
             return;
         }
         MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
@@ -762,15 +782,30 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
         ee.addressList = new List<String>{lead.Partner_Email__c};
         ee.subjectLine = 'Application Completed for ' + lead.Name;
-        MessagingService.ReplacementText partnerName = new MessagingService.ReplacementText('{!Lead.Partner_Account__r}', lead.Partner_Account__r.Name);
-        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.Name}', lead.Name);
-        ee.replacementTexts = new List<MessagingService.ReplacementText>{partnerName, leadName};
+
+        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
         ee.sobjectId = lead.Id;
         try {
             MessagingService.sendEmailTemplate(ee);
         } catch (Exception e) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
                 '; ' + e.getStackTraceString());
+
+        }
+    }
+     /**
+     * When application is completed, if PCR is still a "No Match," we create a QC Case
+     * @param lead lead that has completed the SSF Application
+     */
+    @TestVisible
+    private void createQCCaseForNoMatchPCR(Lead lead) {
+        if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {
+            CaseFactory noMatchFactory  = new CaseFactory();
+            noMatchFactory.setLead(lead);
+            noMatchFactory.setQueueType('No FICO Match');
+            System.enqueueJob(noMatchFactory);
+
         }
     }
 }

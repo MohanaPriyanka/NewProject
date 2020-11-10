@@ -122,7 +122,8 @@ public without sharing class CaseFactory implements Queueable {
             newCcCase.Disable_Followup_Email__c = true;
             newCcCase.QC_Case_Subject__c = 'No FICO Match';
             newCcCase.Product_Line__c = 'Community Solar';
-            newCcCase.AccountId = lead.Parent_Account__c;
+            newCcCase.AccountId = lead.Partner_Account__c;
+            newCcCase.ContactId = lead.Sales_Person__c;
             newCcCase.Category__c = 'QC';
             newCcCase.Case_Type__c = '3rd Party';
             newCcCase.Sale_Status__c = 'Pre-Sale';
@@ -143,7 +144,8 @@ public without sharing class CaseFactory implements Queueable {
             newCcCase.Lead_Lookup__c = lead.Id;
             newCcCase.QC_Case_Subject__c = 'Low FICO Match';
             newCcCase.Product_Line__c = 'Community Solar';
-            newCcCase.AccountId = lead.Parent_Account__c;
+            newCcCase.AccountId = lead.Partner_Account__c;
+            newCcCase.ContactId = lead.Sales_Person__c;
             newCcCase.Category__c = 'QC';
             newCcCase.Sale_Status__c = 'Pre-Sale';
             newCcCase.Case_Type__c = '3rd Party';
