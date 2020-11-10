@@ -56,30 +56,6 @@
         <senderType>OrgWideEmailAddress</senderType>
         <template>BFG_Internal_Alerts/Partner_App_Submitted_Alert_Internal</template>
     </alerts>
-    <alerts>
-        <fullName>X3_Days_Past_Due</fullName>
-        <description>3 Days Past Due</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Send_Bills_Contact__c</field>
-            <type>contactLookup</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Billing_Emails/Bill_Late_3_Days</template>
-    </alerts>
-    <alerts>
-        <fullName>x3dayspastdue</fullName>
-        <description>3 Days Past Due</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Send_Bills_Contact__c</field>
-            <type>contactLookup</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Billing_Emails/Bill_Late_3_Days</template>
-    </alerts>
     <fieldUpdates>
         <fullName>Account_Partner_Name_Update_Sharing</fullName>
         <field>Partner_Name_Text__c</field>
