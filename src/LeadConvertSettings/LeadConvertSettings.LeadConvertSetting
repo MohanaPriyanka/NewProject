@@ -4,30 +4,6 @@
     <objectMapping>
         <inputObject>Lead</inputObject>
         <mappingFields>
-            <inputField>Annual_Electricity_Cost__c</inputField>
-            <outputField>Annual_Electricity_Cost__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>LASERCA__Birthdate__c</inputField>
-            <outputField>Date_of_Birth__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Business_Phone__c</inputField>
-            <outputField>Business_Phone__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>LASERCA__Credit_Bureau__c</inputField>
-            <outputField>Credit_Bureau__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Parent_Account__c</inputField>
-            <outputField>Parent_Account__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Product_Line_Account_Map__c</inputField>
-            <outputField>Product_Line__c</outputField>
-        </mappingFields>
-        <mappingFields>
             <inputField>Community_Solar_apt_suite__c</inputField>
             <outputField>Apt_Suite__c</outputField>
         </mappingFields>
@@ -50,6 +26,34 @@
         <mappingFields>
             <inputField>Electricity_Provider__c</inputField>
             <outputField>Electricity_Provider__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>LASERCA__Birthdate__c</inputField>
+            <outputField>Date_of_Birth__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Business_Phone__c</inputField>
+            <outputField>Business_Phone__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>LASERCA__Credit_Bureau__c</inputField>
+            <outputField>Credit_Bureau__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Annual_Electricity_Cost__c</inputField>
+            <outputField>Annual_Electricity_Cost__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Moody_s_Risk_Calc__c</inputField>
+            <outputField>Moody_s_Risk_Calc__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Parent_Account__c</inputField>
+            <outputField>Parent_Account__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Product_Line_Account_Map__c</inputField>
+            <outputField>Product_Line__c</outputField>
         </mappingFields>
         <outputObject>Account</outputObject>
     </objectMapping>
@@ -268,6 +272,10 @@
             <outputField>Loan_Program_Class__c</outputField>
         </mappingFields>
         <mappingFields>
+            <inputField>Loan_Rate__c</inputField>
+            <outputField>IRBD_Rate__c</outputField>
+        </mappingFields>
+        <mappingFields>
             <inputField>Loan_Term_Override__c</inputField>
             <outputField>Loan_Term_Override__c</outputField>
         </mappingFields>
@@ -394,10 +402,6 @@
         <mappingFields>
             <inputField>SREC_Product__c</inputField>
             <outputField>SREC_Product__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Loan_Rate__c</inputField>
-            <outputField>IRBD_Rate__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>State_of_Issuance__c</inputField>
