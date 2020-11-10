@@ -19,7 +19,9 @@ import { getFinDocFileTypes,
          setRemainingFields,
          setComponentUnderwritingVals,
          handleUnderwritingChange,
-         verifyUtilityAccountEntry
+         verifyUtilityAccountEntry,
+         validateServiceZipCode,
+         applicationValid
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -64,6 +66,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         
         if (this.zipCheckResponse) {
             this.zipCheckResponse = JSON.parse(this.zipCheckResponse);
+
             this.collectRateClass = this.zipCheckResponse.collectRateClass;
             if (this.zipCheckResponse.zipCode) {
                 this.zipinput = this.zipCheckResponse.zipCode;
@@ -219,6 +222,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
     }
 
+    handleZipEntry(event) {
+        validateServiceZipCode(this, event);
+    }
+
     rateClassOnChange(event) {
         this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex].rateClass = event.target.value;
         this.selectedRateClasses.push(this.rateClassObj[event.target.value]);
@@ -265,53 +272,11 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         return false;
     }
 
-    applicationValid() {
-        var allValid = [...this.template.querySelectorAll('lightning-input'), ...this.template.querySelectorAll('lightning-combobox')]
-        .reduce((validSoFar, inputCmp) => {
-            inputCmp.reportValidity();
-            return validSoFar && inputCmp.checkValidity();
-        }, true);
-        
-        if(this.isFileUpload) {
-            var uploadValid = true;
-            this.propertyAccount.utilityAccountLogs.forEach(ual => {
-                if(!ual.utilityBills || ual.utilityBills.length === 0) {
-                    uploadValid = false;
-                }
-            });
-            if(!uploadValid) {
-                allValid = false;    
-                this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
-                    if(element.categoryType === 'Customer Utility Bill') {
-                        element.addError();
-                    }
-                });
-            }
-        }
-        if(!this.resiApplicationType && !this.isFico && (!this.restLead.financialDocs || this.restLead.financialDocs.length ===0)) {
-            this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
-                if(element.categoryType === 'Financial Review Documents') {
-                    element.addError();
-                }
-            });
-        }
-        
-        if(!allValid) {
-            this.showWarningToast('Warning!', 'Please verify your application before submitting');
-            return false;
-        }
-        
-        this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
-            element.removeError();
-        });
-        return true;
-    }
-
     // upsert Lead into Salesforce, submit form
     submitApplication() {
 
         // if application invalid, cease upsert
-        if (!this.applicationValid()) {
+        if (!applicationValid(this)) {
             return;
         }
 
