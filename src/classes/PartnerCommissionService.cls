@@ -201,9 +201,11 @@ public without sharing class PartnerCommissionService{
     private void getAndCreatePartnerInvoices(List<Opportunity> opportunities){
         Set<Id> partnerIds = new Set<Id>();
         Map<Id, String> partnerIdToNameMap = new Map<Id, String>();
+        Map<Id, Id> partnerAccountMap = new Map<Id, Id>();
         for (Opportunity opportunity : opportunities){
             partnerIds.add(opportunity.Partner_tag_lookup__c);
             partnerIdToNameMap.put(opportunity.Partner_tag_lookup__c, opportunity.Partner_tag_lookup__r.Name);
+            partnerAccountMap.put(opportunity.Partner_tag_lookup__c, opportunity.Partner_tag_lookup__r.Account__c);
         }
         List<Invoice__c> invoices = partnerInvoiceSelector.getPendingPartnerInvoices(partnerIds, getDueDate());
         for (Invoice__c invoice : invoices){
@@ -213,7 +215,7 @@ public without sharing class PartnerCommissionService{
         List<Invoice__c> invoicesToInsert = new List<Invoice__c>();
         for (Id partnerId : partnerIds){
             if (!partnerToOldestOpenInvoiceMap.containsKey(partnerId)){
-                invoicesToInsert.add(createPartnerInvoice(partnerId, partnerIdToNameMap.get(partnerId)));
+                invoicesToInsert.add(createPartnerInvoice(partnerId, partnerIdToNameMap.get(partnerId), partnerAccountMap.get(partnerId)));
             }
         }
         insert invoicesToInsert;
@@ -285,7 +287,7 @@ public without sharing class PartnerCommissionService{
     }
 
     @TestVisible
-    private Invoice__c createPartnerInvoice(Id partnerId, String partnerName){
+    private Invoice__c createPartnerInvoice(Id partnerId, String partnerName, Id accountId){
         Date dueDate = getDueDate();
         Id recordTypeId = Schema.SObjectType.Invoice__c.getRecordTypeInfosByDeveloperName().get('Partner_Invoice').getRecordTypeId();
         Date dueToAccountingDate = Date.newInstance(dueDate.Year(),dueDate.month(),3);
@@ -300,7 +302,8 @@ public without sharing class PartnerCommissionService{
             Partner__c = partnerId,
             Product_Line__c = 'Community Solar',
             Status__c = 'Received >> QC',
-            RecordTypeId = recordTypeId
+            RecordTypeId = recordTypeId,
+            Account__c = accountId
         );
         return invoiceToCreate;
     }

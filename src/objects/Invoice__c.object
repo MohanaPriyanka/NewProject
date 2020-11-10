@@ -160,7 +160,7 @@
         <fullName>Account__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>Related Client Account for Client Invoices</inlineHelpText>
+        <inlineHelpText>Related Client Account for Client Invoices, or a partner account</inlineHelpText>
         <label>Account</label>
         <referenceTo>Account</referenceTo>
         <relationshipLabel>Invoices</relationshipLabel>
