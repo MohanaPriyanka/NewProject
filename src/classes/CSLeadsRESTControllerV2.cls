@@ -117,8 +117,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Handle other non-Lead database changes if the application is newly marked as "Application Complete"
         // Placed last because we want to ensure Lead properly updates before queueing other object changes
         if (applicationNowComplete) {
-
-  			
             UtilityDataRequestService.create(new List<Id>{requestLead.id});
  			createAndSendCSPartnerEmail(lead.Id);
             createQCCaseForNoMatchPCR(lead);
@@ -702,7 +700,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 '?leadid=' + lead.Id +
                 '&email=' + lead.Email +
                 '&partnerId=' + lead.Partner_Lookup__c +
-                '&loc=' + location;
+                '&loc=agree';
         }
     }
     public String getApplicationStatus(Lead lead) {
@@ -765,7 +763,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     public static void createAndSendCSPartnerEmail(Id leadId) {
         Lead lead = new LeadSelector().selectOne(leadId);
         System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
-
         if (Test.isRunningTest() && lead == null) {
             //For tests that are using mocks, the lead cannot be mocked in a future method - we therefore exit the method
             return;
@@ -775,7 +772,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 'Email was not sent to Partner for lead: ' + lead.Id + '; First confirm ' +
                     'that there is an email template found in System Default custom metadata. ' +
                     'Then confirm the lead is populated with a Partner Email.', Logger.WARN);
-
             return;
         }
         MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
@@ -786,13 +782,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
         ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
         ee.sobjectId = lead.Id;
-
         try {
             MessagingService.sendEmailTemplate(ee);
         } catch (Exception e) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
                 '; ' + e.getStackTraceString());
-
         }
     }
      /**
@@ -806,7 +800,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             noMatchFactory.setLead(lead);
             noMatchFactory.setQueueType('No FICO Match');
             System.enqueueJob(noMatchFactory);
-
         }
     }
 }
