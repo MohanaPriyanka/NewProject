@@ -55,7 +55,7 @@
     <fields>
         <fullName>Load_Zone_Utility__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Lookup to the Load Zone and Utility Object</inlineHelpText>
+        <inlineHelpText>Lookup to the ZIP Code object</inlineHelpText>
         <label>ZIP Code</label>
         <referenceTo>Load_U__c</referenceTo>
         <relationshipLabel>ZipCode Utility Junctions</relationshipLabel>
