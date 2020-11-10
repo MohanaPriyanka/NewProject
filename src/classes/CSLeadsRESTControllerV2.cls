@@ -581,9 +581,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         for(Contract contract : leadToReturn.Contracts__r) {
             linkedEntityIdSet.add(contract.Id);
         }
-        for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
-            linkedEntityIdSet.add(finUnderwriteDoc.Id);
-        }
+//        for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
+//            linkedEntityIdSet.add(finUnderwriteDoc.Id);
+//        }
         for(Object accountId : ualsByPropertyAccountId.keySet()) {
             for(Object ualObj : ualsByPropertyAccountId.getValues((Id) accountId)) {
                 Utility_Account_Log__c ual = (Utility_Account_Log__c) ualObj;
@@ -816,9 +816,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
         ee.addressList = new List<String>{lead.Partner_Email__c};
         ee.subjectLine = 'Application Completed for ' + lead.Name;
-        MessagingService.ReplacementText partnerName = new MessagingService.ReplacementText('{!Lead.Partner_Account__r}', lead.Partner_Account__r.Name);
-        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.Name}', lead.Name);
-        ee.replacementTexts = new List<MessagingService.ReplacementText>{partnerName, leadName};
+        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
         ee.sobjectId = lead.Id;
 
         MessagingService.sendEmailTemplate(ee);
