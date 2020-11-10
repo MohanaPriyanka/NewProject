@@ -718,6 +718,16 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Business_Phone__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Phone entered by applicant in business phone field in SSF</inlineHelpText>
+        <label>Business Phone</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
         <fullName>COI__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
