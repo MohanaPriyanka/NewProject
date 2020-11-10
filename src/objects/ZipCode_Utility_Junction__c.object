@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
@@ -57,12 +56,12 @@
         <fullName>Load_Zone_Utility__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Lookup to the Load Zone and Utility Object</inlineHelpText>
-        <label>Load Zone &amp; Utility</label>
+        <label>ZIP Code</label>
         <referenceTo>Load_U__c</referenceTo>
         <relationshipLabel>ZipCode Utility Junctions</relationshipLabel>
         <relationshipName>ZipCode_Utility_Junctions</relationshipName>
         <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
@@ -87,7 +86,7 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>ZipCode Utility Junctions</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
