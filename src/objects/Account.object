@@ -718,6 +718,16 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Business_Phone__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Phone entered by applicant in business phone field in SSF</inlineHelpText>
+        <label>Business Phone</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
         <fullName>COI__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -1135,6 +1145,20 @@ Days_Past_Due__c = 90)</formula>
         <label>Collection Call Today</label>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Collection_Email_Text__c</fullName>
+        <description>This text is used in the collection email templates.</description>
+        <externalId>false</externalId>
+        <formula>IF(Days_Past_Due__c &lt;=30, 
+&quot;As a reminder, there are no fees for one time OR recurring auto-payments made through our portal!&quot;,
+&quot;Per your community solar agreement, BlueWave reserves the right to cancel your agreement at any point after your account becomes ten days past due.&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Collection Email Text</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Collection_Email_To_Fire_Today__c</fullName>
@@ -2335,6 +2359,20 @@ IF(
         <summaryOperation>count</summaryOperation>
         <trackHistory>false</trackHistory>
         <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Moody_s_Risk_Calc__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Risk Calc score calculated using financial documents provided during enrollment</inlineHelpText>
+        <label>Moody&apos;s Risk Calc</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Moody_s_Ratings</valueSetName>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Most_Recent_Engagement_Attempt__c</fullName>

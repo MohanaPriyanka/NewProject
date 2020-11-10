@@ -2362,6 +2362,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Business_Phone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.COI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2458,6 +2463,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Collection_Call_Today__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Collection_Email_Text__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14458,6 +14468,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Partner_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Partner_Application_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

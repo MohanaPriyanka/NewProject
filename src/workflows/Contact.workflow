@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
-        <fullName>CS_3_Days_Past_Due</fullName>
-        <description>CS 3 Days Past Due</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Billing_Emails/Bill_Late_3_Days</template>
-    </alerts>
-    <alerts>
         <fullName>Internal_RL_Co_Applicant_Added</fullName>
         <ccEmails>solarloans@bluewavesolar.com</ccEmails>
         <description>Internal - RL - Co Applicant Added</description>

@@ -425,4 +425,10 @@ public class CustomerCommunicationHandlerTest{
 
         System.assertEquals(0, caseList.size());
     }
+    public static testMethod void testFormatMoney() {
+        System.assertEquals('$0.10', CustomerCommunicationHandler.formatMoney(.1), 'Return should have two decimal places if the input only has one');
+        System.assertEquals('$1.00', CustomerCommunicationHandler.formatMoney(1), 'Return should have two decimal places if the input has none');
+        System.assertEquals('$1.10', CustomerCommunicationHandler.formatMoney(1.10), 'Return should add a dollar sign and retain two decimals');
+    }
+
  }
