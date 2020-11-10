@@ -229,7 +229,7 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Zip Code</label>
+    <label>ZIP Code</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
@@ -258,10 +258,10 @@
         <label>Town Names</label>
     </listViews>
     <nameField>
-        <label>Zip Code</label>
+        <label>ZIP Code</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Zip Codes</pluralLabel>
+    <pluralLabel>ZIP Codes</pluralLabel>
     <recordTypes>
         <fullName>Load_Zone_Utility</fullName>
         <active>true</active>
