@@ -165,8 +165,7 @@ private class BatchAuthNetReturnedTransactionsTest {
         processingParameter.className = 'BatchAuthNetReturnedTransactions';
         processingParameter.optionalIntegers = new Map<String, Integer>();
         processingParameter.optionalIntegers.put(BatchAuthNetReturnedTransactions.TOTAL_TRANSACTIONS_LABEL, 42);
-        BatchAuthNetReturnedTransactionsMock batchAuthNetReturnedTransactions = new BatchAuthNetReturnedTransactionsMock();
-        batchAuthNetReturnedTransactions.numToReturn = 42;
+        BatchAuthNetReturnedTransactions batchAuthNetReturnedTransactions = new BatchAuthNetReturnedTransactions();
         batchAuthNetReturnedTransactions.executePostQueryJob(processingParameter, returnedPaymentsJson);
 
         List<Error_Log__c> errorLogs = [
@@ -190,19 +189,32 @@ private class BatchAuthNetReturnedTransactionsTest {
         System.assertEquals(0,beforeLogs.size());
 
         Test.startTest();
-            String response = '[' +
-                '{"Id":"2c92a0aa6eb68ebb016ec19ef9c56e3e","AccountId":"XXXXXXXXXX123",' +
-                '"PaymentMethodId":"2c92c0f86a0c41a5016a1f41d63a2f96",' +
-                '"Amount":23.00000,"EffectiveDate":"2019-12-01","ReferenceId":"41714238397"},' +
-                '{"Id":"2c92a0aa6eb68ebb016ec19fed2d73f2","AccountId":"XXXXXXXXXX123",' +
-                '"PaymentMethodId":"2c92c0f86a0c41a5016a1f41d63a2f96",' +
-                '"Amount":23.00000,"EffectiveDate":"2019-12-01","ReferenceId":"41714239217"}]';
-            BatchAuthNetReturnedTransactions batchService = new BatchAuthNetReturnedTransactions();
-            List<Case> cases = batchService.markTransactionsAsReturned(response);
-            Logger.flushLogs();
+        List<Zuora__Payment__c> payments = [
+            SELECT Id, Zuora__EXT_ID__c, Zuora__BillingAccount__r.Zuora__Zuora_Id__c, Zuora__PaymentMethodId__c,
+                Zuora__Amount__c, Zuora__Effective_Date__c, Zuora__ReferenceId__c
+            FROM Zuora__Payment__c
+        ];
+        System.assertEquals(3, payments.size(), 'Expected three payments to return');
+        List<ZuoraAPI.Payment> zuoraPayments = new List<ZuoraAPI.Payment>();
+        for (Zuora__Payment__c payment : payments) {
+            ZuoraAPI.Payment zuoraPayment = new ZuoraAPI.Payment();
+            zuoraPayment.id = payment.Zuora__EXT_ID__c;
+            zuoraPayment.amount = payment.Zuora__Amount__c;
+            zuoraPayment.paymentMethodId = payment.Zuora__PaymentMethodId__c;
+            zuoraPayment.effectiveDate = payment.Zuora__Effective_Date__c;
+            zuoraPayment.referenceId = payment.Zuora__ReferenceId__c;
+            zuoraPayment.accountId = payment.Zuora__BillingAccount__r.Zuora__Zuora_Id__c;
+            zuoraPayment.CrmId = payment.Id;
+            zuoraPayments.add(zuoraPayment);
+        }
+        String response = JSON.serialize(zuoraPayments);
+        BatchAuthNetReturnedTransactions batchService = new BatchAuthNetReturnedTransactions();
+        batchService.queueReturnedPaymentService(response);
         Test.stopTest();
-
-        System.assert(cases.size() > 0);
+        List<Case> cases = [SELECT Id FROM Case];
+        System.assertEquals(1, cases.size(), 'Expected a case for the first payment that was returned');
+        System.assertEquals(2, ZuoraReturnedPaymentService.chainedReturnedPaymentService.paymentIdsToReturn.size(),
+            'Expected another queueable to be executed with the other two payment ids to return');
 
         List<Error_Log__c> afterLogs = [
             SELECT Class__c, Method__c, Message__c
@@ -215,7 +227,7 @@ private class BatchAuthNetReturnedTransactionsTest {
     }
 
     public static void insertTestBillingAccountRecords(){
-        Account property = new Account(name = 'Account Property');
+        Account property = new Account(Name = 'Account Property');
         insert property;
 
         Zuora__CustomerAccount__c billingAccount = new Zuora__CustomerAccount__c(
@@ -260,44 +272,9 @@ private class BatchAuthNetReturnedTransactionsTest {
         insert otherPayment;
     }
 
-    @IsTest
-    private static void testPostQueryJobNoReturns() {
-        String returnedPaymentsJson = '[]';
-        ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter();
-        processingParameter.className = 'BatchAuthNetReturnedTransactions';
-        processingParameter.optionalIntegers = new Map<String, Integer>();
-        processingParameter.optionalIntegers.put(BatchAuthNetReturnedTransactions.TOTAL_TRANSACTIONS_LABEL, 42);
-        BatchAuthNetReturnedTransactionsMock batchAuthNetReturnedTransactions = new BatchAuthNetReturnedTransactionsMock();
-        batchAuthNetReturnedTransactions.numToReturn = 4200;
-        batchAuthNetReturnedTransactions.executePostQueryJob(processingParameter, returnedPaymentsJson);
-
-        List<Error_Log__c> errorLogs = [
-            SELECT Id, Class__c, Method__c, Message__c, Severity__c
-            FROM Error_Log__c
-            WHERE Method__c = 'Returned Transaction Results'
-        ];
-        System.assertEquals(0, errorLogs.size());
-        errorLogs = [
-            SELECT Id, Class__c, Method__c, Message__c, Severity__c
-            FROM Error_Log__c
-            WHERE Method__c = 'Transaction Count Check'
-        ];
-        System.assertEquals(1, errorLogs.size());
-        System.assert(errorLogs[0].Message__c.contains('Found ' + batchAuthNetReturnedTransactions.numToReturn + ' electronic'));
-    }
-
-    private class BatchAuthNetReturnedTransactionsMock extends BatchAuthNetReturnedTransactions {
-        public Integer numToReturn = 0;
-        protected override String getElectronicPaymentsFromDate(Datetime startDate) {
-            return '{"records":[' +
-                '{"Id":"2c92c0f86e68bce2016e6be187634fa2"}],"size":'+numToReturn+',"done":true}';
-        }
-    }
-
-    /*************
-      *** MOCKS ***
-      *************/
-
+    /**
+     * @description Mocks
+     */
     public class TransactionMock implements HttpCalloutMock {
         public Integer numTransactions = 0;
 

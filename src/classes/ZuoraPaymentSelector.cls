@@ -87,8 +87,4 @@ public with sharing class ZuoraPaymentSelector {
             'WHERE ' + conditions;
         return result;
     }
-
-    public static String selectElectronicPaymentsFromDate(Datetime startDate) {
-        return 'SELECT Id FROM Payment WHERE Type = \'Electronic\' AND EffectiveDate > ' + startDate.format('yyyy-MM-dd');
-    }
 }
