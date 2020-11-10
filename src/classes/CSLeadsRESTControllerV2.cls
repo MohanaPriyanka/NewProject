@@ -581,9 +581,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         for(Contract contract : leadToReturn.Contracts__r) {
             linkedEntityIdSet.add(contract.Id);
         }
-//        for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
-//            linkedEntityIdSet.add(finUnderwriteDoc.Id);
-//        }
+        for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
+            linkedEntityIdSet.add(finUnderwriteDoc.Id);
+        }
         for(Object accountId : ualsByPropertyAccountId.keySet()) {
             for(Object ualObj : ualsByPropertyAccountId.getValues((Id) accountId)) {
                 Utility_Account_Log__c ual = (Utility_Account_Log__c) ualObj;
