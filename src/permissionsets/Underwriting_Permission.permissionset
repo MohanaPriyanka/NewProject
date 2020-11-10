@@ -970,11 +970,6 @@
         <field>Lead.Moody_s_Risk_Calc__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Lead.Moodys_RiskCalc__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Underwriting Permission</label>
     <objectPermissions>
