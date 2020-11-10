@@ -718,6 +718,16 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Business_Phone__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Phone entered by applicant in business phone field in SSF</inlineHelpText>
+        <label>Business Phone</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
         <fullName>COI__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -2349,6 +2359,20 @@ IF(
         <summaryOperation>count</summaryOperation>
         <trackHistory>false</trackHistory>
         <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Moody_s_Risk_Calc__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Risk Calc score calculated using financial documents provided during enrollment</inlineHelpText>
+        <label>Moody&apos;s Risk Calc</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Moody_s_Ratings</valueSetName>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Most_Recent_Engagement_Attempt__c</fullName>

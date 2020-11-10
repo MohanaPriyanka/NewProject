@@ -7,6 +7,11 @@
     <description>Gives access to editing the Lead Status field on RL and CS leads, and permission to edit PCR records</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Moody_s_Risk_Calc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Adjusted_DTI_Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -962,7 +967,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Lead.Moodys_RiskCalc__c</field>
+        <field>Lead.Moody_s_Risk_Calc__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
