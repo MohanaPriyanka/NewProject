@@ -6,8 +6,9 @@
 
 @IsTest
 public with sharing class ZipcodeUtilitiesSelectorTest {
-    @IsTest
-    public static void testGetZipcodeUtilitiesAndLoadzones() {
+
+    public static zipcodeUtilitiesTestData insertTestData() {
+        // Insert Utilities
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -16,8 +17,10 @@ public with sharing class ZipcodeUtilitiesSelectorTest {
             Name = 'National Grid',
             Number_of_Decimal_Places__c = 2
         );
-        insert new List<Utility__c>{eversource, nationalGrid};
+        List<Utility__c> utilities = new List<Utility__c>{eversource, nationalGrid};
+        insert utilities;
 
+        // Insert Load Zones
         Load_U__c lzu12345 = new Load_U__c (
             Name = '12345',
             LZ__c = 'SEMA',
@@ -28,11 +31,10 @@ public with sharing class ZipcodeUtilitiesSelectorTest {
             LZ__c = 'SEMA',
             Town__c= 'Medfield'
         );
+        List<Load_U__c> loadZones = new List<Load_U__c>{lzu12345, lzu54321};
+        insert loadZones;
 
-        insert new List<Load_U__c>{
-            lzu12345, lzu54321
-        };
-
+        // Insert Zipcode Utility Junctions
         ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
             Load_Zone_Utility__c = lzu12345.Id,
             Utility__c = eversource.Id
@@ -41,27 +43,46 @@ public with sharing class ZipcodeUtilitiesSelectorTest {
             Load_Zone_Utility__c = lzu54321.Id,
             Utility__c = nationalGrid.Id
         );
-        insert new List<ZipCode_Utility_Junction__c>{junction, junction2};
+        List<Zipcode_Utility_Junction__c> junctions= new List<ZipCode_Utility_Junction__c>{junction, junction2};
+        insert junctions;
 
+        return new zipcodeUtilitiesTestData(utilities, loadZones, junctions);
+    }
+
+    public class zipcodeUtilitiesTestData {
+        public List<Utility__c> utilities;
+        public List<Load_U__c> loadZones;
+        public List<ZipCode_Utility_Junction__c> junctions;
+
+        public zipcodeUtilitiesTestData(
+            List<Utility__c> utilities, List<Load_U__c> loadZones, List<ZipCode_Utility_Junction__c> junctions)
+        {
+            this.utilities = utilities;
+            this.loadZones = loadZones;
+            this.junctions = junctions;
+        }
+    }
+
+    @IsTest
+    public static void testGetZipcodeUtilitiesAndLoadzones() {
+        zipcodeUtilitiesTestData dataSet = insertTestData();
+
+        // Test no match query
         List<ZipCode_Utility_Junction__c> noJunctions = ZipcodeUtilitiesSelector.selectZipcodeUtilitiesAndLoadzones('11111');
         System.assertEquals(0, noJunctions.size());
 
-
+        // Test query match with one junction record found
         List<ZipCode_Utility_Junction__c> junctions12345 = ZipcodeUtilitiesSelector.selectZipcodeUtilitiesAndLoadzones('12345');
-
         System.assertEquals(1, junctions12345.size());
-        System.assertEquals(junction.Id, junctions12345[0].Id);
-        System.assertEquals(eversource.Id, junctions12345[0].Utility__r.Id);
-        System.assertEquals('12345', junctions12345[0].Load_Zone_Utility__r.Name);
-        System.assertEquals(lzu12345.Id, junctions12345[0].Load_Zone_Utility__r.Id);
+        System.assertEquals(dataSet.junctions[0].Id, junctions12345[0].Id);
+        System.assertEquals(dataSet.utilities[0].Id, junctions12345[0].Utility__r.Id);
+        System.assertEquals(dataSet.loadZones[0].Name, junctions12345[0].Load_Zone_Utility__r.Name);
+        System.assertEquals(dataSet.loadZones[0].Id, junctions12345[0].Load_Zone_Utility__r.Id);
 
-        List<ZipCode_Utility_Junction__c> junctions54321 = ZipcodeUtilitiesSelector.selectZipcodeUtilitiesAndLoadzones('54321');
-
-        System.assertEquals(1, junctions54321.size());
-        System.assertEquals(junction2.Id, junctions54321[0].Id);
-        System.assertEquals(nationalGrid.Id, junctions54321[0].Utility__r.Id);
-        System.assertEquals('54321', junctions54321[0].Load_Zone_Utility__r.Name);
-        System.assertEquals(lzu54321.Id, junctions54321[0].Load_Zone_Utility__r.Id);
-
+        // Test selectZipCodesServedByUtility query match
+        Set<String> zipsServedByUtility = ZipcodeUtilitiesSelector.selectZipCodesServedByUtility((String) dataSet.utilities[0].Id);
+        List<String> zipsServed = new List<String>(zipsServedByUtility);
+        System.assertEquals(1, zipsServedByUtility.size());
+        System.assertEquals(dataSet.loadZones[0].Name, zipsServed[0], 'Incorrect result for query of zipcodes served by Utility');
     }
 }

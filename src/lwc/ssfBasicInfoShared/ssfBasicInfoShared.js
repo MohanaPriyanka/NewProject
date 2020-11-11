@@ -20,7 +20,6 @@ const getUnderwritingHelpText = () => {
 
 // set cmp values on underwriting based on if a residential or biz app to control cmp behavior
 const setComponentUnderwritingVals = (component) => {
-
     const isResiApplication = component.resiApplicationType;
 
     if (isResiApplication) {
@@ -78,7 +77,6 @@ const getNewRestUtilityAccountLog = (component) => {
     return {
         localid: component.utilityAccountCount,
         name: `Utility Account ${component.utilityAccountCount}`,
-        servicePostalCode: component.zipinput,
         utilityId: component.utilityId,
         doNotDelete: false,
         showUpload: component.isFileUpload,
@@ -87,7 +85,7 @@ const getNewRestUtilityAccountLog = (component) => {
 }
 
 const validateUtilityAccountLog = (utilityAccountLog) => {
-    if(utilityAccountLog &&
+    if (utilityAccountLog &&
         utilityAccountLog.utilityAccountNumber &&
         utilityAccountLog.serviceStreet &&
         utilityAccountLog.serviceState &&
@@ -97,6 +95,53 @@ const validateUtilityAccountLog = (utilityAccountLog) => {
         }
 
     return false;
+}
+
+const validateServiceZipCode = (cmp, event) => {
+    let fieldsToDisplayError = [];
+    let fieldsToClearError = [];
+    let zipCodeInput = cmp.zipinput;
+
+    if (event !== null) {
+        // Perform realtime validation for single field change onblur
+        const index = event.target.dataset.rowIndex;
+        checkIfZipcodeSupported(cmp, index, fieldsToDisplayError, fieldsToClearError);
+    } else {
+        // Perform validation for every UAL's zipcode field
+        const utilityAccountLogs = cmp.propertyAccount.utilityAccountLogs;
+        for (let index=0; index < utilityAccountLogs.length; index++) {
+            checkIfZipcodeSupported(cmp, index, fieldsToDisplayError, fieldsToClearError);
+        }
+    }
+
+    if (fieldsToDisplayError.length !== 0) {
+        let error = `Invalid ZIP Code or ZIP Code not in the same Utility area as the previously-entered ZIP Code ${zipCodeInput}. 
+            Please enter a ZIP Code in the same Utility area as ${zipCodeInput} or restart your application.`;
+        fieldsToDisplayError.forEach(fieldElement => {
+            fieldElement.setCustomValidity(error);
+            fieldElement.reportValidity();
+        });
+    }
+    if (fieldsToClearError.length !== 0) {
+        fieldsToClearError.forEach(fieldElement => {
+            fieldElement.setCustomValidity('');
+            fieldElement.reportValidity();
+        });
+    }
+}
+
+const checkIfZipcodeSupported = (cmp, index, fieldsToDisplayError, fieldsToClearError) => {
+    const zipCodesSupported = cmp.zipCheckResponse.utilityZipCodesServed;
+    let enteredZipCode = cmp.propertyAccount.utilityAccountLogs[index].servicePostalCode;
+    if (!zipCodesSupported.includes(enteredZipCode)) {
+        fieldsToDisplayError.push(locateZipCodeField(cmp, index));
+    } else {
+        fieldsToClearError.push(locateZipCodeField(cmp, index));
+    }
+}
+
+const locateZipCodeField = (cmp, index) => {
+    return cmp.template.querySelector(`[data-ual-zip-index="${index}"]`);
 }
 
 const setRemainingFields = (component, sameHomeAddressAsFirstUA) => {
@@ -177,6 +222,51 @@ const matchHomeAddress = (restLead, propertyAccount) => {
     return restLead;
 }
 
+const applicationValid = (cmp) => {
+    // Check all UAL zips, even if on a resume app, to ensure we service those zips
+    validateServiceZipCode(cmp, null);
+
+    var allValid = [...cmp.template.querySelectorAll('lightning-input'), ...cmp.template.querySelectorAll('lightning-combobox')]
+    .reduce((validSoFar, inputCmp) => {
+        inputCmp.reportValidity();
+        return validSoFar && inputCmp.checkValidity();
+    }, true);
+
+    if (cmp.isFileUpload) {
+        var uploadValid = true;
+        cmp.propertyAccount.utilityAccountLogs.forEach(ual => {
+            if (!ual.utilityBills || ual.utilityBills.length === 0) {
+                uploadValid = false;
+            }
+        });
+        if (!uploadValid) {
+            allValid = false;
+            cmp.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
+                if (element.categoryType === 'Customer Utility Bill') {
+                    element.addError();
+                }
+            });
+        }
+    }
+    if (!cmp.resiApplicationType && !cmp.isFico && (!cmp.restLead.financialDocs || cmp.restLead.financialDocs.length ===0)) {
+        cmp.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
+            if (element.categoryType === 'Financial Review Documents') {
+                element.addError();
+            }
+        });
+    }
+
+    if (!allValid) {
+        cmp.showWarningToast('Warning!', 'Please verify your application before submitting');
+        return false;
+    }
+
+    cmp.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
+        element.removeError();
+    });
+    return true;
+}
+
 export {  
     getFinDocFileTypes,
     getUnderwritingHelpText,
@@ -188,5 +278,7 @@ export {
     setComponentUnderwritingVals,
     handleUnderwritingChange,
     getNumberOfContractDocs,
-    verifyUtilityAccountEntry
+    verifyUtilityAccountEntry,
+    validateServiceZipCode,
+    applicationValid
 }
