@@ -345,6 +345,7 @@ public with sharing class CapacityServiceTest {
         CapacityService service = new CapacityService();
         CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345');
         System.assertEquals(1, response.sharedSolarSystems.size());
+        System.assertEquals(4, response.utilityZipCodesServed.size());
         List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>(response.sharedSolarSystems);
         System.assertEquals('ACE Solar', sharedSolarSystems[0].Sales_Partners__c,
             'Expected the system for 12345 to only be available for ACE Solar');

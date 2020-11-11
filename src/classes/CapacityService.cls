@@ -30,7 +30,16 @@ public without sharing class CapacityService {
         setUtilitiesAndLoadZones(zipcodeResponse, utilityId);
         zipcodeResponse.rateClasses = new Set<Rate_Class__c>(rateClassSelector.selectByUtilities(zipcodeResponse.utilityIds));
         setProductsAndSharedSolarSystems(zipcodeResponse, getPartnerName(partnerId));
+        setZipCodesServedInUtilityTerritory(zipcodeResponse);
         return zipcodeResponse;
+    }
+
+    // Retrieve zip codes served by Utility ID. If no or multiple utilities provided, do nothing
+    private void setZipCodesServedInUtilityTerritory(ZipcodeResponse zipcodeResponse) {
+        if (zipcodeResponse.utilityIds.size() == 1) {
+            String utilityId = (String) new List<Id>(zipcodeResponse.utilityIds)[0];
+            zipcodeResponse.utilityZipCodesServed = ZipcodeUtilitiesSelector.selectZipCodesServedByUtility(utilityId);
+        }
     }
 
     // A null partner name should find all systems to support CSAP, blank should get the default partner
@@ -108,6 +117,7 @@ public without sharing class CapacityService {
         public Set<String> loadZoneNames = new Set<String>();
         public Boolean ficoUnderwriting;
         public Boolean finDocsUnderwriting;
+        public Set<String> utilityZipCodesServed = new Set<String>();
 
         public Boolean hasCapacity() {
             return (
@@ -120,7 +130,7 @@ public without sharing class CapacityService {
 
         public Boolean collectRateClass() {
             for(Product2 prod : products) {
-                if(prod.Collect_Rate_Class_via_Application__c) {
+                if (prod.Collect_Rate_Class_via_Application__c) {
                     return true;
                 }
             }

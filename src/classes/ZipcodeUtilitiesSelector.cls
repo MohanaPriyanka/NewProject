@@ -16,4 +16,19 @@ public inherited sharing class ZipcodeUtilitiesSelector {
 
         return zipcodeUtilities;
     }
+
+    public static Set<String> selectZipCodesServedByUtility(String utilityId) {
+        Set<String> zipCodesServed = new Set<String>();
+        for (ZipCode_Utility_Junction__c junction : [
+            SELECT Load_Zone_Utility__r.Name
+            FROM ZipCode_Utility_Junction__c
+            WHERE Utility__c =: utilityId
+            ORDER BY Load_Zone_Utility__r.Name] )
+        {
+            zipCodesServed.add(junction.Load_Zone_Utility__r.Name);
+        }
+
+        return zipCodesServed;
+    }
+
 }
