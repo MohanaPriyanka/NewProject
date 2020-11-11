@@ -87,12 +87,6 @@ public with sharing class ZuoraPaymentSelectorTest {
     }
 
     @IsTest
-    private static void testSelectElectronicPaymentsFromDate() {
-        System.assertNotEquals(null, ZuoraPaymentSelector.selectElectronicPaymentsFromDate(System.now()));
-
-    }
-
-    @IsTest
     private static void testGetFailedPaymentRunPaymentsFromLastDay() {
         Datetime dt = Datetime.newInstanceGmt(2019, 12, 31, 0, 0, 0);
         String query = ZuoraPaymentSelector.getFailedPaymentRunPaymentsFromLastDay(dt);

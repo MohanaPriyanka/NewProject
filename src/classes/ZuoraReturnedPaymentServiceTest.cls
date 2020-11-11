@@ -1,5 +1,5 @@
 /**
- * Created by PeterYao on 8/26/2019.
+ * @description Created by PeterYao on 8/26/2019.
  */
 @IsTest
 public with sharing class ZuoraReturnedPaymentServiceTest {
@@ -7,7 +7,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         useMocks(false);
     }
     public static void useMocks(Boolean associateDMToInvoices) {
-        ZuoraController.paymentSelector = (ZuoraPaymentSelector) Test.createStub(ZuoraPaymentSelector.class, new MockZuoraPaymentSelector());
+        ZuoraReturnedPaymentService.paymentSelector = (ZuoraPaymentSelector) Test.createStub(ZuoraPaymentSelector.class, new MockZuoraPaymentSelector());
         ZuoraReturnedPaymentService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(associateDMToInvoices));
     }
     @TestSetup public static void testDataSetup() {
@@ -15,7 +15,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         ZuoraAPIHelperTest.testSetup();
         GatewaySelectorTest.testDataSetup();
 
-        Account property = new Account(name = 'Account Property');
+        Account property = new Account(Name = 'Account Property');
         insert property;
 
         Zuora__CustomerAccount__c billingAccount = new Zuora__CustomerAccount__c(
@@ -138,8 +138,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
 
     @IsTest
     private static void testNotEnoughCalloutsToReversePaymentWithDMsAssociatedToInvoices() {
-        ZuoraController.paymentSelector = (ZuoraPaymentSelector) Test.createStub(ZuoraPaymentSelector.class, new MockZuoraPaymentSelector());
-        ZuoraReturnedPaymentService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(true));
+        useMocks(true);
         // Reversing the payment requires 10 callouts, plus 6 callouts to create/post debit memos, and 1 to update the payment.
         // Setting the number of callouts used at 85 won't give it enough
         ZuoraAPIHelper.numberCalloutsForZuoraNamespace = 85;
@@ -197,10 +196,9 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         }
     }
 
-    /*************
-     *** MOCKS ***
-     *************/
-
+    /**
+     * @description Mock Selector
+     */
     public class MockZuoraPaymentSelector extends MockProvider {
         public MockZuoraPaymentSelector() {
         }
@@ -233,24 +231,19 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         List<Case> beforeCases = [
             SELECT Id, Zuora_Payment_Method__c, AccountId
             FROM Case
-            WHERE Zuora_Payment_Method__c != null
+            WHERE Zuora_Payment_Method__c != NULL
         ];
         System.assertEquals(0,beforeCases.size());
 
         Test.startTest();
-            ZuoraPaymentSelector selector = new ZuoraPaymentSelector();
-            List<Zuora__Payment__c> paymentList = selector.selectById(new Set<Id>{payment[0].Id});
             ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService();
-            List<Zuora__PaymentMethod__c> methods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(new List<String>{payment[0].Zuora__PaymentMethodId__c});
-            returnedPaymentService.payMethod = methods[0];
-            Case caseToInsert = returnedPaymentService.createCaseForReturns(paymentList[0]);
-            insert caseToInsert;
+            returnedPaymentService.performReturn(payment[0].Id);
         Test.stopTest();
 
         List<Case> afterCases = [
             SELECT Id, Zuora_Payment_Method__r.Zuora__External_Id__c, AccountId
             FROM Case
-            WHERE Zuora_Payment_Method__c != null
+            WHERE Zuora_Payment_Method__c != NULL
         ];
 
         System.assertEquals(1, afterCases.size());
