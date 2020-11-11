@@ -165,9 +165,18 @@ public without sharing class SubscriptionManagementService implements Queueable{
             return;
         }
 
-        List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
-        update updateSOs;
-        publishSubscriptionOrderChangeEvents(updateSOs);
+        try {
+            List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
+            update updateSOs;
+            publishSubscriptionOrderChangeEvents(updateSOs);
+        } catch (Exception e) {
+            Logger.logNow(
+                'SubscriptionManagementService',
+                'checkSOApproval',
+                'Did not stamp approved values, publish subscription change events, or set CFDs on these SOs:\n' + JSON.serialize(approvedSOs),
+                Logger.ERROR);
+            return;
+        }
 
         try {
             ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(approvedSOs);
