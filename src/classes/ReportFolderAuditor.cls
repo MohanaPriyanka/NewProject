@@ -68,7 +68,7 @@ public without sharing class ReportFolderAuditor implements Schedulable {
             Logger.logLater(
                 'ReportFolderAuditor',
                 'alertReportAndDashboardShareChanges',
-                'Email client ops (at this time, Cara and Walt) that we found these report folder and/or report differences ' +
+                'Email client ops and sales ops that we found these report folder and/or report differences ' +
                     'from the last time we checked:\n' + resultString,
                 Logger.ERROR
             );

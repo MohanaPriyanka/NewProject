@@ -150,6 +150,10 @@ public without sharing virtual class BatchAuthNetReturnedTransactions implements
         }
     }
 
+    /**
+     * @description Starts the Returned Payment Service, which returns each of the payments by creating debit memos
+     * @param response Serialized data query response, a list of payments that are not returned in Zuora, but should be
+     */
     @TestVisible
     private void queueReturnedPaymentService(String response) {
         List<ZuoraAPI.Payment> transactionsToMarkReturned = (List<ZuoraAPI.Payment>) JSON.deserialize(response, List<ZuoraAPI.Payment>.class);
