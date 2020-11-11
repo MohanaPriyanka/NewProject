@@ -101,9 +101,10 @@ public class PartnerCommissionServiceTest {
     @IsTest
     private static void testPartnerInvoiceCreation(){
         PartnerCommissionService service = new PartnerCommissionService();
-        Invoice__c partnerInvoice = service.createPartnerInvoice('a0s3K0000006wCMQAY','Partner One');
+        Invoice__c partnerInvoice = service.createPartnerInvoice('a0s3K0000006wCMQAY','Partner One', '0013K000006yKHOQA2');
         System.assertEquals('a0s3K0000006wCMQAY',partnerInvoice.Partner__c);
         System.assertEquals(15,partnerInvoice.Due_Date__c.day());
+        System.assertEquals('0013K000006yKHOQA2', partnerInvoice.Account__c);
     }
 
     private static void useMocks() {
