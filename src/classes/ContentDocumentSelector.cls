@@ -18,19 +18,24 @@ public inherited sharing class ContentDocumentSelector {
     }
 
     public List<ContentDocumentLink> selectByLinkedEntities(Set<Id> entityIds) {
-        List<Id> entityIdList = new List<Id>(entityIds);
+        if (entityIds.isEmpty()) {
+            return new List<ContentDocumentLink>();
+        }
         return [
             SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate, 
             ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData
             FROM ContentDocumentLink
-            WHERE LinkedEntityId IN :entityIdList       //entityIds
+            WHERE LinkedEntityId IN :entityIds
             ORDER BY ContentDocument.CreatedDate DESC
         ];
     }
 
     public List<ContentDocumentLink> selectByLinkedEntitiesWithoutData(Set<Id> entityIds) {
+        if (entityIds.isEmpty()) {
+            return new List<ContentDocumentLink>();
+        }
         return [
-            SELECT Id, LinkedEntityId, ContentDocumentId,
+            SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate,
                 ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title
             FROM ContentDocumentLink
             WHERE LinkedEntityId IN :entityIds

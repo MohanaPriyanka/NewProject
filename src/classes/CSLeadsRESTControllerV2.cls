@@ -117,10 +117,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Handle other non-Lead database changes if the application is newly marked as "Application Complete"
         // Placed last because we want to ensure Lead properly updates before queueing other object changes
         if (applicationNowComplete) {
-
-
             UtilityDataRequestService.create(new List<Id>{requestLead.id});
- 			createAndSendCSPartnerEmail(lead.Id);
+            createAndSendCSPartnerEmail(lead.Id);
             createQCCaseForNoMatchPCR(lead);
         }
         // Set return envelope
@@ -352,7 +350,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 registerNewContentDocs(new List<RestLead.RestContentDocument>{contentDoc}, finDoc);
             }
         }
-        if (requestLead.propertyAccounts != null) {            
+        if (requestLead.propertyAccounts != null) {
             for (RestLead.RestPropertyAccount requestPropertyAccount : requestLead.propertyAccounts) {
                 Account newAccount = requestPropertyAccount.asAccount(newLead);
                 uow.registerNew(newAccount);
@@ -425,7 +423,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         RestLead.RestPropertyAccount requestAccount = requestLead.propertyAccounts.get(0);
         if(requestLead.propertyAccounts.size() > 1 || existingLead.Accounts__r.size() > 1 ||
             (!existingLead.Accounts__r.isEmpty() && existingLead.Accounts__r[0].Id != requestAccount.id)
-        ) {
+            ) {
             envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
             response.statusCode = statusCode.badRequest;
             return false;
@@ -533,8 +531,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 }
                 if(leadUAL.Utility_Rate_Class__r.Name != restUAL.get('rateClass')) {
                     return true;
+                }
             }
-        }
         }
         return false;
     }
@@ -550,8 +548,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // map UALs to their parent property accounts
         MultiMap ualsByPropertyAccountId = CollectionUtil.multiMapByField(leadToReturn.Utility_Account_Logs__r, Utility_Account_Log__c.Account__c);
         Set<Id> linkedEntityIdSet = new Set<Id>{leadToReturn.Id};
+        Set<Id> linkedContractIdSet = new Set<Id>();
         for(Contract contract : leadToReturn.Contracts__r) {
-            linkedEntityIdSet.add(contract.Id);
+            linkedContractIdSet.add(contract.Id);
         }
         for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
             linkedEntityIdSet.add(finUnderwriteDoc.Id);
@@ -562,9 +561,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 linkedEntityIdSet.add(ual.Id);
             }
         }
-        // get all related content docs and sort by linked entity
-        List<ContentDocumentLink> cdls = contentSelector.selectByLinkedEntities(linkedEntityIdSet);
+        // get all related content docs (contracts with data since we show them) and sort by linked entity
+        List<ContentDocumentLink> cdls = contentSelector.selectByLinkedEntitiesWithoutData(linkedEntityIdSet);
         MultiMap contentDocLinksByLinkedEntityId = CollectionUtil.multiMapByField(cdls, ContentDocumentLink.LinkedEntityId);
+        List<ContentDocumentLink> cdlsWithData = contentSelector.selectByLinkedEntities(linkedContractIdSet);
+        contentDocLinksByLinkedEntityId.putValues(ContentDocumentLink.LinkedEntityId, cdlsWithData);
         List<Object> contractCDLs = new List<Object>();
         for(Contract contract : leadToReturn.Contracts__r) {
             contractCDLs.addAll(contentDocLinksByLinkedEntityId.getValues(contract.Id));
@@ -690,19 +691,19 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         } else {
             lead.Continue_Application_Link__c =
                 baseUrl +
-                '?leadid=' + lead.Id +
-                '&email=' + lead.Email +
-                '&partnerId=' + lead.Partner_Lookup__c +
-                '&loc=' + location;
+                    '?leadid=' + lead.Id +
+                    '&email=' + lead.Email +
+                    '&partnerId=' + lead.Partner_Lookup__c +
+                    '&loc=' + location;
         }
         // Set Contract Re-Sign (Agree page) link, if empty and ever needed later (W-020708)
         if (lead.Contract_eSign_Link__c	== null) {
             lead.Contract_eSign_Link__c =
                 baseUrl +
-                '?leadid=' + lead.Id +
-                '&email=' + lead.Email +
-                '&partnerId=' + lead.Partner_Lookup__c +
-                '&loc=' + location;
+                    '?leadid=' + lead.Id +
+                    '&email=' + lead.Email +
+                    '&partnerId=' + lead.Partner_Lookup__c +
+                    '&loc=' + location;
         }
     }
     public String getApplicationStatus(Lead lead) {
@@ -737,8 +738,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         List<Utility_Account_Log__c> uploadUALs = [
             SELECT Id,
-                (SELECT Id FROM ContentDocumentLinks 
-                WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
+            (SELECT Id FROM ContentDocumentLinks
+            WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
             FROM Utility_Account_Log__c
             WHERE Id IN :ualIds
         ];
@@ -794,10 +795,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
         }
     }
-     /**
-     * When application is completed, if PCR is still a "No Match," we create a QC Case
-     * @param lead lead that has completed the SSF Application
-     */
+    /**
+    * When application is completed, if PCR is still a "No Match," we create a QC Case
+    * @param lead lead that has completed the SSF Application
+    */
     @TestVisible
     private void createQCCaseForNoMatchPCR(Lead lead) {
         if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {
