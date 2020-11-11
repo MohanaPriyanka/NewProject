@@ -261,6 +261,18 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Anniversary_Date__c</fullName>
+        <description>The 12-month anniversary after PTO</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The 12-month anniversary after PTO</inlineHelpText>
+        <label>Anniversary Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Apex_Context__c</fullName>
         <defaultValue>false</defaultValue>
         <description>No profiles or permission sets should grant users edit access to this field. It is used to make sure record updates made in Apex aren&apos;t prevented by validation rules.</description>
