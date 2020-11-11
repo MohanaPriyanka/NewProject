@@ -758,7 +758,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
     /**
      * @description Future method to send an email to the related Partner when the customer has completed their SSF
-     * Application
+     * Application. By setting the targetObjectId but not treating it as a recipient, the activity will be logged
+     * to the lead but not actually sent to the customer
+     *
      * @param leadId Id for Lead that has completed the application
      */
     @Future
@@ -777,21 +779,25 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
             return;
         }
-        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
-        ee.emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
-        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
-        ee.addressList = new List<String>{lead.Partner_Email__c};
-        ee.subjectLine = 'Application Completed for ' + lead.Name;
 
-        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
-        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
-        ee.sobjectId = lead.Id;
+        EmailTemplate template = MessagingService.getHtml(systemDefault.Application_Complete_Email_Template__c);
+        String templateHtml = template.HtmlValue;
+        templateHtml = templateHtml.replace('{{{Recipient.Name}}}', lead.Name);
+
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
+        mail.setSubject('Application Completed for ' + lead.Name);
+        mail.setHtmlBody(templateHtml);
+        mail.setToAddresses(new List<String>{lead.Partner_Email__c});
+        mail.setTargetObjectId(lead.Id);
+        mail.setSaveAsActivity(true);
+        mail.setTreatTargetObjectAsRecipient(false);
+
         try {
-            MessagingService.sendEmailTemplate(ee);
+            MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
         } catch (Exception e) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
                 '; ' + e.getStackTraceString());
-
         }
     }
      /**
