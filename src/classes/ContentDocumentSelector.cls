@@ -21,11 +21,14 @@ public inherited sharing class ContentDocumentSelector {
         if (entityIds.isEmpty()) {
             return new List<ContentDocumentLink>();
         }
+        // Can't query by sets of ids, they have to be lists:
+        // https://salesforce.stackexchange.com/questions/139007/map-keyset-or-setid-not-returning-content-notes-related-to-an-event
+        List<Id> entityIdList = new List<Id>(entityIds);
         return [
             SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate, 
             ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData
             FROM ContentDocumentLink
-            WHERE LinkedEntityId IN :entityIds
+            WHERE LinkedEntityId IN :entityIdList
             ORDER BY ContentDocument.CreatedDate DESC
         ];
     }
@@ -34,11 +37,12 @@ public inherited sharing class ContentDocumentSelector {
         if (entityIds.isEmpty()) {
             return new List<ContentDocumentLink>();
         }
+        List<Id> entityIdList = new List<Id>(entityIds);
         return [
             SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate,
                 ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title
             FROM ContentDocumentLink
-            WHERE LinkedEntityId IN :entityIds
+            WHERE LinkedEntityId IN :entityIdList
             ORDER BY ContentDocument.CreatedDate DESC
         ];
     }
