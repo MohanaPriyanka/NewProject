@@ -845,7 +845,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(cvUtilBill.Id, responseUtilityBill.get('lastPublishedVersionId'), 'The request should have returned a valid content version ID for utility bill');
         System.assertEquals('UtilityBill.pdf', responseUtilityBill.get('title'), 'The request should have returned a valid content version ID for utility bill');
         System.assertNotEquals(null, responseUtilityBill.get('docLinkId'), 'The request should have returned a valid content document link ID for utility bill');
-        System.assertNotEquals(null, responseUtilityBill.get('body'), 'The request should have returned a valid body for utility bill');
+        System.assertEquals(null, responseUtilityBill.get('body'), 'The request should NOT have returned a valid body for utility bill because we never use it');
         System.assertNotEquals(null, responseUtilityBill.get('size'), 'The request should have returned a valid size for utility bill');
         System.assertNotEquals(null, responseUtilityBill.get('createdDate'), 'The request should have returned a valid created date for utility bill');
         // verify financialDocs response fields
@@ -856,7 +856,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertNotEquals(null, responseFinancialDoc.get('lastPublishedVersionId'), 'The request should have returned a valid content version ID for financial document');
         System.assertEquals('FinancialDocument.pdf', responseFinancialDoc.get('title'), 'The request should have returned the input title for financial document');
         System.assertNotEquals(null, responseFinancialDoc.get('docLinkId'), 'The request should have returned a valid content document link ID for financial document');
-        System.assertEquals('ZmluYW5jaWFsIGRvY3M=', responseFinancialDoc.get('body'), 'The request should have returned a valid body for financial document');
+        System.assertEquals(null, responseFinancialDoc.get('body'), 'The request should not have returned a valid body for financial document because we never use it');
         System.assertNotEquals(null, responseFinancialDoc.get('size'), 'The request should have returned a valid size for financial document');
         System.assertNotEquals(null, responseFinancialDoc.get('createdDate'), 'The request should have returned a valid created date for financial document');
     }
