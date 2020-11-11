@@ -117,10 +117,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Handle other non-Lead database changes if the application is newly marked as "Application Complete"
         // Placed last because we want to ensure Lead properly updates before queueing other object changes
         if (applicationNowComplete) {
-
-
             UtilityDataRequestService.create(new List<Id>{requestLead.id});
- 			createAndSendCSPartnerEmail(lead.Id);
+            createAndSendCSPartnerEmail(lead.Id);
             createQCCaseForNoMatchPCR(lead);
         }
         // Set return envelope
@@ -352,7 +350,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 registerNewContentDocs(new List<RestLead.RestContentDocument>{contentDoc}, finDoc);
             }
         }
-        if (requestLead.propertyAccounts != null) {            
+        if (requestLead.propertyAccounts != null) {
             for (RestLead.RestPropertyAccount requestPropertyAccount : requestLead.propertyAccounts) {
                 Account newAccount = requestPropertyAccount.asAccount(newLead);
                 uow.registerNew(newAccount);
@@ -425,7 +423,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         RestLead.RestPropertyAccount requestAccount = requestLead.propertyAccounts.get(0);
         if(requestLead.propertyAccounts.size() > 1 || existingLead.Accounts__r.size() > 1 ||
             (!existingLead.Accounts__r.isEmpty() && existingLead.Accounts__r[0].Id != requestAccount.id)
-        ) {
+            ) {
             envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
             response.statusCode = statusCode.badRequest;
             return false;
@@ -533,8 +531,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 }
                 if(leadUAL.Utility_Rate_Class__r.Name != restUAL.get('rateClass')) {
                     return true;
+                }
             }
-        }
         }
         return false;
     }
@@ -547,57 +545,27 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Lead leadToReturn, Boolean docsNewlyGenerated, Integer numberOfContractDocs)
     {
         RestLead responseLead = new RestLead(leadToReturn);
-        // map UALs to their parent property accounts
+
         MultiMap ualsByPropertyAccountId = CollectionUtil.multiMapByField(leadToReturn.Utility_Account_Logs__r, Utility_Account_Log__c.Account__c);
-        Set<Id> linkedEntityIdSet = new Set<Id>{leadToReturn.Id};
-        for(Contract contract : leadToReturn.Contracts__r) {
-            linkedEntityIdSet.add(contract.Id);
-        }
-        for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
-            linkedEntityIdSet.add(finUnderwriteDoc.Id);
-        }
-        for(Object accountId : ualsByPropertyAccountId.keySet()) {
-            for(Object ualObj : ualsByPropertyAccountId.getValues((Id) accountId)) {
-                Utility_Account_Log__c ual = (Utility_Account_Log__c) ualObj;
-                linkedEntityIdSet.add(ual.Id);
-            }
-        }
-        // get all related content docs and sort by linked entity
-        List<ContentDocumentLink> cdls = contentSelector.selectByLinkedEntities(linkedEntityIdSet);
-        MultiMap contentDocLinksByLinkedEntityId = CollectionUtil.multiMapByField(cdls, ContentDocumentLink.LinkedEntityId);
-        List<Object> contractCDLs = new List<Object>();
-        for(Contract contract : leadToReturn.Contracts__r) {
-            contractCDLs.addAll(contentDocLinksByLinkedEntityId.getValues(contract.Id));
-        }
-        if(numberOfContractDocs == null || numberOfContractDocs == 0) {
-            numberOfContractDocs = 2;
-        }
-        if(contractCDLs.isEmpty()) {
-            responseLead.mostRecentContractGen = Datetime.now();
-        } else if(docsNewlyGenerated) {
-            ContentDocumentLink cdl = (ContentDocumentLink) contractCDLs[0];
-            responseLead.mostRecentContractGen = cdl.ContentDocument.CreatedDate;
-        } else {
-            responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, contractCDLs, numberOfContractDocs);
-        }
-        // compile the financial underwriting documents and their uploads
-        List<RestLead.RestContentDocument> returnFinDocs = new List<RestLead.RestContentDocument>();
-        for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
-            for(Object cdl : contentDocLinksByLinkedEntityId.getValues(finUnderwriteDoc.Id)) {
-                RestLead.RestContentDocument returnContentDoc = new RestLead.RestContentDocument((ContentDocumentLink) cdl);
-                returnContentDoc.parentId = finUnderwriteDoc.Id;
-                returnFinDocs.add(returnContentDoc);
-            }
-        }
-        responseLead.financialDocs = returnFinDocs;
-        // compile the property accounts, uals, and utility bill uploads
+
+        MultiMap leadUALandFUDCDLMap = getLeadUALandFUDCDLMap(leadToReturn, ualsByPropertyAccountId);
+
+        setResponseLeadContentDocs(leadToReturn, responseLead, docsNewlyGenerated, numberOfContractDocs);
+
+        setResponseLeadFinancialDocs(leadToReturn, leadUALandFUDCDLMap, responseLead);
+
+        setResponseLeadPropertyAccountsAndChildren(leadToReturn, ualsByPropertyAccountId, leadUALandFUDCDLMap, responseLead);
+        return responseLead;
+    }
+
+    private void setResponseLeadPropertyAccountsAndChildren(Lead leadToReturn, MultiMap ualsByPropertyAccountId, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestPropertyAccount> returnPropertyAccounts = new List<RestLead.RestPropertyAccount>();
-        for(Account propertyAccount : leadToReturn.Accounts__r) {
+        for (Account propertyAccount : leadToReturn.Accounts__r) {
             List<RestLead.RestUtilityAccountLog> returnUalList = new List<RestLead.RestUtilityAccountLog>();
-            for(Object ual : ualsByPropertyAccountId.getValues(propertyAccount.Id)) {
+            for (Object ual : ualsByPropertyAccountId.getValues(propertyAccount.Id)) {
                 RestLead.RestUtilityAccountLog returnUal = new RestLead.RestUtilityAccountLog((Utility_Account_Log__c) ual);
                 List<RestLead.RestContentDocument> utilityBillList = new List<RestLead.RestContentDocument>();
-                for(Object cdl : contentDocLinksByLinkedEntityId.getValues(returnUal.id)) {
+                for (Object cdl : leadUALandFUDCDLMap.getValues(returnUal.id)) {
                     RestLead.RestContentDocument returnContentDoc = new RestLead.RestContentDocument((ContentDocumentLink) cdl);
                     utilityBillList.add(returnContentDoc);
                 }
@@ -609,10 +577,53 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             returnPropertyAccounts.add(returnPropertyAccount);
         }
         responseLead.propertyAccounts = returnPropertyAccounts;
-        return responseLead;
+    }
+
+    private void setResponseLeadFinancialDocs(Lead leadToReturn, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
+        List<RestLead.RestContentDocument> returnFinDocs = new List<RestLead.RestContentDocument>();
+        for (Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
+            for (Object cdl : leadUALandFUDCDLMap.getValues(finUnderwriteDoc.Id)) {
+                RestLead.RestContentDocument returnContentDoc = new RestLead.RestContentDocument((ContentDocumentLink) cdl);
+                returnContentDoc.parentId = finUnderwriteDoc.Id;
+                returnFinDocs.add(returnContentDoc);
+            }
+        }
+        responseLead.financialDocs = returnFinDocs;
+    }
+
+    private void setResponseLeadContentDocs(Lead leadToReturn, RestLead responseLead, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
+        List<ContentDocumentLink> contractCDLs =
+            contentSelector.selectByLinkedEntities(CollectionUtil.getIdSet(leadToReturn.Contracts__r));
+        if (contractCDLs.isEmpty()) {
+            responseLead.mostRecentContractGen = Datetime.now();
+        } else if (docsNewlyGenerated) {
+            ContentDocumentLink cdl = (ContentDocumentLink) contractCDLs[0];
+            responseLead.mostRecentContractGen = cdl.ContentDocument.CreatedDate;
+        } else {
+            if (numberOfContractDocs == null || numberOfContractDocs == 0) {
+                numberOfContractDocs = 2;
+            }
+            responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, contractCDLs, numberOfContractDocs);
+        }
+    }
+
+    private MultiMap getLeadUALandFUDCDLMap(Lead leadToReturn, MultiMap ualsByPropertyAccountId) {
+        Set<Id> linkedEntityIdSet = new Set<Id>{
+            leadToReturn.Id
+        };
+        linkedEntityIdSet.addAll(CollectionUtil.getIdSet(leadToReturn.Underwrite_Financial_Documents__r));
+        for (Object accountId : ualsByPropertyAccountId.keySet()) {
+            for (Object ualObj : ualsByPropertyAccountId.getValues((Id) accountId)) {
+                Utility_Account_Log__c ual = (Utility_Account_Log__c) ualObj;
+                linkedEntityIdSet.add(ual.Id);
+            }
+        }
+        List<ContentDocumentLink> leadUALandFUDCDLs = contentSelector.selectByLinkedEntitiesWithoutData(linkedEntityIdSet);
+        MultiMap leadUALandFUDCDLMap = CollectionUtil.multiMapByField(leadUALandFUDCDLs, ContentDocumentLink.LinkedEntityId);
+        return leadUALandFUDCDLMap;
     }
     private void registerNewContentDocs(List<RestLead.RestContentDocument> requestContentDocuments, SObject linkedEntity) {
-        for(RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
+        for (RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
             if(requestContentDocument.id == null) {
                 requestContentDocument.body = String.escapeSingleQuotes(requestContentDocument.body);
                 requestContentDocument.validateCreateFields();
@@ -690,19 +701,19 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         } else {
             lead.Continue_Application_Link__c =
                 baseUrl +
-                '?leadid=' + lead.Id +
-                '&email=' + lead.Email +
-                '&partnerId=' + lead.Partner_Lookup__c +
-                '&loc=' + location;
+                    '?leadid=' + lead.Id +
+                    '&email=' + lead.Email +
+                    '&partnerId=' + lead.Partner_Lookup__c +
+                    '&loc=' + location;
         }
         // Set Contract Re-Sign (Agree page) link, if empty and ever needed later (W-020708)
         if (lead.Contract_eSign_Link__c	== null) {
             lead.Contract_eSign_Link__c =
                 baseUrl +
-                '?leadid=' + lead.Id +
-                '&email=' + lead.Email +
-                '&partnerId=' + lead.Partner_Lookup__c +
-                '&loc=' + location;
+                    '?leadid=' + lead.Id +
+                    '&email=' + lead.Email +
+                    '&partnerId=' + lead.Partner_Lookup__c +
+                    '&loc=' + location;
         }
     }
     public String getApplicationStatus(Lead lead) {
@@ -737,8 +748,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         List<Utility_Account_Log__c> uploadUALs = [
             SELECT Id,
-                (SELECT Id FROM ContentDocumentLinks 
-                WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
+            (SELECT Id FROM ContentDocumentLinks
+            WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
             FROM Utility_Account_Log__c
             WHERE Id IN :ualIds
         ];
@@ -794,10 +805,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
         }
     }
-     /**
-     * When application is completed, if PCR is still a "No Match," we create a QC Case
-     * @param lead lead that has completed the SSF Application
-     */
+    /**
+    * When application is completed, if PCR is still a "No Match," we create a QC Case
+    * @param lead lead that has completed the SSF Application
+    */
     @TestVisible
     private void createQCCaseForNoMatchPCR(Lead lead) {
         if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {

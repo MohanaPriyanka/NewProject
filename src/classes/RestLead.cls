@@ -547,7 +547,12 @@ public without sharing class RestLead {
             this.lastPublishedVersionId = cdl.ContentDocument.LatestPublishedVersion.Id;
             this.docLinkId = cdl.Id;
             this.title = cdl.ContentDocument.LatestPublishedVersion.Title;
-            this.body = EncodingUtil.base64Encode(cdl.ContentDocument.LatestPublishedVersion.VersionData);
+            // Since we only create RestContentDocuments with data for Contracts, not Utility Bills or Financial Docs
+            try {
+                this.body = EncodingUtil.base64Encode(cdl.ContentDocument.LatestPublishedVersion.VersionData);
+            } catch (SObjectException soe) {
+                this.body = null;
+            }
             this.size = cdl.ContentDocument.ContentSize;
             this.createdDate = cdl.ContentDocument.CreatedDate;
         }
@@ -556,7 +561,11 @@ public without sharing class RestLead {
             this.id = cd.Id;
             this.lastPublishedVersionId = cd.LatestPublishedVersion.Id;
             this.title = cd.LatestPublishedVersion.Title;
-            this.body = EncodingUtil.base64Encode(cd.LatestPublishedVersion.VersionData);
+            try {
+                this.body = EncodingUtil.base64Encode(cd.LatestPublishedVersion.VersionData);
+            } catch (SObjectException soe) {
+                this.body = null;
+            }
             this.size = cd.ContentSize;
             this.createdDate = cd.CreatedDate;
         }
