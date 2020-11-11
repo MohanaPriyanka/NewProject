@@ -565,7 +565,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         List<ContentDocumentLink> cdls = contentSelector.selectByLinkedEntitiesWithoutData(linkedEntityIdSet);
         MultiMap contentDocLinksByLinkedEntityId = CollectionUtil.multiMapByField(cdls, ContentDocumentLink.LinkedEntityId);
         List<ContentDocumentLink> cdlsWithData = contentSelector.selectByLinkedEntities(linkedContractIdSet);
-        contentDocLinksByLinkedEntityId.putValues(ContentDocumentLink.LinkedEntityId, cdlsWithData);
+        for (ContentDocumentLink cdl : cdlsWithData) {
+            contentDocLinksByLinkedEntityId.putValue(cdl.LinkedEntityId, cdl);
+        }
         List<Object> contractCDLs = new List<Object>();
         for(Contract contract : leadToReturn.Contracts__r) {
             contractCDLs.addAll(contentDocLinksByLinkedEntityId.getValues(contract.Id));
