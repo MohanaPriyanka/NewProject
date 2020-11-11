@@ -29431,7 +29431,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Reserved_Anchor_Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
