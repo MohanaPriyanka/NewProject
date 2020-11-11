@@ -78460,10 +78460,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>AccessContentBuilder</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ActivateContract</name>
     </userPermissions>
     <userPermissions>
