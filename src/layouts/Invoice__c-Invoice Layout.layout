@@ -20,6 +20,9 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Approved_Commission_Payment_Total_Due__c</field>
             </layoutItems>
@@ -48,6 +51,10 @@
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Invoice_Type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Account__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

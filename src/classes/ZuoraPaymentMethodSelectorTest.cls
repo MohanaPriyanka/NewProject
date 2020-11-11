@@ -1,7 +1,7 @@
 @IsTest
 public with sharing class ZuoraPaymentMethodSelectorTest {
     @TestSetup public static void testDataSetup() {
-        Account property = new Account(name = 'Account Property');
+        Account property = new Account(Name = 'Account Property');
         insert property;
 
         Zuora__CustomerAccount__c billingAccount = new Zuora__CustomerAccount__c(
@@ -52,7 +52,7 @@ public with sharing class ZuoraPaymentMethodSelectorTest {
     private static void testGetSFRecordFromZuoraId() {
         List<String> zuoraIds = new List<String>{'2c92c0f86a0c41a5016a1f41d63a2f96','2c92c0f86a0c41a5016a1f41d63a2f88'};
 
-        List<Zuora__PaymentMethod__c> payMethods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(zuoraIds);
+        List<Zuora__PaymentMethod__c> payMethods = new ZuoraPaymentMethodSelector().getSFRecordFromZuoraId(zuoraIds);
         System.assertEquals(2,payMethods.size());
     }
 }
