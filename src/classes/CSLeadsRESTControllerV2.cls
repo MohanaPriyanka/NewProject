@@ -545,62 +545,27 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Lead leadToReturn, Boolean docsNewlyGenerated, Integer numberOfContractDocs)
     {
         RestLead responseLead = new RestLead(leadToReturn);
-        // map UALs to their parent property accounts
+
         MultiMap ualsByPropertyAccountId = CollectionUtil.multiMapByField(leadToReturn.Utility_Account_Logs__r, Utility_Account_Log__c.Account__c);
-        Set<Id> linkedEntityIdSet = new Set<Id>{leadToReturn.Id};
-        Set<Id> linkedContractIdSet = new Set<Id>();
-        for(Contract contract : leadToReturn.Contracts__r) {
-            linkedContractIdSet.add(contract.Id);
-        }
-        for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
-            linkedEntityIdSet.add(finUnderwriteDoc.Id);
-        }
-        for(Object accountId : ualsByPropertyAccountId.keySet()) {
-            for(Object ualObj : ualsByPropertyAccountId.getValues((Id) accountId)) {
-                Utility_Account_Log__c ual = (Utility_Account_Log__c) ualObj;
-                linkedEntityIdSet.add(ual.Id);
-            }
-        }
-        // get all related content docs (contracts with data since we show them) and sort by linked entity
-        List<ContentDocumentLink> cdls = contentSelector.selectByLinkedEntitiesWithoutData(linkedEntityIdSet);
-        MultiMap contentDocLinksByLinkedEntityId = CollectionUtil.multiMapByField(cdls, ContentDocumentLink.LinkedEntityId);
-        List<ContentDocumentLink> cdlsWithData = contentSelector.selectByLinkedEntities(linkedContractIdSet);
-        for (ContentDocumentLink cdl : cdlsWithData) {
-            contentDocLinksByLinkedEntityId.putValue(cdl.LinkedEntityId, cdl);
-        }
-        List<Object> contractCDLs = new List<Object>();
-        for(Contract contract : leadToReturn.Contracts__r) {
-            contractCDLs.addAll(contentDocLinksByLinkedEntityId.getValues(contract.Id));
-        }
-        if(numberOfContractDocs == null || numberOfContractDocs == 0) {
-            numberOfContractDocs = 2;
-        }
-        if(contractCDLs.isEmpty()) {
-            responseLead.mostRecentContractGen = Datetime.now();
-        } else if(docsNewlyGenerated) {
-            ContentDocumentLink cdl = (ContentDocumentLink) contractCDLs[0];
-            responseLead.mostRecentContractGen = cdl.ContentDocument.CreatedDate;
-        } else {
-            responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, contractCDLs, numberOfContractDocs);
-        }
-        // compile the financial underwriting documents and their uploads
-        List<RestLead.RestContentDocument> returnFinDocs = new List<RestLead.RestContentDocument>();
-        for(Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
-            for(Object cdl : contentDocLinksByLinkedEntityId.getValues(finUnderwriteDoc.Id)) {
-                RestLead.RestContentDocument returnContentDoc = new RestLead.RestContentDocument((ContentDocumentLink) cdl);
-                returnContentDoc.parentId = finUnderwriteDoc.Id;
-                returnFinDocs.add(returnContentDoc);
-            }
-        }
-        responseLead.financialDocs = returnFinDocs;
-        // compile the property accounts, uals, and utility bill uploads
+
+        MultiMap leadUALandFUDCDLMap = getLeadUALandFUDCDLMap(leadToReturn, ualsByPropertyAccountId);
+
+        setResponseLeadContentDocs(leadToReturn, responseLead, docsNewlyGenerated, numberOfContractDocs);
+
+        setResponseLeadFinancialDocs(leadToReturn, leadUALandFUDCDLMap, responseLead);
+
+        setResponseLeadPropertyAccountsAndChildren(leadToReturn, ualsByPropertyAccountId, leadUALandFUDCDLMap, responseLead);
+        return responseLead;
+    }
+
+    private void setResponseLeadPropertyAccountsAndChildren(Lead leadToReturn, MultiMap ualsByPropertyAccountId, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestPropertyAccount> returnPropertyAccounts = new List<RestLead.RestPropertyAccount>();
-        for(Account propertyAccount : leadToReturn.Accounts__r) {
+        for (Account propertyAccount : leadToReturn.Accounts__r) {
             List<RestLead.RestUtilityAccountLog> returnUalList = new List<RestLead.RestUtilityAccountLog>();
-            for(Object ual : ualsByPropertyAccountId.getValues(propertyAccount.Id)) {
+            for (Object ual : ualsByPropertyAccountId.getValues(propertyAccount.Id)) {
                 RestLead.RestUtilityAccountLog returnUal = new RestLead.RestUtilityAccountLog((Utility_Account_Log__c) ual);
                 List<RestLead.RestContentDocument> utilityBillList = new List<RestLead.RestContentDocument>();
-                for(Object cdl : contentDocLinksByLinkedEntityId.getValues(returnUal.id)) {
+                for (Object cdl : leadUALandFUDCDLMap.getValues(returnUal.id)) {
                     RestLead.RestContentDocument returnContentDoc = new RestLead.RestContentDocument((ContentDocumentLink) cdl);
                     utilityBillList.add(returnContentDoc);
                 }
@@ -612,10 +577,53 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             returnPropertyAccounts.add(returnPropertyAccount);
         }
         responseLead.propertyAccounts = returnPropertyAccounts;
-        return responseLead;
+    }
+
+    private void setResponseLeadFinancialDocs(Lead leadToReturn, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
+        List<RestLead.RestContentDocument> returnFinDocs = new List<RestLead.RestContentDocument>();
+        for (Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
+            for (Object cdl : leadUALandFUDCDLMap.getValues(finUnderwriteDoc.Id)) {
+                RestLead.RestContentDocument returnContentDoc = new RestLead.RestContentDocument((ContentDocumentLink) cdl);
+                returnContentDoc.parentId = finUnderwriteDoc.Id;
+                returnFinDocs.add(returnContentDoc);
+            }
+        }
+        responseLead.financialDocs = returnFinDocs;
+    }
+
+    private void setResponseLeadContentDocs(Lead leadToReturn, RestLead responseLead, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
+        List<ContentDocumentLink> contractCDLs =
+            contentSelector.selectByLinkedEntities(CollectionUtil.getIdSet(leadToReturn.Contracts__r));
+        if (contractCDLs.isEmpty()) {
+            responseLead.mostRecentContractGen = Datetime.now();
+        } else if (docsNewlyGenerated) {
+            ContentDocumentLink cdl = (ContentDocumentLink) contractCDLs[0];
+            responseLead.mostRecentContractGen = cdl.ContentDocument.CreatedDate;
+        } else {
+            if (numberOfContractDocs == null || numberOfContractDocs == 0) {
+                numberOfContractDocs = 2;
+            }
+            responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, contractCDLs, numberOfContractDocs);
+        }
+    }
+
+    private MultiMap getLeadUALandFUDCDLMap(Lead leadToReturn, MultiMap ualsByPropertyAccountId) {
+        Set<Id> linkedEntityIdSet = new Set<Id>{
+            leadToReturn.Id
+        };
+        linkedEntityIdSet.addAll(CollectionUtil.getIdSet(leadToReturn.Underwrite_Financial_Documents__r));
+        for (Object accountId : ualsByPropertyAccountId.keySet()) {
+            for (Object ualObj : ualsByPropertyAccountId.getValues((Id) accountId)) {
+                Utility_Account_Log__c ual = (Utility_Account_Log__c) ualObj;
+                linkedEntityIdSet.add(ual.Id);
+            }
+        }
+        List<ContentDocumentLink> leadUALandFUDCDLs = contentSelector.selectByLinkedEntitiesWithoutData(linkedEntityIdSet);
+        MultiMap leadUALandFUDCDLMap = CollectionUtil.multiMapByField(leadUALandFUDCDLs, ContentDocumentLink.LinkedEntityId);
+        return leadUALandFUDCDLMap;
     }
     private void registerNewContentDocs(List<RestLead.RestContentDocument> requestContentDocuments, SObject linkedEntity) {
-        for(RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
+        for (RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
             if(requestContentDocument.id == null) {
                 requestContentDocument.body = String.escapeSingleQuotes(requestContentDocument.body);
                 requestContentDocument.validateCreateFields();
