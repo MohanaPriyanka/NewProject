@@ -67,6 +67,10 @@
                 <behavior>Edit</behavior>
                 <field>Annual_kWh__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Average_Demand__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>

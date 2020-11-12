@@ -34331,6 +34331,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Log__c.Average_Demand__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Calculated_Subscription_KW_DC_Rounded__c</field>
         <readable>true</readable>
@@ -35042,6 +35047,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility_Data_Request_Period__c.Used_in_Average_Demand_Calculation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_Data_Request_Period__c.Utility_Data_Request__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -35068,6 +35078,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Data_Request__c.Annual_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Data_Request__c.Average_Demand__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
