@@ -143,6 +143,10 @@
                 <behavior>Edit</behavior>
                 <field>Proposed_kWh__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Average_Demand__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

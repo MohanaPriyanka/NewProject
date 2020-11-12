@@ -448,6 +448,18 @@ QD=Quantity Delivered</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Used_in_Average_Demand_Calculation__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checked if the UDRP record was used to calculate the Average Demand of the related UDR/UAL</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked if the UDRP record was used to calculate the Average Demand of the related UDR/UAL</inlineHelpText>
+        <label>Used in Average Demand Calculation</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Utility_Data_Request__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

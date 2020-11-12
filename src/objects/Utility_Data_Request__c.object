@@ -225,14 +225,30 @@ U=Customer receives supply from the Utility</inlineHelpText>
     </fields>
     <fields>
         <fullName>Annual_kWh__c</fullName>
+        <description>Value calculated from UDRP Quantities in the last 12 months where the Measurement Unit = KH and the Measurement Significance Code = 51</description>
         <externalId>false</externalId>
-        <inlineHelpText>This is the rolled up kWh quantity value from UDRP&apos;s.</inlineHelpText>
+        <inlineHelpText>Value calculated from UDRP Quantities in the last 12 months where the Measurement Unit = KH and the Measurement Significance Code = 51</inlineHelpText>
         <label>Annual kWh</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Average_Demand__c</fullName>
+        <description>Value calculated from UDRP Quantities in the last 12 months where the Measurement Unit = K1 and the Measurement Significance Code = 51</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Value calculated from UDRP Quantities in the last 12 months where the Measurement Unit = K1 and the Measurement Significance Code = 51</inlineHelpText>
+        <label>Average Demand</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
