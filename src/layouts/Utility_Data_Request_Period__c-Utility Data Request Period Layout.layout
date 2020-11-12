@@ -88,8 +88,15 @@
                 <field>Quantity_Qualifier__c</field>
             </layoutItems>
             <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Used_in_Annual_kWh_Calculation__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Used_in_Average_Demand_Calculation__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
