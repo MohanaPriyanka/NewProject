@@ -406,7 +406,5 @@ src/package.xml
 # sites/*
 # siteDotComSites/*
 /IlluminatedCloud/
-/.idea/encodings.xml
-/.idea/illuminatedCloud.xml
-/.idea/inspectionProfiles/Project_Default.xml
+/.idea
 SMP.iml
