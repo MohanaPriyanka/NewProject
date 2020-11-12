@@ -50,6 +50,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -141,7 +147,7 @@
         <name>Confirm_Screen</name>
         <label>Confirm_Screen</label>
         <locationX>848</locationX>
-        <locationY>271</locationY>
+        <locationY>270</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -150,7 +156,7 @@
         </connector>
         <fields>
             <name>Warning</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Press &quot;&lt;/b&gt;&lt;b style=&quot;font-size: 14px; color: rgb(68, 0, 255);&quot;&gt;Next&lt;/b&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;&quot; to send an email to the customer requesting Contract Re-signature.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Instructions:&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Press &quot;&lt;/span&gt;&lt;span style=&quot;font-size: 14px; color: rgb(68, 0, 255);&quot;&gt;Next&lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&quot; to send an email to the customer requesting Contract Re-signature.&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;The customer will see the &lt;/span&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;latest &lt;/b&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;contract files under their lead&apos;s Contract record.&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;NOTE: &lt;/b&gt;Prior to sending this email, you should have re-generated contract documents on the related Contract record by checking &quot;Generate Review Version&quot;. After a few moments (and a page refresh), the re-generated contract files should appear under &quot;Files&quot;&lt;/li&gt;&lt;li&gt;To preview exactly what the customer will see when they click the link in their email, navigate to the link provided below.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;Email Details:&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -239,11 +245,6 @@
             </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <fields>
-            <name>Extra</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;The generated and sent email will be logged under Activities on the Lead for reference.&lt;/b&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
