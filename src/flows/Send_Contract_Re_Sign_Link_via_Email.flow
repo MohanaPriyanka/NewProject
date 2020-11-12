@@ -39,6 +39,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <description>Sends SSF link to Lead email for purposes of Contract Re-Signature.</description>
     <interviewLabel>Send Contract Re-Sign Link via Email {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Send Contract Re-Sign Link via Email</label>
@@ -64,6 +65,7 @@
         <connector>
             <targetReference>Confirm_Screen</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Address</field>
             <operator>EqualTo</operator>
@@ -90,6 +92,7 @@
         <connector>
             <targetReference>Get_Customer_Care_Email</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>DeveloperName</field>
             <operator>EqualTo</operator>
@@ -116,6 +119,7 @@
         <connector>
             <targetReference>Get_Email_Template</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
