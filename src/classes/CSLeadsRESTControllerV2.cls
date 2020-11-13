@@ -545,19 +545,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Lead leadToReturn, Boolean docsNewlyGenerated, Integer numberOfContractDocs)
     {
         RestLead responseLead = new RestLead(leadToReturn);
-
         MultiMap ualsByPropertyAccountId = CollectionUtil.multiMapByField(leadToReturn.Utility_Account_Logs__r, Utility_Account_Log__c.Account__c);
-
         MultiMap leadUALandFUDCDLMap = getLeadUALandFUDCDLMap(leadToReturn, ualsByPropertyAccountId);
-
         setResponseLeadContentDocs(leadToReturn, responseLead, docsNewlyGenerated, numberOfContractDocs);
-
         setResponseLeadFinancialDocs(leadToReturn, leadUALandFUDCDLMap, responseLead);
-
         setResponseLeadPropertyAccountsAndChildren(leadToReturn, ualsByPropertyAccountId, leadUALandFUDCDLMap, responseLead);
         return responseLead;
         }
-
     private void setResponseLeadPropertyAccountsAndChildren(Lead leadToReturn, MultiMap ualsByPropertyAccountId, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestPropertyAccount> returnPropertyAccounts = new List<RestLead.RestPropertyAccount>();
         for(Account propertyAccount : leadToReturn.Accounts__r) {
@@ -578,7 +572,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         responseLead.propertyAccounts = returnPropertyAccounts;
     }
-
     private void setResponseLeadFinancialDocs(Lead leadToReturn, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestContentDocument> returnFinDocs = new List<RestLead.RestContentDocument>();
         for (Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
@@ -590,7 +583,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         responseLead.financialDocs = returnFinDocs;
     }
-
     private void setResponseLeadContentDocs(Lead leadToReturn, RestLead responseLead, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
         List<ContentDocumentLink> contractCDLs =
             contentSelector.selectByLinkedEntities(CollectionUtil.getIdSet(leadToReturn.Contracts__r));
@@ -606,7 +598,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, contractCDLs, numberOfContractDocs);
         }
     }
-
     private MultiMap getLeadUALandFUDCDLMap(Lead leadToReturn, MultiMap ualsByPropertyAccountId) {
         Set<Id> linkedEntityIdSet = new Set<Id>{
             leadToReturn.Id
@@ -765,11 +756,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return 'Started';
     }
-
-
     /**
      * @description Future method to send an email to the related Partner when the customer has completed their SSF
-     * Application
+     * Application. By setting the targetObjectId but not treating it as a recipient, the activity will be logged
+     * to the lead but not actually sent to the customer
+     *
      * @param leadId Id for Lead that has completed the application
      */
     @Future
@@ -787,16 +778,21 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                     'Then confirm the lead is populated with a Partner Email.', Logger.WARN);
             return;
         }
-        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
-        ee.emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
-        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
-        ee.addressList = new List<String>{lead.Partner_Email__c};
-        ee.subjectLine = 'Application Completed for ' + lead.Name;
-        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
-        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
-        ee.sobjectId = lead.Id;
+
+        EmailTemplate template = MessagingService.getHtml(systemDefault.Application_Complete_Email_Template__c);
+        String templateHtml = template.HtmlValue;
+        templateHtml = templateHtml.replace('{{{Recipient.Name}}}', lead.Name);
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
+        mail.setSubject('Application Completed for ' + lead.Name);
+        mail.setHtmlBody(templateHtml);
+        mail.setToAddresses(new List<String>{lead.Partner_Email__c});
+        mail.setTargetObjectId(lead.Id);
+        mail.setSaveAsActivity(true);
+        mail.setTreatTargetObjectAsRecipient(false);
+
         try {
-            MessagingService.sendEmailTemplate(ee);
+            MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
         } catch (Exception e) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
                 '; ' + e.getStackTraceString());
