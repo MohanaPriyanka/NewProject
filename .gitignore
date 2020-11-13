@@ -242,7 +242,6 @@ build.properties
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
-.idea/codeStyles/Project.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -406,5 +405,5 @@ src/package.xml
 # sites/*
 # siteDotComSites/*
 /IlluminatedCloud/
-/.idea
+/.idea/illuminatedCloud.xml
 SMP.iml
