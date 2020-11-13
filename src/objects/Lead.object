@@ -1086,7 +1086,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <fullName>Business_Title__c</fullName>
         <externalId>false</externalId>
         <label>Business Title</label>
-        <length>25</length>
+        <length>50</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
