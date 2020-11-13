@@ -384,6 +384,36 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Num_months_Annual_kWh__c</fullName>
+        <description>The number of months used in the Annual kWh calculation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of months used in the Annual kWh calculation.</inlineHelpText>
+        <label>Number of months used in Annual kWh</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Num_months_Average_Demand__c</fullName>
+        <description>The number of months used in the Average Demand calculation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of months used in the Average Demand calculation.</inlineHelpText>
+        <label>Number of months used in Average Demand</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Number_of_Units__c</fullName>
         <externalId>false</externalId>
         <label>Number of Units</label>
