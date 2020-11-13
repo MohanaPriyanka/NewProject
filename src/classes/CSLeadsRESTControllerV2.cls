@@ -713,7 +713,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                     '?leadid=' + lead.Id +
                     '&email=' + lead.Email +
                     '&partnerId=' + lead.Partner_Lookup__c +
-                    '&loc=' + location;
+                    '&loc=agree';
         }
     }
     public String getApplicationStatus(Lead lead) {
