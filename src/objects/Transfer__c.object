@@ -466,6 +466,12 @@ ISCHANGED(Allocation_Schedule__c), ISCHANGED(Attempted_Transfer__c),ISCHANGED(At
         <errorMessage>Transfer records may not be edited after bills have been generated.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Billing_or_Enacted_ALS</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(NOT(ISPICKVAL(Allocation_Schedule__r.Status__c, &apos;Billing&apos;)), NOT(ISPICKVAL(Allocation_Schedule__r.Status__c, &apos;Enacted By Utility&apos;)))</errorConditionFormula>
+        <errorMessage>Allocation Schedule must be &quot;Billing&quot; or &quot;Enacted by Utility&quot;</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Default_Credit_Value_Range</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
