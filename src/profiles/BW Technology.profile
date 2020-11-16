@@ -47723,6 +47723,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility_Data_Request__c.Detail_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_Data_Request__c.Exception_Reason_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -47734,6 +47739,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Data_Request__c.Government_Credit_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Data_Request__c.Header_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47784,6 +47794,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Data_Request__c.Request_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Request_Status_new__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
