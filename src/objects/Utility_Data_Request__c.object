@@ -295,6 +295,43 @@ U=Customer receives supply from the Utility</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Detail_Status__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Tracks the status of the USGH EDI request record</inlineHelpText>
+        <label>Detail Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pending</fullName>
+                    <default>true</default>
+                    <label>Pending</label>
+                </value>
+                <value>
+                    <fullName>Data Received</fullName>
+                    <default>false</default>
+                    <label>Data Received</label>
+                </value>
+                <value>
+                    <fullName>Complete</fullName>
+                    <default>false</default>
+                    <label>Complete</label>
+                </value>
+                <value>
+                    <fullName>Error</fullName>
+                    <default>false</default>
+                    <label>Error</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Exception_Reason_Code__c</fullName>
         <description>Ex: A13=Other A76=Account not found or invalid
 A80=Service, Commodity or Billing Option Not Available
@@ -338,6 +375,48 @@ Y=Yes, account does have a NYPA Discount</inlineHelpText>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Header_Status__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Tracks the status of the USGH record for EDI requests</inlineHelpText>
+        <label>Header Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pending</fullName>
+                    <default>true</default>
+                    <label>Pending</label>
+                </value>
+                <value>
+                    <fullName>Sent</fullName>
+                    <default>false</default>
+                    <label>Sent</label>
+                </value>
+                <value>
+                    <fullName>Data Received</fullName>
+                    <default>false</default>
+                    <label>Data Received</label>
+                </value>
+                <value>
+                    <fullName>Complete</fullName>
+                    <default>false</default>
+                    <label>Complete</label>
+                </value>
+                <value>
+                    <fullName>Error</fullName>
+                    <default>false</default>
+                    <label>Error</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>LDC_Customer_Eligibility__c</fullName>
@@ -512,6 +591,28 @@ Complete - All data received and updated</inlineHelpText>
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Request_Status_new__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(OR(TEXT(Header_Status__c) =&apos;Error&apos;,TEXT(Detail_Status__c )=&apos;Error&apos;),&quot;Error&quot;,
+    IF(AND(TEXT(Header_Status__c) =&apos;Data Received&apos;,TEXT(Detail_Status__c )=&apos;Data Received&apos;),&quot;Data Received&quot;,
+        IF(OR(TEXT(Header_Status__c) =&apos;Data Received&apos;,TEXT(Detail_Status__c )=&apos;Data Received&apos;),&quot;Partial Data Received&quot;,
+            IF(AND(TEXT(Header_Status__c) =&apos;Complete&apos;,TEXT(Detail_Status__c )=&apos;Complete&apos;),&quot;Complete&quot;,
+                IF(TEXT(Header_Status__c) =&apos;Sent&apos;,&quot;Sent&quot;,
+                    IF(TEXT(Header_Status__c) = &apos;Pending&apos;,&quot;Pending&quot;,&quot;Error&quot;)
+                )
+            )
+        )
+    )
+)</formula>
+        <inlineHelpText>Overall status of the request based on the header and detail status fields. Both header and detail statuses must be complete for the request status to change to complete.</inlineHelpText>
+        <label>Request Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Sender_Transaction_ID__c</fullName>
