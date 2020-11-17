@@ -239,6 +239,10 @@ const getContractDocuments = (component) => {
     }, 60000);
 }
 
+const navigateBack = (component) => {
+    component.dispatchEvent(new CustomEvent('navigateback', {}));
+}
+
 const validDisclosureConsent = (component) => {
     if (!component.disclosures) {
         showWarningToast(
@@ -320,5 +324,6 @@ export {
     showCreditCheckApproval,
     showCSAgreementApproval,
     consentsComplete,
-    getCreditCheckLabel
+    getCreditCheckLabel,
+    navigateBack
 }
