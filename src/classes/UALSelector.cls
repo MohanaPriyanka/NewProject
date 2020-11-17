@@ -4,6 +4,7 @@
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UALSelector {
+    
     public Utility_Account_Log__c selectOne(Id utilityAccountLogId) {
         List<Utility_Account_Log__c> uals = this.selectAll(new Set<Id>{utilityAccountLogId});
         if (uals.isEmpty()) {
@@ -11,29 +12,35 @@ public without sharing class UALSelector {
         }
         return uals[0];
     }
+    
     public List<Utility_Account_Log__c> selectAll(Set<Id> utilityAccountLogIds) {
         return [
             SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
                 Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
-                Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name
+                Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
+            	Num_months_Annual_kWh__c, Num_months_Average_Demand__c
             FROM Utility_Account_Log__c
             WHERE Id = :utilityAccountLogIds
         ];
     }
+    
     public Map<Id,Utility_Account_Log__c> selectAllMap(Set<Id> utilityAccountLogIds) {
         return new Map<Id, Utility_Account_Log__c>([
             SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
                 Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
-                Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name
+                Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
+            	Num_months_Annual_kWh__c, Num_months_Average_Demand__c
             FROM Utility_Account_Log__c
             WHERE Id = :utilityAccountLogIds
         ]);
     }
+    
     public Map<Id, Utility_Account_Log__c> selectAllByLeadMap(Set<Id> leadIds) {
         return new Map<Id, Utility_Account_Log__c>([
             SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
             Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
-            Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name, QC_Status__c
+            Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name, QC_Status__c,
+            Num_months_Annual_kWh__c, Num_months_Average_Demand__c
             FROM Utility_Account_Log__c
             WHERE Lead__c = :leadIds
         ]);
