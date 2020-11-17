@@ -33,7 +33,7 @@ public without sharing class UtilityDataRequestService {
         this.newUDRMap = newUDRMap;
     }
     
-    private class udrObject {
+    class udrObject {
         private Id udrId;
         private List<Utility_Data_Request_Period__c> listKH = new List<Utility_Data_Request_Period__c>();
         private List<Utility_Data_Request_Period__c> listK1 = new List<Utility_Data_Request_Period__c>();
