@@ -32,32 +32,6 @@ public without sharing class UtilityDataRequestService {
         this.oldUDRMap = oldUDRMap;
         this.newUDRMap = newUDRMap;
     }
-    
-    class udrObject {
-        private Id udrId;
-        private List<Utility_Data_Request_Period__c> listKH = new List<Utility_Data_Request_Period__c>();
-        private List<Utility_Data_Request_Period__c> listK1 = new List<Utility_Data_Request_Period__c>();
-        
-        public udrObject(Id udrId) {
-            this.udrId = udrId;
-        }
-        
-        public void addUdrpKH(Utility_Data_Request_Period__c udrp) {
-            listKH.add(udrp);
-        }
-        
-        public void addUdrpK1(Utility_Data_Request_Period__c udrp) {
-            listK1.add(udrp);
-        }
-        
-        public List<Utility_Data_Request_Period__c> getListKH() {
-            return this.listKH;
-        }
-        
-        public List<Utility_Data_Request_Period__c> getListK1() {
-            return this.listK1;
-        }
-    }
 
     /**
      * @description Populates the UDR.Annual_kWh and the UAL.Annual_kWh with the value calculated in the getAnnualkWh method.
@@ -396,4 +370,29 @@ public without sharing class UtilityDataRequestService {
         return udrToRateClassMap.get(udrId);
     }
     
+    public class udrObject {
+    	private Id udrId;
+    	private List<Utility_Data_Request_Period__c> listKH = new List<Utility_Data_Request_Period__c>();
+    	private List<Utility_Data_Request_Period__c> listK1 = new List<Utility_Data_Request_Period__c>();
+        
+        public udrObject(Id udrId) {
+            this.udrId = udrId;
+        }
+        
+        public void addUdrpKH(Utility_Data_Request_Period__c udrp) {
+            listKH.add(udrp);
+        }
+        
+        public void addUdrpK1(Utility_Data_Request_Period__c udrp) {
+            listK1.add(udrp);
+        }
+        
+        public List<Utility_Data_Request_Period__c> getListKH() {
+            return this.listKH;
+        }
+        
+        public List<Utility_Data_Request_Period__c> getListK1() {
+            return this.listK1;
+        }
+	}
 }
