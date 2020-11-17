@@ -5,7 +5,6 @@
     <changePasswordTemplate>CS_Application_Email_Notifications/CommunityChangePasswordEmailTemplate</changePasswordTemplate>
     <communityRoles/>
     <disableReputationRecordConversations>false</disableReputationRecordConversations>
-    <emailFooterLogo>Communities_Shared_Document_Folder/BlueLogo_png.png</emailFooterLogo>
     <emailSenderAddress>lalexander@bluewavesolar.com</emailSenderAddress>
     <emailSenderName>BlueWave Solar</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
@@ -28,9 +27,9 @@
     <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <networkMemberGroups>
+        <profile>partner portal community manager</profile>
         <profile>admin</profile>
         <profile>partner portal community user</profile>
-        <profile>partner portal community manager</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
