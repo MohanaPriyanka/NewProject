@@ -787,7 +787,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         continueUrl.getParameters().put('email', lead.Email);
         continueUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
         continueUrl.getParameters().put('loc', 'agree');
-        lead.Contract_eSign_Link__c = continueUrl.getUrl();
+        lead.Contract_eSign_Link__c = resignUrl.getUrl();
     }
 
     public String getApplicationStatus(Lead lead) {
