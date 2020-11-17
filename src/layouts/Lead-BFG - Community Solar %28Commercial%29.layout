@@ -189,7 +189,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Moody_s_Risk_Calc__c</field>
+                <field>Moodys_RiskCalc__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -492,11 +492,6 @@
             <actionType>CustomButton</actionType>
             <sortOrder>18</sortOrder>
         </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Lead.Email_Contract_Re_Sign_Link</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>19</sortOrder>
-        </platformActionListItems>
     </platformActionList>
     <quickActionList>
         <quickActionListItems>
@@ -531,6 +526,14 @@
             </layoutItem>
         </relatedContentItems>
     </relatedContent>
+    <relatedLists>
+        <fields>CASES.CASE_NUMBER</fields>
+        <fields>CASES.SUBJECT</fields>
+        <fields>CASES.CREATED_DATE</fields>
+        <fields>CASES.PRIORITY</fields>
+        <fields>OWNER_NAME</fields>
+        <relatedList>Case.Lead_Lookup__c</relatedList>
+    </relatedLists>
     <relatedLists>
         <fields>ACCOUNT.NAME</fields>
         <fields>ACCOUNT.ADDRESS2_STREET</fields>
