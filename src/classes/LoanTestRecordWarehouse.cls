@@ -8,8 +8,18 @@
 public class LoanTestRecordWarehouse {
     public static List<String> partnerSetup() {
         List<String> partnerSetupList = new List<String>();
-        Partner__c partner = new Partner__c(Name = 'Bluewave Inside Sales');
+        Account partnerAccount = new Account(
+            Name = 'Bluewave Inside Sales',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
+        insert partnerAccount;
+        Partner__c partner = new Partner__c(
+            Name = 'Bluewave Inside Sales',
+            Account__c = partnerAccount.Id
+        );
         insert partner;
+        partnerAccount.Partner__c = partner.Id;
+        update partnerAccount;
         partnerSetupList.add(partner.Id);
 
         BSST__c salesRep = new BSST__c(Name = 'BlueWave User', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@Sales.com');

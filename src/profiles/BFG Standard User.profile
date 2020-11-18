@@ -3168,6 +3168,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PartnerSSSEligibilitySelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PartnerSSSEligibilitySelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PartnerSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3241,6 +3249,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProductionSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -34925,6 +34937,31 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Commission_Structure__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Compound_Key__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Partner_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Partner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Partner_Task__c.Action_Label__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -38544,9 +38581,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Sales_Partners__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -57296,6 +57333,9 @@
         <layout>Partner_Product_Junction__c-Partner Product Junction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Partner_Shared_Solar_System_Eligibility__c-Partner Shared Solar System Access Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Partner_Task__c-Child Partner Task</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -59248,6 +59288,15 @@
         <modifyAllRecords>false</modifyAllRecords>
         <object>Partner_Product_Junction__c</object>
         <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Partner_Shared_Solar_System_Eligibility__c</object>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>allErrors</name>
         <label>allErrors</label>
-        <locationX>955</locationX>
-        <locationY>194</locationY>
+        <locationX>836</locationX>
+        <locationY>255</locationY>
         <assignmentItems>
             <assignToReference>sovc_Error_Logs</assignToReference>
             <operator>Add</operator>
@@ -17,10 +18,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assign_firstUtilityId</name>
+        <label>Assign firstUtilityId</label>
+        <locationX>482</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>firstUtilityId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>utilityId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getParcelZip</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assign_Input_Variables</name>
         <label>Assign Input Variables</label>
-        <locationX>379</locationX>
-        <locationY>566</locationY>
+        <locationX>177</locationX>
+        <locationY>593</locationY>
         <assignmentItems>
             <assignToReference>productId</assignToReference>
             <operator>Assign</operator>
@@ -56,7 +73,7 @@
     <assignments>
         <name>Assign_Lead_id</name>
         <label>Assign Lead Id</label>
-        <locationX>508</locationX>
+        <locationX>351</locationX>
         <locationY>313</locationY>
         <assignmentItems>
             <assignToReference>leadId</assignToReference>
@@ -72,8 +89,8 @@
     <assignments>
         <name>error_Log</name>
         <label>error_Log</label>
-        <locationX>848</locationX>
-        <locationY>188</locationY>
+        <locationX>730</locationX>
+        <locationY>255</locationY>
         <assignmentItems>
             <assignToReference>sov_Error_Log.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -125,8 +142,8 @@
     <decisions>
         <name>MethodDecision</name>
         <label>MethodDecision</label>
-        <locationX>268</locationX>
-        <locationY>380</locationY>
+        <locationX>166</locationX>
+        <locationY>315</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Manual_Inputs</name>
@@ -173,6 +190,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -182,15 +205,16 @@
     <recordLookups>
         <name>getLead</name>
         <label>getLead</label>
-        <locationX>639</locationX>
-        <locationY>310</locationY>
+        <locationX>482</locationX>
+        <locationY>313</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getParcelZip</targetReference>
+            <targetReference>Assign_firstUtilityId</targetReference>
         </connector>
         <faultConnector>
             <targetReference>error_Log</targetReference>
         </faultConnector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -223,8 +247,8 @@
     <recordLookups>
         <name>getParcelZip</name>
         <label>getParcelZip</label>
-        <locationX>476</locationX>
-        <locationY>810</locationY>
+        <locationX>490</locationX>
+        <locationY>593</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getUtility</targetReference>
@@ -232,6 +256,7 @@
         <faultConnector>
             <targetReference>error_Log</targetReference>
         </faultConnector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
             <operator>EqualTo</operator>
@@ -248,16 +273,12 @@
             <assignToReference>utilityCount</assignToReference>
             <field>Utility_Junction_Count__c</field>
         </outputAssignments>
-        <outputAssignments>
-            <assignToReference>firstUtilityId</assignToReference>
-            <field>Utility_Relationship_1__c</field>
-        </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>getPartner</name>
         <label>getPartner</label>
-        <locationX>706</locationX>
-        <locationY>805</locationY>
+        <locationX>718</locationX>
+        <locationY>593</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getProduct</targetReference>
@@ -265,6 +286,7 @@
         <faultConnector>
             <targetReference>error_Log</targetReference>
         </faultConnector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -281,8 +303,8 @@
     <recordLookups>
         <name>getProduct</name>
         <label>getProduct</label>
-        <locationX>813</locationX>
-        <locationY>803</locationY>
+        <locationX>831</locationX>
+        <locationY>593</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>scrResults</targetReference>
@@ -290,6 +312,7 @@
         <faultConnector>
             <targetReference>error_Log</targetReference>
         </faultConnector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -306,8 +329,8 @@
     <recordLookups>
         <name>getUtility</name>
         <label>Get First Utility</label>
-        <locationX>580</locationX>
-        <locationY>808</locationY>
+        <locationX>597</locationX>
+        <locationY>593</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getPartner</targetReference>
@@ -315,6 +338,7 @@
         <faultConnector>
             <targetReference>error_Log</targetReference>
         </faultConnector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -332,8 +356,8 @@
     <screens>
         <name>scrCS_Qualification_Check</name>
         <label>Which Solar Farms will a customer qualify for?</label>
-        <locationX>171</locationX>
-        <locationY>231</locationY>
+        <locationX>176</locationX>
+        <locationY>174</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -515,8 +539,8 @@
     <screens>
         <name>scrErrors</name>
         <label>Errors</label>
-        <locationX>1215</locationX>
-        <locationY>199</locationY>
+        <locationX>1068</locationX>
+        <locationY>255</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -531,8 +555,8 @@
     <screens>
         <name>scrResults</name>
         <label>Results</label>
-        <locationX>1165</locationX>
-        <locationY>753</locationY>
+        <locationX>1028</locationX>
+        <locationY>592</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -612,8 +636,8 @@
     <subflows>
         <name>Log_Errors</name>
         <label>Log Errors</label>
-        <locationX>1068</locationX>
-        <locationY>193</locationY>
+        <locationX>949</locationX>
+        <locationY>255</locationY>
         <connector>
             <targetReference>scrErrors</targetReference>
         </connector>
@@ -627,10 +651,12 @@
     </subflows>
     <textTemplates>
         <name>errorMessage</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;p&gt;Flow: Check CS Qualification Flow&lt;/p&gt;&lt;p&gt;Message: {!$Flow.FaultMessage}&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>utilityNames</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;p&gt;Utility: &lt;/p&gt;</text>
     </textTemplates>
     <variables>

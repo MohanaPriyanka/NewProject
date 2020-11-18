@@ -8,17 +8,24 @@ private class CSQualificationTestclass {
     public static void setupTestData() {
         Test.startTest();
 
-        Account accountRecord = new Account(
+        Id partnerAccountRTID = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId();
+        Account partnerAccount = new Account(
             Name = 'Mass Renewables',
             State_Market__c = 'MA',
             Enable_CS_Application_in_Portal__c = true,
-            Community_Solar_Application_Type__c = 'CSAP');
-        insert accountRecord;
+            Community_Solar_Application_Type__c = 'CSAP',
+            RecordTypeId = partnerAccountRTID
+        );
+        insert partnerAccount;
 
         Partner__c partner = new Partner__c(
             Name = 'Mass Renewables',
-            Email__c = 'massRenewables@test.com');
+            Email__c = 'massRenewables@test.com',
+            Account__c = partnerAccount.Id
+        );
         insert partner;
+        partnerAccount.Partner__c = partner.Id;
+        update partnerAccount;
 
         TestFactory.setDefaultCSPartner(partner.Id);
 
@@ -106,10 +113,10 @@ private class CSQualificationTestclass {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Product__c = vderProduct.Id,
             Maximum_Subscription_Capacity_kWDC__c = 25);
         insert sss1;
+        insert SharedSolarSystemsTest.getPartnerEligibilities(sss1, partnerAccount);
 
         Lead resiLead = new Lead(
             FirstName = 'Switch',

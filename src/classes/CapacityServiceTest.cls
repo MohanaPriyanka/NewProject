@@ -107,6 +107,8 @@ public with sharing class CapacityServiceTest {
 
         insert new List<Product2>{srecProduct, smartProduct};
 
+        List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities =
+            new List<Partner_Shared_Solar_System_Eligibility__c>();
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
@@ -120,7 +122,6 @@ public with sharing class CapacityServiceTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'ACE Solar',
             Product__c = srecProduct.Id,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Available_SMB_Underwriting_Method_FICO__c = true,
@@ -139,7 +140,6 @@ public with sharing class CapacityServiceTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'BlueWave Inside Sales',
             Product__c = srecProduct.Id,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Available_SMB_Underwriting_Method_FICO__c = true,
@@ -158,7 +158,6 @@ public with sharing class CapacityServiceTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'BlueWave Inside Sales',
             Product__c = smartProduct.Id,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Available_SMB_Underwriting_Method_FICO__c = false,
@@ -177,7 +176,6 @@ public with sharing class CapacityServiceTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Product__c = smartProduct.Id,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Available_SMB_Underwriting_Method_FICO__c = false,
@@ -185,13 +183,35 @@ public with sharing class CapacityServiceTest {
 
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4};
 
-        Partner__c partner = new Partner__c(
-            Name = 'ACE Solar'
+        Id partnerAccountRTID = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId();
+        Account aceSolarAccount = new Account(
+            Name = 'ACE Solar',
+            RecordTypeId = partnerAccountRTID
+        );
+        Account defaultPartnerAccount = new Account(
+            Name = 'BlueWave Inside Sales',
+            RecordTypeId = partnerAccountRTID
+        );
+        insert new List<Account>{aceSolarAccount, defaultPartnerAccount};
+        Partner__c aceSolar = new Partner__c(
+            Name = 'ACE Solar',
+            Account__c = aceSolarAccount.Id
         );
         Partner__c defaultPartner = new Partner__c(
-            Name = 'BlueWave Inside Sales'
+            Name = 'BlueWave Inside Sales',
+            Account__c = defaultPartnerAccount.Id
         );
-        insert new List<Partner__c>{partner, defaultPartner};
+        insert new List<Partner__c>{aceSolar, defaultPartner};
+        aceSolarAccount.Partner__c = aceSolar.Id;
+        defaultPartnerAccount.Partner__c = defaultPartner.Id;
+        update new List<Account>{aceSolarAccount, defaultPartnerAccount};
+
+        partnerEligibilities.addAll(SharedSolarSystemsTest.getPartnerEligibilities(sss1, aceSolarAccount));
+        partnerEligibilities.addAll(SharedSolarSystemsTest.getPartnerEligibilities(sss2, defaultPartnerAccount));
+        partnerEligibilities.addAll(SharedSolarSystemsTest.getPartnerEligibilities(sss3, defaultPartnerAccount));
+        partnerEligibilities.addAll(SharedSolarSystemsTest.getPartnerEligibilities(sss4, aceSolarAccount));
+        partnerEligibilities.addAll(SharedSolarSystemsTest.getPartnerEligibilities(sss4, defaultPartnerAccount));
+        insert partnerEligibilities;
 
         System_Properties__c property = new System_Properties__c(Name = 'System', Default_CS_Partner__c = defaultPartner.Id);
         insert property;
@@ -322,10 +342,13 @@ public with sharing class CapacityServiceTest {
 
     @IsTest
     private static void testFindCapacityByZipCodeNoPartners() {
-        Partner__c partner =[SELECT Id FROM Partner__c WHERE Name = 'ACE Solar'];
-        Shared_Solar_System__c sss = [SELECT Id, Sales_Partners__c FROM Shared_Solar_System__c WHERE Sales_Partners__c = 'ACE Solar'];
-        sss.Sales_Partners__c = null;
-        update sss;
+        Account partner = [SELECT Id FROM Account WHERE Name = 'ACE Solar'];
+        List<Partner_Shared_Solar_System_Eligibility__c> eligibilities = [
+            SELECT Id
+            FROM Partner_Shared_Solar_System_Eligibility__c
+            WHERE Account__c = :partner.Id
+        ];
+        delete eligibilities;
 
         CapacityService service = new CapacityService();
         CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345', partner.Id);
@@ -345,9 +368,16 @@ public with sharing class CapacityServiceTest {
         CapacityService service = new CapacityService();
         CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345');
         System.assertEquals(1, response.sharedSolarSystems.size());
+        Id sssId = new List<Shared_Solar_System__c>(response.sharedSolarSystems)[0].Id;
         System.assertEquals(4, response.utilityZipCodesServed.size());
-        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>(response.sharedSolarSystems);
-        System.assertEquals('ACE Solar', sharedSolarSystems[0].Sales_Partners__c,
+        List<Partner_Shared_Solar_System_Eligibility__c> partnerSharedSolarSystemEligibilities = [
+            SELECT Id, Account__r.Partner__r.Name
+            FROM Partner_Shared_Solar_System_Eligibility__c
+            WHERE Shared_Solar_System__c IN :response.sharedSolarSystems
+        ];
+        System.assertEquals(1, partnerSharedSolarSystemEligibilities.size(),
+            'Expected the system for 12345 to only be available for one partner');
+        System.assertEquals('ACE Solar', partnerSharedSolarSystemEligibilities[0].Account__r.Partner__r.Name,
             'Expected the system for 12345 to only be available for ACE Solar');
         System.assertEquals(true, response.hasCapacity(), 'Expected to find capacity if not looking by partner (for CSAP)');
 
@@ -368,10 +398,19 @@ public with sharing class CapacityServiceTest {
 
         response = service.findCapacityByZipcode('23456');
         System.assertEquals(2, response.sharedSolarSystems.size());
-        sharedSolarSystems = new List<Shared_Solar_System__c>(response.sharedSolarSystems);
-        System.assertEquals('BlueWave Inside Sales', sharedSolarSystems[0].Sales_Partners__c,
+        partnerSharedSolarSystemEligibilities = [
+            SELECT Id, Shared_Solar_System__c, Account__r.Partner__r.Name
+            FROM Partner_Shared_Solar_System_Eligibility__c
+            WHERE Shared_Solar_System__c IN :response.sharedSolarSystems
+        ];
+        System.assertNotEquals(
+            partnerSharedSolarSystemEligibilities[0].Shared_Solar_System__c,
+            partnerSharedSolarSystemEligibilities[1].Shared_Solar_System__c,
+            'There should be two partner eligibilities, one for each system in the response'
+        );
+        System.assertEquals('BlueWave Inside Sales', partnerSharedSolarSystemEligibilities[0].Account__r.Partner__r.Name,
             'Expected the systems for 23456 to only be available for BlueWave Inside Sales, the default partner');
-        System.assertEquals('BlueWave Inside Sales', sharedSolarSystems[1].Sales_Partners__c,
+        System.assertEquals('BlueWave Inside Sales', partnerSharedSolarSystemEligibilities[1].Account__r.Partner__r.Name,
             'Expected the systems for 23456 to only be available for BlueWave Inside Sales, the default partner');
         System.assertEquals(true, response.hasCapacity(), 'Expected to find capacity if not looking by partner (for CSAP)');
 

@@ -55,7 +55,7 @@ export default class CSQualificationTable extends LightningElement {
                 match.sssFICO = result[i].sss.Credit_Score_Requirement__c;
                 match.minFICO = result[i].minFICO;
 
-                match.sssPartners = result[i].sss.Sales_Partners__c;
+                match.sssPartners = result[i].eligiblePartners;
                 match.hasPartner = result[i].hasPartner;
 
                 formattedDataMap.set(match.sssName, match)

@@ -29,7 +29,6 @@ private class TransferPartServiceTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25);
 
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(Name = 'SSS 2',
@@ -46,7 +45,6 @@ private class TransferPartServiceTest {
             Assignment_Order__c = '2',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25);
 
         insert new List<Shared_Solar_System__c> {sss1, sss2};
