@@ -90,6 +90,13 @@ public without sharing class SubscriptionManagementService implements Queueable{
         List<Subscription_Order__c> stampSOs = soSelector.selectByIds(soIds);
         for (Subscription_Order__c so : stampSOs ) {
             so.Effective_Date__c = System.now();
+            if (so.System_Change_Percent_Share_of_System__c == null) {
+                throw new Util.BWException('A Subscription Order is unable to be created due to the UAS missing required data. Please ensure UAS ' + so.Utility_Account_Subscription__r.Id +' has: ' + '\n' +
+                    '1. An Opportunity' +'\n' +
+                    '2. A Shared Solar System' +'\n' +
+                    '3. A Sizing Method ' + '\n' +
+                'After populating the correct fields above, try again. If you still experience an error, contact BizApps');
+            }
             so.Approved_Change_in_Percent_Share__c = so.System_Change_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
             so.Approved_Change_in_Subscription__c = so.System_Change_kW_DC_Rounded__c - so.Previous_kw_DC_Subscription__c;
             if (so.Product__r.Customer_Subscription_Type__c == 'kWh') {
@@ -165,18 +172,9 @@ public without sharing class SubscriptionManagementService implements Queueable{
             return;
         }
 
-        try {
-            List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
-            update updateSOs;
-            publishSubscriptionOrderChangeEvents(updateSOs);
-        } catch (Exception e) {
-            Logger.logNow(
-                'SubscriptionManagementService',
-                'checkSOApproval',
-                'Did not stamp approved values, publish subscription change events, or set CFDs on these SOs:\n' + JSON.serialize(approvedSOs),
-                Logger.ERROR);
-            return;
-        }
+        List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
+        update updateSOs;
+        publishSubscriptionOrderChangeEvents(updateSOs);
 
         try {
             ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(approvedSOs);
