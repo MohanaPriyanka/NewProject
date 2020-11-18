@@ -115,7 +115,8 @@
                       name="email"
                       value={restLead.email}
                       label="Email"
-                      onblur={emailOnBlur}
+                      onchange={genericOnChange}
+                      onblur={findDuplicate}
                       type="email"
                       required
                       disabled={resumedApp}>

@@ -53,7 +53,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track showAddress;
     @track isPhone;
     @track helpTextVisible;
-    @track email;
     @track showModal;
 
     isFico = true;
@@ -212,14 +211,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
     }
 
-    emailOnBlur(event) {
-        this.restLead[event.target.name] = event.target.value;
-        this.email = event.target.value;
-        this.findDuplicate();
-    }
-
     findDuplicate() {
-        findIncompleteApplication({email : this.email})
+        findIncompleteApplication({email : this.restLead.email})
         .then(result => {
             if (result != null) {
                 this.showModal = true;
