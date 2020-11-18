@@ -29046,6 +29046,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Production__c.Main_Transfer_Default_Credit_Value_Input__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Production__c.Main_Transfer_Default_Credit_Value__c</field>
         <readable>true</readable>
@@ -33567,6 +33572,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Transfer__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Transfer__c.Date_of_Transfer__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -35558,6 +35568,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility__c.EIA_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Expect_Unsubscribed_Credits__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Host_Account_Bill_Transfer_Month__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

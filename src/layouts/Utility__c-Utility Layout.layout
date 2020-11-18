@@ -26,6 +26,14 @@
                 <behavior>Edit</behavior>
                 <field>Comments__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Expect_Unsubscribed_Credits__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Host_Account_Bill_Transfer_Month__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
