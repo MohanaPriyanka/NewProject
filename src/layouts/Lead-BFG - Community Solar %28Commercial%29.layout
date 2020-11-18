@@ -5,7 +5,6 @@
     <customButtons>LASER_Credit_Access_Custom</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>FindDup</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
@@ -531,6 +530,14 @@
             </layoutItem>
         </relatedContentItems>
     </relatedContent>
+    <relatedLists>
+        <fields>CASES.CASE_NUMBER</fields>
+        <fields>CASES.SUBJECT</fields>
+        <fields>CASES.CREATED_DATE</fields>
+        <fields>CASES.PRIORITY</fields>
+        <fields>OWNER_NAME</fields>
+        <relatedList>Case.Lead_Lookup__c</relatedList>
+    </relatedLists>
     <relatedLists>
         <fields>ACCOUNT.NAME</fields>
         <fields>ACCOUNT.ADDRESS2_STREET</fields>
