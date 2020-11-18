@@ -36,14 +36,18 @@ public with sharing class CSAPControllerTest {
             Name = 'BlueWave Customer Care',
             State_Market__c = 'MA',
             Enable_CS_Application_in_Portal__c = true,
-            Community_Solar_Application_Type__c = 'CSAP');
+            Community_Solar_Application_Type__c = 'CSAP',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
         insert accountRecord;
 
         Account accountRecord2 = new Account(
             Name = 'Mass Renewables',
             State_Market__c = 'MA',
             Enable_CS_Application_in_Portal__c = true,
-            Community_Solar_Application_Type__c = 'CSAP');
+            Community_Solar_Application_Type__c = 'CSAP',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
         insert accountRecord2;
 
         Partner__c partner2 = new Partner__c(
@@ -51,6 +55,8 @@ public with sharing class CSAPControllerTest {
             Email__c = 'massRenewables@test.com',
             Account__c = accountRecord2.Id);
         insert partner2;
+        accountRecord2.Partner__c = partner2.Id;
+        update accountRecord2;
 
         TestFactory.setDefaultCSPartner(partner2.Id);
 
@@ -164,11 +170,15 @@ public with sharing class CSAPControllerTest {
                                                                     Assignment_Order__c = '1',
                                                                     Expected_Yield_kWh_kW__c = 1300,
                                                                     Assemblage_Count__c = 1,
-                                                                    Sales_Partners__c = 'All',
                                                                     Product__c = smartProduct.Id,
                                                                     Maximum_Subscription_Capacity_kWDC__c = 25,
                                                                     Available_SMB_Underwriting_Method_FICO__c = true);
         insert sss1;
+
+        insert SharedSolarSystemsTest.getPartnerEligibilities(
+            new List<Shared_Solar_System__c>{sss1}, [SELECT Id, Name FROM Account WHERE RecordType.Name = 'Partner Account']
+        );
+
         Test.stopTest();
     }
 
@@ -570,11 +580,13 @@ public with sharing class CSAPControllerTest {
     @IsTest static void testSLPortalCSAPApplication() {
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
+        Id partnerAccountRTID = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId();
         Account account = new Account(
             Name = 'Solar Installer',
             State_Market__c = 'MA',
             Enable_CS_Application_in_Portal__c = true,
-            Community_Solar_Application_Type__c = 'CSAP'
+            Community_Solar_Application_Type__c = 'CSAP',
+            RecordTypeId = partnerAccountRTID
         );
         insert account;
 
@@ -583,6 +595,9 @@ public with sharing class CSAPControllerTest {
             Email__c = 'test@test.com',
             Account__c = account.Id);
         insert partner;
+        account.Partner__c = partner.Id;
+        update account;
+        insert SharedSolarSystemsTest.getPartnerEligibilities([SELECT Id FROM Shared_Solar_System__c], new List<Account>{account});
 
         BSST__c salesRep = new BSST__c(
             Name = 'Test Tester',
@@ -813,20 +828,12 @@ public with sharing class CSAPControllerTest {
         );
         insert crLog;
 
-
         CSAPController.SSSResult result = CSAPController.checkLeadCreditIfQualified(leadToInsert.Id);
 
         LASERCA__Personal_Credit_Report__c checkPCR = [
             SELECT Id, LASERCA__Credit_Score__c
             FROM LASERCA__Personal_Credit_Report__c
             WHERE Id = :pcr.Id
-            LIMIT 1
-        ];
-
-        Lead checkLead = [
-            SELECT Id
-            FROM Lead
-            WHERE Id = :leadToInsert.Id
             LIMIT 1
         ];
 

@@ -13,11 +13,20 @@ public with sharing class SubscriptionSizingTestclass {
     public static void testSetup() {
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
 
+        Id partnerAccountRTID = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId();
+        Account partnerAccount = new Account(
+            Name = 'BlueWave Test Partner',
+            RecordTypeId = partnerAccountRTID
+        );
+        insert partnerAccount;
         Partner__c partner1 = new Partner__c (
             Name = 'BlueWave Test Partner',
-            Email__c = 'bwtest@email.com'
+            Email__c = 'bwtest@email.com',
+            Account__c = partnerAccount.Id
         );
         insert partner1;
+        partnerAccount.Partner__c = partner1.Id;
+        update partnerAccount;
 
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
@@ -121,7 +130,6 @@ public with sharing class SubscriptionSizingTestclass {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Available_SMB_Underwriting_Method_FICO__c = true
         );
@@ -143,7 +151,6 @@ public with sharing class SubscriptionSizingTestclass {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1316,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Available_SMB_Underwriting_Method_FICO__c = true
         );
@@ -165,12 +172,13 @@ public with sharing class SubscriptionSizingTestclass {
             Assignment_Order__c = '2',
             Expected_Yield_kWh_kW__c = 1316,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Available_SMB_Underwriting_Method_FICO__c = true
         );
         //max kwh subscription = 25*1316 = 32900
-        insert new List<Shared_Solar_System__c>{costSSS, kwhSSS, kwhSSSTwo};
+        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{costSSS, kwhSSS, kwhSSSTwo};
+        insert sharedSolarSystems;
+        insert SharedSolarSystemsTest.getPartnerEligibilities(sharedSolarSystems, new List<Account>{partnerAccount});
 
         Load_U__c eversourceLZU = new Load_U__c(
             Name = '12345',
@@ -576,7 +584,7 @@ public with sharing class SubscriptionSizingTestclass {
         lc.setLeadId(switchLead.Id);
         lc.setConvertedStatus('Qualified');
         lc.setDoNotCreateOpportunity(true);
-
+        Test.startTest();
         Database.LeadConvertResult lcr = Database.convertLead(lc, false);
         System.assert(lcr.isSuccess(), lcr.getErrors());
 
@@ -591,7 +599,7 @@ public with sharing class SubscriptionSizingTestclass {
         } else {
             System.assertEquals(1, convertedOpps.size());
         }
-
+        Test.stopTest();
 
         List<Utility_Account_Subscription__c> convertedUASes = [
             SELECT Id, Sizing_Method__c, Shared_Solar_System__r.Name, Annual_kWh_Subscription_Future_Rollup__c,
@@ -618,7 +626,6 @@ public with sharing class SubscriptionSizingTestclass {
             System.assertEquals(25.0776, convertedUASes[0].Future_Customer_Subscription_KWDC_Rollup__c);
         }
 
-
         List<Subscription_Order__c> sOrders = [
             SELECT Id, Utility_NMC_Tariff__c, Size_Ratio__c, Utility_Account_Subscription__c, Utility_NMC_Tariff__r.Size_Ratio__c,
                 Utility_Account_Subscription__r.Sizing_Method__c, New_Annual_kWh__c,
@@ -626,7 +633,6 @@ public with sharing class SubscriptionSizingTestclass {
             FROM Subscription_Order__c
             WHERE Utility_Account_Subscription__r.Utility_Account_Log__c = :ual.Id
         ];
-
 
         if (featureService.isEnabled('Sizing_Method')) {
             System.assertEquals(2, sOrders.size());
@@ -639,8 +645,6 @@ public with sharing class SubscriptionSizingTestclass {
         } else {
             System.assertEquals(1, sOrders.size());
         }
-
-
     }
 
     @IsTest

@@ -280,8 +280,7 @@ public without sharing class CSSubscriptionEnroller {
             if (sss.Utility__c == lead.Utility_Relationship__c &&
                 sss.Service_Territories__c != null && 
                 sss.Service_Territories__c.contains(lead.LoadZone__c) &&
-                sss.Sales_Partners__c != null &&
-                (sss.Sales_Partners__c.contains('All') || sss.Sales_Partners__c.contains(lead.Partner_Name__c)) &&
+                SharedSolarSystems.isPartnerEligible(lead.Partner_Lookup__c, sss.Partner_Shared_Solar_System_Accesses__r) &&
                 (lead.Product__c == null || sss.Product__c == lead.Product__c) &&
                 (
                     (lead.Underwriting_Criteria__c == 'FICO' && sss.Available_SMB_Underwriting_Method_FICO__c && Decimal.valueOf(lead.LASER_Credit_Score__c) >= sss.Credit_Score_Requirement__c)

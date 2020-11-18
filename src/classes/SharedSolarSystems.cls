@@ -12,6 +12,8 @@ public inherited sharing class SharedSolarSystems {
     private static ProductSelector productSelector = new ProductSelector();
     @TestVisible
     private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
+    private static PartnerSSSEligibilitySelector eligibilitySelector = new PartnerSSSEligibilitySelector();
+    private MultiMap sssIdToEligiblePartners;
 
     public SharedSolarSystems(List<Shared_Solar_System__c> records) {
         this.records = records;
@@ -122,4 +124,72 @@ public inherited sharing class SharedSolarSystems {
         return contractsToCFDs;
     }
 
+    /**
+     * @description Gets the lead's qualification based on Utility, Service Territory, Partner, Product, and Credit Score
+     * @param lead The lead to check
+     * @param creditScore The lead's credit score
+     * @return Qualified or Unqualified
+     */
+    public String checkCSQualification(Lead lead, Decimal creditScore) {
+        for (Shared_Solar_System__c sss : records) {
+            if (sss.Utility__c == lead.Utility_relationship__c &&
+                (sss.Service_Territories__c != null &&
+                    sss.Service_Territories__c.contains(lead.LoadZone__c)) &&
+                (partnerEligible(sss, lead) || sss.Public__c == true) &&
+                (sss.Product__c == lead.Product__c) &&
+                (creditScore == null || creditScore > sss.Credit_Score_Requirement__c)) {
+                return 'Qualified';
+            }
+        }
+
+        return 'Unqualified';
+    }
+
+    private Boolean partnerEligible(Shared_Solar_System__c sss, Lead lead) {
+        if (sssIdToEligiblePartners == null) {
+            sssIdToEligiblePartners = eligibilitySelector.getPartnersBySSS();
+        }
+        return sssIdToEligiblePartners.containsKey(sss.Id) && sssIdToEligiblePartners.getValueSet(sss.Id).contains(lead.Partner_Lookup__r.Id);
+    }
+
+    /**
+     * @description Removes systems from the sssList that don't have a Partner_SSS_Eligibility__c for the given partner id
+     * @param partnerId Partner with which to check eligibility
+     * @param sssList List of Shared Solar Systems to be pruned
+     */
+    public static void pruneIneligiblePartners(Id partnerId, List<Shared_Solar_System__c> sssList) {
+        for (Integer i = sssList.size()-1; i >= 0; i--) {
+            if (!isPartnerEligible(partnerId, sssList[i].Partner_Shared_Solar_System_Accesses__r)) {
+                sssList.remove(i);
+            }
+        }
+    }
+
+    /**
+     * @description True if the Partner has a corresponding Partner_Shared_Solar_System_Eligibility__c
+     * @param partnerOrAccountId Partner Id to check
+     * @param partnerEligibilities List of Partner_Shared_Solar_System_Accesses__r for a SSS
+     * @return True if found
+     */
+    public static Boolean isPartnerEligible(Id partnerOrAccountId, List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities) {
+        for (Partner_Shared_Solar_System_Eligibility__c partnerEligibility : partnerEligibilities) {
+            if (partnerOrAccountId == partnerEligibility.Account__c || partnerOrAccountId == partnerEligibility.Account__r.Partner__c) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @description Returns a semi-colon delimited list of partners from the list of Partner SSS Eligibility records
+     * @param partnerEligibilities List of eligibility records to summarize
+     * @return Summary
+     */
+    public static String summarizeEligiblePartners(List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities) {
+        String eligiblePartners = '';
+        for (Partner_Shared_Solar_System_Eligibility__c eligibility : partnerEligibilities) {
+            eligiblePartners += eligibility.Account__r.Name + '; ';
+        }
+        return eligiblePartners.removeEnd('; ');
+    }
 }

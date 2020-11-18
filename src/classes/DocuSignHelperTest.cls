@@ -342,16 +342,24 @@ public with sharing class DocuSignHelperTest {
                 Maximum_Subscription_Capacity_kWDC__c = 25,
                 Available_SMB_Underwriting_Method_FICO__c = true
         );
-
-
-        sss1.Sales_Partners__c = 'Barbara Cerullo; Boston Solar';
         insert sss1;
-
-        Partner__c Partner = new Partner__c(Name = 'Boston Solar');
-        insert Partner;
+        RecordType partnerAccountRT = [SELECT Id FROM RecordType WHERE Name = 'Partner Account' AND SobjectType = 'Account' LIMIT 1];
+        Account partnerAccount = new Account(
+            Name = 'Boston Solar',
+            RecordType = partnerAccountRT
+        );
+        insert partnerAccount;
+        Partner__c partner = new Partner__c(
+            Name = 'Boston Solar',
+            Account__c = partnerAccount.Id
+        );
+        insert partner;
+        partnerAccount.Partner__c = partner.Id;
+        update partnerAccount;
+        insert SharedSolarSystemsTest.getPartnerEligibilities(sss1, partnerAccount);
 
         BSST__c newSalesTeam = new BSST__c (Name = 'Partner',
-                Partner__c = Partner.Id,
+                Partner__c = partner.Id,
                 Custom_ID__c = 'partner');
 
         insert newSalesTeam;
@@ -607,7 +615,6 @@ public with sharing class DocuSignHelperTest {
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
                 Maximum_Subscription_Capacity_kWDC__c = 25,
-                Sales_Partners__c = 'Barbara Cerullo; Boston Solar',
                 Available_SMB_Underwriting_Method_FICO__c = true
         );
 
@@ -627,16 +634,28 @@ public with sharing class DocuSignHelperTest {
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
                 Maximum_Subscription_Capacity_kWDC__c = 25,
-                Sales_Partners__c = 'Barbara Cerullo; Boston Solar',
                 Available_SMB_Underwriting_Method_FICO__c = true
         );
-        insert new List<Shared_Solar_System__c>{sss1, sss2};
+        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{sss1, sss2};
+        insert sharedSolarSystems;
 
-        Partner__c Partner = new Partner__c(Name = 'Boston Solar');
-        insert Partner;
+        RecordType partnerAccountRT = [SELECT Id FROM RecordType WHERE Name = 'Partner Account' AND SobjectType = 'Account' LIMIT 1];
+        Account partnerAccount = new Account(
+            Name = 'Boston Solar',
+            RecordType = partnerAccountRT
+        );
+        insert partnerAccount;
+        Partner__c partner = new Partner__c(
+            Name = 'Boston Solar',
+            Account__c = partnerAccount.Id
+        );
+        insert partner;
+        partnerAccount.Partner__c = partner.Id;
+        update partnerAccount;
+        insert SharedSolarSystemsTest.getPartnerEligibilities(sharedSolarSystems, new List<Account>{partnerAccount});
 
         BSST__c newSalesTeam = new BSST__c (Name = 'Partner',
-                Partner__c = Partner.Id,
+                Partner__c = partner.Id,
                 Custom_ID__c = 'partner');
 
         insert newSalesTeam;

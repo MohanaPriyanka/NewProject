@@ -106,7 +106,6 @@ public class LeadServiceTestclass {
             Product__c = csProduct.Id,
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'BlueWave Test Partner',
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Billing_Method__c = 'kWh',
             Available_SMB_Underwriting_Method_Docs__c = true, 
@@ -129,7 +128,6 @@ public class LeadServiceTestclass {
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
             Maximum_Subscription_Capacity_kWDC__c = 25,
-            Sales_Partners__c = 'All',
             Billing_Method__c = 'NMC',
             Available_SMB_Underwriting_Method_Docs__c = true, 
             Available_SMB_Underwriting_Method_FICO__c = true
@@ -138,21 +136,46 @@ public class LeadServiceTestclass {
             sss1, sss2
         };
 
+        Account partnerAccount1 = new Account(
+            Name = 'BlueWave Test Partner',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
+        Account partnerAccount2 = new Account(
+            Name = 'BlueWave Test Partner2',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
+        insert new List<Account>{
+            partnerAccount1, partnerAccount2
+        };
+
         Partner__c partner1 = new Partner__c (
             Name = 'BlueWave Test Partner',
-            Email__c = 'bwtest@email.com'
+            Email__c = 'bwtest@email.com',
+            Account__c = partnerAccount1.Id
         );
-
-        TestFactory.setDefaultCSPartner(partner1.Id);
-
         Partner__c partner2 = new Partner__c(
             Name = 'Other Test Partner',
-            Email__c = 'otherTest@email.com'
+            Email__c = 'otherTest@email.com',
+            Account__c = partnerAccount2.Id
         );
-
         insert new List<Partner__c>{
             partner1, partner2
         };
+        partnerAccount1.Partner__c = partner1.id;
+        partnerAccount2.Partner__c = partner2.Id;
+        update new List<Account>{
+            partnerAccount1, partnerAccount2
+        };
+        TestFactory.setDefaultCSPartner(partner1.Id);
+
+        List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities =
+            SharedSolarSystemsTest.getPartnerEligibilities(new List<Shared_Solar_System__c>{sss1, sss2}, new List<Account>{partnerAccount2});
+        partnerEligibilities.add(new Partner_Shared_Solar_System_Eligibility__c(
+                Shared_Solar_System__c = sss1.Id,
+                Account__c = partnerAccount1.Id
+            )
+        );
+        insert partnerEligibilities;
 
         BSST__c salesRep1 = new BSST__c(
             Name = 'BW Sales Rep',
@@ -385,7 +408,7 @@ public class LeadServiceTestclass {
 
     @IsTest
     static void testCompleteLeadConversionWithSubscriptionOrders() {
-       useMocks(true);
+        useMocks(true);
         Lead switchLead = [
             SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
                 LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c
