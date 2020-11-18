@@ -79,7 +79,7 @@ public without sharing class CSSubscriptionEnroller {
         sssList = sssSelector.getSharedSolarSystemsForEnrollment();
 
         productsMap = new Map<Id, Product2>([
-            SELECT Id, Program__c, Sizing_Method__c,
+            SELECT Id, Program__c, Sizing_Method__c, Customer_Subscription_Type__c,
                 (SELECT Id, Name, Size_Ratio__c, Utility_NMC_Tariff__r.Customer_Type__c,
                     Utility_NMC_Tariff__r.Minimum_kWh__c, Utility_NMC_Tariff__r.Maximum_kWh__c,
                     Utility_NMC_Tariff__r.Utility_Relationship__c, Utility_NMC_Tariff__c
@@ -191,27 +191,26 @@ public without sharing class CSSubscriptionEnroller {
         Decimal totalAnnualCostOfElectricity = 0;
         Decimal totalAnnualkWhElectricity = 0;
         for (Utility_Account_Log__c ual : leadIdToLeadWithChildren.get(lead.Id).Utility_Account_Logs__r) {
-            if (ual.Annual_Cost_of_Electricity__c == null && ual.Annual_kWh__c == null) {
+            if ((ual.Annual_Cost_of_Electricity__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'Electricity Cost ($)')
+                || ( ual.Annual_kWh__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'kWh' )) {
                 throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
             }
-            if (featureService.isEnabled('Sizing_Method')) {
-                totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-                if (productsMap.get(lead.Product__c).Sizing_Method__c == 'Rate Class Ratio' && ual.Utility_Rate_Class__c != null) {
-                    totalAnnualkWhElectricity += Util.nullToZero((ual.Annual_kWh__c * ual.Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c));
-                } else {
-                    totalAnnualkWhElectricity += Util.nullToZero(ual.Annual_kWh__c);
-                }
-            } else {
-                totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-                totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
-            }
 
-            if (featureService.isEnabled('Subscription_Orders')) {
+            totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
                 totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
                 totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
+
+            if (productsMap.get(lead.Product__c).Sizing_Method__c == 'Rate Class Ratio' && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'kWh') {
+                try {
+                    totalAnnualkWhElectricity += Util.nullToZero((ual.Annual_kWh__c * ual.Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c));
+                } catch (System.NullPointerException e) {
+                    throw new Util.BWException('Utility Account Log is missing required information for sizing. Confirm that the UAL has: ' + '\n' +
+                        '1. Rate Class on UAL' + '\n' +
+                        '2. Rate Class has a Sizing Method with a Size Ratio'
+                    );
+                }
             } else {
-                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subscribed_Annual_Cost_of_Electricity__c);
-                totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs__c);
+                totalAnnualkWhElectricity += Util.nullToZero(ual.Annual_kWh__c);
             }
         }
         return new AnnualEnergyTotal(totalAnnualCostOfElectricity, totalAnnualkWhElectricity);
