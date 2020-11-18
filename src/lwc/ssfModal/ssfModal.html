@@ -1,0 +1,26 @@
+<template>
+    <template if:true={show}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <h4 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Hey, we know you! Looks like you have already started an application!</h4>
+                </header>
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>Please check your email for a "Continue Application" link in order to pick up where you left off.</p>
+                    <br/>
+                    <p>If you want to sign up an additional property for Bluewave Community Solar,
+                        please make sure the first application is completed before starting a new one.</p>
+                    <br/>
+                    <p>If you have any issues locating the email or have further questions, you can reach our support team at <b><span style="color:blue">888-817-2703.</span></b></p>
+                    <br/>
+                    <p>You can close this application now.</p>
+                    <br/>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

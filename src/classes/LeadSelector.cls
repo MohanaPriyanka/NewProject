@@ -207,6 +207,24 @@ public without sharing class LeadSelector {
         return leads[0];
     }
 
+    public Lead selectOneIncompleteSSFLeadByEmail(String email) {
+        List<Lead> duplicateLead = [
+            SELECT Id, Name, Application_Complete_Date__c, Continue_Application_Link__c, Email, Partner_Email__c
+            FROM Lead
+            WHERE Email = :email
+            AND Application_Complete_Date__c = NULL
+            AND LeadSource = 'Switch'
+            ORDER BY CreatedDate DESC
+            LIMIT 1
+        ];
+        if (duplicateLead.size() > 0 ) {
+            return duplicateLead[0];
+        } else {
+            return null;
+        }
+
+    }
+
     public List<Lead> selectForUDRCreation(List<Id> leadIds) {
         List<Lead> leads = [
             SELECT Id, Utility_relationship__r.Utility_Data_Collection_Mechanism__c,

@@ -115,7 +115,7 @@
                       name="email"
                       value={restLead.email}
                       label="Email"
-                      onchange={genericOnChange}
+                      onchange={emailOnChange}
                       type="email"
                       required
                       disabled={resumedApp}>
@@ -169,7 +169,7 @@
                             <lightning-input
                               name="zipCode"
                               class="slds-var-m-bottom_small"
-                              label="ZIP Code"
+                              label="Zip"
                               onchange={genericOnChange}
                               value={restLead.zipCode}
                               required>
@@ -229,7 +229,7 @@
                         <lightning-input
                           name="billingPostalCode"
                           class="slds-var-m-bottom_small"
-                          label="ZIP Code"
+                          label="Zip"
                           onchange={propertyAccountOnChange}
                           value={propertyAccount.billingPostalCode}
                           required>
@@ -359,19 +359,15 @@
                                     </div>
                                     <div class="input-group half">
                                         <lightning-input
-                                          type="select"
-                                          key={it.value.localid}
-                                          name="servicePostalCode"
-                                          data-row-index={it.index}
-                                          data-ual-zip-index={it.index}
-                                          class="slds-var-m-bottom_small"
-                                          label="ZIP Code"
-                                          value={it.value.servicePostalCode}
-                                          maxlength="5"
-                                          minlength="5"
-                                          onchange={utilityAccountOnChange}
-                                          onblur={handleZipEntry}
-                                          required>
+                                            type="select" key={it.value.localid}
+                                            name="servicePostalCode"
+                                            data-row-index={it.index}
+                                            class="slds-var-m-bottom_small"
+                                            label="Zip"
+                                            value={it.value.servicePostalCode}
+                                            onchange={utilityAccountOnChange}
+                                            disabled
+                                            required>
                                         </lightning-input>
                                     </div>
                                     <div class="input-group half">
@@ -468,4 +464,6 @@
     <template if:true={showSpinner}>
         <c-ssf-waiting-room></c-ssf-waiting-room>
     </template>
+    <!-- MODAL -->
+    <c-ssf-modal show={showModal}></c-ssf-modal>
 </template>

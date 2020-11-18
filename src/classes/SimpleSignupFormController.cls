@@ -8,6 +8,7 @@ public without sharing class SimpleSignupFormController {
     private static CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     private static CSLeadsRESTControllerV3 restControllerV3 = new CSLeadsRESTControllerV3();
     private static ContentService contentService = new ContentService();
+    private static LeadSelector leadSelector = new LeadSelector();
 
     @AuraEnabled
     public static String getContentDistributionById(Id leadId, String email, Id documentId) {
@@ -114,6 +115,47 @@ public without sharing class SimpleSignupFormController {
     @AuraEnabled
     public static void log(String className, String methodName, String message, String severity) {
         Logger.logNow(className, methodName, message, severity);
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Lead findIncompleteApplication(String email) {
+        Lead duplicateLead = leadSelector.selectOneIncompleteSSFLeadByEmail(email);
+
+        if (duplicateLead != null) {
+            sendContinueApplicationEmail(duplicateLead);
+        }
+
+        return duplicateLead;
+    }
+
+    public static void sendContinueApplicationEmail(Lead lead) {
+        System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
+        if (Test.isRunningTest() && lead == null) {
+            //For tests that are using mocks, the lead cannot be mocked in a future method - we therefore exit the method
+            return;
+        }
+        if (systemDefault.Continue_Application_Email_Template__c == null) {
+            Logger.logNow('SimpleSignupFormController', 'sendContinueApplicationEmail',
+                'Continue Application email was not sent to ' + lead.Id, Logger.WARN);
+            return;
+        }
+
+        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
+        ee.emailTemplateName = systemDefault.Continue_Application_Email_Template__c;
+        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
+        ee.addressList = new List<String>{lead.Email, lead.Partner_Email__c};
+        ee.subjectLine = 'Continue Your Application for Bluewave Community Solar';
+        MessagingService.ReplacementText url = new MessagingService.ReplacementText('{{{Recipient.Continue_Application_Link__c}}}', lead.Continue_Application_Link__c);
+        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
+        ee.sobjectId = lead.Id;
+
+        try {
+            MessagingService.sendEmailTemplate(ee);
+        } catch (Exception e) {
+            Logger.logNow('SimpleSignupFormController', 'sendContinueApplicationEmail', e.getMessage() +
+                '; ' + e.getStackTraceString());
+        }
     }
 
 

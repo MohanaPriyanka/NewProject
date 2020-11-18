@@ -10,6 +10,7 @@ import { makeRequest } from 'c/httpRequestService';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import formFactorName from '@salesforce/client/formFactor';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
+import findIncompleteApplication from '@salesforce/apex/SimpleSignupFormController.findIncompleteApplication';
 import { getFinDocFileTypes,
          getUnderwritingHelpText,
          getNewRestLead,
@@ -19,9 +20,7 @@ import { getFinDocFileTypes,
          setRemainingFields,
          setComponentUnderwritingVals,
          handleUnderwritingChange,
-         verifyUtilityAccountEntry,
-         validateServiceZipCode,
-         applicationValid
+         verifyUtilityAccountEntry
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -54,6 +53,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track showAddress;
     @track isPhone;
     @track helpTextVisible;
+    @track email;
+    @track showModal;
 
     isFico = true;
     utilityAccountCount = 0;
@@ -63,10 +64,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         this.isPhone = (formFactorName === 'Small');
-        
+
         if (this.zipCheckResponse) {
             this.zipCheckResponse = JSON.parse(this.zipCheckResponse);
-
             this.collectRateClass = this.zipCheckResponse.collectRateClass;
             if (this.zipCheckResponse.zipCode) {
                 this.zipinput = this.zipCheckResponse.zipCode;
@@ -210,6 +210,26 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
     }
 
+    emailOnChange(event) {
+        this.restLead[event.target.name] = event.target.value;
+        this.email = event.target.value;
+
+        clearTimeout(this.timeoutId);
+        this.timeoutId = setTimeout(this.findDuplicate.bind(this), 3000);
+    }
+
+    findDuplicate() {
+        findIncompleteApplication({email : this.email})
+        .then(result => {
+            if (result != null) {
+                this.showModal = true;
+            }
+        })
+        .catch(error => {
+            // No duplicate application found - continue as usual
+        })
+    }
+
     preventDefaultEvent(event) {
         event.preventDefault();
     }
@@ -220,10 +240,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if (eventField === 'utilityAccountNumber' || eventField === 'utilityAccountNumberReentry') {
             verifyUtilityAccountEntry(this, event, eventField);
         }
-    }
-
-    handleZipEntry(event) {
-        validateServiceZipCode(this, event);
     }
 
     rateClassOnChange(event) {
@@ -272,11 +288,53 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         return false;
     }
 
+    applicationValid() {
+        var allValid = [...this.template.querySelectorAll('lightning-input'), ...this.template.querySelectorAll('lightning-combobox')]
+        .reduce((validSoFar, inputCmp) => {
+            inputCmp.reportValidity();
+            return validSoFar && inputCmp.checkValidity();
+        }, true);
+        
+        if(this.isFileUpload) {
+            var uploadValid = true;
+            this.propertyAccount.utilityAccountLogs.forEach(ual => {
+                if(!ual.utilityBills || ual.utilityBills.length === 0) {
+                    uploadValid = false;
+                }
+            });
+            if(!uploadValid) {
+                allValid = false;    
+                this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
+                    if(element.categoryType === 'Customer Utility Bill') {
+                        element.addError();
+                    }
+                });
+            }
+        }
+        if(!this.resiApplicationType && !this.isFico && (!this.restLead.financialDocs || this.restLead.financialDocs.length ===0)) {
+            this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
+                if(element.categoryType === 'Financial Review Documents') {
+                    element.addError();
+                }
+            });
+        }
+        
+        if(!allValid) {
+            this.showWarningToast('Warning!', 'Please verify your application before submitting');
+            return false;
+        }
+        
+        this.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
+            element.removeError();
+        });
+        return true;
+    }
+
     // upsert Lead into Salesforce, submit form
     submitApplication() {
 
         // if application invalid, cease upsert
-        if (!applicationValid(this)) {
+        if (!this.applicationValid()) {
             return;
         }
 
