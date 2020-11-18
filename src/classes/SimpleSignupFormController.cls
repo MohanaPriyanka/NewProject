@@ -117,8 +117,18 @@ public without sharing class SimpleSignupFormController {
         Logger.logNow(className, methodName, message, severity);
     }
 
+    /**
+     * @description SSF needs to check the server for an incomplete application that matches the email of current applicant
+     *
+     * @param email Email used to find match in Salesforce
+     *
+     * @return Duplicate lead if found, null if no duplicate or an internal user testing
+     */
     @AuraEnabled(cacheable=true)
     public static Lead findIncompleteApplication(String email) {
+        if (email.endsWithIgnoreCase('@bluewavesolar.com')) {
+            return null;
+        }
         Lead duplicateLead = leadSelector.selectOneIncompleteSSFLeadByEmail(email);
 
         if (duplicateLead != null) {
@@ -128,6 +138,11 @@ public without sharing class SimpleSignupFormController {
         return duplicateLead;
     }
 
+    /**
+     * @description When a duplicate SSF applicant is found, we send them (along with their partner) an email with a link to
+     * continue their existing application.
+     * @param lead Existing SSF lead found in Salesforce
+     */
     public static void sendContinueApplicationEmail(Lead lead) {
         System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
         if (Test.isRunningTest() && lead == null) {
@@ -147,7 +162,7 @@ public without sharing class SimpleSignupFormController {
         ee.subjectLine = 'Continue Your Application for Bluewave Community Solar';
         MessagingService.ReplacementText url = new MessagingService.ReplacementText('{{{Recipient.Continue_Application_Link__c}}}', lead.Continue_Application_Link__c);
         MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
-        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{url, leadName};
         ee.sobjectId = lead.Id;
 
         try {

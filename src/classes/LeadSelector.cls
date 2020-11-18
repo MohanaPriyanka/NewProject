@@ -217,7 +217,7 @@ public without sharing class LeadSelector {
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];
-        if (duplicateLead.size() > 0 ) {
+        if (duplicateLead.size() > 0  ) {
             return duplicateLead[0];
         } else {
             return null;
