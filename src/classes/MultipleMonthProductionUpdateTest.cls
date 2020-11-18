@@ -71,7 +71,6 @@ public class MultipleMonthProductionUpdateTest {
                                        Utility_NMC_Tariff__c = eversizeNMC.Id,
                                        Expected_Yield_kWh_kW__c = 1300,
                                        Assemblage_Count__c = 1,
-                                       Sales_Partners__c = 'All',
                                        Client_Account__c = clientAccount.Id,
                                        BWC_Project_Entity_Manual__c = entity1.Id,
                                        Utility__c = eversource.Id,

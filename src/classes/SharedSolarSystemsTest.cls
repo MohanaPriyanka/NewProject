@@ -117,6 +117,27 @@ public with sharing class SharedSolarSystemsTest {
             'COD System with COD Trigger should have a Revenue Start Date set because of a system specific CFD');
     }
 
+    @TestVisible
+    private static List<Partner_Shared_Solar_System_Eligibility__c> getPartnerEligibilities(Shared_Solar_System__c sharedSolarSystem, Account partnerAccount) {
+        return getPartnerEligibilities(new List<Shared_Solar_System__c>{sharedSolarSystem}, new List<Account>{partnerAccount});
+    }
+
+    @TestVisible
+    private static List<Partner_Shared_Solar_System_Eligibility__c> getPartnerEligibilities(List<Shared_Solar_System__c> sharedSolarSystems, List<Account> partnerAccounts) {
+        List<Partner_Shared_Solar_System_Eligibility__c> partnerSharedSolarSystemEligibilities =
+            new List<Partner_Shared_Solar_System_Eligibility__c>();
+        for (Shared_Solar_System__c sss : sharedSolarSystems) {
+            for (Account partnerAccount : partnerAccounts) {
+                partnerSharedSolarSystemEligibilities.add(new Partner_Shared_Solar_System_Eligibility__c(
+                    Shared_Solar_System__c = sss.Id,
+                    Account__c = partnerAccount.Id,
+                    Active__c = true
+                ));
+            }
+        }
+        return partnerSharedSolarSystemEligibilities;
+    }
+
     /*************
       *** MOCKS ***
       *************/

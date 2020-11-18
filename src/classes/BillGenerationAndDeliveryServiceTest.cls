@@ -81,7 +81,6 @@ public class BillGenerationAndDeliveryServiceTest {
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
                 Product__c = normalCSProduct.Id,
-                Sales_Partners__c = 'All',
                 BWC_Project_Entity_Manual__c = entity1.Id,
                 Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id);
@@ -103,7 +102,6 @@ public class BillGenerationAndDeliveryServiceTest {
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
                 Product__c = normalCSProduct.Id,
-                Sales_Partners__c = 'All',
                 BWC_Project_Entity_Manual__c = entity1.Id,
                 Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id);
@@ -125,7 +123,6 @@ public class BillGenerationAndDeliveryServiceTest {
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
                 Product__c = normalCSProduct.Id,
-                Sales_Partners__c = 'All',
                 BWC_Project_Entity_Manual__c = entity1.Id,
                 Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id);
