@@ -212,12 +212,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
     }
 
-    emailOnChange(event) {
+    emailOnBlur(event) {
         this.restLead[event.target.name] = event.target.value;
         this.email = event.target.value;
-
-        clearTimeout(this.timeoutId);
-        this.timeoutId = setTimeout(this.findDuplicate.bind(this), 3000);
+        this.findDuplicate();
     }
 
     findDuplicate() {
