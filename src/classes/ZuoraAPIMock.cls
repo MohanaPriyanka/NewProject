@@ -1323,6 +1323,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                     '"Comments":"Original Payment 2c92a00b71c96bdf0171dfcabc4e34c7, PaymentPartItem 2c92a00a71c95c4a0171dfcaf46f5343",' +
                     '"ExternalId":"2c92c0fa6c8aee2e016c92668a082a3f"}'
             );
+        } else if (endpoint.contains('NODATA')) {
+            res.setBody('');
         } else {
             res.setBody(
                 '{"Column":"accountnumber","Type":"varchar","Extra":"","Comment":"AccountNumber"}' +
