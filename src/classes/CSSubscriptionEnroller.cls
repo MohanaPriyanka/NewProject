@@ -79,7 +79,7 @@ public without sharing class CSSubscriptionEnroller {
         sssList = sssSelector.getSharedSolarSystemsForEnrollment();
 
         productsMap = new Map<Id, Product2>([
-            SELECT Id, Program__c, Sizing_Method__c,
+            SELECT Id, Program__c, Sizing_Method__c, Customer_Subscription_Type__c,
                 (SELECT Id, Name, Size_Ratio__c, Utility_NMC_Tariff__r.Customer_Type__c,
                     Utility_NMC_Tariff__r.Minimum_kWh__c, Utility_NMC_Tariff__r.Maximum_kWh__c,
                     Utility_NMC_Tariff__r.Utility_Relationship__c, Utility_NMC_Tariff__c
