@@ -191,7 +191,8 @@ public without sharing class CSSubscriptionEnroller {
         Decimal totalAnnualCostOfElectricity = 0;
         Decimal totalAnnualkWhElectricity = 0;
         for (Utility_Account_Log__c ual : leadIdToLeadWithChildren.get(lead.Id).Utility_Account_Logs__r) {
-            if (ual.Annual_Cost_of_Electricity__c == null && ual.Annual_kWh__c == null) {
+            if ((ual.Annual_Cost_of_Electricity__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'Electricity Cost ($)')
+                || ( ual.Annual_kWh__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'kWh' )) {
                 throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
             }
 
@@ -204,7 +205,7 @@ public without sharing class CSSubscriptionEnroller {
                     totalAnnualkWhElectricity += Util.nullToZero((ual.Annual_kWh__c * ual.Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c));
                 } catch (System.NullPointerException e) {
                     throw new Util.BWException('Utility Account Log is missing required information for sizing. Confirm that the UAL has: ' + '\n' +
-                        '1. Rate Class on UAL' +
+                        '1. Rate Class on UAL' + '\n' +
                         '2. Rate Class has a Sizing Method with a Size Ratio'
                     );
                 }
