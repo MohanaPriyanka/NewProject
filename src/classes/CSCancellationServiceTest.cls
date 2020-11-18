@@ -1622,7 +1622,7 @@ public with sharing class CSCancellationServiceTest {
         insert newUAS;
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectByAccounts(new Set<Id>{opportunity.AccountId}));
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{opportunity.AccountId}));
         System.assertEquals(1, accountCancellationTextMap.keySet().size());
         System.assertEquals(1, accountCancellationTextMap.values().size());
         List<Account> accounts = new List<Account>(accountCancellationTextMap.keySet());
@@ -1664,7 +1664,7 @@ public with sharing class CSCancellationServiceTest {
         insert newUAS;
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectByAccounts(new Set<Id>{opportunity.AccountId}));
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{opportunity.AccountId}));
         System.assertEquals(1, accountCancellationTextMap.keySet().size());
         System.assertEquals(1, accountCancellationTextMap.values().size());
         List<Account> accounts = new List<Account>(accountCancellationTextMap.keySet());
@@ -1694,7 +1694,7 @@ public with sharing class CSCancellationServiceTest {
 
         Boolean exceptionCaught = false;
         try {
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectByAccounts(new Set<Id>{opportunity.AccountId}));
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{opportunity.AccountId}));
         } catch (Exception bwe) {
             exceptionCaught = true;
             System.assert(bwe.getMessage().contains('Cancellation Paragraph Two'));
@@ -1706,7 +1706,7 @@ public with sharing class CSCancellationServiceTest {
 
         exceptionCaught = false;
         try {
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectByAccounts(new Set<Id>{opportunity.AccountId}));
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{opportunity.AccountId}));
         } catch (Util.BWException bwe) {
             exceptionCaught = true;
             System.assert(false);
