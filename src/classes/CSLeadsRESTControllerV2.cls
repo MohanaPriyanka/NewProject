@@ -582,8 +582,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         setResponseLeadFinancialDocs(leadToReturn, leadUALandFUDCDLMap, responseLead);
 
         return responseLead;
-    
-  
+    }
+
     private void setResponseLeadPropertyAccountsAndChildren(Lead leadToReturn, MultiMap ualsByPropertyAccountId, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestPropertyAccount> returnPropertyAccounts = new List<RestLead.RestPropertyAccount>();
         for(Account propertyAccount : leadToReturn.Accounts__r) {
