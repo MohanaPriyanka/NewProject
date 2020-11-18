@@ -191,13 +191,10 @@ public without sharing class CSSubscriptionEnroller {
         Decimal totalAnnualCostOfElectricity = 0;
         Decimal totalAnnualkWhElectricity = 0;
         for (Utility_Account_Log__c ual : leadIdToLeadWithChildren.get(lead.Id).Utility_Account_Logs__r) {
-
-            //Values are both empty - throw error
             if (ual.Annual_Cost_of_Electricity__c == null && ual.Annual_kWh__c == null) {
                 throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
             }
 
-            //Sizing Method is turned on - we can remove this if statement
             totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
             totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
             totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
@@ -214,16 +211,6 @@ public without sharing class CSSubscriptionEnroller {
             } else {
                 totalAnnualkWhElectricity += Util.nullToZero(ual.Annual_kWh__c);
             }
-
-//            if (featureService.isEnabled('Sizing_Method')) {
-
-//            } else {
-//                totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-//                totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
-//            }
-
-            //Subscription Orders are turned on - we can remove if statement
-
         }
         return new AnnualEnergyTotal(totalAnnualCostOfElectricity, totalAnnualkWhElectricity);
     }
