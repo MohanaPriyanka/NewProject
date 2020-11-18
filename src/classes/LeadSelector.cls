@@ -45,7 +45,6 @@ public without sharing class LeadSelector {
         'Zuora_Payment_Ref_Id__c',
         'Zuora_Payment_Ref_Id_Expiration_Date__c'
     };
-
     public List<String> apiPropertyAccountFields = new List<String>{
         'Id', 
         'Lead__c', 
@@ -57,7 +56,6 @@ public without sharing class LeadSelector {
         'Zuora_Payment_Ref_Id__c', 
         'Zuora_Payment_Ref_Id_Expiration_Date__c'
     };
-
     public List<String> apiUtilityAccountFields = new List<String>{
         'Id', 
         'Account__c', 
@@ -79,7 +77,6 @@ public without sharing class LeadSelector {
             AND ConvertedAccountId != NULL
         ];
     }
-
     public Lead selectOne(Id leadId) {
         List<Lead> leads = this.selectAll(new Set<Id>{leadId});
         if (leads.isEmpty()) {
@@ -120,11 +117,11 @@ public without sharing class LeadSelector {
                 Name,
                 Parcel_Zip__c,
                 Parent_Account__c,
-                Partner_Email__c,
+                Partner_Email__c, 
                 Partner_Account__c,
                 Partner_Account__r.Name,
                 Partner_Lookup__c, 
-                Partner_Lookup__r.Id,
+                Partner_Lookup__r.Id, 
                 Partner_Lookup__r.Name,
                 Personal_Credit_Report__c,
                 Personal_Credit_Report__r.LASERCA__Credit_Score__c,
@@ -139,7 +136,7 @@ public without sharing class LeadSelector {
                 Product__r.Generic_Terms_Conga_Template__c,
                 Product__r.Disclosure_Form_Conga_Template__c,
                 Referral_Email__c,
-                Referral_Name__c,
+                Referral_Name__c, 
                 Sales_Person__c,
                 State, 
                 Status, 
@@ -156,7 +153,6 @@ public without sharing class LeadSelector {
             WHERE Id = :leadIds
         ];
     }
-
     public Lead selectOneWithPropertiesAndUtilities(Id leadId) {
         String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Customer_Signed_Date__c,Product__r.Name,Product__r.Disclosure_Form_Conga_Template__c,Utility_relationship__r.EIA_ID__c, Underwriting_Criteria__c';
         query += ', (SELECT ' + String.join(apiPropertyAccountFields, ', ') + ' FROM Accounts__r)';
@@ -166,28 +162,23 @@ public without sharing class LeadSelector {
         query += ' FROM Lead WHERE Id = :leadId LIMIT 1';
         return Database.query(String.escapeSingleQuotes(query));
     }
-
     public List<Lead> selectForMerge(Set<Id> leadIds) {
         String fields = String.join(apiLeadFields, ', ');
         String query = 'SELECT ' + fields + ' FROM Lead ' + ' WHERE Id IN :leadIds ORDER BY CreatedDate ASC';
         List<Lead> leadList = Database.query(String.escapeSingleQuotes(query));
         return leadList;
     }
-
     public Lead selectOneForContractCreation(Id leadId) {
         List<Lead> leads = [
             SELECT Id, Customer_Signed_Date__c, Product__c, Product__r.Generic_Terms_Conga_Template__c,
                 (SELECT Id FROM Accounts__r ORDER BY CreatedDate ASC LIMIT 1)
             FROM Lead WHERE Id = :leadId
         ];
-
         if(leads.isEmpty()) {
             return null;
         }
-
         return leads[0];
     }
-
     public Lead selectOneForStatusUpdate(Id leadId) {
         List<Lead> leads = [
             SELECT Id, Application_Complete_Date__c, Application_Status__c, Continue_Application_Link__c, Contract_eSign_Link__c,
@@ -198,14 +189,11 @@ public without sharing class LeadSelector {
             FROM Lead
             WHERE Id = :leadId
         ];
-
         if (leads.isEmpty()) {
             return null;
         }
-
         return leads[0];
     }
-
     public List<Lead> selectForUDRCreation(List<Id> leadIds) {
         List<Lead> leads = [
             SELECT Id, Utility_relationship__r.Utility_Data_Collection_Mechanism__c,
@@ -216,7 +204,6 @@ public without sharing class LeadSelector {
         ];
         return leads;
     }
-
     public static Map<Id, Lead> getLeadMap(List<Id> leadIds) {
         return new Map<Id, Lead>([
             SELECT Id,

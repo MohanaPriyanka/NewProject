@@ -125,7 +125,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Placed last because we want to ensure Lead properly updates before queueing other object changes
         if (applicationNowComplete) {
             UtilityDataRequestService.create(new List<Id>{requestLead.id});
-            createAndSendCSPartnerEmail(lead.Id);
+ 			createAndSendCSPartnerEmail(lead.Id);
             createQCCaseForNoMatchPCR(lead);
         }
         // Set return envelope
@@ -373,7 +373,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 registerNewContentDocs(new List<RestLead.RestContentDocument>{contentDoc}, finDoc);
             }
         }
-        if (requestLead.propertyAccounts != null) {
+        if (requestLead.propertyAccounts != null) {            
             for (RestLead.RestPropertyAccount requestPropertyAccount : requestLead.propertyAccounts) {
                 Account newAccount = requestPropertyAccount.asAccount(newLead);
                 uow.registerNew(newAccount);
@@ -448,7 +448,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         RestLead.RestPropertyAccount requestAccount = requestLead.propertyAccounts.get(0);
         if(requestLead.propertyAccounts.size() > 1 || existingLead.Accounts__r.size() > 1 ||
             (!existingLead.Accounts__r.isEmpty() && existingLead.Accounts__r[0].Id != requestAccount.id)
-            ) {
+        ) {
             envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
             response.statusCode = statusCode.badRequest;
             return false;
@@ -560,8 +560,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 }
                 if(leadUAL.Utility_Rate_Class__r.Name != restUAL.get('rateClass')) {
                     return true;
-                }
             }
+        }
         }
         return false;
     }
@@ -582,13 +582,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         setResponseLeadFinancialDocs(leadToReturn, leadUALandFUDCDLMap, responseLead);
 
         return responseLead;
-    }
-
+    
+  
     private void setResponseLeadPropertyAccountsAndChildren(Lead leadToReturn, MultiMap ualsByPropertyAccountId, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestPropertyAccount> returnPropertyAccounts = new List<RestLead.RestPropertyAccount>();
-        for (Account propertyAccount : leadToReturn.Accounts__r) {
+        for(Account propertyAccount : leadToReturn.Accounts__r) {
             List<RestLead.RestUtilityAccountLog> returnUalList = new List<RestLead.RestUtilityAccountLog>();
-            for (Object ual : ualsByPropertyAccountId.getValues(propertyAccount.Id)) {
+            for(Object ual : ualsByPropertyAccountId.getValues(propertyAccount.Id)) {
                 RestLead.RestUtilityAccountLog returnUal = new RestLead.RestUtilityAccountLog((Utility_Account_Log__c) ual);
                 List<RestLead.RestContentDocument> utilityBillList = new List<RestLead.RestContentDocument>();
                 for (Object cdl : leadUALandFUDCDLMap.getValues(returnUal.id)) {
@@ -604,7 +604,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         responseLead.propertyAccounts = returnPropertyAccounts;
     }
-
+      
     private void setResponseLeadFinancialDocs(Lead leadToReturn, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestContentDocument> returnFinDocs = new List<RestLead.RestContentDocument>();
         for (Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
@@ -618,6 +618,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     private void setResponseLeadContentDocs(Lead leadToReturn, RestLead responseLead, Boolean docsNewlyGenerated) {
+
         List<ContentDocumentLink> contractCDLs =
             contentSelector.selectByLinkedEntities(CollectionUtil.getIdSet(leadToReturn.Contracts__r));
 
@@ -633,7 +634,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             responseLead.contentDocs = compileLeadContentDocs(responseLead, contractCDLs);
         }
     }
-
     private MultiMap getLeadUALandFUDCDLMap(Lead leadToReturn, MultiMap ualsByPropertyAccountId) {
         Set<Id> linkedEntityIdSet = new Set<Id>{
             leadToReturn.Id
@@ -651,7 +651,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     private void registerNewContentDocs(List<RestLead.RestContentDocument> requestContentDocuments, SObject linkedEntity) {
-        for (RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
+        for(RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
             if(requestContentDocument.id == null) {
                 requestContentDocument.body = String.escapeSingleQuotes(requestContentDocument.body);
                 requestContentDocument.validateCreateFields();
@@ -795,10 +795,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         } else {
             resignUrl = new PageReference(baseUrl);
         }
-        continueUrl.getParameters().put('leadid', lead.Id);
-        continueUrl.getParameters().put('email', lead.Email);
-        continueUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
-        continueUrl.getParameters().put('loc', 'agree');
+        resignUrl.getParameters().put('leadid', lead.Id);
+        resignUrl.getParameters().put('email', lead.Email);
+        resignUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
+        resignUrl.getParameters().put('loc', 'agree');
         lead.Contract_eSign_Link__c = resignUrl.getUrl();
     }
 
@@ -835,8 +835,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         List<Utility_Account_Log__c> uploadUALs = [
             SELECT Id,
-            (SELECT Id FROM ContentDocumentLinks
-            WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
+                (SELECT Id FROM ContentDocumentLinks 
+                WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
             FROM Utility_Account_Log__c
             WHERE Id IN :ualIds
         ];
@@ -871,7 +871,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 'Email was not sent to Partner for lead: ' + lead.Id + '; First confirm ' +
                     'that there is an email template found in System Default custom metadata. ' +
                     'Then confirm the lead is populated with a Partner Email.', Logger.WARN);
-
             return;
         }
         MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
@@ -880,15 +879,23 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         ee.addressList = new List<String>{lead.Partner_Email__c};
         ee.subjectLine = 'Application Completed for ' + lead.Name;
 
-        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
-        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
-        ee.sobjectId = lead.Id;
+        EmailTemplate template = MessagingService.getHtml(systemDefault.Application_Complete_Email_Template__c);
+        String templateHtml = template.HtmlValue;
+        templateHtml = templateHtml.replace('{{{Recipient.Name}}}', lead.Name);
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
+        mail.setSubject('Application Completed for ' + lead.Name);
+        mail.setHtmlBody(templateHtml);
+        mail.setToAddresses(new List<String>{lead.Partner_Email__c});
+        mail.setTargetObjectId(lead.Id);
+        mail.setSaveAsActivity(true);
+        mail.setTreatTargetObjectAsRecipient(false);
+
         try {
             MessagingService.sendEmailTemplate(ee);
         } catch (Exception e) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
                 '; ' + e.getStackTraceString());
-
         }
     }
 
@@ -903,7 +910,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             noMatchFactory.setLead(lead);
             noMatchFactory.setQueueType('No FICO Match');
             System.enqueueJob(noMatchFactory);
-
         }
     }
 }
