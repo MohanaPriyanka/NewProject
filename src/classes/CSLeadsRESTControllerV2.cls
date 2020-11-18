@@ -698,24 +698,36 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
      * @return Integer number of contract files to retrieve and send to SSF client
      */
     private Integer calcNumberOfContractDocuments(Lead lead, RestLead restLead) {
-        // ONE Contract file needed if selected Product specifies a standalone disclosure form
-        if (lead.Product__r.Disclosure_Form_Conga_Template__c != null) {
+        // ONE Contract file needed if selected Product does not specify a disclosure form
+        if (lead.Product__r.Disclosure_Form_Conga_Template__c == null) {
             return 1;
         }
 
-        // Determine number of Contract files based on rate class specifics
+        // Determine number of Contract files based on rate class specifics...
+        // If ANY UAL in the app 1) doesn't have a rate class or 2) rate class has suppress disclosure = false,
+        //    we must generate both the disclosure and the project-specific contract file, otherwise we generate 1 file
         List<String> rateClassNames = new List<String>();
-        for (RestLead.RestUtilityAccountLog ual : restLead.propertyAccounts[0]?.utilityAccountLogs) {
-            if (ual.rateClass == null) {
-                return 2;
-            } else {
+        List<RestLead.RestUtilityAccountLog> uals = restLead.propertyAccounts[0]?.utilityAccountLogs;
+        for (RestLead.RestUtilityAccountLog ual : uals) {
+            if (ual.rateClass != null) {
                 rateClassNames.add(ual.rateClass);
             }
         }
-        Map<String,Rate_Class__c> rateClasses = rcSelector.selectByNameAndUtility(rateClassNames,restLead.utilityId);
-        for (String name : rateClassNames) {
-            Rate_Class__c rateClass = rateClasses.get(name);
-            if (rateClass.Suppress_Disclosure_Form__c == false) {
+        if (!rateClassNames.isEmpty()) {
+            Map<String,Rate_Class__c> rateClasses = rcSelector.selectByNameAndUtility(rateClassNames,restLead.utilityId);
+            Boolean allSuppress = true;
+            for (RestLead.RestUtilityAccountLog ual : uals) {
+                if (ual.rateClass == null) {
+                    allSuppress = false;
+                    continue;
+                }
+                Rate_Class__c rateClass = rateClasses.get(ual.rateClass);
+                if (rateClass == null || rateClass.Suppress_Disclosure_Form__c == false) {
+                    allSuppress = false;
+                }
+            }
+
+            if (allSuppress) {
                 return 1;
             }
         }
