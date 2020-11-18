@@ -68,6 +68,10 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         this.showPaymentPage(event.detail);
     }
 
+    handleNavigateBackToBasicInfo(event) {
+        this.showBasicInfoPage();
+    }
+
     setUnderwritingMethod(event) {
         this.isFico = event.detail;
     }

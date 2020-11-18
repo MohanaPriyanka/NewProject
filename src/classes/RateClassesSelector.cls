@@ -33,6 +33,23 @@ public inherited sharing class RateClassesSelector {
             ORDER BY Name
         ];
     }
+
+    public Map<String,Rate_Class__c> selectByNameAndUtility(List<String> rateClassNames, Id utilityId) {
+        Map<String,Rate_Class__c> returnMap = new Map<String,Rate_Class__c>();
+
+        List<Rate_Class__c> rateClasses = [
+            SELECT Id, Suppress_Disclosure_Form__c
+            FROM Rate_Class__c
+            WHERE Name IN : new Set<String>(rateClassNames)
+            AND Utility__c =: utilityId
+        ];
+
+        for (Rate_Class__c rateClass : rateClasses) {
+            returnMap.put(rateClass.Name, rateClass);
+        }
+
+        return returnMap;
+    }
     
     public Map<String, Rate_Class__c> selectWithEDI() {
         Map<String, Rate_Class__c> rateClassEDIMap = new Map<String, Rate_Class__c>();
@@ -49,5 +66,4 @@ public inherited sharing class RateClassesSelector {
         
         return rateClassEDIMap;
     }
-    
 }

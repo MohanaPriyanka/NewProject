@@ -68,6 +68,7 @@ public without sharing class LeadSelector {
         'Annual_kWh__c', 
         'Annual_Cost_of_Electricity__c'
     };
+
     public static List<Lead> selectConvertedByIds(List<Id> leadIds) {
         return [
             SELECT Id, ConvertedAccountId, Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c
@@ -83,6 +84,7 @@ public without sharing class LeadSelector {
         }
         return leads[0];
     }
+
     public List<Lead> selectAll(Set<Id> leadIds) {
         return [
             SELECT 
@@ -132,6 +134,7 @@ public without sharing class LeadSelector {
                 Product__r.Id, 
                 Product__r.Name, 
                 Product__r.Generic_Terms_Conga_Template__c,
+                Product__r.Disclosure_Form_Conga_Template__c,
                 Referral_Email__c,
                 Referral_Name__c, 
                 Sales_Person__c,
@@ -151,7 +154,7 @@ public without sharing class LeadSelector {
         ];
     }
     public Lead selectOneWithPropertiesAndUtilities(Id leadId) {
-        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Product__r.Name, Customer_Signed_Date__c, Utility_relationship__r.EIA_ID__c, Underwriting_Criteria__c';
+        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Customer_Signed_Date__c,Product__r.Name,Product__r.Disclosure_Form_Conga_Template__c,Utility_relationship__r.EIA_ID__c, Underwriting_Criteria__c';
         query += ', (SELECT ' + String.join(apiPropertyAccountFields, ', ') + ' FROM Accounts__r)';
         query += ', (SELECT ' + String.join(apiUtilityAccountFields, ', ') + ', Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name FROM Utility_Account_Logs__r)';
         query += ', (SELECT Id FROM Contracts__r)';
@@ -228,6 +231,4 @@ public without sharing class LeadSelector {
             AND Product_line__c = 'Community Solar'
         ]);
     }
-
-
 }

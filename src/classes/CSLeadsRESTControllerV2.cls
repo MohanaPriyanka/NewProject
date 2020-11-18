@@ -12,6 +12,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible private CapacityService capacityService = new CapacityService();
     @TestVisible private CustomerContractService customerContractService = new CustomerContractService();
     @TestVisible private ContentService contentService = new ContentService();
+    @TestVisible private RateClassesSelector rcSelector = new RateClassesSelector();
     @TestVisible private CSQualificationService qualificationService = new CSQualificationService();
     @TestVisible protected LeadSelector leadSelector = new LeadSelector();
     @TestVisible private AccountsSelector accountsSelector = new AccountsSelector();
@@ -19,6 +20,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible private ContentDocumentSelector contentSelector = new ContentDocumentSelector();
     @TestVisible private CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     @TestVisible private String baseUrl = Util.getCommunitySiteURL('Apply') + '/s/switch';
+    @TestVisible private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
+
     @TestVisible private Map<String, String> contractLeadFields = new Map<String, String>{
         'FirstName' => 'firstName',
         'LastName' => 'lastName',
@@ -32,12 +35,14 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         'LASERCA__Home_Zip__c' => 'zipCode',
         'Business_Title__c' => 'businessTitle'
     };
+
     @TestVisible private Map<String, String> contractUALFields = new Map<String, String>{
         'Service_Address__c' => 'serviceStreet',
         'Service_City__c' => 'serviceCity',
         'Service_State__c' => 'serviceState',
         'Service_Zip_Code__c' => 'servicePostalCode'
     };
+
     @TestVisible private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<Schema.SObjectType> {
             ContentVersion.SObjectType,
@@ -49,13 +54,14 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             ContentDocumentLink.SObjectType
         }
     );
-    private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
+
     public static final Map<String, String> APP_STATUS_TO_LOCATION = new Map<String, String>{
         'Started' => 'info',
         'Customer Info Completed' => 'agree',
         'Contracts Signed' => 'pay',
         'Application Completed' => 'complete'
     };
+
     public virtual void getLead(String leadId, String email) {
         RestResponse response = RestContext.response;
         if(leadId == null || email == null) {
@@ -69,13 +75,14 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
                 response.statusCode = statusCode.badRequest;
             } else {
-                RestLead responseLead = formatRestLeadFromLeadAndChildren(leadToReturn, false, null);
+                RestLead responseLead = formatRestLeadFromLeadAndChildren(leadToReturn, false);
                 envelope.setData(responseLead);
                 response.statusCode = statusCode.ok;
             }
         }
         envelope.setJSONResponse(response);
     }
+
     /**
      * Called by (Aura) SSFApplication/SSFApplicationDTC on SSF application completion
      * <br><br>
@@ -127,6 +134,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         response.statusCode = statusCode.ok;
         envelope.setJSONResponse(response);
     }
+
     public virtual void patchPropertyAccount(String jsonRequest) {
         RestLead.RestPropertyAccount requestAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
         RestResponse response = RestContext.response;
@@ -148,6 +156,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     public virtual void patchUtilityAccountLog(String jsonRequest) {
         RestLead.RestUtilityAccountLog requestUAL = (RestLead.RestUtilityAccountLog) JSON.deserialize(jsonRequest, RestLead.RestUtilityAccountLog.class);
         RestResponse response = RestContext.response;
@@ -167,6 +176,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     public virtual void patchApplication(String jsonRequest) {
         RestResponse response = RestContext.response;
         Map<String, Object> requestLeadMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
@@ -175,6 +185,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         if (applicationValid(jsonRequest, response, existingLead)) {
             Savepoint sp = Database.setSavepoint();
             try {
+                // Assess state of contract documents
                 Set<Id> contractIdSet = new Set<Id>();
                 for (Contract contract : existingLead.Contracts__r) {
                     contractIdSet.add(contract.Id);
@@ -183,19 +194,25 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 if (!contractIdSet.isEmpty()) {
                     existingDocs = contentSelector.selectByLinkedEntities(contractIdSet);
                 }
-                Boolean regenerateDocs = existingDocs.isEmpty() || existingDocs[0].ContentDocument.CreatedDate.date() < Date.today().addDays(ContentDocLinkPrivacyScheduler.minDaysInPast) || contractFieldsUpdated(jsonRequest, existingLead);
+                Boolean regenerateDocs =
+                    existingDocs.isEmpty() ||
+                    existingDocs[0].ContentDocument.CreatedDate.date() < Date.today().addDays(ContentDocLinkPrivacyScheduler.minDaysInPast) ||
+                    contractFieldsUpdated(jsonRequest, existingLead);
+
+                // Commit application data to database
                 updateLeadAccountAndUALs(jsonRequest, existingLead);
                 uow.commitWork();
+
+                // Regenerate contract files if required
                 if (regenerateDocs) {
                     customerContractService.regenerateDocuments(leadId);
                 }
+
+                // Update lead application status
                 updateLeadApplicationStatus(leadId);
-                Integer numberOfDocs;
-                if (requestLeadMap.containsKey('numberOfContractDocs')) {
-                    numberOfDocs = (Integer)requestLeadMap.get('numberOfContractDocs');
-                }
-                RestLead responseLead = formatRestLeadFromLeadAndChildren(leadId, regenerateDocs, numberOfDocs);
-                responseLead.numberOfContractDocs = numberOfDocs;
+
+                // Return formatted response
+                RestLead responseLead = formatRestLeadFromLeadAndChildren(leadId, regenerateDocs);
                 envelope.setData(responseLead);
                 response.statusCode = statusCode.ok;
             } catch (Util.BWException bwe) {
@@ -210,6 +227,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     public virtual void patchContract(String jsonRequest) {
         Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
         RestResponse response = RestContext.response;
@@ -235,6 +253,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     public virtual void postLead(String jsonRequest) {
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         RestResponse response = RestContext.response;
@@ -259,6 +278,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         envelope.setJSONResponse(response);
     }
+
     public virtual void postPropertyAccount(String jsonRequest) {
         RestLead.RestPropertyAccount requestPropertyAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
         RestResponse response = RestContext.response;
@@ -301,6 +321,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         response.statusCode = statusCode.created;
         envelope.setJSONResponse(response);
     }
+
     public virtual void postUtilityAccountLog(String jsonRequest) {
         RestLead.RestUtilityAccountLog restUtilityAccountLog = (RestLead.RestUtilityAccountLog) JSON.deserialize(jsonRequest, RestLead.RestUtilityAccountLog.class);
         RestResponse response = RestContext.response;
@@ -329,12 +350,14 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         response.statusCode = statusCode.created;
         envelope.setJSONResponse(response);
     }
+
     public virtual void performZipCheck(String zipCode, String partnerId, String utilityId) {
         RestResponse response = RestContext.response;
         RestZipCode zipCodeResponse = new RestZipCode(capacityService.findCapacityByZipcode(zipCode, partnerId, utilityId));
         envelope.setData(zipCodeResponse);
         envelope.setJSONResponse(response);
     }
+
     private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
         Lead newLead = requestLead.asLead();
         newLead = leadService.insertLead(newLead);
@@ -355,7 +378,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 Account newAccount = requestPropertyAccount.asAccount(newLead);
                 uow.registerNew(newAccount);
                 if (newLead.Product__c != null) {
-                    Contract c = customerContractService.setContractFields(newLead, requestLead.numberOfContractDocs);
+                    Integer numberOfContractDocs = calcNumberOfContractDocuments(newLead, requestLead);
+                    Contract c = customerContractService.setContractFields(newLead, numberOfContractDocs);
                     uow.registerNew(c, Contract.AccountId, newAccount);
                 }
                 if (requestPropertyAccount.utilityAccountLogs != null) {
@@ -365,13 +389,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         uow.commitWork();
         updateLeadApplicationStatus(newLead.Id);
-        RestLead responseLead = formatRestLeadFromLeadAndChildren(newLead.Id, true, requestLead.numberOfContractDocs);
-        if (requestLead.numberOfContractDocs != null) {
-            responseLead.numberOfContractDocs = requestLead.numberOfContractDocs;
-        }
+        RestLead responseLead = formatRestLeadFromLeadAndChildren(newLead.Id, true);
         envelope.setData(responseLead);
         response.statusCode = statusCode.created;
     }
+
     private void updateLeadAccountAndUALs(String jsonRequest, Lead existingLead) {
         Map<String, Object> requestLeadMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
@@ -383,6 +405,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             updateAccount(existingLead, requestPropertyAccounts, requestAccountList);
         }
     }
+
     /**
      * @param reqUALs Utility Account Log's (UAL) to insert
      * @param propertyAccount Parent Property Account to which the UALs belong
@@ -396,6 +419,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             }
         }
     }
+
     private List<RestLead.RestUtilityAccountLog> insertUALs(Account newPropertyAccount, List<RestLead.RestUtilityAccountLog> restUtilityAccountLogs) {
         List<Utility_Account_Log__c> ualsToInsert = new List<Utility_Account_Log__c>();
         for (RestLead.RestUtilityAccountLog requestUtilityAccountLog : restUtilityAccountLogs) {
@@ -408,6 +432,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return ualsToReturn;
     }
+
     private Boolean applicationValid(String jsonRequest, RestResponse response, Lead existingLead) {
         RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
         Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
@@ -436,6 +461,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return true;
     }
+
     private void updateAccount(Lead lead, List<RestLead.RestPropertyAccount> requestPropertyAccounts, List<Object> requestAccountList) {
         Map<Id, Utility_Account_Log__c> existingUtilityAccountLogMap = ualSelector.selectAllByLeadMap(new Set<Id>{lead.Id});
         Map<Id, Account> existingAccountMap = accountsSelector.selectPropertyAccountsByLeadIdsMap(new Set<Id>{lead.Id});
@@ -458,6 +484,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             }
         }
     }
+
     private void updateUtilityAccountLogs(Account propertyAccount, List<RestLead.RestUtilityAccountLog> requestUtilityAccountLogs, List<Object> requestUALList, Map<Id, Utility_Account_Log__c> existingUtilityAccountLogMap) {
         for(Integer ualIndex = 0; ualIndex < requestUtilityAccountLogs.size(); ualIndex++) {
             Map<String, Object> ualMap = (Map<String, Object>) requestUALList[ualIndex];
@@ -479,6 +506,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             }
         }
     }
+
     @TestVisible
     private Boolean contractFieldsUpdated(String jsonRequest, Lead existingLead) {
         RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
@@ -506,6 +534,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return checkUALsForChanges(requestMap, existingLead);
     }
+
     private Boolean checkUALsForChanges(Map<String, Object> requestMap, Lead existingLead) {
         List<Object> accountList = (List<Object>)requestMap.get('propertyAccounts');
         Map<String, Object> accountMap = (Map<String, Object>)accountList.get(0);
@@ -536,22 +565,25 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return false;
     }
+
     @TestVisible
-    private RestLead formatRestLeadFromLeadAndChildren(Id leadId, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
+    private RestLead formatRestLeadFromLeadAndChildren(Id leadId, Boolean docsNewlyGenerated) {
         Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
-        return formatRestLeadFromLeadAndChildren(leadToReturn, docsNewlyGenerated, numberOfContractDocs);
+        return formatRestLeadFromLeadAndChildren(leadToReturn, docsNewlyGenerated);
     }
-    private RestLead formatRestLeadFromLeadAndChildren(
-        Lead leadToReturn, Boolean docsNewlyGenerated, Integer numberOfContractDocs)
-    {
+
+    private RestLead formatRestLeadFromLeadAndChildren(Lead leadToReturn, Boolean docsNewlyGenerated) {
         RestLead responseLead = new RestLead(leadToReturn);
         MultiMap ualsByPropertyAccountId = CollectionUtil.multiMapByField(leadToReturn.Utility_Account_Logs__r, Utility_Account_Log__c.Account__c);
         MultiMap leadUALandFUDCDLMap = getLeadUALandFUDCDLMap(leadToReturn, ualsByPropertyAccountId);
-        setResponseLeadContentDocs(leadToReturn, responseLead, docsNewlyGenerated, numberOfContractDocs);
-        setResponseLeadFinancialDocs(leadToReturn, leadUALandFUDCDLMap, responseLead);
+
         setResponseLeadPropertyAccountsAndChildren(leadToReturn, ualsByPropertyAccountId, leadUALandFUDCDLMap, responseLead);
+        setResponseLeadContentDocs(leadToReturn, responseLead, docsNewlyGenerated);
+        setResponseLeadFinancialDocs(leadToReturn, leadUALandFUDCDLMap, responseLead);
+
         return responseLead;
-        }
+    }
+
     private void setResponseLeadPropertyAccountsAndChildren(Lead leadToReturn, MultiMap ualsByPropertyAccountId, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestPropertyAccount> returnPropertyAccounts = new List<RestLead.RestPropertyAccount>();
         for(Account propertyAccount : leadToReturn.Accounts__r) {
@@ -572,6 +604,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         responseLead.propertyAccounts = returnPropertyAccounts;
     }
+      
     private void setResponseLeadFinancialDocs(Lead leadToReturn, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestContentDocument> returnFinDocs = new List<RestLead.RestContentDocument>();
         for (Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
@@ -583,19 +616,22 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         responseLead.financialDocs = returnFinDocs;
     }
-    private void setResponseLeadContentDocs(Lead leadToReturn, RestLead responseLead, Boolean docsNewlyGenerated, Integer numberOfContractDocs) {
+
+    private void setResponseLeadContentDocs(Lead leadToReturn, RestLead responseLead, Boolean docsNewlyGenerated) {
+
         List<ContentDocumentLink> contractCDLs =
             contentSelector.selectByLinkedEntities(CollectionUtil.getIdSet(leadToReturn.Contracts__r));
+
+        // Determine number of documents to instruct SSF to wait for
+        responseLead.numberOfContractDocs = calcNumberOfContractDocuments(leadToReturn, responseLead);
+
         if (contractCDLs.isEmpty()) {
             responseLead.mostRecentContractGen = Datetime.now();
         } else if (docsNewlyGenerated) {
             ContentDocumentLink cdl = (ContentDocumentLink) contractCDLs[0];
             responseLead.mostRecentContractGen = cdl.ContentDocument.CreatedDate;
         } else {
-            if (numberOfContractDocs == null || numberOfContractDocs == 0) {
-                numberOfContractDocs = 2;
-            }
-            responseLead.contentDocs = compileLeadContentDocs(leadToReturn.Id, contractCDLs, numberOfContractDocs);
+            responseLead.contentDocs = compileLeadContentDocs(responseLead, contractCDLs);
         }
     }
     private MultiMap getLeadUALandFUDCDLMap(Lead leadToReturn, MultiMap ualsByPropertyAccountId) {
@@ -613,6 +649,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         MultiMap leadUALandFUDCDLMap = CollectionUtil.multiMapByField(leadUALandFUDCDLs, ContentDocumentLink.LinkedEntityId);
         return leadUALandFUDCDLMap;
     }
+
     private void registerNewContentDocs(List<RestLead.RestContentDocument> requestContentDocuments, SObject linkedEntity) {
         for(RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
             if(requestContentDocument.id == null) {
@@ -633,16 +670,72 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             }
         }
     }
-    private List<RestLead.RestContentDocument> compileLeadContentDocs(Id leadId, List<Object> contractCDLs, Integer numberOfContractDocs) {
+
+    /**
+     * @description Retrieves formatted Contract files for response to SSF client
+     * @param responseLead Formatted lead submitted to SSF, from which application details are retrieved
+     * @param contractCDLs Contract ContentDocumentLinks (CDLs)
+     * @return List of RestContentDocuments to provide back to client in SSF
+     */
+    private List<RestLead.RestContentDocument> compileLeadContentDocs(RestLead responseLead, List<Object> contractCDLs) {
         List<RestLead.RestContentDocument> restContentDocs = new List<RestLead.RestContentDocument>();
-        Integer docCount = Math.min(numberOfContractDocs, contractCDLs.size());
-        for(Integer i=0; i<docCount; i++) {
+        Integer docCount = Math.min(responseLead.numberOfContractDocs, contractCDLs.size());
+
+        for (Integer i=0; i < docCount; i++) {
             RestLead.RestContentDocument rcd = new RestLead.RestContentDocument((ContentDocumentLink) contractCDLs[i]);
             rcd.publicUrl = contentSelector.getPublicDistributionLinkByDocId(rcd.docLinkId);
             restContentDocs.add(rcd);
         }
         return restContentDocs;
     }
+
+    /**
+     * @description Assesses number of contract files that should be retrieved from server for contract signature
+     * <p></p>
+     * Logic moved from ssfBasicInfoShared.js to this class
+     * @param lead Lead retrieved from database
+     * @param restLead Formatted lead for SSF
+     * @return Integer number of contract files to retrieve and send to SSF client
+     */
+    private Integer calcNumberOfContractDocuments(Lead lead, RestLead restLead) {
+        // ONE Contract file needed if selected Product does not specify a disclosure form
+        if (lead.Product__r.Disclosure_Form_Conga_Template__c == null) {
+            return 1;
+        }
+
+        // Determine number of Contract files based on rate class specifics...
+        // If ANY UAL in the app 1) doesn't have a rate class or 2) rate class has suppress disclosure = false,
+        //    we must generate both the disclosure and the project-specific contract file, otherwise we generate 1 file
+        List<String> rateClassNames = new List<String>();
+        List<RestLead.RestUtilityAccountLog> uals = restLead.propertyAccounts[0]?.utilityAccountLogs;
+        for (RestLead.RestUtilityAccountLog ual : uals) {
+            if (ual.rateClass != null) {
+                rateClassNames.add(ual.rateClass);
+            }
+        }
+        if (!rateClassNames.isEmpty()) {
+            Map<String,Rate_Class__c> rateClasses = rcSelector.selectByNameAndUtility(rateClassNames,restLead.utilityId);
+            Boolean allSuppress = true;
+            for (RestLead.RestUtilityAccountLog ual : uals) {
+                if (ual.rateClass == null) {
+                    allSuppress = false;
+                    continue;
+                }
+                Rate_Class__c rateClass = rateClasses.get(ual.rateClass);
+                if (rateClass == null || rateClass.Suppress_Disclosure_Form__c == false) {
+                    allSuppress = false;
+                }
+            }
+
+            if (allSuppress) {
+                return 1;
+            }
+        }
+
+        // Default to 2 contract file retrieval
+        return 2;
+    }
+
     /**
      * Updates Lead Application Status based on Lead criteria and specific logic.
      * <br>
@@ -661,6 +754,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             Util.updateAndLog(new List<SObject>{lead}, 'CSLeadsRESTControllerV2', 'updateLeadApplicationStatus');
         }
     }
+
     /**
      * Separate method to potentially be used by SSF directly when resolving "No Match" credit reports
      *
@@ -672,6 +766,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             lead.Soft_Pull_Credit_Report__c = true;
         }
     }
+
     /**
      * Sets links on Lead to access application in SSF at a later state
      * @param lead Lead to set links for
@@ -679,34 +774,34 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
      */
     public void setContinueApplicationLinks(Lead lead, String applicationStatus) {
         String location = APP_STATUS_TO_LOCATION.get(applicationStatus);
-        // Set Continue Application Link
+        PageReference continueUrl;
+        PageReference resignUrl;
+
+        // Set Continue Application Link based on current Lead info
         if (lead.Continue_Application_Link__c != null) {
-            PageReference url = new PageReference(lead.Continue_Application_Link__c);
-            // Set new location parameter based on where in the application the customer is
-            url.getParameters().put('loc', location);
-            // Ensure partnerId is filled in
-            if (url.getParameters().get('partnerId') == null) {
-                url.getParameters().put('partnerId', lead.Partner_Lookup__c);
-            }
-            lead.Continue_Application_Link__c = url.getUrl();
+            continueUrl = new PageReference(lead.Continue_Application_Link__c);
         } else {
-            lead.Continue_Application_Link__c =
-                baseUrl +
-                '?leadid=' + lead.Id +
-                '&email=' + lead.Email +
-                '&partnerId=' + lead.Partner_Lookup__c +
-                '&loc=' + location;
+            continueUrl = new PageReference(baseUrl);
         }
-        // Set Contract Re-Sign (Agree page) link, if empty and ever needed later (W-020708)
-        if (lead.Contract_eSign_Link__c	== null) {
-            lead.Contract_eSign_Link__c =
-                baseUrl +
-                '?leadid=' + lead.Id +
-                '&email=' + lead.Email +
-                '&partnerId=' + lead.Partner_Lookup__c +
-                '&loc=agree';
+        continueUrl.getParameters().put('leadid', lead.Id);
+        continueUrl.getParameters().put('email', lead.Email);
+        continueUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
+        continueUrl.getParameters().put('loc', location);
+        lead.Continue_Application_Link__c = continueUrl.getUrl();
+
+        // Set Contract Re-Sign (Agree page) link based on current Lead info
+        if (lead.Contract_eSign_Link__c != null) {
+            resignUrl = new PageReference(lead.Contract_eSign_Link__c);
+        } else {
+            resignUrl = new PageReference(baseUrl);
         }
+        resignUrl.getParameters().put('leadid', lead.Id);
+        resignUrl.getParameters().put('email', lead.Email);
+        resignUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
+        resignUrl.getParameters().put('loc', 'agree');
+        lead.Contract_eSign_Link__c = resignUrl.getUrl();
     }
+
     public String getApplicationStatus(Lead lead) {
         if (lead.Application_Complete_Date__c != null) {
             return 'Application Completed';
@@ -726,6 +821,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return 'Started';
     }
+
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private String getUALStatus(List<Utility_Account_Log__c> ualList) {
         List<Id> ualIds = new List<Id>();
@@ -756,11 +852,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return 'Started';
     }
+
     /**
      * @description Future method to send an email to the related Partner when the customer has completed their SSF
-     * Application. By setting the targetObjectId but not treating it as a recipient, the activity will be logged
-     * to the lead but not actually sent to the customer
-     *
+     * Application
      * @param leadId Id for Lead that has completed the application
      */
     @Future
@@ -778,6 +873,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                     'Then confirm the lead is populated with a Partner Email.', Logger.WARN);
             return;
         }
+        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
+        ee.emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
+        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
+        ee.addressList = new List<String>{lead.Partner_Email__c};
+        ee.subjectLine = 'Application Completed for ' + lead.Name;
 
         EmailTemplate template = MessagingService.getHtml(systemDefault.Application_Complete_Email_Template__c);
         String templateHtml = template.HtmlValue;
@@ -792,16 +892,17 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         mail.setTreatTargetObjectAsRecipient(false);
 
         try {
-            MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
+            MessagingService.sendEmailTemplate(ee);
         } catch (Exception e) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
                 '; ' + e.getStackTraceString());
         }
     }
-     /**
-     * When application is completed, if PCR is still a "No Match," we create a QC Case
-     * @param lead lead that has completed the SSF Application
-     */
+
+    /**
+    * When application is completed, if PCR is still a "No Match," we create a QC Case
+    * @param lead lead that has completed the SSF Application
+    */
     @TestVisible
     private void createQCCaseForNoMatchPCR(Lead lead) {
         if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {

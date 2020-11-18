@@ -1,27 +1,21 @@
-/**
- * Created by lindsayholmes_gearscrm on 2020-09-14.
- */
-
 import { LightningElement, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { getUSStateOptionsFull } from 'c/util';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { makeRequest } from 'c/httpRequestService';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import formFactorName from '@salesforce/client/formFactor';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
-import { getFinDocFileTypes,
-         getUnderwritingHelpText,
-         getNewRestLead,
-         getNewRestPropertyAccount,
-         getNewRestUtilityAccountLog,
-         validateUtilityAccountLog,
-         setRemainingFields,
-         setComponentUnderwritingVals,
-         handleUnderwritingChange,
-         verifyUtilityAccountEntry,
-         validateServiceZipCode,
-         applicationValid
+import {
+    onLoad,
+    getFinDocFileTypes,
+    getUnderwritingHelpText,
+    getNewRestUtilityAccountLog,
+    validateUtilityAccountLog,
+    setRemainingFields,
+    handleUnderwritingChange,
+    verifyUtilityAccountEntry,
+    validateServiceZipCode,
+    applicationValid,
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -62,131 +56,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+        onLoad(this);
         this.isPhone = (formFactorName === 'Small');
-        
-        if (this.zipCheckResponse) {
-            this.zipCheckResponse = JSON.parse(this.zipCheckResponse);
-            this.collectRateClass = this.zipCheckResponse.collectRateClass;
-            if (this.zipCheckResponse.zipCode) {
-                this.zipinput = this.zipCheckResponse.zipCode;
-            }
-
-            if (this.zipCheckResponse.products && this.zipCheckResponse.products.length > 0) {
-                this.selectedProduct = this.zipCheckResponse.products[0];
-            }
-
-            if (this.zipCheckResponse.utilities && this.zipCheckResponse.utilities.length > 0 && this.zipCheckResponse.utilities[0].utilityId) {
-                let selectedUtility = this.zipCheckResponse.utilities[0];
-                this.utilityId = selectedUtility.utilityId;
-    
-                if (selectedUtility.dataCollectionMethod) {
-                    this.isFileUpload = (selectedUtility.dataCollectionMethod !== 'EDI');
-                }
-                else {
-                    this.isFileUpload = true;
-                }
-            }
-            else {
-                this.isFileUpload = true;
-            }
-
-            if (this.zipCheckResponse.rateClasses) {
-                this.rateClassObj = Object.fromEntries(this.zipCheckResponse.rateClasses.map(
-                    rateClass => ([rateClass.name, rateClass])
-                ));
-
-                if (this.collectRateClass) {
-                    if (this.zipCheckResponse.rateClasses.length === 0) {
-                        this.collectRateClass = false;
-                    }
-                    else {
-                        this.rateClassOptions = this.zipCheckResponse.rateClasses.map(
-                            rateClass => ({ value: rateClass.name, label: rateClass.name })
-                        );
-                    }
-                }
-            }
-        }
-
-        // if a lead has already been created, have the form show existing values
-        if (this.leadJson) {
-            this.resumedApp = true;
-            this.restLead = JSON.parse(this.leadJson);
-            this.propertyAccount = this.restLead.propertyAccounts[0];
-            if (this.propertyAccount.utilityAccountLogs) {
-                let account = this.propertyAccount;
-                for (let i=0; i < account.utilityAccountLogs.length; i++) {
-                    account.utilityAccountLogs[i].localid = i+1;
-                    account.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
-                    account.utilityAccountLogs[i].doNotDelete = true;
-                    account.utilityAccountLogs[i].showUpload = this.isFileUpload &&
-                        (!account.utilityAccountLogs[i].utilityBills || account.utilityAccountLogs[i].utilityBills.length === 0);
-                    account.utilityAccountLogs[i].utilityAccountNumberReentry = account.utilityAccountLogs[i].utilityAccountNumber;
-
-                    if (account.utilityAccountLogs[i].rateClass) {
-                        this.selectedRateClasses.push(this.rateClassObj[account.utilityAccountLogs[i].rateClass]);
-                    }
-                }
-            }
-            this.sameBillingAddress = this.propertyAccount.billingStreet === this.propertyAccount.utilityAccountLogs[0].serviceStreet;
-            this.sameHomeAddress = this.restLead.streetAddress === this.propertyAccount.utilityAccountLogs[0].serviceStreet;
-        } 
-        // if no lead exists, set default values for restLead and propertyAccount
-        else {
-            this.restLead = getNewRestLead(this);
-            this.propertyAccount = getNewRestPropertyAccount(this);
-        }
-
-        // set component underwriting values
-        setComponentUnderwritingVals(this);
-
-        if (!this.restLead.partnerId) {
-            this.restLead.partnerId = this.partnerId;
-        }
-
-        if (!this.restLead.salesRepId) {
-            this.restLead.salesRepId = this.salesRepId;
-        }
-
-        if (!this.restLead.campaignId) {
-            this.restLead.campaignId = this.campaignId;
-        }
-
-        // if there are no utility accounts, add an empty one so the form will show fields to enter data
-        if (this.propertyAccount && this.propertyAccount.utilityAccountLogs
-            && this.propertyAccount.utilityAccountLogs.length === 0) {
-            this.addUtilityAccount();
-        }
-        // set the values to properly display the utility portion of the form
-        this.utilityAccountCount = this.propertyAccount.utilityAccountLogs.length;
-        this.utilityAccountSection = this.utilityAccountCount;
-        
-        // if certain property values didn't come in from the api, find their values
-        if (!this.stateOptions) {
-            this.stateOptions = getUSStateOptionsFull();
-        }
-
-        if (this.mock) {
-            this.mockData();
-        }
-    }
-
-    mockData() {
-        this.restLead.firstName = 'Peter';
-        this.restLead.lastName = 'Testcase';
-        this.restLead.email = 'pyao@bluewavesolar.com';
-        if (this.resiApplicationType) {
-            this.restLead.mobilePhone = 1231231234;
-        }
-        else {
-            this.restLead.businessPhone = 1231231234;
-        }
-        this.propertyAccount.utilityAccountLogs[0].utilityAccountNumber = '123';
-        this.propertyAccount.utilityAccountLogs[0].nameOnAccount = 'Peter Testcase';
-        this.propertyAccount.utilityAccountLogs[0].serviceStreet = '123 Main';
-        this.propertyAccount.utilityAccountLogs[0].serviceState = 'MA';
-        this.propertyAccount.utilityAccountLogs[0].serviceCity = 'Boston';
-        this.propertyAccount.utilityAccountLogs[0].servicePostalCode = this.zipinput;
     }
 
     // handle changes in form entries
@@ -220,6 +91,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][eventField] = event.target.value;
         if (eventField === 'utilityAccountNumber' || eventField === 'utilityAccountNumberReentry') {
             verifyUtilityAccountEntry(this, event, eventField);
+        }
+        if (eventField === 'servicePostalCode' && event.target.value.length === 5) {
+            validateServiceZipCode(this, event);
         }
     }
 
@@ -376,29 +250,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
                 id: file
             }); 
         });
-    }
-
-    getNumberOfDocs() {
-        if(!this.selectedProduct || !this.selectedProduct.standaloneDisclosureForm) {
-            return 1;
-        }
-
-        if(this.selectedRateClasses.length === 0) {
-            return 2;
-        }
-
-        let allSuppress = true;
-        this.selectedRateClasses.forEach(rateClass => {
-            if(!rateClass.suppressDisclosureForm) {
-                allSuppress = false;
-            }
-        });
-
-        if(allSuppress) {
-            return 1;
-        }
-
-        return 2;
     }
 
     toggleHelp() {
