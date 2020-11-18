@@ -71,10 +71,11 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         update sysProp;
         Account partnerAccount = new Account(Name='BlueWave Test Partner',
             Partner__c = partner.Id,
-            RecordTypeId = '0120a000000uhu2',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId(),
             State_Market__c = states,
             Enable_CS_Application_in_Portal__c = true,
-            Community_Solar_Application_Type__c = 'CSAP');
+            Community_Solar_Application_Type__c = 'CSAP'
+        );
         insert partnerAccount;
         partner.Account__c = partnerAccount.Id;
         update partnerAccount;
@@ -260,9 +261,23 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             Shared_Solar_System__c sss3 = getSolarSystem('Project C Second St', '3', clientAccount, eversizeNMC, normalSRECProduct, entity2, eversource);
             Shared_Solar_System__c sss4 = getSolarSystem('Project D Dee St', '4', clientAccount, nationalGridNMC, normalSRECProduct, entity2, nationalGrid);
             Shared_Solar_System__c sss5 = getSolarSystem('Project E Dog St', '5', clientAccount, nationalGridNMC, normalCSProduct, entity2, nationalGrid);
-            insert new List<Shared_Solar_System__c>{
-                sss1, sss2, sss3, sss4, sss5
-            };
+            List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5};
+            insert sharedSolarSystems;
+            List<Account> partners = [SELECT Id FROM Account WHERE RecordType.Name = 'Partner Account'];
+            List<Partner_Shared_Solar_System_Eligibility__c> partnerSharedSolarSystemEligibilities =
+                new List<Partner_Shared_Solar_System_Eligibility__c>();
+            for (Shared_Solar_System__c sss : sharedSolarSystems) {
+                for (Account partner : partners) {
+                    partnerSharedSolarSystemEligibilities.add(
+                        new Partner_Shared_Solar_System_Eligibility__c(
+                            Shared_Solar_System__c = sss.Id,
+                            Account__c = partner.Id
+                        )
+                    );
+                }
+            }
+            insert partnerSharedSolarSystemEligibilities;
+
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.GatewayHelper(csDataSetting));
             }
@@ -381,7 +396,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                     Expected_Yield_kWh_kW__c = 1300,
                     Assemblage_Count__c = 1,
                     Product__c = product.Id,
-                    Sales_Partners__c = 'All;BlueWave Test Partner',
                     Service_Territories__c = 'NEMA;SEMA;WCMA',
                     BWC_Project_Entity_Manual__c = entity.Id,
                     Maximum_Subscription_Capacity_kWDC__c = 25,

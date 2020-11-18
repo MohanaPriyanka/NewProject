@@ -650,8 +650,6 @@ public class TestcaseRecordDeleterTest {
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
-                Sales_Partners__c = 'All',
-//                Billing_Method__c = 'NMC',
                 BWC_Project_Entity_Manual__c = entity2.Id,
                 Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id

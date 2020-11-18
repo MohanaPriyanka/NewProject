@@ -66,13 +66,21 @@ public class LeadTriggerHandlerTest {
             Available_SMB_Underwriting_Method_Docs__c = true, 
             Available_SMB_Underwriting_Method_FICO__c = true
         );
-
-        
-        sss1.Sales_Partners__c = 'Barbara Cerullo; Boston Solar'; 
         insert sss1;
-        
-        Partner__c partner = new Partner__c(Name = 'Boston Solar');
+
+        Account partnerAccount = new Account(
+            Name = 'Boston Solar',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
+        insert partnerAccount;
+        Partner__c partner = new Partner__c(
+            Name = 'Boston Solar',
+            Account__c = partnerAccount.Id
+        );
         insert partner;
+        partnerAccount.Partner__c = partner.Id;
+        update partnerAccount;
+        insert SharedSolarSystemsTest.getPartnerEligibilities(sss1, partnerAccount);
         
         BSST__c newSalesTeam = new BSST__c (Name = 'Partner',
                                             Partner__c = partner.Id,
@@ -541,7 +549,8 @@ public class LeadTriggerHandlerTest {
         Shared_Solar_System__c sss1 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P1');
         Shared_Solar_System__c sss2 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P2');
         Shared_Solar_System__c sss3 = getSharedSolarSystem(nmcRate, csProduct, nationalGrid, 'National Grid P1');
-        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3};
+        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{sss1, sss2, sss3};
+        insert sharedSolarSystems;
 
         Shared_Solar_System__c sssCheck = [
             SELECT Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kWDC__c
@@ -551,8 +560,19 @@ public class LeadTriggerHandlerTest {
         System.assertEquals(25, sssCheck.Maximum_Subscription_Capacity_kWDC__c, 'SSS should have a Maximum_Subscription_Capacity_kWDC__c of 25');
         System.assertEquals(6006, sssCheck.Maximum_Subscription_Cost__c, 'SSS should have a Maximum_Subscription_Cost__c of 6006');
 
-        Partner__c partner = new Partner__c(Name = 'BlueWave Customer Care');
+        Account partnerAccount = new Account(
+            Name = 'BlueWave Customer Care',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
+        insert partnerAccount;
+        Partner__c partner = new Partner__c(
+            Name = 'BlueWave Customer Care',
+            Account__c = partnerAccount.Id
+        );
         insert partner;
+        partnerAccount.Partner__c = partner.Id;
+        update partnerAccount;
+        insert SharedSolarSystemsTest.getPartnerEligibilities(sharedSolarSystems, [SELECT Id FROM Account WHERE RecordType.Name = 'Partner Account']);
         BSST__c salesTeam = new BSST__c (Name = 'Partner',
             Partner__c = partner.Id,
             Custom_ID__c = 'partner'
@@ -843,7 +863,8 @@ public class LeadTriggerHandlerTest {
         Shared_Solar_System__c sss4 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P3');
         Shared_Solar_System__c sss5 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P4');
         Shared_Solar_System__c sss3 = getSharedSolarSystem(nmcRate, csProduct, nationalGrid, 'National Grid P1');
-        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5};
+        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5};
+        insert sharedSolarSystems;
         Shared_Solar_System__c sssCheck = [
             SELECT Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kWDC__c
             FROM Shared_Solar_System__c
@@ -851,8 +872,19 @@ public class LeadTriggerHandlerTest {
         ];
         System.assertEquals(25, sssCheck.Maximum_Subscription_Capacity_kWDC__c, 'SSS should have a Maximum_Subscription_Capacity_kWDC__c of 25');
         System.assertEquals(6006, sssCheck.Maximum_Subscription_Cost__c, 'SSS should have a Maximum_Subscription_Cost__c of 6006');
-        Partner__c partner = new Partner__c(Name = 'BlueWave Customer Care');
+        Account partnerAccount = new Account(
+            Name = 'BlueWave Customer Care',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
+        insert partnerAccount;
+        Partner__c partner = new Partner__c(
+            Name = 'BlueWave Customer Care',
+            Account__c = partnerAccount.Id
+        );
         insert partner;
+        partnerAccount.Partner__c = partner.Id;
+        update partnerAccount;
+        insert SharedSolarSystemsTest.getPartnerEligibilities(sharedSolarSystems, [SELECT Id FROM Account WHERE RecordType.Name = 'Partner Account']);
         BSST__c salesTeam = new BSST__c (Name = 'Partner',
             Partner__c = partner.Id,
             Custom_ID__c = 'partner'
@@ -1013,8 +1045,7 @@ public class LeadTriggerHandlerTest {
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
             Maximum_Subscription_Capacity_kWDC__c = 25,
-            Sales_Partners__c = 'All',
-            Available_SMB_Underwriting_Method_Docs__c = true, 
+            Available_SMB_Underwriting_Method_Docs__c = true,
             Available_SMB_Underwriting_Method_FICO__c = true
         );
         return sss1;

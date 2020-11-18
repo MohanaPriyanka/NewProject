@@ -8,8 +8,8 @@
 public without sharing class CSQualificationService {
 
     public static void underwriteWithFICO(
-            Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap,
-            Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap,
+        Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
         Set<Id> pcrIds = new Set<Id>();
         if (triggerOldMap == null) {
             for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
@@ -45,14 +45,13 @@ public without sharing class CSQualificationService {
             return;
         }
 
-            Map<Id, Lead> leadMap = LeadSelector.getLeadMap(leadIds);
+        Map<Id, Lead> leadMap = LeadSelector.getLeadMap(leadIds);
 
         if (leadMap.isEmpty()){
             return;
         }
 
-        //Query for all the Shared Solar Systems
-            List<Shared_Solar_System__c> sharedSolarSystems = getSharedSolarSystems();
+        SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(getSharedSolarSystems());
 
         List<Lead> updateLeads = new List<Lead>();
         List<LASERCA__Personal_Credit_Report__c> updatePCRs = new List<LASERCA__Personal_Credit_Report__c>();
@@ -77,71 +76,52 @@ public without sharing class CSQualificationService {
                 }
             }
 
-            if(pcr.Approval_Status__c =='Declined'){
+            if (pcr.Approval_Status__c =='Declined') {
                 CaseFactory lowMatchFactory = new CaseFactory();
                 lowMatchFactory.setLead(lead);
                 lowMatchFactory.setQueueType('Low FICO Match');
                 System.enqueueJob(lowMatchFactory);
             }
-            //Check if lead is qualified
-                lead.Status = checkCSQualification(lead, sharedSolarSystems, creditScore);
-                updateLeads.add(lead);
 
-            }
+            lead.Status = sharedSolarSystems.checkCSQualification(lead, creditScore);
+            updateLeads.add(lead);
 
-            update updatePCRs;
-            update updateLeads;
+        }
+
+        update updatePCRs;
+        update updateLeads;
     }
 
     public String underwriteWithFinancialReview(Lead lead){
-        if(lead == null) {
+        if( lead == null) {
             return null;
         }
 
         Set<Id> financialUnderwritingIds = new Set<Id>();
-        if(lead.Underwrite_Financial_Documents__r != null) {
+        if (lead.Underwrite_Financial_Documents__r != null) {
             for(Financial_Underwriting_Document__c fud : lead.Underwrite_Financial_Documents__r) {
                 financialUnderwritingIds.add(fud.Id);
             }
         }
 
         List<ContentDocumentLink> contentDocLinks = new List<ContentDocumentLink>();
-        if(!financialUnderwritingIds.isEmpty()) {
+        if (!financialUnderwritingIds.isEmpty()) {
             contentDocLinks = [SELECT Id, LinkedEntityId FROM ContentDocumentLink WHERE LinkedEntityId = :financialUnderwritingIds];
         }
-        List<Shared_Solar_System__c> sharedSolarSystems = getSharedSolarSystems();
+        SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(getSharedSolarSystems());
         
         String result = 'Unqualified';
-        if(!contentDocLinks.isEmpty()) {
-            result = CSQualificationService.checkCSQualification(lead, sharedSolarSystems, null);
+        if (!contentDocLinks.isEmpty()) {
+            result = sharedSolarSystems.checkCSQualification(lead, null);
         }
         return result;
     }
 
-    private static String checkCSQualification(Lead lead, List<Shared_Solar_System__c> sharedSolarSystems, Decimal creditScore) {
-            for (Shared_Solar_System__c sss : sharedSolarSystems) {
-                if (sss.Utility__c == lead.Utility_relationship__c &&
-                    (sss.Service_Territories__c != null && sss.Service_Territories__c.contains(lead.LoadZone__c)) &&
-                    ((sss.Sales_Partners__c != null &&
-                        (sss.Sales_Partners__c.contains('All') || sss.Sales_Partners__c.contains(lead.Partner_Lookup__r.Name))) ||
-                        sss.Public__c == true) &&
-                    sss.Product__c == lead.Product__c &&
-                    (creditScore == null || creditScore > sss.Credit_Score_Requirement__c)
-                        ) {
-                        return 'Qualified';
-                }
-
-            }
-
-        return 'Unqualified';
-    }
-
     private static List<Shared_Solar_System__c> getSharedSolarSystems() {
         return [
-            SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__c, Public__c, Utility__c, Service_Territories__c,
-                    Sales_Partners__c
+            SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__c, Public__c, Utility__c, Service_Territories__c
             FROM Shared_Solar_System__c
-            WHERE Open__c = true
+            WHERE Open__c = TRUE
             AND Capacity_Available_to_be_Reserved__c > 0
             ORDER BY Credit_Score_Requirement__c ASC
         ];
@@ -163,6 +143,8 @@ public without sharing class CSQualificationService {
         public Boolean hasPartner = false;
         @AuraEnabled
         public Boolean minFICO = false;
+        @AuraEnabled
+        public String eligiblePartners;
     }
 
     public class QualificationInput {
@@ -170,15 +152,12 @@ public without sharing class CSQualificationService {
         private List<Id> utilityIds = new List<Id>();
         private String loadZone;
         private Id productId;
-        private String partner;
+        private String partnerId;
         private Integer fico;
-        private Partner__c partnerSobj;
 
-        public QualificationInput(String product, String partner, String zipCode, String fico, String utility) {
-            this.productId = (Id) product;
-
-            partnerSobj = PartnerSelector.selectPartnerByPartnerId(partner);
-            this.partner = partnerSobj.Name;
+        public QualificationInput(Id productId, Id partnerId, String zipCode, String fico, String utility) {
+            this.productId = productId;
+            this.partnerId = partnerId;
 
             if (fico != null) {
                 this.fico = Integer.valueOf(fico);
@@ -208,14 +187,15 @@ public without sharing class CSQualificationService {
                 }
                 if (sss.Capacity_Available_to_be_Reserved__c > 0) {
                     matchResult.hasCapacity = true;
-
                 }
                 if (sss.Service_Territories__c != null && sss.Service_Territories__c.contains(this.loadZone)) {
                     matchResult.hasLZ = true;
                 }
-                if (sss.Sales_Partners__c != null && (sss.Sales_Partners__c.contains('All') || sss.Sales_Partners__c.contains(this.partner))) {
+                if (SharedSolarSystems.isPartnerEligible(partnerId, sss.Partner_Shared_Solar_System_Accesses__r)) {
                     matchResult.hasPartner = true;
                 }
+                matchResult.eligiblePartners = SharedSolarSystems.summarizeEligiblePartners(sss.Partner_Shared_Solar_System_Accesses__r);
+
                 if (this.fico == null || this.fico >= sss.Credit_Score_Requirement__c) {
                     matchResult.minFICO = true;
                 }

@@ -56,7 +56,7 @@ public without sharing class CSAPController {
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];
-        Lead lead = [SELECT Id, Personal_Credit_Report__c FROM Lead WHERE Id = :leadId];
+
         if (crList.size() > 0) {
             if (crList[0].LASERCA__Personal_Credit_Report__c == null){
                 throw new AuraHandledException('An error occurred: No credit report was returned. Please contact BlueWave Support Team at the number below.');
@@ -105,37 +105,40 @@ public without sharing class CSAPController {
     public static SSSResult checkCreditReport(Id leadId, Decimal creditScore) {
         SSSResult sssResult = new SSSResult();
         sssResult.sssCreditQualification = 'Ready for Credit Check';
-            Lead lead = [SELECT Id, Status, Partner_Name__c, Application_Source_Phase_2__c, LoadZone__c, Utility_relationship__c FROM Lead WHERE Id = :leadId];
-            String sssQuery = 'SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__r.Name , Product__c, Product__r.Program__c ';
-            sssQuery +=       'FROM Shared_Solar_System__c ';
-            sssQuery +=       'WHERE Open__c = true ';
-            sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
-            sssQuery +=       'AND Utility__c IN (\'' + lead.Utility_relationship__c + '\') ';
-            sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.LoadZone__c + '\') ';
-            if (lead.Partner_Name__c != null){
-                sssQuery +=       'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
-            } else {
-                sssQuery +=       'AND Public__c = true ';
+        Lead lead = [SELECT Id, Status, Partner_Lookup__c, Partner_Name__c, Application_Source_Phase_2__c, LoadZone__c, Utility_relationship__c FROM Lead WHERE Id = :leadId];
+        String sssQuery = 'SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__r.Name , Product__c, Product__r.Program__c, ' +
+            '(SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE) ';
+        sssQuery +=       'FROM Shared_Solar_System__c ';
+        sssQuery +=       'WHERE Open__c = true ';
+        sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
+        sssQuery +=       'AND Utility__c IN (\'' + lead.Utility_relationship__c + '\') ';
+        sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.LoadZone__c + '\') ';
+        if (lead.Partner_Name__c == null) {
+            sssQuery +=       'AND Public__c = true ';
+        }
+        sssQuery += 'ORDER BY Credit_Score_Requirement__c ASC ';
+        List<Shared_Solar_System__c> sssList = Database.query(sssQuery);
+        if (lead.Partner_Lookup__c != null) {
+            SharedSolarSystems.pruneIneligiblePartners(lead.Partner_Lookup__c, sssList);
+        }
+        Map<String, Product2> productProgramMap = new Map<String, Product2>();
+        String passedCredit = 'Unqualified';
+        for (Shared_Solar_System__c sss : sssList) {
+            if (creditScore >= sss.Credit_Score_Requirement__c) {
+                Product2 sssProduct = new Product2();
+                sssProduct.Id = sss.Product__c;
+                sssProduct.Program__c = sss.Product__r.Program__c;
+                productProgramMap.put(sss.Product__r.Program__c, sssProduct);
+                passedCredit = 'Qualified';
             }
-            sssQuery += 'ORDER BY Credit_Score_Requirement__c ASC ';
-            List<Shared_Solar_System__c> sssList = Database.query(sssQuery);
-            Map<String, Product2> productProgramMap = new Map<String, Product2>();
-            String passedCredit = 'Unqualified';
-            for (Shared_Solar_System__c sss : sssList) {
-                if (creditScore >= sss.Credit_Score_Requirement__c) {
-                    Product2 sssProduct = new Product2();
-                    sssProduct.Id = sss.Product__c;
-                    sssProduct.Program__c = sss.Product__r.Program__c;
-                    productProgramMap.put(sss.Product__r.Program__c, sssProduct);
-                    passedCredit = 'Qualified';
-                }
-            }
-            sssResult.sssCreditQualification = passedCredit;
-            sssResult.productList = productProgramMap.values();
+        }
+        sssResult.sssCreditQualification = passedCredit;
+        sssResult.productList = productProgramMap.values();
         return sssResult;
     }
+
     @AuraEnabled
-    public static Lead addAdditionalLead(Lead lead){
+    public static Lead addAdditionalLead(Lead lead) {
         lead = processLead(lead);
         lead.Id = null;
         insert lead;
@@ -243,23 +246,22 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Boolean hasAvailableCapacity(Id leadId) {
         Lead lead = [
-            SELECT Id, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c,
+            SELECT Id, Partner_Lookup__c, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c,
                 LASERCA__Home_State__c, Application_Type__c, Utility_relationship__c, LoadZone__c
             FROM Lead
-                WHERE Id = :leadId
+            WHERE Id = :leadId
         ];
         if (lead.Utility_relationship__c == null || lead.LoadZone__c == null) {
             return false;
         }
-        String sssQuery = 'SELECT Id, Product__r.Name  ';
+        String sssQuery = 'SELECT Id, Product__r.Name,  ' +
+            '(SELECT Id, Account__c, Account__r.Name, Account__r.Partner__c, Account__r.Partner__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE) ';
         sssQuery +=       'FROM Shared_Solar_System__c ';
         sssQuery +=       'WHERE Open__c = true ';
         sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
         sssQuery +=       'AND Utility__c = \'' + lead.Utility_relationship__c + '\' ';
         sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.LoadZone__c + '\') ';
-        if (lead.Partner_Name__c != null){
-            sssQuery +=       'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
-        } else {
+        if (lead.Partner_Name__c == null) {
             sssQuery +=       'AND Public__c = true ';
         }
         if (lead.System_Assignment__c == 'Automatic - COD Date/Available Capacity' || lead.System_Assignment__c == null){
@@ -268,6 +270,9 @@ public without sharing class CSAPController {
             sssQuery += 'ORDER BY Assignment_order__c ASC';
         }
         List<Shared_Solar_System__c> sssList = Database.query(sssQuery);
+        if (lead.Partner_Lookup__c != null) {
+            SharedSolarSystems.pruneIneligiblePartners(lead.Partner_Lookup__c, sssList);
+        }
         return (sssList.size() > 0);
     }
     // The Credit Check methods are copied FROM SLPAddCustomer to make it easier to retire that class

@@ -81,8 +81,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Billing_Method__c = 'NMC',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Capacity_kWDC__c = 25,
-            Sales_Partners__c = 'All'
+            Maximum_Subscription_Capacity_kWDC__c = 25
         );
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(
             Name = 'Eversource P2',
@@ -100,8 +99,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Billing_Method__c = 'NMC',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Capacity_kWDC__c = 25,
-            Sales_Partners__c = 'All'
+            Maximum_Subscription_Capacity_kWDC__c = 25
         );
         Shared_Solar_System__c kwhSSS = new Shared_Solar_System__c(
             Name = 'kWh Shared Solar System 1',
@@ -119,7 +117,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1316,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25
         );
         Shared_Solar_System__c kwhSSS2 = new Shared_Solar_System__c(
@@ -138,7 +135,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1316,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25
         );
         insert new List<Shared_Solar_System__c>{sss1, sss2, kwhSSS, kwhSSS2};
@@ -417,9 +413,9 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         return ualList;
     }
     //Mimic sssSelector.getSharedSolarSystemsForEnrollment() but add ability to query by product
-    public static List<Shared_Solar_System__c> getSharedSolarSystems(String product) {
+    private static List<Shared_Solar_System__c> getSharedSolarSystems(String product) {
         return [
-            SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
+            SELECT Id, Name, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
                 Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c,
                 Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
                 Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
