@@ -29,7 +29,7 @@ public without sharing class CapacityService {
         zipcodeResponse.zipcode = zipcode;
         setUtilitiesAndLoadZones(zipcodeResponse, utilityId);
         zipcodeResponse.rateClasses = new Set<Rate_Class__c>(rateClassSelector.selectByUtilities(zipcodeResponse.utilityIds));
-        setProductsAndSharedSolarSystems(zipcodeResponse, getPartnerName(partnerId));
+        setProductsAndSharedSolarSystems(zipcodeResponse, validatePartnerId(partnerId));
         setZipCodesServedInUtilityTerritory(zipcodeResponse);
         return zipcodeResponse;
     }
@@ -42,13 +42,18 @@ public without sharing class CapacityService {
         }
     }
 
-    // A null partner name should find all systems to support CSAP, blank should get the default partner
-    private String getPartnerName(String partnerId) {
+    /**
+     * @description Validates that a partnerId is in the database. A null partner id should find all systems to support
+     *   CSAP, but a empty string partnerId should get the default partner
+     * @param partnerId partnerId to validate
+     * @return null or a valid Partner__c.Id
+     */
+    private String validatePartnerId(String partnerId) {
         if (partnerId == null) {
             return null;
         } else if (partnerId != '') {
             try {
-                return PartnerSelector.selectPartnerByPartnerId(partnerId).Name;
+                return PartnerSelector.selectPartnerByPartnerId(partnerId).Id;
             } catch (QueryException qe) {
                 Logger.logNow(
                     'CapacityService',
@@ -58,7 +63,7 @@ public without sharing class CapacityService {
                 );
             }
         }
-        return PartnerSelector.selectDefaultCSPartner().Name;
+        return PartnerSelector.selectDefaultCSPartner().Id;
     }
 
     public void setUtilitiesAndLoadZones(ZipcodeResponse zipcodeResponse, Id utilityId) {
@@ -77,8 +82,8 @@ public without sharing class CapacityService {
         }
     }
 
-    public void setProductsAndSharedSolarSystems(ZipcodeResponse zipcodeResponse, String partnerName) {
-        List<Shared_Solar_System__c> sharedSolarSystems =
+    public void setProductsAndSharedSolarSystems(ZipcodeResponse zipcodeResponse, String partnerId) {
+        List<Shared_Solar_System__c> systemsForUtilityAndLoadZone =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
                 zipcodeResponse.utilityIds,
                 zipcodeResponse.loadZoneNames
@@ -86,13 +91,11 @@ public without sharing class CapacityService {
 
         zipcodeResponse.ficoUnderwriting = false;
         zipcodeResponse.finDocsUnderwriting = false;
-        
+
         // Allowing null partnerNames to match to all systems, to support CSAP behavior
-        for (Shared_Solar_System__c sharedSolarSystem: sharedSolarSystems) {
-            if (partnerName == null ||
-                (sharedSolarSystem.Sales_Partners__c != null &&
-                (sharedSolarSystem.Sales_Partners__c.split(';').contains(partnerName) ||
-                sharedSolarSystem.Sales_Partners__c.split(';').contains('All')))) {
+        for (Shared_Solar_System__c sharedSolarSystem: systemsForUtilityAndLoadZone) {
+            if (partnerId == null ||
+                SharedSolarSystems.isPartnerEligible(partnerId, sharedSolarSystem.Partner_Shared_Solar_System_Accesses__r)) {
                 zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
                 zipcodeResponse.products.add(sharedSolarSystem.Product__r);
 

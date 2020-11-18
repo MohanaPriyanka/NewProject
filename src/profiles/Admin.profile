@@ -1016,6 +1016,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PartnerSSSEligibilitySelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PartnerSSSEligibilitySelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PartnerSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1093,6 +1101,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProductionSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ProductionServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -27753,6 +27765,31 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Partner_Product_Junction__c.Enabled_Product__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Commission_Structure__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Compound_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Partner_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Partner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

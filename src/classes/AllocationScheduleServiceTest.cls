@@ -85,7 +85,6 @@ public with sharing class AllocationScheduleServiceTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25);
         insert sss1;
 

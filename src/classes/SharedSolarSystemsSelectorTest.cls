@@ -32,7 +32,6 @@ public with sharing class SharedSolarSystemsSelectorTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25);
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
             Service_Territory__c = 'NEMA',
@@ -47,7 +46,6 @@ public with sharing class SharedSolarSystemsSelectorTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25);
         Shared_Solar_System__c sss3 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
             Service_Territory__c = 'NEMA',
@@ -62,7 +60,6 @@ public with sharing class SharedSolarSystemsSelectorTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25);
         Shared_Solar_System__c sss4 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
             Service_Territory__c = 'NEMA',
@@ -77,7 +74,6 @@ public with sharing class SharedSolarSystemsSelectorTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25);
         Shared_Solar_System__c sss5 = new Shared_Solar_System__c(   Name = 'Closed SSS',
             Service_Territory__c = 'NEMA',
@@ -92,7 +88,6 @@ public with sharing class SharedSolarSystemsSelectorTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
             Maximum_Subscription_Capacity_kWDC__c = 25);
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5};
     }
