@@ -194,6 +194,17 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Address_Update__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checked if the UAL address info was different from the most recent UDR address info.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked if the UAL address info was different from the most recent UDR address info.</inlineHelpText>
+        <label>Address Update</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Annual_Cost_of_Electricity__c</fullName>
         <description>This is used for the SREC CS Product sizing. It is the total dollar amount a customer spends annually on their electric utility bill for this account. It is initially filled in with an estimate from the customer/partner during the CS application process, then filled in by Ops with the QCed amount.</description>
         <externalId>false</externalId>
@@ -600,6 +611,61 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Previous_Name_on_Utility_Account__c</fullName>
+        <externalId>false</externalId>
+        <label>Previous Name on Utility Account</label>
+        <length>120</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Previous_Service_Address__c</fullName>
+        <externalId>false</externalId>
+        <label>Previous Service Address</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Previous_Service_City__c</fullName>
+        <externalId>false</externalId>
+        <label>Previous Service City</label>
+        <length>25</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Previous_Service_State__c</fullName>
+        <externalId>false</externalId>
+        <label>Previous Service State</label>
+        <length>25</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Previous_Service_Zip_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Previous Service Zip Code</label>
+        <length>15</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Product_Tariff__c</fullName>
