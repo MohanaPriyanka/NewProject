@@ -144,6 +144,10 @@
             <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Anniversary_Date__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -268,7 +272,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Anchor_Capacity_Reserved__c</field>
+                <field>Reserved_Anchor_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Reserved_Anchor_Capacity_Percent__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -285,13 +293,6 @@
                 <field>Anchor_CS_Capacity_Committed__c</field>
             </layoutItems>
             <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Capacity_Available_to_be_Reserved__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Project_Capacity_Available_kW_DC__c</field>
             </layoutItems>
@@ -299,23 +300,31 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Capacity_Committed_kW_DC__c</field>
+                <behavior>Readonly</behavior>
+                <field>Anchor_Capacity_Reserved__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Reserved_Anchor_Capacity__c</field>
+                <behavior>Readonly</behavior>
+                <field>Pending_Anchor_Capacity__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Reserved_Capacity_kW_DC__c</field>
+                <behavior>Readonly</behavior>
+                <field>Available_Anchor_Capacity__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Total_Capacity_Committed_Reserved__c</field>
+                <field>Capacity_Committed_kW_DC__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Reserved_Capacity_kW_DC__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Capacity_Available_to_be_Reserved__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -680,6 +689,16 @@
         <fields>Product__c</fields>
         <relatedList>Opportunity.Shared_Solar_System__c</relatedList>
         <sortField>OPPORTUNITY.STAGE_NAME</sortField>
+        <sortOrder>Asc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <fields>NAME</fields>
+        <fields>Partner_Name__c</fields>
+        <fields>Active__c</fields>
+        <fields>Commission_Structure__c</fields>
+        <relatedList>Partner_Shared_Solar_System_Eligibility__c.Shared_Solar_System__c</relatedList>
+        <sortField>Partner_Name__c</sortField>
         <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
