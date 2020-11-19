@@ -36,6 +36,7 @@
                   value={restLead.email}
                   label="Email"
                   onchange={genericOnChange}
+                  onblur={findDuplicate}
                   type="email"
                   required
                   disabled={resumedApp}>
@@ -360,18 +361,14 @@
                                 </div>
                                 <div class="input-group half">
                                     <lightning-input
-                                        type="select"
-                                        key={it.value.localid}
+                                        type="select" key={it.value.localid}
                                         name="servicePostalCode"
                                         data-row-index={it.index}
-                                        data-ual-zip-index={it.index}
                                         class="slds-var-m-bottom_small"
                                         label="ZIP Code"
                                         value={it.value.servicePostalCode}
-                                        maxlength="5"
-                                        minlength="5"
                                         onchange={utilityAccountOnChange}
-                                        onblur={handleZipEntry}
+                                        disabled
                                         required>
                                     </lightning-input>
                                 </div>
@@ -469,4 +466,7 @@
 
     <!-- LOADING SPINNER -->
     <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
+
+    <!-- MODAL -->
+    <c-ssf-modal show={showModal}></c-ssf-modal>
 </template>
