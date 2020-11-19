@@ -298,7 +298,11 @@ public with sharing class SimpleSignupFormControllerTest {
 
         System.assertNotEquals(null, checkLead);
         System.assertEquals(matchingLead.Continue_Application_Link__c, 'continueURL.com');
-        System.assertEquals(1, MessagingService.emailsSent.size(), 'Continue Application email should be sent to customer.');
+        System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
+        if (systemDefault.Continue_Application_Email_Template__c != null) {
+            System.assertEquals(1, MessagingService.emailsSent.size(), 'Continue Application email should be sent to customer.');
+
+        }
     }
 
     @IsTest
