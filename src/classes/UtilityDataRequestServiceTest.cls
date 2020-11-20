@@ -26,11 +26,11 @@ private class UtilityDataRequestServiceTest {
         );
         insert testUtility;
         
-        State__c stateGA = new State__c(
-            Name = 'Georgia',
-            Avg_Annual_Resi_kWh__c = 165200
+        State__c stateMA = new State__c(
+        	Name = 'MA',
+        	Avg_Annual_Resi_kWh__c = 165200
         );
-        insert stateGA;
+        insert stateMA;
         
         Product2 testProduct = new Product2(
             Name = 'testProduct',
@@ -59,34 +59,54 @@ private class UtilityDataRequestServiceTest {
         insert testLeadList;
         
         Utility_Account_Log__c testUAL1 = new Utility_Account_Log__c(
-            Service_State__c = 'Georgia',
             Lead__c = resiLead.Id,
-            Name_on_Account__c = 'testUAL1',
-            Utility_lookup__c = testUtility.Id
+            Utility_lookup__c = testUtility.Id,
+            Username__c = 'testUAL1',
+            Name_on_Account__c = 'Tom',
+            Service_Address__c = '66 Mass Ave',
+            Service_City__c = 'Boston',
+            Service_State__c = 'MA',
+            Service_Zip_Code__c = '02115'
         );
         
         Utility_Account_Log__c testUAL2 = new Utility_Account_Log__c(
-            Service_State__c = 'Georgia',
             Lead__c = resiLead.Id,
-            Name_on_Account__c = 'testUAL2'
+            Username__c = 'testUAL2',
+            Name_on_Account__c = 'Tim',
+            Service_Address__c = '32 Quincy St, apt 20',
+            Service_City__c = 'Cambridge',
+            Service_State__c = 'ma',
+            Service_Zip_Code__c = '02138'
         );
         
         Utility_Account_Log__c testUAL3 = new Utility_Account_Log__c(
-            Service_State__c = 'Georgia',
             Lead__c = nonResiLead.Id,
-            Name_on_Account__c = 'testUAL3'
+            Username__c = 'testUAL3',
+            Name_on_Account__c = 'Jim',
+            Service_Address__c = '249 Pearl St.',
+            Service_City__c = 'Somerville',
+            Service_State__c = 'MA',
+            Service_Zip_Code__c = '02145'
         );
         
         Utility_Account_Log__c testUAL4 = new Utility_Account_Log__c(
-            Service_State__c = 'Georgia',
             Lead__c = resiLead.Id,
-            Name_on_Account__c = 'testUAL4'
+            Username__c = 'testUAL4',
+            Name_on_Account__c = 'Bill',
+            Service_Address__c = '459  Broadway',
+            Service_City__c = 'Everett',
+            Service_State__c = 'MA',
+            Service_Zip_Code__c = '02149'
         );
         
         Utility_Account_Log__c testUAL5 = new Utility_Account_Log__c(
-            Service_State__c = 'Georgia',
             Lead__c = resiLead.Id,
-            Name_on_Account__c = 'testUAL5'
+            Username__c = 'testUAL5',
+            Name_on_Account__c = 'Bob',
+            Service_Address__c = '1 brighton ave, 20',
+            Service_City__c = 'Allston',
+            Service_State__c = 'MA',
+            Service_Zip_Code__c = '02134'
         );
         
         List<Utility_Account_Log__c> testUALList = new List<Utility_Account_Log__c>{testUAL1, testUAL2, testUAL3, testUAL4, testUAL5};
@@ -94,42 +114,77 @@ private class UtilityDataRequestServiceTest {
         
         Utility_Data_Request__c testUDR1 = new Utility_Data_Request__c(
             Request_Status__c = 'Pending',
-            Customer_Name__c = 'testUDR1',
+            Old_Account_Number__c = 'testUDR1',
             Utility_Account_Log__c = testUAL1.Id,
-            State__c = 'MA',
-            Utility__c = testUtility.Id
+            Utility__c = testUtility.Id,
+            Government_Credit_Code__c = 'N',
+            LDC_Customer_Eligibility__c = 'N',
+            Customer_Name__c = 'Tom',
+            Address_Line_1__c = '#66 Mass. Ave. ',
+            Address_Line_2__c = '',
+            City__c = 'boston ',
+            State__c = 'Ma.',
+            Zip_Code__c = '   02115  '
         );
         
         Utility_Data_Request__c testUDR2 = new Utility_Data_Request__c(
             Request_Status__c = 'Complete',
-            Customer_Name__c = 'testUDR2',
+            Old_Account_Number__c = 'testUDR2',
             Utility_Account_Log__c = testUAL2.Id,
+            Utility__c = testUtility.Id,
+            Government_Credit_Code__c = 'N',
+            LDC_Customer_Eligibility__c = 'N',
+            Customer_Name__c = 'Tim',
+            Address_Line_1__c = '32 Quincy St,',
+            Address_Line_2__c = 'Apt 20',
+            City__c = 'Combridge',
             State__c = 'MA',
-            Utility__c = testUtility.Id
+            Zip_Code__c = '02138 '
         );
         
         Utility_Data_Request__c testUDR3 = new Utility_Data_Request__c(
             Request_Status__c = 'Pending',
-            Customer_Name__c = 'testUDR3',
+            Old_Account_Number__c = 'testUDR3',
             Utility_Account_Log__c = testUAL3.Id,
+            Utility__c = testUtility.Id,
+            Government_Credit_Code__c = 'N',
+            LDC_Customer_Eligibility__c = 'Y',
+            Customer_Name__c = 'Jim',
+            Address_Line_1__c = '249 Pearl St',
+            Address_Line_2__c = '',
+            City__c = 'Somerville',
             State__c = 'MA',
-            Utility__c = testUtility.Id
+            Zip_Code__c = '02145'
         );
         
         Utility_Data_Request__c testUDR4 = new Utility_Data_Request__c(
             Request_Status__c = 'Pending',
-            Customer_Name__c = 'testUDR4',
+            Old_Account_Number__c = 'testUDR4',
             Utility_Account_Log__c = testUAL4.Id,
+            Utility__c = testUtility.Id,
+            Government_Credit_Code__c = 'Y',
+            LDC_Customer_Eligibility__c = 'N',
+            Customer_Name__c = 'Bill',
+            Address_Line_1__c = '458 Broadway',
+            Address_Line_2__c = '',
+            City__c = 'Everett',
             State__c = 'MA',
-            Utility__c = testUtility.Id
+            Zip_Code__c = '02149'
         );
         
         Utility_Data_Request__c testUDR5 = new Utility_Data_Request__c(
             Request_Status__c = 'Pending',
-            Customer_Name__c = 'testUDR5',
+            Old_Account_Number__c = 'testUDR5',
             Utility_Account_Log__c = testUAL5.Id,
-            State__c = 'MA',
-            Utility__c = testUtility.Id
+            Utility__c = testUtility.Id,
+            Government_Credit_Code__c = 'Y',
+            LDC_Customer_Eligibility__c = 'Y',
+            Customer_Name__c = 'Bob',
+            Address_Line_1__c = '1 Brighton Ave',
+            Address_Line_2__c = 'Unit 20',
+            City__c = 'Allston',
+            State__c = 'Ma',
+            Zip_Code__c = '02134'
         );
         
         List<Utility_Data_Request__c> testUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR2, testUDR3, testUDR4, testUDR5};
@@ -715,17 +770,21 @@ private class UtilityDataRequestServiceTest {
     private static Utility_Data_Request__c getTestUDR(String customerName) {
         return [
             SELECT Id, Request_Status__c, Customer_Name__c, State__c, Utility__c, Annual_kWh__c, Average_Demand__c, 
-                Utility_Account_Log__c, Utility_Account_Log__r.Utility_Rate_Class__c, 
-            	Num_months_Annual_kWh__c, Num_months_Average_Demand__c
+                Utility_Account_Log__c, Utility_Account_Log__r.Utility_Rate_Class__c, Old_Account_Number__c,
+            	Num_months_Annual_kWh__c, Num_months_Average_Demand__c, Government_Credit_Code__c, LDC_Customer_Eligibility__c
             FROM Utility_Data_Request__c
-            WHERE Customer_Name__c = :customerName
+            WHERE Old_Account_Number__c = :customerName
         ];
     }
 
     private static Utility_Account_Log__c getTestUAL(Id ualId) {
         return [
-            SELECT Id, Name, Name_on_Account__c, Utility_Rate_Class__c, Annual_kWh__c, Average_Demand__c,
-            Num_months_Annual_kWh__c//, Num_months_Average_Demand__c
+            SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
+                Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
+                Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
+            	Num_months_Annual_kWh__c, Num_months_Average_Demand__c, NYPA__c, RNY__c, Address_Update__c,
+            	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
+            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c
             FROM Utility_Account_Log__c
             WHERE Id = :ualId
         ];
@@ -777,7 +836,7 @@ private class UtilityDataRequestServiceTest {
     }
 
     @IsTest
-    static void updateStatusToComplete() {
+    static void testRateClass() {
         List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size());
         
@@ -875,11 +934,11 @@ private class UtilityDataRequestServiceTest {
         
         System.assert(errorLogs[1].Message__c.contains('Null Rate_Class_Lookup__c value for most recent UDRP related to'));
         
-        //System.assert(!errorLogs.isEmpty(), 'Error logs should have generated for this transaction');
     }
     
     @IsTest
-    static void testAnnualkWhAndAverageDemand() {
+    static void testUALFieldUpdates() {
+        
         Utility_Data_Request__c testUDR1 = getTestUDR('testUDR1');
         Utility_Data_Request__c testUDR3 = getTestUDR('testUDR3');
         Utility_Data_Request__c testUDR4 = getTestUDR('testUDR4');
@@ -919,7 +978,7 @@ private class UtilityDataRequestServiceTest {
                             + ' which has 5 K1 UDRPs so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
                             + 'In this case the answer should be 28233.6.');
         System.assertEquals(5, testUAL1.Num_months_Annual_kWh__c);
-        //System.assertEquals(5, testUAL1.Num_months_Average_Demand__c);
+        System.assertEquals(5, testUAL1.Num_months_Average_Demand__c);
         
         System.assertEquals(165200, updatedTestUDR3.Annual_kWh__c, 'UDR3 has 1 KH UDRP, it is a non-Residential customer, and the Product.X4_month_sizing_method__c == State Average Annual Usage' 
                             + 'so the Annual kWh should be the related State Avg Annual Resi kWh.'
@@ -936,7 +995,7 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals(20, testUAL3.Average_Demand__c, 'UAL3 is related to UDR3, which has 2 K1 UDRP, so the Average Demand is the Annual kWh divided by 8260. '
                             + 'In this case the answer should be 20.');
         System.assertEquals(1, testUAL3.Num_months_Annual_kWh__c);
-        //System.assertEquals(2, testUAL3.Num_months_Average_Demand__c);
+        System.assertEquals(2, testUAL3.Num_months_Average_Demand__c);
         
         System.assertEquals(60572, updatedTestUDR4.Annual_kWh__c, 'UDR4 has 3 KH UDRP and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
@@ -954,7 +1013,7 @@ private class UtilityDataRequestServiceTest {
                             + ' which has 3 K1 UDRPs, so the Average Demand is the Annual kWh divided by 8260 '
                             + 'In this case the answer should be 7.33.');
         System.assertEquals(3, testUAL4.Num_months_Annual_kWh__c);
-        //System.assertEquals(3, testUAL4.Num_months_Average_Demand__c);
+        System.assertEquals(3, testUAL4.Num_months_Average_Demand__c);
         
         System.assertEquals(487579, updatedTestUDR5.Annual_kWh__c, 'UDR5 has 14 KH UDRP and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the 12 most recent UDRP.Quantity__c values.'
@@ -974,7 +1033,7 @@ private class UtilityDataRequestServiceTest {
                             + 'so the Annual kWh should be the sum of the 12 most recent UDRP.Quantity__c values.'
                             + 'In this case the answer should be 22406.');
         System.assertEquals(14, testUAL5.Num_months_Annual_kWh__c);
-        //System.assertEquals(12, testUAL5.Num_months_Average_Demand__c);
+        System.assertEquals(12, testUAL5.Num_months_Average_Demand__c);
         
         List<Utility_Data_Request__c> updatedTestUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5};
         List<Utility_Data_Request_Period__c> khUDRPList= udrpSelector.selectWithKHByUDR(updatedTestUDRList);
@@ -996,6 +1055,50 @@ private class UtilityDataRequestServiceTest {
                 System.assertEquals(true, udrp.Used_in_Average_Demand_Calculation__c, 'UDRP used in avg demand Calculation, should be true. UDRP: ' + udrp);
             }
         }
+        
+        System.assertEquals('No', testUAL1.NYPA__c);
+        System.assertEquals('No', testUAL1.RNY__c);
+        System.assertEquals('No', testUAL3.NYPA__c);
+        System.assertEquals('Yes', testUAL3.RNY__c);
+        System.assertEquals('Yes', testUAL4.NYPA__c);
+        System.assertEquals('No', testUAL4.RNY__c);
+        System.assertEquals('Yes', testUAL5.NYPA__c);
+        System.assertEquals('Yes', testUAL5.RNY__c);
+        
+        System.assertEquals(false, testUAL1.Address_Update__c, 'The addresses should have matched, so the Address_Update__c should be false.');
+        System.assertEquals(false, testUAL3.Address_Update__c, 'The addresses should have matched, so the Address_Update__c should be false.');
+        System.assertEquals(true, testUAL4.Address_Update__c, 'The addresses should not have matched, so the Address_Update__c should be true.');
+        System.assertEquals(true, testUAL5.Address_Update__c, 'The addresses should not have matched, so the Address_Update__c should be true.');
+        
+        System.assertEquals('Bill', testUAL4.Previous_Name_on_Utility_Account__c);
+        System.assertEquals('459  Broadway', testUAL4.Previous_Service_Address__c);
+        System.assertEquals('Everett', testUAL4.Previous_Service_City__c);
+        System.assertEquals('MA', testUAL4.Previous_Service_State__c);
+        System.assertEquals('02149', testUAL4.Previous_Service_Zip_Code__c);
+        
+        System.assertEquals('Bill', testUAL4.Name_on_Account__c);
+        System.assertEquals('458 Broadway', testUAL4.Service_Address__c);
+        System.assertEquals('Everett', testUAL4.Service_City__c);
+        System.assertEquals('MA', testUAL4.Service_State__c);
+        System.assertEquals('02149', testUAL4.Service_Zip_Code__c);
+        
+        System.assertEquals('Bob', testUAL5.Previous_Name_on_Utility_Account__c);
+        System.assertEquals('1 brighton ave, 20', testUAL5.Previous_Service_Address__c);
+        System.assertEquals('Allston', testUAL5.Previous_Service_City__c);
+        System.assertEquals('MA', testUAL5.Previous_Service_State__c);
+        System.assertEquals('02134', testUAL5.Previous_Service_Zip_Code__c);
+        
+        System.assertEquals('Bob', testUAL5.Name_on_Account__c);
+        System.assertEquals('1 Brighton Ave Unit 20', testUAL5.Service_Address__c);
+        System.assertEquals('Allston', testUAL5.Service_City__c);
+        System.assertEquals('Ma', testUAL5.Service_State__c);
+        System.assertEquals('02134', testUAL5.Service_Zip_Code__c);
+                
+        System.assertEquals('Complete', testUAL1.QC_Status__c, 'The addresses should have matched, and the NYPA/RNY fields are No, so the status should be Complete.');
+        System.assertEquals('Pending BW Review', testUAL3.QC_Status__c, 'The addresses should have matched, but the NYPA/RNY fields are No/Yes, so the status should be Pending BW Review.');
+        System.assertEquals('Pending BW Review', testUAL4.QC_Status__c, 'The addresses should have matched, but the NYPA/RNY fields are Yes/No, so the status should be Pending BW Review.');
+        System.assertEquals('Pending BW Review', testUAL5.QC_Status__c, 'The addresses should have matched, but the NYPA/RNY fields are Yes/Yes, so the status should be Pending BW Review.');
+        
     }
 
     @IsTest
@@ -1032,7 +1135,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Service_State__c = 'Georgia',
             Lead__c = lead.Id,
-            Name_on_Account__c = 'testUAL1',
+            Username__c = 'testUAL1',
             Utility_lookup__c = utilityId
         );
         insert ual;
