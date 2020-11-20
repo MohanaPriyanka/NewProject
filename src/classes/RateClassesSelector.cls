@@ -38,7 +38,7 @@ public inherited sharing class RateClassesSelector {
         Map<String,Rate_Class__c> returnMap = new Map<String,Rate_Class__c>();
 
         List<Rate_Class__c> rateClasses = [
-            SELECT Id, Suppress_Disclosure_Form__c
+            SELECT Id, Suppress_Disclosure_Form__c, Name
             FROM Rate_Class__c
             WHERE Name IN : new Set<String>(rateClassNames)
             AND Utility__c =: utilityId

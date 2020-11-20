@@ -358,6 +358,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         envelope.setJSONResponse(response);
     }
 
+    @TestVisible
     private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
         Lead newLead = requestLead.asLead();
         newLead = leadService.insertLead(newLead);
@@ -617,8 +618,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         responseLead.financialDocs = returnFinDocs;
     }
 
+    @TestVisible
     private void setResponseLeadContentDocs(Lead leadToReturn, RestLead responseLead, Boolean docsNewlyGenerated) {
-
         List<ContentDocumentLink> contractCDLs =
             contentSelector.selectByLinkedEntities(CollectionUtil.getIdSet(leadToReturn.Contracts__r));
 
@@ -711,16 +712,14 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         for (RestLead.RestUtilityAccountLog ual : uals) {
             if (ual.rateClass != null) {
                 rateClassNames.add(ual.rateClass);
+            } else {
+                return 2;
             }
         }
         if (!rateClassNames.isEmpty()) {
-            Map<String,Rate_Class__c> rateClasses = rcSelector.selectByNameAndUtility(rateClassNames,restLead.utilityId);
             Boolean allSuppress = true;
+            Map<String,Rate_Class__c> rateClasses = rcSelector.selectByNameAndUtility(rateClassNames,restLead.utilityId);
             for (RestLead.RestUtilityAccountLog ual : uals) {
-                if (ual.rateClass == null) {
-                    allSuppress = false;
-                    continue;
-                }
                 Rate_Class__c rateClass = rateClasses.get(ual.rateClass);
                 if (rateClass == null || rateClass.Suppress_Disclosure_Form__c == false) {
                     allSuppress = false;
