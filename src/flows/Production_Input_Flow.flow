@@ -285,7 +285,6 @@
         <scale>8</scale>
     </formulas>
     <interviewLabel>Production Input Flow {!$Flow.CurrentDateTime}</interviewLabel>
-    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Production Input Flow</label>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -572,6 +571,12 @@
             <field>Amount__c</field>
             <value>
                 <elementReference>UnsubcribedAmount</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <stringValue>Unsubscribed Credits</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
