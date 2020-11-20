@@ -68,6 +68,7 @@ public without sharing class LeadSelector {
         'Annual_kWh__c', 
         'Annual_Cost_of_Electricity__c'
     };
+
     public static List<Lead> selectConvertedByIds(List<Id> leadIds) {
         return [
             SELECT Id, ConvertedAccountId, Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c
@@ -83,6 +84,7 @@ public without sharing class LeadSelector {
         }
         return leads[0];
     }
+
     public List<Lead> selectAll(Set<Id> leadIds) {
         return [
             SELECT 

@@ -725,7 +725,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                     allSuppress = false;
                 }
             }
-
             if (allSuppress) {
                 return 1;
             }
