@@ -55,7 +55,7 @@ public inherited sharing class UtilityAccountSubscriptions {
             return uasesToMarkInactive;
         }
 
-        uasesToMarkInactive = UASSelector.selectByAccounts(new Set<Id>(accountsCancelled));
+        uasesToMarkInactive = UASSelector.selectUASesByAccounts(new Set<Id>(accountsCancelled));
         return uasesToMarkInactive;
     }
 }

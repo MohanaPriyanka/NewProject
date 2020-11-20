@@ -25,7 +25,7 @@ public with sharing class UASSelectorTest {
     }
     @IsTest public static void testSelectByAccounts() {
         Set<Id> accountIds = (new Map<Id, Account>([SELECT Id FROM Account])).keySet();
-        System.assert(UASSelector.selectByAccounts(accountIds).size() > 0, 'Expected UASes for accounts');
+        System.assert(UASSelector.selectUASesByAccounts(accountIds).size() > 0, 'Expected UASes for accounts');
     }
     @IsTest public static void testSelectByUAL() {
         Set<Id> ualIds = (new Map<Id, Utility_Account_Log__c>([SELECT Id FROM Utility_Account_Log__c])).keySet();

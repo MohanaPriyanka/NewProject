@@ -5,7 +5,7 @@
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UASSelector {
-    public static List<Utility_Account_Subscription__c> selectByAccounts(Set<Id> accounts) {
+    public static List<Utility_Account_Subscription__c> selectUASesByAccounts(Set<Id> accounts) {
         return [
             SELECT Id,
                 Subscription_Type__c,
@@ -24,6 +24,7 @@ public without sharing class UASSelector {
                 Opportunity__r.Product__r.Cancellation_Paragraph_Three__c
             FROM Utility_Account_Subscription__c
             WHERE Utility_Account_Log__r.Account__c = :accounts
+            AND Future_Customer_Subscription_KWDC_Rollup__c != 0
         ];
     }
     public static List<Utility_Account_Subscription__c> selectByUAL(Set<Id> ualIds) {
