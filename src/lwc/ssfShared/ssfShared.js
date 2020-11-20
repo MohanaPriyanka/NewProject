@@ -1,4 +1,3 @@
-import { getNumberOfContractDocs } from 'c/ssfBasicInfoShared';
 import { makeRequest } from 'c/httpRequestService';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import insertLog from '@salesforce/apex/Logger.insertLog';
@@ -163,7 +162,6 @@ const setLocation = (component) => {
 
     if (!basicInfoValidation.isValid) {
         if (basicInfoValidation.detail === 'no_capacity') {
-            console.log('no capacity detected');
             //TODO: show error screen
             component.showBasicInfoPage();
         } else {
@@ -177,10 +175,6 @@ const setLocation = (component) => {
             component.showPaymentPage();
             break;
         case 'agree' :
-            if (!lead.numberOfContractDocs) {
-                lead.numberOfContractDocs = getNumberOfDocsForExistingLead(lead, zipcodeResponse);
-                component.leadJSON = JSON.stringify(lead);
-            }
             component.showAgreementsPage();
             break;
         default :
@@ -254,10 +248,6 @@ const validationFailure = (reason) => {
         isValid: false,
         detail: reason
     };
-}
-
-const getNumberOfDocsForExistingLead = (lead, capacity) => {
-    return getNumberOfContractDocs(lead, capacity.products[0], capacity.rateClasses);
 }
 
 export {
