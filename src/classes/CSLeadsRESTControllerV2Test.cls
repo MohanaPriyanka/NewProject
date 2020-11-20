@@ -1130,7 +1130,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     private static void testContractFilesCompilation() {
         // Mock data
         CSLeadsRESTControllerV2Test.RestLeadTestDataset dataSet = new CSLeadsRESTControllerV2Test.RestLeadTestDataset();
-        dataSet.generateMockData(false);
+        dataSet.generateTestData(false);
         Lead generatedLead = new LeadSelector().selectOneWithPropertiesAndUtilities(dataSet.leadId);
         dataSet.insertContractFiles();
 
@@ -1161,7 +1161,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     private static void testContractFilesCompilation_NoRateClass() {
         // Mock data
         CSLeadsRESTControllerV2Test.RestLeadTestDataset dataSet = new CSLeadsRESTControllerV2Test.RestLeadTestDataset();
-        dataSet.generateMockData(true);
+        dataSet.generateTestData(true);
         Lead generatedLead = new LeadSelector().selectOneWithPropertiesAndUtilities(dataSet.leadId);
         dataSet.insertContractFiles();
 
@@ -1223,7 +1223,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             insert rateClass;
         }
 
-        private void generateMockData(Boolean missingRateClass) {
+        private void generateTestData(Boolean missingRateClass) {
             restLead = new RestLead();
             restLead.productName = product.Name;
             restLead.utilityId = utilityId;
