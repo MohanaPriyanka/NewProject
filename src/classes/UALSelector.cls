@@ -18,7 +18,9 @@ public without sharing class UALSelector {
             SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
                 Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
                 Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
-            	Num_months_Annual_kWh__c, Num_months_Average_Demand__c
+            	Num_months_Annual_kWh__c, Num_months_Average_Demand__c, NYPA__c, RNY__c, Address_Update__c,
+            	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
+            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c
             FROM Utility_Account_Log__c
             WHERE Id = :utilityAccountLogIds
         ];
@@ -29,7 +31,9 @@ public without sharing class UALSelector {
             SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
                 Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
                 Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
-            	Num_months_Annual_kWh__c, Num_months_Average_Demand__c
+            	Num_months_Annual_kWh__c, Num_months_Average_Demand__c, NYPA__c, RNY__c, Address_Update__c,
+            	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
+            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c
             FROM Utility_Account_Log__c
             WHERE Id = :utilityAccountLogIds
         ]);
@@ -38,9 +42,11 @@ public without sharing class UALSelector {
     public Map<Id, Utility_Account_Log__c> selectAllByLeadMap(Set<Id> leadIds) {
         return new Map<Id, Utility_Account_Log__c>([
             SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
-            Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
-            Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name, QC_Status__c,
-            Num_months_Annual_kWh__c, Num_months_Average_Demand__c
+                Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
+                Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
+            	Num_months_Annual_kWh__c, Num_months_Average_Demand__c, NYPA__c, RNY__c, Address_Update__c,
+            	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
+            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c
             FROM Utility_Account_Log__c
             WHERE Lead__c = :leadIds
         ]);
