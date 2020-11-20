@@ -635,7 +635,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             responseLead.contentDocs = compileLeadContentDocs(responseLead, contractCDLs);
         }
     }
-
     private MultiMap getLeadUALandFUDCDLMap(Lead leadToReturn, MultiMap ualsByPropertyAccountId) {
         Set<Id> linkedEntityIdSet = new Set<Id>{
             leadToReturn.Id
@@ -726,6 +725,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                     allSuppress = false;
                 }
             }
+
             if (allSuppress) {
                 return 1;
             }
@@ -854,9 +854,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
     /**
      * @description Future method to send an email to the related Partner when the customer has completed their SSF
-     * Application. By setting the targetObjectId but not treating it as a recipient, the activity will be logged
-     * to the lead but not actually sent to the customer
-     *
+     * Application
      * @param leadId Id for Lead that has completed the application
      */
     @Future
@@ -872,14 +870,17 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 'Email was not sent to Partner for lead: ' + lead.Id + '; First confirm ' +
                     'that there is an email template found in System Default custom metadata. ' +
                     'Then confirm the lead is populated with a Partner Email.', Logger.WARN);
-
             return;
         }
+        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
+        ee.emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
+        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
+        ee.addressList = new List<String>{lead.Partner_Email__c};
+        ee.subjectLine = 'Application Completed for ' + lead.Name;
 
         EmailTemplate template = MessagingService.getHtml(systemDefault.Application_Complete_Email_Template__c);
         String templateHtml = template.HtmlValue;
         templateHtml = templateHtml.replace('{{{Recipient.Name}}}', lead.Name);
-
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
         mail.setSubject('Application Completed for ' + lead.Name);
@@ -890,12 +891,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         mail.setTreatTargetObjectAsRecipient(false);
 
         try {
-            MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
+            MessagingService.sendEmailTemplate(ee);
         } catch (Exception e) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
                 '; ' + e.getStackTraceString());
         }
     }
+
     /**
     * When application is completed, if PCR is still a "No Match," we create a QC Case
     * @param lead lead that has completed the SSF Application
@@ -907,7 +909,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             noMatchFactory.setLead(lead);
             noMatchFactory.setQueueType('No FICO Match');
             System.enqueueJob(noMatchFactory);
-
         }
     }
 }

@@ -72,6 +72,10 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
         this.isFico = event.detail;
     }
 
+    handleNavigateBackToBasicInfo(event) {
+        this.showBasicInfoPage();
+    }
+
     showEnterEmailPage() {
         this.getEmail = true;
         this.getZip = false;

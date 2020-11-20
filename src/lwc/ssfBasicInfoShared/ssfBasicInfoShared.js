@@ -1,6 +1,127 @@
-/**
- * Created by lindsayholmes_gearscrm on 2020-09-14.
-**/
+import {getUSStateOptionsFull} from 'c/util';
+
+// Perform tasks when first instancing component
+const onLoad = (cmp) => {
+
+    handleZipCheck(cmp);
+    handleNewOrExistingApp(cmp);
+    setComponentUnderwritingVals(cmp);
+
+    if (!cmp.restLead.partnerId) {
+        cmp.restLead.partnerId = cmp.partnerId;
+    }
+    if (!cmp.restLead.salesRepId) {
+        cmp.restLead.salesRepId = cmp.salesRepId;
+    }
+    if (!cmp.restLead.campaignId) {
+        cmp.restLead.campaignId = cmp.campaignId;
+    }
+    // if there are no utility accounts, add an empty one so the form will show fields to enter data
+    if (cmp.propertyAccount && cmp.propertyAccount.utilityAccountLogs
+        && cmp.propertyAccount.utilityAccountLogs.length === 0) {
+        cmp.addUtilityAccount();
+    }
+    // set the values to properly display the utility portion of the form
+    cmp.utilityAccountCount = cmp.propertyAccount.utilityAccountLogs.length;
+    cmp.utilityAccountSection = cmp.utilityAccountCount;
+
+    // if certain property values didn't come in from the api, find their values
+    if (!cmp.stateOptions) {
+        cmp.stateOptions = getUSStateOptionsFull();
+    }
+    if (cmp.mock) {
+        mockData(cmp);
+    }
+}
+
+const handleZipCheck = (cmp) => {
+    if (cmp.zipCheckResponse) {
+        cmp.zipCheckResponse = JSON.parse(cmp.zipCheckResponse);
+        cmp.collectRateClass = cmp.zipCheckResponse.collectRateClass;
+
+        // Set ZIP Code
+        if (cmp.zipCheckResponse.zipCode) {
+            cmp.zipinput = cmp.zipCheckResponse.zipCode;
+        }
+        // Set Product
+        if (cmp.zipCheckResponse.products && cmp.zipCheckResponse.products.length > 0) {
+            cmp.selectedProduct = cmp.zipCheckResponse.products[0];
+        }
+        // Set Utility, Data Collection Method
+        if (cmp.zipCheckResponse.utilities && cmp.zipCheckResponse.utilities.length > 0 && cmp.zipCheckResponse.utilities[0].utilityId) {
+            let selectedUtility = cmp.zipCheckResponse.utilities[0];
+            cmp.utilityId = selectedUtility.utilityId;
+            if (selectedUtility.dataCollectionMethod) {
+                cmp.isFileUpload = (selectedUtility.dataCollectionMethod !== 'EDI');
+            }
+            else {
+                cmp.isFileUpload = true;
+            }
+        } else {
+            cmp.isFileUpload = true;
+        }
+        // Set Rate Classes, if needed
+        if (cmp.zipCheckResponse.rateClasses) {
+            cmp.rateClassObj = Object.fromEntries(cmp.zipCheckResponse.rateClasses.map(
+                rateClass => ([rateClass.name, rateClass])
+            ));
+            if (cmp.collectRateClass) {
+                if (cmp.zipCheckResponse.rateClasses.length === 0) {
+                    cmp.collectRateClass = false;
+                }
+                else {
+                    cmp.rateClassOptions = cmp.zipCheckResponse.rateClasses.map(
+                        rateClass => ({ value: rateClass.name, label: rateClass.name })
+                    );
+                }
+            }
+        }
+    }
+}
+
+const handleNewOrExistingApp = (cmp) => {
+    // if a lead has already been created, have the form show existing values
+    if (cmp.leadJson) {
+        cmp.resumedApp = true;
+        cmp.restLead = JSON.parse(cmp.leadJson);
+        cmp.propertyAccount = cmp.restLead.propertyAccounts[0];
+        if (cmp.propertyAccount.utilityAccountLogs) {
+            let account = cmp.propertyAccount;
+            for (let i=0; i < account.utilityAccountLogs.length; i++) {
+                account.utilityAccountLogs[i].localid = i+1;
+                account.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
+                account.utilityAccountLogs[i].doNotDelete = true;
+                account.utilityAccountLogs[i].showUpload =
+                    cmp.isFileUpload && (!account.utilityAccountLogs[i].utilityBills || account.utilityAccountLogs[i].utilityBills.length === 0);
+                account.utilityAccountLogs[i].utilityAccountNumberReentry = account.utilityAccountLogs[i].utilityAccountNumber;
+
+                if (account.utilityAccountLogs[i].rateClass) {
+                    cmp.selectedRateClasses.push(cmp.rateClassObj[account.utilityAccountLogs[i].rateClass]);
+                }
+            }
+        }
+        cmp.sameBillingAddress = cmp.propertyAccount.billingStreet === cmp.propertyAccount.utilityAccountLogs[0].serviceStreet;
+        cmp.sameHomeAddress = cmp.restLead.streetAddress === cmp.propertyAccount.utilityAccountLogs[0].serviceStreet;
+        resumeAppSetProduct(cmp);
+    }
+    // if no lead exists, set default values for restLead and propertyAccount
+    else {
+        cmp.restLead = getNewRestLead(cmp);
+        cmp.propertyAccount = getNewRestPropertyAccount(cmp);
+    }
+}
+
+// Ensure we're setting the selected product based on restLead returned by server (resume app only)
+// Someone internal may have changed the product for the customer in the backend, reflect that change here
+const resumeAppSetProduct = (cmp) => {
+    let possibleProducts = new Map();
+    cmp.zipCheckResponse.products.forEach(product => {
+        possibleProducts.set(product.name, product);
+    });
+    const productOnLead = possibleProducts.get(cmp.restLead.productName);
+    // If no match found, set selectedProduct default, which is cmp.zipCheckResponse.products[0]
+    cmp.selectedProduct = productOnLead ? productOnLead : cmp.selectedProduct;
+}
 
 const getFinDocFileTypes = () => {
     return ['.png', '.jpg', '.jpeg', '.pdf', '.zip'];
@@ -85,16 +206,12 @@ const getNewRestUtilityAccountLog = (component) => {
 }
 
 const validateUtilityAccountLog = (utilityAccountLog) => {
-    if (utilityAccountLog &&
-        utilityAccountLog.utilityAccountNumber &&
-        utilityAccountLog.serviceStreet &&
-        utilityAccountLog.serviceState &&
-        utilityAccountLog.serviceCity &&
-        utilityAccountLog.servicePostalCode) {
-            return true;
-        }
-
-    return false;
+    return !!(utilityAccountLog &&
+              utilityAccountLog.utilityAccountNumber &&
+              utilityAccountLog.serviceStreet &&
+              utilityAccountLog.serviceState &&
+              utilityAccountLog.serviceCity &&
+              utilityAccountLog.servicePostalCode);
 }
 
 const validateServiceZipCode = (cmp, event) => {
@@ -153,33 +270,6 @@ const setRemainingFields = (component, sameHomeAddressAsFirstUA) => {
     }
     component.propertyAccount.name = component.resiApplicationType ? `${component.restLead.firstName} ${component.restLead.lastName}` : component.restLead.businessName;
     component.restLead.propertyAccounts = [component.propertyAccount];
-    component.restLead.numberOfContractDocs = getNumberOfContractDocs(component.restLead, component.selectedProduct, component.selectedRateClasses);
-}
-
-const getNumberOfContractDocs = (lead, product, rateClasses) => {
-    if (product.standaloneDisclosureForm === false) {
-        return 1;
-    }
-    if (rateClasses && rateClasses.length > 0) {
-        const rateClassObj = Object.fromEntries(rateClasses.map(
-            rateClass => ([rateClass.name, rateClass])
-        ));
-
-        let allSuppress = true;
-        lead.propertyAccounts.forEach(propAcct => {
-            propAcct.utilityAccountLogs.forEach(ual => {
-                if (!ual.rateClass || !rateClassObj.hasOwnProperty(ual.rateClass)
-                    || !rateClassObj[ual.rateClass].suppressDisclosureForm) {
-                    allSuppress = false;
-                }
-            });
-        });
-
-        if (allSuppress) {
-            return 1;
-        }
-    }
-    return 2;
 }
 
 const verifyUtilityAccountEntry = (cmp, event, eventField) => {
@@ -188,8 +278,8 @@ const verifyUtilityAccountEntry = (cmp, event, eventField) => {
     let ualNumReentryInputElement = cmp.template.querySelector(`[data-ual-number-reentry-index="${index}"]`);
 
     // Retrieve current stored values for input fields
-    const ualNum = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumber.replace('-','');
-    const ualNumReentry = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumberReentry.replace('-','');
+    const ualNum = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumber.replaceAll('-','');
+    const ualNumReentry = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumberReentry.replaceAll('-','');
 
     // Retrieve state booleans... assess if we want to run validation in real-time
     const ualNumChangeValidate = eventField === 'utilityAccountNumber' && !!ualNumReentry;
@@ -267,18 +357,34 @@ const applicationValid = (cmp) => {
     return true;
 }
 
+const mockData = (cmp) => {
+    cmp.restLead.firstName = 'Peter';
+    cmp.restLead.lastName = 'Testcase';
+    cmp.restLead.email = 'pyao@bluewavesolar.com';
+    if (cmp.resiApplicationType) {
+        cmp.restLead.mobilePhone = 1231231234;
+    }
+    else {
+        cmp.restLead.businessPhone = 1231231234;
+    }
+    cmp.propertyAccount.utilityAccountLogs[0].utilityAccountNumber = '123';
+    cmp.propertyAccount.utilityAccountLogs[0].nameOnAccount = 'Peter Testcase';
+    cmp.propertyAccount.utilityAccountLogs[0].serviceStreet = '123 Main';
+    cmp.propertyAccount.utilityAccountLogs[0].serviceState = 'MA';
+    cmp.propertyAccount.utilityAccountLogs[0].serviceCity = 'Boston';
+    cmp.propertyAccount.utilityAccountLogs[0].servicePostalCode = cmp.zipinput;
+}
+
 export {  
     getFinDocFileTypes,
     getUnderwritingHelpText,
-    getNewRestLead,
-    getNewRestPropertyAccount,
     getNewRestUtilityAccountLog,
     validateUtilityAccountLog,
     setRemainingFields,
-    setComponentUnderwritingVals,
     handleUnderwritingChange,
-    getNumberOfContractDocs,
     verifyUtilityAccountEntry,
     validateServiceZipCode,
-    applicationValid
+    applicationValid,
+    onLoad,
+    resumeAppSetProduct
 }

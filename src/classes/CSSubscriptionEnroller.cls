@@ -197,8 +197,8 @@ public without sharing class CSSubscriptionEnroller {
             }
 
             totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-            totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
-            totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
+                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
+                totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
 
             if (productsMap.get(lead.Product__c).Sizing_Method__c == 'Rate Class Ratio' && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'kWh') {
                 try {

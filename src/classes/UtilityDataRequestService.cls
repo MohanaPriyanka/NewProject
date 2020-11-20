@@ -4,10 +4,8 @@
  * Test: UtilityDataRequestServiceTest
  * 
  */
-
 @SuppressWarnings('ApexDocValidation')
 public without sharing class UtilityDataRequestService {
-
     @TestVisible private Map<Id,Utility_Data_Request__c> completedUDRMap = new Map<Id,Utility_Data_Request__c>();
     @TestVisible private Map<Id,Utility_Data_Request__c> newUDRMap;
     @TestVisible private Map<Id,Utility_Data_Request__c> oldUDRMap;
@@ -16,13 +14,11 @@ public without sharing class UtilityDataRequestService {
     @TestVisible private Map<Id,Id> udrToRateClassMap = new Map<Id,Id>();
     @TestVisible private Map<Id,List<Utility_Data_Request_Period__c>> udrToUdrpMap;
     @TestVisible private fflib_SObjectUnitOfWork uow;
-
     @TestVisible private static RateClassesSelector rateClassesSelector = new RateClassesSelector();
     @TestVisible private static UtilityDataRequestPeriodSelector udrpSelector = new UtilityDataRequestPeriodSelector();
     @TestVisible private static UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
     @TestVisible private static UALSelector ualSelector = new UALSelector();
     @TestVisible private static StateSelector stateSelector = new StateSelector();
-
     /**
      * Constructor for service class instance
      * @param oldUDRMap Trigger.oldMap
@@ -32,7 +28,6 @@ public without sharing class UtilityDataRequestService {
         this.oldUDRMap = oldUDRMap;
         this.newUDRMap = newUDRMap;
     }
-
     /**
      * @description Populates the UDR.Annual_kWh and the UAL.Annual_kWh with the value calculated in the getAnnualkWh method.
      * Only want to update where the UDR Request Status is being updated to Complete from something else.
@@ -41,12 +36,12 @@ public without sharing class UtilityDataRequestService {
     public void beforeStatusUpdatedToComplete() {
         // Setup trigger context, retrieve data
         setupTriggerContext();
-        
+
         if(!completedUDRMap.isEmpty()) {
             beforeUpdateUDR();
+
         }
     }
-    
     /**
      * Method used when a UDR record status is updated to 'Complete' from previously being something else
      * <p></p>
@@ -54,15 +49,15 @@ public without sharing class UtilityDataRequestService {
      */
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void afterStatusUpdatedToComplete() {
+
         // Setup trigger context, retrieve data
         setupTriggerContext();
-            
+
         // Perform actions
         if (!completedUDRMap.isEmpty()) {
             updateUDRP();
             updateUAL();
         }
-
         // Commit work
         try {
             uow.commitWork();
@@ -71,10 +66,8 @@ public without sharing class UtilityDataRequestService {
                 + '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
             Logger.logLater('UtilityDataRequestService', 'afterStatusUpdatedToComplete', message);
         }
-
         Logger.flushLogs();
     }
-    
     @TestVisible
     private void setupTriggerContext() {
         // Instance UOW
@@ -84,14 +77,12 @@ public without sharing class UtilityDataRequestService {
                 Utility_Account_Log__c.getSObjectType()
             }
         );
-
         // Map completed UDRs for further processing
         for (Utility_Data_Request__c udr : newUDRMap.values()) {
             if (udr.Request_Status__c == 'Complete' && oldUDRMap.get(udr.Id).Request_Status__c != 'Complete') {
                 completedUDRMap.put(udr.Id,udr);
             }
         }
-
         // Retrieve Rate Classes, UDR->UDRPs, and UALs for Completed UDRs
         if (!completedUDRMap.isEmpty()) {
             rateClassWithEDIMap = rateClassesSelector.selectWithEDI();
@@ -101,14 +92,12 @@ public without sharing class UtilityDataRequestService {
             );
         }
     }
-    
+
     @TestVisible
     private void beforeUpdateUDR(){
         Map<Id, udrObject> udrObjectMap = new Map<Id, udrObject>();
-        
         for(Id udrId : udrToUdrpMap.keySet()){
             udrObject currentUDR = new udrObject(udrId);
-            
             for(Utility_Data_Request_Period__c udrp : udrToUdrpMap.get(udrId)) {
                 if(udrp.Measurement_Significance_Code__c == '51' && udrp.Measurement_Unit__c == 'KH') {
                     currentUDR.addUdrpKH(udrp);
@@ -120,27 +109,21 @@ public without sharing class UtilityDataRequestService {
         }
         //Need to get map of new UDRs with specific query criteria needed for the kWh calculation
         Map<Id, Utility_Data_Request__c> udrMap = udrSelector.selectMapForKWHById(completedUDRMap.values());
-        
         for(Utility_Data_Request__c udr : completedUDRMap.values()) {
-            
             Utility_Data_Request__c currentUDR = udrMap.get(udr.Id);
             udrObject currentUdrObject = udrObjectMap.get(udr.Id);
-            
             Double kWhNumMonths = currentUdrObject.getListKH().size();
             Double demandNumMonths = currentUdrObject.getListK1().size();
-            
             Double updatedAnnualkWh = getAnnualkWh(currentUDR, currentUdrObject.getListKH());
             currentUDR.Annual_kWh__c = updatedAnnualkWh;
             Double updatedAverageDemand = getAverageDemand(currentUDR, currentUdrObject.getListK1());
-                
             udr.Annual_kWh__c = updatedAnnualkWh;
             udr.Average_Demand__c = updatedAverageDemand;
             udr.Num_months_Annual_kWh__c = kWhNumMonths;
             udr.Num_months_Average_Demand__c = demandNumMonths;
-            
         }
+
     }
-    
     /**
      * @description Calculates the number for the Annual kWh field for a UDR and its related UAL.
      * It needs the number of UDRPs for the given UDR where the UDRP.Measurement_Unit is 'KH', and finds the Annual kWh based on how many UDRPs there are.
@@ -156,10 +139,10 @@ public without sharing class UtilityDataRequestService {
      */
     @TestVisible
     private Double getAnnualkWh(Utility_Data_Request__c udr, List <Utility_Data_Request_Period__c> udrpList) { 
-        
+
         Decimal kWh = 0;
+
         Integer numUDRP = udrpList.size();
-        
         if (numUDRP >= 12) {
             for (Integer i=0; i<12; i++) {
                 kWh = kWh + udrpList[i].Quantity__c;
@@ -191,17 +174,14 @@ public without sharing class UtilityDataRequestService {
         kWh = kWh.setScale(2);
         return kWh.doubleValue();
     }
-    
     /**
      * @description Calculates the number for the Average Demand field for a UDR and its related UAL.
      * Used the same basic logic as the getAnnualkWh method
      */
     @TestVisible
     private Double getAverageDemand(Utility_Data_Request__c udr, List <Utility_Data_Request_Period__c> udrpList) { 
-        
         Decimal avgDemand = 0;
         Integer numUDRP = udrpList.size();
-        
         if (numUDRP >= 12) {
             for (Integer i=0; i<12; i++) {
                 avgDemand = avgDemand + udrpList[i].Quantity__c;
@@ -220,9 +200,6 @@ public without sharing class UtilityDataRequestService {
         avgDemand = avgDemand.setScale(2);
         return avgDemand.doubleValue();
     }
-    
-    
-    
     @TestVisible // Modify UDRPs
     private void updateUDRP() {
         // Only want to update the Rate Classes if the Status updated from something else to Complete
@@ -230,25 +207,20 @@ public without sharing class UtilityDataRequestService {
         for (Id udrId : completedUDRMap.keySet()) {
             udrpsToUpdate.addAll(populateRateClassOnUDRP(udrId));
         }
-
         uow.registerDirty(udrpsToUpdate);
     }
-    
     @TestVisible // Modify UALs
     private void updateUAL() {
         for (Id udrId : completedUDRMap.keySet()) {
             Utility_Account_Log__c ual = getUalForCompletedUdr(udrId);
             Id rateClass = getRateClassForCompletedUdr(udrId);
-            
             populateKwhAndDemandOnUAL(ual, completedUDRMap.get(udrId));
             populateRateClassOnUAL(ual, rateClass, udrId);
             populateAddressNameOnUAL(ual);
         }
-
         // Register work
         uow.registerDirty(ualMap.values());
     }
-    
     /**
      * @description Populates the UDRP.Rate_Class_Lookup__c where 
      * the Rate Class object's EDI_Rate_Class__c text matches the UDRP's Rate_Subclass__c text.
@@ -256,16 +228,12 @@ public without sharing class UtilityDataRequestService {
     @TestVisible
     private List<Utility_Data_Request_Period__c> populateRateClassOnUDRP(Id udrId) {
         List<Utility_Data_Request_Period__c> udrpList = udrToUdrpMap.get(udrId);
-
         for (Integer i=0; i<udrpList.size(); i++) {
             String rateSubclass = udrpList[i].Rate_Subclass__c;
-
             if (rateSubclass != null && rateClassWithEDIMap.containsKey(rateSubclass)
                 && udrpList[i].Utility_Data_Request__r.Utility__c == rateClassWithEDIMap.get(rateSubclass).Utility__c) {
-                    
                     Id rateClassId = rateClassWithEDIMap.get(rateSubclass).Id;
                     udrpList[i].Rate_Class_Lookup__c = rateClassId;
-                    
                     if (i == 0) {
                         // First UDRP (most recent service date) is what we use for Rate Class lookup elsewhere
                         udrToRateClassMap.put(udrId, rateClassId);
@@ -277,10 +245,8 @@ public without sharing class UtilityDataRequestService {
                 Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', message);
             }
         }
-
         return udrpList;
     }
-    
     /**
      * @description Populates the UAL.Utility_Rate_Class__c (lookup to Rate Class) with 
      * the most recent UDRP's Rate_Class_Lookup__c where the Rate_Class_Lookup__c is not null.
@@ -296,7 +262,6 @@ public without sharing class UtilityDataRequestService {
             Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUAL', message);
         }
     }
-    
     @TestVisible
     private void populateKwhAndDemandOnUAL(Utility_Account_Log__c ual, Utility_Data_Request__c udr) {
         ual.Annual_kWh__c = udr.Annual_kWh__c;
@@ -304,7 +269,6 @@ public without sharing class UtilityDataRequestService {
         ual.Num_months_Annual_kWh__c = udr.Num_months_Annual_kWh__c;
         ual.Num_months_Average_Demand__c = udr.Num_months_Average_Demand__c;
     }
-    
     @TestVisible
     private void populateAddressNameOnUAL(Utility_Account_Log__c ual) {
         // future state:
@@ -315,7 +279,6 @@ public without sharing class UtilityDataRequestService {
         // ual.previous name = ual.name
         // ual.name = udr.name
     }
-
     /**
      * Assesses if UDRs should be generated for passed-in lead ids based on Utility Data Collection Mechanism
      * <p></p>
@@ -329,7 +292,6 @@ public without sharing class UtilityDataRequestService {
         fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
             new List<Schema.SObjectType> {Utility_Data_Request__c.SObjectType, Utility_Account_Log__c.SObjectType}
         );
-
         List<Utility_Account_Log__c> uals = ualSelector.selectUalsWithUdrs(leadIds);
         for (Utility_Account_Log__c ual : uals) {
             if (ual.Utility_Data_Requests__r.isEmpty()) {
@@ -338,7 +300,6 @@ public without sharing class UtilityDataRequestService {
                 uow.registerDirty(ual);
             }
         }
-
         try {
             uow.commitWork();
         } catch (Exception e) {
@@ -347,7 +308,6 @@ public without sharing class UtilityDataRequestService {
             Logger.logNow('UtilityDataRequestService', 'create (@future)', message, 'Error');
         }
     }
-
     @TestVisible
     private static Utility_Data_Request__c constructNewUDR(Utility_Account_Log__c ual) {
         return new Utility_Data_Request__c(
@@ -359,40 +319,34 @@ public without sharing class UtilityDataRequestService {
             Request_Status__c       = 'Pending'
         );
     }
-    
+
     @TestVisible
     private Utility_Account_Log__c getUalForCompletedUdr(Id udrId) {
         return ualMap.get(completedUDRMap.get(udrId).Utility_Account_Log__c);
     }
-    
     @TestVisible
     private Id getRateClassForCompletedUdr(Id udrId) {
         return udrToRateClassMap.get(udrId);
     }
-    
     public class udrObject {
     	private Id udrId;
     	private List<Utility_Data_Request_Period__c> listKH = new List<Utility_Data_Request_Period__c>();
     	private List<Utility_Data_Request_Period__c> listK1 = new List<Utility_Data_Request_Period__c>();
-        
         public udrObject(Id udrId) {
             this.udrId = udrId;
         }
-        
         public void addUdrpKH(Utility_Data_Request_Period__c udrp) {
             listKH.add(udrp);
         }
-        
         public void addUdrpK1(Utility_Data_Request_Period__c udrp) {
             listK1.add(udrp);
         }
-        
         public List<Utility_Data_Request_Period__c> getListKH() {
             return this.listKH;
         }
-        
         public List<Utility_Data_Request_Period__c> getListK1() {
             return this.listK1;
         }
 	}
+
 }
