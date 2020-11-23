@@ -207,9 +207,8 @@ public without sharing class LeadSelector {
         } else {
             return null;
         }
-
-
     }
+
     public List<Lead> selectForUDRCreation(List<Id> leadIds) {
         List<Lead> leads = [
             SELECT Id, Utility_relationship__r.Utility_Data_Collection_Mechanism__c,
