@@ -775,19 +775,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         continueUrl.getParameters().put('email', lead.Email);
         continueUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
         continueUrl.getParameters().put('loc', location);
-        lead.Continue_Application_Link__c = continueUrl.getUrl();
 
-        // Set Contract Re-Sign (Agree page) link based on current Lead info
-        if (lead.Contract_eSign_Link__c != null) {
-            resignUrl = new PageReference(lead.Contract_eSign_Link__c);
-        } else {
-            resignUrl = new PageReference(baseUrl);
-        }
-        continueUrl.getParameters().put('leadid', lead.Id);
-        continueUrl.getParameters().put('email', lead.Email);
-        continueUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
-        continueUrl.getParameters().put('loc', 'agree');
-        lead.Contract_eSign_Link__c = continueUrl.getUrl();
+        resignUrl = new PageReference(continueUrl.getUrl());
+        resignUrl.getParameters().put('loc','agree');
+
+        // Set fields on Lead
+        lead.Continue_Application_Link__c = continueUrl.getUrl();
+        lead.Contract_eSign_Link__c = resignUrl.getUrl();
     }
 
     public String getApplicationStatus(Lead lead) {
