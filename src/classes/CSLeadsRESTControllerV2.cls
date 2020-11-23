@@ -720,7 +720,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Map<String,Rate_Class__c> rateClasses = rcSelector.selectByNameAndUtility(rateClassNames,restLead.utilityId);
         for (String name : rateClassNames) {
             Rate_Class__c rateClass = rateClasses.get(name);
-            if (rateClass.Suppress_Disclosure_Form__c == true) {
+            if (rateClass?.Suppress_Disclosure_Form__c == true) {
                 rateClassesWithSuppressedDisclosure++;
             }
             if (rateClassesWithSuppressedDisclosure == rateClassesInApplication) {
