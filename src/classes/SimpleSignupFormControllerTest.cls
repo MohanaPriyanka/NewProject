@@ -279,49 +279,4 @@ public with sharing class SimpleSignupFormControllerTest {
         system.assertEquals(testMessage,logs[0].Message__c, 'Log retrieved contains incorrect Message__c');
 
     }
-
-    @IsTest
-    private static void testDuplicateSSFLead() {
-        Lead matchingLead = new Lead(
-            FirstName = 'Match',
-            LastName = 'Testcase',
-            Email = 'test@email.com',
-            Company = 'Testcase',
-            LeadSource = 'Switch',
-            Continue_Application_Link__c = 'continueURL.com'
-        );
-
-        insert matchingLead;
-        Test.startTest();
-        Lead checkLead = SimpleSignupFormController.findIncompleteApplication('test@email.com');
-        Test.stopTest();
-
-        System.assertNotEquals(null, checkLead);
-        System.assertEquals(matchingLead.Continue_Application_Link__c, 'continueURL.com');
-        System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
-        if (systemDefault.Continue_Application_Email_Template__c != null) {
-            System.assertEquals(1, MessagingService.emailsSent.size(), 'Continue Application email should be sent to customer.');
-
-        }
-    }
-
-    @IsTest
-    private static void testNODuplicateSSFLead() {
-        Lead matchingLead = new Lead(
-            FirstName = 'NoMatch',
-            LastName = 'Testcase',
-            Email = 'test@email.com',
-            Company = 'Testcase',
-            LeadSource = 'Switch',
-            Continue_Application_Link__c = 'continueURL.com'
-        );
-
-        insert matchingLead;
-        Test.startTest();
-        Lead checkLead = SimpleSignupFormController.findIncompleteApplication('noMatch@email.com');
-        Test.stopTest();
-
-        System.assertEquals(null, checkLead);
-        System.assertEquals(null, MessagingService.emailsSent, 'Continue Application email should be sent to customer.');
-    }
 }
