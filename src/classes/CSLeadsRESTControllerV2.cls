@@ -699,7 +699,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
      */
     private Integer calcNumberOfContractDocuments(Lead lead, RestLead restLead) {
         // ONE Contract file needed if selected Product specifies a standalone disclosure form
-        if (lead.Product__r.Disclosure_Form_Conga_Template__c != null) {
+        if (lead.Product__r.Disclosure_Form_Conga_Template__c == null) {
             return 1;
         }
 
@@ -707,15 +707,23 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         List<String> rateClassNames = new List<String>();
         for (RestLead.RestUtilityAccountLog ual : restLead.propertyAccounts[0]?.utilityAccountLogs) {
             if (ual.rateClass == null) {
+                // Null rate class on any UAL, don't suppress disclosure and provide 2 contract files
                 return 2;
             } else {
                 rateClassNames.add(ual.rateClass);
             }
         }
+
+        Integer rateClassesInApplication = rateClassNames.size();
+        Integer rateClassesWithSuppressedDisclosure = 0;
+
         Map<String,Rate_Class__c> rateClasses = rcSelector.selectByNameAndUtility(rateClassNames,restLead.utilityId);
         for (String name : rateClassNames) {
             Rate_Class__c rateClass = rateClasses.get(name);
-            if (rateClass.Suppress_Disclosure_Form__c == false) {
+            if (rateClass.Suppress_Disclosure_Form__c == true) {
+                rateClassesWithSuppressedDisclosure++;
+            }
+            if (rateClassesWithSuppressedDisclosure == rateClassesInApplication) {
                 return 1;
             }
         }
