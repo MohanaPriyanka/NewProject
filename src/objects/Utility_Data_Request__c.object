@@ -595,12 +595,12 @@ Complete - All data received and updated</inlineHelpText>
     <fields>
         <fullName>Request_Status_new__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(OR(TEXT(Header_Status__c) =&apos;Error&apos;,TEXT(Detail_Status__c )=&apos;Error&apos;),&quot;Error&quot;,
-    IF(AND(TEXT(Header_Status__c) =&apos;Data Received&apos;,TEXT(Detail_Status__c )=&apos;Data Received&apos;),&quot;Data Received&quot;,
-        IF(OR(TEXT(Header_Status__c) =&apos;Data Received&apos;,TEXT(Detail_Status__c )=&apos;Data Received&apos;),&quot;Partial Data Received&quot;,
-            IF(AND(TEXT(Header_Status__c) =&apos;Complete&apos;,TEXT(Detail_Status__c )=&apos;Complete&apos;),&quot;Complete&quot;,
-                IF(TEXT(Header_Status__c) =&apos;Sent&apos;,&quot;Sent&quot;,
-                    IF(TEXT(Header_Status__c) = &apos;Pending&apos;,&quot;Pending&quot;,&quot;Error&quot;)
+        <formula>IF(OR(ISPICKVAL(Header_Status__c,&quot;Error&quot;),ISPICKVAL(Detail_Status__c, &quot;Error&quot;)),&quot;Error&quot;,
+    IF(AND(ISPICKVAL(Header_Status__c,&quot;Data Received&quot;),ISPICKVAL(Detail_Status__c, &quot;Data Received&quot;)),&quot;Data Received&quot;,
+        IF(AND(ISPICKVAL(Header_Status__c,&quot;Complete&quot;),ISPICKVAL(Detail_Status__c,&quot;Complete&quot;)),&quot;Complete&quot;,
+            IF(OR(ISPICKVAL(Header_Status__c,&quot;Data Received&quot;),ISPICKVAL(Header_Status__c,&quot;Complete&quot;),ISPICKVAL(Detail_Status__c,&quot;Data Received&quot;)),&quot;Partial Data Received&quot;,
+                IF(ISPICKVAL(Header_Status__c, &quot;Sent&quot;),&quot;Sent&quot;,
+                    IF(ISPICKVAL(Header_Status__c, &quot;Pending&quot;),&quot;Pending&quot;,&quot;Error&quot;)
                 )
             )
         )
