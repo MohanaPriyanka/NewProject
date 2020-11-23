@@ -77,6 +77,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         private final String RETRY_ON_EXCEPTION = 'RetryOnException';
         @TestVisible
         private final String RETRY_ATTEMPT = 'RetryAttempt';
+        private final String CONTINUE_ON_NO_DATA = 'ContinueOnNoData';
         public ProcessingParameter() {
         }
         public ProcessingParameter(String className) {
@@ -106,6 +107,27 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
                 return;
             }
             optionalIntegers.put(RETRY_ATTEMPT, optionalIntegers.get(RETRY_ATTEMPT)+1);
+        }
+        /**
+         * @description Informs the ZuoraDataQueryAsyncService to run executePostQueryJob on the specified className even
+         * if no data are found. By default, executePostQueryJob is only called if the data query returns data
+         */
+        public void enableContinueOnNoData() {
+            if (optionalBooleans == null) {
+                optionalBooleans = new Map<String, Boolean>();
+            }
+            optionalBooleans.put(CONTINUE_ON_NO_DATA, true);
+        }
+        /**
+         * @description Returns true if this processing parameter's className should be run even when the data query returns no data
+         * @return Boolean
+         */
+        public Boolean continueOnNoData() {
+            return (
+                optionalBooleans != null &&
+                optionalBooleans.containsKey(CONTINUE_ON_NO_DATA) &&
+                optionalBooleans.get(CONTINUE_ON_NO_DATA)
+            );
         }
     }
 

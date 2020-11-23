@@ -81,7 +81,8 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
         System.enqueueJob(checkStatus);
     }
 
-    private void handleCompletedQuery (Zuora_Data_Query__c dataQueryToUpdate){
+    @TestVisible
+    private void handleCompletedQuery (Zuora_Data_Query__c dataQueryToUpdate) {
         zuoraQueryResult.getDataFromDataQuery();
         String dataAsString = convertDataQueryResponseToJSON(zuoraQueryResult.data.allData);
         dataQueryToUpdate.Link_To_File__c = zuoraQueryResult.data.dataFile;
@@ -89,9 +90,12 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
         // be used for small data sets or as a preview:
         dataQueryToUpdate.Data_From_Zuora__c = dataAsString.substring(0, Math.min(dataAsString.length(), 131000));
         dataQueryToUpdate.Output_Rows__c = zuoraQueryResult.data.outputRows;
-        if (dataAsString != '[]' && dataQueryToUpdate.Processing_Parameter__c != null) {
-            ZuoraDataQueryService.ProcessingParameter processingParameter =
-                (ZuoraDataQueryService.ProcessingParameter) JSON.deserialize(dataQueryToUpdate.Processing_Parameter__c, ZuoraDataQueryService.ProcessingParameter.class);
+        if (dataQueryToUpdate.Processing_Parameter__c == null) {
+            return;
+        }
+        ZuoraDataQueryService.ProcessingParameter processingParameter =
+            (ZuoraDataQueryService.ProcessingParameter) JSON.deserialize(dataQueryToUpdate.Processing_Parameter__c, ZuoraDataQueryService.ProcessingParameter.class);
+        if (dataAsString != '[]' || processingParameter.continueOnNoData()) {
             try {
                 ZuoraDataQueryService.handlePostQueryJob(dataAsString, processingParameter);
             } catch (ZuoraDataQueryService.RetriableException re) {
