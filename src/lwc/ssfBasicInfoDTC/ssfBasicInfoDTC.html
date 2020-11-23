@@ -116,6 +116,7 @@
                       value={restLead.email}
                       label="Email"
                       onchange={genericOnChange}
+                      onblur={findDuplicate}
                       type="email"
                       required
                       disabled={resumedApp}>
@@ -468,4 +469,6 @@
     <template if:true={showSpinner}>
         <c-ssf-waiting-room></c-ssf-waiting-room>
     </template>
+    <!-- MODAL -->
+    <c-ssf-modal show={showModal}></c-ssf-modal>
 </template>

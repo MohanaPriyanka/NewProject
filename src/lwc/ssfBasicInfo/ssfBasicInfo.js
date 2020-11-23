@@ -10,6 +10,7 @@ import { makeRequest } from 'c/httpRequestService';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import formFactorName from '@salesforce/client/formFactor';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
+import findIncompleteApplication from '@salesforce/apex/SimpleSignupFormController.findIncompleteApplication';
 import { getFinDocFileTypes,
          getUnderwritingHelpText,
          getNewRestLead,
@@ -54,6 +55,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track showAddress;
     @track isPhone;
     @track helpTextVisible;
+    @track showModal;
 
     isFico = true;
     utilityAccountCount = 0;
@@ -66,7 +68,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         
         if (this.zipCheckResponse) {
             this.zipCheckResponse = JSON.parse(this.zipCheckResponse);
-
             this.collectRateClass = this.zipCheckResponse.collectRateClass;
             if (this.zipCheckResponse.zipCode) {
                 this.zipinput = this.zipCheckResponse.zipCode;
@@ -208,6 +209,18 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.restLead[event.target.name] = strippedPhone;
             event.target.setCustomValidity("Please enter a 10-digit phone number");
         }
+    }
+
+    findDuplicate() {
+        findIncompleteApplication({email : this.restLead.email})
+        .then(result => {
+            if (result != null) {
+                this.showModal = true;
+            }
+        })
+        .catch(error => {
+            // No duplicate application found - continue as usual
+        })
     }
 
     preventDefaultEvent(event) {

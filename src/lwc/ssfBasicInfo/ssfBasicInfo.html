@@ -36,6 +36,7 @@
                   value={restLead.email}
                   label="Email"
                   onchange={genericOnChange}
+                  onblur={findDuplicate}
                   type="email"
                   required
                   disabled={resumedApp}>
@@ -469,4 +470,7 @@
 
     <!-- LOADING SPINNER -->
     <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
+
+    <!-- MODAL -->
+    <c-ssf-modal show={showModal}></c-ssf-modal>
 </template>
