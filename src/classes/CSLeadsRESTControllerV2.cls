@@ -699,33 +699,32 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
      * @return Integer number of contract files to retrieve and send to SSF client
      */
     private Integer calcNumberOfContractDocuments(Lead lead, RestLead restLead) {
-        // ONE Contract file needed if selected Product does not specify a disclosure form
+        // ONE Contract file needed if selected Product specifies a standalone disclosure form
         if (lead.Product__r.Disclosure_Form_Conga_Template__c == null) {
             return 1;
         }
 
-        // Determine number of Contract files based on rate class specifics...
-        // If ANY UAL in the app 1) doesn't have a rate class or 2) rate class has suppress disclosure = false,
-        //    we must generate both the disclosure and the project-specific contract file, otherwise we generate 1 file
+        // Determine number of Contract files based on rate class specifics
         List<String> rateClassNames = new List<String>();
-        List<RestLead.RestUtilityAccountLog> uals = restLead.propertyAccounts[0]?.utilityAccountLogs;
-        for (RestLead.RestUtilityAccountLog ual : uals) {
-            if (ual.rateClass != null) {
-                rateClassNames.add(ual.rateClass);
-            } else {
+        for (RestLead.RestUtilityAccountLog ual : restLead.propertyAccounts[0]?.utilityAccountLogs) {
+            if (ual.rateClass == null) {
+                // Null rate class on any UAL, don't suppress disclosure and provide 2 contract files
                 return 2;
+            } else {
+                rateClassNames.add(ual.rateClass);
             }
         }
-        if (!rateClassNames.isEmpty()) {
-            Boolean allSuppress = true;
-            Map<String,Rate_Class__c> rateClasses = rcSelector.selectByNameAndUtility(rateClassNames,restLead.utilityId);
-            for (RestLead.RestUtilityAccountLog ual : uals) {
-                Rate_Class__c rateClass = rateClasses.get(ual.rateClass);
-                if (rateClass == null || rateClass.Suppress_Disclosure_Form__c == false) {
-                    allSuppress = false;
-                }
+
+        Integer rateClassesInApplication = rateClassNames.size();
+        Integer rateClassesWithSuppressedDisclosure = 0;
+
+        Map<String,Rate_Class__c> rateClasses = rcSelector.selectByNameAndUtility(rateClassNames,restLead.utilityId);
+        for (String name : rateClassNames) {
+            Rate_Class__c rateClass = rateClasses.get(name);
+            if (rateClass?.Suppress_Disclosure_Form__c == true) {
+                rateClassesWithSuppressedDisclosure++;
             }
-            if (allSuppress) {
+            if (rateClassesWithSuppressedDisclosure == rateClassesInApplication) {
                 return 1;
             }
         }
@@ -785,18 +784,12 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         continueUrl.getParameters().put('email', lead.Email);
         continueUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
         continueUrl.getParameters().put('loc', location);
-        lead.Continue_Application_Link__c = continueUrl.getUrl();
 
-        // Set Contract Re-Sign (Agree page) link based on current Lead info
-        if (lead.Contract_eSign_Link__c != null) {
-            resignUrl = new PageReference(lead.Contract_eSign_Link__c);
-        } else {
-            resignUrl = new PageReference(baseUrl);
-        }
-        resignUrl.getParameters().put('leadid', lead.Id);
-        resignUrl.getParameters().put('email', lead.Email);
-        resignUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
-        resignUrl.getParameters().put('loc', 'agree');
+        resignUrl = new PageReference(continueUrl.getUrl());
+        resignUrl.getParameters().put('loc','agree');
+
+        // Set fields on Lead
+        lead.Continue_Application_Link__c = continueUrl.getUrl();
         lead.Contract_eSign_Link__c = resignUrl.getUrl();
     }
 
