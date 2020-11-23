@@ -30,6 +30,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         methodToRunAfter.methodName = 'AccountingPeriod';
         methodToRunAfter.startDate = startDate;
         methodToRunAfter.endDate = endDate;
+        methodToRunAfter.enableContinueOnNoData();
         ZuoraDataQueryService.callFromApex(queryString,methodToRunAfter);
     }
 
@@ -116,6 +117,9 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         Map<String, Journal_Entry__c> zuoraJournalEntries = new Map<String, Journal_Entry__c>();
 
         ledgerItems = (List<GeneralLedgerItem>)JSON.deserialize(response, List<GeneralLedgerItem>.class);
+        if (ledgerItems.isEmpty()) {
+            return;
+        }
         zuoraJournalEntries = convertGeneralLedgerToJournalEntry(ledgerItems, method.methodName);
 
         JournalEntrySelector selector = new JournalEntrySelector();

@@ -211,9 +211,52 @@ public class ZuoraDataQueryServiceTest {
             'Expected to retry the post query job because a RetriableException was thrown');
     }
 
+    @IsTest
+    private static void continuePostQueryJobDataOnNoData() {
+        ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter('ZuoraDataQueryServiceTest.PostQueryNoDataTest');
+        processingParameter.enableContinueOnNoData();
+        Zuora_Data_Query__c dataQuery = new Zuora_Data_Query__c(
+            Processing_Parameter__c = JSON.serialize(processingParameter)
+        );
+
+        ZuoraDataQueryService.DataQueryResult result = ZuoraDataQueryService.submitDataQuery('SELECT NO DATA');
+        result.data.dataFile = 'https://owl-auw2-sbx01-query-result.s3.us-west-2.amazonaws.com/NODATA';
+        ZuoraDataQueryAsyncService dataQueryAsyncService = new ZuoraDataQueryAsyncService();
+        dataQueryAsyncService.zuoraQueryResult = result;
+        dataQueryAsyncService.handleCompletedQuery(dataQuery);
+        System.assert(ZuoraDataQueryServiceTest.ranExecutePostQueryJob, 'Expected to run PostQueryNoDataTest.executePostQueryJob');
+
+    }
+
+    @IsTest
+    private static void doNotContinuePostQueryJobDataOnNoData() {
+        ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter('ZuoraDataQueryServiceTest.PostQueryNoDataTest');
+        Zuora_Data_Query__c dataQuery = new Zuora_Data_Query__c(
+            Processing_Parameter__c = JSON.serialize(processingParameter)
+        );
+
+        ZuoraDataQueryService.DataQueryResult result = ZuoraDataQueryService.submitDataQuery('SELECT NO DATA');
+        result.data.dataFile = 'https://owl-auw2-sbx01-query-result.s3.us-west-2.amazonaws.com/NODATA';
+        ZuoraDataQueryAsyncService dataQueryAsyncService = new ZuoraDataQueryAsyncService();
+        dataQueryAsyncService.zuoraQueryResult = result;
+        dataQueryAsyncService.handleCompletedQuery(dataQuery);
+        System.assert(!ZuoraDataQueryServiceTest.ranExecutePostQueryJob, 'Did not expect to run PostQueryNoDataTest.executePostQueryJob');
+
+    }
+
     public class PostQueryTest implements ZuoraDataQueryService.Processor {
         public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
             throw new ZuoraDataQueryService.RetriableException('Retry post query job');
         }
     }
+
+    public static Boolean ranExecutePostQueryJob = false;
+    public class PostQueryNoDataTest implements ZuoraDataQueryService.Processor {
+        public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
+            List<Object> responseList = (List<Object>)JSON.deserialize(response, List<Object>.class);
+            ranExecutePostQueryJob = true;
+            System.assert(responseList.isEmpty(), 'Expected an empty response but got: ' + response);
+        }
+    }
+
 }
