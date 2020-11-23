@@ -40334,11 +40334,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Partner_Shared_Solar_System_Eligibility__c.Partner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Partner_Task__c.Action_Label__c</field>
         <readable>true</readable>
@@ -44071,11 +44066,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Sales_Charge__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Shared_Solar_System__c.Sales_Partners__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
