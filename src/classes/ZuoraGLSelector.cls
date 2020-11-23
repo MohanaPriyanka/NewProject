@@ -23,8 +23,8 @@ public with sharing class ZuoraGLSelector {
             'INNER JOIN RatePlanCharge rp ON it.rateplanchargeid = rp.Id ' +
             'INNER JOIN Invoice iv ON it.invoiceid = iv.Id ' +
             'INNER JOIN Account a ON iv.accountid = a.Id ' +
-            'WHERE iv.invoicedate > TIMESTAMP \'' + String.valueOf(startTime)+ '\' ' +
-            'AND iv.invoicedate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            'WHERE iv.invoicedate > TIMESTAMP \'' + startTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\' ' +
+            'AND iv.invoicedate < TIMESTAMP \'' + endTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
         // Catch-up invoice items are invoice items that Zuora creates for service periods that haven't been billed since
         // the start of the subscription to the charge date of the current invoice. For example, if a subscription starts
         // 1/1/2020 and we don't bill until 5/20/20, Zuora will create $0 invoice items for Jan, Feb, March, and April,
@@ -49,10 +49,10 @@ public with sharing class ZuoraGLSelector {
             'INNER JOIN Account a ON m.accountid = a.Id';
 
         if (startDate != null && endDate != null){
-            Datetime startTime = DateTime.newInstance(startDate.year(),startDate.month(),startDate.day());
-            Datetime endTime = DateTime.newInstance(endDate.year(),endDate.month(),endDate.day());
-            creditMemoQuery += ' WHERE m.memodate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
-            creditMemoQuery += ' AND m.memodate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            Datetime startTime = Datetime.newInstance(startDate.year(),startDate.month(),startDate.day());
+            Datetime endTime = Datetime.newInstance(endDate.year(),endDate.month(),endDate.day());
+            creditMemoQuery += ' WHERE m.memodate > TIMESTAMP \'' + startTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
+            creditMemoQuery += ' AND m.memodate < TIMESTAMP \'' + endTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
         }
         return creditMemoQuery;
     }
@@ -76,10 +76,10 @@ public with sharing class ZuoraGLSelector {
                 'INNER JOIN Account a ON m.accountid = a.Id';
 
         if (startDate != null && endDate != null){
-            Datetime startTime = DateTime.newInstance(startDate.year(),startDate.month(),startDate.day());
-            Datetime endTime = DateTime.newInstance(endDate.year(),endDate.month(),endDate.day());
-            debitMemoQuery += ' WHERE m.memodate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
-            debitMemoQuery += ' AND m.memodate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            Datetime startTime = Datetime.newInstance(startDate.year(),startDate.month(),startDate.day());
+            Datetime endTime = Datetime.newInstance(endDate.year(),endDate.month(),endDate.day());
+            debitMemoQuery += ' WHERE m.memodate > TIMESTAMP \'' + startTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
+            debitMemoQuery += ' AND m.memodate < TIMESTAMP \'' + endTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
         }
         return debitMemoQuery;
     }
@@ -108,10 +108,10 @@ public with sharing class ZuoraGLSelector {
             'INNER JOIN Account a ON m.accountid = a.Id';
 
         if (startDate != null && endDate != null){
-            Datetime startTime = DateTime.newInstance(startDate.year(),startDate.month(),startDate.day());
-            Datetime endTime = DateTime.newInstance(endDate.year(),endDate.month(),endDate.day());
-            payPartDebitMemoQuery += ' WHERE p.createddate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
-            payPartDebitMemoQuery += ' AND p.createddate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            Datetime startTime = Datetime.newInstance(startDate.year(),startDate.month(),startDate.day());
+            Datetime endTime = Datetime.newInstance(endDate.year(),endDate.month(),endDate.day());
+            payPartDebitMemoQuery += ' WHERE p.createddate > TIMESTAMP \'' + startTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
+            payPartDebitMemoQuery += ' AND p.createddate < TIMESTAMP \'' + endTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
             payPartDebitMemoQuery += ' AND py.Status = \'Processed\' ';
         } else {
             payPartDebitMemoQuery += ' WHERE py.Status = \'Processed\' ';
@@ -144,10 +144,10 @@ public with sharing class ZuoraGLSelector {
             'INNER JOIN Account a ON iv.accountid = a.Id';
 
         if (startDate != null && endDate != null){
-            Datetime startTime = DateTime.newInstance(startDate.year(),startDate.month(),startDate.day());
-            Datetime endTime = DateTime.newInstance(endDate.year(),endDate.month(),endDate.day());
-            payPartInvoiceQuery += ' WHERE p.createddate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
-            payPartInvoiceQuery += ' AND p.createddate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            Datetime startTime = Datetime.newInstance(startDate.year(),startDate.month(),startDate.day());
+            Datetime endTime = Datetime.newInstance(endDate.year(),endDate.month(),endDate.day());
+            payPartInvoiceQuery += ' WHERE p.createddate > TIMESTAMP \'' + startTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
+            payPartInvoiceQuery += ' AND p.createddate < TIMESTAMP \'' + endTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
             payPartInvoiceQuery += ' AND py.Status = \'Processed\' ';
         } else {
             payPartInvoiceQuery += ' WHERE py.Status = \'Processed\' ';
