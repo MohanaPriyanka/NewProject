@@ -68,7 +68,6 @@ public without sharing class LeadSelector {
         'Annual_kWh__c', 
         'Annual_Cost_of_Electricity__c'
     };
-
     public static List<Lead> selectConvertedByIds(List<Id> leadIds) {
         return [
             SELECT Id, ConvertedAccountId, Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c
@@ -84,7 +83,6 @@ public without sharing class LeadSelector {
         }
         return leads[0];
     }
-
     public List<Lead> selectAll(Set<Id> leadIds) {
         return [
             SELECT 
@@ -194,7 +192,6 @@ public without sharing class LeadSelector {
         }
         return leads[0];
     }
-
     public Lead selectOneIncompleteSSFLeadByEmail(String email) {
         List<Lead> duplicateLead = [
             SELECT Id, Name, Application_Complete_Date__c, Continue_Application_Link__c, Email, Partner_Email__c
@@ -210,8 +207,9 @@ public without sharing class LeadSelector {
         } else {
             return null;
         }
-    }
 
+
+    }
     public List<Lead> selectForUDRCreation(List<Id> leadIds) {
         List<Lead> leads = [
             SELECT Id, Utility_relationship__r.Utility_Data_Collection_Mechanism__c,
