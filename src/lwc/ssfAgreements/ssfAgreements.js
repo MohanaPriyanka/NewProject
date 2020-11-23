@@ -11,7 +11,9 @@ import { onLoad,
          showCreditCheckApproval,
          showCSAgreementApproval,
          consentsComplete,
-         getCreditCheckLabel } from 'c/ssfAgreementsShared';
+         getCreditCheckLabel,
+         navigateBack
+} from 'c/ssfAgreementsShared';
 
 export default class SsfAgreements extends LightningElement {
     @api leadJson;
@@ -55,6 +57,7 @@ export default class SsfAgreements extends LightningElement {
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css')
         onLoad(this);
+        window.scrollTo(0, 0);
     }
 
     renderedCallback() {
@@ -117,6 +120,10 @@ export default class SsfAgreements extends LightningElement {
 
     genericOnChange(event) {
         this[event.target.name] = event.target.value;
+    }
+
+    handleBackButton(event) {
+        navigateBack(this);
     }
 
     continueAgreement(event) {
