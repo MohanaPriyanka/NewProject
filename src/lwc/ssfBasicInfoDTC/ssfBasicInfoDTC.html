@@ -116,7 +116,6 @@
                       value={restLead.email}
                       label="Email"
                       onchange={genericOnChange}
-                      onblur={findDuplicate}
                       type="email"
                       required
                       disabled={resumedApp}>
@@ -358,7 +357,7 @@
                                             required>
                                         </lightning-combobox>
                                     </div>
-                                     <div class="input-group half">
+                                    <div class="input-group half">
                                         <lightning-input
                                           type="select"
                                           key={it.value.localid}
@@ -469,6 +468,4 @@
     <template if:true={showSpinner}>
         <c-ssf-waiting-room></c-ssf-waiting-room>
     </template>
-    <!-- MODAL -->
-    <c-ssf-modal show={showModal}></c-ssf-modal>
 </template>
