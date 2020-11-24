@@ -41,7 +41,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track selectedRateClasses = [];
     @track showSpinner;
     @track spinnerMessage;
-    @track sameBillingAddress = true;
+    @track sameBillingAddress;
     @track utilityAccountSection;
     @track isFileUpload;
     @track showUnderwritingOptions;
@@ -63,7 +63,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     // handle changes in form entries
     genericOnChange(event) {
         this.restLead[event.target.name] = event.target.value;
-
         if (event.target.name === 'underwritingCriteria') {
             // need to handle applicant selection on underwriting field, either FICO or Financial Documents
             this.isFico = event.target.value === 'FICO';

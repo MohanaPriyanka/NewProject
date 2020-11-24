@@ -100,8 +100,7 @@ const handleNewOrExistingApp = (cmp) => {
                 }
             }
         }
-        cmp.sameBillingAddress = cmp.propertyAccount.billingStreet === cmp.propertyAccount.utilityAccountLogs[0].serviceStreet;
-        cmp.sameHomeAddress = cmp.restLead.streetAddress === cmp.propertyAccount.utilityAccountLogs[0].serviceStreet;
+        resumeAppSetAddressFlags(cmp);
         resumeAppSetProduct(cmp);
     }
     // if no lead exists, set default values for restLead and propertyAccount
@@ -109,6 +108,15 @@ const handleNewOrExistingApp = (cmp) => {
         cmp.restLead = getNewRestLead(cmp);
         cmp.propertyAccount = getNewRestPropertyAccount(cmp);
     }
+}
+
+const resumeAppSetAddressFlags = (cmp) => {
+    const firstUal = cmp.propertyAccount.utilityAccountLogs[0];
+    const leadBillingStreetZip = `${cmp.propertyAccount.billingStreet} ${cmp.propertyAccount.billingPostalCode}`;
+    const leadContactStreetZip = `${cmp.restLead.streetAddress} ${cmp.restLead.zipCode}`;
+    const leadFirstUalStreetZip = `${firstUal.serviceStreet} ${firstUal.servicePostalCode}`;
+    cmp.sameBillingAddress = leadBillingStreetZip === leadFirstUalStreetZip;
+    cmp.sameHomeAddress = leadContactStreetZip === leadFirstUalStreetZip;
 }
 
 // Ensure we're setting the selected product based on restLead returned by server (resume app only)
