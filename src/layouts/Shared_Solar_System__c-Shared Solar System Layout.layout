@@ -216,6 +216,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Sales_Partners__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Available_SMB_Underwriting_Method_FICO__c</field>
             </layoutItems>
         </layoutColumns>
@@ -240,8 +244,8 @@
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
         <label>Information</label>
-        <layoutColumns />
-        <layoutColumns />
+        <layoutColumns/>
+        <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
@@ -374,8 +378,8 @@
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
         <label>Subscription Information</label>
-        <layoutColumns />
-        <layoutColumns />
+        <layoutColumns/>
+        <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
@@ -391,7 +395,7 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns />
+        <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
@@ -587,8 +591,8 @@
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
         <label>System Information</label>
-        <layoutColumns />
-        <layoutColumns />
+        <layoutColumns/>
+        <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
@@ -596,9 +600,9 @@
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
         <label>Custom Links</label>
-        <layoutColumns />
-        <layoutColumns />
-        <layoutColumns />
+        <layoutColumns/>
+        <layoutColumns/>
+        <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
     <miniLayout>
@@ -721,11 +725,6 @@
         <relatedList>Client_Contract__c.Shared_Solar_System__c</relatedList>
         <sortField>Effective_Date__c</sortField>
         <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Account.NAME</fields>
-        <relatedList>Partner_Account_Shared_Solar_System__c.Shared_Solar_System__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

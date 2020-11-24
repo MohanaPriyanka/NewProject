@@ -204,6 +204,15 @@ Production: BlueWave Inside Sales</description>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Disable_PartnerSSSEligibilityTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Disables the PartnerSharedSolarSystemEligibilityTrigger</inlineHelpText>
+        <label>Disable PartnerSSSEligibilityTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disable_ProductionTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
