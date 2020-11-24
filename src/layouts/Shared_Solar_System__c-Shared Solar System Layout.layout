@@ -216,10 +216,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Sales_Partners__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Available_SMB_Underwriting_Method_FICO__c</field>
             </layoutItems>
         </layoutColumns>
