@@ -185,14 +185,13 @@ public without sharing class UtilityDataRequestService {
                 avgDemand = avgDemand + udrpList[i].Quantity__c;
                 udrpList[i].Used_In_Average_Demand_Calculation__c = true;
             }
-        } else if (numUDRP < 12 && numUDRP >= 4) {
+            avgDemand = avgDemand/12;
+        } else if (numUDRP < 12 && numUDRP > 0) {
             for (Integer i=0; i<numUDRP; i++) {
                 avgDemand = avgDemand + udrpList[i].Quantity__c;
                 udrpList[i].Used_In_Average_Demand_Calculation__c = true;
             }
-            avgDemand = (avgDemand/numUDRP)*12;
-        } else if (numUDRP < 4 && numUDRP > 0) { 
-            avgDemand = (udr.Annual_kWh__c)/8260;
+            avgDemand = avgDemand/numUDRP;
         }
         update udrpList;
         avgDemand = avgDemand.setScale(2);

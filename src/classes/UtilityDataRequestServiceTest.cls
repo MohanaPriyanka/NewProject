@@ -782,13 +782,25 @@ private class UtilityDataRequestServiceTest {
             Measurement_Significance_Code__c = '51'
         );
         
+        Utility_Data_Request_Period__c testUDRP47 = new Utility_Data_Request_Period__c(
+            Utility_Data_Request__c = testUDR5.Id, 
+            Rate_Class__c = 'Test EDI Rate Class 1',
+            Rate_Subclass__c = 'Test EDI Rate Class 1',
+            Load_Profile_Description__c = 'testUDRP47',
+            Service_Start_Date__c = Date.newInstance(2015, 1, 2),
+            Measurement_Unit__c ='K1',
+            Quantity__c = 10,
+            Used_In_Average_Demand_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
+        );
+        
         List<Utility_Data_Request_Period__c> testUDRPList = new List<Utility_Data_Request_Period__c>{
             testUDRP1, testUDRP2, testUDRP3, testUDRP4, testUDRP5, testUDRP6, testUDRP7, testUDRP8, 
             testUDRP9, testUDRP10, testUDRP11, testUDRP12, testUDRP13, testUDRP14, testUDRP15, testUDRP16, 
             testUDRP17, testUDRP18, testUDRP19, testUDRP20, testUDRP21, testUDRP22, testUDRP23, testUDRP24, 
             testUDRP25, testUDRP26, testUDRP27, testUDRP28, testUDRP29, testUDRP30, testUDRP31, testUDRP32, 
             testUDRP33, testUDRP34, testUDRP35, testUDRP36, testUDRP37, testUDRP38, testUDRP39, testUDRP40, 
-            testUDRP41, testUDRP42, testUDRP43, testUDRP44, testUDRP45, testUDRP46};
+            testUDRP41, testUDRP42, testUDRP43, testUDRP44, testUDRP45, testUDRP46, testUDRP47};
         insert testUDRPList;
     }
 
@@ -994,26 +1006,26 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals(33823.2, updatedTestUDR1.Annual_kWh__c, 'UDR1 has 5 KH UDRP so the Annual kWh should be ' 
                             + 'the sum of the UDRP.Quantity__c values multiplied by the number of months and divided by 12.'
                             + 'In this case the answer should be 33823.2.');
-        System.assertEquals(28233.6, updatedTestUDR1.Average_Demand__c, 'UDR1 has 5 K1 UDRP so the Annual kWh should be ' 
+        System.assertEquals(2352.80, updatedTestUDR1.Average_Demand__c, 'UDR1 has 5 K1 UDRP so the Annual kWh should be ' 
                             + 'the sum of the UDRP.Quantity__c values multiplied by the number of months and divided by 12.'
-                            + 'In this case the answer should be 28233.6.');
+                            + 'In this case the answer should be 2352.80.');
         System.assertEquals(5, updatedTestUDR1.Num_months_Annual_kWh__c);
         System.assertEquals(5, updatedTestUDR1.Num_months_Average_Demand__c);
         
         System.assertEquals(33823.2, testUAL1.Annual_kWh__c, 'UAL1 is related to UDR1,' 
                             + ' which has 5 KH UDRPs so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
                             + 'In this case the answer should be 33823.2.');
-        System.assertEquals(28233.6, testUAL1.Average_Demand__c, 'UAL1 is related to UDR1,' 
+        System.assertEquals(2352.80, testUAL1.Average_Demand__c, 'UAL1 is related to UDR1,' 
                             + ' which has 5 K1 UDRPs so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
-                            + 'In this case the answer should be 28233.6.');
+                            + 'In this case the answer should be 2352.80.');
         System.assertEquals(5, testUAL1.Num_months_Annual_kWh__c);
         System.assertEquals(5, testUAL1.Num_months_Average_Demand__c);
         
         System.assertEquals(165200, updatedTestUDR3.Annual_kWh__c, 'UDR3 has 1 KH UDRP, it is a non-Residential customer, and the Product.X4_month_sizing_method__c == State Average Annual Usage' 
                             + 'so the Annual kWh should be the related State Avg Annual Resi kWh.'
                             + 'In this case the answer should be 165200 since the test State Avg Annual Resi kWh is 165200.');
-        System.assertEquals(20, updatedTestUDR3.Average_Demand__c, 'UDR3 has 2 K1 UDRP, so the Average Demand is the Annual kWh divided by 8260 '
-                            + 'In this case the answer should be 20.');
+        System.assertEquals(549, updatedTestUDR3.Average_Demand__c, 'UDR3 has 2 K1 UDRP, so the Average Demand is the Annual kWh divided by 8260 '
+                            + 'In this case the answer should be 549.');
         System.assertEquals(1, updatedTestUDR3.Num_months_Annual_kWh__c);
         System.assertEquals(2, updatedTestUDR3.Num_months_Average_Demand__c);
         
@@ -1021,16 +1033,16 @@ private class UtilityDataRequestServiceTest {
                             + ' which has 1 KH UDRP, it is a non-Residential customer, and the Product.X4_month_sizing_method__c == State Average Annual Usage, ' 
                             + 'so the Annual kWh should be the related State Avg Annual Resi kWh.'
                             + 'In this case the answer should be 165200 since the test State Avg Annual Resi kWh is 165200.');
-        System.assertEquals(20, testUAL3.Average_Demand__c, 'UAL3 is related to UDR3, which has 2 K1 UDRP, so the Average Demand is the Annual kWh divided by 8260. '
-                            + 'In this case the answer should be 20.');
+        System.assertEquals(549, testUAL3.Average_Demand__c, 'UAL3 is related to UDR3, which has 2 K1 UDRP, so the Average Demand is the Annual kWh divided by 8260. '
+                            + 'In this case the answer should be 549.');
         System.assertEquals(1, testUAL3.Num_months_Annual_kWh__c);
         System.assertEquals(2, testUAL3.Num_months_Average_Demand__c);
         
         System.assertEquals(60572, updatedTestUDR4.Annual_kWh__c, 'UDR4 has 3 KH UDRP and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
                             + 'In this case the answer should be 60572.');
-        System.assertEquals(7.33, updatedTestUDR4.Average_Demand__c, 'UDR4 has 3 K1 UDRP, so the Average Demand is the Annual kWh divided by 8260 '
-                            + 'In this case the answer should be 7.33.');
+        System.assertEquals(3461, updatedTestUDR4.Average_Demand__c, 'UDR4 has 3 K1 UDRP, so the Average Demand is the Annual kWh divided by 8260 '
+                            + 'In this case the answer should be 3461.');
         System.assertEquals(3, updatedTestUDR4.Num_months_Annual_kWh__c);
         System.assertEquals(3, updatedTestUDR4.Num_months_Average_Demand__c);
         
@@ -1038,31 +1050,31 @@ private class UtilityDataRequestServiceTest {
                             + ' which has 3 KH UDRPs and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
                             + 'In this case the answer should be 60572.');
-        System.assertEquals(7.33, testUAL4.Average_Demand__c, 'UAL4 is related to UDR4,' 
+        System.assertEquals(3461, testUAL4.Average_Demand__c, 'UAL4 is related to UDR4,' 
                             + ' which has 3 K1 UDRPs, so the Average Demand is the Annual kWh divided by 8260 '
-                            + 'In this case the answer should be 7.33.');
+                            + 'In this case the answer should be 3461.');
         System.assertEquals(3, testUAL4.Num_months_Annual_kWh__c);
         System.assertEquals(3, testUAL4.Num_months_Average_Demand__c);
         
         System.assertEquals(487579, updatedTestUDR5.Annual_kWh__c, 'UDR5 has 14 KH UDRP and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the 12 most recent UDRP.Quantity__c values.'
                             + 'In this case the answer should be 487579.');
-        System.assertEquals(22406, updatedTestUDR5.Average_Demand__c, 'UDR5 has 12 K1 UDRP and is a Residential customer, ' 
+        System.assertEquals(1867.17, updatedTestUDR5.Average_Demand__c, 'UDR5 has 12 K1 UDRP and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the 12 most recent UDRP.Quantity__c values.'
-                            + 'In this case the answer should be 22406.');
+                            + 'In this case the answer should be 1867.17.');
         System.assertEquals(14, updatedTestUDR5.Num_months_Annual_kWh__c);
-        System.assertEquals(12, updatedTestUDR5.Num_months_Average_Demand__c);
+        System.assertEquals(13, updatedTestUDR5.Num_months_Average_Demand__c);
         
         System.assertEquals(487579, testUAL5.Annual_kWh__c, 'UAL5 is related to UDR5,' 
                             + ' which has 14 KH UDRPs and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the 12 most recent UDRP.Quantity__c values.'
                             + 'In this case the answer should be 487579.');
-        System.assertEquals(22406, testUAL5.Average_Demand__c, 'UAL5 is related to UDR5,' 
+        System.assertEquals(1867.17, testUAL5.Average_Demand__c, 'UAL5 is related to UDR5,' 
                             + ' which has 12 K1 UDRPs and is a Residential customer, ' 
                             + 'so the Annual kWh should be the sum of the 12 most recent UDRP.Quantity__c values.'
-                            + 'In this case the answer should be 22406.');
+                            + 'In this case the answer should be 1867.17.');
         System.assertEquals(14, testUAL5.Num_months_Annual_kWh__c);
-        System.assertEquals(12, testUAL5.Num_months_Average_Demand__c);
+        System.assertEquals(13, testUAL5.Num_months_Average_Demand__c);
         
         List<Utility_Data_Request__c> updatedTestUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5};
         List<Utility_Data_Request_Period__c> khUDRPList= udrpSelector.selectWithKHByUDR(updatedTestUDRList);
@@ -1077,8 +1089,7 @@ private class UtilityDataRequestServiceTest {
         }
         
         for(Utility_Data_Request_Period__c udrp : k1UDRPList) {
-            if(udrp.Load_Profile_Description__c == 'testUDRP30' || udrp.Load_Profile_Description__c == 'testUDRP31' || udrp.Load_Profile_Description__c == 'testUDRP32' || 
-               udrp.Load_Profile_Description__c == 'testUDRP33' || udrp.Load_Profile_Description__c == 'testUDRP34' ) {
+            if(udrp.Load_Profile_Description__c == 'testUDRP47') {
                 System.assertEquals(false, udrp.Used_in_Average_Demand_Calculation__c, 'UDRP not used in avg demand calculation, should be false. UDRP: ' + udrp);
             } else {
                 System.assertEquals(true, udrp.Used_in_Average_Demand_Calculation__c, 'UDRP used in avg demand Calculation, should be true. UDRP: ' + udrp);
