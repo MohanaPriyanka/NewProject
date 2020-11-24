@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UserTriggerHandler {
     public static void afterInsert(List<User> users) {
         shareSharedSolarSystems(users);
@@ -38,18 +39,18 @@ public without sharing class UserTriggerHandler {
             partnerAccountIds.add(partner.AccountId);
         }
 
-        List<Partner_Account_Shared_Solar_System__c> passsList = [
-            SELECT Partner_Account__c, Shared_Solar_System__c
-            FROM Partner_Account_Shared_Solar_System__c
-            WHERE Partner_Account__c IN :partnerAccountIds
+        List<Partner_Shared_Solar_System_Eligibility__c> partnerSSSEligibilities = [
+            SELECT Account__c, Shared_Solar_System__c
+            FROM Partner_Shared_Solar_System_Eligibility__c
+            WHERE Account__c IN :partnerAccountIds
         ];
 
         Map<Id, Set<Id>> partnerAccountToSharedSolarSystems = new Map<Id, Set<Id>>();
-        for (Partner_Account_Shared_Solar_System__c passs : passsList) {
-            if (!partnerAccountToSharedSolarSystems.containsKey(passs.Partner_Account__c)) {
-                partnerAccountToSharedSolarSystems.put(passs.Partner_Account__c, new Set<Id>());
+        for (Partner_Shared_Solar_System_Eligibility__c eligibility : partnerSSSEligibilities) {
+            if (!partnerAccountToSharedSolarSystems.containsKey(eligibility.Account__c)) {
+                partnerAccountToSharedSolarSystems.put(eligibility.Account__c, new Set<Id>());
             }
-            partnerAccountToSharedSolarSystems.get(passs.Partner_Account__c).add(passs.Shared_Solar_System__c);
+            partnerAccountToSharedSolarSystems.get(eligibility.Account__c).add(eligibility.Shared_Solar_System__c);
         }
 
         List<Shared_Solar_System__share> shares = new List<Shared_Solar_System__share>();
