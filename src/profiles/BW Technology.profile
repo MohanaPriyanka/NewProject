@@ -40090,11 +40090,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Partner_Account_Shared_Solar_System__c.Compound_Key__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Partner_Alert_Filter__c.Acknowledged__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -69427,15 +69422,6 @@
         <modifyAllRecords>true</modifyAllRecords>
         <object>PartnerMarketingBudget</object>
         <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>Partner_Account_Shared_Solar_System__c</object>
-        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
