@@ -19,8 +19,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible private UALSelector ualSelector = new UALSelector();
     @TestVisible private ContentDocumentSelector contentSelector = new ContentDocumentSelector();
     @TestVisible private CustomerContractSelector customerContractSelector = new CustomerContractSelector();
-    @TestVisible private String baseUrl = Util.getCommunitySiteURL('Apply') + '/s/switch';
     @TestVisible private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
+    public static String baseUrl = Util.getCommunitySiteURL('Apply') + '/s/switch';
 
     @TestVisible private Map<String, String> contractLeadFields = new Map<String, String>{
         'FirstName' => 'firstName',
@@ -363,9 +363,10 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Lead newLead = requestLead.asLead();
         newLead = leadService.insertLead(newLead);
         newLead = duplicateService.checkLeadDuplicates(newLead);
+
         // Set continue application links
-        String applicationStatus = getApplicationStatus(newLead);
-        setContinueApplicationLinks(newLead, applicationStatus);
+        setContinueApplicationLinks(newLead, null);
+
         newLead = leadService.updateLead(newLead);
         if (requestLead.financialDocs != null) {
             for (RestLead.RestContentDocument contentDoc : requestLead.financialDocs) {
@@ -765,35 +766,31 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     /**
-     * Sets links on Lead to access application in SSF at a later state
+     * @description Sets links on Lead to access application in SSF at a later state
      * @param lead Lead to set links for
      * @param applicationStatus Current application status of Lead
      */
-    public void setContinueApplicationLinks(Lead lead, String applicationStatus) {
-        String location = APP_STATUS_TO_LOCATION.get(applicationStatus);
-        PageReference continueUrl;
-        PageReference resignUrl;
-
-        // Set Continue Application Link based on current Lead info
-        if (lead.Continue_Application_Link__c != null) {
-            continueUrl = new PageReference(lead.Continue_Application_Link__c);
-        } else {
-            continueUrl = new PageReference(baseUrl);
+    public static void setContinueApplicationLinks(Lead lead, String applicationStatus) {
+        if (applicationStatus == null) {
+            applicationStatus = getApplicationStatus(lead);
         }
+        String location = APP_STATUS_TO_LOCATION.get(applicationStatus);
+
+        // Set Continue Application link with all mandatory fields
+        PageReference continueUrl = new PageReference(baseUrl);
         continueUrl.getParameters().put('leadid', lead.Id);
         continueUrl.getParameters().put('email', lead.Email);
         continueUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
         continueUrl.getParameters().put('loc', location);
-
-        resignUrl = new PageReference(continueUrl.getUrl());
-        resignUrl.getParameters().put('loc','agree');
-
-        // Set fields on Lead
         lead.Continue_Application_Link__c = continueUrl.getUrl();
-        lead.Contract_eSign_Link__c = resignUrl.getUrl();
+
+        // Set Contract Re-Sign (Agree page) link based on current Lead info
+        PageReference re_signUrl = new PageReference(continueUrl.getUrl());
+        re_signUrl.getParameters().put('loc', 'agree');
+        lead.Contract_eSign_Link__c = re_signUrl.getUrl();
     }
 
-    public String getApplicationStatus(Lead lead) {
+    public static String getApplicationStatus(Lead lead) {
         if (lead.Application_Complete_Date__c != null) {
             return 'Application Completed';
         }
@@ -814,7 +811,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    private String getUALStatus(List<Utility_Account_Log__c> ualList) {
+    private static String getUALStatus(List<Utility_Account_Log__c> ualList) {
         List<Id> ualIds = new List<Id>();
         for(Utility_Account_Log__c ual : ualList) {
             if(ual.Utility_lookup__r.Utility_Data_Collection_Mechanism__c == 'File Upload') {
