@@ -107,15 +107,21 @@ public without sharing class UtilityDataRequestService {
         for(Utility_Data_Request__c udr : completedUDRMap.values()) {
             Utility_Data_Request__c currentUDR = udrMap.get(udr.Id);
             udrObject currentUdrObject = udrObjectMap.get(udr.Id);
-            Double kWhNumMonths = currentUdrObject.getListKH().size();
-            Double demandNumMonths = currentUdrObject.getListK1().size();
+
+            if(currentUdrObject != null) {
+                Double kWhNumMonths = currentUdrObject.getListKH().size();
+
             Double updatedAnnualkWh = getAnnualkWh(currentUDR, currentUdrObject.getListKH());
             currentUDR.Annual_kWh__c = updatedAnnualkWh;
+                Double demandNumMonths = currentUdrObject.getListK1().size();
             Double updatedAverageDemand = getAverageDemand(currentUDR, currentUdrObject.getListK1());
             udr.Annual_kWh__c = updatedAnnualkWh;
-            udr.Average_Demand__c = updatedAverageDemand;
             udr.Num_months_Annual_kWh__c = kWhNumMonths;
+                udr.Average_Demand__c = updatedAverageDemand;
             udr.Num_months_Average_Demand__c = demandNumMonths;
+
+            }         
+
         }
     }
     /**
@@ -206,8 +212,6 @@ public without sharing class UtilityDataRequestService {
         for (Id udrId : completedUDRMap.keySet()) {
             Utility_Account_Log__c ual = getUalForCompletedUdr(udrId);
             Id rateClass = getRateClassForCompletedUdr(udrId);
-
-
             populateRateClassOnUAL(ual, rateClass, udrId);
             populateFieldsOnUAL(ual, completedUDRMap.get(udrId));
         }
@@ -221,6 +225,9 @@ public without sharing class UtilityDataRequestService {
     @TestVisible
     private List<Utility_Data_Request_Period__c> populateRateClassOnUDRP(Id udrId) {
         List<Utility_Data_Request_Period__c> udrpList = udrToUdrpMap.get(udrId);
+
+        if(udrpList != null) {
+
         for (Integer i=0; i<udrpList.size(); i++) {
             String rateSubclass = udrpList[i].Rate_Subclass__c;
             if (rateSubclass != null && rateClassWithEDIMap.containsKey(rateSubclass)
@@ -240,6 +247,10 @@ public without sharing class UtilityDataRequestService {
         }
         return udrpList;
     }
+
+        return new List<Utility_Data_Request_Period__c>();
+    }
+
     /**
      * @description Populates the UAL.Utility_Rate_Class__c (lookup to Rate Class) with 
      * the most recent UDRP's Rate_Class_Lookup__c where the Rate_Class_Lookup__c is not null.
@@ -276,6 +287,8 @@ public without sharing class UtilityDataRequestService {
             ual.QC_Status__c = 'Pending BW Review';
         } else if(addressStatus) {
             ual.QC_Status__c = 'Complete';
+        } else if(!addressStatus) {
+            ual.QC_Status__c = 'Pending BW Review';
         }
     }
     @TestVisible
@@ -389,10 +402,14 @@ public without sharing class UtilityDataRequestService {
     }
     public class udrObject {
     	private Id udrId;
-    	private List<Utility_Data_Request_Period__c> listKH = new List<Utility_Data_Request_Period__c>();
-    	private List<Utility_Data_Request_Period__c> listK1 = new List<Utility_Data_Request_Period__c>();
+
+    	private List<Utility_Data_Request_Period__c> listKH;
+    	private List<Utility_Data_Request_Period__c> listK1;
+
         public udrObject(Id udrId) {
             this.udrId = udrId;
+            this.listKH = new List<Utility_Data_Request_Period__c>();
+            this.listK1 = new List<Utility_Data_Request_Period__c>();
         }
         public void addUdrpKH(Utility_Data_Request_Period__c udrp) {
             listKH.add(udrp);
