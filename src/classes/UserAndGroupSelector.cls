@@ -58,6 +58,7 @@ public inherited sharing class UserAndGroupSelector {
             SELECT Id, AccountId
             FROM User
             WHERE AccountId IN :accountIds
+            AND IsActive = TRUE
         ];
         MultiMap usersByAccountId = MultiMap.newSetInstance();
         for (User user : users) {
