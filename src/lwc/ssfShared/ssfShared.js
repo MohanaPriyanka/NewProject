@@ -150,7 +150,7 @@ const setIsFico = (resiApplicationType, underwritingMethodSelected) => {
 }
 
 const checkZipCodeCapacity = async (component) => {
-    const utilityId = component.leadJSON.utilityId;
+    const utilityId = JSON.parse(component.leadJSON).utilityId;
     return getZipCodeCapacity(component.zipCodeInput, component.partnerId, utilityId);
 }
 

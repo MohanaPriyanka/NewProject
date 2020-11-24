@@ -182,7 +182,7 @@ public without sharing class LeadSelector {
     public Lead selectOneForStatusUpdate(Id leadId) {
         List<Lead> leads = [
             SELECT Id, Application_Complete_Date__c, Application_Status__c, Continue_Application_Link__c, Contract_eSign_Link__c,
-                Underwriting_Criteria__c,
+                Underwriting_Criteria__c, Partner_Lookup__c, Email,
                 (SELECT Id FROM Accounts__r),
                 (SELECT Id, Utility_lookup__r.Utility_Data_Collection_Mechanism__c FROM Utility_Account_Logs__r),
                 (SELECT Id, Customer_Signature_Date_Time__c FROM Contracts__r)
