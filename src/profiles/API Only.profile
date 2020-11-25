@@ -20237,6 +20237,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Estimated_Amounts_Note__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Estimated_Buildable_Area__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -20508,6 +20513,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.IX_App_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.IX_Application_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
