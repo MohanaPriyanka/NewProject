@@ -21,11 +21,11 @@ private without sharing class UserTriggerHandlerTest {
         );
         insert sss;
 
-        Partner_Account_Shared_Solar_System__c passs = new Partner_Account_Shared_Solar_System__c(
-            Partner_Account__c = partnerAccount.Id,
+        Partner_Shared_Solar_System_Eligibility__c eligibility = new Partner_Shared_Solar_System_Eligibility__c(
+            Account__c = partnerAccount.Id,
             Shared_Solar_System__c = sss.Id
         );
-        insert passs;
+        insert eligibility;
 
         Test.startTest();
         User u = new User(
@@ -47,9 +47,9 @@ private without sharing class UserTriggerHandlerTest {
         insert u;
         Test.stopTest();
 
-        List<Shared_Solar_System__share> shares = [
+        List<Shared_Solar_System__Share> shares = [
             SELECT Id, ParentId, UserOrGroupId
-            FROM Shared_Solar_System__share
+            FROM Shared_Solar_System__Share
         ];
         System.assertEquals(1, shares.size(), 'Expected 1 Shared_Solar_System__share record to be created');
         System.assertEquals(sss.Id, shares[0].ParentId, 'Expected the Shared_Solar_System__share record to have a ParentId equal to the ID of the test Shared_Solar_System__c record');

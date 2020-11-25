@@ -9,8 +9,9 @@
  * Trigger then uses the SharedSolarSystemSharingService.evaluateSharingViaUsers to share the SSS records based on
  * Opportunity Stage and Product Line
  */
-
-public with sharing class SharedSolarSystemSharingService {
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class SharedSolarSystemSharingService {
+    private static UserAndGroupSelector userAndGroupSelector = new UserAndGroupSelector();
 
     //Evaluates the Apex based SSS Sharing for the Subscription Change Event
     public void evaluateSharingViaSubscriptionChange(List<Subscription_Change_Event__e> subscriptionChangeEventList) {
@@ -29,7 +30,8 @@ public with sharing class SharedSolarSystemSharingService {
         }
     }
     //Evaluates the Apex based SSS Sharing for the property list
-    public void evaluateSharingViaProperties(List<Id> propertyIdList) {
+    @TestVisible
+    private void evaluateSharingViaProperties(List<Id> propertyIdList) {
         Set<Id> parentAccountIdSet = new Set<Id>();
         List<Id> userIdList = new List<Id>();
         for (Account acc : [SELECT Id, Parent_Account__c FROM Account WHERE Id IN :propertyIdList AND Parent_Account__c != null]) {
@@ -74,15 +76,104 @@ public with sharing class SharedSolarSystemSharingService {
         }
         Util.insertAndLog(sssShareList, 'SharedSolarSystemApexSharing', 'evaluateSharingViaUser');
     }
-    public List<Shared_Solar_System__Share> generateSSSAccess(List<Id> recordIds, List<Id> userIdList, String accessLevel) {
+
+    /**
+     * @description Shares systems to partners when new partner eligibility records are inserted
+     * @param eligibilities List of Partner_Shared_Solar_System_Eligibility records (Trigger.new)
+     */
+    public void shareSharedSolarSystems(List<Partner_Shared_Solar_System_Eligibility__c> eligibilities) {
+        MultiMap partnerAccountToSharedSolarSystems = MultiMap.newSetInstance();
+        for (Partner_Shared_Solar_System_Eligibility__c eligibility : eligibilities) {
+            if (eligibility.Active__c) {
+                partnerAccountToSharedSolarSystems.putValue(eligibility.Account__c, eligibility.Shared_Solar_System__c);
+            }
+        }
+        Set<Id> partnerAccountIds = CollectionUtil.toIds(partnerAccountToSharedSolarSystems.keySet());
+        MultiMap partnerAccountToUsers =
+            userAndGroupSelector.getUsersByAccountIds(partnerAccountIds);
+
+        List<Shared_Solar_System__Share> shares = new List<Shared_Solar_System__Share>();
+        for (Id partnerAccountId : partnerAccountIds) {
+            Set<Id> sharedSolarSystemIds = CollectionUtil.toIds(partnerAccountToSharedSolarSystems.getValues(partnerAccountId));
+            Set<Id> userIds = CollectionUtil.toIds(partnerAccountToUsers.getValues(partnerAccountId));
+            if (userIds != null) {
+                shares.addAll(generateSSSAccess(
+                    new List<Id>(sharedSolarSystemIds),
+                    new List<Id>(userIds),
+                    'Read',
+                    Schema.Shared_Solar_System__Share.RowCause.Manual)
+                );
+            }
+        }
+        insert shares;
+    }
+
+    /**
+     * @description Creates new shares, or removes shares, as partner eligibility records are updated
+     * @param oldMap Trigger.oldMap
+     * @param newMap Trigger.newMap
+     */
+    public void changeSharesAfterEligibilityUpdate(
+        Map<Id, Partner_Shared_Solar_System_Eligibility__c> oldMap,
+        Map<Id, Partner_Shared_Solar_System_Eligibility__c> newMap) {
+        Set<Id> partnerAccountIdsToUnshare = new Set<Id>();
+        Set<Id> sharedSolarSystemIdsToUnshare = new Set<Id>();
+        List<Partner_Shared_Solar_System_Eligibility__c> eligibilitiesToShare = new List<Partner_Shared_Solar_System_Eligibility__c>();
+        for (Partner_Shared_Solar_System_Eligibility__c newEligibility : newMap.values()) {
+            if (oldMap.get(newEligibility.Id).Active__c && !newEligibility.Active__c) {
+                partnerAccountIdsToUnshare.add(newEligibility.Account__c);
+                sharedSolarSystemIdsToUnshare.add(newEligibility.Shared_Solar_System__c);
+            } else if (!oldMap.get(newEligibility.Id).Active__c && newEligibility.Active__c) {
+                eligibilitiesToShare.add(newEligibility);
+            }
+        }
+        unshareSharedSolarSystems(partnerAccountIdsToUnshare, sharedSolarSystemIdsToUnshare);
+        shareSharedSolarSystems(eligibilitiesToShare);
+    }
+
+    /**
+     * @description Removes shares when partner eligibility records are deleted
+     * @param oldMap Trigger.oldMap
+     */
+    public void unshareSharedSolarSystemsAfterDelete(Map<Id, Partner_Shared_Solar_System_Eligibility__c> oldMap) {
+        Set<Id> partnerAccountIds = new Set<Id>();
+        Set<Id> sharedSolarSystemIds = new Set<Id>();
+        for (Partner_Shared_Solar_System_Eligibility__c eligibility : oldMap.values()) {
+            partnerAccountIds.add(eligibility.Account__c);
+            sharedSolarSystemIds.add(eligibility.Shared_Solar_System__c);
+        }
+        unshareSharedSolarSystems(partnerAccountIds, sharedSolarSystemIds);
+    }
+
+    private static void unshareSharedSolarSystems(Set<Id> partnerAccountIds, Set<Id> sharedSolarSystemIds) {
+        MultiMap partnerAccountToUsers = userAndGroupSelector.getUsersByAccountIds(partnerAccountIds);
+        if (partnerAccountToUsers.isEmpty()) {
+            return;
+        }
+
+        Set<Id> userIds = CollectionUtil.toIds(partnerAccountToUsers.values());
+        List<Shared_Solar_System__Share> shares = [
+            SELECT ParentId, UserOrGroupId
+            FROM Shared_Solar_System__Share
+            WHERE ParentId IN :sharedSolarSystemIds
+            AND UserOrGroupId IN :userIds
+        ];
+
+        delete shares;
+    }
+
+    private List<Shared_Solar_System__Share> generateSSSAccess(List<Id> sssIds, List<Id> userIdList, String accessLevel) {
+        return generateSSSAccess(sssIds, userIdList, accessLevel, Schema.Shared_Solar_System__Share.RowCause.Customer_Portal_Access__c);
+    }
+    private List<Shared_Solar_System__Share> generateSSSAccess(List<Id> sssIds, List<Id> userIdList, String accessLevel, String rowClause) {
         List<Shared_Solar_System__Share> shareRecords = new List<Shared_Solar_System__Share>();
-        for (Id record : recordIds) {
+        for (Id record : sssIds) {
             for (Id userId : userIdList) {
                 Shared_Solar_System__Share sssShare = new Shared_Solar_System__Share();
                 sssShare.ParentId = record;
                 sssShare.UserOrGroupId = userId;
                 sssShare.AccessLevel = accessLevel;
-                sssShare.RowCause = Schema.Shared_Solar_System__Share.RowCause.Customer_Portal_Access__c;
+                sssShare.RowCause = rowClause;
                 shareRecords.add(sssShare);
             }
         }
