@@ -346,7 +346,7 @@ public with sharing class DocuSignHelperTest {
         RecordType partnerAccountRT = [SELECT Id FROM RecordType WHERE Name = 'Partner Account' AND SobjectType = 'Account' LIMIT 1];
         Account partnerAccount = new Account(
             Name = 'Boston Solar',
-            RecordType = partnerAccountRT
+            RecordTypeId = partnerAccountRT.Id
         );
         insert partnerAccount;
         Partner__c partner = new Partner__c(
@@ -640,11 +640,13 @@ public with sharing class DocuSignHelperTest {
         insert sharedSolarSystems;
 
         RecordType partnerAccountRT = [SELECT Id FROM RecordType WHERE Name = 'Partner Account' AND SobjectType = 'Account' LIMIT 1];
+        System.debug(LoggingLevel.ERROR, 'PartnerAccountRT: ' + partnerAccountRT);
         Account partnerAccount = new Account(
             Name = 'Boston Solar',
-            RecordType = partnerAccountRT
+            RecordTypeId = partnerAccountRT.Id
         );
         insert partnerAccount;
+        System.debug(LoggingLevel.ERROR, [SELECT Name, RecordTypeId FROM Account WHERE Id = :partnerAccount.Id]);
         Partner__c partner = new Partner__c(
             Name = 'Boston Solar',
             Account__c = partnerAccount.Id

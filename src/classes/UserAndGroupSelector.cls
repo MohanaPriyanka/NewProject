@@ -51,4 +51,20 @@ public inherited sharing class UserAndGroupSelector {
             LIMIT 1
         ];
     }
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public MultiMap getUsersByAccountIds(Set<Id> accountIds) {
+        List<User> users = [
+            SELECT Id, AccountId
+            FROM User
+            WHERE AccountId IN :accountIds
+            AND IsActive = TRUE
+        ];
+        MultiMap usersByAccountId = MultiMap.newSetInstance();
+        for (User user : users) {
+            usersByAccountId.putValue(user.AccountId, user.Id);
+        }
+        return usersByAccountId;
+    }
+
 }
