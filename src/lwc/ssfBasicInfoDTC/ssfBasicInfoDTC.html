@@ -55,6 +55,7 @@
                                 value={restLead.underwritingCriteria}
                                 onchange={genericOnChange}
                                 options={underwritingOptions}
+                                read-only={underwritingReadOnly}
                                 required>
                             </lightning-combobox>
                             <template if:false={isPhone}>
@@ -84,6 +85,24 @@
                                     <lightning-formatted-rich-text value={underwritingHelpText}></lightning-formatted-rich-text>
                                 </div>
                             </div>
+                        </template>
+                    </div>
+                    <div class="input-group half">
+                        <!-- SPACER -->
+                    </div>
+                    <div class="input-group half">
+                        <template if:false={underwritingReadOnly}>
+                            <template if:false={isFico}>
+                                <c-ssf-file-upload
+                                  required
+                                  has-help-text
+                                  input-text="Upload Financial Documents"
+                                  category-type="Financial Review Documents"
+                                  accepted-file-types={finDocFileTypes}
+                                  onfileuploaded={handleFinancialDocsUpload}>
+                                    <p>Please provide three years of full company financial records including total assets, total liabilities, and net income.</p>
+                                </c-ssf-file-upload>
+                            </template>
                         </template>
                     </div>
                 </div>
@@ -407,23 +426,6 @@
                                             </c-ssf-file-upload>
                                         </template>
                                     </div>
-                                    <template if:true={it.last}>
-                                        <template if:false={isFico}>
-                                            <div class="input-group half">
-                                                <template if:false={isFico}>
-                                                    <c-ssf-file-upload 
-                                                        required
-                                                        has-help-text
-                                                        input-text="Upload Financial Documents"
-                                                        category-type="Financial Review Documents"
-                                                        accepted-file-types={finDocFileTypes}
-                                                        onfileuploaded={handleFinancialDocsUpload}>
-                                                        <p>Please provide three years of full company financial records including total assets, total liabilities, and net income.</p>
-                                                    </c-ssf-file-upload>
-                                                </template>
-                                            </div>
-                                        </template>
-                                    </template>
                                     <div class="input-group">
                                         <template if:true={it.last}>
                                             <div class="combo-button" title="Add another Utility Account" onclick={addAnotherUtilityAccount}>

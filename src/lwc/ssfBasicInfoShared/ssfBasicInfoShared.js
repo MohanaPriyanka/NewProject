@@ -175,6 +175,14 @@ const setComponentUnderwritingVals = (component) => {
         }
     }
 
+    // For resumed apps (or back motion), disable modification of underwriting field and set isFico to val set in Lead
+    if (component.resumedApp === true) {
+        component.isFico = component.restLead.underwritingCriteria === 'FICO';
+        if (component.isFico === false) {
+            component.disableUnderwritingFields = true;
+        }
+    }
+
     handleUnderwritingChange(component);
 }
 
