@@ -88,7 +88,7 @@ public without sharing class ClientInvoicingFeeWaiveService {
             return null;
         }
         Decimal assignmentAgreementSize = uasToAssignedCapacityMap.get(order.Utility_Account_Subscription__c);
-        if (order.Effective_Date__c < milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c) {
+        if (order.Effective_Date__c <= milestoneDate && order.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c) {
             // We don't handle Max % of Project in the initial period right now, because that includes logic includes an annual clause
             // that is only applicable after the milestone date
             return createInvoiceMemoBasedOnCustomerDate(order, milestoneDate, null, assignmentAgreementSize);
