@@ -88,7 +88,7 @@
                 <field>Date_Utility_Account_Cancelled__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
+                <behavior>Edit</behavior>
                 <field>Utility_Rate_Class__c</field>
             </layoutItems>
             <layoutItems>
