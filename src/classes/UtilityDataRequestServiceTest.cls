@@ -109,7 +109,17 @@ private class UtilityDataRequestServiceTest {
             Service_Zip_Code__c = '02134'
         );
         
-        List<Utility_Account_Log__c> testUALList = new List<Utility_Account_Log__c>{testUAL1, testUAL2, testUAL3, testUAL4, testUAL5};
+        Utility_Account_Log__c testUAL6 = new Utility_Account_Log__c(	        
+        Lead__c = resiLead.Id,	
+        Username__c = 'testUAL6',	
+        Name_on_Account__c = 'Kris',	
+        Service_Address__c = '32 Quincy St, apt 20',	
+        Service_City__c = 'Cambridge',	
+        Service_State__c = 'ma',	
+        Service_Zip_Code__c = '02138'	
+    );	
+
+        List<Utility_Account_Log__c> testUALList = new List<Utility_Account_Log__c>{testUAL1, testUAL2, testUAL3, testUAL4, testUAL5, testUAL6};
         insert testUALList;
         
         Utility_Data_Request__c testUDR1 = new Utility_Data_Request__c(
@@ -127,6 +137,7 @@ private class UtilityDataRequestServiceTest {
             State__c = 'Ma.',
             Zip_Code__c = '   02115  '
         );
+        
         
         Utility_Data_Request__c testUDR2 = new Utility_Data_Request__c(
             Header_Status__c        = 'Complete',
@@ -191,8 +202,25 @@ private class UtilityDataRequestServiceTest {
             State__c = 'Ma',
             Zip_Code__c = '02134'
         );
+
+        Utility_Data_Request__c testUDR6 = new Utility_Data_Request__c(
+            Header_Status__c        = 'Pending',
+            Detail_Status__c        = 'Pending',
+            Old_Account_Number__c = 'testUDR6',	
+            Utility_Account_Log__c = testUAL6.Id,	
+            Utility__c = testUtility.Id,	
+            Government_Credit_Code__c = 'N',	
+            LDC_Customer_Eligibility__c = 'N',	
+            Customer_Name__c = 'Kris',	
+            Address_Line_1__c = '32 Quincy St,',	
+            Address_Line_2__c = 'Apt 20',	
+            City__c = 'Combridge',	
+            State__c = 'MA',	
+            Zip_Code__c = '02138 '	
+        );	
+
+        List<Utility_Data_Request__c> testUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR2, testUDR3, testUDR4, testUDR5, testUDR6};
         
-        List<Utility_Data_Request__c> testUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR2, testUDR3, testUDR4, testUDR5};
         insert testUDRList;
         
         Rate_Class__c testRateClass1 = new Rate_Class__c(
@@ -987,6 +1015,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request__c testUDR3 = getTestUDR('testUDR3');
         Utility_Data_Request__c testUDR4 = getTestUDR('testUDR4');
         Utility_Data_Request__c testUDR5 = getTestUDR('testUDR5');
+        Utility_Data_Request__c testUDR6 = getTestUDR('testUDR6');	
         
         testUDR1.Header_Status__c = 'Complete';
         testUDR1.Detail_Status__c = 'Complete';
@@ -996,19 +1025,23 @@ private class UtilityDataRequestServiceTest {
         testUDR4.Detail_Status__c = 'Complete';
         testUDR5.Header_Status__c = 'Complete';
         testUDR5.Detail_Status__c = 'Complete';
+        testUDR6.Header_Status__c = 'Complete';
+        testUDR6.Detail_Status__c = 'Complete';
         
-        List<Utility_Data_Request__c> testUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5};
+        List<Utility_Data_Request__c> testUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5, testUDR6};	
         update testUDRList;
         
         Utility_Account_Log__c testUAL1 = getTestUAL(testUDR1.Utility_Account_Log__c);
         Utility_Account_Log__c testUAL3 = getTestUAL(testUDR3.Utility_Account_Log__c);
         Utility_Account_Log__c testUAL4 = getTestUAL(testUDR4.Utility_Account_Log__c);
         Utility_Account_Log__c testUAL5 = getTestUAL(testUDR5.Utility_Account_Log__c);
+        Utility_Account_Log__c testUAL6 = getTestUAL(testUDR6.Utility_Account_Log__c);	
         
         Utility_Data_Request__c updatedTestUDR1 = getTestUDR('testUDR1');
         Utility_Data_Request__c updatedTestUDR3 = getTestUDR('testUDR3');
         Utility_Data_Request__c updatedTestUDR4 = getTestUDR('testUDR4');
         Utility_Data_Request__c updatedTestUDR5 = getTestUDR('testUDR5');
+        Utility_Data_Request__c updatedTestUDR6 = getTestUDR('testUDR6');	
         
         System.assertEquals(33823.2, updatedTestUDR1.Annual_kWh__c, 'UDR1 has 5 KH UDRP so the Annual kWh should be ' 
                             + 'the sum of the UDRP.Quantity__c values multiplied by the number of months and divided by 12.'
@@ -1111,11 +1144,14 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals('No', testUAL4.RNY__c);
         System.assertEquals('Yes', testUAL5.NYPA__c);
         System.assertEquals('Yes', testUAL5.RNY__c);
+        System.assertEquals('No', testUAL6.NYPA__c);
+        System.assertEquals('No', testUAL6.RNY__c);
         
         System.assertEquals(false, testUAL1.Address_Update__c, 'The addresses should have matched, so the Address_Update__c should be false.');
         System.assertEquals(false, testUAL3.Address_Update__c, 'The addresses should have matched, so the Address_Update__c should be false.');
         System.assertEquals(true, testUAL4.Address_Update__c, 'The addresses should not have matched, so the Address_Update__c should be true.');
         System.assertEquals(true, testUAL5.Address_Update__c, 'The addresses should not have matched, so the Address_Update__c should be true.');
+        System.assertEquals(true, testUAL6.Address_Update__c, 'The addresses should not have matched, so the Address_Update__c should be true.');	
         
         System.assertEquals('Bill', testUAL4.Previous_Name_on_Utility_Account__c);
         System.assertEquals('459  Broadway', testUAL4.Previous_Service_Address__c);
@@ -1141,11 +1177,11 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals('Ma', testUAL5.Service_State__c);
         System.assertEquals('02134', testUAL5.Service_Zip_Code__c);
                 
-        System.assertEquals('Complete', testUAL1.QC_Status__c, 'The addresses should have matched, and the NYPA/RNY fields are No, so the status should be Complete.');
+        System.assertEquals('Complete', testUAL1.QC_Status__c, 'The addresses should have matched, and the NYPA/RNY fields are No, so the status should be Complete.');        	
         System.assertEquals('Pending BW Review', testUAL3.QC_Status__c, 'The addresses should have matched, but the NYPA/RNY fields are No/Yes, so the status should be Pending BW Review.');
-        System.assertEquals('Pending BW Review', testUAL4.QC_Status__c, 'The addresses should have matched, but the NYPA/RNY fields are Yes/No, so the status should be Pending BW Review.');
-        System.assertEquals('Pending BW Review', testUAL5.QC_Status__c, 'The addresses should have matched, but the NYPA/RNY fields are Yes/Yes, so the status should be Pending BW Review.');
-        
+        System.assertEquals('Pending BW Review', testUAL4.QC_Status__c, 'The addresses should not have matched, and the NYPA/RNY fields are Yes/No, so the status should be Pending BW Review.');	
+        System.assertEquals('Pending BW Review', testUAL5.QC_Status__c, 'The addresses should not have matched, and the NYPA/RNY fields are Yes/Yes, so the status should be Pending BW Review.');
+        System.assertEquals('Pending BW Review', testUAL6.QC_Status__c, 'The NYPA/RNY fields are no, but the addresses should not have matched, so the status should be Pending BW Review.');	        
     }
 
     @IsTest
