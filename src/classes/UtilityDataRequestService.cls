@@ -87,7 +87,7 @@ public without sharing class UtilityDataRequestService {
 
         // Map completed UDRs for further processing
         for (Utility_Data_Request__c udr : newUDRMap.values()) {
-            if (udr.Request_Status__c == 'Complete' && oldUDRMap.get(udr.Id).Request_Status__c != 'Complete') {
+            if (udr.Request_Status_new__c == 'Complete' && oldUDRMap.get(udr.Id).Request_Status_new__c != 'Complete') {
                 completedUDRMap.put(udr.Id,udr);
             }
         }
@@ -127,17 +127,17 @@ public without sharing class UtilityDataRequestService {
             udrObject currentUdrObject = udrObjectMap.get(udr.Id);
             
             if(currentUdrObject != null) {
-                Double kWhNumMonths = currentUdrObject.getListKH().size();
-                Double updatedAnnualkWh = getAnnualkWh(currentUDR, currentUdrObject.getListKH());
-            	currentUDR.Annual_kWh__c = updatedAnnualkWh;
+            Double kWhNumMonths = currentUdrObject.getListKH().size();
+            Double updatedAnnualkWh = getAnnualkWh(currentUDR, currentUdrObject.getListKH());
+            currentUDR.Annual_kWh__c = updatedAnnualkWh;
                 
                 Double demandNumMonths = currentUdrObject.getListK1().size();
-                Double updatedAverageDemand = getAverageDemand(currentUDR, currentUdrObject.getListK1());
+            Double updatedAverageDemand = getAverageDemand(currentUDR, currentUdrObject.getListK1());
                 
-                udr.Annual_kWh__c = updatedAnnualkWh;
-                udr.Num_months_Annual_kWh__c = kWhNumMonths;
+            udr.Annual_kWh__c = updatedAnnualkWh;
+            udr.Num_months_Annual_kWh__c = kWhNumMonths;
                 udr.Average_Demand__c = updatedAverageDemand;
-                udr.Num_months_Average_Demand__c = demandNumMonths;
+            udr.Num_months_Average_Demand__c = demandNumMonths;
             }         
         }
     }
@@ -255,30 +255,30 @@ public without sharing class UtilityDataRequestService {
     @TestVisible
     private List<Utility_Data_Request_Period__c> populateRateClassOnUDRP(Id udrId) {
         List<Utility_Data_Request_Period__c> udrpList = udrToUdrpMap.get(udrId);
-        
+
         if(udrpList != null) {
-            for (Integer i=0; i<udrpList.size(); i++) {
-                String rateSubclass = udrpList[i].Rate_Subclass__c;
-    
-                if (rateSubclass != null && rateClassWithEDIMap.containsKey(rateSubclass)
-                    && udrpList[i].Utility_Data_Request__r.Utility__c == rateClassWithEDIMap.get(rateSubclass).Utility__c) {
-                        
-                        Id rateClassId = rateClassWithEDIMap.get(rateSubclass).Id;
-                        udrpList[i].Rate_Class_Lookup__c = rateClassId;
-                        
-                        if (i == 0) {
-                            // First UDRP (most recent service date) is what we use for Rate Class lookup elsewhere
-                            udrToRateClassMap.put(udrId, rateClassId);
-                        }
-                } else if (rateSubclass == null) {
-                    Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'Null Rate Subclass on ' + udrpList[i].Name);
-                } else {
-                    String message = 'No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c on ' + udrpList[i];
-                    Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', message);
-                }
+        for (Integer i=0; i<udrpList.size(); i++) {
+            String rateSubclass = udrpList[i].Rate_Subclass__c;
+
+            if (rateSubclass != null && rateClassWithEDIMap.containsKey(rateSubclass)
+                && udrpList[i].Utility_Data_Request__r.Utility__c == rateClassWithEDIMap.get(rateSubclass).Utility__c) {
+                    
+                    Id rateClassId = rateClassWithEDIMap.get(rateSubclass).Id;
+                    udrpList[i].Rate_Class_Lookup__c = rateClassId;
+                    
+                    if (i == 0) {
+                        // First UDRP (most recent service date) is what we use for Rate Class lookup elsewhere
+                        udrToRateClassMap.put(udrId, rateClassId);
+                    }
+            } else if (rateSubclass == null) {
+                Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'Null Rate Subclass on ' + udrpList[i].Name, Logger.INFO);
+            } else {
+                String message = 'No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c on ' + udrpList[i];
+                Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', message);
             }
-        	return udrpList;
         }
+        return udrpList;
+    }
         return new List<Utility_Data_Request_Period__c>();
         
     }
@@ -439,7 +439,8 @@ public without sharing class UtilityDataRequestService {
             Utility_DUNS__c         = ual.Utility_lookup__r.Utility_DUNS_Number__c,
             Utility_Name__c         = ual.Utility_lookup__r.Name,
             Utility_Account_Log__c  = ual.Id,
-            Request_Status__c       = 'Pending'
+            Header_Status__c        = 'Pending',
+            Detail_Status__c        = 'Pending'
         );
     }
     

@@ -598,7 +598,7 @@ Complete - All data received and updated</inlineHelpText>
         <formula>IF(OR(ISPICKVAL(Header_Status__c,&quot;Error&quot;),ISPICKVAL(Detail_Status__c, &quot;Error&quot;)),&quot;Error&quot;,
     IF(AND(ISPICKVAL(Header_Status__c,&quot;Data Received&quot;),ISPICKVAL(Detail_Status__c, &quot;Data Received&quot;)),&quot;Data Received&quot;,
         IF(AND(ISPICKVAL(Header_Status__c,&quot;Complete&quot;),ISPICKVAL(Detail_Status__c,&quot;Complete&quot;)),&quot;Complete&quot;,
-            IF(OR(ISPICKVAL(Header_Status__c,&quot;Data Received&quot;),ISPICKVAL(Header_Status__c,&quot;Complete&quot;),ISPICKVAL(Detail_Status__c,&quot;Data Received&quot;)),&quot;Partial Data Received&quot;,
+            IF(OR(ISPICKVAL(Header_Status__c,&quot;Data Received&quot;),ISPICKVAL(Header_Status__c,&quot;Complete&quot;),ISPICKVAL(Detail_Status__c,&quot;Data Received&quot;),ISPICKVAL(Detail_Status__c,&quot;Complete&quot;)),&quot;Partial Data Received&quot;,
                 IF(ISPICKVAL(Header_Status__c, &quot;Sent&quot;),&quot;Sent&quot;,
                     IF(ISPICKVAL(Header_Status__c, &quot;Pending&quot;),&quot;Pending&quot;,&quot;Error&quot;)
                 )
