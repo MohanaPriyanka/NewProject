@@ -583,7 +583,7 @@ public without sharing class RestLead {
         public ContentDocumentLink asContentDocLinkForInsert() {
             return new ContentDocumentLink(
                 ContentDocumentId = this.id,
-                ShareType = 'V',
+                ShareType = 'I',
                 Visibility = 'AllUsers'
             );
         }
