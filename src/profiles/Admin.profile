@@ -204,10 +204,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BatchCreditSRECHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BillGenerationAndDeliveryServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1129,10 +1125,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RecurringSRECHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringSRECHandlerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

@@ -1291,10 +1291,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BatchCreditSRECHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BatchLeadsDuplicateService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -4140,10 +4136,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RecurringSRECHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringSRECHandlerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
