@@ -278,6 +278,11 @@
         <expression>{!Billing_Period_Start_Date} + (-1)</expression>
     </formulas>
     <formulas>
+        <name>formula_productionname</name>
+        <dataType>String</dataType>
+        <expression>{!Lookup_SSS.Name} &amp;&quot; - &quot;&amp; TEXT(MONTH({!Billing_Period_Start_Date})) &amp;&quot;/&quot;&amp; TEXT(YEAR({!Billing_Period_Start_Date}))</expression>
+    </formulas>
+    <formulas>
         <name>MainTransferDefaultCreditValue</name>
         <dataType>Currency</dataType>
         <expression>BLANKVALUE({!sov_ActiveProduction.Main_Transfer_Default_Credit_Value_Input__c},{!sov_ActiveProduction.Main_Transfer_Default_Credit_Value__c}
@@ -285,7 +290,6 @@
         <scale>8</scale>
     </formulas>
     <interviewLabel>Production Input Flow {!$Flow.CurrentDateTime}</interviewLabel>
-    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Production Input Flow</label>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -336,6 +340,12 @@
             <field>Bill_Period__c</field>
             <value>
                 <elementReference>rcs_BillPeriods</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Date_of_Transfer__c</field>
+            <value>
+                <elementReference>Date_of_Transfer</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -422,6 +432,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Date_of_Transfer__c</field>
+            <value>
+                <elementReference>Date_of_Transfer</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Default_Credit_Value__c</field>
             <value>
                 <elementReference>Get_Active_Production.Main_Transfer_Default_Credit_Value_Input__c</elementReference>
@@ -496,7 +512,7 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <elementReference>ProductionNameFormula</elementReference>
+                <elementReference>formula_productionname</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1223,7 +1239,7 @@
             <dataType>Number</dataType>
             <fieldText>Amount (kWh)</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
+            <isRequired>false</isRequired>
             <scale>2</scale>
         </fields>
         <showFooter>true</showFooter>
@@ -1239,8 +1255,8 @@
     <status>Active</status>
     <textTemplates>
         <name>ProductionNameFormula</name>
-        <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>{!Lookup_SSS.Name} - {!Billing_Period_Start_Date}</text>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>{!Lookup_SSS.Name} - MONTH({!Billing_Period_Start_Date})/YEAR({!Billing_Period_Start_Date})</text>
     </textTemplates>
     <variables>
         <name>recordId</name>
