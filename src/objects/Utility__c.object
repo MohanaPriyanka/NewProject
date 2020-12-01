@@ -89,6 +89,42 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Expect_Unsubscribed_Credits__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>When this field is set to true, the Transfer Data Entry Flow will direct the user to create unsubscribed transfer records</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When this field is set to true, the Transfer Data Entry Flow will direct the user to create unsubscribed transfer records</inlineHelpText>
+        <label>Expect Unsubscribed Credits</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Host_Account_Bill_Transfer_Month__c</fullName>
+        <description>This field controls whether the Previous or Current month&apos;s transfer record is used in the Transfer Data Entry Flow</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field controls whether the Previous or Current month&apos;s transfer record is used in the Transfer Data Entry Flow</inlineHelpText>
+        <label>Host Account Bill Transfer Month</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Current</fullName>
+                    <default>false</default>
+                    <label>Current</label>
+                </value>
+                <value>
+                    <fullName>Previous</fullName>
+                    <default>false</default>
+                    <label>Previous</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Number_of_Decimal_Places__c</fullName>
         <externalId>false</externalId>
         <label>Number of Decimal Places</label>
