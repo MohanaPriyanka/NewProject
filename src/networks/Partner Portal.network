@@ -27,20 +27,21 @@
     <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <networkMemberGroups>
-        <profile>partner portal community manager</profile>
+        <profile>Partner Portal Community Manager</profile>
         <profile>admin</profile>
-        <profile>partner portal community user</profile>
+        <profile>Partner Portal Community User</profile>
+        <profile>bw technology</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
         <forgotPasswordPageOverrideSetting>Designer</forgotPasswordPageOverrideSetting>
         <homePageOverrideSetting>Designer</homePageOverrideSetting>
-        <loginPageOverrideSetting>Designer</loginPageOverrideSetting>
+        <loginPageOverrideSetting>Standard</loginPageOverrideSetting>
         <selfRegProfilePageOverrideSetting>Designer</selfRegProfilePageOverrideSetting>
     </networkPageOverrides>
     <picassoSite>Partner_Portal1</picassoSite>
     <selfRegistration>false</selfRegistration>
-    <sendWelcomeEmail>false</sendWelcomeEmail>
+    <sendWelcomeEmail>true</sendWelcomeEmail>
     <site>Partner_Portal</site>
     <status>Live</status>
     <tabs>
@@ -48,5 +49,5 @@
         <standardTab>Chatter</standardTab>
     </tabs>
     <urlPathPrefix>partnerportal</urlPathPrefix>
-    <welcomeTemplate>CS_Application_Email_Notifications/CommunityWelcomeEmailTemplate</welcomeTemplate>
+    <welcomeTemplate>CSPartnerEmails/Partner_Portal_Welcome_Email</welcomeTemplate>
 </Network>

@@ -20,12 +20,6 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
-        <object>Invoice__c</object>
-        <objectField>Account__c</objectField>
-        <userField>Account</userField>
-    </accessMappings>
-    <accessMappings>
-        <accessLevel>Read</accessLevel>
         <object>Lead</object>
         <objectField>Partner_Account__c</objectField>
         <userField>Account</userField>
@@ -34,6 +28,12 @@
         <accessLevel>Read</accessLevel>
         <object>Opportunity</object>
         <objectField>Partner_Account__c</objectField>
+        <userField>Account</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Utility_Account_Log__c</object>
+        <objectField>Lead__c.Partner_Account__c</objectField>
         <userField>Account</userField>
     </accessMappings>
     <description>Community Sharing Set for the Manager Users Portal Partner.</description>
