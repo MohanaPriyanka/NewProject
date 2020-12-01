@@ -1226,14 +1226,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CreateOrderandPaymentRequest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreateOrderandPaymentRequestTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CreateUALController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
