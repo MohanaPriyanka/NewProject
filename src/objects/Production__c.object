@@ -327,6 +327,17 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Main_Transfer_Default_Credit_Value_Input__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is used in the Production Input flow to store the credit value that will be used when the Main Transfer is eventually created. It is needed because the Credit Value is stored on the Host Account bill which is created before transfer is created.</inlineHelpText>
+        <label>Main Transfer Default Credit Value Input</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Main_Transfer_Default_Credit_Value__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Max of Production Detail&apos;s &quot;Main Transfer Default Credit Value&quot;</inlineHelpText>
