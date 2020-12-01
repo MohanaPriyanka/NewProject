@@ -1448,6 +1448,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UtilityDataRequestSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UtilityDataRequestService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
