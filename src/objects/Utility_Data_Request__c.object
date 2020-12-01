@@ -146,7 +146,6 @@
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
         <fields>Name</fields>
-        <fields>Request_Status__c</fields>
         <fields>Request_Sent_Date__c</fields>
         <fields>Request_Recieved_Date__c</fields>
         <fields>Utility_Name__c</fields>
@@ -542,57 +541,6 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         <type>DateTime</type>
     </fields>
     <fields>
-        <fullName>Request_Status__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Pending - Not sent to data provider
-Sent - Awaiting response from data provider
-Data Received - Data has been returned, but UDR update is not complete
-Complete - All data received and updated</inlineHelpText>
-        <label>Request Status</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Pending</fullName>
-                    <default>true</default>
-                    <label>Pending</label>
-                </value>
-                <value>
-                    <fullName>Sent</fullName>
-                    <default>false</default>
-                    <label>Sent</label>
-                </value>
-                <value>
-                    <fullName>Data Received</fullName>
-                    <default>false</default>
-                    <label>Data Received</label>
-                </value>
-                <value>
-                    <fullName>Complete</fullName>
-                    <default>false</default>
-                    <label>Complete</label>
-                </value>
-                <value>
-                    <fullName>Error</fullName>
-                    <default>false</default>
-                    <label>Error</label>
-                </value>
-                <value>
-                    <fullName>Value1</fullName>
-                    <default>false</default>
-                    <isActive>false</isActive>
-                    <label>Value1</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Request_Status_new__c</fullName>
         <externalId>false</externalId>
         <formula>IF(OR(ISPICKVAL(Header_Status__c,&quot;Error&quot;),ISPICKVAL(Detail_Status__c, &quot;Error&quot;)),&quot;Error&quot;,
@@ -743,7 +691,6 @@ Complete - All data received and updated</inlineHelpText>
     </nameField>
     <pluralLabel>Utility Data Requests</pluralLabel>
     <searchLayouts>
-        <searchResultsAdditionalFields>Request_Status__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Request_Sent_Date__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Request_Recieved_Date__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Utility_Name__c</searchResultsAdditionalFields>
