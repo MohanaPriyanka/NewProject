@@ -48993,11 +48993,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Data_Request__c.Request_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Data_Request__c.State__c</field>
         <readable>false</readable>
     </fieldPermissions>
