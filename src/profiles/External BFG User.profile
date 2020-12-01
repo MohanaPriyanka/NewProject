@@ -31478,11 +31478,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Data_Request__c.Request_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Data_Request__c.Request_Status_new__c</field>
         <readable>true</readable>
     </fieldPermissions>
