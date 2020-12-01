@@ -883,6 +883,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UtilityDataRequestSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UtilityDataRequestService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
