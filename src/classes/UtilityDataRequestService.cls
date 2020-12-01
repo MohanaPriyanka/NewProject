@@ -75,7 +75,7 @@ public without sharing class UtilityDataRequestService {
         );
         // Map completed UDRs for further processing
         for (Utility_Data_Request__c udr : newUDRMap.values()) {
-            if (udr.Request_Status__c == 'Complete' && oldUDRMap.get(udr.Id).Request_Status__c != 'Complete') {
+            if (udr.Request_Status_new__c == 'Complete' && oldUDRMap.get(udr.Id).Request_Status_new__c != 'Complete') {
                 completedUDRMap.put(udr.Id,udr);
             }
         }
@@ -238,7 +238,7 @@ public without sharing class UtilityDataRequestService {
                         udrToRateClassMap.put(udrId, rateClassId);
                     }
             } else if (rateSubclass == null) {
-                Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'Null Rate Subclass on ' + udrpList[i].Name);
+                Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', 'Null Rate Subclass on ' + udrpList[i].Name, Logger.INFO);
             } else {
                 String message = 'No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c on ' + udrpList[i];
                 Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', message);
@@ -388,7 +388,8 @@ public without sharing class UtilityDataRequestService {
             Utility_DUNS__c         = ual.Utility_lookup__r.Utility_DUNS_Number__c,
             Utility_Name__c         = ual.Utility_lookup__r.Name,
             Utility_Account_Log__c  = ual.Id,
-            Request_Status__c       = 'Pending'
+            Header_Status__c        = 'Pending',
+            Detail_Status__c        = 'Pending'
         );
     }
     @TestVisible
