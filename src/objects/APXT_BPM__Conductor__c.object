@@ -859,101 +859,6 @@ else
 &amp;UrlFieldName=Conga_Formula_PRINT__c</url>
     </webLinks>
     <webLinks>
-        <fullName>Monthly_SREC_QC_Report</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Monthly SREC QC Report</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/00O0a000005FJzY</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Preview_Monthly_SREC_Payments</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Preview Monthly SREC Payments</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/00O0a000005FJcy</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Preview_Quarterly_SREC_Payments</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Preview Quarterly SREC Payments</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/00O8A000000SaVp</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Preview_SREC_Payments</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Preview SREC Payments</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/00O0a000005FJcy</url>
-    </webLinks>
-    <webLinks>
-        <fullName>SREC_PAYMENTS</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>SREC PAYMENTS:</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/{!APXT_BPM__Conductor__c.APXT_BPM__Report_Id__c}</url>
-    </webLinks>
-    <webLinks>
         <fullName>Send_2_Page_Bills</fullName>
         <availability>online</availability>
         <displayType>link</displayType>
@@ -1019,22 +924,6 @@ location.reload(true);
 alert(&apos;Bills have been Queued for sending to LetterStream. Check \&apos;View Paper Bills to be Added \&apos; in ~5 min to confirm all bills have been sent. Contact Product Team if there are bills in that list.&apos;);</url>
     </webLinks>
     <webLinks>
-        <fullName>Send_Monthly_SREC_Payments</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Send Monthly SREC Payments</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
-{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)} 
-if (confirm(&apos;Are you sure you want to send SREC Payments?&apos;)) { 
-var result = sforce.apex.execute(&quot;BatchCreditSRECHandler&quot;, &quot;executeBatch&quot;, {type:&quot;monthly&quot;}); 
-alert(result); 
-window.location.reload(); 
-}</url>
-    </webLinks>
-    <webLinks>
         <fullName>Send_PDFs_Via_Email</fullName>
         <availability>online</availability>
         <displayType>link</displayType>
@@ -1058,38 +947,6 @@ window.location.reload();
 &amp;ReportId={!APXT_BPM__Conductor__c.APXT_BPM__Report_Id__c}
 &amp;RecordId={!APXT_BPM__Conductor__c.APXT_BPM__Record_Id__c}
 &amp;UrlFieldName=Conga_Formula_EMAIL__c</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Send_Quarterly_SREC_Payments</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Send Quarterly SREC Payments</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)}
-{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)}
-if (confirm(&apos;Are you sure you want to send SREC Payments?&apos;)) {
-var result = sforce.apex.execute(&quot;BatchCreditSRECHandler&quot;, &quot;executeBatch&quot;, {type:&quot;quarterly&quot;});
-alert(result);
-window.location.reload();
-}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Send_SREC_Payments</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Send SREC Payments</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
-{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)} 
-if (confirm(&apos;Are you sure you want to send SREC Payments?&apos;)) { 
-var result = sforce.apex.execute(&quot;BatchCreditSRECHandler&quot;, &quot;executeBatch&quot;, {}); 
-alert(result); 
-window.location.reload(); 
-}</url>
     </webLinks>
     <webLinks>
         <fullName>Send_Via_Email</fullName>
