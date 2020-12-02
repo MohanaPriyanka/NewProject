@@ -134,10 +134,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BatchCreditSRECHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BlogComponentController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -255,14 +251,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CommunitySolarCustomerPortalTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreateOrderandPaymentRequest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreateOrderandPaymentRequestTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -559,10 +547,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RecurringSRECHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringSRECHandlerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
