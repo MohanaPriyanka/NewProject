@@ -264,6 +264,10 @@
                 <field>Total_System_Size_kW_AC__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>RiskCalc_Min__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Conversion_Rate__c</field>
             </layoutItems>
@@ -576,6 +580,11 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
+            <actionName>Shared_Solar_System__c.Billing_Case</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
             <actionName>FeedItem.TextPost</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
@@ -637,9 +646,9 @@
         </platformActionListItems>
         <platformActionListItems>
 
-            <actionName>Shared_Solar_System__c.Billing_Case</actionName>
+            <actionName>Shared_Solar_System__c.Input_Production_Data</actionName>
             <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
+            <sortOrder>13</sortOrder>
 
         </platformActionListItems>
     </platformActionList>

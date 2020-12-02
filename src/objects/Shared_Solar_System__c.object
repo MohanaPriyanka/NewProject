@@ -1690,6 +1690,19 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>RiskCalc_Min__c</fullName>
+        <externalId>false</externalId>
+        <label>RiskCalc Minimum</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>SSS_Update__c</fullName>
         <description>Triggers workflows</description>
         <externalId>false</externalId>
