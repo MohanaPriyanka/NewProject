@@ -19,8 +19,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible private UALSelector ualSelector = new UALSelector();
     @TestVisible private ContentDocumentSelector contentSelector = new ContentDocumentSelector();
     @TestVisible private CustomerContractSelector customerContractSelector = new CustomerContractSelector();
-    @TestVisible private String baseUrl = Util.getCommunitySiteURL('Apply') + '/s/switch';
     @TestVisible private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
+    public static String baseUrl = Util.getCommunitySiteURL('Apply') + '/s/switch';
 
     @TestVisible private Map<String, String> contractLeadFields = new Map<String, String>{
         'FirstName' => 'firstName',
@@ -125,7 +125,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Placed last because we want to ensure Lead properly updates before queueing other object changes
         if (applicationNowComplete) {
             UtilityDataRequestService.create(new List<Id>{requestLead.id});
-            createAndSendCSPartnerEmail(lead.Id);
+ 			createAndSendCSPartnerEmail(lead.Id);
             createQCCaseForNoMatchPCR(lead);
         }
         // Set return envelope
@@ -358,13 +358,15 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         envelope.setJSONResponse(response);
     }
 
+    @TestVisible
     private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
         Lead newLead = requestLead.asLead();
         newLead = leadService.insertLead(newLead);
         newLead = duplicateService.checkLeadDuplicates(newLead);
+
         // Set continue application links
-        String applicationStatus = getApplicationStatus(newLead);
-        setContinueApplicationLinks(newLead, applicationStatus);
+        setContinueApplicationLinks(newLead, null);
+
         newLead = leadService.updateLead(newLead);
         if (requestLead.financialDocs != null) {
             for (RestLead.RestContentDocument contentDoc : requestLead.financialDocs) {
@@ -373,7 +375,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 registerNewContentDocs(new List<RestLead.RestContentDocument>{contentDoc}, finDoc);
             }
         }
-        if (requestLead.propertyAccounts != null) {
+        if (requestLead.propertyAccounts != null) {            
             for (RestLead.RestPropertyAccount requestPropertyAccount : requestLead.propertyAccounts) {
                 Account newAccount = requestPropertyAccount.asAccount(newLead);
                 uow.registerNew(newAccount);
@@ -448,7 +450,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         RestLead.RestPropertyAccount requestAccount = requestLead.propertyAccounts.get(0);
         if(requestLead.propertyAccounts.size() > 1 || existingLead.Accounts__r.size() > 1 ||
             (!existingLead.Accounts__r.isEmpty() && existingLead.Accounts__r[0].Id != requestAccount.id)
-            ) {
+        ) {
             envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
             response.statusCode = statusCode.badRequest;
             return false;
@@ -560,8 +562,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 }
                 if(leadUAL.Utility_Rate_Class__r.Name != restUAL.get('rateClass')) {
                     return true;
-                }
             }
+        }
         }
         return false;
     }
@@ -586,9 +588,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
     private void setResponseLeadPropertyAccountsAndChildren(Lead leadToReturn, MultiMap ualsByPropertyAccountId, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestPropertyAccount> returnPropertyAccounts = new List<RestLead.RestPropertyAccount>();
-        for (Account propertyAccount : leadToReturn.Accounts__r) {
+        for(Account propertyAccount : leadToReturn.Accounts__r) {
             List<RestLead.RestUtilityAccountLog> returnUalList = new List<RestLead.RestUtilityAccountLog>();
-            for (Object ual : ualsByPropertyAccountId.getValues(propertyAccount.Id)) {
+            for(Object ual : ualsByPropertyAccountId.getValues(propertyAccount.Id)) {
                 RestLead.RestUtilityAccountLog returnUal = new RestLead.RestUtilityAccountLog((Utility_Account_Log__c) ual);
                 List<RestLead.RestContentDocument> utilityBillList = new List<RestLead.RestContentDocument>();
                 for (Object cdl : leadUALandFUDCDLMap.getValues(returnUal.id)) {
@@ -604,7 +606,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         responseLead.propertyAccounts = returnPropertyAccounts;
     }
-
+      
     private void setResponseLeadFinancialDocs(Lead leadToReturn, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
         List<RestLead.RestContentDocument> returnFinDocs = new List<RestLead.RestContentDocument>();
         for (Financial_Underwriting_Document__c finUnderwriteDoc : leadToReturn.Underwrite_Financial_Documents__r) {
@@ -617,6 +619,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         responseLead.financialDocs = returnFinDocs;
     }
 
+    @TestVisible
     private void setResponseLeadContentDocs(Lead leadToReturn, RestLead responseLead, Boolean docsNewlyGenerated) {
         List<ContentDocumentLink> contractCDLs =
             contentSelector.selectByLinkedEntities(CollectionUtil.getIdSet(leadToReturn.Contracts__r));
@@ -633,7 +636,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             responseLead.contentDocs = compileLeadContentDocs(responseLead, contractCDLs);
         }
     }
-
     private MultiMap getLeadUALandFUDCDLMap(Lead leadToReturn, MultiMap ualsByPropertyAccountId) {
         Set<Id> linkedEntityIdSet = new Set<Id>{
             leadToReturn.Id
@@ -651,7 +653,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     private void registerNewContentDocs(List<RestLead.RestContentDocument> requestContentDocuments, SObject linkedEntity) {
-        for (RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
+        for(RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
             if(requestContentDocument.id == null) {
                 requestContentDocument.body = String.escapeSingleQuotes(requestContentDocument.body);
                 requestContentDocument.validateCreateFields();
@@ -764,35 +766,31 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     /**
-     * Sets links on Lead to access application in SSF at a later state
+     * @description Sets links on Lead to access application in SSF at a later state
      * @param lead Lead to set links for
      * @param applicationStatus Current application status of Lead
      */
-    public void setContinueApplicationLinks(Lead lead, String applicationStatus) {
-        String location = APP_STATUS_TO_LOCATION.get(applicationStatus);
-        PageReference continueUrl;
-        PageReference resignUrl;
-
-        // Set Continue Application Link based on current Lead info
-        if (lead.Continue_Application_Link__c != null) {
-            continueUrl = new PageReference(lead.Continue_Application_Link__c);
-        } else {
-            continueUrl = new PageReference(baseUrl);
+    public static void setContinueApplicationLinks(Lead lead, String applicationStatus) {
+        if (applicationStatus == null) {
+            applicationStatus = getApplicationStatus(lead);
         }
+        String location = APP_STATUS_TO_LOCATION.get(applicationStatus);
+
+        // Set Continue Application link with all mandatory fields
+        PageReference continueUrl = new PageReference(baseUrl);
         continueUrl.getParameters().put('leadid', lead.Id);
         continueUrl.getParameters().put('email', lead.Email);
         continueUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
         continueUrl.getParameters().put('loc', location);
-
-        resignUrl = new PageReference(continueUrl.getUrl());
-        resignUrl.getParameters().put('loc','agree');
-
-        // Set fields on Lead
         lead.Continue_Application_Link__c = continueUrl.getUrl();
-        lead.Contract_eSign_Link__c = resignUrl.getUrl();
+
+        // Set Contract Re-Sign (Agree page) link based on current Lead info
+        PageReference re_signUrl = new PageReference(continueUrl.getUrl());
+        re_signUrl.getParameters().put('loc', 'agree');
+        lead.Contract_eSign_Link__c = re_signUrl.getUrl();
     }
 
-    public String getApplicationStatus(Lead lead) {
+    public static String getApplicationStatus(Lead lead) {
         if (lead.Application_Complete_Date__c != null) {
             return 'Application Completed';
         }
@@ -813,7 +811,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    private String getUALStatus(List<Utility_Account_Log__c> ualList) {
+    private static String getUALStatus(List<Utility_Account_Log__c> ualList) {
         List<Id> ualIds = new List<Id>();
         for(Utility_Account_Log__c ual : ualList) {
             if(ual.Utility_lookup__r.Utility_Data_Collection_Mechanism__c == 'File Upload') {
@@ -825,8 +823,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         List<Utility_Account_Log__c> uploadUALs = [
             SELECT Id,
-            (SELECT Id FROM ContentDocumentLinks
-            WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
+                (SELECT Id FROM ContentDocumentLinks 
+                WHERE ContentDocument.LatestPublishedVersion.File_Category__c = 'Customer Utility Bill')
             FROM Utility_Account_Log__c
             WHERE Id IN :ualIds
         ];
@@ -861,14 +859,17 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 'Email was not sent to Partner for lead: ' + lead.Id + '; First confirm ' +
                     'that there is an email template found in System Default custom metadata. ' +
                     'Then confirm the lead is populated with a Partner Email.', Logger.WARN);
-
             return;
         }
+        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
+        ee.emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
+        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
+        ee.addressList = new List<String>{lead.Partner_Email__c};
+        ee.subjectLine = 'Application Completed for ' + lead.Name;
 
         EmailTemplate template = MessagingService.getHtml(systemDefault.Application_Complete_Email_Template__c);
         String templateHtml = template.HtmlValue;
         templateHtml = templateHtml.replace('{{{Recipient.Name}}}', lead.Name);
-
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
         mail.setSubject('Application Completed for ' + lead.Name);
@@ -879,7 +880,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         mail.setTreatTargetObjectAsRecipient(false);
 
         try {
-            MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
+            MessagingService.sendEmailTemplate(ee);
         } catch (Exception e) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
                 '; ' + e.getStackTraceString());
@@ -897,7 +898,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             noMatchFactory.setLead(lead);
             noMatchFactory.setQueueType('No FICO Match');
             System.enqueueJob(noMatchFactory);
-
         }
     }
 }
