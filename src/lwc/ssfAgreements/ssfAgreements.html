@@ -124,8 +124,11 @@
   <p class="slds-var-m-around_small" onkeyup={checkForSubmit}>
     <lightning-input data-id="consentEmail" name="consentEmail" value={consentEmail} type="email" label="Confirm Email to Sign:" onchange={genericOnChange}></lightning-input>
   </p>
-  
-  <div class="slds-size_1-of-1">
+
+  <div class="slds-size_1-of-2">
+    <button class="btn-inverse slds-var-m-around_small slds-float_left" onclick={handleBackButton}>Back</button>
+  </div>
+  <div class="slds-size_2-of-2">
     <button class="btn slds-var-m-around_small slds-float_right" onclick={continueAgreement}>Continue</button>
   </div>
 

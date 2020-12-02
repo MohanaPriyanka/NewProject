@@ -39,5 +39,6 @@ export default class SsfWaitingRoom extends LightningElement {
     
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+        window.scrollTo(0, 0);
     }
 }
