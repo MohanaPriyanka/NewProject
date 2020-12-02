@@ -14,25 +14,42 @@ private class CSCancellationSchedulerTest {
 
         CSCancellationServiceTest.createBills(System.today() - 88, sss[0].Id);
 
-        UASB__c uasb = [
-            SELECT Id, Opportunity__r.AccountId
-            FROM UASB__c
-            LIMIT 1
-        ];
-
-        Account acct = [
+        Account propAccount1 = [
             SELECT Id,
                 Max_Overdue_Due_Date_Zuora__c,
                 Total_Outstanding_Balance_Zuora__c,
                 Max_Overdue_Due_Date__c,
                 Total_Outstanding_Balance__c
             FROM Account
-            WHERE Id = : uasb.Opportunity__r.AccountId
+            WHERE Name = 'Prop Account 1'
             LIMIT 1
         ];
-        acct.Max_Overdue_Due_Date_Zuora__c = System.today().addDays(-68);
-        acct.Total_Outstanding_Balance_Zuora__c = 12.00;
-        update acct;
+        propAccount1.Max_Overdue_Due_Date_Zuora__c = System.today().addDays(-68);
+        propAccount1.Total_Outstanding_Balance_Zuora__c = 12.00;
+        update propAccount1;
+
+        Opportunity oppFor236 = [
+            SELECT Id, AccountId, StageName, (SELECT Id, Utility_Account_Log__c FROM Utility_Account_Subscriptions__r)
+            FROM Opportunity
+            WHERE Name = 'Jordan Jordan 0000236'
+            LIMIT 1
+        ];
+
+        // Set UAL to Cancelled, which updates the UAS Date Removed from Project and sets it to inactive
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Id = oppFor236.Utility_Account_Subscriptions__r[0].Utility_Account_Log__c
+        );
+        ual.Date_Utility_Account_Cancelled__c = System.today();
+        update ual;
+
+        oppFor236.StageName  = 'Cancelled';
+        oppFor236.Date_Removed_from_Project__c = ual.Date_Utility_Account_Cancelled__c;
+        update oppFor236;
+        List<Account> accountsToRemoveFromLastProject = CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate();
+        System.assertEquals(1, accountsToRemoveFromLastProject.size(),
+            'Expected one Account to be ready to be marked with a Removed From Project date');
+        System.assertEquals(oppFor236.AccountId, accountsToRemoveFromLastProject[0].Id,
+            'Expected the Account for the Jordan Jordan 0000236 opp to be ready to be marked with a Removed From Project date');
 
         Autopay_Schedule__c schedule = new Autopay_Schedule__c(
             Run_Date__c = System.today(),
@@ -44,10 +61,12 @@ private class CSCancellationSchedulerTest {
         cancellationScheduler.execute(null);
         Test.stopTest();
 
-        // There should be one overdue account, with opps set to cancelled, but not yet removed
-        System.assertEquals(1, cancellationScheduler.overdueAccounts.size());
-        System.assertEquals(1, cancellationScheduler.cancelledOpportunities.size());
-        System.assertEquals(0, cancellationScheduler.accountsRemovedFromAllProjects.size());
+        System.assertEquals(1, cancellationScheduler.overdueAccounts.size(),
+            'There should be one overdue account, with opps set to cancelled, but not yet removed');
+        System.assertEquals(1, cancellationScheduler.cancelledOpportunities.size(), '' +
+            'Expected the cancellation scheduler to find one opp to mark as cancelled');
+        System.assertEquals(1, cancellationScheduler.accountsRemovedFromAllProjects.size(),
+            'Expected the cancellation scheduler to find the account ready to be marked with Removed From Project');
         if (UserInfo.getUserEmail() != null) {
             System.assertEquals(1, MessagingService.emailsSent.size(), 'Expected to send an email of the summary');
         }

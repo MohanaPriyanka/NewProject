@@ -143,4 +143,23 @@ public with sharing class AccountsSelectorTest {
         Test.stopTest();
         System.assertEquals(partnerAccount.Id, defaultPartnerAccount.Id, 'Expected the default partner Account to be returned');
     }
+
+    @IsTest
+    public static void testGetAccountsById() {
+        System.assertNotEquals(null, new AccountsSelector().getAccountsById(new Set<Id>()),
+            'Expected an empty list when selecting by an empty set');
+    }
+
+    @IsTest
+    public static void testGetPropertiesFromParent() {
+        System.assertNotEquals(null, new AccountsSelector().getPropertiesFromParent(new Set<Id>()),
+            'Expected an empty list when selecting by an empty set');
+    }
+
+    @IsTest
+    public static void testSelectPartnerAccount() {
+        System.assertEquals(null, AccountsSelector.selectPartnerAccount(Util.getFakeId(Account.SObjectType)),
+            'Expected to handle selecting a partner account that doesn\'t exist');
+    }
+
 }
