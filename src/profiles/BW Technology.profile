@@ -616,10 +616,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BatchCreditSRECHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BillGenerationAndDeliveryServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1358,14 +1354,6 @@
     <classAccesses>
         <apexClass>ContractTriggerTest</apexClass>
         <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreateOrderandPaymentRequest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreateOrderandPaymentRequestTest</apexClass>
-        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>CreateUALController</apexClass>
@@ -3661,10 +3649,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RecurringSRECHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringSRECHandlerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
