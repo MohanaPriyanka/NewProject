@@ -3504,14 +3504,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PermissionService</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PermissionServiceTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PermissionsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3645,10 +3637,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RecalculateUALCostControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringSRECHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
