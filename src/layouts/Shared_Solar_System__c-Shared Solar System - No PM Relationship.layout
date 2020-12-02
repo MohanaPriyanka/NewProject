@@ -636,9 +636,11 @@
             <sortOrder>12</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
+
             <actionName>Shared_Solar_System__c.Billing_Case</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>0</sortOrder>
+
         </platformActionListItems>
     </platformActionList>
     <quickActionList>
