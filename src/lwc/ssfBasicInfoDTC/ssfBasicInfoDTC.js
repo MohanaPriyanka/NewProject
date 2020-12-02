@@ -48,6 +48,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track showAddress;
     @track isPhone;
     @track helpTextVisible;
+    @track disableUnderwritingFields = false;
 
     isFico = true;
     utilityAccountCount = 0;
@@ -258,5 +259,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     get underwritingHelpText() {
         return getUnderwritingHelpText();
+    }
+
+    get underwritingReadOnly() {
+        return this.disableUnderwritingFields;
     }
 }
