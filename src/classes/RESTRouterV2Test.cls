@@ -575,7 +575,7 @@ public with sharing class RESTRouterV2Test {
         req.addHeader('Content-Type', 'application/json');
 
         CSLeadsRESTControllerV2 ctrl = new CSLeadsRESTControllerV2();
-        RestLead restLead = ctrl.formatRestLeadFromLeadAndChildren(lead.Id, false, 2);
+        RestLead restLead = ctrl.formatRestLeadFromLeadAndChildren(lead.Id, false);
         String applicationJson = JSON.serialize(restLead);
         req.requestBody = Blob.valueOf(applicationJson);
 
