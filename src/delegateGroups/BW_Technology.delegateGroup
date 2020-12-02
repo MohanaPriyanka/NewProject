@@ -16,13 +16,11 @@
     <permissionSets>CS Billing Edit</permissionSets>
     <permissionSets>Loan Servicing Visibility</permissionSets>
     <permissionSets>Loan Servicing Editing</permissionSets>
-    <permissionSets>SREC Management</permissionSets>
     <permissionSets>Shared Solar System Management</permissionSets>
     <permissionSets>CS Subscription Management</permissionSets>
     <permissionSets>Disbursal Management for Sales</permissionSets>
     <permissionSets>Waive Late Fees</permissionSets>
     <permissionSets>Edit Loans</permissionSets>
-    <permissionSets>Edit Related SREC Field on Transactions</permissionSets>
     <permissionSets>Edit Loan Disbursal Dates</permissionSets>
     <permissionSets>Edit Sales Agent field on Loan object</permissionSets>
     <permissionSets>Branch Management Permissions Manage</permissionSets>
@@ -97,7 +95,7 @@
     <permissionSets>Chargent Admin (Orders)</permissionSets>
     <permissionSets>Chargent User (Orders)</permissionSets>
     <permissionSets>Bill Adjustment Creation</permissionSets>
-    <permissionSets>Partner Product &amp; SSS Junction Management</permissionSets>
+    <permissionSets>Partner &amp; SSS Junction Management</permissionSets>
     <permissionSets>Managing Loan Portfolios</permissionSets>
     <permissionSets>Manage Gateways and Entites</permissionSets>
     <permissionSets>Underwriting Permission</permissionSets>
@@ -110,7 +108,6 @@
     <permissionSets>Disable Loan Originations &amp; Enable CS</permissionSets>
     <permissionSets>AccessToModifyCSPortal</permissionSets>
     <permissionSets>Partner QC Editing</permissionSets>
-    <permissionSets>Monthly SREC Invoice Generation</permissionSets>
     <permissionSets>Marketing Cloud Connector</permissionSets>
     <permissionSets>Marketing Cloud Connector Admin</permissionSets>
     <permissionSets>Marketing Cloud Connector Partner Community User</permissionSets>
@@ -182,32 +179,27 @@
     <permissionSets>SSSO Creation</permissionSets>
     <permissionSets>Subscription Order Mgmt</permissionSets>
     <permissionSets>Subscription Order Visibility</permissionSets>
+    <permissionSets>Customer Contract Mgmt</permissionSets>
+    <permissionSets>Client Case Sharing</permissionSets>
     <permissionSets>Customer Assignment Agreement Management</permissionSets>
+    <permissionSets>Production and Transfer Edit</permissionSets>
+    <permissionSets>Client Invoicing</permissionSets>
+    <permissionSets>Client Invoicing Admin</permissionSets>
+    <permissionSets>CS Billing Admin</permissionSets>
+    <permissionSets>Production and Transfer Read</permissionSets>
     <permissionSets>Anchor Management</permissionSets>
     <permissionSets>Campaign Read Access</permissionSets>
     <permissionSets>CS Financial Doc Visibility</permissionSets>
     <permissionSets>Returned Payments</permissionSets>
-    <permissionSets>Opportunity Product Management</permissionSets>
-    <permissionSets>High Velocity Sales Cadence Creator</permissionSets>
     <permissionSets>High Velocity Sales User</permissionSets>
     <permissionSets>Einstein Analytics for Sales Cloud HVS</permissionSets>
-    <permissionSets>CS Billing Admin</permissionSets>
-    <permissionSets>Production and Transfer Read</permissionSets>
-    <permissionSets>Customer Contract Mgmt</permissionSets>
-    <permissionSets>Client Case Sharing</permissionSets>
-    <permissionSets>Production and Transfer Edit</permissionSets>
-    <permissionSets>Client Invoicing</permissionSets>
-    <permissionSets>Client Invoicing Admin</permissionSets>
-    <permissionSets>Production and Transfer Read</permissionSets>
-    <permissionSets>Anchor Management</permissionSets>
-    <permissionSets>Campaign Read Access</permissionSets>
+    <permissionSets>High Velocity Sales Cadence Creator</permissionSets>
+    <permissionSets>Opportunity Product Management</permissionSets>
     <permissionSets>Edit Products</permissionSets>
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Underwriting Screen Access</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
-    <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
-    <permissionSets>CS Financial Doc Visibility</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
     <permissionSets>Permission Set for Payment Request (Chargent Orders)</permissionSets>
