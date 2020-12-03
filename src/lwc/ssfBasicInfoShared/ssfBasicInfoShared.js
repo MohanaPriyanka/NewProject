@@ -269,12 +269,12 @@ const findDuplicateUAL = (cmp, event) => {
     let enteredAccountNumber = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumber;
     findDuplicateUALs({ualNumber: enteredAccountNumber})
         .then(result => {
-            if (result == 'No Duplicate Found') {
+            if (result === 'No Duplicate Found') {
                 //clear error messages
                 let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
                 field.setCustomValidity('');
                 field.reportValidity();
-            } else if (result == 'Application in Review') {
+            } else if (result === 'Application in Review') {
                 let error = 'An application has already been submitted for this Utility Account';
                 let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
                 field.setCustomValidity(error);
