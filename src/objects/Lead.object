@@ -7646,7 +7646,7 @@ SEMA = 13 -14</inlineHelpText>
             <operation>equals</operation>
             <value>Expired/Unqualified</value>
         </filters>
-        <label>Expired or Unqualified</label>
+        <label>Inactive</label>
     </listViews>
     <listViews>
         <fullName>Incomplete_ApplicationsPartnerPoral</fullName>
@@ -7804,7 +7804,7 @@ SEMA = 13 -14</inlineHelpText>
             <operation>equals</operation>
             <value>Application Started</value>
         </filters>
-        <label>Application started</label>
+        <label>Incomplete</label>
     </listViews>
     <listViews>
         <fullName>RL_Unqualified_Leads_non_DOER</fullName>

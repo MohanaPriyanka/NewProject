@@ -30,6 +30,12 @@
         <objectField>Partner_Contact__c</objectField>
         <userField>Contact</userField>
     </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Utility_Account_Log__c</object>
+        <objectField>Lead__c.Partner_Contact__c</objectField>
+        <userField>Contact</userField>
+    </accessMappings>
     <description>Sharing set for the Partner Portal. This is for non-manager users, who should only have access to their own deals.</description>
     <name>Partner Portal User Sharing Set</name>
     <profiles>Partner Portal Community User</profiles>
