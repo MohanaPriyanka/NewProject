@@ -125,7 +125,6 @@ public without sharing class SimpleSignupFormController {
         if (duplicateUALs.size() > 0) {
             duplicateResult = handleDuplicateUALs(duplicateUALs);
         }
-
         return duplicateResult;
     }
 
@@ -227,7 +226,6 @@ public without sharing class SimpleSignupFormController {
                 uas.Opportunity__r.StageName != 'DUPLICATE' &&
                 uas.Opportunity__r.StageName != 'Expired' &&
                 uas.Opportunity__r.StageName != 'Dead') {
-                System.debug('Returning true');
                 return true;
             }
         }

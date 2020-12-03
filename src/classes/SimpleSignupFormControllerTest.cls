@@ -279,4 +279,93 @@ public with sharing class SimpleSignupFormControllerTest {
         system.assertEquals(testMessage,logs[0].Message__c, 'Log retrieved contains incorrect Message__c');
 
     }
+
+    @IsTest
+    private static void testDuplicateUALs() {
+        Lead matchingLead = new Lead(
+            FirstName = 'Successful',
+            LastName = 'Match',
+            Email = 'test@email.com',
+            Company = 'Company',
+            LeadSource = 'Switch',
+            Continue_Application_Link__c = 'continueURL.com',
+            Status = 'New'
+        );
+
+        Lead qualifiedLead = new Lead(
+            FirstName = 'Qualified',
+            LastName = 'Match',
+            Email = 'test@email.com',
+            Partner_Email__c = 'partner@email.com',
+            Company = 'Testcase',
+            LeadSource = 'Switch',
+            Continue_Application_Link__c = 'continueURL.com',
+            Application_Complete_Date__c = System.today(),
+            Status = 'Qualified'
+        );
+
+        Lead unqualifiedLead = new Lead(
+            FirstName = 'Unqualified',
+            LastName = 'Match',
+            Email = 'test@email.com',
+            Company = 'Testcase',
+            LeadSource = 'Switch',
+            Continue_Application_Link__c = 'continueURL.com',
+            Status = 'Unqualified',
+            Application_Complete_Date__c = System.today()
+        );
+
+        insert new List<Lead>{matchingLead, qualifiedLead, unqualifiedLead};
+
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Name = '1234',
+            Lead__c = matchingLead.Id
+        );
+        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
+            Name = '1111',
+            Lead__c = qualifiedLead.Id
+        );
+        Utility_Account_Log__c ual3 = new Utility_Account_Log__c(
+            Name = '2222',
+            Lead__c = unqualifiedLead.Id
+        );
+
+        insert new List<Utility_Account_Log__c>{ual, ual2, ual3};
+
+        String result = SimpleSignupFormController.findDuplicateUALs('1234');
+        System.assertEquals(String.valueOf(matchingLead.Id), result, 'Returns lead Id for duplicate');
+        String resultNoMatch = SimpleSignupFormController.findDuplicateUALs('5678');
+        System.assertEquals('No Duplicate Found', resultNoMatch, 'No duplicate UAL found');
+        String resultQualified = SimpleSignupFormController.findDuplicateUALs('1111');
+        System.assertEquals('Application in Review', resultQualified, 'Duplicate Application Under Review should have been found');
+        String resultUnqualified = SimpleSignupFormController.findDuplicateUALs('2222');
+        System.assertEquals('No Duplicate Found', resultUnqualified, 'Application should not be stopped for Duplicate UALs attached to Unqualified Leads');
+    }
+
+
+    @IsTest
+    private static void testSendContinueApplicationEmail() {
+        Lead matchingLead = new Lead(
+            FirstName = 'Existing',
+            LastName = 'Customer',
+            Email = 'test@email.com',
+            Partner_Email__c = 'partner@email.com',
+            Company = 'Testcase',
+            LeadSource = 'Switch',
+            Continue_Application_Link__c = 'continueURL.com',
+            Status = 'New'
+        );
+        insert matchingLead;
+
+        Test.startTest();
+        SimpleSignupFormController.sendContinueApplicationEmail(matchingLead.Id);
+        Test.stopTest();
+
+
+        System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
+        if (systemDefault.Continue_Application_Email_Template__c != null) {
+            System.assertEquals(1, MessagingService.emailsSent.size(), 'Continue Application email should be sent to customer.');
+
+        }
+    }
 }
