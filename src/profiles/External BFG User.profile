@@ -28213,11 +28213,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.RiskCalc_Min__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.RiskCalc_Minimum__c</field>
         <readable>true</readable>
     </fieldPermissions>
