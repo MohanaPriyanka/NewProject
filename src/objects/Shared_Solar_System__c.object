@@ -1703,6 +1703,20 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>RiskCalc_Minimum__c</fullName>
+        <externalId>false</externalId>
+        <label>RiskCalc Minimum</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Moody_s_Ratings</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>SSS_Update__c</fullName>
         <description>Triggers workflows</description>
         <externalId>false</externalId>
@@ -2379,6 +2393,89 @@ null)</formula>
         <active>true</active>
         <label>SSS - No PM Relationship</label>
         <picklistValues>
+            <picklist>RiskCalc_Minimum__c</picklist>
+            <values>
+                <fullName>A1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>A2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>A3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aa1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aa2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aa3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aaa</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>B1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>B2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>B3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ba1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ba2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ba3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Baa1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Baa2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Baa3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>C</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ca</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Caa1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Caa2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Service_Territories__c</picklist>
             <values>
                 <fullName>Bangor Hydro</fullName>
@@ -2629,6 +2726,89 @@ null)</formula>
         <fullName>SSS_PM_Relationship</fullName>
         <active>false</active>
         <label>SSS PM Relationship</label>
+        <picklistValues>
+            <picklist>RiskCalc_Minimum__c</picklist>
+            <values>
+                <fullName>A1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>A2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>A3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aa1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aa2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aa3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aaa</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>B1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>B2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>B3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ba1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ba2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ba3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Baa1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Baa2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Baa3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>C</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ca</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Caa1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Caa2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Service_Territories__c</picklist>
             <values>

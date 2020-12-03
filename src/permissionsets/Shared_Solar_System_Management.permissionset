@@ -556,6 +556,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Shared_Solar_System__c.RiskCalc_Minimum__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Shared_Solar_System__c.SSS_Update__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -718,4 +723,8 @@
         <object>Shared_Solar_System__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
 </PermissionSet>
