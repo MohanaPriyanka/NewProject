@@ -26,6 +26,10 @@
                 <behavior>Edit</behavior>
                 <field>Application_Complete_Email_Template__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Continue_Application_Email_Template__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

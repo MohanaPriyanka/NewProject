@@ -285,12 +285,14 @@
                                     <lightning-input
                                         key={it.value.localid}
                                         data-row-index={it.index}
+                                        data-ual-number-index={it.index}
                                         name="utilityAccountNumber"
                                         class="slds-var-m-bottom_small slds-col"
                                         label="Utility Account Number"
                                         field-level-help="Please ensure the utility account number perfectly matches what's found on the applicant's bill."
                                         value={it.value.utilityAccountNumber}
                                         onchange={utilityAccountOnChange}
+                                        onblur={validateUtilityAccount}
                                         required>
                                     </lightning-input>
                                 </div>
@@ -468,6 +470,11 @@
             <button class="btn slds-var-m-around_small slds-float_right" onclick={submitApplication}>Next</button>
         </div>
     </div>
+
+    <!-- DUPLICATE MODAL -->
+    <template if:true={showModal}>
+        <c-duplicate-modal show={showModal} lead-id={duplicateLeadId} ></c-duplicate-modal>
+    </template>
 
     <!-- LOADING SPINNER -->
     <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
