@@ -2,7 +2,7 @@
  * Created by PeterYao on 2/24/2020.
  * Tested By: SimpleSignupFormControllerTest
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation,PMD.ApexDoc')
 public without sharing class SimpleSignupFormController {
     private static ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
     private static CustomerContractSelector customerContractSelector = new CustomerContractSelector();
@@ -117,6 +117,76 @@ public without sharing class SimpleSignupFormController {
         Logger.logNow(className, methodName, message, severity);
     }
 
+    @AuraEnabled
+    public static String findDuplicateUALs(String ualNumber) {
+        List<Utility_Account_Log__c> duplicateUALs = new UALSelector().selectDuplicateUALs(ualNumber);
+        String duplicateResult = 'No Duplicate Found';
+
+        if (duplicateUALs.size() > 0) {
+            duplicateResult = handleDuplicateUALs(duplicateUALs);
+        }
+        return duplicateResult;
+    }
+
+    /**
+     * @description Loops through duplicate UALs to determine the state of the Application or Subscriptions.
+     * @param duplicateUALs List of Utility Account Logs and their subscriptions
+     * @return Gives further instruction on how to handle duplicate. If incomplete application, returns lead Id in order
+     * to send a "Continue Application" email
+     */
+    public static String handleDuplicateUALs(List<Utility_Account_Log__c> duplicateUALs) {
+        for (Utility_Account_Log__c ual : duplicateUALs) {
+            if ((ual.Lead__r.Application_Complete_Date__c != null && ual.Lead__r.Status != 'Unqualified' && !ual.Lead__r.IsConverted
+            ) || hasExistingSubscription(ual) ) {
+                return 'Application in Review';
+            } else if (ual.Lead__c != null && ual.Lead__r.Application_Complete_Date__c == null
+                && ual.Lead__r.Status != 'Unqualified') {
+                return ual.Lead__r.Id;
+            }
+        }
+        return 'No Duplicate Found';
+    }
+
+
+    /**
+     * @description When a duplicate SSF applicant is found, we send them (along with their partner) an email with a link to
+     * continue their existing application.
+     * @param leadId Lead Id for duplicate lead already in SF
+     */
+    @AuraEnabled
+    public static void sendContinueApplicationEmail(Id leadId) {
+        System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
+        Lead lead = leadSelector.selectOne(leadId);
+
+        if (Test.isRunningTest() && lead == null) {
+            //For tests that are using mocks, the lead cannot be mocked in a future method - we therefore exit the method
+            return;
+        }
+        if (systemDefault.Continue_Application_Email_Template__c == null) {
+            Logger.logNow('SimpleSignupFormController', 'sendContinueApplicationEmail',
+                'Continue Application email was not sent to ' + lead.Id, Logger.WARN);
+            return;
+        }
+
+        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
+        ee.emailTemplateName = systemDefault.Continue_Application_Email_Template__c;
+        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
+        ee.addressList = new List<String>{lead.Email, lead.Partner_Email__c};
+        ee.subjectLine = 'Continue Your Application for Bluewave Community Solar';
+        MessagingService.ReplacementText url = new MessagingService.ReplacementText('{{{Recipient.Continue_Application_Link__c}}}', lead.Continue_Application_Link__c);
+        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{url, leadName};
+        ee.sobjectId = lead.Id;
+
+        try {
+            MessagingService.sendEmailTemplate(ee);
+        } catch (Exception e) {
+            Logger.logNow('SimpleSignupFormController', 'sendContinueApplicationEmail', e.getMessage() +
+                '; ' + e.getStackTraceString());
+        }
+    }
+
+
 
     /****************************************/
     /***          HELPER METHODS          ***/
@@ -148,5 +218,17 @@ public without sharing class SimpleSignupFormController {
             newDocs.add(mydoc);
         }
         update newDocs;
+    }
+
+    private static Boolean hasExistingSubscription(Utility_Account_Log__c ual) {
+        for (Utility_Account_Subscription__c uas : ual.Utility_Account_Subscriptions__r ) {
+            if (uas.Opportunity__r.StageName != 'Cancelled' &&
+                uas.Opportunity__r.StageName != 'DUPLICATE' &&
+                uas.Opportunity__r.StageName != 'Expired' &&
+                uas.Opportunity__r.StageName != 'Dead') {
+                return true;
+            }
+        }
+        return false;
     }
 }

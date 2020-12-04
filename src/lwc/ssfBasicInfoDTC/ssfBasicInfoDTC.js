@@ -1,3 +1,7 @@
+/**
+ * Created by lindsayholmes_gearscrm on 2020-09-14.
+ */
+
 import { LightningElement, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -16,6 +20,7 @@ import {
     verifyUtilityAccountEntry,
     validateServiceZipCode,
     applicationValid,
+    findDuplicateUAL
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -49,6 +54,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track isPhone;
     @track helpTextVisible;
     @track disableUnderwritingFields = false;
+    @track showModal;
+    @track duplicateLeadId;
 
     isFico = true;
     utilityAccountCount = 0;
@@ -100,6 +107,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     handleZipEntry(event) {
         validateServiceZipCode(this, event);
+    }
+
+    validateUtilityAccount(event) {
+        findDuplicateUAL(this, event);
     }
 
     rateClassOnChange(event) {
