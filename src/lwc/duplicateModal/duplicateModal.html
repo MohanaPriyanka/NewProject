@@ -1,0 +1,64 @@
+<template>
+    <template if:true={show}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <div role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <template if:false={emailSent}>
+                <div class="slds-modal__container">
+                    <!-- Modal/Popup Box LWC header here -->
+                    <header class="slds-modal__header">
+                        <h4 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Hey, we know you!</h4>
+                    </header>
+                    <!-- Modal/Popup Box LWC body starts here -->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <p> Looks like you have already started an application for this Utility Account!</p>
+                        <br/>
+                        <p> If you wish to continue the application, select the <b>"Send Continue Application Email"</b> button below
+                            and we will send you a link to pick up the application where you left off.</p>
+                        <br/>
+                        <p> If you want to sign up a different Utility Account for community solar,
+                            you can close this window and apply with a different Utility Account.</p>
+                        <br/>
+                        <p> If you have any issues locating the email or have further questions, you can reach our support team at <b>
+                            <a href="mailto:PartnerSupport@BlueWaveSolar.com" style="color:blue"> partnersupport@bluewavesolar.com</a></b></p>
+                        <br/>
+                    </div>
+                    <!-- Modal/Popup Box LWC footer starts here -->
+                    <template if:false={isPhone}>
+                        <footer class="slds-modal__footer">
+                            <div class="slds-float_left">
+                                <button class="slds-button slds-button_neutral" onclick={closeModal} title="Close">Close</button>
+                            </div>
+                            <div class="slds-float_right">
+                                <button class="slds-button slds-button_brand" onclick={sendEmail} title="SendEmail">Send Continue Application Email</button>
+                            </div>
+                        </footer>
+                    </template>
+                    <template if:true={isPhone}>
+                        <footer class="slds-modal__footer">
+                            <div class ="slds-align_absolute-center">
+                                <button class="slds-button slds-button_neutral slds-m-around_small" onclick={closeModal} title="Close">Close</button>
+                                <button class="slds-button slds-button_brand slds-m-around_small" onclick={sendEmail} title="SendEmail">Send Continue Application Email</button>
+                            </div>
+                        </footer>
+                    </template>
+                </div>
+            </template>
+            <template if:true={emailSent}>
+                <div class="slds-modal__container">
+                    <div class="slds-modal__content slds-p-around_medium slds-text-align_center" id="modal-emailSent">
+                        <h1> Email Sent! </h1>
+                        <br/>
+                        <p> You can close this window now. </p>
+                        <br/>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <div class="slds-float_right">
+                            <button class="slds-button slds-button_neutral" onclick={closeModal} title="Close">Close</button>
+                        </div>
+                    </footer>
+                </div>
+            </template>
+        </div>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

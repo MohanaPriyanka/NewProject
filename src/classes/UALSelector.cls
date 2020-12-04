@@ -1,6 +1,6 @@
 /**
  * Created by jlugo on 2019-07-10.
- * Tested by: UtilityDataRequestServiceTest, and system tests in RESTRouterV2Test
+ * Tested by: UALSelectorTest, UtilityDataRequestServiceTest, and system tests in RESTRouterV2Test
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UALSelector {
@@ -64,5 +64,23 @@ public without sharing class UALSelector {
         ];
     }
 
-
+    public List<Utility_Account_Log__c> selectDuplicateUALs(String ualNumber) {
+        return [
+            SELECT
+                Id,
+                Name,
+                Lead__r.Application_Complete_Date__c,
+                Lead__r.Continue_Application_Link__c,
+                Lead__r.IsConverted,
+                Lead__r.Status,
+                Opportunity__r.StageName,
+                (SELECT Id, Opportunity__r.StageName
+                    FROM Utility_Account_Subscriptions__r
+                    WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
+                )
+            FROM Utility_Account_Log__c
+            WHERE Name = :ualNumber
+            AND Lead__r.LastName != 'Testcase'
+        ];
+    }
 }
