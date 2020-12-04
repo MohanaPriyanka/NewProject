@@ -468,6 +468,7 @@ public with sharing class DocuSignHelperTest {
             insert newDRS;
         }
 
+        Test.getEventBus().deliver();
         Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignHelperTest.DocuSignTimeoutMock());
         Test.setMock(HttpCalloutMock.class, new DocuSignHelperTest.DocuSignTimeoutMock());
@@ -516,7 +517,7 @@ public with sharing class DocuSignHelperTest {
                 WHERE Class__c = 'DocuSignHelper'
         ];
 
-        System.assert(errorLogs.size() == 1, 'We should have 1 message that logs that the Opp is sending, plus AutoRetry messages');
+        System.assertEquals(1, errorLogs.size(), 'We should have 1 message that logs that the Opp is sending, plus AutoRetry messages, but got these: ' + errorLogs);
         // the first error log is from DocuSignHelper.sendCSPackageFuture
         System.assertEquals('DocuSignHelper', errorLogs[0].Class__c);
         System.assertEquals('AutoRetryContractSend', errorLogs[0].Method__c);
