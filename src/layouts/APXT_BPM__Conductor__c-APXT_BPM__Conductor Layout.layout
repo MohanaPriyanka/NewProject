@@ -110,42 +110,6 @@
             <layoutItems>
                 <customLink>COMMUNITY_SOLAR_BILLING</customLink>
             </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <customLink>SREC_PAYMENTS</customLink>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -172,18 +136,6 @@
             <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
-            <layoutItems>
-                <customLink>Preview_Monthly_SREC_Payments</customLink>
-            </layoutItems>
-            <layoutItems>
-                <customLink>Preview_Quarterly_SREC_Payments</customLink>
-            </layoutItems>
-            <layoutItems>
-                <customLink>Monthly_SREC_QC_Report</customLink>
-            </layoutItems>
-            <layoutItems>
-                <customLink>View_Invoices_to_Be_Created</customLink>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -209,18 +161,6 @@
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <customLink>Send_Monthly_SREC_Payments</customLink>
-            </layoutItems>
-            <layoutItems>
-                <customLink>Send_Quarterly_SREC_Payments</customLink>
-            </layoutItems>
-            <layoutItems>
-                <customLink>Send_PDFs_Via_Email</customLink>
-            </layoutItems>
-            <layoutItems>
-                <customLink>Download_for_Print</customLink>
             </layoutItems>
         </layoutColumns>
         <style>CustomLinks</style>

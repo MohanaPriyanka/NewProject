@@ -683,10 +683,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>RecurringSRECHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ReferralCodeHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -28213,6 +28209,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Reserved_Capacity_kW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.RiskCalc_Min__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
