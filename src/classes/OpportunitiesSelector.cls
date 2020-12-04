@@ -27,7 +27,8 @@ public without sharing class OpportunitiesSelector {
                 Contract_Status__c,
                 Product_Line__c,
                 Parent_Account_ID__c,
-                BlueWave_Signature_Status__c
+                BlueWave_Signature_Status__c,
+                Lead__c
             FROM Opportunity
             WHERE Id IN: oppIds
         ];
@@ -209,5 +210,16 @@ public without sharing class OpportunitiesSelector {
             oppSubscriptionMap.put((Id) ar.get('oppId'), (Decimal) ar.get('total') );
         }
         return oppSubscriptionMap;
+    }
+
+    public MultiMap getOpportunitiesWithOpenQCCases(Set<Id> oppIds) {
+        List<Case> casesWithOpportunities = [
+            SELECT Id, Related_Opportunity__c
+            FROM Case
+            WHERE Related_Opportunity__c = :oppIds
+            AND Category__c = 'QC'
+            AND IsClosed = FALSE
+        ];
+        return CollectionUtil.multiMapByField(casesWithOpportunities, Case.Related_Opportunity__c);
     }
 }
