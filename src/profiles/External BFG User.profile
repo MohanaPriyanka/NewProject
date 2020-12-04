@@ -31490,6 +31490,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Data_Request__c.Utility_Formatted_Account_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Data_Request__c.Utility_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
