@@ -3204,14 +3204,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PartnerHealthBatch</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PartnerHealthBatchTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PartnerSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
