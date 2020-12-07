@@ -63,4 +63,10 @@ public with sharing class LeadSelectorTest {
         System.assertEquals(1, l.Accounts__r.size(), 'Selector should have returned a child account with the lead record');
         System.assertEquals(1, l.Utility_Account_Logs__r.size(), 'Selector should have returned a child utility account log with the lead record');
     }
+
+    @IsTest
+    private static void testSelectForPartnerApplicationStatus() {
+        System.assertNotEquals(null, new LeadSelector().getLeadsForPartnerApplicationStatus(new Set<Id>()),
+            'Expected a non-null value, even with an empty set of ids');
+    }
 }
