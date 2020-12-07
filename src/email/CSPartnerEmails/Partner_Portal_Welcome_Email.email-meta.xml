@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Partner Portal Welcome Email</name>
+    <style>none</style>
+    <subject>Welcome to BlueWave&apos;s Partner Portal</subject>
+    <textOnly>Hey {!Receiving_User.FirstName},
+
+Welcome to BlueWave&apos;s Partner Portal!
+
+To access your portal, click the button below and login using the username, {!Receiving_User.Username}.
+
+Log Into Your Portal Here
+
+Have questions?
+You can also reach us at 844.786.4100 or partnersupport@bluewavesolar.com. We&apos;re happy to help.
+Thanks for joining the Wave, we&apos;re happy you&apos;re here.
+- All of us here at BlueWave
+
+BlueWave Partner Support
+844.786.4100 | partnersupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
