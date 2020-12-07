@@ -47,4 +47,9 @@ public with sharing class CaseSelectorTest {
         System.assertEquals(1, new CaseSelector().selectOpenLowMatchCasesFromLead(lead).size(), 'Only open low match cases should show up in results. ' +
             'The result should be the 1 open case that was added.');
     }
+    @IsTest
+    public static void testSelectForPartnerApplicationStatusEvaluation() {
+        System.assertNotEquals(null, new CaseSelector().selectForPartnerApplicationStatusEvaluation(new Set<Id>()),
+            'Expected a non-null response even when selecting with no ids');
+    }
 }
