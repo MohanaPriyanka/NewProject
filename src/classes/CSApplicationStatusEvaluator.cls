@@ -42,7 +42,7 @@ public without sharing class CSApplicationStatusEvaluator {
                 applicationStatusChanges.add(new Application_Status_Change__e(LeadId__c = lead.Id));
             }
         }
-        EventBus.publish(applicationStatusChanges);
+        logErrors(EventBus.publish(applicationStatusChanges), applicationStatusChanges);
     }
 
     /**
@@ -58,7 +58,7 @@ public without sharing class CSApplicationStatusEvaluator {
                 applicationStatusChanges.add(new Application_Status_Change__e(CaseId__c = triggerCase.Id));
             }
         }
-        EventBus.publish(applicationStatusChanges);
+        logErrors(EventBus.publish(applicationStatusChanges), applicationStatusChanges);
     }
 
     /**
@@ -75,7 +75,7 @@ public without sharing class CSApplicationStatusEvaluator {
                 applicationStatusChanges.add(new Application_Status_Change__e(LeadId__c = triggerOldMap.get(opportunity.Id).Lead__c));
             }
         }
-        EventBus.publish(applicationStatusChanges);
+        logErrors(EventBus.publish(applicationStatusChanges), applicationStatusChanges);
     }
 
     /**
@@ -87,7 +87,29 @@ public without sharing class CSApplicationStatusEvaluator {
         for (Opportunity opportunity : triggerOld) {
             applicationStatusChanges.add(new Application_Status_Change__e(LeadId__c = opportunity.Lead__c));
         }
-        EventBus.publish(applicationStatusChanges);
+        logErrors(EventBus.publish(applicationStatusChanges), applicationStatusChanges);
+    }
+
+    private static void logErrors(List<Database.SaveResult> saveResults, List<Application_Status_Change__e> applicationStatusChanges) {
+        Boolean foundError = false;
+        for (Database.SaveResult saveResult : saveResults){
+            if (!saveResult.isSuccess()) {
+                foundError = true;
+                Logger.logLater('CSApplicationStatusEvaluator', 'logErrors', 'Did not publish event: ' + summarizeError(saveResult.getErrors()), Logger.ERROR);
+            }
+        }
+        if (foundError) {
+            Logger.logLater('CSApplicationStatusEvaluator', 'logErrors', 'applicationStatusChanges: ' + JSON.serialize(applicationStatusChanges), Logger.ERROR);
+            Logger.flushLogs();
+        }
+    }
+
+    private static String summarizeError(List<Database.Error> errors) {
+        String errorMessage = '';
+        for (Database.Error error : errors) {
+            errorMessage += error.getMessage() + '\n';
+        }
+        return errorMessage;
     }
 
     /**
