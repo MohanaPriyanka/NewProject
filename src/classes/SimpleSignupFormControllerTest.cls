@@ -13,13 +13,11 @@ public with sharing class SimpleSignupFormControllerTest {
         );
         insert cv;
         cv = [SELECT Id, Title, ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
-
         Product2 product = new Product2(
             Name = 'CS Product',
             Generic_Terms_Conga_Template__c = null
         );
         insert product;
-
         Lead lead = new Lead(
             FirstName = 'first',
             LastName = 'last',
@@ -28,13 +26,11 @@ public with sharing class SimpleSignupFormControllerTest {
             Product__c = product.Id
         );
         insert lead;
-
         Account propertyAccount = new Account(
             Lead__c = lead.Id,
             Name = 'test account'
         );
         insert propertyAccount;
-
         Contract contract = new Contract(
             Lead__c = lead.Id,
             Product__c = product.Id,
@@ -44,7 +40,6 @@ public with sharing class SimpleSignupFormControllerTest {
             Customer_Signature_Date_Time__c = null
         );
         insert contract;
-
         ContentDocumentLink cdl = new ContentDocumentLink(
             LinkedEntityId = contract.Id,
             ContentDocumentId = cv.ContentDocumentId,
@@ -54,7 +49,6 @@ public with sharing class SimpleSignupFormControllerTest {
         );
         insert cdl;
     }
-
     @IsTest
     private static void testContentDocSelector() {
         User guest = [SELECT Id FROM User WHERE Alias = 'guest' LIMIT 1];
@@ -66,12 +60,10 @@ public with sharing class SimpleSignupFormControllerTest {
         ];
         System.assertEquals(1, contentDocumentLinks.size(), 'Expected setup to create one content doc');
         Id contentDocId = contentDocumentLinks[0].ContentDocumentId;
-
         System.runAs(guest) {
             ContentDocumentSelector cds = new ContentDocumentSelector();
             System.assertEquals(0, cds.selectById(new Set<Id>{contentDocId}).size(),
                 'Expected the selector to not find any docs because of sharing restriction');
-
             String cdlStr = SimpleSignupFormController.getContentDocumentLinksByLead(lead.Id, lead.Email, null);
             List<RestLead.RestContentDocument> rcdList = (List<RestLead.RestContentDocument>) JSON.deserialize(cdlStr, List<RestLead.RestContentDocument>.class);
             System.assertEquals(1, rcdList.size(),
@@ -80,7 +72,6 @@ public with sharing class SimpleSignupFormControllerTest {
                 'Expected to get the right content document id');
         }
     }
-
     @IsTest
     private static void testContentDocSelectorErrorHandling() {
         User guest = [SELECT Id FROM User WHERE Alias = 'guest' LIMIT 1];
@@ -92,7 +83,6 @@ public with sharing class SimpleSignupFormControllerTest {
         ];
         System.assertEquals(1, contentDocumentLinks.size(), 'Expected setup to create one content doc');
         Id contentDocId = contentDocumentLinks[0].ContentDocumentId;
-
         System.runAs(guest) {
             try {
                 SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, 'fakeemail', null);
@@ -100,14 +90,12 @@ public with sharing class SimpleSignupFormControllerTest {
             } catch (AuraHandledException ahe) {
                 System.assert(ahe.getMessage().contains('did not match'), 'Exception should indicate the lead id and email did not match, but received ' + ahe.getMessage());
             }
-
             try {
                 SimpleSignupFormController.getContentDistributionById(testLead.Id, 'fakeemail', contentDocId);
                 System.assert(false, 'Expected a fake email to generate an authorization exception');
             } catch (AuraHandledException ahe) {
                 System.assert(ahe.getMessage().contains('did not match'), 'Exception should indicate the lead id and email did not match, but received ' + ahe.getMessage());
             }
-
             try {
                 System.assertEquals(null, SimpleSignupFormController.getContentDistributionById(testLead.Id, testLead.Email, contentDocId), 'Expected a Content Doc with no Content Distribution to return null');
             } catch (Exception ahe) {
@@ -116,8 +104,6 @@ public with sharing class SimpleSignupFormControllerTest {
             }
         }
     }
-
-
     @IsTest
     private static void testContentDistributionSuccess() {
         Lead testLead = [SELECT Id, Email FROM Lead];
@@ -130,10 +116,8 @@ public with sharing class SimpleSignupFormControllerTest {
         insert csaCV;
         ContentDocumentSelector selector = new ContentDocumentSelector();
         String csaContentDocId = selector.getDocumentIdFromVersionId(csaCV.Id);
-
         String csaPath = SimpleSignupFormController.getContentDistributionById(testLead.Id, testLead.Email, csaContentDocId);
         System.assertNotEquals(null, csaPath, 'Expected SimpleSignupFormController.getContentDistributionById() to return one auto-generated ContentDistribution public link');
-
         ContentVersion sdfCV = new ContentVersion(
             ContentLocation = 'S',
             VersionData = EncodingUtil.base64Decode('SSF SDF body'),
@@ -142,12 +126,9 @@ public with sharing class SimpleSignupFormControllerTest {
         );
         insert sdfCV;
         String sdfContentDocId = selector.getDocumentIdFromVersionId(sdfCV.Id);
-
         String sdfPath = SimpleSignupFormController.getContentDistributionById(testLead.Id, testLead.Email, sdfContentDocId);
         System.assertNotEquals(null, sdfPath, 'Expected SimpleSignupFormController.getContentDistributionById() to return one auto-generated ContentDistribution public link');
     }
-
-
     @IsTest
     private static void testGetContentDocumentLinksByLead() {
         Lead testLead = [SELECT Id, Email, (SELECT Id FROM Contracts__r) FROM Lead];
@@ -160,7 +141,6 @@ public with sharing class SimpleSignupFormControllerTest {
         insert cv;
         cv = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
         Test.setCreatedDate(cv.ContentDocumentId, Datetime.now().addDays(-5));
-
         ContentDocumentLink cdl = new ContentDocumentLink(
             LinkedEntityId = testLead.Contracts__r[0].Id,
             ContentDocumentId = cv.ContentDocumentId,
@@ -168,23 +148,17 @@ public with sharing class SimpleSignupFormControllerTest {
             Visibility = 'AllUsers'
         );
         insert cdl;
-
-
         ContentDocumentSelector docSelector = new ContentDocumentSelector();
         List<ContentDocumentLink> cdlList = docSelector.selectByLinkedEntity(testLead.Contracts__r[0].Id);
         RestLead.RestContentDocument rcd1 = new RestLead.RestContentDocument(cdlList[0]);   // most recent
-
         String retStr = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, null);
         List<RestLead.RestContentDocument> retList = (List<RestLead.RestContentDocument>)JSON.deserialize(retStr, List<RestLead.RestContentDocument>.class);
         System.assertEquals(2, retList.size(), 'With no minimum start date, both CDLs should be returned');
-
         retStr = SimpleSignupFormController.getContentDocumentLinksByLead(testLead.Id, testLead.Email, Datetime.now().addDays(-1));
         retList = (List<RestLead.RestContentDocument>)JSON.deserialize(retStr, List<RestLead.RestContentDocument>.class);
         System.assertEquals(1, retList.size(), 'Only one CDL should be returned, as the other was created before the minimum start date');
         System.assertEquals(rcd1.id, retList[0].id, 'The CDL returned should be the one with the created date of today');
     }
-
-
     @IsTest
     private static void testChangeOwnerOfUpload() {
         User user2 = new User(
@@ -200,36 +174,26 @@ public with sharing class SimpleSignupFormControllerTest {
         );
         insert user2;
         List<ContentDocument> contentDoc = [SELECT Id, OwnerId FROM ContentDocument];
-
         System.assertEquals(1, contentDoc.size(), 'Setup should return a single ContentDocument record');
         System.assertNotEquals(user2.Id, contentDoc[0].OwnerId, 'Setup should return a ContentRecord record NOT owned by the new test user');
-
         Test.startTest();
             SimpleSignupFormController.changeOwnerOfUpload(new Set<Id>{contentDoc[0].Id}, user2.Id);
         Test.stopTest();
-
         ContentDocument cd = [SELECT Id, OwnerId FROM ContentDocument WHERE Id = :contentDoc[0].Id LIMIT 1];
         System.assertEquals(user2.Id, cd.OwnerId, 'Method should have changed ContentDocument record owner to new test user');
     }
-
-
     @IsTest
     private static void testUnlinkDocsFromDummyRecord() {
         User backup = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
-
         Custom_File_Upload_Share__c cfus = new Custom_File_Upload_Share__c(Name = 'test');
         insert cfus;
-
         List<ContentDocumentLink> existingCdlList = [SELECT Id, ContentDocumentId, ContentDocument.OwnerId FROM ContentDocumentLink WHERE LinkedEntityId IN (SELECT Id FROM Contract)];
         System.assertEquals(1, existingCdlList.size(), 'Setup should only return one ContentDocumentLink');
         System.assertNotEquals(backup.Id, existingCdlList[0].ContentDocument.OwnerId, 'Setup should return a ContentRecord record NOT owned by the new test user');
         String docId = existingCdlList[0].ContentDocumentId;
-
         ContentDocumentLink cdl = new ContentDocumentLink(ContentDocumentId = docId, LinkedEntityId = cfus.Id);
         insert cdl;
-
         String result = SimpleSignupFormController.unlinkDocsFromDummyRecord(new List<String>{docId}, 'Customer Utility Bill');
-
         System.assertEquals('OK', result, 'Method should return \'OK\' for successful operation');
         List<ContentDocumentLink> newCdlListToUser = [SELECT Id, LinkedEntityId, ContentDocument.LatestPublishedVersion.File_Category__c FROM ContentDocumentLink WHERE ContentDocumentId = :docId AND LinkedEntityId = :backup.Id];
         System.assertEquals(1, newCdlListToUser.size(), 'Doc should be linked to new user record');
@@ -237,36 +201,29 @@ public with sharing class SimpleSignupFormControllerTest {
         List<ContentDocumentLink> newCdlListToContract = [SELECT Id, LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId = :docId AND LinkedEntityId IN (SELECT Id FROM Custom_File_Upload_Share__c)];
         System.assert(newCdlListToContract.isEmpty(), 'Doc should no longer be linked to Custom File Upload Share record');
     }
-
-
     @IsTest
     private static void testUnlinkDocsMissingDummyRecord() {
         User backup = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
         List<ContentDocumentLink> existingCdlList = [SELECT Id, ContentDocumentId, ContentDocument.OwnerId FROM ContentDocumentLink WHERE LinkedEntityId IN (SELECT Id FROM Contract)];
         System.assertEquals(1, existingCdlList.size(), 'Setup should only return one ContentDocumentLink');
         String docId = existingCdlList[0].ContentDocumentId;
-
         String result = SimpleSignupFormController.unlinkDocsFromDummyRecord(new List<String>{docId}, 'Customer Utility Bill');
-
         System.assertEquals(null, result, 'Missing dummy record should cause method to return null');
         List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c WHERE Class__c = 'SimpleSignupFormController' AND Method__c = 'unlinkDocsFromDummyRecord'];
         System.assert(!errors.isEmpty(), 'Missing dummy record, should have caused method to create Error Log records');
         ContentDocument contentDoc = [SELECT OwnerId FROM ContentDocument WHERE Id = :docId LIMIT 1];
         System.assertNotEquals(backup.Id, contentDoc.OwnerId, 'Missing dummy record prevents method from reparenting uploaded file');
     }
-
     @IsTest
     static void testLog() {
         Integer expectedLogVolume = 1;
         String testClassName = 'testClass';
         String testMethodName = 'testMethod';
         String testMessage = 'testMessage';
-
         // Run Test
         Test.startTest();
         SimpleSignupFormController.log(testClassName, testMethodName, testMessage, 'Error');
         Test.stopTest();
-
         // Verify Test
         Error_Log__c[] logs = [
             SELECT Method__c, Message__c
@@ -277,9 +234,7 @@ public with sharing class SimpleSignupFormControllerTest {
         system.assertEquals(expectedLogVolume,logs.size(),'Expected '+ expectedLogVolume +' logs, received '+logs.size());
         system.assertEquals(testMethodName,logs[0].Method__c, 'Log retrieved contains incorrect Method__c');
         system.assertEquals(testMessage,logs[0].Message__c, 'Log retrieved contains incorrect Message__c');
-
     }
-
     @IsTest
     private static void testDuplicateUALs() {
         Lead matchingLead = new Lead(
@@ -291,7 +246,6 @@ public with sharing class SimpleSignupFormControllerTest {
             Continue_Application_Link__c = 'continueURL.com',
             Status = 'New'
         );
-
         Lead qualifiedLead = new Lead(
             FirstName = 'Qualified',
             LastName = 'Match',
@@ -303,7 +257,6 @@ public with sharing class SimpleSignupFormControllerTest {
             Application_Complete_Date__c = System.today(),
             Status = 'Qualified'
         );
-
         Lead unqualifiedLead = new Lead(
             FirstName = 'Unqualified',
             LastName = 'Match',
@@ -314,9 +267,7 @@ public with sharing class SimpleSignupFormControllerTest {
             Status = 'Unqualified',
             Application_Complete_Date__c = System.today()
         );
-
         insert new List<Lead>{matchingLead, qualifiedLead, unqualifiedLead};
-
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Name = '1234',
             Lead__c = matchingLead.Id
@@ -329,9 +280,7 @@ public with sharing class SimpleSignupFormControllerTest {
             Name = '2222',
             Lead__c = unqualifiedLead.Id
         );
-
         insert new List<Utility_Account_Log__c>{ual, ual2, ual3};
-
         String result = SimpleSignupFormController.findDuplicateUALs('1234');
         System.assertEquals(String.valueOf(matchingLead.Id), result, 'Returns lead Id for duplicate');
         String resultNoMatch = SimpleSignupFormController.findDuplicateUALs('5678');
@@ -341,8 +290,6 @@ public with sharing class SimpleSignupFormControllerTest {
         String resultUnqualified = SimpleSignupFormController.findDuplicateUALs('2222');
         System.assertEquals('No Duplicate Found', resultUnqualified, 'Application should not be stopped for Duplicate UALs attached to Unqualified Leads');
     }
-
-
     @IsTest
     private static void testSendContinueApplicationEmail() {
         Lead matchingLead = new Lead(
@@ -356,15 +303,13 @@ public with sharing class SimpleSignupFormControllerTest {
             Status = 'New'
         );
         insert matchingLead;
-
         Test.startTest();
         SimpleSignupFormController.sendContinueApplicationEmail(matchingLead.Id);
         Test.stopTest();
 
-
         System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
         if (systemDefault.Continue_Application_Email_Template__c != null) {
-        //    System.assertEquals(1, MessagingService.emailsSent.size(), 'Continue Application email should be sent to customer.');
+            System.assertEquals(1, MessagingService.emailsSent.size(), 'Continue Application email should be sent to customer.');
 
         }
     }
