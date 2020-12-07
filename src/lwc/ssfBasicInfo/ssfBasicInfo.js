@@ -16,6 +16,7 @@ import {
     verifyUtilityAccountEntry,
     validateServiceZipCode,
     applicationValid,
+    findDuplicateUAL
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -49,6 +50,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track isPhone;
     @track helpTextVisible;
     @track disableUnderwritingFields = false;
+    @track showModal;
+    @track duplicateLeadId;
 
     isFico = true;
     utilityAccountCount = 0;
@@ -99,6 +102,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     handleZipEntry(event) {
         validateServiceZipCode(this, event);
+    }
+
+    validateUtilityAccount(event) {
+        findDuplicateUAL(this, event);
     }
 
     rateClassOnChange(event) {

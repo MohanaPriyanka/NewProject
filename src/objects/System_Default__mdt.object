@@ -13,6 +13,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Continue_Application_Email_Template__c</fullName>
+        <description>Email template sent to customers to &quot;Continue Application&quot; in SSF</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Continue Application Email Template</label>
+        <length>130</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Default_Build__c</fullName>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
