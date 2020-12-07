@@ -8,6 +8,10 @@ trigger ApplicationStatusChangeTrigger on Application_Status_Change__e (after in
         CSApplicationStatusEvaluator evaluator = new CSApplicationStatusEvaluator(Trigger.new);
         evaluator.updatePartnerApplicationStatus();
     } catch (Exception e) {
-        Logger.logNow('ApplicationStatusChangeTrigger', 'main', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        Logger.logNow('' +
+            'ApplicationStatusChangeTrigger',
+            'main',
+            e.getMessage() + '\n' + e.getStackTraceString() + '\n' + 'Trigger size: ' + Trigger.new.size() + '\n' + JSON.serialize(Trigger.new),
+            Logger.ERROR);
     }
 }
