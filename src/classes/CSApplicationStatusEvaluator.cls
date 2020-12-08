@@ -214,12 +214,12 @@ public without sharing class CSApplicationStatusEvaluator {
 
     private Boolean allComplete(List<Opportunity> opportunities) {
         OppSummary oppSummary = getSummary(opportunities);
-        return oppSummary.hasComplete && !oppSummary.hasInProgress;
+        return oppSummary.hasComplete && !oppSummary.hasInProgress && !oppSummary.hasLost;
     }
 
     private Boolean allLost(List<Opportunity> opportunities) {
         OppSummary oppSummary = getSummary(opportunities);
-        return oppSummary.hasLost && !oppSummary.hasInProgress;
+        return oppSummary.hasLost && !oppSummary.hasInProgress && !oppSummary.hasComplete;
     }
 
     private OppSummary getSummary(List<Opportunity> opportunities) {
