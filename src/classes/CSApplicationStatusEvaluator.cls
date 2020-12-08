@@ -174,27 +174,29 @@ public without sharing class CSApplicationStatusEvaluator {
     }
 
     @TestVisible
-    private Lead registerStatusUpdate(Lead lead) {
+    private Lead registerStatusUpdate(Lead leadToEvaluate) {
         String newStatus;
 
-        if (allComplete(lead.Opportunities__r)) {
+        if (allComplete(leadToEvaluate.Opportunities__r)) {
             newStatus = COMPLETE;
-        } else if (hasOpenQCCases(lead)) {
+        } else if (hasOpenQCCases(leadToEvaluate)) {
             newStatus = AWAITING_CUSTOMER_INFO;
-        } else if (allLost(lead.Opportunities__r) ||
-            UNQUALIFIED_LEAD_STATUSES.contains(lead.Status)) {
+        } else if (allLost(leadToEvaluate.Opportunities__r) ||
+            UNQUALIFIED_LEAD_STATUSES.contains(leadToEvaluate.Status)) {
             newStatus = EXPIRED_UNQUALIFIED;
-        } else if (lead.Application_Complete_Date__c == null) {
+        } else if (leadToEvaluate.Application_Complete_Date__c == null) {
             newStatus = APPLICATION_STARTED;
         } else {
             newStatus = UNDER_REVIEW;
         }
 
-        if (newStatus != lead.Partner_Application_Status__c) {
-            lead.Partner_Application_Status__c = newStatus;
-            uow.registerDirty(lead);
+        if (newStatus != leadToEvaluate.Partner_Application_Status__c) {
+            leadToEvaluate.Partner_Application_Status__c = newStatus;
+            uow.registerDirty(leadToEvaluate, new List<SObjectField>{
+                Lead.Partner_Application_Status__c
+            });
         }
-        return lead;
+        return leadToEvaluate;
     }
 
     private Boolean hasOpenQCCases(Lead lead) {
