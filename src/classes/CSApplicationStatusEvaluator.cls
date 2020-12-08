@@ -168,7 +168,9 @@ public without sharing class CSApplicationStatusEvaluator {
         for (Lead lead : leadsToEvaluate) {
             registerStatusUpdate(lead);
         }
+        Util.disableTrigger('Disable_LeadTrigger__c');
         uow.commitWork();
+        Util.enableTrigger('Disable_LeadTrigger__c');
     }
 
     @TestVisible
