@@ -112,10 +112,6 @@ private with sharing class CSApplicationStatusEvaluatorTest {
         System.assertEquals(CSApplicationStatusEvaluator.APPLICATION_STARTED, evaluator.registerStatusUpdate(lead).Partner_Application_Status__c,
             'Expected a lead with no cases or opps to be assigned Application Started: ' + JSON.serialize(lead));
 
-        lead = getLead(new LeadParams('{"status":"New","openQCCases":1}'));
-        System.assertEquals(CSApplicationStatusEvaluator.APPLICATION_STARTED, evaluator.registerStatusUpdate(lead).Partner_Application_Status__c,
-            'Expected a lead with an open QC case and no Application Complete Date to be assigned Application Started: ' + JSON.serialize(lead));
-
         // Under Review Tests
         lead = getLead(new LeadParams('{"status":"New","applicationCompleteDate":"2020-12-02T16:24:36.525Z"}'));
         System.assertEquals(CSApplicationStatusEvaluator.UNDER_REVIEW, evaluator.registerStatusUpdate(lead).Partner_Application_Status__c,
@@ -135,6 +131,10 @@ private with sharing class CSApplicationStatusEvaluatorTest {
         System.assertEquals(CSApplicationStatusEvaluator.AWAITING_CUSTOMER_INFO, evaluator.registerStatusUpdate(lead).Partner_Application_Status__c,
             'Expected a lead with an open QC case to be assigned Awaiting Customer Information if there is a case on the Opportunity: ' + JSON.serialize(lead));
         evaluator.oppIdToCaseMap.remove(lead.Opportunities__r[0].Id);
+
+        lead = getLead(new LeadParams('{"status":"Unqualified","openQCCases":1}'));
+        System.assertEquals(CSApplicationStatusEvaluator.AWAITING_CUSTOMER_INFO, evaluator.registerStatusUpdate(lead).Partner_Application_Status__c,
+            'Expected a lead with an open QC case and Unqualified to be Awaiting Customer Info: ' + JSON.serialize(lead));
 
         // Expired/Unqualified tests
         lead = getLead(new LeadParams('{"status":"Unqualified"}'));
