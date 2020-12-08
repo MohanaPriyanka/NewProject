@@ -116,15 +116,15 @@ public class CustomerCommunicationHandlerTest{
             Contact contactA = new Contact( FirstName = 'Contact A',
                                             LastName = 'Last',
                                             Account = accountParent1,
-                                            Email = 'jpentaleri@bluewavesolar.com');
+                                            Email = 'jpentaleriA@bluewavesolar.com');
             Contact contactB = new Contact( FirstName = 'Contact B',
                                             LastName = 'Last',
                                             Account = accountParent2,
-                                            Email = 'jpentaleri@bluewavesolar.com');
+                                            Email = 'jpentaleriB@bluewavesolar.com');
             Contact contactC = new Contact( FirstName = 'Contact C',
                                             LastName = 'Last',
                                             Account = accountParent3,
-                                            Email = 'jpentaleri@bluewavesolar.com');
+                                            Email = 'jpentaleriC@bluewavesolar.com');
 
             insert new List<Contact>{contactA, contactB, contactC};
 
