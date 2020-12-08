@@ -1166,6 +1166,9 @@ public with sharing class CSCancellationServiceTest {
         for (Messaging.Email email : MessagingService.emailsSent) {
             Messaging.SingleEmailMessage sem = (Messaging.SingleEmailMessage) email;
             System.assert(sem.getHtmlBody().contains(dateRemovedString));
+            System.debug('Email sent!');
+            System.assert(!sem.getHtmlBody().contains('Amp'));
+            System.assert(sem.getHtmlBody().contains('BlueWave Community Solar'));
         }
     }
 
