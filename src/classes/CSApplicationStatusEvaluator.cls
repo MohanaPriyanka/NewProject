@@ -179,15 +179,15 @@ public without sharing class CSApplicationStatusEvaluator {
 
         if (allComplete(lead.Opportunities__r)) {
             newStatus = COMPLETE;
+        } else if (hasOpenQCCases(lead)) {
+            newStatus = AWAITING_CUSTOMER_INFO;
         } else if (allLost(lead.Opportunities__r) ||
             UNQUALIFIED_LEAD_STATUSES.contains(lead.Status)) {
             newStatus = EXPIRED_UNQUALIFIED;
         } else if (lead.Application_Complete_Date__c == null) {
             newStatus = APPLICATION_STARTED;
-        } else if (!hasOpenQCCases(lead)) {
+        } else {
             newStatus = UNDER_REVIEW;
-        } else if (hasOpenQCCases(lead)) {
-            newStatus = AWAITING_CUSTOMER_INFO;
         }
 
         if (newStatus != lead.Partner_Application_Status__c) {
@@ -214,12 +214,12 @@ public without sharing class CSApplicationStatusEvaluator {
 
     private Boolean allComplete(List<Opportunity> opportunities) {
         OppSummary oppSummary = getSummary(opportunities);
-        return oppSummary.hasComplete && !oppSummary.hasInProgress;
+        return oppSummary.hasComplete && !oppSummary.hasInProgress && !oppSummary.hasLost;
     }
 
     private Boolean allLost(List<Opportunity> opportunities) {
         OppSummary oppSummary = getSummary(opportunities);
-        return oppSummary.hasLost && !oppSummary.hasInProgress;
+        return oppSummary.hasLost && !oppSummary.hasInProgress && !oppSummary.hasComplete;
     }
 
     private OppSummary getSummary(List<Opportunity> opportunities) {
