@@ -105,6 +105,12 @@ public with sharing class ContactServiceTest {
         newContacts.put(newMarkWithZC.Id, newMarkWithZC);
         System.assertEquals(1, testContactService.contactsWithZuoraUpdates(oldContacts, newContacts).size(),
             'Expected a contact because there is relevant change for a contact with a Zuora Contact');
+
+        oldContacts.put(oldMarkWithZC.Id, oldMarkWithZC);
+        newMarkWithZC.FirstName = null;
+        newContacts.put(newMarkWithZC.Id, newMarkWithZC);
+        System.assertEquals(1, testContactService.contactsWithZuoraUpdates(oldContacts, newContacts).size(),
+            'Expected a contact because there is relevant change for a contact with a Zuora Contact');
     }
 
     /*************

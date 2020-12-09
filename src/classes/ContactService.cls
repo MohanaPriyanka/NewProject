@@ -56,7 +56,8 @@ public with sharing class ContactService {
         Map<Id, Contact> contactsWithUpdates = new Map<Id, Contact>();
         for (Contact contact : newContacts.values()) {
             if (contact.Email != oldContacts.get(contact.Id).Email ||
-                !contact.FirstName.equals(oldContacts.get(contact.Id).FirstName) ||
+                (contact.FirstName != null && !contact.FirstName.equals(oldContacts.get(contact.Id).FirstName)) ||
+                (contact.FirstName == null && oldContacts.get(contact.Id).FirstName != null) ||
                 !contact.LastName.equals(oldContacts.get(contact.Id).LastName)) {
                 contactsWithUpdates.put(contact.Id, contact);
             }
