@@ -111,18 +111,21 @@ public without sharing class CSCancellationService {
         return accountIdToReplacementMap;
     }
 
+
     private static void addAccountToReplacementMap(Map<Account, Map<String, String>> accountIdToReplacementMap, Account account) {
         if (!accountIdToReplacementMap.containsKey(account)) {
-            accountIdToReplacementMap.put(
-                account,
-                new Map<String, String>{
-                    CANCELLATION_PARAGRAPH_TWO_LABEL => '',
-                    CANCELLATION_PARAGRAPH_THREE_LABEL => '',
-                    '{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName
-                }
-            );
+            Map<String, String> replacements = new Map<String, String>{
+                CANCELLATION_PARAGRAPH_TWO_LABEL => '',
+                CANCELLATION_PARAGRAPH_THREE_LABEL => '',
+                '{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName
+            };
+            if (account.Client_Brand_Key__c == 'AmpBlack' || account.Client_Brand_Key__c == 'AmpRed') {
+                replacements.put('BlueWave Community Solar', 'Amp-BlueWave');
+            }
+            accountIdToReplacementMap.put(account,replacements);
         }
     }
+
 
     // If two opportunities have products with conflicting cancellation information, we should show a default cancellation message
     private static void resolveConflictingCancellationMessages(Map<Account, Map<String, String>> accountIdToReplacementMap, Account account, Utility_Account_Subscription__c uas) {

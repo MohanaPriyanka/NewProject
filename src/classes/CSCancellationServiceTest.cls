@@ -432,7 +432,6 @@ public with sharing class CSCancellationServiceTest {
             FROM Schedule_Z_Subscription__c
         ];
 
-        List<Schedule_Z__c> sz = [SELECT Id, Name FROM Schedule_Z__c];
 
         System.assertEquals(3, schedZList.size());
         for (Schedule_Z_Subscription__c schedZ : schedZList) {
@@ -1180,14 +1179,6 @@ public with sharing class CSCancellationServiceTest {
 
         System.assertEquals(0, scheduleZsReplaced.size());
 
-        List<Schedule_Z__c> schedZInProgress = [
-            SELECT Id, Shared_Solar_System__c,
-            (SELECT Id, Utility_Account_Subscription__c
-            FROM Schedule_Z_Subscriptions__r)
-            FROM Schedule_Z__c
-            WHERE Status__c != 'Replaced'
-            AND Status__c != 'Rejected by Utility'
-        ];
 
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Date_Removed_from_Project__c
@@ -1457,6 +1448,8 @@ public with sharing class CSCancellationServiceTest {
         MessagingService.onlyUseActiveTemplates = false;
         update propAcct1;
         System.assertEquals(1, MessagingService.emailsSent.size());
+        
+        
         MessagingService.emailsSent = null;
 
         List<Opportunity> oppsToUpdate = [
@@ -1495,7 +1488,7 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testAllAccountsAreClosed() {
         List<Account> acctsToClose = [
-            SELECT Id
+            SELECT Id, Name, Client_Brand_key__c
             FROM Account
             WHERE RecordType.Name = 'Property'
         ];
@@ -1506,9 +1499,26 @@ public with sharing class CSCancellationServiceTest {
             acctIdList.add(acct.Id);
             acct.Cancellation_Reason__c = 'Customer Moved';
             acct.Cancellation_Request_Date__c = System.today();
+            if (acct.Name == 'Prop Account 2'){
+                acct.Client_Brand_key__c = 'AmpRed';
+            }
         }
 
         update acctsToClose;
+        for (Messaging.Email email : MessagingService.emailsSent) {
+            Messaging.SingleEmailMessage sem = (Messaging.SingleEmailMessage) email;
+            if (sem.getToAddresses().contains('jpentalerib@bluewavesolar.com'))    /*this contact has an AmpRed client brand key */
+            {
+                System.assert(sem.getHtmlBody().contains('Amp'),'Cancellation emails sent to customers assigned the AmpBlack or AmpRed branding should' +
+                ' see Amp in their emails, not BlueWave');
+                System.assert(!sem.getHtmlBody().contains('BlueWave Community Solar'),'Cancellation emails sent to customers assigned the AmpBlack' +
+                ' or AmpRed branding should not see BlueWave Community Solar in their emails');    
+            } else {
+                System.assert(!sem.getHtmlBody().contains('Amp'),'Cancellation emails sent to customers with BlueWave branding should not see Amp in their emails');
+                System.assert(sem.getHtmlBody().contains('BlueWave Community Solar'),'Cancellation emails sent to customers assigned the BlueWave ' +
+                ' branding should see BlueWave in their emails, not Amp');    
+            }
+        }
 
         List<Opportunity> oppsToCancel = [
             SELECT Id
