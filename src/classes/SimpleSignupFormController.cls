@@ -142,23 +142,21 @@ public without sharing class SimpleSignupFormController {
 
     /**
      * @description Deserializes input data into Lead object and updates server, triggering run of soft credit pull
-     * @param leadJSON Lead data passed in from ssfCreditPullForm.js or elsewhere
+     * @param lead Partial lead record passed in
      * @return Datetime string corresponding to time of last successful update on the Lead, or ERROR if err encountered
      */
     @SuppressWarnings('PMD.ApexCRUDViolation')
     @AuraEnabled(Cacheable=false)
-    public static String updateLeadAndRunCreditCheck(String leadJSON) {
-        Lead leadToUpdate;
+    public static String updateLeadAndRunCreditCheck(Lead lead) {
         String response;
         try {
-            leadToUpdate = (Lead) JSON.deserialize(leadJSON, Lead.class);
-            leadToUpdate.Soft_Pull_Credit_Report__c = true;
+            lead.Soft_Pull_Credit_Report__c = true;
             response = Datetime.now().format();
-            update leadToUpdate;
+            update lead;
         } catch (Exception e) {
             log('SimpleSignupFormController',
                 'updateLeadAndRunCreditCheck',
-                e.getMessage() + '\n\n' + e.getStackTraceString() + '\n\n' + 'leadJSON: ' + leadJSON,
+                e.getMessage() + '\n\n' + e.getStackTraceString() + '\n\n' + 'lead: ' + lead,
                 'ERROR'
             );
             return 'ERROR';

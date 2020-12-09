@@ -365,21 +365,16 @@ public with sharing class SimpleSignupFormControllerTest {
     @IsTest
     private static void testUpdateLeadAndRunCreditCheck() {
         // Construct data
-        Id leadId = [SELECT Id FROM Lead LIMIT 1]?.Id;
-
-        JSONGenerator generator = JSON.createGenerator(false);
-        generator.writeStartObject();
-        generator.writeStringField('id',leadId);
-        generator.writeStringField('LASERCA__Birthdate__c', '1993-12-03');
-        generator.writeStringField('LASERCA__Home_Address__c', '123 Hope Rd');
-        generator.writeStringField('LASERCA__Home_City__c', 'Essex');
-        generator.writeStringField('LASERCA__Home_State__c', 'MA');
-        generator.writeStringField('LASERCA__Home_Zip__c', '02633');
-        generator.writeEndObject();
+        Lead lead = [SELECT Id FROM Lead LIMIT 1];
+        lead.LASERCA__Birthdate__c = Date.valueOf('1993-12-03');
+        lead.LASERCA__Home_Address__c = '123 Hope Rd';
+        lead.LASERCA__Home_City__c = 'Essex';
+        lead.LASERCA__Home_State__c = 'MA';
+        lead.LASERCA__Home_Zip__c = '02633';
 
         // Run test
         Test.startTest();
-        SimpleSignupFormController.updateLeadAndRunCreditCheck(generator.getAsString());
+        SimpleSignupFormController.updateLeadAndRunCreditCheck(lead);
         Test.stopTest();
 
         // Validate state
@@ -387,15 +382,14 @@ public with sharing class SimpleSignupFormControllerTest {
             SELECT Id, LASERCA__Birthdate__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
                 LASERCA__Home_State__c, LASERCA__Home_Zip__c, Soft_Pull_Credit_Report__c
             FROM Lead
-            WHERE Id =: leadId
+            WHERE Id =: lead.Id
         ];
 
-        Map<String,String> data = (Map<String,String>) JSON.deserialize(generator.getAsString(),Map<String,String>.class);
-        System.assertEquals(Date.valueOf(data.get('LASERCA__Birthdate__c')), updatedLead.LASERCA__Birthdate__c, 'invalid new birthdate val from JSON');
-        System.assertEquals(data.get('LASERCA__Home_Address__c'), updatedLead.LASERCA__Home_Address__c, 'invalid new address val from JSON');
-        System.assertEquals(data.get('LASERCA__Home_City__c'), updatedLead.LASERCA__Home_City__c, 'invalid new city val from JSON');
-        System.assertEquals(data.get('LASERCA__Home_State__c'), updatedLead.LASERCA__Home_State__c, 'invalid new state val from JSON');
-        System.assertEquals(data.get('LASERCA__Home_Zip__c'), updatedLead.LASERCA__Home_Zip__c, 'invalid new ZIP val from JSON');
+        System.assertEquals(lead.LASERCA__Birthdate__c, updatedLead.LASERCA__Birthdate__c, 'invalid new birthdate val');
+        System.assertEquals(lead.LASERCA__Home_Address__c, updatedLead.LASERCA__Home_Address__c, 'invalid new address val');
+        System.assertEquals(lead.LASERCA__Home_City__c, updatedLead.LASERCA__Home_City__c, 'invalid new city val');
+        System.assertEquals(lead.LASERCA__Home_State__c, updatedLead.LASERCA__Home_State__c, 'invalid new state val');
+        System.assertEquals(lead.LASERCA__Home_Zip__c, updatedLead.LASERCA__Home_Zip__c, 'invalid new ZIP val');
 
         // Soft_Pull_Credit_Report__c is set to TRUE in SimpleSignupFormController.updateLeadAndRunCreditCheck(),
         // however, WFR / Process quickly returns this value to FALSE and runs credit check. Should be FALSE now.

@@ -23,7 +23,7 @@ export default class SsfCreditPullForm extends LightningElement {
     lead = {};
     pollerId;
     pollerTimeoutId;
-    pollingTimeoutInSeconds = 60;
+    pollingTimeoutInSeconds = 120;
     retryEligible = false;
     retryPollingOnly = false;
     stateOptions;
@@ -31,7 +31,8 @@ export default class SsfCreditPullForm extends LightningElement {
     connectedCallback() {
         window.scrollTo(0,0);
         this.stateOptions = getUSStateOptionsFull();
-        this.lead.id = this.leadId;
+        this.lead.Id = this.leadId;
+        this.lead.sobjectType = 'Lead';
 
         // Set text to display on screen from passed-in latest credit report
         if (this.latestCreditReport) {
@@ -49,10 +50,14 @@ export default class SsfCreditPullForm extends LightningElement {
     }
 
     async submit() {
-        this.toggleSpinnerOn();
-
         // Verify submission has new information to send to server
-        this.verifyInputs();
+        if (!this.hasInputs()) {
+            this.showErrorToast('Oops!', 'Please enter any new data or press "No Thanks" to continue.');
+            return;
+        }
+
+        // Toggle spinner
+        this.toggleSpinnerOn();
 
         // If polling previously timed out, check if we want to update the Lead again on the server before proceeding
         if (this.retryEligible) {
@@ -71,14 +76,20 @@ export default class SsfCreditPullForm extends LightningElement {
         this.clearErrorState();
     }
 
-    verifyInputs() {
-        return true;
+    hasInputs() {
+        let hasData = false;
+        [...this.template.querySelectorAll('lightning-input')].forEach(inputCmp => {
+            if (!!this.lead[inputCmp.name]) {
+                hasData = true;
+            }
+        });
+        return hasData;
     }
 
     async updateLead() {
         try {
             let response = await updateLeadAndRunCreditCheck({
-                leadJSON: JSON.stringify(this.lead),
+                lead: this.lead,
             });
             if (response === 'ERROR' || response === null) {
                 this.notifyLeadUpdateError();
