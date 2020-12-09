@@ -3951,14 +3951,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PartnerHealthBatch</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PartnerHealthBatchTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PartnerInvoiceSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -48411,7 +48403,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Utility_Rate_Class__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -73002,7 +72994,7 @@
         <layout>Utility_Account_Bill__c-CS Billing Log Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Utility_Account_Log__c-Utility Account Log Layout</layout>
+        <layout>Utility_Account_Log__c-Partner Portal Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>

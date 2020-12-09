@@ -3140,14 +3140,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PartnerHealthBatch</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PartnerHealthBatchTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PartnerSSSEligibilitySelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -38540,7 +38532,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.RiskCalc_Min__c</field>
+        <field>Shared_Solar_System__c.RiskCalc_Minimum__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -42081,6 +42073,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Data_Request__c.Utility_DUNS__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Utility_Formatted_Account_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -64869,7 +64866,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>

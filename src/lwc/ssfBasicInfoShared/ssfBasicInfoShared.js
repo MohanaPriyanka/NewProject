@@ -1,4 +1,5 @@
 import {getUSStateOptionsFull} from 'c/util';
+import findDuplicateUALs from '@salesforce/apex/SimpleSignupFormController.findDuplicateUALs';
 
 // Perform tasks when first instancing component
 const onLoad = (cmp) => {
@@ -136,7 +137,7 @@ const getFinDocFileTypes = () => {
 }
 
 const getUnderwritingHelpText = () => {
-    return '<p>The FICO underwriting option is only available for a select group of customers. Please select the financial review option if the applicant’s annual cost exceeds the amount below for their utility and rate class.' + 
+    return '<p>The FICO underwriting option is only available for a select group of customers. Please select the financial review option if the applicant’s annual cost exceeds the amount below for their utility and rate class.' +
     '<ul>' +
     '   <li>CMP – Small Commercial: $55,000</li>' +
     '   <li>CMP – Medium Commercial: $55,000</li>' +
@@ -205,8 +206,8 @@ const getNewRestLead = (component) => {
 
 const getNewRestPropertyAccount = (component) => {
     return {
-        billingPostalCode: component.resiApplicationType ? '' : component.zipinput, 
-        utilityAccountLogs: [] 
+        billingPostalCode: component.resiApplicationType ? '' : component.zipinput,
+        utilityAccountLogs: []
     }
 }
 
@@ -263,6 +264,39 @@ const validateServiceZipCode = (cmp, event) => {
     }
 }
 
+const findDuplicateUAL = (cmp, event) => {
+    const index = event.target.dataset.rowIndex;
+    let enteredAccountNumber = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumber;
+    findDuplicateUALs({ualNumber: enteredAccountNumber})
+        .then(result => {
+            if (result === 'No Duplicate Found') {
+                //clear error messages
+                let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
+                field.setCustomValidity('');
+                field.reportValidity();
+            } else if (result === 'Application in Review') {
+                let error = 'An application has already been submitted for this Utility Account';
+                let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
+                field.setCustomValidity(error);
+                field.reportValidity();
+            } else {
+                // found incomplete duplicate SSF Application
+                // show modal that allows user to send continue application email
+                let error = 'An application is already in process for this Utility Account.';
+                let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
+                field.setCustomValidity(error);
+                field.reportValidity();
+                cmp.showModal = true;
+                cmp.duplicateLeadId = result;
+            }
+        })
+        .catch(error => {
+            //no duplicate found - continue as usual
+        })
+}
+
+
+
 const checkIfZipcodeSupported = (cmp, index, fieldsToDisplayError, fieldsToClearError) => {
     const zipCodesSupported = cmp.zipCheckResponse.utilityZipCodesServed;
     let enteredZipCode = cmp.propertyAccount.utilityAccountLogs[index].servicePostalCode;
@@ -275,6 +309,9 @@ const checkIfZipcodeSupported = (cmp, index, fieldsToDisplayError, fieldsToClear
 
 const locateZipCodeField = (cmp, index) => {
     return cmp.template.querySelector(`[data-ual-zip-index="${index}"]`);
+}
+const locateUtilityAccountNumberField = (cmp, index) => {
+    return cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
 }
 
 const setRemainingFields = (component, sameHomeAddressAsFirstUA) => {
@@ -391,7 +428,7 @@ const mockData = (cmp) => {
     cmp.propertyAccount.utilityAccountLogs[0].servicePostalCode = cmp.zipinput;
 }
 
-export {  
+export {
     getFinDocFileTypes,
     getUnderwritingHelpText,
     getNewRestUtilityAccountLog,
@@ -402,5 +439,6 @@ export {
     validateServiceZipCode,
     applicationValid,
     onLoad,
-    resumeAppSetProduct
+    resumeAppSetProduct,
+    findDuplicateUAL
 }
