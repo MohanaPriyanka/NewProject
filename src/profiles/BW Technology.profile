@@ -20453,6 +20453,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Commission_Structure__c.Partner_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Commission_Structure__c.Partner__c</field>
         <readable>true</readable>
     </fieldPermissions>
