@@ -1,5 +1,5 @@
 /*************************************************************************************
- * Test: LeadTriggerHandlerTest,assignServiceTerritoryTest,UtilityAccountLogConvertTestClass,mapAvailableCapacityTest,ReferralCodeHandlerTest
+ * Test: LeadTriggerHandlerTest,UtilityAccountLogConvertTestClass,ReferralCodeHandlerTest,CSApplicationStatusEvaluatorTest
  *************************************************************************************/
 
 trigger LeadTrigger on Lead (before insert, after insert, before update, after update ) {
@@ -13,17 +13,19 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
     switch on Trigger.operationType {
         when AFTER_UPDATE {
             leadDispatcher.onAfterUpdate(Trigger.new, Trigger.oldMap);
-            loanHandler.OnAfterLeadUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
+            loanHandler.onAfterLeadUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
+            CSApplicationStatusEvaluator.publishEvent(Trigger.oldMap, Trigger.new);
         }
         when BEFORE_UPDATE {
             leadDispatcher.onBeforeUpdate(Trigger.new, Trigger.oldMap);
-            loanHandler.OnBeforeLeadUpdate(Trigger.newMap, Trigger.oldMap);
+            loanHandler.onBeforeLeadUpdate(Trigger.newMap, Trigger.oldMap);
         }
         when BEFORE_INSERT {
             leadDispatcher.onBeforeInsert(Trigger.new);
         }
         when AFTER_INSERT {
            leadDispatcher.checkForDuplicates(Trigger.new);
+            CSApplicationStatusEvaluator.publishEvent(null, Trigger.new);
         }
     }
 }
