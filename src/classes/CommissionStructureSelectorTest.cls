@@ -52,18 +52,10 @@ public with sharing class CommissionStructureSelectorTest {
         };
     }
 
-    @isTest
-    public static void testGetActiveCommissionStructures() {
-        List<Partner__c> partners = [
-            SELECT Id
-            FROM Partner__c
-        ];
-
-        CommissionStructureSelector selector = new CommissionStructureSelector();
-        List<Commission_Structure__c> structures = selector.getActiveCommissionStructures(
-            new Set<Id>{partners[0].Id, partners[1].Id}
-        );
-
-        System.assertEquals(3,structures.size());
+    @IsTest
+    public static void getCommissionStructureMapByIds() {
+        Map<Id, Commission_Structure__c> commissionStructuresIds = new Map<Id, Commission_Structure__c>([SELECT Id FROM Commission_Structure__c]);
+        Map<Id, Commission_Structure__c> checkMap = new CommissionStructureSelector().getCommissionStructureMapByIds(commissionStructuresIds.keySet());
+        System.assertEquals(3, checkMap.size(), 'Selector should return a map of 3 Commission Structures');
     }
 }

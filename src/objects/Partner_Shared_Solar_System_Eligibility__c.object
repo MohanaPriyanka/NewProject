@@ -255,5 +255,15 @@ https://goravseth.com/preventing-duplicate-junction-object-records</description>
     <pluralLabel>Partner Shared Solar System Accesses</pluralLabel>
     <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Required_Commission_Structure</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISBLANK( Commission_Structure__c ), 
+NOT( Partner_Name__c = &apos;BlueWave Inside Sales&apos;),
+NOT( Partner_Name__c = &apos;BlueWave Test Partner&apos;),
+NOT( Partner_Name__c = &apos;Placeholder Partner&apos;))</errorConditionFormula>
+        <errorMessage>Commission Structure is required.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

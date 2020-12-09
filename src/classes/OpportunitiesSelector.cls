@@ -27,8 +27,7 @@ public without sharing class OpportunitiesSelector {
                 Contract_Status__c,
                 Product_Line__c,
                 Parent_Account_ID__c,
-                BlueWave_Signature_Status__c,
-                Lead__c
+                BlueWave_Signature_Status__c
             FROM Opportunity
             WHERE Id IN: oppIds
         ];
@@ -69,10 +68,11 @@ public without sharing class OpportunitiesSelector {
     public List<Opportunity> selectWithoutFirstInvoiceCommission(Set<Id> accountIds){
         return [
             SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
-                CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,
+                Shared_Solar_System__r.Name, CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,
                 Commission_Structure__r.Cents_kW_DC_First_Bill__c, StageName, Product_Line__c,
                 Commission_Structure__c, Partner_tag_lookup__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name, 
-            	Partner_tag_lookup__r.Account__c
+            	Partner_tag_lookup__r.Account__c, Partner_tag_lookup__r.Account__r.RecordType.Name,
+                Partner_Account__c, Partner_Account__r.Name, Partner_Account__r.RecordType.Name
             FROM Opportunity
             WHERE Commission_Structure__r.Cents_kW_DC_First_Bill__c != null
             AND Commission_Structure__r.Cents_kW_DC_First_Bill__c != 0
@@ -84,11 +84,12 @@ public without sharing class OpportunitiesSelector {
     }
     public List<Opportunity> selectWithoutFirstPaymentCommission(Set<Id> accountIds){
         return [
-            SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
+            SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c, Shared_Solar_System__r.Name,
                 CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,
                 Commission_Structure__r.Cents_kW_DC_First_Bill__c, StageName, Product_Line__c,
                 Commission_Structure__c,  Partner_tag_lookup__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name, 
-            	Partner_tag_lookup__r.Account__c
+            	Partner_tag_lookup__r.Account__c, Partner_tag_lookup__r.Account__r.RecordType.Name,
+                Partner_Account__c, Partner_Account__r.Name, Partner_Account__r.RecordType.Name
             FROM Opportunity
             WHERE Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != null
             AND Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != 0
@@ -101,8 +102,11 @@ public without sharing class OpportunitiesSelector {
     public List<Opportunity> selectByIdWithCommissionPayment(Set<Id> opportunityIds) {
         return [
             SELECT Id, StageName, Product_Line__c,  Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
-                CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_Up_Front__c, Product__c, Commission_Structure__c, 
-            	Partner_tag_lookup__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Account__c, Partner_tag_lookup__r.Name,
+                Shared_Solar_System__r.Name, CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_Up_Front__c,
+                Product__c, Commission_Structure__c,Partner_tag_lookup__c, Partner_tag_lookup__r.Id,
+                Partner_tag_lookup__r.Account__c, Partner_tag_lookup__r.Name, Partner_tag_lookup__r.Account__r.Name,
+                Partner_tag_lookup__r.Account__r.RecordType.Name, Partner_Account__c, Partner_Account__r.Name,
+                Partner_Account__r.RecordType.Name,
                 (SELECT Id, Status__c FROM Commission_Payments__r WHERE Commission_Type__c = 'Contract Execution')
             FROM Opportunity
             WHERE Id IN : opportunityIds
@@ -210,16 +214,5 @@ public without sharing class OpportunitiesSelector {
             oppSubscriptionMap.put((Id) ar.get('oppId'), (Decimal) ar.get('total') );
         }
         return oppSubscriptionMap;
-    }
-
-    public MultiMap getOpportunitiesWithOpenQCCases(Set<Id> oppIds) {
-        List<Case> casesWithOpportunities = [
-            SELECT Id, Related_Opportunity__c
-            FROM Case
-            WHERE Related_Opportunity__c = :oppIds
-            AND Category__c = 'QC'
-            AND IsClosed = FALSE
-        ];
-        return CollectionUtil.multiMapByField(casesWithOpportunities, Case.Related_Opportunity__c);
     }
 }
