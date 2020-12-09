@@ -161,7 +161,6 @@
     <permissionSets>Query Zuora Data</permissionSets>
     <permissionSets>SSS Customer Facing Info Management</permissionSets>
     <permissionSets>Production and Transfer Admin</permissionSets>
-    <permissionSets>HubSpot Integration Permissions</permissionSets>
     <permissionSets>Manage Entities (Legal)</permissionSets>
     <permissionSets>Update ALSS Date Enacted</permissionSets>
     <permissionSets>Einstein Search</permissionSets>
