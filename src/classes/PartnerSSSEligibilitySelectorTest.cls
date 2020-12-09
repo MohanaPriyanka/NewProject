@@ -4,6 +4,7 @@
 @IsTest
 public with sharing class PartnerSSSEligibilitySelectorTest {
     @TestSetup
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     public static void testSetup() {
         Account partnerAccount = new Account(
             Name = 'Test Partner Account',

@@ -433,11 +433,6 @@ public class PartnerCommissionHandlerTest {
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
-            //"Partner_tag_lookup__c":"a0s3K0000006wCRQAY"
-            //"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2","Account__c":"0010a00001Ljv4ZAAR"}
-            //"Partner_Account__c":"0010a00001Ljv4ZAAR"
-            //"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}
-
             String oppListAsJSON = '[' +
                 '{' +
                 '"Id":"0000000AAA",' +

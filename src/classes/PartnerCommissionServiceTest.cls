@@ -1,9 +1,9 @@
 @isTest
 public class PartnerCommissionServiceTest {
+
     @IsTest
     private static void testContractExecution(){
         useMocks();
-
         PartnerCommissionService.PendingCommission pendingComm = new PartnerCommissionService.PendingCommission();
         pendingComm.opportunitiesToRun = getOpportunityMockForContractExecutionType();
         pendingComm.typeOfCommission = PartnerCommissionService.CommissionType.CONTRACTEXECUTION;
