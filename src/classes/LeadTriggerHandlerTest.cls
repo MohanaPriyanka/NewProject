@@ -596,12 +596,14 @@ public class LeadTriggerHandlerTest {
             Custom_ID__c = 'partner',
             System_Assignment__c = 'Automatic - Assignment Order',
             Parent_Account__c = parentAccount.Id,
-            Underwriting_Criteria__c = 'Past Payment History'
+            Underwriting_Criteria__c = 'Past Payment History',
+            Partner_Lookup__c = partner.Id
         );
         Lead additionalProperty = primaryProperty.clone();
         additionalProperty.Utility_relationship__c = nationalGrid.Id;
         additionalProperty.Electricity_Provider__c = 'National Grid';
         insert new List<Lead>{primaryProperty, additionalProperty};
+        CSQualificationTestclass.pullCreditForLead(primaryProperty.Id, 'High FICO');
 
         ChargentOrders__ChargentOrder__c newACHOrder1 = new ChargentOrders__ChargentOrder__c(
             ChargentOrders__Payment_Method__c = 'Check',
@@ -1024,6 +1026,52 @@ public class LeadTriggerHandlerTest {
             System.assertEquals(25, uasAggregate[0].get('maximum'), 'Should be one 25kW UAS created by lead conversion, for a maximum of 25 when subscription orders are NOT active');
             System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0), 'Should be one 25kW UAS created by lead conversion, for a minimum of 25 when subscription orders are NOT active');
         }
+    }
+
+    @IsTest
+    private static void testGetSortedSharedSolarSystems() {
+        SharedSolarSystems sssList = new SharedSolarSystems(new List<Shared_Solar_System__c>{getMockSSSIgnoringLoadZones(true, 'SEMA')});
+        System.assertEquals(1, sssList.getQualifiedForLead(getMockLead('NEMA')).size(),
+            'Should have found a qualifying system if ignoring load zones:\n' +
+                JSON.serializePretty(sssList) + '\n' + JSON.serializePretty(getMockLead('NEMA')));
+
+        sssList = new SharedSolarSystems(new List<Shared_Solar_System__c>{getMockSSSIgnoringLoadZones(false, 'SEMA')});
+        System.assertEquals(0, sssList.getQualifiedForLead(getMockLead('NEMA')).size(),
+            'Should not have found a qualifying system if ignoring load zones:\n' +
+                JSON.serializePretty(sssList) + '\n' + JSON.serializePretty(getMockLead('NEMA')));
+
+        sssList = new SharedSolarSystems(new List<Shared_Solar_System__c>{getMockSSSIgnoringLoadZones(false, 'SEMA')});
+        System.assertEquals(1, sssList.getQualifiedForLead(getMockLead('SEMA')).size(),
+            'Should have found a qualifying system if not ignoring load zones but getting a lead that matches:\n' +
+                JSON.serializePretty(sssList) + '\n' + JSON.serializePretty(getMockLead('SEMA')));
+    }
+
+    private static Lead getMockLead(String loadZone) {
+        sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
+        fabbedLead.setField(Lead.Utility_relationship__c, Util.getFakeId(Utility__c.SObjectType));
+        fabbedLead.setField(Lead.LoadZone__c, loadZone);
+        fabbedLead.setField(Lead.Partner_Lookup__c, Util.getFakeId(Partner__c.SObjectType));
+        fabbedLead.setField(Lead.Product__c, Util.getFakeId(Product2.SObjectType));
+        fabbedLead.setField(Lead.Underwriting_Criteria__c, 'FICO');
+        fabbedLead.setField(Lead.LASER_Credit_Score__c, '800');
+        return (Lead) fabbedLead.toSObject();
+    }
+    private static Shared_Solar_System__c getMockSSSIgnoringLoadZones(Boolean ignoreLoadZones, String serviceTerritories) {
+        sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        sfab_FabricatedSObject fabbedProduct = new sfab_FabricatedSObject(Product2.class);
+        fabbedProduct.setField(Product2.Ignore_Load_Zones_When_Qualifying__c, ignoreLoadZones);
+        fabbedSSS.setParent('Product__r', fabbedProduct);
+        fabbedSSS.setField(Shared_Solar_System__c.Product__c, Util.getFakeId(Product2.SObjectType));
+        fabbedSSS.setField(Shared_Solar_System__c.Service_Territories__c, serviceTerritories);
+        fabbedSSS.setField(Shared_Solar_System__c.Utility__c, Util.getFakeId(Utility__c.SObjectType));
+        fabbedSSS.setField(Shared_Solar_System__c.Available_SMB_Underwriting_Method_FICO__c, true);
+        fabbedSSS.setField(Shared_Solar_System__c.Credit_Score_Requirement__c, 200);
+        sfab_FabricatedSObject fabbedPartnerEligibility = new sfab_FabricatedSObject(Partner_Shared_Solar_System_Eligibility__c.class);
+        sfab_FabricatedSObject fabbedPartnerAccount = new sfab_FabricatedSObject(Account.class);
+        fabbedPartnerAccount.setField(Account.Partner__c, Util.getFakeId(Partner__c.SObjectType));
+        fabbedPartnerEligibility.setParent('Account__r', fabbedPartnerAccount);
+        fabbedSSS.setChildren('Partner_Shared_Solar_System_Accesses__r', new List<sfab_FabricatedSObject>{fabbedPartnerEligibility});
+        return (Shared_Solar_System__c) fabbedSSS.toSObject();
     }
 
     @SuppressWarnings('PMD.AvoidDmlStatementsInLoops')
