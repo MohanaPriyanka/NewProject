@@ -137,7 +137,7 @@ public without sharing class SimpleSignupFormController {
             checker = new CreditReportChecker(leadId, queryAfterDatetime);
         }
 
-        return new CreditReportChecker.LatestReportDetail(checker);
+        return checker.getLatestReportDetail();
     }
 
     /**

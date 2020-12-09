@@ -37,6 +37,19 @@ public without sharing class CreditReportChecker {
         this.latestReportNoMatch = isNoMatch(this.latestReport);
     }
 
+    /**
+     * @description Outputs Detail object corresponding to truncated credit report information
+     * @return Detail object
+     */
+    public LatestReportDetail getLatestReportDetail() {
+        LatestReportDetail detail = new LatestReportDetail();
+        detail.noMatch = latestReportNoMatch;
+        detail.createdDate = latestReport?.CreatedDate;
+        detail.scoreFactor = latestReport?.LASERCA__TransUnion_Score_Factor__c;
+        detail.alertMessage = latestReport?.LASERCA__TransUnion_Alert_Message__c;
+        return detail;
+    }
+
     private Boolean isNoMatch(LASERCA__Personal_Credit_Report__c report) {
         if (report == null) {
             return null;
@@ -68,12 +81,6 @@ public without sharing class CreditReportChecker {
         @AuraEnabled public String scoreFactor;
         @AuraEnabled public String alertMessage;
         @AuraEnabled public Datetime createdDate;
-        public LatestReportDetail(CreditReportChecker checker) {
-            this.noMatch = checker.latestReportNoMatch;
-            this.createdDate = checker.latestReport?.CreatedDate;
-            this.scoreFactor = checker.latestReport?.LASERCA__TransUnion_Score_Factor__c;
-            this.alertMessage = checker.latestReport?.LASERCA__TransUnion_Alert_Message__c;
-        }
     }
 
 }
