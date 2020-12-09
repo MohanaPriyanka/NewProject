@@ -7,7 +7,6 @@ public without sharing class SimpleSignupFormController {
     private static ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
     private static CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     private static CSLeadsRESTControllerV3 restControllerV3 = new CSLeadsRESTControllerV3();
-    private static ContentService contentService = new ContentService();
     private static LeadSelector leadSelector = new LeadSelector();
 
     @AuraEnabled
@@ -43,7 +42,7 @@ public without sharing class SimpleSignupFormController {
             rcd.publicUrl = contentDocumentSelector.getPublicDistributionLinkByDocId(rcd.id);
             returnRcd.add(rcd);
         }
-
+        
         return JSON.serialize(returnRcd);
     }
 
@@ -117,6 +116,56 @@ public without sharing class SimpleSignupFormController {
         Logger.logNow(className, methodName, message, severity);
     }
 
+    /**
+     * @description Checks result of latest credit report (if it exists) to determine if we want to request
+     *  additional information from the applicant or partner in SSF via a separate screen
+     * @param leadId id of the lead to check for Personal Credit Report (PCR) records
+     * @param queryAllHistoric Query for all historic PCRs on the lead, true or false
+     * @param queryAfter (Optional) query only for PCRs created on or after specified datetime string
+     * @return returns CreditReportChecker.LatestReportDetail object if needed, otherwise returns null
+     */
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    @AuraEnabled(Cacheable=false)
+    public static CreditReportChecker.LatestReportDetail getLatestCreditReport(
+        Id leadId, Boolean queryAllHistoric, String queryAfter)
+    {
+        CreditReportChecker checker;
+        if (queryAllHistoric) {
+            checker = new CreditReportChecker(leadId);
+        } else {
+            Datetime queryAfterDatetime = queryAfter == null ? Datetime.now() : Datetime.parse(queryAfter);
+            checker = new CreditReportChecker(leadId, queryAfterDatetime);
+        }
+
+        return new CreditReportChecker.LatestReportDetail(checker);
+    }
+
+    /**
+     * @description Deserializes input data into Lead object and updates server, triggering run of soft credit pull
+     * @param leadJSON Lead data passed in from ssfCreditPullForm.js or elsewhere
+     * @return Datetime string corresponding to time of last successful update on the Lead, or ERROR if err encountered
+     */
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    @AuraEnabled(Cacheable=false)
+    public static String updateLeadAndRunCreditCheck(String leadJSON) {
+        Lead leadToUpdate;
+        String response;
+        try {
+            leadToUpdate = (Lead) JSON.deserialize(leadJSON, Lead.class);
+            leadToUpdate.Soft_Pull_Credit_Report__c = true;
+            response = Datetime.now().format();
+            update leadToUpdate;
+        } catch (Exception e) {
+            log('SimpleSignupFormController',
+                'updateLeadAndRunCreditCheck',
+                e.getMessage() + '\n\n' + e.getStackTraceString() + '\n\n' + 'leadJSON: ' + leadJSON,
+                'ERROR'
+            );
+            return 'ERROR';
+        }
+        return response;
+    }
+
     @AuraEnabled
     public static String findDuplicateUALs(String ualNumber) {
         List<Utility_Account_Log__c> duplicateUALs = new UALSelector().selectDuplicateUALs(ualNumber);
@@ -146,7 +195,6 @@ public without sharing class SimpleSignupFormController {
         }
         return 'No Duplicate Found';
     }
-
 
     /**
      * @description When a duplicate SSF applicant is found, we send them (along with their partner) an email with a link to
@@ -185,12 +233,6 @@ public without sharing class SimpleSignupFormController {
                 '; ' + e.getStackTraceString());
         }
     }
-
-
-
-    /****************************************/
-    /***          HELPER METHODS          ***/
-    /****************************************/
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private static Id getReparentUserId() {

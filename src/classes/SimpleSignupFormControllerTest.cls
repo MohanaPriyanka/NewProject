@@ -3,6 +3,7 @@
  */
 @IsTest
 public with sharing class SimpleSignupFormControllerTest {
+
     @TestSetup
     public static void testSetup() {
         ContentVersion cv = new ContentVersion(
@@ -117,7 +118,6 @@ public with sharing class SimpleSignupFormControllerTest {
         }
     }
 
-
     @IsTest
     private static void testContentDistributionSuccess() {
         Lead testLead = [SELECT Id, Email FROM Lead];
@@ -146,7 +146,6 @@ public with sharing class SimpleSignupFormControllerTest {
         String sdfPath = SimpleSignupFormController.getContentDistributionById(testLead.Id, testLead.Email, sdfContentDocId);
         System.assertNotEquals(null, sdfPath, 'Expected SimpleSignupFormController.getContentDistributionById() to return one auto-generated ContentDistribution public link');
     }
-
 
     @IsTest
     private static void testGetContentDocumentLinksByLead() {
@@ -184,7 +183,6 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assertEquals(rcd1.id, retList[0].id, 'The CDL returned should be the one with the created date of today');
     }
 
-
     @IsTest
     private static void testChangeOwnerOfUpload() {
         User user2 = new User(
@@ -212,7 +210,6 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assertEquals(user2.Id, cd.OwnerId, 'Method should have changed ContentDocument record owner to new test user');
     }
 
-
     @IsTest
     private static void testUnlinkDocsFromDummyRecord() {
         User backup = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
@@ -237,7 +234,6 @@ public with sharing class SimpleSignupFormControllerTest {
         List<ContentDocumentLink> newCdlListToContract = [SELECT Id, LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId = :docId AND LinkedEntityId IN (SELECT Id FROM Custom_File_Upload_Share__c)];
         System.assert(newCdlListToContract.isEmpty(), 'Doc should no longer be linked to Custom File Upload Share record');
     }
-
 
     @IsTest
     private static void testUnlinkDocsMissingDummyRecord() {
@@ -273,10 +269,10 @@ public with sharing class SimpleSignupFormControllerTest {
             FROM Error_Log__c
             WHERE Class__c =: testClassName
         ];
-        system.debug(logs);
-        system.assertEquals(expectedLogVolume,logs.size(),'Expected '+ expectedLogVolume +' logs, received '+logs.size());
-        system.assertEquals(testMethodName,logs[0].Method__c, 'Log retrieved contains incorrect Method__c');
-        system.assertEquals(testMessage,logs[0].Message__c, 'Log retrieved contains incorrect Message__c');
+        System.debug(logs);
+        System.assertEquals(expectedLogVolume,logs.size(),'Expected '+ expectedLogVolume +' logs, received '+logs.size());
+        System.assertEquals(testMethodName,logs[0].Method__c, 'Log retrieved contains incorrect Method__c');
+        System.assertEquals(testMessage,logs[0].Message__c, 'Log retrieved contains incorrect Message__c');
 
     }
 
@@ -342,7 +338,6 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assertEquals('No Duplicate Found', resultUnqualified, 'Application should not be stopped for Duplicate UALs attached to Unqualified Leads');
     }
 
-
     @IsTest
     private static void testSendContinueApplicationEmail() {
         Lead matchingLead = new Lead(
@@ -365,5 +360,45 @@ public with sharing class SimpleSignupFormControllerTest {
         if (systemDefault.Continue_Application_Email_Template__c != null) {
             System.assertEquals(1, MessagingService.emailsSent.size(), 'Continue Application email should be sent to customer.');
         }
+    }
+
+    @IsTest
+    private static void testUpdateLeadAndRunCreditCheck() {
+        // Construct data
+        Id leadId = [SELECT Id FROM Lead LIMIT 1]?.Id;
+
+        JSONGenerator generator = JSON.createGenerator(false);
+        generator.writeStartObject();
+        generator.writeStringField('id',leadId);
+        generator.writeStringField('LASERCA__Birthdate__c', '1993-12-03');
+        generator.writeStringField('LASERCA__Home_Address__c', '123 Hope Rd');
+        generator.writeStringField('LASERCA__Home_City__c', 'Essex');
+        generator.writeStringField('LASERCA__Home_State__c', 'MA');
+        generator.writeStringField('LASERCA__Home_Zip__c', '02633');
+        generator.writeEndObject();
+
+        // Run test
+        Test.startTest();
+        SimpleSignupFormController.updateLeadAndRunCreditCheck(generator.getAsString());
+        Test.stopTest();
+
+        // Validate state
+        Lead updatedLead = [
+            SELECT Id, LASERCA__Birthdate__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
+                LASERCA__Home_State__c, LASERCA__Home_Zip__c, Soft_Pull_Credit_Report__c
+            FROM Lead
+            WHERE Id =: leadId
+        ];
+
+        Map<String,String> data = (Map<String,String>) JSON.deserialize(generator.getAsString(),Map<String,String>.class);
+        System.assertEquals(Date.valueOf(data.get('LASERCA__Birthdate__c')), updatedLead.LASERCA__Birthdate__c, 'invalid new birthdate val from JSON');
+        System.assertEquals(data.get('LASERCA__Home_Address__c'), updatedLead.LASERCA__Home_Address__c, 'invalid new address val from JSON');
+        System.assertEquals(data.get('LASERCA__Home_City__c'), updatedLead.LASERCA__Home_City__c, 'invalid new city val from JSON');
+        System.assertEquals(data.get('LASERCA__Home_State__c'), updatedLead.LASERCA__Home_State__c, 'invalid new state val from JSON');
+        System.assertEquals(data.get('LASERCA__Home_Zip__c'), updatedLead.LASERCA__Home_Zip__c, 'invalid new ZIP val from JSON');
+
+        // Soft_Pull_Credit_Report__c is set to TRUE in SimpleSignupFormController.updateLeadAndRunCreditCheck(),
+        // however, WFR / Process quickly returns this value to FALSE and runs credit check. Should be FALSE now.
+        System.assertEquals(false, updatedLead.Soft_Pull_Credit_Report__c, 'Credit report pull field should now be FALSE');
     }
 }

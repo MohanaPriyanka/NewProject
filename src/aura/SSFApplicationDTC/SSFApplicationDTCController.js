@@ -44,6 +44,9 @@
         component.set('v.showSpinner', true);
         component.set('v.spinnerMessage', 'Completing your application');
 
+        // Send async callout to server to check for credit report status
+        helper.checkCreditReportStatus(component);
+
         let paymentPageResponse = event.getParams();
         if (!paymentPageResponse || !paymentPageResponse.paymentMethod ||
             !paymentPageResponse.paymentMethod.CreatedDate || !paymentPageResponse.paymentMethod.Id)
