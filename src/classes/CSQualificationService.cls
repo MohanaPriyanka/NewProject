@@ -6,6 +6,7 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CSQualificationService {
+    private static SharedSolarSystemsSelector systemsSelector = new SharedSolarSystemsSelector();
 
     public static void underwriteWithFICO(
         Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap,
@@ -51,7 +52,7 @@ public without sharing class CSQualificationService {
             return;
         }
 
-        SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(getSharedSolarSystems());
+        SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(systemsSelector.getSharedSolarSystemsForEnrollment());
 
         List<Lead> updateLeads = new List<Lead>();
         List<LASERCA__Personal_Credit_Report__c> updatePCRs = new List<LASERCA__Personal_Credit_Report__c>();
@@ -108,8 +109,8 @@ public without sharing class CSQualificationService {
         if (!financialUnderwritingIds.isEmpty()) {
             contentDocLinks = [SELECT Id, LinkedEntityId FROM ContentDocumentLink WHERE LinkedEntityId = :financialUnderwritingIds];
         }
-        SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(getSharedSolarSystems());
-        
+        SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(systemsSelector.getSharedSolarSystemsForEnrollment());
+
         String result = 'Unqualified';
         if (!contentDocLinks.isEmpty()) {
             result = sharedSolarSystems.checkCSQualification(lead, null);
@@ -117,18 +118,7 @@ public without sharing class CSQualificationService {
         return result;
     }
 
-    private static List<Shared_Solar_System__c> getSharedSolarSystems() {
-        return [
-            SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__c, Public__c, Utility__c, Service_Territories__c
-            FROM Shared_Solar_System__c
-            WHERE Open__c = TRUE
-            AND Capacity_Available_to_be_Reserved__c > 0
-            ORDER BY Credit_Score_Requirement__c ASC
-        ];
-    }
-
-
-    public virtual class QualificationMatch{
+    public virtual class QualificationMatch {
         @AuraEnabled
         public Shared_Solar_System__c sss;
         @AuraEnabled
@@ -191,7 +181,7 @@ public without sharing class CSQualificationService {
                 if (sss.Service_Territories__c != null && sss.Service_Territories__c.contains(this.loadZone)) {
                     matchResult.hasLZ = true;
                 }
-                if (SharedSolarSystems.isPartnerEligible(partnerId, sss.Partner_Shared_Solar_System_Accesses__r)) {
+                if (SharedSolarSystems.isPartnerEligible(partnerId, sss)) {
                     matchResult.hasPartner = true;
                 }
                 matchResult.eligiblePartners = SharedSolarSystems.summarizeEligiblePartners(sss.Partner_Shared_Solar_System_Accesses__r);

@@ -9,14 +9,12 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CSSubscriptionEnroller {
-    @TestVisible
-    private static FeatureService featureService = new FeatureService();
-    @TestVisible
-    private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+    @TestVisible private static FeatureService featureService = new FeatureService();
+    @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
 
     private List<Lead> leads;
     private Map<Id, Lead> leadIdToLeadWithChildren;
-    private List<Shared_Solar_System__c> sssList;
+    @TestVisible private SharedSolarSystems sssList;
     private Map<Id, Product2> productsMap;
     private Map<Id, List<Shared_Solar_System__c>> leadIdToAvailableSSS;
     private Map<Id, List<Opportunity>> leadOppsMap;
@@ -76,7 +74,7 @@ public without sharing class CSSubscriptionEnroller {
             WHERE Id = :leadIds
         ]);
         
-        sssList = sssSelector.getSharedSolarSystemsForEnrollment();
+        sssList = new SharedSolarSystems(sssSelector.getSharedSolarSystemsForEnrollment());
 
         productsMap = new Map<Id, Product2>([
             SELECT Id, Program__c, Sizing_Method__c, Customer_Subscription_Type__c,
@@ -118,23 +116,13 @@ public without sharing class CSSubscriptionEnroller {
         
         try {
             uow.commitWork();
-        } catch(Exception ex) {
-            String exceptionMsg =  'Error creating enrollments for converted leads. Exception: ';
-            if(ex.getTypeName() == 'DmlException') {
-                for(Integer i=0; i<ex.getNumDml(); i++) {
-                    exceptionMsg += '\nFor ID ' + ex.getDmlId(i) + ' the following fields caused a ' + ex.getDmlStatusCode(i) + ' error: ' + ex.getDmlFieldNames(i);
-                }
-            } else {
-                exceptionMsg += ex.getMessage() + '\nCause: ' + ex.getCause();
-            }
-            
+        } catch (Exception ex) {
             Logger.logLater(
                 'CSSubscriptionEnroller', 
                 'enroll', 
-                exceptionMsg + '\nStackTrace: ' + ex.getStackTraceString()
+                ex.getMessage() + '\n' + ex.getStackTraceString()
             );
         }
-
         Logger.flushLogs();
     }
 
@@ -197,8 +185,8 @@ public without sharing class CSSubscriptionEnroller {
             }
 
             totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
-                totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
-                totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
+            totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subsc_Annual_Cost_of_Electricity_Rollup__c);
+            totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs_Rollup__c);
 
             if (productsMap.get(lead.Product__c).Sizing_Method__c == 'Rate Class Ratio' && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'kWh') {
                 try {
@@ -220,7 +208,7 @@ public without sharing class CSSubscriptionEnroller {
     private void createOpportunityAndContactRoles(Lead lead, AnnualEnergyTotal annualTotals) {
         Id propertyAccountId = getPropertyAccount(lead);
         ChargentOrders__ChargentOrder__c chargentOrder = leadIdToLeadWithChildren.get(lead.Id).Chargent_Orders__r.isEmpty() ? null : leadIdToLeadWithChildren.get(lead.Id).Chargent_Orders__r[0];
-        List<Shared_Solar_System__c> availableSSS = getSortedSharedSolarSystems(lead);
+        List<Shared_Solar_System__c> availableSSS = sssList.getQualifiedForLead(lead);
         leadIdToAvailableSSS.put(lead.Id, availableSSS);
         
         //Need to pass the property Account here (not converted Account)
@@ -270,33 +258,6 @@ public without sharing class CSSubscriptionEnroller {
         }
         return propAccountId;
     }
-    
-
-    private List<Shared_Solar_System__c> getSortedSharedSolarSystems(Lead lead) {
-        List<SSSWrapper> sssWrappers = new List<SSSWrapper>();
-        List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
-        for (Shared_Solar_System__c sss : sssList) {
-            if (sss.Utility__c == lead.Utility_Relationship__c &&
-                sss.Service_Territories__c != null && 
-                sss.Service_Territories__c.contains(lead.LoadZone__c) &&
-                SharedSolarSystems.isPartnerEligible(lead.Partner_Lookup__c, sss.Partner_Shared_Solar_System_Accesses__r) &&
-                (lead.Product__c == null || sss.Product__c == lead.Product__c) &&
-                (
-                    (lead.Underwriting_Criteria__c == 'FICO' && sss.Available_SMB_Underwriting_Method_FICO__c && Decimal.valueOf(lead.LASER_Credit_Score__c) >= sss.Credit_Score_Requirement__c)
-                    || (lead.Underwriting_Criteria__c == 'Financial Review' && sss.Available_SMB_Underwriting_Method_Docs__c)
-                    || (lead.Underwriting_Criteria__c != 'FICO' && lead.Underwriting_Criteria__c != 'Financial Review')
-                )
-            ) {
-                    sssWrappers.add(new SSSWrapper(sss, lead.System_Assignment__c));
-            }
-        }
-        sssWrappers.sort();
-        for (Integer wrapperIndex = 0; wrapperIndex < sssWrappers.size(); wrapperIndex++) {
-            sortedSharedSolarSystems.add(sssWrappers[wrapperIndex].sss);
-        }
-        return sortedSharedSolarSystems;
-    }
-
 
     private void createUAS(Lead lead) {
         List<Shared_Solar_System__c> sharedSolarSystems = leadIdToAvailableSSS.get(lead.Id);
@@ -325,8 +286,6 @@ public without sharing class CSSubscriptionEnroller {
         }
     }
 
-
-
     public class AnnualEnergyTotal {
         public Decimal cost;
         public Decimal kWh;
@@ -334,39 +293,6 @@ public without sharing class CSSubscriptionEnroller {
         public AnnualEnergyTotal(Decimal cost, Decimal kWh) {
             this.cost = cost.setScale(0);
             this.kWh = kWh.setScale(0);
-        }
-    }
-
-    private class SSSWrapper implements Comparable {
-        public Shared_Solar_System__c sss;
-        public String systemAssignment;
-        public SSSWrapper(Shared_Solar_System__c sss, String systemAssignment) {
-            this.sss = sss;
-            this.systemAssignment = systemAssignment;
-        }
-        public Integer compareTo(Object compareTo) {
-            SSSWrapper compareToSSS = (SSSWrapper) compareTo;
-            Integer returnValue = 0;
-            if (systemAssignment == 'Automatic - COD Date/Available Capacity' || systemAssignment == null) {
-                if (sss.Estimated_COD_Date_Manual__c > compareToSSS.sss.Estimated_COD_Date_Manual__c) {
-                    returnValue = 1;
-                } else if (sss.Estimated_COD_Date_Manual__c < compareToSSS.sss.Estimated_COD_Date_Manual__c) {
-                    returnValue = -1;
-                } else {
-                    if (sss.Project_Capacity_Available_kW_DC__c > compareToSSS.sss.Project_Capacity_Available_kW_DC__c) {
-                        returnValue = 1;
-                    } else if (sss.Project_Capacity_Available_kW_DC__c < compareToSSS.sss.Project_Capacity_Available_kW_DC__c) {
-                        returnValue = -1;
-                    }
-                }
-            } else if (systemAssignment == 'Automatic - Assignment Order') {
-                if (sss.Assignment_Order__c > compareToSSS.sss.Assignment_Order__c) {
-                    return 1;
-                } else if (sss.Assignment_Order__c < compareToSSS.sss.Assignment_Order__c) {
-                    return -1;
-                }
-            }
-            return returnValue;
         }
     }
 }
