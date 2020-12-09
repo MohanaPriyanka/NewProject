@@ -199,7 +199,7 @@
         <relationshipLabel>Partner Shared Solar System</relationshipLabel>
         <relationshipName>Partner_Shared_Solar_System_Accesses</relationshipName>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
