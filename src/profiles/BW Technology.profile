@@ -41030,6 +41030,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Ignore_Load_Zones_When_Qualifying__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.Index_Rate_for_Adjustment__c</field>
         <readable>true</readable>
     </fieldPermissions>

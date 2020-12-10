@@ -95,7 +95,7 @@ public without sharing class CapacityService {
         // Allowing null partnerNames to match to all systems, to support CSAP behavior
         for (Shared_Solar_System__c sharedSolarSystem: systemsForUtilityAndLoadZone) {
             if (partnerId == null ||
-                SharedSolarSystems.isPartnerEligible(partnerId, sharedSolarSystem.Partner_Shared_Solar_System_Accesses__r)) {
+                SharedSolarSystems.isPartnerEligible(partnerId, sharedSolarSystem)) {
                 zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
                 zipcodeResponse.products.add(sharedSolarSystem.Product__r);
 
@@ -146,7 +146,7 @@ public without sharing class CapacityService {
         // check that the zipcode can be a number
         Boolean invalidNumber = false;
         try {
-            Integer zipInt = Integer.valueOf(zipcode);
+            Integer.valueOf(zipcode);
         } catch (Exception e) {
             invalidNumber = true;
         }

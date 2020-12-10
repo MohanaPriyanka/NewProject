@@ -240,7 +240,8 @@ public without sharing class LeadSelector {
                 Status,
                 Utility_relationship__c,
                 Utility_relationship__r.Id,
-                Utility_relationship__r.Name
+                Utility_relationship__r.Name,
+                Underwriting_Criteria__c
             FROM Lead
             WHERE Id IN :leadIds
             AND Product_line__c = 'Community Solar'

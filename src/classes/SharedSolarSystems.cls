@@ -13,7 +13,6 @@ public inherited sharing class SharedSolarSystems {
     @TestVisible
     private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
     private static PartnerSSSEligibilitySelector eligibilitySelector = new PartnerSSSEligibilitySelector();
-    private MultiMap sssIdToEligiblePartners;
 
     public SharedSolarSystems(List<Shared_Solar_System__c> records) {
         this.records = records;
@@ -125,6 +124,26 @@ public inherited sharing class SharedSolarSystems {
     }
 
     /**
+     * @description Gets the qualified systems for this lead, sorted by the lead's System Assignment setting
+     * @param lead Lead being qualified
+     * @return List of systems that qualify
+     */
+    public List<Shared_Solar_System__c> getQualifiedForLead(Lead lead) {
+        List<SSSWrapper> sssWrappers = new List<SSSWrapper>();
+        List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
+        for (Shared_Solar_System__c sss : records) {
+            if (qualifiedForSystem(lead, sss, null)) {
+                sssWrappers.add(new SSSWrapper(sss, lead.System_Assignment__c));
+            }
+        }
+        sssWrappers.sort();
+        for (Integer wrapperIndex = 0; wrapperIndex < sssWrappers.size(); wrapperIndex++) {
+            sortedSharedSolarSystems.add(sssWrappers[wrapperIndex].sss);
+        }
+        return sortedSharedSolarSystems;
+    }
+
+    /**
      * @description Gets the lead's qualification based on Utility, Service Territory, Partner, Product, and Credit Score
      * @param lead The lead to check
      * @param creditScore The lead's credit score
@@ -132,24 +151,28 @@ public inherited sharing class SharedSolarSystems {
      */
     public String checkCSQualification(Lead lead, Decimal creditScore) {
         for (Shared_Solar_System__c sss : records) {
-            if (sss.Utility__c == lead.Utility_relationship__c &&
-                (sss.Service_Territories__c != null &&
-                    sss.Service_Territories__c.contains(lead.LoadZone__c)) &&
-                (partnerEligible(sss, lead) || sss.Public__c == true) &&
-                (sss.Product__c == lead.Product__c) &&
-                (creditScore == null || creditScore > sss.Credit_Score_Requirement__c)) {
+            if (qualifiedForSystem(lead, sss, creditScore)) {
                 return 'Qualified';
             }
         }
-
         return 'Unqualified';
     }
 
-    private Boolean partnerEligible(Shared_Solar_System__c sss, Lead lead) {
-        if (sssIdToEligiblePartners == null) {
-            sssIdToEligiblePartners = eligibilitySelector.getPartnersBySSS();
+    private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+        return (sss.Utility__c == lead.Utility_relationship__c &&
+            SharedSolarSystems.loadZoneInServiceTerritory(lead.LoadZone__c, sss) &&
+            SharedSolarSystems.isPartnerEligible(lead.Partner_Lookup__c, sss) &&
+            (lead.Product__c == null || sss.Product__c == lead.Product__c) &&
+            meetsUnderwritingCriteria(lead, sss, creditScore));
+    }
+
+    private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+        if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
+            creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
         }
-        return sssIdToEligiblePartners.containsKey(sss.Id) && sssIdToEligiblePartners.getValueSet(sss.Id).contains(lead.Partner_Lookup__r.Id);
+        return (lead.Underwriting_Criteria__c == 'FICO' && sss.Available_SMB_Underwriting_Method_FICO__c && creditScore >= sss.Credit_Score_Requirement__c)
+            || (lead.Underwriting_Criteria__c == 'Financial Review' && sss.Available_SMB_Underwriting_Method_Docs__c)
+            || (lead.Underwriting_Criteria__c != 'FICO' && lead.Underwriting_Criteria__c != 'Financial Review');
     }
 
     /**
@@ -159,7 +182,7 @@ public inherited sharing class SharedSolarSystems {
      */
     public static void pruneIneligiblePartners(Id partnerId, List<Shared_Solar_System__c> sssList) {
         for (Integer i = sssList.size()-1; i >= 0; i--) {
-            if (!isPartnerEligible(partnerId, sssList[i].Partner_Shared_Solar_System_Accesses__r)) {
+            if (!isPartnerEligible(partnerId, sssList[i])) {
                 sssList.remove(i);
             }
         }
@@ -168,11 +191,14 @@ public inherited sharing class SharedSolarSystems {
     /**
      * @description True if the Partner has a corresponding Partner_Shared_Solar_System_Eligibility__c
      * @param partnerOrAccountId Partner Id to check
-     * @param partnerEligibilities List of Partner_Shared_Solar_System_Accesses__r for a SSS
+     * @param sss Shared Solar System with list of Partner_Shared_Solar_System_Accesses__r and Public
      * @return True if found
      */
-    public static Boolean isPartnerEligible(Id partnerOrAccountId, List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities) {
-        for (Partner_Shared_Solar_System_Eligibility__c partnerEligibility : partnerEligibilities) {
+    public static Boolean isPartnerEligible(Id partnerOrAccountId, Shared_Solar_System__c sss) {
+        if (sss.Public__c) {
+            return true;
+        }
+        for (Partner_Shared_Solar_System_Eligibility__c partnerEligibility : sss.Partner_Shared_Solar_System_Accesses__r) {
             if (partnerOrAccountId == partnerEligibility.Account__c || partnerOrAccountId == partnerEligibility.Account__r.Partner__c) {
                 return true;
             }
@@ -191,5 +217,64 @@ public inherited sharing class SharedSolarSystems {
             eligiblePartners += eligibility.Account__r.Name + '; ';
         }
         return eligiblePartners.removeEnd('; ');
+    }
+
+    /**
+     * @description True if the load zone is served by the shared solar system, or if the SSS ignores load zones for
+     * qualification purposes (as specified by the the related Product)
+     * @param loadZone The load zone (e.g. SEMA)
+     * @param sss The Shared_Solar_System__c, selected with Product__r.Ignore_Load_Zones_When_Qualifying__c and Service_Territories
+     * @return Boolean
+     */
+    private static Boolean loadZoneInServiceTerritory(String loadZone, Shared_Solar_System__c sss) {
+        if (sss.Product__r.Ignore_Load_Zones_When_Qualifying__c) {
+            return true;
+        }
+        return sss.Service_Territories__c != null && sss.Service_Territories__c.contains(loadZone);
+    }
+
+    /**
+     * @description Used to sort systems based on either COD and Project Capacity, or Assignment Order
+     */
+    private class SSSWrapper implements Comparable {
+        public Shared_Solar_System__c sss;
+        public String systemAssignment;
+        public SSSWrapper(Shared_Solar_System__c sss, String systemAssignment) {
+            this.sss = sss;
+            this.systemAssignment = systemAssignment;
+        }
+        public Integer compareTo(Object compareTo) {
+            SSSWrapper compareToSSS = (SSSWrapper) compareTo;
+            Integer returnValue = 0;
+            if (systemAssignment == 'Automatic - COD Date/Available Capacity' || systemAssignment == null) {
+                return compareByCOD(compareToSSS);
+            } else if (systemAssignment == 'Automatic - Assignment Order') {
+                return compareByAssignmentOrder(compareToSSS);
+            }
+            return returnValue;
+        }
+
+        private Integer compareByAssignmentOrder(SSSWrapper compareToSSS) {
+            if (sss.Assignment_Order__c > compareToSSS.sss.Assignment_Order__c) {
+                return 1;
+            } else if (sss.Assignment_Order__c < compareToSSS.sss.Assignment_Order__c) {
+                return -1;
+            }
+            return 0;
+        }
+
+        private Integer compareByCOD(SSSWrapper compareToSSS) {
+            if (sss.Estimated_COD_Date_Manual__c > compareToSSS.sss.Estimated_COD_Date_Manual__c) {
+                return 1;
+            } else if (sss.Estimated_COD_Date_Manual__c < compareToSSS.sss.Estimated_COD_Date_Manual__c) {
+                return -1;
+            }
+            if (sss.Project_Capacity_Available_kW_DC__c > compareToSSS.sss.Project_Capacity_Available_kW_DC__c) {
+                return 1;
+            } else if (sss.Project_Capacity_Available_kW_DC__c < compareToSSS.sss.Project_Capacity_Available_kW_DC__c) {
+                return -1;
+            }
+            return 0;
+        }
     }
 }
