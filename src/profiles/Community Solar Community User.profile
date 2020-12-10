@@ -68956,6 +68956,9 @@
         <layout>Partner_Product_Junction__c-Partner Product Junction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Partner_Shared_Solar_System_Eligibility__c-Partner Shared Solar System Access Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Partner_Task__c-Child Partner Task</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -69081,6 +69084,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Service_Territory__c-Service Territory Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Shared_Solar_System_Order__c-Shared Solar System Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Shared_Solar_System__c-Customer Portal</layout>
