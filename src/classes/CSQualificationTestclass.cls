@@ -3,7 +3,7 @@
  */
 
 @IsTest
-private class CSQualificationTestclass {
+public class CSQualificationTestclass {
     @TestSetup
     public static void setupTestData() {
         Test.startTest();
@@ -114,7 +114,10 @@ private class CSQualificationTestclass {
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
             Product__c = vderProduct.Id,
-            Maximum_Subscription_Capacity_kWDC__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Available_SMB_Underwriting_Method_FICO__c = true,
+            Available_SMB_Underwriting_Method_Docs__c = true
+        );
         insert sss1;
         insert SharedSolarSystemsTest.getPartnerEligibilities(sss1, partnerAccount);
 
@@ -142,7 +145,8 @@ private class CSQualificationTestclass {
             Utility_relationship__c = nyseg.Id,
             Phone = '1231231234',
             Customer_type__c = 'Residential',
-            Status = 'Sales Qualified'
+            Status = 'Sales Qualified',
+            Partner_Lookup__c = partner.Id
         );
 
         Database.DMLOptions dmo = new Database.DMLOptions();
@@ -294,6 +298,12 @@ private class CSQualificationTestclass {
             crLog.LASERCA__Status__c = 'Completed';
         }
         insert crLog;
+
+        Lead lead = new Lead(
+            Id = leadId,
+            Personal_Credit_Report__c = pcr.Id
+        );
+        update lead;
     }
 
 
@@ -304,6 +314,8 @@ private class CSQualificationTestclass {
             FROM Lead
             LIMIT 1
         ];
+        lead.Underwriting_Criteria__c = 'Financial Review';
+        update lead;
 
         CSQualificationService qualService = new CSQualificationService();
         String newStatus = qualService.underwriteWithFinancialReview(lead);
@@ -314,7 +326,7 @@ private class CSQualificationTestclass {
         lead = [
             SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
-            LIMIT 1
+            WHERE Id = :lead.Id
         ];
         newStatus = qualService.underwriteWithFinancialReview(lead);
         System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as the lead\'s child Financial Underwriting Document record has no files attached.');
@@ -337,9 +349,9 @@ private class CSQualificationTestclass {
         );
         insert cdl;
         lead = [
-            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, Underwriting_Criteria__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
-            LIMIT 1
+            WHERE Id = :lead.Id
         ];
         newStatus = qualService.underwriteWithFinancialReview(lead);
         System.assertEquals('Qualified', newStatus, 'The lead status should be Qualified, as the lead\'s child Financial Underwriting Document record has files attached and there is a matching SSS.');
