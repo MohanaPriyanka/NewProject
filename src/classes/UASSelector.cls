@@ -14,6 +14,7 @@ public without sharing class UASSelector {
                 Utility_Account_Log__r.Account__c,
                 Utility_Account_Log__r.Account__r.Id,
                 Utility_Account_Log__r.Account__r.Name,
+                Utility_Account_Log__r.Account__r.Client_Brand_key__c,
                 Utility_Account_Log__r.Account__r.Cancellation_Comments__c,
                 Utility_Account_Log__r.Account__r.Send_Bills_Contact__c,
                 Utility_Account_Log__r.Account__r.Send_Bills_Contact__r.Email,
