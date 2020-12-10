@@ -250,23 +250,30 @@ public class PartnerCommissionHandlerTest {
         UtilityAccountSubscriptionHandlerTest.setupData();
 
         List<Opportunity> opportunities = [
-            SELECT Id, Partner_tag_lookup__c, Product__c
+            SELECT Id, Partner_tag_lookup__c, Product__c, Partner_Account__c
             FROM Opportunity
         ];
         System.assertEquals(2,opportunities.size());
+
+        Shared_Solar_System__c sss = new Shared_Solar_System__c(
+            Name = 'Test System'
+        );
+        insert sss;
 
         //No commission structure assigned at Complete
         Opportunity oppOne = new Opportunity(
             Id = opportunities[0].Id,
             Product_Line__c = 'Community Solar',
             StageName = 'Complete',
-            CS_Capacity_Allocated__c = 15.00
+            CS_Capacity_Allocated__c = 15.00,
+            Shared_Solar_System__c = sss.Id
         );
         update oppOne;
 
         Commission_Structure__c commissionOne = new Commission_Structure__c(
             Name = 'Commission Structure One',
             Partner__c = opportunities[0].Partner_tag_lookup__c,
+            Partner_Account__c = opportunities[0].Partner_Account__c,
             Product__c = opportunities[0].Product__c,
             Active__c = true,
             Cents_kW_DC_Up_Front__c = 0.10,
@@ -274,6 +281,18 @@ public class PartnerCommissionHandlerTest {
             Cents_kW_DC_First_Bill_Paid__c = 0.11
         );
         insert commissionOne;
+
+
+
+        Partner_Shared_Solar_System_Eligibility__c partnerEligibility =
+            new Partner_Shared_Solar_System_Eligibility__c(
+                Account__c = opportunities[0].Partner_Account__c,
+                Shared_Solar_System__c = sss.Id,
+                Commission_Structure__c = commissionOne.Id,
+                Active__c = true
+            );
+        insert partnerEligibility;
+
         Util.enableAllTriggers();
 
         Test.startTest();
@@ -414,9 +433,6 @@ public class PartnerCommissionHandlerTest {
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
-            //"Partner_tag_lookup__c":"a0s3K0000006wCRQAY"
-            //"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"}
-
             String oppListAsJSON = '[' +
                 '{' +
                 '"Id":"0000000AAA",' +
@@ -424,7 +440,9 @@ public class PartnerCommissionHandlerTest {
                 '"StageName":"Complete",' +
                 '"Product_Line__c":"Community Solar",' +
                 '"Partner_tag_lookup__c":"a0s3K0000006wCRQAY",'+
-                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"},' +
+                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2","Account__c":"0010a00001Ljv4ZAAR"},' +
+                '"Partner_Account__c":"0010a00001Ljv4ZAAR",' +
+                '"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"},'+
                 '"Shared_Solar_System__r" : {' +
                 '"Unique_Id__c": "SSS-0002"}, ' +
                 '"Account" : {' +
@@ -438,7 +456,9 @@ public class PartnerCommissionHandlerTest {
                 '"StageName":"Complete",' +
                 '"Product_Line__c":"Community Solar",' +
                 '"Partner_tag_lookup__c":"a0s3K0000006wCRQAY",'+
-                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"},' +
+                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2","Account__c":"0010a00001Ljv4ZAAR"},' +
+                '"Partner_Account__c":"0010a00001Ljv4ZAAR",' +
+                '"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"},'+
                 '"Shared_Solar_System__r" : {' +
                 '"Unique_Id__c": "SSS-0003"}, ' +
                 '"Account" : {' +
@@ -454,7 +474,9 @@ public class PartnerCommissionHandlerTest {
                 '"StageName":"Complete",' +
                 '"Product_Line__c":"Community Solar",' +
                 '"Partner_tag_lookup__c":"a0s3K0000006wCRQAY",'+
-                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"},' +
+                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2","Account__c":"0010a00001Ljv4ZAAR"},' +
+                '"Partner_Account__c":"0010a00001Ljv4ZAAR",' +
+                '"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"},'+
                 '"Account" : {' +
                 '"Name" : "Account Two",' +
                 '"Account_Number__c" : "BW-00002"' +
@@ -468,7 +490,9 @@ public class PartnerCommissionHandlerTest {
                 '"StageName":"Complete",' +
                 '"Product_Line__c":"Community Solar",' +
                 '"Partner_tag_lookup__c":"a0s3K0000006wCRQAY",'+
-                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"},' +
+                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2","Account__c":"0010a00001Ljv4ZAAR"},' +
+                '"Partner_Account__c":"0010a00001Ljv4ZAAR",' +
+                '"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"},'+
                 '"Account" : {' +
                 '"Name" : "Account Two",' +
                 '"Account_Number__c" : "BW-00002"' +
@@ -482,7 +506,9 @@ public class PartnerCommissionHandlerTest {
                 '"StageName":"Complete",' +
                 '"Product_Line__c":"Community Solar",' +
                 '"Partner_tag_lookup__c":"a0s3K0000006wCRQAY",'+
-                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"},' +
+                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2","Account__c":"0010a00001Ljv4ZAAR"},' +
+                '"Partner_Account__c":"0010a00001Ljv4ZAAR",' +
+                '"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"},'+
                 '"Account" : {' +
                 '"Name" : "Account Three",' +
                 '"Account_Number__c" : "BW-00003"' +
@@ -496,7 +522,9 @@ public class PartnerCommissionHandlerTest {
                 '"StageName":"Complete",' +
                 '"Product_Line__c":"Community Solar",' +
                 '"Partner_tag_lookup__c":"a0s3K0000006wCRQAY",'+
-                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"},' +
+                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2","Account__c":"0010a00001Ljv4ZAAR"},' +
+                '"Partner_Account__c":"0010a00001Ljv4ZAAR",' +
+                '"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"},'+
                 '"Account" : {' +
                 '"Name" : "Account One",' +
                 '"Account_Number__c" : "BW-00001"' +
@@ -510,7 +538,9 @@ public class PartnerCommissionHandlerTest {
                 '"StageName":"Complete",' +
                 '"Product_Line__c":"Community Solar",' +
                 '"Partner_tag_lookup__c":"a0s3K0000006wCRQAY",'+
-                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2"},' +
+                '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2","Account__c":"0010a00001Ljv4ZAAR"},' +
+                '"Partner_Account__c":"0010a00001Ljv4ZAAR",' +
+                '"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"},'+
                 '"Account" : {' +
                 '"Name" : "Account One",' +
                 '"Account_Number__c" : "BW-00001"' +
