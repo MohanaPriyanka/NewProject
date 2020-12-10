@@ -57480,11 +57480,14 @@
         <layout>Service_Territory__c-Service Territory Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System - No PM Relationship</layout>
-        <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
+        <layout>Shared_Solar_System_Order__c-Shared Solar System Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Shared_Solar_System__c-Shared Solar System - No PM Relationship</layout>
+        <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
