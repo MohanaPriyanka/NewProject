@@ -13,6 +13,8 @@ public class PartnerCommissionHandler{
     private Set<Opportunity> allOpsToCheck = new Set<Opportunity>();
     @TestVisible
     private Map<String, String> acctToJournalEntryMap = new Map<String, String>();
+    @TestVisible
+    private static FeatureService featureService = new FeatureService();
 
     public Set<Id> queuedIds = new Set<Id>();
 
@@ -185,12 +187,25 @@ public class PartnerCommissionHandler{
     }
 
     public static Boolean isCompleteCSOppWithPartner(Opportunity opp){
-        return (opp.StageName == 'Complete'
-            && opp.Product_Line__c == 'Community Solar'
-            && opp.Partner_tag_lookup__c != null
-            && opp.Partner_tag_lookup__r.Name != 'Placeholder Partner'
-            && opp.Partner_tag_lookup__r.Name != 'Bluewave Test Partner'
-            && opp.Partner_tag_lookup__r.Name != 'BlueWave Inside Sales');
+        if (featureService.isEnabled('Switch_New_Partner_Data_Model') && opp.Partner_Account__c != null) {
+            return (opp.StageName == 'Complete'
+                && opp.Product_Line__c == 'Community Solar'
+                && opp.Partner_Account__c != null
+                && opp.Partner_Account__r.Name != 'Placeholder Partner'
+                && opp.Partner_Account__r.Name != 'Bluewave Test Partner'
+                && opp.Partner_Account__r.Name != 'BlueWave Inside Sales'
+                && opp.Partner_Account__r.RecordType.Name != 'Client Account'
+            );
+        } else {
+            return (opp.StageName == 'Complete'
+                && opp.Product_Line__c == 'Community Solar'
+                && opp.Partner_tag_lookup__c != null
+                && opp.Partner_tag_lookup__r.Name != 'Placeholder Partner'
+                && opp.Partner_tag_lookup__r.Name != 'Bluewave Test Partner'
+                && opp.Partner_tag_lookup__r.Name != 'BlueWave Inside Sales'
+                && opp.Partner_tag_lookup__r.Account__r.RecordType.Name != 'Client Account'
+            );
+        }
     }
 
     private static void callPartnerCommissionService(List<Opportunity> oppList, PartnerCommissionService.CommissionType type){
