@@ -160,7 +160,7 @@ public without sharing class LeadSelector {
     }
 
     public Lead selectOneWithPropertiesAndUtilities(Id leadId) {
-        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Product__r.Name, Customer_Signed_Date__c, Utility_relationship__r.EIA_ID__c, Underwriting_Criteria__c';
+        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Customer_Signed_Date__c,Product__r.Name,Product__r.Disclosure_Form_Conga_Template__c,Utility_relationship__r.EIA_ID__c, Underwriting_Criteria__c';
         query += ', (SELECT ' + String.join(apiPropertyAccountFields, ', ') + ' FROM Accounts__r)';
         query += ', (SELECT ' + String.join(apiUtilityAccountFields, ', ') + ', Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name FROM Utility_Account_Logs__r)';
         query += ', (SELECT Id FROM Contracts__r)';
@@ -193,7 +193,7 @@ public without sharing class LeadSelector {
     public Lead selectOneForStatusUpdate(Id leadId) {
         List<Lead> leads = [
             SELECT Id, Application_Complete_Date__c, Application_Status__c, Continue_Application_Link__c, Contract_eSign_Link__c,
-                Underwriting_Criteria__c,
+                Underwriting_Criteria__c, Partner_Lookup__c, Email,
                 (SELECT Id FROM Accounts__r),
                 (SELECT Id, Utility_lookup__r.Utility_Data_Collection_Mechanism__c FROM Utility_Account_Logs__r),
                 (SELECT Id, Customer_Signature_Date_Time__c FROM Contracts__r)
