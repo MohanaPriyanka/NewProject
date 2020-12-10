@@ -44886,11 +44886,11 @@
         <layout>Shared_Solar_System__c-Internal Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
         <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
