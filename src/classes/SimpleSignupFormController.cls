@@ -7,7 +7,6 @@ public without sharing class SimpleSignupFormController {
     private static ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
     private static CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     private static CSLeadsRESTControllerV3 restControllerV3 = new CSLeadsRESTControllerV3();
-    private static ContentService contentService = new ContentService();
     private static LeadSelector leadSelector = new LeadSelector();
 
     @AuraEnabled
@@ -36,7 +35,7 @@ public without sharing class SimpleSignupFormController {
         } else {
             cdlList = contentDocumentSelector.selectByLinkedEntity(contracts[0].Id);
         }
-        
+
         List<RestLead.RestContentDocument> returnRcd = new List<RestLead.RestContentDocument>();
         for(ContentDocumentLink cdl : cdlList) {
             RestLead.RestContentDocument rcd = new RestLead.RestContentDocument(cdl);
@@ -70,7 +69,7 @@ public without sharing class SimpleSignupFormController {
             Logger.logNow('SimpleSignupFormController', 'unlinkDocsFromDummyRecord', 'Unable to reparent uploaded docs for site guest user file upload. Missing dummy record or new owner ID.');
             return null;
         }
-        
+
         List<ContentDocumentLink> linksToDelete = new List<ContentDocumentLink>();
         Set<Id> documentIds = new Set<Id>();
         for(String doc : documents) {
@@ -91,7 +90,7 @@ public without sharing class SimpleSignupFormController {
                 }
             }
         }
-        
+
         try {
             delete linksToDelete;
             changeOwnerOfUpload(documentIds, ownerId);
@@ -115,6 +114,54 @@ public without sharing class SimpleSignupFormController {
     @AuraEnabled
     public static void log(String className, String methodName, String message, String severity) {
         Logger.logNow(className, methodName, message, severity);
+    }
+
+    /**
+     * @description Checks result of latest credit report (if it exists) to determine if we want to request
+     *  additional information from the applicant or partner in SSF via a separate screen
+     * @param leadId id of the lead to check for Personal Credit Report (PCR) records
+     * @param queryAllHistoric Query for all historic PCRs on the lead, true or false
+     * @param queryAfter (Optional) query only for PCRs created on or after specified datetime string
+     * @return returns CreditReportChecker.LatestReportDetail object if needed, otherwise returns null
+     */
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    @AuraEnabled(Cacheable=false)
+    public static CreditReportChecker.LatestReportDetail getLatestCreditReport(
+        Id leadId, Boolean queryAllHistoric, String queryAfter)
+    {
+        CreditReportChecker checker;
+        if (queryAllHistoric) {
+            checker = new CreditReportChecker(leadId);
+        } else {
+            Datetime queryAfterDatetime = queryAfter == null ? Datetime.now() : Datetime.parse(queryAfter);
+            checker = new CreditReportChecker(leadId, queryAfterDatetime);
+        }
+
+        return checker.getLatestReportDetail();
+    }
+
+    /**
+     * @description Deserializes input data into Lead object and updates server, triggering run of soft credit pull
+     * @param lead Partial lead record passed in
+     * @return Datetime string corresponding to time of last successful update on the Lead, or ERROR if err encountered
+     */
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    @AuraEnabled(Cacheable=false)
+    public static String updateLeadAndRunCreditCheck(Lead lead) {
+        String response;
+        try {
+            lead.Soft_Pull_Credit_Report__c = true;
+            response = Datetime.now().format();
+            update lead;
+        } catch (Exception e) {
+            log('SimpleSignupFormController',
+                'updateLeadAndRunCreditCheck',
+                e.getMessage() + '\n\n' + e.getStackTraceString() + '\n\n' + 'lead: ' + lead,
+                'ERROR'
+            );
+            return 'ERROR';
+        }
+        return response;
     }
 
     @AuraEnabled
@@ -146,7 +193,6 @@ public without sharing class SimpleSignupFormController {
         }
         return 'No Duplicate Found';
     }
-
 
     /**
      * @description When a duplicate SSF applicant is found, we send them (along with their partner) an email with a link to
@@ -185,12 +231,6 @@ public without sharing class SimpleSignupFormController {
                 '; ' + e.getStackTraceString());
         }
     }
-
-
-
-    /****************************************/
-    /***          HELPER METHODS          ***/
-    /****************************************/
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private static Id getReparentUserId() {
