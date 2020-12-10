@@ -11,6 +11,53 @@
         );
     },
 
+    checkCreditReportStatus : function(component) {
+        // Check if application requires FICO guarantor
+        if (component.get('v.lead.underwritingCriteria') !== 'FICO') {
+            return;
+        }
+
+        // Send callout to server to process credit report analysis
+        var action = component.get('c.getLatestCreditReport');
+        action.setParams({
+            leadId : component.get('v.lead.id'),
+            queryAllHistoric : true
+        });
+        action.setCallback(this, function(response) {
+            var state = response.getState();
+            if (state === 'SUCCESS') {
+                this.assessCreditReport(component, response);
+            }
+            if (state === 'INCOMPLETE') {
+                this.logError(
+                    component,
+                    'SSFApplicationController',
+                    'helper.checkCreditPullStatus',
+                    'Server returned no response. Possible network error incurred');
+                this.showFinalPage(component);
+            }
+            else if (state === 'ERROR') {
+                var errors = response.getError();
+                this.logError(
+                    component,
+                    'SSFApplicationController',
+                    'helper.checkCreditPullStatus',
+                    errors[0].message);
+                this.showFinalPage(component);
+            }
+        });
+        $A.enqueueAction(action);
+    },
+
+    assessCreditReport : function(component, response) {
+        const creditReportDetail = response.getReturnValue();
+        if (creditReportDetail.noMatch === true) {
+            // PCR has been generated, but no match credit score ("9999") indicated
+            component.set('v.latestCreditReport', creditReportDetail);
+            component.set('v.showCreditCheckInfoPage', true);
+        }
+    },
+
     finishApplication : function(component) {
         let restLead = JSON.stringify({
             id: component.get('v.lead.id'),
@@ -18,13 +65,19 @@
             applicationCompleteDate: new Date(),
             underwritingCriteria: component.get('v.lead.underwritingCriteria')
         });
-        let callout = this.genericCallout(
+        let patchLead = this.genericCallout(
             '/apply/services/apexrest/v3/leads',
             'PATCH',
             restLead
         ).then(
             (resolveResult) => {
-                this.showFinalPage(component);
+                // Prior to bringing user to Complete screen, check status of credit report if relevant
+                let showCreditCheckForm = component.get('v.showCreditCheckInfoPage');
+                if (showCreditCheckForm === true) {
+                    this.showCreditCheckInfoPage(component);
+                } else {
+                    this.showFinalPage(component);
+                }
             },
             (rejectResult) => {
                 let message = 'Lead sent by PATCH to server: ' + restLead
@@ -63,10 +116,19 @@
         }));
     },
 
+    showCreditCheckInfoPage : function(component) {
+        component.set('v.showSpinner', false);
+        component.set('v.getInfo', false);
+        component.set('v.getPayment', false);
+        component.set('v.showCreditCheckInfoPage', true);
+        component.set('v.showComplete', false);
+    },
+
     showFinalPage : function(component) {
         component.set('v.showSpinner', false);
         component.set('v.getInfo', false);
         component.set('v.getPayment', false);
+        component.set('v.showCreditCheckInfoPage', false);
         component.set('v.showComplete', true);
     },
 

@@ -1,0 +1,101 @@
+<template>
+  <div class="page-container">
+    <div class="form">
+      <div class="slds-size_1-of-1">
+        <h1 class="slds-text-align_center slds-var-p-around_medium">Hang on!</h1>
+      </div>
+      <h4 class="form-header">{headerText}</h4>
+      <h6>Applicant Info<span class="blue-text">&nbsp;&gt;</span></h6>
+      <div class="form-section">
+        <div class="input-group half">
+          <lightning-input
+            name="applicantName"
+            label="Applicant Name"
+            class="slds-var-m-bottom_small"
+            value={applicantName}
+            field-level-help="If the applicant has multiple names, please re-apply with the name that is on file with the credit bureau."
+            disabled>
+          </lightning-input>
+        </div>
+        <div class="input-group half">
+          <lightning-input
+            name="LASERCA__Birthdate__c"
+            label="Applicant Birthdate"
+            date-style="short"
+            class="slds-var-m-bottom_small"
+            field-level-help="This is necessary if, for instance, there is a Jr. or Sr. with the same primary residence listed in the credit bureau database."
+            value={lead.LASERCA__Birthdate__c}
+            onchange={genericOnChange}
+            type="date">
+          </lightning-input>
+        </div>
+        <div class="input-group half">
+          <lightning-input
+            name="LASERCA__Home_Address__c"
+            class="slds-var-m-bottom_small"
+            label="Street Address"
+            field-level-help="This address will be used to perform a soft credit pull. Please ensure the address is associated with the applicant."
+            onchange={genericOnChange}
+            value={lead.LASERCA__Home_Address__c}>
+          </lightning-input>
+        </div>
+        <div class="input-group half">
+          <lightning-input
+            name="LASERCA__Home_City__c"
+            class="slds-var-m-bottom_small"
+            label="City"
+            onchange={genericOnChange}
+            value={lead.LASERCA__Home_City__c}>
+          </lightning-input>
+        </div>
+        <div class="input-group half">
+          <lightning-combobox
+            name="LASERCA__Home_State__c"
+            class="slds-var-m-bottom_small slds-col"
+            label="State"
+            onchange={genericOnChange}
+            options={stateOptions}
+            placeholder=""
+            value={lead.LASERCA__Home_State__c}>
+          </lightning-combobox>
+        </div>
+        <div class="input-group half">
+          <lightning-input
+            name="LASERCA__Home_Zip__c"
+            class="slds-var-m-bottom_small"
+            label="ZIP Code"
+            onchange={genericOnChange}
+            value={lead.LASERCA__Home_Zip__c}>
+          </lightning-input>
+        </div>
+      </div>
+      <template if:true={partnerVersion}>
+        <div class="form-section input-group">
+          <lightning-accordion class="slds-size_1-of-1" allow-multiple-sections-open active-section-name={activeSections}>
+            <lightning-accordion-section name="0" label="Technical Details">
+              <article class="slds-card">
+                <div class="slds-card__body slds-card__body_inner">
+                  <h6 class="slds-align_absolute-center" style="padding-top: unset;">TransUnion Message</h6>
+                  <p class="slds-align_absolute-center" style="padding-top: unset;">Score Factor</p>
+                  <p class="slds-align_absolute-center">{scoreFactor}</p>
+                  <br>
+                  <p class="slds-align_absolute-center" style="padding-top: unset;">Alert Message</p>
+                  <p class="slds-align_absolute-center">{alertMessage}</p>
+                </div>
+              </article>
+            </lightning-accordion-section>
+          </lightning-accordion>
+        </div>
+      </template>
+      <div class="slds-size_1-of-1 slds-p-top_medium">
+        <div class="slds-grid slds-wrap slds-gutters slds-align_absolute-center slds-large-size--5-of-6 slds-small-size_2-of-4">
+          <button class="btn-inverse slds-var-m-around_small slds-large-size--3-of-12 slds-size--1-of-1"
+            onclick={decline}>No Thanks</button>
+          <button class="btn slds-var-m-around_small slds-large-size--3-of-12 slds-size--1-of-1"
+            onclick={submit}>Try Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
+</template>
