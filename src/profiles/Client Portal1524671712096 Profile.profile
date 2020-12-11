@@ -44762,6 +44762,9 @@
         <layout>Partner_Product_Junction__c-Partner Product Junction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Partner_Shared_Solar_System_Eligibility__c-Partner Shared Solar System Access Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Partner_Task__c-Child Partner Task</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -44877,14 +44880,17 @@
         <layout>Service_Territory__c-Service Territory Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+        <layout>Shared_Solar_System_Order__c-Shared Solar System Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
         <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -46620,10 +46626,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>RemoveDirectMessageMembers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>SelectFilesFromSalesforce</name>
     </userPermissions>
     <userPermissions>
@@ -46633,9 +46635,5 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>UseWebLink</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ViewAllUsers</name>
     </userPermissions>
 </Profile>

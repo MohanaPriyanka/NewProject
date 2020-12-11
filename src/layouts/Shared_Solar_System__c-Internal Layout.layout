@@ -3,9 +3,9 @@
     <customButtons>Preview_Next_Schedule_Z</customButtons>
     <customButtons>New_Shared_Solar_System_Order</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
-    <excludeButtons>Clone</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
     <excludeButtons>Edit</excludeButtons>
+    <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -35,15 +35,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Waitlist__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Open__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Assignment_Order__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Waitlist__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -86,13 +86,6 @@
                 <field>Zip_Code__c</field>
             </layoutItems>
             <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Reacquisition_Start_Date__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Sales_Charge__c</field>
             </layoutItems>
@@ -101,8 +94,24 @@
                 <field>Project_Location_and_Customer_Allocation__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CDG_Host_Account__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Project_Number__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Host_Account_Name__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Unique_ID__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Reacquisition_Start_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -137,17 +146,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Utility_NMC_Tariff__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>NMC_Value__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Anniversary_Date__c</field>
             </layoutItems>
         </layoutColumns>
@@ -161,11 +159,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Client_Opportunity__c</field>
+                <field>Client_Account__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Client_Account__c</field>
+                <field>Client_Opportunity__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -208,29 +206,25 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Criteria</label>
+        <label>Utility Account Information</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Credit_Score_Requirement__c</field>
+                <field>Meter__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Available_SMB_Underwriting_Method_FICO__c</field>
+                <field>Host_Utility_Account_Number__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Maximum_Subscription_Cost__c</field>
+                <behavior>Edit</behavior>
+                <field>App_ID_WO_Manual__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Maximum_Subscription_Capacity_kWDC__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Available_SMB_Underwriting_Method_Docs__c</field>
+                <field>Special_Ledger_Account_Number__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -243,45 +237,6 @@
         <layoutColumns/>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Host Account</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Meter__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Host_Utility_Account_Number__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Project_Number__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>App_ID_WO_Manual__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Special_Ledger_Account_Number__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Host_Account_Name__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>CDG_Host_Account__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -302,13 +257,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Anchor_Capacity_Reserved__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Total_System_Size_kWh_DC__c</field>
             </layoutItems>
             <layoutItems>
@@ -316,8 +264,27 @@
                 <field>Total_System_Size_kW_AC__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>RiskCalc_Minimum__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Conversion_Rate__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Reserved_Anchor_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Reserved_Anchor_Capacity_Percent__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_CS_Capacity_kW_DC_Formula__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -327,22 +294,7 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Total_CS_Capacity_kW_DC_Formula__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Total_Capacity_Committed_Reserved__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
                 <field>Anchor_CS_Capacity_Committed__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Capacity_Available_to_be_Reserved__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -352,19 +304,31 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Capacity_Committed_kW_DC__c</field>
+                <behavior>Readonly</behavior>
+                <field>Anchor_Capacity_Reserved__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Reserved_Capacity_kW_DC__c</field>
+                <behavior>Readonly</behavior>
+                <field>Pending_Anchor_Capacity__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Reserved_Anchor_Capacity__c</field>
+                <behavior>Readonly</behavior>
+                <field>Available_Anchor_Capacity__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Capacity_Committed_kW_DC__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Reserved_Capacity_kW_DC__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Capacity_Available_to_be_Reserved__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -374,24 +338,51 @@
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
         <label>Subscription Information</label>
-        <layoutColumns/>
-        <layoutColumns/>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Targets</label>
         <layoutColumns>
             <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Credit_Score_Requirement__c</field>
+            </layoutItems>
+            <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utility_NMC_Tariff__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>NMC_Value__c</field>
+            </layoutItems>
         </layoutColumns>
-        <layoutColumns/>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Assemblage_Count__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Maximum_Subscription_Cost__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Maximum_Subscription_Capacity_kWDC__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Available_SMB_Underwriting_Method_FICO__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Available_SMB_Underwriting_Method_Docs__c</field>
+            </layoutItems>
+        </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
@@ -402,11 +393,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Actual_COD_Date__c</field>
+                <field>Estimated_COD_Date_Manual__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Estimated_COD_Date_Manual__c</field>
+                <field>Actual_COD_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -415,10 +406,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Actual_PTO_Date_MANUAL__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Upcoming_Meter_Read_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -467,6 +454,10 @@
                 <field>Meter_Reading_Schedule__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Upcoming_Meter_Read_Date__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Billing_Method__c</field>
             </layoutItems>
@@ -481,17 +472,21 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Last_Schedule_Z__c</field>
+                <field>Last_Sch_Z_Enacted_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Last_Sch_Z_Enacted_Date__c</field>
+                <field>Last_Schedule_Z__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Count_of_Schedule_Zs__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>ScheduleZ_Filed__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -515,25 +510,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Management_Fee_Escalator_Start_Date__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>System Information</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>CreatedById</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>LastModifiedById</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -601,49 +577,79 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
-    <miniLayout>
-        <fields>Name</fields>
-        <fields>BWC_Project_Entity_Manual__c</fields>
-    </miniLayout>
-    <quickActionList>
-        <quickActionListItems>
-            <quickActionName>Shared_Solar_System__c.Billing_Case</quickActionName>
-        </quickActionListItems>
-        <quickActionListItems>
-            <quickActionName>FeedItem.TextPost</quickActionName>
-        </quickActionListItems>
-        <quickActionListItems>
-            <quickActionName>FeedItem.ContentPost</quickActionName>
-        </quickActionListItems>
-        <quickActionListItems>
-            <quickActionName>FeedItem.MobileSmartActions</quickActionName>
-        </quickActionListItems>
-        <quickActionListItems>
-            <quickActionName>FeedItem.RypplePost</quickActionName>
-        </quickActionListItems>
-        <quickActionListItems>
-            <quickActionName>FeedItem.LinkPost</quickActionName>
-        </quickActionListItems>
-        <quickActionListItems>
-            <quickActionName>FeedItem.PollPost</quickActionName>
-        </quickActionListItems>
-        <quickActionListItems>
-            <quickActionName>FeedItem.QuestionPost</quickActionName>
-        </quickActionListItems>
-        <quickActionListItems>
-            <quickActionName>FeedItem.ContentNote</quickActionName>
-        </quickActionListItems>
-    </quickActionList>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Status__c</fields>
-        <fields>Date_Submitted_to_Utility__c</fields>
-        <fields>Date_Enacted_by_Utility__c</fields>
-        <fields>CREATED_DATE</fields>
-        <relatedList>Schedule_Z__c.Shared_Solar_System__c</relatedList>
-        <sortField>CREATED_DATE</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
+    <platformActionList>
+        <actionListContext>Record</actionListContext>
+        <platformActionListItems>
+            <actionName>Shared_Solar_System__c.Billing_Case</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>FeedItem.TextPost</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>1</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>FeedItem.ContentPost</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>2</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>FeedItem.LinkPost</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>3</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>FeedItem.PollPost</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>4</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>FeedItem.QuestionPost</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>5</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>FeedItem.ContentNote</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>6</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Submit</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>7</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Clone</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>8</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>PrintableView</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>9</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>ChangeRecordType</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>10</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Preview_Next_Schedule_Z</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>11</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>New_Shared_Solar_System_Order</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>12</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Shared_Solar_System__c.Input_Production_Data</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>13</sortOrder>
+        </platformActionListItems>
+    </platformActionList>
     <relatedLists>
         <fields>OPPORTUNITY.NAME</fields>
         <fields>Customer_Group__c</fields>
@@ -660,12 +666,14 @@
         <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
-        <fields>CASES.CASE_NUMBER</fields>
-        <fields>CASES.SUBJECT</fields>
-        <fields>CASES.CREATED_DATE</fields>
-        <fields>CASES.PRIORITY</fields>
-        <fields>OWNER_NAME</fields>
-        <relatedList>Case.Shared_Solar_System__c</relatedList>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <fields>NAME</fields>
+        <fields>Partner_Name__c</fields>
+        <fields>Active__c</fields>
+        <fields>Commission_Structure__c</fields>
+        <relatedList>Partner_Shared_Solar_System_Eligibility__c.Shared_Solar_System__c</relatedList>
+        <sortField>Partner_Name__c</sortField>
+        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
@@ -687,6 +695,44 @@
         <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
+        <fields>NAME</fields>
+        <fields>Status__c</fields>
+        <fields>Date_Submitted_to_Utility__c</fields>
+        <fields>Date_Enacted_by_Utility__c</fields>
+        <fields>CREATED_DATE</fields>
+        <relatedList>Schedule_Z__c.Shared_Solar_System__c</relatedList>
+        <sortField>CREATED_DATE</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Bill_Number__c</fields>
+        <fields>Opportunity_Id__c</fields>
+        <fields>Opportunity__c</fields>
+        <relatedList>System_Bill__c.Shared_Solar_System__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>ChargentBase__Merchant_ID__c</fields>
+        <fields>ChargentBase__Security_Key__c</fields>
+        <fields>ChargentBase__Require_AVS__c</fields>
+        <fields>ChargentBase__Require_CCV__c</fields>
+        <fields>ChargentBase__Test_Mode__c</fields>
+        <fields>RECORDTYPE</fields>
+        <fields>ChargentBase__Active__c</fields>
+        <fields>ChargentBase__Debug__c</fields>
+        <fields>ChargentBase__Use_Tokenization__c</fields>
+        <relatedList>ChargentBase__Gateway__c.Shared_Solar_System__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>CASES.CASE_NUMBER</fields>
+        <fields>CASES.SUBJECT</fields>
+        <fields>CASES.CREATED_DATE</fields>
+        <fields>CASES.PRIORITY</fields>
+        <fields>OWNER_NAME</fields>
+        <relatedList>Case.Shared_Solar_System__c</relatedList>
+    </relatedLists>
+    <relatedLists>
         <relatedList>RelatedEntityHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
@@ -696,7 +742,6 @@
         <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
     <relatedLists>
-        <excludeButtons>MassChangeOwner</excludeButtons>
         <fields>NAME</fields>
         <fields>Milestone_Date__c</fields>
         <fields>Status__c</fields>
@@ -707,8 +752,16 @@
         <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
+        <fields>Date_Approved__c</fields>
+        <fields>Approval_Status__c</fields>
+        <fields>Total_System_Size_kW_DC__c</fields>
+        <fields>Yield__c</fields>
         <relatedList>Shared_Solar_System_Order__c.Shared_Solar_System__c</relatedList>
+        <sortField>Date_Approved__c</sortField>
+        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
@@ -722,13 +775,21 @@
         <sortField>Effective_Date__c</sortField>
         <sortOrder>Desc</sortOrder>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Capacity_Snapshot__c.Shared_Solar_System__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Invoice_Line_Item__c.Shared_Solar_System__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hj0000006UbWU</masterLabel>
+        <masterLabel>00h0U000001lvio</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

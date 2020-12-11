@@ -504,6 +504,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContactService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContactServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ContentDocumentSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -21476,6 +21484,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Account_Last_Contact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Actual_COD_date__c</field>
         <readable>true</readable>
@@ -22212,6 +22225,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.IX_Notes_Short__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.IX_Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -22798,6 +22816,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Next_Option_Payment_Due__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -28478,6 +28501,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.IBLS_Category__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Ignore_Load_Zones_When_Qualifying__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -50799,14 +50827,14 @@
         <layout>Shared_Solar_System_Order__c-Shared Solar System Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System - No PM Relationship</layout>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
         <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>

@@ -19797,6 +19797,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Account_Last_Contact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Actual_COD_date__c</field>
         <readable>true</readable>
@@ -20513,6 +20518,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.IX_Notes_Short__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.IX_Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -21099,6 +21109,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Next_Option_Payment_Due__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -48300,6 +48315,9 @@
         <layout>Partner_Product_Junction__c-Partner Product Junction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Partner_Shared_Solar_System_Eligibility__c-Partner Shared Solar System Access Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Partner_Task__c-Child Partner Task</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -48428,11 +48446,15 @@
         <layout>Shared_Solar_System_Order__c-Shared Solar System Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System - No PM Relationship</layout>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+        <layout>Shared_Solar_System__c-Internal Layout</layout>
+        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Snapshot_Report_Object__c-Landowner Last Contact Object Layout</layout>
