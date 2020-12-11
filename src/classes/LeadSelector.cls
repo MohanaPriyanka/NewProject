@@ -257,6 +257,7 @@ public without sharing class LeadSelector {
             )
             FROM Lead
             WHERE Id = :leadIds
+            FOR UPDATE
         ];
     }
 }
