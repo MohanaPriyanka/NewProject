@@ -275,12 +275,12 @@
     <formulas>
         <name>formula_ProductionEndDate</name>
         <dataType>Date</dataType>
-        <expression>{!Billing_Period_Start_Date} + (-1)</expression>
+        <expression>{!Billing_Period_Start_Date}</expression>
     </formulas>
     <formulas>
         <name>formula_productionname</name>
         <dataType>String</dataType>
-        <expression>{!Lookup_SSS.Name} &amp;&quot; - &quot;&amp; TEXT(MONTH({!Billing_Period_Start_Date})) &amp;&quot;/&quot;&amp; TEXT(YEAR({!Billing_Period_Start_Date}))</expression>
+        <expression>{!Lookup_SSS.Name} &amp;&quot; Production - &quot;&amp; TEXT(MONTH({!Billing_Period_Start_Date})) &amp;&quot;/&quot;&amp; TEXT(YEAR({!Billing_Period_Start_Date}))</expression>
     </formulas>
     <formulas>
         <name>MainTransferDefaultCreditValue</name>
