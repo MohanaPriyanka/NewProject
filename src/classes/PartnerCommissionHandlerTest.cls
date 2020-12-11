@@ -250,23 +250,18 @@ public class PartnerCommissionHandlerTest {
         UtilityAccountSubscriptionHandlerTest.setupData();
 
         List<Opportunity> opportunities = [
-            SELECT Id, Partner_tag_lookup__c, Product__c, Partner_Account__c
+            SELECT Id, Partner_tag_lookup__c, Product__c, Partner_Account__c, Shared_Solar_System__c
             FROM Opportunity
+            ORDER BY Name
         ];
         System.assertEquals(2,opportunities.size());
-
-        Shared_Solar_System__c sss = new Shared_Solar_System__c(
-            Name = 'Test System'
-        );
-        insert sss;
 
         //No commission structure assigned at Complete
         Opportunity oppOne = new Opportunity(
             Id = opportunities[0].Id,
             Product_Line__c = 'Community Solar',
             StageName = 'Complete',
-            CS_Capacity_Allocated__c = 15.00,
-            Shared_Solar_System__c = sss.Id
+            CS_Capacity_Allocated__c = 15.00
         );
         update oppOne;
 
@@ -282,12 +277,10 @@ public class PartnerCommissionHandlerTest {
         );
         insert commissionOne;
 
-
-
         Partner_Shared_Solar_System_Eligibility__c partnerEligibility =
             new Partner_Shared_Solar_System_Eligibility__c(
                 Account__c = opportunities[0].Partner_Account__c,
-                Shared_Solar_System__c = sss.Id,
+                Shared_Solar_System__c = opportunities[0].Shared_Solar_System__c,
                 Commission_Structure__c = commissionOne.Id,
                 Active__c = true
             );
@@ -319,7 +312,7 @@ public class PartnerCommissionHandlerTest {
         UtilityAccountSubscriptionHandlerTest.setupData();
 
         List<Opportunity> opportunities = [
-            SELECT Id, Partner_tag_lookup__c, Product__c
+            SELECT Id, Partner_tag_lookup__c, Product__c, Partner_Account__c, Shared_Solar_System__c
             FROM Opportunity
             LIMIT 1
         ];
@@ -332,6 +325,7 @@ public class PartnerCommissionHandlerTest {
         Commission_Structure__c commissionOne = new Commission_Structure__c(
             Name = 'Commission Structure One',
             Partner__c = opportunities[0].Partner_tag_lookup__c,
+            Partner_Account__c = opportunities[0].Partner_Account__c,
             Product__c = opportunities[0].Product__c,
             Active__c = true,
             Cents_kW_DC_Up_Front__c = 0.10,
@@ -339,6 +333,15 @@ public class PartnerCommissionHandlerTest {
             Cents_kW_DC_First_Bill_Paid__c = 0.11
         );
         insert commissionOne;
+
+        Partner_Shared_Solar_System_Eligibility__c partnerEligibility =
+            new Partner_Shared_Solar_System_Eligibility__c(
+                Account__c = opportunities[0].Partner_Account__c,
+                Shared_Solar_System__c = opportunities[0].Shared_Solar_System__c,
+                Commission_Structure__c = commissionOne.Id,
+                Active__c = true
+            );
+        insert partnerEligibility;
 
         //No commission structure assigned at Complete
         Opportunity oppOne = new Opportunity(

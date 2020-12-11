@@ -597,7 +597,7 @@ public with sharing class CSAPControllerTest {
         insert partner;
         account.Partner__c = partner.Id;
         update account;
-        insert SharedSolarSystemsTest.getPartnerEligibilities([SELECT Id FROM Shared_Solar_System__c], new List<Account>{account});
+        insert SharedSolarSystemsTest.getPartnerEligibilities([SELECT Id, Product__c FROM Shared_Solar_System__c], new List<Account>{account});
 
         BSST__c salesRep = new BSST__c(
             Name = 'Test Tester',

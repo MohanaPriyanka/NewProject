@@ -124,18 +124,48 @@ public with sharing class SharedSolarSystemsTest {
 
     @TestVisible
     private static List<Partner_Shared_Solar_System_Eligibility__c> getPartnerEligibilities(List<Shared_Solar_System__c> sharedSolarSystems, List<Account> partnerAccounts) {
+        Map<String, Commission_Structure__c> commissionStructureMap = getCommissionStructures(sharedSolarSystems, partnerAccounts);
         List<Partner_Shared_Solar_System_Eligibility__c> partnerSharedSolarSystemEligibilities =
             new List<Partner_Shared_Solar_System_Eligibility__c>();
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
             for (Account partnerAccount : partnerAccounts) {
+                String csKey = partnerAccount.Id + '-' + sss.Product__c;
                 partnerSharedSolarSystemEligibilities.add(new Partner_Shared_Solar_System_Eligibility__c(
                     Shared_Solar_System__c = sss.Id,
                     Account__c = partnerAccount.Id,
-                    Active__c = true
+                    Active__c = true,
+                    Commission_Structure__c = commissionStructureMap.get(csKey).Id
                 ));
             }
         }
         return partnerSharedSolarSystemEligibilities;
+    }
+
+    @TestVisible
+    private static Map<String, Commission_Structure__c> getCommissionStructures(List<Shared_Solar_System__c> sharedSolarSystems, List<Account> partnerAccounts) {
+        Map<String, Commission_Structure__c> commissionStructureMap = new Map<String, Commission_Structure__c>();
+        Set<Id> productIds = new Set<Id>();
+        for (Shared_Solar_System__c sss : sharedSolarSystems) {
+            productIds.add(sss.Product__c);
+        }
+
+        for(Account partner : partnerAccounts) {
+            for (Id product : productIds) {
+                String mapKey = partner.Id + '-' + product;
+                Commission_Structure__c commissionStructure = new Commission_Structure__c(
+                    Name = 'Test Commission Structure',
+                    Cents_kW_DC_First_Bill__c = 0.03,
+                    Cents_kW_DC_Up_Front__c = 0.08,
+                    Cents_kW_DC_First_Bill_Paid__c = 0.02,
+                    Partner_Account__c = partner.Id,
+                    Product__c = product
+                );
+                commissionStructureMap.put(mapKey, commissionStructure);
+            }
+        }
+
+        insert commissionStructureMap.values();
+        return commissionStructureMap;
     }
 
     /*************

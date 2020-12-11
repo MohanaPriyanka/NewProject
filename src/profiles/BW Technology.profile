@@ -3716,6 +3716,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SharedSolarSystemSharingServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SharedSolarSystems</apexClass>
         <enabled>false</enabled>
     </classAccesses>
