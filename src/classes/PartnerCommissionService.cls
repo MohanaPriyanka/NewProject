@@ -11,9 +11,12 @@ public without sharing class PartnerCommissionService{
     private static CommissionPaymentSelector commissionPaySelector = new CommissionPaymentSelector();
     @TestVisible
     private static PartnerInvoiceSelector partnerInvoiceSelector = new PartnerInvoiceSelector();
+    @TestVisible
+    private static PartnerSSSEligibilitySelector eligibilitySelector = new PartnerSSSEligibilitySelector();
 
     private Map<Id,Decimal> oppToUASSummaryMap = new Map<Id,Decimal>();
-    private Map<String,Commission_Structure__c> partnerProductKeyToCommissionMap = new Map<String,Commission_Structure__c>();
+    private Map<String, Id> eligibleCommissionStructureMap = new Map<String, Id>();
+    private Map<Id, Commission_Structure__c> commissionStructureMap = new Map<Id, Commission_Structure__c>();
     private Map<Id,Commission_Payment__c> oppToExistingContractExecutionPaymentMap = new Map<Id,Commission_Payment__c>();
     private Map<String,Invoice__c> partnerToOldestOpenInvoiceMap = new Map<String,Invoice__c>();
     private Date dueDate;
@@ -56,7 +59,6 @@ public without sharing class PartnerCommissionService{
     **/
     @TestVisible
     private void calculateCommissionRecords(PendingCommission pendingCommission){
-
         if (pendingCommission.typeOfCommission == CommissionType.CONTRACTEXECUTION){
             populateContractExecutionMaps(pendingCommission.opportunitiesToRun);
             setOpportunityFields(pendingCommission.opportunitiesToRun);
@@ -163,23 +165,32 @@ public without sharing class PartnerCommissionService{
         oppToUASSummaryMap = utilityaccountSelector.getUASSummaryByOpportunity(oppIds);
     }
 
-    private void populateCommissionStructureMap(List<Opportunity> opportunities){
+    /**
+     * @description Queries for the Partner_Shared_Solar_System_Eligibility__c junction records related to the
+     * opportunities' partners. The junction records are then placed in a map with a key corresponding to the Partner and Project.
+     * With the key and related Commission Structure, we can create a map of Commission Structures to be used in
+     * setActiveCommissions()
+     * @param opportunities Opportunities used to query for corresponding Partner_Shared_Solar_System_Eligibility__c junction records
+     */
+    private void populateCommissionStructureMap(List<Opportunity> opportunities) {
         Set<Id> partnerIds = new Set<Id>();
-        for (Opportunity opportunity : opportunities){
-            partnerIds.add(opportunity.Partner_tag_lookup__c);
-        }
-        List<Commission_Structure__c> activeCommissionStructures = commissionStructureSelector.getActiveCommissionStructures(partnerIds);
-        for (Commission_Structure__c structure : activeCommissionStructures){
-            String partnerProductKey = String.valueOf(structure.Partner__c) + String.valueOf(structure.Product__c);
-            if (partnerProductKeyToCommissionMap.containsKey(partnerProductKey)){
-                Logger.logLater('PartnerCommissionService','populateCommissionStructureMap',
-                    'More than one active commission structure record was found for ' +
-                        'partner: ' + structure.Partner__c + ' and product: ' + structure.Product__c,
-                    'INFO');
-                continue;
+        for (Opportunity opp : opportunities) {
+            if (opp.Partner_Account__c != null || opp.Partner_tag_lookup__c != null) {
+                partnerIds.add(opp.Partner_Account__c);
+                partnerIds.add(opp.Partner_tag_lookup__r.Account__c);
+            } else {
+                Logger.logNow('PartnerCommissionService', 'populateCommissionStructureMap', 'Opportunity does not have Partner Account populated: ' + opp.Id);
             }
-            partnerProductKeyToCommissionMap.put(partnerProductKey,structure);
         }
+
+        List<Partner_Shared_Solar_System_Eligibility__c> partnerAccess = eligibilitySelector.getSSSByPartner(partnerIds);
+        Set<Id> commissionStructureIds = new Set<Id>();
+        for (Partner_Shared_Solar_System_Eligibility__c junction : partnerAccess) {
+            String eligibilityKey = junction.Account__c + '-' + junction.Shared_Solar_System__c;
+            eligibleCommissionStructureMap.put(eligibilityKey, junction.Commission_Structure__c);
+            commissionStructureIds.add(junction.Commission_Structure__c);
+        }
+        commissionStructureMap = commissionStructureSelector.getCommissionStructureMapByIds(commissionStructureIds);
     }
 
     private void populateExistingPaymentsMap(Set<Id> oppIds){
@@ -250,22 +261,30 @@ public without sharing class PartnerCommissionService{
         }
     }
 
-    private void setActiveCommissionStructure(Opportunity opportunity){
-        if (opportunity.Commission_Structure__c == null){
-            String partnerProductKey = String.valueOf(opportunity.Partner_tag_lookup__c) + String.valueOf(opportunity.Product__c);
-            Commission_Structure__c structure = partnerProductKeyToCommissionMap.get(partnerProductKey);
-            if (structure == null){
-                createCaseForSupportFollowUp('During creation of contract execution commission payment record, ' +
-                    'could not find active commission structure for partner: ' +
-                    String.valueOf(opportunity.Partner_tag_lookup__c) + 'and product: ' +
-                    String.valueOf(opportunity.Product__c) + 'on opportunity: ' +
+    /**
+     * @description Assigns Commission Structure to Opportunity using Partner and SSS assignment. If no commission
+     * structure found, create case. Have to use commissionStructureMap to assign Commission_Structure__r in order
+     * to maintain data related to Commission Structure record for calculateCommissionPayments()
+     * @param opportunity Opportunity having Commission Structure assigned
+     */
+    private void setActiveCommissionStructure(Opportunity opportunity) {
+        if (opportunity.Commission_Structure__c == null) {
+            String eligibilityKey = (opportunity.Partner_Account__c == null ? opportunity.Partner_tag_lookup__r.Account__c : opportunity.Partner_Account__c)
+                + '-' + opportunity.Shared_Solar_System__c;
+            Id structureId = eligibleCommissionStructureMap.get(eligibilityKey);
+            if (structureId == null) {
+                String partnerName = String.valueOf((opportunity.Partner_Account__c == null ? opportunity.Partner_tag_lookup__r.Name : opportunity.Partner_Account__r.Name));
+                    createCaseForSupportFollowUp('During creation of contract execution commission payment record, ' +
+                    'could not find commission structure for Partner: ' +
+                    partnerName + 'and Shared Solar System: ' +
+                    String.valueOf(opportunity.Shared_Solar_System__r.Name) + 'on opportunity: ' +
                     String.valueOf(opportunity.Id) + ' (' + String.valueOf(opportunity.Name) + '). ' +
-                    'There are either no matches or too many matches for that partner and product pair',
+                    'Confirm there is a Partner Shared Solar System Access record for this Partner & SSS combo.',
                     opportunity.Id
                 );
             } else {
-                opportunity.Commission_Structure__c = structure.Id;
-                opportunity.Commission_Structure__r = structure;
+                opportunity.Commission_Structure__c = structureId;
+                opportunity.Commission_Structure__r = commissionStructureMap.get(structureId);
                 uow.registerDirty(opportunity);
             }
         }

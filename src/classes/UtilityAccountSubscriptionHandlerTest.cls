@@ -15,11 +15,6 @@ public class UtilityAccountSubscriptionHandlerTest {
         Account clientAccount = new Account(name = 'Test Client');
         insert clientAccount;
 
-        Partner__c partner = new Partner__c(
-            Name = 'Some Partner'
-        );
-        insert partner;
-
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
@@ -65,19 +60,30 @@ public class UtilityAccountSubscriptionHandlerTest {
 
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
-        Id parentAccountRT =
-            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+        Partner__c partner = new Partner__c(
+            Name = 'Some Partner'
+        );
+        insert partner;
+
+        Id partnerAccountRT = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Partner Account').getRecordTypeId();
+
+        Account partnerAccount = new Account(
+            Name = 'Partner Account',
+            RecordTypeId = partnerAccountRT
+        );
+
+        Id parentAccountRT = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
 
         Account accountParent = new Account(name = 'Account Parent',
             RecordTypeId = parentAccountRT);
 
-        Account accountA = new Account(name = 'Account A',
+        Account propAccountA = new Account(name = 'Account A',
             Parent_Account__c = accountParent.Id);
 
-        Account accountB = new Account(name = 'Account B',
+        Account propAccountB = new Account(name = 'Account B',
             Parent_Account__c = accountParent.Id);
 
-        insert new List<Account> {accountParent, accountA, accountB};
+        insert new List<Account> {partnerAccount, accountParent, propAccountA, propAccountB};
 
         Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
@@ -96,11 +102,12 @@ public class UtilityAccountSubscriptionHandlerTest {
 
         Opportunity opportunityone =
             new Opportunity(Name = 'AOpp',
-                AccountId = accountA.Id,
+                AccountId = propAccountA.Id,
                 Shared_Solar_System__c = sss1.Id,
                 StageName = 'Complete',
                 NMC_Tariff__c = eversizeNMC.Id,
                 Partner_tag_lookup__c = partner.Id,
+                Partner_Account__c = partnerAccount.Id,
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
@@ -110,7 +117,7 @@ public class UtilityAccountSubscriptionHandlerTest {
 
         Utility_Account_Log__c ualog =
             new Utility_Account_Log__c(Name = '0000234',
-                Account__c = accountA.Id,
+                Account__c = propAccountA.Id,
                 Annual_Cost_of_Electricity__c = 10000,
                 Name_on_Account__c = 'A Testcase');
 
@@ -128,11 +135,12 @@ public class UtilityAccountSubscriptionHandlerTest {
 
         Opportunity opportunitytwo =
             new Opportunity(Name = 'BOpp',
-                AccountId = accountB.Id,
+                AccountId = propAccountB.Id,
                 Shared_Solar_System__c = sss1.Id,
                 StageName = 'Complete',
                 NMC_Tariff__c = eversizeNMC.Id,
                 Partner_tag_lookup__c = partner.Id,
+                Partner_Account__c = partnerAccount.Id,
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
@@ -141,7 +149,7 @@ public class UtilityAccountSubscriptionHandlerTest {
 
         Utility_Account_Log__c ualogTwo =
             new Utility_Account_Log__c(Name = '0000236',
-                Account__c = accountB.Id,
+                Account__c = propAccountB.Id,
                 Annual_Cost_of_Electricity__c = 20000,
                 Name_on_Account__c = 'B Testcase');
 

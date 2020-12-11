@@ -21,9 +21,19 @@ private without sharing class UserTriggerHandlerTest {
         );
         insert sss;
 
+        Commission_Structure__c commissionStructure = new Commission_Structure__c(
+            Name = 'Test Commission Structure',
+            Cents_kW_DC_First_Bill__c = 0.03,
+            Cents_kW_DC_Up_Front__c = 0.08,
+            Cents_kW_DC_First_Bill_Paid__c = 0.02,
+            Partner_Account__c = partnerAccount.Id
+        );
+        insert commissionStructure;
+
         Partner_Shared_Solar_System_Eligibility__c eligibility = new Partner_Shared_Solar_System_Eligibility__c(
             Account__c = partnerAccount.Id,
-            Shared_Solar_System__c = sss.Id
+            Shared_Solar_System__c = sss.Id,
+            Commission_Structure__c = commissionStructure.Id
         );
         insert eligibility;
 

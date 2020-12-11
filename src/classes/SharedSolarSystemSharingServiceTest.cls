@@ -260,12 +260,25 @@ private class SharedSolarSystemSharingServiceTest {
     @IsTest
     private static void testPartnerEligibilityAfterInsertUpdate() {
         Id partnerAccountId = [SELECT Id FROM Account WHERE Name = 'Test Partner Account' LIMIT 1].Id;
-        Id sharedSolarSystemId = [SELECT Id FROM Shared_Solar_System__c LIMIT 1].Id;
+        Shared_Solar_System__c sharedSolarSystem = [SELECT Id, Product__c FROM Shared_Solar_System__c LIMIT 1];
         Id userId = [SELECT Id FROM User WHERE Alias = 'PSSSTest' LIMIT 1].Id;
+
+        Commission_Structure__c commissionStructure = new Commission_Structure__c(
+            Name = 'Test Commission Structure',
+            Cents_kW_DC_First_Bill__c = 0.03,
+            Cents_kW_DC_Up_Front__c = 0.08,
+            Cents_kW_DC_First_Bill_Paid__c = 0.02,
+            Partner_Account__c = partnerAccountId,
+            Product__c = sharedSolarSystem.Product__c
+        );
+
+        insert commissionStructure;
+
         Partner_Shared_Solar_System_Eligibility__c partnerEligibility = new Partner_Shared_Solar_System_Eligibility__c (
             Account__c = partnerAccountId,
-            Shared_Solar_System__c = sharedSolarSystemId,
-            Active__c = true
+            Shared_Solar_System__c = sharedSolarSystem.Id,
+            Active__c = true,
+            Commission_Structure__c = commissionStructure.Id
         );
 
         insert partnerEligibility;
@@ -275,7 +288,7 @@ private class SharedSolarSystemSharingServiceTest {
             FROM Shared_Solar_System__Share
         ];
         System.assertEquals(1, shares.size(), 'Expected 1 Shared_Solar_System__share record to be created');
-        System.assertEquals(sharedSolarSystemId, shares[0].ParentId, 'Expected the Shared_Solar_System__share record to have a ParentId equal to the ID of the test Shared_Solar_System__c record');
+        System.assertEquals(sharedSolarSystem.Id, shares[0].ParentId, 'Expected the Shared_Solar_System__share record to have a ParentId equal to the ID of the test Shared_Solar_System__c record');
         System.assertEquals(userId, shares[0].UserOrGroupId, 'Expected the Shared_Solar_System__share record to have a UserOrGroupId equal to the ID of the test User record');
 
         partnerEligibility.Active__c = false;
@@ -293,19 +306,32 @@ private class SharedSolarSystemSharingServiceTest {
             FROM Shared_Solar_System__Share
         ];
         System.assertEquals(1, shares.size(), 'Expected 1 Shared_Solar_System__share record to be created');
-        System.assertEquals(sharedSolarSystemId, shares[0].ParentId, 'Expected the Shared_Solar_System__share record to have a ParentId equal to the ID of the test Shared_Solar_System__c record');
+        System.assertEquals(sharedSolarSystem.Id, shares[0].ParentId, 'Expected the Shared_Solar_System__share record to have a ParentId equal to the ID of the test Shared_Solar_System__c record');
         System.assertEquals(userId, shares[0].UserOrGroupId, 'Expected the Shared_Solar_System__share record to have a UserOrGroupId equal to the ID of the test User record');
     }
 
     @IsTest
     private static void testPartnerEligibilityAfterDelete() {
-        Id partnerAccountId = [SELECT Id FROM Account WHERE Name = 'Test Partner Account'  LIMIT 1].Id;
-        Id sharedSolarSystemId = [SELECT Id FROM Shared_Solar_System__c LIMIT 1].Id;
+        Id partnerAccountId = [SELECT Id FROM Account WHERE Name = 'Test Partner Account' LIMIT 1].Id;
+        Shared_Solar_System__c sharedSolarSystem = [SELECT Id, Product__c FROM Shared_Solar_System__c LIMIT 1];
         Id userId = [SELECT Id FROM User WHERE Alias = 'PSSSTest' LIMIT 1].Id;
+
+        Commission_Structure__c commissionStructure = new Commission_Structure__c(
+            Name = 'Test Commission Structure',
+            Cents_kW_DC_First_Bill__c = 0.03,
+            Cents_kW_DC_Up_Front__c = 0.08,
+            Cents_kW_DC_First_Bill_Paid__c = 0.02,
+            Partner_Account__c = partnerAccountId,
+            Product__c = sharedSolarSystem.Product__c
+        );
+
+        insert commissionStructure;
+
         Partner_Shared_Solar_System_Eligibility__c partnerEligibility = new Partner_Shared_Solar_System_Eligibility__c (
             Account__c = partnerAccountId,
-            Shared_Solar_System__c = sharedSolarSystemId,
-            Active__c = true
+            Shared_Solar_System__c = sharedSolarSystem.Id,
+            Active__c = true,
+            Commission_Structure__c = commissionStructure.Id
         );
         insert partnerEligibility;
 
@@ -314,7 +340,7 @@ private class SharedSolarSystemSharingServiceTest {
             FROM Shared_Solar_System__Share
         ];
         System.assertEquals(1, shares.size(), 'Expected 1 Shared_Solar_System__share record to be created');
-        System.assertEquals(sharedSolarSystemId, shares[0].ParentId, 'Expected the Shared_Solar_System__share record to have a ParentId equal to the ID of the test Shared_Solar_System__c record');
+        System.assertEquals(sharedSolarSystem.Id, shares[0].ParentId, 'Expected the Shared_Solar_System__share record to have a ParentId equal to the ID of the test Shared_Solar_System__c record');
         System.assertEquals(userId, shares[0].UserOrGroupId, 'Expected the Shared_Solar_System__share record to have a UserOrGroupId equal to the ID of the test User record');
 
         Test.startTest();
