@@ -1,7 +1,7 @@
 @isTest
 public with sharing class DynamicToStaticSubscriptionHandlerTest {
     @testSetup static void setupTestData() {
-        RecalculateUALCostControllerTest.setupTestData();
+        OpportunityTriggerTest.setupData();
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(false));
 
     }

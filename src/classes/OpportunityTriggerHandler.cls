@@ -4,12 +4,11 @@
  *************************************************************************************/
 
 public without sharing class OpportunityTriggerHandler {
-    private Boolean m_isExecuting = false;
-    private Integer batchSize = 0;
-
     @TestVisible
     private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
     private static CustomerAssignmentService customerAssignmentService = new CustomerAssignmentService();
+    private static Id residentialRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Community Solar').getRecordTypeId();
+    private static Id anchorRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('BFG - Community Solar (Anchor)').getRecordTypeId();
 
     public void onBeforeInsert(List<Opportunity> newOppList){
         customIdSwapOpp(newOppList, null);
@@ -17,12 +16,16 @@ public without sharing class OpportunityTriggerHandler {
         setLeadLookup(newOppList);
         eventHandling(newOppList, null);
         setPartnerForTests(newOppList);
+        setCSRecordType(newOppList);
+        setServicingOnBehalfOf(newOppList);
     }
 
     public void onBeforeUpdate(List<Opportunity> oldOppList, List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
         customIdSwapOpp(updatedOppList, oldOppMap);
         mapDocuSignRS(updatedOppList, oldOppMap);
         eventHandling(updatedOppList, oldOppMap);
+        setCSRecordType(updatedOppList);
+        setServicingOnBehalfOf(updatedOppList);
     }
 
     public void onAfterUpdate(Map<Id, Opportunity> oldMap, Map<Id, Opportunity> newMap) {
@@ -48,7 +51,7 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-    public void customIdSwapOpp(List<Opportunity> oppList, Map<ID, Opportunity> oldOppMap){
+    private void customIdSwapOpp(List<Opportunity> oppList, Map<ID, Opportunity> oldOppMap){
         Set<String> customIdSet = new Set<String>();
         for (Opportunity opp : oppList){
             if (opp.Custom_Id__c != null){
@@ -73,31 +76,10 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-    public Map<Id,Subscription_Change_Event__e> eventHandling(List<Opportunity> newOpps, Map<Id, Opportunity> oldOpps){
+    @TestVisible
+    private Map<Id,Subscription_Change_Event__e> eventHandling(List<Opportunity> newOpps, Map<Id, Opportunity> oldOpps){
         Map<Id,Subscription_Change_Event__e> subscriptionEventMap = new Map<Id,Subscription_Change_Event__e>();
-        Set<Id> oppIdsWithChangedSSS = new Set<Id>();
-        for (Opportunity newOpp : newOpps){
-            Opportunity oldOpp;
-            if (oldOpps != null && oldOpps.containsKey(newOpp.Id)){
-                oldOpp = oldOpps.get(newOpp.Id);
-            }
-            // Fire Subscription Change Event on insert, or on update if the Account, SSS or Stage change:
-            if (oldOpp == null){
-                subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
-            } else if (newOpp.AccountId != oldOpp.AccountId){
-                subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
-                subscriptionEventMap = createSubscriptionChangeEvent(oldOpp.AccountId, subscriptionEventMap);
-            } else if (newOpp.Shared_Solar_System__c != oldOpp.Shared_Solar_System__c){
-                oppIdsWithChangedSSS.add(newOpp.Id);
-                subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
-            } else if ((newOpp.StageName == 'Cancelled' && oldOpp.StageName != 'Cancelled') ||
-                (newOpp.StageName == 'DUPLICATE' && oldOpp.StageName != 'DUPLICATE') ||
-                (newOpp.StageName == 'Expired' && oldOpp.StageName != 'Expired') ||
-                (newOpp.StageName == 'Dead' && oldOpp.StageName != 'Dead') ||
-                (newOpp.StageName == 'Complete' && oldOpp.StageName != 'Complete')){
-                subscriptionEventMap = createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
-            }
-        }
+        Set<Id> oppIdsWithChangedSSS = createSubscriptionChangeEvents(newOpps, oldOpps, subscriptionEventMap);
 
         if (oppIdsWithChangedSSS.size() > 0) {
             SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
@@ -109,12 +91,31 @@ public without sharing class OpportunityTriggerHandler {
         return subscriptionEventMap;
     }
 
-    private static Map<Id,Subscription_Change_Event__e> createSubscriptionChangeEvent(Id accountId, Map<Id,Subscription_Change_Event__e> eventMap){
+    private Set<Id> createSubscriptionChangeEvents(List<Opportunity> newOpps, Map<Id, Opportunity> oldOpps, Map<Id, Subscription_Change_Event__e> subscriptionEventMap) {
+        Set<Id> oppIdsWithChangedSSS = new Set<Id>();
+        for (Opportunity newOpp : newOpps) {
+            Opportunity oldOpp = oldOpps?.get(newOpp.Id);
+            // Fire Subscription Change Event on insert, or on update if the Account, SSS or Stage change:
+            if (oldOpp == null) {
+                createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
+            } else if (newOpp.AccountId != oldOpp.AccountId) {
+                createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
+                createSubscriptionChangeEvent(oldOpp.AccountId, subscriptionEventMap);
+            } else if (newOpp.Shared_Solar_System__c != oldOpp.Shared_Solar_System__c) {
+                oppIdsWithChangedSSS.add(newOpp.Id);
+                createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
+            } else if (Opportunities.lostOpportunityStages.contains(newOpp.StageName) && !Opportunities.lostOpportunityStages.contains(oldOpp.StageName)) {
+                createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
+            }
+        }
+        return oppIdsWithChangedSSS;
+    }
+
+    private static void createSubscriptionChangeEvent(Id accountId, Map<Id, Subscription_Change_Event__e> eventMap) {
         Subscription_Change_Event__e stageChange = new Subscription_Change_Event__e(
             Property_Account_Id__c = accountId
         );
         eventMap.put(accountId,stageChange);
-        return eventMap;
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -139,7 +140,7 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-    public void mapDocuSignRS(List<Opportunity> oppList, Map<Id, Opportunity> oldOppMap){
+    private void mapDocuSignRS(List<Opportunity> oppList, Map<Id, Opportunity> oldOppMap){
         Set<String> oppIdSet = new Set<String>();
         for (Opportunity opp : oppList) {
             if (opp.Email__c != null) {
@@ -168,8 +169,8 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-   @InvocableMethod
-   public static void activatePortalUser(List<Id> oppIdList) {
+    @InvocableMethod
+    public static void activatePortalUser(List<Id> oppIdList) {
        List<Opportunity> updatedOpps = OpportunitiesSelector.selectByIds(oppIdList);
 
        List<Id> parentAccountIdList = new List<Id>();
@@ -187,7 +188,7 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-    public void createPartnerCommission(Map<ID, Opportunity> oldOpps, Map<ID, Opportunity> newOpps){
+    private void createPartnerCommission(Map<ID, Opportunity> oldOpps, Map<ID, Opportunity> newOpps){
         Set<Id> opportunityIdSet = new Set<Id>();
 
         for (Opportunity newOpp : newOpps.values()) {
@@ -205,10 +206,31 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-    public void setLeadLookup(List<Opportunity> insertedOpportunities) {
+    private void setLeadLookup(List<Opportunity> insertedOpportunities) {
         for (Opportunity o : insertedOpportunities) {
             if (o.Lead_ID__c != null && o.Lead_ID__c != '') {
                 o.Lead__c = o.Lead_ID__c;
+            }
+        }
+    }
+
+    private void setCSRecordType(List<Opportunity> triggerNew) {
+        for (Opportunity opportunity : triggerNew) {
+            if (opportunity.Product_Line__c != 'Community Solar') {
+                continue;
+            }
+            if (opportunity.Customer_Group__c == 'Anchor') {
+                opportunity.RecordTypeId = anchorRecordTypeId;
+            } else {
+                opportunity.RecordTypeId = residentialRecordTypeId;
+            }
+        }
+    }
+
+    private void setServicingOnBehalfOf(List<Opportunity> triggerNew) {
+        for (Opportunity opportunity : triggerNew) {
+            if (opportunity.Product_Line__c == 'Community Solar' && opportunity.Servicing_on_Behalf_oftest__c == null) {
+                opportunity.Servicing_on_Behalf_oftest__c = opportunity.Servicing_on_behalf_of__c;
             }
         }
     }
