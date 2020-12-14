@@ -271,4 +271,18 @@ public without sharing class SimpleSignupFormController {
         }
         return false;
     }
+
+    /**
+     * @description Retrieves truncated RestZipCode for resume apps. Method tested in CapacityServiceTest.
+     * @param zip ZIP Code
+     * @param utilityId Utility ID
+     * @param isFico Underwriting == FICO?
+     * @return Stringified RestZipCode for immediate use in SSF in resume app situations where capacity check not needed
+     */
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    @AuraEnabled(Cacheable=false)
+    public static String getZipcodeDataForResumeApp(String zip, String utilityId, Boolean isFico) {
+        CapacityService capacityService = new CapacityService();
+        return JSON.serialize(new RestZipCode(capacityService.getZipcodeResponseForResumeApp(zip,utilityId,isFico)));
+    }
 }
