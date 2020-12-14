@@ -1,7 +1,7 @@
-import { makeRequest } from 'c/httpRequestService';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import {makeRequest} from 'c/httpRequestService';
+import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 import insertLog from '@salesforce/apex/Logger.insertLog';
-import { getZipCodeCapacity } from 'c/zipCodeService';
+import getZipcodeDataForResumeApp from '@salesforce/apex/SimpleSignupFormController.getZipcodeDataForResumeApp';
 
 const loadApplication = (component) => {
     // If no URL parameters set, provide default experience
@@ -21,9 +21,6 @@ const loadApplication = (component) => {
     }
     if (urlParams.campaignId) {
         component.campaignId = urlParams.campaignId;
-    }
-    if (urlParams.mock) {
-        component.mock = urlParams.mock;
     }
 
     // If resuming an application, process passed-in lead id & other details
@@ -59,6 +56,9 @@ const retrieveApplication = async (component) => {
     let leadPromise;
     try {
         leadPromise = await getLead(component, component.leadId, component.email);
+        component.zipCodeInput = leadPromise.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
+        component.resiApplicationType = leadPromise.applicationType === 'Residential';
+        component.isFico = setIsFico(component.resiApplicationType, leadPromise.underwritingCriteria);
         component.leadJSON = JSON.stringify(leadPromise);
     } catch (error) {
         let fail = typeof error === 'object' ? error : JSON.parse(error);
@@ -70,27 +70,18 @@ const retrieveApplication = async (component) => {
         return;
     }
 
-    // Set component parameters based on retrieved Lead
-    component.zipCodeInput = leadPromise.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
-    component.resiApplicationType = leadPromise.applicationType === 'Residential';
-    component.isFico = setIsFico(component.resiApplicationType, leadPromise.underwritingCriteria);
-
-    // Check zip code capacity and set component fields based on result
-    let zipPromise;
-    try {
-        zipPromise = await checkZipCodeCapacity(component);
-        component.zipCodeResponse = JSON.stringify(zipPromise);
-    } catch (error) {
-        handlePromiseError(component, error, 'getZipCodeCapacity', 'Error');
-        return;
-    }
-
-    // Set component parameters based on retrieved zipcode check
-    if (zipPromise.ficoUnderwriting) {
-        component.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
-    }
-    if (zipPromise.finDocsUnderwriting) {
-        component.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
+    // Retrieve ZIP Code data on resumed application if on info or agree page
+    // Current screens beyond 'agree' do not require zipcode data (applicant already signed)
+    if (component.loc === 'info' || component.loc === 'agree') {
+        try {
+            component.zipCodeResponse = await getZipcodeDataForResumeApp({
+                zip: component.zipCodeInput,
+                utilityId: JSON.parse(component.leadJSON).utilityId,
+                isFico: component.isFico
+            });
+        } catch (error) {
+            handlePromiseError(component, error, 'getZipCodeData', 'Error');
+        }
     }
 
     // Set application page to start on based on URL params, lead, and capacity
@@ -149,28 +140,11 @@ const setIsFico = (resiApplicationType, underwritingMethodSelected) => {
     }
 }
 
-const checkZipCodeCapacity = async (component) => {
-    const utilityId = JSON.parse(component.leadJSON).utilityId;
-    return getZipCodeCapacity(component.zipCodeInput, component.partnerId, utilityId);
-}
-
 const setLocation = (component) => {
-    let lead = JSON.parse(component.leadJSON);
-    const zipcodeResponse = JSON.parse(component.zipCodeResponse);
-    const location = component.loc;
-    const basicInfoValidation = validateBasicInfoCompleted(zipcodeResponse, lead, location);
-
-    if (!basicInfoValidation.isValid) {
-        if (basicInfoValidation.detail === 'no_capacity') {
-            //TODO: show error screen
+    switch (component.loc) {
+        case 'info':
             component.showBasicInfoPage();
-        } else {
-            component.showBasicInfoPage();
-        }
-        return;
-    }
-
-    switch (location) {
+            break;
         case 'pay' :
             component.showPaymentPage();
             break;
@@ -180,74 +154,6 @@ const setLocation = (component) => {
         default :
             component.showBasicInfoPage();
     }
-}
-
-// Verify that all basic info fields are complete before advancing in the application
-const validateBasicInfoCompleted = (capacity, lead, loc) => {
-
-    // First verify that capacity exists and we have all required fields
-    const hasCapacity = capacity.hasCapacity && !!capacity.products && capacity.products.length !== 0;
-    const hasUtilities = !!capacity.utilities && !!lead.utilityId;
-    const hasCapacityZip = !!capacity.zipCode;
-
-    if (!hasCapacity || !hasUtilities || !hasCapacityZip) {
-        if (loc !== 'pay') { // For payment page, let user through, they have already signed contract
-            return validationFailure('no_capacity');
-        }
-    }
-
-    if (!lead.firstName) {
-        return validationFailure('missing_firstName');
-    }
-    if (!lead.lastName) {
-        return validationFailure('missing_lastName');
-    }
-    if (!lead.email) {
-        return validationFailure('missing_email');
-    }
-    if (!lead.productName) {
-        return validationFailure('missing_productName');
-    }
-    if (lead.applicationType !== 'Residential' && lead.applicationType !== 'Non-Residential') {
-        return validationFailure('invalid_applicationType');
-    }
-    if (lead.applicationType !== 'Residential' && (!lead.businessName || !lead.businessTitle)) {
-        return validationFailure('missing_businessNameOrTitle');
-    }
-    if (!lead.propertyAccounts || lead.propertyAccounts.length === 0) {
-        return validationFailure('missing_propertyAccount');
-    }
-
-    for (let i=0; i<lead.propertyAccounts.length; i++) {
-        const propertyAccount = lead.propertyAccounts[i];
-        if (!propertyAccount.billingStreet || !propertyAccount.billingCity
-            || !propertyAccount.billingState || !propertyAccount.billingPostalCode) {
-            return validationFailure('missing_propertyAccountAddress');
-        }
-        if (!propertyAccount.utilityAccountLogs || propertyAccount.utilityAccountLogs.length === 0) {
-            return validationFailure('missing_UAL');
-        }
-        for (let j=0; j<propertyAccount.utilityAccountLogs.length; j++) {
-            const ual = propertyAccount.utilityAccountLogs[j];
-            if (!ual.nameOnAccount || !ual.serviceStreet || !ual.serviceCity
-                || !ual.serviceState || !ual.servicePostalCode) {
-                return validationFailure('missing_UALaddress');
-            }
-        }
-    }
-
-    // default validation pass if reached
-    return {
-        isValid: true,
-        detail: null
-    };
-}
-
-const validationFailure = (reason) => {
-    return {
-        isValid: false,
-        detail: reason
-    };
 }
 
 export {
