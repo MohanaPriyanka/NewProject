@@ -1,6 +1,6 @@
 /**
  * Created by PeterYao on 2/24/2020.
- * Tested By: SimpleSignupFormControllerTest
+ * Tested By: SimpleSignupFormControllerTest, CapacityServiceTest, CreditReportCheckerTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation,PMD.ApexDoc')
 public without sharing class SimpleSignupFormController {
