@@ -12373,7 +12373,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Utility_Name__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -12388,7 +12388,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Utility_relationship__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -30648,7 +30648,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Account__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -30718,7 +30718,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Lead__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46878,7 +46878,7 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Account</object>
-        <viewAllRecords>false</viewAllRecords>
+        <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
