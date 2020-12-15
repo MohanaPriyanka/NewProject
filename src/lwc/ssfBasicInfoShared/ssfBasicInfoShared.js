@@ -3,7 +3,6 @@ import findDuplicateUALs from '@salesforce/apex/SimpleSignupFormController.findD
 
 // Perform tasks when first instancing component
 const onLoad = (cmp) => {
-
     handleZipCheck(cmp);
     handleNewOrExistingApp(cmp);
     setComponentUnderwritingVals(cmp);
@@ -29,9 +28,6 @@ const onLoad = (cmp) => {
     // if certain property values didn't come in from the api, find their values
     if (!cmp.stateOptions) {
         cmp.stateOptions = getUSStateOptionsFull();
-    }
-    if (cmp.mock) {
-        mockData(cmp);
     }
 }
 
@@ -102,7 +98,6 @@ const handleNewOrExistingApp = (cmp) => {
             }
         }
         resumeAppSetAddressFlags(cmp);
-        resumeAppSetProduct(cmp);
     }
     // if no lead exists, set default values for restLead and propertyAccount
     else {
@@ -118,18 +113,6 @@ const resumeAppSetAddressFlags = (cmp) => {
     const leadFirstUalStreetZip = `${firstUal.serviceStreet} ${firstUal.servicePostalCode}`;
     cmp.sameBillingAddress = leadBillingStreetZip === leadFirstUalStreetZip;
     cmp.sameHomeAddress = leadContactStreetZip === leadFirstUalStreetZip;
-}
-
-// Ensure we're setting the selected product based on restLead returned by server (resume app only)
-// Someone internal may have changed the product for the customer in the backend, reflect that change here
-const resumeAppSetProduct = (cmp) => {
-    let possibleProducts = new Map();
-    cmp.zipCheckResponse.products.forEach(product => {
-        possibleProducts.set(product.name, product);
-    });
-    const productOnLead = possibleProducts.get(cmp.restLead.productName);
-    // If no match found, set selectedProduct default, which is cmp.zipCheckResponse.products[0]
-    cmp.selectedProduct = productOnLead ? productOnLead : cmp.selectedProduct;
 }
 
 const getFinDocFileTypes = () => {
@@ -268,34 +251,32 @@ const findDuplicateUAL = (cmp, event) => {
     const index = event.target.dataset.rowIndex;
     let enteredAccountNumber = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumber;
     findDuplicateUALs({ualNumber: enteredAccountNumber})
-        .then(result => {
-            if (result === 'No Duplicate Found') {
-                //clear error messages
-                let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
-                field.setCustomValidity('');
-                field.reportValidity();
-            } else if (result === 'Application in Review') {
-                let error = 'An application has already been submitted for this Utility Account';
-                let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
-                field.setCustomValidity(error);
-                field.reportValidity();
-            } else {
-                // found incomplete duplicate SSF Application
-                // show modal that allows user to send continue application email
-                let error = 'An application is already in process for this Utility Account.';
-                let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
-                field.setCustomValidity(error);
-                field.reportValidity();
-                cmp.showModal = true;
-                cmp.duplicateLeadId = result;
-            }
-        })
-        .catch(error => {
-            //no duplicate found - continue as usual
-        })
+    .then(result => {
+        if (result === 'No Duplicate Found') {
+            //clear error messages
+            let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
+            field.setCustomValidity('');
+            field.reportValidity();
+        } else if (result === 'Application in Review') {
+            let error = 'An application has already been submitted for this Utility Account';
+            let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
+            field.setCustomValidity(error);
+            field.reportValidity();
+        } else {
+            // found incomplete duplicate SSF Application
+            // show modal that allows user to send continue application email
+            let error = 'An application is already in process for this Utility Account.';
+            let field = cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
+            field.setCustomValidity(error);
+            field.reportValidity();
+            cmp.showModal = true;
+            cmp.duplicateLeadId = result;
+        }
+    })
+    .catch(error => {
+        //no duplicate found - continue as usual
+    });
 }
-
-
 
 const checkIfZipcodeSupported = (cmp, index, fieldsToDisplayError, fieldsToClearError) => {
     const zipCodesSupported = cmp.zipCheckResponse.utilityZipCodesServed;
@@ -310,6 +291,7 @@ const checkIfZipcodeSupported = (cmp, index, fieldsToDisplayError, fieldsToClear
 const locateZipCodeField = (cmp, index) => {
     return cmp.template.querySelector(`[data-ual-zip-index="${index}"]`);
 }
+
 const locateUtilityAccountNumberField = (cmp, index) => {
     return cmp.template.querySelector(`[data-ual-number-index="${index}"]`);
 }
@@ -410,24 +392,6 @@ const applicationValid = (cmp) => {
     return true;
 }
 
-const mockData = (cmp) => {
-    cmp.restLead.firstName = 'Peter';
-    cmp.restLead.lastName = 'Testcase';
-    cmp.restLead.email = 'pyao@bluewavesolar.com';
-    if (cmp.resiApplicationType) {
-        cmp.restLead.mobilePhone = 1231231234;
-    }
-    else {
-        cmp.restLead.businessPhone = 1231231234;
-    }
-    cmp.propertyAccount.utilityAccountLogs[0].utilityAccountNumber = '123';
-    cmp.propertyAccount.utilityAccountLogs[0].nameOnAccount = 'Peter Testcase';
-    cmp.propertyAccount.utilityAccountLogs[0].serviceStreet = '123 Main';
-    cmp.propertyAccount.utilityAccountLogs[0].serviceState = 'MA';
-    cmp.propertyAccount.utilityAccountLogs[0].serviceCity = 'Boston';
-    cmp.propertyAccount.utilityAccountLogs[0].servicePostalCode = cmp.zipinput;
-}
-
 export {
     getFinDocFileTypes,
     getUnderwritingHelpText,
@@ -439,6 +403,5 @@ export {
     validateServiceZipCode,
     applicationValid,
     onLoad,
-    resumeAppSetProduct,
     findDuplicateUAL
 }
