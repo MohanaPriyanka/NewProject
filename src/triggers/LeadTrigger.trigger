@@ -14,7 +14,7 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
         when AFTER_UPDATE {
             leadDispatcher.onAfterUpdate(Trigger.new, Trigger.oldMap);
             loanHandler.onAfterLeadUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
-            CSApplicationStatusEvaluator.publishEvent(Trigger.oldMap, Trigger.new);
+            CSApplicationStatusEventPublisher.publishEvent(Trigger.oldMap, Trigger.new);
         }
         when BEFORE_UPDATE {
             leadDispatcher.onBeforeUpdate(Trigger.new, Trigger.oldMap);
@@ -25,7 +25,7 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
         }
         when AFTER_INSERT {
            leadDispatcher.checkForDuplicates(Trigger.new);
-            CSApplicationStatusEvaluator.publishEvent(null, Trigger.new);
+            CSApplicationStatusEventPublisher.publishEvent(null, Trigger.new);
         }
     }
 }
