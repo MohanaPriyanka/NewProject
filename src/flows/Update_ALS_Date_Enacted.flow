@@ -14,9 +14,9 @@
             <targetReference>Assign_Error_Log</targetReference>
         </faultConnector>
         <inputParameters>
-            <name>allocationScheduleIds</name>
+            <name>currentAndPreviousScheduleZs</name>
             <value>
-                <elementReference>alsIds</elementReference>
+                <elementReference>currentAndPreviousALSIds</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -133,14 +133,14 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>alsIds</assignToReference>
+            <assignToReference>currentAndPreviousALSIds</assignToReference>
             <operator>Add</operator>
             <value>
                 <elementReference>Get_ALS.Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>alsIds</assignToReference>
+            <assignToReference>currentAndPreviousALSIds</assignToReference>
             <operator>Add</operator>
             <value>
                 <elementReference>replacedALSId</elementReference>
@@ -181,12 +181,19 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>User_chosen_ALS</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>toggleConfirmPreviousALS.value</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Replaced_ALS</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -373,8 +380,38 @@
         </connector>
         <fields>
             <name>txtConfirmReplacedALS</name>
-            <fieldText>&lt;p&gt;By updating the Date Enacted By Utility on the current ALS, we also need to update the previous ALS with the updated &quot;Date Retired by Utility&quot;.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please confirm that the ALS below is the correct &lt;b&gt;previous&lt;/b&gt; ALS.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;{!Get_Replaced_ALS.Name}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;ALS Id: {!Get_Replaced_ALS.Schedule_Z_Id__c}&lt;/p&gt;&lt;p&gt;Status: {!Get_Replaced_ALS.Status__c}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;By updating the Date Enacted By Utility on the current ALS, we also need to update the previous ALS with the updated &quot;Date Retired by Utility&quot;.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please confirm that the ALS below is the correct &lt;b&gt;previous&lt;/b&gt; ALS.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>txtPreviousALS</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;{!Get_Replaced_ALS.Name}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;ALS Id: {!Get_Replaced_ALS.Schedule_Z_Id__c}&lt;/p&gt;&lt;p&gt;Status: {!Get_Replaced_ALS.Status__c}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Get_Replaced_ALS.Id</leftValueReference>
+                    <operator>NotEqualTo</operator>
+                    <rightValue>
+                        <stringValue></stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>txtNoPreviousALS</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(240, 10, 10);&quot;&gt;NO PREVIOUS ALS FOUND&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Get_Replaced_ALS.Id</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>toggleConfirmPreviousALS</name>
@@ -412,6 +449,16 @@
             </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Get_Replaced_ALS.Id</leftValueReference>
+                    <operator>NotEqualTo</operator>
+                    <rightValue>
+                        <stringValue></stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>lookupALS</name>
@@ -450,12 +497,19 @@
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
-                <conditionLogic>and</conditionLogic>
+                <conditionLogic>or</conditionLogic>
                 <conditions>
                     <leftValueReference>toggleConfirmPreviousALS.value</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>Get_Replaced_ALS.Id</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -531,19 +585,19 @@
         <text>&lt;p&gt;Flow: Update ALS Date Enacted&lt;/p&gt;&lt;p&gt;Record: {!$Flow.CurrentRecord}&lt;/p&gt;&lt;p&gt;Message: {!$Flow.FaultMessage}&lt;/p&gt;</text>
     </textTemplates>
     <variables>
-        <name>alsIds</name>
-        <dataType>String</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
         <name>alsList</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Schedule_Z__c</objectType>
+    </variables>
+    <variables>
+        <name>currentAndPreviousALSIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>recordId</name>
