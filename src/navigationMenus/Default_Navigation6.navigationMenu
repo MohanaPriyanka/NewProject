@@ -11,10 +11,11 @@
         <type>InternalLink</type>
     </navigationMenuItem>
     <navigationMenuItem>
-        <label>Log Out</label>
+        <label>Logout</label>
         <position>2</position>
         <publiclyAvailable>false</publiclyAvailable>
-        <target>Logout</target>
-        <type>Event</type>
+        <target>https://bluewavememberportal.force.com/secur/logout.jsp</target>
+        <targetPreference>OpenExternalLinkInSameTab</targetPreference>
+        <type>ExternalLink</type>
     </navigationMenuItem>
 </NavigationMenu>
