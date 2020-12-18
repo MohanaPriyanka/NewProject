@@ -214,8 +214,8 @@ public class LeadServiceTestclass {
             Product_line__c = 'Community Solar',
             Product__c = csProduct.Id,
             Parcel_Zip__c = '12345',
-            Customer_type__c = 'Residential',
-            Application_Type__c = 'Residential',
+            Customer_type__c = 'Non-Residential',
+            Application_Type__c = 'Non-Residential',
             System_Assignment__c = 'Automatic - Assignment Order'));
         insert switchLead;
 
@@ -353,14 +353,14 @@ public class LeadServiceTestclass {
         System.assertNotEquals(null, convertedLead.ConvertedAccountId, 'Converted lead should have a ConvertedAccountId');
 
         Account convertedAccount = [
-            SELECT Id, Owner.Name, RecordType.Name
+            SELECT Id, Owner.Name, RecordType.Name, Name
             FROM Account
             WHERE Id = :convertedLead.ConvertedAccountId
             LIMIT 1
         ];
 
         Account propAcct = [
-            SELECT Id, Send_Bills_Contact__c, RecordType.Name, Parent_Account__c
+            SELECT Id, Send_Bills_Contact__c, RecordType.Name, Parent_Account__c, Name
             FROM Account
             WHERE Lead__c = :convertedLead.Id AND RecordType.Name = 'Property'
             LIMIT 1
@@ -388,11 +388,13 @@ public class LeadServiceTestclass {
         //test converted account = parent account
         System.assertEquals('Parent Account', convertedAccount.RecordType.Name, 'Converted account should have a record type of Parent Account');
         System.assertEquals('API', convertedAccount.Owner.Name, 'Converted account should be owned by API user');
+        System.assertEquals('Switch Testcase', convertedAccount.Name, 'Parent Account should have Name of Customer, not Company');
 
         //Test property's parent account
         System.assertEquals(convertedAccount.Id, propAcct.Parent_Account__c, 'Property account should be the converted account');
         System.assertEquals(contact.Id, propAcct.Send_Bills_Contact__c, 'Property account Send Bills Contact should be the converted contact');
         System.assertEquals('Community Solar', contact.Product_Line__c, 'Converted contact should be assigned to the Community Solar product line');
+        System.assertEquals('Switch Comp', propAcct.Name, 'Property Account should have name of Company when Non-Residential');
 
         System.assertEquals(1, oppList.size(), 'Lead conversion should have produced a single opportunity');
         System.assertEquals('Albany Post Rd Solar Farm', oppList[0].Shared_Solar_System__r.Name, 'Opportunity should be assigned an SSS with the same utility as the converted lead');
