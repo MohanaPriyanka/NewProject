@@ -13,7 +13,11 @@ public inherited sharing class SharedSolarSystems {
     @TestVisible
     private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
     private static PartnerSSSEligibilitySelector eligibilitySelector = new PartnerSSSEligibilitySelector();
-
+    private static final List<String> Ordered_Moody_Risk_Scores = new List<String>{
+        	'Aaa', 'Aa1', 'Aa2', 'Aa3', 'A1', 'A2', 'A3', 
+            'Baa1', 'Baa2', 'Baa3', 'Ba1', 'Ba2', 'Ba3', 'B1', 'B2', 'B3', 
+            'Caa1', 'Caa2', 'Ca', 'C'};
+    
     public SharedSolarSystems(List<Shared_Solar_System__c> records) {
         this.records = records;
     }
@@ -122,7 +126,7 @@ public inherited sharing class SharedSolarSystems {
         }
         return contractsToCFDs;
     }
-
+    
     /**
      * @description Gets the qualified systems for this lead, sorted by the lead's System Assignment setting
      * @param lead Lead being qualified
@@ -159,22 +163,41 @@ public inherited sharing class SharedSolarSystems {
     }
 
     private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
-        return (sss.Utility__c == lead.Utility_relationship__c &&
-            SharedSolarSystems.loadZoneInServiceTerritory(lead.LoadZone__c, sss) &&
-            SharedSolarSystems.isPartnerEligible(lead.Partner_Lookup__c, sss) &&
-            (lead.Product__c == null || sss.Product__c == lead.Product__c) &&
-            meetsUnderwritingCriteria(lead, sss, creditScore));
+        return (sss.Utility__c == lead.Utility_relationship__c && 
+                SharedSolarSystems.loadZoneInServiceTerritory(lead.LoadZone__c, sss) && 
+                SharedSolarSystems.isPartnerEligible(lead.Partner_Lookup__c, sss) && 
+                (lead.Product__c == null || sss.Product__c == lead.Product__c) && 
+                meetsUnderwritingCriteria(lead, sss, creditScore));
     }
-
+    
     private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
         if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
             creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
         }
-        return (lead.Underwriting_Criteria__c == 'FICO' && sss.Available_SMB_Underwriting_Method_FICO__c && creditScore >= sss.Credit_Score_Requirement__c)
-            || (lead.Underwriting_Criteria__c == 'Financial Review' && sss.Available_SMB_Underwriting_Method_Docs__c)
-            || (lead.Underwriting_Criteria__c != 'FICO' && lead.Underwriting_Criteria__c != 'Financial Review');
+        switch on (lead.Underwriting_Criteria__c) {
+            when 'FICO' {
+                return meetsFICOUnderwriting(lead, sss, creditScore);
+            } when 'Financial Review' {
+                return meetsFinancialReviewUnderwriting(lead, sss);
+            }
+        }
+        return true;
+    }
+    
+    private Boolean meetsFICOUnderwriting(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+        if (!sss.Available_SMB_Underwriting_Method_FICO__c) {
+            return false;
+        }
+        return creditScore >= sss.Credit_Score_Requirement__c;
     }
 
+    private Boolean meetsFinancialReviewUnderwriting(Lead lead, Shared_Solar_System__c sss) {
+        if (!sss.Available_SMB_Underwriting_Method_Docs__c || lead.Moody_s_Risk_Calc__c == null || sss.RiskCalc_Minimum__c == null) {
+            return false;
+        }
+        return Ordered_Moody_Risk_Scores.indexOf(lead.Moody_s_Risk_Calc__c) <= Ordered_Moody_Risk_Scores.indexOf(sss.RiskCalc_Minimum__c);
+    }
+    
     /**
      * @description Removes systems from the sssList that don't have a Partner_SSS_Eligibility__c for the given partner id
      * @param partnerId Partner with which to check eligibility
