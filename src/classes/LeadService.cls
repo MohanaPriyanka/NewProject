@@ -59,6 +59,7 @@ public without sharing class LeadService {
             LIMIT 1
         ];
 
+        convertedAccount.Name = lead.FirstName + ' ' + lead.LastName;
         convertedAccount.ShippingStreet = lead.Street;
         convertedAccount.ShippingCity = lead.City;
         convertedAccount.ShippingState = lead.State;
