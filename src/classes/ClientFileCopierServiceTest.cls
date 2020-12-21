@@ -50,13 +50,6 @@ public with sharing class ClientFileCopierServiceTest {
         ];
         // 7 Contracts, 1 doesn't have any files, 2 others have 2 UASes each = 7 - 1 + 2 = 8
         System.assertEquals(8, afterFiles.size());
-
-        List<Error_Log__c> logs = [
-            SELECT Id
-            FROM Error_Log__c
-            WHERE Method__c = 'checkForMissingFiles'
-        ];
-        System.assert(logs.size() > 0);
     }
 
     @IsTest
@@ -163,8 +156,6 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockContractSelector extends MockProvider {
-        MockContractSelector() {
-        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String contractsAsString = '[' +
                 '{"Id":"8002f000000GebbAAC"},' + // has no files
@@ -185,8 +176,6 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockOppSelector extends MockProvider {
-        MockOppSelector() {
-        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String oppAsString = '[' +
                 '{"Id":"0062f00000EllRvAAJ","Personal_Credit_Report2__c":"a0Fj000000EYyV1EAL"},' +
@@ -205,8 +194,6 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockContentDocumentOpportunitySelector extends MockProvider {
-        MockContentDocumentOpportunitySelector() {
-        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String docLinkAsString = '[' +
                 '{"Id":"06A2f000009rUqOEAU","LinkedEntityId":"a0Fj000000EYyZ5EAL","ContentDocumentId":"0692f000001g4u2AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001eitDAAQ","LatestPublishedVersion":{"Title":"LASERCA_FileName"}}},' +
@@ -225,18 +212,16 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockContentDocumentContractSelector extends MockProvider {
-        MockContentDocumentContractSelector() {
-        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String docLinkAsString = '[' +
-                '{"Id":"06A2f000004rUrQEAU","LinkedEntityId":"8002f000000GevzAAC","ContentDocumentId":"0692f000001g9v4AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Title":"Credit Allocation Agreement"}}},' +
-                '{"Id":"06A2f000004rUrLEAU","LinkedEntityId":"8002f000000Gew0AAC","ContentDocumentId":"0692f000001g9uzAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuAAAQ","LatestPublishedVersion":{"Title":"Credit Allocation Agreement"}}},' +
-                '{"Id":"06A2f000004rUrGEAU","LinkedEntityId":"8002f000000Gew1AAC","ContentDocumentId":"0692f000001g9uuAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giu5AAA","LatestPublishedVersion":{"Title":"Credit Allocation Agreement"}}},' +
-                '{"Id":"06A2f000004rUr1EAE","LinkedEntityId":"8002f000000Gew2AAC","ContentDocumentId":"0692f000001g9ukAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitvAAA","LatestPublishedVersion":{"Title":"Credit Allocation Agreement"}}},' +
-                '{"Id":"06A2f000004rUrNEAE","LinkedEntityId":"8002f000000Gew2AAC","ContentDocumentId":"0692f000001g9ujAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitbAAA","LatestPublishedVersion":{"Title":"Disclosure Form"}}},' +
-                '{"Id":"06A2f000004rUqrEAE","LinkedEntityId":"8002f000000GewFAAS","ContentDocumentId":"0692f000001g9uVAAQ","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitgAAA","LatestPublishedVersion":{"Title":"Credit Allocation Agreement"}}},' +
-                '{"Id":"06A2f000004rUqXEAE","LinkedEntityId":"8002f000000GewFAAS","ContentDocumentId":"0692f000001g9uxAAQ","ContentDocument":{"LatestPublishedVersionId":"0682f000001gittAAA","LatestPublishedVersion":{"Title":"Disclosure Form"}}},' +
-                '{"Id":"06A2f000004rUqOEAU","LinkedEntityId":"8002f000000GewNAAS","ContentDocumentId":"0692f000001g9u2AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitDAAQ","LatestPublishedVersion":{"Title":"Credit Allocation Agreement"}}}' +
+                '{"Id":"06A2f000004rUrQEAU","LinkedEntityId":"8002f000000GevzAAC","ContentDocumentId":"0692f000001g9v4AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}},' +
+                '{"Id":"06A2f000004rUrLEAU","LinkedEntityId":"8002f000000Gew0AAC","ContentDocumentId":"0692f000001g9uzAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuAAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}},' +
+                '{"Id":"06A2f000004rUrGEAU","LinkedEntityId":"8002f000000Gew1AAC","ContentDocumentId":"0692f000001g9uuAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giu5AAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}},' +
+                '{"Id":"06A2f000004rUr1EAE","LinkedEntityId":"8002f000000Gew2AAC","ContentDocumentId":"0692f000001g9ukAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitvAAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}},' +
+                '{"Id":"06A2f000004rUrNEAE","LinkedEntityId":"8002f000000Gew2AAC","ContentDocumentId":"0692f000001g9ujAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitbAAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
+                '{"Id":"06A2f000004rUqrEAE","LinkedEntityId":"8002f000000GewFAAS","ContentDocumentId":"0692f000001g9uVAAQ","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitgAAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}},' +
+                '{"Id":"06A2f000004rUqXEAE","LinkedEntityId":"8002f000000GewFAAS","ContentDocumentId":"0692f000001g9uxAAQ","ContentDocument":{"LatestPublishedVersionId":"0682f000001gittAAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
+                '{"Id":"06A2f000004rUqOEAU","LinkedEntityId":"8002f000000GewNAAS","ContentDocumentId":"0692f000001g9u2AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitDAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}}' +
                 ']';
 
             switch on methodCall.stubbedMethodName {
@@ -249,8 +234,6 @@ public with sharing class ClientFileCopierServiceTest {
     }
 
     public class MockUASSelector extends MockProvider {
-        MockUASSelector() {
-        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String uasesAsString = '[' +
                 '{"Id":"a1d2f000000FYqDAAW","Name":"0002340","Opportunity__c":"0062f00000EllRvAAJ","Opportunity__r":{"Name":"Joshua Phillips","Personal_Credit_Report2__c":"a0Fj000000EYyV1EAL","ContractId":"8002f000000GevzAAC","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8002f000000GevzAAC","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0000234"}},' +
@@ -280,22 +263,21 @@ public with sharing class ClientFileCopierServiceTest {
         }
     }
 
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     public class MockContentVersionSelector extends MockProvider {
-        MockContentVersionSelector() {
-        }
         public override Object handleMethodCall(MethodCall methodCall) {
-            ContentVersion fileOne = new ContentVersion(Id = '0682f000001giuFAAQ', ContentDocumentId = '0692f000001g9v4AAA', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileTwo = new ContentVersion(Id = '0682f000001giuAAAQ', ContentDocumentId = '0692f000001g9uzAAA', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileThree = new ContentVersion(Id = '0682f000001giu5AAA', ContentDocumentId = '0692f000001g9uuAAA', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileFour = new ContentVersion(Id = '0682f000001gitvAAA', ContentDocumentId = '0692f000001g9ukAAA', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileFive = new ContentVersion(Id = '0682f000001gitbAAA', ContentDocumentId = '0692f000001g9ujAAA', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileSix = new ContentVersion(Id = '0682f000001gitgAAA', ContentDocumentId = '0692f000001g9uVAAQ', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileSeven = new ContentVersion(Id = '0682f000001gittAAA', ContentDocumentId = '0692f000001g9uxAAQ', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileTweleve = new ContentVersion(Id = '0682f000001gitDAAQ', ContentDocumentId = '0692f000001g9u2AAA', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileEighteen = new ContentVersion(Id = '0682f000001eitDAAQ', ContentDocumentId = '0692f000001g4u2AAA', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileNineteen = new ContentVersion(Id = '0682f000001fitDAAQ', ContentDocumentId = '0692f000001g5u2AAA', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileTwentyTwo = new ContentVersion(Id = '0682f000001jitDAAQ', ContentDocumentId = '0692f000001g8u2AAA', VersionData = Blob.valueOf('textBody'));
-            ContentVersion fileTwentyThree = new ContentVersion(Id = '0682f000001kitDAAQ', ContentDocumentId = '0692f000001g0u2AAA', VersionData = Blob.valueOf('textBody'));
+            ContentVersion fileOne = new ContentVersion(Id = '0682f000001giuFAAQ', ContentDocumentId = '0692f000001g9v4AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileTwo = new ContentVersion(Id = '0682f000001giuAAAQ', ContentDocumentId = '0692f000001g9uzAAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileThree = new ContentVersion(Id = '0682f000001giu5AAA', ContentDocumentId = '0692f000001g9uuAAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileFour = new ContentVersion(Id = '0682f000001gitvAAA', ContentDocumentId = '0692f000001g9ukAAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileFive = new ContentVersion(Id = '0682f000001gitbAAA', ContentDocumentId = '0692f000001g9ujAAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileSix = new ContentVersion(Id = '0682f000001gitgAAA', ContentDocumentId = '0692f000001g9uVAAQ', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileSeven = new ContentVersion(Id = '0682f000001gittAAA', ContentDocumentId = '0692f000001g9uxAAQ', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileTweleve = new ContentVersion(Id = '0682f000001gitDAAQ', ContentDocumentId = '0692f000001g9u2AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileEighteen = new ContentVersion(Id = '0682f000001eitDAAQ', ContentDocumentId = '0692f000001g4u2AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileNineteen = new ContentVersion(Id = '0682f000001fitDAAQ', ContentDocumentId = '0692f000001g5u2AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileTwentyTwo = new ContentVersion(Id = '0682f000001jitDAAQ', ContentDocumentId = '0692f000001g8u2AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileTwentyThree = new ContentVersion(Id = '0682f000001kitDAAQ', ContentDocumentId = '0692f000001g0u2AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
 
             Map<Id, ContentVersion> cvMap = new Map<Id, ContentVersion>();
             cvMap.put(fileOne.Id, fileOne);

@@ -94,7 +94,8 @@ public without sharing class ContractMigrationService {
             ContentLocation = 'S',
             VersionData = fileAttach.Body,
             Title = fileAttach.Name,
-            PathOnClient = '/' + fileAttach.Name
+            PathOnClient = '/' + fileAttach.Name,
+            Signing_Status__c = 'Countersigned'
         );
         fileToContractMap.put(newContract.Id, version);
     }

@@ -168,6 +168,11 @@ const postProcessContractDocs = (component, contracts) => {
         if (contract.title.endsWith('.pdf')) {
             contract.title = contract.title.slice(0,-4);
         }
+        // With W-021302, we add (Review), (Signed) or (Countersigned) to the end of filenames, that we can remove
+        // for consistency
+        if (contract.title.indexOf(' (') !== -1) {
+            contract.title = contract.title.substring(0, contract.title.indexOf(' ('));
+        }
         if (contract.title === tcTitle || contract.title === csaTitle) {
             if (!csAgreementLoaded) {
                 csAgreementLoaded = true;

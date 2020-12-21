@@ -40,7 +40,7 @@ public inherited sharing class ContentDocumentSelector {
         List<Id> entityIdList = new List<Id>(entityIds);
         return [
             SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate,
-                ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title
+                ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.Signing_Status__c
             FROM ContentDocumentLink
             WHERE LinkedEntityId IN :entityIdList
             ORDER BY ContentDocument.CreatedDate DESC
@@ -54,7 +54,7 @@ public inherited sharing class ContentDocumentSelector {
             FROM ContentDocumentLink
             WHERE LinkedEntityId = : transfer.Id
         ]){
-            contentDocIds.add(docLInk.ContentDocumentId);
+            contentDocIds.add(docLink.ContentDocumentId);
         } 
 
         ContentDocument latestTransferSheet = [
@@ -76,14 +76,6 @@ public inherited sharing class ContentDocumentSelector {
             LIMIT 1
         ];
         return versionList[0].ContentDocumentId;
-    }
-
-    public List<ContentDocument> getContentDocsFromContentVersions(Set<Id> contentVersionIds) {
-        return [
-            SELECT ContentSize, CreatedDate, LatestPublishedVersion.Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData
-            FROM ContentDocument
-            WHERE LatestPublishedVersion.Id = :contentVersionIds
-        ];
     }
 
     public List<ContentDocument> getLeadDocsCreatedWithinRange(Datetime startDate, Datetime endDate) {
