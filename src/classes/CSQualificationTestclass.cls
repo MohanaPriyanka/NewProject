@@ -99,7 +99,8 @@ public class CSQualificationTestclass {
             junction1, junction2, junction3
         };
 
-        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'Albany Post Rd',
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
+            Name = 'Albany Post Rd',
             Service_Territory__c = 'Hudson Valley',
             Service_Territories__c = 'Hudson Valley',
             Open__c = true,
@@ -116,7 +117,8 @@ public class CSQualificationTestclass {
             Product__c = vderProduct.Id,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Available_SMB_Underwriting_Method_FICO__c = true,
-            Available_SMB_Underwriting_Method_Docs__c = true
+            Available_SMB_Underwriting_Method_Docs__c = true,
+            RiskCalc_Minimum__c = 'C'
         );
         insert sss1;
         insert SharedSolarSystemsTest.getPartnerEligibilities(sss1, partnerAccount);
@@ -146,7 +148,8 @@ public class CSQualificationTestclass {
             Phone = '1231231234',
             Customer_type__c = 'Residential',
             Status = 'Sales Qualified',
-            Partner_Lookup__c = partner.Id
+            Partner_Lookup__c = partner.Id,
+            Moody_s_Risk_Calc__c = 'Baa1'
         );
 
         Database.DMLOptions dmo = new Database.DMLOptions();
@@ -166,7 +169,7 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c 
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -189,7 +192,7 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -209,7 +212,7 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -232,7 +235,7 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -253,7 +256,7 @@ public class CSQualificationTestclass {
         Test.stopTest();
 
         Lead checkLead = [
-            SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
+            SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c, 
                 Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Personal_Credit_Report__r.Approval_Status__c
             FROM Lead
             WHERE Id = :lead.Id
@@ -301,7 +304,8 @@ public class CSQualificationTestclass {
 
         Lead lead = new Lead(
             Id = leadId,
-            Personal_Credit_Report__c = pcr.Id
+            Personal_Credit_Report__c = pcr.Id, 
+            Moody_s_Risk_Calc__c = 'Aaa'
         );
         update lead;
     }
@@ -310,7 +314,8 @@ public class CSQualificationTestclass {
     @IsTest
     private static void testFinancialReviewQualification() {
         Lead lead = [
-            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, 
+            	Moody_s_Risk_Calc__c
             FROM Lead
             LIMIT 1
         ];
@@ -324,7 +329,8 @@ public class CSQualificationTestclass {
         Financial_Underwriting_Document__c fud = new Financial_Underwriting_Document__c(Lead__c = lead.Id);
         insert fud;
         lead = [
-            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, 
+            	Moody_s_Risk_Calc__c, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -349,7 +355,8 @@ public class CSQualificationTestclass {
         );
         insert cdl;
         lead = [
-            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, Underwriting_Criteria__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, 
+            	Moody_s_Risk_Calc__c, Underwriting_Criteria__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -360,7 +367,8 @@ public class CSQualificationTestclass {
         lead.Utility_relationship__c = newUtility.Id;
         update lead;
         lead = [
-            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Moody_s_Risk_Calc__c, 
+            	Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             LIMIT 1
         ];
@@ -373,7 +381,7 @@ public class CSQualificationTestclass {
     public static void testQualificationWidgetWithInputs() {
         List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
         Lead switchLead = [
-            SELECT Id, Product__c, Parcel_Zip__c
+            SELECT Id, Product__c, Parcel_Zip__c, Moody_s_Risk_Calc__c
             FROM Lead
             LIMIT 1
         ];
@@ -408,7 +416,7 @@ public class CSQualificationTestclass {
 
         List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
         Lead switchLead = [
-            SELECT Id, Product__c, Parcel_Zip__c
+            SELECT Id, Product__c, Parcel_Zip__c, Moody_s_Risk_Calc__c 
             FROM Lead
             LIMIT 1
         ];
@@ -433,7 +441,7 @@ public class CSQualificationTestclass {
     public static void testQualificationWidgetNoMatch() {
         List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
         Lead switchLead = [
-            SELECT Id, Product__c, Parcel_Zip__c
+            SELECT Id, Product__c, Parcel_Zip__c, Moody_s_Risk_Calc__c 
             FROM Lead
             LIMIT 1
         ];
@@ -456,7 +464,7 @@ public class CSQualificationTestclass {
     @IsTest
     public static void closeReportMissingCasesTest() {
         Lead switchLead = [
-            SELECT Id,Name,Parent_Account__c
+            SELECT Id, Name, Parent_Account__c, Moody_s_Risk_Calc__c 
             FROM Lead
             LIMIT 1
         ];
