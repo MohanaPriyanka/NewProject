@@ -13,7 +13,7 @@ public inherited sharing class SharedSolarSystems {
     @TestVisible
     private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
     private static PartnerSSSEligibilitySelector eligibilitySelector = new PartnerSSSEligibilitySelector();
-    private static final List<String> Ordered_Moody_Risk_Scores = new List<String>{
+    private static final List<String> ORDERED_MOODY_RISK_SCORES = new List<String>{
         	'Aaa', 'Aa1', 'Aa2', 'Aa3', 'A1', 'A2', 'A3', 
             'Baa1', 'Baa2', 'Baa3', 'Ba1', 'Ba2', 'Ba3', 'B1', 'B2', 'B3', 
             'Caa1', 'Caa2', 'Ca', 'C'};
@@ -171,9 +171,6 @@ public inherited sharing class SharedSolarSystems {
     }
     
     private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
-        if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
-            creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
-        }
         switch on (lead.Underwriting_Criteria__c) {
             when 'FICO' {
                 return meetsFICOUnderwriting(lead, sss, creditScore);
@@ -185,6 +182,9 @@ public inherited sharing class SharedSolarSystems {
     }
     
     private Boolean meetsFICOUnderwriting(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+        if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
+            creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
+        }
         if (!sss.Available_SMB_Underwriting_Method_FICO__c) {
             return false;
         }
@@ -195,7 +195,7 @@ public inherited sharing class SharedSolarSystems {
         if (!sss.Available_SMB_Underwriting_Method_Docs__c || lead.Moody_s_Risk_Calc__c == null || sss.RiskCalc_Minimum__c == null) {
             return false;
         }
-        return Ordered_Moody_Risk_Scores.indexOf(lead.Moody_s_Risk_Calc__c) <= Ordered_Moody_Risk_Scores.indexOf(sss.RiskCalc_Minimum__c);
+        return ORDERED_MOODY_RISK_SCORES.indexOf(lead.Moody_s_Risk_Calc__c) <= ORDERED_MOODY_RISK_SCORES.indexOf(sss.RiskCalc_Minimum__c);
     }
     
     /**
