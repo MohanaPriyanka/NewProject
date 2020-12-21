@@ -162,4 +162,17 @@ public with sharing class AccountsSelectorTest {
             'Expected to handle selecting a partner account that doesn\'t exist');
     }
 
+    @IsTest
+    public static void testGetRetiredAccounts() {
+        Id propertyRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
+        Account propertyAccount = new Account(
+            RecordTypeId = propertyRecordTypeId,
+            Name = 'Test Account',
+            Date_Removed_from_Project__c = System.today()
+        );
+        insert propertyAccount;
+        System.assertNotEquals(null, new AccountsSelector().getRetiredAccounts(new Set<Id>{propertyAccount.Id}),
+            'Expected to return Accounts with Date Removed from Project');
+    }
+
 }

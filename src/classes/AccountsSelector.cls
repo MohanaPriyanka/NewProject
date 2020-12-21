@@ -214,4 +214,14 @@ public without sharing class AccountsSelector {
         }
         return accounts != null && accounts.size() > 0 ? accounts[0] : null;
     }
+
+    public List<Account> getRetiredAccounts(Set<Id> acctIds) {
+        return [
+            SELECT Id, Date_Removed_from_Project__c,
+            (SELECT Id, Date_Removed_from_Project__c FROM Opportunities)
+            FROM Account
+            WHERE Date_Removed_from_Project__c != null
+            AND Id IN :acctIds
+        ];
+    }
 }
