@@ -47,12 +47,12 @@ private class InvocableDateEnactedALSUpdateTestclass {
         System.assertEquals(Date.newInstance(2020, 01, 12), checkAccounts[0].Date_Removed_from_Project__c, 'Account is updated with Date Removed from Project from Opp');
     }
 
-    /**
+    /**************
      * SYSTEM TEST
-    */
+    ***************/
 
     @IsTest
-    static void testHappyPath() {
+    static void testSystemTest() {
         Shared_Solar_System__c sss = [
             SELECT Id
             FROM Shared_Solar_System__c
@@ -61,6 +61,7 @@ private class InvocableDateEnactedALSUpdateTestclass {
 
         Date oldRetiredDate = Date.newInstance(2020, 01, 08);
         Date newRetiredDate = Date.newInstance(2020, 01, 12);
+        String newEnactedDateString = '01/12/2020';
 
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
@@ -104,13 +105,6 @@ private class InvocableDateEnactedALSUpdateTestclass {
             );
         insert uas;
 
-        Schedule_Z__c enactedALS = new Schedule_Z__c(
-            Name = 'Enacted ALS',
-            Shared_Solar_System__c = sss.Id,
-            Status__c = 'Enacted By Utility',
-            Date_Enacted_by_Utility__c = oldRetiredDate
-        );
-
         Schedule_Z__c billingALS = new Schedule_Z__c(
             Name = 'Billing ALS',
             Shared_Solar_System__c = sss.Id,
@@ -118,8 +112,7 @@ private class InvocableDateEnactedALSUpdateTestclass {
             Date_Schedule_Z_Retired_by_Utility__c = oldRetiredDate
         );
 
-        insert new List<Schedule_Z__c>{enactedALS, billingALS};
-        List<Id> alsList = new List<Id>{enactedALS.Id, billingALS.Id};
+        insert billingALS;
 
         Schedule_Z_Subscription__c alss = new Schedule_Z_Subscription__c(
             Schedule_Z__c = billingALS.Id,
@@ -130,10 +123,8 @@ private class InvocableDateEnactedALSUpdateTestclass {
         );
         insert alss;
 
-        enactedALS.Date_Enacted_by_Utility__c = newRetiredDate;
-        update enactedALS;
-
-        InvocableDateEnactedALSUpdate.updateDateRemovedFromProject(new List<List<Id>>{alsList});
+        List<String> flowParameters = new List<String>{String.valueOf(billingALS.Id), newEnactedDateString};
+        InvocableDateEnactedALSUpdate.updateDateRemovedFromProject(new List<List<String>>{flowParameters});
 
         Schedule_Z__c checkALS = [
             SELECT Id, Date_Schedule_Z_Retired_by_Utility__c

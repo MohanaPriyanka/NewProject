@@ -15,18 +15,26 @@ public with sharing class InvocableDateEnactedALSUpdate {
     /**
      * @description Invocable Method called from "Update ALS Date Enacted" that receives the current and
      * previous ALS.
-     * @param currentAndPreviousScheduleZs List of ALSes that contains the current ALS that is updating
-      * its "Date Enacted by Utility"  and the previous ALS that also needs its "Date Retired by Utility" updated
+     * @param params 2 paramaters passed from Flow: 1. Id for Replaced Allocation Schedule 2. New "Date Enacted by Utility"
+     * that will be used to update all "Date Removed from Projects" for related records
      */
     @InvocableMethod(Label='Update Replaced ALS')
-    public static void updateDateRemovedFromProject(List<List<Id>> currentAndPreviousScheduleZs) {
-        Set<Id> alsIds = new Set<Id>(currentAndPreviousScheduleZs[0]);
-        List<Schedule_Z__c> scheduleZS = new AllocationScheduleSelector().selectAll(alsIds);
-        if (scheduleZS.size() != 2) {
+    public static void updateDateRemovedFromProject(List<List<String>> params) {
+        Id replacedScheduleZId;
+        Date newRetiredDate;
+        for (String param : params[0]) {
+            if (param.length() == 18) {
+                replacedScheduleZId = param;
+            } else {
+                newRetiredDate = Date.parse(param);
+            }
+        }
+        Schedule_Z__c replacedScheduleZ = new AllocationScheduleSelector().selectOne(replacedScheduleZId);
+        if (replacedScheduleZ == null) {
             return;
         }
         InvocableDateEnactedALSUpdate invocableService = new InvocableDateEnactedALSUpdate();
-        invocableService.handleDateRemovedFromProject(scheduleZS);
+        invocableService.handleDateRemovedFromProject(replacedScheduleZ, newRetiredDate);
     }
 
     /**
@@ -36,36 +44,26 @@ public with sharing class InvocableDateEnactedALSUpdate {
      *          - Do not want to change the Date Removed From Project on the UASes that were finalled (they get their Date Removed From Project from their finalled UAL, not the ALS)
      *      - Reevaluate Opportunities to make sure they have the MAX(Date Removed From Project) from their UASes
      *      - Reevaluate Property Accounts to make sure they have the MAX(Date Removed From Project) from their Opps
-     * @param currentAndPreviousScheduleZs Allocation Schedules to update and find related records
+     * @param replacedScheduleZ  Replaced Allocation Schedule
+     * @param newRetiredDate  New "Date Enacted by Utility" that will be used to update all "Date Removed from Projects" for related records Allocation Schedules to update and find related records
      */
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    public void handleDateRemovedFromProject(List<Schedule_Z__c> currentAndPreviousScheduleZs) {
-        Date oldRetiredDate;
-        Date newRetiredDate;
-        Id replacedScheduleZId;
-        for (Schedule_Z__c als : currentAndPreviousScheduleZs) {
-            if (als.Status__c == 'Replaced' || als.Status__c == 'Billing') {
-                oldRetiredDate = als.Date_Schedule_Z_Retired_by_Utility__c;
-                replacedScheduleZId= als.Id;
-            } else if (als.Status__c == 'Enacted by Utility') {
-                newRetiredDate = als.Date_Enacted_by_Utility__c;
-            }
-        }
-
+    public void handleDateRemovedFromProject(Schedule_Z__c replacedScheduleZ, Date newRetiredDate) {
+        Date oldRetiredDate = replacedScheduleZ.Date_Schedule_Z_Retired_by_Utility__c;
         Schedule_Z__c replacedALS = new Schedule_Z__c(
-            Id = replacedScheduleZId,
+            Id = replacedScheduleZ.Id,
             Date_Schedule_Z_Retired_by_Utility__c = newRetiredDate
         );
 
         Savepoint sp = Database.setSavepoint();
         try {
-            update findRetiredUASes(replacedScheduleZId, oldRetiredDate, newRetiredDate);
+            update findRetiredUASes(replacedScheduleZ.Id, oldRetiredDate, newRetiredDate);
             update findRetiredOpportunities();
             update findRetiredAccounts();
             update replacedALS;
         } catch (Exception e ) {
             Database.rollback(sp);
-            Logger.logLater('InvocableDateEnactedALSUpdate', 'updateDateRemovedFromProject', 'Failed to update related UASes, Opps, and Accounts for Replaced ALS: ' + replacedScheduleZId + '; ' +
+            Logger.logLater('InvocableDateEnactedALSUpdate', 'updateDateRemovedFromProject', 'Failed to update related UASes, Opps, and Accounts for Replaced ALS: ' + replacedScheduleZ.Id + '; ' +
              + e.getMessage() + '; ' + e.getStackTraceString());
         }
         Logger.flushLogs();
@@ -73,7 +71,7 @@ public with sharing class InvocableDateEnactedALSUpdate {
 
     @TestVisible
     private List<Utility_Account_Subscription__c> findRetiredUASes(Id replacedScheduleZId, Date oldRetiredDate, Date newRetiredDate) {
-        LIst<Utility_Account_Subscription__c> uasesToUpdate = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> uasesToUpdate = new List<Utility_Account_Subscription__c>();
         for (Schedule_Z_Subscription__c szs : szsSelector.getRetiredALSSFromALS(replacedScheduleZId)) {
             // Only want to update the UASes that were removed from ALS - not UASes that were finalled and therefore
             // got their "Date Removed From Project" from their UAL
