@@ -106,6 +106,35 @@
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>Signing_Status__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Set by Conga and ContractMigrationService to allow ClientFileCopierService to only copy Countersigned documents</inlineHelpText>
+        <label>Signing Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Review</fullName>
+                    <default>false</default>
+                    <label>Review</label>
+                </value>
+                <value>
+                    <fullName>Signed</fullName>
+                    <default>false</default>
+                    <label>Signed</label>
+                </value>
+                <value>
+                    <fullName>Countersigned</fullName>
+                    <default>false</default>
+                    <label>Countersigned</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>TagCsv</fullName>
     </fields>
     <fields>

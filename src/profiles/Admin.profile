@@ -552,6 +552,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContractMigrationService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ContractSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -8834,6 +8838,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ContentVersion.Signing_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract.ActivatedDate</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8920,6 +8929,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.Conga_Signed_Contract__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Conga_Signed_Template__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
