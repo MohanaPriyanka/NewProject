@@ -94,41 +94,22 @@ public without sharing class ClientFileCopierService {
         if (parentRecordIds.size() > 0) {
             docLinks = contentDocumentSelector.selectByLinkedEntitiesWithoutData(parentRecordIds);
             versionIdToLinkedEntityId = compareFileNameAndType(docLinks,docType);
-            checkForMissingFiles(parentRecordIds, versionIdToLinkedEntityId);
         }
         return versionIdToLinkedEntityId;
     }
 
-    private Map<Id,Id> compareFileNameAndType(List<ContentDocumentLink> docLinks, String docType){
+    private Map<Id,Id> compareFileNameAndType(List<ContentDocumentLink> docLinks, String docType) {
         Map<Id,Id> versionIdToLinkedEntityId = new Map<Id,Id>();
-        for (ContentDocumentLink link : docLinks){
+        for (ContentDocumentLink link : docLinks) {
             Boolean customerAgreement = docType == CUSTOMER_AGREEMENT  && link.ContentDocument.LatestPublishedVersion.Title.contains('Agreement');
             Boolean disclosure = docType == DISCLOSURE && link.ContentDocument.LatestPublishedVersion.Title.contains('Disclosure');
             Boolean creditReport = docType == CREDIT_REPORT;
-            if (customerAgreement || disclosure || creditReport){
+            Boolean countersigned = link.ContentDocument.LatestPublishedVersion.Signing_Status__c == 'Countersigned';
+            if ((countersigned && (customerAgreement || disclosure)) || creditReport) {
                 versionIdToLinkedEntityId.put(link.ContentDocument.LatestPublishedVersionId, link.LinkedEntityId);
             }
         }
         return versionIdToLinkedEntityId;
-    }
-
-    private void checkForMissingFiles(Set<Id> parentRecordIds, Map<Id,Id> versionIdToParentId){
-        Set<Id> parentIdsWithFiles = new Set<Id>();
-        Set<Id> parentIdsWithoutFiles = new Set<Id>();
-
-        for (Id linkedRecord : versionIdToParentId.values()){
-            parentIdsWithFiles.add(linkedRecord);
-        }
-        for (Id parentRecordId : parentRecordIds){
-            if (!parentIdsWithFiles.contains(parentRecordId)){
-                parentIdsWithoutFiles.add(parentRecordId);
-            }
-        }
-        Logger.logNow(
-            'ClientFileCopierService',
-            'checkForMissingFiles',
-            'No File Found For Opportunity or Contracts: ' + JSON.serialize(parentIdsWithoutFiles)
-        );
     }
 
     private Id createSupportingDocumentsFolder(Id assignmentAgreementId, String docType){
