@@ -2,7 +2,7 @@
  * Created by SarahRenfro on 11/15/2019.
  */
 @IsTest
-private class SubscriptionManagementServiceTest {
+public class SubscriptionManagementServiceTest {
     private static String sssId = 'a1J29000000tjOkEAI';
     @TestSetup
     public static void setupData() {

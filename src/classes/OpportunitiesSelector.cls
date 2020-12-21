@@ -227,4 +227,15 @@ public without sharing class OpportunitiesSelector {
         ];
         return CollectionUtil.multiMapByField(casesWithOpportunities, Case.Related_Opportunity__c);
     }
+
+    public List<Opportunity> selectRetiredOpportunities(Set<Id> oppIds) {
+        return [
+            SELECT Id, Name, AccountId, Date_Removed_from_Project__c,
+            (SELECT Id, Date_Removed_from_Project__c
+            FROM Utility_Account_Subscriptions__r)
+            FROM Opportunity
+            WHERE Id IN :oppIds
+            AND Date_Removed_from_Project__c != null
+        ];
+    }
 }

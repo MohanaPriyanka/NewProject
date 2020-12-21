@@ -277,4 +277,17 @@ public with sharing class OpportunitiesSelectorTest {
         OpportunitiesSelector selector = new OpportunitiesSelector();
         System.assert(selector.getAggregateOpportunitySubscriptions(oppIds).size() > 0);
     }
+
+    @IsTest
+    public static void testSelectRetiredOpportunities(){
+        Opportunity opp = [
+            SELECT Id, Date_Removed_from_Project__c
+            FROM Opportunity
+            LIMIT 1
+        ];
+        opp.Date_Removed_from_Project__c = System.today();
+        update opp;
+        System.assertNotEquals(null, new OpportunitiesSelector().selectRetiredOpportunities(new Set<Id>{opp.Id}),
+            'Expect a list of Opportunities with Date Removed From Project populated');
+    }
 }
