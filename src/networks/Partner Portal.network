@@ -26,6 +26,7 @@
     <enableUpDownVote>false</enableUpDownVote>
     <forgotPasswordTemplate>CSPartnerEmails/Partner_Portal_Password_Reset</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
+    <logoutUrl>https://bluewavememberportal.force.com/partnerportal</logoutUrl>
     <networkMemberGroups>
         <profile>Partner Portal Community Manager</profile>
         <profile>admin</profile>
