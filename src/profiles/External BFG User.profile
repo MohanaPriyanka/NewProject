@@ -667,14 +667,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>RecalculateUALCostController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecalculateUALCostControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ReferralCodeHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -12381,7 +12373,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Utility_Name__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -12396,7 +12388,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Utility_relationship__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -29954,6 +29946,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Transfer__c.Date_of_Transfer__c</field>
         <readable>false</readable>
@@ -30656,7 +30653,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Account__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -30726,7 +30723,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Lead__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>

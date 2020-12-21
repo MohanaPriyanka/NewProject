@@ -13,7 +13,7 @@ trigger CaseTrigger on Case ( before insert, after insert, after update, after d
             if (Trigger.isInsert) {
                 CaseEscalationHandler.linkTaskToCase(Trigger.new);
             }
-            CSApplicationStatusEvaluator.publishEvent(Trigger.oldMap, Trigger.new);
+            CSApplicationStatusEventPublisher.publishEvent(Trigger.oldMap, Trigger.new);
         } when BEFORE_INSERT {
             CaseEscalationHandler.findContactFromVM(Trigger.new);
         }

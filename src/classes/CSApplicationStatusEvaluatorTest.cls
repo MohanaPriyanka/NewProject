@@ -105,8 +105,31 @@ private with sharing class CSApplicationStatusEvaluatorTest {
     }
 
     @IsTest
+    private static void testScheduleOnLockedRow() {
+        Datetime testStarted = System.now();
+        useMocks();
+        List<Application_Status_Change__e> applicationStatusChanges = new List<Application_Status_Change__e>{
+            new Application_Status_Change__e(LeadId__c = Util.getFakeId(Lead.SObjectType))
+        };
+        List<CronTrigger> cronTriggers = [SELECT Id FROM CronTrigger WHERE CreatedDate >= :testStarted];
+        System.assertEquals(0, cronTriggers.size(), 'There should be no scheduled jobs created since this test started, but got: ' + cronTriggers);
+        Test.startTest();
+        CSApplicationStatusEvaluator evaluator = new CSApplicationStatusEvaluator(applicationStatusChanges);
+        evaluator.updatePartnerApplicationStatus();
+
+        cronTriggers = [SELECT Id, CronJobDetail.Name FROM CronTrigger WHERE CreatedDate >= :testStarted];
+        System.assertEquals(1, cronTriggers.size(), 'Should have scheduled the evaluator since the mock threw a Record Currently Unavailable exception');
+        System.assert(cronTriggers[0].CronJobDetail.Name.contains('ApplicationStatusChangeEvaluatorAutoSchedule'), 'Cron trigger name should contain auto schedule: ' + cronTriggers[0].CronJobDetail.Name);
+        Test.stopTest();
+        cronTriggers = [SELECT Id, CronJobDetail.Name FROM CronTrigger WHERE CreatedDate >= :testStarted AND Id != :cronTriggers[0].Id];
+        System.assertEquals(1, cronTriggers.size(), 'Expected the evaluator to schedule a new job if the record is still unavailable');
+    }
+
+    @IsTest
     private static void testStatusEvaluation() {
-        CSApplicationStatusEvaluator evaluator = new CSApplicationStatusEvaluator();
+        CSApplicationStatusEvaluator evaluator = new CSApplicationStatusEvaluator(null);
+        evaluator.oppIdToCaseMap = MultiMap.newListInstance();
+
         // Application Started Tests
         Lead lead = getLead(new LeadParams('{"status":"New"}'));
         System.assertEquals(CSApplicationStatusEvaluator.APPLICATION_STARTED, evaluator.registerStatusUpdate(lead).Partner_Application_Status__c,
@@ -158,6 +181,22 @@ private with sharing class CSApplicationStatusEvaluatorTest {
         System.assertEquals(CSApplicationStatusEvaluator.COMPLETE, evaluator.registerStatusUpdate(lead).Partner_Application_Status__c,
             'Expected a lead with a complete opp to be assigned Complete even if there is an open QC case: ' + JSON.serialize(lead));
 
+    }
+
+    @IsTest
+    private static void testPublisherErrorLogging() {
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'CSApplicationStatusEvaluator'];
+        System.assertEquals(0, errorLogs.size(), 'Expected no error logs to start');
+        Database.SaveResult sr = (Database.SaveResult)
+            JSON.deserialize('{' +
+                '"success":false,' +
+                '"errors":[{"message":"The number of published platform event messages exceeded the hourly publishing limit or the test limit for event messages published from an Apex test context.","statusCode":"LIMIT_EXCEEDED"}' +
+                ']}', Database.SaveResult.class);
+        List<Application_Status_Change__e> applicationStatusChanges = new List<Application_Status_Change__e>();
+        CSApplicationStatusEventPublisher.logErrors(new List<Database.SaveResult>{sr}, applicationStatusChanges);
+        errorLogs = [SELECT Id, Message__c FROM Error_Log__c WHERE Class__c = 'CSApplicationStatusEvaluator'];
+        System.assertEquals(1, errorLogs.size(), 'Expected to log the save result');
+        System.assert(errorLogs[0].Message__c.contains('exceeded the hourly publishing limit'), 'Should have included the error message, but got this: ' + errorLogs);
     }
 
     private class LeadParams {
@@ -245,9 +284,28 @@ private with sharing class CSApplicationStatusEvaluatorTest {
 
     @TestVisible
     private class MockUOW extends MockProvider {
-        public MockUOW(){}
         public override Object handleMethodCall(MethodCall methodCall) {
             throw new Util.BWException('Test exception');
         }
     }
+
+
+    /*************
+      *** MOCKS ***
+      *************/
+    public static void useMocks() {
+        CSApplicationStatusEvaluator.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new MockedLeadSelector());
+    }
+
+    public class MockedLeadSelector extends MockProvider {
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'getLeadsForPartnerApplicationStatus' {
+                    throw new QueryException('Record Currently Unavailable');
+                }
+            }
+            return null;
+        }
+    }
+
 }

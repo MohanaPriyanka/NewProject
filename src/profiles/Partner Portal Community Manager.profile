@@ -4111,14 +4111,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>RecalculateUALCostController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecalculateUALCostControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ReferralCodeHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -40558,7 +40550,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Shared_Solar_System_Name__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>

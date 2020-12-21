@@ -14,7 +14,7 @@ trigger OpportunityTrigger on Opportunity (before insert, after insert, before u
         when BEFORE_INSERT {
             opportunityTriggerHandler.onBeforeInsert(Trigger.new);
         } when AFTER_INSERT {
-            CSApplicationStatusEvaluator.publishEvent(null, Trigger.new);
+            CSApplicationStatusEventPublisher.publishEvent(null, Trigger.new);
         } when BEFORE_UPDATE {
             opportunityTriggerHandler.onBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
         } when AFTER_UPDATE {
@@ -23,9 +23,9 @@ trigger OpportunityTrigger on Opportunity (before insert, after insert, before u
             disbursalHandler.setContractDisbursalToReady(Trigger.new, Trigger.newMap, Trigger.oldMap);
             opportunityTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap);
             opportunityTriggerHandler.queueNMCTariffChange(Trigger.new, Trigger.oldMap);
-            CSApplicationStatusEvaluator.publishEvent(Trigger.oldMap, Trigger.new);
+            CSApplicationStatusEventPublisher.publishEvent(Trigger.oldMap, Trigger.new);
         } when AFTER_DELETE {
-            CSApplicationStatusEvaluator.publishEventAfterDelete(Trigger.old);
+            CSApplicationStatusEventPublisher.publishEventAfterDelete(Trigger.old);
         }
     }
 }

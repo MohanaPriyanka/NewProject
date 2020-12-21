@@ -109,6 +109,25 @@ public without sharing class CapacityService {
         }
     }
 
+    /**
+     * @description Provides a valid ZipcodeResponse to pass back to SSF for resume applications ONLY. Data provided
+     *              does not include SSS/Product/Capacity data since W-021427 for resumed applications (to mitigate bugs)
+     * @param zipCode ZIP Code of first UAL
+     * @param utilityId Utility ID previously selected during Lead creation / initial SSF application submission
+     * @param isFico Underwriting method set during Lead creation / initial SSF application submission
+     * @return ZipcodeResponse to pass back to SSF
+     */
+    public ZipcodeResponse getZipcodeResponseForResumeApp(String zipCode, String utilityId, Boolean isFico) {
+        ZipcodeResponse zipcodeResponse = new ZipcodeResponse();
+        zipcodeResponse.zipcode = zipCode;
+        setUtilitiesAndLoadZones(zipcodeResponse, utilityId);
+        zipcodeResponse.ficoUnderwriting = isFico;
+        zipcodeResponse.finDocsUnderwriting = !isFico;
+        zipcodeResponse.rateClasses = new Set<Rate_Class__c>(rateClassSelector.selectByUtilities(zipcodeResponse.utilityIds));
+        zipcodeResponse.utilityZipCodesServed = ZipcodeUtilitiesSelector.selectZipCodesServedByUtility(utilityId);
+        return zipcodeResponse;
+    }
+
     public class ZipcodeResponse {
         public String zipcode;
         public Set<Utility__c> utilities = new Set<Utility__c>();

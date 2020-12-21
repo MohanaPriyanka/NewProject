@@ -7,6 +7,10 @@
         <value xsi:nil="true"/>
     </values>
     <values>
+        <field>Continue_Application_Email_Template__c</field>
+        <value xsi:type="xsd:string">Test_Duplicate_Email_Send_1605639357489</value>
+    </values>
+    <values>
         <field>Default_Build__c</field>
         <value xsi:type="xsd:string">a2Sj0000000JsHkEAK</value>
     </values>

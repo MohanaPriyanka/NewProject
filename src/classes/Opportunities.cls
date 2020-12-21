@@ -6,6 +6,7 @@
 
 public inherited sharing class Opportunities {
     public List<Opportunity> records;
+    public static List<String> lostOpportunityStages = new List<String>{'Cancelled', 'Expired', 'DUPLICATE', 'Dead', 'Complete'};
     private static Integer systemBillGenerationGracePeriod;
 
     public Opportunities(List<Opportunity> sObjectList) {

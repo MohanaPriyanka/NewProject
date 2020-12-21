@@ -3354,14 +3354,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>RecalculateUALCostController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecalculateUALCostControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ReferralCodeHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -64850,7 +64842,7 @@
     </loginIpRanges>
     <loginIpRanges>
         <description>GSRP Americas 5</description>
-        <endAddress>204.4.182.24</endAddress>
+        <endAddress>204.4.182.27</endAddress>
         <startAddress>204.4.182.0</startAddress>
     </loginIpRanges>
     <loginIpRanges>

@@ -1168,6 +1168,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CommissionStructureSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CommissionStructureSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CommunitiesLandingController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3260,14 +3268,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>RecalculateUALCostController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecalculateUALCostControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ReferralCodeHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3345,6 +3345,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SharedSolarSystemHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SharedSolarSystemSharingServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -15541,6 +15545,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Commission_Structure__c.Cents_kW_DC_Up_Front__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Commission_Structure__c.Partner_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

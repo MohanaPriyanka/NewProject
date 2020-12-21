@@ -8,7 +8,7 @@
  *  Tested By: CSApplicationStatusEvaluatorTest
  */
 
-public without sharing class CSApplicationStatusEvaluator {
+public without sharing class CSApplicationStatusEvaluator implements Schedulable {
     @TestVisible private static final String APPLICATION_STARTED = 'Application Started';
     @TestVisible private static final String UNDER_REVIEW = 'Under Review';
     @TestVisible private static final String AWAITING_CUSTOMER_INFO = 'Awaiting Information Requested';
@@ -17,8 +17,9 @@ public without sharing class CSApplicationStatusEvaluator {
     private static final List<String> UNQUALIFIED_LEAD_STATUSES = new List<String>{'Unqualified', 'No Response', 'Lost', 'Expired'};
 
     private static CaseSelector caseSelector = new CaseSelector();
-    private static LeadSelector leadSelector = new LeadSelector();
+    @TestVisible private static LeadSelector leadSelector = new LeadSelector();
     private static OpportunitiesSelector opportunitySelector = new OpportunitiesSelector();
+    private List<Application_Status_Change__e> applicationStatusChanges;
     private List<Lead> leadsToEvaluate;
     @TestVisible private MultiMap oppIdToCaseMap;
     @TestVisible private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
@@ -28,109 +29,14 @@ public without sharing class CSApplicationStatusEvaluator {
     );
 
     /**
-     * @description Publishes an Application Status Event for Community Solar leads
-     * @param triggerOldMap Trigger.oldMap, or null if called from an insert
-     * @param triggerNew Trigger.new
-     */
-    public static void publishEvent(Map<Id, Lead> triggerOldMap, List<Lead> triggerNew) {
-        List<Application_Status_Change__e> applicationStatusChanges = new List<Application_Status_Change__e>();
-        for (Lead lead : triggerNew) {
-            if (lead.Product_line__c == 'Community Solar' &&
-                (triggerOldMap == null ||
-                    lead.Status != triggerOldMap.get(lead.Id).Status ||
-                    lead.Application_Complete_Date__c != triggerOldMap.get(lead.Id).Application_Complete_Date__c)) {
-                applicationStatusChanges.add(new Application_Status_Change__e(LeadId__c = lead.Id));
-            }
-        }
-        logErrors(EventBus.publish(applicationStatusChanges), applicationStatusChanges);
-    }
-
-    /**
-     * @description Publishes an Application Status Event after insert/update of a QC Case
-     * @param triggerOldMap Trigger.oldMap, or null if called from an insert
-     * @param triggerNew Trigger.new
-     */
-    public static void publishEvent(Map<Id, Case> triggerOldMap, List<Case> triggerNew) {
-        List<Application_Status_Change__e> applicationStatusChanges = new List<Application_Status_Change__e>();
-        for (Case triggerCase : triggerNew) {
-            if ((triggerOldMap == null && triggerCase.Category__c == 'QC') ||
-                (triggerOldMap != null && (triggerOldMap.get(triggerCase.Id).Category__c == 'QC' || triggerCase.Category__c == 'QC'))) {
-                applicationStatusChanges.add(new Application_Status_Change__e(CaseId__c = triggerCase.Id));
-            }
-        }
-        logErrors(EventBus.publish(applicationStatusChanges), applicationStatusChanges);
-    }
-
-    /**
-     * @description Publishes an Application Change Event after insert/update of any Opportunity
-     * @param triggerOldMap Trigger.oldMap or null if called from an insert
-     * @param triggerNew Trigger.new
-     */
-    public static void publishEvent(Map<Id, Opportunity> triggerOldMap, List<Opportunity> triggerNew) {
-        List<Application_Status_Change__e> applicationStatusChanges = new List<Application_Status_Change__e>();
-        for (Opportunity opportunity : triggerNew) {
-            applicationStatusChanges.add(new Application_Status_Change__e(OpportunityId__c = opportunity.Id));
-            if (triggerOldMap != null &&
-                triggerOldMap.get(opportunity.Id).Lead__c != opportunity.Lead__c) {
-                applicationStatusChanges.add(new Application_Status_Change__e(LeadId__c = triggerOldMap.get(opportunity.Id).Lead__c));
-            }
-        }
-        logErrors(EventBus.publish(applicationStatusChanges), applicationStatusChanges);
-    }
-
-    /**
-     * @description Publishes an Application Change Event after delete of any Opportunity
-     * @param triggerOld Trigger.old
-     */
-    public static void publishEventAfterDelete(List<Opportunity> triggerOld) {
-        List<Application_Status_Change__e> applicationStatusChanges = new List<Application_Status_Change__e>();
-        for (Opportunity opportunity : triggerOld) {
-            applicationStatusChanges.add(new Application_Status_Change__e(LeadId__c = opportunity.Lead__c));
-        }
-        logErrors(EventBus.publish(applicationStatusChanges), applicationStatusChanges);
-    }
-
-    private static void logErrors(List<Database.SaveResult> saveResults, List<Application_Status_Change__e> applicationStatusChanges) {
-        Boolean foundError = false;
-        for (Database.SaveResult saveResult : saveResults){
-            if (!saveResult.isSuccess()) {
-                foundError = true;
-                Logger.logLater('CSApplicationStatusEvaluator', 'logErrors', 'Did not publish event: ' + summarizeError(saveResult.getErrors()), Logger.ERROR);
-            }
-        }
-        if (foundError) {
-            Logger.logLater('CSApplicationStatusEvaluator', 'logErrors', 'applicationStatusChanges: ' + JSON.serialize(applicationStatusChanges), Logger.ERROR);
-            Logger.flushLogs();
-        }
-    }
-
-    private static String summarizeError(List<Database.Error> errors) {
-        String errorMessage = '';
-        for (Database.Error error : errors) {
-            errorMessage += error.getMessage() + '\n';
-        }
-        return errorMessage;
-    }
-
-    /**
-     * @description Default constructor for test only
-     */
-    @TestVisible
-    private CSApplicationStatusEvaluator() {
-        oppIdToCaseMap = MultiMap.newListInstance();
-    }
-
-    /**
-     * @description Initializes the class from a list of Application Status Change platform events by finding the related
-     * lead. Cases could be related to an Opportunity which is in turn related to a Lead.
-     * @param applicationStatusChanges The list of platform events with lead, case, or opportunity ids
+     * @description Constructor, just saving the list of events to evaluate
+     * @param applicationStatusChanges The list to evaluate
      */
     public CSApplicationStatusEvaluator(List<Application_Status_Change__e> applicationStatusChanges) {
-        getLeadsToEvaluateFromEvents(applicationStatusChanges);
-        getQCCasesRelatedToLeadsViaOpportunity();
+        this.applicationStatusChanges = applicationStatusChanges;
     }
 
-    private void getLeadsToEvaluateFromEvents(List<Application_Status_Change__e> applicationStatusChanges) {
+    private void getLeadsToEvaluateFromEvents() {
         Set<Id> eventLeadIds = new Set<Id>();
         Set<Id> eventCaseIds = new Set<Id>();
         Set<Id> eventOppIds = new Set<Id>();
@@ -164,6 +70,26 @@ public without sharing class CSApplicationStatusEvaluator {
      * @description If necessary, updates each of the leads that were found during initialization
      */
     public void updatePartnerApplicationStatus() {
+        try {
+            getLeadsToEvaluateFromEvents();
+            getQCCasesRelatedToLeadsViaOpportunity();
+        } catch (Exception e) {
+            if (e.getMessage().contains('Record Currently Unavailable') || e.getMessage().contains('UNABLE_TO_LOCK_ROW')) {
+                Datetime now = Datetime.now().addMinutes(2);
+                String cron = '0 '+ now.minute() + ' ' + now.hour() + ' ' + now.day() + ' ' + now.month() + ' ? ' + now.year();
+                Logger.logNow(
+                    'CSApplicationStatusEvaluator',
+                    'updatePartnerApplicationStatus',
+                    'Retrying in 2 minutes ('+ now.getTime() +') because of:\n' + e.getMessage() + '\n' + JSON.serialize(applicationStatusChanges),
+                    Logger.WARN
+                );
+                System.schedule('ApplicationStatusChangeEvaluatorAutoSchedule'+now.getTime(), cron, new CSApplicationStatusEvaluator(applicationStatusChanges));
+                return;
+            } else {
+                throw new Util.BWException(e.getMessage());
+            }
+        }
+
         uow.registerWork(new Logger());
         for (Lead lead : leadsToEvaluate) {
             registerStatusUpdate(lead);
@@ -171,6 +97,19 @@ public without sharing class CSApplicationStatusEvaluator {
         Util.disableTrigger('Disable_LeadTrigger__c');
         uow.commitWork();
         Util.enableTrigger('Disable_LeadTrigger__c');
+    }
+
+    public void execute(SchedulableContext context) {
+        try {
+            System.abortJob(context.getTriggerId());
+            updatePartnerApplicationStatus();
+        } catch (Exception e) {
+            Logger.logNow('' +
+                'ApplicationStatusChangeEvaluator',
+                'execute',
+                e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serialize(applicationStatusChanges),
+                Logger.ERROR);
+        }
     }
 
     @TestVisible
@@ -251,4 +190,5 @@ public without sharing class CSApplicationStatusEvaluator {
         Boolean hasLost = false;
         Boolean hasInProgress = false;
     }
+
 }

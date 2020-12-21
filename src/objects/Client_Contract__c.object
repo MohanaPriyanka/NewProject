@@ -147,9 +147,9 @@
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
-    <enableReports>false</enableReports>
+    <enableReports>true</enableReports>
     <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
@@ -270,6 +270,7 @@
     <nameField>
         <displayFormat>CC-{0000}</displayFormat>
         <label>Client Contract Name</label>
+        <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Client Contracts</pluralLabel>
