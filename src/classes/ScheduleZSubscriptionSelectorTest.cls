@@ -178,6 +178,6 @@ public with sharing class ScheduleZSubscriptionSelectorTest {
 
         uas.Date_Removed_from_Project__c = System.today();
         update uas;
-        System.assertNotEquals(null, new ScheduleZSubscriptionSelector().getRetiredSZSFromALS(scheduleZId));
+        System.assertNotEquals(null, new ScheduleZSubscriptionSelector().getRetiredALSSFromALS(scheduleZId));
     }
 }
