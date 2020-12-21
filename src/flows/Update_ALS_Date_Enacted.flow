@@ -14,9 +14,9 @@
             <targetReference>Assign_Error_Log</targetReference>
         </faultConnector>
         <inputParameters>
-            <name>currentAndPreviousScheduleZs</name>
+            <name>params</name>
             <value>
-                <elementReference>currentAndPreviousALSIds</elementReference>
+                <elementReference>flowParameters</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -47,20 +47,6 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>Get_Replaced_ALS.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>replacedALS</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Get_Replaced_ALS</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>replacedALS.Date_Schedule_Z_Retired_by_Utility__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>New_Date_Enacted_by_Utility</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -107,7 +93,7 @@
     <assignments>
         <name>assign_User_Chosen_ALS</name>
         <label>Assign User Chosen ALS</label>
-        <locationX>731</locationX>
+        <locationX>834</locationX>
         <locationY>455</locationY>
         <assignmentItems>
             <assignToReference>replacedALSId</assignToReference>
@@ -117,7 +103,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_User_Chosen_ALS</targetReference>
+            <targetReference>Update_Date_Enacted</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -133,44 +119,21 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>currentAndPreviousALSIds</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>Get_ALS.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>currentAndPreviousALSIds</assignToReference>
+            <assignToReference>flowParameters</assignToReference>
             <operator>Add</operator>
             <value>
                 <elementReference>replacedALSId</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>flowParameters</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>newDateEnactedString</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_Current_ALS</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Update_Date_Retired</name>
-        <label>Update Date Retired</label>
-        <locationX>977</locationX>
-        <locationY>455</locationY>
-        <assignmentItems>
-            <assignToReference>replacedALS</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Get_User_Chosen_ALS</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>replacedALS.Date_Schedule_Z_Retired_by_Utility__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>New_Date_Enacted_by_Utility</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Update_Date_Enacted</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -221,6 +184,12 @@
         <name>formula_RunningUserId</name>
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
+    </formulas>
+    <formulas>
+        <description>Convert Date into String for flowParameters</description>
+        <name>newDateEnactedString</name>
+        <dataType>String</dataType>
+        <expression>TEXT(MONTH({!New_Date_Enacted_by_Utility}))+&quot;/&quot; +TEXT(DAY({!New_Date_Enacted_by_Utility}))+&quot;/&quot; +TEXT(YEAR({!New_Date_Enacted_by_Utility}))</expression>
     </formulas>
     <interviewLabel>Update ALS Date Enacted {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Update ALS Date Enacted</label>
@@ -300,27 +269,6 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Billing</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Schedule_Z__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_User_Chosen_ALS</name>
-        <label>Get User Chosen ALS</label>
-        <locationX>851</locationX>
-        <locationY>456</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Update_Date_Retired</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>replacedALSId</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -594,6 +542,14 @@
     </variables>
     <variables>
         <name>currentAndPreviousALSIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Text list that contains the new &quot;Enacted by Utility&quot; date and the previous Allocation Schedule Id</description>
+        <name>flowParameters</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
