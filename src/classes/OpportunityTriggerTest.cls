@@ -32,7 +32,9 @@ public with sharing class OpportunityTriggerTest {
         // We put the parent account's name in AccountNumber and use that to update the accounts.
         Map<String, Account> accountNameMap = new Map<String, Account>();
         List<Account> accounts = [SELECT Id, Name, AccountNumber FROM Account];
-        Account byCostAccount, bykWhAccount;
+        Account byCostAccount;
+        Account bykWhAccount;
+        
         for (Account acct : accounts) {
             accountNameMap.put(acct.Name, acct);
             if (acct.Name == 'TestRecalcPropA') {
@@ -237,23 +239,6 @@ public with sharing class OpportunityTriggerTest {
         System.assertEquals('Community Solar', noCustomerGroup.RecordType.Name,
             'The default record type for an opportunity with Product Line of Community Solar should be Community Solar');
 
-        noCustomerGroup.Customer_Group__c = 'Anchor';
-        update noCustomerGroup;
-        noCustomerGroup = [SELECT RecordType.Name FROM Opportunity WHERE Id = :noCustomerGroup.Id];
-        System.assertEquals('BFG - Community Solar (Anchor)', noCustomerGroup.RecordType.Name,
-            'A Anchor Residential Customer Group opportunity should be Anchor');
-
-        Opportunity nonResidentialCustomerGroup = new Opportunity(
-            Name = 'Test Opp',
-            Product_Line__c = 'Community Solar',
-            Customer_Group__c = 'Non-Residential',
-            StageName = 'New',
-            CloseDate = Date.today()
-        );
-        insert nonResidentialCustomerGroup;
-        nonResidentialCustomerGroup = [SELECT RecordType.Name FROM Opportunity WHERE Id = :nonResidentialCustomerGroup.Id];
-        System.assertEquals('Community Solar', nonResidentialCustomerGroup.RecordType.Name,
-            'A Non-Residential Customer Group opportunity should be Community Solar');
     }
 
     @IsTest
