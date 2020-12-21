@@ -170,7 +170,7 @@ public inherited sharing class SharedSolarSystems {
                 meetsUnderwritingCriteria(lead, sss, creditScore));
     }
     
-    private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+    public Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
         switch on (lead.Underwriting_Criteria__c) {
             when 'FICO' {
                 return meetsFICOUnderwriting(lead, sss, creditScore);

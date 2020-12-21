@@ -4,7 +4,6 @@
  */
 @IsTest
 public with sharing class InvocableLeadQualificationTest {
-    
     @TestSetup 
     public static void testSetup() {
         Product2 product1 = new Product2(
@@ -171,7 +170,5 @@ public with sharing class InvocableLeadQualificationTest {
         System.assertEquals('Unqualified', updatedLead3.Status, 'The lead.Status should update to Unqualified becuase ' + 
                             'the Moody score is less than the RiskCalc Min.');
     }
-    
-    
     
 }
