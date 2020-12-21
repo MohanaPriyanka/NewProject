@@ -233,4 +233,44 @@ public with sharing class SharedSolarSystemsTest {
             return null;
         }
     }
+    
+    private static void testMeetsUnderwritingCriteria() {
+        SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(null);
+        Shared_Solar_System__c sss = new Shared_Solar_System__c(
+            Available_SMB_Underwriting_Method_FICO__c = true,
+            Available_SMB_Underwriting_Method_Docs__c = true,
+            Credit_Score_Requirement__c = 750,
+            RiskCalc_Minimum__c = 'Ba3'
+        );
+        System.assert(sharedSolarSystems.meetsUnderwritingCriteria(getLead('FICO', '800', null), sss, null), 
+            'lead with FICO of 800 should meet underwriting for a system with FICO min of 750');
+        System.assert(!sharedSolarSystems.meetsUnderwritingCriteria(getLead('FICO', '700', null), sss, null),
+            'lead with FICO of 800 should meet underwriting for a system with FICO min of 750');
+        System.assert(sharedSolarSystems.meetsUnderwritingCriteria(getLead('FICO', null, null), sss, 800),
+            'lead getting a credit pull of 800 (before it\'s set on the lead) should meet underwriting for a system with FICO min of 750');
+        System.assert(!sharedSolarSystems.meetsUnderwritingCriteria(getLead('FICO', null, null), sss, 700),
+            'lead getting a credit pull of 700 (before it\'s set on the lead) should not meet underwriting for a system with FICO min of 750');
+        sss.Available_SMB_Underwriting_Method_FICO__c = false;
+        System.assert(!sharedSolarSystems.meetsUnderwritingCriteria(getLead('FICO', '800', null), sss, null),
+            'lead with FICO of 800 should not meet underwriting for a system that is not available to qualify for FICO');
+        
+        System.assert(sharedSolarSystems.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Aaa'), sss, null), 
+            'Finanical Review lead with a Moody\'s of Aaa should meet underwriting for a system with RiskCalc min of Ba3');
+        System.assert(sharedSolarSystems.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Ba3'), sss, null), 
+            'Finanical Review lead with a Moody\'s of Ba3 should meet underwriting for a system with RiskCalc min of Ba3');
+        System.assert(!sharedSolarSystems.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'C1'), sss, null), 
+            'Finanical Review lead with a Moody\'s of C1 should not meet underwriting for a system with RiskCalc min of Ba3');
+        sss.Available_SMB_Underwriting_Method_Docs__c = false;
+        System.assert(!sharedSolarSystems.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Aaa'), sss, null), 
+            'Finanical Review lead with a Moody\'s of Aaa should not meet underwriting for a system that is not available to qualify');
+    }
+    
+    private static Lead getLead(String underwritingCriteria, String creditScore, String moodys) {
+        sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
+        fabbedLead.setField(Lead.Underwriting_Criteria__c, underwritingCriteria);
+        fabbedLead.setField(Lead.LASER_Credit_Score__c, creditScore);
+        fabbedLead.setField(Lead.Moody_s_Risk_Calc__c, moodys);
+        return (Lead) fabbedLead.toSObject();
+    }
+    
 }
