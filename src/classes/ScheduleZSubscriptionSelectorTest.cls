@@ -162,4 +162,22 @@ public with sharing class ScheduleZSubscriptionSelectorTest {
         List<Schedule_Z_Subscription__c> testSZSList =  ScheduleZSubscriptionSelector.getScheduleZSubscriptionsList(szsIds);
         System.assertEquals(9, testSZSList.size());
     }
+
+    @IsTest
+    public static void testGetRetiredSZS() {
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Date_Removed_from_Project__c,
+            (SELECT Id, Schedule_Z__c FROM Schedule_Z_Subscriptions__r)
+            FROM Utility_Account_Subscription__c
+            LIMIT 1
+        ];
+        Id scheduleZId;
+        for (Schedule_Z_Subscription__c szs : uas.Schedule_Z_Subscriptions__r) {
+            scheduleZId = szs.Schedule_Z__c;
+        }
+
+        uas.Date_Removed_from_Project__c = System.today();
+        update uas;
+        System.assertNotEquals(null, new ScheduleZSubscriptionSelector().getRetiredALSSFromALS(scheduleZId));
+    }
 }

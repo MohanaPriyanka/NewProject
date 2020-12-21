@@ -198,4 +198,15 @@ public with sharing class ScheduleZSubscriptionSelector {
         }
         return overdueSZSes;
     }
+
+    public List<Schedule_Z_Subscription__c> getRetiredALSSFromALS(Id replacedALSId) {
+        return [
+            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Id,
+                Utility_Account_Subscription__r.Opportunity__c, Utility_Account_Subscription__r.Date_Removed_from_Project__c,
+                Schedule_Z__r.Date_Schedule_Z_Retired_by_Utility__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Utility_Account_Subscription__r.Date_Removed_from_Project__c != NULL
+            AND Schedule_Z__c = :replacedALSId
+        ];
+    }
 }
