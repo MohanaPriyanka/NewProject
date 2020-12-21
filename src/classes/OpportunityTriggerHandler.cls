@@ -7,7 +7,7 @@ public without sharing class OpportunityTriggerHandler {
     @TestVisible
     private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
     private static CustomerAssignmentService customerAssignmentService = new CustomerAssignmentService();
-    private static Id CSRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Community Solar').getRecordTypeId();
+    private static Id csRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Community Solar').getRecordTypeId();
 
     public void onBeforeInsert(List<Opportunity> newOppList){
         customIdSwapOpp(newOppList, null);
@@ -216,7 +216,7 @@ public without sharing class OpportunityTriggerHandler {
     private void setCSRecordType(List<Opportunity> triggerNew) {
         for (Opportunity opportunity : triggerNew) {
             if (opportunity.Product_Line__c == 'Community Solar') {
-                opportunity.RecordTypeId = CSRecordTypeId;
+                opportunity.RecordTypeId = csRecordTypeId;
             }
         }
     }
