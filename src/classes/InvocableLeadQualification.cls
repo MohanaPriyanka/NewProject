@@ -13,7 +13,7 @@ public without sharing class InvocableLeadQualification {
     @InvocableMethod(label='Run Lead Qualification Check')
     public static void runLeadQualificationCheck(List<Id> leadIds) {
         List<Shared_Solar_System__c> sssList = sssSelector.getSharedSolarSystemsForEnrollment();
-        if(leadIds != null && sssList != null) {
+        if(leadIds != null && sssList != null && !leadIds.isEmpty()) {
             Lead lead = leadSelector.selectOne(leadIds[0]);
             SharedSolarSystems sss = new SharedSolarSystems(sssList);
             String leadStatus = sss.checkCSQualification(lead, null);

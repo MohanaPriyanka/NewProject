@@ -57,17 +57,6 @@ public with sharing class InvocableLeadQualificationTest {
         insert SSS1;
     }
     
-    private static Shared_Solar_System__c getTestSSS(String name) {
-        return [
-            SELECT Id, Name, Open__c, RiskCalc_Minimum__c, Utility__c, Product__c, Public__c, 
-            Credit_Score_Requirement__c, Capacity_Committed_kW_DC__c, Reserved_Capacity_kW_DC__c, 
-            Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c, Total_System_Size_kWh_DC__c, 
-            Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c 
-            FROM Shared_Solar_System__c
-            WHERE Name = :name
-        ];
-    }
-    
     private static Lead getTestLead(String referralName) {
         return [
             SELECT Id, Referral_Name__c, Moody_s_Risk_Calc__c, Status, LASER_Credit_Score__c
@@ -77,98 +66,25 @@ public with sharing class InvocableLeadQualificationTest {
     }
     
     @IsTest
-    static void testQualifiedFICOLead() {
+    static void testRunLeadQualificationCheck() {
         List<Id> leadList = new List<Id>();
-        Lead lead = getTestLead('testLead1');
-        lead.Underwriting_Criteria__c = 'FICO';
-        update lead;
-        leadList.add(lead.Id);
-        InvocableLeadQualification.runLeadQualificationCheck(leadList);
-        Lead updatedLead = getTestLead('testLead1');
-        System.assertEquals('Qualified', updatedLead.Status, 'The lead.Status should update to Qualified becuase ' + 
-                            'the lead.LASER_Credit_Score__c is greater than the sss.Credit_Score_Requirement__c');
-    }
-    
-    @IsTest
-    static void testUnqualifiedFICOLead() {
-        List<Id> leadList = new List<Id>();
-        Lead lead = getTestLead('testLead1');
-        lead.Underwriting_Criteria__c = 'FICO';
-        update lead;
-        Shared_Solar_System__c sss = getTestSSS('testSSS1');
-        sss.Available_SMB_Underwriting_Method_FICO__c = False;
-        update sss;
-        leadList.add(lead.Id);
-        InvocableLeadQualification.runLeadQualificationCheck(leadList);
-        Lead updatedLead = getTestLead('testLead1');
-        System.assertEquals('Unqualified', updatedLead.Status, 'The lead.Status should update to Qualified becuase ' + 
-                            'the Available_SMB_Underwriting_Method_FICO__c is false.');
-    }
-    
-    @IsTest
-    static void testNullMoodysFinReviewLead() {
-        List<Id> leadList = new List<Id>();
-        Lead lead = getTestLead('testLead1');
-        lead.Moody_s_Risk_Calc__c = null;
-        update lead;
-        leadList.add(lead.Id);
-        InvocableLeadQualification.runLeadQualificationCheck(leadList);
-        Lead updatedLead = getTestLead('testLead1');
-        System.assertEquals('Unqualified', updatedLead.Status, 'The lead.Status should update to Unqualified because ' + 
-                            'the Moody RiskCalc is null.');
-    }
-    
-    @IsTest
-    static void testNullRiskCalcMinFinReviewLead() {
-        List<Id> leadList = new List<Id>();
-        Lead lead = getTestLead('testLead1');
-        Shared_Solar_System__c sss = getTestSSS('testSSS1');
-        sss.RiskCalc_Minimum__c = null;
-        update sss;
-        leadList.add(lead.Id);
-        InvocableLeadQualification.runLeadQualificationCheck(leadList);
-        Lead updatedLead = getTestLead('testLead1');
-        System.assertEquals('Unqualified', updatedLead.Status, 'The lead.Status should update to Unqualified becuase ' + 
-                            'the RiskCalc Minimum is null.');
-    }
-    
-    @IsTest
-    static void testFalseAvailableSMBFinReviewLead() {
-        List<Id> leadList = new List<Id>();
-        Lead lead = getTestLead('testLead1');
-        Shared_Solar_System__c sss = getTestSSS('testSSS1');
-        sss.Available_SMB_Underwriting_Method_Docs__c = False;
-        update sss;
-        leadList.add(lead.Id);
-        InvocableLeadQualification.runLeadQualificationCheck(leadList);
-        Lead updatedLead = getTestLead('testLead1');
-        System.assertEquals('Unqualified', updatedLead.Status, 'The lead.Status should update to Unqualified becuase ' + 
-                            'the Available_SMB_Underwriting_Method_Docs__c is false.');
-    }
-    
-    @IsTest
-    static void testMoodyScoresFinReviewLead() {
-        List<Id> leadList = new List<Id>();
-        Lead lead = getTestLead('testLead1');
-        leadList.add(lead.Id);
+        // Passing an empty list
         InvocableLeadQualification.runLeadQualificationCheck(leadList);
         Lead updatedLead1 = getTestLead('testLead1');
-        System.assertEquals('Qualified', updatedLead1.Status, 'The lead.Status should update to Qualified becuase ' + 
-                            'the Moody score is above the RiskCalc Min.');
-        
-        lead.Moody_s_Risk_Calc__c = 'Ba3';
-        update lead;
-        InvocableLeadQualification.runLeadQualificationCheck(leadList);
+        System.assertEquals('New', updatedLead1.Status, 'The lead.Status should still be New becuase ' + 
+                            'the list passed was empty, so the lead.Status was not updated.');
+        // Passing a null list
+        InvocableLeadQualification.runLeadQualificationCheck(null);
         Lead updatedLead2 = getTestLead('testLead1');
-        System.assertEquals('Qualified', updatedLead2.Status, 'The lead.Status should update to Qualified becuase ' + 
-                            'the Moody score is equal to the RiskCalc Min.');
-        
-        lead.Moody_s_Risk_Calc__c = 'Caa1';
-        update lead;
+        System.assertEquals('New', updatedLead2.Status, 'The lead.Status should still be New becuase ' + 
+                            'the list passed was null, so the lead.Status was not updated.');
+        //Passing a valid list
+        Lead lead = getTestLead('testLead1');
+        leadList.add(lead.Id);
         InvocableLeadQualification.runLeadQualificationCheck(leadList);
         Lead updatedLead3 = getTestLead('testLead1');
-        System.assertEquals('Unqualified', updatedLead3.Status, 'The lead.Status should update to Unqualified becuase ' + 
-                            'the Moody score is less than the RiskCalc Min.');
+        System.assertEquals('Qualified', updatedLead3.Status, 'The lead.Status should update to Qualified becuase ' + 
+                            'the Moody score is above the RiskCalc Min.');
     }
     
 }
