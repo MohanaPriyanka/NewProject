@@ -90,4 +90,14 @@ public with sharing class AllocationScheduleSelectorTest {
         System.assertEquals(2,sssMap.get(sssList[0].Id).size());
         System.assertEquals(1,sssMap.get(sssList[1].Id).size());
     }
+
+    @IsTest
+    public static void testSelectOne() {
+        Schedule_Z__c als = [
+            SELECT Id
+            FROM Schedule_Z__c
+            LIMIT 1
+        ];
+        System.assertNotEquals(null, new AllocationScheduleSelector().selectOne(als.Id), 'Expected selector to return one ALS');
+    }
 }
