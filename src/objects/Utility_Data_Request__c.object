@@ -645,7 +645,7 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         <fullName>Utility_Formatted_Account_Number__c</fullName>
         <externalId>false</externalId>
         <formula>CASE(Utility_DUNS__c, 
-    &apos;006977763&apos;,  &apos;N0100&apos;&amp;RIGHT(SUBSTITUTE(Account_Number__c, &apos;-&apos;, &apos;&apos;),10), /*NYSEG Replacement*/
+    &apos;006977763&apos;,  &apos;N010&apos;&amp;RIGHT(SUBSTITUTE(Account_Number__c, &apos;-&apos;, &apos;&apos;),11), /*NYSEG Replacement*/
     Account_Number__c
 )</formula>
         <label>Utility Formatted Account Number</label>
