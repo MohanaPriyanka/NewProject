@@ -123,12 +123,6 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>not_suppressNameFieldLink</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>hideCheckboxColumn</name>
                 <value>
                     <booleanValue>true</booleanValue>
@@ -168,6 +162,12 @@
                 <name>columnAlignments</name>
                 <value>
                     <stringValue>Name:left,Lifetime_Savings__c:left, Zuora__Balance__c:left, Zuora__AccountNumber__c:left, View_Account__c:left</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>suppressNameFieldLink</name>
+                <value>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
