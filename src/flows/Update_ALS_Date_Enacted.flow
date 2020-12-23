@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Call_Apex</name>
         <label>Call Apex</label>
-        <locationX>1482</locationX>
-        <locationY>593</locationY>
+        <locationX>1712</locationX>
+        <locationY>695</locationY>
         <actionName>InvocableDateEnactedALSUpdate</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -180,6 +180,43 @@
             <label>Auto chosen ALS</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Related_Records_to_Update</name>
+        <label>Related Records to Update?</label>
+        <locationX>1453</locationX>
+        <locationY>572</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_Related_Records</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>replacedALSId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scrFinish</targetReference>
+            </connector>
+            <label>No Related Records</label>
+        </rules>
+        <rules>
+            <name>Related_Records</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>replacedALSId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Call_Apex</targetReference>
+            </connector>
+            <label>Related Records</label>
+        </rules>
+    </decisions>
     <formulas>
         <name>formula_RunningUserId</name>
         <dataType>String</dataType>
@@ -281,7 +318,7 @@
         <locationX>1321</locationX>
         <locationY>575</locationY>
         <connector>
-            <targetReference>Call_Apex</targetReference>
+            <targetReference>Related_Records_to_Update</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
@@ -489,8 +526,8 @@
     <screens>
         <name>scrFinish</name>
         <label>scrFinish</label>
-        <locationX>1623</locationX>
-        <locationY>577</locationY>
+        <locationX>1707</locationX>
+        <locationY>484</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>

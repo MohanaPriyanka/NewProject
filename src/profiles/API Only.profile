@@ -20520,11 +20520,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Notes__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.IX_Payment_25_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -28762,6 +28757,11 @@
         <editable>false</editable>
         <field>Schedule_Z_Subscription__c.Number_of_Decimal_Places__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Schedule_Z_Subscription__c.Percent_Share_Number_Format__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
