@@ -6,7 +6,6 @@
     <excludeButtons>Convert</excludeButtons>
     <excludeButtons>CreateCallList</excludeButtons>
     <excludeButtons>CreateSurveyInvitation</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
     <excludeButtons>Edit</excludeButtons>
     <excludeButtons>FindDup</excludeButtons>
@@ -121,8 +120,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Annual_kWh__c</fields>
-        <fields>Annual_Cost_of_Electricity__c</fields>
         <relatedList>Utility_Account_Log__c.Lead__c</relatedList>
     </relatedLists>
     <relatedLists>
