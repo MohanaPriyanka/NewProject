@@ -33264,11 +33264,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Notes__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.IX_Payment_25_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
