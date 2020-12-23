@@ -802,13 +802,25 @@ private class UtilityDataRequestServiceTest {
             Measurement_Significance_Code__c = '51'
         );
         
+        Utility_Data_Request_Period__c testUDRP48 = new Utility_Data_Request_Period__c(
+            Utility_Data_Request__c = testUDR1.Id, 
+            Rate_Class__c = 'Test EDI Rate Class 1',
+            Rate_Subclass__c = null,
+            Load_Profile_Description__c = 'testUDRP48',
+            Service_Start_Date__c = Date.newInstance(2018, 5, 1),
+            Measurement_Unit__c ='KH',
+            Quantity__c = 25,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '51'
+        );
+        
         List<Utility_Data_Request_Period__c> testUDRPList = new List<Utility_Data_Request_Period__c>{
             testUDRP1, testUDRP2, testUDRP3, testUDRP4, testUDRP5, testUDRP6, testUDRP7, testUDRP8, 
             testUDRP9, testUDRP10, testUDRP11, testUDRP12, testUDRP13, testUDRP14, testUDRP15, testUDRP16, 
             testUDRP17, testUDRP18, testUDRP19, testUDRP20, testUDRP21, testUDRP22, testUDRP23, testUDRP24, 
             testUDRP25, testUDRP26, testUDRP27, testUDRP28, testUDRP29, testUDRP30, testUDRP31, testUDRP32, 
             testUDRP33, testUDRP34, testUDRP35, testUDRP36, testUDRP37, testUDRP38, testUDRP39, testUDRP40, 
-            testUDRP41, testUDRP42, testUDRP43, testUDRP44, testUDRP45, testUDRP46, testUDRP47};
+            testUDRP41, testUDRP42, testUDRP43, testUDRP44, testUDRP45, testUDRP46, testUDRP47, testUDRP48};
         insert testUDRPList;
     }
 
@@ -897,31 +909,33 @@ private class UtilityDataRequestServiceTest {
         Rate_Class__c testRateClass2 = getTestRateClass('testRateClass2');
         
         System.assertEquals(testRateClass1.Id, testUDRPList[0].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for testUDRP1 should now be testRateClass1.');
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[0].Load_Profile_Description__c + ' should now be testRateClass1.');
         System.assertEquals(testRateClass2.Id, testUDRPList[1].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for testUDRP2 should now be testRateClass2.');
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[1].Load_Profile_Description__c + ' should now be testRateClass2.');
         System.assertEquals(testRateClass2.Id, testUDRPList[2].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for testUDRP3 should now be testRateClass2.');
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[2].Load_Profile_Description__c + ' should now be testRateClass2.');
         System.assertEquals(Null, testUDRPList[3].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for testUDRP4 should be null because ' 
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[3].Load_Profile_Description__c + ' should be null because ' 
                             + 'the Rate_Class__c text was null, so no Rate Class object could be found for it.');
         System.assertEquals(Null, testUDRPList[4].Rate_Class_Lookup__c,  
-                            'The Rate_Class_Lookup__c for testUDRP5 should be null because ' 
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[4].Load_Profile_Description__c + ' should be null because ' 
                             + 'the Rate_Class__c text did not match any Rate_Class__c.EDI_Rate_Class__c fields');
         System.assertEquals(testUAL1.Utility_Rate_Class__c, testUDRPList[2].Rate_Class_Lookup__c,  
                             'The "Rate Class" (Utility_Rate_Class__c) for the UAL on testUDR1 should be the same as the Rate Class for testUDRP3,' 
                             + 'becuase testUDRP3 has the most recent Service Start Date of the all UDRPs for testUDR1.');
+        System.assertEquals(testRateClass1.Id, testUDRPList[5].Rate_Class_Lookup__c, 
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[5].Load_Profile_Description__c + ' should now be testRateClass1.');
         
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
         
-        System.assertEquals(2, errorLogs.size(),'There should be two error logs created when thsi test runs');
+        System.assertEquals(2, errorLogs.size(),'There should be two error logs created when this test runs');
         
         for (error_log__c e : errorLogs){
             if (e.severity__c == 'Error'){
-                System.assert(e.Message__c.contains('No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c on '),
+                System.assert(e.Message__c.contains('No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c or Rate_Class__c on'),
                                                     'An error log should be created when a matching rate class is not found');
             } else {
-                System.assert(e.Message__c.contains('Null Rate Subclass on'),'Null Rate Subclasses should log an INFO error log');        
+                System.assert(e.Message__c.contains('Null Rate Subclass & Rate Class on'),'Null Rate Subclasses should log an INFO error log');        
             }
         }
         
@@ -978,7 +992,7 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals(0, errorLogs.size());
         
         Utility_Data_Request_Period__c testUDRP4 = getTestUDRP('testUDRP4');
-        testUDRP4.Service_Start_Date__c = Date.newInstance(2020, 10, 13);
+        testUDRP4.Service_Start_Date__c = Date.newInstance(2020, 12, 20);
         update testUDRP4;
         
         Utility_Data_Request__c testUDR1 = getTestUDR('testUDR1');
@@ -991,19 +1005,19 @@ private class UtilityDataRequestServiceTest {
         );
         
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
-        System.assertEquals(3, errorLogs.size(),'We expect 3 error logs - one for Null Rate subclass on a UDRP, another for not finding a matching EDI_Rate_Class on Rate Class'
-                                                +' and a third for not being able to populate a rate class on UAL');
+        System.assertEquals(3, errorLogs.size(),'We expect 3 error logs - one for Null Rate subclass on a UDRP, another for not finding a matching EDI_Rate_Class on Rate Class' 
+                            +' and a third for not being able to populate a rate class on UAL since the most recent KH UDRP has a null Rate Subclass & Rate Class.');
         
         for (error_log__c e : errorLogs){
             if (e.severity__c == 'Info'&& e.method__c =='populateRateClassOnUDRP'){
-                System.assert(e.message__c.contains('Null Rate Subclass on'),'Null Rate Subclasses should log an INFO error log');   
+                System.assert(e.message__c.contains('Null Rate Subclass & Rate Class on'),'Null Rate Subclasses & Rate Classes should log an INFO error log');   
             }
             else if (e.severity__c == 'Error'&& e.Method__c =='populateRateClassOnUDRP'){
-                System.assert(e.message__c.contains('No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c on '),
+                System.assert(e.message__c.contains('No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c or Rate_Class__c on'),
                 'An error log should be created when a matching rate class is not found');
-            }
-            else {
-                System.assert(e.message__c.contains('Null Rate_Class_Lookup__c value for most recent UDRP related to'),'Null Rate on most recent UDRP should create an error log');       
+            } else {
+                System.assert(e.message__c.contains('UAL Rate Class could not be populated because there is a ' + 
+                'null Rate_Class_Lookup__c for the most recent UDRP, where the Measurement Unit is KH, related to UDR'),'Null Rate on most recent KH UDRP should create an error log');       
             }
         }
     }
@@ -1043,22 +1057,22 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request__c updatedTestUDR5 = getTestUDR('testUDR5');
         Utility_Data_Request__c updatedTestUDR6 = getTestUDR('testUDR6');	
         
-        System.assertEquals(33823.2, updatedTestUDR1.Annual_kWh__c, 'UDR1 has 5 KH UDRP so the Annual kWh should be ' 
+        System.assertEquals(28236, updatedTestUDR1.Annual_kWh__c, 'UDR1 has 5 KH UDRP so the Annual kWh should be ' 
                             + 'the sum of the UDRP.Quantity__c values multiplied by the number of months and divided by 12.'
-                            + 'In this case the answer should be 33823.2.');
+                            + 'In this case the answer should be 28236.');
         System.assertEquals(2352.80, updatedTestUDR1.Average_Demand__c, 'UDR1 has 5 K1 UDRP so the Annual kWh should be ' 
                             + 'the sum of the UDRP.Quantity__c values multiplied by the number of months and divided by 12.'
                             + 'In this case the answer should be 2352.80.');
-        System.assertEquals(5, updatedTestUDR1.Num_months_Annual_kWh__c);
+        System.assertEquals(6, updatedTestUDR1.Num_months_Annual_kWh__c);
         System.assertEquals(5, updatedTestUDR1.Num_months_Average_Demand__c);
         
-        System.assertEquals(33823.2, testUAL1.Annual_kWh__c, 'UAL1 is related to UDR1,' 
+        System.assertEquals(28236, testUAL1.Annual_kWh__c, 'UAL1 is related to UDR1,' 
                             + ' which has 5 KH UDRPs so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
-                            + 'In this case the answer should be 33823.2.');
+                            + 'In this case the answer should be 28236.');
         System.assertEquals(2352.80, testUAL1.Average_Demand__c, 'UAL1 is related to UDR1,' 
                             + ' which has 5 K1 UDRPs so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of months and multiplied by 12.'
                             + 'In this case the answer should be 2352.80.');
-        System.assertEquals(5, testUAL1.Num_months_Annual_kWh__c);
+        System.assertEquals(6, testUAL1.Num_months_Annual_kWh__c);
         System.assertEquals(5, testUAL1.Num_months_Average_Demand__c);
         
         System.assertEquals(165200, updatedTestUDR3.Annual_kWh__c, 'UDR3 has 1 KH UDRP, it is a non-Residential customer, and the Product.X4_month_sizing_method__c == State Average Annual Usage' 
