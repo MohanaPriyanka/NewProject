@@ -28765,6 +28765,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Schedule_Z_Subscription__c.Percent_Share_Number_Format__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Schedule_Z_Subscription__c.Percent_Share__c</field>
         <readable>false</readable>
     </fieldPermissions>
