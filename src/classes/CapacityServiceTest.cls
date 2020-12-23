@@ -343,12 +343,10 @@ public with sharing class CapacityServiceTest {
     @IsTest
     public static void testZipcodeDataForResumeApp() {
         Id utilityId = [SELECT Id FROM Utility__c WHERE Name = 'Eversource' LIMIT 1]?.Id;
-        String response = SimpleSignupFormController.getZipcodeDataForResumeApp('12345', utilityId, true);
+        String response = SimpleSignupFormController.getZipcodeDataForResumeApp('12345', utilityId);
         RestZipCode responseObj = (RestZipCode) JSON.deserialize(response, RestZipCode.class);
 
         System.assert(responseObj.zipCode == '12345', 'Bad zipcode in response');
-        System.assert(responseObj.ficoUnderwriting == true, 'Bad fico underwriting value in response');
-        System.assert(responseObj.finDocsUnderwriting == false, 'Bad findocs underwriting val in response');
         System.assert(responseObj.products.size() == 0, 'Products should not be set on this truncated response');
         System.assert(responseObj.utilityZipCodesServed.size() > 0, 'Zipcodes served needs to be set on response');
         System.assert(responseObj.utilities != null, 'Utilities property provided in response should have data');
