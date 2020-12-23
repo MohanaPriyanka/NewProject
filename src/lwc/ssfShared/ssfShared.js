@@ -77,7 +77,6 @@ const retrieveApplication = async (component) => {
             component.zipCodeResponse = await getZipcodeDataForResumeApp({
                 zip: component.zipCodeInput,
                 utilityId: JSON.parse(component.leadJSON).utilityId,
-                isFico: component.isFico
             });
         } catch (error) {
             handlePromiseError(component, error, 'getZipCodeData', 'Error');
