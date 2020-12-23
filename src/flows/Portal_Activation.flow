@@ -213,8 +213,8 @@
     <waits>
         <name>Wait_3_Days</name>
         <label>Wait 3 Days</label>
-        <locationX>436</locationX>
-        <locationY>725</locationY>
+        <locationX>437</locationX>
+        <locationY>726</locationY>
         <defaultConnectorLabel>Default Path</defaultConnectorLabel>
         <waitEvents>
             <name>Wait3_Days</name>
@@ -232,13 +232,13 @@
             <inputParameters>
                 <name>TimeOffset</name>
                 <value>
-                    <numberValue>1.0</numberValue>
+                    <numberValue>3.0</numberValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>TimeOffsetUnit</name>
                 <value>
-                    <stringValue>Hours</stringValue>
+                    <stringValue>Days</stringValue>
                 </value>
             </inputParameters>
             <label>Wait 3 Days</label>
