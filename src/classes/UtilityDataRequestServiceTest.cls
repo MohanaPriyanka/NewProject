@@ -807,7 +807,7 @@ private class UtilityDataRequestServiceTest {
             Rate_Class__c = 'Test EDI Rate Class 1',
             Rate_Subclass__c = null,
             Load_Profile_Description__c = 'testUDRP48',
-            Service_Start_Date__c = Date.newInstance(2020, 5, 12),
+            Service_Start_Date__c = Date.newInstance(2018, 5, 1),
             Measurement_Unit__c ='KH',
             Quantity__c = 25,
             Used_In_Annual_kWh_Calculation__c = false,
@@ -909,26 +909,26 @@ private class UtilityDataRequestServiceTest {
         Rate_Class__c testRateClass2 = getTestRateClass('testRateClass2');
         
         System.assertEquals(testRateClass1.Id, testUDRPList[0].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for testUDRP1 should now be testRateClass1.');
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[0].Load_Profile_Description__c + ' should now be testRateClass1.');
         System.assertEquals(testRateClass2.Id, testUDRPList[1].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for testUDRP2 should now be testRateClass2.');
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[1].Load_Profile_Description__c + ' should now be testRateClass2.');
         System.assertEquals(testRateClass2.Id, testUDRPList[2].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for testUDRP3 should now be testRateClass2.');
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[2].Load_Profile_Description__c + ' should now be testRateClass2.');
         System.assertEquals(Null, testUDRPList[3].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for testUDRP4 should be null because ' 
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[3].Load_Profile_Description__c + ' should be null because ' 
                             + 'the Rate_Class__c text was null, so no Rate Class object could be found for it.');
         System.assertEquals(Null, testUDRPList[4].Rate_Class_Lookup__c,  
-                            'The Rate_Class_Lookup__c for testUDRP5 should be null because ' 
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[4].Load_Profile_Description__c + ' should be null because ' 
                             + 'the Rate_Class__c text did not match any Rate_Class__c.EDI_Rate_Class__c fields');
         System.assertEquals(testUAL1.Utility_Rate_Class__c, testUDRPList[2].Rate_Class_Lookup__c,  
                             'The "Rate Class" (Utility_Rate_Class__c) for the UAL on testUDR1 should be the same as the Rate Class for testUDRP3,' 
                             + 'becuase testUDRP3 has the most recent Service Start Date of the all UDRPs for testUDR1.');
         System.assertEquals(testRateClass1.Id, testUDRPList[5].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for testUDRP48 should now be testRateClass1.');
+                            'The Rate_Class_Lookup__c for ' + testUDRPList[5].Load_Profile_Description__c + ' should now be testRateClass1.');
         
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
         
-        System.assertEquals(2, errorLogs.size(),'There should be two error logs created when thsi test runs');
+        System.assertEquals(2, errorLogs.size(),'There should be two error logs created when this test runs');
         
         for (error_log__c e : errorLogs){
             if (e.severity__c == 'Error'){
@@ -992,7 +992,7 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals(0, errorLogs.size());
         
         Utility_Data_Request_Period__c testUDRP4 = getTestUDRP('testUDRP4');
-        testUDRP4.Service_Start_Date__c = Date.newInstance(2020, 10, 13);
+        testUDRP4.Service_Start_Date__c = Date.newInstance(2020, 12, 20);
         update testUDRP4;
         
         Utility_Data_Request__c testUDR1 = getTestUDR('testUDR1');
@@ -1005,19 +1005,19 @@ private class UtilityDataRequestServiceTest {
         );
         
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
-        System.assertEquals(3, errorLogs.size(),'We expect 3 error logs - one for Null Rate subclass on a UDRP, another for not finding a matching EDI_Rate_Class on Rate Class'
-                                                +' and a third for not being able to populate a rate class on UAL');
+        System.assertEquals(3, errorLogs.size(),'We expect 3 error logs - one for Null Rate subclass on a UDRP, another for not finding a matching EDI_Rate_Class on Rate Class' 
+                            +' and a third for not being able to populate a rate class on UAL since the most recent KH UDRP has a null Rate Subclass & Rate Class.');
         
         for (error_log__c e : errorLogs){
             if (e.severity__c == 'Info'&& e.method__c =='populateRateClassOnUDRP'){
-                System.assert(e.message__c.contains('Null Rate Subclass & Rate Class on'),'Null Rate Subclasses should log an INFO error log');   
+                System.assert(e.message__c.contains('Null Rate Subclass & Rate Class on'),'Null Rate Subclasses & Rate Classes should log an INFO error log');   
             }
             else if (e.severity__c == 'Error'&& e.Method__c =='populateRateClassOnUDRP'){
                 System.assert(e.message__c.contains('No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c or Rate_Class__c on'),
                 'An error log should be created when a matching rate class is not found');
-            }
-            else {
-                System.assert(e.message__c.contains('Null Rate_Class_Lookup__c value for most recent UDRP related to'),'Null Rate on most recent UDRP should create an error log');       
+            } else {
+                System.assert(e.message__c.contains('UAL Rate Class could not be populated because there is a ' + 
+                'null Rate_Class_Lookup__c for the most recent UDRP, where the Measurement Unit is KH, related to UDR'),'Null Rate on most recent KH UDRP should create an error log');       
             }
         }
     }
