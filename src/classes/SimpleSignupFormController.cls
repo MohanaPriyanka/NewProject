@@ -281,8 +281,8 @@ public without sharing class SimpleSignupFormController {
      */
     @SuppressWarnings('PMD.ApexCRUDViolation')
     @AuraEnabled(Cacheable=false)
-    public static String getZipcodeDataForResumeApp(String zip, String utilityId, Boolean isFico) {
+    public static String getZipcodeDataForResumeApp(String zip, String utilityId) {
         CapacityService capacityService = new CapacityService();
-        return JSON.serialize(new RestZipCode(capacityService.getZipcodeResponseForResumeApp(zip,utilityId,isFico)));
+        return JSON.serialize(new RestZipCode(capacityService.getZipcodeResponseForResumeApp(zip,utilityId)));
     }
 }

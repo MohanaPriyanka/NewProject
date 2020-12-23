@@ -12,9 +12,11 @@ public inherited sharing class RestZipCode {
     public Set<String> loadZones;
     public Set<Product> products;
     public Set<RateClass> rateClasses;
+    public Set<String> utilityZipCodesServed;
     public Boolean ficoUnderwriting;
     public Boolean finDocsUnderwriting;
-    public Set<String> utilityZipCodesServed;
+    public Boolean collectPayment;
+    public Boolean underwrite;
 
     public RestZipCode(CapacityService.ZipcodeResponse response) {
         this.zipCode = response.zipcode;
@@ -24,9 +26,11 @@ public inherited sharing class RestZipCode {
         this.loadZones = response.loadZoneNames;
         this.products = response.products == null ? getProducts(new Set<Product2>()) : getProducts(response.products);
         this.rateClasses = response.rateClasses == null ? getRateClasses(new Set<Rate_Class__c>()) : getRateClasses(response.rateClasses);
+        this.utilityZipCodesServed = response.utilityZipCodesServed;
         this.ficoUnderwriting = response.ficoUnderwriting;
         this.finDocsUnderwriting = response.finDocsUnderwriting;
-        this.utilityZipCodesServed = response.utilityZipCodesServed;
+        this.collectPayment = response.collectPayment;
+        this.underwrite = response.underwrite;
     }
 
     private Set<Utility> getUtilities(Set<Utility__c> utilitySobjs) {
