@@ -1082,15 +1082,20 @@ public with sharing class CSLeadsRESTControllerV2Test {
             Partner_Email__c = 'partner@testcase.com'
         );
         insert leadToUpdate;
+        CSLeadsRESTControllerV2.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockFeatureSelector());
+        MessagingService.emailTemplateMap = new Map<String, EmailTemplate>();
+        sfab_FabricatedSObject fabbedEmailTemplate = new sfab_FabricatedSObject(EmailTemplate.class);
+        fabbedEmailTemplate.setField(EmailTemplate.HtmlValue, '{{{Recipient.Name}}}');
+        MessagingService.emailTemplateMap.put('MockTemplate', (EmailTemplate) fabbedEmailTemplate.toSObject());
         Test.startTest();
         CSLeadsRESTControllerV2.createAndSendCSPartnerEmail(leadToUpdate.Id);
         Test.stopTest();
-        //Check email template ID in Custom Metadata System Defaults
-        // Unable to mock due to @Future methods being static
-        System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
-        if (systemDefault.Application_Complete_Email_Template__c != null) {
-            System.assertEquals(1, MessagingService.emailsSent.size(), 'Application Complete email should be sent to Partner');
-        }
+        System.assertEquals(1, MessagingService.emailsSent.size(), 'Application Complete email should be sent to Partner');
+        Messaging.SingleEmailMessage sentEmail = (Messaging.SingleEmailMessage) MessagingService.emailsSent[0];
+        System.assert(!sentEmail.htmlBody.contains('{{{Recipient.Name}}}'),
+            'Merge fields should be merged, but got: ' + sentEmail.htmlBody);
+        System.assert(sentEmail.htmlBody.contains('Other Testcase'),
+            'The Lead Name should have gotten merge in, but got: ' + sentEmail.htmlBody);
     }
 
     @IsTest
@@ -1131,7 +1136,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
      *************/
     @TestVisible
     private class MockLeadService extends MockProvider {
-        public MockLeadService(){}
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'updateLead' {
@@ -1150,7 +1154,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @TestVisible
     private class MockLeadSelector implements StubProvider {
-        public MockLeadSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
                 Lead newLead = new Lead();
@@ -1283,7 +1286,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @TestVisible
     private class MockAccountService implements StubProvider {
-        public MockAccountService(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             switch on stubbedMethodName {
@@ -1299,7 +1301,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @TestVisible
     private class MockAccountsSelector implements StubProvider {
-        public MockAccountsSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             switch on stubbedMethodName {
@@ -1333,7 +1334,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @TestVisible
     private class MockUALService implements StubProvider {
-        public MockUALService(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             switch on stubbedMethodName {
@@ -1352,7 +1352,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @TestVisible
     private class MockUALSelector implements StubProvider {
-        public MockUALSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             if (String.valueOf(listOfArgs.get(0)).substring(0,15) == 'a1b000000000111') {
@@ -1377,7 +1376,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @TestVisible
     private class MockCustomerContractService extends MockProvider {
-        public MockCustomerContractService(){}
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'createContractFromLead' {
@@ -1392,7 +1390,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @TestVisible
     private class MockCapacityService implements StubProvider {
-        public MockCapacityService() {}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             String zipResponseWithCapacity = '{"zipcode":"02633","utilityIds":["a1MS0000008BldpMAC"],"utilities":[{"attributes":{"type":"Utility__c","url":"/services/data/v47.0/sobjects/Utility__c/a1MS0000008BldpMAC"},"Id":"a1MS0000008BldpMAC","Name":"Eversource"}],"sharedSolarSystems":[{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvGMAW"},"Id":"a1JS0000003BMvGMAW","Name":"Project A Oak Road","Capacity_Available_to_be_Reserved__c":144499.98,"Product__c":"01tS0000005j7AVIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"}},{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvHMAW"},"Id":"a1JS0000003BMvHMAW","Name":"Project B Main St","Capacity_Available_to_be_Reserved__c":1445.86,"Product__c":"01tS0000005j7AVIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"}},{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvIMAW"},"Id":"a1JS0000003BMvIMAW","Name":"Project C Second St","Capacity_Available_to_be_Reserved__c":1445.86,"Product__c":"01tS0000005j7AWIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},"Id":"01tS0000005j7AWIAY","Name":"BlueWave SREC","Customer_Subscription_Type__c":"Electricity Cost ($)"}}],"products":[{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"},{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},"Id":"01tS0000005j7AWIAY","Name":"BlueWave SREC","Customer_Subscription_Type__c":"Electricity Cost ($)"}],"loadZones":[{"attributes":{"type":"Load_U__c","url":"/services/data/v47.0/sobjects/Load_U__c/a0ZS0000007rJ3mMAE"},"Id":"a0ZS0000007rJ3mMAE","LZ__c":"SEMA","Town__c":"Medfield","Name":"02633"}],"loadZoneNames":["SEMA"]}';
@@ -1430,19 +1427,28 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @TestVisible
     private class MockUOW extends MockProvider {
-        public MockUOW(){}
         public override Object handleMethodCall(MethodCall methodCall) {
             return null;
         }
     }
     private class MockQualificationService implements StubProvider {
-        public MockQualificationService() {}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
                 if(stubbedMethodName == 'underwriteWithFinancialReview') {
                     return 'Qualified';
                 }
                 return null;
+        }
+    }
+    private class MockFeatureSelector implements StubProvider {
+        public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
+            List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
+            if(stubbedMethodName == 'getSystemDefaults') {
+                sfab_FabricatedSObject fabbedSystemDefault = new sfab_FabricatedSObject(System_Default__mdt.class);
+                fabbedSystemDefault.setField(System_Default__mdt.Application_Complete_Email_Template__c, 'MockTemplate');
+                return fabbedSystemDefault.toSObject();
+            }
+            return null;
         }
     }
 }
