@@ -221,7 +221,7 @@
         </connector>
         <fields>
             <name>currentLeadInfoDisplay</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;&lt;u&gt;Current Lead Info&lt;/u&gt; &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Moody&apos;s Rick Calc:&lt;/b&gt; {!getLead.Moody_s_Risk_Calc__c}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Utility:&lt;/b&gt; &lt;span style=&quot;background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255)); color: var(--lwc-colorTextWeak,rgb(62, 62, 60)); font-size: var(--lwc-fontSize3,0.8125rem); font-family: var(--lwc-fontFamily,&amp;quot;Salesforce Sans&amp;quot;, Arial, sans-serif);&quot;&gt;{!getLead.Utility_Name__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Load Zone:&lt;/b&gt; {!getLead.LoadZone__c}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Product:&lt;/b&gt; {!getLead.Product__r.Name}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b&gt;&lt;u&gt;Current Lead Info&lt;/u&gt; &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Moody&apos;s Rick Calc:&lt;/b&gt; {!getLead.Moody_s_Risk_Calc__c}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Utility:&lt;/b&gt; &lt;span style=&quot;font-family: var(--lwc-fontFamily,&amp;quot;Salesforce Sans&amp;quot;, Arial, sans-serif); font-size: var(--lwc-fontSize3,0.8125rem); color: var(--lwc-colorTextWeak,rgb(62, 62, 60)); background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255));&quot;&gt;{!getLead.Utility_relationship__r.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Load Zone:&lt;/b&gt; {!getLead.LoadZone__c}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Product:&lt;/b&gt; {!getLead.Product__r.Name}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
