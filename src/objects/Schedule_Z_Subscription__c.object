@@ -111,6 +111,21 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Percent_Share_Number_Format__c</fullName>
+        <externalId>false</externalId>
+        <formula>Percent_Share__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This field is used in the NY NG Allocation Schedule Conga Template because they require the excel template to use Excel Percentage formatting.</inlineHelpText>
+        <label>Percent Share Number Format</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>10</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Percent_Share__c</fullName>
         <externalId>false</externalId>
         <formula>ROUND(Customer_Subscription_kW_DC__c/System_Size_kW_DC__c , Number_of_Decimal_Places__c + 2)</formula>
