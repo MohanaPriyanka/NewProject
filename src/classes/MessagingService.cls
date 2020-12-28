@@ -7,7 +7,7 @@
 
 public without sharing class MessagingService {
     private static OrgWideEmailAddress customerCareEmail;
-    private static Map<String, EmailTemplate> emailTemplateMap = new Map<String, EmailTemplate>();
+    @TestVisible private static Map<String, EmailTemplate> emailTemplateMap = new Map<String, EmailTemplate>();
     public static Messaging.Email[] emailsSent;
     @TestVisible private static Boolean onlyUseActiveTemplates = true;
 
