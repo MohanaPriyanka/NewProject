@@ -20,6 +20,11 @@
         <default>false</default>
         <label>Past Payment History</label>
     </customValue>
+    <customValue>
+        <fullName>None</fullName>
+        <default>false</default>
+        <label>None</label>
+    </customValue>
     <masterLabel>Underwriting Criteria</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

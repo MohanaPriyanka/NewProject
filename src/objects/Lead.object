@@ -3998,6 +3998,17 @@ Monthly_Payment__c)</formula>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>No_Payment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>W-019782</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Default unchecked; checked if the likely-assigned SSS does not require payment information (e.g. UCB product). If checked, this lead CANNOT be put on a SSS that requires capture of payment info.</inlineHelpText>
+        <label>Not Requesting Payment Info</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>No_Veteran_Disability__c</fullName>
         <defaultValue>false</defaultValue>
         <description>This checkbox serves as the false value to the Veteran/Disability checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>

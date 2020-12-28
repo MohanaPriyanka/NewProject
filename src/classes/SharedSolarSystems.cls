@@ -5,21 +5,53 @@
  */
 
 public inherited sharing class SharedSolarSystems {
-    private List<Shared_Solar_System__c> records;
-    @TestVisible
-    private static FeatureService featureService = new FeatureService();
-    @TestVisible
-    private static ProductSelector productSelector = new ProductSelector();
-    @TestVisible
-    private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
-    private static PartnerSSSEligibilitySelector eligibilitySelector = new PartnerSSSEligibilitySelector();
+
+    @TestVisible private static FeatureService featureService = new FeatureService();
+    @TestVisible private static ProductSelector productSelector = new ProductSelector();
+    @TestVisible private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
+    @TestVisible private static final Boolean LOG_FINE_RESULTS = Logger.shouldLog(Logger.FINE);
+    @TestVisible private static Boolean capacityCheckInstance = false;
     private static final List<String> ORDERED_MOODY_RISK_SCORES = new List<String>{
-        	'Aaa', 'Aa1', 'Aa2', 'Aa3', 'A1', 'A2', 'A3', 
-            'Baa1', 'Baa2', 'Baa3', 'Ba1', 'Ba2', 'Ba3', 'B1', 'B2', 'B3', 
-            'Caa1', 'Caa2', 'Ca', 'C'};
-    
+        'Aaa', 'Aa1', 'Aa2', 'Aa3', 'A1', 'A2', 'A3',
+        'Baa1', 'Baa2', 'Baa3', 'Ba1', 'Ba2', 'Ba3', 'B1', 'B2', 'B3',
+        'Caa1', 'Caa2', 'Ca', 'C'};
+    private List<Shared_Solar_System__c> records;
+    private Lead virtualLead;
+
+    /**
+     * @description Default constructor used in most cases
+     * @param records List of SSS to be used throughout this class
+     */
     public SharedSolarSystems(List<Shared_Solar_System__c> records) {
         this.records = records;
+    }
+
+    /**
+     * @description Constructor for running Capacity Checks through qualification logic in CapacityService{} to return
+     *      rank-ordered SSS for a given ZIP code by Assignment Order.
+     * <p></p>
+     *     Creates a (virtual) lead to be used throughout this class instance to avoid necessity of method overloading
+     * @param sharedSolarSystems List of Shared_Solar_System__c
+     * @param utilityId Utility ID of Applicant
+     * @param partnerId Partner lookup ID used for capacity check
+     */
+    public SharedSolarSystems(List<Shared_Solar_System__c> sharedSolarSystems, Id utilityId, String partnerId) {
+        this.records = sharedSolarSystems;
+        this.virtualLead = new Lead(
+            Partner_Lookup__c = partnerId,
+            System_Assignment__c = 'Automatic - Assignment Order',
+            Utility_relationship__c = utilityId
+        );
+        capacityCheckInstance = true;
+    }
+
+    /**
+     * @description Rank-orders SSSs found in Capacity Check by Assignment Order for use with
+     *      CapacityService.setProductsAndSharedSolarSystems()
+     * @return Rank-ordered SSS list by Automatic Assignment Order
+     */
+    public List<Shared_Solar_System__c> orderedSssForCapacityCheck() {
+        return getQualifiedForLead(virtualLead);
     }
 
     public static Decimal calculateMaximumkWh(Shared_Solar_System__c sss){
@@ -57,6 +89,7 @@ public inherited sharing class SharedSolarSystems {
         fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Shared_Solar_System__c.SObjectType});
         updateManagementRevenueStartDate(uow);
     }
+
     public void updateManagementRevenueStartDate(fflib_SObjectUnitOfWork uow) {
         MultiMap contractsToCFDs = getContractsToCFDs();
         for (Shared_Solar_System__c sss : records) {
@@ -126,7 +159,7 @@ public inherited sharing class SharedSolarSystems {
         }
         return contractsToCFDs;
     }
-    
+
     /**
      * @description Gets the qualified systems for this lead, sorted by the lead's System Assignment setting
      * @param lead Lead being qualified
@@ -144,6 +177,7 @@ public inherited sharing class SharedSolarSystems {
         for (Integer wrapperIndex = 0; wrapperIndex < sssWrappers.size(); wrapperIndex++) {
             sortedSharedSolarSystems.add(sssWrappers[wrapperIndex].sss);
         }
+        Logger.flushLogs();
         return sortedSharedSolarSystems;
     }
 
@@ -163,41 +197,80 @@ public inherited sharing class SharedSolarSystems {
     }
 
     private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
-        return (sss.Utility__c == lead.Utility_relationship__c && 
-                SharedSolarSystems.loadZoneInServiceTerritory(lead.LoadZone__c, sss) && 
-                SharedSolarSystems.isPartnerEligible(lead.Partner_Lookup__c, sss) && 
-                (lead.Product__c == null || sss.Product__c == lead.Product__c) && 
-                meetsUnderwritingCriteria(lead, sss, creditScore));
+        Boolean utilityMatch = sss.Utility__c == lead.Utility_relationship__c;
+        Boolean lzInServiceTerritory = SharedSolarSystems.loadZoneInServiceTerritory(lead.LoadZone__c, sss);
+        Boolean isPartnerEligible = SharedSolarSystems.isPartnerEligible(lead.Partner_Lookup__c, sss);
+        Boolean productMatch = lead.Product__c == null || sss.Product__c == lead.Product__c;
+        Boolean meetsUnderwritingCriteria = meetsUnderwritingCriteria(lead, sss, creditScore);
+
+        Boolean isQualified = utilityMatch
+            && lzInServiceTerritory
+            && isPartnerEligible
+            && productMatch
+            && meetsUnderwritingCriteria;
+
+        if (LOG_FINE_RESULTS) {
+            String logMessage = '------\n' + 'Lead: ' + JSON.serialize(lead)
+                + '\nShared Solar System: ' + JSON.serialize(sss)
+                + '\nCredit Score: ' + creditScore
+                + '\nutilityMatch: ' + String.valueOf(utilityMatch)
+                + '\nlzInServiceTerritory: ' + String.valueOf(lzInServiceTerritory)
+                + '\nisPartnerEligible: ' + String.valueOf(isPartnerEligible)
+                + '\nproductMatch: ' + String.valueOf(productMatch)
+                + '\nmeetsUnderwritingCriteria: ' + String.valueOf(meetsUnderwritingCriteria)
+                + '\nLEAD QUALIFIED FOR SYSTEM?: ' + String.valueOf(isQualified);
+            Logger.logLater('SharedSolarSystems','qualifiedForSystem',logMessage, 'FINE');
+        }
+        return isQualified;
     }
-    
-    public Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+
+    @TestVisible
+    private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+        Boolean meetsCriteria = false;
+        Boolean sssDoesNotUnderwrite = sss.Do_Not_Underwrite__c;
+
         switch on (lead.Underwriting_Criteria__c) {
             when 'FICO' {
-                return meetsFICOUnderwriting(lead, sss, creditScore);
+                meetsCriteria = meetsFICOUnderwriting(lead, sss, creditScore);
             } when 'Financial Review' {
-                return meetsFinancialReviewUnderwriting(lead, sss);
+                meetsCriteria = meetsFinancialReviewUnderwriting(lead, sss);
+            } when else {
+                meetsCriteria = true;
             }
         }
-        return true;
+
+        // Last: check if SSS does not require underwriting. Overwrite previously-generated value if so.
+        return sssDoesNotUnderwrite != null && sssDoesNotUnderwrite ? true : meetsCriteria;
     }
-    
+
     private Boolean meetsFICOUnderwriting(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
-        if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
-            creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
-        }
         if (!sss.Available_SMB_Underwriting_Method_FICO__c) {
             return false;
         }
+
+        if (capacityCheckInstance) {
+            creditScore = 999;
+        } else if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
+            creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
+        }
+
         return creditScore >= sss.Credit_Score_Requirement__c;
     }
 
     private Boolean meetsFinancialReviewUnderwriting(Lead lead, Shared_Solar_System__c sss) {
+        if (capacityCheckInstance) {
+            // Default "virtual lead" for capacity checks to have lowest possible Moody's risk score
+            lead.Moody_s_Risk_Calc__c = 'Aaa';
+        }
         if (!sss.Available_SMB_Underwriting_Method_Docs__c || lead.Moody_s_Risk_Calc__c == null || sss.RiskCalc_Minimum__c == null) {
             return false;
         }
-        return ORDERED_MOODY_RISK_SCORES.indexOf(lead.Moody_s_Risk_Calc__c) <= ORDERED_MOODY_RISK_SCORES.indexOf(sss.RiskCalc_Minimum__c);
+
+        Integer leadRiskScore = ORDERED_MOODY_RISK_SCORES.indexOf(lead.Moody_s_Risk_Calc__c);
+        Integer sssRiskScore = ORDERED_MOODY_RISK_SCORES.indexOf(sss.RiskCalc_Minimum__c);
+        return leadRiskScore != -1 && leadRiskScore <= sssRiskScore;
     }
-    
+
     /**
      * @description Removes systems from the sssList that don't have a Partner_SSS_Eligibility__c for the given partner id
      * @param partnerId Partner with which to check eligibility
@@ -250,7 +323,7 @@ public inherited sharing class SharedSolarSystems {
      * @return Boolean
      */
     private static Boolean loadZoneInServiceTerritory(String loadZone, Shared_Solar_System__c sss) {
-        if (sss.Product__r.Ignore_Load_Zones_When_Qualifying__c) {
+        if (sss.Product__r.Ignore_Load_Zones_When_Qualifying__c || capacityCheckInstance) {
             return true;
         }
         return sss.Service_Territories__c != null && sss.Service_Territories__c.contains(loadZone);

@@ -5,15 +5,23 @@
  * Tested By: LoggerTest
  *************************************************************************************/
 public with sharing class Logger implements fflib_SObjectUnitOfWork.IDoWork {
-    @TestVisible
-    private static Map<String, List<Log>> logs;
+    @TestVisible private static Map<String, List<Log>> logs;
     private static Integer timesLogsCleared = 0;
     public static final String ERROR = 'Error';
     public static final String WARN = 'Warn';
     public static final String DEBUG = 'Debug';
     public static final String INFO = 'Info';
     public static final String FINE = 'Fine';
-    private static System_Properties__c systemProperty;
+    private static final System_Properties__c systemProperty {
+        get {
+            if (systemProperty == null) {
+                List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+                systemProperty = systemProperties.size() > 0 ? systemProperties[0] : new System_Properties__c();
+            }
+            return systemProperty;
+        }
+        set;
+    }
     private static Map<String, Integer> severityToInt =
         new Map<String, Integer>{FINE => 1, INFO => 2, DEBUG => 3, WARN => 4, ERROR => 5};
 
@@ -105,24 +113,15 @@ public with sharing class Logger implements fflib_SObjectUnitOfWork.IDoWork {
                 Message__c = message.left(130000),
                 Severity__c = severity,
                 Timestamp__c = Datetime.newInstance(timestamp.date(), timestamp.time()));
-        if (systemProperty == null) {
-            List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
-            if (systemProperties.size() > 0) {
-                systemProperty = systemProperties[0];
-            } else {
-                systemProperty = new System_Properties__c();
-            }
-        }
-        if (shouldLog(severity, systemProperty.Log_Level__c)) {
+        if (shouldLog(severity)) {
             Database.insert(errorLog, false);
         }
     }
 
-    @TestVisible
-    private static Boolean shouldLog(String severity, String logLevel) {
+    public static Boolean shouldLog(String severity) {
         if (severityToInt.containsKey(severity) &&
-            severityToInt.containsKey(logLevel)) {
-            return severityToInt.get(severity) >= severityToInt.get(logLevel);
+            severityToInt.containsKey(systemProperty.Log_Level__c)) {
+            return severityToInt.get(severity) >= severityToInt.get(systemProperty.Log_Level__c);
         } else {
             return true;
         }
