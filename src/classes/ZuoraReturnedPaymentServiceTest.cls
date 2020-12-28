@@ -17,6 +17,14 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
 
         Account property = new Account(Name = 'Account Property');
         insert property;
+        Contact sendBillsContact = new Contact(
+            FirstName = 'Test',
+            LastName = 'Test',
+            Email = 'test@test.com'
+        );
+        insert sendBillsContact;
+        property.Send_Bills_Contact__c = sendBillsContact.Id;
+        update property;
 
         Zuora__CustomerAccount__c billingAccount = new Zuora__CustomerAccount__c(
             Name = 'Test BillingAccount',
@@ -31,12 +39,15 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
             Zuora__External_Id__c = '2c92c0f86a0c41a5016a1f41d63a2f96'
         );
         insert payMethod;
+        billingAccount.Zuora__Default_Payment_Method__c = payMethod.Id;
+        update billingAccount;
 
         Zuora__Payment__c payment = new Zuora__Payment__c(
             Zuora__PaymentMethodId__c = '2c92c0f86a0c41a5016a1f41d63a2f96',
             Name = 'PY1234',
             Zuora__BillingAccount__c = billingAccount.Id,
-            Zuora__Amount__c = 23
+            Zuora__Amount__c = 23,
+            Zuora__SubmittedOn__c = System.now()
         );
         insert payment;
     }
@@ -50,7 +61,9 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         List<ZuoraAPI.DebitMemo> debitMemos =
             returnedPaymentService.convertPaymentToDebitMemos(payment);
         Test.stopTest();
-        Integer itemPartCalls = 0, invoiceItemCalls = 0, debitMemoCalls = 0;
+        Integer itemPartCalls = 0;
+        Integer invoiceItemCalls = 0;
+        Integer debitMemoCalls = 0;
         for (ZuoraAPIHelper.EndpointCall endpointCall : ZuoraAPIHelper.endpointsCalled) {
             if (endpointCall.endpoint.contains('itemparts')) {
                 itemPartCalls++;
@@ -66,17 +79,20 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         System.assertEquals(2, invoiceItemCalls);
         System.assertEquals(3, debitMemos.size(), 'Expected to get three debit memos to reverse this payment');
         for (ZuoraAPI.DebitMemo debitMemo : debitMemos) {
-            if (debitMemo.charges[0].amount == 13.67) {
-                System.assertEquals('BW-0023170', debitMemo.ClientOwner_Zcustom);
-                System.assertEquals('SSS-000024', debitMemo.Project_Zcustom);
-            } else if (debitMemo.charges[0].amount == 134.70) {
-                System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
-                System.assertEquals('SSS-000099', debitMemo.Project_Zcustom);
-            } else if (debitMemo.charges[0].amount == 120.21) {
-                System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
-                System.assertEquals('SSS-000098', debitMemo.Project_Zcustom);
-            } else {
-                System.assert(false, 'Debit memos should be one of the amounts of the payment part items!');
+            switch on CustomerCommunicationHandler.formatMoney(debitMemo.charges[0].amount) {
+                when '$13.67' {
+                    System.assertEquals('BW-0023170', debitMemo.ClientOwner_Zcustom);
+                    System.assertEquals('SSS-000024', debitMemo.Project_Zcustom);
+                } when '$134.70' {
+                    System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
+                    System.assertEquals('SSS-000099', debitMemo.Project_Zcustom);
+                } when '$120.21' {
+                    System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
+                    System.assertEquals('SSS-000098', debitMemo.Project_Zcustom);
+                } when else {
+                    System.assert(false, 'Debit memos should be one of the amounts of the payment part items:' +
+                        CustomerCommunicationHandler.formatMoney(debitMemo.charges[0].amount));
+                }
             }
         }
     }
@@ -104,7 +120,8 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         useMocks(true);
         ZuoraController.reverseReturnedPayment(Util.getFakeId(Schema.Zuora__Payment__c.SObjectType));
         Test.stopTest();
-        Integer paymentCalls = 0, debitMemoCalls = 0;
+        Integer paymentCalls = 0;
+        Integer debitMemoCalls = 0;
         for (ZuoraAPIHelper.EndpointCall endpointCall : ZuoraAPIHelper.endpointsCalled) {
             if (endpointCall.endpoint.contains('payments')) {
                 paymentCalls++;
@@ -165,7 +182,9 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         List<ZuoraAPI.DebitMemo> debitMemos =
             returnedPaymentService.convertPaymentToDebitMemos(payment);
         Test.stopTest();
-        Integer itemPartCalls = 0, invoiceItemCalls = 0, debitMemoCalls = 0;
+        Integer itemPartCalls = 0;
+        Integer invoiceItemCalls = 0;
+        Integer debitMemoCalls = 0;
         for (ZuoraAPIHelper.EndpointCall endpointCall : ZuoraAPIHelper.endpointsCalled) {
             if (endpointCall.endpoint.contains('itemparts')) {
                 itemPartCalls++;
@@ -181,17 +200,19 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         System.assertEquals(2, invoiceItemCalls);
         System.assertEquals(3, debitMemos.size(), 'Expected to get three debit memos to reverse this payment');
         for (ZuoraAPI.DebitMemo debitMemo : debitMemos) {
-            if (debitMemo.items[0].amount == 13.67) {
-                System.assertEquals('BW-0023170', debitMemo.ClientOwner_Zcustom);
-                System.assertEquals('SSS-000024', debitMemo.Project_Zcustom);
-            } else if (debitMemo.items[0].amount == 134.70) {
-                System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
-                System.assertEquals('SSS-000099', debitMemo.Project_Zcustom);
-            } else if (debitMemo.items[0].amount == 120.21) {
-                System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
-                System.assertEquals('SSS-000098', debitMemo.Project_Zcustom);
-            } else {
-                System.assert(false, 'Debit memos should be one of the amounts of the payment part items!');
+            switch on CustomerCommunicationHandler.formatMoney(debitMemo.items[0].amount) {
+                when '$13.67' {
+                    System.assertEquals('BW-0023170', debitMemo.ClientOwner_Zcustom);
+                    System.assertEquals('SSS-000024', debitMemo.Project_Zcustom);
+                } when '$134.70' {
+                    System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
+                    System.assertEquals('SSS-000099', debitMemo.Project_Zcustom);
+                } when '$120.21' {
+                    System.assertEquals('BW-00000385', debitMemo.ClientOwner_Zcustom);
+                    System.assertEquals('SSS-000098', debitMemo.Project_Zcustom);
+                } when else {
+                    System.assert(false, 'Debit memos should be one of the amounts of the payment part items: ' + debitMemo.items[0].amount);
+                }
             }
         }
     }
@@ -200,9 +221,6 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
      * @description Mock Selector
      */
     public class MockZuoraPaymentSelector extends MockProvider {
-        public MockZuoraPaymentSelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'selectById' {
@@ -236,19 +254,29 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         System.assertEquals(0,beforeCases.size());
 
         Test.startTest();
-            ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService();
-            returnedPaymentService.performReturn(payment[0].Id);
+        ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService();
+        returnedPaymentService.performReturn(payment[0].Id);
+        // Simulate Z360 updating the billing account's default payment method to null
+        Zuora__CustomerAccount__c billingAccount = new Zuora__CustomerAccount__c(
+            Id = payment[0].Zuora__BillingAccount__c,
+            Zuora__Default_Payment_Method__c = null
+        );
+        update billingAccount;
         Test.stopTest();
 
         List<Case> afterCases = [
-            SELECT Id, Zuora_Payment_Method__r.Zuora__External_Id__c, AccountId
+            SELECT Id, Zuora_Payment_Method__r.Zuora__External_Id__c, AccountId, Status
             FROM Case
             WHERE Zuora_Payment_Method__c != NULL
         ];
 
-        System.assertEquals(1, afterCases.size());
-        System.assertEquals(payment[0].Zuora__BillingAccount__r.Zuora__Account__c, afterCases[0].AccountId);
-        System.assertEquals(payment[0].Zuora__PaymentMethodId__c, afterCases[0].Zuora_Payment_Method__r.Zuora__External_Id__c);
+        System.assertEquals(1, afterCases.size(), 'Expected to create one returned payment case');
+        System.assertEquals(payment[0].Zuora__BillingAccount__r.Zuora__Account__c, afterCases[0].AccountId,
+            'Expected the case to be related to the Salesforce Account');
+        System.assertEquals(payment[0].Zuora__PaymentMethodId__c, afterCases[0].Zuora_Payment_Method__r.Zuora__External_Id__c,
+            'Expected the case to be related to the Zuora Payment Method');
+        System.assertEquals('New', afterCases[0].Status, 'Expected the case to be open');
+        System.assertEquals(1, MessagingService.emailsSent.size(), 'Expected just an email for the Returned Payment case');
     }
 
     @IsTest

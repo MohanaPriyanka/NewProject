@@ -5,10 +5,11 @@
  * Tested by: MessagingServiceTest
  **/
 
-public class MessagingService {
+public without sharing class MessagingService {
     private static OrgWideEmailAddress customerCareEmail;
-    private static Map<String, EmailTemplate> emailTemplateMap = new Map<String, EmailTemplate>();
+    @TestVisible private static Map<String, EmailTemplate> emailTemplateMap = new Map<String, EmailTemplate>();
     public static Messaging.Email[] emailsSent;
+    @TestVisible private static Boolean onlyUseActiveTemplates = true;
 
     public static OrgWideEmailAddress getCustomerCareEmail() {
         if (customerCareEmail == null) {
@@ -60,7 +61,7 @@ public class MessagingService {
     }
 
     @TestVisible
-    private static Boolean onlyUseActiveTemplates = true;
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static EmailTemplate getHtml (String templateName) {
         if (emailTemplateMap.get(templateName) == null) {
             List<EmailTemplate> templates = [
@@ -113,6 +114,21 @@ public class MessagingService {
         } catch (EmailException ee) {
             Logger.logNow('MessagingService', 'sendEmail', ee.getMessage());}
         return sendEmailResults;
+    }
+
+    /**
+     * @description Registers Error Logs for unsuccessful SendEmailResults
+     * @param sendEmailResults List of SendEmailResults from Messaging.sendEmail()
+     * @param prefix A prefix to make it easier to identify the source of the email
+     */
+    public static void logErrors(List<Messaging.SendEmailResult> sendEmailResults, String prefix) {
+        for (Messaging.SendEmailResult rr : sendEmailResults) {
+            if (!rr.isSuccess()) {
+                for (Messaging.SendEmailError error : rr.getErrors()) {
+                    Logger.logLater('MessagingService', 'logErrors', prefix + ': ' + error.getMessage(), Logger.ERROR);
+                }
+            }
+        }
     }
 
     public class EmailEnvelope {

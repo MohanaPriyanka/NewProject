@@ -10,10 +10,25 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
     private Zuora__PaymentMethod__c payMethod;
     @TestVisible private List<Id> paymentIdsToReturn;
     @TestVisible private static ZuoraReturnedPaymentService chainedReturnedPaymentService;
+    private static Map<Object, SObject> emailTemplatesForReturnedPayments {
+        get {
+            if (emailTemplatesForReturnedPayments == null) {
+                List<EmailTemplate> templates = [
+                    SELECT Id, HtmlValue, DeveloperName
+                    FROM EmailTemplate
+                    WHERE DeveloperName LIKE 'Returned_Payment_Notification%'
+                ];
+                emailTemplatesForReturnedPayments = CollectionUtil.mapByField(templates, EmailTemplate.DeveloperName);
+            }
+            return emailTemplatesForReturnedPayments;
+        }
+        set;
+    }
 
     /**
      * @description Default constructor
      */
+    @SuppressWarnings('PMD.EmptyStatementBlock')
     public ZuoraReturnedPaymentService() {
     }
 
@@ -100,9 +115,7 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
     private List<ZuoraAPI.DebitMemo> convertPaymentToDebitMemos(ZuoraAPI.Payment payment) {
         HttpResponse response;
         ZuoraAPI.OrderBySubscriptionOwner subscription;
-        if (featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
-            // We don't create debit memos from a subscription charge, so we don't need the subscription
-        } else {
+        if (!featureService.isEnabled('Relate_Debit_Memos_To_Invoices')) {
             subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(payment.accountId);
         }
         response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/payments/'+ payment.id +'/parts', null, false);
@@ -249,7 +262,7 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
      * @param zuoraPayment The payment related to the case
      * @return A case ready to be inserted
      */
-    private Case insertCaseForReturns(Zuora__Payment__c zuoraPayment) {
+    public Case insertCaseForReturns(Zuora__Payment__c zuoraPayment) {
         List<Zuora__PaymentMethod__c> paymentMethods =
             paymentMethodSelector.getSFRecordFromZuoraId(new List<String>{zuoraPayment.Zuora__PaymentMethodId__c});
         CaseFactory caseFactory = new CaseFactory();
@@ -263,15 +276,48 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
         newCase.AccountId = zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__c;
+        newCase.ContactId = zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__c;
         if (paymentMethods.size() == 1) {
             newCase.Zuora_Payment_Method__c = paymentMethods[0].Id;
         } else {
-            Logger.logLater('ZuoraReturnedPaymentService','getPaymentMethod','When creating a returned payment case, expected one payment method for this payment but got ' +
+            Logger.logLater('ZuoraReturnedPaymentService','insertCaseForReturns','When creating a returned payment case, expected one payment method for this payment but got ' +
                 paymentMethods.size() + '\n' + JSON.serializePretty(zuoraPayment));
         }
 
         insert newCase;
+        try {
+            sendCustomerEmailForReturnedPaymentCase(zuoraPayment, newCase);
+        } catch (Exception e) {
+            Logger.logLater('ZuoraReturnedPaymentService', 'insertCaseForReturns', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
         return newCase;
+    }
+
+    private void sendCustomerEmailForReturnedPaymentCase(Zuora__Payment__c zuoraPayment, Case newCase) {
+        String templateKey = 'Returned_Payment_Notification_' + zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__r.Client_Brand_Key__c;
+        EmailTemplate template = (EmailTemplate) emailTemplatesForReturnedPayments.get(templateKey);
+        if (template == null) {
+            Logger.logLater('ZuoraReturnedPaymentService', 'sendCustomerEmailForReturnedPaymentCase', 'Could not find template for payment:\n' + JSON.serialize(zuoraPayment), Logger.ERROR);
+            return;
+        }
+        if (zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__c == null ||
+            zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__r.Email == null) {
+            Logger.logLater('ZuoraReturnedPaymentService', 'sendCustomerEmailForReturnedPaymentCase', 'Could not send a Returned Payment email for:\n' + JSON.serialize(zuoraPayment), Logger.ERROR);
+            return;
+        }
+        String htmlBody = template.HtmlValue
+            .replace('{{{Recipient.Name}}}', zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__r.Name)
+            .replace('{{{Payment_Date}}}', zuoraPayment.Zuora__SubmittedOn__c.format('MM/dd/yyyy'));
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        mail.setHtmlBody(htmlBody);
+        mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
+        mail.setToAddresses(new List<String>{zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__r.Email});
+        mail.setSubject('Community Solar Payment Returned');
+        mail.setTargetObjectId(zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__c);
+        mail.setWhatId(newCase.Id);
+        mail.setSaveAsActivity(true);
+        List<Messaging.SendEmailResult> results = MessagingService.sendEmail(new List<Messaging.Email>{mail});
+        MessagingService.logErrors(results, newCase.Id);
     }
 
     private Map<String, String> gatewayNameFromGatewayIdMap(){

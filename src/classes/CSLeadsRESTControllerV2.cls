@@ -20,6 +20,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible private ContentDocumentSelector contentSelector = new ContentDocumentSelector();
     @TestVisible private CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     @TestVisible private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
+    @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
     public static String baseUrl = Util.getCommunitySiteURL('Apply') + '/s/switch';
 
     @TestVisible private Map<String, String> contractLeadFields = new Map<String, String>{
@@ -849,27 +850,19 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @Future
     public static void createAndSendCSPartnerEmail(Id leadId) {
         Lead lead = new LeadSelector().selectOne(leadId);
-        System_Default__mdt systemDefault = new FeatureSelector().getSystemDefaults();
-        if (Test.isRunningTest() && lead == null) {
-            //For tests that are using mocks, the lead cannot be mocked in a future method - we therefore exit the method
-            return;
-        }
-        if (systemDefault.Application_Complete_Email_Template__c == null || lead.Partner_Email__c == null) {
+        System_Default__mdt systemDefault = featureSelector.getSystemDefaults();
+        if (systemDefault.Application_Complete_Email_Template__c == null || lead?.Partner_Email__c == null) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail',
-                'Email was not sent to Partner for lead: ' + lead.Id + '; First confirm ' +
+                'Email was not sent to Partner for lead: ' + leadId + '; First confirm ' +
                     'that there is an email template found in System Default custom metadata. ' +
                     'Then confirm the lead is populated with a Partner Email.', Logger.WARN);
             return;
         }
-        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
-        ee.emailTemplateName = systemDefault.Application_Complete_Email_Template__c;
-        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
-        ee.addressList = new List<String>{lead.Partner_Email__c};
-        ee.subjectLine = 'Application Completed for ' + lead.Name;
 
         EmailTemplate template = MessagingService.getHtml(systemDefault.Application_Complete_Email_Template__c);
         String templateHtml = template.HtmlValue;
         templateHtml = templateHtml.replace('{{{Recipient.Name}}}', lead.Name);
+
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
         mail.setSubject('Application Completed for ' + lead.Name);
@@ -880,7 +873,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         mail.setTreatTargetObjectAsRecipient(false);
 
         try {
-            MessagingService.sendEmailTemplate(ee);
+            MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
         } catch (Exception e) {
             Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
                 '; ' + e.getStackTraceString());
