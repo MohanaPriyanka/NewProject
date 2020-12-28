@@ -80,7 +80,6 @@ public with sharing class ZuoraPaymentSelectorTest {
         );
         insert new List<Zuora__Payment__c>{paymentOne,paymentTwo,paymentThree};
 
-        List<Account> accountList = new List<Account>{accountTwo};
         List<Id> accountIdList = new List<Id>{accountTwo.Id};
 
         System.assertEquals( 3, (ZuoraPaymentSelector.selectByAccount(accountIdList).size()));
@@ -100,5 +99,11 @@ public with sharing class ZuoraPaymentSelectorTest {
         ZuoraPaymentSelector selector = new ZuoraPaymentSelector();
         Map<String,Zuora__Payment__c> paymentMap = selector.selectByExternalId(new Set<String>{'1234'});
         System.assert(paymentMap.containsKey('1234'));
+    }
+
+    @IsTest
+    private static void testSelectPaymentsNotMarkedAsReturned() {
+        String sql = ZuoraPaymentSelector.selectPaymentsNotMarkedAsReturned(new List<String>{'GatewayId'});
+        System.assert(sql.contains('SELECT '), 'Expected a select statement, but got: ' + sql);
     }
 }

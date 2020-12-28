@@ -8,7 +8,7 @@ public with sharing class MessagingServiceTest {
     @IsTest
     public static void testGetCustomerCareEmail() {
         OrgWideEmailAddress customerCare = MessagingService.getCustomerCareEmail();
-        System.debug(LoggingLevel.ERROR, customerCare.Address = 'customercare@bluewavesolar.com');
+        System.assertEquals('customercare@bluewavesolar.com', customerCare.Address, 'Method should have selected customercare');
     }
 
     @IsTest
@@ -102,4 +102,19 @@ public with sharing class MessagingServiceTest {
         System.assert(!replaced.contains('NameField gets replaced'));
     }
 
+    @IsTest
+    public static void testLogErrors() {
+        // Unfortunately, we can't construct this type:
+        // https://salesforce.stackexchange.com/questions/237458/messaging-sendemailresult-type-cannot-be-constructed
+        String sendEmailResultJSON = '{"success":false,' +
+            '"errors":[{"message":"Unknown error"}]}';
+
+        Messaging.SendEmailResult failedMessageResult =
+            (Messaging.SendEmailResult) JSON.deserialize(sendEmailResultJSON, Messaging.SendEmailResult.class);
+        MessagingService.logErrors(new List<Messaging.SendEmailResult>{failedMessageResult}, null);
+        System.assertEquals(1, Logger.logs.size(), 'Expected one error log to be registered');
+        System.assert(Logger.logs.values()[0][0].message.contains('Unknown error'),
+            'Expected the mock unknown error, but got: ' + Logger.logs.values()[0][0].message);
+
+    }
 }
