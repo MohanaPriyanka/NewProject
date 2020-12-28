@@ -3,6 +3,7 @@
  */
 
 @IsTest
+@SuppressWarnings('PMD.AvoidHardcodingId')
 private class PaymentCaseTest {
     private static PaymentCaseCreator pcc = new PaymentCaseCreator();
 
@@ -29,6 +30,7 @@ private class PaymentCaseTest {
         payment.CrmId = accountId;
         payment.paymentMethodId = '123456';
         payment.accountId = '2c92c0f86e3a939c016e3ca865542888';
+        payment.GatewayResponse = 'Credit Card Declined.';
         List<ZuoraAPI.Payment> failedAutopayPayments = new List<ZuoraAPI.Payment>{payment};
         String json = JSON.serialize(failedAutopayPayments);
         pcc.executePostQueryJob(null, json);
@@ -64,11 +66,11 @@ private class PaymentCaseTest {
         payment.CrmId = accountId;
         payment.paymentMethodId = '123456';
         pcc.getAccountsForCases(new List<ZuoraAPI.Payment>{payment});
-        Case newCase = pcc.createCaseForPayment(null, accountId, PaymentCaseCreator.OrderCaseType.InternalError);
+        Case newCase = pcc.createCaseForPayment(null, accountId, PaymentCaseCreator.OrderCaseType.INTERNAL_ERROR);
         System.assert(newCase.Description.contains('No payment for an autopay account'), 'Expected a description to indicate a null payment');
         System.assertEquals(accountId, newCase.AccountId, 'Expected account id to be set');
 
-        newCase = pcc.createCaseForPayment(payment, accountId, PaymentCaseCreator.OrderCaseType.PaymentStatusError);
+        newCase = pcc.createCaseForPayment(payment, accountId, PaymentCaseCreator.OrderCaseType.PAYMENT_STATUS_ERROR);
         System.assertNotEquals(null, newCase.Zuora_Payment_Method__r, 'Expected payment method to be set');
         System.assertNotEquals(null, newCase.ContactId, 'Expected Contact Id to be set on the case');
     }
@@ -90,7 +92,7 @@ private class PaymentCaseTest {
 
         pcc.getAccountsForCases(new List<ZuoraAPI.Payment>{payment});
         pcc.sendAllRequiredEmails(caseToPaymentMap);
-        System.assertEquals(null, MessagingService.emailsSent, 'Did not expect a payment under review to send an email to the customer');
+        System.assertEquals(0, MessagingService.emailsSent.size(), 'Did not expect a payment under review to send an email to the customer');
     }
 
     @IsTest
@@ -204,9 +206,6 @@ private class PaymentCaseTest {
     }
 
     public class AccountsSelectorMockImpl extends MockProvider {
-        public AccountsSelectorMockImpl() {
-    }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'selectAll' {
@@ -237,9 +236,6 @@ private class PaymentCaseTest {
         }
         }
     public class ZuoraAccountSelectorMockImpl extends MockProvider {
-        public ZuoraAccountSelectorMockImpl() {
-    }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'getAutopayAccountsWithBalance' {

@@ -12,14 +12,14 @@
 
 public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDataQueryService.Processor {
     public enum OrderCaseType {
-        PaymentStatusError,
-        InternalError
+        PAYMENT_STATUS_ERROR,
+        INTERNAL_ERROR
     }
 
     private Map<OrderCaseType, String> caseTypeSubjectMap =
         new Map<OrderCaseType, String>{
-            OrderCaseType.PaymentStatusError => 'Transaction Failed',
-            OrderCaseType.InternalError => 'Internal - Send to Product Team'
+            OrderCaseType.PAYMENT_STATUS_ERROR => 'Transaction Failed',
+            OrderCaseType.INTERNAL_ERROR => 'Internal - Send to Product Team'
         };
 
     private static List<String> errorsWarrantingAnEmail =
@@ -41,6 +41,33 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
             'Invalid Routing Number. Please check that Bank Account Number and Routing Number are not reversed.',
         'Please enter a \'Bank Account Number\'' => 'Invalid Bank Account Number. Please double check the Bank Account Number entered.'
     };
+
+    private static EmailTemplate autopayErrorMessageAmp {
+        get {
+            if (autopayErrorMessageAmp == null) {
+                autopayErrorMessageAmp = [
+                    SELECT Id, HtmlValue, Body, DeveloperName, Subject
+                    FROM EmailTemplate
+                    WHERE DeveloperName = 'CS_Autopay_Error_Message_AmpRed'
+                ];
+            }
+            return autopayErrorMessageAmp;
+        }
+        set;
+    }
+    private static EmailTemplate autopayErrorMessageBlueWave {
+        get {
+            if (autopayErrorMessageBlueWave == null) {
+                autopayErrorMessageBlueWave = [
+                    SELECT Id, HtmlValue, Body, DeveloperName, Subject
+                    FROM EmailTemplate
+                    WHERE DeveloperName = 'CS_Autopay_Error_Message'
+                ];
+            }
+            return autopayErrorMessageBlueWave;
+        }
+        set;
+    }
 
     @TestVisible
     private static ZuoraAccountSelector zuoraAccountSelector = new ZuoraAccountSelector();
@@ -106,7 +133,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         Map<String, Case> accountsWithFailedPayments = new Map<String, Case>();
 
         for (ZuoraAPI.Payment payment : failedAutopayPayments) {
-            Case caseToOpen = createCaseForPayment(payment, payment.CrmId, OrderCaseType.PaymentStatusError);
+            Case caseToOpen = createCaseForPayment(payment, payment.CrmId, OrderCaseType.PAYMENT_STATUS_ERROR);
             casesToOpen.add(caseToOpen);
             accountsWithFailedPayments.put(payment.accountId, caseToOpen);
             caseToPaymentMap.put(caseToOpen, payment);
@@ -115,7 +142,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         List<ZuoraAPI.ZuoraAccount> zuoraAccounts = zuoraAccountSelector.getAutopayAccountsWithBalance();
         for (ZuoraAPI.ZuoraAccount autopayAccountWithBalance : zuoraAccounts) {
             if (!accountsWithFailedPayments.containsKey(autopayAccountWithBalance.Id)) {
-                Case caseToOpen = createCaseForPayment(null, autopayAccountWithBalance.CrmId, OrderCaseType.InternalError);
+                Case caseToOpen = createCaseForPayment(null, autopayAccountWithBalance.CrmId, OrderCaseType.INTERNAL_ERROR);
                 casesToOpen.add(caseToOpen);
                 caseToPaymentMap.put(caseToOpen, null);
             }
@@ -133,7 +160,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
     @TestVisible
     private Case createCaseForPayment(ZuoraAPI.Payment payment, Id accountId, OrderCaseType type) {
         Case newCase;
-        if (type == OrderCaseType.PaymentStatusError) {
+        if (type == OrderCaseType.PAYMENT_STATUS_ERROR) {
             newCase = caseFactory.getCase('Customer_Care');
             newCase.ContactId = accountIdToAccountMap.get(accountId).Send_Bills_Contact__c;
         } else {
@@ -162,73 +189,60 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
     @TestVisible
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private void sendAllRequiredEmails(Map<Case, ZuoraAPI.Payment> caseToPaymentMap) {
-        EmailTemplate autopayErrorMessageAmp = [
-            SELECT Id, HtmlValue, Body, DeveloperName, Subject
-            FROM EmailTemplate
-            WHERE DeveloperName = 'CS_Autopay_Error_Message_AmpRed'
-        ];
-        EmailTemplate autopayErrorMessageBlueWave = [
-            SELECT Id, HtmlValue, Body, DeveloperName, Subject
-            FROM EmailTemplate
-            WHERE DeveloperName = 'CS_Autopay_Error_Message'
-        ];
-
         List<Messaging.Email> emailsToSend = new List<Messaging.Email>();
 
         for (Case aCase : caseToPaymentMap.keySet()) {
             List<String> emailList = new List<String>();
             ZuoraAPI.Payment payment = caseToPaymentMap.get(aCase);
-            if (payment == null) {
-                emailsToSend.add(sendInternalErrorEmail(aCase.Description));
+            Account account = accountIdToAccountMap.get(payment?.CrmId);
+            String toEmail = account?.Send_Bills_Contact__r.Email;
+            String name = account?.Send_Bills_Contact__r.FirstName;
+            String errorMessage = payment?.GatewayResponse;
+            if (!errorsWarrantingAnEmail.contains(payment?.GatewayResponse)) {
                 continue;
             }
-            Account account = accountIdToAccountMap.get(payment.CrmId);
-            String toEmail = account.Send_Bills_Contact__r.Email;
-            String name = account.Send_Bills_Contact__r.FirstName;
-            String errorMessage = payment.GatewayResponse;
-            if (!errorsWarrantingAnEmail.contains(payment.GatewayResponse)) {
-                continue;
-            }
-            if (toEmail == null || name == null || account.Zuora__Invoices__r.isEmpty() || account.Zuora__Invoices__r[0].Zuora__DueDate__c == null) {
-                emailsToSend.add(sendInternalErrorEmail('Not sending autopay failure email for Payment: ' + payment.id +
-                    ' because there is no email, name, or invoices for the related contact or account'));
+            if (payment == null ||
+                toEmail == null ||
+                name == null ||
+                account.Zuora__Invoices__r.isEmpty() ||
+                account.Zuora__Invoices__r[0].Zuora__DueDate__c == null) {
+                emailsToSend.add(sendInternalErrorEmail('Not sending autopay failure email for Payment: ' + payment?.id +
+                    ' because there is no payment, email, name, or invoices for the related contact or account\n' + JSON.serialize(account)));
                 continue;
             }
             emailList.add(toEmail);
-            if (account.Additional_Contact__r.Email != null) {
-                emailList.add(account.Additional_Contact__r.Email);
-            }
+            MessagingService.safeAddCC(account.Additional_Contact__r.Email, emailList);
             Date dueDate = account.Zuora__Invoices__r[0].Zuora__DueDate__c;
             String billDueDateString =
                 Datetime.newInstance(dueDate.year(), dueDate.month(), dueDate.day()).format('MMMMM dd, yyyy');
+            emailsToSend.add(sendTransactionErrorEmail(name, billDueDateString, errorMessage, emailList,
+                getBrandedTemplateToUse(account), account.Send_Bills_Contact__c, aCase));
+        }
+        sendEmails(emailsToSend);
+    }
 
-            if (account.Client_Brand_Key__c != null && account.Client_Brand_Key__c.contains('Amp')) {
-                emailsToSend.add(sendTransactionErrorEmail(name, billDueDateString, errorMessage, emailList,
-                    autopayErrorMessageAmp, account.Send_Bills_Contact__c, aCase));
-            } else {
-                emailsToSend.add(sendTransactionErrorEmail(name, billDueDateString, errorMessage, emailList,
-                    autopayErrorMessageBlueWave, account.Send_Bills_Contact__c, aCase));
-            }
+    private EmailTemplate getBrandedTemplateToUse(Account account) {
+        EmailTemplate templateToUse = autopayErrorMessageBlueWave;
+        if (account.Client_Brand_Key__c != null && account.Client_Brand_Key__c.contains('Amp')) {
+            templateToUse = autopayErrorMessageAmp;
         }
-        if (Util.getSystemPropertyCheckbox('Send_Payment_Case_Emails__c')) {
-            sendEmails(emailsToSend);
-        } else {
-            Logger.logLater('PaymentCaseCreator', 'sendAllRequiredEmails', 'Emails disabled:\n'+JSON.serialize(emailsToSend), Logger.ERROR);
-        }
+        return templateToUse;
     }
 
     private void sendEmails(List<Messaging.Email> emailsToSend) {
-        if (emailsToSend.size() > 0) {
-            List<Messaging.SendEmailResult> results = MessagingService.sendEmail(emailsToSend);
-            for (Messaging.SendEmailResult result : results) {
-                if (!result.isSuccess()) {
-                    String logString = 'Autopay Auto-Email send failed with errors:\n';
-                    List<Messaging.SendEmailError> errors = result.getErrors();
-                    for (Messaging.SendEmailError error : errors) {
-                        logString += error.getMessage() + '\n';
-                    }
-                    Logger.logLater('PaymentCaseCreator', 'sendAllRequiredEmails', logString, 'Error');
+        if (!Util.getSystemPropertyCheckbox('Send_Payment_Case_Emails__c')) {
+            Logger.logLater('PaymentCaseCreator', 'sendAllRequiredEmails', 'Emails disabled:\n'+JSON.serialize(emailsToSend), Logger.ERROR);
+            return;
+        }
+        List<Messaging.SendEmailResult> results = MessagingService.sendEmail(emailsToSend);
+        for (Messaging.SendEmailResult result : results) {
+            if (!result.isSuccess()) {
+                String logString = 'Autopay Auto-Email send failed with errors:\n';
+                List<Messaging.SendEmailError> errors = result.getErrors();
+                for (Messaging.SendEmailError error : errors) {
+                    logString += error.getMessage() + '\n';
                 }
+                Logger.logLater('PaymentCaseCreator', 'sendAllRequiredEmails', logString, 'Error');
             }
         }
     }
@@ -286,7 +300,8 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
     private Set<Id> findDefaultPaymentMethodUpdates(Map<Id, Zuora__CustomerAccount__c> oldCustomerAccounts, Map<Id, Zuora__CustomerAccount__c> newCustomerAccounts) {
         Set<Id> propertyAccountIds = new Set<Id>();
         for (Zuora__CustomerAccount__c oldAccount : oldCustomerAccounts.values()) {
-            if (oldAccount.Zuora__Default_Payment_Method__c != newCustomerAccounts.get(oldAccount.Id).Zuora__Default_Payment_Method__c) {
+            if (oldAccount.Zuora__Default_Payment_Method__c != newCustomerAccounts.get(oldAccount.Id).Zuora__Default_Payment_Method__c &&
+                newCustomerAccounts.get(oldAccount.Id).Zuora__Default_Payment_Method__c != null) {
                 propertyAccountIds.add(oldAccount.Zuora__Account__c);
             }
         }
