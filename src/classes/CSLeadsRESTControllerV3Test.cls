@@ -118,6 +118,10 @@ public with sharing class CSLeadsRESTControllerV3Test {
     }
 
     public static void useMocks () {
+        Lead newLead = new Lead(
+            Id = Util.getFakeId(Lead.SObjectType),
+            Email = CSLeadsRESTControllerV2Test.SAMPLE_EMAIL
+        );
         mockLeadService =  new CSLeadsRESTControllerV2Test.MockLeadService();
         controller.leadService = (LeadService) Test.createStub(LeadService.class, mockLeadService);
         controller.accountService = (AccountService) Test.createStub(AccountService.class, new CSLeadsRESTControllerV2Test.MockAccountService());
@@ -125,7 +129,7 @@ public with sharing class CSLeadsRESTControllerV3Test {
         controller.capacityService = (CapacityService) Test.createStub(CapacityService.class, new CSLeadsRESTControllerV2Test.MockCapacityService());
         controller.uow = (fflib_SObjectUnitOfWork) Test.createStub(fflib_SObjectUnitOfWork.class, new CSLeadsRESTControllerV2Test.MockUOW());
 
-        controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new CSLeadsRESTControllerV2Test.MockLeadSelector());
+        controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new CSLeadsRESTControllerV2Test.MockLeadSelector(newLead));
         controller.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new CSLeadsRESTControllerV2Test.MockAccountsSelector());
         controller.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new CSLeadsRESTControllerV2Test.MockUALSelector());
 

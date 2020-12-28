@@ -2,12 +2,19 @@
  * Created by jlugo on 2019-07-09.
  */
 @IsTest
-@SuppressWarnings('PMD.ExcessivePublicCount')
+@SuppressWarnings('PMD.ExcessivePublicCount, PMD.AvoidHardcodingId')
 public with sharing class CSLeadsRESTControllerV2Test {
     private static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
     private static MockLeadService mockLeadService;
     @TestVisible private static final String SAMPLE_EMAIL = 'email@invalid.com';
-    public static void useMocks () {
+    private static void useMocks() {
+        Lead newLead = new Lead(
+            Id = Util.getFakeId(Lead.SObjectType),
+            Email = SAMPLE_EMAIL
+        );
+        useMocks(newLead);
+    }
+    private static void useMocks(Lead leadToReturnFromLeadSelector) {
         mockLeadService = new MockLeadService();
         controller.leadService = (LeadService) Test.createStub(LeadService.class, mockLeadService);
         controller.accountService = (AccountService) Test.createStub(AccountService.class, new MockAccountService());
@@ -17,7 +24,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.duplicateService = (CSLeadsDuplicateService) Test.createStub(CSLeadsDuplicateService.class , new MockDuplicateService(false));
         controller.uow = (fflib_SObjectUnitOfWork) Test.createStub(fflib_SObjectUnitOfWork.class, new MockUOW());
         controller.qualificationService = (CSQualificationService) Test.createStub(CSQualificationService.class, new MockQualificationService());
-        controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new MockLeadSelector());
+        controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new MockLeadSelector(leadToReturnFromLeadSelector));
         controller.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
         controller.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector());
         RestContext.response = new RestResponse();
@@ -45,7 +52,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     @IsTest
     private static void testGetLeadSuccess() {
         useMocks();
-        controller.getLead('00Q000000000888', SAMPLE_EMAIL);
+        controller.getLead(Util.getfakeId(Lead.SObjectType), SAMPLE_EMAIL);
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed GET request should succeed');
     }
     @IsTest
@@ -67,8 +74,18 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @IsTest
     private static void testGetLeadTooManyAccounts() {
-        useMocks();
-        controller.getLead('00Q000000000777', SAMPLE_EMAIL);
+        sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
+        fabbedLead.setField(Lead.Email, SAMPLE_EMAIL);
+        fabbedLead.setField(Lead.Id, Util.getFakeId(Lead.SObjectType));
+        sfab_FabricatedSObject fabbedPropertyAccount1 = new sfab_FabricatedSObject(Account.class);
+        fabbedPropertyAccount1.setField(Account.Lead__c, Util.getFakeId(Lead.SObjectType));
+        fabbedPropertyAccount1.setField(Account.Id, Util.getFakeId(Account.SObjectType));
+        sfab_FabricatedSObject fabbedPropertyAccount2 = new sfab_FabricatedSObject(Account.class);
+        fabbedPropertyAccount2.setField(Account.Lead__c, Util.getFakeId(Lead.SObjectType));
+        fabbedPropertyAccount2.setField(Account.Id, Util.getFakeId(Account.SObjectType));
+        fabbedLead.setChildren('Accounts__r', new List<sfab_FabricatedSObject>{fabbedPropertyAccount1, fabbedPropertyAccount2});
+        useMocks((Lead) fabbedLead.toSObject());
+        controller.getLead(Util.getFakeId(Lead.SObjectType), SAMPLE_EMAIL);
         System.assertEquals(400, RestContext.response.statusCode, 'Method should return error when lead has multiple property accounts');
     }
     /*******************
@@ -76,10 +93,19 @@ public with sharing class CSLeadsRESTControllerV2Test {
      *******************/
     @IsTest
     private static void testPullCreditOnContractSignature() {
-        useMocks();
+        sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
+        fabbedLead.setField(Lead.Id, Util.getFakeId(Lead.SObjectType));
+        fabbedLead.setField(Lead.Email, SAMPLE_EMAIL);
+        fabbedLead.setField(Lead.Customer_Signed_Date__c, Datetime.now());
+        fabbedLead.setField(Lead.Underwriting_Criteria__c, 'FICO');
+        sfab_FabricatedSObject fabbedContract = new sfab_FabricatedSObject(Contract.class);
+        fabbedContract.setField(Contract.Id, Util.getFakeId(Contract.SObjectType));
+        fabbedContract.setField(Contract.Lead__c, Util.getFakeId(Lead.SObjectType));
+        fabbedContract.setField(Contract.Customer_Signature_Date_Time__c, Datetime.now());
+        fabbedLead.setChildren('Contracts__r', new List<sfab_FabricatedSObject>{fabbedContract});
+        useMocks((Lead) fabbedLead.toSObject());
         Util.mockDML = true;
-        Id leadId = '00Q000000000666';
-        controller.updateLeadApplicationStatus(leadId);
+        controller.updateLeadApplicationStatus(Util.getFakeId(Lead.SObjectType));
         System.assertNotEquals(null, Util.objectsUpdatedIfMockingDML);
         List<Lead> updatedLeads = (List<Lead>) Util.objectsUpdatedIfMockingDML;
         for (Lead checkLead : updatedLeads) {
@@ -88,10 +114,19 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @IsTest
     private static void testDontPullCreditForFinancialDocs() {
-        useMocks();
+        sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
+        fabbedLead.setField(Lead.Id, Util.getFakeId(Lead.SObjectType));
+        fabbedLead.setField(Lead.Email, SAMPLE_EMAIL);
+        fabbedLead.setField(Lead.Customer_Signed_Date__c, Datetime.now());
+        fabbedLead.setField(Lead.Underwriting_Criteria__c, 'Financial Review');
+        sfab_FabricatedSObject fabbedContract = new sfab_FabricatedSObject(Contract.class);
+        fabbedContract.setField(Contract.Id, Util.getFakeId(Contract.SObjectType));
+        fabbedContract.setField(Contract.Lead__c, Util.getFakeId(Lead.SObjectType));
+        fabbedContract.setField(Contract.Customer_Signature_Date_Time__c, Datetime.now());
+        fabbedLead.setChildren('Contracts__r', new List<sfab_FabricatedSObject>{fabbedContract});
+        useMocks((Lead) fabbedLead.toSObject());
         Util.mockDML = true;
-        Id leadId = '00Q000000000555';
-        controller.updateLeadApplicationStatus(leadId);
+        controller.updateLeadApplicationStatus(Util.getFakeId(Lead.SObjectType));
         System.assertNotEquals(null, Util.objectsUpdatedIfMockingDML);
         List<Lead> updatedLeads = (List<Lead>) Util.objectsUpdatedIfMockingDML;
         for (Lead checkLead : updatedLeads) {
@@ -117,10 +152,20 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @IsTest
     private static void testPatchLeadCreditPullOnce() {
-        useMocks();
+        sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
+        fabbedLead.setField(Lead.Id, Util.getFakeId(Lead.SObjectType));
+        fabbedLead.setField(Lead.Email, SAMPLE_EMAIL);
+        fabbedLead.setField(Lead.Customer_Signed_Date__c, Datetime.now());
+        fabbedLead.setField(Lead.Underwriting_Criteria__c, 'FICO');
+        fabbedLead.setField(Lead.Application_Status__c, 'Contracts Signed');
+        sfab_FabricatedSObject fabbedContract = new sfab_FabricatedSObject(Contract.class);
+        fabbedContract.setField(Contract.Id, Util.getFakeId(Contract.SObjectType));
+        fabbedContract.setField(Contract.Lead__c, Util.getFakeId(Lead.SObjectType));
+        fabbedContract.setField(Contract.Customer_Signature_Date_Time__c, Datetime.now());
+        fabbedLead.setChildren('Contracts__r', new List<sfab_FabricatedSObject>{fabbedContract});
+        useMocks((Lead) fabbedLead.toSObject());
         Util.mockDML = true;
-        Id leadId = '00Q000000000444';
-        controller.updateLeadApplicationStatus(leadId);
+        controller.updateLeadApplicationStatus(Util.getFakeId(Lead.SObjectType));
         System.assertEquals(null, Util.objectsUpdatedIfMockingDML, 'Application Status is the same and therefore does not require an update');
     }
     @IsTest
@@ -132,7 +177,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @IsTest
     private static void testPatchLeadInvalidId() {
-        useMocks();
+        useMocks(null);
         String jsonRequest = '{ "id": "00Q000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
         controller.patchLead(jsonRequest);
         System.assertEquals(404, RestContext.response.statusCode, 'PATCH should throw an error if the ID provided is not valid');
@@ -286,7 +331,20 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @IsTest
     private static void testPostLeadSuccess() {
-        useMocks();
+        sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
+        fabbedLead.setField(Lead.Email, SAMPLE_EMAIL);
+        fabbedLead.setField(Lead.Id, Util.getFakeId(Lead.SObjectType));
+        fabbedLead.setField(Lead.CreatedDate, Datetime.now());
+        sfab_FabricatedSObject fabbedPropertyAccount1 = new sfab_FabricatedSObject(Account.class);
+        fabbedPropertyAccount1.setField(Account.Lead__c, Util.getFakeId(Lead.SObjectType));
+        fabbedPropertyAccount1.setField(Account.Id, Util.getFakeId(Account.SObjectType));
+        fabbedLead.setChildren('Accounts__r', new List<sfab_FabricatedSObject>{fabbedPropertyAccount1});
+        sfab_FabricatedSObject fabbedUAL = new sfab_FabricatedSObject(Utility_Account_Log__c.class);
+        fabbedUAL.setField(Utility_Account_Log__c.Lead__c, Util.getFakeId(Utility_Account_Log__c.SObjectType));
+        fabbedUAL.setField(Utility_Account_Log__c.Id, Util.getFakeId(Utility_Account_Log__c.SObjectType));
+        fabbedUAL.setField(Utility_Account_Log__c.Account__c, Util.getFakeId(Account.SObjectType));
+        fabbedLead.setChildren('Utility_Account_Logs__r', new List<sfab_FabricatedSObject>{fabbedUAL});
+        useMocks((Lead) fabbedLead.toSObject());
         String jsonRequest = '{' +
             '"firstName": "Unit",' +
             '"lastName": "Testcase",' +
@@ -330,7 +388,20 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @IsTest
     private static void testPostPropertyAccountWhenOneAlreadyExists() {
-        useMocks();
+        sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
+        fabbedLead.setField(Lead.Email, SAMPLE_EMAIL);
+        fabbedLead.setField(Lead.Id, '00Q000000000999');
+        fabbedLead.setField(Lead.CreatedDate, Datetime.now());
+        sfab_FabricatedSObject fabbedPropertyAccount1 = new sfab_FabricatedSObject(Account.class);
+        fabbedPropertyAccount1.setField(Account.Lead__c, '00Q000000000999');
+        fabbedPropertyAccount1.setField(Account.Id, Util.getFakeId(Account.SObjectType));
+        fabbedLead.setChildren('Accounts__r', new List<sfab_FabricatedSObject>{fabbedPropertyAccount1});
+        sfab_FabricatedSObject fabbedUAL = new sfab_FabricatedSObject(Utility_Account_Log__c.class);
+        fabbedUAL.setField(Utility_Account_Log__c.Lead__c, '00Q000000000999');
+        fabbedUAL.setField(Utility_Account_Log__c.Id, Util.getFakeId(Utility_Account_Log__c.SObjectType));
+        fabbedUAL.setField(Utility_Account_Log__c.Account__c, Util.getFakeId(Account.SObjectType));
+        fabbedLead.setChildren('Utility_Account_Logs__r', new List<sfab_FabricatedSObject>{fabbedUAL});
+        useMocks((Lead) fabbedLead.toSObject());
         // We only support one property account today.  If you try to pass another in after one exists, you should get an error
         String jsonRequest = '{' +
             '"leadId": "00Q000000000999",' +
@@ -348,7 +419,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @IsTest
     private static void testPostPropertyAccountWithInvalidLead() {
-        useMocks();
+        useMocks(null);
         String jsonRequest = '{' +
             '"leadId": "00Q000000000111",' + // ID of ...111 is set as an non-existent ID in the mock svc
             '"billingStreet": "Test billing street",' +
@@ -363,7 +434,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     private static void testPostPropertyAccountWithMinimalFields() {
         useMocks();
         String jsonRequest = '{' +
-            '"leadId": "00Q000000000888",' +
+            '"leadId": "'+Util.getFakeId(Lead.SObjectType)+'",' +
             '"billingStreet": "Test billing street",' +
             '"billingCity": "Test billing city",' +
             '"billingState": "NY",' +
@@ -437,7 +508,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @IsTest
     private static void testPatchApplicationInvalidLeadId() {
-        useMocks();
+        useMocks(null);
         String jsonRequest = '{ "id": "00Q000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
         controller.patchApplication(jsonRequest);
         System.assertEquals(404, RestContext.response.statusCode, 'PATCH should throw an error if the ID provided is not valid');
@@ -471,7 +542,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     private static void testPatchApplicationSuccessNoDocs() {
         useMocks();
         String jsonRequest = '{' +
-            '"id": "00Q000000000888",' +
+            '"id": "'+Util.getFakeId(Lead.SObjectType)+'",' +
             '"firstName": "Unit",' +
             '"lastName": "Testcase",' +
             '"email": "test@invalid.bluewavesolar.com",' +
@@ -484,14 +555,14 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"productName": "CS Product",' +
             '"propertyAccounts": [{' +
             '   "id": "001000000000999",' +
-            '   "leadId": "00Q000000000888", ' +
+            '   "leadId": "'+Util.getFakeId(Lead.SObjectType)+'", ' +
             '   "billingStreet": "Test billing street",' +
             '   "billingCity": "Test billing city",' +
             '   "billingState": "NY",' +
             '   "billingPostalCode": "14472",' +
             '   "utilityAccountLogs": [{' +
             '       "id": "a1b000000000999",' +
-            '       "leadId": "00Q000000000888", ' +
+            '       "leadId": "'+Util.getFakeId(Lead.SObjectType)+'", ' +
             '       "propertyAccountId": "001000000000999",' +
             '       "nameOnAccount": "Test Accounts Payable",' +
             '       "serviceStreet": "Test service street",' +
@@ -827,7 +898,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         RestContext.request = req;
         RestContext.response = new RestResponse();
         RESTRouterV2.postRequest();
-        System.debug('error logs: ' + [SELECT Id, Class__c, Method__c, Message__c FROM Error_Log__c]);
+        System.debug(LoggingLevel.ERROR, 'error logs: ' + [SELECT Id, Class__c, Method__c, Message__c FROM Error_Log__c]);
         RestResponse response = RestContext.response;
         String jsonResponse = response.responseBody.toString();
         Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
@@ -1136,7 +1207,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
      *************/
     @TestVisible
     private class MockLeadService extends MockProvider {
-        public override Object handleMethodCall(MethodCall methodCall) {
+            public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'updateLead' {
                     return new Lead(Company = 'test');
@@ -1154,134 +1225,16 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     @TestVisible
     private class MockLeadSelector implements StubProvider {
+        private Lead leadToReturn;
+        public MockLeadSelector() {
+            this.leadToReturn = null;
+        }
+        public MockLeadSelector(Lead leadToReturn) {
+            this.leadToReturn = leadToReturn;
+        }
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
-                Lead newLead = new Lead();
-                newLead.Email = SAMPLE_EMAIL;
-                if(!listOfArgs.isEmpty() && listOfArgs.get(0) != null) {
-                    if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000111') {
-                        return null;
-                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000999') {
-                        newLead.Application_Complete_Date__c = Datetime.newInstance(2017, 1, 1);
-                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000888') {
-                        newLead.Id = '00Q000000000888';
-                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000777') {
-                        String leadMapJson = '{ ' +
-                        '   "attributes": {' +
-                        '       "type": "Lead",' +
-                        '       "url": "/services/data/v48.0/sobjects/Lead/00Q000000000777"' +
-                        '   },' +
-                        '   "Email": "' + SAMPLE_EMAIL + '",' +
-                        '   "Id": "00Q000000000777",' +
-                        '   "Accounts__r": {' +
-                        '       "totalSize": 2,' +
-                        '       "done": true,' +
-                        '       "records": ' +
-                        '           [' +
-                        '               {' +
-                        '                   "attributes": {' +
-                        '                       "type": "Account",' +
-                        '                       "url": "/services/data/v48.0/sobjects/Account/001000000000999"' +
-                        '                   },' +
-                        '                   "Lead__c": "00Q000000000777",' +
-                        '                   "Id": "001000000000999"' +
-                        '               },' +
-                        '               {' +
-                        '                   "attributes": {' +
-                        '                       "type": "Account",' +
-                        '                       "url": "/services/data/v48.0/sobjects/Account/001000000000999"' +
-                        '                   },' +
-                        '                   "Lead__c": "00Q000000000777",' +
-                        '                   "Id": "001000000000999"' +
-                        '               }' +
-                        '           ]' +
-                        '   }' +  
-                        '}';
-                        return (Lead)JSON.deserialize(leadMapJson, Lead.class);
-                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000666' ||
-                        String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000555' ||
-                        String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000444') {
-                        //lead with contracts
-                        String leadMapJson = '{ ' +
-                            '   "attributes": {' +
-                            '       "type": "Lead",' +
-                            '       "url": "/services/data/v48.0/sobjects/Lead/00Q000000000666"' +
-                            '   },' +
-                            '   "Email": "' + SAMPLE_EMAIL + '",' +
-                            '   "Id": "00Q000000000666",' +
-                            '   "Customer_Signed_Date__c": "2020-07-22T00:00:00Z",' +
-                            '   "Underwriting_Criteria__c": "FICO", ' +
-                            '   "Contracts__r": {' +
-                            '       "totalSize": 1,' +
-                            '       "done": true,' +
-                            '       "records": ' +
-                            '           [' +
-                            '               {' +
-                            '                   "attributes": {' +
-                            '                       "type": "Contract",' +
-                            '                       "url": "/services/data/v48.0/sobjects/Contract/800000000000999"' +
-                            '                   },' +
-                            '                   "Lead__c": "00Q000000000666",' +
-                            '                   "Customer_Signature_Date_Time__c": "2020-07-22T00:00:00Z", ' +
-                            '                   "Id": "800000000000999"' +
-                            '               }' +
-                            '           ]' +
-                            '   }' +
-                            '}';
-                        Lead lead = (Lead)JSON.deserialize(leadMapJson, Lead.class);
-                        if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000555'){
-                            lead.Underwriting_Criteria__c = 'Financial Review';
-                        } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000444') {
-                            lead.Application_Status__c = 'Contracts Signed';
-                        }
-                        return lead;
-                    }
-                }
-                if(stubbedMethodName == 'selectOneWithPropertiesAndUtilities') {
-                    String createDate = Datetime.now().format('yyyy-MM-dd') + 'T' + Datetime.now().format('kk:mm:ss.SSS') + '+0000';
-                    String leadMapJson = '{ ' +
-                        '   "attributes": {' +
-                        '       "type": "Lead",' +
-                        '       "url": "/services/data/v48.0/sobjects/Lead/00Q000000000999"' +
-                        '   },' +
-                        '   "Email": "' + SAMPLE_EMAIL + '",' +
-                        '   "Id": "00Q000000000999",' +
-                        '   "CreatedDate": "' + createDate + '",' +
-                        '   "Accounts__r": {' +
-                        '       "totalSize": 1,' +
-                        '       "done": true,' +
-                        '       "records": ' +
-                        '           [' +
-                        '               {' +
-                        '                   "attributes": {' +
-                        '                       "type": "Account",' +
-                        '                       "url": "/services/data/v48.0/sobjects/Account/001000000000999"' +
-                        '                   },' +
-                        '                   "Lead__c": "00Q000000000999",' +
-                        '                   "Id": "001000000000999"' +
-                        '               }' +
-                        '           ]' +
-                        '   },' + 
-                        '   "Utility_Account_Logs__r": {' +
-                        '       "totalSize": 1,' +
-                        '       "done": true,' +
-                        '       "records": ' +
-                        '           [' +
-                        '               {' +
-                        '                   "attributes": {' +
-                        '                       "type": "Utility_Account_Log__c",' +
-                        '                       "url": "/services/data/v48.0/sobjects/Utility_Account_Log__c/a1b2C000000wv1JQAQ"' +
-                        '                   },' +
-                        '                   "Lead__c": "00Q000000000999",' +
-                        '                   "Id": "a1b000000000999",' +
-                        '                   "Account__c": "001000000000999"' +
-                        '               }' +
-                        '           ]' +
-                        '   }' + 
-                        '}';
-                    return (Lead)JSON.deserialize(leadMapJson, Lead.class);
-                }
-                return newLead;
+            return leadToReturn;
         }
     }
     @TestVisible
@@ -1306,10 +1259,10 @@ public with sharing class CSLeadsRESTControllerV2Test {
             switch on stubbedMethodName {
                 when 'selectOne' {
                     Account newAccount = new Account();
-                    if(!listOfArgs.isEmpty() && listOfArgs.get(0) != null) {
-                        if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000111') {
+                    switch on String.valueOf(listOfArgs.get(0)).substring(0,15) {
+                        when '001000000000111' {
                             return null;
-                        } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000888') {
+                        } when '001000000000888' {
                             newAccount.Id = '001000000000888';
                             newAccount.Lead__c = Util.getFakeId(Schema.Lead.SObjectType);
                         }
@@ -1317,12 +1270,9 @@ public with sharing class CSLeadsRESTControllerV2Test {
                     return newAccount;
                 }
                 when 'selectPropertyAccountsByLeadIds' {
-                    for (Id leadId : (Set<Id>) listOfArgs.get(0)) {
-                        if(!listOfArgs.isEmpty() && listOfArgs.get(0) != null) {
-                            if (String.valueOf(leadId).substring(0,15) == '00Q000000000999') {
-                                return new List<Account>{new Account()};
-                            }
-                        }
+                    Set<Id> leadIds = (Set<Id>) listOfArgs.get(0);
+                    if (leadIds.contains('00Q000000000999')) {
+                        return new List<Account>{new Account()};
                     }
                 }
                 when 'selectPropertyAccountsByLeadIdsMap' {
