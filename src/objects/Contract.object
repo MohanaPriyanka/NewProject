@@ -273,7 +273,7 @@ Account.Assignment_Agreement_Template__c
 &quot;&amp;defaultpdf=1&quot; +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;apdf=0&quot; +
-&quot;&amp;emailtemplateid=&quot; + CASE(Account.Client_Brand_Key__c,&quot;AmpRed&quot;,&quot;00X0a0000011XNq&quot;,&quot;AmpBlack&quot;,&quot;00X0a0000011XNq&quot;,&quot;{!Environment.Conga_emailtemplate_SSFCountersigned}&quot;) +
+&quot;&amp;emailtemplateid=&quot; + CASE(Account.Client_Brand_Key__c,&quot;AmpRed&quot;,&quot;00X0a0000011XNv&quot;,&quot;AmpBlack&quot;,&quot;00X0a0000011XNq&quot;,&quot;{!Environment.Conga_emailtemplate_SSFCountersigned}&quot;) +
 &quot;&amp;emailtoid=&quot; + Account.Send_Bills_Contact__r.Id +
 &quot;&amp;emailrelatedtoid={QVar0}&quot; +
 &quot;&amp;emailfromid=0D20a0000004K0P&quot; +
