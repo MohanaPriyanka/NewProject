@@ -10143,6 +10143,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Entity__c.Membership_Certificate_Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Entity__c.Merchant_Security_Key__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10198,6 +10203,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Entity__c.Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Entity__c.Operating_Agreement__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10234,6 +10244,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Entity__c.SC_Foreign_Registration__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Entity__c.Sale_date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

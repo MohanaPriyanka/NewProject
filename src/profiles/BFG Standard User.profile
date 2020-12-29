@@ -17630,6 +17630,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Entity__c.Membership_Certificate_Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Entity__c.Merchant_Security_Key__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -17685,6 +17690,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Entity__c.Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Entity__c.Operating_Agreement__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -17726,6 +17736,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Entity__c.SC_Foreign_Registration__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Entity__c.Sale_date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21531,6 +21546,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Newsletter_Opt_in__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.No_Payment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38291,6 +38311,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Do_Not_Ask_for_Payment_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Do_Not_Underwrite__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -566,6 +566,7 @@ public with sharing class DocuSignHelperTest {
         sysProp.DocuSign_Guest_User__c = '123@345.com';
         sysProp.DocuSign_Guest_User_Credential__c = '234234';
         sysProp.DocuSign_Integrator_Key__c = '123123-123123';
+        sysProp.Log_Level__c = 'Info';
         update sysProp;
 
         Utility__c nationalGrid = new Utility__c(
