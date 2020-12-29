@@ -1697,6 +1697,15 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Resolution_Details__c</fullName>
+        <externalId>false</externalId>
+        <label>Resolution Details</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Resolution__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>What is the resolution to this case?</inlineHelpText>
