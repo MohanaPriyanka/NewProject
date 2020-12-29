@@ -25,94 +25,28 @@
     </actionCalls>
     <actionCalls>
         <processMetadataValues>
-            <name>emailAlertSelection</name>
+            <name>ActionCallType</name>
             <value>
-                <stringValue>CS_Partner_Contract_Complete</stringValue>
+                <stringValue>flow</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>flowSelection</name>
+            <value>
+                <stringValue>Portal Activation</stringValue>
             </value>
         </processMetadataValues>
         <name>myRule_17_A1</name>
-        <label>CS Partner - Contract Complete</label>
-        <locationX>1700</locationX>
-        <locationY>200</locationY>
-        <actionName>Opportunity.CS_Partner_Contract_Complete</actionName>
-        <actionType>emailAlert</actionType>
-        <connector>
-            <targetReference>myRule_17_A2</targetReference>
-        </connector>
-        <inputParameters>
-            <name>SObjectRowId</name>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
-    <actionCalls>
-        <processMetadataValues>
-            <name>emailAlertSelection</name>
-            <value>
-                <stringValue>CS_Partner_Contract_Complete</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>myRule_20_A1</name>
-        <label>CS Partner - Contract Complete</label>
-        <locationX>2000</locationX>
-        <locationY>200</locationY>
-        <actionName>Opportunity.CS_Partner_Contract_Complete</actionName>
-        <actionType>emailAlert</actionType>
-        <connector>
-            <targetReference>myRule_20_A2</targetReference>
-        </connector>
-        <inputParameters>
-            <name>SObjectRowId</name>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
-    <actionCalls>
-        <processMetadataValues>
-            <name>emailAlertSelection</name>
-            <value>
-                <stringValue>CS_Opportunity_Complete_Email</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>myRule_20_A3</name>
-        <label>CS Opportunity Complete Email</label>
-        <locationX>2000</locationX>
-        <locationY>400</locationY>
-        <actionName>Opportunity.CS_Opportunity_Complete_Email</actionName>
-        <actionType>emailAlert</actionType>
-        <connector>
-            <targetReference>myRule_20_A4</targetReference>
-        </connector>
-        <inputParameters>
-            <name>SObjectRowId</name>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
-    <actionCalls>
-        <processMetadataValues>
-            <name>apexSelection</name>
-            <value>
-                <stringValue>OpportunityTriggerHandler</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>myWaitEvent_myWait_myRule_17_event_0_SA1</name>
         <label>Portal Activation</label>
         <locationX>1700</locationX>
         <locationY>200</locationY>
-        <actionName>OpportunityTriggerHandler</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>myWaitEvent_myWait_myRule_17_event_0_postWaitExecutionAssignment</targetReference>
-        </connector>
+        <actionName>Portal_Activation</actionName>
+        <actionType>flow</actionType>
         <inputParameters>
             <processMetadataValues>
                 <name>dataType</name>
                 <value>
-                    <stringValue>ID</stringValue>
+                    <stringValue>SObject</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -124,7 +58,7 @@
             <processMetadataValues>
                 <name>leftHandSideLabel</name>
                 <value>
-                    <stringValue>oppIdList</stringValue>
+                    <stringValue>sov_Opportunity</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -136,42 +70,25 @@
             <processMetadataValues>
                 <name>objectType</name>
                 <value>
-                    <stringValue></stringValue>
+                    <stringValue>Opportunity</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>Reference</stringValue>
+                    <stringValue>SObject</stringValue>
                 </value>
             </processMetadataValues>
-            <name>oppIdList</name>
+            <name>sov_Opportunity</name>
             <value>
-                <elementReference>myVariable_current.Id</elementReference>
+                <elementReference>myVariable_current</elementReference>
             </value>
         </inputParameters>
-    </actionCalls>
-    <actionCalls>
-        <processMetadataValues>
-            <name>apexSelection</name>
-            <value>
-                <stringValue>OpportunityTriggerHandler</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>myWaitEvent_myWait_myRule_20_event_0_SA1</name>
-        <label>Portal Activation</label>
-        <locationX>2000</locationX>
-        <locationY>200</locationY>
-        <actionName>OpportunityTriggerHandler</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>myWaitEvent_myWait_myRule_20_event_0_postWaitExecutionAssignment</targetReference>
-        </connector>
         <inputParameters>
             <processMetadataValues>
                 <name>dataType</name>
                 <value>
-                    <stringValue>ID</stringValue>
+                    <stringValue>SObject</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -183,7 +100,7 @@
             <processMetadataValues>
                 <name>leftHandSideLabel</name>
                 <value>
-                    <stringValue>oppIdList</stringValue>
+                    <stringValue>sov_Lead</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -195,92 +112,71 @@
             <processMetadataValues>
                 <name>objectType</name>
                 <value>
-                    <stringValue></stringValue>
+                    <stringValue>Lead</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>Reference</stringValue>
+                    <stringValue>SObject</stringValue>
                 </value>
             </processMetadataValues>
-            <name>oppIdList</name>
+            <name>sov_Lead</name>
             <value>
-                <elementReference>myVariable_current.Id</elementReference>
+                <elementReference>myVariable_current.Lead__r</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>sov_SSS</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Shared_Solar_System__c</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>sov_SSS</name>
+            <value>
+                <elementReference>myVariable_current.Shared_Solar_System__r</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
-    <assignments>
-        <name>myWaitAssignment_myWait_myRule_17</name>
-        <label>myWaitAssignment_myWait_myRule_17</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>cancelWaits</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>myWait_myRule_17</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>myDecision</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>myWaitAssignment_myWait_myRule_20</name>
-        <label>myWaitAssignment_myWait_myRule_20</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>cancelWaits</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>myWait_myRule_20</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>myPreWaitDecision_myWait_myRule_17</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>myWaitEvent_myWait_myRule_17_event_0_postWaitExecutionAssignment</name>
-        <label>myWaitEvent_myWait_myRule_17_event_0_postWaitExecutionAssignment</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>myWaitEvent_myWait_myRule_17_event_0_postActionExecutionVariable</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>myWait_myRule_17</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>myWaitEvent_myWait_myRule_20_event_0_postWaitExecutionAssignment</name>
-        <label>myWaitEvent_myWait_myRule_20_event_0_postWaitExecutionAssignment</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>myWaitEvent_myWait_myRule_20_event_0_postActionExecutionVariable</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>myWait_myRule_20</targetReference>
-        </connector>
-    </assignments>
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <name>isChangedDecision2_myRule_1_StageName</name>
         <label>isChangedDecision2_myRule_1_StageName</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myPreWaitDecision_myWait_myRule_20</targetReference>
+            <targetReference>myDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
@@ -301,7 +197,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myPreWaitDecision_myWait_myRule_20</targetReference>
+                <targetReference>myDecision</targetReference>
             </connector>
             <label>isChangedRule_2_myRule_1_StageName</label>
         </rules>
@@ -792,9 +688,6 @@
         <label>myDecision16</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision19</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_17</name>
@@ -824,409 +717,16 @@
                         <stringValue>Picklist</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_current.Lead__r.LeadSource</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Switch</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Lead__r.CreatedBy.LastName</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Originations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
                 <leftValueReference>myVariable_current.StageName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Complete</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Product_Line__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Community Solar</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Anchor</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Public Offtake</stringValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>myRule_17_pmetdec</targetReference>
             </connector>
-            <label>CS Complete - SSF</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>5.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision19</name>
-        <label>myDecision19</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_20</name>
-            <conditionLogic>1 AND 2 AND( (3 and 4) or 5 ) and 6 and 7</conditionLogic>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.StageName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Complete</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Product_Line__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Community Solar</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Lead__r.LeadSource</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Switch</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Lead__r.CreatedBy.LastName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Originations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Lead__r.LeadSource</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>CSAP</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Anchor</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Public Offtake</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_20_pmetdec</targetReference>
-            </connector>
-            <label>CS Complete - Non SSF</label>
+            <label>CS Complete</label>
         </rules>
     </decisions>
     <decisions>
@@ -1313,445 +813,6 @@
                 <targetReference>myRule_7_pmetdec</targetReference>
             </connector>
             <label>Stage to Pending QC Sig</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>myPreWaitDecision_myWait_myRule_17</name>
-        <label>myPreWaitDecision_myWait_myRule_17</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myWaitAssignment_myWait_myRule_17</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myPreWaitRule_myWait_myRule_17</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Lead__r.LeadSource</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Switch</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Lead__r.CreatedBy.LastName</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Originations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.StageName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Complete</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Product_Line__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Community Solar</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Anchor</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Public Offtake</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myDecision</targetReference>
-            </connector>
-            <label>myPreWaitRule_myWait_myRule_17</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>myPreWaitDecision_myWait_myRule_20</name>
-        <label>myPreWaitDecision_myWait_myRule_20</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myWaitAssignment_myWait_myRule_20</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myPreWaitRule_myWait_myRule_20</name>
-            <conditionLogic>1 AND 2 AND( (3 and 4) or 5 ) and 6 and 7</conditionLogic>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.StageName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Complete</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Product_Line__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Community Solar</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Lead__r.LeadSource</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Switch</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Lead__r.CreatedBy.LastName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Originations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Lead__r.LeadSource</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>CSAP</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Anchor</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Public Offtake</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myPreWaitDecision_myWait_myRule_17</targetReference>
-            </connector>
-            <label>myPreWaitRule_myWait_myRule_20</label>
         </rules>
     </decisions>
     <decisions>
@@ -2244,412 +1305,10 @@
                         <stringValue>Picklist</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_old.Lead__r.LeadSource</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Switch</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Lead__r.CreatedBy.LastName</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Originations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
                 <leftValueReference>myVariable_old.StageName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Complete</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Product_Line__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Community Solar</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Anchor</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Public Offtake</stringValue>
-                </rightValue>
-            </conditions>
-            <label>Previously Met - Prev</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>myRule_20_pmetdec</name>
-        <label>Previously Met Decision</label>
-        <locationX>2000</locationX>
-        <locationY>100</locationY>
-        <defaultConnector>
-            <targetReference>myRule_20_A1</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Not Previously Met</defaultConnectorLabel>
-        <rules>
-            <name>myRule_20_pmetnullrule</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>myVariable_old</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_20_A1</targetReference>
-            </connector>
-            <label>Previously Met - Null</label>
-        </rules>
-        <rules>
-            <name>myRule_20_pmetrule</name>
-            <conditionLogic>1 AND 2 AND( (3 and 4) or 5 ) and 6 and 7</conditionLogic>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.StageName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Complete</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Product_Line__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Community Solar</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Lead__r.LeadSource</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Switch</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Lead__r.CreatedBy.LastName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Originations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Lead__r.LeadSource</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>CSAP</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Anchor</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Customer_Group__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Public Offtake</stringValue>
                 </rightValue>
             </conditions>
             <label>Previously Met - Prev</label>
@@ -2757,7 +1416,7 @@
                 <stringValue>TEXT (PRIORVALUE ( [Opportunity].StageName ))</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_12_myRule_11_A3_9833314462</name>
+        <name>formula_12_myRule_11_A3_3812323633</name>
         <dataType>String</dataType>
         <expression>TEXT (PRIORVALUE ( {!myVariable_current.StageName} ))</expression>
     </formulas>
@@ -2768,42 +1427,9 @@
                 <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_13_myRule_11_A2_9962243716</name>
+        <name>formula_13_myRule_11_A2_8385018004</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>TODAY()</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_18_myRule_17_A2_2347877399</name>
-        <dataType>Date</dataType>
-        <expression>TODAY()</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>TODAY()</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_21_myRule_20_A4_7896517406</name>
-        <dataType>Date</dataType>
-        <expression>TODAY()</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>TODAY()</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_22_myRule_20_A2_1791480255</name>
-        <dataType>Date</dataType>
-        <expression>TODAY()</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -2813,7 +1439,7 @@
                 </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A2_7271138183</name>
+        <name>formula_3_myRule_1_A2_3126933123</name>
         <dataType>String</dataType>
         <expression>TEXT({!myVariable_current.StageName})</expression>
     </formulas>
@@ -2824,7 +1450,7 @@
                 <stringValue>TEXT(PRIORVALUE([Opportunity].StageName ) )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_4_myRule_1_A2_5912082237</name>
+        <name>formula_4_myRule_1_A2_2531374803</name>
         <dataType>String</dataType>
         <expression>TEXT(PRIORVALUE({!myVariable_current.StageName} ) )</expression>
     </formulas>
@@ -2835,7 +1461,7 @@
                 <stringValue>NOW() </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_5_myRule_1_A1_4904088295</name>
+        <name>formula_5_myRule_1_A1_0893891937</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
@@ -2846,7 +1472,7 @@
                 <stringValue>TEXT(PRIORVALUE([Opportunity].StageName ))</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_8_myRule_7_A3_4806755920</name>
+        <name>formula_8_myRule_7_A3_9424060414</name>
         <dataType>String</dataType>
         <expression>TEXT(PRIORVALUE({!myVariable_current.StageName} ))</expression>
     </formulas>
@@ -2857,11 +1483,11 @@
                 <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_9_myRule_7_A2_0462681161</name>
+        <name>formula_9_myRule_7_A2_6834742318</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
-    <interviewLabel>Opportunity_Create_Edit-24_InterviewLabel</interviewLabel>
+    <interviewLabel>Opportunity_Create_Edit-26_InterviewLabel</interviewLabel>
     <label>Opportunity Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -2995,7 +1621,7 @@
             </processMetadataValues>
             <field>Previous_Stage__c</field>
             <value>
-                <elementReference>formula_12_myRule_11_A3_9833314462</elementReference>
+                <elementReference>formula_12_myRule_11_A3_3812323633</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -3209,250 +1835,6 @@
         <object>Task</object>
     </recordCreates>
     <recordCreates>
-        <name>myRule_17_A2</name>
-        <label>EMAIL LOG: CS Opp Complete</label>
-        <locationX>1700</locationX>
-        <locationY>300</locationY>
-        <connector>
-            <targetReference>myWait_myRule_17</targetReference>
-        </connector>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Date</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Due Date Only</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>formula_18_myRule_17_A2_2347877399</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Description</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Description</field>
-            <value>
-                <stringValue>Email notification that CS Opportunity = complete email sent to partner</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Assigned To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>OwnerId</field>
-            <value>
-                <stringValue>0050a00000GdFjI</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Priority</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Priority</field>
-            <value>
-                <stringValue>Low</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Status</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Status</field>
-            <value>
-                <stringValue>Completed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Subject</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Subject</field>
-            <value>
-                <stringValue>EMAIL LOG: CS Opportunity Complete Email to Partner</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Related To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>APXTConga4__Composer_QuickMerge__c;APXTConga4__Conga_Email_Staging__c;APXTConga4__Conga_Email_Template__c;APXT_BPM__Conductor__c;Account;Account_Bill__c;Adjustment_Application__c;Application__c;Asset;AssetRelationship;Asset_Management__c;Autopay_Schedule__c;Bank__c;Bill_Adjustment__c;Bill_Period__c;BlueWave_Blog__c;BlueWave_Surveys__c;Campaign;Case;Change_Order__c;ChannelProgram;ChannelProgramLevel;ChargentOrders__ChargentOrder__c;ChargentOrders__Email_Notification__c;ChargentOrders__Transaction__c;Client_Allocation_Schedule_Subscription__c;Client_Health_Report__c;Client_Utility_Account_Subscription__c;CommSubscriptionConsent;Commission_Payment__c;Commission_Structure__c;Construction__c;ContactRequest;Contract;Deal__c;Disbursal__c;Entity_Contract_Junction__c;Entity__c;External_Affairs__c;Feeder__c;Financial_Relationship__c;ISA_Payment__c;IX_Service_Agreement__c;Incentive__c;Interconnection__c;Invoice__c;Journal_Entry__c;LASERCA__Inquiries__c;LASERCA__Personal_Credit_Report__c;LASERCA__Public_Records__c;LASERCA__Trade_Accounts__c;ListEmail;LiveAgentSession;LiveChatTranscript;LiveText__Campaign_Send_Member__c;LiveText__Campaign_Send__c;LiveText__Conversation_Event__c;LiveText__Recent_Campaign_Send_Member__c;Load_U__c;Loan_Data__c;Loan_Partner_Experience_Survey__c;Loan_Traunch__c;Loan__c;MPM4_BASE__Milestone1_Milestone__c;MPM4_BASE__Milestone1_Program__c;MPM4_BASE__Milestone1_Project__c;MPM4_BASE__Milestone1_Resource__c;MPM4_BASE__Milestone1_Task__c;Management_Reporting__c;Marketing_Inventory__c;Meter_Reading_Schedule__c;Operations_Group_Assignment__c;Opportunity;Order;Overpayment_Application__c;Overpayment__c;Paper_Check__c;PartnerFundAllocation;PartnerFundClaim;PartnerFundRequest;PartnerMarketingBudget;Partner_Task__c;Partner__c;PartyConsent;Product2;Product_Escalation_Schedule__c;Product_Escalator__c;Product_Group_Assignment__c;Product_Release__c;Production__c;Project_Assemblage__c;Project_Finance__c;Quick_Sales_Sheet__c;Quote;Rate_Class__c;Related_Contract_Parties__c;SREC_Invoice__c;SREC__c;Schedule_Z__c;Shared_Solar_System_Order__c;Snapshot_Report_Object__c;Solar_Loan_Syndication__c;Solution;State_Registration__c;Study_Option__c;Study__c;Submittals__c;Subscription_Order__c;Subscription_Transfer__c;System_Bill__c;Town__c;Transfer_Part__c;Transfer__c;Utility_Design_and_Easement__c;Zuora_Data_Query__c;Zuora__CustomerAccount__c;Zuora__Payment__c;Zuora__SubscriptionChargeTierHistory__c;Zuora__SubscriptionHistory__c;Zuora__SubscriptionProductChargeHistory__c;Zuora__SubscriptionProductCharge__c;Zuora__SubscriptionProductFeature__c;Zuora__SubscriptionRatePlanChargeTier__c;Zuora__SubscriptionRatePlanHistory__c;Zuora__SubscriptionRatePlan__c;Zuora__Subscription__c;Zuora__ZInvoice__c;agf__ADM_Epic__c;agf__ADM_Priority__c;agf__ADM_Release_Event__c;agf__ADM_Release_Stamp_Cache__c;agf__ADM_Release__c;agf__ADM_Severity_Type__c;agf__ADM_Severity__c;agf__ADM_Sprint__c;agf__ADM_Type__c;agf__ADM_Work__c;agf__Environments_Order__c;agf__Headcount__c;agf__Locking_Record__c;agf__OMOpportunity__c;agf__QA_Test_Case__c;agf__QA_Test_Execution__c;agf__QA_Test_Plan__c;agf__RCA__c;agf__Release_Signoff_Infrastructure__c;agf__Retrospective__c;copado__Artifact_Version__c;copado__Artifact__c;copado__Compliance_Finding__c;copado__Compliance_Rule_Criteria__c;copado__Compliance_Rule_Group_Item__c;copado__Compliance_Rule__c;copado__Data_Template__c;copado__Deployment_History__c;copado__Deployment_Job__c;copado__Deployment__c;copado__Destination_Org__c;copado__Epic__c;copado__Git_Backup__c;copado__Metadata_Group__c;copado__OrgDiff__c;copado__Project__c;copado__Quality_Gate__c;copado__Sprint__c;copado__Step__c;copado__Team__c;copado__User_Story_Task__c;copado__User_Story__c;dsfs__CustomParameterMap__c;dsfs__DocuSign_Recipient_Status__c;dsfs__DocuSign_Status__c;dsfs__EnvelopeConfiguration__c;et4ae5__Triggered_Send_Execution__c</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>WhatId</field>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-    </recordCreates>
-    <recordCreates>
         <name>myRule_1_A2</name>
         <label>Create New OCH</label>
         <locationX>100</locationX>
@@ -3493,7 +1875,7 @@
             </processMetadataValues>
             <field>New_Stage__c</field>
             <value>
-                <elementReference>formula_3_myRule_1_A2_7271138183</elementReference>
+                <elementReference>formula_3_myRule_1_A2_3126933123</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3559,498 +1941,10 @@
             </processMetadataValues>
             <field>Previous_Stage__c</field>
             <value>
-                <elementReference>formula_4_myRule_1_A2_5912082237</elementReference>
+                <elementReference>formula_4_myRule_1_A2_2531374803</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
-    </recordCreates>
-    <recordCreates>
-        <name>myRule_20_A2</name>
-        <label>EMAIL LOG: CS Opportunity Complete Email to Partner</label>
-        <locationX>2000</locationX>
-        <locationY>300</locationY>
-        <connector>
-            <targetReference>myRule_20_A3</targetReference>
-        </connector>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Date</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Due Date Only</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>formula_22_myRule_20_A2_1791480255</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Description</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Description</field>
-            <value>
-                <stringValue>Email notification that CS Opportunity = complete email sent to partner</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Assigned To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>OwnerId</field>
-            <value>
-                <stringValue>0050a00000GdFjI</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Priority</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Priority</field>
-            <value>
-                <stringValue>Low</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Status</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Status</field>
-            <value>
-                <stringValue>Completed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Subject</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Subject</field>
-            <value>
-                <stringValue>EMAIL LOG: CS Opportunity Complete Email to Partner</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Related To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>APXTConga4__Composer_QuickMerge__c;APXTConga4__Conga_Email_Staging__c;APXTConga4__Conga_Email_Template__c;APXT_BPM__Conductor__c;Account;Account_Bill__c;Adjustment_Application__c;Asset;AssetRelationship;Asset_Management__c;Autopay_Schedule__c;Bank__c;Bill_Adjustment__c;BlueWave_Blog__c;BlueWave_Surveys__c;Campaign;Case;Case_Status_Change__c;Change_Order__c;ChannelProgram;ChannelProgramLevel;ChargentOrders__ChargentOrder__c;ChargentOrders__Email_Notification__c;ChargentOrders__Transaction__c;Client_Health_Report__c;Commission_Payment__c;Commission_Structure__c;Construction__c;ContactRequest;Contract;Deal__c;Disbursal__c;Entity__c;External_Affairs__c;Feeder__c;Financial_Relationship__c;Invoice__c;LASERCA__Inquiries__c;LASERCA__Personal_Credit_Report__c;LASERCA__Public_Records__c;LASERCA__Trade_Accounts__c;ListEmail;LiveAgentSession;LiveChatTranscript;LiveText__Campaign_Send_Member__c;LiveText__Campaign_Send__c;LiveText__Conversation_Event__c;LiveText__Recent_Campaign_Send_Member__c;Load_U__c;Loan_Data__c;Loan_Partner_Experience_Survey__c;Loan_Traunch__c;Loan__c;MC4SF__MC_Subscriber__c;MPM4_BASE__Milestone1_Milestone__c;MPM4_BASE__Milestone1_Program__c;MPM4_BASE__Milestone1_Project__c;MPM4_BASE__Milestone1_Resource__c;MPM4_BASE__Milestone1_Task__c;Management_Reporting__c;Marketing_Inventory__c;Meter_Reading_Schedule__c;Operations_Group_Assignment__c;Opportunity;Order;Overpayment_Application__c;Overpayment__c;Paper_Check__c;PartnerFundAllocation;PartnerFundClaim;PartnerFundRequest;PartnerMarketingBudget;Partner_Task__c;Partner__c;Product2;Product_Escalation_Schedule__c;Product_Escalator__c;Product_Group_Assignment__c;Product_Release__c;Project_Assemblage__c;Project_Finance__c;Quick_Sales_Sheet__c;Quote;Rate_Class__c;SREC_Invoice__c;SREC__c;Schedule_Z__c;Snapshot_Report_Object__c;Solar_Loan_Syndication__c;Solution;State_Registration__c;Submittals__c;System_Bill__c;Town__c;Zuora__CustomerAccount__c;Zuora__Payment__c;Zuora__SubscriptionChargeTierHistory__c;Zuora__SubscriptionHistory__c;Zuora__SubscriptionProductChargeHistory__c;Zuora__SubscriptionProductCharge__c;Zuora__SubscriptionProductFeature__c;Zuora__SubscriptionRatePlanChargeTier__c;Zuora__SubscriptionRatePlanHistory__c;Zuora__SubscriptionRatePlan__c;Zuora__Subscription__c;agf__ADM_Epic__c;agf__ADM_Priority__c;agf__ADM_Release_Event__c;agf__ADM_Release_Stamp_Cache__c;agf__ADM_Release__c;agf__ADM_Severity_Type__c;agf__ADM_Severity__c;agf__ADM_Sprint__c;agf__ADM_Type__c;agf__ADM_Work__c;agf__Environments_Order__c;agf__Headcount__c;agf__Locking_Record__c;agf__OMOpportunity__c;agf__QA_Test_Case__c;agf__QA_Test_Execution__c;agf__QA_Test_Plan__c;agf__RCA__c;agf__Release_Signoff_Infrastructure__c;agf__Retrospective__c;copado__Artifact_Version__c;copado__Artifact__c;copado__Compliance_Finding__c;copado__Compliance_Rule_Criteria__c;copado__Compliance_Rule_Group_Item__c;copado__Compliance_Rule__c;copado__Deployment_History__c;copado__Deployment_Job__c;copado__Deployment__c;copado__Destination_Org__c;copado__Epic__c;copado__Git_Backup__c;copado__OrgDiff__c;copado__Project__c;copado__Sprint__c;copado__Step__c;copado__Team__c;copado__User_Story_Task__c;copado__User_Story__c;dsfs__DocuSign_Recipient_Status__c;dsfs__DocuSign_Status__c;et4ae5__Triggered_Send_Execution__c</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>WhatId</field>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-    </recordCreates>
-    <recordCreates>
-        <name>myRule_20_A4</name>
-        <label>EMAIL LOG: CS Complete Emaii</label>
-        <locationX>2000</locationX>
-        <locationY>500</locationY>
-        <connector>
-            <targetReference>myWait_myRule_20</targetReference>
-        </connector>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Date</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Due Date Only</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>formula_21_myRule_20_A4_7896517406</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Description</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Description</field>
-            <value>
-                <stringValue>Email log</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Assigned To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>OwnerId</field>
-            <value>
-                <stringValue>0050a00000GdFjI</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Priority</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Priority</field>
-            <value>
-                <stringValue>Low</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Status</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Status</field>
-            <value>
-                <stringValue>Completed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Subject</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Subject</field>
-            <value>
-                <stringValue>EMAIL LOG: CS Complete Customer Email</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Related To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>APXTConga4__Composer_QuickMerge__c;APXTConga4__Conga_Email_Staging__c;APXTConga4__Conga_Email_Template__c;APXT_BPM__Conductor__c;Account;Account_Bill__c;Adjustment_Application__c;Asset;AssetRelationship;Asset_Management__c;Autopay_Schedule__c;Bank__c;Bill_Adjustment__c;BlueWave_Blog__c;BlueWave_Surveys__c;Campaign;Case;Case_Status_Change__c;Change_Order__c;ChannelProgram;ChannelProgramLevel;ChargentOrders__ChargentOrder__c;ChargentOrders__Email_Notification__c;ChargentOrders__Transaction__c;Client_Health_Report__c;Commission_Payment__c;Commission_Structure__c;Construction__c;ContactRequest;Contract;Deal__c;Disbursal__c;Entity__c;External_Affairs__c;Feeder__c;Financial_Relationship__c;Invoice__c;LASERCA__Inquiries__c;LASERCA__Personal_Credit_Report__c;LASERCA__Public_Records__c;LASERCA__Trade_Accounts__c;ListEmail;LiveAgentSession;LiveChatTranscript;LiveText__Campaign_Send_Member__c;LiveText__Campaign_Send__c;LiveText__Conversation_Event__c;LiveText__Recent_Campaign_Send_Member__c;Load_U__c;Loan_Data__c;Loan_Partner_Experience_Survey__c;Loan_Traunch__c;Loan__c;MC4SF__MC_Subscriber__c;MPM4_BASE__Milestone1_Milestone__c;MPM4_BASE__Milestone1_Program__c;MPM4_BASE__Milestone1_Project__c;MPM4_BASE__Milestone1_Resource__c;MPM4_BASE__Milestone1_Task__c;Management_Reporting__c;Marketing_Inventory__c;Meter_Reading_Schedule__c;Operations_Group_Assignment__c;Opportunity;Order;Overpayment_Application__c;Overpayment__c;Paper_Check__c;PartnerFundAllocation;PartnerFundClaim;PartnerFundRequest;PartnerMarketingBudget;Partner_Task__c;Partner__c;Product2;Product_Escalation_Schedule__c;Product_Escalator__c;Product_Group_Assignment__c;Product_Release__c;Project_Assemblage__c;Project_Finance__c;Quick_Sales_Sheet__c;Quote;Rate_Class__c;SREC_Invoice__c;SREC__c;Schedule_Z__c;Snapshot_Report_Object__c;Solar_Loan_Syndication__c;Solution;State_Registration__c;Submittals__c;System_Bill__c;Town__c;Zuora__CustomerAccount__c;Zuora__Payment__c;Zuora__SubscriptionChargeTierHistory__c;Zuora__SubscriptionHistory__c;Zuora__SubscriptionProductChargeHistory__c;Zuora__SubscriptionProductCharge__c;Zuora__SubscriptionProductFeature__c;Zuora__SubscriptionRatePlanChargeTier__c;Zuora__SubscriptionRatePlanHistory__c;Zuora__SubscriptionRatePlan__c;Zuora__Subscription__c;agf__ADM_Epic__c;agf__ADM_Priority__c;agf__ADM_Release_Event__c;agf__ADM_Release_Stamp_Cache__c;agf__ADM_Release__c;agf__ADM_Severity_Type__c;agf__ADM_Severity__c;agf__ADM_Sprint__c;agf__ADM_Type__c;agf__ADM_Work__c;agf__Environments_Order__c;agf__Headcount__c;agf__Locking_Record__c;agf__OMOpportunity__c;agf__QA_Test_Case__c;agf__QA_Test_Execution__c;agf__QA_Test_Plan__c;agf__RCA__c;agf__Release_Signoff_Infrastructure__c;agf__Retrospective__c;copado__Artifact_Version__c;copado__Artifact__c;copado__Compliance_Finding__c;copado__Compliance_Rule_Criteria__c;copado__Compliance_Rule_Group_Item__c;copado__Compliance_Rule__c;copado__Deployment_History__c;copado__Deployment_Job__c;copado__Deployment__c;copado__Destination_Org__c;copado__Epic__c;copado__Git_Backup__c;copado__OrgDiff__c;copado__Project__c;copado__Sprint__c;copado__Step__c;copado__Team__c;copado__User_Story_Task__c;copado__User_Story__c;dsfs__DocuSign_Recipient_Status__c;dsfs__DocuSign_Status__c;et4ae5__Triggered_Send_Execution__c</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>WhatId</field>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
     </recordCreates>
     <recordCreates>
         <name>myRule_7_A3</name>
@@ -4159,7 +2053,7 @@
             </processMetadataValues>
             <field>Previous_Stage__c</field>
             <value>
-                <elementReference>formula_8_myRule_7_A3_4806755920</elementReference>
+                <elementReference>formula_8_myRule_7_A3_9424060414</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -4196,6 +2090,7 @@
         <connector>
             <targetReference>myRule_11_A2</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -4279,6 +2174,20 @@
         <connector>
             <targetReference>myRule_11_A3</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -4328,19 +2237,6 @@
                 <booleanValue>true</booleanValue>
             </value>
         </filters>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Opportunity__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
         <inputAssignments>
             <processMetadataValues>
                 <name>dataType</name>
@@ -4374,7 +2270,7 @@
             </processMetadataValues>
             <field>Closed_On__c</field>
             <value>
-                <elementReference>formula_13_myRule_11_A2_9962243716</elementReference>
+                <elementReference>formula_13_myRule_11_A2_8385018004</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -4411,6 +2307,7 @@
         <connector>
             <targetReference>myDecision16</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -4602,6 +2499,20 @@
         <connector>
             <targetReference>myRule_1_A2</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -4651,19 +2562,6 @@
                 <booleanValue>true</booleanValue>
             </value>
         </filters>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Opportunity__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
         <inputAssignments>
             <processMetadataValues>
                 <name>dataType</name>
@@ -4697,7 +2595,7 @@
             </processMetadataValues>
             <field>Closed_On__c</field>
             <value>
-                <elementReference>formula_5_myRule_1_A1_4904088295</elementReference>
+                <elementReference>formula_5_myRule_1_A1_0893891937</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -4734,6 +2632,7 @@
         <connector>
             <targetReference>myRule_7_A2</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -4817,6 +2716,20 @@
         <connector>
             <targetReference>myRule_7_A3</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -4866,19 +2779,6 @@
                 <booleanValue>true</booleanValue>
             </value>
         </filters>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Opportunity__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
         <inputAssignments>
             <processMetadataValues>
                 <name>dataType</name>
@@ -4912,20 +2812,13 @@
             </processMetadataValues>
             <field>Closed_On__c</field>
             <value>
-                <elementReference>formula_9_myRule_7_A2_0462681161</elementReference>
+                <elementReference>formula_9_myRule_7_A2_6834742318</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
     </recordUpdates>
     <startElementReference>isChangedDecision2_myRule_1_StageName</startElementReference>
     <status>Active</status>
-    <variables>
-        <name>cancelWaits</name>
-        <dataType>String</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-    </variables>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>
@@ -4942,118 +2835,4 @@
         <isOutput>false</isOutput>
         <objectType>Opportunity</objectType>
     </variables>
-    <variables>
-        <name>myWaitEvent_myWait_myRule_17_event_0_postActionExecutionVariable</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <booleanValue>false</booleanValue>
-        </value>
-    </variables>
-    <variables>
-        <name>myWaitEvent_myWait_myRule_20_event_0_postActionExecutionVariable</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <booleanValue>false</booleanValue>
-        </value>
-    </variables>
-    <waits>
-        <name>myWait_myRule_17</name>
-        <label>myWait_myRule_17</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <defaultConnectorLabel>defaultLabel</defaultConnectorLabel>
-        <waitEvents>
-            <processMetadataValues>
-                <name>inputParameterType</name>
-                <value>
-                    <stringValue>now</stringValue>
-                </value>
-            </processMetadataValues>
-            <name>myWaitEvent_myWait_myRule_17_event_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>myWaitEvent_myWait_myRule_17_event_0_postActionExecutionVariable</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myWaitEvent_myWait_myRule_17_event_0_SA1</targetReference>
-            </connector>
-            <eventType>AlarmEvent</eventType>
-            <inputParameters>
-                <name>AlarmTime</name>
-                <value>
-                    <elementReference>$Flow.InterviewStartTime</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>TimeOffsetUnit</name>
-                <value>
-                    <stringValue>Days</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>TimeOffset</name>
-                <value>
-                    <numberValue>3.0</numberValue>
-                </value>
-            </inputParameters>
-            <label>myWaitEvent_myWait_myRule_17_event_0</label>
-        </waitEvents>
-    </waits>
-    <waits>
-        <name>myWait_myRule_20</name>
-        <label>myWait_myRule_20</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <defaultConnectorLabel>defaultLabel</defaultConnectorLabel>
-        <waitEvents>
-            <processMetadataValues>
-                <name>inputParameterType</name>
-                <value>
-                    <stringValue>now</stringValue>
-                </value>
-            </processMetadataValues>
-            <name>myWaitEvent_myWait_myRule_20_event_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>myWaitEvent_myWait_myRule_20_event_0_postActionExecutionVariable</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myWaitEvent_myWait_myRule_20_event_0_SA1</targetReference>
-            </connector>
-            <eventType>AlarmEvent</eventType>
-            <inputParameters>
-                <name>AlarmTime</name>
-                <value>
-                    <elementReference>$Flow.InterviewStartTime</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>TimeOffsetUnit</name>
-                <value>
-                    <stringValue>Days</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>TimeOffset</name>
-                <value>
-                    <numberValue>3.0</numberValue>
-                </value>
-            </inputParameters>
-            <label>myWaitEvent_myWait_myRule_20_event_0</label>
-        </waitEvents>
-    </waits>
 </Flow>
