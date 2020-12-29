@@ -247,9 +247,15 @@ public with sharing class ZuoraAccountServiceTest {
             SELECT Id, Class__c, Message__c
             FROM Error_Log__c
         ];
-        System.assertEquals(1, errorLogs.size());
-        // Because we deleted the lead:
-        System.assert(errorLogs[0].Message__c.contains('Found no property accounts to create for these lead Ids:'));
+
+        Boolean errorLogFound = false;
+        for (Error_Log__c err : errorLogs) {
+            if (err.Message__c.contains('Found no property accounts to create for these lead Ids:')) {
+                // Because we deleted the lead
+                errorLogFound = true;
+            }
+        }
+        System.assertEquals(true, errorLogFound, 'Error log not constructed for deleted Lead scenario');
     }
 
     @IsTest
