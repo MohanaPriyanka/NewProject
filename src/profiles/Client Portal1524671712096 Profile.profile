@@ -2452,11 +2452,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Bill__c.Chargent_Order__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Bill__c.Check_Text__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4228,11 +4223,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.Category__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.Chargent_Order__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13977,11 +13967,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Loan__c.SREC_Direct_Deposit_Order__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Loan__c.SREC_Product__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -23602,11 +23587,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Overpayment__c.Transaction__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Paper_Check__c.Account_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -28658,11 +28638,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Transaction_Application__c.Process_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Transaction_Application__c.Transaction__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

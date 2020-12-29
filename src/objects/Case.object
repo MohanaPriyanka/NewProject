@@ -934,19 +934,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         </valueSet>
     </fields>
     <fields>
-        <fullName>Chargent_Order__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>XXX Chargent Order</label>
-        <referenceTo>ChargentOrders__ChargentOrder__c</referenceTo>
-        <relationshipLabel>Cases</relationshipLabel>
-        <relationshipName>Cases</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>ClosedDate</fullName>
     </fields>
     <fields>
