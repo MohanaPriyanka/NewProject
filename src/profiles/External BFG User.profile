@@ -31781,7 +31781,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility__c.Collect_Customer_POD_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
