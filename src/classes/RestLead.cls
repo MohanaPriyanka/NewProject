@@ -406,6 +406,7 @@ public without sharing class RestLead {
         public Id utilityId;
         public String email;
         public String utilityAccountNumber;
+        public String podId;
         public String nameOnAccount;
         public String serviceStreet;
         public String serviceCity;
@@ -433,6 +434,7 @@ public without sharing class RestLead {
             this.propertyAccountId = ual.Account__c;
             this.utilityId = ual.Utility_lookup__c;
             this.utilityAccountNumber = ual.Name;
+            this.podId = ual.Premise_Number__c;
             this.nameOnAccount = ual.Name_on_Account__c;
             this.serviceStreet = ual.Service_Address__c;
             this.serviceCity = ual.Service_City__c;
@@ -450,6 +452,7 @@ public without sharing class RestLead {
                 Account__c = propertyAccount.Id,
                 Lead__c = propertyAccount.Lead__c,
                 Name = utilityAccountNumber,
+                Premise_Number__c = podId,
                 Name_on_Account__c = nameOnAccount,
                 Service_Address__c = serviceStreet,
                 Service_City__c = serviceCity,
@@ -482,6 +485,7 @@ public without sharing class RestLead {
         @SuppressWarnings('PMD')
         public Utility_Account_Log__c mergeFields(Set<String> fieldNames, Utility_Account_Log__c baseUAL) {
             if (fieldNames.contains('utilityAccountNumber')) baseUAL.Name = this.utilityAccountNumber;
+            if (fieldNames.contains('podId')) baseUAL.Premise_Number__c = this.podId;
             if (fieldNames.contains('nameOnAccount')) baseUAL.Name_on_Account__c = this.nameOnAccount;
             if (fieldNames.contains('serviceStreet')) baseUAL.Service_Address__c = this.serviceStreet;
             if (fieldNames.contains('serviceCity')) baseUAL.Service_City__c = this.serviceCity;

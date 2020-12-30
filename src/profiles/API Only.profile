@@ -33140,6 +33140,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility_Data_Request__c.Premise_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_Data_Request__c.Request_Recieved_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -33507,6 +33512,11 @@
         <editable>true</editable>
         <field>Utility_NMC_Tariff__c.Year_of_Tariff__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Collect_Customer_POD_Number__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>

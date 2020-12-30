@@ -47908,6 +47908,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility_Data_Request__c.Premise_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_Data_Request__c.Request_Recieved_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -48284,6 +48289,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Collect_Customer_POD_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

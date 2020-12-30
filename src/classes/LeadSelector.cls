@@ -61,7 +61,8 @@ public without sharing class LeadSelector {
     public List<String> apiUtilityAccountFields = new List<String>{
         'Id', 
         'Account__c', 
-        'Name', 
+        'Name',
+        'Premise_Number__c',
         'Name_on_Account__c', 
         'Service_Address__c', 
         'Service_City__c', 
