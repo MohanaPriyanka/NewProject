@@ -17,6 +17,7 @@ public inherited sharing class RestZipCode {
     public Boolean finDocsUnderwriting;
     public Boolean collectPayment;
     public Boolean underwrite;
+    public Boolean collectPOD;
 
     public RestZipCode(CapacityService.ZipcodeResponse response) {
         this.zipCode = response.zipcode;
@@ -31,6 +32,7 @@ public inherited sharing class RestZipCode {
         this.finDocsUnderwriting = response.finDocsUnderwriting;
         this.collectPayment = response.collectPayment;
         this.underwrite = response.underwrite;
+        this.collectPOD = response.collectPOD;
     }
 
     private Set<Utility> getUtilities(Set<Utility__c> utilitySobjs) {

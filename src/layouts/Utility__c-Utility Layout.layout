@@ -44,6 +44,10 @@
                 <behavior>Edit</behavior>
                 <field>Utility_Data_Collection_Mechanism__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Collect_Customer_POD_Number__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>

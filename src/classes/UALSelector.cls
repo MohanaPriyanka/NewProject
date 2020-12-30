@@ -20,7 +20,7 @@ public without sharing class UALSelector {
                 Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
             	Num_months_Annual_kWh__c, Num_months_Average_Demand__c, NYPA__c, RNY__c, Address_Update__c,
             	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
-            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c
+            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c, Premise_Number__c
             FROM Utility_Account_Log__c
             WHERE Id = :utilityAccountLogIds
         ];
@@ -33,7 +33,7 @@ public without sharing class UALSelector {
                 Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
             	Num_months_Annual_kWh__c, Num_months_Average_Demand__c, NYPA__c, RNY__c, Address_Update__c,
             	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
-            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c
+            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c, Premise_Number__c
             FROM Utility_Account_Log__c
             WHERE Id = :utilityAccountLogIds
         ]);
@@ -46,7 +46,7 @@ public without sharing class UALSelector {
                 Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
             	Num_months_Annual_kWh__c, Num_months_Average_Demand__c, NYPA__c, RNY__c, Address_Update__c,
             	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
-            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c
+            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c, Premise_Number__c
             FROM Utility_Account_Log__c
             WHERE Lead__c = :leadIds
         ]);
@@ -56,7 +56,7 @@ public without sharing class UALSelector {
 
         return [
             SELECT Id, Name, Utility_lookup__r.Utility_DUNS_Number__c, Utility_lookup__c, Utility_lookup__r.Name,
-                Utility_lookup__r.Utility_Data_Collection_Mechanism__c, QC_Status__c,
+                Utility_lookup__r.Utility_Data_Collection_Mechanism__c, QC_Status__c, Premise_Number__c,
                 (SELECT Id FROM Utility_Data_Requests__r)
             FROM Utility_Account_Log__c
             WHERE Lead__c IN :leadIds

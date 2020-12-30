@@ -591,8 +591,8 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
     <fields>
         <fullName>Premise_Number__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Xcel (MN) Requirement</inlineHelpText>
-        <label>Premise Number</label>
+        <inlineHelpText>Xcel (MN) Requirement, also used in NYSEG/EGE. This number is premise specific, they do not change/move with a customer.</inlineHelpText>
+        <label>Premise/PoD ID</label>
         <length>15</length>
         <required>false</required>
         <securityClassification>Restricted</securityClassification>

@@ -5,6 +5,10 @@
         <formula>Utility_Account_Log__c.Name</formula>
     </fieldOverrides>
     <fieldOverrides>
+        <field>Premise_Number__c</field>
+        <formula>Utility_Account_Log__c.Premise_Number__c</formula>
+    </fieldOverrides>
+    <fieldOverrides>
         <field>Utility__c</field>
         <formula>Utility_Account_Log__c.Utility_lookup__c</formula>
     </fieldOverrides>
