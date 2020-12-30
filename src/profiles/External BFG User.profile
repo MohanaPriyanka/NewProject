@@ -31446,7 +31446,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility_Data_Request__c.Premise_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>

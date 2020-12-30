@@ -57,8 +57,8 @@
         <fullName>Collect_Customer_POD_Number__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>When checked, we collect the customer POD number in SSF. Some utilities use this number to lookup EDI data</inlineHelpText>
-        <label>Collect Customer POD Number</label>
+        <inlineHelpText>When checked, we collect the customer PoD ID in SSF. Some utilities use this number to lookup EDI data</inlineHelpText>
+        <label>Collect Customer PoD ID</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
