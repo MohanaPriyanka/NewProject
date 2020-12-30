@@ -395,7 +395,8 @@ public without sharing class UtilityDataRequestService {
             Utility_Name__c         = ual.Utility_lookup__r.Name,
             Utility_Account_Log__c  = ual.Id,
             Header_Status__c        = 'Pending',
-            Detail_Status__c        = 'Pending'
+            Detail_Status__c        = 'Pending',
+            Premise_Number__c       = ual.Premise_Number__c
         );
     }
     @TestVisible

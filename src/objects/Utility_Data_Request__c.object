@@ -521,6 +521,18 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Premise_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Premise/PoD ID</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Request_Recieved_Date__c</fullName>
         <externalId>false</externalId>
         <label>Request Recieved Date</label>
@@ -644,8 +656,8 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
     <fields>
         <fullName>Utility_Formatted_Account_Number__c</fullName>
         <externalId>false</externalId>
-        <formula>CASE(Utility_DUNS__c, 
-    &apos;006977763&apos;,  &apos;N010&apos;&amp;RIGHT(SUBSTITUTE(Account_Number__c, &apos;-&apos;, &apos;&apos;),11), /*NYSEG Replacement*/
+        <formula>IF( Utility__r.Collect_Customer_POD_Number__c ,
+    Premise_Number__c ,
     Account_Number__c
 )</formula>
         <label>Utility Formatted Account Number</label>
