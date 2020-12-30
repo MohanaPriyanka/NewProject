@@ -141,6 +141,16 @@ public without sharing class CapacityService {
         zipcodeResponse.finDocsUnderwriting = financialReviewSupported();
         zipcodeResponse.collectPayment = collectPaymentSupported();
         zipcodeResponse.underwrite = underwriteSupported();
+        zipcodeResponse.collectPOD = collectPOD();
+    }
+
+    /**
+     * @description Set boolean flags for capacity check on resume app for SSF.
+     * This method should differ from setBooleanFlags() in that it does not pull information from SSS and instead takes
+     * information from the Lead and other sources that were set at the time of Lead creation (e.g. application submission)
+     */
+    private void setBooleanFlagsOnResume() {
+        zipcodeResponse.collectPOD = collectPOD();
     }
 
     /**
@@ -203,12 +213,20 @@ public without sharing class CapacityService {
         return true;
     }
 
+    // Determine if collecting PoD ID (e.g. NYSEG requirements for EDI)
+    private Boolean collectPOD() {
+        Utility__c selectedUtility = new List<Utility__c>(zipcodeResponse.utilities)[0];
+        if (selectedUtility.Collect_Customer_POD_number__c) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * @description Provides a valid ZipcodeResponse to pass back to SSF for resume applications ONLY. Data provided
      *              does not include SSS/Product/Capacity data since W-021427 for resumed applications (to mitigate bugs)
      * @param zipCode ZIP Code of first UAL
      * @param utilityId Utility ID previously selected during Lead creation / initial SSF application submission
-     * @param isFico Underwriting method set during Lead creation / initial SSF application submission
      * @return ZipcodeResponse to pass back to SSF
      */
     public ZipcodeResponse getZipcodeResponseForResumeApp(String zipCode, String utilityId) {
@@ -217,6 +235,7 @@ public without sharing class CapacityService {
         setUtilitiesAndLoadZones(utilityId);
         setRateClasses();
         setZipCodesServedInUtilityTerritory();
+        setBooleanFlagsOnResume();
         return zipcodeResponse;
     }
 
@@ -234,6 +253,7 @@ public without sharing class CapacityService {
         public Boolean finDocsUnderwriting;
         public Boolean collectPayment;
         public Boolean underwrite;
+        public Boolean collectPOD;
 
         public Boolean hasCapacity() {
             return (

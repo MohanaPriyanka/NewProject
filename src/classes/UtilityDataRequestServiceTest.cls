@@ -22,7 +22,8 @@ private class UtilityDataRequestServiceTest {
         Utility__c testUtility = new Utility__c(
             Name = 'testUtility',
             Utility_DUNS_Number__c = '1234567890',
-            Utility_Data_Collection_Mechanism__c = 'EDI'
+            Utility_Data_Collection_Mechanism__c = 'EDI',
+            Collect_Customer_POD_Number__c = true
         );
         insert testUtility;
         
@@ -110,14 +111,14 @@ private class UtilityDataRequestServiceTest {
         );
         
         Utility_Account_Log__c testUAL6 = new Utility_Account_Log__c(	        
-        Lead__c = resiLead.Id,	
-        Username__c = 'testUAL6',	
-        Name_on_Account__c = 'Kris',	
-        Service_Address__c = '32 Quincy St, apt 20',	
-        Service_City__c = 'Cambridge',	
-        Service_State__c = 'ma',	
-        Service_Zip_Code__c = '02138'	
-    );	
+            Lead__c = resiLead.Id,
+            Username__c = 'testUAL6',
+            Name_on_Account__c = 'Kris',
+            Service_Address__c = '32 Quincy St, apt 20',
+            Service_City__c = 'Cambridge',
+            Service_State__c = 'ma',
+            Service_Zip_Code__c = '02138'
+        );
 
         List<Utility_Account_Log__c> testUALList = new List<Utility_Account_Log__c>{testUAL1, testUAL2, testUAL3, testUAL4, testUAL5, testUAL6};
         insert testUALList;
@@ -137,8 +138,7 @@ private class UtilityDataRequestServiceTest {
             State__c = 'Ma.',
             Zip_Code__c = '   02115  '
         );
-        
-        
+
         Utility_Data_Request__c testUDR2 = new Utility_Data_Request__c(
             Header_Status__c        = 'Complete',
             Detail_Status__c        = 'Complete',
@@ -1074,7 +1074,7 @@ private class UtilityDataRequestServiceTest {
                             + 'In this case the answer should be 2352.80.');
         System.assertEquals(6, testUAL1.Num_months_Annual_kWh__c);
         System.assertEquals(5, testUAL1.Num_months_Average_Demand__c);
-        
+
         System.assertEquals(165200, updatedTestUDR3.Annual_kWh__c, 'UDR3 has 1 KH UDRP, it is a non-Residential customer, and the Product.X4_month_sizing_method__c == State Average Annual Usage' 
                             + 'so the Annual kWh should be the related State Avg Annual Resi kWh.'
                             + 'In this case the answer should be 165200 since the test State Avg Annual Resi kWh is 165200.');
@@ -1233,7 +1233,8 @@ private class UtilityDataRequestServiceTest {
             Service_State__c = 'Georgia',
             Lead__c = lead.Id,
             Username__c = 'testUAL1',
-            Utility_lookup__c = utilityId
+            Utility_lookup__c = utilityId,
+            Premise_Number__c = '129585012851'
         );
         insert ual;
 
@@ -1247,7 +1248,7 @@ private class UtilityDataRequestServiceTest {
             SELECT Id, Account_Number__c, Utility__c, Utility_DUNS__c, Utility_Name__c, Request_Status_new__c,
                 Utility_Account_Log__r.Name, Utility_Account_Log__r.Utility_lookup__c,
                 Utility_Account_Log__r.Utility_lookup__r.Name, Utility_Account_Log__r.Utility_lookup__r.Utility_DUNS_Number__c,
-                Utility_Account_Log__r.QC_Status__c
+                Utility_Account_Log__r.QC_Status__c,Premise_Number__c
             FROM Utility_Data_Request__c
             WHERE Utility_Account_Log__c =: ual.Id
         ];
@@ -1260,6 +1261,7 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals(udrs[0].Utility_Account_Log__r.Utility_lookup__r.Name, udrs[0].Utility_Name__c, 'Incorrect utility name for generated UDR');
         System.assertEquals('Pending', udrs[0].Request_Status_new__c, 'Incorrect status for newly-generated UDR');
         System.assertEquals('Pending Utility Data', udrs[0].Utility_Account_Log__r.QC_Status__c, 'UAL status incorrect for pending UDR');
+        System.assertEquals(ual.Premise_Number__c, udrs[0].Premise_Number__c, 'PoD ID not copied from UAL when it should be');
     }
     
 }

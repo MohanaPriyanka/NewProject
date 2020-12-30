@@ -310,6 +310,37 @@
                                             required>
                                         </lightning-input>
                                     </div>
+                                    <template if:true={collectPOD}>
+                                        <div class="input-group half">
+                                            <lightning-input
+                                              key={it.value.localid}
+                                              data-row-index={it.index}
+                                              data-pod-id-index={it.index}
+                                              name="podId"
+                                              class="slds-var-m-bottom_small slds-col"
+                                              label="Point of Delivery ID (PoD)"
+                                              field-level-help="PoD ID for the customer's utility account. This can be found on the customer utility bill."
+                                              value={it.value.podId}
+                                              onchange={utilityAccountOnChange}
+                                              required>
+                                            </lightning-input>
+                                        </div>
+                                        <div class="input-group half">
+                                            <lightning-input
+                                              key={it.value.localid}
+                                              data-row-index={it.index}
+                                              data-pod-id-reentry-index={it.index}
+                                              onpaste={preventDefaultEvent}
+                                              name="podIdReentry"
+                                              class="slds-var-m-bottom_small slds-col"
+                                              label="Re-Enter Point of Delivery ID"
+                                              field-level-help="Please re-enter the PoD ID for verification purposes."
+                                              value={it.value.podIdReentry}
+                                              onchange={utilityAccountOnChange}
+                                              required>
+                                            </lightning-input>
+                                        </div>
+                                    </template>
                                     <div class="input-group half">
                                         <lightning-input
                                             key={it.value.localid}
