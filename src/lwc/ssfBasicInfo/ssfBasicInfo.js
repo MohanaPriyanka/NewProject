@@ -16,7 +16,8 @@ import {
     verifyUtilityAccountEntry,
     validateServiceZipCode,
     applicationValid,
-    findDuplicateUAL
+    findDuplicateUAL,
+    verifyPODEntry
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -53,6 +54,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track showModal;
     @track duplicateLeadId;
 
+    collectPOD = false;
     isFico = true;
     utilityAccountCount = 0;
     resumedApp = false;
@@ -94,9 +96,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][eventField] = event.target.value;
         if (eventField === 'utilityAccountNumber' || eventField === 'utilityAccountNumberReentry') {
             verifyUtilityAccountEntry(this, event, eventField);
-        }
-        if (eventField === 'servicePostalCode' && event.target.value.length === 5) {
+        } else if (eventField === 'servicePostalCode' && event.target.value.length === 5) {
             validateServiceZipCode(this, event);
+        } else if (eventField === 'podId' || eventField === 'podIdReentry') {
+            verifyPODEntry(this, event, eventField);
         }
     }
 
@@ -147,7 +150,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     // perform validations
     lastUtilityAccountValid() {
         let index = this.utilityAccountCount - 1;
-        if(validateUtilityAccountLog(this.propertyAccount.utilityAccountLogs[index])) {
+        if (validateUtilityAccountLog(this, index)) {
             return true;
         }
         this.showWarningToast('Warning', 'Please complete this utility account before adding another');
