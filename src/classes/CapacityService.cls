@@ -215,9 +215,11 @@ public without sharing class CapacityService {
 
     // Determine if collecting PoD ID (e.g. NYSEG requirements for EDI)
     private Boolean collectPOD() {
-        Utility__c selectedUtility = new List<Utility__c>(zipcodeResponse.utilities)[0];
-        if (selectedUtility.Collect_Customer_POD_number__c) {
-            return true;
+        if (!zipcodeResponse.utilities.isEmpty()) {
+            Utility__c selectedUtility = new List<Utility__c>(zipcodeResponse.utilities)[0];
+            if (selectedUtility.Collect_Customer_POD_number__c) {
+                return true;
+            }
         }
         return false;
     }
