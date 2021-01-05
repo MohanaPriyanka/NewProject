@@ -14383,6 +14383,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.No_Payment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.No_Veteran_Disability__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31164,6 +31169,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Do_Not_Ask_for_Payment_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Do_Not_Underwrite__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

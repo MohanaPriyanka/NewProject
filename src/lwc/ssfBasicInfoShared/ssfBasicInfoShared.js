@@ -5,7 +5,7 @@ import findDuplicateUALs from '@salesforce/apex/SimpleSignupFormController.findD
 const onLoad = (cmp) => {
     handleZipCheck(cmp);
     handleNewOrExistingApp(cmp);
-    setComponentUnderwritingVals(cmp);
+    setUnderwriting(cmp, cmp.resumedApp);
 
     if (!cmp.restLead.partnerId) {
         cmp.restLead.partnerId = cmp.partnerId;
@@ -104,8 +104,8 @@ const resumeAppSetUALs = (cmp) => {
             account.utilityAccountLogs[i].localid = i+1;
             account.utilityAccountLogs[i].name = `Utility Account ${i+1}`;
             account.utilityAccountLogs[i].doNotDelete = true;
-            account.utilityAccountLogs[i].showUpload =
-                cmp.isFileUpload && (!account.utilityAccountLogs[i].utilityBills || account.utilityAccountLogs[i].utilityBills.length === 0);
+            account.utilityAccountLogs[i].showUpload = cmp.isFileUpload &&
+                (!account.utilityAccountLogs[i].utilityBills || account.utilityAccountLogs[i].utilityBills.length === 0);
             account.utilityAccountLogs[i].utilityAccountNumberReentry = account.utilityAccountLogs[i].utilityAccountNumber;
             account.utilityAccountLogs[i].podIdReentry = account.utilityAccountLogs[i].podId;
 
@@ -141,49 +141,48 @@ const getUnderwritingHelpText = () => {
     '</ul></p>';
 }
 
-// set cmp values on underwriting based on if a residential or biz app to control cmp behavior
-const setComponentUnderwritingVals = (component) => {
-    const isResiApplication = component.resiApplicationType;
+const setUnderwriting = (component, resumedApp) => {
+    if (!resumedApp) {
+        newApplicationUnderwriting(component);
+    } else {
+        resumedAppUnderwriting(component);
+    }
+    handleUnderwritingChange(component);
+}
 
-    if (isResiApplication) {
-        component.showUnderwritingOptions = false;
+const newApplicationUnderwriting = (component) => {
+    if (!component.zipCheckResponse.underwrite) {
+        component.underwriting = 'None';
+        component.restLead.underwritingCriteria = 'None';
+    }
+    else if (component.resiApplicationType  || component.underwritingOptions.length === 0) {
+        component.underwriting = 'FICO';
         component.restLead.underwritingCriteria = 'FICO';
     }
-    else {
-        // no underwriting options provided in zip check
-        if (!component.underwritingOptions || component.underwritingOptions.length === 0) {
-            component.showUnderwritingOptions = false;
-            component.restLead.underwritingCriteria = 'FICO';
-        }
-        // one underwriting option provided in zip check
-        else if (component.underwritingOptions.length === 1) {
+    else if (!component.resiApplicationType) {
+        if (component.underwritingOptions.length === 1) {
+            // One underwriting option provided in zip check for SMB app
             let option = component.underwritingOptions[0].value;
-            component.showUnderwritingOptions = false;
+            component.underwriting = option;
             component.restLead.underwritingCriteria = option;
-            component.isFico = option === 'FICO';
         }
-        // more than one underwriting option provided in zip check
         else {
-            // We want "Apply with Guarantor or Financial Documents?" to appear for biz apps in ssfBasicInfo page
+            // More than one underwriting option provided in zip check for SMB app
             component.showUnderwritingOptions = true;
         }
     }
+}
 
-    // For resumed apps (or back motion), disable modification of underwriting field and set isFico to val set in Lead
-    if (component.resumedApp === true) {
-        component.isFico = component.restLead.underwritingCriteria === 'FICO';
-        if (component.isFico === false) {
-            component.disableUnderwritingFields = true;
-        }
-    }
-
-    handleUnderwritingChange(component);
+const resumedAppUnderwriting = (component) => {
+    // For resumed apps (or back button movement), set underwriting based on Lead data and disable modification
+    component.showUnderwritingOptions = false;
+    component.underwriting = component.restLead.underwritingCriteria;
+    component.disableUnderwritingFields = true;
 }
 
 // notify parent ssf/ssfDTC of underwriting option to pass to ssfAgreements/ssfAgreementsDTC
 const handleUnderwritingChange = (component) => {
-    const isFico = component.isFico;
-    const underwritingChangeEvent = new CustomEvent('underwritingchange', {detail: isFico});
+    const underwritingChangeEvent = new CustomEvent('underwritingchange', {detail: component.underwriting});
     component.dispatchEvent(underwritingChangeEvent);
 }
 
@@ -406,7 +405,9 @@ const applicationValid = (cmp) => {
             });
         }
     }
-    if (!cmp.resiApplicationType && !cmp.isFico && (!cmp.restLead.financialDocs || cmp.restLead.financialDocs.length ===0)) {
+    if (!cmp.resiApplicationType && cmp.underwriting === 'Financial Review' &&
+        (!cmp.restLead.financialDocs || cmp.restLead.financialDocs.length === 0))
+    {
         cmp.template.querySelectorAll('c-ssf-file-upload').forEach(element => {
             if (element.categoryType === 'Financial Review Documents') {
                 element.addError();
