@@ -22,7 +22,11 @@ const onRender = (component) => {
 const disclosureSigned = (component, event) => {
     component.disclosures = event.target.checked;
     if (event.target.checked) {
-        showCreditCheckApproval(component);
+        if (component.renderCreditCheckLanguage) {
+            showCreditCheckApproval(component);
+        } else {
+            showCSAgreementApproval(component);
+        }
     }
 }
 
@@ -95,7 +99,9 @@ const showCreditCheckApproval = (component) => {
 }
 
 const showCSAgreementApproval = (component) => {
-    if (!validCreditCheckReview(component)) {
+    if (!component.renderCreditCheckLanguage && !validDisclosureConsent(component)) {
+        return;
+    } else if (component.renderCreditCheckLanguage && !validCreditCheckReview(component)) {
         return;
     }
     component.showDisclosures = false;
@@ -108,15 +114,26 @@ const showCSAgreementApproval = (component) => {
 
 // Indicate to server that Consents section of the application is complete
 const consentsComplete = async (component) => {
-    if (validDisclosureConsent(component) && validCreditCheckReview(component) &&
-        validCSAgreement(component) && validConsentEmail(component))
-    {
-        component.showSpinner = true;
-        component.spinnerMessage = 'Saving your consents';
+    component.showSpinner = true;
+    component.spinnerMessage = 'Saving your consents';
 
+    let complete;
+    if (!component.renderCreditCheckLanguage) {
+        // Do not check Credit Check disclosure signature since there is no underwriting for this Lead
+        if (validDisclosureConsent(component) && validCSAgreement(component) && validConsentEmail(component)) {
+            complete = true;
+        }
+    } else {
+        if (validDisclosureConsent(component) && validCreditCheckReview(component) &&
+            validCSAgreement(component) && validConsentEmail(component))
+        {
+            complete = true;
+        }
+    }
+
+    if (complete) {
         try {
             let consentPromise = await updateServerConsentsSigned(component);
-            component.showSpinner = false;
 
             // If contracts successfully updated on server, post consentsComplete event to bubble up
             const consentsCompleteEvent = new CustomEvent('consentscomplete', {
@@ -136,9 +153,9 @@ const consentsComplete = async (component) => {
                 'Oops',
                 'We ran into a technical issue, please contact customer care\n' + promiseError
             );
-            component.showSpinner = false;
         }
     }
+    component.showSpinner = false;
 }
 
 const updateServerConsentsSigned = async (component) => {
@@ -310,10 +327,10 @@ const showWarningToast = (component, title, message) => {
 }
 
 const getCreditCheckLabel = (component) => {
-    if (component.isFico) {
+    if (component.isFicoUnderwriting) {
         return 'Check to Authorize Credit and Utility Billing Review';
     }
-    else {
+    else if (component.isFinDocsUnderwriting) {
         return 'Check to Authorize Financial and Utility Billing Review';
     }
 }

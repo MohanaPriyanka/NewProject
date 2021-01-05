@@ -57,9 +57,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track disableUnderwritingFields = false;
     @track showModal;
     @track duplicateLeadId;
+    @track underwriting = 'FICO'; // Defaulted to FICO
 
     collectPOD = false;
-    isFico = true;
     utilityAccountCount = 0;
     resumedApp = false;
     finDocFileTypes = getFinDocFileTypes();
@@ -75,8 +75,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         this.restLead[event.target.name] = event.target.value;
 
         if (event.target.name === 'underwritingCriteria') {
-            // need to handle applicant's selection on underwriting field, either FICO or Financial Documents
-            this.isFico = event.target.value === 'FICO';
+            // Set application and Lead to use specified underwriting selection
+            this.underwriting = event.target.value;
             handleUnderwritingChange(this);
         }
     }
@@ -277,5 +277,13 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     get underwritingReadOnly() {
         return this.disableUnderwritingFields;
+    }
+
+    get isFicoUnderwriting() {
+        return this.underwriting === 'FICO';
+    }
+
+    get isFinDocsUnderwriting() {
+        return this.underwriting === 'Financial Review';
     }
 }

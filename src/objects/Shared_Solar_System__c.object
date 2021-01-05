@@ -3189,6 +3189,14 @@ Client_Account__c != BWC_Project_Entity_Manual__r.Client_Account__c
         <errorMessage>The Client Account on the Shared Solar System and the Client Account on the Entity are not the same. If the Client Account on the Entity is not filled in, make sure that it is.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Do_Not_Underwrite_Check</fullName>
+        <active>true</active>
+        <errorConditionFormula>Do_Not_Underwrite__c  = true &amp;&amp;
+(Available_SMB_Underwriting_Method_Docs__c = true ||
+ Available_SMB_Underwriting_Method_FICO__c = true)</errorConditionFormula>
+        <errorMessage>If &quot;Do Not Underwrite&quot; is checked, no Available Underwriting Methods can also be checked</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Lock_Utility</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
