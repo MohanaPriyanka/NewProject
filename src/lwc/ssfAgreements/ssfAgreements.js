@@ -17,7 +17,7 @@ import { onLoad,
 
 export default class SsfAgreements extends LightningElement {
     @api leadJson;
-    @api isFico;
+    @api underwriting;
 
     @track disclosures;
     @track creditCheck;
@@ -52,6 +52,18 @@ export default class SsfAgreements extends LightningElement {
 
     get creditCheckLabel() {
         return getCreditCheckLabel(this);
+    }
+
+    get isFicoUnderwriting() {
+        return this.underwriting === 'FICO';
+    }
+
+    get isFinDocsUnderwriting() {
+        return this.underwriting === 'Financial Review';
+    }
+
+    get renderCreditCheckLanguage() {
+        return this.isFicoUnderwriting || this.isFinDocsUnderwriting;
     }
 
     connectedCallback() {
