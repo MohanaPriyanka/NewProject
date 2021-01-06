@@ -5,7 +5,6 @@
     <customButtons>Check_Loadzone</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <excludeButtons>XClean</excludeButtons>
@@ -352,6 +351,11 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
+            <actionName>Lead.Lead_Qualification</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
             <actionName>Lead.Log_a_Call</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
@@ -360,11 +364,6 @@
             <actionName>Lead.Event</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>2</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Lead.Lead_Qualification</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>NewTask</actionName>
@@ -476,6 +475,7 @@
     </relatedLists>
     <relatedLists>
         <fields>CASES.CASE_NUMBER</fields>
+        <fields>CASES.STATUS</fields>
         <fields>CASES.SUBJECT</fields>
         <fields>CASES.CREATED_DATE</fields>
         <fields>CASES.PRIORITY</fields>
