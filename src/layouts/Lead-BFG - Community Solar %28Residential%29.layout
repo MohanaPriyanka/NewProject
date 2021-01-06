@@ -5,6 +5,7 @@
     <customButtons>Check_Loadzone</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <excludeButtons>XClean</excludeButtons>
@@ -351,11 +352,6 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>Lead.Lead_Qualification</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
             <actionName>Lead.Log_a_Call</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
@@ -364,6 +360,11 @@
             <actionName>Lead.Event</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>2</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Lead.Lead_Qualification</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>NewTask</actionName>
@@ -492,11 +493,10 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>QC_Status__c</fields>
         <fields>Annual_Cost_of_Electricity__c</fields>
-        <fields>Service_Address__c</fields>
-        <fields>Service_City__c</fields>
-        <fields>Service_State__c</fields>
-        <fields>Service_Zip_Code__c</fields>
+        <fields>Annual_kWh__c</fields>
+        <fields>Utility_Rate_Class__c</fields>
         <relatedList>Utility_Account_Log__c.Lead__c</relatedList>
     </relatedLists>
     <relatedLists>
