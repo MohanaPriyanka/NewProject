@@ -1,9 +1,10 @@
 /**
- * @description:
+ * @description: Creates an extraction request, and retrieves extraction results (queueing again if incomplete).
+ * Tested By: GlyntExtractionServiceTest
  */
 public without sharing class GlyntExtractionService implements Queueable, Processor, Database.AllowsCallouts {
     private static GlyntAPIHelper apiHelper = new GlyntAPIHelper();
-    private static String extractionsEndpoint = '/v6/data-pools/'+GlyntAPIHelper.dataPoolId+'/extractions/';
+    private static String extractionsEndpoint = '/v6/data-pools/' + GlyntAPIHelper.dataPoolId + '/extractions/';
     private Datetime retryUntil;
     private List<String> extractionsToRetrieve;
     @TestVisible private static GlyntExtractionService extractionRetryService;
@@ -16,17 +17,26 @@ public without sharing class GlyntExtractionService implements Queueable, Proces
     }
 
     /**
-     * @description Default constructor
+     * @description Default constructor used to create extractions
      */
     @SuppressWarnings('PMD.EmptyStatementBlock')
     public GlyntExtractionService() {
     }
 
+    /**
+     * @description Constructor used to retrieve extractions
+     * @param retryUntil Timeout, after which this class should not queue to retrieve extractions
+     * @param extractionsToRetrieve List of Glynt extraction ids to retrieve
+     */
     public GlyntExtractionService(Datetime retryUntil, List<String> extractionsToRetrieve) {
         this.retryUntil = retryUntil;
         this.extractionsToRetrieve = extractionsToRetrieve;
     }
 
+    /**
+     * @description Queueable execute
+     * @param context Unused
+     */
     public void execute(QueueableContext context) {
         List<String> incompleteExtractions = new List<String>();
         List<GlyntAPI.ExtractionResponse> completeExtractions = new List<GlyntAPI.ExtractionResponse>();
@@ -97,12 +107,11 @@ public without sharing class GlyntExtractionService implements Queueable, Proces
         return extractionResponse;
     }
 
-    public class ProcessingParameter {
-        public String className;
-        public Datetime timeStarted;
-        public List<String> extractionsToRetrieve;
-    }
-
+    /**
+     * @description Implementation of Processor interface, called when this class gets successful and finished extractions.
+     * Intended to be used for debugging
+     * @param extractionResponses List of responses to process
+     */
     public void processExtractions(List<GlyntAPI.ExtractionResponse> extractionResponses) {
         Logger.logLater('GlyntExtractionService', 'processExtractions', JSON.serializePretty(extractionResponses), Logger.INFO);
     }

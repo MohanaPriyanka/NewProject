@@ -1,4 +1,5 @@
 /**
+ * @description: Classes representing the JSON objects that are used by the Glynt API: https://api.glynt.ai/v6/docs#definitions
  * Tested By: GlyntAPIHelperTest
  */
 @SuppressWarnings('PMD')

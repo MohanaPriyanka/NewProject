@@ -435,7 +435,7 @@ public without sharing class UtilityDataRequestService {
 
     @TestVisible
     private static Utility_Data_Request__c constructNewUDR(Utility_Account_Log__c ual) {
-        Utility_Data_Request__c utilityDataRequest = new Utility_Data_Request__c(
+        return new Utility_Data_Request__c(
             Account_Number__c       = ual.Name,
             Utility__c              = ual.Utility_lookup__c,
             Utility_DUNS__c         = ual.Utility_lookup__r.Utility_DUNS_Number__c,
@@ -443,14 +443,9 @@ public without sharing class UtilityDataRequestService {
             Utility_Account_Log__c  = ual.Id,
             Header_Status__c        = 'Pending',
             Detail_Status__c        = 'Pending',
-            Premise_Number__c       = ual.Premise_Number__c
+            Premise_Number__c       = ual.Premise_Number__c,
+            Service_Provider__c = ual.Utility_lookup__r.Use_Glynt__c?'Glynt':'ESG'
         );
-        if (ual.Utility_lookup__r.Use_Glynt__c) {
-            utilityDataRequest.Service_Provider__c = 'Glynt';
-        } else {
-            utilityDataRequest.Service_Provider__c = 'ESG';
-        }
-        return utilityDataRequest;
     }
     
     @TestVisible
