@@ -58,7 +58,7 @@ const retrieveApplication = async (component) => {
         leadPromise = await getLead(component, component.leadId, component.email);
         component.zipCodeInput = leadPromise.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode;
         component.resiApplicationType = leadPromise.applicationType === 'Residential';
-        component.isFico = setIsFico(component.resiApplicationType, leadPromise.underwritingCriteria);
+        component.underwriting = leadPromise.underwritingCriteria;
         component.leadJSON = JSON.stringify(leadPromise);
     } catch (error) {
         let fail = typeof error === 'object' ? error : JSON.parse(error);
@@ -123,20 +123,6 @@ const showGenericErrorToast = (component) => {
         message: 'Please contact Customer Care for help',
         variant: 'warning'
     }));
-}
-
-const setIsFico = (resiApplicationType, underwritingMethodSelected) => {
-    // if residential app, leave default isFico = true on application
-    if (resiApplicationType) {
-        return true;
-    }
-    // if SMB app, check for underwriting method selected previously, or leave as default
-    switch (underwritingMethodSelected) {
-        case 'Financial Review' :
-            return false;
-        default :
-            return true;
-    }
 }
 
 const setLocation = (component) => {

@@ -18,6 +18,7 @@
                   value={restLead.firstName}
                   label="First Name"
                   onchange={genericOnChange}
+                  class="slds-var-m-bottom_small"
                   required>
                 </lightning-input>
             </div>
@@ -26,6 +27,7 @@
                   name="lastName"
                   value={restLead.lastName}
                   label="Last Name"
+                  class="slds-var-m-bottom_small"
                   onchange={genericOnChange}
                   required>
                 </lightning-input>
@@ -37,6 +39,7 @@
                   label="Email"
                   onchange={genericOnChange}
                   type="email"
+                  class="slds-var-m-bottom_small"
                   required
                   disabled={resumedApp}>
                 </lightning-input>
@@ -48,10 +51,11 @@
                   label="Phone"
                   onchange={phoneOnChange}
                   type="tel"
+                  class="slds-var-m-bottom_small"
                   required>
                 </lightning-input>
             </div>
-            <template if:true={isFico}>
+            <template if:true={isFicoUnderwriting}>
                 <div class="input-group half">
                     <lightning-input
                       name="streetAddress"
@@ -108,6 +112,7 @@
                       value={restLead.businessName}
                       label="Name of Business or Organization"
                       onchange={genericOnChange}
+                      class="slds-var-m-bottom_small"
                       required>
                     </lightning-input>
                 </div>
@@ -118,6 +123,7 @@
                       label="Business Phone"
                       onchange={phoneOnChange}
                       type="tel"
+                      class="slds-var-m-bottom_small"
                       required>
                     </lightning-input>
                 </div>
@@ -126,17 +132,18 @@
                       name="businessTitle"
                       value={restLead.businessTitle}
                       label="Job Title or Organizational Affiliation"
+                      class="slds-var-m-bottom_small"
                       onchange={genericOnChange}
                       required>
                     </lightning-input>
                 </div>
-                <div class="input-group half">
-                    <div if:true={showUnderwritingOptions} class="fieldWithHelp">
-                        <lightning-combobox 
+                <template if:true={showUnderwritingOptions} class="fieldWithHelp">
+                    <div class="input-group half">
+                        <lightning-combobox
                             name="underwritingCriteria"
                             class="slds-var-m-bottom_small"
                             placeholder=""
-                            label="Apply with Guarantor or Financial Documents?"
+                            label="Underwriting Method"
                             value={restLead.underwritingCriteria}
                             onchange={genericOnChange}
                             options={underwritingOptions}
@@ -153,9 +160,7 @@
                             <template if:true={helpTextVisible} onclick={handleInteriorClick}>
                                 <div class="tooltip tooltip__underwriting-field" role="tooltip" id="help">
                                     <div class="slds-popover__body">
-                                        <lightning-formatted-rich-text
-                                          value={underwritingHelpText}>
-                                        </lightning-formatted-rich-text>
+                                        <lightning-formatted-rich-text value={underwritingHelpText}></lightning-formatted-rich-text>
                                     </div>
                                 </div>
                             </template>
@@ -175,13 +180,10 @@
                             </div>
                         </div>
                     </template>
-                </div>
-                <div class="input-group half">
-                    <!-- SPACER -->
-                </div>
-                <div class="input-group half">
-                    <template if:false={underwritingReadOnly}>
-                        <template if:false={isFico}>
+                </template>
+                <template if:false={underwritingReadOnly}>
+                    <template if:true={isFinDocsUnderwriting}>
+                        <div class="input-group half">
                             <c-ssf-file-upload
                               required
                               has-help-text
@@ -191,9 +193,9 @@
                               onfileuploaded={handleFinancialDocsUpload}>
                                 <p>Please provide three years of full company financial records including total assets, total liabilities, and net income.</p>
                             </c-ssf-file-upload>
-                        </template>
+                        </div>
                     </template>
-                </div>
+                </template>
             </div>
         </template>
 
