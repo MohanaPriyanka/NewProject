@@ -1521,6 +1521,7 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                 <value>
                     <fullName>File Not Scored Due to Insufficient Credit</fullName>
                     <default>false</default>
+                    <active>true</active>
                     <label>File Not Scored Due to Insufficient Credit</label>
                 </value>
                 <value>
