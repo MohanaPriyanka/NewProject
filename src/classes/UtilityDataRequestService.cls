@@ -90,9 +90,11 @@ public without sharing class UtilityDataRequestService {
     }
     @TestVisible
     private void beforeUpdateUDR(){
-        Map<Id, udrObject> udrObjectMap = new Map<Id, udrObject>();
+
+        Map<Id, UDRWrapper> udrObjectMap = new Map<Id, UDRWrapper>();
         for(Id udrId : udrToUdrpMap.keySet()){
-            udrObject currentUDR = new udrObject(udrId);
+            UDRWrapper currentUDR = new UDRWrapper(udrId);
+
             for(Utility_Data_Request_Period__c udrp : udrToUdrpMap.get(udrId)) {
                 if(udrp.Measurement_Significance_Code__c == '51' && udrp.Measurement_Unit__c == 'KH') {
                     currentUDR.addUdrpKH(udrp);
@@ -106,7 +108,9 @@ public without sharing class UtilityDataRequestService {
         Map<Id, Utility_Data_Request__c> udrMap = udrSelector.selectMapForKWHById(completedUDRMap.values());
         for(Utility_Data_Request__c udr : completedUDRMap.values()) {
             Utility_Data_Request__c currentUDR = udrMap.get(udr.Id);
-            udrObject currentUdrObject = udrObjectMap.get(udr.Id);
+
+            UDRWrapper currentUdrObject = udrObjectMap.get(udr.Id);
+
             if(currentUdrObject != null) {
                 Double kWhNumMonths = currentUdrObject.getListKH().size();
             Double updatedAnnualkWh = getAnnualkWh(currentUDR, currentUdrObject.getListKH());
@@ -128,7 +132,7 @@ public without sharing class UtilityDataRequestService {
      * 
      * If there are 11-4 UDRPs: it adds the UDRP.Quantity__c values, divides that by 4, and then multiplies it by 12.
      * 
-     * If there are less than 4 UDRPs: it checkes to see if the UDR has a 'Residential' customer type.
+     * If there are less than 4 UDRPs: it checks to see if the UDR has a 'Residential' customer type.
      * 		Less than 4 and Residential - then it adds the UDRP.Quantity__c values, divides that by 4, and then multiplies it by 12.
      * 		Less than 4 and not Residential - it checks the ">4 month sizing method" picklist on the related Product to see how to calculate the field.
      * 				If the picklist value == 'Using State Usage'- it uses the Avg_Annual_Resi_kWh__c from the related State object.
@@ -138,63 +142,61 @@ public without sharing class UtilityDataRequestService {
         Decimal kWh = 0;
         Integer numUDRP = udrpList.size();
         if (numUDRP >= 12) {
-            for (Integer i=0; i<12; i++) {
-                kWh = kWh + udrpList[i].Quantity__c;
-                udrpList[i].Used_In_Annual_kWh_Calculation__c = true;
-            }
+            kWh = sumFirst12UDRPs(udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Annual_kWh_Calculation__c);
         } else if (numUDRP < 12 && numUDRP >= 4) {
-            for (Integer i=0; i<numUDRP; i++) {
-                kWh = kWh + udrpList[i].Quantity__c;
-                udrpList[i].Used_In_Annual_kWh_Calculation__c = true;
-            }
+            kWh = sumAllUDRPs(udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Annual_kWh_Calculation__c);
             kWh = (kWh/numUDRP)*12;
-        } else if (numUDRP < 4 && numUDRP > 0) { 
-            String customerType = udr.Utility_Account_Log__r.Lead__r.Customer_type__c;
-            if (customerType == 'Residential' && customerType!= null) {
-                for(Integer i=0; i<numUDRP; i++) {
-                	kWh = kWh + udrpList[i].Quantity__c;
-                    udrpList[i].Used_In_Annual_kWh_Calculation__c = true;
-            	}
+        } else if (numUDRP > 0 && udr.Utility_Account_Log__r.Lead__r.Customer_type__c == 'Residential') {
+            kWh = sumAllUDRPs(udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Annual_kWh_Calculation__c);
             	kWh = (kWh/numUDRP)*12;
-            } else if (customerType != 'Residential' && customerType != null){
-                String sizingMethod = udr.Utility_Account_Log__r.Lead__r.Product__r.X4_month_sizing_method__c;
-                if (sizingMethod == 'State Average Annual Usage') {
+        } else if (numUDRP > 0 && udr.Utility_Account_Log__r.Lead__r.Product__r.X4_month_sizing_method__c == 'State Average Annual Usage') {
                     State__c state = stateSelector.selectByName(udr.Utility_Account_Log__r.Service_State__c);                    
                     kWh = state.Avg_Annual_Resi_kWh__c;
                 }
-            }
-        }
         update udrpList;
         kWh = kWh.setScale(2);
         return kWh.doubleValue();
     }
+
+    private Decimal sumAllUDRPs(List<Utility_Data_Request_Period__c> udrpList, Schema.SObjectField fieldUsedInCalculation) {
+        Decimal kWh = 0;
+        for (Integer i = 0; i < udrpList.size(); i++) {
+            kWh = kWh + udrpList[i].Quantity__c;
+            udrpList[i].put(fieldUsedInCalculation, true);
+        }
+        return kWh;
+    }
+    private Decimal sumFirst12UDRPs(List<Utility_Data_Request_Period__c> udrpList, Schema.SObjectField fieldUsedInCalculation) {
+        Decimal kWh = 0;
+        for (Integer i = 0; i < 12; i++) {
+            kWh = kWh + udrpList[i].Quantity__c;
+            udrpList[i].put(fieldUsedInCalculation, true);
+        }
+        return kWh;
+    }
+
     /**
      * @description Calculates the number for the Average Demand field for a UDR and its related UAL.
      * Used the same basic logic as the getAnnualkWh method
+     * @param udr
+     * @param udrpList
+     * @return
      */
     @TestVisible
     private Double getAverageDemand(Utility_Data_Request__c udr, List <Utility_Data_Request_Period__c> udrpList) { 
         Decimal avgDemand = 0;
         Integer numUDRP = udrpList.size();
         if (numUDRP >= 12) {
-            for (Integer i=0; i<12; i++) {
-                avgDemand = avgDemand + udrpList[i].Quantity__c;
-                udrpList[i].Used_In_Average_Demand_Calculation__c = true;
-            }
+            avgDemand = sumFirst12UDRPs(udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Average_Demand_Calculation__c);
             avgDemand = avgDemand/12;
         } else if (numUDRP < 12 && numUDRP > 0) {
-            for (Integer i=0; i<numUDRP; i++) {
-                avgDemand = avgDemand + udrpList[i].Quantity__c;
-                udrpList[i].Used_In_Average_Demand_Calculation__c = true;
-            }
+            avgDemand = sumAllUDRPs(udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Average_Demand_Calculation__c);
             avgDemand = avgDemand/numUDRP;
         }
         update udrpList;
         avgDemand = avgDemand.setScale(2);
         return avgDemand.doubleValue();
     }
-
-
     @TestVisible // Modify UDRPs
     private void updateUDRP() {
         // Only want to update the Rate Classes if the Status updated from something else to Complete
@@ -222,10 +224,8 @@ public without sharing class UtilityDataRequestService {
     @TestVisible
     private List<Utility_Data_Request_Period__c> populateRateClassOnUDRP(Id udrId) {
         List<Utility_Data_Request_Period__c> udrpList = udrToUdrpMap.get(udrId);
-
         if(udrpList == null) {
             return new List<Utility_Data_Request_Period__c>();
-
                     }
         Boolean firstKH = false;
         for(Utility_Data_Request_Period__c udrp : udrpList) {
@@ -240,7 +240,6 @@ public without sharing class UtilityDataRequestService {
         }
         return udrpList;
     }
-
     private Id setRateClassLookupOnUDRP(String rateSubclass, String rateClass, Utility_Data_Request_Period__c udrp) {
         if(rateSubclass !=null && rateClassWithEDIMap.containsKey(rateSubclass) && (udrp.Utility_Data_Request__r.Utility__c == rateClassWithEDIMap.get(rateSubclass).Utility__c)) {
             return rateClassWithEDIMap.get(rateSubclass).Id;
@@ -253,7 +252,6 @@ public without sharing class UtilityDataRequestService {
             Logger.logLater('UtilityDataRequestService', 'populateRateClassOnUDRP', message);
         }
         return null;
-
     }
     /**
      * @description Populates the UAL.Utility_Rate_Class__c (lookup to Rate Class) with 
@@ -371,6 +369,10 @@ public without sharing class UtilityDataRequestService {
             new List<Schema.SObjectType> {Utility_Data_Request__c.SObjectType, Utility_Account_Log__c.SObjectType}
         );
         List<Utility_Account_Log__c> uals = ualSelector.selectUalsWithUdrs(leadIds);
+        // If the UAL has multiple bills and is getting data via Glynt, we might need to make multiple UDRs, one for each
+        // bill. That way, Glynt can extract the data from each bill, which Salesforce can process further downstream
+        // Until then, if there are multiple attachments, GlyntUploadService will upload all of them, extract all of them,
+        // and write all of the data back to the single UDR.
         for (Utility_Account_Log__c ual : uals) {
             if (ual.Utility_Data_Requests__r.isEmpty()) {
                 uow.registerNew(constructNewUDR(ual));
@@ -396,7 +398,8 @@ public without sharing class UtilityDataRequestService {
             Utility_Account_Log__c  = ual.Id,
             Header_Status__c        = 'Pending',
             Detail_Status__c        = 'Pending',
-            Premise_Number__c       = ual.Premise_Number__c
+            Premise_Number__c       = ual.Premise_Number__c,
+            Service_Provider__c = ual.Utility_lookup__r.Use_Glynt__c?'Glynt':'ESG'
         );
     }
     @TestVisible
@@ -407,11 +410,13 @@ public without sharing class UtilityDataRequestService {
     private Id getRateClassForCompletedUdr(Id udrId) {
         return udrToRateClassMap.get(udrId);
     }
-    public class udrObject {
+
+    public class UDRWrapper {
     	private Id udrId;
     	private List<Utility_Data_Request_Period__c> listKH;
     	private List<Utility_Data_Request_Period__c> listK1;
-        public udrObject(Id udrId) {
+        public UDRWrapper(Id udrId) {
+
             this.udrId = udrId;
             this.listKH = new List<Utility_Data_Request_Period__c>();
             this.listK1 = new List<Utility_Data_Request_Period__c>();
