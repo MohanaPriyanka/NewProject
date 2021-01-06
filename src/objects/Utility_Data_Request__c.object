@@ -589,6 +589,33 @@ Y=Yes, the account is receiving Utility Discounts/Incentive Rates</inlineHelpTex
         <unique>true</unique>
     </fields>
     <fields>
+        <fullName>Service_Provider__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates the service used to retrieve the data for this request</inlineHelpText>
+        <label>Service Provider</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>ESG</fullName>
+                    <default>true</default>
+                    <label>ESG</label>
+                </value>
+                <value>
+                    <fullName>Glynt</fullName>
+                    <default>false</default>
+                    <label>Glynt</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>State__c</fullName>
         <complianceGroup>PII</complianceGroup>
         <externalId>false</externalId>
