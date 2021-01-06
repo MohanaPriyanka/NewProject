@@ -14,7 +14,7 @@ trigger UtilityDataRequestTrigger on Utility_Data_Request__c (after insert, afte
     switch on Trigger.operationType {
         when AFTER_INSERT {
             uploadService.associateContentToUDRs(Trigger.new);
-            uploadService.queueGlyntUpload(Trigger.newMap.keySet());
+            uploadService.queueGlyntUpload(Trigger.new);
         }
         when BEFORE_UPDATE {
             udrService.beforeStatusUpdatedToComplete();

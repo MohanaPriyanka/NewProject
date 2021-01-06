@@ -38,13 +38,21 @@ public without sharing class GlyntUploadService implements Queueable, Database.A
     }
 
     /**
-     * @description Starts the upload to Glynt via queueable
-     * @param utilityDataRequestIds The list of UDR Ids to upload
+     * @description Starts the upload to Glynt via queueable for any UDRs with Service Provider of Glynt
+     * @param utilityDataRequests List of Utility Data Requests, with Service Provider
      */
-    public void queueGlyntUpload(Set<Id> utilityDataRequestIds) {
-        GlyntUploadService uploadService = new GlyntUploadService();
-        uploadService.utilityDataRequestsToUpload = utilityDataRequestIds;
-        System.enqueueJob(uploadService);
+    public void queueGlyntUpload(List<Utility_Data_Request__c> utilityDataRequests) {
+        Set<Id> utilityDataRequestsForGlynt = new Set<Id>();
+        for (Utility_Data_Request__c udr : utilityDataRequests) {
+            if (udr.Service_Provider__c == 'Glynt') {
+                utilityDataRequestsForGlynt.add(udr.Id);
+            }
+        }
+        if (!utilityDataRequestsForGlynt.isEmpty()) {
+            GlyntUploadService uploadService = new GlyntUploadService();
+            uploadService.utilityDataRequestsToUpload = utilityDataRequestsForGlynt;
+            System.enqueueJob(uploadService);
+        }
     }
 
     /**

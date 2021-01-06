@@ -32,7 +32,8 @@ private with sharing class GlyntUploadServiceTest {
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new GlyntMockUploadFailure());
         Utility_Data_Request__c udr = new Utility_Data_Request__c(
-            Utility_Account_Log__c = ual.Id
+            Utility_Account_Log__c = ual.Id,
+            Service_Provider__c = 'Glynt'
         );
         insert udr;
         Test.stopTest();
@@ -56,6 +57,35 @@ private with sharing class GlyntUploadServiceTest {
         System.assert(errorLogs[0].Message__c.contains('You have uncommitted work pending'),
             'We expect the queueable to execute which does the createDocument callout resulting in an exception, but got this: ' +
                 errorLogs[0].Message__c);
+    }
+
+    @IsTest
+    private static void testUDRsForESG() {
+        Utility_Account_Log__c ual = [SELECT Id FROM Utility_Account_Log__c WHERE Name = '123' LIMIT 1];
+
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new GlyntMockUploadFailure());
+        Utility_Data_Request__c udr = new Utility_Data_Request__c(
+            Utility_Account_Log__c = ual.Id,
+            Service_Provider__c = 'ESG'
+        );
+        insert udr;
+        Test.stopTest();
+
+        List<ContentDocumentLink> contentDocumentLinks = [
+            SELECT Id
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = :udr.Id
+        ];
+        System.assertEquals(1, contentDocumentLinks.size(), 'Expected the Utility Bill to be linked to the new UDR');
+
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'GlyntUploadService'
+            AND Severity__c = 'Error'
+        ];
+        System.assertEquals(0, errorLogs.size(), 'Did not expect to try to upload, so there should be no error about uncommitted work');
     }
 
     @IsTest
