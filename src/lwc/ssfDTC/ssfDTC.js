@@ -16,7 +16,6 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
     @track underwritingOptions = [];
     @track salesRepId;
     @track campaignId;
-    @track mock;
     @track getEmail;
     @track getZip;
     @track getBasicInfo;
@@ -27,7 +26,7 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
     @wire(CurrentPageReference) pageRef;
 
     loc = '';
-    isFico = true;
+    underwriting = 'FICO'; // Defaulted to FICO
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
@@ -69,7 +68,7 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
     }
 
     setUnderwritingMethod(event) {
-        this.isFico = event.detail;
+        this.underwriting = event.detail;
     }
 
     handleNavigateBackToBasicInfo(event) {
