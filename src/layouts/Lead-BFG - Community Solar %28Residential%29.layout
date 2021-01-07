@@ -479,6 +479,7 @@
     </relatedLists>
     <relatedLists>
         <fields>CASES.CASE_NUMBER</fields>
+        <fields>CASES.STATUS</fields>
         <fields>CASES.SUBJECT</fields>
         <fields>CASES.CREATED_DATE</fields>
         <fields>CASES.PRIORITY</fields>
@@ -496,11 +497,10 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>QC_Status__c</fields>
         <fields>Annual_Cost_of_Electricity__c</fields>
-        <fields>Service_Address__c</fields>
-        <fields>Service_City__c</fields>
-        <fields>Service_State__c</fields>
-        <fields>Service_Zip_Code__c</fields>
+        <fields>Annual_kWh__c</fields>
+        <fields>Utility_Rate_Class__c</fields>
         <relatedList>Utility_Account_Log__c.Lead__c</relatedList>
     </relatedLists>
     <relatedLists>
