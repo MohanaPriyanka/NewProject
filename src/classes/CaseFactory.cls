@@ -120,7 +120,7 @@ public without sharing class CaseFactory implements Queueable {
             Case newCcCase = getCase('Customer_QC');
             newCcCase.Lead_Lookup__c = lead.Id;
             newCcCase.Disable_Followup_Email__c = true;
-            newCcCase.QC_Case_Subject__c = 'No FICO Match';
+            newCcCase.QC_Case_Subject__c = 'No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)';
             newCcCase.Product_Line__c = 'Community Solar';
             newCcCase.AccountId = lead.Partner_Account__c;
             newCcCase.ContactId = lead.Sales_Person__c;
@@ -142,7 +142,7 @@ public without sharing class CaseFactory implements Queueable {
             queryForRecordTypesAndQueues();
             Case newCcCase = getCase('Customer_QC');
             newCcCase.Lead_Lookup__c = lead.Id;
-            newCcCase.QC_Case_Subject__c = 'Low FICO Match';
+            newCcCase.QC_Case_Subject__c = 'Low Credit Match - New Guarantor Needs to Apply';
             newCcCase.Product_Line__c = 'Community Solar';
             newCcCase.AccountId = lead.Partner_Account__c;
             newCcCase.ContactId = lead.Sales_Person__c;
