@@ -26,7 +26,8 @@ public inherited sharing class ContentDocumentSelector {
         List<Id> entityIdList = new List<Id>(entityIds);
         return [
             SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate, 
-            ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData
+                ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData,
+                ContentDocument.LatestPublishedVersion.FileExtension
             FROM ContentDocumentLink
             WHERE LinkedEntityId IN :entityIdList
             ORDER BY ContentDocument.CreatedDate DESC

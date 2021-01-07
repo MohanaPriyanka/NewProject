@@ -1521,7 +1521,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                 <value>
                     <fullName>File Not Scored Due to Insufficient Credit</fullName>
                     <default>false</default>
-                    <isActive>true</isActive>
                     <label>File Not Scored Due to Insufficient Credit</label>
                 </value>
                 <value>
@@ -1558,6 +1557,11 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <fullName>Signature Needed on Updated Customer Contract at Link Provided - Typos Corrected</fullName>
                     <default>false</default>
                     <label>Signature Needed on Updated Customer Contract at Link Provided - Typos Corrected</label>
+                </value>
+                <value>
+                    <fullName>Subscription Adjustment Needed</fullName>
+                    <default>false</default>
+                    <label>Subscription adjustment needed</label>
                 </value>
                 <value>
                     <fullName>Upload Complete Utility Bill to Case - Bill Within last 90 Days Needed</fullName>

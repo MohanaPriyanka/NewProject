@@ -894,7 +894,7 @@ private class UtilityDataRequestServiceTest {
 
     @IsTest
     static void testRateClass() {
-        List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
+        List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c WHERE Class__c = 'UtilityDataRequestService'];
         System.assertEquals(0, errorLogs.size());
         
         Utility_Data_Request__c testUDR1 = getTestUDR('testUDR1');
@@ -914,10 +914,10 @@ private class UtilityDataRequestServiceTest {
                             'The Rate_Class_Lookup__c for ' + testUDRPList[1].Load_Profile_Description__c + ' should now be testRateClass2.');
         System.assertEquals(testRateClass2.Id, testUDRPList[2].Rate_Class_Lookup__c, 
                             'The Rate_Class_Lookup__c for ' + testUDRPList[2].Load_Profile_Description__c + ' should now be testRateClass2.');
-        System.assertEquals(Null, testUDRPList[3].Rate_Class_Lookup__c, 
+        System.assertEquals(null, testUDRPList[3].Rate_Class_Lookup__c,
                             'The Rate_Class_Lookup__c for ' + testUDRPList[3].Load_Profile_Description__c + ' should be null because ' 
                             + 'the Rate_Class__c text was null, so no Rate Class object could be found for it.');
-        System.assertEquals(Null, testUDRPList[4].Rate_Class_Lookup__c,  
+        System.assertEquals(null, testUDRPList[4].Rate_Class_Lookup__c,
                             'The Rate_Class_Lookup__c for ' + testUDRPList[4].Load_Profile_Description__c + ' should be null because ' 
                             + 'the Rate_Class__c text did not match any Rate_Class__c.EDI_Rate_Class__c fields');
         System.assertEquals(testUAL1.Utility_Rate_Class__c, testUDRPList[2].Rate_Class_Lookup__c,  
@@ -926,12 +926,12 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals(testRateClass1.Id, testUDRPList[5].Rate_Class_Lookup__c, 
                             'The Rate_Class_Lookup__c for ' + testUDRPList[5].Load_Profile_Description__c + ' should now be testRateClass1.');
         
-        errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
+        errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c WHERE Class__c = 'UtilityDataRequestService'];
         
         System.assertEquals(2, errorLogs.size(),'There should be two error logs created when this test runs');
         
-        for (error_log__c e : errorLogs){
-            if (e.severity__c == 'Error'){
+        for (Error_Log__c e : errorLogs){
+            if (e.Severity__c == 'Error'){
                 System.assert(e.Message__c.contains('No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c or Rate_Class__c on'),
                                                     'An error log should be created when a matching rate class is not found');
             } else {
@@ -945,29 +945,29 @@ private class UtilityDataRequestServiceTest {
     @IsTest
     static void updateStatusToNotComplete() {
         Utility_Data_Request__c testUDR1 = getTestUDR('testUDR1');
-        System.assertEquals(testUDR1.Detail_status__c,'Pending','Expect detail status to be pending');
+        System.assertEquals(testUDR1.Detail_Status__c,'Pending','Expect detail status to be pending');
         testUDR1.Header_Status__c = 'Complete';
         update testUDR1;
-        testUDR1 = [select id, request_status_new__c from utility_data_request__c where id = :testUDR1.id];
-        System.assertEquals(testUDR1.request_status_new__c,'Partial Data Received','Expect request status to be partial data received '
+        testUDR1 = [SELECT Id, Request_Status_new__c FROM Utility_Data_Request__c WHERE Id = :testUDR1.Id];
+        System.assertEquals(testUDR1.Request_Status_new__c,'Partial Data Received','Expect request status to be partial data received '
                                                           + 'because details have not been returned');
 
         
         List<Utility_Data_Request_Period__c> testUDRPList = getTestUDRPList(testUDR1.Id);
         
-        System.assertEquals(testUDRPList[0].Rate_Class_Lookup__c, Null, 
+        System.assertEquals(testUDRPList[0].Rate_Class_Lookup__c, null,
                             'The Rate_Class_Lookup__c for testUDRP1 should still be null becuase ' 
                             + 'the status on the related UDR was not updated to Complete.');
-        System.assertEquals(testUDRPList[1].Rate_Class_Lookup__c, Null,
+        System.assertEquals(testUDRPList[1].Rate_Class_Lookup__c, null,
                             'The Rate_Class_Lookup__c for testUDRP2 should still be null becuase ' 
                             + 'the status on the related UDR was not updated to Complete.');
-        System.assertEquals(testUDRPList[2].Rate_Class_Lookup__c, Null,
+        System.assertEquals(testUDRPList[2].Rate_Class_Lookup__c, null,
                             'The Rate_Class_Lookup__c for testUDRP3 should still be null becuase ' 
                             + 'the status on the related UDR was not updated to Complete.');
-        System.assertEquals(testUDRPList[3].Rate_Class_Lookup__c, Null,
+        System.assertEquals(testUDRPList[3].Rate_Class_Lookup__c, null,
                             'The Rate_Class_Lookup__c for testUDRP4 should still be null becuase ' 
                             + 'the status on the related UDR was not updated to Complete.');
-        System.assertEquals(testUDRPList[4].Rate_Class_Lookup__c, Null,
+        System.assertEquals(testUDRPList[4].Rate_Class_Lookup__c, null,
                             'The Rate_Class_Lookup__c for testUDRP5 should still be null becuase ' 
                             + 'the status on the related UDR was not updated to Complete.');
 
@@ -981,14 +981,14 @@ private class UtilityDataRequestServiceTest {
         
         List<Utility_Data_Request_Period__c> testUDRPList = getTestUDRPList(testUDR2.Id);
         
-        System.assertEquals(testUDRPList[0].Rate_Class_Lookup__c, Null, 
+        System.assertEquals(testUDRPList[0].Rate_Class_Lookup__c, null,
             'testUDRP6 is related to testUDR2, whose status was already Complete before the update,'
             + ' so the EDI_Rate_Class should still be null becuase the status did not update to complete,');
     }
     
     @IsTest
     static void testNullRecentUDRP() {
-        List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
+        List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c WHERE Class__c = 'UtilityDataRequestService'];
         System.assertEquals(0, errorLogs.size());
         
         Utility_Data_Request_Period__c testUDRP4 = getTestUDRP('testUDRP4');
@@ -1004,19 +1004,19 @@ private class UtilityDataRequestServiceTest {
             'The most recent UDRP has a null Rate Class, so the Utility_Rate_Class__c on  UAL should still be null'
         );
         
-        errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
+        errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c WHERE Class__c = 'UtilityDataRequestService'];
         System.assertEquals(3, errorLogs.size(),'We expect 3 error logs - one for Null Rate subclass on a UDRP, another for not finding a matching EDI_Rate_Class on Rate Class' 
                             +' and a third for not being able to populate a rate class on UAL since the most recent KH UDRP has a null Rate Subclass & Rate Class.');
         
-        for (error_log__c e : errorLogs){
-            if (e.severity__c == 'Info'&& e.method__c =='populateRateClassOnUDRP'){
-                System.assert(e.message__c.contains('Null Rate Subclass & Rate Class on'),'Null Rate Subclasses & Rate Classes should log an INFO error log');   
+        for (Error_Log__c e : errorLogs){
+            if (e.Severity__c == 'Info'&& e.Method__c =='populateRateClassOnUDRP'){
+                System.assert(e.Message__c.contains('Null Rate Subclass & Rate Class on'),'Null Rate Subclasses & Rate Classes should log an INFO error log');
             }
-            else if (e.severity__c == 'Error'&& e.Method__c =='populateRateClassOnUDRP'){
-                System.assert(e.message__c.contains('No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c or Rate_Class__c on'),
+            else if (e.Severity__c == 'Error'&& e.Method__c =='populateRateClassOnUDRP'){
+                System.assert(e.Message__c.contains('No matching Rate Class record with an EDI_Rate_Class__c that matches the Rate_Subclass__c or Rate_Class__c on'),
                 'An error log should be created when a matching rate class is not found');
             } else {
-                System.assert(e.message__c.contains('UAL Rate Class could not be populated because there is a ' + 
+                System.assert(e.Message__c.contains('UAL Rate Class could not be populated because there is a ' +
                 'null Rate_Class_Lookup__c for the most recent UDRP, where the Measurement Unit is KH, related to UDR'),'Null Rate on most recent KH UDRP should create an error log');       
             }
         }
@@ -1055,8 +1055,7 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request__c updatedTestUDR3 = getTestUDR('testUDR3');
         Utility_Data_Request__c updatedTestUDR4 = getTestUDR('testUDR4');
         Utility_Data_Request__c updatedTestUDR5 = getTestUDR('testUDR5');
-        Utility_Data_Request__c updatedTestUDR6 = getTestUDR('testUDR6');	
-        
+
         System.assertEquals(28236, updatedTestUDR1.Annual_kWh__c, 'UDR1 has 5 KH UDRP so the Annual kWh should be ' 
                             + 'the sum of the UDRP.Quantity__c values multiplied by the number of months and divided by 12.'
                             + 'In this case the answer should be 28236.');
