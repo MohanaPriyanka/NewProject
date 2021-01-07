@@ -185,6 +185,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Use_Glynt__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked, Utility Data Requests associated with Utility Account Logs with an attached bill for this utility will be sent to Glynt for data extraction. Utility Data Collection Mechanism must be &quot;File Upload&quot;</inlineHelpText>
+        <label>Use Glynt</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Utility_DUNS_Number__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Used in the EDI integration as unique identifier for utilities</inlineHelpText>
@@ -232,6 +241,14 @@
     <pluralLabel>Utilities</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Collect_Data_Through_EDI_Or_Glynt</fullName>
+        <active>true</active>
+        <description>Can&apos;t have EDI and Glynt enabled at the same time</description>
+        <errorConditionFormula>AND(ISPICKVAL( Utility_Data_Collection_Mechanism__c , &quot;EDI&quot;),
+    Use_Glynt__c)</errorConditionFormula>
+        <errorMessage>Collecting data through both EDI and Glynt is not supported - choose one or the other</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>Lock_Number_of_Decimals</fullName>
         <active>true</active>

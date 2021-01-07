@@ -1540,6 +1540,38 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GlyntAPI</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntAPIHelper</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntAPIHelperTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntExtractionService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntExtractionServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntUploadService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntUploadServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>HomeController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -23649,6 +23681,31 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Financial_Underwriting_Document__c.Lead__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Glynt_Configuration__mdt.Authorization_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Glynt_Configuration__mdt.Data_Pool_Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Glynt_Configuration__mdt.Extraction_Processor__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Glynt_Configuration__mdt.Extraction_Query_Timeout__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Glynt_Configuration__mdt.Production__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47933,6 +47990,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility_Data_Request__c.Service_Provider__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_Data_Request__c.State__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -48334,6 +48396,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility__c.Supplier_Account_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Use_Glynt__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -66898,6 +66965,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Global-Global Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Glynt_Configuration__mdt-Glynt Configuration Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ISA_Payment__c-ISA Payment Layout</layout>
