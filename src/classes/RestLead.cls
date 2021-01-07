@@ -33,6 +33,7 @@ public without sharing class RestLead {
     public String referralName;
     public String referralEmail;
     public String underwritingCriteria;
+    public Boolean noPayment;
     public Integer numberOfContractDocs;    // used in SSF only
     public Datetime mostRecentContractGen;  // used in SSF only
 
@@ -69,6 +70,7 @@ public without sharing class RestLead {
         this.referralName = lead.Referral_Name__c;
         this.referralEmail = lead.Referral_Email__c;
         this.underwritingCriteria = lead.Underwriting_Criteria__c;
+        this.noPayment = lead.No_Payment__c;
     }
 
     public void validateCreateFields() {
@@ -193,6 +195,7 @@ public without sharing class RestLead {
             Referral_Email__c = this.referralEmail,
             Continue_Application_Link__c = this.continueApplicationLink,
             Underwriting_Criteria__c = this.underwritingCriteria,
+            No_Payment__c = this.noPayment,
             Utility_relationship__c = this.utilityId
         );
         // Since:

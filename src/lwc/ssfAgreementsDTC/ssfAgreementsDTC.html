@@ -33,7 +33,6 @@
       </div>
     </div>
   </template>
-
   <div class="slds-var-m-around_small">
     <p class="small">Click the checkboxes below to sign your agreements:</p>
   </div>
@@ -43,7 +42,7 @@
         <lightning-input name="disclosures" type="checkbox" checked={disclosures} label="Check to Consent to Electronic Disclosures" onchange={disclosureChecked}></lightning-input>
       </p>
       <p class="small slds-var-m-around_small">
-        By checking this box, entering my email address in the Email field below, and clicking the "Continue" button, I acknowledge that I have reviewed and agree to the BlueWave <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.my.salesforce.com/sfc/p/j0000001q7GO/a/0a000000MkFk/pvivOEszT68vNzlruWfakqXulDdStUlPcwN5oAm70aA">ESIGN Consent Disclosure</a></b> and consent to receive electronic disclosures. The device I will use to receive and access electronic disclosures meets the hardware and software requirements described in the ESIGN Consent Disclosure.
+        {disclosureLanguageFirstSegment}<b><a target="_blank" rel="noopener noreferrer" style="color:blue" href={esignDisclosureUrl}>ESIGN Consent Disclosure</a></b>{disclosureLanguageSecondSegment}
       </p>
     </template>
     <template if:true={renderCreditCheckLanguage}>
@@ -53,10 +52,9 @@
         </p>
         <template if:true={isFicoUnderwriting}>
           <p class="small slds-var-m-around_small">
-            By checking this box, and clicking the “Continue” button, I am providing my electronic signature and signing an electronic record that is my written authorization giving BlueWave permission to perform a soft pull of a consumer report showing my credit history (which will NOT impact my credit score) and to access my electric utility billing history. I am also giving BlueWave my permission to use my credit history and my electric utility billing history to process my application and for any other lawful purpose
+            {ficoLanguageFirstSegment}
             <template if:true={moreCreditCheck}>
-              <span>. I understand that BlueWave may share my consumer report with third parties that participate in the transaction contemplated by my application (including but not limited to the owner or developer of the community solar project) and/or any party that intends to use the information as a potential investor, servicer or insurer in connection with a valuation of or an assessment or the risks associated with any agreement I enter into with BlueWave pursuant to my application. I understand that if I ask BlueWave whether it checked my credit, BlueWave will tell me, and if it did, provide the name and address of the consumer reporting agency that provided the information.</span>
-              <span onclick={showLessCreditCheck} style="text-decoration:underline;color:blue">[Show less]</span>
+              {ficoLanguageSecondSegment} <span onclick={showLessCreditCheck} style="text-decoration:underline;color:blue">[Show less]</span>
             </template>
             <template if:false={moreCreditCheck}>
               ... <span onclick={showMoreCreditCheck} style="text-decoration:underline;color:blue">[Show more]</span>
@@ -65,10 +63,9 @@
         </template>
         <template if:true={isFinDocsUnderwriting}>
           <p class="small slds-var-m-around_small">
-            Customer will promptly provide to us, in connection with Customer’s application and from time to time in connection with this Agreement, copies of Customer’s audited Financial Statements for each of the three (3) years prior to the date of our request, along with a copy of Customer’s internally generated interim Financial Statement for any period immediately prior to the date of our request that is not covered by such prior 3 years of Financial Statements. Customer’s delivery of such Financial Statements to us shall be accompanied by a written representation and warranty from a duly authorized officer of Customer that such Financial Statements are true and correct at the time of delivery. “Financial Statement” means a financial statement as prepared for Customer in the ordinary course of business, consisting of a balance sheet, statement of income, changes in stockholders equity, and statement of cash flows, including notes, and prepared in accordance with Generally Accepted Accounting Principles used by the Financial Accounting Standards Board or the American Institute of Certified Public Accountants
+            {finDocsLanguageFirstSegment}
             <template if:true={moreCreditCheck}>
-              <span>. Customer authorizes us to use such Financial Statements in connection with your application, including to determine eligibility which may include analysis of your Financial Statements, review of your subscription, any update, renewal, modification or extension of this Agreement, or the collection of amounts due under this Agreement.  You understand that we may share any such Financial Statements with third parties that participate in the transactions contemplated by this Agreement (including but not limited to the Project Owner) and/or any party that intends to use the information as part of our eligibility determination or as a potential investor, servicer or insurer in connection with a valuation of or an assessment of the risks associated with this Agreement).  You certify that all information you provide to us in connection with your Financial Statements are true and understand that this information must be updated upon request if your financial condition changes. For purposes of this request and authorization, “Financial Statement” means a financial statement as prepared for Customer in the ordinary course of business, consisting of a balance sheet, statement of income, changes in stockholders equity, and statement of cash flows, including notes, and prepared in accordance with Generally Accepted Accounting Principles used by the Financial Accounting Standards Board or the American Institute of Certified Public Accountants.</span>
-              <span onclick={showLessCreditCheck} style="text-decoration:underline;color:#0000ff">[Show less]</span>
+              {finDocsLanguageSecondSegment} <span onclick={showLessCreditCheck} style="text-decoration:underline;color:#0000ff">[Show less]</span>
             </template>
             <template if:false={moreCreditCheck}>
               ... <span onclick={showMoreCreditCheck} style="text-decoration:underline;color:blue">[Show more]</span>
@@ -82,7 +79,7 @@
         <lightning-input name="csAgreement" checked={csAgreement} type="checkbox" label="Check to Sign Community Solar Agreement and CS Disclosure" onchange={csAgreementChecked}></lightning-input>
       </p>
       <p class="small slds-var-m-around_small">
-        <span>By checking this box, entering my email address in the Email field below, and clicking the "Continue" button, I acknowledge that I have reviewed and agree to the </span>
+        <span>{agreementLanguageFirstSegment}</span>
         <template iterator:it={contractDocuments}>
             <span key={it.value.id}>
                 <template if:false={it.value.first}> and </template>
@@ -91,17 +88,15 @@
                 </a></b>
             </span>
         </template>
-        <span> as well as BlueWave's <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b>. I understand that by doing so, I am providing my electronic signature and signing the agreements linked above as electronic records, signature is subject to the additional terms and conditions described here</span>
+        <span> as well as BlueWave's <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b>. {agreementLanguageSecondSegment}</span>
         <template if:true={moreCSAgreement}>
-          <span>. I am also granting BlueWave permission to contact me via the phone number provided on this application. I also acknowledge that this is an application only and consummation of this transaction does not occur upon the placement of my electronic signature on this contract; rather consummation occurs (meaning that there is an executed agreement between BlueWave and me) after BlueWave verifies my eligibility, approves the document that I have electronically signed, and returns the contract to me with its countersignature.</span>
-          <span onclick={showLessCSAgreement} style="text-decoration:underline;color:blue">[Show less]</span>
+          {agreementLanguageThirdSegment} <span onclick={showLessCSAgreement} style="text-decoration:underline;color:blue">[Show less]</span>
         </template>
         <template if:false={moreCSAgreement}>
           ... <span onclick={showMoreCSAgreement} style="text-decoration:underline;color:blue" data-target-id="agreement">[Show more]</span>
         </template>
       </p>
     </template>
-
     <div class="slds-grid slds-wrap">
       <div class="slds-size_1-of-3">
       </div>
@@ -124,17 +119,16 @@
       </div>
     </div>
   </div>
-
   <p class="slds-var-m-around_small" onkeyup={checkForSubmit}>
     <lightning-input data-id="consentEmail" name="consentEmail" value={consentEmail} type="email" label="Confirm Email to Sign:" onchange={genericOnChange}></lightning-input>
   </p>
-
-  <div class="slds-size_1-of-2">
-    <button class="btn-inverse slds-var-m-around_small slds-float_left" onclick={handleBackButton}>Back</button>
+  <div class="slds-grid">
+    <div class="slds-size_1-of-2">
+      <button class="btn-inverse slds-var-m-around_small slds-float_left" onclick={handleBackButton}>Back</button>
+    </div>
+    <div class="slds-size_1-of-2">
+      <button class="btn slds-var-m-around_small slds-float_right" onclick={continueAgreement}>{continueButtonLabel}</button>
+    </div>
   </div>
-  <div class="slds-size_2-of-1">
-    <button class="btn slds-var-m-around_small slds-float_right" onclick={continueAgreement}>Continue</button>
-  </div>
-
   <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
 </template>

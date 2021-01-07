@@ -115,7 +115,7 @@ const showCSAgreementApproval = (component) => {
 // Indicate to server that Consents section of the application is complete
 const consentsComplete = async (component) => {
     component.showSpinner = true;
-    component.spinnerMessage = 'Saving your consents';
+    component.spinnerMessage = 'Saving your consents...';
 
     let complete;
     if (!component.renderCreditCheckLanguage) {
@@ -222,7 +222,7 @@ const getContractDocuments = (component) => {
     }
     component.showSpinner = true;
     window.setTimeout(() => {
-        component.spinnerMessage = 'Generating your documents';
+        component.spinnerMessage = 'Generating your documents...';
     }, 5000);
     window.setTimeout(() => {
         component.spinnerMessage = 'This can take a minute';
@@ -283,7 +283,7 @@ const validCreditCheckReview = (component) => {
         showWarningToast(
             component,
             'Sorry',
-            'Please check the checkbox to authorize credit and utility billing review'
+            getCreditErrorToastMessage(component)
         );
         return false;
     } else {
@@ -326,13 +326,124 @@ const showWarningToast = (component, title, message) => {
     component.dispatchEvent(evt);
 }
 
-const getCreditCheckLabel = (component) => {
+const getCreditErrorToastMessage = (component) => {
+    if (component.isFicoUnderwriting) {
+        return 'Please check the checkbox to authorize credit and utility billing review';
+    }
+    if (component.isFinDocsUnderwriting) {
+        return 'Please check the checkbox to authorize financial and utility billing review';
+    }
+}
+
+const getText = (component, identifier) => {
+    switch (identifier) {
+        case 'fico1':
+            return ficoLanguage1(component);
+        case 'fico2':
+            return ficoLanguage2();
+        case 'finDocs1':
+            return finDocsLanguage1();
+        case 'finDocs2':
+            return finDocsLanguage2();
+        case 'disclosure1':
+            return disclosureLanguage1(component);
+        case 'disclosure2':
+            return disclosureLanguage2();
+        case 'agree1':
+            return agreementLanguage1(component);
+        case 'agree2':
+            return agreementLanguage2();
+        case 'agree3':
+            return agreementLanguage3();
+        case 'esignUrl':
+            return `https://bluewavesolar.my.salesforce.com/sfc/p/j0000001q7GO/a/0a000000MkFk/pvivOEszT68vNzlruWfakqXulDdStUlPcwN5oAm70aA`;
+        case 'creditCheckLabel':
+            return creditCheckLabel(component);
+        default:
+            return null;
+    }
+}
+const creditCheckLabel = (component) => {
     if (component.isFicoUnderwriting) {
         return 'Check to Authorize Credit and Utility Billing Review';
     }
     else if (component.isFinDocsUnderwriting) {
         return 'Check to Authorize Financial and Utility Billing Review';
     }
+}
+
+const disclosureLanguage1 = (component) => {
+    return `By checking this box, entering my email address in the Email field below, and clicking the "${component.continueButtonLabel}"`+
+           ` button, I acknowledge that I have reviewed and agree to the BlueWave ` /* E-SIGN DISCLOSURE */;
+}
+
+const disclosureLanguage2 = () => {
+    return ` and consent to receive electronic disclosures. The device I will use to receive and access electronic disclosures`+
+           ` meets the hardware and software requirements described in the ESIGN Consent Disclosure.`;
+}
+
+const ficoLanguage1 = (component) => {
+    return `By checking this box, and clicking the “${component.continueButtonLabel}” button, I am providing my electronic` +
+           ` signature and signing an electronic record that is my written authorization giving BlueWave permission to` +
+           ` perform a soft pull of a consumer report showing my credit history (which will NOT impact my credit score)`+
+           ` and to access my electric utility billing history. I am also giving BlueWave my permission to use my credit`+
+           ` history and my electric utility billing history to process my application and for any other lawful purpose`;
+}
+
+const ficoLanguage2 = () => {
+    return `. I understand that BlueWave may share my consumer report with third parties that participate in the transaction`+
+           ` contemplated by my application (including but not limited to the owner or developer of the community solar project)`+
+           ` and/or any party that intends to use the information as a potential investor, servicer or insurer in connection with`+
+           ` a valuation of or an assessment or the risks associated with any agreement I enter into with BlueWave pursuant to`+
+           ` my application. I understand that if I ask BlueWave whether it checked my credit, BlueWave will tell me, and if it`+
+           ` did, provide the name and address of the consumer reporting agency that provided the information. `;
+}
+
+const finDocsLanguage1 = () => {
+    return `Customer will promptly provide to us, in connection with Customer’s application and from time to time in connection`+
+           ` with this Agreement, copies of Customer’s audited Financial Statements for each of the three (3) years prior to the`+
+           ` date of our request, along with a copy of Customer’s internally generated interim Financial Statement for any period`+
+           ` immediately prior to the date of our request that is not covered by such prior 3 years of Financial Statements.`+
+           ` Customer’s delivery of such Financial Statements to us shall be accompanied by a written representation and warranty`+
+           ` from a duly authorized officer of Customer that such Financial Statements are true and correct at the time of delivery`;
+}
+
+const finDocsLanguage2 = () => {
+    return `. “Financial Statement” means a financial statement as prepared for Customer in the ordinary course of business,`+
+           ` consisting of a balance sheet, statement of income, changes in stockholders equity, and statement of cash flows,`+
+           ` including notes, and prepared in accordance with Generally Accepted Accounting Principles used by the Financial`+
+           ` Accounting Standards Board or the American Institute of Certified Public Accountants. Customer authorizes us to`+
+           ` use such Financial Statements in connection with your application, including to determine` +
+           ` eligibility which may include analysis of your Financial Statements, review of your subscription, any update, renewal,`+
+           ` modification or extension of this Agreement, or the collection of amounts due under this Agreement.  You understand`+
+           ` that we may share any such Financial Statements with third parties that participate in the transactions contemplated`+
+           ` by this Agreement (including but not limited to the Project Owner) and/or any party that intends to use the information`+
+           ` as part of our eligibility determination or as a potential investor, servicer or insurer in connection with a valuation`+
+           ` of or an assessment of the risks associated with this Agreement).  You certify that all information you provide to us in`+
+           ` connection with your Financial Statements are true and understand that this information must be updated upon request if`+
+           ` your financial condition changes. For purposes of this request and authorization, “Financial Statement” means a financial`+
+           ` statement as prepared for Customer in the ordinary course of business, consisting of a balance sheet, statement of income,`+
+           ` changes in stockholders equity, and statement of cash flows, including notes, and prepared in accordance with Generally`+
+           ` Accepted Accounting Principles used by the Financial Accounting Standards Board or the American Institute of Certified`+
+           ` Public Accountants.`;
+}
+
+const agreementLanguage1 = (component) => {
+    return `By checking this box, entering my email address in the Email field below, and clicking the "${component.continueButtonLabel}"`+
+           ` button, I acknowledge that I have reviewed and agree to the ` /* DISCLOSURE FORM, CS AGREEMENT, PRIVACY POLICY*/;
+}
+
+const agreementLanguage2 = () => {
+    return `I understand that by doing so, I am providing my electronic signature and signing the agreements linked above as`+
+           ` electronic records, signature is subject to the additional terms and conditions described here`;
+}
+
+const agreementLanguage3 = () => {
+    return `. I am also granting BlueWave permission to contact me via the phone number provided on this application. I also`+
+           ` acknowledge that this is an application only and consummation of this transaction does not occur upon the `+
+           ` placement of my electronic signature on this contract; rather consummation occurs (meaning that there is an`+
+           ` executed agreement between BlueWave and me) after BlueWave verifies my eligibility, approves the document that`+
+           ` I have electronically signed, and returns the contract to me with its countersignature.`;
 }
 
 export {
@@ -346,6 +457,6 @@ export {
     showCreditCheckApproval,
     showCSAgreementApproval,
     consentsComplete,
-    getCreditCheckLabel,
-    navigateBack
+    navigateBack,
+    getText,
 }

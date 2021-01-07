@@ -6,6 +6,9 @@
   <aura:attribute name="zuoraAccountId" type="String"/>
   <aura:attribute name="defaultName" type="String"/>
   <aura:attribute name="defaultZip" type="String"/>
+  <aura:attribute name="postOnloadEvent" type="boolean" default="false"/>
+  <aura:attribute name="showSpinner" type="boolean" default="false"/>
+  <aura:attribute name="spinnerMessage" type="String" default="Loading..."/>
 
   <!-- Isn't compatible with locker service, so we're setting the version of this component to 39. -->
   <ltng:require scripts="{!$Resource.Zuora131Min}"/>
@@ -14,4 +17,6 @@
   <!-- We can't use aura:if to show/hide the zuora_payment div because the paymentType change handler expects to
        use the div before it's rendered? -->
   <div id="zuora_payment" style="{!or(v.paymentType == 'ACH', v.paymentType == 'Credit Card')?'display:block':'display:none'}"></div>
+  <c:bluewaveSpinner spinnerMessage="{!v.spinnerMessage}" show="{!v.showSpinner}"/>
+
 </aura:component>

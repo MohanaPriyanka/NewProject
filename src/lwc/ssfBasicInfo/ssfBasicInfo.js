@@ -159,21 +159,19 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     // upsert Lead into Salesforce, submit form
     submitApplication() {
+        this.spinnerMessage = 'Saving the application...';
+        this.showSpinner = true;
 
         // if application invalid, cease upsert
         if (!applicationValid(this)) {
+            this.showSpinner = false;
             return;
         }
 
         // set remaining fields on restLead, including some address fields
         setRemainingFields(this, false);
-        this.showSpinner = true;
-
         window.setTimeout(() => {
-            this.spinnerMessage = 'Saving the application';
-        }, 3000);
-        window.setTimeout(() => {
-            this.spinnerMessage = 'We\'ll generate documents next.\r\nThis may take a minute, please stand by.';
+            this.spinnerMessage = `We'll generate documents next.\r\nThis may take a minute, please stand by.`;
         }, 6000);
         
         if (!this.resumedApp) {

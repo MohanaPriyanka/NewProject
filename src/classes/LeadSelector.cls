@@ -27,6 +27,7 @@ public without sharing class LeadSelector {
         'LoadZone__c',
         'Manual_Campaign_ID__c',
         'MobilePhone',
+        'No_Payment__c',
         'Parcel_Zip__c',
         'Partner_lookup__c',
         'Partner_Email__c',
@@ -41,6 +42,7 @@ public without sharing class LeadSelector {
         'State',
         'Street',
         'Terms_Conditions__c',
+        'Underwriting_Criteria__c',
         'Utility_relationship__c',
         'Zuora_Payment_Ref_Id__c',
         'Zuora_Payment_Ref_Id_Expiration_Date__c'
@@ -124,6 +126,7 @@ public without sharing class LeadSelector {
             MobilePhone,
             Moody_s_Risk_Calc__c, 
             Name,
+            No_Payment__c,
             Parcel_Zip__c,
             Parent_Account__c,
             Partner_Email__c, 
@@ -164,7 +167,8 @@ public without sharing class LeadSelector {
     }
 
     public Lead selectOneWithPropertiesAndUtilities(Id leadId) {
-        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Customer_Signed_Date__c,Product__r.Name,Product__r.Disclosure_Form_Conga_Template__c,Utility_relationship__r.EIA_ID__c, Underwriting_Criteria__c';
+        String query = 'SELECT ' + String.join(apiLeadFields, ', ') + ', CreatedDate, Customer_Signed_Date__c,' +
+            'Product__r.Name, Product__r.Disclosure_Form_Conga_Template__c, Utility_relationship__r.EIA_ID__c';
         query += ', (SELECT ' + String.join(apiPropertyAccountFields, ', ') + ' FROM Accounts__r)';
         query += ', (SELECT ' + String.join(apiUtilityAccountFields, ', ') + ', Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name FROM Utility_Account_Logs__r)';
         query += ', (SELECT Id FROM Contracts__r)';
@@ -223,8 +227,10 @@ public without sharing class LeadSelector {
                 LASERCA__Home_Zip__c,
                 LeadSource,
                 LoadZone__c,
-            	Moody_s_Risk_Calc__c, 
-                OwnerId, Product__c,
+            	Moody_s_Risk_Calc__c,
+                No_Payment__c,
+                OwnerId,
+                Product__c,
                 Partner_Lookup__r.Name,
                 Partner_Account__c,
                 Partner_Account__r.Name,
