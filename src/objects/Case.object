@@ -1519,64 +1519,44 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Adjust subscription, &gt;25kW</fullName>
+                    <fullName>File Not Scored Due to Insufficient Credit</fullName>
                     <default>false</default>
-                    <label>Adjust subscription, &gt;25kW</label>
+                    <label>File Not Scored Due to Insufficient Credit</label>
                 </value>
                 <value>
-                    <fullName>Change account # on contract</fullName>
+                    <fullName>Low Credit Match - New Guarantor Needs to Apply</fullName>
                     <default>false</default>
-                    <label>Change account # on contract</label>
+                    <label>Low Credit Match - New Guarantor Needs to Apply</label>
                 </value>
                 <value>
-                    <fullName>Change load zone</fullName>
+                    <fullName>No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)</fullName>
                     <default>false</default>
-                    <label>Change load zone</label>
+                    <label>No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)</label>
                 </value>
                 <value>
-                    <fullName>Change to commercial</fullName>
+                    <fullName>Not Enough Usage to be Subscribed</fullName>
                     <default>false</default>
-                    <label>Change to commercial</label>
+                    <label>Not Enough Usage to be Subscribed</label>
                 </value>
                 <value>
-                    <fullName>Check Comments About Sizing section</fullName>
+                    <fullName>Provide Information on Net Metering Credits</fullName>
                     <default>false</default>
-                    <label>Check Comments About Sizing section</label>
+                    <label>Provide Information on Net Metering Credits</label>
                 </value>
                 <value>
-                    <fullName>Check contract, handwritten</fullName>
+                    <fullName>Provide New Utility Account Number for EDI Utility Data</fullName>
                     <default>false</default>
-                    <label>Check contract, handwritten</label>
+                    <label>Provide New Utility Account Number for EDI Utility Data</label>
                 </value>
                 <value>
-                    <fullName>Credit report did not match customer&apos;s name, attach credit check for right customer</fullName>
+                    <fullName>Provide Payment Information - Notify Customer to Call BlueWave Support</fullName>
                     <default>false</default>
-                    <label>Credit report did not match customer&apos;s name, attach credit check for right customer</label>
+                    <label>Provide Payment Information - Notify Customer to Call BlueWave Support</label>
                 </value>
                 <value>
-                    <fullName>Credit report is missing, Upload correct credit report</fullName>
+                    <fullName>Signature Needed on Updated Customer Contract at Link Provided - Typos Corrected</fullName>
                     <default>false</default>
-                    <label>Credit report is missing, Upload correct credit report</label>
-                </value>
-                <value>
-                    <fullName>Custom&apos;s credit was denied , change stage to unqualified</fullName>
-                    <default>false</default>
-                    <label>Custom&apos;s credit was denied , change stage to unqualified</label>
-                </value>
-                <value>
-                    <fullName>Customer email missing</fullName>
-                    <default>false</default>
-                    <label>Customer email missing</label>
-                </value>
-                <value>
-                    <fullName>Load zone missing on utility bill</fullName>
-                    <default>false</default>
-                    <label>Load zone missing on utility bill</label>
-                </value>
-                <value>
-                    <fullName>Other</fullName>
-                    <default>false</default>
-                    <label>Other</label>
+                    <label>Signature Needed on Updated Customer Contract at Link Provided - Typos Corrected</label>
                 </value>
                 <value>
                     <fullName>Subscription adjustment needed</fullName>
@@ -1584,44 +1564,153 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <label>Subscription adjustment needed</label>
                 </value>
                 <value>
+                    <fullName>Upload Complete Utility Bill to Case - Bill Within last 90 Days Needed</fullName>
+                    <default>false</default>
+                    <label>Upload Complete Utility Bill to Case - Bill Within last 90 Days Needed</label>
+                </value>
+                <value>
+                    <fullName>Upload Complete Utility Bill to Case - Customer Disabled EDI Data</fullName>
+                    <default>false</default>
+                    <label>Upload Complete Utility Bill to Case - Customer Disabled EDI Data</label>
+                </value>
+                <value>
+                    <fullName>Upload Complete Utility Bill to Case - Need 3 Months of Bills</fullName>
+                    <default>false</default>
+                    <label>Upload Complete Utility Bill to Case - Need 3 Months of Bills</label>
+                </value>
+                <value>
+                    <fullName>Upload Complete Utility Bill to Case - Need Bill without Overdue Payments</fullName>
+                    <default>false</default>
+                    <label>Upload Complete Utility Bill to Case - Need Bill without Overdue Payments</label>
+                </value>
+                <value>
+                    <fullName>Upload Complete Utility Bill to Case - Need More Pages</fullName>
+                    <default>false</default>
+                    <label>Upload Complete Utility Bill to Case - Need More Pages</label>
+                </value>
+                <value>
+                    <fullName>Utility Account is Already Subscribed</fullName>
+                    <default>false</default>
+                    <label>Utility Account is Already Subscribed</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Adjust subscription, &gt;25kW</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Adjust subscription, &gt;25kW</label>
+                </value>
+                <value>
+                    <fullName>Change account # on contract</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Change account # on contract</label>
+                </value>
+                <value>
+                    <fullName>Change load zone</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Change load zone</label>
+                </value>
+                <value>
+                    <fullName>Change to commercial</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Change to commercial</label>
+                </value>
+                <value>
+                    <fullName>Check Comments About Sizing section</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Check Comments About Sizing section</label>
+                </value>
+                <value>
+                    <fullName>Check contract, handwritten</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Check contract, handwritten</label>
+                </value>
+                <value>
+                    <fullName>Credit report did not match customer&apos;s name, attach credit check for right customer</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Credit report did not match customer&apos;s name, attach credit check for right customer</label>
+                </value>
+                <value>
+                    <fullName>Credit report is missing, Upload correct credit report</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Credit report is missing, Upload correct credit report</label>
+                </value>
+                <value>
+                    <fullName>Custom&apos;s credit was denied , change stage to unqualified</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Custom&apos;s credit was denied , change stage to unqualified</label>
+                </value>
+                <value>
+                    <fullName>Customer email missing</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Customer email missing</label>
+                </value>
+                <value>
+                    <fullName>Load zone missing on utility bill</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Load zone missing on utility bill</label>
+                </value>
+                <value>
+                    <fullName>Low FICO Match</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Low FICO Match</label>
+                </value>
+                <value>
+                    <fullName>No FICO Match</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>No FICO Match</label>
+                </value>
+                <value>
                     <fullName>Too few years at location</fullName>
                     <default>false</default>
+                    <isActive>false</isActive>
                     <label>Too few years at location</label>
                 </value>
                 <value>
                     <fullName>Too few years in business</fullName>
                     <default>false</default>
+                    <isActive>false</isActive>
                     <label>Too few years in business</label>
+                </value>
+                <value>
+                    <fullName>Upload Green Button Data</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Upload Green Button Data</label>
                 </value>
                 <value>
                     <fullName>Upload complete contract</fullName>
                     <default>false</default>
+                    <isActive>false</isActive>
                     <label>Upload complete contract</label>
                 </value>
                 <value>
                     <fullName>Upload complete utility bill to utility Account Log</fullName>
                     <default>false</default>
+                    <isActive>false</isActive>
                     <label>Upload complete utility bill to utility Account Log</label>
-                </value>
-                <value>
-                    <fullName>Upload Green Button Data</fullName>
-                    <default>false</default>
-                    <label>Upload Green Button Data</label>
                 </value>
                 <value>
                     <fullName>Upload utility bill without overdue payments</fullName>
                     <default>false</default>
+                    <isActive>false</isActive>
                     <label>Upload utility bill without overdue payments</label>
-                </value>
-                <value>
-                    <fullName>No FICO Match</fullName>
-                    <default>false</default>
-                    <label>No FICO Match</label>
-                </value>
-                <value>
-                    <fullName>Low FICO Match</fullName>
-                    <default>false</default>
-                    <label>Low FICO Match</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -4511,6 +4600,73 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <active>true</active>
         <businessProcess>Customer Care Case</businessProcess>
         <label>Partner Care Case</label>
+        <picklistValues>
+            <picklist>QC_Case_Subject__c</picklist>
+            <values>
+                <fullName>File Not Scored Due to Insufficient Credit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Low Credit Match - New Guarantor Needs to Apply</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Credit Match - Provide Additional Background on Guarantor %28New Address or DOB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Enough Usage to be Subscribed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Provide Information on Net Metering Credits</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Provide New Utility Account Number for EDI Utility Data</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Provide Payment Information - Notify Customer to Call BlueWave Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Signature Needed on Updated Customer Contract at Link Provided - Typos Corrected</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription adjustment needed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upload Complete Utility Bill to Case - Bill Within last 90 Days Needed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upload Complete Utility Bill to Case - Customer Disabled EDI Data</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upload Complete Utility Bill to Case - Need 3 Months of Bills</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upload Complete Utility Bill to Case - Need Bill without Overdue Payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upload Complete Utility Bill to Case - Need More Pages</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Utility Account is Already Subscribed</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Case_Type__c</picklist>
             <values>
