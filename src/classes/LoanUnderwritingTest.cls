@@ -340,30 +340,4 @@ public with sharing class LoanUnderwritingTest {
                        WHERE ParentId = :lead.ConvertedContactId];
         System.assertEquals(1, attachments.size());
     }
-
-   
-    static testMethod void testSendContinueApplicationRequest() {
-        Test.startTest();
-
-        Lead lead = [SELECT Id, Name, Email, CAP_Stage__c, ConvertedOpportunityId, Status, Comments__c, Personal_Credit_Report__c
-        FROM Lead
-        WHERE FirstName = 'leadMALoanTerm20Rate725'
-        LIMIT 1];
-
-        System.assertEquals('Unqualified', lead.Status);
-
-        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
-        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
-
-        LoanUnderwriting.sendContinueApplicationRequest(lead);
-
-        lead = [SELECT Id, Name, Email, CAP_Stage__c, Status
-        FROM Lead
-        WHERE FirstName = 'leadMALoanTerm20Rate725'
-        LIMIT 1];
-
-        System.assertEquals('Awaiting Info Requested from Customer', lead.Status);
-
-        Test.stopTest();
-    }
 }
