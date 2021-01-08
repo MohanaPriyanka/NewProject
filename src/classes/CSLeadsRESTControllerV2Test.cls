@@ -1199,7 +1199,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             WHERE Category__c = 'QC'
         ];
         System.assertEquals(1, qcCase.size(), 'QC Case is created for completed applications that still have a No Match PCR');
-        System.assertEquals('No FICO Match', qcCase[0].QC_Case_Subject__c, 'No FICO Match QC case should be created');
+        System.assertEquals('No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)', qcCase[0].QC_Case_Subject__c, 'No FICO Match QC case should be created');
     }
 
     @IsTest
