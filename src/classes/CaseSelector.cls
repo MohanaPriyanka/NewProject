@@ -10,7 +10,7 @@ public without sharing class CaseSelector {
             FROM Case
             WHERE Lead_Lookup__c = :lead.Id
             AND IsClosed = FALSE
-            AND QC_Case_Subject__c = 'No FICO Match'
+            AND QC_Case_Subject__c = 'No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)'
         ];
     }
     public List<Case> selectOpenLowMatchCasesFromLead(Lead lead) {
@@ -19,7 +19,7 @@ public without sharing class CaseSelector {
             FROM Case
             WHERE Lead_Lookup__c = :lead.Id
             AND IsClosed = FALSE
-            AND QC_Case_Subject__c = 'Low FICO Match'
+            AND QC_Case_Subject__c = 'Low Credit Match - New Guarantor Needs to Apply'
         ];
     }
     public List<Case> selectForPartnerApplicationStatusEvaluation(Set<Id> caseIds) {
