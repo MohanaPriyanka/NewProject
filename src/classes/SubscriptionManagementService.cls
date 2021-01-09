@@ -180,7 +180,8 @@ public without sharing class SubscriptionManagementService implements Queueable{
             Logger.logNow(
                 'SubscriptionManagementService',
                 'checkSOApproval',
-                'Did not stamp approved values, publish subscription change events, or set CFDs on these SOs:\n' + JSON.serialize(approvedSOs),
+                'Did not stamp approved values, publish subscription change events, or set CFDs on these SOs:\n' + JSON.serialize(approvedSOs) + '\n' +
+                e.getMessage() + '\n' + e.getStackTraceString(),
                 Logger.ERROR);
             return;
         }
