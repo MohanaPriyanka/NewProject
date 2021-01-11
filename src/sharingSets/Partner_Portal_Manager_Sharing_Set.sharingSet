@@ -44,5 +44,6 @@
     </accessMappings>
     <description>Community Sharing Set for the Manager Users Portal Partner.</description>
     <name>Partner Portal Manager Sharing Set</name>
-    <profiles>Partner Portal Community Manager</profiles>
+    <profiles>partner portal community manager</profiles>
+    <profiles>partner portal community manager log in</profiles>
 </SharingSet>
