@@ -31,6 +31,13 @@
         if (isPaymentInfoOnFile) {
             helper.showFinalPage(component);
             return;
+        } else if (lead.noPayment) {
+            component.set('v.showSpinner', true);
+            component.set('v.spinnerMessage', 'Completing your application...');
+            component.set('v.lead', lead);
+            helper.checkCreditReportStatus(component);
+            helper.finishApplication(component);
+            return;
         }
 
         // Show get payment page if no payment information on file
