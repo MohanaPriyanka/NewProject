@@ -12,7 +12,7 @@ const connCallback = (component) => {
         component.utilityOptions = [];
     }
     
-    if(component.zipCodeInput && !component.zipCodeResponse) {
+    if (component.zipCodeInput && !component.zipCodeResponse) {
         component.showSpinner = true;
         component.spinnerMessage = 'Checking for projects...';
         getZipCapacity_shared(component, null);
@@ -29,69 +29,63 @@ const checkForSubmit_shared = (component, event) => {
     if (event.which === 13) {
         const inputBox = component.template.querySelector('lightning-input');
         inputBox.reportValidity();
-        if(inputBox.checkValidity()) {
+        if (inputBox.checkValidity()) {
             getZipCapacity_shared(component, null);
         }
     }
 }
 
-const getZipCapacity_shared = (component, utilityId) => {
-    getZipCodeCapacity(component.zipCodeInput, component.partnerId, utilityId).then(
-        (resolveResult) => {
-            component.showSpinner = false;
-            component.zipCodeResponse = JSON.stringify(resolveResult);
-            if (resolveResult.hasCapacity && resolveResult.products.length >= 1) {
-                if(resolveResult.utilities && resolveResult.utilities.length === 1) {
-                    if(resolveResult.ficoUnderwriting) {
-                        component.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
-                    }
-                    if(resolveResult.finDocsUnderwriting) {
-                        component.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
-                    }
-                    component.selectedUtility = resolveResult.utilities[0];
-                    component.showModal = false;
-                    
-                    const capacityCheckCompleteEvent = new CustomEvent('capacitycheckcomplete', {
-                        detail: {
-                            zipCodeResponse: component.zipCodeResponse,
-                            underwritingOptions: component.underwritingOptions,
-                            resiApplicationType: component.resiApplicationType
-                        }
-                    });
-                    component.dispatchEvent(capacityCheckCompleteEvent);
-                } else if(resolveResult.utilities && resolveResult.utilities.length > 1) {
-                    component.utilityOptions = resolveResult.utilities.map(
-                        utility => {
-                            return {value: JSON.stringify(utility), label: utility.name};
-                        }
-                    );
-                    component.showModal = true;
+const getZipCapacity_shared = async (component, utilityId) => {
+    try {
+        let check = await getZipCodeCapacity(component.zipCodeInput, component.partnerId, utilityId);
+        component.zipCodeResponse = JSON.stringify(check);
+        if (check.utilities && check.utilities.length > 1) {
+            component.utilityOptions = check.utilities.map(
+                utility => {
+                    return {value: JSON.stringify(utility), label: utility.name};
                 }
-            } else {
-                const evt = new ShowToastEvent({
-                    title: 'Sorry, your zip code is not eligible for service at this time',
-                    message: 'Please check later',
-                    variant: 'warning'
-                });
-                component.dispatchEvent(evt);
+            );
+            component.showModal = true;
+        } else if (check.hasCapacity && check.products.length >= 1 && check.utilities.length === 1) {
+            if (check.ficoUnderwriting) {
+                component.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
             }
-        },
-        (rejectResult) => {
-            component.showSpinner = false;
-            insertLog({
-                className: 'ssf',
-                methodName: 'getZipCodeCapacity',
-                message: JSON.stringify(rejectResult),
-                severity: 'Error'
-            });
+            if (check.finDocsUnderwriting) {
+                component.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
+            }
+            component.selectedUtility = check.utilities[0];
+            component.showModal = false;
+            component.dispatchEvent(new CustomEvent('capacitycheckcomplete', {
+                detail: {
+                    zipCodeResponse: component.zipCodeResponse,
+                    underwritingOptions: component.underwritingOptions,
+                    resiApplicationType: component.resiApplicationType
+                }})
+            );
+        } else {
             const evt = new ShowToastEvent({
-                title: 'Sorry, we ran into a technical problem',
-                message: 'Please contact Customer Care for help',
+                title: 'Sorry, your zip code is not eligible for service at this time',
+                message: 'Please check later',
                 variant: 'warning'
             });
             component.dispatchEvent(evt);
         }
-    );
+        component.showSpinner = false;
+    } catch (exception) {
+        insertLog({
+            className: 'ssf',
+            methodName: 'getZipCodeCapacity',
+            message: JSON.stringify(exception),
+            severity: 'Error'
+        });
+        component.showSpinner = false;
+        const evt = new ShowToastEvent({
+            title: 'Sorry, we ran into a technical problem',
+            message: 'Please contact Customer Care for help',
+            variant: 'warning'
+        });
+        component.dispatchEvent(evt);
+    }
 }
 
 
