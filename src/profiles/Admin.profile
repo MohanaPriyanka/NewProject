@@ -996,14 +996,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PCRApprovalHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PCRApprovalHandlerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PCRPublicRecordHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1141,10 +1133,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProductionToBillServiceTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>QueueableApplicationReview</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
