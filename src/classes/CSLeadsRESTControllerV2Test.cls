@@ -944,7 +944,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"zipCode": "10901",' +
             '"eiaId": "1234",' +
             '"productName": "CS Product",' +
-            '"campaignId": "0005500000",';
+            '"campaignId": "0005500000",' +
+            '"noPayment": false,';
         if(financialDocs != null) {
             json += financialDocs + ',';
         }
@@ -982,7 +983,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"eiaId": "1234",' +
             '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
             '"productName": "CS Product",' +
-            '"campaignId": "0005500000"' +
+            '"campaignId": "0005500000",' +
+            '"noPayment": false' +
             '}';
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
@@ -1025,7 +1027,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '   "eiaId": "1234",' +
             '   "continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
             '   "productName": "CS Product",' +
-            '   "campaignId": "0005500000"' +
+            '   "campaignId": "0005500000",' +
+            '   "noPayment": false' +
             '}';
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
@@ -1177,7 +1180,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             Email = 'test@invalid.bluewavesolar.com',
             Company = 'System Testcase',
             LeadSource = 'Switch',
-            Partner_Email__c = 'partner@testcase.com'
+            Partner_Email__c = 'partner@testcase.com',
+            Underwriting_Criteria__c = 'FICO'
         );
         insert leadToUpdate;
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
@@ -1199,7 +1203,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
             WHERE Category__c = 'QC'
         ];
         System.assertEquals(1, qcCase.size(), 'QC Case is created for completed applications that still have a No Match PCR');
-        System.assertEquals('No FICO Match', qcCase[0].QC_Case_Subject__c, 'No FICO Match QC case should be created');
     }
 
     /*************

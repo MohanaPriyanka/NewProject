@@ -17,7 +17,8 @@ public with sharing class RESTRouterV2Test {
             ',"eiaId": "1234"' +
             ',"productName": "CS Product"' +
             ',"referralName": "RefFirst RefLast"' +
-            ',"referralEmail": "refemail@invalid.bluewavesolar.com"';
+            ',"referralEmail": "refemail@invalid.bluewavesolar.com"' +
+            ',"noPayment": false';
 
     @TestVisible
     private static String validResiLead = validLead + ',"applicationType": "Residential"';
