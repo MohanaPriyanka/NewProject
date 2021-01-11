@@ -1,6 +1,6 @@
 /*************************************************************************************
  * Description: 
- * Tested By: PCRApprovalHandlerTest
+ * Tested By: CSAPControllerTest
  *************************************************************************************/
 
 public without sharing class MapPCRtoLeadHandler {
@@ -72,7 +72,7 @@ public without sharing class MapPCRtoLeadHandler {
                 leadUpdateMap.put(lead.Id, lead);
             }
 
-            if (lead != null && contactid == null && 
+            if (lead != null && contactid == null &&
                 lead.Product_line__c == 'Community Solar' &&
                 lead.Personal_Credit_Report__c != pcr.Id) {
 
