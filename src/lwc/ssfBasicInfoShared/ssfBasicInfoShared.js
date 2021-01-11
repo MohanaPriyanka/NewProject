@@ -192,7 +192,8 @@ const getNewRestLead = (component) => {
         zipCode: component.zipinput,
         productName: component.selectedProduct.name,
         utilityId: component.utilityId,
-        financialDocs: []
+        financialDocs: [],
+        noPayment: !component.zipCheckResponse.collectPayment,
     }
 }
 
