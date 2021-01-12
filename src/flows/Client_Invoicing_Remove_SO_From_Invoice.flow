@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>50.0</apiVersion>
+    <assignments>
+        <name>Set_Invoice_Date_to_Null</name>
+        <label>Set Invoice Date to Null</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>Get_Subscription_Order.Invoice_Date__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Subscription_Order</targetReference>
+        </connector>
+    </assignments>
     <description>Removes a Subscription Order from a Client Invoice</description>
     <interviewLabel>Client Invoicing: Remove SO From Invoice {!$Flow.CurrentDateTime}</interviewLabel>
-    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Client Invoicing: Remove SO From Invoice</label>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -27,7 +40,7 @@
         <name>Delete_Invoice_Line_Item</name>
         <label>Delete Invoice Line Item</label>
         <locationX>176</locationX>
-        <locationY>398</locationY>
+        <locationY>638</locationY>
         <connector>
             <targetReference>Finished</targetReference>
         </connector>
@@ -37,11 +50,12 @@
         <name>Get_Invoice_Line_Item</name>
         <label>Get Invoice Line Item</label>
         <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Delete_Invoice_Line_Item</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -60,8 +74,9 @@
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Invoice_Line_Item</targetReference>
+            <targetReference>Set_Invoice_Date_to_Null</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -73,14 +88,25 @@
         <object>Subscription_Order__c</object>
         <queriedFields>Id</queriedFields>
         <queriedFields>Invoice_Line_Item__c</queriedFields>
+        <queriedFields>Invoice_Date__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>Update_Subscription_Order</name>
+        <label>Update Subscription Order</label>
+        <locationX>176</locationX>
+        <locationY>398</locationY>
+        <connector>
+            <targetReference>Get_Invoice_Line_Item</targetReference>
+        </connector>
+        <inputReference>Get_Subscription_Order</inputReference>
+    </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>Finished</name>
         <label>Finished</label>
         <locationX>176</locationX>
-        <locationY>518</locationY>
+        <locationY>758</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
