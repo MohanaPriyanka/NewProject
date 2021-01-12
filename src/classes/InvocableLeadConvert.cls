@@ -18,11 +18,7 @@ public with sharing class InvocableLeadConvert {
         List<Database.LeadConvertResult> lcrs = Database.convertLead(leadConverts, false);
         for (Database.LeadConvertResult lcr : lcrs) {
             if (!lcr.isSuccess()) {
-                Logger.logNow(
-                    'InvocableLeadConvert',
-                    'convertLead',
-                    'CS Lead conversion failed for Id: ' + leadToConvert.Id +
-                        ' error:' + lcr.getErrors()[0].getMessage());
+                Logger.logNow('InvocableLeadConvert','convertLead','CS Lead conversion failed for Id: ' + leadToConvert.Id +' error:' + lcr.getErrors()[0].getMessage());
                 throw new Util.BWException('Sorry there was an error converting the lead! BizApps has already been notified.');
             }
         }
