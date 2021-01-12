@@ -132,39 +132,58 @@ public without sharing class CSQualificationService {
         @AuraEnabled
         public Boolean hasPartner = false;
         @AuraEnabled
-        public Boolean minFICO = false;
+        public Boolean isUnderwritten = false;
         @AuraEnabled
         public String eligiblePartners;
+        @AuraEnabled
+        public String underwritingOptions;
     }
 
     public class QualificationInput {
         public  List<QualificationMatch> qualificationMatches = new List<QualificationMatch>();
         private List<Id> utilityIds = new List<Id>();
+        private Lead lead;
         private String loadZone;
         private Id productId;
         private String partnerId;
         private Integer fico;
+        private String underwriting;
 
-        public QualificationInput(Id productId, Id partnerId, String zipCode, String fico, String utility) {
+        public QualificationInput(Id leadId, Id productId, Id partnerId, String zipCode, String underwriting) {
             this.productId = productId;
             this.partnerId = partnerId;
+            this.underwriting = underwriting;
+
+            if (leadId != null) {
+                this.lead = new LeadSelector().selectOne(leadId);
+                this.utilityIds.add(this.lead.Utility_relationship__c);
+                this.loadZone = this.lead.LoadZone__c;
+            } else {
+                assignUtilityAndLoadZones(zipCode);
+            }
 
             if (fico != null) {
                 this.fico = Integer.valueOf(fico);
-            }
-
-            List<ZipCode_Utility_Junction__c> zipCodeUtilityJunctions = ZipcodeUtilitiesSelector.selectZipcodeUtilitiesAndLoadzones(zipCode);
-            this.loadZone = zipCodeUtilityJunctions[0].Load_Zone_Utility__r.LZ__c;
-
-            if (utility == null) {
-                for (ZipCode_Utility_Junction__c junction : zipCodeUtilityJunctions) {
-                    this.utilityIds.add(junction.Utility__c);
-                }
+            } else if (this.lead != null && this.lead.LASER_Credit_Score__c != null) {
+                this.fico = Integer.valueOf(this.lead.LASER_Credit_Score__c);
             } else {
-                this.utilityIds.add(utility);
+                this.fico = 999;
             }
         }
 
+        private void assignUtilityAndLoadZones(String zipcode) {
+            List<ZipCode_Utility_Junction__c> zipCodeUtilityJunctions = ZipcodeUtilitiesSelector.selectZipcodeUtilitiesAndLoadzones(zipCode);
+            for (ZipCode_Utility_Junction__c junction : zipCodeUtilityJunctions) {
+                this.utilityIds.add(junction.Utility__c);
+            }
+            this.loadZone = zipCodeUtilityJunctions[0].Load_Zone_Utility__r.LZ__c;
+        }
+
+        /**
+         * @description Evaluates qualifying attributes for each pairing of Lead to SSS. Creates a list
+          * of boolean maps (match Results)  that are used in the CSQualificationTable LWC.
+         *
+         */
         public void createQualificationList() {
             SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
             List<Shared_Solar_System__c> sssList = sssSelector.selectSharedSolarSystemsForQualificationCheck(this.productId, this.utilityIds);
@@ -178,22 +197,27 @@ public without sharing class CSQualificationService {
                 if (sss.Capacity_Available_to_be_Reserved__c > 0) {
                     matchResult.hasCapacity = true;
                 }
-                if (sss.Service_Territories__c != null && sss.Service_Territories__c.contains(this.loadZone)) {
-                    matchResult.hasLZ = true;
-                }
-                if (SharedSolarSystems.isPartnerEligible(partnerId, sss)) {
-                    matchResult.hasPartner = true;
-                }
-                matchResult.eligiblePartners = SharedSolarSystems.summarizeEligiblePartners(sss.Partner_Shared_Solar_System_Accesses__r);
 
-                if (this.fico == null || this.fico >= sss.Credit_Score_Requirement__c) {
-                    matchResult.minFICO = true;
+                matchResult.hasLZ = SharedSolarSystems.loadZoneInServiceTerritory(this.loadZone, sss);
+                matchResult.hasPartner = SharedSolarSystems.isPartnerEligible(partnerId, sss);
+                matchResult.eligiblePartners = SharedSolarSystems.summarizeEligiblePartners(sss.Partner_Shared_Solar_System_Accesses__r);
+                matchResult.underwritingOptions = SharedSolarSystems.summarizeUnderwritingOptions(sss);
+
+                switch on (this.underwriting) {
+                    when 'FICO' {
+                        matchResult.isUnderwritten = sss.Available_SMB_Underwriting_Method_FICO__c && this.fico >= sss.Credit_Score_Requirement__c;
+                    } when 'Financial Review' {
+                        matchResult.isUnderwritten = sss.Available_SMB_Underwriting_Method_Docs__c;
+                    } when else {
+                        matchResult.isUnderwritten = true;
+                    }
                 }
+
                 if (matchResult.isOpen &&
                         matchResult.hasCapacity &&
                         matchResult.hasLZ &&
                         matchResult.hasPartner &&
-                        matchResult.minFICO
+                        matchResult.isUnderwritten
                         ) {
                     matchResult.completeMatch = true;
                 }
@@ -205,9 +229,8 @@ public without sharing class CSQualificationService {
 
     @SuppressWarnings('PMD.ExcessiveParameterList')
     @AuraEnabled
-    public static List<QualificationMatch> getQualificationMatches(String product, String partner, String zipCode,
-        String fico, String utility) {
-        QualificationInput input = new QualificationInput(product, partner, zipCode, fico, utility);
+    public static List<QualificationMatch> getQualificationMatches(String leadId, String product, String partner, String zipCode, String underwriting) {
+        QualificationInput input = new QualificationInput(leadId, product, partner, zipCode, underwriting);
         input.createQualificationList();
         return input.qualificationMatches;
     }

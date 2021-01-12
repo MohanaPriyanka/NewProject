@@ -464,6 +464,20 @@ private class PostSandboxRefresherTest {
     }
 
     @IsTest
+    private static void testLeadConvert() {
+        List<Lead> leads = [SELECT Id FROM Lead WHERE IsConverted = FALSE LIMIT 1];
+        leads[0].Status = 'Qualified';
+        update leads[0];
+
+        Test.startTest();
+        InvocableLeadConvert.convertLead(leads);
+        Test.stopTest();
+
+        leads = [SELECT Id FROM Lead WHERE Id IN :leads AND IsConverted = TRUE];
+        System.assertEquals(1, leads.size());
+    }
+
+    @IsTest
     private static void testPostSandboxRefresherDataDeleterAttachments() {
         List<Account> accounts = [
             SELECT Id

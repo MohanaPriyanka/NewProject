@@ -5182,6 +5182,18 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Selected_SSS_For_Conversion__c</fullName>
+        <description>Top 6 SSS that have been selected to be considered for Subscriptions during Conversion</description>
+        <externalId>false</externalId>
+        <label>Selected SSS For Conversion</label>
+        <length>113</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Self_Employed__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

@@ -20,8 +20,8 @@
     <assignments>
         <name>Assign_firstUtilityId</name>
         <label>Assign firstUtilityId</label>
-        <locationX>482</locationX>
-        <locationY>458</locationY>
+        <locationX>483</locationX>
+        <locationY>330</locationY>
         <assignmentItems>
             <assignToReference>firstUtilityId</assignToReference>
             <operator>Assign</operator>
@@ -53,17 +53,17 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>fico</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>ficoInput</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>zipCode</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>zipcodeInput</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>underwritingInput</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Select_Underwriting_Method</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -123,6 +123,22 @@
             <targetReference>allErrors</targetReference>
         </connector>
     </assignments>
+    <choices>
+        <name>choiceFICO</name>
+        <choiceText>FICO</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>FICO</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choiceFinancialReview</name>
+        <choiceText>Financial Review</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Financial Review</stringValue>
+        </value>
+    </choices>
     <choices>
         <name>leadInput</name>
         <choiceText>Via Lead Lookup</choiceText>
@@ -206,7 +222,7 @@
         <name>getLead</name>
         <label>getLead</label>
         <locationX>482</locationX>
-        <locationY>313</locationY>
+        <locationY>187</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_firstUtilityId</targetReference>
@@ -238,6 +254,10 @@
         <outputAssignments>
             <assignToReference>productId</assignToReference>
             <field>Product__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>underwritingInput</assignToReference>
+            <field>Underwriting_Criteria__c</field>
         </outputAssignments>
         <outputAssignments>
             <assignToReference>utilityId</assignToReference>
@@ -514,14 +534,14 @@
             </visibilityRule>
         </fields>
         <fields>
-            <name>ficoInput</name>
+            <name>Select_Underwriting_Method</name>
+            <choiceReferences>choiceFICO</choiceReferences>
+            <choiceReferences>choiceFinancialReview</choiceReferences>
             <dataType>String</dataType>
-            <defaultValue>
-                <stringValue>700</stringValue>
-            </defaultValue>
-            <fieldText>Enter FICO (not required)</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
+            <defaultSelectedChoiceReference>choiceFICO</defaultSelectedChoiceReference>
+            <fieldText>Select Underwriting Method</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
@@ -540,7 +560,7 @@
         <name>scrErrors</name>
         <label>Errors</label>
         <locationX>1068</locationX>
-        <locationY>255</locationY>
+        <locationY>246</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -585,12 +605,6 @@
             <extensionName>c:csQualificationTable</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>fico</name>
-                <value>
-                    <elementReference>fico</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>partner</name>
                 <value>
                     <elementReference>partnerId</elementReference>
@@ -609,9 +623,15 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>utility</name>
+                <name>underwriting</name>
                 <value>
-                    <elementReference>utilityId</elementReference>
+                    <elementReference>underwritingInput</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>leadId</name>
+                <value>
+                    <elementReference>leadId</elementReference>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -740,6 +760,16 @@
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <objectType>Error_Log__c</objectType>
+    </variables>
+    <variables>
+        <name>underwritingInput</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue>FICO</stringValue>
+        </value>
     </variables>
     <variables>
         <name>utilityCount</name>
