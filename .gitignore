@@ -362,9 +362,7 @@ src/package.xml
 *standard__*
 !src/objects/standard__*
 
-# Form Assembly
-*tfa__*
-!src/objects/tfa__*
+
 
 
 #If we want to promote page layout changes for installed pacakges, we can't ignore them.
@@ -378,6 +376,9 @@ src/package.xml
 
 #If we want to promote custom application changes for installed pacakges, we can't ignore them.
 !src/CustomApplication/*
+
+#If we want to promote global value set changes for installed pacakges, we can't ignore them.
+!src/globalValueSets/*
 
 
 #profiles and permission sets are complex Files. If your Org's 
