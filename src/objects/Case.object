@@ -5269,14 +5269,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
     </searchLayouts>
     <sharingModel>Private</sharingModel>
     <validationRules>
-        <fullName>Block_Close_Case_with_Order_Status_Error</fullName>
-        <active>true</active>
-        <description>Disallows the closing of a case if that case is linked to a chargent order with a Payment Status of &apos;Error&apos;.</description>
-        <errorConditionFormula>AND(TEXT(Chargent_Order__r.ChargentOrders__Payment_Status__c) = &apos;Error&apos;, AND(TEXT(Status) = &apos;Closed&apos;,
-             TEXT(PRIORVALUE(Status)) != &apos;Closed&apos;))</errorConditionFormula>
-        <errorMessage>Don&apos;t close a case related to a Chargent Order with Payment Status &apos;Error&apos;. Instead, update the Payment Status to &apos;Complete&apos; to indicate it should no longer be used. Then, close the case, or let the case creator automatically close it next time it runs.</errorMessage>
-    </validationRules>
-    <validationRules>
         <fullName>Prevent_Editing_Permission_Related_Field</fullName>
         <active>true</active>
         <description>Prevents anyone from creating a permissions request case that is &quot;In Progress&quot; (will trigger provisioning of permissions) or editing an existing case.</description>
