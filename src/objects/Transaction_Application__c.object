@@ -280,19 +280,6 @@ PRINCIPAL WRITEDOWN REVERSAL</description>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
-    <fields>
-        <fullName>Transaction__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <inlineHelpText>Related Transaction - may be blank for manual adjustments</inlineHelpText>
-        <label>Transaction</label>
-        <referenceTo>ChargentOrders__Transaction__c</referenceTo>
-        <relationshipLabel>Transaction Applications</relationshipLabel>
-        <relationshipName>Transaction_Applications</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
     <label>Transaction Application</label>
     <nameField>
         <displayFormat>TA-{0000}</displayFormat>
@@ -300,7 +287,7 @@ PRINCIPAL WRITEDOWN REVERSAL</description>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Transaction Applications</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
