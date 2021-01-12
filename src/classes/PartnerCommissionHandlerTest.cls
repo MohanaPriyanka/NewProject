@@ -80,8 +80,10 @@ public class PartnerCommissionHandlerTest {
         useMocks();
         PartnerCommissionHandler commiss = new PartnerCommissionHandler();
         PartnerCommissionHandler.PendingBillCommission oppLists = commiss.findUninvoicedCommission(null);
-        System.assertEquals(2,oppLists.FirstBillOpps.size());
-        System.assertEquals(3,oppLists.FirstPaymentOpps.size());
+        System.assertEquals(7, commiss.oppsWithoutInvoiceCommission.size(), 'Query for all Opps missing Commission Payments');
+        System.assertEquals(7, commiss.oppsWithoutPaymentCommission.size(), 'Query for all Opps missing Commission Payments');
+        System.assertEquals(2,oppLists.FirstBillOpps.size(), 'Only 2 Opportunities have InvoiceItems');
+        System.assertEquals(3,oppLists.FirstPaymentOpps.size(), '3 Opportunities have PaymentParts');
 
         /*  BW-00001: 2 opps for sss #2 and #3, invoice and payment only for sss #2
             BW-00002: 2 opps for sss #2 and #3, payment for #3 only
