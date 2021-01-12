@@ -147,6 +147,14 @@ public with sharing class ClientInvoiceGeneratorTest {
         ];
         System.assertEquals(0, subscriptionOrders.size(),
             'Expected all Subscription Orders to get invoiced');
+        subscriptionOrders = [
+            SELECT Id, Invoice_Line_Item__c
+            FROM Subscription_Order__c
+            WHERE Invoice_Date__c = NULL
+            AND Invoice_Line_Item__c != NULL
+        ];
+        System.assertEquals(0, subscriptionOrders.size(),
+            'Expected all Subscription Orders to have an Invoice Date');
         clientInvoicingMemos = [
             SELECT Id, Invoice_Line_Item__c
             FROM Client_Invoicing_Memo__c
