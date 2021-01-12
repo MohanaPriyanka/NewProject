@@ -1565,20 +1565,6 @@ TEXT(YEAR(Commencement_Datee__c ) + FLOOR((MONTH(Commencement_Datee__c ) + Produ
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>SREC_Direct_Deposit_Order__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <inlineHelpText>The most recent bank info the customer has given to send SREC payments</inlineHelpText>
-        <label>SREC Direct Deposit Order</label>
-        <referenceTo>ChargentOrders__ChargentOrder__c</referenceTo>
-        <relationshipLabel>Loans</relationshipLabel>
-        <relationshipName>Loans</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>SREC_Product__c</fullName>
         <externalId>false</externalId>
         <formula>Opportunity__r.SREC_Product__r.Name</formula>

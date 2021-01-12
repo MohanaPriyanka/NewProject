@@ -356,20 +356,6 @@
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Chargent_Order__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Chargent Order</label>
-        <referenceTo>ChargentOrders__ChargentOrder__c</referenceTo>
-        <relationshipLabel>Account Bills</relationshipLabel>
-        <relationshipName>Account_Bills</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Check_Text__c</fullName>
         <externalId>false</externalId>
         <formula>Parent_Account__r.Check_Text__c</formula>
