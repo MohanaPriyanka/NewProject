@@ -111,6 +111,7 @@ public without sharing class ClientInvoiceGenerator {
                 Details__c = JSON.serializePretty(details)
             );
             uow.registerNew(invoiceLineItem, Invoice_Line_Item__c.Invoice__c, invoice);
+            subscriptionOrder.Invoice_Date__c = invoice.Effective_Date__c==null?System.today():invoice.Effective_Date__c;
             uow.registerDirty(subscriptionOrder, Subscription_Order__c.Invoice_Line_Item__c, invoiceLineItem);
             return invoiceLineItem;
         }
