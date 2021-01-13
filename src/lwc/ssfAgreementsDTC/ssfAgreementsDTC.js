@@ -1,18 +1,19 @@
 import { LightningElement, track, api } from 'lwc';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
-import { onLoad,
-         onRender,
-         disclosureSigned,
-         creditCheckSigned,
-         communitySolarAgreementSigned,
-         displayDocument,
-         showDisclosureApproval,
-         showCreditCheckApproval,
-         showCSAgreementApproval,
-         consentsComplete,
-         getCreditCheckLabel,
-         navigateBack
+import {
+    onLoad,
+    onRender,
+    disclosureSigned,
+    creditCheckSigned,
+    communitySolarAgreementSigned,
+    displayDocument,
+    showDisclosureApproval,
+    showCreditCheckApproval,
+    showCSAgreementApproval,
+    consentsComplete,
+    navigateBack,
+    getText,
 } from 'c/ssfAgreementsShared';
 
 export default class SsfAgreementsDTC extends LightningElement {
@@ -43,16 +44,7 @@ export default class SsfAgreementsDTC extends LightningElement {
     documentPollerId;
     documentPollerTimeoutId;
     mostRecentDocDate;
-
-    get supportsDataUri() {
-        // trident = IE
-        const navua = window.navigator.userAgent.toLowerCase();
-        return !(navua.indexOf("trident") > -1 || navua.indexOf("edge") > -1);
-    };
-
-    get creditCheckLabel() {
-        return getCreditCheckLabel(this);
-    }
+    esignDisclosureUrl = getText(this, 'esignUrl');
 
     get isFicoUnderwriting() {
         return this.underwriting === 'FICO';
@@ -74,6 +66,68 @@ export default class SsfAgreementsDTC extends LightningElement {
 
     renderedCallback() {
         onRender(this);
+    }
+
+    get supportsDataUri() {
+        // trident = IE
+        const navua = window.navigator.userAgent.toLowerCase();
+        return !(navua.indexOf("trident") > -1 || navua.indexOf("edge") > -1);
+    };
+
+    get creditCheckLabel() {
+        return getText(this, 'creditCheckLabel');
+    }
+
+    get isFicoUnderwriting() {
+        return this.underwriting === 'FICO';
+    }
+
+    get isFinDocsUnderwriting() {
+        return this.underwriting === 'Financial Review';
+    }
+
+    get renderCreditCheckLanguage() {
+        return this.isFicoUnderwriting || this.isFinDocsUnderwriting;
+    }
+
+    get continueButtonLabel() {
+        return this.lead.noPayment ? 'Finish' : 'Continue';
+    }
+
+    get ficoLanguageFirstSegment() {
+        return getText(this, 'fico1');
+    }
+
+    get ficoLanguageSecondSegment() {
+        return getText(this, 'fico2');
+    }
+
+    get finDocsLanguageFirstSegment() {
+        return getText(this, 'finDocs1');
+    }
+
+    get finDocsLanguageSecondSegment() {
+        return getText(this, 'finDocs2');
+    }
+
+    get disclosureLanguageFirstSegment() {
+        return getText(this, 'disclosure1');
+    }
+
+    get disclosureLanguageSecondSegment() {
+        return getText(this, 'disclosure2');
+    }
+
+    get agreementLanguageFirstSegment() {
+        return getText(this, 'agree1');
+    }
+
+    get agreementLanguageSecondSegment() {
+        return getText(this, 'agree2');
+    }
+
+    get agreementLanguageThirdSegment() {
+        return getText(this, 'agree3');
     }
 
     hideContractDocument(event) {

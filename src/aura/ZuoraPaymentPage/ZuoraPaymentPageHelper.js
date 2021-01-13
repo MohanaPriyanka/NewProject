@@ -4,6 +4,10 @@
 
 ({
     renderPaymentFrame: function(component) {
+        var self = this;
+        Z.setEventHandler("onloadCallback", function() {
+            self.onLoadEvent(component);
+        });
         var paymentPageMetadata = component.get('v.paymentPageMetadata');
         var paymentType = component.get('v.paymentType');
         var accountId = component.get('v.zuoraAccountId');
@@ -64,5 +68,17 @@
                 completeEvent.fire();
             }
         }));
-    }
+    },
+
+    toggleSpinner: function(component) {
+        if (component.get('v.postOnloadEvent')) {
+            component.set('v.showSpinner', true);
+        }
+    },
+
+    onLoadEvent: function(component) {
+        if (component.get('v.postOnloadEvent')) {
+            component.set('v.showSpinner', false);
+        }
+    },
 });

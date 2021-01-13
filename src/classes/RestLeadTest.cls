@@ -5,7 +5,6 @@
 @IsTest
 public with sharing class RestLeadTest {
 
-
     private static RestLead validResidentialLead = new RestLead();
     private static RestLead validNonResidentialLead;
     private static RestLead invalidNonResidentialLead;
@@ -25,6 +24,7 @@ public with sharing class RestLeadTest {
         validResidentialLead.state = 'NY';
         validResidentialLead.zipCode = '00000';
         validResidentialLead.productName = 'VDER';
+        validResidentialLead.noPayment = false;
 
         validPropertyAccount.billingStreet = '1 Billing Street';
         validPropertyAccount.billingCity = 'Billing City';

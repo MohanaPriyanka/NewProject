@@ -3,6 +3,7 @@
  */
 ({
     doInit: function(component, event, helper) {
+        helper.toggleSpinner(component);
         var getPaymentPageMetadataAction = component.get('c.getPageMetadataWithDomain');
         var hostname = window.location.hostname;
 
@@ -24,6 +25,7 @@
     },
 
     renderPaymentFrame: function(component, event, helper) {
+        helper.toggleSpinner(component);
         helper.renderPaymentFrame(component);
-    }
+    },
 })

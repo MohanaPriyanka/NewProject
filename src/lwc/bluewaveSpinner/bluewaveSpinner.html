@@ -6,12 +6,14 @@
 <template>
   <template if:true={show}>
     <div class="slds-spinner_container" style="position:fixed">
-      <div class="slds-align--absolute-center" style="height: 100%">
-        <span class="spinner-message">{spinnerMessage}</span>
-      </div>
-      <div class="slds-spinner--brand slds-spinner slds-spinner--medium" aria-hidden="false" role="alert">
-        <div class="slds-spinner__dot-a"></div>
-        <div class="slds-spinner__dot-b"></div>
+      <div class="slds-align--absolute-center slds-spinner_container background-box slds-p-around_medium slds-grid slds-grid_vertical">
+        <div class="slds-col slds-spinner--brand slds-spinner slds-spinner--medium" aria-hidden="false" role="alert">
+          <div class="slds-spinner__dot-a"></div>
+          <div class="slds-spinner__dot-b"></div>
+        </div>
+        <div class="slds-col slds-align--absolute-center">
+          <span class="spinner-message">{spinnerMessage}</span>
+        </div>
       </div>
     </div>
   </template>
