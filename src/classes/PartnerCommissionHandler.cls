@@ -10,7 +10,9 @@ public class PartnerCommissionHandler{
     @TestVisible
     private static JournalEntrySelector glSelector = new JournalEntrySelector();
     @TestVisible
-    private Set<Opportunity> allOpsToCheck = new Set<Opportunity>();
+    private List<Opportunity> oppsWithoutInvoiceCommission = new List<Opportunity>();
+    @TestVisible
+    private List<Opportunity> oppsWithoutPaymentCommission = new List<Opportunity>();
     @TestVisible
     private Map<String, String> acctToJournalEntryMap = new Map<String, String>();
     @TestVisible
@@ -73,45 +75,38 @@ public class PartnerCommissionHandler{
 
         if (accountsToCheck.size() > 0) {
             setJournalEntryMap(accountsToCheck);
-            String accountAndProjectKey;
-
-            for (Opportunity opp : allOpsToCheck) {
-                accountAndProjectKey = opp.Account.Account_Number__c + opp.Shared_Solar_System__r.Unique_ID__c;
-                Boolean hasEntries = acctToJournalEntryMap.containsKey(accountAndProjectKey);
-                String objects;
-                if (hasEntries) {
-                    objects = acctToJournalEntryMap.get(accountAndProjectKey);
-                }
-                if (hasEntries && objects.contains('InvoiceItem')) {
-                    oppsPendingCommission.firstBillOpps.add(opp);
-                }
-                if (hasEntries && objects.contains('PaymentPart')) {
-                    oppsPendingCommission.firstPaymentOpps.add(opp);
-                }
-            }
+            addEligibleOppToPending(oppsWithoutInvoiceCommission, 'InvoiceItem', oppsPendingCommission.firstBillOpps);
+            addEligibleOppToPending(oppsWithoutPaymentCommission, 'PaymentPart', oppsPendingCommission.firstPaymentOpps);
         }
         return oppsPendingCommission;
+    }
+    private void addEligibleOppToPending(List<Opportunity> oppsWithoutCommission, String journalType, List<Opportunity> opportunitiesToCommission) {
+        for (Opportunity opp : oppsWithoutCommission) {
+            String accountAndProjectKey = opp.Account.Account_Number__c + opp.Shared_Solar_System__r.Unique_ID__c;
+            String journalTypesForCustomerProject = acctToJournalEntryMap.get(accountAndProjectKey);
+            if (journalTypesForCustomerProject != null && journalTypesForCustomerProject.contains(journalType)) {
+                opportunitiesToCommission.add(opp);
+            }
+        }
     }
 
     @TestVisible
     private Set<String> getOpportunitiesWithoutCommission(Set<Id> accountIds) {
-        List<Opportunity> oppsWithoutInvoiceCommission = oppSelector.selectWithoutFirstInvoiceCommission(accountIds);
-        List<Opportunity> oppsWithoutPaymentCommission = oppSelector.selectWithoutFirstPaymentCommission(accountIds);
+        oppsWithoutInvoiceCommission = oppSelector.selectWithoutFirstInvoiceCommission(accountIds);
+        oppsWithoutPaymentCommission = oppSelector.selectWithoutFirstPaymentCommission(accountIds);
         Set<String> accountsToCheck = new Set<String>();
+        addToAccountsToCheck(oppsWithoutInvoiceCommission, accountsToCheck);
+        addToAccountsToCheck(oppsWithoutPaymentCommission, accountsToCheck);
 
-        for (Opportunity opp : oppsWithoutInvoiceCommission){
-            if (isCompleteCSOppWithPartner(opp)){
-                accountsToCheck.add(opp.Account.Account_Number__c);
-                allOpsToCheck.add(opp);
-            }
-        }
-        for (Opportunity opp : oppsWithoutPaymentCommission){
-            if (isCompleteCSOppWithPartner(opp)){
-                accountsToCheck.add(opp.Account.Account_Number__c);
-                allOpsToCheck.add(opp);
-            }
-        }
         return accountsToCheck;
+    }
+
+    private void addToAccountsToCheck(List<Opportunity> oppsWithoutCommission, Set<String> accountsToCheck) {
+        for (Opportunity opp : oppsWithoutCommission) {
+            if (isCompleteCSOppWithPartner(opp)) {
+                accountsToCheck.add(opp.Account.Account_Number__c);
+            }
+        }
     }
 
     @TestVisible
