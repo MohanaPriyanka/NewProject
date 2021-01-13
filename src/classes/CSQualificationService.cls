@@ -164,8 +164,8 @@ public without sharing class CSQualificationService {
 
             if (fico != null) {
                 this.fico = Integer.valueOf(fico);
-            } else if (this.lead != null && this.lead.LASER_Credit_Score__c != null) {
-                this.fico = Integer.valueOf(this.lead.LASER_Credit_Score__c);
+            } else if (this.lead != null) {
+                this.fico = (this.lead.LASER_Credit_Score__c == null ? 0 : Integer.valueOf(this.lead.LASER_Credit_Score__c));
             } else {
                 this.fico = 999;
             }
