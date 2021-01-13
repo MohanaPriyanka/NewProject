@@ -2,6 +2,16 @@
  * Created by peteryao on 3/8/20.
  */
 .spinner-message {
-    margin-top: 70px;
-    position: "absolute";
+    margin-top: auto;
+    text-align: center;
+    white-space: pre-line;
+}
+
+.background-box {
+    background-color: #FFFFFF;
+    max-height: 200px;
+    max-width: 400px;
+    border-radius: 0.5rem;
+    border: 5px solid #b1bac1;
+    position: fixed;
 }

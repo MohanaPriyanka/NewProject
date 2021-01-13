@@ -168,16 +168,16 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     // upsert Lead into Salesforce, submit form
     submitApplication() {
+        this.showSpinner = true;
 
         // if application invalid, cease upsert
         if (!applicationValid(this)) {
+            this.showSpinner = false;
             return;
         }
 
         // set remaining fields on restLead, including some address fields
         setRemainingFields(this, this.sameHomeAddress);
-        this.showSpinner = true;
-        
         if (!this.resumedApp) {
             this.createLead(this.restLead).then(
                 (resolveResult) => {
