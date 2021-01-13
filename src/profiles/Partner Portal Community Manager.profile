@@ -22313,11 +22313,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>ChargentOrders__Transaction__c.Status_Map_Client_Reporting__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>ChargentOrders__Transaction__c.System_Bill_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
