@@ -44,8 +44,8 @@
     <actionCalls>
         <name>leadQualificationCheck</name>
         <label>leadQualificationCheck</label>
-        <locationX>627</locationX>
-        <locationY>302</locationY>
+        <locationX>729</locationX>
+        <locationY>285</locationY>
         <actionName>InvocableLeadQualification</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -150,8 +150,8 @@
     <assignments>
         <name>assignLeadFields</name>
         <label>assignLeadFields</label>
-        <locationX>374</locationX>
-        <locationY>175</locationY>
+        <locationX>572</locationX>
+        <locationY>127</locationY>
         <assignmentItems>
             <assignToReference>getLead.Moody_s_Risk_Calc__c</assignToReference>
             <operator>Assign</operator>
@@ -307,6 +307,32 @@
             <label>Not Qualified</label>
         </rules>
     </decisions>
+    <decisions>
+        <description>If Lead is already converted, no need to try again</description>
+        <name>IsConverted</name>
+        <label>decisionIsConverted</label>
+        <locationX>323</locationX>
+        <locationY>181</locationY>
+        <defaultConnector>
+            <targetReference>updateLeadFields</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>IsConvertedTrue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getLead.IsConverted</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scrAlreadyConverted</targetReference>
+            </connector>
+            <label>IsConverted</label>
+        </rules>
+    </decisions>
     <dynamicChoiceSets>
         <name>moodysPicklist</name>
         <dataType>Picklist</dataType>
@@ -331,6 +357,7 @@
         <expression>CONTAINS({!getLead.LoadZone__c}, &quot;/&quot;)</expression>
     </formulas>
     <interviewLabel>Lead {!$Flow.CurrentDateTime}</interviewLabel>
+    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Lead Qualification/Conversion</label>
     <loops>
         <name>Loop_Selected_SSS</name>
@@ -372,7 +399,7 @@
         <locationY>176</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>updateLeadFields</targetReference>
+            <targetReference>IsConverted</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -389,8 +416,8 @@
     <recordLookups>
         <name>Lead</name>
         <label>Lead</label>
-        <locationX>431</locationX>
-        <locationY>442</locationY>
+        <locationX>524</locationX>
+        <locationY>425</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Qualification</targetReference>
@@ -433,13 +460,33 @@
     <recordUpdates>
         <name>updateLeadRecord</name>
         <label>updateLeadRecord</label>
-        <locationX>504</locationX>
-        <locationY>174</locationY>
+        <locationX>725</locationX>
+        <locationY>129</locationY>
         <connector>
             <targetReference>leadQualificationCheck</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log</targetReference>
+        </faultConnector>
         <inputReference>getLead</inputReference>
     </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    <screens>
+        <name>scrAlreadyConverted</name>
+        <label>Already Converted Lead</label>
+        <locationX>338</locationX>
+        <locationY>344</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>txtAlreadyConverted</name>
+            <fieldText>&lt;p&gt;This lead has already been converted! No further action necessary. &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can close this window now.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <screens>
         <name>scrError</name>
         <label>Error Screen</label>
@@ -517,7 +564,7 @@
             <inputParameters>
                 <name>columnWidths</name>
                 <value>
-                    <stringValue>Name:316, Utility__c:244, Capacity_Available_to_be_Reserved__c:220</stringValue>
+                    <stringValue>column-widths-mode=&quot;auto&quot;</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -588,8 +635,8 @@
     <screens>
         <name>updateLeadFields</name>
         <label>updateLeadFields</label>
-        <locationX>264</locationX>
-        <locationY>175</locationY>
+        <locationX>460</locationX>
+        <locationY>125</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -708,16 +755,6 @@
             <fieldText>Load Zone:</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>formula_IgnoreLoadZones</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <booleanValue>false</booleanValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
         </fields>
         <fields>
             <name>spacer2</name>
