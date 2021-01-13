@@ -1404,10 +1404,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>FileDeliveryHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>FilesUnitOfWorkHelper</apexClass>
         <enabled>false</enabled>
     </classAccesses>
