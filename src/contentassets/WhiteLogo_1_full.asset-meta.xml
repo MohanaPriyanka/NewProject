@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentAsset xmlns="http://soap.sforce.com/2006/04/metadata">
-    <isVisibleByExternalUsers>false</isVisibleByExternalUsers>
+    <isVisibleByExternalUsers>true</isVisibleByExternalUsers>
     <language>en_US</language>
     <masterLabel>WhiteLogo_1_full</masterLabel>
-    <originNetwork>Partner Portal</originNetwork>
+    <originNetwork>BlueWave Member Portal</originNetwork>
     <relationships>
         <network>
             <access>VIEWER</access>
-            <name>Partner Portal</name>
+            <name>BlueWave Member Portal</name>
         </network>
         <workspace>
             <access>INFERRED</access>
