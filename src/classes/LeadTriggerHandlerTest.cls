@@ -498,17 +498,9 @@ public class LeadTriggerHandlerTest {
         );
         insert sysProp;
 
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(   Name = 'Chargent Gateway',
-                ChargentBase__Available_Payment_Methods__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                ChargentBase__Active__c = True);
-        insert chGateway;
 
         Entity__c defaultEntity = new Entity__c(
-            Name = 'BWC Holdings, LLC',
-            Gateway__c = chGateway.Id
+            Name = 'BWC Holdings, LLC'
         );
         insert defaultEntity;
 
@@ -605,36 +597,6 @@ public class LeadTriggerHandlerTest {
         insert new List<Lead>{primaryProperty, additionalProperty};
         CSQualificationTestclass.pullCreditForLead(primaryProperty.Id, 'High FICO');
 
-        ChargentOrders__ChargentOrder__c newACHOrder1 = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Payment_Method__c = 'Check',
-            ChargentOrders__Bank_Name__c = 'primary bank',
-            ChargentOrders__Bank_Routing_Number__c = '123456789',
-            ChargentOrders__Bank_Account_Type__c = 'Checking',
-            ChargentOrders__Bank_Account_Number__c = '1234567890',
-            ChargentOrders__Bank_Account_Name__c = 'primary',
-            ChargentOrders__Billing_Email__c = 'primary@bluewavesolar.com',
-            Entity__c = defaultEntity.Id,
-            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
-            Lead__c = primaryProperty.Id,
-            Autopay_Only__c = true
-        );
-
-        ChargentOrders__ChargentOrder__c newACHOrder2 = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Payment_Method__c = 'Credit Card',
-            ChargentOrders__Billing_Email__c = 'additional@bluewavesolar.com',
-            ChargentOrders__Card_Type__c = 'VISA',
-            ChargentOrders__Card_Number__c = '1234123412341234',
-            ChargentOrders__Card_Expiration_Month__c = '01',
-            ChargentOrders__Card_Expiration_Year__c = '12',
-            ChargentOrders__Billing_Zip_Postal__c = '12345',
-            ChargentOrders__Billing_First_Name__c = 'Testy',
-            ChargentOrders__Billing_Last_Name__c = 'McTesterson',
-            Entity__c = defaultEntity.Id,
-            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
-            Lead__c = additionalProperty.Id,
-            Autopay_Only__c = true
-        );
-        insert new List<ChargentOrders__ChargentOrder__c>{newACHOrder1, newACHOrder2};
 
         // kW DC = Annual Cost / NMC Rate / Yield
         Utility_Account_Log__c ual1 = new Utility_Account_Log__c(
@@ -703,15 +665,6 @@ public class LeadTriggerHandlerTest {
         System.assertEquals(2, opps.size(), 'Lead conversion should have produced two Opportunities for Eversource, one for each SSS');
 
         for (Opportunity opp : opps) {
-            if (opp.ACH_Bank_Name__c != null) {
-                //from ACHOrder1
-                System.assertEquals('*****6789', opp.ACH_Bank_Routing_Number__c, 'Opp ACH_Bank_Routing_Number__c should match the value input on the Chargent Order');
-                System.assertEquals('******7890', opp.ACH_Account_Number__c, 'Opp ACH_Account_Number__c should match the value input on the Chargent Order');
-            } else if (opp.CC_Card_Type__c != null) {
-                //from ACHOrder2
-                System.assertEquals('************1234', opp.CC_Account_Number__c, 'Opp CC_Account_Number__c should match the value input on the Chargent Order');
-            }
-
             System.assertNotEquals(contract.Id, opp.ContractId, 'A new Contract should have been created for each Opportunity');
             System.assertEquals(opp.AccountId, opp.Contract.AccountId, 'Opportunity\'s Contract should have the same Account as its Opportunity');
             System.assertEquals(opp.Lead__c, opp.Contract.Lead__c, 'Opportunity\'s Contract should have the same Lead as its Opportunity');
@@ -743,19 +696,6 @@ public class LeadTriggerHandlerTest {
             System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0), 'Should be a 25kW, 10kW and 5kW UAS created by lead conversion, for a total of 35 when subscription orders are NOT active');
             System.assertEquals(25, uasAggregate[0].get('maximum'), 'Should be a 25kW, 10kW and 5kW UAS created by lead conversion, for a maximum of 25 when subscription orders are NOT active');
             System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0), 'Should be a 25kW, 10kW and 5kW UAS created by lead conversion, for a minimum of 5 when subscription orders are NOT active');
-        }
-
-        List<ChargentOrders__ChargentOrder__c> primaryPropOrders = [
-            SELECT Id, ChargentOrders__Billing_Email__c, ChargentOrders__Bank_Name__c,
-                ChargentOrders__Bank_Account_Name__c
-            FROM ChargentOrders__ChargentOrder__c
-            WHERE ChargentOrders__Account__c = : eversourceLeads[0].ConvertedAccountId
-        ];
-        System.assertEquals(1, primaryPropOrders.size(), 'There should be one Chargent Order for the primary property account');
-        for (ChargentOrders__ChargentOrder__c chOrder : primaryPropOrders) {
-            System.assertEquals(newACHOrder1.ChargentOrders__Billing_Email__c, chOrder.ChargentOrders__Billing_Email__c, 'The ChargentOrders__Billing_Email__c of the primary property Chargent Order should match that of the Chargent Order attached to the primary property lead');
-            System.assertEquals(newACHOrder1.ChargentOrders__Bank_Name__c, chOrder.ChargentOrders__Bank_Name__c, 'The ChargentOrders__Bank_Name__c of the primary property Chargent Order should match that of the Chargent Order attached to the primary property lead');
-            System.assertEquals(newACHOrder1.ChargentOrders__Bank_Account_Name__c, chOrder.ChargentOrders__Bank_Account_Name__c, 'The ChargentOrders__Bank_Account_Name__c of the primary property Chargent Order should match that of the Chargent Order attached to the primary property lead');
         }
 
         List<Lead> ngridLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_relationship__r.Name = 'National Grid'];
@@ -792,20 +732,6 @@ public class LeadTriggerHandlerTest {
             System.assertEquals(25, ((Decimal) uasAggregate[0].get('total')).setScale(0), 'Should be one 25kW UAS created by lead conversion, for a total of 25 when subscription orders are NOT active');
             System.assertEquals(25, uasAggregate[0].get('maximum'), 'Should be one 25kW UAS created by lead conversion, for a maximum of 25 when subscription orders are NOT active');
             System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0), 'Should be one 25kW UAS created by lead conversion, for a minimum of 25 when subscription orders are NOT active');
-        }
-
-        List<ChargentOrders__ChargentOrder__c> additionalPropOrders = [
-            SELECT Id, ChargentOrders__Billing_Email__c, ChargentOrders__Bank_Name__c,
-                ChargentOrders__Bank_Account_Name__c
-            FROM ChargentOrders__ChargentOrder__c
-            WHERE ChargentOrders__Account__c = : ngridLeads[0].ConvertedAccountId
-        ];
-
-        System.assertEquals(1, additionalPropOrders.size(), 'There should be one Chargent Order for the additional property account');
-        for (ChargentOrders__ChargentOrder__c chOrder : additionalPropOrders) {
-            System.assertEquals(newACHOrder2.ChargentOrders__Billing_Email__c, chOrder.ChargentOrders__Billing_Email__c, 'The ChargentOrders__Billing_Email__c of the additional property Chargent Order should match that of the Chargent Order attached to the additional property lead');
-            System.assertEquals(newACHOrder2.ChargentOrders__Bank_Name__c, chOrder.ChargentOrders__Bank_Name__c, 'The ChargentOrders__Bank_Name__c of the additional property Chargent Order should match that of the Chargent Order attached to the additional property lead');
-            System.assertEquals(newACHOrder2.ChargentOrders__Bank_Account_Name__c, chOrder.ChargentOrders__Bank_Account_Name__c, 'The ChargentOrders__Bank_Account_Name__c of the additional property Chargent Order should match that of the Chargent Order attached to the additional property lead');
         }
     }
 

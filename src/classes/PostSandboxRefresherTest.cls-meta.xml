@@ -3,17 +3,12 @@
     <apiVersion>34.0</apiVersion>
     <packageVersions>
         <majorNumber>5</majorNumber>
-        <minorNumber>55</minorNumber>
-        <namespace>ChargentBase</namespace>
-    </packageVersions>
-    <packageVersions>
-        <majorNumber>5</majorNumber>
         <minorNumber>2</minorNumber>
         <namespace>Zuora</namespace>
     </packageVersions>
     <packageVersions>
         <majorNumber>9</majorNumber>
-        <minorNumber>26</minorNumber>
+        <minorNumber>31</minorNumber>
         <namespace>zqu</namespace>
     </packageVersions>
     <status>Active</status>
