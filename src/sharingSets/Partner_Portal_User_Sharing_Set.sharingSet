@@ -38,5 +38,6 @@
     </accessMappings>
     <description>Sharing set for the Partner Portal. This is for non-manager users, who should only have access to their own deals.</description>
     <name>Partner Portal User Sharing Set</name>
-    <profiles>Partner Portal Community User</profiles>
+    <profiles>partner portal community user</profiles>
+    <profiles>partner portal community user login</profiles>
 </SharingSet>
