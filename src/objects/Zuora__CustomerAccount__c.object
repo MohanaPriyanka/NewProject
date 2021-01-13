@@ -173,7 +173,9 @@
     <fields>
         <fullName>View_Account__c</fullName>
         <externalId>false</externalId>
-        <formula>HYPERLINK(&quot;/s/customeraccount/&quot;&amp;Id, &quot;View Account/Make a Payment&quot;,&quot;_self&quot;)</formula>
+        <formula>HYPERLINK(&quot;/s/customeraccount/&quot;&amp;Id,&quot;Open Your Account&quot;,
+	&quot;_self &quot;
+)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Displayed in customer portal</inlineHelpText>
         <label>View Account</label>

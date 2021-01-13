@@ -13,12 +13,5 @@
         </a>
       </p>
     </div>
-    <div class="slds-grid slds-grid--align-center">
-      <p class="slds-col">
-        <a href="tel:8447864100">
-          <ui:outputText class="slds-text-color_weak" value="844-786-4100"/>
-        </a>
-      </p>
-    </div>
   </footer>
 </aura:component>
