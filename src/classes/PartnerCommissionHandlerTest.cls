@@ -61,7 +61,6 @@ public class PartnerCommissionHandlerTest {
         PartnerCommissionHandler commissionService = new PartnerCommissionHandler();
         Set<String> acctIds = commissionService.getOpportunitiesWithoutCommission(null);
         System.assertEquals(4, acctIds.size());
-        System.assertEquals(7,commissionService.allOpsToCheck.size());
         System.assert(acctIds.contains('BW-00001'));
         System.assert(acctIds.contains('BW-00002'));
         System.assert(acctIds.contains('BW-00003'));
@@ -80,8 +79,8 @@ public class PartnerCommissionHandlerTest {
         useMocks();
         PartnerCommissionHandler commiss = new PartnerCommissionHandler();
         PartnerCommissionHandler.PendingBillCommission oppLists = commiss.findUninvoicedCommission(null);
-        System.assertEquals(2,oppLists.FirstBillOpps.size());
-        System.assertEquals(3,oppLists.FirstPaymentOpps.size());
+        System.assertEquals(2,oppLists.firstBillOpps.size(), 'Only 2 Opportunities have InvoiceItems');
+        System.assertEquals(3,oppLists.firstPaymentOpps.size(), '3 Opportunities have PaymentParts');
 
         /*  BW-00001: 2 opps for sss #2 and #3, invoice and payment only for sss #2
             BW-00002: 2 opps for sss #2 and #3, payment for #3 only
@@ -113,6 +112,55 @@ public class PartnerCommissionHandlerTest {
             }
         }
         System.assert(containsBW001);
+    }
+
+    @IsTest
+    private static void testEligibleOppsForCommission() {
+        Journal_Entry__c invoiceJE = new Journal_Entry__c(
+            Project__c = 'SSS-0002',
+            Customer_Account__c = 'BW-00005',
+            Amount__c = 10,
+            Object_Type__c = 'InvoiceItem'
+        );
+        Journal_Entry__c paymentJE = new Journal_Entry__c(
+            Project__c = 'SSS-0002',
+            Customer_Account__c = 'BW-00005',
+            Amount__c = 10,
+            Object_Type__c = 'PaymentPart'
+        );
+        insert new List<Journal_Entry__c> {invoiceJE, paymentJE};
+
+        // Mocked Opportunity is eligible for "First Bill Paid" Commission Payment but should be excluded
+        // from "First Bill Sent" Commission Payments due to $0 for First Bill Sent Commission Structure
+        String oppJSON = '[' +
+            '{' +
+            '"Id":"0000000EEE",' +
+            '"Name":"Oppty FIVE",' +
+            '"StageName":"Complete",' +
+            '"Product_Line__c":"Community Solar",' +
+            '"Commission_Stucture__c":"a4w3K0000000EMXQA2",' +
+            '"Commission_Structure__r":{"Id":"a4w3K0000000EMXQA2",' +
+            '"Cents_kW_DC_First_Bill_Paid__c":0.2400, ' +
+            '"Cents_kW_DC_First_Bill__c":0.000},' +
+            '"Partner_tag_lookup__c":"a0s3K0000006wCRQAY",'+
+            '"Partner_tag_lookup__r":{"Id":"a0s3K0000006wCRQAY","Name":"Test Partner 2","Account__c":"0010a00001Ljv4ZAAR"},' +
+            '"Partner_Account__c":"0010a00001Ljv4ZAAR",' +
+            '"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"},'+
+            '"Shared_Solar_System__r" : {' +
+            '"Unique_Id__c": "SSS-0002"}, ' +
+            '"Account" : {' +
+            '"Name" : "Account Four", ' +
+            '"Account_Number__c" : "BW-00005"' +
+            '}}]';
+
+        useMocks(new List<Opportunity>(), (List<Opportunity>) JSON.deserialize(oppJSON, List<Opportunity>.class));
+        PartnerCommissionHandler handler = new PartnerCommissionHandler();
+        PartnerCommissionHandler.PendingBillCommission oppLists = handler.findUninvoicedCommission(null);
+        System.assertEquals(0, handler.oppsWithoutInvoiceCommission.size(),
+            'Opportunity should not be considered for Invoice Commission Payment if Commission Structure has $0 for First Bill Sent.');
+        System.assertEquals(1, handler.oppsWithoutPaymentCommission.size(), 'Opportunity should be considered for Payment Commission Payment');
+        System.assertEquals(0, oppLists.firstBillOpps.size(), 'Opportunity is not eligible for PaymentPart Commission Payment');
+        System.assertEquals(1, oppLists.firstPaymentOpps.size(), 'Opportunity should have pending PaymentPart Commission Payment');
     }
 
     @IsTest
@@ -428,11 +476,19 @@ public class PartnerCommissionHandlerTest {
     }
 
     private static void useMocks() {
-        PartnerCommissionHandler.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
+        PartnerCommissionHandler.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector(null, null));
+    }
+    private static void useMocks(List<Opportunity> oppsWithoutFirstBillCommission, List<Opportunity> oppsWithoutFirstPaymentCommission) {
+        PartnerCommissionHandler.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector(oppsWithoutFirstBillCommission, oppsWithoutFirstPaymentCommission));
     }
 
     public class MockOppSelector extends MockProvider {
-        public MockOppSelector() {
+        private List<Opportunity> oppsWithoutFirstBillCommission;
+        private List<Opportunity> oppsWithoutFirstPaymentCommission;
+
+        public MockOppSelector(List<Opportunity> oppsWithoutFirstBillCommission, List<Opportunity> oppsWithoutFirstPaymentCommission) {
+            this.oppsWithoutFirstBillCommission = oppsWithoutFirstBillCommission;
+            this.oppsWithoutFirstPaymentCommission = oppsWithoutFirstPaymentCommission;
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
@@ -552,9 +608,15 @@ public class PartnerCommissionHandlerTest {
                 ']';
             switch on methodCall.stubbedMethodName {
                 when 'selectWithoutFirstPaymentCommission' {
+                    if (oppsWithoutFirstPaymentCommission != null) {
+                        return oppsWithoutFirstPaymentCommission;
+                    }
                     return (List<Opportunity>) JSON.deserialize(oppListAsJSON, List<Opportunity>.class);
                 }
                 when 'selectWithoutFirstInvoiceCommission' {
+                    if (oppsWithoutFirstBillCommission != null) {
+                        return oppsWithoutFirstBillCommission;
+                    }
                     return (List<Opportunity>) JSON.deserialize(oppListAsJSON, List<Opportunity>.class);
                 }
                 when 'selectByIdWithApprovedCommissionPayment' {
