@@ -10,16 +10,20 @@
                     <th class="slds-size_1-of-12 slds-p-around_xx-small">Utility</th>
                     <th class="slds-size_2-of-12 slds-p-around_xx-small">Service Territories</th>
                     <th class="slds-size_1-of-12 slds-p-around_xx-small">Available Capacity</th>
-                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Minimum FICO</th>
+                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Underwriting</th>
                     <th class="slds-size_3-of-12 slds-p-around_xx-small">Sales Partners</th>
                 </tr>
                 <template for:each={matches} for:item="item">
                     <tr key={item.sssName} class = "slds-theme_shade">
                         <template if:true={item.sssMatch}>
-                            <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Qualified" title="Qualified"></lightning-icon>
+                            <td class="slds-p-around_xx-small slds-align_absolute-center">
+                                    <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Qualified" title="Qualified"></lightning-icon>
+                            </td>
                         </template>
                         <template if:false={item.sssMatch}>
-                            <lightning-icon icon-name="action:close" size="xx-small" alternative-text="NotQualified" title="NotQualified"></lightning-icon>
+                            <td class="slds-p-around_xx-small slds-align_absolute-center">
+                                    <lightning-icon icon-name="action:close" size="xx-small" alternative-text="NotQualified" title="NotQualified"></lightning-icon>
+                            </td>
                         </template>
 
                         <td class="slds-p-around_xx-small">{item.sssName}</td>
@@ -49,11 +53,11 @@
                             <td class="slds-theme_warning slds-p-around_xx-small">{item.sssCapacity}</td>
                         </template>
 
-                        <template if:true={item.minFICO}>
-                            <td class="slds-p-around_xx-small">{item.sssFICO}</td>
+                        <template if:true={item.isUnderwritten}>
+                            <td class="slds-p-around_xx-small">{item.underwritingOptions}</td>
                         </template>
-                        <template if:false={item.minFICO}>
-                            <td class="slds-theme_warning slds-p-around_xx-small">{item.sssFICO}</td>
+                        <template if:false={item.isUnderwritten}>
+                            <td class="slds-theme_warning slds-p-around_xx-small">{item.underwritingOptions}</td>
                         </template>
 
                         <template if:true={item.hasPartner}>
