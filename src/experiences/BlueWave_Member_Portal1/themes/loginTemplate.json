@@ -10,6 +10,7 @@
   },
   "type" : "theme",
   "views" : [ {
+    "componentAttributes" : { },
     "componentName" : "salesforceIdentity:loginBody",
     "id" : "e1683942-51d6-4e4e-86e9-76378a648026",
     "label" : "login:themeLayout-home",
@@ -28,6 +29,7 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : { },
     "componentName" : "salesforceIdentity:loginBody",
     "id" : "e2e2be86-e66d-43fc-bfd3-518deceb961b",
     "label" : "login:themeLayout-home",

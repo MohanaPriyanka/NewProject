@@ -1,6 +1,6 @@
 {
   "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
-  "componentName" : "siteforce:sldsTwoCol84SidebarFeaturedLayout",
+  "componentName" : "siteforce:sldsOneColLayout",
   "id" : "9bd71f19-5504-499c-80ce-398f506eb0f9",
   "label" : "Billing Account Detail",
   "regions" : [ {
@@ -23,8 +23,8 @@
     "components" : [ {
       "componentAttributes" : {
         "relatedListApiName" : "Zuora__ZInvoices__r",
-        "relatedListComponentOverride" : "GRID",
-        "width" : "MEDIUM"
+        "relatedListComponentOverride" : "ADVGRID",
+        "width" : "SMALL"
       },
       "componentName" : "forceCommunity:relatedListSingle",
       "id" : "f1311988-8c99-49c5-928c-cdbcd2670617",
@@ -39,6 +39,30 @@
       },
       "componentName" : "forceCommunity:relatedListSingle",
       "id" : "53e9b2bf-aa02-4773-b8e7-24bb6137551f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "attachFiles" : true,
+        "authenticatedActionName" : "NewCommunityCase",
+        "confirmationMessageDescription" : "You'll hear back from us soon.",
+        "confirmationMessageTitle" : "Your request was submitted successfully.",
+        "deflectionCategoryGroupName" : "{!DataCategoryGroupName}",
+        "deflectionNotHelpful" : "Didn't find what you're looking for?",
+        "deflectionNumberOfArticles" : 6,
+        "deflectionParentCategory" : "{!TopLevelCategory}",
+        "deflectionSubHeader" : "Check out these articles...",
+        "deflectionTitle" : "Need Answers Fast?",
+        "hasDeflection" : true,
+        "headerTitle" : "Submit a Support Case",
+        "isReCaptchaEnabled" : false,
+        "reCaptchaPrivateKey" : "",
+        "reCaptchaPublicKey" : "",
+        "unauthenticatedActionName" : "NewCommunityCase"
+      },
+      "componentName" : "selfService:caseCreate",
+      "id" : "2f7d13ce-ef5f-431f-866d-4ada4a8077e7",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
