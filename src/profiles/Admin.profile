@@ -360,10 +360,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ChargentTransactionSelector</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ClientBrandingServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>

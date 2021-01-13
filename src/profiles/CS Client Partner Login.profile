@@ -1102,10 +1102,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ChargentTransactionSelector</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ClickToDial__TaskController</apexClass>
         <enabled>false</enabled>
     </classAccesses>

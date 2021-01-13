@@ -1156,10 +1156,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ChargentTransactionSelector</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ClickToDial__TaskController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
