@@ -390,14 +390,12 @@ public class CSQualificationTestclass {
             FROM Partner__c
             LIMIT 1
         ];
-
         String productId = switchLead.Product__c;
         String partnerId = partner.Id;
         String zipCode = switchLead.Parcel_Zip__c;
-        String fico;
-        String utilityId;
+        String underwriting = 'FICO';
 
-        allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
+        allMatches = CSQualificationService.getQualificationMatches(null, productId, partnerId, zipCode, underwriting);
 
         System.assertEquals(1, allMatches.size(), 'There should be one qualification match');
         System.assert(allMatches[0].completeMatch, 'The qualification match should be a complete match');
@@ -420,13 +418,13 @@ public class CSQualificationTestclass {
             FROM Lead
             LIMIT 1
         ];
+        pullCreditForLead(switchLead.Id, 'Low FICO');
         String productId = switchLead.Product__c;
         String partnerId = partner.Id;
         String zipCode = switchLead.Parcel_Zip__c;
-        String fico = '200';
-        String utilityId;
+        String underwriting = 'FICO';
 
-        allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
+        allMatches = CSQualificationService.getQualificationMatches(switchLead.Id, productId, partnerId, zipCode, underwriting);
 
         System.assertEquals(1, allMatches.size(), 'There should be one qualification match');
         System.assert(!allMatches[0].completeMatch, 'The qualification match should NOT be a complete match because the FICO score is too low');
@@ -434,7 +432,6 @@ public class CSQualificationTestclass {
         System.assert(allMatches[0].isOpen, 'isOpen should be true for the qualification match');
         System.assert(allMatches[0].hasCapacity, 'hasCapacity should be true for the qualification match');
         System.assert(allMatches[0].hasLZ, 'hasLZ should be true for the qualification match');
-        System.assert(!allMatches[0].minFICO, 'minFICO should be false for the qualification match because the FICO score is too low');
     }
 
     @IsTest
@@ -454,10 +451,9 @@ public class CSQualificationTestclass {
         String productId = switchLead.Product__c;
         String partnerId = partner.Id;
         String zipCode = '56789';
-        String fico;
-        String utilityId;
+        String underwriting = 'Financial Review';
 
-        allMatches = CSQualificationService.getQualificationMatches(productId, partnerId, zipCode, fico, utilityId);
+        allMatches = CSQualificationService.getQualificationMatches(null, productId, partnerId, zipCode, underwriting);
         System.assertEquals(0, allMatches.size(), 'There should be no qualification matches');
     }
 
