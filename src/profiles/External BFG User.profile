@@ -6290,11 +6290,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>ChargentOrders__Transaction__c.Negative_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>ChargentOrders__Transaction__c.Order_Account_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
