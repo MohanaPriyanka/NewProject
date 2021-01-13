@@ -10,9 +10,11 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen" category="dont know">
+            <property name="leadId" type="String" role="inputOnly"/>
             <property name="product" type="String" role="inputOnly"/>
             <property name="partner" type="String" role="inputOnly"/>
             <property name="zipCode" type="String" role="inputOnly"/>
+            <property name="underwriting" type="String" role="inputOnly"/>
             <property name="fico" type="String" role="inputOnly"/>
             <property name="utility" type="String" role="inputOnly"/>
         </targetConfig>

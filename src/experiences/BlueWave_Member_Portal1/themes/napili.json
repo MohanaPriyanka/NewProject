@@ -10,6 +10,10 @@
   },
   "type" : "theme",
   "views" : [ {
+    "componentAttributes" : {
+      "IsDefaultHeaderHidden" : false,
+      "IsDefaultNotificationsHidden" : true
+    },
     "componentName" : "siteforce:serviceBody",
     "id" : "3c69537b-9a8c-44f7-ad0b-57d74a72ed3e",
     "label" : "Default",
@@ -135,6 +139,7 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : { },
     "componentName" : "salesforceIdentity:loginBody2",
     "id" : "a11e25df-9884-4c78-98ab-e70597a90a52",
     "label" : "Login",

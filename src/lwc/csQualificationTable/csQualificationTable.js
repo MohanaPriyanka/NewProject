@@ -1,4 +1,4 @@
-import { LightningElement, track, api, wire } from 'lwc';
+import { LightningElement, track, api } from 'lwc';
 
 import getMatches from '@salesforce/apex/CSQualificationService.getQualificationMatches';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
@@ -6,9 +6,12 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 export default class CSQualificationTable extends LightningElement {
     @track matches;
     @track sssMap = new Map();
+    @api leadId;
     @api zipCode;
     @api partner;
     @api product;
+    @api underwriting;
+    //TODO: to be removed after deleting old versions of CheckCSQualification flows
     @api fico;
     @api utility;
 
@@ -17,7 +20,7 @@ export default class CSQualificationTable extends LightningElement {
     }
 
     getMatches() {
-        getMatches({product: this.product, partner: this.partner, zipCode: this.zipCode, fico: this.fico, utility: this.utility})
+        getMatches({leadId: this.leadId, product: this.product, partner: this.partner, zipCode: this.zipCode, underwriting: this.underwriting})
         .then(result => {
             this.highlightMatches(result);
         })
@@ -30,6 +33,7 @@ export default class CSQualificationTable extends LightningElement {
             this.dispatchEvent(event);
         });
     }
+
 
     highlightMatches(result) {
         let formattedDataMap = new Map();
@@ -52,8 +56,8 @@ export default class CSQualificationTable extends LightningElement {
                 match.sssCapacity = result[i].sss.Capacity_Available_to_be_Reserved__c;
                 match.hasCapacity = result[i].hasCapacity;
 
-                match.sssFICO = result[i].sss.Credit_Score_Requirement__c;
-                match.minFICO = result[i].minFICO;
+                match.underwritingOptions = result[i].underwritingOptions;
+                match.isUnderwritten = result[i].isUnderwritten;
 
                 match.sssPartners = result[i].eligiblePartners;
                 match.hasPartner = result[i].hasPartner;

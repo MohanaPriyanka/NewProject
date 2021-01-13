@@ -10,23 +10,12 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "enableInlineEdit" : true,
-        "filterName" : "{!filterId}",
-        "layout" : "STANDARD",
-        "pageSize" : 25,
-        "scope" : "{!objectName}",
-        "showActionBar" : true,
-        "showChartsPanel" : true,
-        "showDisplay" : "showall",
-        "showFilterPanel" : true,
-        "showImageIcon" : true,
-        "showManualRefreshButton" : true,
-        "showObjectName" : true,
-        "showPinnedList" : true,
-        "showSearchBar" : true
+        "flowArguments" : "[{\"label\":\"varAccountId\",\"dataType\":\"String\",\"supportsRecordId\":false,\"value\":\"{!CurrentUser.accountId}\"}]",
+        "flowLayout" : "oneColumn",
+        "flowName" : "Screen_Flow_Disp_Billing_Acct_Details_in_Cust_Portal"
       },
-      "componentName" : "forceCommunity:objectHome",
-      "id" : "ba20b92a-92a6-4d2c-9bbc-ca8d040cc2dd",
+      "componentName" : "forceCommunity:flowCommunity",
+      "id" : "065d6c7e-5c16-4886-83a9-c2cc51f0fe75",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
@@ -37,6 +26,10 @@
   }, {
     "id" : "e08c34f1-415b-4848-8bd2-ec5d914382a9",
     "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "id" : "195dd303-dc38-42ef-83c4-37abd9cda731",
+    "regionName" : "sidebar",
     "type" : "region"
   } ],
   "themeLayoutType" : "Inner",

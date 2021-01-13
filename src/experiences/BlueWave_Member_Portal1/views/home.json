@@ -1,6 +1,6 @@
 {
   "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
-  "componentName" : "siteforce:sldsOneColLayout",
+  "componentName" : "siteforce:sldsTwoCol48Layout",
   "id" : "4b07b72a-0488-4202-baa5-fcfd52dc13aa",
   "label" : "Home",
   "regions" : [ {
@@ -9,7 +9,7 @@
         "richTextValue" : "<h2>&nbsp;</h2>\n<h1 style=\"text-align: center;\"><strong>Hello, {!CurrentUser.name} </strong></h1>\n<p style=\"text-align: center;\">&nbsp;</p>"
       },
       "componentName" : "forceCommunity:htmlBlock",
-      "id" : "51207b90-3ddd-4488-be70-ef14f919fee4",
+      "id" : "53811b1a-01b2-48ed-b0d6-4484aafdfaa6",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
@@ -20,23 +20,21 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "enableInlineEdit" : true,
-        "filterName" : "00B0a0000054wCCEAY",
-        "layout" : "STANDARD",
-        "pageSize" : 10,
-        "scope" : "Zuora__CustomerAccount__c",
-        "showActionBar" : true,
-        "showChartsPanel" : true,
-        "showDisplay" : "showall",
-        "showFilterPanel" : true,
-        "showImageIcon" : true,
-        "showManualRefreshButton" : true,
-        "showObjectName" : true,
-        "showPinnedList" : true,
-        "showSearchBar" : true
+        "flowArguments" : "[{\"label\":\"varAccountId\",\"dataType\":\"String\",\"supportsRecordId\":false,\"value\":\"{!CurrentUser.accountId}\"}]",
+        "flowLayout" : "oneColumn",
+        "flowName" : "Screen_Flow_Disp_Billing_Acct_Details_in_Cust_Portal"
       },
-      "componentName" : "forceCommunity:objectHome",
-      "id" : "3718af0e-3ccd-4cae-931b-e87f02810b92",
+      "componentName" : "forceCommunity:flowCommunity",
+      "id" : "e628ad8d-7b0b-4c7f-a220-87fa1ded90e9",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<p style=\"text-align: center;\"><a href=\"https://bluewavesolar.com/bw-resources/a-6-minute-guide-to-community-solar-billing\" target=\"_blank\" style=\"font-size: 10px;\">﻿</a><a href=\"https://bluewavesolar.com/bw-resources/a-6-minute-guide-to-community-solar-billing\" target=\"_blank\" style=\"font-size: 16px;\">Want to learn more about how community solar billing works? Click Here!</a></p>"
+      },
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "3034a890-7f8a-4b7e-bd49-dc446fe41506",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
@@ -68,6 +66,22 @@
       "componentAttributes" : { },
       "componentName" : "forceCommunity:quipCard",
       "id" : "1095bd8f-1681-48b0-9f6e-0a9b5cc4981a",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<div class=\"sfdcCbVideoContainer\"><iframe class=\"sfdcCbVideo\" allowfullscreen=\"true\" width=\"100%\" title=\"Video from https://player.vimeo.com/video/417286945\" src=\"https://player.vimeo.com/video/417286945\"></iframe></div><p> </p>"
+      },
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "ce394e75-3beb-4e85-b88e-5a25a33f96d1",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : { },
+      "componentName" : "c:CSPPaperlessUpdate",
+      "id" : "8d0797c2-94ca-4292-b503-0de67b70f0c8",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"

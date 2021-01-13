@@ -14,9 +14,18 @@ public inherited sharing class SharedSolarSystemsSelector {
     }
     public List<Shared_Solar_System__c> selectAll(Set<Id> sssIds) {
         return [
-            SELECT Id, Apex_Context__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c,
-                CS_Services_Type__c, Client_Management_Contract__c, Client_Acquisition_Contract__c,
-                Client_Account__c, Client_Account__r.Name
+            SELECT Id, Name,  Apex_Context__c, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
+                Capacity_Available_to_be_Reserved__c, CS_Services_Type__c, Client_Management_Contract__c,
+                Client_Acquisition_Contract__c, Client_Account__c, Client_Account__r.Name, Product__c,
+                Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
+                Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c, RiskCalc_Minimum__c,
+                Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Utility__r.Number_of_Decimal_Places__c,
+                Expected_Yield_kWh_kW__c, Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,
+                Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
+                BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c, Total_System_Size_kWh_DC__c,
+                Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c, Public__c,
+                Do_Not_Underwrite__c,
+            (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE Id IN :sssIds
         ];
@@ -107,7 +116,7 @@ public inherited sharing class SharedSolarSystemsSelector {
 
     public List<Shared_Solar_System__c> getSharedSolarSystemsForEnrollment() {
         return [
-            SELECT Id, Name, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
+            SELECT Id, Name, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name, Capacity_Available_to_be_Reserved__c,
                 Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
                 Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c, RiskCalc_Minimum__c,
                 Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Utility__r.Number_of_Decimal_Places__c,
@@ -127,7 +136,9 @@ public inherited sharing class SharedSolarSystemsSelector {
     public List<Shared_Solar_System__c> selectSharedSolarSystemsForQualificationCheck(String productId, List<Id> utilityIds) {
         return [
             SELECT Id, Name, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c,
-                Credit_Score_Requirement__c, Product__r.Name, Utility__r.Name, Public__c,
+                Credit_Score_Requirement__c, Product__r.Name, Utility__r.Name, Public__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
+                Do_Not_Underwrite__c, Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
+                RiskCalc_Minimum__c,
             (SELECT Id, Account__c, Account__r.Partner__c, Account__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE Product__c = :productId
