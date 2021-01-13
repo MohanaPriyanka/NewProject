@@ -2,11 +2,71 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <apiVersion>50.0</apiVersion>
     <assignments>
+        <name>Add_to_List</name>
+        <label>Add to List</label>
+        <locationX>132</locationX>
+        <locationY>1243</locationY>
+        <assignmentItems>
+            <assignToReference>ListtoCreateProdDetails</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_ProductionDetail</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_DefaultUtilityFees</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assign_to_prod_detail</name>
+        <label>assign to prod detail</label>
+        <locationX>50</locationX>
+        <locationY>1093</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_ProductionDetail.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_DefaultUtilityFees.Description__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_ProductionDetail.Amount__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_DefaultUtilityFees.Amount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_ProductionDetail.kWh_Amount__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_DefaultUtilityFees.Amount_kWh__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_ProductionDetail.Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Fee</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_ProductionDetail.Production__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sov_ThisMonthProduction.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_to_List</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>This is the Production record that should be used when creating Transfer and Production Detail records. It is different based on the value of Host Account Bill Transfer Month on Utility.</description>
         <name>AssignActiveProduction</name>
         <label>Assign Active Production</label>
-        <locationX>448</locationX>
-        <locationY>1832</locationY>
+        <locationX>879</locationX>
+        <locationY>2275</locationY>
         <assignmentItems>
             <assignToReference>sov_ActiveProduction</assignToReference>
             <operator>Assign</operator>
@@ -22,8 +82,8 @@
         <description>This is the Production record that should be used when creating Transfer and Production Detail records. It is different based on the value of Host Account Bill Transfer Month on Utility.</description>
         <name>AssignActiveProduction_0</name>
         <label>Assign Active Production</label>
-        <locationX>791</locationX>
-        <locationY>1805</locationY>
+        <locationX>1122</locationX>
+        <locationY>2139</locationY>
         <assignmentItems>
             <assignToReference>sov_ActiveProduction</assignToReference>
             <operator>Assign</operator>
@@ -38,8 +98,8 @@
     <decisions>
         <name>dec_Additional_Transfers_0_0</name>
         <label>Additional Transfers</label>
-        <locationX>777</locationX>
-        <locationY>2373</locationY>
+        <locationX>1112</locationX>
+        <locationY>2779</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>out_Additional_Transfers_0_0</name>
@@ -76,8 +136,8 @@
         <description>Decides which Production to use based off of the value on Utility.</description>
         <name>dec_Production</name>
         <label>Production</label>
-        <locationX>782</locationX>
-        <locationY>1679</locationY>
+        <locationX>1110</locationX>
+        <locationY>2003</locationY>
         <defaultConnector>
             <targetReference>AssignActiveProduction_0</targetReference>
         </defaultConnector>
@@ -116,8 +176,8 @@
     <decisions>
         <name>dec_UtilityFees</name>
         <label>Additional Utility Fees</label>
-        <locationX>422</locationX>
-        <locationY>1369</locationY>
+        <locationX>650</locationX>
+        <locationY>1798</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>out_Additional_UtilityFees</name>
@@ -153,8 +213,8 @@
     <decisions>
         <name>dec_UtilityFeesNeeded</name>
         <label>Utility Fees Needed</label>
-        <locationX>1381</locationX>
-        <locationY>1008</locationY>
+        <locationX>1090</locationX>
+        <locationY>955</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Utility_Fees_Needed</name>
@@ -167,7 +227,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>scrUtilityFees</targetReference>
+                <targetReference>Get_Default_Utility_Fees</targetReference>
             </connector>
             <label>Utility Fees Needed</label>
         </rules>
@@ -188,10 +248,47 @@
         </rules>
     </decisions>
     <decisions>
+        <name>dec_UtilityFeesNeeded_0</name>
+        <label>Utility Fees Needed</label>
+        <locationX>387</locationX>
+        <locationY>1437</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Utility_Fees_Needed_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ManualUtilityFeesNeeded</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scrUtilityFees</targetReference>
+            </connector>
+            <label>Utility Fees Needed</label>
+        </rules>
+        <rules>
+            <name>No_Utility_Fees_Needed_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ManualUtilityFeesNeeded</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scrBill_Period</targetReference>
+            </connector>
+            <label>No Utility Fees Needed</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>DecExpect_Unsubscribed_Credits</name>
         <label>Expect Unsubscribed Credits?</label>
-        <locationX>778</locationX>
-        <locationY>2523</locationY>
+        <locationX>1113</locationX>
+        <locationY>2929</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Expect_Unsub_Credits</name>
@@ -291,6 +388,20 @@
     </formulas>
     <interviewLabel>Production Input Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Production Input Flow</label>
+    <loops>
+        <name>Loop_DefaultUtilityFees</name>
+        <label>Loop_DefaultUtilityFees</label>
+        <locationX>237</locationX>
+        <locationY>1089</locationY>
+        <collectionReference>Selected_Default_Utility_Fees</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>assign_to_prod_detail</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Create_Utility_Fee_Production_Details</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -313,8 +424,8 @@
     <recordCreates>
         <name>Create_AdditionalTransfer</name>
         <label>Create_AdditionalTransfer</label>
-        <locationX>566</locationX>
-        <locationY>2242</locationY>
+        <locationX>906</locationX>
+        <locationY>2626</locationY>
         <connector>
             <targetReference>scr_Additional_Transfers</targetReference>
         </connector>
@@ -396,8 +507,8 @@
     <recordCreates>
         <name>Create_Main_Transfer</name>
         <label>Create Main Transfer</label>
-        <locationX>785</locationX>
-        <locationY>2141</locationY>
+        <locationX>1123</locationX>
+        <locationY>2514</locationY>
         <connector>
             <targetReference>scr_Additional_Transfers</targetReference>
         </connector>
@@ -485,7 +596,7 @@
     <recordCreates>
         <name>create_Production</name>
         <label>create_Production</label>
-        <locationX>776</locationX>
+        <locationX>1102</locationX>
         <locationY>566</locationY>
         <assignRecordIdToReference>sov_ThisMonthProduction.Id</assignRecordIdToReference>
         <connector>
@@ -538,8 +649,8 @@
     <recordCreates>
         <name>create_ProductionDetail</name>
         <label>create_ProductionDetail</label>
-        <locationX>789</locationX>
-        <locationY>1215</locationY>
+        <locationX>397</locationX>
+        <locationY>1773</locationY>
         <connector>
             <targetReference>scr_Additional_Utility_Fees</targetReference>
         </connector>
@@ -579,8 +690,8 @@
     <recordCreates>
         <name>Create_Unsubscribed_ProductionDetail</name>
         <label>Create_Unsubscribed_ProductionDetail</label>
-        <locationX>588</locationX>
-        <locationY>2742</locationY>
+        <locationX>923</locationX>
+        <locationY>3134</locationY>
         <connector>
             <targetReference>Update_Bill_Period</targetReference>
         </connector>
@@ -617,11 +728,21 @@
         <object>Transfer_Part__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <name>Create_Utility_Fee_Production_Details</name>
+        <label>Create Utility Fee Production Details</label>
+        <locationX>389</locationX>
+        <locationY>1196</locationY>
+        <connector>
+            <targetReference>scrManual_Utility_Fees_Needed</targetReference>
+        </connector>
+        <inputReference>ListtoCreateProdDetails</inputReference>
+    </recordCreates>
     <recordLookups>
         <name>Get_Active_Production</name>
         <label>Get Active Production</label>
-        <locationX>792</locationX>
-        <locationY>1931</locationY>
+        <locationX>1121</locationX>
+        <locationY>2271</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>scr_MainTransfer</targetReference>
@@ -639,10 +760,31 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Default_Utility_Fees</name>
+        <label>Get Default Utility Fees</label>
+        <locationX>384</locationX>
+        <locationY>951</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>scrDefault_Utility_Fees</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Utility__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Lookup_Utility.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Default_Utility_Fee__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_ProductionLastMonth</name>
         <label>Get_ProductionLastMonth</label>
-        <locationX>458</locationX>
-        <locationY>1677</locationY>
+        <locationX>885</locationX>
+        <locationY>2007</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AssignActiveProduction</targetReference>
@@ -676,7 +818,7 @@
     <recordLookups>
         <name>Lookup_SSS</name>
         <label>Lookup_SSS</label>
-        <locationX>776</locationX>
+        <locationX>1102</locationX>
         <locationY>206</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -697,7 +839,7 @@
     <recordLookups>
         <name>Lookup_Utility</name>
         <label>Lookup_Utility</label>
-        <locationX>776</locationX>
+        <locationX>1102</locationX>
         <locationY>326</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -718,8 +860,8 @@
     <recordUpdates>
         <name>Update_Bill_Period</name>
         <label>Update Bill Period</label>
-        <locationX>784</locationX>
-        <locationY>2742</locationY>
+        <locationX>1119</locationX>
+        <locationY>3134</locationY>
         <connector>
             <targetReference>scrDone</targetReference>
         </connector>
@@ -743,8 +885,8 @@
     <screens>
         <name>scr_Additional_Transfers</name>
         <label>Additional Transfers</label>
-        <locationX>783</locationX>
-        <locationY>2241</locationY>
+        <locationX>1120</locationX>
+        <locationY>2639</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -796,8 +938,8 @@
     <screens>
         <name>scr_Additional_Utility_Fees</name>
         <label>Additional Utility Fees</label>
-        <locationX>791</locationX>
-        <locationY>1367</locationY>
+        <locationX>399</locationX>
+        <locationY>1913</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -849,8 +991,8 @@
     <screens>
         <name>scr_MainTransfer</name>
         <label>scr_MainTransfer</label>
-        <locationX>788</locationX>
-        <locationY>2049</locationY>
+        <locationX>1123</locationX>
+        <locationY>2389</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -900,7 +1042,7 @@
     <screens>
         <name>scr_Production_Inputs</name>
         <label>Production Inputs</label>
-        <locationX>776</locationX>
+        <locationX>1102</locationX>
         <locationY>446</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -959,8 +1101,8 @@
     <screens>
         <name>scr_UnsubscribedProduction</name>
         <label>scr_UnsubscribedProduction</label>
-        <locationX>588</locationX>
-        <locationY>2527</locationY>
+        <locationX>922</locationX>
+        <locationY>2929</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -994,7 +1136,7 @@
     <screens>
         <name>scr_Utility_Bill_File_Upload</name>
         <label>Utility Bill File Upload</label>
-        <locationX>776</locationX>
+        <locationX>1102</locationX>
         <locationY>686</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1038,8 +1180,8 @@
     <screens>
         <name>scrAdditional_Transfers</name>
         <label>Additional Transfers</label>
-        <locationX>566</locationX>
-        <locationY>2369</locationY>
+        <locationX>903</locationX>
+        <locationY>2776</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1102,8 +1244,8 @@
     <screens>
         <name>scrBill_Period</name>
         <label>Bill Period</label>
-        <locationX>789</locationX>
-        <locationY>1512</locationY>
+        <locationX>1112</locationX>
+        <locationY>1788</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1127,10 +1269,61 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>scrDefault_Utility_Fees</name>
+        <label>Default Utility Fees</label>
+        <locationX>385</locationX>
+        <locationY>1094</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Loop_DefaultUtilityFees</targetReference>
+        </connector>
+        <fields>
+            <name>txt_Default_Utility_Fee</name>
+            <fieldText>&lt;p&gt;Select the fees below that are included in the utility bill. &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If any fees that are on the bill are not shown below, you will have the opportunity to manually add them on the next page.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>datatable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Default_Utility_Fee__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatableV2</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <stringValue>Name,Amount__c,Amount_kWh__c,Description__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_Default_Utility_Fees</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnAlignments</name>
+                <value>
+                    <stringValue>center</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>Selected_Default_Utility_Fees</assignToReference>
+                <name>outputSelectedRows</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>scrDone</name>
         <label>Done</label>
-        <locationX>784</locationX>
-        <locationY>2902</locationY>
+        <locationX>1119</locationX>
+        <locationY>3294</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1143,10 +1336,63 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>scrManual_Utility_Fees_Needed</name>
+        <label>Manual Utility Fees Needed?</label>
+        <locationX>395</locationX>
+        <locationY>1331</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>dec_UtilityFeesNeeded_0</targetReference>
+        </connector>
+        <fields>
+            <name>txt_UtilityFeesNeeded_0</name>
+            <fieldText>&lt;p&gt;Are there other Utility Fees that need to be logged manually?&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>toggle_ManualUtilityFeesNeeded</name>
+            <extensionName>flowruntime:toggle</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>messageToggleActive</name>
+                <value>
+                    <stringValue>Yes</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>messageToggleInactive</name>
+                <value>
+                    <stringValue>No</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>var_ManualUtilityFeesNeeded</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Utility Fees?</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>var_ManualUtilityFeesNeeded</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>scrUtility_Fees_Needed</name>
         <label>Utility Fees Needed?</label>
-        <locationX>776</locationX>
-        <locationY>806</locationY>
+        <locationX>1099</locationX>
+        <locationY>840</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1198,8 +1444,8 @@
     <screens>
         <name>scrUtilityFees</name>
         <label>Utility Fees</label>
-        <locationX>783</locationX>
-        <locationY>1094</locationY>
+        <locationX>400</locationX>
+        <locationY>1628</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1246,7 +1492,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>650</locationX>
+        <locationX>976</locationX>
         <locationY>48</locationY>
         <connector>
             <targetReference>Lookup_SSS</targetReference>
@@ -1259,11 +1505,35 @@
         <text>{!Lookup_SSS.Name} - MONTH({!Billing_Period_Start_Date})/YEAR({!Billing_Period_Start_Date})</text>
     </textTemplates>
     <variables>
+        <name>ListtoCreateProdDetails</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Transfer_Part__c</objectType>
+    </variables>
+    <variables>
+        <name>Loop_ProductionDetail</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Transfer_Part__c</objectType>
+    </variables>
+    <variables>
         <name>recordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>Selected_Default_Utility_Fees</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Default_Utility_Fee__c</objectType>
     </variables>
     <variables>
         <name>sov_ActiveProduction</name>
@@ -1290,6 +1560,13 @@
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>var_ManualUtilityFeesNeeded</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <description>If this is true, the user should be directed to log utility fees.</description>
