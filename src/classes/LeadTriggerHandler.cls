@@ -107,7 +107,7 @@ public without sharing class LeadTriggerHandler {
 
         List<Opportunity> oppsToUpdate = new List<Opportunity>();
         for (Lead lead: updatedLeads) {
-            if (lead.IsConverted) {
+            if (lead.IsConverted && lead.ConvertedOpportunityId != null) {
                 Opportunity opp = getUpdatedOpp(lead, oldLeadMap.get(lead.Id));
                 if (opp != null) {
                     oppsToUpdate.add(opp);
@@ -220,8 +220,6 @@ public without sharing class LeadTriggerHandler {
         Boolean returnNull = true;
         Opportunity opp = new Opportunity(Id = newLead.ConvertedOpportunityId);
         for (String field : leadToOppConvertMap.keySet()) {
-            System.debug(field + ' (new):' + newLead.get(field));
-            System.debug(field + ' (old):' + oldLead.get(field));
             if (newLead.get(field) != oldLead.get(field)) {
                 opp.put(leadToOppConvertMap.get(field), newLead.get(field));
                 returnNull=false;

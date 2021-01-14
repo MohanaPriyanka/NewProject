@@ -88,6 +88,10 @@
     </fieldPermissions>
     <flowAccesses>
         <enabled>true</enabled>
+        <flow>Lead_Qualification_Conversion</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
         <flow>Prep_Account_for_Delete</flow>
     </flowAccesses>
     <hasActivationRequired>false</hasActivationRequired>

@@ -1,40 +1,35 @@
 {
   "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
-  "componentName" : "siteforce:sldsOneColLayout",
+  "componentName" : "siteforce:sldsTwoCol66Layout",
   "id" : "81c46d04-026d-44d7-ba45-5f34c827c89b",
   "label" : "Contact Support",
   "regions" : [ {
     "components" : [ {
       "componentAttributes" : {
-        "showTitle" : false,
-        "title" : "Featured Topics"
+        "allowAttachments" : true,
+        "attachmentLabel" : "Upload File",
+        "buttonAlignment" : "center",
+        "buttonBgColor" : "",
+        "buttonBgHoverColor" : "",
+        "buttonBorderColor" : "",
+        "buttonMaxWidth" : "",
+        "buttonRadius" : 5,
+        "buttonTextColor" : "",
+        "buttonTextHoverColor" : "",
+        "callToAction" : false,
+        "callToActionButtonText" : "",
+        "callToActionText" : "",
+        "callToActionUrl" : "",
+        "confirmationSubtext" : "You'll hear back from us soon.",
+        "confirmationText" : "Your request was submitted successfully.",
+        "guestQuickActionName" : "NewCommunityCase",
+        "headerSubtitle" : "Tell us how we can help.",
+        "headerTitle" : "Contact Customer Support",
+        "quickActionName" : "NewCommunityCase",
+        "requestSummaryText" : "Case summary"
       },
-      "componentName" : "forceTopic:featuredTopics",
-      "id" : "e16fee31-4348-49b7-ad89-61b647e90a15",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    }, {
-      "componentAttributes" : {
-        "attachFiles" : true,
-        "authenticatedActionName" : "NewCommunityCase",
-        "confirmationMessageDescription" : "You'll hear back from us soon.",
-        "confirmationMessageTitle" : "Your request was submitted successfully.",
-        "deflectionCategoryGroupName" : "{!DataCategoryGroupName}",
-        "deflectionNotHelpful" : "Didn't find what you're looking for?",
-        "deflectionNumberOfArticles" : 6,
-        "deflectionParentCategory" : "{!TopLevelCategory}",
-        "deflectionSubHeader" : "Check out these Support Topics...",
-        "deflectionTitle" : "Need Answers Fast?",
-        "hasDeflection" : true,
-        "headerTitle" : "Submit a Support Case",
-        "isReCaptchaEnabled" : false,
-        "reCaptchaPrivateKey" : "",
-        "reCaptchaPublicKey" : "",
-        "unauthenticatedActionName" : "NewCommunityCase"
-      },
-      "componentName" : "selfService:caseCreate",
-      "id" : "25be618d-15d7-4387-80a9-3eb0784959b5",
+      "componentName" : "forceCommunity:contactSupportForm",
+      "id" : "c1412b63-51c8-4912-9504-e5173b70bb11",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
@@ -56,6 +51,52 @@
     } ],
     "id" : "d857ad61-99a1-4b87-b8e6-bd6ee17c6fe9",
     "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "maxWidth" : 100,
+        "radius" : 0,
+        "showTitle" : false,
+        "title" : "Featured Topics"
+      },
+      "componentName" : "forceTopic:featuredTopics",
+      "id" : "e16fee31-4348-49b7-ad89-61b647e90a15",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "c77337b2-9fc6-4961-8eda-76735ec3ff40",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "askConfirmationQuestion" : true,
+        "confirmationMessageLabel" : "Got it!",
+        "deflectionSubtitle" : "Find what you need here.",
+        "deflectionTitle" : "Need Answers Fast?",
+        "firstQuestion" : "Did this content solve your issue?",
+        "maxResults" : 6,
+        "measureDeflection" : true,
+        "redirectUrl" : "",
+        "secondQuestion" : "Stop creating your case?",
+        "showArticles" : true,
+        "showDiscussions" : false,
+        "topicId" : "0TO0a000000DpgcGAC"
+      },
+      "componentName" : "forceCommunity:caseDeflection",
+      "id" : "b6b274aa-37c9-4014-bdbe-d5901ded5f3f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "dfe5ebb1-5d00-4698-924d-1909c5f2b13e",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "67b948c3-62d1-42b3-90f3-db7bba954925",
+    "regionName" : "footer",
     "type" : "region"
   } ],
   "themeLayoutType" : "Inner",

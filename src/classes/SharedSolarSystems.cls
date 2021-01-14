@@ -1,7 +1,7 @@
 /**
  * Created by SarahRenfro on 7/6/2020.
  * Description: Domain class for SSS
- * Test: CSUtilityAccountSubscriptionFactoryTest, SharedSolarSystemsTest
+ * Test: CSUtilityAccountSubscriptionFactoryTest, SharedSolarSystemsTest, LeadServiceTestclass
  */
 
 public inherited sharing class SharedSolarSystems {
@@ -9,6 +9,7 @@ public inherited sharing class SharedSolarSystems {
     @TestVisible private static FeatureService featureService = new FeatureService();
     @TestVisible private static ProductSelector productSelector = new ProductSelector();
     @TestVisible private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
+    @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     @TestVisible private static final Boolean LOG_FINE_RESULTS = Logger.shouldLog(Logger.FINE);
     @TestVisible private static Boolean capacityCheckInstance = false;
     private static final List<String> ORDERED_MOODY_RISK_SCORES = new List<String>{
@@ -57,9 +58,9 @@ public inherited sharing class SharedSolarSystems {
     public static Decimal calculateMaximumkWh(Shared_Solar_System__c sss){
         Decimal sssRemainingSubscriptionCapacity = sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c;
         if (featureService.isEnabled('Sizing_Method') && sss.Product__r.Customer_Subscription_Type__c == 'kWh'
-                && sss.Product__r.Sizing_Method__c == 'Project Ratio') {
-                sssRemainingSubscriptionCapacity = sssRemainingSubscriptionCapacity/sss.Utility_NMC_Tariff__r.Size_Ratio__c;
-            }
+            && sss.Product__r.Sizing_Method__c == 'Project Ratio') {
+            sssRemainingSubscriptionCapacity = sssRemainingSubscriptionCapacity/sss.Utility_NMC_Tariff__r.Size_Ratio__c;
+        }
         return sssRemainingSubscriptionCapacity.setScale(2, RoundingMode.HALF_DOWN);
     }
 
@@ -160,6 +161,8 @@ public inherited sharing class SharedSolarSystems {
         return contractsToCFDs;
     }
 
+
+
     /**
      * @description Gets the qualified systems for this lead, sorted by the lead's System Assignment setting
      * @param lead Lead being qualified
@@ -168,6 +171,11 @@ public inherited sharing class SharedSolarSystems {
     public List<Shared_Solar_System__c> getQualifiedForLead(Lead lead) {
         List<SSSWrapper> sssWrappers = new List<SSSWrapper>();
         List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
+
+        if (lead.Selected_SSS_For_Conversion__c != null) {
+            getPreSelectedSharedSolarSystems(lead);
+        }
+
         for (Shared_Solar_System__c sss : records) {
             if (qualifiedForSystem(lead, sss, null)) {
                 sssWrappers.add(new SSSWrapper(sss, lead.System_Assignment__c));
@@ -196,6 +204,17 @@ public inherited sharing class SharedSolarSystems {
         return 'Unqualified';
     }
 
+    /**
+     * @description If the lead has had SSSes pre-selected for conversion, we need to query for just those projects
+     * rather than all projects for qualification
+     * @param lead Lead that is being considered for qualification or conversion
+     */
+    private void getPreSelectedSharedSolarSystems(Lead lead) {
+        List<String> selectedSSSIds = lead.Selected_SSS_For_Conversion__c.split('/');
+        this.records = sssSelector.selectAll(new Set<Id>((List<Id>) selectedSSSIds));
+    }
+
+    @TestVisible
     private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
         Boolean utilityMatch = sss.Utility__c == lead.Utility_relationship__c;
         Boolean lzInServiceTerritory = SharedSolarSystems.loadZoneInServiceTerritory(lead.LoadZone__c, sss);
@@ -225,7 +244,7 @@ public inherited sharing class SharedSolarSystems {
     }
 
     @TestVisible
-    private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+    public Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
         Boolean meetsCriteria = false;
         Boolean sssDoesNotUnderwrite = sss.Do_Not_Underwrite__c;
 
@@ -315,6 +334,20 @@ public inherited sharing class SharedSolarSystems {
         return eligiblePartners.removeEnd('; ');
     }
 
+    public static String summarizeUnderwritingOptions(Shared_Solar_System__c sss) {
+        String options = '';
+        if (sss.Do_Not_Underwrite__c) {
+            return 'No underwriting necessary';
+        }
+        if (sss.Available_SMB_Underwriting_Method_FICO__c) {
+            options += 'FICO with ' + sss.Credit_Score_Requirement__c + ' Minimum;';
+        }
+        if (sss.Available_SMB_Underwriting_Method_Docs__c) {
+            options += 'Financial Review with ' + sss.RiskCalc_Minimum__c + ' Minimum;';
+        }
+        return options;
+    }
+
     /**
      * @description True if the load zone is served by the shared solar system, or if the SSS ignores load zones for
      * qualification purposes (as specified by the the related Product)
@@ -322,7 +355,7 @@ public inherited sharing class SharedSolarSystems {
      * @param sss The Shared_Solar_System__c, selected with Product__r.Ignore_Load_Zones_When_Qualifying__c and Service_Territories
      * @return Boolean
      */
-    private static Boolean loadZoneInServiceTerritory(String loadZone, Shared_Solar_System__c sss) {
+    public static Boolean loadZoneInServiceTerritory(String loadZone, Shared_Solar_System__c sss) {
         if (sss.Product__r.Ignore_Load_Zones_When_Qualifying__c || capacityCheckInstance) {
             return true;
         }

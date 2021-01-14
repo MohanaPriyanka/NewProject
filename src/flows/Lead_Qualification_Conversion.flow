@@ -1,15 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionCalls>
+        <name>Convert_Lead</name>
+        <label>Convert Lead</label>
+        <locationX>1354</locationX>
+        <locationY>588</locationY>
+        <actionName>InvocableLeadConvert</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>scrFinish</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>leadsToConvert</name>
+            <value>
+                <elementReference>leadToConvert</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Get_Ordered_List_of_Qualified_SSS</name>
+        <label>Get Ordered List of Qualified SSS</label>
+        <locationX>547</locationX>
+        <locationY>589</locationY>
+        <actionName>InvocableQualifiedSSSSelector</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>scrQualifiedLead</targetReference>
+        </connector>
+        <inputParameters>
+            <name>leadsFromFlow</name>
+            <value>
+                <elementReference>Lead</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>orderedSSSList</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>leadQualificationCheck</name>
         <label>leadQualificationCheck</label>
-        <locationX>288</locationX>
-        <locationY>697</locationY>
+        <locationX>729</locationX>
+        <locationY>285</locationY>
         <actionName>InvocableLeadQualification</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Lead</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log</targetReference>
+        </faultConnector>
         <inputParameters>
             <name>leadIds</name>
             <value>
@@ -19,10 +63,95 @@
     </actionCalls>
     <apiVersion>50.0</apiVersion>
     <assignments>
+        <name>Add_Break</name>
+        <label>Add Break</label>
+        <locationX>837</locationX>
+        <locationY>794</locationY>
+        <assignmentItems>
+            <assignToReference>selectedSSSIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>/</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Selected_SSS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_Error_Log_to_List</name>
+        <label>Add Error Log to List</label>
+        <locationX>1289</locationX>
+        <locationY>195</locationY>
+        <assignmentItems>
+            <assignToReference>sovc_ErrorLogs</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>sov_ErrorLog</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Log_Errors</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_Selected_SSS_Id</name>
+        <label>Add Selected SSS Id</label>
+        <locationX>1020</locationX>
+        <locationY>792</locationY>
+        <assignmentItems>
+            <assignToReference>selectedSSSIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_Selected_SSS.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Break</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Error_Log</name>
+        <label>Assign Error Log</label>
+        <locationX>1181</locationX>
+        <locationY>195</locationY>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Timestamp__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.User__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_RunningUserId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Message__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>errorMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Error_Log_to_List</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>assignLeadFields</name>
         <label>assignLeadFields</label>
-        <locationX>553</locationX>
-        <locationY>481</locationY>
+        <locationX>572</locationX>
+        <locationY>127</locationY>
         <assignmentItems>
             <assignToReference>getLead.Moody_s_Risk_Calc__c</assignToReference>
             <operator>Assign</operator>
@@ -53,6 +182,36 @@
         </assignmentItems>
         <connector>
             <targetReference>updateLeadRecord</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Store_Selected_SSS_List_on_Lead</name>
+        <label>Store Selected SSS List on Lead</label>
+        <locationX>1092</locationX>
+        <locationY>587</locationY>
+        <assignmentItems>
+            <assignToReference>Lead.Selected_SSS_For_Conversion__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>selectedSSSIds</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_RunningUserId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>leadToConvert</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getLead</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Lead_with_Selected_SSS</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -111,6 +270,69 @@
             <elementReference>getLead.Moody_s_Risk_Calc__c</elementReference>
         </value>
     </choices>
+    <decisions>
+        <name>Check_Qualification</name>
+        <label>Check Qualification</label>
+        <locationX>410</locationX>
+        <locationY>584</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Qualified</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Lead.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Qualified</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Ordered_List_of_Qualified_SSS</targetReference>
+            </connector>
+            <label>Qualified</label>
+        </rules>
+        <rules>
+            <name>Not_Qualified</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Lead.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Unqualified</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>showLeadStatus</targetReference>
+            </connector>
+            <label>Not Qualified</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>If Lead is already converted, no need to try again</description>
+        <name>IsConverted</name>
+        <label>decisionIsConverted</label>
+        <locationX>323</locationX>
+        <locationY>181</locationY>
+        <defaultConnector>
+            <targetReference>updateLeadFields</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>IsConvertedTrue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getLead.IsConverted</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scrAlreadyConverted</targetReference>
+            </connector>
+            <label>IsConverted</label>
+        </rules>
+    </decisions>
     <dynamicChoiceSets>
         <name>moodysPicklist</name>
         <dataType>Picklist</dataType>
@@ -119,8 +341,38 @@
         <picklistField>Moody_s_Risk_Calc__c</picklistField>
         <picklistObject>Lead</picklistObject>
     </dynamicChoiceSets>
+    <formulas>
+        <name>formula_IgnoreLoadZones</name>
+        <dataType>Boolean</dataType>
+        <expression>{!getLead.Product__r.Ignore_Load_Zones_When_Qualifying__c}</expression>
+    </formulas>
+    <formulas>
+        <name>formula_RunningUserId</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Id}</expression>
+    </formulas>
+    <formulas>
+        <name>formula_SplitLZ</name>
+        <dataType>Boolean</dataType>
+        <expression>CONTAINS({!getLead.LoadZone__c}, &quot;/&quot;)</expression>
+    </formulas>
     <interviewLabel>Lead {!$Flow.CurrentDateTime}</interviewLabel>
+    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Lead Qualification/Conversion</label>
+    <loops>
+        <name>Loop_Selected_SSS</name>
+        <label>Loop Selected SSS</label>
+        <locationX>926</locationX>
+        <locationY>580</locationY>
+        <collectionReference>selectedSSSList</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_Selected_SSS_Id</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Store_Selected_SSS_List_on_Lead</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -143,11 +395,11 @@
     <recordLookups>
         <name>getLead</name>
         <label>getLead</label>
-        <locationX>783</locationX>
-        <locationY>266</locationY>
+        <locationX>162</locationX>
+        <locationY>176</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>updateLeadFields</targetReference>
+            <targetReference>IsConverted</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -164,11 +416,11 @@
     <recordLookups>
         <name>Lead</name>
         <label>Lead</label>
-        <locationX>554</locationX>
-        <locationY>697</locationY>
+        <locationX>524</locationX>
+        <locationY>425</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>showLeadStatus</targetReference>
+            <targetReference>Check_Qualification</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -180,39 +432,211 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Lead</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Utility_relationship__c</queriedFields>
+        <queriedFields>LoadZone__c</queriedFields>
+        <queriedFields>Partner_Lookup__c</queriedFields>
+        <queriedFields>Partner_Account__c</queriedFields>
+        <queriedFields>Product__c</queriedFields>
+        <queriedFields>Underwriting_Criteria__c</queriedFields>
+        <queriedFields>LASER_Credit_Score__c</queriedFields>
+        <queriedFields>Moody_s_Risk_Calc__c</queriedFields>
+        <queriedFields>Status</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Update_Lead_with_Selected_SSS</name>
+        <label>Update Lead with Selected SSS</label>
+        <locationX>1231</locationX>
+        <locationY>587</locationY>
+        <connector>
+            <targetReference>Convert_Lead</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log</targetReference>
+        </faultConnector>
+        <inputReference>Lead</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>updateLeadRecord</name>
         <label>updateLeadRecord</label>
-        <locationX>288</locationX>
-        <locationY>481</locationY>
+        <locationX>725</locationX>
+        <locationY>129</locationY>
         <connector>
             <targetReference>leadQualificationCheck</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log</targetReference>
+        </faultConnector>
         <inputReference>getLead</inputReference>
     </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
-        <name>showLeadStatus</name>
-        <label>showLeadStatus</label>
-        <locationX>783</locationX>
-        <locationY>697</locationY>
+        <name>scrAlreadyConverted</name>
+        <label>Already Converted Lead</label>
+        <locationX>338</locationX>
+        <locationY>344</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>txtAlreadyConverted</name>
+            <fieldText>&lt;p&gt;This lead has already been converted! No further action necessary. &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can close this window now.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>scrError</name>
+        <label>Error Screen</label>
+        <locationX>1479</locationX>
+        <locationY>164</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>txtError</name>
+            <fieldText>&lt;p&gt;Oops! There was an error in the Qualification and Conversion of the lead!&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;BizApps has already been notified. You can close this window now. &lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>scrFinish</name>
+        <label>Finish</label>
+        <locationX>1524</locationX>
+        <locationY>584</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
-            <name>leadStatus</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;Lead Status:&lt;/b&gt; {!Lead.Status}&lt;/p&gt;</fieldText>
+            <name>txttest</name>
+            <fieldText>&lt;p&gt;Congrats! Lead has been converted!&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can close this window now&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>scrQualifiedLead</name>
+        <label>scrQualifiedLead</label>
+        <locationX>755</locationX>
+        <locationY>589</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Loop_Selected_SSS</targetReference>
+        </connector>
+        <fields>
+            <name>txtDatable</name>
+            <fieldText>&lt;p&gt;Select the Shared Solar Systems that you want to be &lt;b&gt;considered &lt;/b&gt;for subscriptions. &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Subscriptions will be created and sized based on the customer&apos;s annual usage, available capacity, and project maximums.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;NOTE: This does &lt;b&gt;not &lt;/b&gt;guarantee subscriptions will be created for &lt;b&gt;all &lt;/b&gt;projects. If the project is not selected, no subscriptions will be created for the project. &lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>tableSSS</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Shared_Solar_System__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <stringValue>Shared_Solar_System__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>preSelectedRows</name>
+                <value>
+                    <elementReference>orderedSSSList</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <stringValue>Name,Utility__c,Capacity_Available_to_be_Reserved__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnWidths</name>
+                <value>
+                    <stringValue>column-widths-mode=&quot;auto&quot;</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>orderedSSSList</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>selectedSSSList</assignToReference>
+                <name>outputSelectedRows</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>showLeadStatus</name>
+        <label>showLeadStatus</label>
+        <locationX>321</locationX>
+        <locationY>786</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>getLead</targetReference>
+        </connector>
+        <fields>
+            <name>leadStatus</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(234, 8, 8);&quot;&gt;LEAD IS UNQUALIFIED. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Consult the table below to determine why there are no Projects available for this customer.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>yodaTable</name>
+            <extensionName>c:csQualificationTable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>leadId</name>
+                <value>
+                    <elementReference>Lead.Id</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>partner</name>
+                <value>
+                    <elementReference>Lead.Partner_Lookup__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>product</name>
+                <value>
+                    <elementReference>Lead.Product__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>underwriting</name>
+                <value>
+                    <elementReference>Lead.Underwriting_Criteria__c</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>updateLeadFields</name>
         <label>updateLeadFields</label>
-        <locationX>783</locationX>
-        <locationY>481</locationY>
+        <locationX>460</locationX>
+        <locationY>125</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -221,8 +645,23 @@
         </connector>
         <fields>
             <name>currentLeadInfoDisplay</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;&lt;u&gt;Current Lead Info&lt;/u&gt; &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Moody&apos;s Rick Calc:&lt;/b&gt; {!getLead.Moody_s_Risk_Calc__c}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Utility:&lt;/b&gt; &lt;span style=&quot;font-family: var(--lwc-fontFamily,&amp;quot;Salesforce Sans&amp;quot;, Arial, sans-serif); font-size: var(--lwc-fontSize3,0.8125rem); color: var(--lwc-colorTextWeak,rgb(62, 62, 60)); background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255));&quot;&gt;{!getLead.Utility_relationship__r.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Load Zone:&lt;/b&gt; {!getLead.LoadZone__c}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Product:&lt;/b&gt; {!getLead.Product__r.Name}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b&gt;&lt;u&gt;Current Lead Info&lt;/u&gt; &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Utility:&lt;/b&gt; &lt;span style=&quot;background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255)); color: var(--lwc-colorTextWeak,rgb(62, 62, 60)); font-size: var(--lwc-fontSize3,0.8125rem); font-family: var(--lwc-fontFamily,&amp;quot;Salesforce Sans&amp;quot;, Arial, sans-serif);&quot;&gt;{!getLead.Utility_relationship__r.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Load Zone:&lt;/b&gt; {!getLead.LoadZone__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Product:&lt;/b&gt; {!getLead.Product__r.Name}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>txtMoodyScore</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Moody&apos;s Rick Calc:&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; {!getLead.Moody_s_Risk_Calc__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>getLead.Underwriting_Criteria__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Financial Review</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>selectedFieldCollection</name>
@@ -238,6 +677,16 @@
             <fieldText>Moody&apos;s Rick Calc:</fieldText>
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>getLead.Underwriting_Criteria__c</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Financial Review</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>updateUtility</name>
@@ -274,6 +723,28 @@
             <name>spacer1</name>
             <fieldText>&lt;p&gt; &lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>txtSplitLoadZone</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;Please resolve Split Load Zone before proceeding.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>formula_SplitLZ</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>formula_IgnoreLoadZones</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>updateLoadZone</name>
@@ -327,16 +798,38 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>439</locationX>
-        <locationY>137</locationY>
+        <locationX>50</locationX>
+        <locationY>42</locationY>
         <connector>
             <targetReference>getLead</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Log_Errors</name>
+        <label>Log Errors</label>
+        <locationX>1373</locationX>
+        <locationY>190</locationY>
+        <connector>
+            <targetReference>scrError</targetReference>
+        </connector>
+        <flowName>Error_Log_Creation</flowName>
+        <inputAssignments>
+            <name>socv_ErrorLog</name>
+            <value>
+                <elementReference>sovc_ErrorLogs</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <textTemplates>
+        <name>errorMessage</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;Flow: Lead Qualification/Conversion&lt;/p&gt;&lt;p&gt;Record: {!$Flow.CurrentRecord}&lt;/p&gt;&lt;p&gt;Message: {!$Flow.FaultMessage}&lt;/p&gt;</text>
+    </textTemplates>
     <variables>
         <name>allCollection</name>
         <dataType>String</dataType>
@@ -400,6 +893,14 @@
         <objectType>Lead</objectType>
     </variables>
     <variables>
+        <name>leadToConvert</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Lead</objectType>
+    </variables>
+    <variables>
         <name>old_currentMoody</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -426,6 +927,14 @@
         <objectType>Utility__c</objectType>
     </variables>
     <variables>
+        <name>orderedSSSList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Shared_Solar_System__c</objectType>
+    </variables>
+    <variables>
         <name>recordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -438,6 +947,37 @@
         <isCollection>true</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>selectedSSSIds</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>selectedSSSList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Shared_Solar_System__c</objectType>
+    </variables>
+    <variables>
+        <name>sov_ErrorLog</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Error_Log__c</objectType>
+    </variables>
+    <variables>
+        <name>sovc_ErrorLogs</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Error_Log__c</objectType>
     </variables>
     <variables>
         <name>utilityLookup</name>
