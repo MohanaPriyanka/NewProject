@@ -26,6 +26,10 @@
                 <behavior>Edit</behavior>
                 <field>Service_End_Date__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Num_Days__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
