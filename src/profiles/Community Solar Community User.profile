@@ -46561,11 +46561,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Zuora__CustomerAccount__c.View_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Zuora__CustomerAccount__c.Zuora__AccountNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
