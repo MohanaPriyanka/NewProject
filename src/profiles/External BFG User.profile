@@ -31281,6 +31281,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Data_Request_Period__c.Num_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Data_Request_Period__c.Product_Transfer_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
