@@ -696,10 +696,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>FileDeliveryHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>FilesUnitOfWorkHelper</apexClass>
         <enabled>true</enabled>
     </classAccesses>
