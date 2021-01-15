@@ -120,7 +120,6 @@
                   <aura:set attribute="else">
                     <h3 class="slds-text-heading_small slds-text-color_default">
                       <p>Your Account is not currently set to Autopay.</p>
-                      <p>Please update your payment method.</p>
                     </h3>
                   </aura:set>
                 </aura:if>
