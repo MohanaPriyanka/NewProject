@@ -178,6 +178,9 @@ public without sharing class CSSubscriptionEnroller {
         Decimal totalAnnualCostOfElectricity = 0;
         Decimal totalAnnualkWhElectricity = 0;
         for (Utility_Account_Log__c ual : leadIdToLeadWithChildren.get(lead.Id).Utility_Account_Logs__r) {
+            if (ual.QC_Status__c == 'Pending BW Review' || ual.QC_Status__c =='Pending Utility Data') {
+                throw new Util.BWException('Utility Account Logs are in QC Pending. Please review the UALs and set the status to Complete before converting.');
+            }
             if ((ual.Annual_Cost_of_Electricity__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'Electricity Cost ($)')
                 || ( ual.Annual_kWh__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'kWh' )) {
                 throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
