@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Convert_Lead</name>
         <label>Convert Lead</label>
-        <locationX>1354</locationX>
-        <locationY>588</locationY>
+        <locationX>1962</locationX>
+        <locationY>840</locationY>
         <actionName>InvocableLeadConvert</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -23,13 +23,16 @@
     <actionCalls>
         <name>Get_Ordered_List_of_Qualified_SSS</name>
         <label>Get Ordered List of Qualified SSS</label>
-        <locationX>547</locationX>
-        <locationY>589</locationY>
+        <locationX>1155</locationX>
+        <locationY>841</locationY>
         <actionName>InvocableQualifiedSSSSelector</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>scrQualifiedLead</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log</targetReference>
+        </faultConnector>
         <inputParameters>
             <name>leadsFromFlow</name>
             <value>
@@ -44,8 +47,8 @@
     <actionCalls>
         <name>leadQualificationCheck</name>
         <label>leadQualificationCheck</label>
-        <locationX>729</locationX>
-        <locationY>285</locationY>
+        <locationX>987</locationX>
+        <locationY>382</locationY>
         <actionName>InvocableLeadQualification</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -65,8 +68,8 @@
     <assignments>
         <name>Add_Break</name>
         <label>Add Break</label>
-        <locationX>837</locationX>
-        <locationY>794</locationY>
+        <locationX>1445</locationX>
+        <locationY>1046</locationY>
         <assignmentItems>
             <assignToReference>selectedSSSIds</assignToReference>
             <operator>Add</operator>
@@ -81,8 +84,8 @@
     <assignments>
         <name>Add_Error_Log_to_List</name>
         <label>Add Error Log to List</label>
-        <locationX>1289</locationX>
-        <locationY>195</locationY>
+        <locationX>1632</locationX>
+        <locationY>55</locationY>
         <assignmentItems>
             <assignToReference>sovc_ErrorLogs</assignToReference>
             <operator>Add</operator>
@@ -97,8 +100,8 @@
     <assignments>
         <name>Add_Selected_SSS_Id</name>
         <label>Add Selected SSS Id</label>
-        <locationX>1020</locationX>
-        <locationY>792</locationY>
+        <locationX>1628</locationX>
+        <locationY>1044</locationY>
         <assignmentItems>
             <assignToReference>selectedSSSIds</assignToReference>
             <operator>Add</operator>
@@ -113,8 +116,8 @@
     <assignments>
         <name>Assign_Error_Log</name>
         <label>Assign Error Log</label>
-        <locationX>1181</locationX>
-        <locationY>195</locationY>
+        <locationX>1524</locationX>
+        <locationY>55</locationY>
         <assignmentItems>
             <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -148,10 +151,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assign_Not_Ready_For_Conversion</name>
+        <label>Assign Not Ready for Conversion</label>
+        <locationX>580</locationX>
+        <locationY>980</locationY>
+        <assignmentItems>
+            <assignToReference>ualsReadyForConversion</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>LoopUALs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>assignLeadFields</name>
         <label>assignLeadFields</label>
-        <locationX>572</locationX>
-        <locationY>127</locationY>
+        <locationX>810</locationX>
+        <locationY>243</locationY>
         <assignmentItems>
             <assignToReference>getLead.Moody_s_Risk_Calc__c</assignToReference>
             <operator>Assign</operator>
@@ -187,8 +206,8 @@
     <assignments>
         <name>Store_Selected_SSS_List_on_Lead</name>
         <label>Store Selected SSS List on Lead</label>
-        <locationX>1092</locationX>
-        <locationY>587</locationY>
+        <locationX>1700</locationX>
+        <locationY>839</locationY>
         <assignmentItems>
             <assignToReference>Lead.Selected_SSS_For_Conversion__c</assignToReference>
             <operator>Assign</operator>
@@ -273,8 +292,8 @@
     <decisions>
         <name>Check_Qualification</name>
         <label>Check Qualification</label>
-        <locationX>410</locationX>
-        <locationY>584</locationY>
+        <locationX>985</locationX>
+        <locationY>619</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Qualified</name>
@@ -287,7 +306,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Ordered_List_of_Qualified_SSS</targetReference>
+                <targetReference>LoopUALs</targetReference>
             </connector>
             <label>Qualified</label>
         </rules>
@@ -308,11 +327,96 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_UALs_Statuses</name>
+        <label>Check UALs Statuses</label>
+        <locationX>993</locationX>
+        <locationY>930</locationY>
+        <defaultConnector>
+            <targetReference>Get_Ordered_List_of_Qualified_SSS</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Ready_for_Conversion</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ualsReadyForConversion</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Resolve_UALs_Before_Conversion</targetReference>
+            </connector>
+            <label>Not Ready for Conversion</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>decUALStatusCheck</name>
+        <label>UAL Status Check</label>
+        <locationX>586</locationX>
+        <locationY>779</locationY>
+        <defaultConnector>
+            <targetReference>LoopUALs</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Pending_QC</name>
+            <conditionLogic>1 OR (2 AND 3) OR (4 AND 5) OR 6</conditionLogic>
+            <conditions>
+                <leftValueReference>LoopUALs.QC_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pending Utility Data</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getLead.Product__r.Customer_Subscription_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>kWh</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>LoopUALs.Annual_kWh__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getLead.Product__r.Customer_Subscription_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Electricity Cost ($)</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>LoopUALs.Annual_Cost_of_Electricity__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>LoopUALs.QC_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pending BW Review</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Not_Ready_For_Conversion</targetReference>
+            </connector>
+            <label>Pending QC</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>If Lead is already converted, no need to try again</description>
         <name>IsConverted</name>
         <label>decisionIsConverted</label>
-        <locationX>323</locationX>
-        <locationY>181</locationY>
+        <locationX>503</locationX>
+        <locationY>243</locationY>
         <defaultConnector>
             <targetReference>updateLeadFields</targetReference>
         </defaultConnector>
@@ -357,13 +461,12 @@
         <expression>CONTAINS({!getLead.LoadZone__c}, &quot;/&quot;)</expression>
     </formulas>
     <interviewLabel>Lead {!$Flow.CurrentDateTime}</interviewLabel>
-    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Lead Qualification/Conversion</label>
     <loops>
         <name>Loop_Selected_SSS</name>
         <label>Loop Selected SSS</label>
-        <locationX>926</locationX>
-        <locationY>580</locationY>
+        <locationX>1534</locationX>
+        <locationY>832</locationY>
         <collectionReference>selectedSSSList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -371,6 +474,20 @@
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Store_Selected_SSS_List_on_Lead</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>LoopUALs</name>
+        <label>Loop UALs</label>
+        <locationX>906</locationX>
+        <locationY>800</locationY>
+        <collectionReference>Get_UALS</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>decUALStatusCheck</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Check_UALs_Statuses</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -393,10 +510,39 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
+        <name>Get_UALS</name>
+        <label>Get UALS</label>
+        <locationX>1291</locationX>
+        <locationY>384</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Qualification</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Lead__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Lead.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Utility_Account_Log__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>QC_Status__c</queriedFields>
+        <queriedFields>Annual_kWh__c</queriedFields>
+        <queriedFields>Annual_Cost_of_Electricity__c</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getLead</name>
         <label>getLead</label>
-        <locationX>162</locationX>
-        <locationY>176</locationY>
+        <locationX>363</locationX>
+        <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsConverted</targetReference>
@@ -416,11 +562,11 @@
     <recordLookups>
         <name>Lead</name>
         <label>Lead</label>
-        <locationX>524</locationX>
-        <locationY>425</locationY>
+        <locationX>1154</locationX>
+        <locationY>379</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Check_Qualification</targetReference>
+            <targetReference>Get_UALS</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -447,8 +593,8 @@
     <recordUpdates>
         <name>Update_Lead_with_Selected_SSS</name>
         <label>Update Lead with Selected SSS</label>
-        <locationX>1231</locationX>
-        <locationY>587</locationY>
+        <locationX>1839</locationX>
+        <locationY>839</locationY>
         <connector>
             <targetReference>Convert_Lead</targetReference>
         </connector>
@@ -460,8 +606,8 @@
     <recordUpdates>
         <name>updateLeadRecord</name>
         <label>updateLeadRecord</label>
-        <locationX>725</locationX>
-        <locationY>129</locationY>
+        <locationX>993</locationX>
+        <locationY>241</locationY>
         <connector>
             <targetReference>leadQualificationCheck</targetReference>
         </connector>
@@ -472,10 +618,79 @@
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
+        <name>Resolve_UALs_Before_Conversion</name>
+        <label>Resolve UALs Before Conversion</label>
+        <locationX>913</locationX>
+        <locationY>1093</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>txtResolveUALs</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Utility Account Logs for this lead are not ready for conversion.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please confirm all UALs have their proper Annual Usage populated and the QC Status is set to Complete.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ualDatatable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Utility_Account_Log__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <stringValue>Utility_Account_Log__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <stringValue>Name,QC_Status__c,Annual_kWh__c,Annual_Cost_of_Electricity__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnWidths</name>
+                <value>
+                    <stringValue>Name:228, QC_Status__c:228, Annual_kWh__c:228, Annual_Cost_of_Electricity__c:228</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>hideCheckboxColumn</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnEdits</name>
+                <value>
+                    <stringValue>QC_Status__c:true</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>not_suppressNameFieldLink</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_UALS</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>scrAlreadyConverted</name>
         <label>Already Converted Lead</label>
-        <locationX>338</locationX>
-        <locationY>344</locationY>
+        <locationX>510</locationX>
+        <locationY>60</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -490,8 +705,8 @@
     <screens>
         <name>scrError</name>
         <label>Error Screen</label>
-        <locationX>1479</locationX>
-        <locationY>164</locationY>
+        <locationX>1822</locationX>
+        <locationY>52</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -506,24 +721,24 @@
     <screens>
         <name>scrFinish</name>
         <label>Finish</label>
-        <locationX>1524</locationX>
-        <locationY>584</locationY>
+        <locationX>2132</locationX>
+        <locationY>836</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>txttest</name>
-            <fieldText>&lt;p&gt;Congrats! Lead has been converted!&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can close this window now&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Congrats! Lead has been converted!&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You can close this window now&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
-        <showFooter>true</showFooter>
+        <showFooter>false</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>scrQualifiedLead</name>
         <label>scrQualifiedLead</label>
-        <locationX>755</locationX>
-        <locationY>589</locationY>
+        <locationX>1363</locationX>
+        <locationY>841</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -585,8 +800,8 @@
     <screens>
         <name>showLeadStatus</name>
         <label>showLeadStatus</label>
-        <locationX>321</locationX>
-        <locationY>786</locationY>
+        <locationX>362</locationX>
+        <locationY>605</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -595,7 +810,7 @@
         </connector>
         <fields>
             <name>leadStatus</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(234, 8, 8);&quot;&gt;LEAD IS UNQUALIFIED. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Consult the table below to determine why there are no Projects available for this customer.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(234, 8, 8); font-size: 20px;&quot;&gt;LEAD IS UNQUALIFIED. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Consult the table below to determine why there are no Projects available for this customer.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -635,8 +850,8 @@
     <screens>
         <name>updateLeadFields</name>
         <label>updateLeadFields</label>
-        <locationX>460</locationX>
-        <locationY>125</locationY>
+        <locationX>671</locationX>
+        <locationY>242</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -802,7 +1017,7 @@
     </screens>
     <start>
         <locationX>50</locationX>
-        <locationY>42</locationY>
+        <locationY>72</locationY>
         <connector>
             <targetReference>getLead</targetReference>
         </connector>
@@ -811,8 +1026,8 @@
     <subflows>
         <name>Log_Errors</name>
         <label>Log Errors</label>
-        <locationX>1373</locationX>
-        <locationY>190</locationY>
+        <locationX>1716</locationX>
+        <locationY>50</locationY>
         <connector>
             <targetReference>scrError</targetReference>
         </connector>
@@ -978,6 +1193,16 @@
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <objectType>Error_Log__c</objectType>
+    </variables>
+    <variables>
+        <name>ualsReadyForConversion</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>utilityLookup</name>

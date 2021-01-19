@@ -49,7 +49,7 @@ public without sharing class CSSubscriptionEnroller {
         leadIdToLeadWithChildren = new Map<Id, Lead>([
             SELECT Id, Selected_SSS_For_Conversion__c,
                 (SELECT Id, Name, Annual_Cost_of_Electricity__c, Annual_kWh__c, Lead__c, 
-                    Lead__r.Product__r.Customer_Subscription_Type__c, Name_on_Account__c, Proposed_kWh__c, 
+                    Lead__r.Product__r.Customer_Subscription_Type__c, Name_on_Account__c, Proposed_kWh__c, QC_Status__c,
                     Subsc_Annual_Cost_of_Electricity_Rollup__c, Subscribed_Annual_kWhs_Rollup__c, 
                     Subscribed_Annual_Cost_of_Electricity__c, Subscribed_Annual_kWhs__c, Utility__c, 
                     Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c
@@ -178,6 +178,9 @@ public without sharing class CSSubscriptionEnroller {
         Decimal totalAnnualCostOfElectricity = 0;
         Decimal totalAnnualkWhElectricity = 0;
         for (Utility_Account_Log__c ual : leadIdToLeadWithChildren.get(lead.Id).Utility_Account_Logs__r) {
+            if (ual.QC_Status__c == 'Pending BW Review' || ual.QC_Status__c == 'Pending Utility Data') {
+                throw new Util.BWException('Utility Account Logs are in QC Pending. Please review the UALs and set the status to Complete before converting.');
+            }
             if ((ual.Annual_Cost_of_Electricity__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'Electricity Cost ($)')
                 || ( ual.Annual_kWh__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'kWh' )) {
                 throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
