@@ -131,6 +131,8 @@
                     <lightning-input
                       name="businessTitle"
                       value={restLead.businessTitle}
+                      max-length="50"
+                      message-when-too-long="Please limit to 50 characters"
                       label="Job Title or Organizational Affiliation"
                       class="slds-var-m-bottom_small"
                       onchange={genericOnChange}
