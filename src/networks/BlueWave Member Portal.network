@@ -11,7 +11,7 @@
     <enableDirectMessages>false</enableDirectMessages>
     <enableGuestChatter>true</enableGuestChatter>
     <enableGuestFileAccess>true</enableGuestFileAccess>
-    <enableGuestMemberVisibility>true</enableGuestMemberVisibility>
+    <enableGuestMemberVisibility>false</enableGuestMemberVisibility>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
     <enableMemberVisibility>true</enableMemberVisibility>
@@ -31,7 +31,7 @@
         <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
         <profile>customer community plus login user</profile>
-        <profile>community solar community user</profile>
+        <profile>Community Solar Community User</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>

@@ -14,7 +14,6 @@ private class PostSandboxRefresherTest {
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
         Test.loadData(Load_U__c.SObjectType, 'TestCSLoadU');
-        Test.loadData(ChargentBase__Gateway__c.SObjectType, 'TestCSGateway');
         Test.loadData(Contact.SObjectType, 'TestCSContact');
         Test.loadData(Account.SObjectType, 'TestCSAccount');
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
@@ -124,22 +123,9 @@ private class PostSandboxRefresherTest {
     }
     @IsTest
     static void testSandboxRefresh() {
-        List<ChargentBase__Gateway__c> gateways = [
-            SELECT Id, ChargentBase__Merchant_ID__c
-            FROM ChargentBase__Gateway__c
-            WHERE ChargentBase__Test_Mode__c = TRUE
-        ];
-        System.assertEquals(0, gateways.size(), 'Did not expect to load test gateways');
         Test.startTest();
-        PostSandboxRefresher.switchChargentToTestMode();
         PostSandboxRefresher.updateDocusignToDemoConfig();
         Test.stopTest();
-        gateways = [
-            SELECT Id, ChargentBase__Merchant_ID__c
-            FROM ChargentBase__Gateway__c
-            WHERE ChargentBase__Test_Mode__c = FALSE
-        ];
-        System.assertEquals(0, gateways.size(), 'Did not expect any non-test gateways after running the refresher');
     }
     static testMethod void testBatchUpdateFailure() {
         List<Lead> leadList = [SELECT Id, Company

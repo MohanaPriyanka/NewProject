@@ -1104,10 +1104,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ChargentTransactionSelector</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ClickToDial__TaskController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -19452,11 +19448,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>ChargentOrders__Transaction__c.Negative_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>ChargentOrders__Transaction__c.Order_Account_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -19478,11 +19469,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>ChargentOrders__Transaction__c.Shared_Solar_System_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ChargentOrders__Transaction__c.Status_Map_Client_Reporting__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45858,7 +45844,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Service_Address_From_Log__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -45943,7 +45929,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Utility_Account_Log_Name__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46548,11 +46534,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Zuora__CustomerAccount__c.Lifetime_Savings__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Zuora__CustomerAccount__c.View_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

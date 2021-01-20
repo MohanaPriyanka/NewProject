@@ -22,141 +22,11 @@ public without sharing class CSOpportunityFactoryTest {
 
         System.assert(!hasErrored, 'CSOpportunityFactory.setDefaultOppFields hit an error');
     }
-
-    @IsTest
-    public static void testCanAddPaymentInfoToOpp() {
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(   Name = 'Chargent Gateway',
-                ChargentBase__Available_Payment_Methods__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                ChargentBase__Active__c = True);
-        insert chGateway;
-
-        Entity__c defaultEntity = new Entity__c(
-            Name = 'BWC Holdings, LLC',
-            Gateway__c = chGateway.Id
-        );
-        insert defaultEntity;
-
-        ChargentOrders__ChargentOrder__c newACHOrder = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Payment_Method__c = 'Check',
-            ChargentOrders__Bank_Name__c = 'primary bank',
-            ChargentOrders__Bank_Routing_Number__c = '123456789',
-            ChargentOrders__Bank_Account_Type__c = 'Checking',
-            ChargentOrders__Bank_Account_Number__c = '1234567890',
-            ChargentOrders__Bank_Account_Name__c = 'primary',
-            ChargentOrders__Billing_Email__c = 'primary@bluewavesolar.com',
-            Entity__c = defaultEntity.Id,
-            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
-            Autopay_Only__c = true
-        );
-
-        ChargentOrders__ChargentOrder__c newCCOrder = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Payment_Method__c = 'Credit Card',
-            ChargentOrders__Billing_Email__c = 'additional@bluewavesolar.com',
-            ChargentOrders__Card_Type__c = 'VISA',
-            ChargentOrders__Card_Number__c = '1234123412341234',
-            ChargentOrders__Card_Expiration_Month__c = '01',
-            ChargentOrders__Card_Expiration_Year__c = '12',
-            ChargentOrders__Billing_Zip_Postal__c = '12345',
-            ChargentOrders__Billing_First_Name__c = 'Testy',
-            ChargentOrders__Billing_Last_Name__c = 'McTesterson',
-            Entity__c = defaultEntity.Id,
-            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
-            Autopay_Only__c = true
-        );
-
-        ChargentOrders__ChargentOrder__c neitherOrder = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Payment_Method__c = 'Neither',
-            ChargentOrders__Billing_Email__c = 'additional@bluewavesolar.com',
-            ChargentOrders__Card_Type__c = 'VISA',
-            ChargentOrders__Card_Number__c = '1234123412341234',
-            ChargentOrders__Card_Expiration_Month__c = '01',
-            ChargentOrders__Card_Expiration_Year__c = '12',
-            ChargentOrders__Billing_Zip_Postal__c = '12345',
-            ChargentOrders__Billing_First_Name__c = 'Testy',
-            ChargentOrders__Billing_Last_Name__c = 'McTesterson',
-            Entity__c = defaultEntity.Id,
-            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
-            Autopay_Only__c = true
-        );
-
-        insert new List<ChargentOrders__ChargentOrder__c>{newACHOrder, newCCOrder, neitherOrder};
-
-        Opportunity achOpp = new Opportunity();
-        Opportunity creditOpp = new Opportunity();
-        Opportunity neitherOpp = new Opportunity();
-
-        achOpp = CSOpportunityFactory.addPaymentInfoToOpp(achOpp, newACHOrder);
-        creditOpp = CSOpportunityFactory.addPaymentInfoToOpp(creditOpp, newCCOrder);
-        neitherOpp = CSOpportunityFactory.addPaymentInfoToOpp(neitherOpp, neitherOrder);
-
-        System.assertNotEquals(null, achOpp.ACH_Bank_Name__c);
-        System.assertNotEquals(null, achOpp.ACH_Bank_Routing_Number__c);
-        System.assertNotEquals(null, achOpp.ACH_Account_Type__c);
-        System.assertNotEquals(null, achOpp.ACH_Account_Number__c);
-        System.assertNotEquals(null, achOpp.ACH_Name_on_Account__c);
-        System.assertEquals(null, achOpp.CC_Card_Type__c);
-        System.assertEquals(null, achOpp.CC_Account_Number__c);
-        System.assertEquals(null, achOpp.CC_CardHolder_Name__c);
-        System.assertEquals(null, achOpp.CC_Expiration_Month__c);
-        System.assertEquals(null, achOpp.CC_Expiration_Year__c);
-
-        System.assertEquals(null, creditOpp.ACH_Bank_Name__c);
-        System.assertEquals(null, creditOpp.ACH_Bank_Routing_Number__c);
-        System.assertEquals(null, creditOpp.ACH_Account_Type__c);
-        System.assertEquals(null, creditOpp.ACH_Account_Number__c);
-        System.assertEquals(null, creditOpp.ACH_Name_on_Account__c);
-        System.assertNotEquals(null, creditOpp.CC_Card_Type__c);
-        System.assertNotEquals(null, creditOpp.CC_Account_Number__c);
-        System.assertEquals('Testy McTesterson', creditOpp.CC_CardHolder_Name__c);
-        System.assertNotEquals(null, creditOpp.CC_Expiration_Month__c);
-        System.assertNotEquals(null, creditOpp.CC_Expiration_Year__c);
-
-
-        System.assertEquals(null, neitherOpp.ACH_Bank_Name__c);
-        System.assertEquals(null, neitherOpp.ACH_Bank_Routing_Number__c);
-        System.assertEquals(null, neitherOpp.ACH_Account_Type__c);
-        System.assertEquals(null, neitherOpp.ACH_Account_Number__c);
-        System.assertEquals(null, neitherOpp.ACH_Name_on_Account__c);
-        System.assertEquals(null, neitherOpp.CC_Card_Type__c);
-        System.assertEquals(null, neitherOpp.CC_Account_Number__c);
-        System.assertEquals(null, neitherOpp.CC_CardHolder_Name__c);
-        System.assertEquals(null, neitherOpp.CC_Expiration_Month__c);
-        System.assertEquals(null, neitherOpp.CC_Expiration_Year__c);
-    }
+   
 
     @IsTest
     public static void testCanGenerateCSOpportunitiesForLeadByCost() {
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(   Name = 'Chargent Gateway',
-                ChargentBase__Available_Payment_Methods__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                ChargentBase__Active__c = True);
-        insert chGateway;
-
-        Entity__c defaultEntity = new Entity__c(
-            Name = 'BWC Holdings, LLC',
-            Gateway__c = chGateway.Id
-        );
-        insert defaultEntity;
-
-        ChargentOrders__ChargentOrder__c newACHOrder = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Payment_Method__c = 'Check',
-            ChargentOrders__Bank_Name__c = 'primary bank',
-            ChargentOrders__Bank_Routing_Number__c = '123456789',
-            ChargentOrders__Bank_Account_Type__c = 'Checking',
-            ChargentOrders__Bank_Account_Number__c = '1234567890',
-            ChargentOrders__Bank_Account_Name__c = 'primary',
-            ChargentOrders__Billing_Email__c = 'primary@bluewavesolar.com',
-            Entity__c = defaultEntity.Id,
-            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
-            Autopay_Only__c = true
-        );
-
-        insert newACHOrder;
+  
 
         Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .1848,
@@ -249,7 +119,7 @@ public without sharing class CSOpportunityFactoryTest {
             WHERE Id =: lead.Id
         ];
 
-        List<Opportunity> generatedOpps = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, newACHOrder, annualTotals, propertyAccount.Id);
+        List<Opportunity> generatedOpps = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, annualTotals, propertyAccount.Id);
 
         Opportunity opp1 = generatedOpps[0];
         Opportunity opp2 = generatedOpps[1];
@@ -258,54 +128,17 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(sss1.Id, opp1.Shared_Solar_System__c);
         System.assertEquals(sss1.Maximum_Subscription_Cost__c, opp1.Annual_Electricity_Cost__c);
         System.assertEquals(0, opp1.Annual_Consumption_kWh__c);
-        System.assertEquals(newACHOrder.ChargentOrders__Bank_Name__c, opp1.ACH_Bank_Name__c);
-        System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp1.ACH_Name_on_Account__c);
-        System.assertEquals('*****6789', opp1.ACH_Bank_Routing_Number__c);
-        System.assertEquals('******7890', opp1.ACH_Account_Number__c);
         System.assertEquals('Contract Pending', opp1.StageName);
 
         System.assertEquals(sss2.Id, opp2.Shared_Solar_System__c);
         System.assertEquals(annualTotals.cost - opp1.Annual_Electricity_Cost__c, opp2.Annual_Electricity_Cost__c);
         System.assertEquals(0, opp2.Annual_Consumption_kWh__c);
-        System.assertEquals(newACHOrder.ChargentOrders__Bank_Name__c, opp2.ACH_Bank_Name__c);
-        System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp2.ACH_Name_on_Account__c);
-        System.assertEquals('*****6789', opp2.ACH_Bank_Routing_Number__c);
-        System.assertEquals('******7890', opp2.ACH_Account_Number__c);
         System.assertEquals('Contract Pending', opp2.StageName);
 
     }
 
     @IsTest
     public static void testCanGenerateCSOpportunitiesForLeadBykWh() {
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(   Name = 'Chargent Gateway',
-                ChargentBase__Available_Payment_Methods__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                ChargentBase__Active__c = True);
-        insert chGateway;
-
-        Entity__c defaultEntity = new Entity__c(
-            Name = 'BWC Holdings, LLC',
-            Gateway__c = chGateway.Id
-        );
-        insert defaultEntity;
-
-        ChargentOrders__ChargentOrder__c newACHOrder = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Payment_Method__c = 'Check',
-            ChargentOrders__Bank_Name__c = 'primary bank',
-            ChargentOrders__Bank_Routing_Number__c = '123456789',
-            ChargentOrders__Bank_Account_Type__c = 'Checking',
-            ChargentOrders__Bank_Account_Number__c = '1234567890',
-            ChargentOrders__Bank_Account_Name__c = 'primary',
-            ChargentOrders__Billing_Email__c = 'primary@bluewavesolar.com',
-            Entity__c = defaultEntity.Id,
-            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
-            Autopay_Only__c = true
-        );
-
-        insert newACHOrder;
-
         Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .1848,
             Name = 'Nation Grid WCMA Class 2 - S/F 2016',
@@ -399,7 +232,7 @@ public without sharing class CSOpportunityFactoryTest {
             WHERE Id =: lead.Id
         ];
 
-        List<Opportunity> generatedOpps = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, newACHOrder, annualTotals, propertyAccount.Id);
+        List<Opportunity> generatedOpps = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, annualTotals, propertyAccount.Id);
 
         Opportunity opp1 = generatedOpps[0];
         Opportunity opp2 = generatedOpps[1];
@@ -409,19 +242,11 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(0, opp1.Annual_Electricity_Cost__c);
         Decimal maximumKWHSubscription =  sss1.Maximum_Subscription_Capacity_kWDC__c *sss1.Expected_Yield_kWh_kW__c;
         System.assertEquals(maximumKWHSubscription, opp1.Annual_Consumption_kWh__c);
-        System.assertEquals(newACHOrder.ChargentOrders__Bank_Name__c, opp1.ACH_Bank_Name__c);
-        System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp1.ACH_Name_on_Account__c);
-        System.assertEquals('*****6789', opp1.ACH_Bank_Routing_Number__c);
-        System.assertEquals('******7890', opp1.ACH_Account_Number__c);
         System.assertEquals('QC in Process', opp1.StageName);
 
         System.assertEquals(sss2.Id, opp2.Shared_Solar_System__c);
         System.assertEquals(0, opp2.Annual_Electricity_Cost__c);
         System.assertEquals(annualTotals.kWh - opp1.Annual_Consumption_kWh__c, opp2.Annual_Consumption_kWh__c);
-        System.assertEquals(newACHOrder.ChargentOrders__Bank_Name__c, opp2.ACH_Bank_Name__c);
-        System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp2.ACH_Name_on_Account__c);
-        System.assertEquals('*****6789', opp2.ACH_Bank_Routing_Number__c);
-        System.assertEquals('******7890', opp2.ACH_Account_Number__c);
         System.assertEquals('QC in Process', opp2.StageName);
     }
 
@@ -494,32 +319,7 @@ public without sharing class CSOpportunityFactoryTest {
             Product__c = csProduct.Id,
             Custom_ID__c = 'partner',
             System_Assignment__c = 'Automatic - Assignment Order',
-            Parent_Account__c = parentAccount.Id,
-            Loan_System_Information__c = '{' +
-                '"CreditCardExpirationMonth":2,' +
-                '"Active":false,' +
-                '"Id":"2c92c0f86a0c41a5016a1f41d63a2f96",' +
-                '"CreditCardExpirationYear":2022,' +
-                '"UpdatedDate":"2019-04-15T04:29:28.000+00:00",' +
-                '"CreditCardPostalCode":"12345",' +
-                '"IsCompany":false,' +
-                '"CreditCardType":"AmericanExpress",' +
-                '"LastTransactionStatus":"Approved",' +
-                '"UpdatedById":"3",' +
-                '"BankIdentificationNumber":"370000",' +
-                '"CreatedDate":"2019-04-15T04:29:28.000+00:00",' +
-                '"TotalNumberOfProcessedPayments":0,' +
-                '"PaymentMethodStatus":"Active",' +
-                '"NumConsecutiveFailures":0,' +
-                '"TotalNumberOfErrorPayments":0,' +
-                '"CreditCardMaskNumber":"***********0002",' +
-                '"CreatedById":"3",' +
-                '"LastTransactionDateTime":"2019-04-15T04:29:29.000+00:00",' +
-                '"UseDefaultRetryRule":true,' +
-                '"Type":"CreditCard",' +
-                '"CreditCardHolderName":"Test"' +
-                '}'
-        );
+            Parent_Account__c = parentAccount.Id);
         insert lead;
 
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
@@ -537,12 +337,12 @@ public without sharing class CSOpportunityFactoryTest {
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
                 Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c, Partner_Account__c, Partner_Contact__c, 
                 Partner_Email__c, Personal_Credit_Report__c, Phone2__c, Product_Line__c, Referral_Email__c, bs_Sales_ID__c,
-                Security_Type__c, LoadZone__c, System_Assignment__c, Utility__c, OwnerId, Loan_System_Information__c, Underwriting_Criteria__c
+                Security_Type__c, LoadZone__c, System_Assignment__c, Utility__c, OwnerId,  Underwriting_Criteria__c
             FROM Lead
             WHERE Id =: lead.Id
         ];
 
-        List<Opportunity> generatedOpps = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, null, annualTotals, propertyAccount.Id);
+        List<Opportunity> generatedOpps = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, annualTotals, propertyAccount.Id);
 
         Opportunity opp1 = generatedOpps[0];
         Opportunity opp2 = generatedOpps[1];
@@ -552,19 +352,9 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(0, opp1.Annual_Electricity_Cost__c);
         Decimal maximumKWHSubscription = sss1.Maximum_Subscription_Capacity_kWDC__c * sss1.Expected_Yield_kWh_kW__c;
         System.assertEquals(maximumKWHSubscription, opp1.Annual_Consumption_kWh__c);
-        System.assertEquals('AmericanExpress', opp1.CC_Card_Type__c);
-        System.assertEquals('***********0002', opp1.CC_Account_Number__c);
-        System.assertEquals('Test', opp1.CC_CardHolder_Name__c);
-        System.assertEquals('2', opp1.CC_Expiration_Month__c);
-        System.assertEquals('2022', opp1.CC_Expiration_Year__c);
-
+  
         System.assertEquals(sss2.Id, opp2.Shared_Solar_System__c);
         System.assertEquals(0, opp2.Annual_Electricity_Cost__c);
         System.assertEquals(annualTotals.kWh - opp1.Annual_Consumption_kWh__c, opp2.Annual_Consumption_kWh__c);
-        System.assertEquals('AmericanExpress', opp2.CC_Card_Type__c);
-        System.assertEquals('***********0002', opp2.CC_Account_Number__c);
-        System.assertEquals('Test', opp2.CC_CardHolder_Name__c);
-        System.assertEquals('2', opp2.CC_Expiration_Month__c);
-        System.assertEquals('2022', opp2.CC_Expiration_Year__c);
     }
 }
