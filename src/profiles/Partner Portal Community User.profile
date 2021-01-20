@@ -1847,10 +1847,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ChargentTransactionSelector</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ClickToDial__TaskController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -22283,11 +22279,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>ChargentOrders__Transaction__c.Negative_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>ChargentOrders__Transaction__c.Order_Account_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -22309,11 +22300,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>ChargentOrders__Transaction__c.Shared_Solar_System_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ChargentOrders__Transaction__c.Status_Map_Client_Reporting__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -498,17 +498,9 @@ public class LeadTriggerHandlerTest {
         );
         insert sysProp;
 
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(   Name = 'Chargent Gateway',
-                ChargentBase__Available_Payment_Methods__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                ChargentBase__Active__c = True);
-        insert chGateway;
 
         Entity__c defaultEntity = new Entity__c(
-            Name = 'BWC Holdings, LLC',
-            Gateway__c = chGateway.Id
+            Name = 'BWC Holdings, LLC'
         );
         insert defaultEntity;
 
@@ -605,36 +597,6 @@ public class LeadTriggerHandlerTest {
         insert new List<Lead>{primaryProperty, additionalProperty};
         CSQualificationTestclass.pullCreditForLead(primaryProperty.Id, 'High FICO');
 
-        ChargentOrders__ChargentOrder__c newACHOrder1 = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Payment_Method__c = 'Check',
-            ChargentOrders__Bank_Name__c = 'primary bank',
-            ChargentOrders__Bank_Routing_Number__c = '123456789',
-            ChargentOrders__Bank_Account_Type__c = 'Checking',
-            ChargentOrders__Bank_Account_Number__c = '1234567890',
-            ChargentOrders__Bank_Account_Name__c = 'primary',
-            ChargentOrders__Billing_Email__c = 'primary@bluewavesolar.com',
-            Entity__c = defaultEntity.Id,
-            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
-            Lead__c = primaryProperty.Id,
-            Autopay_Only__c = true
-        );
-
-        ChargentOrders__ChargentOrder__c newACHOrder2 = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Payment_Method__c = 'Credit Card',
-            ChargentOrders__Billing_Email__c = 'additional@bluewavesolar.com',
-            ChargentOrders__Card_Type__c = 'VISA',
-            ChargentOrders__Card_Number__c = '1234123412341234',
-            ChargentOrders__Card_Expiration_Month__c = '01',
-            ChargentOrders__Card_Expiration_Year__c = '12',
-            ChargentOrders__Billing_Zip_Postal__c = '12345',
-            ChargentOrders__Billing_First_Name__c = 'Testy',
-            ChargentOrders__Billing_Last_Name__c = 'McTesterson',
-            Entity__c = defaultEntity.Id,
-            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
-            Lead__c = additionalProperty.Id,
-            Autopay_Only__c = true
-        );
-        insert new List<ChargentOrders__ChargentOrder__c>{newACHOrder1, newACHOrder2};
 
         // kW DC = Annual Cost / NMC Rate / Yield
         Utility_Account_Log__c ual1 = new Utility_Account_Log__c(

@@ -11,7 +11,6 @@ public without sharing class CSOpportunityFactory {
     public static List<Opportunity> generateCSOpportunities(
         Lead lead,
         List<Shared_Solar_System__c> availableSSS,
-        ChargentOrders__ChargentOrder__c baseChargentOrder,
         CSSubscriptionEnroller.AnnualEnergyTotal annualTotals,
         Id propertyAccountId
     ) {
@@ -46,12 +45,6 @@ public without sharing class CSOpportunityFactory {
                 );
                 opp = setOpportunityStage(lead, opp);
                 opp = setDefaultOppFields(lead, opp);
-                if (baseChargentOrder != null) {
-                    opp = addPaymentInfoToOpp(opp, baseChargentOrder);
-                }
-                if (lead.Loan_System_Information__c != null) {
-                    opp = addPaymentInfoToOpp(opp, lead.Loan_System_Information__c);
-                }
                 oppListToCreate.add(opp);
                 oppCounter++;
             }
@@ -59,23 +52,6 @@ public without sharing class CSOpportunityFactory {
         return oppListToCreate;
     }
 
-    @TestVisible
-    private static Opportunity addPaymentInfoToOpp(Opportunity opp, ChargentOrders__ChargentOrder__c chOrder) {
-        if (chOrder.ChargentOrders__Payment_Method__c == 'Check') {
-            opp.ACH_Bank_Name__c = chOrder.ChargentOrders__Bank_Name__c;
-            opp.ACH_Bank_Routing_Number__c = Util.obscureText(chOrder.ChargentOrders__Bank_Routing_Number__c, 4);
-            opp.ACH_Account_Type__c = chOrder.ChargentOrders__Bank_Account_Type__c;
-            opp.ACH_Account_Number__c = Util.obscureText(chOrder.ChargentOrders__Bank_Account_Number__c, 4);
-            opp.ACH_Name_on_Account__c = chOrder.ChargentOrders__Bank_Account_Name__c;
-        } else if (chOrder.ChargentOrders__Payment_Method__c == 'Credit Card') {
-            opp.CC_Card_Type__c = chOrder.ChargentOrders__Card_Type__c ;
-            opp.CC_Account_Number__c = Util.obscureText(chOrder.ChargentOrders__Card_Number__c, 4);
-            opp.CC_CardHolder_Name__c = chOrder.ChargentOrders__Billing_First_Name__c +' ' + chOrder.ChargentOrders__Billing_Last_Name__c;
-            opp.CC_Expiration_Month__c = chOrder.ChargentOrders__Card_Expiration_Month__c;
-            opp.CC_Expiration_Year__c = chOrder.ChargentOrders__Card_Expiration_Year__c;
-        }
-        return opp;
-    }
 
     @TestVisible
     private static Opportunity addPaymentInfoToOpp(Opportunity opp, String paymentMethodJSON) {
@@ -118,7 +94,7 @@ public without sharing class CSOpportunityFactory {
         opp.Acquired_By_Client_Closed_By_BlueWave__c = lead.Acquired_By_Client_Closed_By_BlueWave__c;
         opp.Application_Date__c = lead.Application__c;
         opp.Application_Type__c = lead.Application_Type__c;
-        opp.Avidia_Checking_Account__c = lead.Avidia_Checking_Account__c;
+
         opp.BS_Sales_ID__c = lead.bs_Sales_ID__c;
         opp.Business_Title__c = lead.Business_Title__c;
         opp.Customer_Group__c = lead.Customer_Type_Formula__c;
@@ -126,16 +102,10 @@ public without sharing class CSOpportunityFactory {
         opp.Customer_Referral__c = lead.Customer_Referral__c;
         opp.Customer_type__c = lead.Customer_type__c;
         opp.Date_of_Application__c = lead.Date_of_Application__c;
-        opp.DOER_Solar_Loan__c = lead.DOER_Solar_Loan__c;
         opp.Email__c = lead.Email_Re_Enter__c;
-        opp.Is_Loan_Secured__c = lead.Is_Loan_Secured__c;
         opp.Lead_ID__c = lead.Lead_ID__c;
         opp.LoadZone__c = lead.LoadZone__c;
-        opp.Loan_Program_Class__c = lead.Loan_Program_Class__c;
-        opp.Maximum_Monthly_Disbursement__c = lead.Maximum_Monthly_Disbursement2__c;
         opp.Name = lead.Company;
-        opp.Number_of_Years_at_Location__c = lead.Number_of_Years_at_Location__c;
-        opp.Number_of_Years_in_Business__c = lead.Number_of_Years_in_Business__c;
         opp.OwnerId = lead.OwnerId;
         opp.Parcel_ZIp__c = lead.Parcel_Zip__c;
         opp.Partner_Email__c = lead.Partner_Email__c;
