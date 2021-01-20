@@ -115,9 +115,8 @@ public inherited sharing class SharedSolarSystems {
                 startDate = getStartDateForCFD(cfd, startDate, sss);
             } else if (cfd.Shared_Solar_System__c == sss.Id) {
                 return getStartDateForCFD(cfd, null, sss);
-            } else {
-                // must be cfd.SSS != sss.Id, so we can skip it
             }
+            // else: must be cfd.SSS != sss.Id, so we can skip it
         }
         return startDate;
     }
@@ -255,7 +254,7 @@ public inherited sharing class SharedSolarSystems {
     }
 
     @TestVisible
-    public Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+    private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
         Boolean meetsCriteria = false;
         Boolean sssDoesNotUnderwrite = sss.Do_Not_Underwrite__c;
 
@@ -330,38 +329,6 @@ public inherited sharing class SharedSolarSystems {
             }
         }
         return false;
-    }
-
-    /**
-     * @description Returns a semi-colon delimited list of partners from the list of Partner SSS Eligibility records
-     * @param partnerEligibilities List of eligibility records to summarize
-     * @return Summary
-     */
-    public static String summarizeEligiblePartners(List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities) {
-        String eligiblePartners = '';
-        for (Partner_Shared_Solar_System_Eligibility__c eligibility : partnerEligibilities) {
-            eligiblePartners += eligibility.Account__r.Name + '; ';
-        }
-        return eligiblePartners.removeEnd('; ');
-    }
-
-    public static String summarizeUnderwritingOptions(Shared_Solar_System__c sss) {
-        String options = '';
-        if (sss.Do_Not_Underwrite__c) {
-            return 'No underwriting necessary';
-        }
-        if (sss.Available_SMB_Underwriting_Method_FICO__c) {
-            options += 'FICO with ' + sss.Credit_Score_Requirement__c + ' Minimum; ';
-        }
-        if (sss.Available_SMB_Underwriting_Method_Docs__c) {
-            options += 'Financial Review with ' + sss.RiskCalc_Minimum__c + ' Minimum; ';
-        }
-        if (sss.Do_Not_Ask_for_Payment_Method__c) {
-            options += 'No Payment Details Required ';
-        } else {
-            options += 'Payment Details Required';
-        }
-        return options;
     }
 
     /**
