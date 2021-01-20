@@ -11,7 +11,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     public void runApexClass(SandboxContext context) {
         updateLetterStreamToTestConfig();
         updateDocusignToDemoConfig();
-        switchChargentToTestMode();
         setupBWTestPartner();
         setupDataForReportTest();
         schedulePostSandboxJob();
@@ -37,24 +36,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         newLetterStreamSetting.API_Endpoint__c = 'https://secure.letterstream.com/apis/';
         upsert newLetterStreamSetting;
     }
-    @TestVisible
-    private static void switchChargentToTestMode() {
-        if (!Util.isSandboxOrTest()) {
-            throw new Util.BWException('Don\'t switch Chargent to Test Mode!');
-        }
-        // We'll switch all gateways to Authorize for now since they have a test gateway.
-        RecordType authorizeRT = [SELECT Id FROM RecordType WHERE DeveloperName = 'Authorizenet' LIMIT 1];
-        List<ChargentBase__Gateway__c> gateways = [SELECT Id, Name FROM ChargentBase__Gateway__c];
-        for (ChargentBase__Gateway__c gateway : gateways) {
-            gateway.ChargentBase__Test_Mode__c = true;
-            gateway.RecordTypeId = authorizeRT.Id;
-            gateway.ChargentBase__Merchant_ID__c = '2EBsLaEw64D';
-            gateway.ChargentBase__Security_Key__c = '9QcB6Meb59K5x8WG';
-        }
-        if (gateways.size() > 0) {
-            Database.executeBatch(new GenericBatchDMLOperation(gateways, 'Update'));
-        }
-    }
+
     @TestVisible
     private static void setupBWTestPartner() {
         Partner__c partner = new Partner__c(Name = 'BlueWave Test Partner');
@@ -134,7 +116,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
      - Insert Parent Account, Contact, Property Account, Utility Account Log, Opportunity, and Utility Account Subscription
      - Insert Schedule Z, Bill Periods, Productions, and Transfers - then call EEUTH them to generate UASBs, System Bills, and Account Bills
      - Update Account Bills to publish them
-     - Insert Chargent Orders to create transactions
+    
      */
     public class CSRecordLoader implements Queueable {
         public CSDataSetting csDataSetting;
@@ -416,47 +398,14 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
                 FROM Shared_Solar_System__c
                 ORDER BY Name DESC
             ];
-            RecordType authorizeRT = [SELECT Id FROM RecordType WHERE DeveloperName = 'Authorizenet' LIMIT 1];
-            ChargentBase__Gateway__c chGateway =
-                new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                    ChargentBase__Test_Mode__c = true,
-                    RecordTypeId = authorizeRT.Id,
-                    ChargentBase__Merchant_ID__c = '2EBsLaEw64D',
-                    ChargentBase__Security_Key__c = '9QcB6Meb59K5x8WG',
-                    ChargentBase__Default_Payment_Method_for_PC__c = 'Credit Card',
-                    ChargentBase__Default_Payment_Method_for_PR__c = 'Credit Card',
-                    Shared_Solar_System__c = sssList[0].Id,
-                    Entity__c = sssList[0].BWC_Project_Entity_Manual__r.Id,
-                    ChargentBase__Available_Payment_Methods__c = 'Credit Card;eCheck',
-                    ChargentBase__Active__c = true,
-                    CreatedDate = csDataDate
-                );
-            insert chGateway;
-            ChargentBase__Gateway__c chGateway2 =
-                new ChargentBase__Gateway__c(Name = 'Chargent Gateway B',
-                    ChargentBase__Test_Mode__c = true,
-                    RecordTypeId = authorizeRT.Id,
-                    ChargentBase__Merchant_ID__c = '2EBsLaEw64D',
-                    ChargentBase__Security_Key__c = '9QcB6Meb59K5x8WG',
-                    ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                    ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                    Shared_Solar_System__c = sssList[1].Id,
-                    Entity__c = sssList[1].BWC_Project_Entity_Manual__r.Id,
-                    ChargentBase__Available_Payment_Methods__c = 'Credit Card;eCheck',
-                    ChargentBase__Active__c = true,
-                    CreatedDate = csDataDate
-                );
-            insert chGateway2;
+            
             Entity__c defaultEntity = new Entity__c(
                 Name = 'BWC Holdings, LLC',
-                Gateway__c = chGateway.Id,
                 CreatedDate = csDataDate
             );
             insert defaultEntity;
             Entity__c entity1 = [SELECT Id FROM Entity__c WHERE Name = 'Project A Oak Road' LIMIT 1];
-            entity1.Gateway__c = chGateway.Id;
             Entity__c entity2 = [SELECT Id FROM Entity__c WHERE Name = 'Project B Main St' LIMIT 1];
-            entity2.Gateway__c = chGateway2.Id;
             update new List<Entity__c>{entity1, entity2};
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.FirstAccountHelper(csDataSetting));
@@ -997,8 +946,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         if (Util.isSandboxOrTest()) {
             Util.disableAllTriggers();
             delete [SELECT Id FROM CS_Bill_Setting__c WHERE CreatedDate = :csDataDate];
-            delete [SELECT Id FROM ChargentOrders__Transaction__c WHERE CreatedDate = :csDataDate];
-            delete [SELECT Id FROM ChargentOrders__ChargentOrder__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Transfer_Part__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Transfer__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Utility_Account_Bill__c WHERE CreatedDate = :csDataDate];
@@ -1017,7 +964,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             delete [SELECT Id FROM Case WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Contact WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Account WHERE CreatedDate = :csDataDate];
-            delete [SELECT Id FROM ChargentBase__Gateway__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Shared_Solar_System__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Utility__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Entity__c WHERE CreatedDate = :csDataDate];

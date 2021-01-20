@@ -1,8 +1,0 @@
-Id,ChargentOrders__Order__c,ChargentOrders__Gateway__c,ChargentOrders__Response_Message__c,ChargentOrders__Type__c,ChargentOrders__Payment_Method__c,Activity_Type__c,ChargentOrders__Amount__c,ChargentOrders__Response_Status__c
-TransactionA,CaseCreation-OrderNoCase,TestGatewayOne,OK,Charge,Credit Card,Payment,50,Approved
-TransactionB,CaseCreation-OrderNotToday,TestGatewayOne,OK,Charge,Credit Card,Payment,50,Approved
-TransactionC,CaseCreation-OrderPaymentStatus,TestGatewayOne,OK,Charge,Credit Card,Payment,50,Approved
-TransactionD,CaseCreation-OrderNextTrans,TestGatewayOne,OK,Charge,Credit Card,Payment,50,Approved
-TransactionE,CaseCreation-OrderTransResponse,TestGatewayOne,Credit Card Declined.,Charge,Credit Card,Payment,50,Error
-TransactionF,CaseCreation-OrderAccountBill,TestGatewayOne,OK,Charge,Credit Card,Payment,50,Approved
-TransactionG,AutoEmailer-Order1,TestGatewayOne,Invalid Route.,Charge,Check,Payment,1000,Error

@@ -9,7 +9,6 @@ public class CSPaymentTest {
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
         Test.loadData(Load_U__c.SObjectType, 'TestCSLoadU');
-        Test.loadData(ChargentBase__Gateway__c.SObjectType, 'TestCSGateway');
         Test.loadData(Contact.SObjectType, 'TestCSContact');
         Test.loadData(Account.SObjectType, 'TestCSAccount');
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
@@ -29,7 +28,6 @@ public class CSPaymentTest {
         Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');
         Test.stopTest();
         Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
-        Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
         TestFactory.setCSBillSettings();
 
         // Because there's no way to populate self lookups:
