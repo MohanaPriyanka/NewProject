@@ -24,7 +24,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
                 BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c, Total_System_Size_kWh_DC__c,
                 Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c, Public__c,
-                Do_Not_Underwrite__c,
+                Do_Not_Underwrite__c, Do_Not_Ask_for_Payment_Method__c,
             (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE Id IN :sssIds
