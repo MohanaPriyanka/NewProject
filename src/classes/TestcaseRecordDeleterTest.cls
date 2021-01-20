@@ -20,61 +20,6 @@ public class TestcaseRecordDeleterTest {
         BSST__c salesRep = new BSST__c(Name = 'Joe Bob', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@Sales.com');
         insert salesRep;
 
-        ChargentBase__Gateway__c chGateway =
-            new ChargentBase__Gateway__c(Name = 'SREC',
-                ChargentBase__Merchant_ID__c = '235986',
-                ChargentBase__Available_Payment_Methods__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                ChargentBase__Active__c = True);
-        insert chGateway;
-
-        /* Only one Chargent Order to avoid error: No more than one executeBatch can be called from within a test method.
-        Please make sure the iterable returned from your start method matches the batch size, resulting in one executeBatch invocation */
-        ChargentOrders__ChargentOrder__c alreadyReady = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Bank_Account_Number__c = '00000000000',
-            ChargentOrders__Bank_Routing_Number__c = '123456789',
-            ChargentOrders__Bank_Account_Name__c = 'Jordan Test',
-            ChargentOrders__Bank_Name__c = 'Originally Set to Ready',
-            ChargentOrders__Bank_Account_Type__c = 'Checking',
-            ChargentOrders__Payment_Method__c = 'Check',
-            ChargentOrders__Gateway__c = chGateway.Id,
-            ChargentOrders__Credit_Amount__c = 0.03,
-            SREC_Status__c = 'Ready');
-        ChargentOrders__ChargentOrder__c orderOne = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Bank_Account_Number__c = '00000000000',
-            ChargentOrders__Bank_Routing_Number__c = '123456789',
-            ChargentOrders__Bank_Account_Name__c = 'Jordan Test',
-            ChargentOrders__Bank_Name__c = 'Bank of Bank',
-            ChargentOrders__Bank_Account_Type__c = 'Checking',
-            ChargentOrders__Payment_Method__c = 'Check',
-            ChargentOrders__Gateway__c = chGateway.Id,
-            ChargentOrders__Credit_Amount__c = 0,
-            SREC_Status__c = '');
-        ChargentOrders__ChargentOrder__c orderTwo = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Bank_Account_Number__c = '00000000000',
-            ChargentOrders__Bank_Routing_Number__c = '123456789',
-            ChargentOrders__Bank_Account_Name__c = 'Jordan Test',
-            ChargentOrders__Bank_Name__c = 'Bank of Bank',
-            ChargentOrders__Bank_Account_Type__c = 'Checking',
-            ChargentOrders__Payment_Method__c = 'Check',
-            ChargentOrders__Gateway__c = chGateway.Id,
-            ChargentOrders__Credit_Amount__c = 0,
-            SREC_Status__c = '');
-        ChargentOrders__ChargentOrder__c orderThree = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Bank_Account_Number__c = '00000000000',
-            ChargentOrders__Bank_Routing_Number__c = '123456789',
-            ChargentOrders__Bank_Account_Name__c = 'Jordan Test',
-            ChargentOrders__Bank_Name__c = 'Bank of Bank',
-            ChargentOrders__Bank_Account_Type__c = 'Checking',
-            ChargentOrders__Payment_Method__c = 'Check',
-            ChargentOrders__Gateway__c = chGateway.Id,
-            ChargentOrders__Credit_Amount__c = 0,
-            SREC_Status__c = '');
-        insert new List<ChargentOrders__ChargentOrder__c>{
-            alreadyReady, orderOne, orderTwo, orderThree
-        };
-
         Lead leadOne = new Lead (FirstName = 'One',
             LastName = 'Testcase',
             Company = 'Company one');
@@ -617,21 +562,11 @@ public class TestcaseRecordDeleterTest {
             Username = 'testBillCreationandPay@bluewavesolar.com');
         Util.insertSobj(userRecord);
 
-        ChargentBase__Gateway__c chGateway =
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                ChargentBase__Merchant_ID__c = '235986',
-                ChargentBase__Available_Payment_Methods__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                ChargentBase__Debug__c = True,
-                ChargentBase__Active__c = TRUE);
-        insert chGateway;
-
+   
         Entity__c entity2 = new Entity__c (
             Name = 'Oxford Barrett St. P2',
             Send_Checks_Address__c = '200 Other Street, City MA 02114',
-            Client_Account__c = clientAccount2.Id,
-            Gateway__c = chGateway.Id
+            Client_Account__c = clientAccount2.Id
         );
         insert entity2;
 

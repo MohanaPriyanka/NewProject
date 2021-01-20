@@ -360,10 +360,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ChargentTransactionSelector</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ClientBrandingServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -7481,11 +7477,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>ChargentOrders__Transaction__c.Gateway_Month__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ChargentOrders__Transaction__c.Negative_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

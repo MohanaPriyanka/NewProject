@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 12/12/2018.
  * Description: Moving Logic for CS Subscriptions out of LeadTriggerHandler.
- * Dependencies: Leads, SharedSolarSystems, ChargentOrders (on leads)
+ * Dependencies: Leads, SharedSolarSystems
  *
  * Outputs: Opportunities for leads, Utility Account Subscriptions for leads
  * Test: LeadTriggerHandlerTest, LeadServiceTestclass
@@ -23,7 +23,6 @@ public without sharing class CSSubscriptionEnroller {
 
     private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<Schema.SObjectType> {
-            ChargentOrders__ChargentOrder__c.SObjectType,
             Utility_Account_Log__c.SObjectType,
             Contract.SObjectType,
             Opportunity.SObjectType,
@@ -56,16 +55,6 @@ public without sharing class CSSubscriptionEnroller {
                 FROM Utility_Account_Logs__r
                 ORDER BY Annual_Cost_of_Electricity__c, Annual_kWh__c DESC),
                 (SELECT Id FROM Accounts__r WHERE RecordType.Name = 'Property'),
-                (SELECT Id, Lead__c, ChargentOrders__Payment_Method__c, ChargentOrders__Bank_Name__c,
-                    ChargentOrders__Bank_Routing_Number__c, ChargentOrders__Bank_Account_Type__c,
-                    ChargentOrders__Bank_Account_Number__c, ChargentOrders__Bank_Account_Name__c,
-                    ChargentOrders__Billing_Email__c, ChargentOrders__Card_Type__c,
-                    ChargentOrders__Card_Number__c, ChargentOrders__Card_Expiration_Month__c,
-                    ChargentOrders__Card_Expiration_Year__c, ChargentOrders__Billing_Address__c,
-                    ChargentOrders__Billing_City__c, ChargentOrders__Billing_State__c,
-                    ChargentOrders__Billing_Zip_Postal__c, ChargentOrders__Billing_First_Name__c,
-                    ChargentOrders__Billing_Last_Name__c, Autopay_Only__c
-                FROM Chargent_Orders__r),
                 (SELECT Id, AccountId, Contract_Type__c, Customer_Signature_Date_Time__c, Product__c
                 FROM Contracts__r WHERE RecordTypeId = :CustomerContractService.RECORD_TYPE_ID
                 ORDER BY CreatedDate DESC)
@@ -106,7 +95,6 @@ public without sharing class CSSubscriptionEnroller {
             if (annualTotals.cost != 0 || annualTotals.kWh != 0) {
                 createOpportunityAndContactRoles(lead, annualTotals);
                 createUAS(lead);
-                moveChOrderToAccount(lead);
                 if (lead.Zuora_Payment_Ref_Id__c != null) {
                     System.enqueueJob(new ZuoraAccountAsyncService(lead.Id));
                 }
@@ -209,12 +197,11 @@ public without sharing class CSSubscriptionEnroller {
 
     private void createOpportunityAndContactRoles(Lead lead, AnnualEnergyTotal annualTotals) {
         Id propertyAccountId = getPropertyAccount(lead);
-        ChargentOrders__ChargentOrder__c chargentOrder = leadIdToLeadWithChildren.get(lead.Id).Chargent_Orders__r.isEmpty() ? null : leadIdToLeadWithChildren.get(lead.Id).Chargent_Orders__r[0];
         List<Shared_Solar_System__c> availableSSS = sssList.getQualifiedForLead(lead);
         leadIdToAvailableSSS.put(lead.Id, availableSSS);
         
         //Need to pass the property Account here (not converted Account)
-        List<Opportunity> oppListToCreate = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, chargentOrder, annualTotals, propertyAccountId);
+        List<Opportunity> oppListToCreate = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, annualTotals, propertyAccountId);
         leadOppsMap.put(lead.Id, oppListToCreate);
         for(Opportunity opp : oppListToCreate) {
             List<Contract> leadContracts = leadIdToLeadWithChildren.get(lead.Id).Contracts__r;
@@ -278,15 +265,6 @@ public without sharing class CSSubscriptionEnroller {
     }
 
     
-    private void moveChOrderToAccount(Lead lead) {
-        //Link the chargent order to the property account, not the converted account
-        Id propAccountId = getPropertyAccount(lead);
-
-        for(ChargentOrders__ChargentOrder__c chargentOrder : leadIdToLeadWithChildren.get(lead.Id).Chargent_Orders__r) {
-            chargentOrder.ChargentOrders__Account__c = propAccountId;
-            uow.registerDirty(chargentOrder);
-        }
-    }
 
     public class AnnualEnergyTotal {
         public Decimal cost;
