@@ -221,12 +221,14 @@ public inherited sharing class SharedSolarSystems {
         Boolean isPartnerEligible = SharedSolarSystems.isPartnerEligible(lead.Partner_Lookup__c, sss);
         Boolean productMatch = lead.Product__c == null || sss.Product__c == lead.Product__c;
         Boolean meetsUnderwritingCriteria = meetsUnderwritingCriteria(lead, sss, creditScore);
+        Boolean paymentMatch = meetsPaymentCriteria(lead, sss);
 
         Boolean isQualified = utilityMatch
             && lzInServiceTerritory
             && isPartnerEligible
             && productMatch
-            && meetsUnderwritingCriteria;
+            && meetsUnderwritingCriteria
+            && paymentMatch;
 
         if (LOG_FINE_RESULTS) {
             String logMessage = '------\n' + 'Lead: ' + JSON.serialize(lead)
@@ -237,10 +239,19 @@ public inherited sharing class SharedSolarSystems {
                 + '\nisPartnerEligible: ' + String.valueOf(isPartnerEligible)
                 + '\nproductMatch: ' + String.valueOf(productMatch)
                 + '\nmeetsUnderwritingCriteria: ' + String.valueOf(meetsUnderwritingCriteria)
+                + '\nmeetsPaymentCriteria: ' + String.valueOf(paymentMatch)
                 + '\nLEAD QUALIFIED FOR SYSTEM?: ' + String.valueOf(isQualified);
             Logger.logLater('SharedSolarSystems','qualifiedForSystem',logMessage, 'FINE');
         }
         return isQualified;
+    }
+
+    public static Boolean meetsPaymentCriteria(Lead lead, Shared_Solar_System__c sss) {
+        Boolean meetsCriteria = false;
+        if (lead.No_Payment__c == sss.Do_Not_Ask_for_Payment_Method__c) {
+            meetsCriteria = true;
+        }
+        return meetsCriteria;
     }
 
     @TestVisible
@@ -340,10 +351,15 @@ public inherited sharing class SharedSolarSystems {
             return 'No underwriting necessary';
         }
         if (sss.Available_SMB_Underwriting_Method_FICO__c) {
-            options += 'FICO with ' + sss.Credit_Score_Requirement__c + ' Minimum;';
+            options += 'FICO with ' + sss.Credit_Score_Requirement__c + ' Minimum; ';
         }
         if (sss.Available_SMB_Underwriting_Method_Docs__c) {
-            options += 'Financial Review with ' + sss.RiskCalc_Minimum__c + ' Minimum;';
+            options += 'Financial Review with ' + sss.RiskCalc_Minimum__c + ' Minimum; ';
+        }
+        if (sss.Do_Not_Ask_for_Payment_Method__c) {
+            options += 'No Payment Details Required ';
+        } else {
+            options += 'Payment Details Required';
         }
         return options;
     }

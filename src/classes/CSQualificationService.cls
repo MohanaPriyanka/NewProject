@@ -158,6 +158,7 @@ public without sharing class CSQualificationService {
                 this.lead = new LeadSelector().selectOne(leadId);
                 this.utilityIds.add(this.lead.Utility_relationship__c);
                 this.loadZone = this.lead.LoadZone__c;
+
             } else {
                 assignUtilityAndLoadZones(zipCode);
             }
@@ -203,15 +204,19 @@ public without sharing class CSQualificationService {
                 matchResult.eligiblePartners = SharedSolarSystems.summarizeEligiblePartners(sss.Partner_Shared_Solar_System_Accesses__r);
                 matchResult.underwritingOptions = SharedSolarSystems.summarizeUnderwritingOptions(sss);
 
+                Boolean meetsPaymentCriteria = (this.lead == null ? true : SharedSolarSystems.meetsPaymentCriteria(this.lead, sss));
+                Boolean meetsUnderwritingCriteria;
+
                 switch on (this.underwriting) {
                     when 'FICO' {
-                        matchResult.isUnderwritten = sss.Available_SMB_Underwriting_Method_FICO__c && this.fico >= sss.Credit_Score_Requirement__c;
+                        meetsUnderwritingCriteria= sss.Available_SMB_Underwriting_Method_FICO__c && this.fico >= sss.Credit_Score_Requirement__c;
                     } when 'Financial Review' {
-                        matchResult.isUnderwritten = sss.Available_SMB_Underwriting_Method_Docs__c;
+                        meetsUnderwritingCriteria = sss.Available_SMB_Underwriting_Method_Docs__c;
                     } when else {
-                        matchResult.isUnderwritten = true;
+                        meetsUnderwritingCriteria = true;
                     }
                 }
+                matchResult.isUnderwritten = meetsUnderwritingCriteria == meetsPaymentCriteria;
 
                 if (matchResult.isOpen &&
                         matchResult.hasCapacity &&

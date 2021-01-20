@@ -24,7 +24,7 @@
         <name>Get_Ordered_List_of_Qualified_SSS</name>
         <label>Get Ordered List of Qualified SSS</label>
         <locationX>1155</locationX>
-        <locationY>841</locationY>
+        <locationY>842</locationY>
         <actionName>InvocableQualifiedSSSSelector</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -588,6 +588,7 @@
         <queriedFields>LASER_Credit_Score__c</queriedFields>
         <queriedFields>Moody_s_Risk_Calc__c</queriedFields>
         <queriedFields>Status</queriedFields>
+        <queriedFields>No_Payment__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
