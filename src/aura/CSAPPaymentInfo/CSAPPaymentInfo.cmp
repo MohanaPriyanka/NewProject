@@ -5,12 +5,11 @@
 <aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
   <aura:set attribute="STAGENAME" value="NAV_Payment_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
-  <aura:attribute name="paymentProvider" type="String" default="Chargent"/>
+  <aura:attribute name="paymentProvider" type="String" default="Zuora"/>
   <aura:attribute name="Autopay" type="Boolean" default="true"/>
   <aura:attribute name="supressWaiting" type="Boolean" />
   <aura:attribute name="AutopayAcknowledgement" type="Boolean" default="false"/>
   <aura:attribute name="SelectedPaymentMethod" type="String" default=""/>
-  <aura:handler name="change" value="{!v.SelectedPaymentMethod}" action="{!c.clearFields}"/>
   <aura:attribute name="PaymentMethodsAccepted" type="String[]"/>
   <aura:attribute name="States" type="String[]"/>
   <aura:attribute name="expirationYears" type="String[]"/>
