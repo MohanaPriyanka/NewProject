@@ -945,7 +945,7 @@ Opportunity__r.Shared_Solar_System__c
         <formula>Utility_Account_Log__r.Service_Address__c &amp; Utility_Account_Log__r.Service_Apt_Suite__c &amp;&quot;, &quot;&amp; Utility_Account_Log__r.Service_City__c &amp;&quot; &quot;&amp; Utility_Account_Log__r.Service_State__c &amp;&quot; &quot;&amp;  Utility_Account_Log__r.Service_Zip_Code__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Equals Utility Account Log Service Address</inlineHelpText>
-        <label>Service Address (From Log)</label>
+        <label>Service Address</label>
         <required>false</required>
         <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
@@ -1253,7 +1253,7 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
         <description>Used in the UAS display flow on cases</description>
         <externalId>false</externalId>
         <formula>Utility_Account_Log__r.Name</formula>
-        <label>Utility Account Log Name</label>
+        <label>Utility Account Number</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1332,10 +1332,10 @@ Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c
     <label>Utility Account Subscription</label>
     <listViews>
         <fullName>Customer_Community_List_Community_Solar_Subscriptions</fullName>
-        <columns>NAME</columns>
+        <columns>Utility_Account_Log_Name__c</columns>
         <columns>Status__c</columns>
+        <columns>Service_Address_From_Log__c</columns>
         <columns>Shared_Solar_System_Name__c</columns>
-        <columns>Estimated_Annual_Subscription_kWh__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Next_Schedule_Z_Status__c</field>
