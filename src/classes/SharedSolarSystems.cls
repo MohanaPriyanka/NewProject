@@ -247,7 +247,9 @@ public inherited sharing class SharedSolarSystems {
 
     public static Boolean meetsPaymentCriteria(Lead lead, Shared_Solar_System__c sss) {
         Boolean meetsCriteria = false;
-        if (lead.No_Payment__c == sss.Do_Not_Ask_for_Payment_Method__c) {
+        if (capacityCheckInstance) {
+            meetsCriteria = true;
+        } else if (lead.No_Payment__c == sss.Do_Not_Ask_for_Payment_Method__c) {
             meetsCriteria = true;
         }
         return meetsCriteria;
