@@ -53,7 +53,12 @@ public with sharing class CapacityServiceTest {
             LZ__c = 'SEMA/NEMA',
             Town__c= 'Medfield'
         );
-        insert new List<Load_U__c>{everLZU, everLZU2, everLZU3, everLZU4};
+        Load_U__c ngLZU5 = new Load_U__c (
+            Name = '98765',
+            LZ__c = 'NEMA',
+            Town__c= 'Medfield'
+        );
+        insert new List<Load_U__c>{everLZU, everLZU2, everLZU3, everLZU4, ngLZU5};
 
         ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
             Load_Zone_Utility__c = everLZU.Id,
@@ -75,7 +80,11 @@ public with sharing class CapacityServiceTest {
             Load_Zone_Utility__c = everLZU4.Id,
             Utility__c = eversource.Id
         );
-        insert new List<ZipCode_Utility_Junction__c>{junction,junction2,junction3,junction4,junction5};
+        ZipCode_Utility_Junction__c junction6 = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = ngLZU5.Id,
+            Utility__c = nationalGrid.Id
+        );
+        insert new List<ZipCode_Utility_Junction__c>{junction,junction2,junction3,junction4,junction5,junction6};
 
         Product2 srecProduct = new Product2( Name = 'SREC Community Solar',
             Family = 'Community Solar',
@@ -163,7 +172,7 @@ public with sharing class CapacityServiceTest {
             Available_SMB_Underwriting_Method_FICO__c = false,
             Available_SMB_Underwriting_Method_Docs__c = true);
 
-        Shared_Solar_System__c sss4 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
+        Shared_Solar_System__c sss4 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P2',
             Service_Territory__c = 'NEMA',
             Service_Territories__c = 'NEMA',
             Open__c = true,
@@ -298,6 +307,26 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(2, response.products.size());
         System.assertEquals(4, response.sharedSolarSystems.size());
         System.assertEquals(2, response.rateClasses.size());
+    }
+
+    @IsTest
+    public static void testVirtualLead() {
+        CapacityService service = new CapacityService();
+        Shared_Solar_System__c sss = [
+            SELECT Id, Do_Not_Ask_for_Payment_Method__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P2'
+            LIMIT 1
+        ];
+        sss.Do_Not_Ask_for_Payment_Method__c = true;
+        update sss;
+        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('98765', Util.getFakeId(Partner__c.SObjectType));
+        System.assertEquals(1, response.utilities.size());
+        System.assertEquals(1, response.loadZones.size());
+        System.assertEquals(1, response.loadZoneNames.size());
+        System.assertEquals(1, response.products.size());
+        System.assertEquals(1, response.sharedSolarSystems.size());
+        System.assertEquals(1, response.rateClasses.size());
     }
 
     @IsTest

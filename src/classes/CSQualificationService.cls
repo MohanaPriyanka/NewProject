@@ -47,13 +47,11 @@ public without sharing class CSQualificationService {
         }
 
         Map<Id, Lead> leadMap = LeadSelector.getLeadMap(leadIds);
-
         if (leadMap.isEmpty()){
             return;
         }
 
         SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(systemsSelector.getSharedSolarSystemsForEnrollment());
-
         List<Lead> updateLeads = new List<Lead>();
         List<LASERCA__Personal_Credit_Report__c> updatePCRs = new List<LASERCA__Personal_Credit_Report__c>();
         for (LASERCA__Personal_Credit_Report__c pcr : completedPCRs) {
@@ -86,9 +84,7 @@ public without sharing class CSQualificationService {
 
             lead.Status = sharedSolarSystems.checkCSQualification(lead, creditScore);
             updateLeads.add(lead);
-
         }
-
         update updatePCRs;
         update updateLeads;
     }
@@ -158,6 +154,7 @@ public without sharing class CSQualificationService {
                 this.lead = new LeadSelector().selectOne(leadId);
                 this.utilityIds.add(this.lead.Utility_relationship__c);
                 this.loadZone = this.lead.LoadZone__c;
+
             } else {
                 assignUtilityAndLoadZones(zipCode);
             }
@@ -200,18 +197,22 @@ public without sharing class CSQualificationService {
 
                 matchResult.hasLZ = SharedSolarSystems.loadZoneInServiceTerritory(this.loadZone, sss);
                 matchResult.hasPartner = SharedSolarSystems.isPartnerEligible(partnerId, sss);
-                matchResult.eligiblePartners = SharedSolarSystems.summarizeEligiblePartners(sss.Partner_Shared_Solar_System_Accesses__r);
-                matchResult.underwritingOptions = SharedSolarSystems.summarizeUnderwritingOptions(sss);
+                matchResult.eligiblePartners = summarizeEligiblePartners(sss.Partner_Shared_Solar_System_Accesses__r);
+                matchResult.underwritingOptions = summarizeUnderwritingOptions(sss);
+
+                Boolean meetsPaymentCriteria = (this.lead == null ? true : SharedSolarSystems.meetsPaymentCriteria(this.lead, sss));
+                Boolean meetsUnderwritingCriteria;
 
                 switch on (this.underwriting) {
                     when 'FICO' {
-                        matchResult.isUnderwritten = sss.Available_SMB_Underwriting_Method_FICO__c && this.fico >= sss.Credit_Score_Requirement__c;
+                        meetsUnderwritingCriteria= sss.Available_SMB_Underwriting_Method_FICO__c && this.fico >= sss.Credit_Score_Requirement__c;
                     } when 'Financial Review' {
-                        matchResult.isUnderwritten = sss.Available_SMB_Underwriting_Method_Docs__c;
+                        meetsUnderwritingCriteria = sss.Available_SMB_Underwriting_Method_Docs__c;
                     } when else {
-                        matchResult.isUnderwritten = true;
+                        meetsUnderwritingCriteria = true;
                     }
                 }
+                matchResult.isUnderwritten = meetsUnderwritingCriteria == meetsPaymentCriteria;
 
                 if (matchResult.isOpen &&
                         matchResult.hasCapacity &&
@@ -243,6 +244,38 @@ public without sharing class CSQualificationService {
             }
             update cases;
         }
+    }
+
+    /**
+    * @description Returns a semi-colon delimited list of partners from the list of Partner SSS Eligibility records
+    * @param partnerEligibilities List of eligibility records to summarize
+    * @return Summary
+    */
+    private static String summarizeEligiblePartners(List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities) {
+        String eligiblePartners = '';
+        for (Partner_Shared_Solar_System_Eligibility__c eligibility : partnerEligibilities) {
+            eligiblePartners += eligibility.Account__r.Name + '; ';
+        }
+        return eligiblePartners.removeEnd('; ');
+    }
+
+    private static String summarizeUnderwritingOptions(Shared_Solar_System__c sss) {
+        String options = '';
+        if (sss.Do_Not_Underwrite__c) {
+            return 'No underwriting necessary';
+        }
+        if (sss.Available_SMB_Underwriting_Method_FICO__c) {
+            options += 'FICO with ' + sss.Credit_Score_Requirement__c + ' Minimum; ';
+        }
+        if (sss.Available_SMB_Underwriting_Method_Docs__c) {
+            options += 'Financial Review with ' + sss.RiskCalc_Minimum__c + ' Minimum; ';
+        }
+        if (sss.Do_Not_Ask_for_Payment_Method__c) {
+            options += 'No Payment Details Required ';
+        } else {
+            options += 'Payment Details Required';
+        }
+        return options;
     }
 
 }
