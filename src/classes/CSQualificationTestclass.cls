@@ -356,7 +356,8 @@ public class CSQualificationTestclass {
         insert cdl;
         lead = [
             SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, 
-            	Moody_s_Risk_Calc__c, Underwriting_Criteria__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
+            	Moody_s_Risk_Calc__c, Underwriting_Criteria__c, No_Payment__c,
+            (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -368,7 +369,8 @@ public class CSQualificationTestclass {
         update lead;
         lead = [
             SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Moody_s_Risk_Calc__c, 
-            	Underwriting_Criteria__c,Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
+            	Underwriting_Criteria__c,Product__c, No_Payment__c,
+            (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             LIMIT 1
         ];

@@ -115,9 +115,8 @@ public inherited sharing class SharedSolarSystems {
                 startDate = getStartDateForCFD(cfd, startDate, sss);
             } else if (cfd.Shared_Solar_System__c == sss.Id) {
                 return getStartDateForCFD(cfd, null, sss);
-            } else {
-                // must be cfd.SSS != sss.Id, so we can skip it
             }
+            // else: must be cfd.SSS != sss.Id, so we can skip it
         }
         return startDate;
     }
@@ -221,12 +220,14 @@ public inherited sharing class SharedSolarSystems {
         Boolean isPartnerEligible = SharedSolarSystems.isPartnerEligible(lead.Partner_Lookup__c, sss);
         Boolean productMatch = lead.Product__c == null || sss.Product__c == lead.Product__c;
         Boolean meetsUnderwritingCriteria = meetsUnderwritingCriteria(lead, sss, creditScore);
+        Boolean paymentMatch = meetsPaymentCriteria(lead, sss);
 
         Boolean isQualified = utilityMatch
             && lzInServiceTerritory
             && isPartnerEligible
             && productMatch
-            && meetsUnderwritingCriteria;
+            && meetsUnderwritingCriteria
+            && paymentMatch;
 
         if (LOG_FINE_RESULTS) {
             String logMessage = '------\n' + 'Lead: ' + JSON.serialize(lead)
@@ -237,14 +238,25 @@ public inherited sharing class SharedSolarSystems {
                 + '\nisPartnerEligible: ' + String.valueOf(isPartnerEligible)
                 + '\nproductMatch: ' + String.valueOf(productMatch)
                 + '\nmeetsUnderwritingCriteria: ' + String.valueOf(meetsUnderwritingCriteria)
+                + '\nmeetsPaymentCriteria: ' + String.valueOf(paymentMatch)
                 + '\nLEAD QUALIFIED FOR SYSTEM?: ' + String.valueOf(isQualified);
             Logger.logLater('SharedSolarSystems','qualifiedForSystem',logMessage, 'FINE');
         }
         return isQualified;
     }
 
+    public static Boolean meetsPaymentCriteria(Lead lead, Shared_Solar_System__c sss) {
+        Boolean meetsCriteria = false;
+        if (capacityCheckInstance) {
+            meetsCriteria = true;
+        } else if (lead.No_Payment__c == sss.Do_Not_Ask_for_Payment_Method__c) {
+            meetsCriteria = true;
+        }
+        return meetsCriteria;
+    }
+
     @TestVisible
-    public Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+    private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
         Boolean meetsCriteria = false;
         Boolean sssDoesNotUnderwrite = sss.Do_Not_Underwrite__c;
 
@@ -319,33 +331,6 @@ public inherited sharing class SharedSolarSystems {
             }
         }
         return false;
-    }
-
-    /**
-     * @description Returns a semi-colon delimited list of partners from the list of Partner SSS Eligibility records
-     * @param partnerEligibilities List of eligibility records to summarize
-     * @return Summary
-     */
-    public static String summarizeEligiblePartners(List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities) {
-        String eligiblePartners = '';
-        for (Partner_Shared_Solar_System_Eligibility__c eligibility : partnerEligibilities) {
-            eligiblePartners += eligibility.Account__r.Name + '; ';
-        }
-        return eligiblePartners.removeEnd('; ');
-    }
-
-    public static String summarizeUnderwritingOptions(Shared_Solar_System__c sss) {
-        String options = '';
-        if (sss.Do_Not_Underwrite__c) {
-            return 'No underwriting necessary';
-        }
-        if (sss.Available_SMB_Underwriting_Method_FICO__c) {
-            options += 'FICO with ' + sss.Credit_Score_Requirement__c + ' Minimum;';
-        }
-        if (sss.Available_SMB_Underwriting_Method_Docs__c) {
-            options += 'Financial Review with ' + sss.RiskCalc_Minimum__c + ' Minimum;';
-        }
-        return options;
     }
 
     /**
