@@ -46,7 +46,7 @@ public without sharing class CSSubscriptionEnroller {
         }
         
         leadIdToLeadWithChildren = new Map<Id, Lead>([
-            SELECT Id, Selected_SSS_For_Conversion__c,
+            SELECT Id, Selected_SSS_For_Conversion__c, No_Payment__c,
                 (SELECT Id, Name, Annual_Cost_of_Electricity__c, Annual_kWh__c, Lead__c, 
                     Lead__r.Product__r.Customer_Subscription_Type__c, Name_on_Account__c, Proposed_kWh__c, QC_Status__c,
                     Subsc_Annual_Cost_of_Electricity_Rollup__c, Subscribed_Annual_kWhs_Rollup__c, 

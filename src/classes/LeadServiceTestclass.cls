@@ -640,17 +640,17 @@ public class LeadServiceTestclass {
 
     @IsTest
     private static void testGetSortedSharedSolarSystems() {
-        SharedSolarSystems sssList = new SharedSolarSystems(new List<Shared_Solar_System__c>{getMockSSSIgnoringLoadZones(true, 'SEMA')});
+        SharedSolarSystems sssList = new SharedSolarSystems(new List<Shared_Solar_System__c>{getMockSSS(true, 'SEMA', false)});
         System.assertEquals(1, sssList.getQualifiedForLead(getMockLead('NEMA')).size(),
             'Should have found a qualifying system if ignoring load zones:\n' +
                 JSON.serializePretty(sssList) + '\n' + JSON.serializePretty(getMockLead('NEMA')));
 
-        sssList = new SharedSolarSystems(new List<Shared_Solar_System__c>{getMockSSSIgnoringLoadZones(false, 'SEMA')});
+        sssList = new SharedSolarSystems(new List<Shared_Solar_System__c>{getMockSSS(false, 'SEMA', false)});
         System.assertEquals(0, sssList.getQualifiedForLead(getMockLead('NEMA')).size(),
             'Should not have found a qualifying system if ignoring load zones:\n' +
                 JSON.serializePretty(sssList) + '\n' + JSON.serializePretty(getMockLead('NEMA')));
 
-        sssList = new SharedSolarSystems(new List<Shared_Solar_System__c>{getMockSSSIgnoringLoadZones(false, 'SEMA')});
+        sssList = new SharedSolarSystems(new List<Shared_Solar_System__c>{getMockSSS(false, 'SEMA', false)});
         System.assertEquals(1, sssList.getQualifiedForLead(getMockLead('SEMA')).size(),
             'Should have found a qualifying system if not ignoring load zones but getting a lead that matches:\n' +
                 JSON.serializePretty(sssList) + '\n' + JSON.serializePretty(getMockLead('SEMA')));
@@ -659,22 +659,30 @@ public class LeadServiceTestclass {
     @IsTest
     private static void testSelectedSSSForQualification() {
         useMocks(false);
-        List<Shared_Solar_System__c> mockedSSSList = new List<Shared_Solar_System__c>{
-            getMockSSSIgnoringLoadZones(false, 'SEMA'),
-            getMockSSSIgnoringLoadZones(false, 'SEMA'),
-            getMockSSSIgnoringLoadZones(false, 'NEMA')
-        };
+        List<Shared_Solar_System__c> mockedSSSList = getListofMockedSSS();
 
-        System.assertEquals(3, mockedSSSList.size(), 'Should be 3 Shared Solar Systems ready for Enrollment');
+        System.assertEquals(5, mockedSSSList.size(), 'Should be 5 Shared Solar Systems ready for Enrollment');
         SharedSolarSystems sssService =  new SharedSolarSystems(mockedSSSList);
         Lead preSelectedLead = getMockLead('SEMA');
 
-        System.assertEquals(2, sssService.getQualifiedForLead(preSelectedLead).size(), 'Lead should qualify for 2 out of 3 projects when no "Pre-Selected SSS"');
+        System.assertEquals(3, sssService.getQualifiedForLead(preSelectedLead).size(), 'Lead should qualify for 3 out of 5 projects when no "Pre-Selected SSS"');
 
         //Even though we are pre-selecting 2 SSS, lead only qualifies for the SEMA project
         preSelectedLead.Selected_SSS_For_Conversion__c = mockedSSSList[1].Id + '/' + mockedSSSList[2].Id;
         System.assertEquals(1, sssService.getQualifiedForLead(preSelectedLead).size(),
             'Only pre-selected SSSes should be considered for qualification and conversion when populated');
+    }
+
+    @IsTest
+    private static void testPaymentDetailQualification() {
+        useMocks(false);
+        List<Shared_Solar_System__c> mockedSSSList = getListofMockedSSS();
+
+        System.assertEquals(5, mockedSSSList.size(), 'Should be 5 Shared Solar Systems ready for Enrollment');
+        SharedSolarSystems sssService =  new SharedSolarSystems(mockedSSSList);
+        Lead preSelectedLead = getMockLead('SEMA');
+        preSelectedLead.No_Payment__c = true;
+        System.assertEquals(1, sssService.getQualifiedForLead(preSelectedLead).size(), 'Lead should qualify for 1 out of 5 projects when "No Payment"');
     }
 
     @IsTest
@@ -693,9 +701,11 @@ public class LeadServiceTestclass {
         fabbedLead.setField(Lead.Product__c, Util.getFakeId(Product2.SObjectType));
         fabbedLead.setField(Lead.Underwriting_Criteria__c, 'FICO');
         fabbedLead.setField(Lead.LASER_Credit_Score__c, '800');
+        fabbedLead.setField(Lead.No_Payment__c, false);
         return (Lead) fabbedLead.toSObject();
     }
-    private static Shared_Solar_System__c getMockSSSIgnoringLoadZones(Boolean ignoreLoadZones, String serviceTerritories) {
+
+    private static Shared_Solar_System__c getMockSSS(Boolean ignoreLoadZones, String serviceTerritories, Boolean ignorePaymentDetails) {
         sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
         sfab_FabricatedSObject fabbedProduct = new sfab_FabricatedSObject(Product2.class);
         fabbedProduct.setField(Product2.Ignore_Load_Zones_When_Qualifying__c, ignoreLoadZones);
@@ -706,12 +716,23 @@ public class LeadServiceTestclass {
         fabbedSSS.setField(Shared_Solar_System__c.Utility__c, Util.getFakeId(Utility__c.SObjectType));
         fabbedSSS.setField(Shared_Solar_System__c.Available_SMB_Underwriting_Method_FICO__c, true);
         fabbedSSS.setField(Shared_Solar_System__c.Credit_Score_Requirement__c, 200);
+        fabbedSSS.setField(Shared_Solar_System__c.Do_Not_Ask_for_Payment_Method__c, ignorePaymentDetails);
         sfab_FabricatedSObject fabbedPartnerEligibility = new sfab_FabricatedSObject(Partner_Shared_Solar_System_Eligibility__c.class);
         sfab_FabricatedSObject fabbedPartnerAccount = new sfab_FabricatedSObject(Account.class);
         fabbedPartnerAccount.setField(Account.Partner__c, Util.getFakeId(Partner__c.SObjectType));
         fabbedPartnerEligibility.setParent('Account__r', fabbedPartnerAccount);
         fabbedSSS.setChildren('Partner_Shared_Solar_System_Accesses__r', new List<sfab_FabricatedSObject>{fabbedPartnerEligibility});
         return (Shared_Solar_System__c) fabbedSSS.toSObject();
+    }
+
+    private static List<Shared_Solar_System__c> getListofMockedSSS() {
+        return new List<Shared_Solar_System__c> {
+            getMockSSS(false, 'SEMA', false),
+            getMockSSS(false, 'SEMA', false),
+            getMockSSS(true, 'SEMA', false),
+            getMockSSS(false, 'NEMA', false),
+            getMockSSS(false, 'SEMA', true)
+        };
     }
 
     private static void useMocks(Boolean featureOn) {
@@ -724,11 +745,11 @@ public class LeadServiceTestclass {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'selectAll' {
-                    return new List<Shared_Solar_System__c>{getMockSSSIgnoringLoadZones(false, 'SEMA'),
-                        getMockSSSIgnoringLoadZones(false, 'NEMA')};
+                    return new List<Shared_Solar_System__c>{
+                        getMockSSS(false, 'SEMA', false),
+                        getMockSSS(false, 'NEMA', false)};
                 } when 'getSharedSolarSystemsForEnrollment' {
-                    return new List<Shared_Solar_System__c>{getMockSSSIgnoringLoadZones(false, 'SEMA'),
-                        getMockSSSIgnoringLoadZones(false, 'NEMA')};
+                    return getListofMockedSSS();
                 }
             }
             return null;
