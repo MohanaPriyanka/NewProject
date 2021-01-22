@@ -34,11 +34,12 @@ public with sharing class ContractSelectorTest {
         for (Entity__c entity : entities){
             entityIds.add(entity.Id);
         }
-
-        List<Contract> contracts;
-        contracts = ContractSelector.selectContractsForClientAssignment(new List<List<String>>{entityIds})[0];
-
-        System.assert(contracts.size() > 0);
+        ContractSelector.AssignmentAgreementRequest assignmentAgreementRequest = new ContractSelector.AssignmentAgreementRequest();
+        assignmentAgreementRequest.entityId = entities[0].Id;
+        assignmentAgreementRequest.cutoffDate = Date.newInstance(2021,1,1);
+        List<Contract> contracts =
+            ContractSelector.selectContractsForClientAssignment(new List<ContractSelector.AssignmentAgreementRequest>{assignmentAgreementRequest})[0];
+        System.assertNotEquals(null, contracts, 'Expected a non-null contract list');
     }
 
     @IsTest public static void testGetCustomerContractsByAssignmentAgreement(){
@@ -64,7 +65,7 @@ public with sharing class ContractSelectorTest {
 
         List<Contract> contracts;
         ContractSelector selector = new ContractSelector();
-        contracts = selector.getCustomerContractsByAssignmentAgreement(assignmentAgreement.Id);
+        contracts = selector.getCustomerContractsByAssignmentAgreement(new Set<Id>{assignmentAgreement.Id});
         System.assert(contracts.size() > 0);
     }
 }

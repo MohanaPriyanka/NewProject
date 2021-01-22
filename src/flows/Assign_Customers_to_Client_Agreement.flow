@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>ContractGenericBatchUpdate</name>
-        <label>ContractGenericBatchUpdate</label>
-        <locationX>1312</locationX>
-        <locationY>2247</locationY>
-        <actionName>GenericBatchDMLOperation</actionName>
+        <name>Assign_SOs_to_Assignment_Agreement</name>
+        <label>Assign SOs to Assignment Agreement</label>
+        <locationX>182</locationX>
+        <locationY>2702</locationY>
+        <actionName>CustomerAssignmentService</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Done_Screen</targetReference>
+        </connector>
+        <inputParameters>
+            <name>contracts</name>
+            <value>
+                <elementReference>ContractsToUpdate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>cutoffDate</name>
+            <value>
+                <elementReference>Cutoff_Date</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>ContractGenericBatchUpdate</name>
+        <label>ContractGenericBatchUpdate</label>
+        <locationX>50</locationX>
+        <locationY>2486</locationY>
+        <actionName>GenericBatchDMLOperation</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Assign_SOs_to_Assignment_Agreement</targetReference>
         </connector>
         <dataTypeMappings>
             <typeName>T__recordsToUpdate</typeName>
@@ -24,17 +47,23 @@
     <actionCalls>
         <name>getContracts</name>
         <label>getContracts</label>
-        <locationX>1277</locationX>
-        <locationY>883</locationY>
+        <locationX>182</locationX>
+        <locationY>974</locationY>
         <actionName>ContractSelector</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Loop_through_contracts</targetReference>
         </connector>
         <inputParameters>
-            <name>inputParameters</name>
+            <name>cutoffDate</name>
             <value>
-                <elementReference>Contract_Assignment_Entity_Ids</elementReference>
+                <elementReference>Cutoff_Date</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>entityId</name>
+            <value>
+                <elementReference>loopVarEntities.Id</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -43,31 +72,10 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <name>getOpps</name>
-        <label>getOpps</label>
-        <locationX>771</locationX>
-        <locationY>885</locationY>
-        <actionName>OpportunitiesSelector</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>GetOppCount</targetReference>
-        </connector>
-        <inputParameters>
-            <name>inputParameters</name>
-            <value>
-                <elementReference>Contract_Assignment_Entity_Ids</elementReference>
-            </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>OpportunitiesToAssign</assignToReference>
-            <name>output</name>
-        </outputParameters>
-    </actionCalls>
-    <actionCalls>
         <name>InvocableEntitySelector</name>
         <label>InvocableEntitySelector</label>
-        <locationX>609</locationX>
-        <locationY>499</locationY>
+        <locationX>182</locationX>
+        <locationY>398</locationY>
         <actionName>InvocableEntitySelector</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -84,32 +92,12 @@
             <name>output</name>
         </outputParameters>
     </actionCalls>
-    <actionCalls>
-        <name>OppGenericBatchUpdate</name>
-        <label>OppGenericBatchUpdate</label>
-        <locationX>735</locationX>
-        <locationY>2248</locationY>
-        <actionName>GenericBatchDMLOperation</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Done_Screen</targetReference>
-        </connector>
-        <dataTypeMappings>
-            <typeName>T__recordsToUpdate</typeName>
-            <typeValue>Opportunity</typeValue>
-        </dataTypeMappings>
-        <inputParameters>
-            <name>recordsToUpdate</name>
-            <value>
-                <elementReference>OpportunitiesToUpdate</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Add_Contract_To_Update_List</name>
         <label>Add Contract To Update List</label>
-        <locationX>1511</locationX>
-        <locationY>1704</locationY>
+        <locationX>270</locationX>
+        <locationY>2150</locationY>
         <assignmentItems>
             <assignToReference>ContractsToUpdate</assignToReference>
             <operator>Add</operator>
@@ -122,36 +110,13 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Add_Opp_to_Update_List</name>
-        <label>Add Opp to Update List</label>
-        <locationX>525</locationX>
-        <locationY>1703</locationY>
-        <assignmentItems>
-            <assignToReference>OpportunitiesToUpdate</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>oppLoopVarTwo</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Loop_Through_Opps</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Assign_Contract_Assignment_Entity_Names_and_Ids</name>
         <label>Assign Contract Assignment Entity Names and Ids</label>
-        <locationX>1279</locationX>
-        <locationY>499</locationY>
+        <locationX>270</locationX>
+        <locationY>758</locationY>
         <assignmentItems>
-            <assignToReference>selectedContractAssignmentEntityId</assignToReference>
+            <assignToReference>loopVarEntities.Id</assignToReference>
             <operator>Assign</operator>
-            <value>
-                <elementReference>Get_Contract_Assignment_Entity_Ids.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Contract_Assignment_Entity_Ids</assignToReference>
-            <operator>Add</operator>
             <value>
                 <elementReference>Get_Contract_Assignment_Entity_Ids.Id</elementReference>
             </value>
@@ -161,26 +126,10 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Set_Assigment_Agreement</name>
-        <label>Set Assigment Agreement</label>
-        <locationX>525</locationX>
-        <locationY>1505</locationY>
-        <assignmentItems>
-            <assignToReference>oppLoopVarTwo.Assignment_Agreement__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>ContractToInsert.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_Opp_to_Update_List</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Set_Assignment_Agreement_contract</name>
         <label>Set Assignment Agreement</label>
-        <locationX>1511</locationX>
-        <locationY>1493</locationY>
+        <locationX>270</locationX>
+        <locationY>2030</locationY>
         <assignmentItems>
             <assignToReference>ContractLoopVar2.Assignment_Agreement__c</assignToReference>
             <operator>Assign</operator>
@@ -195,8 +144,8 @@
     <assignments>
         <name>Set_Contract_To_Insert_Fields</name>
         <label>Set Contract To Insert Fields</label>
-        <locationX>1039</locationX>
-        <locationY>1336</locationY>
+        <locationX>182</locationX>
+        <locationY>1670</locationY>
         <assignmentItems>
             <assignToReference>ContractToInsert.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -239,8 +188,8 @@
     <assignments>
         <name>UpdateContractRecordCount</name>
         <label>UpdateContractRecordCount</label>
-        <locationX>1609</locationX>
-        <locationY>883</locationY>
+        <locationX>270</locationX>
+        <locationY>1214</locationY>
         <assignmentItems>
             <assignToReference>ContractRecordCount</assignToReference>
             <operator>Add</operator>
@@ -252,52 +201,11 @@
             <targetReference>Loop_through_contracts</targetReference>
         </connector>
     </assignments>
-    <assignments>
-        <name>UpdateOppRecordCount</name>
-        <label>UpdateOppRecordCount</label>
-        <locationX>443</locationX>
-        <locationY>885</locationY>
-        <assignmentItems>
-            <assignToReference>OppRecordCount</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <numberValue>1.0</numberValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>GetOppCount</targetReference>
-        </connector>
-    </assignments>
-    <decisions>
-        <name>Contracts_or_Opportunities</name>
-        <label>Contracts or Opportunities?</label>
-        <locationX>1022</locationX>
-        <locationY>884</locationY>
-        <defaultConnector>
-            <targetReference>getOpps</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Contract is NOT Live</defaultConnectorLabel>
-        <rules>
-            <name>Contract_Feature_is_Live</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_Feature_Flag.Feature_is_Enabled__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>getContracts</targetReference>
-            </connector>
-            <label>Contract Feature is Live</label>
-        </rules>
-    </decisions>
     <decisions>
         <name>IsRecordCountMore50</name>
         <label>IsRecordCountMoreThan50</label>
-        <locationX>1307</locationX>
-        <locationY>1839</locationY>
+        <locationX>182</locationX>
+        <locationY>2366</locationY>
         <defaultConnector>
             <targetReference>Update_Contracts_Small</targetReference>
         </defaultConnector>
@@ -318,97 +226,38 @@
             <label>More Than 50</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>IsRecordCountMoreThan50</name>
-        <label>IsRecordCountMoreThan50</label>
-        <locationX>728</locationX>
-        <locationY>1827</locationY>
-        <defaultConnector>
-            <targetReference>Update_Opportunities</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>LessThan50</defaultConnectorLabel>
-        <rules>
-            <name>MoreThan50</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>OppRecordCount</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <numberValue>50.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>OppGenericBatchUpdate</targetReference>
-            </connector>
-            <label>MoreThan50</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Update_Contracts_or_Opps</name>
-        <label>Update Contracts or Opps?</label>
-        <locationX>1031</locationX>
-        <locationY>1701</locationY>
-        <defaultConnector>
-            <targetReference>Loop_Through_Opps</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Update Opportunities</defaultConnectorLabel>
-        <rules>
-            <name>Update_Contracts</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>ContractRecordCount</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Loop_Through_Contracts_Two</targetReference>
-            </connector>
-            <label>Update Contracts</label>
-        </rules>
-    </decisions>
+    <description>Contract-feature only, with cutoff date</description>
     <formulas>
         <name>ContractName</name>
         <dataType>String</dataType>
         <expression>{!Client.recordName} &amp; &quot; Assignment Agreement &quot; &amp; TEXT({!$Flow.CurrentDate})</expression>
+    </formulas>
+    <formulas>
+        <name>endOfLastMonth</name>
+        <dataType>Date</dataType>
+        <expression>DATE(YEAR(TODAY()),MONTH(TODAY()),1)-1</expression>
     </formulas>
     <interviewLabel>Assign Customers to Client Agreement {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Assign Customers to Client Agreement</label>
     <loops>
         <name>Get_Contract_Assignment_Entity_Ids</name>
         <label>Get Contract Assignment Entity Ids</label>
-        <locationX>1029</locationX>
-        <locationY>499</locationY>
+        <locationX>182</locationX>
+        <locationY>638</locationY>
         <collectionReference>SelectedDatatableEntities</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>Assign_Contract_Assignment_Entity_Names_and_Ids</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Get_Feature_Flag</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>GetOppCount</name>
-        <label>GetOppCount</label>
-        <locationX>627</locationX>
-        <locationY>885</locationY>
-        <assignNextValueToReference>oppLoopVarOne</assignNextValueToReference>
-        <collectionReference>OpportunitiesToAssign</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>UpdateOppRecordCount</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>ConfirmOppsUpdateScreen</targetReference>
+            <targetReference>getContracts</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
         <name>Loop_through_contracts</name>
         <label>Loop through contracts</label>
-        <locationX>1435</locationX>
-        <locationY>883</locationY>
+        <locationX>182</locationX>
+        <locationY>1094</locationY>
         <assignNextValueToReference>ContractLoopVar1</assignNextValueToReference>
         <collectionReference>ContractsToAssign</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -422,8 +271,8 @@
     <loops>
         <name>Loop_Through_Contracts_Two</name>
         <label>Loop Through Contracts</label>
-        <locationX>1311</locationX>
-        <locationY>1613</locationY>
+        <locationX>182</locationX>
+        <locationY>1910</locationY>
         <assignNextValueToReference>ContractLoopVar2</assignNextValueToReference>
         <collectionReference>ContractsToAssign</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -432,21 +281,6 @@
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>IsRecordCountMore50</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>Loop_Through_Opps</name>
-        <label>Loop Through Opps</label>
-        <locationX>736</locationX>
-        <locationY>1606</locationY>
-        <assignNextValueToReference>oppLoopVarTwo</assignNextValueToReference>
-        <collectionReference>OpportunitiesToAssign</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Set_Assigment_Agreement</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>IsRecordCountMoreThan50</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -458,7 +292,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -471,22 +305,23 @@
     <recordCreates>
         <name>Create_Contract</name>
         <label>Create Contract</label>
-        <locationX>1039</locationX>
-        <locationY>1511</locationY>
+        <locationX>182</locationX>
+        <locationY>1790</locationY>
         <connector>
-            <targetReference>Update_Contracts_or_Opps</targetReference>
+            <targetReference>Loop_Through_Contracts_Two</targetReference>
         </connector>
         <inputReference>ContractToInsert</inputReference>
     </recordCreates>
     <recordLookups>
         <name>AssignmentAgreementRecordType</name>
         <label>AssignmentAgreementRecordType</label>
-        <locationX>1037</locationX>
-        <locationY>1157</locationY>
+        <locationX>182</locationX>
+        <locationY>1550</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Set_Contract_To_Insert_Fields</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>DeveloperName</field>
             <operator>EqualTo</operator>
@@ -498,51 +333,21 @@
         <object>RecordType</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordLookups>
-        <name>Get_Feature_Flag</name>
-        <label>Get Feature Flag</label>
-        <locationX>1031</locationX>
-        <locationY>739</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Contracts_or_Opportunities</targetReference>
-        </connector>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Customer_Contract_Object</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Custom_Feature_Enablement__mdt</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordUpdates>
         <name>Update_Contracts_Small</name>
         <label>Update Contracts</label>
-        <locationX>1156</locationX>
-        <locationY>1999</locationY>
+        <locationX>314</locationX>
+        <locationY>2486</locationY>
         <connector>
-            <targetReference>Done_Screen</targetReference>
+            <targetReference>Assign_SOs_to_Assignment_Agreement</targetReference>
         </connector>
         <inputReference>ContractsToUpdate</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_Opportunities</name>
-        <label>Update Opportunities</label>
-        <locationX>887</locationX>
-        <locationY>1999</locationY>
-        <connector>
-            <targetReference>Done_Screen</targetReference>
-        </connector>
-        <inputReference>OpportunitiesToUpdate</inputReference>
     </recordUpdates>
     <screens>
         <name>Assign_Customers_To_Client_Agreement</name>
         <label>Assign Customers To Client Agreement</label>
-        <locationX>384</locationX>
-        <locationY>499</locationY>
+        <locationX>182</locationX>
+        <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -580,8 +385,8 @@
     <screens>
         <name>ConfirmContractsUpdateScreen</name>
         <label>ConfirmContractsUpdateScreen</label>
-        <locationX>1435</locationX>
-        <locationY>1099</locationY>
+        <locationX>182</locationX>
+        <locationY>1430</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -597,20 +402,30 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>ConfirmOppsUpdateScreen</name>
-        <label>ConfirmOppsUpdateScreen</label>
-        <locationX>625</locationX>
-        <locationY>1100</locationY>
+        <name>Cutoff_DateHeader</name>
+        <label>Cutoff Date</label>
+        <locationX>182</locationX>
+        <locationY>158</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>AssignmentAgreementRecordType</targetReference>
+            <targetReference>Assign_Customers_To_Client_Agreement</targetReference>
         </connector>
         <fields>
-            <name>DebugOppsScreen</name>
-            <fieldText>&lt;p&gt;Found &lt;b style=&quot;color: rgb(26, 160, 255);&quot;&gt;{!OppRecordCount}&lt;/b&gt; complete opportunites linked to those entities that do not yet have an assignment agreement.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;When you click Next, these opportunities will be linked to a newly created assignment agreement.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If the record count is &amp;gt;50, this will run in the background and take a moment to complete.&lt;/p&gt;</fieldText>
+            <name>CutoffDateText</name>
+            <fieldText>&lt;p&gt;Please provide the date on or before which Opportunities need to be countersigned and SOs need to effective to be included in the AA&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Cutoff_Date</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>endOfLastMonth</elementReference>
+            </defaultValue>
+            <fieldText>Cutoff Date</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -618,8 +433,8 @@
     <screens>
         <name>Done_Screen</name>
         <label>Done Screen</label>
-        <locationX>1011</locationX>
-        <locationY>2247</locationY>
+        <locationX>182</locationX>
+        <locationY>2822</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -634,8 +449,8 @@
     <screens>
         <name>Select_Contract_Assignment_Entity</name>
         <label>Select Contract Assignment Entity</label>
-        <locationX>828</locationX>
-        <locationY>499</locationY>
+        <locationX>182</locationX>
+        <locationY>518</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -695,10 +510,10 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>51</locationX>
-        <locationY>303</locationY>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>Assign_Customers_To_Client_Agreement</targetReference>
+            <targetReference>Cutoff_DateHeader</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -784,49 +599,6 @@
         <isOutput>false</isOutput>
         <value>
             <stringValue>1</stringValue>
-        </value>
-    </variables>
-    <variables>
-        <name>oppLoopVarOne</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Opportunity</objectType>
-    </variables>
-    <variables>
-        <name>oppLoopVarTwo</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Opportunity</objectType>
-    </variables>
-    <variables>
-        <name>OpportunitiesToAssign</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Opportunity</objectType>
-    </variables>
-    <variables>
-        <name>OpportunitiesToUpdate</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Opportunity</objectType>
-    </variables>
-    <variables>
-        <name>OppRecordCount</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <scale>0</scale>
-        <value>
-            <numberValue>0.0</numberValue>
         </value>
     </variables>
     <variables>
