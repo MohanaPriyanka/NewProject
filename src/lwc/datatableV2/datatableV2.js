@@ -30,7 +30,7 @@
 const VERSION_NUMBER = 2.46;
 
 import { LightningElement, api, track, wire } from 'lwc';
-import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
+import getReturnResults from '@salesforce/apex/SObjectController3.getReturnResults';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 
 const MAXROWCOUNT = 1000;   // Limit the total number of records to be handled by this component
