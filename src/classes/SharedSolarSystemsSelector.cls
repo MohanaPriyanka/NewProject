@@ -49,7 +49,10 @@ public inherited sharing class SharedSolarSystemsSelector {
         loadZoneString = loadZoneString.left(loadZoneString.length() - 1); // strip off extra comma
         String query = 'SELECT Id, Name, Capacity_Available_to_be_Reserved__c, Product__r.Id, Product__r.Name, ' +
             'Product__r.Customer_Subscription_Type__c, Product__r.Collect_Rate_Class_via_Application__c, ' +
-            'Product__r.Ignore_Load_Zones_When_Qualifying__c, Product__r.Disclosure_Form_Conga_Template__c, Public__c, ' +
+            'Product__r.Ignore_Load_Zones_When_Qualifying__c, Product__r.Disclosure_Form_Conga_Template__c, ' +
+            'Product__r.Parent_Product__r.Id, Product__r.Parent_Product__r.Name, Product__r.Parent_Product__r.Customer_Subscription_Type__c,' +
+            'Product__r.Parent_Product__r.Collect_Rate_Class_via_Application__c, Product__r.Parent_Product__r.Ignore_Load_Zones_When_Qualifying__c,' +
+            'Product__r.Parent_Product__r.Disclosure_Form_Conga_Template__c, Public__c, ' +
             'Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c, Estimated_COD_Date_Manual__c,' +
             'Project_Capacity_Available_kW_DC__c, Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c, Utility__c, ' +
             'Service_Territories__c, Assignment_Order__c, RiskCalc_Minimum__c,' +

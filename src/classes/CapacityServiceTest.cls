@@ -100,7 +100,7 @@ public with sharing class CapacityServiceTest {
             Days_in_Bill_Period__c = 30,
             Monthly_Late_Fee__c = 1);
 
-        Product2 smartProduct = new Product2( Name = 'SREC Community Solar',
+        Product2 smartProduct = new Product2( Name = 'SMART Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Program__c = 'SMART - Community Solar',
@@ -310,8 +310,55 @@ public with sharing class CapacityServiceTest {
     }
 
     @IsTest
+    public static void testParentProduct() {
+        CapacityService service = new CapacityService();
+        Product2 smartProduct = [
+            SELECT Id, Parent_Product__c
+            FROM Product2
+            WHERE Name = 'SMART Community Solar'
+            LIMIT 1
+        ];
+
+        Product2 parentProduct = new Product2( Name = 'Hybrid Product',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            Program__c = 'SMART - Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = true,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Days_in_Bill_Period__c = 30,
+            Monthly_Late_Fee__c = 1);
+        insert parentProduct;
+        smartProduct.Parent_Product__c = parentProduct.Id;
+        update smartProduct;
+         smartProduct = [
+            SELECT Id, Parent_Product__c
+            FROM Product2
+            WHERE Name = 'SMART Community Solar'
+            LIMIT 1
+        ];
+        System.assertNotEquals(null, smartProduct.Parent_Product__c);
+
+
+        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('98765', Util.getFakeId(Partner__c.SObjectType));
+        System.assertEquals(1, response.utilities.size());
+        System.assertEquals(1, response.loadZones.size());
+        System.assertEquals(1, response.loadZoneNames.size());
+        System.assertEquals(1, response.products.size());
+        Product2 firstProduct = (new List<Product2>(response.products)[0]);
+        System.assertEquals(parentProduct.Id, firstProduct.Id);
+        System.assertEquals(1, response.sharedSolarSystems.size());
+        System.assertEquals(1, response.rateClasses.size());
+    }
+
+    @IsTest
     public static void testVirtualLead() {
         CapacityService service = new CapacityService();
+
         Shared_Solar_System__c sss = [
             SELECT Id, Do_Not_Ask_for_Payment_Method__c
             FROM Shared_Solar_System__c
@@ -410,7 +457,6 @@ public with sharing class CapacityServiceTest {
         CapacityService service = new CapacityService();
         CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345');
         System.assertEquals(1, response.sharedSolarSystems.size());
-        Id sssId = new List<Shared_Solar_System__c>(response.sharedSolarSystems)[0].Id;
         System.assertEquals(4, response.utilityZipCodesServed.size());
         List<Partner_Shared_Solar_System_Eligibility__c> partnerSharedSolarSystemEligibilities = [
             SELECT Id, Account__r.Partner__r.Name

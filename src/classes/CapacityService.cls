@@ -107,8 +107,16 @@ public without sharing class CapacityService {
 
             for (Shared_Solar_System__c sss : orderedSSS) {
                 zipcodeResponse.sharedSolarSystems.add(sss);
-                zipcodeResponse.products.add(sss.Product__r);
+                zipcodeResponse.products.add(getSSSProduct(sss));
             }
+        }
+    }
+
+    private Product2 getSSSProduct(Shared_Solar_System__c sss) {
+        if (sss.Product__r.Parent_Product__c != null) {
+            return sss.Product__r.Parent_Product__r;
+        } else {
+            return sss.Product__r;
         }
     }
 
