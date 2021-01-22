@@ -35,6 +35,10 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Parent_Product__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>ProductCode</field>
             </layoutItems>
             <layoutItems>
@@ -289,6 +293,12 @@
         <fields>NAME</fields>
         <fields>Size_Ratio__c</fields>
         <relatedList>Product_Tariff__c.Product__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>PRODUCT2.NAME</fields>
+        <fields>PRODUCT2.CUSTOMER_PRODUCT_ID</fields>
+        <fields>PRODUCT2.DESCRIPTION</fields>
+        <relatedList>Product2.Parent_Product__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
