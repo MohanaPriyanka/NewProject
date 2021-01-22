@@ -154,10 +154,6 @@ public with sharing class CustomerAssignmentServiceTest {
         );
         insert customerAccount;
 
-        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
-            Name = 'Project A Oak Road'
-        );
-
         Contract customerContract = new Contract(
             RecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Customer Contract').getRecordTypeId(),
             AccountId = customerAccount.Id,

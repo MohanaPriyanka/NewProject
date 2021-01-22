@@ -61,6 +61,7 @@ public without sharing class CustomerAssignmentService {
         Util.updateSObjs(sosWithUpdatedAssignmentAgreements);
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public void handleRejectedAssignmentAgreement(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
         Set<Id> rejectedAAIds = new Set<Id>();
         for (Contract aa : newMap.values()) {

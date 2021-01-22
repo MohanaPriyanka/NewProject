@@ -65,7 +65,7 @@ public with sharing class ContractSelectorTest {
 
         List<Contract> contracts;
         ContractSelector selector = new ContractSelector();
-        contracts = selector.getCustomerContractsByAssignmentAgreement(assignmentAgreement.Id);
+        contracts = selector.getCustomerContractsByAssignmentAgreement(new Set<Id>{assignmentAgreement.Id});
         System.assert(contracts.size() > 0);
     }
 }
