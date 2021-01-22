@@ -454,7 +454,7 @@ const submitApplication = async (cmp, partnerVersion) => {
     resetReadyStateEvent(cmp);
     if (partnerVersion) {
         modifySpinnerMessageEvent(cmp, 'Saving the application...');
-        toggleLoadingSpinnerEvent(cmp, false, null);
+        toggleLoadingSpinnerEvent(cmp, false);
         window.setTimeout(() => {
             modifySpinnerMessageEvent(cmp,`We'll generate documents next.\r\nThis may take a minute, please stand by.`);
         }, 4000);

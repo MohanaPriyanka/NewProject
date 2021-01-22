@@ -8,12 +8,7 @@ import { toggleLoadingSpinnerEvent, modifySpinnerMessageEvent, postReadyStateEve
 const DOC_GEN_TIMEOUT = 60000; // milliseconds to wait for doc generation
 
 const onLoad = (component) => {
-    if (component.version === 'PARTNER') {
-        toggleLoadingSpinnerEvent(component, false);
-    } else if (component.version === 'DTC') {
-        toggleLoadingSpinnerEvent(component, false, 'waitingRoom');
-    }
-
+    toggleLoadingSpinnerEvent(component, false, 'waitingRoom');
     if (!component.lead && component.leadJson) {
         component.lead = JSON.parse(component.leadJson);
         if (component.lead.contentDocs && component.lead.contentDocs.length >= component.lead.numberOfContractDocs) {
@@ -220,7 +215,6 @@ const postProcessContractDocs = (component, contracts) => {
     component.contractDocuments = parsedContracts;
 
     toggleLoadingSpinnerEvent(component, true, 'waitingRoom');
-    toggleLoadingSpinnerEvent(component, true);
     postReadyStateEvent(component, null);
 }
 
@@ -248,7 +242,6 @@ const getContractDocuments = (component) => {
         .catch(error => {
             postReadyStateEvent(component, 'info');
             toggleLoadingSpinnerEvent(component, true, 'waitingRoom');
-            toggleLoadingSpinnerEvent(component, true);
             window.clearInterval(component.documentPollerId);
             window.clearTimeout(component.documentPollerTimeoutId);
             showWarningToast(
@@ -261,12 +254,11 @@ const getContractDocuments = (component) => {
     component.documentPollerTimeoutId = window.setTimeout(() => {
         postReadyStateEvent(component, 'info');
         toggleLoadingSpinnerEvent(component, true, 'waitingRoom');
-        toggleLoadingSpinnerEvent(component, true);
         window.clearInterval(component.documentPollerId);
         showWarningToast(
             component,
-            'Oops!',
-            'We had an issue generating your documents. Please try again by clicking “Next” or contact our Customer Care team.'
+            'Error',
+            'Oops! We had an issue generating your documents. Please try again by clicking “Next” or contact our Customer Care team.'
         );
         insertLog({
             className: 'ssf',
