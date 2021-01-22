@@ -64692,7 +64692,7 @@
     </layoutAssignments>
     <loginIpRanges>
         <description>GSRP Americas 1</description>
-        <endAddress>12.47.208.24</endAddress>
+        <endAddress>12.47.208.50</endAddress>
         <startAddress>12.47.208.0</startAddress>
     </loginIpRanges>
     <loginIpRanges>
