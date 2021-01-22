@@ -1603,6 +1603,20 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Parent_Product__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>When populated, looks up to Parent Product for a Boilerplate Product Template</inlineHelpText>
+        <label>Parent Product</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Products</relationshipLabel>
+        <relationshipName>Products</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Percent_Share_Decimal_Places__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>For percent field, so 23.45% is 0.2345 (4 decimal places) and 23.4567 is 0.234567 (6 decimal places)</inlineHelpText>

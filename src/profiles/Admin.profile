@@ -28736,6 +28736,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Parent_Product__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.Percent_Share_Decimal_Places__c</field>
         <readable>true</readable>
     </fieldPermissions>
