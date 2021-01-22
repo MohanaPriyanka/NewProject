@@ -28877,6 +28877,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Box_Link__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Building_Permit_Actual_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -35913,6 +35918,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.Opp_Conga_Template_Id_s__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.Parent_Product__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -64920,12 +64930,13 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
+        <default>false</default>
         <recordType>MPM4_BASE__Milestone1_Project__c.General</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>false</default>
+        <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
         <recordType>MPM4_BASE__Milestone1_Project__c.PM</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -66634,10 +66645,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>AccessContentBuilder</name>
-    </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>ActivateContract</name>

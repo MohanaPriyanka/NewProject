@@ -34301,6 +34301,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Box_Link__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Building_Permit_Actual_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -41267,6 +41272,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.Opp_Conga_Template_Id_s__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Parent_Product__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -78742,10 +78752,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>AccessCMC</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>AccessContentBuilder</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
