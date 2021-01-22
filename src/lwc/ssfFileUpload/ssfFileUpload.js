@@ -19,7 +19,7 @@ export default class SsfFileUpload extends LightningElement {
     @track success = false;
     @track isError = false;
     @track isUtilityBill;
-    @track isPhone;
+    @track smallFormFactor;
     @track documents = [];
     @track fileName;
     @track fileUrl;
@@ -34,26 +34,26 @@ export default class SsfFileUpload extends LightningElement {
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
 
-        this.isPhone = (formFactorName === 'Small');
-        if(!this.inputText) {
+        this.smallFormFactor = formFactorName === 'Small';
+        if (!this.inputText) {
             this.inputText = 'Please select a file for upload.';
         }
-        if(!this.acceptedFileTypes) {
+        if (!this.acceptedFileTypes) {
             this.acceptedFileTypes = ['.png', '.jpg', '.jpeg', '.pdf'];
         }
-        if(!this.recordId) {
-            getDummyRecordId({ })
-                .then(result => {
-                    this.recordId = result;
-                })
-                .catch(error => {
-                    insertLog({
-                        className: 'ssf',
-                        methodName: 'getDummyRecordId',
-                        message: 'Unable to find dummy record ID for site guest user file upload. ' + JSON.stringify(error.body.message),
-                        severity: 'Error'
-                    });
-                })
+        if (!this.recordId) {
+            getDummyRecordId({})
+            .then(result => {
+                this.recordId = result;
+            })
+            .catch(error => {
+                insertLog({
+                    className: 'ssf',
+                    methodName: 'getDummyRecordId',
+                    message: 'Unable to find dummy record ID for site guest user file upload. ' + JSON.stringify(error.body.message),
+                    severity: 'Error'
+                });
+            })
         }
         this.isUtilityBill = (this.categoryType === 'Customer Utility Bill');
     }
@@ -69,13 +69,13 @@ export default class SsfFileUpload extends LightningElement {
 
     removeDummyContentLinks() {
         unlinkDocsFromDummy({ documents: this.documents, category: this.categoryType })
-            .then(result => {
-                this.inputText = 'File uploaded successfully';
-                this.success = true;
-                this.showSpinner = false;
-                const uploadEvent = new CustomEvent('fileuploaded', { detail: this.documents });
-                this.dispatchEvent(uploadEvent);
-            })
+        .then(result => {
+            this.inputText = 'File uploaded successfully';
+            this.success = true;
+            this.showSpinner = false;
+            const uploadEvent = new CustomEvent('fileuploaded', { detail: this.documents });
+            this.dispatchEvent(uploadEvent);
+        })
     }
 
     @api
@@ -98,7 +98,7 @@ export default class SsfFileUpload extends LightningElement {
 
     get tooltipClasses() {
         let css = 'tooltip';
-        if(this.isUtilityBill) {
+        if (this.isUtilityBill) {
             css += ' tooltip__utility';
         } else {
             css += ' tooltip__general';

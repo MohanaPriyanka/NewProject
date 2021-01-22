@@ -3,8 +3,17 @@ import { makeRequest } from 'c/httpRequestService';
 import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormController.getContentDocumentLinksByLead'
 import insertLog from '@salesforce/apex/Logger.insertLog';
 import getContentDistributionLink from '@salesforce/apex/SimpleSignupFormController.getContentDistributionById'
+import { toggleLoadingSpinnerEvent, modifySpinnerMessageEvent, postReadyStateEvent } from "c/ssfShared";
+
+const DOC_GEN_TIMEOUT = 60000; // milliseconds to wait for doc generation
 
 const onLoad = (component) => {
+    if (component.version === 'PARTNER') {
+        toggleLoadingSpinnerEvent(component, false);
+    } else if (component.version === 'DTC') {
+        toggleLoadingSpinnerEvent(component, false, 'waitingRoom');
+    }
+
     if (!component.lead && component.leadJson) {
         component.lead = JSON.parse(component.leadJson);
         if (component.lead.contentDocs && component.lead.contentDocs.length >= component.lead.numberOfContractDocs) {
@@ -114,9 +123,6 @@ const showCSAgreementApproval = (component) => {
 
 // Indicate to server that Consents section of the application is complete
 const consentsComplete = async (component) => {
-    component.showSpinner = true;
-    component.spinnerMessage = 'Saving your consents...';
-
     let complete;
     if (!component.renderCreditCheckLanguage) {
         // Do not check Credit Check disclosure signature since there is no underwriting for this Lead
@@ -130,11 +136,11 @@ const consentsComplete = async (component) => {
             complete = true;
         }
     }
-
     if (complete) {
+        modifySpinnerMessageEvent(component, 'Saving your consents...');
+        toggleLoadingSpinnerEvent(component, false);
         try {
             let consentPromise = await updateServerConsentsSigned(component);
-
             // If contracts successfully updated on server, post consentsComplete event to bubble up
             const consentsCompleteEvent = new CustomEvent('consentscomplete', {
                 detail: component.lead,
@@ -155,7 +161,6 @@ const consentsComplete = async (component) => {
             );
         }
     }
-    component.showSpinner = false;
 }
 
 const updateServerConsentsSigned = async (component) => {
@@ -213,20 +218,21 @@ const postProcessContractDocs = (component, contracts) => {
 
     // Add all documents back into single array, and set component variable with result
     component.contractDocuments = parsedContracts;
-    component.showSpinner = false;
+
+    toggleLoadingSpinnerEvent(component, true, 'waitingRoom');
+    toggleLoadingSpinnerEvent(component, true);
+    postReadyStateEvent(component, null);
 }
 
 const getContractDocuments = (component) => {
     if (component.contractDocuments) {
         return component.contractDocuments;
     }
-    component.showSpinner = true;
-    window.setTimeout(() => {
-        component.spinnerMessage = 'Generating your documents...';
-    }, 5000);
-    window.setTimeout(() => {
-        component.spinnerMessage = 'This can take a minute';
-    }, 1000);
+    if (component.version === 'PARTNER') {
+        window.setTimeout(() => {
+            modifySpinnerMessageEvent(component, 'Generating your documents...');
+        }, 5000);
+    }
     component.documentPollerId = window.setInterval(() => {
         getContentDocumentLinksByLead({
             leadId: component.lead.id,
@@ -240,25 +246,35 @@ const getContractDocuments = (component) => {
             }
         })
         .catch(error => {
+            postReadyStateEvent(component, 'info');
+            toggleLoadingSpinnerEvent(component, true, 'waitingRoom');
+            toggleLoadingSpinnerEvent(component, true);
             window.clearInterval(component.documentPollerId);
             window.clearTimeout(component.documentPollerTimeoutId);
-            component.showSpinner = false;
             showWarningToast(
                 component,
                 'Error',
-                'Sorry, we ran into a technical issue: \n' + error.body.message
+                'Sorry, we ran into a technical issue: \n' + error.body?.message
             );
         });
     }, 2000);
     component.documentPollerTimeoutId = window.setTimeout(() => {
+        postReadyStateEvent(component, 'info');
+        toggleLoadingSpinnerEvent(component, true, 'waitingRoom');
+        toggleLoadingSpinnerEvent(component, true);
         window.clearInterval(component.documentPollerId);
-        component.showSpinner = false;
         showWarningToast(
             component,
-            'Error',
-            'Sorry, documents should not take this long to generate. Please contact customer care'
+            'Oops!',
+            'We had an issue generating your documents. Please try again by clicking “Next” or contact our Customer Care team.'
         );
-    }, 60000);
+        insertLog({
+            className: 'ssf',
+            methodName: 'getContractDocuments',
+            message: `Contract document generation timed out for Lead ${component.lead.id}`,
+            severity: 'Error'
+        });
+    }, DOC_GEN_TIMEOUT);
 }
 
 const navigateBack = (component) => {

@@ -1,23 +1,21 @@
 import { LightningElement, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { makeRequest } from 'c/httpRequestService';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import formFactorName from '@salesforce/client/formFactor';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
+import { postReadyStateEvent } from 'c/ssfShared';
 import {
     onLoad,
     getFinDocFileTypes,
-    getUnderwritingHelpText,
     getNewRestUtilityAccountLog,
     validateUtilityAccountLog,
-    setRemainingFields,
     handleUnderwritingChange,
     verifyUtilityAccountEntry,
     validateServiceZipCode,
-    applicationValid,
     findDuplicateUAL,
-    verifyPODEntry
+    verifyPODEntry,
+    getText,
+    submitApplication,
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -41,15 +39,12 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track propertyAccount;
     @track stateOptions;
     @track selectedRateClasses = [];
-    @track showSpinner;
-    @track spinnerMessage;
     @track sameBillingAddress;
     @track utilityAccountSection;
     @track isFileUpload;
     @track showUnderwritingOptions;
     @track showAddress;
-    @track isPhone;
-    @track helpTextVisible;
+    @track underwritingHelpTextVisible;
     @track disableUnderwritingFields = false;
     @track showModal;
     @track duplicateLeadId;
@@ -63,7 +58,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         onLoad(this);
-        this.isPhone = (formFactorName === 'Small');
+        postReadyStateEvent(this, null);
     }
 
     // handle changes in form entries
@@ -147,6 +142,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
     }
 
+    submit() {
+        submitApplication(this, true);
+    }
+
     // perform validations
     lastUtilityAccountValid() {
         let index = this.utilityAccountCount - 1;
@@ -155,90 +154,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
         this.showWarningToast('Warning', 'Please complete this utility account before adding another');
         return false;
-    }
-
-    // upsert Lead into Salesforce, submit form
-    submitApplication() {
-        this.spinnerMessage = 'Saving the application...';
-        this.showSpinner = true;
-
-        // if application invalid, cease upsert
-        if (!applicationValid(this)) {
-            this.showSpinner = false;
-            return;
-        }
-
-        // set remaining fields on restLead, including some address fields
-        setRemainingFields(this, false);
-        window.setTimeout(() => {
-            this.spinnerMessage = `We'll generate documents next.\r\nThis may take a minute, please stand by.`;
-        }, 6000);
-        
-        if (!this.resumedApp) {
-            this.createLead(this.restLead).then(
-                (resolveResult) => {
-                    this.dispatchEvent(new CustomEvent('leadcreated', { detail: resolveResult }));
-                    this.showSpinner = false;
-                },
-                (rejectResult) => {
-                    this.showSpinner = false;
-                    let errors = JSON.parse(rejectResult).errors;
-                    let message = '';
-                    if (errors && errors[0]) {
-                        message += errors[0];
-                    } else {
-                        message += rejectResult;
-                    }
-                    this.showWarningToast('Sorry, we ran into a technical problem!', message);
-                }
-            );
-        }
-        else {
-            this.patchApplication(this.restLead).then(
-                (resolveResult) => {
-                    this.dispatchEvent(new CustomEvent('leadcreated', { detail: resolveResult }));
-                    this.showSpinner = false;
-                },
-                (rejectResult) => {
-                    this.showSpinner = false;
-                    let errors = JSON.parse(rejectResult).errors;
-                    let message = '';
-                    if (errors && errors[0]) {
-                        message += errors[0];
-                    } else {
-                        message += rejectResult;
-                    }
-                    this.showWarningToast('Sorry, we ran into a technical problem!', message);
-                }
-            );
-        }
-    }
-
-    createLead = (restLead) => {
-        let calloutURI = '/apply/services/apexrest/v3/leads';
-        let options = {
-            headers: {name: 'Content-Type', value:'application/json'},
-            body: JSON.stringify(restLead)
-        };
-        return makeRequest(calloutURI, 'POST', options);
-    };
-
-    patchApplication = (restLead) => {
-        let calloutURI = '/apply/services/apexrest/v3/application';
-        let options = {
-            headers: {name: 'Content-Type', value:'application/json'},
-            body: JSON.stringify(restLead)
-        };
-        return makeRequest(calloutURI, 'PATCH', options);
-    };
-
-    showWarningToast(title, message) {
-        const evt = new ShowToastEvent({
-            title: title,
-            message: message,
-            variant: 'warning'
-        });
-        this.dispatchEvent(evt);
     }
 
     handleUtilityBillUpload(event) {
@@ -261,12 +176,20 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         });
     }
 
-    toggleHelp() {
-        this.helpTextVisible = !this.helpTextVisible;
+    toggleUnderwritingHelp() {
+        this.underwritingHelpTextVisible = !this.underwritingHelpTextVisible;
+    }
+
+    get formFactor() {
+        return formFactorName;
+    }
+
+    get isPhone() {
+        return formFactorName === 'Small';
     }
 
     get underwritingHelpText() {
-        return getUnderwritingHelpText();
+        return getText(this, 'underwritingHelptext');
     }
 
     get underwritingReadOnly() {
@@ -280,4 +203,29 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     get isFinDocsUnderwriting() {
         return this.underwriting === 'Financial Review';
     }
+
+    get ualNumFieldLabel() {
+        return getText(this, 'ualNumLabel');
+    }
+
+    get ualNumReentryFieldLabel() {
+        return getText(this, 'ualNumReentryLabel');
+    }
+
+    get podEntryFieldLabel() {
+        return getText(this, 'podLabel');
+    }
+
+    get podReentryFieldLabel() {
+        return getText(this, 'podReentryLabel');
+    }
+
+    get businessNameFieldLabel() {
+        return getText(this, 'businessNameLabel');
+    }
+
+    get businessTitleFieldLabel() {
+        return getText(this, 'businessTitleLabel');
+    }
+
 }

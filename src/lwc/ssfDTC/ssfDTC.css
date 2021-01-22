@@ -1,0 +1,19 @@
+/** SSF.lwc imports' from static resources for a majority of CSS selectors in SimpleSignupFormStyling.StyleLibrary.css **/
+.no-display {
+    display: none !important;
+    min-height: 500px;
+}
+
+.fade-in {
+    animation-name: fade-in-animation;
+    animation-duration: .2s;
+}
+
+@keyframes fade-in-animation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

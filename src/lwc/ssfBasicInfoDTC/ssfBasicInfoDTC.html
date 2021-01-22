@@ -21,7 +21,7 @@
                         <lightning-input
                           name="businessName"
                           value={restLead.businessName}
-                          label="Name of Business or Organization"
+                          label={businessNameFieldLabel}
                           onchange={genericOnChange}
                           class="slds-var-m-bottom_small"
                           required>
@@ -45,7 +45,7 @@
                           max-length="50"
                           message-when-too-long="Please limit to 50 characters"
                           class="slds-var-m-bottom_small"
-                          label="Job Title or Organizational Affiliation"
+                          label={businessTitleFieldLabel}
                           onchange={genericOnChange}
                           required>
                         </lightning-input>
@@ -64,18 +64,16 @@
                                 required>
                             </lightning-combobox>
                             <template if:false={isPhone}>
-                                <div class="help-icon" title="Click here for more information" onclick={toggleHelp}>
+                                <div class="help-icon" title="Click here for more information" onclick={toggleUnderwritingHelp}>
                                     <svg class="help-button__icon" aria-hidden="true">
                                         <use xlink:href="/_slds/icons/action-sprite/svg/symbols.svg#question_post_action"></use>
                                     </svg>
                                     <span class="slds-assistive-text">Click here for more information</span>
                                 </div>
-                                <template if:true={helpTextVisible} onclick={handleInteriorClick}>
-                                    <div class="tooltip tooltip__underwriting-field" role="tooltip" id="help">
-                                        <div class="slds-popover__body">
-                                            <lightning-formatted-rich-text value={underwritingHelpText}></lightning-formatted-rich-text>
-                                        </div>
-                                    </div>
+                                <template if:true={underwritingHelpTextVisible} onclick={handleInteriorClick}>
+                                    <c-ssf-info-box onclose={toggleUnderwritingHelp}>
+                                        <lightning-formatted-rich-text value={underwritingHelpText}></lightning-formatted-rich-text>
+                                    </c-ssf-info-box>
                                 </template>
                             </template>
                             <template if:true={isPhone}>
@@ -83,7 +81,7 @@
                                     <lightning-button
                                         label="[more info]"
                                         variant="base"
-                                        onclick={toggleHelp}>
+                                        onclick={toggleUnderwritingHelp}>
                                     </lightning-button>
                                     <div if:true={helpTextVisible} class="slds-text-align_left">
                                         <lightning-formatted-rich-text value={underwritingHelpText}></lightning-formatted-rich-text>
@@ -293,7 +291,7 @@
                                             data-ual-number-index={it.index}
                                             name="utilityAccountNumber"
                                             class="slds-var-m-bottom_small slds-col"
-                                            label="Utility Account Number"
+                                            label={ualNumFieldLabel}
                                             field-level-help="Please ensure the utility account number exactly matches what's found on your utility bill."
                                             value={it.value.utilityAccountNumber}
                                             onchange={utilityAccountOnChange}
@@ -309,7 +307,7 @@
                                             onpaste={preventDefaultEvent}
                                             name="utilityAccountNumberReentry"
                                             class="slds-var-m-bottom_small slds-col"
-                                            label="Re-Enter Utility Account Number"
+                                            label={ualNumReentryFieldLabel}
                                             field-level-help="Please re-enter your Utility Account Number for verification purposes."
                                             value={it.value.utilityAccountNumberReentry}
                                             onchange={utilityAccountOnChange}
@@ -324,7 +322,7 @@
                                               data-pod-id-index={it.index}
                                               name="podId"
                                               class="slds-var-m-bottom_small slds-col"
-                                              label="Point of Delivery ID (PoD)"
+                                              label={podEntryFieldLabel}
                                               field-level-help="PoD ID for the customer's utility account. This can be found on the customer utility bill."
                                               value={it.value.podId}
                                               onchange={utilityAccountOnChange}
@@ -339,7 +337,7 @@
                                               onpaste={preventDefaultEvent}
                                               name="podIdReentry"
                                               class="slds-var-m-bottom_small slds-col"
-                                              label="Re-Enter Point of Delivery ID"
+                                              label={podReentryFieldLabel}
                                               field-level-help="Please re-enter the PoD ID for verification purposes."
                                               value={it.value.podIdReentry}
                                               onchange={utilityAccountOnChange}
@@ -374,7 +372,6 @@
                                                 required>
                                             </lightning-combobox>
                                         </div>
-                                        <template if:false={isPhone}><div class="input-group half"></div></template>
                                     </template>
                                     <div class="input-group half">
                                         <lightning-input
@@ -425,8 +422,7 @@
                                           class="slds-var-m-bottom_small"
                                           label="ZIP Code"
                                           value={it.value.servicePostalCode}
-                                          maxlength="5"
-                                          minlength="5"
+                                          max-length="5"
                                           onchange={utilityAccountOnChange}
                                           onblur={handleZipEntry}
                                           required>
@@ -500,7 +496,7 @@
                 We take privacy and security seriously. Check out our <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b> for more details. By clicking continue, you understand and agree that someone from BlueWave may contact you using the email and phone number provided.
             </p>
             <div class="slds-size_1-of-1">
-                <button class="btn slds-var-m-around_small slds-float_right" onclick={submitApplication}>Next</button>
+                <button class="btn slds-var-m-around_small slds-float_right" onclick={submit}>Next</button>
             </div>
         </div>
     </template>
@@ -508,10 +504,5 @@
     <!-- DUPLICATE MODAL -->
     <template if:true={showModal}>
          <c-duplicate-modal show={showModal} lead-id={duplicateLeadId} ></c-duplicate-modal>
-    </template>
-
-    <!-- LOADING SPINNER / WAITING ROOM -->
-    <template if:true={showSpinner}>
-        <c-ssf-waiting-room></c-ssf-waiting-room>
     </template>
 </template>

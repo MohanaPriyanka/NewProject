@@ -1,0 +1,25 @@
+<!--
+ - Created by jeff on 1/16/21.
+ -->
+
+<!-- Ssf Info Box -->
+<template>
+    <div class={wrapperStyles}>
+      <div class="info-overlay" onclick={closeOverlay}></div>
+      <div class="info-box">
+        <lightning-button-icon
+          title="Close"
+          alternative-text="Close"
+          icon-name="utility:close"
+          icon-class="slds-button_icon-inverse"
+          variant="bare"
+          size="large"
+          class="slds-float_right slds-p-left_medium"
+          onclick={closeOverlay}>
+        </lightning-button-icon>
+        <div class="slds-col">
+          <slot></slot>
+        </div>
+      </div>
+    </div>
+</template>

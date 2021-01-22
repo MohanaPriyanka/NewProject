@@ -1,0 +1,74 @@
+/**
+ * Created by jeff on 1/16/21.
+ */
+.info-box-wrapper {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    z-index: 10;
+    animation-name: wrapper-in;
+    animation-duration: .25s;
+    animation-timing-function: ease-in-out;
+}
+
+.info-overlay {
+    display: flex;
+    position: fixed;
+    opacity: 0.3;
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 100%;
+    z-index: 15;
+    top: 0;
+    left: 0;
+}
+
+.info-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    max-width: 600px;
+    transform: translate(-50%, -50%);
+    background-color: #387CDF;
+    color: #FFFFFF;
+    padding: 2rem;
+    z-index: 20;
+    border-radius: 2rem;
+    white-space: normal;
+    box-shadow: 3px 3px grey;
+    animation-name: box-in;
+    animation-duration: .3s;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes wrapper-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes box-in {
+    from {
+        top: 45%;
+    }
+    to {
+        top: 50%;
+    }
+}
+
+.fade-out {
+    animation-name: fade-out !important;
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

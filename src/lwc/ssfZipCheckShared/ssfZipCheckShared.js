@@ -5,80 +5,60 @@
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getZipCodeCapacity } from 'c/zipCodeService';
 import insertLog from '@salesforce/apex/Logger.insertLog';
+import { postReadyStateEvent, modifySpinnerMessageEvent, toggleLoadingSpinnerEvent } from "c/ssfShared";
 
-
-const connCallback = (component) => {
+const onLoad = (component) => {
+    modifySpinnerMessageEvent(component, 'Checking availability...');
     if (!component.utilityOptions) {
         component.utilityOptions = [];
     }
-    
     if (component.zipCodeInput && !component.zipCodeResponse) {
-        component.showSpinner = true;
-        component.spinnerMessage = 'Checking for projects...';
-        getZipCapacity_shared(component, null);
+        getCapacity(component, null);
+    } else {
+        postReadyStateEvent(component, null);
     }
 }
 
-const proceedWithSelectedUtility_shared = (component) => {
-    component.showSpinner = true;
+const proceedWithUtility = (component) => {
     component.selectedUtility = JSON.parse(component.selectedUtility);
-    getZipCapacity_shared(component, component.selectedUtility.utilityId);
+    getCapacity(component, component.selectedUtility.utilityId);
 }
 
-const checkForSubmit_shared = (component, event) => {
+const checkForSubmit = (component, event) => {
     if (event.which === 13) {
-        const inputBox = component.template.querySelector('lightning-input');
-        inputBox.reportValidity();
-        if (inputBox.checkValidity()) {
-            getZipCapacity_shared(component, null);
-        }
+        submitForm(component);
     }
 }
 
-const getZipCapacity_shared = async (component, utilityId) => {
+const submitForm = (component) => {
+    const inputBox = component.template.querySelector('lightning-input');
+    inputBox.reportValidity();
+    if (inputBox.checkValidity()) {
+        getCapacity(component, null);
+    }
+}
+
+const getCapacity = async (component, utilityId) => {
+    toggleLoadingSpinnerEvent(component, false);
     try {
         let check = await getZipCodeCapacity(component.zipCodeInput, component.partnerId, utilityId);
         component.zipCodeResponse = JSON.stringify(check);
         if (check.utilities && check.utilities.length > 1) {
-            component.utilityOptions = check.utilities.map(
-                utility => {
-                    return {value: JSON.stringify(utility), label: utility.name};
-                }
-            );
-            component.showModal = true;
+            multipleUtilitiesFound(component);
         } else if (check.hasCapacity && check.products.length >= 1 && check.utilities.length === 1) {
-            if (check.ficoUnderwriting) {
-                component.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
-            }
-            if (check.finDocsUnderwriting) {
-                component.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
-            }
-            component.selectedUtility = check.utilities[0];
-            component.showModal = false;
-            component.dispatchEvent(new CustomEvent('capacitycheckcomplete', {
-                detail: {
-                    zipCodeResponse: component.zipCodeResponse,
-                    underwritingOptions: component.underwritingOptions,
-                    resiApplicationType: component.resiApplicationType
-                }})
-            );
+            capacityFound(component, check);
         } else {
-            const evt = new ShowToastEvent({
-                title: 'Sorry, your zip code is not eligible for service at this time',
-                message: 'Please check later',
-                variant: 'warning'
-            });
-            component.dispatchEvent(evt);
+            noCapacity(component);
         }
-        component.showSpinner = false;
     } catch (exception) {
+        postReadyStateEvent(component, null);
+        toggleLoadingSpinnerEvent(component, true);
         insertLog({
             className: 'ssf',
             methodName: 'getZipCodeCapacity',
             message: JSON.stringify(exception),
             severity: 'Error'
         });
-        component.showSpinner = false;
         const evt = new ShowToastEvent({
             title: 'Sorry, we ran into a technical problem',
             message: 'Please contact Customer Care for help',
@@ -88,10 +68,52 @@ const getZipCapacity_shared = async (component, utilityId) => {
     }
 }
 
+const capacityFound = (component, check) => {
+    toggleLoadingSpinnerEvent(component, true);
+    if (check.ficoUnderwriting) {
+        component.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
+    }
+    if (check.finDocsUnderwriting) {
+        component.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
+    }
+    component.selectedUtility = check.utilities[0];
+    component.showModal = false;
+    component.dispatchEvent(new CustomEvent('capacitycheckcomplete', {
+        detail: {
+            zipCodeResponse: component.zipCodeResponse,
+            underwritingOptions: component.underwritingOptions,
+            resiApplicationType: component.resiApplicationType
+        }})
+    );
+}
+
+const noCapacity = (component) => {
+    window.setTimeout(() => {
+        toggleLoadingSpinnerEvent(component, true);
+        postReadyStateEvent(component, null);
+        const evt = new ShowToastEvent({
+            title: 'Sorry, your zip code is not eligible for service at this time',
+            message: 'Please check later',
+            variant: 'warning'
+        });
+        component.dispatchEvent(evt);
+    }, 300);
+}
+
+const multipleUtilitiesFound = (component) => {
+    toggleLoadingSpinnerEvent(component, true);
+    component.utilityOptions = check.utilities.map(
+        utility => {
+            return {value: JSON.stringify(utility), label: utility.name};
+        }
+    );
+    component.showModal = true;
+}
 
 export {
-    connCallback,
-    proceedWithSelectedUtility_shared,
-    checkForSubmit_shared,
-    getZipCapacity_shared
+    onLoad,
+    proceedWithUtility,
+    checkForSubmit,
+    submitForm,
+    getCapacity
 }
