@@ -48,7 +48,7 @@ public inherited sharing class SubscriptionOrderSelectorTest {
     @IsTest
     public static void testSelectApprovedByContractIds() {
         try {
-            new SubscriptionOrderSelector().selectApprovedByContractIds(new Set<Id>());
+            new SubscriptionOrderSelector().selectApprovedByContractIds(new Set<Id>(), System.today());
         } catch (Exception e) {
             System.assert(false, 'Selector should not have thrown an exception: ' + e.getMessage() + '\n' + e.getStackTraceString());
         }
