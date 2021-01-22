@@ -2,25 +2,8 @@
  * Created by peteryao on 6/17/20.
  */
 @IsTest
+@SuppressWarnings('PMD.AvoidHardcodingId')
 public with sharing class CustomerAssignmentServiceTest {
-    private static String oldOppMapJson = '{' +
-        '"006000000000000AAA":{"Id":"006000000000000AAA"},' +
-        '"006000000000001AAA":{"Id":"006000000000001AAA","Assignment_Agreement__c":"800000000000001AAA"},' +
-        '"006000000000002AAA":{"Id":"006000000000002AAA","Assignment_Agreement__c":"800000000000002AAA"},' +
-        '"006000000000003AAA":{"Id":"006000000000003AAA","Assignment_Agreement__c":"800000000000003AAA"}' +
-        '}';
-    private static String newOppMapJson = '{' +
-        '"006000000000000AAA":{"Id":"006000000000000AAA","Assignment_Agreement__c":"800000000000000AAA"},' + // add assignment agreement
-        '"006000000000001AAA":{"Id":"006000000000001AAA","Assignment_Agreement__c":"800000000000001AAA"},' + // no change
-        '"006000000000002AAA":{"Id":"006000000000002AAA","Assignment_Agreement__c":"800000000000003AAA"},' + // changed AA
-        '"006000000000003AAA":{"Id":"006000000000003AAA"}' + // removed AA
-        '}';
-    private static String oldContractMapJson = '{' +
-        '"800000000000007":{"Id":"800000000000007"},' +
-        '"800000000000008":{"Id":"800000000000008","Assignment_Agreement__c":"800000000000001AAA"},' +
-        '"800000000000009":{"Id":"800000000000009","Assignment_Agreement__c":"800000000000002AAA"},' +
-        '"800000000000000":{"Id":"800000000000000","Assignment_Agreement__c":"800000000000003AAA"}' +
-        '}';
     private static String newContractMapJson = '{' +
         '"800000000000007":{"Id":"800000000000007","Assignment_Agreement__c":"800000000000000AAA"},' + // added
         '"800000000000008":{"Id":"800000000000008","Assignment_Agreement__c":"800000000000001AAA"},' + // no change
@@ -34,63 +17,6 @@ public with sharing class CustomerAssignmentServiceTest {
         '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","CompanySignedDate": ' + null + '}' + //not signed
         '}';
 
-    @IsTest
-    private static void testFindOppsWithUpdatedAgreements() {
-        Map<Id, Opportunity> oldOppMap = (Map<Id, Opportunity>) JSON.deserialize(oldOppMapJson, Map<Id, Opportunity>.class);
-        Map<Id, Opportunity> newOppMap = (Map<Id, Opportunity>) JSON.deserialize(newOppMapJson, Map<Id, Opportunity>.class);
-
-        Map<Id, Id> oppToAssignmentAgreementMap =
-            new CustomerAssignmentService().getOppsWithUpdatedAssignmentAgreements(oldOppMap, newOppMap);
-        System.assertEquals(3, oppToAssignmentAgreementMap.size(), 'Expected to find three opps with updated assignment agreements');
-        for (Id oppId : oppToAssignmentAgreementMap.keySet()) {
-            System.assertNotEquals('006000000000001AAA', oppId, 'This opp should not have a changed assignment agreement');
-        }
-    }
-
-    @IsTest
-    private static void testUpdateAssignmentAgreementsFromOpportunity() {
-        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Customer_Contract_Object'=>false};
-        CustomerAssignmentService.featureService =
-            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
-        CustomerAssignmentService.subscriptionOrderSelector =
-            (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
-        CustomerAssignmentService customerAssignmentService = new CustomerAssignmentService();
-        Util.mockDML = true;
-
-        Map<Id, Opportunity> oldOppMap = (Map<Id, Opportunity>) JSON.deserialize(oldOppMapJson, Map<Id, Opportunity>.class);
-        Map<Id, Opportunity> newOppMap = (Map<Id, Opportunity>) JSON.deserialize(newOppMapJson, Map<Id, Opportunity>.class);
-
-        customerAssignmentService.updateSOSAssignmentAgreementFromOpp(oldOppMap, newOppMap);
-        List<Subscription_Order__c> subscriptionOrdersToUpdate = (List<Subscription_Order__c>) Util.objectsUpdatedIfMockingDML;
-
-        System.assertEquals(3, subscriptionOrdersToUpdate.size(), 'Expected to update three orders');
-        for (Subscription_Order__c so : subscriptionOrdersToUpdate) {
-            switch on (String) so.Id {
-                when 'a9W0v0000000000AAA' {
-                    System.assertEquals('800000000000000AAA', so.Client_Assignment_Agreement__c);
-                } when 'a9W0v0000000002AAA' {
-                    System.assertEquals('800000000000003AAA', so.Client_Assignment_Agreement__c);
-                } when 'a9W0v0000000003AAA' {
-                    System.assertEquals(null, so.Client_Assignment_Agreement__c);
-                } when else {
-                    System.assert(false, 'Did not expect SO ' + so.Id + ' to be updated');
-                }
-            }
-        }
-    }
-
-    @IsTest
-    private static void testFindContractsWithUpdatedAgreements() {
-        Map<Id, Contract> oldContractMap = (Map<Id, Contract>) JSON.deserialize(oldContractMapJson, Map<Id, Contract>.class);
-        Map<Id, Contract> newContractMap = (Map<Id, Contract>) JSON.deserialize(newContractMapJson, Map<Id, Contract>.class);
-
-        Map<Id, Id> contractToAssignmentAgreementMap =
-            new CustomerAssignmentService().getContractsWithUpdatedAssignmentAgreements(oldContractMap, newContractMap);
-        System.assertEquals(3, contractToAssignmentAgreementMap.size(), 'Expected to find three contracts with updated assignment agreements');
-        for (Id contractId : contractToAssignmentAgreementMap.keySet()) {
-            System.assertNotEquals('800000000000008', contractId, 'This contract should not have a changed assignment agreement');
-        }
-    }
     @IsTest
     private static void testSignedAssignmentAgreement() {
         Map<Id, Contract> oldContractMap = (Map<Id, Contract>) JSON.deserialize(signedAssignmentAgreementOldMap, Map<Id, Contract>.class);
@@ -179,18 +105,15 @@ public with sharing class CustomerAssignmentServiceTest {
 
     @IsTest
     private static void testUpdateAssignmentAgreementsFromContract() {
-        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Customer_Contract_Object'=>true};
-        CustomerAssignmentService.featureService =
-            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
         CustomerAssignmentService.subscriptionOrderSelector =
             (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
-        CustomerAssignmentService customerAssignmentService = new CustomerAssignmentService();
         Util.mockDML = true;
 
-        Map<Id, Contract> oldContractMap = (Map<Id, Contract>) JSON.deserialize(oldContractMapJson, Map<Id, Contract>.class);
         Map<Id, Contract> newContractMap = (Map<Id, Contract>) JSON.deserialize(newContractMapJson, Map<Id, Contract>.class);
-
-        customerAssignmentService.assignSOsAssignmentAgreement(oldContractMap, newContractMap);
+        CustomerAssignmentService.ContractAssignmentBundle assignmentBundle = new CustomerAssignmentService.ContractAssignmentBundle();
+        assignmentBundle.contracts = newContractMap.values();
+        assignmentBundle.cutoffDate = Date.newInstance(2021,1,1);
+        CustomerAssignmentService.assignSOsAssignmentAgreement(new List<CustomerAssignmentService.ContractAssignmentBundle>{assignmentBundle});
         List<Subscription_Order__c> subscriptionOrdersToUpdate = (List<Subscription_Order__c>) Util.objectsUpdatedIfMockingDML;
 
         System.assertEquals(3, subscriptionOrdersToUpdate.size(), 'Expected to update three orders');
@@ -209,9 +132,96 @@ public with sharing class CustomerAssignmentServiceTest {
         }
     }
 
+    @IsTest
+    private static void systemTestAssignmentAgreementRejection() {
+        Account clientAccount = new Account(
+            Name = 'Client Account'
+        );
+        insert clientAccount;
+
+        Contract assignmentAgreement = new Contract(
+            RecordTypeId = CustomerAssignmentService.aaTypeId,
+            AccountId = clientAccount.Id,
+            Status = 'Draft'
+        );
+        insert assignmentAgreement;
+        assignmentAgreement.Status  = 'Executed';
+        update assignmentAgreement;
+
+        Account customerAccount = new Account(
+            Name = 'Customer',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId()
+        );
+        insert customerAccount;
+
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
+            Name = 'Project A Oak Road'
+        );
+
+        Contract customerContract = new Contract(
+            RecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Customer Contract').getRecordTypeId(),
+            AccountId = customerAccount.Id,
+            Assignment_Agreement__c = assignmentAgreement.Id
+        );
+        insert customerContract;
+
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Name = 'Utility Account'
+        );
+        insert ual;
+        Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
+            Name = 'Utility Account Subscription',
+            Utility_Account_Log__c = ual.Id
+        );
+        insert uas;
+
+        Subscription_Order__c so1 = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uas.Id,
+            Client_Assignment_Agreement__c = assignmentAgreement.Id
+        );
+        Subscription_Order__c so2 = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uas.Id,
+            Client_Assignment_Agreement__c = assignmentAgreement.Id
+        );
+        insert new List<Subscription_Order__c> {so1, so2};
+
+        List<Contract> customerContracts = [
+            SELECT Id
+            FROM Contract
+            WHERE RecordTypeId = :Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Customer Contract').getRecordTypeId()
+            AND Assignment_Agreement__c = NULL
+        ];
+        System.assertEquals(0, customerContracts.size(), 'Expected all customer contracts to have an Assignment Agreement');
+
+        List<Subscription_Order__c> sOrders = [
+            SELECT Id, Invoice_Date__c, Client_Assignment_Agreement__c
+            FROM Subscription_Order__c
+            WHERE Client_Assignment_Agreement__c = NULL
+        ];
+        System.assertEquals(0, sOrders.size(), 'Expected all subscription orders to have an Assignment Agreement');
+
+        Test.startTest();
+        assignmentAgreement.Status = 'Rejected';
+        update assignmentAgreement;
+        Test.stopTest();
+
+        customerContracts = [
+            SELECT Id
+            FROM Contract
+            WHERE RecordTypeId = :Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Customer Contract').getRecordTypeId()
+            AND Assignment_Agreement__c = NULL
+        ];
+        System.assertEquals(1, customerContracts.size(), 'After setting the Assignment Agreement to Rejected, there should be 1 unassigned Customer Contract');
+
+        sOrders = [
+            SELECT Id, Invoice_Date__c, Client_Assignment_Agreement__c
+            FROM Subscription_Order__c
+            WHERE Client_Assignment_Agreement__c = NULL
+        ];
+        System.assertEquals(2, sOrders.size(), 'After setting the Assignment Agreement to Rejected, there should be 2 unassigned SOs');
+    }
+
     public class MockOppSelector extends MockProvider {
-        public MockOppSelector () {
-        }
         public override Object handleMethodCall(MethodCall methodCall) {
             String queryData = '{"a1J3F000000vM0EUAU":"2020-01-01", "a1J3F000000vM0AUAU":"2020-02-02"}';
             Map<Id, Date> sssFirstCustomerDateMap = (Map<Id, Date>) JSON.deserialize(queryData, Map<Id, Date>.class);
@@ -225,10 +235,7 @@ public with sharing class CustomerAssignmentServiceTest {
     }
 
     public class MockSubscriptionOrderSelector extends MockProvider {
-        public MockSubscriptionOrderSelector() {
-        }
         public override Object handleMethodCall(MethodCall methodCall) {
-            Set<Id> parentIds = (Set<Id>) methodCall.listOfArgs[0];
             switch on methodCall.stubbedMethodName {
                 when 'selectApprovedByOppIds' {
                     String json = '[' +
@@ -247,13 +254,13 @@ public with sharing class CustomerAssignmentServiceTest {
                     String json = '[' +
                         '{"Id":"a9W0v0000000000AAA",' +
                         '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
-                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3B1AAK","Opportunity__r":{"Id":"006000000000000AAA","ContractId":"800000000000007"}}},' +
+                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3B1AAK","Opportunity__r":{"Id":"006000000000000AAA","ContractId":"800000000000007", "Contract" : {"Id" : "800000000000007", "Assignment_Agreement__c" : "800000000000000AAA"}}}},' +
                         '{"Id":"a9W0v0000000002AAA",' +
                         '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
-                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3B2AAK","Opportunity__r":{"Id":"006000000000002AAA","ContractId":"800000000000009"}}},' +
+                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3B2AAK","Opportunity__r":{"Id":"006000000000002AAA","ContractId":"800000000000009", "Contract" : {"Id" : "800000000000009", "Assignment_Agreement__c" : "800000000000003AAA"}}}},' +
                         '{"Id":"a9W0v0000000003AAA",' +
                         '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
-                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3B2AAK","Opportunity__r":{"Id":"006000000000003AAA","ContractId":"800000000000000"}}}' +
+                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3B2AAK","Opportunity__r":{"Id":"006000000000003AAA","ContractId":"800000000000000", "Contract" : {"Id" : "800000000000000"}}}}' +
                         ']';
                     return (List<Subscription_Order__c>) System.JSON.deserialize(json, List<Subscription_Order__c>.class);
                 } when 'getSubscriptionOrdersByAssignmentAgreement' {
