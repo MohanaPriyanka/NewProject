@@ -457,7 +457,6 @@ public with sharing class CapacityServiceTest {
         CapacityService service = new CapacityService();
         CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345');
         System.assertEquals(1, response.sharedSolarSystems.size());
-        Id sssId = new List<Shared_Solar_System__c>(response.sharedSolarSystems)[0].Id;
         System.assertEquals(4, response.utilityZipCodesServed.size());
         List<Partner_Shared_Solar_System_Eligibility__c> partnerSharedSolarSystemEligibilities = [
             SELECT Id, Account__r.Partner__r.Name
