@@ -5,9 +5,6 @@
 public with sharing class ContractTriggerTest {
     @IsTest
     private static void testContractTriggerDisabled() {
-        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Customer_Contract_Object'=>true};
-        CustomerAssignmentService.featureService =
-            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
         Util.mockDML = true;
         Util.disableTrigger('Disable_ContractTrigger__c');
 
@@ -25,9 +22,6 @@ public with sharing class ContractTriggerTest {
 
     @IsTest
     private static void testContractTriggerEnabled() {
-        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Customer_Contract_Object'=>true};
-        CustomerAssignmentService.featureService =
-            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
         Util.mockDML = true;
 
         System.assertEquals(null, Util.objectsUpdatedIfMockingDML);
@@ -57,8 +51,6 @@ public with sharing class ContractTriggerTest {
         clientContract.Status = 'Activated';
 
         update new List<Contract>{customerContract, clientContract};
-        System.assertEquals(0, Util.objectsUpdatedIfMockingDML.size(),
-            'Expected customerAssignmentService.updateAssignmentAgreements trigger to call an update with no rows');
         assertNumberOfActiveContracts(clientContract, 'update');
 
         delete contracts;
@@ -68,6 +60,7 @@ public with sharing class ContractTriggerTest {
         assertNumberOfActiveContracts(clientContract, 'undelete');
     }
 
+    @SuppressWarnings('PMD.ApexUnitTestMethodShouldHaveIsTestAnnotation')
     private static void assertNumberOfActiveContracts(Contract clientContract, String operation) {
         List<Account> clientAccounts = new AccountsSelector().selectAll(new Set<Id>{
             clientContract.AccountId
