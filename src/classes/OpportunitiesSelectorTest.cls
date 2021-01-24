@@ -121,16 +121,13 @@ public with sharing class OpportunitiesSelectorTest {
         List<Entity__c> entities = [
             SELECT Id
             FROM Entity__c
+            LIMIT 1
         ];
         System.assert(entities.size() > 0);
-        List<String> entityIds = new List<String>();
-        for (Entity__c entity : entities){
-            entityIds.add(entity.Id);
-        }
-        List<Opportunity> opportunities;
-        opportunities = OpportunitiesSelector.selectOpportunitiesForClientAssignment(new List<List<String>>{entityIds})[0];
+        List<Opportunity> opportunities =
+            OpportunitiesSelector.selectOpportunitiesForClientAssignment(entities[0].Id, System.today());
 
-        System.assert(opportunities.size() > 0);
+        System.assertNotEquals(null, opportunities, 'Expected a non-null list of opportunities');
     }
 
     @IsTest
@@ -166,50 +163,7 @@ public with sharing class OpportunitiesSelectorTest {
     }
 
     @IsTest
-    public static void testSelectFirstCustomerSignedDateByAssignmentAgreementOFF() {
-        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Customer_Contract_Object'=>false};
-        OpportunitiesSelector.featureService =
-            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
-        Account clientAccount = [
-            SELECT Id
-            FROM Account
-            WHERE Name = 'Goldman'
-            LIMIT 1
-        ];
-        Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
-
-        Contract assignmentAgreement = new Contract(
-            AccountId = clientAccount.Id,
-            RecordTypeId = aaTypeId,
-            CompanySignedDate = System.today().addMonths(-3)
-        );
-        insert assignmentAgreement;
-
-        List<Opportunity> opportunities = [
-            SELECT Id
-            FROM Opportunity
-        ];
-
-        for (Opportunity opp: opportunities) {
-            opp.Assignment_Agreement__c = assignmentAgreement.Id;
-        }
-        update opportunities;
-
-        OpportunitiesSelector oppSelector = new OpportunitiesSelector();
-        Map<Id, Date> checkMap = oppSelector.selectFirstCustomerSignedDateByAssignmentAgreement(new Set<Id> {assignmentAgreement.Id});
-
-        System.assertEquals(4, checkMap.keySet().size(), 'Test setup has opportunities for 4 Shared Solar Systems');
-        for (Date d : checkMap.values()) {
-            System.assertEquals(System.today().addMonths(-3), d);
-        }
-    }
-
-    @IsTest
     public static void testSelectFirstCustomerSignedDateByAssignmentAgreementON() {
-        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Customer_Contract_Object'=>true};
-        OpportunitiesSelector.featureService =
-            (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
-
         Account clientAccount = [
             SELECT Id
             FROM Account

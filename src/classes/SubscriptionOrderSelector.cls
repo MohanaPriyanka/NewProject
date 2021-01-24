@@ -76,11 +76,13 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Approval_Status__c = 'Approved'
         ];
     }
-    public List<Subscription_Order__c> selectApprovedByContractIds(Set<Id> contractIds) {
+    public List<Subscription_Order__c> selectApprovedByContractIds(Set<Id> contractIds, Date cutoffDate) {
         return [
-            SELECT Id, Client_Assignment_Agreement__c, Utility_Account_Subscription__r.Opportunity__r.ContractId
+            SELECT Id, Client_Assignment_Agreement__c, Utility_Account_Subscription__r.Opportunity__r.ContractId,
+                Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c
             FROM Subscription_Order__c
             WHERE Utility_Account_Subscription__r.Opportunity__r.ContractId IN :contractIds
+            AND DAY_ONLY(Effective_Date__c) <= :cutoffDate
             AND Approval_Status__c = 'Approved'
         ];
     }
