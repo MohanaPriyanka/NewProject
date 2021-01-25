@@ -60,18 +60,53 @@ public class ClientInvoicingFeeWaiveServiceTest {
         insert so;
         Test.stopTest();
 
-        Client_Invoicing_Memo__c cim = [
+        List<Client_Invoicing_Memo__c> cims = [
             SELECT Id
             FROM Client_Invoicing_Memo__c
             WHERE Subscription_Order__c = :so.Id
-            LIMIT 1
         ];
-        System.assertNotEquals(null, cim,
-            'Expected to create a CIM since we are in the initial period. ' +
+        System.assertEquals(1, cims.size(), 'Expected to create one CIM since we are in the initial period. ' +
                 'Contract Start Date: ' + contractA.StartDate + ' SO Effective Date: ' + so.Effective_Date__c);
 
         List<Error_Log__c> errorLogs = [SELECT Message__c FROM Error_Log__c];
         System.assert(errorLogs.isEmpty(), errorLogs);
+
+        ClientInvoicingFeeAssignmentService assignmentService = new ClientInvoicingFeeAssignmentService();
+        assignmentService.setSubOrderContractFeeDetail(new Set<Id>{so.Id});
+
+        cims = [
+            SELECT Id
+            FROM Client_Invoicing_Memo__c
+            WHERE Subscription_Order__c = :so.Id
+        ];
+        System.assertEquals(1, cims.size(), 'There should still just a single CIM after reassigning a SO with an uninvoiced CIM');
+
+        Invoice__c invoice = new Invoice__c(
+            Account__c = account.Id
+        );
+        insert invoice;
+        InvocableClientInvoiceLineItemGenerator.LineItemRequest request = new InvocableClientInvoiceLineItemGenerator.LineItemRequest();
+        request.soOrCIMId = cims[0].Id;
+        request.invoiceId = invoice.Id;
+        InvocableClientInvoiceLineItemGenerator.generateLineItem(new List<InvocableClientInvoiceLineItemGenerator.LineItemRequest>{request});
+
+        assignmentService = new ClientInvoicingFeeAssignmentService();
+        assignmentService.setSubOrderContractFeeDetail(new Set<Id>{so.Id});
+
+        cims = [
+            SELECT Id
+            FROM Client_Invoicing_Memo__c
+            WHERE Subscription_Order__c = :so.Id
+        ];
+        System.assertEquals(2, cims.size(), 'There should be two CIMs after reassigning a SO with an invoiced CIM');
+
+        errorLogs = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE Method__c = 'deleteExistingCIMs'
+            AND Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(1, errorLogs.size(), 'Expected an error log for a potential duplicate CIM');
     }
 
     @IsTest
@@ -352,7 +387,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: Estimated COD or Customer: Assignment Date';
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_Estimated_COD__c = System.today().addMonths(-2);
-        so.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__r.CustomerSignedDate = System.today().addMonths(-1).addDays(1);
+        so.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__r.CustomerSignedDate = System.today().addDays(-20);
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
         so.Approved_Change_in_Subscription__c = -12;
         service.uasToAssignedCapacityMap = new Map<Id, Decimal>();
@@ -360,7 +395,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
         service.uasToAssignedCapacityMap.put(Util.getFakeId(Utility_Account_Subscription__c.SObjectType), subscriptionSizeAtTimeOfAssignment);
         cim = service.waiveFeeBasedOnDate(so);
         System.assertNotEquals(null, cim,
-            'Should have gotten an invoicing memo to waive this fee, since the customer cancelled within a month of being assigned');
+            'Should have gotten an invoicing memo to waive this fee, since the customer cancelled 20 days after being assigned');
     }
 
     private static Subscription_Order__c getSubscriptionOrder() {

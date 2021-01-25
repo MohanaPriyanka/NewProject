@@ -26,10 +26,23 @@ public without sharing class ClientInvoicingFeeWaiveService {
     }
 
     public void setFeesToWaive(List<Subscription_Order__c> subOrders) {
+        deleteExistingCIMs(subOrders);
         queryData(subOrders);
         for (Subscription_Order__c order : subOrders) {
             if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c) {
                 waiveFeeBasedOnDate(order);
+            }
+        }
+    }
+
+    private void deleteExistingCIMs(List<Subscription_Order__c> subOrders) {
+        for (Subscription_Order__c so : subOrders) {
+            for (Client_Invoicing_Memo__c cim : so.Client_Invoicing_Memos__r) {
+                if (cim.Invoice_Line_Item__c == null) {
+                    uow.registerDeleted(cim);
+                } else {
+                    Logger.logLater('ClientInvoicingFeeWaiveService', 'deleteExistingCIMs', 'Potentially duplicate cim on SO: ' + so.Id, Logger.ERROR);
+                }
             }
         }
     }
@@ -84,6 +97,10 @@ public without sharing class ClientInvoicingFeeWaiveService {
     }
 
     private Client_Invoicing_Memo__c waiveFeeBasedOnCustomerDate(Subscription_Order__c order, Date milestoneDate) {
+        // Since we're giving the client a customer guarantee, for instance, if the customer cancels within a year,
+        // we'll won't charge them a reacquisition fee for that customer.
+        // So, we don't want to credit the client (i.e. waive the fee) for downsizing subscription orders, just the
+        // order that brings the customer to 0. So if the System Change is anything but 0, we move on.
         if (order.System_Change_kW_DC_Rounded__c != 0) {
             return null;
         }
@@ -195,6 +212,7 @@ public without sharing class ClientInvoicingFeeWaiveService {
      *
      * @return The milestone date for this Subscription Order, or null if the milestone date has not been reached yet.
      */
+    @SuppressWarnings('PMD.EmptyStatementBlock')
     private Date getMilestoneDate(Subscription_Order__c order, String milestoneDateType) {
         if (milestoneDateType == null) {
             return null;
