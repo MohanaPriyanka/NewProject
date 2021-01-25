@@ -247,8 +247,14 @@ const getContractDocuments = (component) => {
             showWarningToast(
                 component,
                 'Error',
-                'Sorry, we ran into a technical issue: \n' + error.body?.message
+                'Sorry, we ran into a technical issue. Please try again by clicking “Next” or contact our Customer Care team.'
             );
+            insertLog({
+                className: 'ssf',
+                methodName: 'getContractDocuments',
+                message: `Unexpected error occurred for Lead ${component.lead.id}: \n\n Error: ${JSON.stringify(error)}`,
+                severity: 'Error'
+            });
         });
     }, 2000);
     component.documentPollerTimeoutId = window.setTimeout(() => {
