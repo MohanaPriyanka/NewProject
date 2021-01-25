@@ -18,7 +18,7 @@
             <c:ssf onconsentscomplete="{!c.handleConsents}"/>
         </aura:if>
         <aura:if isTrue="{!v.getPayment}">
-            <div class="slds-p-around_medium">
+            <div class="payment-page slds-p-around_medium">
                 <p class="slds-var-p-around_medium slds-text-align_center slds-text-heading_large">
                     Subscribe Now, Pay Later!
                 </p>
@@ -51,7 +51,8 @@
                             paymentType="{!v.userSelectedPaymentMethod}"
                             defaultName="{!join(' ', v.lead.firstName, v.lead.lastName)}"
                             defaultZip="{!v.lead.zipCode}"
-                            postOnloadEvent="true"/>
+                            postOnloadEvent="true">
+                        </c:ZuoraPaymentPage>
                     </div>
                 </div>
             </div>
@@ -63,11 +64,12 @@
                     latestCreditReport="{!v.latestCreditReport}"
                     onformcomplete="{!c.showComplete}"
                     applicantName="{!join(' ',v.lead.firstName, v.lead.lastName)}"
-                    partnerVersion="{!v.partnerVersion}"/>
+                    partnerVersion="{!v.partnerVersion}">
+                </c:ssfCreditPullForm>
             </aura:if>
         </aura:if>
         <aura:if isTrue="{!v.showComplete}">
-            <div style="max-width: 640px">
+            <div class="applicationComplete">
                 <p class="slds-var-p-around_medium slds-text-align_center slds-text-heading_large">
                     Application Complete!
                 </p>
@@ -75,11 +77,11 @@
                     The Community Solar application is now complete and under final review.
                 </p>
                 <p class="slds-var-p-around_medium slds-text-align_center">
-                    We sent a copy of the agreement(s) to the email address provided in the application. If the application is approved based on our eligibility requirements, we will email a final signed agreement along with other important information about the subscription. Processing the application may take up to 24 hours. 
+                    We sent a copy of the agreement(s) to the email address provided in the application. If the application is approved based on our eligibility requirements, we will email a final signed agreement along with other important information about the subscription. Processing the application may take up to 24 hours.
                     Stay tuned and thank you for choosing BlueWave Community Solar.
                 </p>
             </div>
         </aura:if>
-        <c:bluewaveSpinner spinnerMessage="{!v.spinnerMessage}" show="{!v.showSpinner}"/>
+        <c:bluewaveSpinner fadeIn="true" spinnerMessage="{!v.spinnerMessage}" show="{!v.showSpinner}"/>
     </div>
 </aura:component>
