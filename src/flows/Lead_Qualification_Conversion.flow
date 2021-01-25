@@ -24,7 +24,7 @@
         <name>Get_Ordered_List_of_Qualified_SSS</name>
         <label>Get Ordered List of Qualified SSS</label>
         <locationX>1155</locationX>
-        <locationY>842</locationY>
+        <locationY>841</locationY>
         <actionName>InvocableQualifiedSSSSelector</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -588,7 +588,6 @@
         <queriedFields>LASER_Credit_Score__c</queriedFields>
         <queriedFields>Moody_s_Risk_Calc__c</queriedFields>
         <queriedFields>Status</queriedFields>
-        <queriedFields>No_Payment__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
@@ -630,59 +629,6 @@
             <name>txtResolveUALs</name>
             <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Utility Account Logs for this lead are not ready for conversion.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please confirm all UALs have their proper Annual Usage populated and the QC Status is set to Complete.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>ualDatatable</name>
-            <dataTypeMappings>
-                <typeName>T</typeName>
-                <typeValue>Utility_Account_Log__c</typeValue>
-            </dataTypeMappings>
-            <extensionName>c:datatable</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>objectName</name>
-                <value>
-                    <stringValue>Utility_Account_Log__c</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columnFields</name>
-                <value>
-                    <stringValue>Name,QC_Status__c,Annual_kWh__c,Annual_Cost_of_Electricity__c</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columnWidths</name>
-                <value>
-                    <stringValue>Name:228, QC_Status__c:228, Annual_kWh__c:228, Annual_Cost_of_Electricity__c:228</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>hideCheckboxColumn</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columnEdits</name>
-                <value>
-                    <stringValue>QC_Status__c:true</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>not_suppressNameFieldLink</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>tableData</name>
-                <value>
-                    <elementReference>Get_UALS</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>false</showFooter>
         <showHeader>false</showHeader>
@@ -750,50 +696,6 @@
             <name>txtDatable</name>
             <fieldText>&lt;p&gt;Select the Shared Solar Systems that you want to be &lt;b&gt;considered &lt;/b&gt;for subscriptions. &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Subscriptions will be created and sized based on the customer&apos;s annual usage, available capacity, and project maximums.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;NOTE: This does &lt;b&gt;not &lt;/b&gt;guarantee subscriptions will be created for &lt;b&gt;all &lt;/b&gt;projects. If the project is not selected, no subscriptions will be created for the project. &lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>tableSSS</name>
-            <dataTypeMappings>
-                <typeName>T</typeName>
-                <typeValue>Shared_Solar_System__c</typeValue>
-            </dataTypeMappings>
-            <extensionName>c:datatable</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>objectName</name>
-                <value>
-                    <stringValue>Shared_Solar_System__c</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>preSelectedRows</name>
-                <value>
-                    <elementReference>orderedSSSList</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columnFields</name>
-                <value>
-                    <stringValue>Name,Utility__c,Capacity_Available_to_be_Reserved__c</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columnWidths</name>
-                <value>
-                    <stringValue>column-widths-mode=&quot;auto&quot;</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>tableData</name>
-                <value>
-                    <elementReference>orderedSSSList</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>selectedSSSList</assignToReference>
-                <name>outputSelectedRows</name>
-            </outputParameters>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -1023,7 +925,7 @@
             <targetReference>getLead</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>Log_Errors</name>
         <label>Log Errors</label>
