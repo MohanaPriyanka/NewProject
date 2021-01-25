@@ -1,8 +1,8 @@
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { makeRequest } from 'c/httpRequestService';
-import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormController.getContentDocumentLinksByLead'
+import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormController.getContentDocumentLinksByLead';
 import insertLog from '@salesforce/apex/Logger.insertLog';
-import getContentDistributionLink from '@salesforce/apex/SimpleSignupFormController.getContentDistributionById'
+import getContentDistributionLink from '@salesforce/apex/SimpleSignupFormController.getContentDistributionById';
 import { toggleLoadingSpinnerEvent, modifySpinnerMessageEvent, postReadyStateEvent } from "c/ssfShared";
 
 const DOC_GEN_TIMEOUT = 60000; // milliseconds to wait for doc generation
