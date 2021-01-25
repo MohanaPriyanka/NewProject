@@ -11,18 +11,19 @@
                         Enter the applicant's zip code and property type to determine their eligibility.
                     </h1>
                     <div class="slds-align_absolute-center zip-container" onkeyup={checkForSubmit}>
-                        <lightning-input name="zipCodeInput"
-                                        label="Zip Code"
-                                        variant="label-hidden"
-                                        value={zipCodeInput}
-                                        onchange={genericOnChange}
-                                        type="text"
-                                        pattern="[0-9]{5}"
-                                        class="input_center"
-                                        message-when-pattern-mismatch="Please enter the applicant's 5 digit ZIP code">
+                        <lightning-input
+                            name="zipCodeInput"
+                            label="Zip Code"
+                            variant="label-hidden"
+                            value={zipCodeInput}
+                            onchange={genericOnChange}
+                            type="text"
+                            pattern="[0-9]{5}"
+                            max-length="5"
+                            class="input_center"
+                            message-when-pattern-mismatch="Please enter the applicant's 5 digit ZIP code">
                         </lightning-input>
                     </div>
-
                     <div class="icon-button-group-parent">
                         <div class="icon-button-group-container">
                             <div class={getResiButtonStyle} onclick={applicationTypeOnChangeResi}>
@@ -65,7 +66,8 @@
                                 onchange={genericOnChange}
                                 variant="label-hidden"
                                 message-when-value-missing="Please select the applicant's utility provider before proceeding."
-                                required></lightning-radio-group>
+                                required>
+                            </lightning-radio-group>
                         </div>
                         <div class="slds-text-align_right slds-var-m-top_xx-large">
                             <button class="btn-inverse small slds-var-m-right_small" onclick={closeModal}>Cancel</button>
@@ -75,6 +77,5 @@
                 </div>
             </section>
         </template>
-        <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
     </div>
 </template>

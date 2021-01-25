@@ -18,7 +18,7 @@
             <c:ssfDTC onconsentscomplete="{!c.handleConsents}"/>
         </aura:if>
         <aura:if isTrue="{!v.getPayment}">
-            <div class="slds-p-around_medium">
+            <div class="payment-page slds-p-around_medium">
                 <p class="slds-var-p-around_medium slds-text-align_center slds-text-heading_large">
                     Subscribe Now, Pay Later!
                 </p>
@@ -48,8 +48,8 @@
                             paymentType="{!v.userSelectedPaymentMethod}"
                             defaultName="{!join(' ', v.lead.firstName, v.lead.lastName)}"
                             defaultZip="{!v.lead.zipCode}"
-                            postOnloadEvent="true"
-                        />
+                            postOnloadEvent="true">
+                        </c:ZuoraPaymentPage>
                     </div>
                 </div>
             </div>
@@ -61,11 +61,12 @@
                     latestCreditReport="{!v.latestCreditReport}"
                     onformcomplete="{!c.showComplete}"
                     applicantName="{!join(' ',v.lead.firstName, v.lead.lastName)}"
-                    partnerVersion="{!v.partnerVersion}"/>
+                    partnerVersion="{!v.partnerVersion}">
+                </c:ssfCreditPullForm>
             </aura:if>
         </aura:if>
         <aura:if isTrue="{!v.showComplete}">
-            <div style="max-width: 640px">
+            <div class="applicationComplete">
                 <p class="slds-var-p-around_medium slds-text-align_center slds-text-heading_large">
                     Application Complete!
                 </p>
@@ -78,6 +79,6 @@
                 </p>
             </div>
         </aura:if>
-        <c:bluewaveSpinner spinnerMessage="{!v.spinnerMessage}" show="{!v.showSpinner}"/>
+        <c:bluewaveSpinner fadeIn="true" spinnerMessage="{!v.spinnerMessage}" show="{!v.showSpinner}"/>
     </div>
 </aura:component>

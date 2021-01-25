@@ -6,29 +6,32 @@ import { LightningElement, api, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
-import { connCallback, proceedWithSelectedUtility_shared, checkForSubmit_shared, getZipCapacity_shared } from 'c/ssfZipCheckShared';
+import { 
+    onLoad,
+    proceedWithUtility, 
+    checkForSubmit,
+    submitForm,
+} from 'c/ssfZipCheckShared';
 
 export default class SsfZipCheckDTC extends NavigationMixin(LightningElement) {
     @api resiApplicationType;
     @api partnerId;
     @api zipCodeInput;
 
-    @track zipCodeResponse;
-    @track underwritingOptions = [];
-
+    @track selectedUtility;
     @track showSpinner = false;
     @track showModal = false;
-    @track spinnerMessage;
+    @track spinnerMessage = 'Checking availability...';
+    @track underwritingOptions = [];
     @track utilityOptions;
-    @track selectedUtility;
+    @track zipCodeResponse;
 
     resiIconUrl = staticResourceFolder + '/Icon_House.png';
     bizIconUrl = staticResourceFolder + '/Icon_City.png';
 
-
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
-        connCallback(this);
+        onLoad(this);
     }
 
     renderedCallback() {
@@ -38,21 +41,16 @@ export default class SsfZipCheckDTC extends NavigationMixin(LightningElement) {
         }
     }
 
-
-
-    // ///////////////////////////////////
-    //      FORM EVENTS
-    // ///////////////////////////////////
     proceedWithSelectedUtility() {
-        proceedWithSelectedUtility_shared(this);
+        proceedWithUtility(this);
     }
 
     checkForSubmit(event) {
-        checkForSubmit_shared(this, event);
+        checkForSubmit(this, event);
     }
 
     submitZip(event) {
-        getZipCapacity_shared(this, null);
+        submitForm(this);
     }
 
     genericOnChange(event) {
@@ -71,10 +69,6 @@ export default class SsfZipCheckDTC extends NavigationMixin(LightningElement) {
         this.showModal = false;
     }
 
-
-    // ///////////////////////////////////
-    //      STYLING
-    // ///////////////////////////////////
     get getContainerStyle() {
         if(this.showModal || this.showSpinner) {
             return 'slds-backdrop slds-backdrop_open';

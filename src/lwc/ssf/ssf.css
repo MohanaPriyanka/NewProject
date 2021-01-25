@@ -1,9 +1,19 @@
-/**
- * Created by peteryao on 7/7/20.
- */
+/** SSF.lwc imports' from static resources for a majority of CSS selectors in SimpleSignupFormStyling.StyleLibrary.css **/
+.no-display {
+    display: none !important;
+    min-height: 500px;
+}
 
-/**
- *  shared CSS component is not sufficiently bug-free to use at this time
- *  replacing with static resource and loadStyles
-**/
-/* @import 'c/ssfStyleLibrary'; */
+.fade-in {
+    animation-name: fade-in-animation;
+    animation-duration: .2s;
+}
+
+@keyframes fade-in-animation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
