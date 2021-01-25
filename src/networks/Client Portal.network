@@ -32,7 +32,6 @@
         <profile>admin</profile>
         <profile>cs client partner login</profile>
         <profile>cs client partner login_gsrp</profile>
-        <profile>cs client partner login_related accounts</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
