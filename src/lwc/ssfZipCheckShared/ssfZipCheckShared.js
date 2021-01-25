@@ -44,19 +44,20 @@ const getCapacity = async (component, utilityId) => {
         let check = await getZipCodeCapacity(component.zipCodeInput, component.partnerId, utilityId);
         component.zipCodeResponse = JSON.stringify(check);
         if (check.utilities && check.utilities.length > 1) {
-            multipleUtilitiesFound(component);
+            multipleUtilitiesFound(component, check);
         } else if (check.hasCapacity && check.products.length >= 1 && check.utilities.length === 1) {
             capacityFound(component, check);
         } else {
             noCapacity(component);
         }
     } catch (exception) {
+        console.log(exception);
         postReadyStateEvent(component, null);
         toggleLoadingSpinnerEvent(component, true);
         insertLog({
             className: 'ssf',
             methodName: 'getZipCodeCapacity',
-            message: JSON.stringify(exception),
+            message: `Error: ${exception}`,
             severity: 'Error'
         });
         const evt = new ShowToastEvent({
@@ -98,9 +99,10 @@ const noCapacity = (component) => {
         });
         component.dispatchEvent(evt);
     }, 300);
+    component.showModal = false;
 }
 
-const multipleUtilitiesFound = (component) => {
+const multipleUtilitiesFound = (component, check) => {
     toggleLoadingSpinnerEvent(component, true);
     component.utilityOptions = check.utilities.map(
         utility => {

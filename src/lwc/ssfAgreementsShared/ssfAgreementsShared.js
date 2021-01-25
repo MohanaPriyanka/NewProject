@@ -142,17 +142,16 @@ const consentsComplete = async (component) => {
             });
             component.dispatchEvent(consentsCompleteEvent);
         } catch (error) {
-            const promiseError = JSON.stringify(error);
             insertLog({
                 className: 'ssf',
                 methodName: 'patchLead',
-                message: promiseError,
+                message: error,
                 severity: 'Error'
             });
             showWarningToast(
                 component,
                 'Oops',
-                'We ran into a technical issue, please contact customer care\n' + promiseError
+                'We ran into a technical issue, please contact customer care\n' + error
             );
         }
     }
@@ -252,7 +251,7 @@ const getContractDocuments = (component) => {
             insertLog({
                 className: 'ssf',
                 methodName: 'getContractDocuments',
-                message: `Unexpected error occurred for Lead ${component.lead.id}: \n\n Error: ${JSON.stringify(error)}`,
+                message: `Unexpected error occurred for Lead ${component.lead.id}: \n\n Error: ${error}`,
                 severity: 'Error'
             });
         });
