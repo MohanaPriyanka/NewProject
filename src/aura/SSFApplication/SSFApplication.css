@@ -3,14 +3,42 @@
 }
 
 .THIS.ssf-container {
-    background-color: white;
-    border-radius: 0.5rem;
     min-width: 50%;
     max-width: 98%;
+    min-height: 510px;
     width: fit-content;
     margin: 0 auto;
 }
 
 .THIS .text-common {
     text-align: center;
+}
+
+.THIS .info-text-box {
+    background-color: #f8f8f8;
+    border-radius: 0.5rem;
+}
+
+.THIS .info-text-box2 {
+    width: fit-content;
+    background-color: #f8f8f8;
+    border-radius: 0.5rem;
+}
+
+.THIS .applicationComplete {
+    max-width: 640px;
+    min-height: 300px;
+    background-color: white;
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.THIS .payment-page {
+    background-color: white;
+    border-radius: 0.5rem;
+    min-width: 50vw;
+    max-width: 860px;
 }

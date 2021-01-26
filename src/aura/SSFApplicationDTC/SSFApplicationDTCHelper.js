@@ -130,6 +130,7 @@
         component.set('v.getPayment', false);
         component.set('v.showCreditCheckInfoPage', false);
         component.set('v.showComplete', true);
+        this.scrollToTop();
     },
 
     logError : function(component, cmpName, methodName, message) {
@@ -139,6 +140,27 @@
             "methodName": methodName,
             "message": message,
             "severity": "Error"
+        });
+        $A.enqueueAction(action);
+    },
+
+    scrollToTop : function() {
+        const scrollOptions = {
+            left: 0,
+            top: 0,
+            behavior: 'auto'
+        }
+        window.scrollTo(scrollOptions);
+    },
+
+    collectPaperlessBilling : function(component) {
+        let action = component.get("c.collectPaperlessBilling");
+        action.setCallback(this, function(response) {
+            const state = response.getState();
+            if (state === "SUCCESS") {
+                const collectPaperlessBillingOption = response.getReturnValue();
+                component.set('v.collectPaperlessBillingOption', collectPaperlessBillingOption);
+            }
         });
         $A.enqueueAction(action);
     },
