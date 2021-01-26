@@ -1,7 +1,7 @@
 /**
  * Created by SarahRenfro on 2/11/2020.
  *
- * Tested By: SubscriptionManagementServiceTestclass, SubscriptionOrderSelectorTest
+ * Tested By: SubscriptionManagementServiceTest, SubscriptionOrderSelectorTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public inherited sharing class SubscriptionOrderSelector {
@@ -52,7 +52,8 @@ public inherited sharing class SubscriptionOrderSelector {
                 Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c,
                 Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c,
                 Contract_Fee_Detail__r.Fee__c,
-                Contract_Fee_Detail__r.Contract__r.StartDate
+                Contract_Fee_Detail__r.Contract__r.StartDate,
+            (SELECT Id, Invoice_Line_Item__c FROM Client_Invoicing_Memos__r)
             FROM Subscription_Order__c
             WHERE Id IN :soIds
             ORDER BY Effective_Date__c
