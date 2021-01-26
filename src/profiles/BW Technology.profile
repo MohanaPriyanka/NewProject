@@ -37941,6 +37941,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.Countersigned_Contract_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.Credit_Approval_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -78752,6 +78757,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>AccessCMC</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>AccessContentBuilder</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
