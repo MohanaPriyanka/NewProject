@@ -307,7 +307,7 @@ public without sharing class SimpleSignupFormController {
     public static void setPropertyAccountPaperlessBillingOption(Id leadId, Id propertyAccountId, Boolean paperless) {
         Account propertyAccount = new Account(
             Id = propertyAccountId,
-            Bill_Delivery_Preference__c = paperless ? 'Email Only' : 'Email and Paper'
+            Bill_Delivery_Preference__c = paperless ? 'Email only' : 'Email and Paper'
         );
         try {
             update propertyAccount;
