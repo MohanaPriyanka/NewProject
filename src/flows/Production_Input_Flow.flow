@@ -515,7 +515,7 @@
         <inputAssignments>
             <field>Attempted_Transfer__c</field>
             <value>
-                <elementReference>Get_Active_Production.Credits_Generated__c</elementReference>
+                <elementReference>Get_Active_Production.Credits_Available_for_Allocation__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -992,7 +992,7 @@
         <name>scr_MainTransfer</name>
         <label>scr_MainTransfer</label>
         <locationX>1123</locationX>
-        <locationY>2389</locationY>
+        <locationY>2382</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1007,6 +1007,9 @@
         <fields>
             <name>MainTransferAmountCurrency</name>
             <dataType>Currency</dataType>
+            <defaultValue>
+                <numberValue>0.0</numberValue>
+            </defaultValue>
             <fieldText>Amount ($)</fieldText>
             <fieldType>InputField</fieldType>
             <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(250, 251, 252); font-size: 14px; font-family: &amp;quot;Source Sans Pro&amp;quot;, sans-serif; color: rgb(40, 44, 51);&quot;&gt;Actual $ Amount Transferred by Utility&lt;/span&gt;&lt;/p&gt;</helpText>
@@ -1016,6 +1019,9 @@
         <fields>
             <name>MainTransferAmount_kWh</name>
             <dataType>Number</dataType>
+            <defaultValue>
+                <numberValue>0.0</numberValue>
+            </defaultValue>
             <fieldText>Amount (kWh)</fieldText>
             <fieldType>InputField</fieldType>
             <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(250, 251, 252); font-size: 14px; font-family: &amp;quot;Source Sans Pro&amp;quot;, sans-serif; color: rgb(40, 44, 51);&quot;&gt;Actual kWh Amount Transferred by Utility&lt;/span&gt;&lt;/p&gt;</helpText>
@@ -1196,6 +1202,9 @@
         <fields>
             <name>AdditionalTransferAmount</name>
             <dataType>Currency</dataType>
+            <defaultValue>
+                <numberValue>0.0</numberValue>
+            </defaultValue>
             <fieldText>Amount ($)</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
@@ -1204,6 +1213,9 @@
         <fields>
             <name>AdditionalTransferAmount_kWh</name>
             <dataType>Number</dataType>
+            <defaultValue>
+                <numberValue>0.0</numberValue>
+            </defaultValue>
             <fieldText>Amount (kWh)</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
