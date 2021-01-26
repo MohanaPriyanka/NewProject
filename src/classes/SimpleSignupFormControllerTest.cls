@@ -399,8 +399,10 @@ public with sharing class SimpleSignupFormControllerTest {
     @IsTest
     private static void testPaperlessBilling() {
         // Setup test
+        FeatureService fs = new FeatureService();
         Id leadId = [SELECT Id FROM Lead WHERE Email = 'foo@bar.com' LIMIT 1].Id;
         Id propertyAccountId = [SELECT Id FROM Account WHERE Name = 'test account' LIMIT 1].Id;
+        Boolean featureCheckBool = fs.isEnabled('Collect_Paperless_Billing_in_SSF');
         Boolean collectPaperlessOption = SimpleSignupFormController.collectPaperlessBilling();
 
         // Run test
@@ -414,5 +416,6 @@ public with sharing class SimpleSignupFormControllerTest {
             FROM Account WHERE Id =: propertyAccountId
         ].Bill_Delivery_Preference__c;
         System.assertEquals('Email only', paperlessOptionOnPropAcc, 'Incorrect paperless option on prop account');
+        System.assertEquals(featureCheckBool, collectPaperlessOption, 'Incorrect bool returned');
     }
 }
