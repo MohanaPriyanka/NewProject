@@ -1023,7 +1023,7 @@
             <targetReference>getLead</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>Log_Errors</name>
         <label>Log Errors</label>
