@@ -671,6 +671,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SObjectController3</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SObjectController3Test</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ScheduleZSubscriptionSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
