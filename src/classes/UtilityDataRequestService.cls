@@ -108,98 +108,67 @@ public without sharing class UtilityDataRequestService {
         
         for(Id udrId : udrToUdrpMap.keySet()){
             UDRWrapper currentUDR = new UDRWrapper(udrId);
-            
-            for(Utility_Data_Request_Period__c udrp : udrToUdrpMap.get(udrId)) {
-                if(udrp.Measurement_Significance_Code__c == '51' && udrp.Measurement_Unit__c == 'KH') {
-                    currentUDR.addUdrpKH51(udrp);
-                } else if(udrp.Measurement_Unit__c == 'KH' && (udrp.Measurement_Significance_Code__c == '41' || udrp.Measurement_Significance_Code__c == '42' || udrp.Measurement_Significance_Code__c == '43')){
-                    currentUDR.addUdrpKH40s(udrp);
-                } else if(udrp.Measurement_Significance_Code__c == '51' && udrp.Measurement_Unit__c == 'K1') {
-                    currentUDR.addUdrpK1(udrp);
-                }
-            }
+            orderUDRPs(currentUDR, udrId);
             udrObjectMap.put(udrId, currentUDR);
         }
         //Need to get map of new UDRs with specific query criteria needed for the kWh calculation
         Map<Id, Utility_Data_Request__c> udrMap = udrSelector.selectMapForKWHById(completedUDRMap.values());
-        
+        calcFieldValuesUDR(udrObjectMap, udrMap);
+    }
+    
+    private void calcFieldValuesUDR(Map<Id, UDRWrapper> udrObjectMap, Map<Id, Utility_Data_Request__c> udrMap) {
         for(Utility_Data_Request__c udr : completedUDRMap.values()) {
-            
             Utility_Data_Request__c currentUDR = udrMap.get(udr.Id);
             UDRWrapper currentUdrObject = udrObjectMap.get(udr.Id);
             
             if(currentUdrObject != null) { 
                 UDRPTotalHelper kWhHelper = getAnnualkWh(currentUDR, currentUdrObject.getListKH());
-                currentUDR.Annual_kWh__c = kWhHelper.kWh;
-                UDRPTotalHelper avgDemandHelper = getAverageDemand(currentUDR, currentUdrObject.getListK1());
-                
                 udr.Annual_kWh__c = kWhHelper.kWh;
                 udr.Num_UDRPs_Annual_kWh__c = kWhHelper.numUDRP;
                 
+                UDRPTotalHelper avgDemandHelper = getAverageDemand(currentUdrObject.getListK1());
                 udr.Average_Demand__c = avgDemandHelper.avgDemand;
                 udr.Num_UDRPs_Avg_Demand__c = avgDemandHelper.numUDRP;
             }         
         }
     }
     
-    @TestVisible
+    private void orderUDRPs(UDRWrapper currentUDR, Id udrId) {
+        for(Utility_Data_Request_Period__c udrp : udrToUdrpMap.get(udrId)) {
+            placeUDRP(currentUDR, udrp);
+        }
+    }
+    
+    private void placeUDRP(UDRWrapper currentUDR, Utility_Data_Request_Period__c udrp) {
+        if(udrp.Measurement_Significance_Code__c == '51' && udrp.Measurement_Unit__c == 'KH') {
+            currentUDR.addUdrpKH51(udrp);
+        } else if(udrp.Measurement_Unit__c == 'KH' && (udrp.Measurement_Significance_Code__c == '41' || udrp.Measurement_Significance_Code__c == '42' || udrp.Measurement_Significance_Code__c == '43')){
+            currentUDR.addUdrpKH40s(udrp);
+        } else if(udrp.Measurement_Significance_Code__c == '51' && udrp.Measurement_Unit__c == 'K1') {
+            currentUDR.addUdrpK1(udrp);
+        }
+    }
+    
     private UDRPTotalHelper getAnnualkWh(Utility_Data_Request__c udr, List <Utility_Data_Request_Period__c> udrpList) { 
         UDRPTotalHelper udrpTotalHelper = new UDRPTotalHelper();
         String customerType = udr.Utility_Account_Log__r.Lead__r.Customer_type__c;
         
         for(Utility_Data_Request_Period__c udrp : udrpList){
-            if(updateUDRPTotals(udrpTotalHelper, udrp, udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Annual_kWh_Calculation__c)) {
+            if(udrpTotalHelper.updateUDRPTotals(udrp, udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Annual_kWh_Calculation__c)) {
                 break;
             }
         }
         
-        if(udrpTotalHelper.days>=120 || (customerType == 'Residential' && customerType!= null)){
-            udrpTotalHelper.kWh=(udrpTotalHelper.quantity/udrpTotalHelper.days)*365;
-        }else if ((udrpTotalHelper.days > 0) && (customerType != 'Residential' && customerType != null)){
-            String sizingMethod = udr.Utility_Account_Log__r.Lead__r.Product__r.X4_month_sizing_method__c;
-            if (sizingMethod == 'State Average Annual Usage') {
-                State__c state = stateSelector.selectByName(udr.Utility_Account_Log__r.Service_State__c);                    
-                udrpTotalHelper.kWh = state.Avg_Annual_Resi_kWh__c;
-            }
-            //additional sizingMethods will be added later
-        }
-        udrpTotalHelper.kWh = udrpTotalHelper.kWh.setScale(2);
+        udrpTotalHelper.updatekWh(customerType, udr);
         update udrpList;
         return udrpTotalHelper;
     }
     
-    private Boolean updateUDRPTotals(UDRPTotalHelper udrpTotalHelper, Utility_Data_Request_Period__c udrp, List <Utility_Data_Request_Period__c> udrpList, SObjectField fieldToUpdate) {
-        Decimal potentialNumDaysWithUDRP = udrpTotalHelper.days + udrp.Num_Days__c;
-        
-        if(potentialNumDaysWithUDRP == 365){
-            includeUDRP(udrpList, udrp, udrpTotalHelper, fieldToUpdate);
-            return true;
-        }else if(potentialNumDaysWithUDRP < 365){
-            includeUDRP(udrpList, udrp, udrpTotalHelper, fieldToUpdate);
-            return false;
-        }else if((365 - udrpTotalHelper.days) > (potentialNumDaysWithUDRP - 365)){
-            includeUDRP(udrpList, udrp, udrpTotalHelper, fieldToUpdate);
-            return true;
-        }else if((365 - udrpTotalHelper.days) < (potentialNumDaysWithUDRP - 365)){
-            return true;
-        }
-        return true;
-    }
-    
-    private void includeUDRP(List<Utility_Data_Request_Period__c> udrpList, Utility_Data_Request_Period__c udrp, UDRPTotalHelper udrpTotalHelper, SObjectField fieldToUpdate) {
-        udrpList[udrpTotalHelper.numUDRP].put(fieldToUpdate, true);
-        udrpTotalHelper.numUDRP++;
-        udrpTotalHelper.days = udrpTotalHelper.days + udrp.Num_Days__c;
-        udrpTotalHelper.quantity = udrpTotalHelper.quantity + udrp.Quantity__c;
-        
-    }
-    
-    @TestVisible
-    private UDRPTotalHelper getAverageDemand(Utility_Data_Request__c udr, List <Utility_Data_Request_Period__c> udrpList) { 
+    private UDRPTotalHelper getAverageDemand(List <Utility_Data_Request_Period__c> udrpList) { 
         UDRPTotalHelper udrpTotalHelper = new UDRPTotalHelper();
         
         for(Utility_Data_Request_Period__c udrp : udrpList){
-            if(updateUDRPTotals(udrpTotalHelper, udrp, udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Average_Demand_Calculation__c)) {
+            if(udrpTotalHelper.updateUDRPTotals(udrp, udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Average_Demand_Calculation__c)) {
                 break;
             }
         }
@@ -495,7 +464,44 @@ public without sharing class UtilityDataRequestService {
         Decimal kWh = 0;
         Decimal avgDemand = 0;
         
-        public UDRPTotalHelper() {}
+        private void updatekWh(String customerType, Utility_Data_Request__c udr) {
+            if(days>=120 || (customerType == 'Residential' && customerType!= null)){
+                kWh=(quantity/days)*365;
+            }else if ((days > 0) && (customerType != 'Residential' && customerType != null)){
+                String sizingMethod = udr.Utility_Account_Log__r.Lead__r.Product__r.X4_month_sizing_method__c;
+                if (sizingMethod == 'State Average Annual Usage') {
+                    State__c state = stateSelector.selectByName(udr.Utility_Account_Log__r.Service_State__c);                    
+                    kWh = state.Avg_Annual_Resi_kWh__c;
+                } 
+                //additional sizingMethods will be added later
+            }
+            kWh = kWh.setScale(2);
+        }
+        
+        private Boolean updateUDRPTotals(Utility_Data_Request_Period__c udrp, List <Utility_Data_Request_Period__c> udrpList, SObjectField fieldToUpdate) {
+            Decimal potentialNumDaysWithUDRP = days + udrp.Num_Days__c;
+            
+            if(potentialNumDaysWithUDRP == 365){
+                includeUDRP(udrp, fieldToUpdate);
+                return true;
+            }else if(potentialNumDaysWithUDRP < 365){
+                includeUDRP(udrp, fieldToUpdate);
+                return false;
+            }else if((365 - days) > (potentialNumDaysWithUDRP - 365)){
+                includeUDRP(udrp, fieldToUpdate);
+                return true;
+            }else if((365 - days) < (potentialNumDaysWithUDRP - 365)){
+                return true;
+            }
+            return true;
+        }
+        
+        private void includeUDRP(Utility_Data_Request_Period__c udrp, SObjectField fieldToUpdate) {
+            udrp.put(fieldToUpdate, true);
+            numUDRP++;
+            days = days + udrp.Num_Days__c;
+            quantity = quantity + udrp.Quantity__c;
+        }
         
     }
     

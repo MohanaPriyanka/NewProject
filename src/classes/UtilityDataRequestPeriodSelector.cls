@@ -44,8 +44,8 @@ public inherited sharing class UtilityDataRequestPeriodSelector {
             Quantity__c, Measurement_Unit__c, Load_Profile_Description__c, Measurement_Significance_Code__c, Quantity_Qualifier__c, 
             Used_in_Annual_kWh_Calculation__c, Used_in_Average_Demand_Calculation__c, Num_Days__c, Rate_Class_Lookup__r.Id
             FROM Utility_Data_Request_Period__c 
-            WHERE Utility_Data_Request__c IN :(udrList)
-            AND Measurement_Significance_Code__c IN :(sCode)
+            WHERE Utility_Data_Request__c IN :udrList
+            AND Measurement_Significance_Code__c IN :sCode
             AND Measurement_Unit__c =:mUnit
             ORDER BY Utility_Data_Request__c ASC, Service_Start_Date__c DESC
         ];
