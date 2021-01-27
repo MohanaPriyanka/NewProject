@@ -20,12 +20,14 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track getZip;
     @track getBasicInfo;
     @track getAgreements;
+    @track readyState = false;
     @track showSpinner = false;
-    @track spinnerMessage;
+    @track spinnerMessage = 'Loading...';
 
     @wire(CurrentPageReference) pageRef;
 
     loc = '';
+    init = true;
     underwriting = 'FICO'; // Defaulted to FICO
 
     connectedCallback() {
@@ -33,8 +35,27 @@ export default class Ssf extends NavigationMixin(LightningElement) {
         loadApplication(this);
     }
 
+    renderedCallback() {
+        if (this.getEmail) {
+            this.readyState = true;
+            const inputBox = this.template.querySelector(`[data-id=emailEntry]`);
+            inputBox.focus();
+        }
+    }
+
     resumeApp() {
         retrieveApplication(this);
+    }
+
+    get containerStyles() {
+        if (!this.readyState || this.init) {
+            this.init = false;
+            return 'page-container no-display';
+        } else if (this.readyState) {
+            return 'page-container fade-in';
+        } else {
+            return 'page-container';
+        }
     }
 
     checkForSubmit(event) {
@@ -42,7 +63,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
             const inputBox = this.template.querySelector('lightning-input');
             inputBox.reportValidity();
             if (inputBox.checkValidity()) {
-                this.getLead();
+                retrieveApplication(this);
             }
         }
     }
@@ -90,6 +111,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     }
 
     showBasicInfoPage() {
+        this.readyState = false;
         this.getEmail = false;
         this.getZip = false;
         this.getBasicInfo = true;
@@ -97,6 +119,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     }
 
     showAgreementsPage() {
+        this.readyState = false;
         this.getEmail = false;
         this.getZip = false;
         this.getBasicInfo = false;
@@ -104,14 +127,40 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     }
 
     showPaymentPage() {
+        this.readyState = false;
         this.getEmail = false;
         this.getZip = false;
         this.getBasicInfo = false;
         this.getAgreements = false;
-        
+        this.showSpinner = false;
+        window.scrollTo(0,0);
         const consentsCompleteEvent = new CustomEvent('consentscomplete', {
             detail: JSON.parse(this.leadJSON)
         });
         this.dispatchEvent(consentsCompleteEvent);
+    }
+
+    handleReadyStateEvent(event) {
+        const location = event.detail;
+        switch (location) {
+            case 'info':
+                this.showBasicInfoPage();
+                break;
+            default:
+                this.readyState = true;
+        }
+    }
+
+    handleResetReadyStateEvent() {
+        this.readyState = false;
+    }
+
+    handleSpinnerMessageEvent(event) {
+        this.spinnerMessage = event.detail;
+    }
+
+    toggleLoadingSpinner(event) {
+        const turnOff = event.detail.toggleOff;
+        this.showSpinner = !turnOff;
     }
 }

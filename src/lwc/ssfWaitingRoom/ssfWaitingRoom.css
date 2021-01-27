@@ -8,6 +8,12 @@
 **/
 /* @import 'c/ssfStyleLibrary'; */
 
+.background {
+    background-color: white;
+    border-radius: 0.5rem;
+    animation-name: fade-in-animation;
+    animation-duration: .2s;
+}
 .slds-carousel__panel.panel-hide{
     display: none;
 }
@@ -20,4 +26,13 @@ img.loading {
     margin: auto;
     max-width: 85px;
     height: auto;
+}
+
+@keyframes fade-in-animation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

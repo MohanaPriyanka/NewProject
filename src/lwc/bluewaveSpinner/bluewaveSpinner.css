@@ -1,8 +1,17 @@
 /**
  * Created by peteryao on 3/8/20.
  */
+.container {
+    animation-name: fade-in;
+    position: fixed;
+}
+
+.spinner-misc {
+    margin-top: -3%;
+}
+
 .spinner-message {
-    margin-top: auto;
+    margin-top: 22%;
     text-align: center;
     white-space: pre-line;
 }
@@ -12,6 +21,36 @@
     max-height: 200px;
     max-width: 400px;
     border-radius: 0.5rem;
-    border: 5px solid #b1bac1;
+    /*box-shadow: 3px 3px grey;*/
     position: fixed;
+}
+
+.fade-in {
+    animation-name: fade-in-animation;
+    animation-duration: .2s;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes fade-in-animation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-out {
+    animation-name: fade-out-animation;
+    animation-duration: .2s;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes fade-out-animation {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }

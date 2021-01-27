@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <apiVersion>49.0</apiVersion>
     <choices>
         <name>QCCaseType</name>
         <choiceText>Adjust subscription, &amp;gt;25kW</choiceText>
@@ -246,6 +247,7 @@
         <connector>
             <targetReference>Create_New_QC_Task</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Sales_Representative__c</field>
             <operator>EqualTo</operator>
@@ -267,6 +269,7 @@
         <connector>
             <targetReference>Is_there_a_Sales_Rep</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Partner__c</field>
             <operator>EqualTo</operator>
@@ -295,6 +298,7 @@
         <connector>
             <targetReference>Is_there_Partner_Opp</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -321,6 +325,7 @@
         <connector>
             <targetReference>Is_there_Partner_Opp</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -347,6 +352,7 @@
         <connector>
             <targetReference>Create_Case</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>DeveloperName</field>
             <operator>EqualTo</operator>
@@ -365,6 +371,7 @@
         <label>Update Lead Application Status</label>
         <locationX>1440</locationX>
         <locationY>497</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -388,6 +395,7 @@
         <connector>
             <targetReference>Update_Lead_Application_Status</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>

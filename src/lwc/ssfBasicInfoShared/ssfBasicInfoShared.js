@@ -1,5 +1,8 @@
 import {getUSStateOptionsFull} from 'c/util';
 import findDuplicateUALs from '@salesforce/apex/SimpleSignupFormController.findDuplicateUALs';
+import { toggleLoadingSpinnerEvent, modifySpinnerMessageEvent, handlePromiseError, resetReadyStateEvent } from "c/ssfShared";
+import {makeRequest} from "c/httpRequestService";
+import {ShowToastEvent} from "lightning/platformShowToastEvent";
 
 // Perform tasks when first instancing component
 const onLoad = (cmp) => {
@@ -130,8 +133,8 @@ const getFinDocFileTypes = () => {
 }
 
 const getUnderwritingHelpText = () => {
-    return '<p>The FICO underwriting option is only available for a select group of customers. Please select the financial review option if the applicant’s annual cost exceeds the amount below for their utility and rate class.' +
-    '<ul>' +
+    return '<p>Guarantor (FICO) underwriting is only available for a select group of customers. Please select Financial Documents if the applicant’s annual cost exceeds the amount below for their utility and rate class:' +
+    '<ul><br>' +
     '   <li>CMP – Small Commercial: $55,000</li>' +
     '   <li>CMP – Medium Commercial: $55,000</li>' +
     '   <li>Versant Bangor Hydro – Small Commercial: $60,000</li>' +
@@ -306,6 +309,12 @@ const locateZipCodeField = (cmp, index) => {
 }
 
 const setRemainingFields = (component, sameHomeAddressAsFirstUA) => {
+    if (component.sameHomeAddress) {
+        component.restLead.streetAddress = component.propertyAccount.utilityAccountLogs[0].serviceStreet;
+        component.restLead.city = component.propertyAccount.utilityAccountLogs[0].serviceCity;
+        component.restLead.state = component.propertyAccount.utilityAccountLogs[0].serviceState;
+        component.restLead.zipCode = component.propertyAccount.utilityAccountLogs[0].servicePostalCode;
+    }
     if (component.sameBillingAddress) {
         component.propertyAccount = matchBillingAddress(component.propertyAccount);
     }
@@ -417,7 +426,7 @@ const applicationValid = (cmp) => {
     }
 
     if (!allValid) {
-        cmp.showWarningToast('Warning!', 'Please verify your application before submitting');
+        showWarningToast(cmp,'Warning!', 'Please verify your application before submitting');
         return false;
     }
 
@@ -427,9 +436,162 @@ const applicationValid = (cmp) => {
     return true;
 }
 
+const showWarningToast = (cmp, title, message) => {
+    const evt = new ShowToastEvent({
+        title: title,
+        message: message,
+        variant: 'warning',
+        mode: 'pester',
+        duration: 3000,
+    });
+    cmp.dispatchEvent(evt);
+}
+
+const submitApplication = async (cmp, partnerVersion) => {
+    if (!applicationValid(cmp)) {
+        return;
+    }
+    resetReadyStateEvent(cmp);
+    if (partnerVersion) {
+        modifySpinnerMessageEvent(cmp, 'Saving the application...');
+        toggleLoadingSpinnerEvent(cmp, false);
+        window.setTimeout(() => {
+            modifySpinnerMessageEvent(cmp,`We'll generate documents next.\r\nThis may take a minute, please stand by.`);
+        }, 4000);
+    } else {
+        toggleLoadingSpinnerEvent(cmp, false, 'waitingRoom');
+    }
+
+    // set remaining fields on restLead, including some address fields
+    setRemainingFields(cmp, false);
+    if (!cmp.resumedApp) {
+        await insertLead(cmp);
+    }
+    else {
+        await patchLead(cmp);
+    }
+}
+
+const insertLead = async (cmp) => {
+    try {
+        let insertResult = await createLead(cmp.restLead);
+        cmp.dispatchEvent(new CustomEvent('leadcreated', { detail: insertResult }));
+    } catch (error) {
+        cmp.dispatchEvent(new CustomEvent('readystate'));
+        handlePromiseError(cmp, error, 'insertLead', 'Error');
+    }
+}
+
+const patchLead = async (cmp) => {
+    try {
+        let patchResult = await patchApplication(cmp.restLead);
+        cmp.dispatchEvent(new CustomEvent('leadcreated', {detail: patchResult}));
+    } catch (error) {
+        cmp.dispatchEvent(new CustomEvent('readystate'));
+        toggleLoadingSpinnerEvent(cmp, true);
+        handlePromiseError(cmp, error, 'patchLead', 'Error');
+    }
+}
+
+const createLead = (restLead) => {
+    let calloutURI = '/apply/services/apexrest/v3/leads';
+    let options = {
+        headers: {name: 'Content-Type', value:'application/json'},
+        body: JSON.stringify(restLead)
+    };
+    return makeRequest(calloutURI, 'POST', options);
+};
+
+const patchApplication = (restLead) => {
+    let calloutURI = '/apply/services/apexrest/v3/application';
+    let options = {
+        headers: {name: 'Content-Type', value:'application/json'},
+        body: JSON.stringify(restLead)
+    };
+    return makeRequest(calloutURI, 'PATCH', options);
+};
+
+const getText = (cmp, identifier) => {
+    switch (identifier) {
+        case 'underwritingHelptext':
+            return getUnderwritingHelpText();
+        case 'ualNumLabel':
+            return getUalNumFieldLabel(cmp);
+        case 'ualNumReentryLabel':
+            return getUalNumReentryFieldLabel(cmp);
+        case 'podLabel':
+            return getPodFieldLabel(cmp);
+        case 'podReentryLabel':
+            return getPodReentryFieldLabel(cmp);
+        case 'businessNameLabel':
+            return getBusinessNameLabel(cmp);
+        case 'businessTitleLabel':
+            return getJobTitleFieldLabel(cmp);
+        default:
+            return null;
+    }
+}
+
+const getUalNumFieldLabel = (cmp) => {
+    const formFactor = cmp.formFactor;
+    if (formFactor === 'Large') {
+        return 'Utility Account Number';
+    }
+    else {
+        return 'Account Number';
+    }
+}
+
+const getUalNumReentryFieldLabel = (cmp) => {
+    const formFactor = cmp.formFactor;
+    if (formFactor === 'Small' || formFactor === 'Medium') {
+        return 'Re-Enter Account #';
+    }
+    else {
+        return 'Re-Enter Utility Account Number';
+    }
+}
+
+const getPodFieldLabel = (cmp) => {
+    const formFactor = cmp.formFactor;
+    if (formFactor === 'Small' || formFactor === 'Medium') {
+        return 'Point of Delivery ID';
+    }
+    else {
+        return 'Point of Delivery ID (PoD)';
+    }
+}
+
+const getPodReentryFieldLabel = (cmp) => {
+    const formFactor = cmp.formFactor;
+    if (formFactor === 'Small' || formFactor === 'Medium') {
+        return 'Re-Enter PoD ID';
+    }
+    else {
+        return 'Re-Enter Point of Delivery ID';
+    }
+}
+
+const getBusinessNameLabel = (cmp) => {
+    const formFactor = cmp.formFactor;
+    if (formFactor === 'Large') {
+        return 'Name of Business or Organization';
+    } else {
+        return 'Name of Business';
+    }
+}
+
+const getJobTitleFieldLabel = (cmp) => {
+    const formFactor = cmp.formFactor;
+    if (formFactor === 'Medium' || formFactor === 'Small') {
+        return 'Job Title or Affiliation';
+    } else {
+        return 'Job Title or Organizational Affiliation';
+    }
+}
+
 export {
     getFinDocFileTypes,
-    getUnderwritingHelpText,
     getNewRestUtilityAccountLog,
     validateUtilityAccountLog,
     setRemainingFields,
@@ -439,5 +601,7 @@ export {
     validateServiceZipCode,
     applicationValid,
     onLoad,
-    findDuplicateUAL
+    findDuplicateUAL,
+    getText,
+    submitApplication
 }

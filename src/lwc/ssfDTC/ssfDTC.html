@@ -1,5 +1,5 @@
 <template>
-    <div class="page-container">
+    <div class={containerStyles}>
         <template if:true={getEmail}>
             <div class="slds-grid slds-wrap slds-var-p-around_large">
                 <div class="slds-size_1-of-1">
@@ -11,6 +11,7 @@
                         <div class="slds-align_absolute-center slds-var-p-top_x-small"
                              style="width: 70%;" onkeyup={checkForSubmit}>
                             <lightning-input
+                                data-id="emailEntry"
                                 name="email"
                                 label="Email Address"
                                 variant="label-hidden"
@@ -27,21 +28,28 @@
         </template>
         <template if:true={getZip}>
             <c-ssf-zip-check-d-t-c
-                resi-application-type={resiApplicationType} 
+                resi-application-type={resiApplicationType}
                 partner-id={partnerId}
                 zip-code-input={zipCodeInput}
+                onspinnermessageupdate={handleSpinnerMessageEvent}
+                ontoggleloading={toggleLoadingSpinner}
+                onreadystate={handleReadyStateEvent}
                 oncapacitycheckcomplete={handleCapacityCheckComplete}>
             </c-ssf-zip-check-d-t-c>
         </template>
         <template if:true={getBasicInfo}>
             <c-ssf-basic-info-d-t-c
-                lead-json={leadJSON} 
-                zip-check-response={zipCodeResponse} 
-                resi-application-type={resiApplicationType} 
+                lead-json={leadJSON}
+                zip-check-response={zipCodeResponse}
+                resi-application-type={resiApplicationType}
                 underwriting-options={underwritingOptions}
                 partner-id={partnerId}
                 sales-rep-id={salesRepId}
                 campaign-id={campaignId}
+                onspinnermessageupdate={handleSpinnerMessageEvent}
+                onresetreadystate={handleResetReadyStateEvent}
+                onreadystate={handleReadyStateEvent}
+                ontoggleloading={toggleLoadingSpinner}
                 onleadcreated={handleLeadCreation}
                 onunderwritingchange={setUnderwritingMethod}>
             </c-ssf-basic-info-d-t-c>
@@ -49,11 +57,18 @@
         <template if:true={getAgreements}>
             <c-ssf-agreements-d-t-c
                 lead-json={leadJSON}
+                onspinnermessageupdate={handleSpinnerMessageEvent}
+                onresetreadystate={handleResetReadyStateEvent}
+                onreadystate={handleReadyStateEvent}
                 onconsentscomplete={handleConsentsComplete}
                 onnavigateback={handleNavigateBackToBasicInfo}
+                ontoggleloading={toggleLoadingSpinner}
                 underwriting={underwriting}>
             </c-ssf-agreements-d-t-c>
         </template>
-        <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
     </div>
+    <c-bluewave-spinner fade-in="true" spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
+    <template if:true={showWaitingRoom}>
+        <c-ssf-waiting-room></c-ssf-waiting-room>
+    </template>
 </template>
