@@ -1,5 +1,5 @@
 ({
-    doInit: function(component) {
+    doInit: function(component, event, helper) {
         var loc;
         var href = decodeURIComponent(window.location.search.substring(1));
         var params = href.split('&');
@@ -14,6 +14,9 @@
                 break;
             }
         }
+
+        // Determine if collecting paperless billing info on Payments page
+        helper.collectPaperlessBilling(component);
 
         component.set('v.getPayment', false);
         if (loc === 'complete') {
@@ -100,6 +103,19 @@
                 helper.showFinalPage(component);
             }
         );
+    },
+
+    setPaperlessBillingOption: function(component) {
+        const leadId = component.get('v.lead.id');
+        const propertyAccountId = component.get('v.lead.propertyAccounts[0].id');
+        const paperless = component.get('v.paperlessBilling');
+        let action = component.get("c.setPropertyAccountPaperlessBillingOption");
+        action.setParams({
+            leadId : leadId,
+            propertyAccountId : propertyAccountId,
+            paperless : paperless
+        });
+        $A.enqueueAction(action);
     },
 
     showComplete: function(component, event, helper) {

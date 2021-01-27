@@ -152,4 +152,17 @@
         }
         window.scrollTo(scrollOptions);
     },
+
+    collectPaperlessBilling : function(component) {
+        let action = component.get("c.collectPaperlessBilling");
+        action.setCallback(this, function(response) {
+            const state = response.getState();
+            if (state === "SUCCESS") {
+                const collectPaperlessBillingOption = response.getReturnValue();
+                component.set('v.collectPaperlessBillingOption', collectPaperlessBillingOption);
+            }
+        });
+        $A.enqueueAction(action);
+    },
+
 });
