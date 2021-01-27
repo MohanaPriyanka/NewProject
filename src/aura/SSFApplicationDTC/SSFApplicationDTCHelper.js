@@ -130,6 +130,7 @@
         component.set('v.getPayment', false);
         component.set('v.showCreditCheckInfoPage', false);
         component.set('v.showComplete', true);
+        this.scrollToTop();
     },
 
     logError : function(component, cmpName, methodName, message) {
@@ -141,5 +142,14 @@
             "severity": "Error"
         });
         $A.enqueueAction(action);
+    },
+
+    scrollToTop : function() {
+        const scrollOptions = {
+            left: 0,
+            top: 0,
+            behavior: 'auto'
+        }
+        window.scrollTo(scrollOptions);
     },
 });

@@ -1,6 +1,6 @@
 {
   "activeBrandingSetId" : "1d81b32a-a20d-4bf4-afc8-41b74a332d03",
-  "customCSS" : "h1, h1 a, h1 a:hover, h1 a:active, h1 a:visited {\n    font-size: 40pt;\n}\n\nh2, h2 a, h2 a:hover, h2 a:active, h2 a:visited{\n    font-size: 16pt;\n}\n\nh3, h3 a, h3 a:hover, h3 a:active, h3 a:visited {\n    font-size: 16pt;\n}\n\nh4, h4 a, h4 a:hover, h4 a:active, h4 a:visited {\n    font-size: 20pt;\n}\n\n.content .slds-form.slds-form_stacked .slds-grid.slds-gutters_small.forcePageBlockSectionRow:first-child {    display: none;\n}\n\nbutton.uiButton{\n    border-radius: .5rem !important;\n    \n}\n\n.forceCommunityContactSupportButton.contactSupportButton{\n    border-radius: .5rem !important;\n    width: 75% !important;\n    display: flex !important;\n    justify-content: center !important;\n    padding: 10px !important;\n        \n}\n\narticle.summary{\nmargin-left: 15px;\n}\n\n.forceCommunityRecordListCompact{\n    background: white; \n    margin-left:2rem;\n\tborder-radius: .3rem;\n    padding: 1rem;\n}\n\nfieldset.slds-theme--default{\n    border-radius:.5rem;\n    padding: 2rem;\n}\n\n.siteforceThemeLayoutStarter .article-item.selfServiceArticleListItem {box-sizing:border-box;border-radius:.2rem}\n\n.slds-button_icon-more{display:none;}\n.slds-icon-utility-down{display:none;}\n.slds-m-left_xx-small{display:none;}\n.rowActionsPlaceHolder{display:none;}\n.slds-row-number{display:none;}\n.uiTooltip {\ndisplay: none !important;\n}",
+  "customCSS" : ".content .slds-form.slds-form_stacked .slds-grid.slds-gutters_small.forcePageBlockSectionRow:first-child {\n    display: none;\n}\n\nbutton.uiButton{\n    border-radius: .5rem !important;\n    \n}\n\n\narticle.summary{\nmargin-left: 15px;\n}\n\n.forceTopicFeaturedTopicItem {\n    font-size:x-large;\n}\n\n\n.forceCommunityRecordListCompact{\n    background: white; \n    border-radius: .3rem;\n    margin-left:2rem;\n    padding: 1rem;\n}\n\nfieldset.slds-theme--default{\n    border-radius:.5rem;\n    padding: 2rem;\n}\n\n.siteforceThemeLayoutStarter .article-item.selfServiceArticleListItem {box-sizing:border-box;border-radius:.2rem}\n\n.slds-button_icon-more{display:none;}\n.slds-icon-utility-down{display:none;}\n.slds-m-left_xx-small{display:none;}\n.rowActionsPlaceHolder{display:none;}\n.slds-row-number{display:none;}\n.uiTooltip {\ndisplay: none !important;\n}",
   "developerName" : "jepson",
   "id" : "2eb092a6-9877-4986-9510-ee521c5b9891",
   "label" : "Jepson",
@@ -11,6 +11,7 @@
   },
   "type" : "theme",
   "views" : [ {
+    "componentAttributes" : { },
     "componentName" : "salesforceIdentity:loginBody2",
     "id" : "d3856df1-a5f2-41b0-b16d-8b0e72b6572e",
     "label" : "Login",
@@ -29,13 +30,22 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1440,
+      "headerBgColor" : "rgba(255, 255, 255, 0.8)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : false
+    },
     "componentName" : "siteforce:themeLayoutStarter",
     "id" : "779da896-a12d-4a6c-975b-f845f61c7cfb",
     "label" : "Default",
     "regions" : [ {
       "components" : [ {
         "componentAttributes" : {
-          "background" : "background: rgb(255,255,255)",
+          "background" : "background: rgb(20,28,51)",
           "backgroundOverlayColor" : "rgba(0, 0, 0, 0.3)",
           "borderBottomColor" : "rgba(0, 0, 0, 0)",
           "centerAlignLogo" : false,
@@ -49,8 +59,8 @@
           "dropdownTextHoverColor" : "",
           "headerHeight" : 24,
           "linkActiveBorderColor" : "",
-          "linkColor" : "rgba(0, 0, 0, 0.8)",
-          "linkHoverColor" : "rgba(0, 0, 0, 0.7)",
+          "linkColor" : "rgba(255, 255, 255, 0.8)",
+          "linkHoverColor" : "rgba(255, 255, 255, 0.8)",
           "linkTextShadowColor" : "rgba(255, 255, 255, 0)",
           "logoWidth" : 183,
           "searchStyle" : "expanded",
@@ -243,14 +253,14 @@
             "enabledFeatures" : [ "LiveAgent" ],
             "gslbBaseURL" : "https://service.force.com",
             "eswConfigId" : "04I0a000000k9elEAA",
-            "baseCoreURL" : "https://bluewavesolar.my.salesforce.com",
+            "baseCoreURL" : "https://bluewavesolar--jeff.my.salesforce.com",
             "eswConfigDevName" : "CS_Customer_Portal_Chat",
             "eswLiveAgentDevName" : "EmbeddedServiceLiveAgent_Parent04I540000008OIAEA2_168359a18ae",
-            "orgId" : "00Dj0000001q7GO",
-            "baseLiveAgentContentURL" : "https://c.la3-c1-phx.salesforceliveagent.com/content",
+            "orgId" : "00D0U000000GuBp",
+            "baseLiveAgentContentURL" : "https://c.la2-c1cs-ord.salesforceliveagent.com/content",
             "deploymentId" : "572j0000000L8TH",
             "buttonId" : "573j0000000LA5U",
-            "baseLiveAgentURL" : "https://d.la3-c1-phx.salesforceliveagent.com/chat",
+            "baseLiveAgentURL" : "https://d.la2-c1cs-ord.salesforceliveagent.com/chat",
             "isOfflineCasesEnabled" : "1"
           },
           "externalScripts" : "",
@@ -281,13 +291,22 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1440,
+      "headerBgColor" : "rgba(255, 255, 255, 0.8)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : true,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : false
+    },
     "componentName" : "siteforce:themeLayoutStarter",
     "id" : "c8c25cf5-65cf-419d-858c-9660c0af7cf4",
     "label" : "Home",
     "regions" : [ {
       "components" : [ {
         "componentAttributes" : {
-          "background" : "background: rgb(255,255,255)",
+          "background" : "background: rgb(20,28,51)",
           "backgroundOverlayColor" : "rgb(255, 255, 255)",
           "borderBottomColor" : "rgba(0, 0, 0, 0)",
           "centerAlignLogo" : false,
@@ -301,7 +320,7 @@
           "dropdownTextHoverColor" : "",
           "headerHeight" : 24,
           "linkActiveBorderColor" : "",
-          "linkColor" : "rgb(75, 75, 75)",
+          "linkColor" : "rgb(255, 255, 255)",
           "linkHoverColor" : "rgba(0, 0, 0, 0.7)",
           "linkTextShadowColor" : "rgba(238, 214, 214, 0)",
           "logoWidth" : 179,
@@ -381,9 +400,9 @@
         }, {
           "components" : [ {
             "componentAttributes" : {
-              "navAlignment" : "center",
-              "navItemThreshold" : 6,
-              "navigationMenuEditorRefresh" : ""
+              "navAlignment" : "left",
+              "navItemThreshold" : 7,
+              "navigationMenuEditorRefresh" : "Default_Navigation"
             },
             "componentName" : "forceCommunity:themeNav",
             "id" : "47878f7a-7531-4159-94a4-091e1f7fedf0",
@@ -501,14 +520,14 @@
             "enabledFeatures" : [ "LiveAgent" ],
             "gslbBaseURL" : "https://service.force.com",
             "eswConfigId" : "04I0a000000k9elEAA",
-            "baseCoreURL" : "https://bluewavesolar.my.salesforce.com",
+            "baseCoreURL" : "https://bluewavesolar--jeff.my.salesforce.com",
             "eswConfigDevName" : "CS_Customer_Portal_Chat",
             "eswLiveAgentDevName" : "EmbeddedServiceLiveAgent_Parent04I540000008OIAEA2_168359a18ae",
-            "orgId" : "00Dj0000001q7GO",
-            "baseLiveAgentContentURL" : "https://c.la3-c1-phx.salesforceliveagent.com/content",
+            "orgId" : "00D0U000000GuBp",
+            "baseLiveAgentContentURL" : "https://c.la2-c1cs-ord.salesforceliveagent.com/content",
             "deploymentId" : "572j0000000L8TH",
             "buttonId" : "573j0000000LA5U",
-            "baseLiveAgentURL" : "https://d.la3-c1-phx.salesforceliveagent.com/chat",
+            "baseLiveAgentURL" : "https://d.la2-c1cs-ord.salesforceliveagent.com/chat",
             "isOfflineCasesEnabled" : "1"
           },
           "externalScripts" : "",

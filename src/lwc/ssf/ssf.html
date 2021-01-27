@@ -1,5 +1,5 @@
 <template>
-    <div class="page-container">
+    <div class={containerStyles}>
         <template if:true={getEmail}>
             <div class="slds-grid slds-wrap slds-var-p-around_large">
                 <div class="slds-size_1-of-1">
@@ -11,6 +11,7 @@
                         <div class="slds-align_absolute-center slds-var-p-top_x-small"
                              style="width: 70%;" onkeyup={checkForSubmit}>
                             <lightning-input
+                                data-id="emailEntry"
                                 name="email"
                                 label="Email Address"
                                 variant="label-hidden"
@@ -30,6 +31,9 @@
                 resi-application-type={resiApplicationType} 
                 partner-id={partnerId}
                 zip-code-input={zipCodeInput}
+                onspinnermessageupdate={handleSpinnerMessageEvent}
+                ontoggleloading={toggleLoadingSpinner}
+                onreadystate={handleReadyStateEvent}
                 oncapacitycheckcomplete={handleCapacityCheckComplete}>
             </c-ssf-zip-check>
         </template>
@@ -42,6 +46,10 @@
                 partner-id={partnerId}
                 sales-rep-id={salesRepId}
                 campaign-id={campaignId}
+                onspinnermessageupdate={handleSpinnerMessageEvent}
+                onresetreadystate={handleResetReadyStateEvent}
+                onreadystate={handleReadyStateEvent}
+                ontoggleloading={toggleLoadingSpinner}
                 onleadcreated={handleLeadCreation}
                 onunderwritingchange={setUnderwritingMethod}>
             </c-ssf-basic-info>
@@ -49,11 +57,15 @@
         <template if:true={getAgreements}>
             <c-ssf-agreements
                 lead-json={leadJSON}
+                onspinnermessageupdate={handleSpinnerMessageEvent}
+                onresetreadystate={handleResetReadyStateEvent}
+                onreadystate={handleReadyStateEvent}
                 onconsentscomplete={handleConsentsComplete}
                 onnavigateback={handleNavigateBackToBasicInfo}
+                ontoggleloading={toggleLoadingSpinner}
                 underwriting={underwriting}>
             </c-ssf-agreements>
         </template>
-        <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
     </div>
+    <c-bluewave-spinner fade-in="true" spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
 </template>

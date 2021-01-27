@@ -8,9 +8,7 @@ import {
     creditCheckSigned,
     communitySolarAgreementSigned,
     displayDocument,
-    showDisclosureApproval,
     showCreditCheckApproval,
-    showCSAgreementApproval,
     consentsComplete,
     navigateBack,
     getText,
@@ -37,26 +35,12 @@ export default class SsfAgreementsDTC extends LightningElement {
     @track csAgreementDocumentId;
     @track disclosureDocumentId;
     @track showContractDocument;
-    @track showSpinner;
-    @track spinnerMessage;
 
     lead;
     documentPollerId;
     documentPollerTimeoutId;
-    mostRecentDocDate;
     esignDisclosureUrl = getText(this, 'esignUrl');
-
-    get isFicoUnderwriting() {
-        return this.underwriting === 'FICO';
-    }
-
-    get isFinDocsUnderwriting() {
-        return this.underwriting === 'Financial Review';
-    }
-
-    get renderCreditCheckLanguage() {
-        return this.isFicoUnderwriting || this.isFinDocsUnderwriting;
-    }
+    version = 'DTC';
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css')
@@ -166,16 +150,8 @@ export default class SsfAgreementsDTC extends LightningElement {
         this.moreCSAgreement = true;
     }
 
-    showDisclosureApproval(event) {
-        showDisclosureApproval(this);
-    }
-
     showCreditCheckApproval(event) {
         showCreditCheckApproval(this);
-    }
-
-    showCSAgreementApproval(event) {
-        showCSAgreementApproval(this);
     }
 
     checkForSubmit(event) {

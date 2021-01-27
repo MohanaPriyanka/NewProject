@@ -36,7 +36,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "title" : "Related Topics"
+        "title" : "Related Topics",
+        "topicId" : "{!topicId}"
       },
       "componentName" : "forceCommunity:relatedTopics",
       "id" : "842a76cd-6abb-4b12-a1a7-1284dc9c7998",

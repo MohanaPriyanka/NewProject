@@ -85,6 +85,95 @@
         <allowFinish>false</allowFinish>
         <allowPause>false</allowPause>
         <fields>
+            <name>billingAccountDataTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Zuora__CustomerAccount__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <stringValue>Name,Lifetime_Savings__c,Zuora__Balance__c,Zuora__AccountNumber__c,View_Account__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnWidths</name>
+                <value>
+                    <stringValue> column-widths-mode=&quot;auto&quot;</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnLabels</name>
+                <value>
+                    <stringValue>Name:Account Name, Zuora__Balance__c:Account Balance, View_Account__c:</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>hideCheckboxColumn</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnIcons</name>
+                <value>
+                    <stringValue>5:action:clone</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnWraps</name>
+                <value>
+                    <stringValue>Name%3Atrue%2C%20Lifetime_Savings__c%3Atrue%2C%20Zuora__Balance__c%3Atrue%2C%20Zuora__AccountNumber__c%3Atrue%2C%20View_Account__c%3Atrue</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>isDisplayHeader</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableLabel</name>
+                <value>
+                    <stringValue>Your BlueWave Accounts</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnOtherAttribs</name>
+                <value>
+                    <stringValue>Name:{hideDefaultActions: true}; Lifetime_Savings__c:{hideDefaultActions: true}; Zuora__Balance__c:{hideDefaultActions: true}; Zuora__AccountNumber__c:{hideDefaultActions: true}; View_Account__c:{hideDefaultActions: true}</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnAlignments</name>
+                <value>
+                    <stringValue>Name:left,Lifetime_Savings__c:left, Zuora__Balance__c:left, Zuora__AccountNumber__c:left, View_Account__c:left</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>suppressNameFieldLink</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <stringValue>Zuora__CustomerAccount__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_Billing_Accounts</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
             <name>dispMessageCenter</name>
             <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Message Center&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Here&apos;s some important information about your latest bill:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;i&gt;{!Get_Bill_Messages.Zuora_Invoice_Message_1_of_2__c}&lt;/i&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;i&gt;{!Get_Bill_Messages.Zuora_Invoice_Message_2_of_2__c}&lt;/i&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Questions? Click the &lt;b&gt;Chat &lt;/b&gt;button at the bottom of the page and we&apos;ll help you out.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>

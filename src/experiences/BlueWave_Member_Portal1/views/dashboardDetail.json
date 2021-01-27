@@ -10,7 +10,7 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "height" : 1065,
+        "height" : "1065",
         "recordId" : "{!recordId}"
       },
       "componentName" : "forceCommunity:dashboard",

@@ -63,6 +63,12 @@ const retrieveApplication = async (component) => {
     } catch (error) {
         let fail = typeof error === 'object' ? error : JSON.parse(error);
         if (fail.errors[0].substr(0,21) === 'Invalid authorization') {
+            const resumeLocation = component.loc ? component.loc : '';
+            if (component.pageRef.state.email) {
+                component.loc = 'email';
+                setLocation(component);
+                component.loc = resumeLocation;
+            }
             showInvalidAuthorizationToast(component);
         } else {
             handlePromiseError(component, error, 'getLead', 'Error');
@@ -84,9 +90,10 @@ const retrieveApplication = async (component) => {
     }
 
     // Set application page to start on based on URL params, lead, and capacity
-    setLocation(component);
-
-    component.showSpinner = false;
+    window.setTimeout(() => {
+        setLocation(component);
+        component.showSpinner = false;
+    }, 1000);
 }
 
 const getLead = async (component, leadId, email) => {
@@ -127,6 +134,12 @@ const showGenericErrorToast = (component) => {
 
 const setLocation = (component) => {
     switch (component.loc) {
+        case 'zip':
+            component.showGetZipCodeCapacityPage();
+            break;
+        case 'email':
+            component.showEnterEmailPage();
+            break;
         case 'info':
             component.showBasicInfoPage();
             break;
@@ -141,7 +154,36 @@ const setLocation = (component) => {
     }
 }
 
+const modifySpinnerMessageEvent = (cmp, message) => {
+    cmp.dispatchEvent(new CustomEvent('spinnermessageupdate', {
+        detail: message
+    }));
+}
+
+const toggleLoadingSpinnerEvent = (cmp, toggleOff, variant) => {
+    let eventDetails = {
+        'toggleOff': toggleOff,
+        'variant' : variant,
+    };
+    cmp.dispatchEvent(new CustomEvent('toggleloading', {
+        detail: eventDetails
+    }));
+}
+
+const resetReadyStateEvent = (cmp) => {
+    cmp.dispatchEvent(new CustomEvent('resetreadystate'));
+}
+
+const postReadyStateEvent = (cmp, location) => {
+    cmp.dispatchEvent(new CustomEvent('readystate',{detail: location}));
+}
+
 export {
     loadApplication,
-    retrieveApplication
+    retrieveApplication,
+    toggleLoadingSpinnerEvent,
+    modifySpinnerMessageEvent,
+    postReadyStateEvent,
+    resetReadyStateEvent,
+    handlePromiseError,
 }

@@ -1164,13 +1164,14 @@ public with sharing class CSLeadsRESTControllerV2Test {
         Test.startTest();
         CSLeadsRESTControllerV2.createAndSendCSPartnerEmail(leadToUpdate.Id);
         Test.stopTest();
-        System.assertEquals(1, MessagingService.emailsSent.size(), 'Application Complete email should be sent to Partner');
+            System.assertEquals(1, MessagingService.emailsSent.size(), 'Application Complete email should be sent to Partner');
         Messaging.SingleEmailMessage sentEmail = (Messaging.SingleEmailMessage) MessagingService.emailsSent[0];
         System.assert(!sentEmail.htmlBody.contains('{{{Recipient.Name}}}'),
             'Merge fields should be merged, but got: ' + sentEmail.htmlBody);
         System.assert(sentEmail.htmlBody.contains('Other Testcase'),
             'The Lead Name should have gotten merge in, but got: ' + sentEmail.htmlBody);
     }
+
     @IsTest
     private static void testCreateQCCaseForNoMatch() {
         Lead leadToUpdate = new Lead (
@@ -1203,8 +1204,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
         ];
         System.assertEquals(1, qcCase.size(), 'QC Case is created for completed applications that still have a No Match PCR');
         System.assertEquals('No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)', qcCase[0].QC_Case_Subject__c, 'No FICO Match QC case should be created');
-
     }
+
     @IsTest
     private static void testContractFilesCompilation() {
         // Mock data
@@ -1212,15 +1213,19 @@ public with sharing class CSLeadsRESTControllerV2Test {
         dataSet.generateTestData(false);
         Lead generatedLead = new LeadSelector().selectOneWithPropertiesAndUtilities(dataSet.leadId);
         dataSet.insertContractFiles();
+
         // Start test
         Test.startTest();
+
         // Run standard scenario with 2 contract files
         controller.setResponseLeadContentDocs(generatedLead, dataSet.restLead, false);
         System.assertEquals(2, dataSet.restLead.contentDocs.size(),'TEST A: Incorrect number of contract files');
+
         // Set rate class to suppress disclosure form, then re-run => 1 contract file should exist in response
         dataSet.setRateClassToSuppressDisclosureForm();
         controller.setResponseLeadContentDocs(generatedLead, dataSet.restLead, false);
         System.assertEquals(1, dataSet.restLead.contentDocs.size(),'TEST B: Incorrect number of contract files');
+
         // Set Product Disclosure_Form_Conga_Template__c field to null => 1 contract file should exist on response
         // OTHER NOTE: All Products must have the Project_Specific_Conga_Template__c field entered
         dataSet.resetRateClass();
@@ -1228,8 +1233,10 @@ public with sharing class CSLeadsRESTControllerV2Test {
         Lead leadWithModifiedProduct = new LeadSelector().selectOneWithPropertiesAndUtilities(dataSet.leadId);
         controller.setResponseLeadContentDocs(leadWithModifiedProduct, dataSet.restLead, false);
         System.assertEquals(1, dataSet.restLead.contentDocs.size(),'TEST C: Incorrect number of contract files');
+
         Test.stopTest();
     }
+
     @IsTest
     private static void testContractFilesCompilation_NoRateClass() {
         // Mock data
@@ -1237,13 +1244,16 @@ public with sharing class CSLeadsRESTControllerV2Test {
         dataSet.generateTestData(true);
         Lead generatedLead = new LeadSelector().selectOneWithPropertiesAndUtilities(dataSet.leadId);
         dataSet.insertContractFiles();
+
         // Start test
         Test.startTest();
+
         controller.setResponseLeadContentDocs(generatedLead, dataSet.restLead, false);
         System.assertEquals(2, dataSet.restLead.contentDocs.size(),'Incorrect number of contract files');
-        Test.stopTest();
 
+        Test.stopTest();
     }
+
     /*************
      *** MOCKS ***
      *************/
@@ -1259,24 +1269,31 @@ public with sharing class CSLeadsRESTControllerV2Test {
         private List<ContentVersion> contractFiles;
         private List<ContentDocumentLink> contractDocumentLinks;
         private RestLead restLead;
+
         public RestLeadTestDataset() {
             insertBaseDependencies();
         }
+
         private void insertBaseDependencies() {
             Partner__c partner = new Partner__c(Name='default test');
             insert partner;
             partnerId = partner.Id;
+
             BSST__c salesRep = new BSST__c(Name = 'default rep', Partner__c = partner.Id);
             insert salesRep;
             salesRepId = salesRep.Id;
             partner.Default_Sales_Rep__c = salesRep.Id;
             update partner;
+
             insert new System_Properties__c(Name = 'test', Default_CS_Partner__c = partner.Id);
+
             contractCongaTemplate = new APXTConga4__Conga_Template__c();
             insert contractCongaTemplate;
+
             product = [SELECT Id,Name FROM Product2 LIMIT 1];
             product.Disclosure_Form_Conga_Template__c = contractCongaTemplate.Id;
             update product;
+
             utilityId = [SELECT Id FROM Utility__c WHERE Name = 'Utility with EIA ID'].Id;
             rateClass = new Rate_Class__c(
                 Name                        = 'Rate Class 1',
@@ -1285,6 +1302,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             );
             insert rateClass;
         }
+
         private void generateTestData(Boolean missingRateClass) {
             restLead = new RestLead();
             restLead.productName = product.Name;
@@ -1303,11 +1321,13 @@ public with sharing class CSLeadsRESTControllerV2Test {
             restLead.partnerId = partnerId;
             restLead.salesRepId = salesRepId;
             restLead.noPayment = false;
+
             RestLead.RestPropertyAccount restAccount = new RestLead.RestPropertyAccount();
             restAccount.billingStreet = 'Test billing street';
             restAccount.billingCity = 'Test billing city';
             restAccount.billingState = 'NY';
             restAccount.billingPostalCode = '14472';
+
             RestLead.RestUtilityAccountLog requestUAL1 = new RestLead.RestUtilityAccountLog();
             requestUAL1.serviceStreet = 'Test service street';
             requestUAL1.serviceCity = 'Test service city';
@@ -1315,13 +1335,16 @@ public with sharing class CSLeadsRESTControllerV2Test {
             requestUAL1.servicePostalCode = '14472';
             requestUAL1.utilityAccountNumber = '555555';
             requestUAL1.rateClass = missingRateClass ? null : 'Rate Class 1';
+
             restAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>{requestUAL1};
             restLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{restAccount};
+
             // Insert data into database using existing methods that would apply to an incoming API request
             controller.insertLeadAccountAndUALs(restLead, new RestResponse());
             leadId = [SELECT Id FROM Lead].Id;
             contractId = [SELECT Id FROM Contract WHERE Lead__c =: leadId].Id;
         }
+
         private void insertContractFiles() {
             // Insert two content versions and link to the Contract (assume Conga generated the following docs)
             ContentVersion content1 = new ContentVersion(
@@ -1336,6 +1359,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             );
             contractFiles = new List<ContentVersion>{content1, content2};
             insert contractFiles;
+
             // Query for Salesforce-generated ContentDocumentLinks on ContentVersions, add to Contract
             contractFiles = [
                 SELECT Id, ContentDocumentId, VersionData, Title FROM ContentVersion
@@ -1356,22 +1380,26 @@ public with sharing class CSLeadsRESTControllerV2Test {
             contractDocumentLinks = new List<ContentDocumentLink>{cdl1, cdl2};
             insert contractDocumentLinks;
         }
+
         private void setRateClassToSuppressDisclosureForm() {
             rateClass.Suppress_Disclosure_Form__c = true;
             update rateClass;
         }
+
         private void resetRateClass() {
             rateClass.Suppress_Disclosure_Form__c = false;
             update rateClass;
         }
+
         private void setProductDisclosureTemplateToNull() {
             product.Disclosure_Form_Conga_Template__c = null;
             update product;
         }
     }
+
     @TestVisible
     private class MockLeadService extends MockProvider {
-            public override Object handleMethodCall(MethodCall methodCall) {
+        public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'updateLead' {
                     return new Lead(Company = 'test');
@@ -1392,10 +1420,10 @@ public with sharing class CSLeadsRESTControllerV2Test {
         private Lead leadToReturn;
         public MockLeadSelector() {
             this.leadToReturn = null;
-        }
+                }
         public MockLeadSelector(Lead leadToReturn) {
             this.leadToReturn = leadToReturn;
-        }
+                }
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             return leadToReturn;
@@ -1436,9 +1464,9 @@ public with sharing class CSLeadsRESTControllerV2Test {
                 when 'selectPropertyAccountsByLeadIds' {
                     Set<Id> leadIds = (Set<Id>) listOfArgs.get(0);
                     if (leadIds.contains('00Q000000000999')) {
-                        return new List<Account>{new Account()};
-                    }
-                }
+                                return new List<Account>{new Account()};
+                            }
+                        }
                 when 'selectPropertyAccountsByLeadIdsMap' {
                     return new Map<Id, Account>{'001000000000999' => new Account(Id = '001000000000999')};
                 }

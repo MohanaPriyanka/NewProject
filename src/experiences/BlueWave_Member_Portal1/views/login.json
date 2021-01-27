@@ -31,7 +31,7 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "richTextValue" : "<p><a href=\"/ForgotPassword\" target=\"_self\" style=\"color: rgb(68, 68, 68);\">Click here to set up your Account or reset your password.</a></p><p><br></p><p style=\"text-align: center;\"><span style=\"color: rgb(68, 68, 68);\">Are you a Solar Installer?</span></p><p style=\"text-align: center;\"><span style=\"color: rgb(68, 68, 68);\">Click </span><a href=\"https://bluewavememberportal.force.com/slportal/s/login/\" target=\"_self\" style=\"color: rgb(68, 68, 68);\"><u>here</u></a><span style=\"color: rgb(68, 68, 68);\"> to log into the Solar Loan Portal.</span></p>"
+        "richTextValue" : "<p><a href=\"/ForgotPassword\" target=\"_self\" style=\"color: rgb(255, 255, 255);\">Click here to set up your Account or reset your password.</a></p>"
       },
       "componentName" : "forceCommunity:richTextInline",
       "id" : "1abc17c9-8245-413d-9ba7-7513afd96695",
