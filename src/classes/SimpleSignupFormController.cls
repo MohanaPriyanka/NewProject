@@ -285,4 +285,39 @@ public without sharing class SimpleSignupFormController {
         CapacityService capacityService = new CapacityService();
         return JSON.serialize(new RestZipCode(capacityService.getZipcodeResponseForResumeApp(zip,utilityId)));
     }
+
+    /**
+     * @description Determines if the "Billing Preference" area of the Payments page to collect Paperless billing option
+     *  is available in the application, based on the Custom Feature Enablement MDT
+     * @return Collect paperless?
+     */
+    @AuraEnabled(Cacheable=false)
+    public static Boolean collectPaperlessBilling() {
+        FeatureService fs = new FeatureService();
+        return fs.isEnabled('Collect_Paperless_Billing_in_SSF');
+    }
+
+    /**
+     * @description Sets Paperless Billing option on Property Account if toggled in SSF UI by customer or partner
+     * @param leadId ID of Lead, if needed for error logging
+     * @param propertyAccountId ID of the Property Account
+     * @param paperless Paperless = TRUE or FALSE as specified by customer or partner in SSF UI
+     */
+    @AuraEnabled(Cacheable=false)
+    public static void setPropertyAccountPaperlessBillingOption(Id leadId, Id propertyAccountId, Boolean paperless) {
+        Account propertyAccount = new Account(
+            Id = propertyAccountId,
+            Bill_Delivery_Preference__c = paperless ? 'Email only' : 'Email and Paper'
+        );
+        try {
+            update propertyAccount;
+        } catch (Exception e) {
+            Logger.logNow(
+                'SimpleSignupFormController',
+                'setPropertyAccountPaperlessBillingOption',
+                'Error setting Paperless option for Lead '+leadId+'\n\n'+e.getMessage()+' '+ e.getStackTraceString(),
+                'Error'
+            );
+        }
+    }
 }

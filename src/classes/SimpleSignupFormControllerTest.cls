@@ -354,4 +354,27 @@ public with sharing class SimpleSignupFormControllerTest {
         // however, WFR / Process quickly returns this value to FALSE and runs credit check. Should be FALSE now.
         System.assertEquals(false, updatedLead.Soft_Pull_Credit_Report__c, 'Credit report pull field should now be FALSE');
     }
+
+    @IsTest
+    private static void testPaperlessBilling() {
+        // Setup test
+        FeatureService fs = new FeatureService();
+        Id leadId = [SELECT Id FROM Lead WHERE Email = 'foo@bar.com' LIMIT 1].Id;
+        Id propertyAccountId = [SELECT Id FROM Account WHERE Name = 'test account' LIMIT 1].Id;
+        Boolean featureCheckBool = fs.isEnabled('Collect_Paperless_Billing_in_SSF');
+        Boolean collectPaperlessOption = SimpleSignupFormController.collectPaperlessBilling();
+
+        // Run test
+        Test.startTest();
+        SimpleSignupFormController.setPropertyAccountPaperlessBillingOption(leadId, propertyAccountId, true);
+        Test.stopTest();
+
+        // Verify results
+        String paperlessOptionOnPropAcc = [
+            SELECT Bill_Delivery_Preference__c
+            FROM Account WHERE Id =: propertyAccountId
+        ].Bill_Delivery_Preference__c;
+        System.assertEquals('Email only', paperlessOptionOnPropAcc, 'Incorrect paperless option on prop account');
+        System.assertEquals(featureCheckBool, collectPaperlessOption, 'Incorrect bool returned');
+    }
 }
