@@ -182,7 +182,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Num_months_Annual_kWh__c</field>
+                <field>Num_UDRPs_Annual_kWh__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -190,7 +190,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Num_months_Average_Demand__c</field>
+                <field>Num_UDRPs_Avg_Demand__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -283,7 +283,6 @@
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
         <fields>Request_Sent_Date__c</fields>
-        <fields>Request_Status__c</fields>
         <fields>Request_Recieved_Date__c</fields>
         <fields>Customer_Name__c</fields>
         <fields>Address_Line_1__c</fields>
