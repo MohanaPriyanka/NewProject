@@ -12,9 +12,8 @@
     Can have at most one input parameter and its data type must be a List of primitive data types
     https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_annotation_InvocableMethod.htm
 */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class InvocableSizingMethodRecalculation {
-
     @InvocableMethod(label='Change Sizing Method for Subscriptions')
     public static void recalculateSubscriptionWithSizingMethod(List<List<Utility_Account_Subscription__c>> uasList) {
         try {

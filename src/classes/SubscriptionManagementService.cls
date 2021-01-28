@@ -138,7 +138,8 @@ public without sharing class SubscriptionManagementService implements Queueable{
         }
     }
 
-    public List<Subscription_Order__c> stampApprovedValues(List<Subscription_Order__c> soList) {
+    @TestVisible
+    private List<Subscription_Order__c> stampApprovedValues(List<Subscription_Order__c> soList) {
         for (Subscription_Order__c so : soList ) {
             so.Effective_Date__c = System.now();
             if (so.System_Change_Percent_Share_of_System__c == null) {

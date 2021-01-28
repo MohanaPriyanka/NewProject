@@ -3,6 +3,7 @@
  */
 @IsTest
 public class SubscriptionManagementServiceTest {
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     private static String sssId = 'a1J29000000tjOkEAI';
     @TestSetup
     public static void setupData() {
@@ -91,7 +92,6 @@ public class SubscriptionManagementServiceTest {
     @IsTest
     private static void testFailInsertSO() {
         Util.disableTrigger('Disable_Client_Objects_Trigger__c');
-
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Name = '000123'
         );

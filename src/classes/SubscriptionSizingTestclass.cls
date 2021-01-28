@@ -557,7 +557,6 @@ public with sharing class SubscriptionSizingTestclass {
         ];
 
         LeadService leadService = new LeadService();
-
         Account propertyAccount = leadService.buildPropertyAccountFromLegacyLead(switchLead);
         insert propertyAccount;
 
