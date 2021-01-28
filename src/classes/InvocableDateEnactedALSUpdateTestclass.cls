@@ -55,7 +55,7 @@ private class InvocableDateEnactedALSUpdateTestclass {
     static void testSystemTest() {
         Util.disableTrigger('Disable_SubscriptionOrder_Trigger__c');
         Shared_Solar_System__c sss = [
-            SELECT Id, Product__c
+            SELECT Id
             FROM Shared_Solar_System__c
             LIMIT 1
         ];
