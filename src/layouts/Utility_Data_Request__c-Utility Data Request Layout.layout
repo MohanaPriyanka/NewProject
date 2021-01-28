@@ -84,7 +84,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Num_months_Annual_kWh__c</field>
+                <field>Num_UDRPs_Annual_kWh__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
@@ -95,7 +95,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Num_months_Average_Demand__c</field>
+                <field>Num_UDRPs_Avg_Demand__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
