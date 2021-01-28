@@ -459,6 +459,30 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Num_UDRPs_Annual_kWh__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of UDRPs used in Annual kWh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Num_UDRPs_Avg_Demand__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of UDRPs used in Average Demand</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Num_months_Annual_kWh__c</fullName>
         <description>The number of months used in the Annual kWh calculation.</description>
         <externalId>false</externalId>
