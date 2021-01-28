@@ -34,8 +34,8 @@ public with sharing class CustomerAssignmentServiceTest {
 
     @IsTest
     private static void systemTestInvoicedAssignmentAgreements() {
+        Util.disableTrigger('Disable_SubscriptionOrder_Trigger__c');
         Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
-
         Account clientAccount = new Account(
             Name = 'Client Account'
         );
@@ -134,6 +134,7 @@ public with sharing class CustomerAssignmentServiceTest {
 
     @IsTest
     private static void systemTestAssignmentAgreementRejection() {
+        Util.disableTrigger('Disable_SubscriptionOrder_Trigger__c');
         Account clientAccount = new Account(
             Name = 'Client Account'
         );

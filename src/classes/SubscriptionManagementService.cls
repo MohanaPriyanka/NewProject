@@ -80,22 +80,73 @@ public without sharing class SubscriptionManagementService implements Queueable{
                     so.Utility_NMC_Tariff__c = uas.Opportunity__r.NMC_Tariff__c;
                     so.Value_of_NMC__c = uas.Opportunity__r.NMC_Tariff__r.Value_of_NMC__c;
                 }
-
+                if (so.Approval_Status__c == 'Approved') {
+                    // Only want to set to "Approved" if we are confident the formulas and calculations were successful
+                    // A SO is set to "Approved" in the after trigger context with stampApprovedValues()
+                    // but do not want to throw error if a DataLoad or Test class inserts SOs as "Approved"
+                    so.Approval_Status__c = null;
+                }
             }
         }
     }
 
-    @TestVisible
-    private List<Subscription_Order__c> stampApprovedValues(Set<Id> soIds) {
-        List<Subscription_Order__c> stampSOs = soSelector.selectByIds(soIds);
-        for (Subscription_Order__c so : stampSOs ) {
+    /**
+     * @description Evaluate SOs and related records after insert. Must requery via soSelector to retrieve any relationship values
+     * Stamp all calculated subscription values and mark the SO as Approved.
+     * Validation rules should stop an SO from being inserted without having all the necessary data values to be marked as "Approved"
+     *
+     * Call 2 future methods:
+     *     One to publish SO Change Event to register changes in an Opportunities subscriptions
+     *     One to assign CFDs to the SOs
+     * @param soMap Map of SOs being inserted or updated
+     */
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public void evaluateApprovedSubscriptionOrders(Map<Id, Subscription_Order__c> soMap) {
+        List<Subscription_Order__c> sOrdersToApprove = stampApprovedValues(soSelector.selectByIds(soMap.keySet()));
+
+        try {
+            update sOrdersToApprove;
+        } catch (Exception e) {
+            Logger.logNow(
+                'SubscriptionManagementService',
+                'stampApprovedValues',
+                'Failed to insert SOs as Approved:\n' + JSON.serialize(soMap.keySet()) + '\n' +
+                    e.getMessage() + '\n' + e.getStackTraceString(),
+                Logger.ERROR);
+        }
+
+        try {
+            publishSubscriptionOrderChangeEvents(sOrdersToApprove);
+        } catch (Exception e) {
+            Logger.logNow(
+                'SubscriptionManagementService',
+                'publishSubscriptionOrderChangeEvents',
+                'Did not publish subscription change events, or set CFDs on these SOs:\n' + JSON.serialize(soMap.keySet()) + '\n' +
+                    e.getMessage() + '\n' + e.getStackTraceString(),
+                Logger.ERROR);
+            return;
+        }
+
+        try {
+            ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(soMap.keySet());
+        } catch (Exception excep){
+            String errorMessage = 'Could not run ClientInvoicingFeeAssignmentService ' +
+                excep.getStackTraceString() + ' ' +
+                excep.getMessage() + ' ' +
+                JSON.serialize(soMap.keySet());
+            Logger.logNow('SubscriptionManagementService', 'setSubOrderContractFeeDetailInFuture', errorMessage);
+        }
+    }
+
+    public List<Subscription_Order__c> stampApprovedValues(List<Subscription_Order__c> soList) {
+        for (Subscription_Order__c so : soList ) {
             so.Effective_Date__c = System.now();
             if (so.System_Change_Percent_Share_of_System__c == null) {
                 throw new Util.BWException('A Subscription Order is unable to be created due to the UAS missing required data. Please ensure UAS ' + so.Utility_Account_Subscription__r.Id +' has: ' + '\n' +
                     '1. An Opportunity' +'\n' +
                     '2. A Shared Solar System' +'\n' +
                     '3. A Sizing Method ' + '\n' +
-                'After populating the correct fields above, try again. If you still experience an error, contact BizApps');
+                    'After populating the correct fields above, try again. If you still experience an error, contact BizApps');
             }
             so.Approved_Change_in_Percent_Share__c = so.System_Change_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
             so.Approved_Change_in_Subscription__c = so.System_Change_kW_DC_Rounded__c - so.Previous_kw_DC_Subscription__c;
@@ -104,17 +155,16 @@ public without sharing class SubscriptionManagementService implements Queueable{
             } else {
                 so.Change_in_Annual_Cost__c = so.New_Annual_Cost__c - so.Previous_Annual_Cost__c;
             }
+            so.Approval_Status__c = 'Approved';
         }
-        return stampSOs;
+
+        return soList;
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void handleSharedSolarSystemOrders(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         List<Shared_Solar_System__c> sssToUpdate = new List<Shared_Solar_System__c>();
         List<Subscription_Order__c> soListToInsert = new List<Subscription_Order__c>();
-        if (!featureService.isEnabled('Subscription_Orders')) {
-            return;
-        }
         List<Shared_Solar_System_Order__c> approvedSSSOs = checkSSSOApproval(sssoList, oldMap);
         for(Shared_Solar_System_Order__c ssso : approvedSSSOs) {
             Shared_Solar_System__c sss = updateSSSFromSSSO(ssso);
@@ -144,7 +194,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
         for (Utility_Account_Subscription__c uas : uasList) {
             Subscription_Order__c so = new Subscription_Order__c(
                 Utility_Account_Subscription__c = uas.Id,
-                Approval_Status__c = 'Approved',
                 Effective_Date__c = System.now(),
                 New_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
                 New_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c
@@ -159,44 +208,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
         }
         return soList;
     }
-    @SuppressWarnings('PMD.ApexCRUDViolation')
-    public void checkSOApproval(List<Subscription_Order__c> soList, Map<Id, Subscription_Order__c> oldMap) {
-        Set<Id> approvedSOs = new Set<Id>();
-        for (Subscription_Order__c so : soList) {
-            if (so.Approval_Status__c == 'Approved' && (oldMap == null || (oldMap != null && oldMap.get(so.Id).Approval_Status__c != 'Approved'))) {
-                approvedSOs.add(so.Id);
-            }
-        }
 
-        if (approvedSOs.isEmpty()) {
-            return;
-        }
-
-        try {
-            List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
-            update updateSOs;
-            publishSubscriptionOrderChangeEvents(updateSOs);
-        } catch (Exception e) {
-            Logger.logNow(
-                'SubscriptionManagementService',
-                'checkSOApproval',
-                'Did not stamp approved values, publish subscription change events, or set CFDs on these SOs:\n' + JSON.serialize(approvedSOs) + '\n' +
-                e.getMessage() + '\n' + e.getStackTraceString(),
-                Logger.ERROR);
-            return;
-        }
-
-        try {
-            ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(approvedSOs);
-        } catch (Exception excep){
-            String errorMessage = 'Could not run ClientInvoicingFeeAssignmentService ' +
-                excep.getStackTraceString() + ' ' +
-                excep.getMessage() + ' ' +
-                JSON.serialize(approvedSOs);
-            Logger.logNow('SubscriptionManagementService', 'checkSOApproval', errorMessage);
-        }
-
-    }
     public List<Shared_Solar_System_Order__c> checkSSSOApproval(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         List<Shared_Solar_System_Order__c> approvedSSSOs = new List<Shared_Solar_System_Order__c>();
         for (Shared_Solar_System_Order__c ssso : sssoList) {
@@ -301,7 +313,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
      */
     public void publishSubscriptionOrderChangeEvents(List<Subscription_Order__c> subscriptionOrders) {
         List<Subscription_Order_Change_Event__e> changeEvents = new List<Subscription_Order_Change_Event__e>();
-
         for (Subscription_Order__c so : subscriptionOrders) {
             Subscription_Order_Change_Event__e event = new Subscription_Order_Change_Event__e(
                 Opportunity_Id__c = so.Utility_Account_Subscription__r.Opportunity__r.Id
@@ -324,7 +335,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
         }
         Map<Id, Decimal> oppSubscriptionMap = oppSelector.getAggregateOpportunitySubscriptions(oppIds);
         List<Opportunity> oppsToUpdate = new List<Opportunity>();
-
         for (Id oppId : oppIds) {
             Decimal sumSubscriptions = (oppSubscriptionMap.get(oppId) == null ? 0 : oppSubscriptionMap.get(oppId) );
             Opportunity opp = new Opportunity(
@@ -358,8 +368,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 Subscription_Order__c so = new Subscription_Order__c(
                     Utility_Account_Subscription__c = uas.Id,
                     Type__c = 'Initial',
-                    Effective_Date__c = System.now(),
-                    Approval_Status__c = 'Approved'
+                    Effective_Date__c = System.now()
                 );
                 if (uas.Subscription_Type__c == 'kWh') {
                     so.New_Annual_kWh__c = uas.Annual_kwh_subscription_future__c;

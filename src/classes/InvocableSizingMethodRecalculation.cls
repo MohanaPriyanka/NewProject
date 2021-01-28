@@ -26,6 +26,7 @@ public without sharing class InvocableSizingMethodRecalculation {
             }
         } catch (Exception e) {
             Logger.logNow('InvocableSizingMethodRecalculation', 'recalculateSubscriptionWithSizingMethod', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+            throw new Util.BWException('Failed to create a Subscription Order to reflect the change in Sizing Method. Confirm the new Sizing Method has the appropriate size factor populated (Size Ratio or Value of NMC)');
         }
     }
 }

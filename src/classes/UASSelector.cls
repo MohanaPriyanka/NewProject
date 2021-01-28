@@ -87,7 +87,8 @@ public without sharing class UASSelector {
                 Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
                 Opportunity__r.NMC_Tariff__c,
                 Opportunity__r.NMC_Tariff__r.Value_of_NMC__c,
-                Opportunity__r.Product__c
+                Opportunity__r.Product__c,
+                Opportunity__r.Product__r.Customer_Subscription_Type__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN :uasIds
         ]);
