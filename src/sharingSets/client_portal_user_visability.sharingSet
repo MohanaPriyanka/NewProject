@@ -8,6 +8,12 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
+        <object>Capacity_Snapshot__c</object>
+        <objectField>Shared_Solar_System__c.Client_Account__c</objectField>
+        <userField>Contact.Account</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
         <object>Client_Utility_Account_Subscription__c</object>
         <objectField>Shared_Solar_System__c.Client_Account__c</objectField>
         <userField>Contact.Account</userField>
