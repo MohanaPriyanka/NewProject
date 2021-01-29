@@ -2270,6 +2270,21 @@ TEXT(DAY(Commencement_Date__c))
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Countersigned_Contract_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(
+ Contract.Parent_Contract__c,
+ Contract.Id 
+)</formula>
+        <inlineHelpText>Returns the ID of the contract that covers the opportunity that is countersigned by BlueWave.</inlineHelpText>
+        <label>Countersigned Contract Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Credit_Approval_Status__c</fullName>
         <externalId>false</externalId>
         <formula>IF( Personal_Credit_Report2__c == null, null, 
