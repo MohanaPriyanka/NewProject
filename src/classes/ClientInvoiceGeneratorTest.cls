@@ -43,7 +43,7 @@ public with sharing class ClientInvoiceGeneratorTest {
         insert cfd;
 
         Shared_Solar_System__c sss = [
-            SELECT Id, (SELECT Id FROM Opportunities__r LIMIT 1)
+            SELECT Id, (SELECT Id, AccountId FROM Opportunities__r LIMIT 1)
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 1'
         ];
@@ -59,6 +59,16 @@ public with sharing class ClientInvoiceGeneratorTest {
             AND Shared_Solar_System__r.Name = 'SSS 1'
             LIMIT 1
         ];
+        Contract customerContract = new Contract(
+            AccountId = sss.Opportunities__r[0].AccountId,
+            Assignment_Agreement__c = assignmentAgreement.Id
+        );
+        insert customerContract;
+        Opportunity opportunity = new Opportunity(
+            Id = sss.Opportunities__r[0].Id,
+            ContractId = customerContract.Id
+        );
+        update opportunity;
 
         Subscription_Order__c soChange = new Subscription_Order__c(
             Effective_Date__c = System.today(),
