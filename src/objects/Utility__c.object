@@ -136,6 +136,7 @@
     <fields>
         <fullName>Number_of_Decimal_Places__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Used for calculating kW subscriptions for SOs</inlineHelpText>
         <label>Number of Decimal Places</label>
         <precision>2</precision>
         <required>false</required>
