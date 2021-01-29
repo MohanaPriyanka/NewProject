@@ -145,14 +145,16 @@ public without sharing class UtilityDataRequestService {
         UDRPTotalHelper udrpTotalHelper = new UDRPTotalHelper();
         String customerType = udr.Utility_Account_Log__r.Lead__r.Customer_type__c;
         
+        if(udrpList.size() == 0) {
+            return udrpTotalHelper;
+        }
+        
         for(Utility_Data_Request_Period__c udrp : udrpList){
             if(udrpTotalHelper.updateUDRPTotals(udrp, udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Annual_kWh_Calculation__c)) {
                 break;
 
         }
     }
-
-
         udrpTotalHelper.updatekWh(customerType, udr);
         update udrpList;
         return udrpTotalHelper;
@@ -160,6 +162,10 @@ public without sharing class UtilityDataRequestService {
     
     private UDRPTotalHelper getAverageDemand(List <Utility_Data_Request_Period__c> udrpList) { 
         UDRPTotalHelper udrpTotalHelper = new UDRPTotalHelper();
+        
+        if(udrpList.size() == 0) {
+            return udrpTotalHelper;
+        }
         
         for(Utility_Data_Request_Period__c udrp : udrpList){
             if(udrpTotalHelper.updateUDRPTotals(udrp, udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Average_Demand_Calculation__c)) {
