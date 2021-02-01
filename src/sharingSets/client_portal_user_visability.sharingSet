@@ -56,6 +56,6 @@
     </accessMappings>
     <description>Grants read access to SSS (and read access to detail objects in master details relationships where SSS is the master) and Opportunity based off of client lookup.</description>
     <name>Client Portal User visibility</name>
-    <profiles>cs client partner login</profiles>
-    <profiles>cs client partner login_gsrp</profiles>
+    <profiles>CS Client Partner Login</profiles>
+    <profiles>CS Client Partner Login_GSRP</profiles>
 </SharingSet>

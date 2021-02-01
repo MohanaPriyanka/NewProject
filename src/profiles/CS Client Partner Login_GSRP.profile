@@ -17500,12 +17500,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Capacity_Snapshot__c.As_Of_Date__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Capacity_Snapshot__c.Available_Capacity__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -17520,7 +17520,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Capacity_Snapshot__c.Shared_Solar_System__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -17530,12 +17530,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Capacity_Snapshot__c.X45_60_Day_Past_Due_Active_kW__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Capacity_Snapshot__c.X60_Day_Past_Due_Active_kW__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -63833,6 +63833,9 @@
         <layout>Campaign_Inventory_Log__c-Campaign Inventory Log Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Capacity_Snapshot__c-Capacity Snapshot Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Client Case View</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -65221,6 +65224,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>CampaignMember</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Capacity_Snapshot__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

@@ -62485,6 +62485,9 @@
         <layout>Campaign_Inventory_Log__c-Campaign Inventory Log Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Capacity_Snapshot__c-Capacity Snapshot Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Client Case View</layout>
     </layoutAssignments>
     <layoutAssignments>
