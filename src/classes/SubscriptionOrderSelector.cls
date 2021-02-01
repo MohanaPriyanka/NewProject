@@ -126,8 +126,8 @@ public inherited sharing class SubscriptionOrderSelector {
             SELECT Utility_Account_Subscription__r.Shared_Solar_System__c Id,	
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Name SSSNAME,	
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__r.Name ENTITYNAME,	
-                Client_Assignment_Agreement__c  ASSIGNMENTAGREEMENT,	
-                SUM(Client_Invoicing_Fee__c) TOTAL,	
+                Client_Assignment_Agreement__c  ASSIGNMENTAGREEMENT,
+                SUM(Client_Invoicing_Fee__c) TOTAL,
                 COUNT(Id) NUM	
             FROM Subscription_Order__c	
             WHERE Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c IN :clientAccountIds	
@@ -135,8 +135,9 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Invoice_Line_Item__c = NULL	
             AND Effective_Date__c <= :effectiveDate	
             AND Client_Invoicing_Fee__c != NULL	
-            AND Client_Invoicing_Fee__c != 0	
-            GROUP BY Utility_Account_Subscription__r.Shared_Solar_System__c,	
+            AND Client_Invoicing_Fee__c != 0
+            AND Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
+            GROUP BY Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Name,	
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__r.Name,	
                 Client_Assignment_Agreement__c	
@@ -155,7 +156,8 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Invoice_Line_Item__c = NULL	
             AND Effective_Date__c <= :effectiveDate	
             AND Client_Invoicing_Fee__c != NULL	
-            AND Client_Invoicing_Fee__c != 0	
-        ];	
+            AND Client_Invoicing_Fee__c != 0
+            AND Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
+        ];
     }
 }

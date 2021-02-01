@@ -136,6 +136,7 @@
     <fields>
         <fullName>Number_of_Decimal_Places__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Used for calculating kW subscriptions for SOs</inlineHelpText>
         <label>Number of Decimal Places</label>
         <precision>2</precision>
         <required>false</required>
@@ -182,6 +183,19 @@
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>UASB_Number_of_Decimals__c</fullName>
+        <defaultValue>2</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of Decimals to round the kWh subscription when calculating UASBs</inlineHelpText>
+        <label>UASB: Number of Decimals</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>

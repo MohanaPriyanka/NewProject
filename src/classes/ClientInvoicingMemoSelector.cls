@@ -49,6 +49,7 @@ public inherited sharing class ClientInvoicingMemoSelector {
             AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'
             AND Effective_Date__c <= :effectiveDate
             AND Invoice_Line_Item__c = NULL
+            AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
             GROUP BY Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__r.Name,
                 Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__r.Name,
@@ -67,6 +68,7 @@ public inherited sharing class ClientInvoicingMemoSelector {
             AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'
             AND Effective_Date__c <= :effectiveDate
             AND Invoice_Line_Item__c = NULL
+            AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
         ];
     }
 }
