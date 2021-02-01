@@ -1,6 +1,6 @@
 // JP 1/10/20 : Rename this "BillGenerationServiceTest" after migration away from SB / AB and delete existing
 
-@isTest
+@IsTest
 public class TransferSheetBillingTest {
     // Like a test setup method, but don't actually insert records
     private static Transfer__c getTestTransfer() {
@@ -35,7 +35,7 @@ public class TransferSheetBillingTest {
         return transfer;
     }
 
-    @isTest
+    @IsTest
     public static void testGetScheduleZSubscriptionMock() {
         useMocks();
         Transfer__c transfer = getTestTransfer();
@@ -53,7 +53,7 @@ public class TransferSheetBillingTest {
         System.assertEquals(0.4841,szsList[4].Percent_Share__c);
     }
 
-    @isTest
+    @IsTest
     public static void testUASBsWithDifferentProducts() {
         useMocks();
         Transfer__c transfer = getTestTransfer();
@@ -69,7 +69,7 @@ public class TransferSheetBillingTest {
         // billing method, they have different credits allocated:
         System.assert(uasbs[2].Size_off_NMCs__c);
         System.assertEquals(1.1758,uasbs[2].Share_of_System__c);
-        System.assertEquals(859.18,uasbs[2].Subscription_Production_kWh_Static__c);
+        System.assertEquals(859,uasbs[2].Subscription_Production_kWh_Static__c);
         System.assertEquals(141.49,uasbs[2].Credits_Allocated__c);
 
         System.assert(!uasbs[3].Size_off_NMCs__c);
@@ -78,7 +78,22 @@ public class TransferSheetBillingTest {
         System.assertEquals(158.77,uasbs[3].Credits_Allocated__c);
     }
 
-    @isTest
+    @IsTest
+    private static void testUASBsWithDifferentUtilityRounding() {
+        useMocks();
+        Transfer__c transfer = getTestTransfer();
+        List<UASB__c> beforeUASBs;
+
+        BillGenerationService service = new BillGenerationService();
+        List<Schedule_Z_Subscription__c> szsList = service.getScheduleZSubscriptionList(transfer, BillGenerationService.BillType.ONTIME);
+
+        beforeUASBs = service.calculateUASBesFromSZSes(szsList,transfer);
+        System.assertEquals(5,beforeUASBs.size());
+        System.assertEquals(859, beforeUASBs[2].Subscription_Production_kWh_Static__c, 'Rounding to 0 decimals for Utility');
+        System.assertEquals(859.18, beforeUASBs[3].Subscription_Production_kWh_Static__c, 'Rounding to 2 decimal places for Utility');
+    }
+
+    @IsTest
     public static void testProductEscalactors() {
         useMocks();
         Transfer__c transfer = getTestTransfer();
@@ -101,7 +116,7 @@ public class TransferSheetBillingTest {
         System.assertEquals(0.18,uasbs[1].Solar_Electricity_Rate__c);
     }
 
-    @isTest
+    @IsTest
     public static void testDifferentTransferAmount(){
         useMocks();
         Transfer__c transfer = getTestTransfer();
@@ -123,7 +138,7 @@ public class TransferSheetBillingTest {
         System.assertEquals(1161.84,secondBillGroup[4].Credits_Allocated__c);
     }
 
-    @isTest
+    @IsTest
     public static void testCancelledCustomer(){
         useMocks();
         Transfer__c transfer = getTestTransfer();
@@ -134,7 +149,7 @@ public class TransferSheetBillingTest {
         System.assertEquals(1,overdueUASB.size());
 
         // Normal Bills:
-        System.assertEquals(859.18,onTimeUASB[2].Subscription_Production_kWh_Static__c);
+        System.assertEquals(859,onTimeUASB[2].Subscription_Production_kWh_Static__c);
         System.assertEquals(141.49,onTimeUASB[2].Credits_Allocated__c);
         System.assertEquals(859.18,onTimeUASB[3].Subscription_Production_kWh_Static__c);
         System.assertEquals(158.77,onTimeUASB[3].Credits_Allocated__c);
@@ -144,7 +159,7 @@ public class TransferSheetBillingTest {
         System.assertEquals(0,overdueUASB[0].Credits_Allocated__c);
     }
 
-    @isTest
+    @IsTest
     public static void testStopCreditTransfer(){
         useMocks();
         Transfer__c transfer = getTestTransfer();
@@ -173,7 +188,7 @@ public class TransferSheetBillingTest {
         }
     }
 
-    @isTest
+    @IsTest
     private static void testConvertTransferSheetToUASB(){
         // Wrong Column Headers:
         String transferSheetWrongColumnHeaders = 'UtilityNumber,Credits,Production,XXX\n 123456789,12,2300,12\n';
@@ -229,7 +244,7 @@ public class TransferSheetBillingTest {
         System.assertEquals(0.1355,uasbFive.NMC_Rate__c);
     }
 
-    @isTest
+    @IsTest
     private static List<TransferSheetService.UASBWithStatus> setupTestSFBillsToTransferMA(){
         useMocks();
         TestFactory.setCSBillSettings();
@@ -260,7 +275,7 @@ public class TransferSheetBillingTest {
         return matchList;
     }
 
-    @isTest
+    @IsTest
     private static void testCompareSFBillsToTransferMA(){
         List<TransferSheetService.UASBWithStatus> matchList = setupTestSFBillsToTransferMA();
         Integer countOfLineItemsWithoutSZS = 0;
@@ -302,7 +317,7 @@ public class TransferSheetBillingTest {
         System.assertEquals(1,countOfLineItemsWithoutSZS);
     }
 
-    @isTest
+    @IsTest
     private static void testCompareSFBillsToTransferMN(){
         useMocks();
 
@@ -319,7 +334,7 @@ public class TransferSheetBillingTest {
             '123 678,99,2600,0.1848\n' +
             '00123456789,10.00,,\n' +
             '0012 3456789,148.77,859.18,0.1848\n' +
-            '223232,141.49,859.18,0.1848\n' +
+            '223232,141.49,859,0.1848\n' +
             '23232 24,99.88,606.50,0.1324\n';
         Map<Integer, List<String>> rowNumberToDataMap = Util.readCSV(transferSheetData);
         Map<String,UASB__c> transferUASBs = TransferSheetService.convertTransferSheetToUASBs(rowNumberToDataMap);
@@ -352,7 +367,7 @@ public class TransferSheetBillingTest {
                 System.assertEquals('CREDIT_MISMATCH',lineItem.Status);
                 System.assertEquals('NMC Rate mismatch',lineItem.MatchMessage);
             } else if (utilityNumber == '223232'){
-                System.assertEquals('MATCH',lineItem.Status);
+                System.assertEquals('MATCH', lineItem.Status);
             } else if (utilityNumber == ' 00 12 34 56789'){
                 System.assertEquals('MATCH',lineItem.Status);
             } else if (utilityNumber == '777888'){
@@ -365,7 +380,7 @@ public class TransferSheetBillingTest {
         System.assertEquals(1,countOfLineItemsWithoutSZS);
     }
 
-    @isTest
+    @IsTest
     private static void testResolveLWC(){
         String apexDataAsJSON = mockGetApexDataFromLWC();
         List<String> overrideValues = mockGetResolutionDataFromLWC();
@@ -398,7 +413,7 @@ public class TransferSheetBillingTest {
         System.assertNotEquals(null,secondUASBList[2].Transfer_Sheet_Resolution__c);
     }
 
-    @isTest
+    @IsTest
     private static void testResolveCreditMismatchUseUtility(){
         String apexDataAsJSON = mockGetApexDataFromLWC();
         List<String> overrideValues = mockGetResolutionDataFromLWC();
@@ -609,7 +624,10 @@ public class TransferSheetBillingTest {
 
         public override Object handleMethodCall(MethodCall methodCall) {
             String szsOne = '{"Id":"szsOne_ID","Customer_Subscription_kW_DC__c": 26.00,"Percent_Share__c" : 1.7982,' +
-                '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+                '"System_Size_kW_DC__c" : 1445.86,' +
+                '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+                '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_One", ' +
                 '"Utility_Account_Log__r" : {"Name" : "07777", "Premise_Number__c" : "12-34-56-789"},' +
                 '"Opportunity__r" : {"Id":"0000000AAA","Name":"Oppty A",' +
@@ -619,7 +637,10 @@ public class TransferSheetBillingTest {
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
             String szsTwo = '{"Id":"szsTwo_ID","Customer_Subscription_kW_DC__c": 12.00,"Percent_Share__c" : 0.8300,' +
-                '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+                '"System_Size_kW_DC__c" : 1445.86,' +
+                '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+                '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Two", ' +
                 '"Utility_Account_Log__r" : {"Name" : "23 23 224"},' +
                 '"Opportunity__r" : {"Id":"0000000BBB","Name":"Oppty B", "Product_Escalation_Schedule__c" : "a6o19000000CsuGAAS",' +
@@ -629,7 +650,10 @@ public class TransferSheetBillingTest {
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
             String szsThree = '{"Id":"szsThree_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
-                '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+                '"System_Size_kW_DC__c" : 1445.86,' +
+                '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+                '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 0}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Three", ' +
                 '"Utility_Account_Log__r" : {"Name" : "777222", "Premise_Number__c" : "223232"},' +
                 '"Opportunity__r" : {"Id":"0000000CCC","Name":"Oppty C",' +
@@ -639,7 +663,10 @@ public class TransferSheetBillingTest {
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
             String szsFour = '{"Id":"szsFour_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
-                '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+                '"System_Size_kW_DC__c" : 1445.86,' +
+                '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+                '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Four", ' +
                 '"Utility_Account_Log__r" : {"Name" : " 00 12 34 56789"},' +
                 '"Opportunity__r" : {"Id":"0000000DDD","Name":"Oppty D",' +
@@ -649,7 +676,10 @@ public class TransferSheetBillingTest {
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
             String szsFive = '{"Id":"szsFive_ID","Customer_Subscription_kW_DC__c": 7.00,"Percent_Share__c" : 0.4841,' +
-                '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+                '"System_Size_kW_DC__c" : 1445.86,' +
+                '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+                '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Five", ' +
                 '"Utility_Account_Log__r" : {"Name" : "777888"},' +
                 '"Opportunity__r" : {"Id":"0000000EEE","Name":"Oppty E",' +
@@ -665,7 +695,20 @@ public class TransferSheetBillingTest {
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCBBB"}}}';
-            String onTimeSZS = '[' + szsOne + ',' + szsTwo + ',' + szsThree + ',' + szsFour + ',' + szsFive + ']';
+//            String szsSeven = '{"Id":"szsSeven_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
+//                '"System_Size_kW_DC__c" : 1445.86,' +
+//                '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
+//                '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
+//                    '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 0}}},' +
+//                '"Utility_Account_Subscription__r" : {"Name" : "UAS_Seven", ' +
+//                '"Utility_Account_Log__r" : {"Name" : "88888"},' +
+//                '"Opportunity__r" : {"Id":"0000000FFF","Name":"Oppty F",' +
+//                '"Product__r" : {"NMC_Discount__c" : 25.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
+//                '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
+//                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
+//                '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
+//                '"AccountId" : "0015400000SajzCCCC"}}}';
+            String onTimeSZS = '[' + szsOne + ',' + szsTwo + ',' + szsThree + ',' + szsFour + ',' + szsFive +  ']';
             String cancelledSZS = '[' + szsSix + ']';
             switch on methodCall.stubbedMethodName {
                 when 'getOnTimeListForBillingOffTransfer' {
