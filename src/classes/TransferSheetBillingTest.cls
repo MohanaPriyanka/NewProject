@@ -695,19 +695,6 @@ public class TransferSheetBillingTest {
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCBBB"}}}';
-//            String szsSeven = '{"Id":"szsSeven_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
-//                '"System_Size_kW_DC__c" : 1445.86,' +
-//                '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
-//                '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
-//                    '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 0}}},' +
-//                '"Utility_Account_Subscription__r" : {"Name" : "UAS_Seven", ' +
-//                '"Utility_Account_Log__r" : {"Name" : "88888"},' +
-//                '"Opportunity__r" : {"Id":"0000000FFF","Name":"Oppty F",' +
-//                '"Product__r" : {"NMC_Discount__c" : 25.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
-//                '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
-//                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
-//                '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
-//                '"AccountId" : "0015400000SajzCCCC"}}}';
             String onTimeSZS = '[' + szsOne + ',' + szsTwo + ',' + szsThree + ',' + szsFour + ',' + szsFive +  ']';
             String cancelledSZS = '[' + szsSix + ']';
             switch on methodCall.stubbedMethodName {
