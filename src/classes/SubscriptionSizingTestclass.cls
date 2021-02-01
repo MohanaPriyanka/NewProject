@@ -543,6 +543,43 @@ public with sharing class SubscriptionSizingTestclass {
         }
     }
 
+    @IsTest
+    public static void testCatchExceptionForSizingMethod() {
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c,
+                Sizing_Method__c
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000333'
+        ];
+
+        Utility_NMC_Tariff__c sizingMethod = new Utility_NMC_Tariff__c (Name = 'cost Tariff w/o Factor ',
+            Utility__c = 'Eversource',
+            Class__c = 'Class 1',
+            Current_Billing_Rate__c = TRUE
+        );
+        insert sizingMethod;
+
+        Set<Id> uasIds = new Set<Id>();
+        for (Utility_Account_Subscription__c uas : uasList) {
+            System.assertNotEquals(uas.Sizing_Method__c, sizingMethod.Id, 'UAS from setup has kw Tariff R1');
+            uas.Sizing_Method__c = sizingMethod.Id;
+            uasIds.add(uas.Id);
+        }
+        update uasList;
+
+        Test.startTest();
+        try {
+            InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(new List<List<Utility_Account_Subscription__c>>{
+                uasList
+            });
+            throw new Util.BWException('An exception should have been thrown because the Sizing Method is missing a Size Ratio');
+        } catch (Exception e) {
+            Boolean expectedExceptionThrown =  e.getMessage().contains('Failed to create a Subscription Order') ? true : false;
+            System.assertEquals(true, expectedExceptionThrown, 'Should not be able to insert a SO when the Sizing Method is missing a sizing factor');
+        }
+        Test.stopTest();
+    }
+
     /**
           System Test for Sizing Method Subscription Sizing
     **/
