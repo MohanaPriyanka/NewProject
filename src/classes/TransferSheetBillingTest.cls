@@ -1,5 +1,5 @@
 // JP 1/10/20 : Rename this "BillGenerationServiceTest" after migration away from SB / AB and delete existing
-
+@SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
 public class TransferSheetBillingTest {
     // Like a test setup method, but don't actually insert records
@@ -715,11 +715,6 @@ public class TransferSheetBillingTest {
 
         public override Object handleMethodCall(MethodCall methodCall) {
             Map<Id, List<Product_Escalator__c>> escalatorMap = new Map<Id, List<Product_Escalator__c>>();
-
-            Product_Escalation_Schedule__c escalatorSchedule = new Product_Escalation_Schedule__c (
-                Id = 'a6o19000000CsuGAAS',
-                Name = 'Product Escalator'
-            );
             Product_Escalator__c firstPeriod = new Product_Escalator__c (
                 Product_Escalation_Schedule__c = 'a6o19000000CsuGAAS',
                 Starting_Credit_Transfer__c = 5,
@@ -736,10 +731,6 @@ public class TransferSheetBillingTest {
                 New_Solar_Electricity_Rate__c = 0.13
             );
 
-            Product_Escalation_Schedule__c escalatorScheduleTwo = new Product_Escalation_Schedule__c (
-                Id = 'a6o19000000CsuGBBS',
-                Name = 'Product Escalator'
-            );
             Product_Escalator__c schedTwo = new Product_Escalator__c (
                 Product_Escalation_Schedule__c = 'a6o19000000CsuGBBS',
                 Starting_Credit_Transfer__c = 0,
