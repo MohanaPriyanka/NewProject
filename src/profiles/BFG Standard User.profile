@@ -42590,6 +42590,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.UASB_Number_of_Decimals__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility__c.Use_Glynt__c</field>
         <readable>true</readable>
