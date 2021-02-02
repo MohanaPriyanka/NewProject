@@ -44,6 +44,7 @@ public with sharing class ScheduleZSubscriptionSelector {
         'Utility_Account_Subscription__r.Opportunity__r.Product__r.Percent_Share_Decimal_Places__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c,' +
         'Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c, ' +
+        'Schedule_Z__r.Shared_Solar_System__r.Utility__r.UASB_Number_of_Decimals__c, ' +
         '(SELECT Id, System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c, ' +
         '   System_Bill__r.Account_Bill__r.Parent_Account__r.Account_Balance__c ' +
         ' FROM Utility_Account_Subscription_Bills__r ' +
@@ -180,7 +181,8 @@ public with sharing class ScheduleZSubscriptionSelector {
                     Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
                     Utility_Account_Subscription__r.Opportunity__r.Product__r.Percent_Share_Decimal_Places__c,
                     Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c,
-                    Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c
+                    Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c,
+                    Schedule_Z__r.Shared_Solar_System__r.Utility__r.UASB_Number_of_Decimals__c
                 FROM Schedule_Z_Subscriptions__r
                 WHERE (Schedule_Z__r.Status__c = 'Billing' OR Schedule_Z__r.Status__c = 'Replaced')
                 ORDER BY CreatedDate DESC
