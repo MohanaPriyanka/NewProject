@@ -82,6 +82,7 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>Shared_Solar_System__c</fields>
+        <fields>Nets_to_Zero__c</fields>
         <fields>Amount__c</fields>
         <fields>Assignment_Agreement_Contract__c</fields>
         <fields>Subscription_Order__c</fields>

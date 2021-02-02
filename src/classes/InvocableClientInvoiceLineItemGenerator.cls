@@ -48,7 +48,7 @@ public without sharing class InvocableClientInvoiceLineItemGenerator {
         List<Subscription_Order__c> subscriptionOrders = subscriptionOrderSelector.selectByIds(new Set<Id>{soId});
         if (subscriptionOrders[0].Invoice_Line_Item__c == null) {
             Invoice_Line_Item__c invoiceLineItem =
-                clientInvoiceGenerator.generateLineItemFromSO(subscriptionOrders[0], invoice, true, true);
+                clientInvoiceGenerator.generateLineItemFromSO(subscriptionOrders[0], invoice, true, true, new Set<Id>());
             clientInvoiceGenerator.commitWork();
             return invoiceLineItem;
         }

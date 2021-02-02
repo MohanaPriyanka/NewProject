@@ -18606,6 +18606,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Invoice_Line_Item__c.Nets_to_Zero__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Invoice_Line_Item__c.Shared_Solar_System__c</field>
         <readable>false</readable>
     </fieldPermissions>

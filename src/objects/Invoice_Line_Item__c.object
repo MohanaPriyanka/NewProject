@@ -221,6 +221,15 @@
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
+        <fullName>Nets_to_Zero__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked when generating client invoices if Subscription Orders for a Utility Account Number and Project nets to zero. Used by Accounting to easily exclude line items from an invoice.</inlineHelpText>
+        <label>Nets to Zero</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Shared_Solar_System__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
