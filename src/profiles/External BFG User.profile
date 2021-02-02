@@ -3768,6 +3768,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Bill_Adjustment__c.kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Bill_Period__c.Bill_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
