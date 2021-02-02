@@ -177,6 +177,10 @@
         <label>Client Invoicing</label>
         <layoutColumns>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Client_Invoicing_Type__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Allocation_Schedule_Subscription__c</field>
             </layoutItems>

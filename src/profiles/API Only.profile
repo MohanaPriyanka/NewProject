@@ -30557,6 +30557,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Client_Invoicing_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Subscription_Order__c.Comments__c</field>
         <readable>true</readable>
