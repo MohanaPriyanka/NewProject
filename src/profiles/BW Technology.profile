@@ -24346,6 +24346,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Invoice_Line_Item__c.Nets_to_Zero__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Invoice_Line_Item__c.Shared_Solar_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -45202,6 +45207,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Subscription_Order__c.Client_Invoicing_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Client_Invoicing_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -76662,12 +76672,13 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
+        <default>false</default>
         <recordType>MPM4_BASE__Milestone1_Project__c.General</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>false</default>
+        <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
         <recordType>MPM4_BASE__Milestone1_Project__c.PM</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -78762,10 +78773,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>AccessCMC</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>AccessContentBuilder</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

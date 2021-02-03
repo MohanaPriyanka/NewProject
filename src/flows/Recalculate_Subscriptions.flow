@@ -20,6 +20,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Add_UAS_to_RateClassUASes</name>
         <label>Add UAS to RateClassUASes</label>
@@ -205,6 +206,7 @@
         <connector>
             <targetReference>UpdateUAL</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -227,6 +229,7 @@
         <connector>
             <targetReference>getUASes</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -247,6 +250,7 @@
         <connector>
             <targetReference>Recalculate_Subscriptions</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Utility_Account_Log__c</field>
             <operator>EqualTo</operator>
@@ -278,6 +282,7 @@
         <connector>
             <targetReference>UAS_Loop</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>

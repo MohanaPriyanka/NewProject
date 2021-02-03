@@ -364,6 +364,55 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Client_Invoicing_Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( 
+    AND(
+        ISBLANK(Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c ),  
+        ISBLANK(Client_Assignment_Agreement__c )
+    )
+    ||
+    (AND(
+        NOT(ISBLANK(Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c )),  
+        NOT(ISBLANK(Client_Assignment_Agreement__c ))
+        )
+    ),
+    CASE(
+        TEXT(Type__c),
+        &quot;Initial&quot;, &quot;Initial&quot;,
+        &quot;Resize&quot;, &quot;Initial&quot;,
+        &quot;Transfer&quot;,IF( Utility_Account_Subscription__r.Shared_Solar_System__r.Waitlist__c ,&quot;Waitlist Transfer&quot;,&quot;Initial&quot;),
+        &quot;Shared Solar System Update&quot;,&quot;Shared Solar System Update&quot;,
+        &quot;Cancellation&quot;,&quot;Cancellation&quot;,
+        &quot;Error&quot;
+    ),
+    IF(
+        AND(
+            NOT(ISBLANK(Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c )),  
+            ISBLANK(Client_Assignment_Agreement__c )
+            )
+        ,
+        CASE(
+            TEXT(Type__c),
+            &quot;Initial&quot;, &quot;Resize&quot;,
+            &quot;Resize&quot;, &quot;Resize&quot;,
+            &quot;Transfer&quot;,IF( Utility_Account_Subscription__r.Shared_Solar_System__r.Waitlist__c ,&quot;Waitlist Transfer&quot;,&quot;Transfer&quot;),
+            &quot;Shared Solar System Update&quot;,&quot;Shared Solar System Update&quot;,
+            &quot;Cancellation&quot;,&quot;Cancellation&quot;,
+            &quot;Error&quot;
+        ),
+        &quot;Error&quot;
+    )
+)</formula>
+        <inlineHelpText>How the SO is used for client invoicing. Based on the Type, Assignment Agreement and Customer Contract Assignment Agreement, and SSS Waitlist fields</inlineHelpText>
+        <label>Client Invoicing Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
@@ -882,21 +931,33 @@ Round(( New_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4
         <fullName>Lock_Approved_SOs</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
-OR(
-ISPICKVAL(Approval_Status__c,&apos;Approved&apos;),
-ISPICKVAL(Approval_Status__c,&apos;&apos;)
-)
+
 /* Prevents changing the approval status once it&apos;s been set to approved, but still allowing it to be set to approved.*/
-,
+
+OR(ISPICKVAL(Approval_Status__c,&apos;Approved&apos;), ISPICKVAL(Approval_Status__c,&apos;&apos;)),
 PRIORVALUE(Approval_Status__c)!=&apos;&apos;,
-NOT(ISBLANK( Approved_Change_in_Subscription__c)),
-NOT(ISCHANGED( Approved_Change_in_Subscription__c)),
-NOT(ISCHANGED( Allocation_Schedule_Subscription__c)),
-NOT(ISCHANGED( Contract_Fee_Detail__c)),
-NOT(ISCHANGED( Client_Assignment_Agreement__c)),
-NOT(ISCHANGED( NetSuite_Invoice__c )),
-NOT(ISCHANGED( Invoice_Date__c )),
-NOT(ISCHANGED( Invoice_Line_Item__c ))
+
+OR(
+(ISCHANGED( Approved_Change_in_Subscription__c)),
+(ISCHANGED( Approved_Change_in_Percent_Share__c)),
+(ISCHANGED( Client_Account__c)),
+(ISCHANGED( Shared_Solar_System_Order__c )),
+(ISCHANGED( Product__c )),
+(ISCHANGED( Previous_Annual_Cost__c )),
+(ISCHANGED( New_Annual_Cost__c )),
+(ISCHANGED( Previous_Annual_kwh__c )),
+(ISCHANGED( New_Annual_kWh__c )),
+(ISCHANGED( Effective_Date__c )),
+(ISCHANGED( Expected_Yield_kWh_kW__c )),
+(ISCHANGED( Utility_Number_of_Decimal_Places__c )),
+(ISCHANGED( Previous_kw_DC_Subscription__c )),
+(ISCHANGED( Utility_NMC_Tariff__c )),
+(ISCHANGED( Change_in_Annual_Cost__c )),
+(ISCHANGED( Change_in_Annual_kWh__c )),
+(ISCHANGED( Size_Ratio__c )),
+(ISCHANGED( Total_System_Size_kW_DC__c )),
+(ISCHANGED( Previous_Percent_Share_of_System__c ))
+)
 )</errorConditionFormula>
         <errorDisplayField>Approval_Status__c</errorDisplayField>
         <errorMessage>Once a Subscription Order is Approved, it cannot be edited. To update a customers subscription, please log a new Subscription Order.</errorMessage>

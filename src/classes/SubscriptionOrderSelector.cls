@@ -149,7 +149,8 @@ public inherited sharing class SubscriptionOrderSelector {
             SELECT Id, Client_Invoicing_Fee__c, Utility_Account_Subscription__r.Shared_Solar_System__c,	
                 Contract_Fee_Detail__c, Contract_Fee_Detail__r.Fee__c, Client_Assignment_Agreement__c,	
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c, Approved_Change_in_Subscription__c,	
-                Contract_Fee_Detail__r.Acquisition_Type_Acquisition__c, Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c	
+                Contract_Fee_Detail__r.Acquisition_Type_Acquisition__c, Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c,
+                Utility_Account_Subscription__r.Utility_Account_Log__r.Name
             FROM Subscription_Order__c	
             WHERE Utility_Account_Subscription__r.Shared_Solar_System__c IN :sharedSolarSystems	
             AND Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'	
