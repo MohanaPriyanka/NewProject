@@ -29,6 +29,7 @@ public inherited sharing class ContractFeeDetailSelector {
                 Shared_Solar_System__c
             FROM Contract_Fee_Detail__c
             WHERE Contract__c IN : contractIds
+            AND Approval_Status__c = 'Approved'
         ];
         return cfdList;
     }

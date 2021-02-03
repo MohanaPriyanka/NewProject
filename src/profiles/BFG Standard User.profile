@@ -1156,6 +1156,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ClientInvoicingUtilizationServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ClientReportObjectSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1245,6 +1249,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ContractFeeDetailSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContractFeeDetailSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -16952,6 +16960,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract_Fee_Detail__c.Acquisition_Channels_Closed_by_BCS__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Approval_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -57072,6 +57085,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contract-General Contract Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contract_Fee_Detail__c-Contract Fee Detail Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Custom_File_Upload_Share__c-Custom File Upload Share Layout</layout>

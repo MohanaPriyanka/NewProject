@@ -27,7 +27,8 @@ public class ClientInvoicingFeeWaiveServiceTest {
             Acquisition_Channels_BCS_Acquired__c = false,
             Acquisition_Channels_Non_BCS_Acquired__c = true,
             Acquisition_Sizing_Type_Upsizing__c = true,
-            Acquisition_Cust_Group_Not_Specified__c = true
+            Acquisition_Cust_Group_Not_Specified__c = true,
+            Approval_Status__c = 'Approved'
         );
         insert cfd;
 
