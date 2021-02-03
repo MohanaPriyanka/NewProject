@@ -55961,12 +55961,13 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
+        <default>false</default>
         <recordType>MPM4_BASE__Milestone1_Project__c.General</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>false</default>
+        <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
         <recordType>MPM4_BASE__Milestone1_Project__c.PM</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
