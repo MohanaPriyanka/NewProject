@@ -931,13 +931,26 @@ private class UtilityDataRequestServiceTest {
             Utility_Data_Request__c = testUDR7.Id, 
             Rate_Class__c = 'Test EDI Rate Class 1',
             Rate_Subclass__c = 'Test EDI Rate Class 1',
-            Load_Profile_Description__c = 'testUDRP51',
+            Load_Profile_Description__c = 'testUDRP52',
             Service_Start_Date__c = Date.newInstance(2020, 4, 3),
             Service_End_Date__c = Date.newInstance(2020, 4, 12),
             Measurement_Unit__c ='K1',
             Quantity__c = 100,
             Used_In_Annual_kWh_Calculation__c = false,
-            Measurement_Significance_Code__c = '51'
+            Measurement_Significance_Code__c = '42'
+        );
+        
+        Utility_Data_Request_Period__c testUDRP53 = new Utility_Data_Request_Period__c(
+            Utility_Data_Request__c = testUDR7.Id, 
+            Rate_Class__c = 'Test EDI Rate Class 1',
+            Rate_Subclass__c = 'Test EDI Rate Class 1',
+            Load_Profile_Description__c = 'testUDRP53',
+            Service_Start_Date__c = Date.newInstance(2020, 5, 3),
+            Service_End_Date__c = Date.newInstance(2020, 6, 12),
+            Measurement_Unit__c ='K1',
+            Quantity__c = 100,
+            Used_In_Annual_kWh_Calculation__c = false,
+            Measurement_Significance_Code__c = '49'
         );
         
         List<Utility_Data_Request_Period__c> testUDRPList = new List<Utility_Data_Request_Period__c>{
@@ -947,7 +960,7 @@ private class UtilityDataRequestServiceTest {
             testUDRP25, testUDRP26, testUDRP27, testUDRP28, testUDRP29, testUDRP30, testUDRP31, testUDRP32, 
             testUDRP33, testUDRP34, testUDRP35, testUDRP36, testUDRP37, testUDRP38, testUDRP39, testUDRP40, 
             testUDRP41, testUDRP42, testUDRP43, testUDRP44, testUDRP45, testUDRP46, testUDRP47, testUDRP48,
-            testUDRP49, testUDRP50, testUDRP51, testUDRP52};
+            testUDRP49, testUDRP50, testUDRP51, testUDRP52, testUDRP53};
         insert testUDRPList;
     }
 
@@ -1267,20 +1280,20 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals(582.45, updatedTestUDR7.Annual_kWh__c, 'UDR7 has 3 KH UDRP so the Annual kWh should be ' 
                             + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.'
                             + 'In this case the answer should be 582.45.');
-        System.assertEquals(300, updatedTestUDR7.Average_Demand__c, 'UDR7 has 1 K1 UDRP so the Average Demand should be ' 
+        System.assertEquals(117.65, updatedTestUDR7.Average_Demand__c, 'UDR7 has 1 K1 UDRP so the Average Demand should be ' 
                             + 'the UDRP.Quantity__c value divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 300.');
+                            + 'In this case the answer should be 117.65.');
         System.assertEquals(3, updatedTestUDR7.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(1, updatedTestUDR7.Num_UDRPs_Avg_Demand__c);
+        System.assertEquals(2, updatedTestUDR7.Num_UDRPs_Avg_Demand__c);
         
         System.assertEquals(582.45, testUAL7.Annual_kWh__c, 'UAL7 is related to UDR7,' 
                             + ' which has 3 KH UDRPs so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.'
                             + 'In this case the answer should be 582.45.');
-        System.assertEquals(300, testUAL7.Average_Demand__c, 'UAL7 is related to UDR7,' 
+        System.assertEquals(117.65, testUAL7.Average_Demand__c, 'UAL7 is related to UDR7,' 
                             + ' which has 1 K1 UDRPs so the Average Demand should be the UDRP.Quantity__c value divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 300.');
+                            + 'In this case the answer should be 117.65.');
         System.assertEquals(3, testUAL7.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(1, testUAL7.Num_UDRPs_Avg_Demand__c);
+        System.assertEquals(2, testUAL7.Num_UDRPs_Avg_Demand__c);
         
         List<Utility_Data_Request__c> updatedTestUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5, testUDR7};
             List<Utility_Data_Request_Period__c> khUDRPList= udrpSelector.selectTypeByUDR(updatedTestUDRList, 'KH', new List<String>{'51'});
