@@ -53,8 +53,9 @@ private class InvocableDateEnactedALSUpdateTestclass {
 
     @IsTest
     static void testSystemTest() {
+        Util.disableTrigger('Disable_SubscriptionOrder_Trigger__c');
         Shared_Solar_System__c sss = [
-            SELECT Id
+            SELECT Id, Product__c
             FROM Shared_Solar_System__c
             LIMIT 1
         ];
@@ -161,7 +162,7 @@ private class InvocableDateEnactedALSUpdateTestclass {
     /***************************
      * MOCKS & HELPER METHODS
     ***************************/
-
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     private static Schedule_Z__c getReplacedScheduleZ() {
         Date retiredDate = Date.newInstance(2020,01,08);
         Schedule_Z__c scheduleZ = new Schedule_Z__c(

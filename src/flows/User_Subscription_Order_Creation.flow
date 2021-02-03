@@ -20,6 +20,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>aassgnSet_New_Resize_Subscriptions</name>
         <label>Set New Resize Subscriptions</label>
@@ -212,13 +213,6 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>sov_SubscriptionOrder.Approval_Status__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Approved</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>sov_SubscriptionOrder.Comments__c</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -260,13 +254,6 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>sovUAS.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sov_SubscriptionOrder.Approval_Status__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Approved</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -371,13 +358,6 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>sovUAS.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sov_SubscriptionOrder.Approval_Status__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Approved</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -964,6 +944,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <connector>
             <targetReference>scrTransfer_Inputs_0</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -989,6 +970,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <connector>
             <targetReference>Set_Available_Capacity</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -1595,12 +1577,14 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
     </subflows>
     <textTemplates>
         <name>errormessage</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>Flow: User Subscription Order Creation
 Record: {!$Flow.CurrentRecord}
 Message: {!$Flow.FaultMessage}</text>
     </textTemplates>
     <textTemplates>
         <name>varErrorMessage</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;p&gt;An Error Occurred in the User Subscription Order Creation Flow:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
