@@ -4,6 +4,7 @@
 @IsTest
 public with sharing class SharedSolarSystemHandlerTest {
     @TestSetup
+    @SuppressWarnings('PMD.ApexUnitTestMethodShouldHaveIsTestAnnotation')
     public static void setupData() {
         Test.startTest();
 
