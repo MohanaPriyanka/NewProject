@@ -136,7 +136,9 @@ public without sharing class UtilityDataRequestService {
         } else if(udrp.Measurement_Unit__c == 'KH' && (udrp.Measurement_Significance_Code__c == '41' || udrp.Measurement_Significance_Code__c == '42' || udrp.Measurement_Significance_Code__c == '43')){
             currentUDR.addUdrpKH40s(udrp);
         } else if(udrp.Measurement_Unit__c == 'K1' && udrp.Measurement_Significance_Code__c == '51') {
-            currentUDR.addUdrpK1(udrp);
+            currentUDR.addUdrpK151(udrp);
+        } else if(udrp.Measurement_Unit__c == 'K1' && (udrp.Measurement_Significance_Code__c == '42' || udrp.Measurement_Significance_Code__c == '49')) {
+            currentUDR.addUdrpK140s(udrp);
         }
     }
 
@@ -401,13 +403,15 @@ public without sharing class UtilityDataRequestService {
     	private Id udrId;
     	private List<Utility_Data_Request_Period__c> listKH51;
         private List<Utility_Data_Request_Period__c> listKH40s;
-    	private List<Utility_Data_Request_Period__c> listK1;
+    	private List<Utility_Data_Request_Period__c> listK151;
+        private List<Utility_Data_Request_Period__c> listK140s;
         public UDRWrapper(Id udrId) {
 
             this.udrId = udrId;
             this.listKH51 = new List<Utility_Data_Request_Period__c>();
             this.listKH40s = new List<Utility_Data_Request_Period__c>();
-            this.listK1 = new List<Utility_Data_Request_Period__c>();
+            this.listK151 = new List<Utility_Data_Request_Period__c>();
+            this.listK140s = new List<Utility_Data_Request_Period__c>();
         }
 
         
@@ -419,8 +423,11 @@ public without sharing class UtilityDataRequestService {
             listKH40s.add(udrp);
 
         }
-        public void addUdrpK1(Utility_Data_Request_Period__c udrp) {
-            listK1.add(udrp);
+        public void addUdrpK151(Utility_Data_Request_Period__c udrp) {
+            listK151.add(udrp);
+        }
+        public void addUdrpK140s(Utility_Data_Request_Period__c udrp) {
+            listK140s.add(udrp);
         }
         public List<Utility_Data_Request_Period__c> getListKH() {
             if(this.listKH51.size() > 0) {
@@ -430,7 +437,11 @@ public without sharing class UtilityDataRequestService {
             }
         }
         public List<Utility_Data_Request_Period__c> getListK1() {
-            return this.listK1;
+            if(this.listK151.size() > 0) {
+                return this.listK151;
+            } else{
+                return this.listK140s;
+            }
         }
 	}
     
