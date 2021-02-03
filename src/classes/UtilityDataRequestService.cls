@@ -131,11 +131,11 @@ public without sharing class UtilityDataRequestService {
     }
 
     private void placeUDRP(UDRWrapper currentUDR, Utility_Data_Request_Period__c udrp) {
-        if(udrp.Measurement_Significance_Code__c == '51' && udrp.Measurement_Unit__c == 'KH') {
+        if(udrp.Measurement_Unit__c == 'KH' && udrp.Measurement_Significance_Code__c == '51') {
             currentUDR.addUdrpKH51(udrp);
         } else if(udrp.Measurement_Unit__c == 'KH' && (udrp.Measurement_Significance_Code__c == '41' || udrp.Measurement_Significance_Code__c == '42' || udrp.Measurement_Significance_Code__c == '43')){
             currentUDR.addUdrpKH40s(udrp);
-        } else if(udrp.Measurement_Significance_Code__c == '51' && udrp.Measurement_Unit__c == 'K1') {
+        } else if(udrp.Measurement_Unit__c == 'K1' && udrp.Measurement_Significance_Code__c == '51') {
             currentUDR.addUdrpK1(udrp);
         }
     }
@@ -168,7 +168,8 @@ public without sharing class UtilityDataRequestService {
         }
         
         for(Utility_Data_Request_Period__c udrp : udrpList){
-            if(udrpTotalHelper.updateUDRPTotals(udrp, udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Average_Demand_Calculation__c)) {
+            if(udrpTotalHelper.updateUDRPTotals(udrp, udrpList, 
+                                                Schema.Utility_Data_Request_Period__c.Used_in_Average_Demand_Calculation__c)) {
                 break;
             }
 
