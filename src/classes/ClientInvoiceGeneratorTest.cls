@@ -4,6 +4,8 @@
  */
 @IsTest
 public with sharing class ClientInvoiceGeneratorTest {
+    private static Id soId = Util.getFakeId(Subscription_Order__c.SObjectType);
+
     @TestSetup
     private static void setupData() {
         SharedSolarSystemHandlerTest.setupData();
@@ -31,19 +33,30 @@ public with sharing class ClientInvoiceGeneratorTest {
             Fee__c = 0.10,
             Fee_Unit__c = 'per W',
             Acquisition_Type_Reacquisition__c = true,
-            Waive_Reacquisition_Fee_Project_Date__c = 'Contract: Effective Date',
-            Waive_Reacquisition_Fee_Number_Months__c = 0,
-            Waive_Reacq_Fee_After_Initial_Period__c = true,
             Acquisition_Cust_Group_Residential__c = true,
             Acquisition_Channels_BCS_Acquired__c = false,
             Acquisition_Channels_Non_BCS_Acquired__c = true,
             Acquisition_Sizing_Type_Upsizing__c = true,
+            Acquisition_Sizing_Type_Downsizing__c = true,
             Acquisition_Cust_Group_Not_Specified__c = true
         );
         insert cfd;
+        Contract_Fee_Detail__c cfd2 = new Contract_Fee_Detail__c(
+            Contract__c = contractA.Id,
+            Fee__c = 0.10,
+            Fee_Unit__c = 'per W',
+            Acquisition_Type_Acquisition__c = true,
+            Acquisition_Cust_Group_Residential__c = true,
+            Acquisition_Channels_BCS_Acquired__c = false,
+            Acquisition_Channels_Non_BCS_Acquired__c = true,
+            Acquisition_Sizing_Type_Upsizing__c = true,
+            Acquisition_Sizing_Type_Downsizing__c = true,
+            Acquisition_Cust_Group_Not_Specified__c = true
+        );
+        insert cfd2;
 
         Shared_Solar_System__c sss = [
-            SELECT Id, (SELECT Id, AccountId FROM Opportunities__r LIMIT 1)
+            SELECT Id, (SELECT Id FROM Opportunities__r LIMIT 1)
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 1'
         ];
@@ -53,39 +66,37 @@ public with sharing class ClientInvoiceGeneratorTest {
         update sss;
 
         Utility_Account_Subscription__c uas = [
-            SELECT Id
+            SELECT Id, Opportunity__c, Opportunity__r.AccountId, (SELECT Id, New_Annual_kWh__c FROM Subscription_Orders__r)
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c = :sss.Opportunities__r[0].Id
             AND Shared_Solar_System__r.Name = 'SSS 1'
             LIMIT 1
         ];
         Contract customerContract = new Contract(
-            AccountId = sss.Opportunities__r[0].AccountId,
+            AccountId = uas.Opportunity__r.AccountId,
             Assignment_Agreement__c = assignmentAgreement.Id
         );
         insert customerContract;
-        Opportunity opportunity = new Opportunity(
-            Id = sss.Opportunities__r[0].Id,
+        Opportunity customerOpportunity = new Opportunity(
+            Id = uas.Opportunity__c,
             ContractId = customerContract.Id
         );
-        update opportunity;
-
-        Subscription_Order__c soChange = new Subscription_Order__c(
-            Effective_Date__c = System.today(),
-            Utility_Account_Subscription__c = uas.Id,
-            Approval_Status__c = 'Approved',
-            New_Annual_kWh__c = 4800,
-            Previous_Annual_kwh__c = 0
-        );
-        Subscription_Order__c soAssigned = new Subscription_Order__c(
-            Effective_Date__c = System.today(),
-            Utility_Account_Subscription__c = uas.Id,
-            Approval_Status__c = 'Approved',
-            New_Annual_kWh__c = 5000,
-            Previous_Annual_kwh__c = 0,
+        update customerOpportunity;
+        Subscription_Order__c so = new Subscription_Order__c(
+            Id = uas.Subscription_Orders__r[0].Id,
             Client_Assignment_Agreement__c = assignmentAgreement.Id
         );
-        insert new List<Subscription_Order__c>{soChange, soAssigned};
+        update so;
+
+        Subscription_Order__c soReverted = new Subscription_Order__c(
+            Effective_Date__c = System.today(),
+            Utility_Account_Subscription__c = uas.Id,
+            Approval_Status__c = 'Approved',
+            New_Annual_kWh__c = 0,
+            Previous_Annual_kwh__c = uas.Subscription_Orders__r[0].New_Annual_kWh__c,
+            Comments__c = 'soReverted'
+        );
+        insert soReverted;
     }
 
     @IsTest
@@ -93,19 +104,27 @@ public with sharing class ClientInvoiceGeneratorTest {
         List<Subscription_Order__c> subscriptionOrders = [
             SELECT Id, Utility_Account_Subscription__r.Shared_Solar_System__r.Name, Utility_Account_Subscription__r.Opportunity__r.StageName,
                 Invoice_Line_Item__c, Effective_Date__c, Client_Invoicing_Fee__c, Potential_Client_Invoicing_Fee__c, Client_Assignment_Agreement__c,
-                Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__r.Name
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__r.Name, Previous_Annual_kwh__c, New_Annual_kWh__c, Comments__c
             FROM Subscription_Order__c
-            WHERE Utility_Account_Subscription__r.Shared_Solar_System__r.Name = 'SSS 1'
+            WHERE Client_Invoicing_Fee__c != NULL
         ];
-        System.assertEquals(3, subscriptionOrders.size(),
-            'Expected three Subscription Orders in testSetup');
-        List<Client_Invoicing_Memo__c> clientInvoicingMemos = [
-            SELECT Id, Subscription_Order__c, Amount__c, Effective_Date__c
-            FROM Client_Invoicing_Memo__c
-            WHERE Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__r.Name = 'SSS 1'
-        ];
-        System.assertEquals(3, clientInvoicingMemos.size(),
-            'Expected three Client Invoicing Memos in testSetup');
+        // We want to generate some Client Invoicing Memos to test invoicing those records, but can't use the Waive Reacq Fee
+        // function on the CFD, because we also want to generate some SOs for downsizing, to test netting to zero. So,
+        // we'll just create some CIMs manually.
+        List<Client_Invoicing_Memo__c> clientInvoicingMemos = new List<Client_Invoicing_Memo__c>();
+        for (Subscription_Order__c so : subscriptionOrders) {
+            clientInvoicingMemos.add(new Client_Invoicing_Memo__c(
+                Subscription_Order__c = so.Id,
+                Amount__c = -so.Client_Invoicing_Fee__c,
+                Effective_Date__c = System.today()
+            ));
+        }
+        insert clientInvoicingMemos;
+
+        System.assertEquals(2, subscriptionOrders.size(),
+            'Unexpected number of Subscription Orders in testSetup');
+        System.assertEquals(2, clientInvoicingMemos.size(),
+            'Unexpected Client Invoicing Memos in testSetup');
 
         InvocableCSFeeSelector.FeeRequest feeRequest = new InvocableCSFeeSelector.FeeRequest();
         feeRequest.clientAccountId = subscriptionOrders[0].Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c;
@@ -147,8 +166,16 @@ public with sharing class ClientInvoiceGeneratorTest {
             SELECT Id, Amount__c, Subscription_Order__c, Client_Invoicing_Memo__c
             FROM Invoice_Line_Item__c
         ];
-        System.assertEquals(6, invoiceLineItems.size(),
-            'Expected 3 invoice line items for the generated invoice');
+        System.assertEquals(4, invoiceLineItems.size(),
+            'Expected 4 invoice line items for the generated invoice');
+        invoiceLineItems = [
+            SELECT Id, Amount__c, Subscription_Order__c, Client_Invoicing_Memo__c
+            FROM Invoice_Line_Item__c
+            WHERE Nets_to_Zero__c = TRUE
+        ];
+        System.assertEquals(2, invoiceLineItems.size(),
+            'Two line items should have Nets to Zero checked');
+
         subscriptionOrders = [
             SELECT Id, Invoice_Line_Item__c
             FROM Subscription_Order__c
@@ -198,8 +225,8 @@ public with sharing class ClientInvoiceGeneratorTest {
         // Tests InvocableClientInvoiceLineItemGenerator.generateLineItem
         InvocableClientInvoiceLineItemGenerator.generateLineItem(lineItemRequests);
         invoiceLineItems = [SELECT Id FROM Invoice_Line_Item__c WHERE Invoice__c = :invoice.Id];
-        System.assertEquals(5, invoiceLineItems.size(),
-            'Expected 2 invoice line items left after deleting one invoice line item (via flow)');
+        System.assertEquals(3, invoiceLineItems.size(),
+            'Unexpected invoice line items left after deleting one invoice line item (via flow)');
         invoiceLineItems = [SELECT Id FROM Invoice_Line_Item__c WHERE Invoice__c = :newInvoice.Id];
         System.assertEquals(1, invoiceLineItems.size(),
             'Expected 1 invoice line item on the new invoice via generateLineItem');
@@ -238,6 +265,44 @@ public with sharing class ClientInvoiceGeneratorTest {
             InvocableClientInvoiceLineItemGenerator.generateLineItem(lineItemRequests);
         System.assertEquals(1, invoiceLineItems.size(),
             'Expected to generate an invoice line item for this un-invoiced Client Invoicing Memo');
+    }
+
+    @IsTest
+    private static void testGetSubscriptionOrdersNettingToZero() {
+        ClientInvoiceGenerator clientInvoiceGenerator = new ClientInvoiceGenerator();
+        List<Subscription_Order__c> subscriptionOrders = new List<Subscription_Order__c>();
+        Id sssId = Util.getFakeId(Shared_Solar_System__c.SObjectType);
+        subscriptionOrders.add(getSO('12345', sssId, 10));
+        subscriptionOrders.add(getSO('12345', sssId, -10));
+        System.assertEquals(2, clientInvoiceGenerator.getSubscriptionOrdersNettingToZero(subscriptionOrders).size(),
+            'Expected two SOs to net each other out');
+        subscriptionOrders.add(getSO('12345', sssId, -10));
+        System.assertEquals(0, clientInvoiceGenerator.getSubscriptionOrdersNettingToZero(subscriptionOrders).size(),
+            'Since invoicing fees do not net out for the UAN and System, should not get any SOs to net');
+        subscriptionOrders.add(getSO('123-45', sssId, 10));
+        System.assertEquals(0, clientInvoiceGenerator.getSubscriptionOrdersNettingToZero(subscriptionOrders).size(),
+            'Since the latest SO does not have the same utility account number, it will not net out');
+        subscriptionOrders.add(getSO('123-45', Util.incrementFakeId(sssId), -10));
+        System.assertEquals(0, clientInvoiceGenerator.getSubscriptionOrdersNettingToZero(subscriptionOrders).size(),
+            'Since the latest SO does not have the same project, it will not net out');
+        subscriptionOrders.add(getSO('123-45', Util.incrementFakeId(sssId), 10));
+        System.assertEquals(2, clientInvoiceGenerator.getSubscriptionOrdersNettingToZero(subscriptionOrders).size(),
+            'Since the latest SO has the same UAN and project, it should net out');
+
+    }
+
+    private static Subscription_Order__c getSO(String utilityAccountNumber, Id sssId, Decimal clientInvoicingFee) {
+        sfab_FabricatedSObject fabbedUAL = new sfab_FabricatedSObject(Utility_Account_Log__c.class);
+        fabbedUAL.setField(Utility_Account_Log__c.Name, utilityAccountNumber);
+        sfab_FabricatedSObject fabbedUAS = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
+        fabbedUAS.setParent('Utility_Account_Log__r', fabbedUAL);
+        fabbedUAS.setField(Utility_Account_Subscription__c.Shared_Solar_System__c, sssId);
+        sfab_FabricatedSObject fabbedSO = new sfab_FabricatedSObject(Subscription_Order__c.class);
+        fabbedSO.setField(Subscription_Order__c.Id, soId);
+        soId = Util.incrementFakeId(soId);
+        fabbedSO.setField(Subscription_Order__c.Client_Invoicing_Fee__c, clientInvoicingFee);
+        fabbedSO.setParent('Utility_Account_Subscription__r', fabbedUAS);
+        return (Subscription_Order__c) fabbedSO.toSObject();
     }
 
     /**
