@@ -179,7 +179,7 @@
         <externalId>false</externalId>
         <inlineHelpText>The threshold for the amount of change from one measurement to the other that should trigger alerts.</inlineHelpText>
         <label>Change Threshold</label>
-        <precision>2</precision>
+        <precision>10</precision>
         <required>true</required>
         <scale>0</scale>
         <trackHistory>true</trackHistory>
