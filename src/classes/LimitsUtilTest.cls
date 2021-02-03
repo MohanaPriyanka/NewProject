@@ -62,7 +62,7 @@ public with sharing class LimitsUtilTest {
       LimitKey__c = 'DailyApiRequests',
       AlertThreshold__c = .8,
       ChangeThreshold__c = .2,
-      SnapshotRetentionDays__c = 0
+      SnapshotRetentionDays__c = -1
     );
     insert testLimit;
 

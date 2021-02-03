@@ -131,12 +131,14 @@ public without sharing class UtilityDataRequestService {
     }
 
     private void placeUDRP(UDRWrapper currentUDR, Utility_Data_Request_Period__c udrp) {
-        if(udrp.Measurement_Significance_Code__c == '51' && udrp.Measurement_Unit__c == 'KH') {
+        if(udrp.Measurement_Unit__c == 'KH' && udrp.Measurement_Significance_Code__c == '51') {
             currentUDR.addUdrpKH51(udrp);
         } else if(udrp.Measurement_Unit__c == 'KH' && (udrp.Measurement_Significance_Code__c == '41' || udrp.Measurement_Significance_Code__c == '42' || udrp.Measurement_Significance_Code__c == '43')){
             currentUDR.addUdrpKH40s(udrp);
-        } else if(udrp.Measurement_Significance_Code__c == '51' && udrp.Measurement_Unit__c == 'K1') {
-            currentUDR.addUdrpK1(udrp);
+        } else if(udrp.Measurement_Unit__c == 'K1' && udrp.Measurement_Significance_Code__c == '51') {
+            currentUDR.addUdrpK151(udrp);
+        } else if(udrp.Measurement_Unit__c == 'K1' && (udrp.Measurement_Significance_Code__c == '42' || udrp.Measurement_Significance_Code__c == '49')) {
+            currentUDR.addUdrpK140s(udrp);
         }
     }
 
@@ -145,14 +147,16 @@ public without sharing class UtilityDataRequestService {
         UDRPTotalHelper udrpTotalHelper = new UDRPTotalHelper();
         String customerType = udr.Utility_Account_Log__r.Lead__r.Customer_type__c;
         
+        if(udrpList.size() == 0) {
+            return udrpTotalHelper;
+        }
+        
         for(Utility_Data_Request_Period__c udrp : udrpList){
             if(udrpTotalHelper.updateUDRPTotals(udrp, udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Annual_kWh_Calculation__c)) {
                 break;
 
         }
     }
-
-
         udrpTotalHelper.updatekWh(customerType, udr);
         update udrpList;
         return udrpTotalHelper;
@@ -161,8 +165,13 @@ public without sharing class UtilityDataRequestService {
     private UDRPTotalHelper getAverageDemand(List <Utility_Data_Request_Period__c> udrpList) { 
         UDRPTotalHelper udrpTotalHelper = new UDRPTotalHelper();
         
+        if(udrpList.size() == 0) {
+            return udrpTotalHelper;
+        }
+        
         for(Utility_Data_Request_Period__c udrp : udrpList){
-            if(udrpTotalHelper.updateUDRPTotals(udrp, udrpList, Schema.Utility_Data_Request_Period__c.Used_in_Average_Demand_Calculation__c)) {
+            if(udrpTotalHelper.updateUDRPTotals(udrp, udrpList, 
+                                                Schema.Utility_Data_Request_Period__c.Used_in_Average_Demand_Calculation__c)) {
                 break;
             }
 
@@ -394,13 +403,15 @@ public without sharing class UtilityDataRequestService {
     	private Id udrId;
     	private List<Utility_Data_Request_Period__c> listKH51;
         private List<Utility_Data_Request_Period__c> listKH40s;
-    	private List<Utility_Data_Request_Period__c> listK1;
+    	private List<Utility_Data_Request_Period__c> listK151;
+        private List<Utility_Data_Request_Period__c> listK140s;
         public UDRWrapper(Id udrId) {
 
             this.udrId = udrId;
             this.listKH51 = new List<Utility_Data_Request_Period__c>();
             this.listKH40s = new List<Utility_Data_Request_Period__c>();
-            this.listK1 = new List<Utility_Data_Request_Period__c>();
+            this.listK151 = new List<Utility_Data_Request_Period__c>();
+            this.listK140s = new List<Utility_Data_Request_Period__c>();
         }
 
         
@@ -412,8 +423,11 @@ public without sharing class UtilityDataRequestService {
             listKH40s.add(udrp);
 
         }
-        public void addUdrpK1(Utility_Data_Request_Period__c udrp) {
-            listK1.add(udrp);
+        public void addUdrpK151(Utility_Data_Request_Period__c udrp) {
+            listK151.add(udrp);
+        }
+        public void addUdrpK140s(Utility_Data_Request_Period__c udrp) {
+            listK140s.add(udrp);
         }
         public List<Utility_Data_Request_Period__c> getListKH() {
             if(this.listKH51.size() > 0) {
@@ -423,7 +437,11 @@ public without sharing class UtilityDataRequestService {
             }
         }
         public List<Utility_Data_Request_Period__c> getListK1() {
-            return this.listK1;
+            if(this.listK151.size() > 0) {
+                return this.listK151;
+            } else{
+                return this.listK140s;
+            }
         }
 	}
     
