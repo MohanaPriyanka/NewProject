@@ -33816,12 +33816,32 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>UASB__c.Billing_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>UASB__c.Billing_Period_End_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>UASB__c.Billing_Period_Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.CDG_Sponsor_Payment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.CDG_Subscription_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Calculated_Credits__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -33861,12 +33881,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>UASB__c.Discounted_Utility_Bill__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>UASB__c.Due_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Effective_Net_Metering_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Ending_Banked_Credits__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -33895,8 +33925,18 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Net_Member_Credits__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Net_Metering_Credits_Allocated__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.New_available_credits__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -33980,6 +34020,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Satellite_Charges__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Savings__c</field>
         <readable>true</readable>
@@ -34016,6 +34061,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>UASB__c.Starting_Banked_Credits__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>UASB__c.Subscription_Production_kWh_Static__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -34032,6 +34082,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.System_Share__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Total_Available_Credits__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -34072,6 +34127,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>UASB__c.Utility_Account_Subscription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Utility_Admin_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

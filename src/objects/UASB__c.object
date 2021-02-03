@@ -162,6 +162,27 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Billing_Method__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Blank unless the UASB is billed via UCB.</inlineHelpText>
+        <label>Billing Method</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>UCB</fullName>
+                    <default>false</default>
+                    <label>UCB</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Billing_Period_End_Date__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>From the production update, the host account billing period end date</inlineHelpText>
@@ -182,6 +203,28 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>CDG_Sponsor_Payment__c</fullName>
+        <externalId>false</externalId>
+        <label>CDG Sponsor Payment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>CDG_Subscription_Fee__c</fullName>
+        <externalId>false</externalId>
+        <label>CDG Subscription Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>CS_Billing_Log__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -193,6 +236,17 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Calculated_Credits__c</fullName>
+        <externalId>false</externalId>
+        <label>Calculated Credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Client_Account_Number__c</fullName>
@@ -323,6 +377,17 @@ MONTH(Billing_Period_End_Date__c),
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Discounted_Utility_Bill__c</fullName>
+        <externalId>false</externalId>
+        <label>Discounted Utility Bill</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Due_Date__c</fullName>
         <externalId>false</externalId>
         <label>Due Date</label>
@@ -344,6 +409,17 @@ MONTH(Billing_Period_End_Date__c),
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ending_Banked_Credits__c</fullName>
+        <externalId>false</externalId>
+        <label>Ending Banked Credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Externally_Serviced__c</fullName>
@@ -405,6 +481,17 @@ MONTH(Billing_Period_End_Date__c),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Net_Member_Credits__c</fullName>
+        <externalId>false</externalId>
+        <label>Net Member Credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Net_Metering_Credits_Allocated__c</fullName>
         <externalId>false</externalId>
         <formula>Credits_Allocated__c</formula>
@@ -417,6 +504,17 @@ MONTH(Billing_Period_End_Date__c),
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>New_available_credits__c</fullName>
+        <externalId>false</externalId>
+        <label>New available credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Opportunity__c</fullName>
@@ -621,6 +719,17 @@ MONTH(Billing_Period_End_Date__c),
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Satellite_Charges__c</fullName>
+        <externalId>false</externalId>
+        <label>Satellite Charges</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Savings__c</fullName>
         <externalId>false</externalId>
         <formula>ROUND(Net_Metering_Credits_Allocated__c,2) - ROUND(Discounted_Bill__c,2)</formula>
@@ -707,6 +816,17 @@ MONTH(Billing_Period_End_Date__c),
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Starting_Banked_Credits__c</fullName>
+        <externalId>false</externalId>
+        <label>Starting Banked Credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Subscription_Production_kWh_Static__c</fullName>
         <externalId>false</externalId>
         <label>Subscription Production (kWh) Static</label>
@@ -770,6 +890,17 @@ MONTH(Billing_Period_End_Date__c),
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Available_Credits__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Available Credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Total_System_NMCs__c</fullName>
@@ -897,6 +1028,17 @@ MONTH(Billing_Period_End_Date__c),
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Admin_Fee__c</fullName>
+        <externalId>false</externalId>
+        <label>Utility Admin Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Zuora_Id__c</fullName>
