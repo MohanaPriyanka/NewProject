@@ -456,7 +456,7 @@ private class PostSandboxRefresherTest {
         update leads[0];
 
         Test.startTest();
-        InvocableLeadConvert.convertLead(leads);
+        InvocableLeadConvert.convertLead(new List<Id>{leads[0].Id});
         Test.stopTest();
 
         leads = [SELECT Id FROM Lead WHERE Id IN :leads AND IsConverted = TRUE];

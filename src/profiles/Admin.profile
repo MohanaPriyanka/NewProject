@@ -28611,6 +28611,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Has_Project_Specific_Products__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.Hide_in_Requested_Product__c</field>
         <readable>true</readable>
     </fieldPermissions>

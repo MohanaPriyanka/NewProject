@@ -447,6 +447,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvocableLeadConvert</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>InvoiceTemplateAssignerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -25419,6 +25423,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.Generic_Terms_Template_Countersigned__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.Has_Project_Specific_Products__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
