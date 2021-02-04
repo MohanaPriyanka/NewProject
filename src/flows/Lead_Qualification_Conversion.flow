@@ -102,6 +102,24 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
+        <name>Update_Screen_SSSSelection</name>
+        <label>Update Screen SSSSelection</label>
+        <locationX>1951</locationX>
+        <locationY>1148</locationY>
+        <actionName>c:UpdateScreen</actionName>
+        <actionType>component</actionType>
+        <connector>
+            <targetReference>LoopUALs</targetReference>
+        </connector>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>updateScreenUnqualified</name>
         <label>updateScreenUnqualified</label>
         <locationX>255</locationX>
@@ -231,8 +249,8 @@
     <assignments>
         <name>Assign_Not_Ready_For_Conversion</name>
         <label>Assign Not Ready for Conversion</label>
-        <locationX>2043</locationX>
-        <locationY>1495</locationY>
+        <locationX>2217</locationX>
+        <locationY>1501</locationY>
         <assignmentItems>
             <assignToReference>ualsReadyForConversion</assignToReference>
             <operator>Assign</operator>
@@ -418,8 +436,8 @@
     <decisions>
         <name>Check_UALs_Statuses</name>
         <label>Check UALs Statuses</label>
-        <locationX>2192</locationX>
-        <locationY>1142</locationY>
+        <locationX>2351</locationX>
+        <locationY>1149</locationY>
         <defaultConnector>
             <targetReference>Convert_Lead</targetReference>
         </defaultConnector>
@@ -443,8 +461,8 @@
     <decisions>
         <name>decUALStatusCheck</name>
         <label>UAL Status Check</label>
-        <locationX>1844</locationX>
-        <locationY>1492</locationY>
+        <locationX>2034</locationX>
+        <locationY>1511</locationY>
         <defaultConnector>
             <targetReference>LoopUALs</targetReference>
         </defaultConnector>
@@ -624,8 +642,8 @@
     <loops>
         <name>LoopUALs</name>
         <label>Loop UALs</label>
-        <locationX>1935</locationX>
-        <locationY>1138</locationY>
+        <locationX>2109</locationX>
+        <locationY>1144</locationY>
         <collectionReference>Get_UALS</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -731,7 +749,7 @@
         <locationX>1814</locationX>
         <locationY>1139</locationY>
         <connector>
-            <targetReference>LoopUALs</targetReference>
+            <targetReference>Update_Screen_SSSSelection</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
@@ -755,8 +773,8 @@
     <screens>
         <name>Resolve_UALs_Before_Conversion</name>
         <label>Resolve UALs Before Conversion</label>
-        <locationX>2187</locationX>
-        <locationY>1501</locationY>
+        <locationX>2364</locationX>
+        <locationY>1491</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -882,11 +900,11 @@
         </connector>
         <fields>
             <name>txtProductNoMatch</name>
-            <fieldText>&lt;p&gt;The Shared Solar Systems you selected do not all have the same product. &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;When selecting SSSes, please make sure all projects are for the same product. &lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Oops! The Shared Solar Systems you selected do not all have the same product.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;When selecting SSSes, please make sure all projects are for the same product.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>scrQualifiedLead</name>
