@@ -41,6 +41,7 @@ public inherited sharing class ContractFeeDetailSelector {
                 Shared_Solar_System__c
             FROM Contract_Fee_Detail__c
             WHERE Utilization_Adjustment_Type__c != NULL
+            AND Approval_Status__c = 'Approved'
         ];
     }
 }
