@@ -146,8 +146,7 @@ public with sharing class ClientInvoicingUtilizationServiceTest {
             Fee_Unit__c = 'per MW',
             Utilization_Adjustment_Multiplier__c = 2,
             Utilization_Adjustment_Floor__c = 50,
-            Contract__c = Util.getFakeId(Contract.SObjectType),
-            Approval_Status__c = 'Approved'
+            Contract__c = Util.getFakeId(Contract.SObjectType)
         );
         return cfd;
     }
