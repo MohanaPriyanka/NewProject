@@ -837,9 +837,9 @@ IF( ISPICKVAL(Class__c, &quot;Class 3&quot;), (Transmission_Charge__c +  Transit
         <fullName>Value_of_Net_Metering_Credit__c</fullName>
         <externalId>false</externalId>
         <label>Value of Net Metering Credit</label>
-        <precision>9</precision>
+        <precision>11</precision>
         <required>false</required>
-        <scale>4</scale>
+        <scale>6</scale>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
