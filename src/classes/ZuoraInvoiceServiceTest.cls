@@ -132,7 +132,7 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assertEquals('0680a000003HjQqAAK',invoiceList[0].Bill_Document_Content_Version_ID__c);
         System.assertEquals('06A0a000002SwvOEAS',invoiceList[0].Content_Document_Id__c);
         System.assert(invoiceList[0].Ready_for_Email_Send__c);
-        System.assert(!invoiceList[0].Ready_for_Paper_Bill_Queue__c);
+        System.assert(invoiceList[0].Ready_for_Paper_Bill_Queue__c);
         System.assert(invoiceList[1].Ready_for_Email_Send__c);
         System.assert(invoiceList[1].Ready_for_Paper_Bill_Queue__c);
     }
