@@ -15,6 +15,7 @@ public with sharing class ZuoraInvoiceService {
     private static LetterStreamInsertSelector insertSelector = new LetterStreamInsertSelector();
     private static MultiMap invoiceItemByAccountCache = MultiMap.newListInstance();
 
+    @SuppressWarnings('PMD.EmptyStatementBlock')
     public ZuoraInvoiceService() {
     }
 
