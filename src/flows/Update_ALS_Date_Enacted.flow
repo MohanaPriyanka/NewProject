@@ -24,8 +24,8 @@
     <assignments>
         <name>Add_Error_Log</name>
         <label>Add Error Log</label>
-        <locationX>1329</locationX>
-        <locationY>808</locationY>
+        <locationX>1333</locationX>
+        <locationY>816</locationY>
         <assignmentItems>
             <assignToReference>sovc_ErrorMessages</assignToReference>
             <operator>Add</operator>
@@ -799,7 +799,7 @@
         <name>scrError</name>
         <label>scrError</label>
         <locationX>1096</locationX>
-        <locationY>801</locationY>
+        <locationY>814</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -834,7 +834,7 @@
             <targetReference>Get_ALS</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>Log_Errors</name>
         <label>Log Errors</label>
