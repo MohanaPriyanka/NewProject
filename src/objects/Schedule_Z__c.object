@@ -400,7 +400,7 @@ CASE(Utility__c,
     <fields>
         <fullName>Status__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>This stamps dates in the related fields</inlineHelpText>
+        <inlineHelpText>Must be updated via the &quot;Update Status &amp; Date&quot; button</inlineHelpText>
         <label>Status</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
