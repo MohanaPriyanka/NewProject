@@ -37,7 +37,7 @@
             <targetReference>Create_Error_Log</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>socv_ErrorLog</name>
         <dataType>SObject</dataType>
