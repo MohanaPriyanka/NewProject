@@ -132,6 +132,13 @@
                 <elementReference>newDateEnactedString</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_ALS.Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>pickStatus</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_Current_ALS</targetReference>
         </connector>
