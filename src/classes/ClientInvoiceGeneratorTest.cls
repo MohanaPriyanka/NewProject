@@ -38,7 +38,8 @@ public with sharing class ClientInvoiceGeneratorTest {
             Acquisition_Channels_Non_BCS_Acquired__c = true,
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Sizing_Type_Downsizing__c = true,
-            Acquisition_Cust_Group_Not_Specified__c = true
+            Acquisition_Cust_Group_Not_Specified__c = true,
+            Approval_Status__c = 'Approved'
         );
         insert cfd;
         Contract_Fee_Detail__c cfd2 = new Contract_Fee_Detail__c(
@@ -51,7 +52,8 @@ public with sharing class ClientInvoiceGeneratorTest {
             Acquisition_Channels_Non_BCS_Acquired__c = true,
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Sizing_Type_Downsizing__c = true,
-            Acquisition_Cust_Group_Not_Specified__c = true
+            Acquisition_Cust_Group_Not_Specified__c = true,
+            Approval_Status__c = 'Approved'
         );
         insert cfd2;
 

@@ -251,6 +251,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ClientInvoiceGeneratorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ClientInvoicingFeeAssignmentService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -260,6 +264,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ClientInvoicingFeeWaiveServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ClientInvoicingUtilizationServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -316,6 +324,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ContractFeeDetailSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContractFeeDetailSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -7949,6 +7961,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract.StartDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Approval_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47971,6 +47988,9 @@
     <layoutAssignments>
         <layout>Contract-Customer Contract</layout>
         <recordType>Contract.Customer_Contract</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contract_Fee_Detail__c-Contract Fee Detail Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Custom_Feature_Enablement__mdt-Custom Feature Enablement Layout</layout>

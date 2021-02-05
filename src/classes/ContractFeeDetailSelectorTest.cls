@@ -36,7 +36,8 @@ public class ContractFeeDetailSelectorTest {
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
             Acquisition_Type_Reacquisition__c = false,
-            Fee__c = 0.10
+            Fee__c = 0.10,
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c cfdATwo = new Contract_Fee_Detail__c(
             Contract__c = contractA.Id,
@@ -51,7 +52,8 @@ public class ContractFeeDetailSelectorTest {
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
             Acquisition_Type_Reacquisition__c = false,
-            Fee__c = 0.11
+            Fee__c = 0.11,
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c cfdBOne = new Contract_Fee_Detail__c(
             Contract__c = contractB.Id,
@@ -66,7 +68,8 @@ public class ContractFeeDetailSelectorTest {
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
             Acquisition_Type_Reacquisition__c = false,
-            Fee__c = 0.11
+            Fee__c = 0.11,
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c cfdCOne = new Contract_Fee_Detail__c(
             Contract__c = contractC.Id,
@@ -81,7 +84,8 @@ public class ContractFeeDetailSelectorTest {
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
             Acquisition_Type_Reacquisition__c = false,
-            Fee__c = 0.11
+            Fee__c = 0.11,
+            Approval_Status__c = 'Approved'
         );
         insert new List<Contract_Fee_Detail__c>{
             cfdAone, cfdATwo, cfdBOne, cfdCOne

@@ -13,7 +13,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
             Acquisition_Cust_Group_Not_Specified__c = true,
-            Fee__c = 0.10
+            Fee__c = 0.10,
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c sssSpecific = new Contract_Fee_Detail__c(
             Id = Util.incrementFakeId(defaultSSS.Id),
@@ -24,7 +25,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
             Acquisition_Cust_Group_Not_Specified__c = true,
-            Fee__c = 10
+            Fee__c = 10,
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c duplicateSSSSpecific = new Contract_Fee_Detail__c(
             Id = Util.incrementFakeId(defaultSSS.Id),
@@ -35,7 +37,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
             Acquisition_Cust_Group_Not_Specified__c = true,
-            Fee__c = 10
+            Fee__c = 10,
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c otherSSSSpecific = new Contract_Fee_Detail__c(
             Id = Util.incrementFakeId(sssSpecific.Id),
@@ -46,7 +49,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
             Acquisition_Cust_Group_Not_Specified__c = true,
-            Fee__c = 10
+            Fee__c = 10,
+            Approval_Status__c = 'Approved'
         );
 
         ClientInvoicingFeeAssignmentService.SubscriptionOrder subscriptionOrder =
@@ -312,7 +316,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = true,
                 Acquisition_Type_Reacquisition__c = false,
-                Fee__c = 0.10
+                Fee__c = 0.10,
+                Approval_Status__c = 'Approved'
             );
             Contract_Fee_Detail__c acqNonBcsAcquiredNonAnchor = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7BBB',
@@ -329,7 +334,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = true,
                 Acquisition_Type_Reacquisition__c = false,
-                Fee__c = 0.11
+                Fee__c = 0.11,
+                Approval_Status__c = 'Approved'
             );
             Contract_Fee_Detail__c acqAnchor = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7CCC',
@@ -348,7 +354,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = true,
                 Acquisition_Type_Reacquisition__c = false,
-                Fee__c = 0.12
+                Fee__c = 0.12,
+                Approval_Status__c = 'Approved'
             );
             Contract_Fee_Detail__c reacqAnchor = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7DDD',
@@ -367,7 +374,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = false,
                 Acquisition_Type_Reacquisition__c = true,
-                Fee__c = 0.13
+                Fee__c = 0.13,
+                Approval_Status__c = 'Approved'
             );
             Contract_Fee_Detail__c reacqBcsAcquiredNonAnchor = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7EEE',
@@ -384,7 +392,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = false,
                 Acquisition_Type_Reacquisition__c = true,
-                Fee__c = 0.14
+                Fee__c = 0.14,
+                Approval_Status__c = 'Approved'
             );
             Contract_Fee_Detail__c reacqNonBcsAcquiredNonAnchor = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7FFF',
@@ -401,7 +410,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = false,
                 Acquisition_Type_Reacquisition__c = true,
-                Fee__c = 0.15
+                Fee__c = 0.15,
+                Approval_Status__c = 'Approved'
             );
              Contract_Fee_Detail__c anchorDownsizing = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7GGG',
@@ -420,7 +430,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Sizing_Type_Upsizing__c = false,
                 Acquisition_Type_Acquisition__c = true,
                 Acquisition_Type_Reacquisition__c = false,
-                Fee__c = 0.16
+                Fee__c = 0.16,
+                Approval_Status__c = 'Approved'
             );
             Contract_Fee_Detail__c sameRateForAll = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7HHH',
@@ -439,7 +450,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = true,
                 Acquisition_Type_Reacquisition__c = true,
-                Fee__c = 0.17
+                Fee__c = 0.17,
+                Approval_Status__c = 'Approved'
             );
             Contract_Fee_Detail__c acqClientClosedBCS = new Contract_Fee_Detail__c(
                 Id = 'a123F000001VLE7III',
@@ -456,7 +468,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
                 Acquisition_Sizing_Type_Upsizing__c = true,
                 Acquisition_Type_Acquisition__c = true,
                 Acquisition_Type_Reacquisition__c = false,
-                Fee__c = 0.09
+                Fee__c = 0.09,
+                Approval_Status__c = 'Approved'
             );
             List<Contract_Fee_Detail__c> cfdList = new List<Contract_Fee_Detail__c>{
                 acqBcsAcquiredNonAnchor, acqNonBcsAcquiredNonAnchor, acqClientClosedBCS, acqAnchor,

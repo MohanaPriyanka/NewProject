@@ -4,6 +4,7 @@
 @IsTest
 public with sharing class SharedSolarSystemHandlerTest {
     @TestSetup
+    @SuppressWarnings('PMD.ApexUnitTestMethodShouldHaveIsTestAnnotation, PMD.AvoidHardcodingId')
     public static void setupData() {
         Test.startTest();
 
@@ -475,7 +476,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = true,
             Acquisition_Type_Reacquisition__c = false,
-            Fee__c = 0.10
+            Fee__c = 0.10,
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c reacq = new Contract_Fee_Detail__c(
             Contract__c = contractA.Id,
@@ -492,7 +494,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Acquisition_Sizing_Type_Upsizing__c = true,
             Acquisition_Type_Acquisition__c = false,
             Acquisition_Type_Reacquisition__c = true,
-            Fee__c = 0.20
+            Fee__c = 0.20,
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c managementAssignmentCFD = new Contract_Fee_Detail__c(
             Contract__c = managementContract.Id,
@@ -501,7 +504,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Fee_Unit__c = 'per MW',
             Recurring_Frequency__c = 'Monthly',
             Management_Fee_Type__c = 'Recurring',
-            Management_Fee_Trigger__c = 'Project: First Customer Assignment Date'
+            Management_Fee_Trigger__c = 'Project: First Customer Assignment Date',
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c managementBillCFD = new Contract_Fee_Detail__c(
             Contract__c = managementContract.Id,
@@ -510,7 +514,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Fee_Unit__c = 'per MW',
             Recurring_Frequency__c = 'Monthly',
             Management_Fee_Type__c = 'Recurring',
-            Management_Fee_Trigger__c = 'Project: First Customer Bill Date'
+            Management_Fee_Trigger__c = 'Project: First Customer Bill Date',
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c managementPTOCFD = new Contract_Fee_Detail__c(
             Contract__c = managementContract.Id,
@@ -519,7 +524,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Fee_Unit__c = 'per MW',
             Recurring_Frequency__c = 'Monthly',
             Management_Fee_Type__c = 'Recurring',
-            Management_Fee_Trigger__c = 'Project: PTO'
+            Management_Fee_Trigger__c = 'Project: PTO',
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c managementCODCFD = new Contract_Fee_Detail__c(
             Contract__c = managementContract.Id,
@@ -528,7 +534,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Fee_Unit__c = 'per MW',
             Recurring_Frequency__c = 'Monthly',
             Management_Fee_Type__c = 'Recurring',
-            Management_Fee_Trigger__c = 'Project: COD'
+            Management_Fee_Trigger__c = 'Project: COD',
+            Approval_Status__c = 'Approved'
         );
         Contract_Fee_Detail__c managementContractEffectiveCFD = new Contract_Fee_Detail__c(
             Contract__c = managementContract.Id,
@@ -537,7 +544,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Fee_Unit__c = 'per MW',
             Recurring_Frequency__c = 'Monthly',
             Management_Fee_Type__c = 'Recurring',
-            Management_Fee_Trigger__c = 'Contract: Effective Date'
+            Management_Fee_Trigger__c = 'Contract: Effective Date',
+            Approval_Status__c = 'Approved'
         );
         insert new List<Contract_Fee_Detail__c>{
             acq, reacq, managementAssignmentCFD, managementBillCFD, managementPTOCFD, managementCODCFD, managementContractEffectiveCFD

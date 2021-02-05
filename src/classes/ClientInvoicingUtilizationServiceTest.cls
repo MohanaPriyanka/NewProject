@@ -206,7 +206,8 @@ public with sharing class ClientInvoicingUtilizationServiceTest {
             Utilization_Adjustment_Type__c = 'Multiplier (%)',
             Utilization_Adjustment_Multiplier__c = 2,
             Fee__c = 10790,
-            Fee_Unit__c = 'per MW'
+            Fee_Unit__c = 'per MW',
+            Approval_Status__c = 'Approved'
         );
         uow.registerNew(cfdAOne, Contract_Fee_Detail__c.Contract__c, contractA);
 
