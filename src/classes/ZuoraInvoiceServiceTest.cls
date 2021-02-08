@@ -1,9 +1,8 @@
 /*************************************************************************************
  * Created By: peteryao on 2019-06-12  
  *************************************************************************************/
-
-@IsTest
-public with sharing class ZuoraInvoiceServiceTest {
+@SuppressWarnings('PMD.AvoidHardcodingId')
+@IsTest public with sharing class ZuoraInvoiceServiceTest {
 
     public static final String CONTENT_DOCUMENT_LINK_DUMMY_ID = '06A0a000002SwvOEAS';
     public static final String CONTENT_VERSION_DUMMY_ID = '0680a000003HjQqAAK';
@@ -100,8 +99,7 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assertEquals(2, sfdcInvoices.size());
 
         // Mark invoices as downloaded from Zuora using test helper method
-        Map<Id, Zuora__ZInvoice__c> invoiceMap = markInvoicesDownloaded(sfdcInvoices);
-
+        Map<Id,Zuora__ZInvoice__c> invoiceMap = markInvoicesDownloaded(sfdcInvoices);
         sfdcInvoices = ZuoraInvoiceSelector.getInvoicesToDownload();
         System.assertEquals(0, sfdcInvoices.size());
 
@@ -121,51 +119,25 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assert(invoiceList[1].Ready_for_Email_Send__c, 'Email send for 1st invoice on account 2 should be true');
         System.assert(invoiceList[1].Ready_for_Paper_Bill_Queue__c, 'Paper send for 1st invoice on account 2 should be true');
 
-        // Insert second invoice on Account which has specified 'Email only' bill delivery preference
-        // Because this is the second invoice, no paper send should be happening
+        // Insert second invoice on a Billing Account which has an 'Email only' bill delivery preference
+        // Since this is NOT the first invoice on the acc, there should be no Paper bill delivery flagged on the Invoice record
         Zuora__ZInvoice__c secondInvoice = new Zuora__ZInvoice__c(
             Zuora__Account__c = invoiceList[0].Zuora__Account__c,
             Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54440',
             Zuora__BillingAccount__c = invoiceList[0].Zuora__BillingAccount__c
         );
         insert secondInvoice;
-        System.assertEquals(
-            false, [SELECT First_Bill__c FROM Zuora__ZInvoice__c WHERE Id =: secondInvoice.Id].First_Bill__c,
-            'Second inserted invoice on the account should have First_Bill__c set to FALSE'
-        );
         
-        Map<Id, Zuora__ZInvoice__c> invoiceMap2 = markInvoicesDownloaded(ZuoraInvoiceSelector.getInvoicesToDownload());
+        Map<Id,Zuora__ZInvoice__c> invoiceMap2 = markInvoicesDownloaded(ZuoraInvoiceSelector.getInvoicesToDownload());
         Zuora__ZInvoice__c invoice2PostDownload = [
-            SELECT Ready_for_Email_Send__c, Ready_for_Paper_Bill_Queue__c
+            SELECT Ready_for_Email_Send__c, Ready_for_Paper_Bill_Queue__c, First_Bill__c
             FROM Zuora__ZInvoice__c
             WHERE Id IN : invoiceMap2.keySet()
         ];
+
+        System.assertEquals(false, invoice2PostDownload.First_Bill__c, '2nd invoice on account should have First_Bill__c FALSE');
         System.assert(invoice2PostDownload.Ready_for_Email_Send__c, 'Email send for 2nd invoice on account 1 should be true');
         System.assert(!invoice2PostDownload.Ready_for_Paper_Bill_Queue__c, 'Paper send for 2nd invoice on account 1 should be false');
-    }
-
-    private static Map<Id, Zuora__ZInvoice__c> markInvoicesDownloaded(List<Zuora__ZInvoice__c> sfdcInvoices) {
-        List<ContentDocumentLink> contentDocumentLinks = new List<ContentDocumentLink>();
-        Map<String, ContentVersion> invToContentVersion = new Map<String, ContentVersion>();
-        Map<Id, Zuora__ZInvoice__c> invoiceMap = new Map<Id, Zuora__ZInvoice__c>();
-
-        for (Zuora__ZInvoice__c zInvoice : sfdcInvoices) {
-            invoiceMap.put(zInvoice.Id, zInvoice);
-            ContentDocumentLink cdl = new ContentDocumentLink(
-                LinkedEntityId = zInvoice.Id,
-                Id = CONTENT_DOCUMENT_LINK_DUMMY_ID,
-                ContentDocumentId = CONTENT_DOCUMENT_LINK_DUMMY_ID
-            );
-            contentDocumentLinks.add(cdl);
-            ContentVersion version = new ContentVersion(
-                Id = CONTENT_VERSION_DUMMY_ID
-            );
-            invToContentVersion.put(zInvoice.Zuora__Zuora_Id__c, version);
-        }
-
-        ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(null);
-        invoiceService.updateZuoraInvoicesAsDownloaded(contentDocumentLinks, invToContentVersion, invoiceMap);
-        return invoiceMap;
     }
 
     @IsTest
@@ -545,6 +517,34 @@ public with sharing class ZuoraInvoiceServiceTest {
         invoiceService.getRecentItems('Account2');
         System.assertEquals(4, ZuoraAPIHelper.numberCalloutsForZuoraNamespace,
             'Expected InvoiceService.getRecentItems to use 2 callouts if a cache miss');
+    }
+
+    /*
+    * Helper methods
+    */
+
+    private static Map<Id,Zuora__ZInvoice__c> markInvoicesDownloaded(List<Zuora__ZInvoice__c> sfdcInvoices) {
+        List<ContentDocumentLink> contentDocumentLinks = new List<ContentDocumentLink>();
+        Map<String, ContentVersion> invToContentVersion = new Map<String, ContentVersion>();
+        Map<Id,Zuora__ZInvoice__c> invoiceMap = new Map<Id, Zuora__ZInvoice__c>();
+
+        for (Zuora__ZInvoice__c zInvoice : sfdcInvoices) {
+            invoiceMap.put(zInvoice.Id, zInvoice);
+            ContentDocumentLink cdl = new ContentDocumentLink(
+                LinkedEntityId = zInvoice.Id,
+                Id = CONTENT_DOCUMENT_LINK_DUMMY_ID,
+                ContentDocumentId = CONTENT_DOCUMENT_LINK_DUMMY_ID
+            );
+            contentDocumentLinks.add(cdl);
+            ContentVersion version = new ContentVersion(
+                Id = CONTENT_VERSION_DUMMY_ID
+            );
+            invToContentVersion.put(zInvoice.Zuora__Zuora_Id__c, version);
+        }
+
+        ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(null);
+        invoiceService.updateZuoraInvoicesAsDownloaded(contentDocumentLinks, invToContentVersion, invoiceMap);
+        return invoiceMap;
     }
 
     /*************

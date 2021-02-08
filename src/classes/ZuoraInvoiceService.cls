@@ -6,14 +6,13 @@
  *************************************************************************************/
 
 public with sharing class ZuoraInvoiceService {
+    public List<Zuora__ZInvoice__c> sfdcZuoraInvoices;
+    public Map<Id, Zuora__ZInvoice__c> invoiceMap;
     private CaseFactory caseFactory = new CaseFactory();
     private ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
     private static ZuoraInvoiceSelector invoiceSelector = new ZuoraInvoiceSelector();
-    public List<Zuora__ZInvoice__c> sfdcZuoraInvoices;
-    public Map<Id, Zuora__ZInvoice__c> invoiceMap;
-    @TestVisible
-    private static LetterStreamInsertSelector insertSelector = new LetterStreamInsertSelector();
     private static MultiMap invoiceItemByAccountCache = MultiMap.newListInstance();
+    @TestVisible private static LetterStreamInsertSelector insertSelector = new LetterStreamInsertSelector();
 
     @SuppressWarnings('PMD.EmptyStatementBlock')
     public ZuoraInvoiceService() {
