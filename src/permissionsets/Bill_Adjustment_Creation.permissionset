@@ -96,6 +96,11 @@
         <field>Bill_Adjustment__c.Utility_Account_Subscription__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Bill_Adjustment__c.kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Bill Adjustment Creation</label>
 </PermissionSet>
