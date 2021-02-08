@@ -90,7 +90,7 @@
         <externalId>false</externalId>
         <formula>IF(
 
-ISPICKVAL(Shared_Solar_System__r.Product__r.Program__c,&quot;SMART - Community Solar&quot;),&quot;{!Environment.VAR_CONGA_TEMPLATE_AOBC}EAO&quot;,
+ISPICKVAL(Shared_Solar_System__r.Product__r.Program__c,&quot;SMART - Community Solar&quot;),&quot;{!Environment.VAR_CONGA_TEMPLATE_AOBC}&quot;,
 
 CASE(Utility__c,
 &quot;Eversource (East)&quot;,&quot;a2F0a000001RC7W,{!Environment.VAR_CONGA_TEMPLATE_EVERSOURCE_MA_SREC_EXCEL}&quot;,
