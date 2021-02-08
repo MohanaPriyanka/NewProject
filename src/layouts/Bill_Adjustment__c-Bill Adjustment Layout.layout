@@ -21,7 +21,7 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Account__c</field>
             </layoutItems>
         </layoutColumns>
@@ -53,6 +53,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Adjustment_Amount__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>kWh__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

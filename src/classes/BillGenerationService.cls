@@ -1,3 +1,8 @@
+/** Description: Used to generate and validate UASBs
+ *
+ * Tested By: BillGenerationServiceTest, TransferSheetBillingTest
+ */
+
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class BillGenerationService {
     public static Map<Id, List<Product_Escalator__c>> productEscalatorMap;
@@ -116,9 +121,10 @@ public without sharing class BillGenerationService {
         }
         Decimal shareOfSystem = szs.Percent_Share__c;
         String creditsRoundingMethod = szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c;
+        Integer productionDecimalRounding = (Integer) szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.UASB_Number_of_Decimals__c;
 
         // Calculate % Share of Production (kWh)
-        Decimal subscriptionProduction = ((shareOfSystem/100) * transfer.Attempted_kWh_Transfer__c).setScale(2, roundingMode.HALF_UP);
+        Decimal subscriptionProduction = ((shareOfSystem/100) * transfer.Attempted_kWh_Transfer__c).setScale(productionDecimalRounding, roundingMode.HALF_UP);
 
         // Calculate Credits Allocated to Customer, either as % of kWh or % of $. Xcel Applies rate in 2 stages:
         Decimal subscriptionNMCs = 0;
