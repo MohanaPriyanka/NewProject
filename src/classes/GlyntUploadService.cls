@@ -9,35 +9,7 @@ public without sharing class GlyntUploadService implements Queueable, Database.A
     @TestVisible private static GlyntExtractionService extractionRetrievalService;
     @TestVisible private Set<Id> utilityDataRequestsToUpload;
 
-    /**
-     * @description Associates a Utility Account Log's Content (assumed to be a utility bill) to the corresponding
-     * Utility Data Request, to make it obvious which bill upload is being requested.
-     * @param utilityDataRequests The UDRs, from an after insert Trigger.new
-     */
-    public void associateContentToUDRs(List<Utility_Data_Request__c> utilityDataRequests) {
-        Set<Id> utilityAccountLogIds = new Set<Id>();
-        Map<Id, Id> ualIdToUDRIdMap = new Map<Id, Id>();
-        for (Utility_Data_Request__c udr : utilityDataRequests) {
-            utilityAccountLogIds.add(udr.Utility_Account_Log__c);
-            ualIdToUDRIdMap.put(udr.Utility_Account_Log__c, udr.Id);
-        }
-        List<ContentDocumentLink> contentDocumentLinksForUALs =
-            contentDocumentSelector.selectByLinkedEntitiesWithoutData(utilityAccountLogIds);
-        List<ContentDocumentLink> contentDocumentLinksForUDRs = new List<ContentDocumentLink>();
-        for (ContentDocumentLink ualCDL : contentDocumentLinksForUALs) {
-            contentDocumentLinksForUDRs.add(
-                new ContentDocumentLink(
-                    LinkedEntityId = ualIdToUDRIdMap.get(ualCDL.LinkedEntityId),
-                    Visibility = 'AllUsers',
-                    ShareType = 'V',
-                    ContentDocumentId = ualCDL.ContentDocumentId
-                )
-            );
-        }
-        insert contentDocumentLinksForUDRs;
-    }
-
-    /**
+     /**
      * @description Starts the upload to Glynt via queueable for any UDRs with Service Provider of Glynt
      * @param utilityDataRequests List of Utility Data Requests, with Service Provider
      */
