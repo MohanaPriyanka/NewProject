@@ -161,7 +161,7 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
             <name>Date_Replaced_with_Newly_Enacted_Sch_Z</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Schedule_Z__c.Status__c</field>
             <operation>equals</operation>
@@ -193,7 +193,7 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
             <name>Schedule_Z_Id</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Schedule_Z__c.Name</field>
             <operation>notEqual</operation>
@@ -206,7 +206,7 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
             <name>Timestamp_QC_Start_Date_field</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Schedule_Z__c.Status__c</field>
             <operation>equals</operation>

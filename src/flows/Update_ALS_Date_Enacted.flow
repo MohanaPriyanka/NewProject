@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionCalls>
         <name>Call_Apex</name>
         <label>Call Apex</label>
@@ -24,8 +24,8 @@
     <assignments>
         <name>Add_Error_Log</name>
         <label>Add Error Log</label>
-        <locationX>1329</locationX>
-        <locationY>808</locationY>
+        <locationX>1333</locationX>
+        <locationY>816</locationY>
         <assignmentItems>
             <assignToReference>sovc_ErrorMessages</assignToReference>
             <operator>Add</operator>
@@ -115,7 +115,7 @@
             <assignToReference>Get_ALS.Date_Enacted_by_Utility__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>New_Date_Enacted_by_Utility</elementReference>
+                <elementReference>Date_Enacted_by_Utility</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -130,6 +130,79 @@
             <operator>Add</operator>
             <value>
                 <elementReference>newDateEnactedString</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_ALS.Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>pickStatus</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Current_ALS</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>We need to assign a value for all the date fields, otherwise it will clear any existing data because the screen inputs sets the values to null. The formula fields below are all this pattern: BLANKVALUE(screen_input, existing_value).</description>
+        <name>Update_Date_Enacted_0</name>
+        <label>Update Date Enacted</label>
+        <locationX>968</locationX>
+        <locationY>265</locationY>
+        <assignmentItems>
+            <assignToReference>Get_ALS.QC_Start_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ffQC_Start_Date</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_ALS.Date_QC_Complete__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ffDate_QC_Complete</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_ALS.Date_Executed_by_Asset_Owner__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ffDate_Executed_by_Asset_Owner</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_ALS.Date_Submitted_to_Utility__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ffDate_Submitted_to_Utility</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_ALS.Date_Rejected_by_Utility__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ffDate_Rejected_by_Utility</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_ALS.Date_Billing__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ffDate_Billing</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_ALS.Date_Done_Billing__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ffDate_Done_Billing</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_ALS.Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>pickStatus</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -217,6 +290,74 @@
             <label>Related Records</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Update_to_Date_Enacted</name>
+        <label>Update to Date Enacted?</label>
+        <locationX>294</locationX>
+        <locationY>555</locationY>
+        <defaultConnector>
+            <targetReference>Update_Date_Enacted_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>pickStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Enacted by Utility</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scrConfirmPreviousALS</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <dynamicChoiceSets>
+        <name>choiceStatus</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Status__c</picklistField>
+        <picklistObject>Schedule_Z__c</picklistObject>
+    </dynamicChoiceSets>
+    <formulas>
+        <name>ffDate_Billing</name>
+        <dataType>Date</dataType>
+        <expression>BLANKVALUE( {!Date_Billing} , {!Get_ALS.Date_Billing__c})</expression>
+    </formulas>
+    <formulas>
+        <name>ffDate_Done_Billing</name>
+        <dataType>Date</dataType>
+        <expression>BLANKVALUE( {!Date_Done_Billing}  , {!Get_ALS.Date_Done_Billing__c} )</expression>
+    </formulas>
+    <formulas>
+        <name>ffDate_Executed_by_Asset_Owner</name>
+        <dataType>Date</dataType>
+        <expression>BLANKVALUE( {!Date_Executed_by_Asset_Owner} , {!Get_ALS.Date_Executed_by_Asset_Owner__c} )</expression>
+    </formulas>
+    <formulas>
+        <name>ffDate_QC_Complete</name>
+        <dataType>Date</dataType>
+        <expression>BLANKVALUE({!Date_QC_Complete}  , {!Get_ALS.Date_QC_Complete__c} )</expression>
+    </formulas>
+    <formulas>
+        <name>ffDate_Rejected_by_Utility</name>
+        <dataType>Date</dataType>
+        <expression>BLANKVALUE( {!Date_Rejected_by_Utility}  , {!Get_ALS.Date_Rejected_by_Utility__c} )</expression>
+    </formulas>
+    <formulas>
+        <name>ffDate_Submitted_to_Utility</name>
+        <dataType>Date</dataType>
+        <expression>BLANKVALUE( {!Date_Submitted_to_Utility} , {!Get_ALS.Date_Submitted_to_Utility__c} )</expression>
+    </formulas>
+    <formulas>
+        <name>ffQC_Start_Date</name>
+        <dataType>Date</dataType>
+        <expression>BLANKVALUE({!QC_Start_Date}  , {!Get_ALS.QC_Start_Date__c} )</expression>
+    </formulas>
     <formulas>
         <name>formula_RunningUserId</name>
         <dataType>String</dataType>
@@ -226,7 +367,7 @@
         <description>Convert Date into String for flowParameters</description>
         <name>newDateEnactedString</name>
         <dataType>String</dataType>
-        <expression>TEXT(MONTH({!New_Date_Enacted_by_Utility}))+&quot;/&quot; +TEXT(DAY({!New_Date_Enacted_by_Utility}))+&quot;/&quot; +TEXT(YEAR({!New_Date_Enacted_by_Utility}))</expression>
+        <expression>TEXT(MONTH({!Date_Enacted_by_Utility}))+&quot;/&quot; +TEXT(DAY({!Date_Enacted_by_Utility}))+&quot;/&quot; +TEXT(YEAR({!Date_Enacted_by_Utility}))</expression>
     </formulas>
     <interviewLabel>Update ALS Date Enacted {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Update ALS Date Enacted</label>
@@ -277,7 +418,7 @@
         <locationY>339</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>scrChange_Date_Enacted</targetReference>
+            <targetReference>scrChange_Status_Dates</targetReference>
         </connector>
         <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
         <filters>
@@ -315,8 +456,8 @@
     <recordUpdates>
         <name>Update_Current_ALS</name>
         <label>Update Current ALS</label>
-        <locationX>1321</locationX>
-        <locationY>575</locationY>
+        <locationX>1318</locationX>
+        <locationY>602</locationY>
         <connector>
             <targetReference>Related_Records_to_Update</targetReference>
         </connector>
@@ -327,27 +468,188 @@
     </recordUpdates>
     <runInMode>SystemModeWithSharing</runInMode>
     <screens>
-        <name>scrChange_Date_Enacted</name>
-        <label>Change Date Enacted</label>
-        <locationX>177</locationX>
-        <locationY>541</locationY>
+        <name>scrChange_Status_Dates</name>
+        <label>Change Status &amp; Dates</label>
+        <locationX>138</locationX>
+        <locationY>551</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>scrConfirmPreviousALS</targetReference>
+            <targetReference>Update_to_Date_Enacted</targetReference>
         </connector>
         <fields>
-            <name>txtChangeDateEnacted</name>
-            <fieldText>&lt;p&gt;Please select the new &quot;Date Enacted by Utility&quot; for the Allocation Schedule.&lt;/p&gt;</fieldText>
+            <name>txtSelectStatus</name>
+            <fieldText>&lt;p&gt;Please select the new &quot;Status&quot; for the Allocation Schedule and update dates as required.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>New_Date_Enacted_by_Utility</name>
+            <name>pickStatus</name>
+            <choiceReferences>choiceStatus</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Status</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>QC_Start_Date</name>
             <dataType>Date</dataType>
-            <fieldText>New Date Enacted by Utility</fieldText>
+            <defaultValue>
+                <elementReference>Get_ALS.QC_Start_Date__c</elementReference>
+            </defaultValue>
+            <fieldText>QC Start Date</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>pickStatus</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>QC in Process</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Date_QC_Complete</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>Get_ALS.Date_QC_Complete__c</elementReference>
+            </defaultValue>
+            <fieldText>Date QC Complete</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>pickStatus</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>QC Complete</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Date_Executed_by_Asset_Owner</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>Get_ALS.Date_Executed_by_Asset_Owner__c</elementReference>
+            </defaultValue>
+            <fieldText>Date Executed by Asset Owner</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>pickStatus</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue> Executed by Asset Owner</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Date_Submitted_to_Utility</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>Get_ALS.Date_Submitted_to_Utility__c</elementReference>
+            </defaultValue>
+            <fieldText>Date Submitted to Utility</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>pickStatus</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue> Submitted to Utility</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Date_Rejected_by_Utility</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>Get_ALS.Date_Rejected_by_Utility__c</elementReference>
+            </defaultValue>
+            <fieldText>Date Rejected by Utility</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>pickStatus</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue> Rejected by Utility</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Date_Enacted_by_Utility</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>Get_ALS.Date_Enacted_by_Utility__c</elementReference>
+            </defaultValue>
+            <fieldText>Date Enacted by Utility</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>pickStatus</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Enacted by Utility</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Date_Billing</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>Get_ALS.Date_Billing__c</elementReference>
+            </defaultValue>
+            <fieldText>Date Billing</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>pickStatus</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue> Billing</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Date_Done_Billing</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>Get_ALS.Date_Done_Billing__c</elementReference>
+            </defaultValue>
+            <fieldText>Date Done Billing</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>pickStatus</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue> Replaced</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -355,8 +657,8 @@
     <screens>
         <name>scrConfirmPreviousALS</name>
         <label>Confirm Previous ALS</label>
-        <locationX>309</locationX>
-        <locationY>548</locationY>
+        <locationX>450</locationX>
+        <locationY>810</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -511,7 +813,7 @@
         <name>scrError</name>
         <label>scrError</label>
         <locationX>1096</locationX>
-        <locationY>801</locationY>
+        <locationY>814</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
