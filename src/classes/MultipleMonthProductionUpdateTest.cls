@@ -38,22 +38,12 @@ public class MultipleMonthProductionUpdateTest {
         TestFactory.insertBWAddress();
         TestFactory.setCSBillSettings();
 
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                ChargentBase__Merchant_ID__c = '235986',
-                ChargentBase__Available_Payment_Methods__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                ChargentBase__Active__c = TRUE);
-        insert chGateway;
-
         Account clientAccount = new Account(name = 'Test Client');
 
         insert new List<Account>{clientAccount};
 
         Entity__c entity1 = new Entity__c (
             Name = 'Oxford Barrett St. P1',
-            Gateway__c = chGateway.Id,
             Client_Account__c = clientAccount.Id
         );
         insert entity1;

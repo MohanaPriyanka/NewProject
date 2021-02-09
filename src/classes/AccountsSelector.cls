@@ -141,9 +141,7 @@ public without sharing class AccountsSelector {
         List<AggregateResult> aggregateResults = [
             SELECT Account.Id Id, Account.Zuora_Id__c Zuora_Id__c, Account.Name AccountName,
                 Account.Client_Brand_Key__c CommunicationProfileId,
-                MAX(Product__r.Days_in_Bill_Period__c) DaysInBillingPeriod,
-                COUNT_DISTINCT(Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.Name) DistinctGateways,
-                MAX(Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.Name) GatewayName
+                MAX(Product__r.Days_in_Bill_Period__c) DaysInBillingPeriod
             FROM Opportunity
             WHERE StageName = 'Complete'
             AND Account.Zuora_Id__c IN :zuoraAccountIds

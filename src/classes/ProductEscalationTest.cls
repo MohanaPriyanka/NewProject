@@ -68,26 +68,14 @@ public class ProductEscalationTest {
         Contact clientContact = new Contact(AccountId = clientAccount.Id, FirstName = 'Test', LastName = 'Client');
         insert clientContact;
 
-        ChargentBase__Gateway__c chGateway =
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                ChargentBase__Merchant_ID__c = '235986',
-                ChargentBase__Debug__c = True,
-                ChargentBase__Available_Payment_Methods__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                ChargentBase__Active__c = TRUE);
-        insert chGateway;
-
         Entity__c entity1 = new Entity__c(
             Name = 'Project A Oak Road',
-            Client_Account__c = clientAccount.Id,
-            Gateway__c = chGateway.Id);
+            Client_Account__c = clientAccount.Id);
         insert entity1;
 
         Entity__c entity2 = new Entity__c(
             Name = 'Project B Main St',
-            Client_Account__c = clientAccount.Id,
-            Gateway__c = chGateway.Id);
+            Client_Account__c = clientAccount.Id);
         insert entity2;
 
         Shared_Solar_System__c sss1 =
@@ -347,7 +335,6 @@ public class ProductEscalationTest {
         insert new List<Schedule_Z__c>{schZOne, schZTwo};
         Date todaysDate = Date.today();
         Date oneMonthAgo = todaysDate.addMonths(-1);
-        Date oneMonthInFuture = todaysDate.addMonths(1);
 
         Bill_Period__c bpA1 = new Bill_Period__c(
             Name = 'sssA - August 2016',
