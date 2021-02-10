@@ -9,7 +9,7 @@ public without sharing class GlyntAPIHelper {
     public static String extractionProcessor;
     public static Integer extractionQueryTimeout;
     @TestVisible private static String authType;
-    private static Integer ACCESS_TOKEN_TIMEOUT_SECONDS = 60*60*12; // 12 hours
+    private static final Integer ACCESS_TOKEN_TIMEOUT_SECONDS = 60*60*12; // 12 hours
     @TestVisible private static List<EndpointCall> endpointsCalled;
 
     static {
@@ -63,9 +63,9 @@ public without sharing class GlyntAPIHelper {
             'GlyntAPIHelper',
             'queryForToken',
             'Request Endpoint: ' + request.getEndpoint() + '\n' +
-                'Request Body: ' + request.getBody() + '\n\n' +
+                'Request Body: ' + request.getBody() + '\n' +
                 'Response Status: ' + response.getStatus() + '\n' +
-                'Response Body: ' + response.getBody(),
+                'Response Body: ' + response.getBody() + '\n\n',
             Logger.FINE);
         GlyntAPI.AuthResponse authResponse = (GlyntAPI.AuthResponse) JSON.deserialize(response.getBody(), GlyntAPI.AuthResponse.class);
         if (authResponse.access_token == null) {
@@ -82,6 +82,7 @@ public without sharing class GlyntAPIHelper {
      * @param flush If true, commits error logs to the database (which implies no subsequent callouts can happen)
      * @return The HttpResponse from the callout
      */
+    @SuppressWarnings('PMD.ApexSuggestUsingNamedCred')
     public HttpResponse callJsonEndpoint(String method, String endpoint, Object body, Boolean flush) {
         String token = getAccessTokenFromCache();
         HttpRequest request = new HttpRequest();

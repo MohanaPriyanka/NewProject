@@ -3,19 +3,14 @@
  * 
  * Tested by: UtilityDataRequestServiceTest, GlyntUploadServiceTest
  */
-trigger UtilityDataRequestTrigger on Utility_Data_Request__c (after insert, after update, before update) {
+trigger UtilityDataRequestTrigger on Utility_Data_Request__c (after update, before update) {
     if (Util.isDisabled('Disable_UtilityDataRequestTrigger__c')) {
         return;
     }
     
     UtilityDataRequestService udrService = new UtilityDataRequestService(Trigger.oldMap, Trigger.newMap);
-    GlyntUploadService uploadService = new GlyntUploadService();
 
     switch on Trigger.operationType {
-        when AFTER_INSERT {
-            uploadService.associateContentToUDRs(Trigger.new);
-            uploadService.queueGlyntUpload(Trigger.new);
-        }
         when BEFORE_UPDATE {
             udrService.beforeStatusUpdatedToComplete();
         }
