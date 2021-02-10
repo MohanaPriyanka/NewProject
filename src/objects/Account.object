@@ -682,12 +682,12 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
                 <sorted>false</sorted>
                 <value>
                     <fullName>Email and Paper</fullName>
-                    <default>true</default>
+                    <default>false</default>
                     <label>Email and Paper</label>
                 </value>
                 <value>
                     <fullName>Email only</fullName>
-                    <default>false</default>
+                    <default>true</default>
                     <label>Email only</label>
                 </value>
                 <value>
@@ -11876,6 +11876,21 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Parent Account</label>
         <picklistValues>
+            <picklist>Bill_Delivery_Preference__c</picklist>
+            <values>
+                <fullName>Email and Paper</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email only</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Paper only</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -13720,6 +13735,21 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <fullName>Property</fullName>
         <active>true</active>
         <label>Property</label>
+        <picklistValues>
+            <picklist>Bill_Delivery_Preference__c</picklist>
+            <values>
+                <fullName>Email and Paper</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email only</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Paper only</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>AccountSource</picklist>
             <values>

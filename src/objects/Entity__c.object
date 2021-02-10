@@ -196,30 +196,6 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Connected_Bank_for_Deposits__c</fullName>
-        <externalId>false</externalId>
-        <formula>TEXT(Gateway__r.Connected_Bank_for_Deposits__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Connected Bank for Deposits</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Connected_Bank_for_Gateway_Payments__c</fullName>
-        <externalId>false</externalId>
-        <formula>TEXT(Gateway__r.Connected_Bank_for_Payments__c )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Connected Bank for Gateway Payments</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>DC_Annual_Report__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Insert date of most recent filed annual report; due 6/16 the year after registration and on 6/16 every 2 years thereafter; $100 late fee</inlineHelpText>
@@ -454,44 +430,6 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Gateway__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Gateway</label>
-        <referenceTo>ChargentBase__Gateway__c</referenceTo>
-        <relationshipLabel>Entities</relationshipLabel>
-        <relationshipName>Entities</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Last_4_Digits_of_Payment_Bank_Acct__c</fullName>
-        <externalId>false</externalId>
-        <formula>Gateway__r.Last_4_Digits_of_Payment_Bank_Acct__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Last 4 Digits of Payment Bank Acct</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Last_4_Digits_on_Deposit_Acct__c</fullName>
-        <externalId>false</externalId>
-        <formula>Gateway__r.Last_4_Digits_of_Deposit_Acct__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Last 4 Digits on Deposit Acct</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Latest_MA_Annual_Report__c</fullName>
@@ -1158,23 +1096,10 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
-    <fields>
-        <fullName>Web_Access_Username__c</fullName>
-        <externalId>false</externalId>
-        <formula>Gateway__r.Web_Access_Username__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Web Access Username</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
     <label>Entity</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Gateway__c</columns>
         <columns>Client_Account__c</columns>
         <columns>Entity_Owner__c</columns>
         <columns>Send_Checks_Address__c</columns>

@@ -6,15 +6,15 @@
  *************************************************************************************/
 
 public with sharing class ZuoraInvoiceService {
+    public List<Zuora__ZInvoice__c> sfdcZuoraInvoices;
+    public Map<Id, Zuora__ZInvoice__c> invoiceMap;
     private CaseFactory caseFactory = new CaseFactory();
     private ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
     private static ZuoraInvoiceSelector invoiceSelector = new ZuoraInvoiceSelector();
-    public List<Zuora__ZInvoice__c> sfdcZuoraInvoices;
-    public Map<Id, Zuora__ZInvoice__c> invoiceMap;
-    @TestVisible
-    private static LetterStreamInsertSelector insertSelector = new LetterStreamInsertSelector();
     private static MultiMap invoiceItemByAccountCache = MultiMap.newListInstance();
+    @TestVisible private static LetterStreamInsertSelector insertSelector = new LetterStreamInsertSelector();
 
+    @SuppressWarnings('PMD.EmptyStatementBlock')
     public ZuoraInvoiceService() {
     }
 
@@ -78,6 +78,7 @@ public with sharing class ZuoraInvoiceService {
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private void updateZuoraInvoicesAsDownloaded(List<ContentDocumentLink> contentDocumentLinks, Map<String, ContentVersion> invoiceToVersion, Map<Id, Zuora__ZInvoice__c> zInvoices) {
         List<Zuora__ZInvoice__c> zuoraInvoicesToUpdate = new List<Zuora__ZInvoice__c>();
+
         for (ContentDocumentLink contentDocumentLink : contentDocumentLinks) {
             Zuora__ZInvoice__c zuoraInvoice = zInvoices.get(contentDocumentLink.LinkedEntityId);
             Zuora__ZInvoice__c zuoraInvoiceToUpdate = new Zuora__ZInvoice__c(
@@ -88,7 +89,7 @@ public with sharing class ZuoraInvoiceService {
             );
             if (zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c == 'Email Only') {
                 zuoraInvoiceToUpdate.Ready_for_Email_Send__c = true;
-                zuoraInvoiceToUpdate.Ready_for_Paper_Bill_Queue__c = false;
+                zuoraInvoiceToUpdate.Ready_for_Paper_Bill_Queue__c = zuoraInvoice.First_Bill__c ? true : false;
             } else if (zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c == 'Paper Only') {
                 zuoraInvoiceToUpdate.Ready_for_Email_Send__c = false;
                 zuoraInvoiceToUpdate.Ready_for_Paper_Bill_Queue__c = true;
@@ -265,8 +266,9 @@ public with sharing class ZuoraInvoiceService {
                     Logger.ERROR);
             } else {
                 decoratedInvoice.invoice.LetterStream_Insert__c = letterStreamInsert.Id;
-                invoicesToUpdate.add(decoratedInvoice.invoice);
             }
+            decoratedInvoice.invoice.First_Bill__c = true;
+            invoicesToUpdate.add(decoratedInvoice.invoice);
         }
         update invoicesToUpdate;
     }
