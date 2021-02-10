@@ -696,17 +696,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Bill_Adjustment__c.kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>CS_Bill_Setting__c.Default_Bill_Message_for_Autopay__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>CS_Bill_Setting__c.Default_Bill_Message_for_Non_Autopay__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ChargentOrders__Transaction__c.Client__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
