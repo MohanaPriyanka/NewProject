@@ -1190,6 +1190,16 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Has_Project_Specific_Products__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked, this Product is a Generic Product with related Products that hold Project Specific Details</inlineHelpText>
+        <label>Has Project Specific Products</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Hide_in_Requested_Product__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

@@ -674,6 +674,36 @@ public class LeadServiceTestclass {
     }
 
     @IsTest
+    private static void testGenericProductSSSQualification() {
+        Lead hybridLead = getMockLead('NEMA');
+        hybridLead.Product__c = '00Q0U00000617VTUAY';
+
+        sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        sfab_FabricatedSObject fabbedProduct = new sfab_FabricatedSObject(Product2.class);
+        fabbedProduct.setField(Product2.Ignore_Load_Zones_When_Qualifying__c, false);
+        fabbedProduct.setField(Product2.Parent_Product__c,'00Q0U00000617VTUAY');
+        fabbedSSS.setParent('Product__r', fabbedProduct);
+        fabbedSSS.setField(Shared_Solar_System__c.Id, Util.getFakeId(Shared_Solar_System__c.SObjectType));
+        fabbedSSS.setField(Shared_Solar_System__c.Product__c, Util.getFakeId(Product2.SObjectType));
+        fabbedSSS.setField(Shared_Solar_System__c.Service_Territories__c, 'NEMA');
+        fabbedSSS.setField(Shared_Solar_System__c.Utility__c, Util.getFakeId(Utility__c.SObjectType));
+        fabbedSSS.setField(Shared_Solar_System__c.Available_SMB_Underwriting_Method_FICO__c, true);
+        fabbedSSS.setField(Shared_Solar_System__c.Credit_Score_Requirement__c, 200);
+        fabbedSSS.setField(Shared_Solar_System__c.Do_Not_Ask_for_Payment_Method__c, false);
+        sfab_FabricatedSObject fabbedPartnerEligibility = new sfab_FabricatedSObject(Partner_Shared_Solar_System_Eligibility__c.class);
+        sfab_FabricatedSObject fabbedPartnerAccount = new sfab_FabricatedSObject(Account.class);
+        fabbedPartnerAccount.setField(Account.Partner__c, Util.getFakeId(Partner__c.SObjectType));
+        fabbedPartnerEligibility.setParent('Account__r', fabbedPartnerAccount);
+        fabbedSSS.setChildren('Partner_Shared_Solar_System_Accesses__r', new List<sfab_FabricatedSObject>{fabbedPartnerEligibility});
+        Shared_Solar_System__c sss =  (Shared_Solar_System__c) fabbedSSS.toSObject();
+
+        SharedSolarSystems sssService =  new SharedSolarSystems(new List<Shared_Solar_System__c>{sss});
+
+        System.assertEquals(1, sssService.getQualifiedForLead(hybridLead).size(),
+            'Lead should qualify for SSS that has Product with Parent Product that matches the Lead\'s Hybrid/Generic Product');
+    }
+
+    @IsTest
     private static void testPaymentDetailQualification() {
         useMocks(false);
         List<Shared_Solar_System__c> mockedSSSList = getListofMockedSSS();

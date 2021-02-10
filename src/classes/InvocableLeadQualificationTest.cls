@@ -32,7 +32,7 @@ public with sharing class InvocableLeadQualificationTest {
             Personal_Credit_Report__c = pcr1.Id,
             Utility_relationship__c = utility1.Id,
             LoadZone__c = 'SEMA',
-            Product__c = null,
+            Product__c = product1.Id,
             Underwriting_Criteria__c = 'Financial Review'
         ); 
         insert lead1;
@@ -71,19 +71,19 @@ public with sharing class InvocableLeadQualificationTest {
         // Passing an empty list
         InvocableLeadQualification.runLeadQualificationCheck(leadList);
         Lead updatedLead1 = getTestLead('testLead1');
-        System.assertEquals('New', updatedLead1.Status, 'The lead.Status should still be New becuase ' + 
+        System.assertEquals('New', updatedLead1.Status, 'The lead.Status should still be New because ' +
                             'the list passed was empty, so the lead.Status was not updated.');
         // Passing a null list
         InvocableLeadQualification.runLeadQualificationCheck(null);
         Lead updatedLead2 = getTestLead('testLead1');
-        System.assertEquals('New', updatedLead2.Status, 'The lead.Status should still be New becuase ' + 
+        System.assertEquals('New', updatedLead2.Status, 'The lead.Status should still be New because ' +
                             'the list passed was null, so the lead.Status was not updated.');
         //Passing a valid list
         Lead lead = getTestLead('testLead1');
         leadList.add(lead.Id);
         InvocableLeadQualification.runLeadQualificationCheck(leadList);
         Lead updatedLead3 = getTestLead('testLead1');
-        System.assertEquals('Qualified', updatedLead3.Status, 'The lead.Status should update to Qualified becuase ' + 
+        System.assertEquals('Qualified', updatedLead3.Status, 'The lead.Status should update to Qualified because ' +
                             'the Moody score is above the RiskCalc Min.');
     }
     
