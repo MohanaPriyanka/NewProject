@@ -124,7 +124,11 @@ private class PostSandboxRefresherTest {
     @IsTest
     static void testSandboxRefresh() {
         Test.startTest();
-        PostSandboxRefresher.updateDocusignToDemoConfig();
+        try {
+            PostSandboxRefresher.updateDocusignToDemoConfig();
+        } catch (Exception e) {
+            System.assert(e.getMessage().contains('Don\'t update DocuSign'), 'Do not need to update Docusign Config for test');
+        }
         Test.stopTest();
     }
     static testMethod void testBatchUpdateFailure() {
@@ -139,7 +143,7 @@ private class PostSandboxRefresherTest {
         Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Upsert'));
         Test.stopTest();
         System.assertEquals(MessagingService.emailsSent.size(), 1);
-        System.debug(MessagingService.emailsSent);
+        System.debug(LoggingLevel.INFO, MessagingService.emailsSent);
     }
     static testMethod void testBatchInsertFailures() {
         List<Lead> leadList = new List<Lead>();
@@ -153,7 +157,7 @@ private class PostSandboxRefresherTest {
         Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Insert'));
         Test.stopTest();
         System.assertEquals(MessagingService.emailsSent.size(), 1);
-        System.debug(MessagingService.emailsSent);
+        System.debug(LoggingLevel.INFO, MessagingService.emailsSent);
         errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(1, errorLogs.size());
     }
@@ -456,7 +460,7 @@ private class PostSandboxRefresherTest {
         update leads[0];
 
         Test.startTest();
-        InvocableLeadConvert.convertLead(leads);
+        InvocableLeadConvert.convertLead(new List<Id>{leads[0].Id});
         Test.stopTest();
 
         leads = [SELECT Id FROM Lead WHERE Id IN :leads AND IsConverted = TRUE];

@@ -1,13 +1,14 @@
 /**
  * Created by SarahRenfro on 12/29/2020.
+ *
  * Description: Called from the Lead_Qualification_Conversion Flow to Convert Leads
  * Tested By: PostSandboxRefresherTest
  */
 
 public with sharing class InvocableLeadConvert {
     @InvocableMethod(Label='Invocable Lead Converter' Description='Converts a Lead from Lead Qualification/Conversion Flow')
-    public static void convertLead(List<Lead> leadsToConvert) {
-        Lead leadToConvert = leadsToConvert[0];
+    public static void convertLead(List<Id> leadIdsToConvert) {
+        Lead leadToConvert = new LeadSelector().selectOne(leadIdsToConvert[0]);
         List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
         Database.LeadConvert leadConvert = new Database.LeadConvert();
         leadConvert.setLeadId(leadToConvert.Id);

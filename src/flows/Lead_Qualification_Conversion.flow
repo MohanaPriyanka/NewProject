@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Convert_Lead</name>
         <label>Convert Lead</label>
-        <locationX>1962</locationX>
-        <locationY>840</locationY>
+        <locationX>2357</locationX>
+        <locationY>794</locationY>
         <actionName>InvocableLeadConvert</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -14,17 +14,17 @@
             <targetReference>Assign_Error_Log</targetReference>
         </faultConnector>
         <inputParameters>
-            <name>leadsToConvert</name>
+            <name>leadIdsToConvert</name>
             <value>
-                <elementReference>leadToConvert</elementReference>
+                <elementReference>leadIdToConvert</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
     <actionCalls>
         <name>Get_Ordered_List_of_Qualified_SSS</name>
         <label>Get Ordered List of Qualified SSS</label>
-        <locationX>1155</locationX>
-        <locationY>842</locationY>
+        <locationX>1271</locationX>
+        <locationY>931</locationY>
         <actionName>InvocableQualifiedSSSSelector</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -47,12 +47,12 @@
     <actionCalls>
         <name>leadQualificationCheck</name>
         <label>leadQualificationCheck</label>
-        <locationX>987</locationX>
-        <locationY>382</locationY>
+        <locationX>966</locationX>
+        <locationY>439</locationY>
         <actionName>InvocableLeadQualification</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Lead</targetReference>
+            <targetReference>Update_Screen</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
@@ -64,12 +64,85 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <actionCalls>
+        <description>Update Screen after some change to the record</description>
+        <name>Update_Screen</name>
+        <label>Update Screen</label>
+        <locationX>971</locationX>
+        <locationY>582</locationY>
+        <actionName>c:UpdateScreen</actionName>
+        <actionType>component</actionType>
+        <connector>
+            <targetReference>Lead</targetReference>
+        </connector>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Update_Screen_GetLead</name>
+        <label>Update Screen GetLead</label>
+        <locationX>366</locationX>
+        <locationY>277</locationY>
+        <actionName>c:UpdateScreen</actionName>
+        <actionType>component</actionType>
+        <connector>
+            <targetReference>IsConverted</targetReference>
+        </connector>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Update_Screen_SSSSelection</name>
+        <label>Update Screen SSSSelection</label>
+        <locationX>1951</locationX>
+        <locationY>1148</locationY>
+        <actionName>c:UpdateScreen</actionName>
+        <actionType>component</actionType>
+        <connector>
+            <targetReference>LoopUALs</targetReference>
+        </connector>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>updateScreenUnqualified</name>
+        <label>updateScreenUnqualified</label>
+        <locationX>255</locationX>
+        <locationY>765</locationY>
+        <actionName>c:UpdateScreen</actionName>
+        <actionType>component</actionType>
+        <connector>
+            <targetReference>getLead</targetReference>
+        </connector>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>50.0</apiVersion>
     <assignments>
         <name>Add_Break</name>
         <label>Add Break</label>
-        <locationX>1445</locationX>
-        <locationY>1046</locationY>
+        <locationX>1397</locationX>
+        <locationY>1309</locationY>
         <assignmentItems>
             <assignToReference>selectedSSSIds</assignToReference>
             <operator>Add</operator>
@@ -84,8 +157,8 @@
     <assignments>
         <name>Add_Error_Log_to_List</name>
         <label>Add Error Log to List</label>
-        <locationX>1632</locationX>
-        <locationY>55</locationY>
+        <locationX>1969</locationX>
+        <locationY>484</locationY>
         <assignmentItems>
             <assignToReference>sovc_ErrorLogs</assignToReference>
             <operator>Add</operator>
@@ -100,8 +173,8 @@
     <assignments>
         <name>Add_Selected_SSS_Id</name>
         <label>Add Selected SSS Id</label>
-        <locationX>1628</locationX>
-        <locationY>1044</locationY>
+        <locationX>1395</locationX>
+        <locationY>1468</locationY>
         <assignmentItems>
             <assignToReference>selectedSSSIds</assignToReference>
             <operator>Add</operator>
@@ -114,10 +187,33 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assign_Designated_Product</name>
+        <label>Assign Designated Product</label>
+        <locationX>1700</locationX>
+        <locationY>1480</locationY>
+        <assignmentItems>
+            <assignToReference>varSelectedProduct</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Selected_SSS.Product__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSubscriptionType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Selected_SSS.Product__r.Customer_Subscription_Type__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Same_Product</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assign_Error_Log</name>
         <label>Assign Error Log</label>
-        <locationX>1524</locationX>
-        <locationY>55</locationY>
+        <locationX>1860</locationX>
+        <locationY>484</locationY>
         <assignmentItems>
             <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -153,8 +249,8 @@
     <assignments>
         <name>Assign_Not_Ready_For_Conversion</name>
         <label>Assign Not Ready for Conversion</label>
-        <locationX>580</locationX>
-        <locationY>980</locationY>
+        <locationX>2217</locationX>
+        <locationY>1501</locationY>
         <assignmentItems>
             <assignToReference>ualsReadyForConversion</assignToReference>
             <operator>Assign</operator>
@@ -169,8 +265,8 @@
     <assignments>
         <name>assignLeadFields</name>
         <label>assignLeadFields</label>
-        <locationX>810</locationX>
-        <locationY>243</locationY>
+        <locationX>803</locationX>
+        <locationY>280</locationY>
         <assignmentItems>
             <assignToReference>getLead.Moody_s_Risk_Calc__c</assignToReference>
             <operator>Assign</operator>
@@ -199,6 +295,10 @@
                 <elementReference>updateProduct.recordId</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getLead.Selected_SSS_For_Conversion__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
         <connector>
             <targetReference>updateLeadRecord</targetReference>
         </connector>
@@ -206,8 +306,8 @@
     <assignments>
         <name>Store_Selected_SSS_List_on_Lead</name>
         <label>Store Selected SSS List on Lead</label>
-        <locationX>1700</locationX>
-        <locationY>839</locationY>
+        <locationX>1685</locationX>
+        <locationY>1132</locationY>
         <assignmentItems>
             <assignToReference>Lead.Selected_SSS_For_Conversion__c</assignToReference>
             <operator>Assign</operator>
@@ -223,10 +323,17 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>leadToConvert</assignToReference>
+            <assignToReference>Lead.Product__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>getLead</elementReference>
+                <elementReference>varSelectedProduct</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>leadIdToConvert</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Lead.Id</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -292,8 +399,8 @@
     <decisions>
         <name>Check_Qualification</name>
         <label>Check Qualification</label>
-        <locationX>985</locationX>
-        <locationY>619</locationY>
+        <locationX>1254</locationX>
+        <locationY>762</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Qualified</name>
@@ -306,7 +413,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>LoopUALs</targetReference>
+                <targetReference>Get_Ordered_List_of_Qualified_SSS</targetReference>
             </connector>
             <label>Qualified</label>
         </rules>
@@ -329,12 +436,12 @@
     <decisions>
         <name>Check_UALs_Statuses</name>
         <label>Check UALs Statuses</label>
-        <locationX>993</locationX>
-        <locationY>930</locationY>
+        <locationX>2351</locationX>
+        <locationY>1149</locationY>
         <defaultConnector>
-            <targetReference>Get_Ordered_List_of_Qualified_SSS</targetReference>
+            <targetReference>Convert_Lead</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>Ready for Conversion</defaultConnectorLabel>
         <rules>
             <name>Not_Ready_for_Conversion</name>
             <conditionLogic>and</conditionLogic>
@@ -354,8 +461,8 @@
     <decisions>
         <name>decUALStatusCheck</name>
         <label>UAL Status Check</label>
-        <locationX>586</locationX>
-        <locationY>779</locationY>
+        <locationX>2034</locationX>
+        <locationY>1511</locationY>
         <defaultConnector>
             <targetReference>LoopUALs</targetReference>
         </defaultConnector>
@@ -371,7 +478,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>getLead.Product__r.Customer_Subscription_Type__c</leftValueReference>
+                <leftValueReference>varSubscriptionType</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>kWh</stringValue>
@@ -385,7 +492,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>getLead.Product__r.Customer_Subscription_Type__c</leftValueReference>
+                <leftValueReference>varSubscriptionType</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Electricity Cost ($)</stringValue>
@@ -412,11 +519,37 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Populate the varSelectedProduct with the first SSS&apos;s Product from the selected SSS List.</description>
+        <name>First_Selected_SSS</name>
+        <label>First Selected SSS?</label>
+        <locationX>1484</locationX>
+        <locationY>1376</locationY>
+        <defaultConnector>
+            <targetReference>Same_Product</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Next SSS</defaultConnectorLabel>
+        <rules>
+            <name>First_SSS_of_Loop</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varSelectedProduct</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Designated_Product</targetReference>
+            </connector>
+            <label>First SSS of Loop</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>If Lead is already converted, no need to try again</description>
         <name>IsConverted</name>
         <label>decisionIsConverted</label>
-        <locationX>503</locationX>
-        <locationY>243</locationY>
+        <locationX>495</locationX>
+        <locationY>280</locationY>
         <defaultConnector>
             <targetReference>updateLeadFields</targetReference>
         </defaultConnector>
@@ -435,6 +568,31 @@
                 <targetReference>scrAlreadyConverted</targetReference>
             </connector>
             <label>IsConverted</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Same_Product</name>
+        <label>SSS Same Product?</label>
+        <locationX>1487</locationX>
+        <locationY>1610</locationY>
+        <defaultConnector>
+            <targetReference>scrProducts_Do_Not_Match</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Mismatch</defaultConnectorLabel>
+        <rules>
+            <name>Product_Match</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varSelectedProduct</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Loop_Selected_SSS.Product__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_Selected_SSS_Id</targetReference>
+            </connector>
+            <label>Product Match</label>
         </rules>
     </decisions>
     <dynamicChoiceSets>
@@ -460,17 +618,22 @@
         <dataType>Boolean</dataType>
         <expression>CONTAINS({!getLead.LoadZone__c}, &quot;/&quot;)</expression>
     </formulas>
+    <formulas>
+        <name>formulaShowProductWarning</name>
+        <dataType>Boolean</dataType>
+        <expression>{!Lead.Product__r.Has_Project_Specific_Products__c}</expression>
+    </formulas>
     <interviewLabel>Lead {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Lead Qualification/Conversion</label>
     <loops>
         <name>Loop_Selected_SSS</name>
         <label>Loop Selected SSS</label>
-        <locationX>1534</locationX>
-        <locationY>832</locationY>
+        <locationX>1493</locationX>
+        <locationY>1130</locationY>
         <collectionReference>selectedSSSList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Add_Selected_SSS_Id</targetReference>
+            <targetReference>First_Selected_SSS</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Store_Selected_SSS_List_on_Lead</targetReference>
@@ -479,8 +642,8 @@
     <loops>
         <name>LoopUALs</name>
         <label>Loop UALs</label>
-        <locationX>906</locationX>
-        <locationY>800</locationY>
+        <locationX>2109</locationX>
+        <locationY>1144</locationY>
         <collectionReference>Get_UALS</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -512,8 +675,8 @@
     <recordLookups>
         <name>Get_UALS</name>
         <label>Get UALS</label>
-        <locationX>1291</locationX>
-        <locationY>384</locationY>
+        <locationX>1260</locationX>
+        <locationY>572</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Qualification</targetReference>
@@ -541,11 +704,11 @@
     <recordLookups>
         <name>getLead</name>
         <label>getLead</label>
-        <locationX>363</locationX>
-        <locationY>242</locationY>
+        <locationX>253</locationX>
+        <locationY>276</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>IsConverted</targetReference>
+            <targetReference>Update_Screen_GetLead</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -562,8 +725,8 @@
     <recordLookups>
         <name>Lead</name>
         <label>Lead</label>
-        <locationX>1154</locationX>
-        <locationY>379</locationY>
+        <locationX>1113</locationX>
+        <locationY>574</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_UALS</targetReference>
@@ -578,26 +741,15 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Lead</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Utility_relationship__c</queriedFields>
-        <queriedFields>LoadZone__c</queriedFields>
-        <queriedFields>Partner_Lookup__c</queriedFields>
-        <queriedFields>Partner_Account__c</queriedFields>
-        <queriedFields>Product__c</queriedFields>
-        <queriedFields>Underwriting_Criteria__c</queriedFields>
-        <queriedFields>LASER_Credit_Score__c</queriedFields>
-        <queriedFields>Moody_s_Risk_Calc__c</queriedFields>
-        <queriedFields>Status</queriedFields>
-        <queriedFields>No_Payment__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
         <name>Update_Lead_with_Selected_SSS</name>
         <label>Update Lead with Selected SSS</label>
-        <locationX>1839</locationX>
-        <locationY>839</locationY>
+        <locationX>1814</locationX>
+        <locationY>1139</locationY>
         <connector>
-            <targetReference>Convert_Lead</targetReference>
+            <targetReference>Update_Screen_SSSSelection</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
@@ -607,8 +759,8 @@
     <recordUpdates>
         <name>updateLeadRecord</name>
         <label>updateLeadRecord</label>
-        <locationX>993</locationX>
-        <locationY>241</locationY>
+        <locationX>955</locationX>
+        <locationY>281</locationY>
         <connector>
             <targetReference>leadQualificationCheck</targetReference>
         </connector>
@@ -621,8 +773,8 @@
     <screens>
         <name>Resolve_UALs_Before_Conversion</name>
         <label>Resolve UALs Before Conversion</label>
-        <locationX>913</locationX>
-        <locationY>1093</locationY>
+        <locationX>2364</locationX>
+        <locationY>1491</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -690,8 +842,8 @@
     <screens>
         <name>scrAlreadyConverted</name>
         <label>Already Converted Lead</label>
-        <locationX>510</locationX>
-        <locationY>60</locationY>
+        <locationX>508</locationX>
+        <locationY>81</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -706,8 +858,8 @@
     <screens>
         <name>scrError</name>
         <label>Error Screen</label>
-        <locationX>1822</locationX>
-        <locationY>52</locationY>
+        <locationX>2159</locationX>
+        <locationY>481</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -722,8 +874,8 @@
     <screens>
         <name>scrFinish</name>
         <label>Finish</label>
-        <locationX>2132</locationX>
-        <locationY>836</locationY>
+        <locationX>2525</locationX>
+        <locationY>799</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -736,10 +888,29 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>scrProducts_Do_Not_Match</name>
+        <label>Products Do Not Match</label>
+        <locationX>1139</locationX>
+        <locationY>1619</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>scrQualifiedLead</targetReference>
+        </connector>
+        <fields>
+            <name>txtProductNoMatch</name>
+            <fieldText>&lt;p&gt;Oops! The Shared Solar Systems you selected do not all have the same product.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;When selecting SSSes, please make sure all projects are for the same product.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>scrQualifiedLead</name>
         <label>scrQualifiedLead</label>
-        <locationX>1363</locationX>
-        <locationY>841</locationY>
+        <locationX>1280</locationX>
+        <locationY>1135</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -747,8 +918,23 @@
             <targetReference>Loop_Selected_SSS</targetReference>
         </connector>
         <fields>
+            <name>warningProduct</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 15, 15); background-color: rgb(255, 255, 255);&quot;&gt;WARNING&lt;/b&gt;&lt;span style=&quot;color: rgb(255, 15, 15); background-color: rgb(255, 255, 255);&quot;&gt;: This lead is assigned a Parent Product. When selecting SSSes below, please only select project with the &lt;/span&gt;&lt;b style=&quot;color: rgb(255, 15, 15); background-color: rgb(255, 255, 255);&quot;&gt;SAME PRODUCT.&lt;/b&gt;&lt;span style=&quot;color: rgb(255, 15, 15); background-color: rgb(255, 255, 255);&quot;&gt; The customer&apos;s product will then be updated based off your selection. &lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>formulaShowProductWarning</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
             <name>txtDatable</name>
-            <fieldText>&lt;p&gt;Select the Shared Solar Systems that you want to be &lt;b&gt;considered &lt;/b&gt;for subscriptions. &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Subscriptions will be created and sized based on the customer&apos;s annual usage, available capacity, and project maximums.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;NOTE: This does &lt;b&gt;not &lt;/b&gt;guarantee subscriptions will be created for &lt;b&gt;all &lt;/b&gt;projects. If the project is not selected, no subscriptions will be created for the project. &lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Select the Shared Solar Systems that you want to be &lt;b&gt;considered &lt;/b&gt;for subscriptions. &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Subscriptions will be created and sized based on the customer&apos;s annual usage, available capacity, and project maximums.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;NOTE: This does &lt;b&gt;not &lt;/b&gt;guarantee subscriptions will be created for &lt;b&gt;all &lt;/b&gt;projects. If the project is not selected, no subscriptions will be created for the project.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -768,13 +954,13 @@
             <inputParameters>
                 <name>columnFields</name>
                 <value>
-                    <stringValue>Name,Utility__c,Capacity_Available_to_be_Reserved__c</stringValue>
+                    <stringValue>Name,Product__c,Utility__c,Capacity_Available_to_be_Reserved__c</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>columnWidths</name>
                 <value>
-                    <stringValue>column-widths-mode=&quot;auto&quot;</stringValue>
+                    <stringValue>Name:249, Product__c:249, Utility__c:249, Capacity_Available_to_be_Reserved__c:249</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -801,13 +987,13 @@
     <screens>
         <name>showLeadStatus</name>
         <label>showLeadStatus</label>
-        <locationX>362</locationX>
-        <locationY>605</locationY>
+        <locationX>528</locationX>
+        <locationY>761</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>getLead</targetReference>
+            <targetReference>updateScreenUnqualified</targetReference>
         </connector>
         <fields>
             <name>leadStatus</name>
@@ -851,8 +1037,8 @@
     <screens>
         <name>updateLeadFields</name>
         <label>updateLeadFields</label>
-        <locationX>671</locationX>
-        <locationY>242</locationY>
+        <locationX>664</locationX>
+        <locationY>280</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1017,8 +1203,8 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
-        <locationY>72</locationY>
+        <locationX>48</locationX>
+        <locationY>50</locationY>
         <connector>
             <targetReference>getLead</targetReference>
         </connector>
@@ -1027,8 +1213,8 @@
     <subflows>
         <name>Log_Errors</name>
         <label>Log Errors</label>
-        <locationX>1716</locationX>
-        <locationY>50</locationY>
+        <locationX>2053</locationX>
+        <locationY>479</locationY>
         <connector>
             <targetReference>scrError</targetReference>
         </connector>
@@ -1098,6 +1284,16 @@
         <isOutput>false</isOutput>
         <value>
             <elementReference>getLead.Utility_relationship__c</elementReference>
+        </value>
+    </variables>
+    <variables>
+        <name>leadIdToConvert</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <elementReference>Lead.Id</elementReference>
         </value>
     </variables>
     <variables>
@@ -1212,5 +1408,19 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Utility__c</objectType>
+    </variables>
+    <variables>
+        <name>varSelectedProduct</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varSubscriptionType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

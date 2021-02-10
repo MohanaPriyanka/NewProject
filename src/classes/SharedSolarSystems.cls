@@ -218,7 +218,7 @@ public inherited sharing class SharedSolarSystems {
         Boolean utilityMatch = sss.Utility__c == lead.Utility_relationship__c;
         Boolean lzInServiceTerritory = SharedSolarSystems.loadZoneInServiceTerritory(lead.LoadZone__c, sss);
         Boolean isPartnerEligible = SharedSolarSystems.isPartnerEligible(lead.Partner_Lookup__c, sss);
-        Boolean productMatch = lead.Product__c == null || sss.Product__c == lead.Product__c;
+        Boolean productMatch = matchesProduct(lead, sss);
         Boolean meetsUnderwritingCriteria = meetsUnderwritingCriteria(lead, sss, creditScore);
         Boolean paymentMatch = meetsPaymentCriteria(lead, sss);
 
@@ -243,6 +243,18 @@ public inherited sharing class SharedSolarSystems {
             Logger.logLater('SharedSolarSystems','qualifiedForSystem',logMessage, 'FINE');
         }
         return isQualified;
+    }
+
+    private static Boolean matchesProduct(Lead lead, Shared_Solar_System__c sss) {
+        Boolean matchesProduct = false;
+        if (capacityCheckInstance) {
+            matchesProduct = true;
+        } else if (sss.Product__r.Parent_Product__c != null && sss.Product__r.Parent_Product__c == lead.Product__c){
+            matchesProduct = true;
+        } else if (sss.Product__c == lead.Product__c) {
+            matchesProduct = true;
+        }
+        return matchesProduct;
     }
 
     public static Boolean meetsPaymentCriteria(Lead lead, Shared_Solar_System__c sss) {
