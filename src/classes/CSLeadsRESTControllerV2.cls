@@ -21,7 +21,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible private CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     @TestVisible private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
     @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
-    public static String baseUrl = Util.getCommunitySiteURL('Apply') + '/s/switch';
 
     @TestVisible private Map<String, String> contractLeadFields = new Map<String, String>{
         'FirstName' => 'firstName',
@@ -65,7 +64,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
 
     public virtual void getLead(String leadId, String email) {
         RestResponse response = RestContext.response;
-        if(leadId == null || email == null) {
+        if (leadId == null || email == null) {
             envelope.addError('Request did not include correct fields to retrieve lead');
             response.statusCode = statusCode.badRequest;
         } else {
@@ -125,7 +124,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Handle other non-Lead database changes if the application is newly marked as "Application Complete"
         // Placed last because we want to ensure Lead properly updates before queueing other object changes
         if (applicationNowComplete) {
-            UtilityDataRequestService.create(new List<Id>{requestLead.id});
+            UtilityDataRequestBuilder.create(new List<Id>{requestLead.id});
  			createAndSendCSPartnerEmail(lead.Id);
             createQCCaseForNoMatchPCR(lead);
         }
@@ -439,30 +438,38 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     private Boolean applicationValid(String jsonRequest, RestResponse response, Lead existingLead) {
         RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
         Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
-        if(existingLead == null) {
+        if (existingLead == null) {
             response.statusCode = statusCode.notFound;
             return false;
         }
-        if(requestMap.size() <= 1 || !requestMap.containsKey('propertyAccounts') || requestLead.propertyAccounts.isEmpty()) {
+        if (missingPropertyAccounts(requestMap, requestLead)) {
             envelope.addError('Request did not include correct objects/fields to update');
             response.statusCode = statusCode.badRequest;
             return false;
         }
         RestLead.RestPropertyAccount requestAccount = requestLead.propertyAccounts.get(0);
-        if(requestLead.propertyAccounts.size() > 1 || existingLead.Accounts__r.size() > 1 ||
-            (!existingLead.Accounts__r.isEmpty() && existingLead.Accounts__r[0].Id != requestAccount.id)
-        ) {
+        if (tooManyOrWrongPropertyAccount(requestLead, existingLead, requestAccount)) {
             envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
             response.statusCode = statusCode.badRequest;
             return false;
         }
         Map<String, Object> accountMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(requestAccount));
-        if(accountMap.size() <= 1 || !accountMap.containsKey('utilityAccountLogs') || requestAccount.utilityAccountLogs == null || requestAccount.utilityAccountLogs.isEmpty()) {
+        if (missingUtilityAccountLogs(accountMap, requestAccount)) {
             envelope.addError('Request did not include correct objects/fields to update');
             response.statusCode = statusCode.badRequest;
             return false;
         }
         return true;
+    }
+    private Boolean missingPropertyAccounts(Map<String, Object> requestMap, RestLead requestLead) {
+        return requestMap.size() <= 1 || !requestMap.containsKey('propertyAccounts') || requestLead.propertyAccounts.isEmpty();
+    }
+    private Boolean tooManyOrWrongPropertyAccount(RestLead requestLead, Lead existingLead, RestLead.RestPropertyAccount requestAccount) {
+        return requestLead.propertyAccounts.size() > 1 || existingLead.Accounts__r.size() > 1 ||
+            (!existingLead.Accounts__r.isEmpty() && existingLead.Accounts__r[0].Id != requestAccount.id);
+    }
+    private Boolean missingUtilityAccountLogs(Map<String, Object> accountMap, RestLead.RestPropertyAccount requestAccount) {
+        return accountMap.size() <= 1 || !accountMap.containsKey('utilityAccountLogs') || requestAccount.utilityAccountLogs == null || requestAccount.utilityAccountLogs.isEmpty();
     }
 
     private void updateAccount(Lead lead, List<RestLead.RestPropertyAccount> requestPropertyAccounts, List<Object> requestAccountList) {
@@ -542,29 +549,35 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         List<Object> accountList = (List<Object>)requestMap.get('propertyAccounts');
         Map<String, Object> accountMap = (Map<String, Object>)accountList.get(0);
         List<Object> ualList = (List<Object>)accountMap.get('utilityAccountLogs');
-        if(existingLead.Utility_Account_Logs__r.size() != ualList.size()) {
+        if (existingLead.Utility_Account_Logs__r.size() != ualList.size()) {
             return true;
         }
         Map<String, Map<String, Object>> restUALMap = new Map<String, Map<String, Object>>();
-        for(Object ualObj : ualList) {
+        for (Object ualObj : ualList) {
             Map<String, Object> restUAL = (Map<String, Object>)ualObj;
             restUALMap.put((String)restUAL.get('utilityAccountNumber'), restUAL);
         }
-        for(Utility_Account_Log__c leadUAL : existingLead.Utility_Account_Logs__r) {
-            if(!restUALMap.containsKey(leadUAL.Name)) {
+        for (Utility_Account_Log__c leadUAL : existingLead.Utility_Account_Logs__r) {
+            if (restUALDifferentFromLeadUAL(restUALMap, leadUAL)) {
                 return true;
-            } else {
-                Map<String, Object> restUAL = restUALMap.get(leadUAL.Name);
-                for(String ualFieldName : contractUALFields.keySet()){
-                    String restUALFieldName = contractUALFields.get(ualFieldName);
-                    if(String.valueOf(leadUAL.get(ualFieldName)) != String.valueOf(restUAL.get(restUALFieldName))) {
-                        return true;
-                    }
-                }
-                if(leadUAL.Utility_Rate_Class__r.Name != restUAL.get('rateClass')) {
-                    return true;
             }
         }
+        return false;
+    }
+
+    private Boolean restUALDifferentFromLeadUAL(Map<String, Map<String, Object>> restUALMap, Utility_Account_Log__c leadUAL) {
+        if (!restUALMap.containsKey(leadUAL.Name)) {
+            return true;
+        }
+        Map<String, Object> restUAL = restUALMap.get(leadUAL.Name);
+        for (String ualFieldName : contractUALFields.keySet()) {
+            String restUALFieldName = contractUALFields.get(ualFieldName);
+            if (String.valueOf(leadUAL.get(ualFieldName)) != String.valueOf(restUAL.get(restUALFieldName))) {
+                return true;
+            }
+        }
+        if (leadUAL.Utility_Rate_Class__r.Name != restUAL.get('rateClass')) {
+            return true;
         }
         return false;
     }
@@ -778,7 +791,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         String location = APP_STATUS_TO_LOCATION.get(applicationStatus);
 
         // Set Continue Application link with all mandatory fields
-        PageReference continueUrl = new PageReference(baseUrl);
+        PageReference continueUrl = new PageReference(Util.getCommunitySiteURL('Apply') + '/s/switch');
         continueUrl.getParameters().put('leadid', lead.Id);
         continueUrl.getParameters().put('email', lead.Email);
         continueUrl.getParameters().put('partnerId', lead.Partner_Lookup__c);
@@ -786,9 +799,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         lead.Continue_Application_Link__c = continueUrl.getUrl();
 
         // Set Contract Re-Sign (Agree page) link based on current Lead info
-        PageReference re_signUrl = new PageReference(continueUrl.getUrl());
-        re_signUrl.getParameters().put('loc', 'agree');
-        lead.Contract_eSign_Link__c = re_signUrl.getUrl();
+        PageReference resignUrl = new PageReference(continueUrl.getUrl());
+        resignUrl.getParameters().put('loc', 'agree');
+        lead.Contract_eSign_Link__c = resignUrl.getUrl();
     }
 
     public static String getApplicationStatus(Lead lead) {

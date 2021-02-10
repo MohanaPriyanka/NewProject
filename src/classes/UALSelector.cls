@@ -58,7 +58,8 @@ public without sharing class UALSelector {
             SELECT Id, Name, Utility_lookup__r.Utility_DUNS_Number__c, Utility_lookup__c, Utility_lookup__r.Name,
                 Utility_lookup__r.Utility_Data_Collection_Mechanism__c, QC_Status__c, Premise_Number__c,
                 Utility_lookup__r.Use_Glynt__c,
-                (SELECT Id FROM Utility_Data_Requests__r)
+            (SELECT Id FROM Utility_Data_Requests__r),
+            (SELECT Id, ContentDocumentId FROM ContentDocumentLinks WHERE ContentDocument.LatestPublishedVersion.FileExtension = 'pdf')
             FROM Utility_Account_Log__c
             WHERE Lead__c IN :leadIds
             AND (Utility_lookup__r.Utility_Data_Collection_Mechanism__c = 'EDI'
