@@ -21583,16 +21583,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Entity__c.Connected_Bank_for_Deposits__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Entity__c.Connected_Bank_for_Gateway_Payments__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Entity__c.DC_Annual_Report__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -21669,21 +21659,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Entity__c.FL_Foreign_Registration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Entity__c.Gateway__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Entity__c.Last_4_Digits_of_Payment_Bank_Acct__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Entity__c.Last_4_Digits_on_Deposit_Acct__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21834,11 +21809,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Entity__c.Send_Checks_Address__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Entity__c.Web_Access_Username__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

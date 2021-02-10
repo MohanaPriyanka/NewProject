@@ -51,20 +51,9 @@ public class ScheduleZTriggerHandlerTest {
             Client_Brand_Key__c = 'AmpBlack');
         insert clientAccount2;
 
-        ChargentBase__Gateway__c chGateway  =
-            new ChargentBase__Gateway__c(Name = 'Chargent Gateway',
-                ChargentBase__Merchant_ID__c = '235986',
-                ChargentBase__Available_Payment_Methods__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
-                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
-                ChargentBase__Debug__c = true,
-                ChargentBase__Active__c = true);
-        insert chGateway;
-
         Entity__c entity1 = new Entity__c (Name = 'Oxford Barrett St. P1',
             Send_Checks_Address__c = 'Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114',
-            Client_Account__c = clientAccount.Id,
-            Gateway__c = chGateway.Id
+            Client_Account__c = clientAccount.Id
         );
         insert entity1;
 

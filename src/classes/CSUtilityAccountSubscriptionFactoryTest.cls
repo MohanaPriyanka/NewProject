@@ -420,7 +420,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
                 Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
                 Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
-                BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c, NMC_Value__c,
+                BWC_Project_Entity_Manual__c, NMC_Value__c,
                 Total_System_Size_kWh_DC__c, Utility__r.Number_of_Decimal_Places__c
             FROM Shared_Solar_System__c
             WHERE Open__c = TRUE
