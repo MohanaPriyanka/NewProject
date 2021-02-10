@@ -166,6 +166,16 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>First_Bill__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Indicates first bill on the account. All first bills receive a snail mail and email copy of their first bill.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates first bill on the account. All first bills receive a snail mail and email copy of their first bill.</inlineHelpText>
+        <label>First Bill</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Legacy_Invoice_Id__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>The Account Bill Id if the invoice is from the historical migration</inlineHelpText>

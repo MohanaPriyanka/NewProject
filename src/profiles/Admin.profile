@@ -35966,6 +35966,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Zuora__ZInvoice__c.First_Bill__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Zuora__ZInvoice__c.Legacy_Invoice_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>

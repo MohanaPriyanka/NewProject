@@ -43,6 +43,10 @@
                 <behavior>Readonly</behavior>
                 <field>Zuora__Age_Bucket__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>First_Bill__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
