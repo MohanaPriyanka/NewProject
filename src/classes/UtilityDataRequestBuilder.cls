@@ -16,8 +16,8 @@ public without sharing class UtilityDataRequestBuilder {
     /**
      * @description Assesses if UDRs should be generated for passed-in lead ids based on Utility Data Collection Mechanism
      * <p></p>
-     * This method will NOT generate UDRs if any existing are found and related to UALs
-     * If it finds UDRs
+     * This method will NOT generate UDRs if any existing are found already related to UALs
+     * It will queue the Glynt upload and extraction if it creates UDRs for utilities for which we're using Glynt
      * @param leadIds Leads to check for UDR creation
      * @author Jeff Parlin 10-28-20
      */
