@@ -18,7 +18,11 @@ public without sharing class UASBSelector {
             'FROM UASB__c ' +
             'WHERE Zuora_Id__c = NULL ' +
             'AND Date__c <= ' + String.valueOf(invoiceDate) + ' ' +
-            'AND Externally_Serviced__c = FALSE ' +
+            // handle various UCB and externally serviced permutations
+            'AND (' +
+                '(Utility_Account_Subscription__r.Shared_Solar_System__r.UCB__c = TRUE ' + 'AND Utility_Account_Subscription__r.Externally_Serviced_Override__c = \'Internally Serviced\') ' +
+                'OR (Utility_Account_Subscription__r.Shared_Solar_System__r.UCB__c = FALSE AND Externally_Serviced__c = FALSE)' +
+            ') ' +
             'ORDER BY Utility_Account_Subscription__r.Opportunity__r.AccountId, Date__c';
         return Database.getQueryLocator(query);
     }
