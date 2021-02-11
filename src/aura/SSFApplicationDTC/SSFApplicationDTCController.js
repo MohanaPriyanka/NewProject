@@ -61,8 +61,8 @@
         if (!paymentPageResponse || !paymentPageResponse.paymentMethod ||
             !paymentPageResponse.paymentMethod.CreatedDate || !paymentPageResponse.paymentMethod.Id)
         {
-            let message = 'Payment page response: ' + JSON.stringify(paymentPageResponse) + '\n\nv.lead: '
-                          + component.get("v.lead");
+            let message = 'Payment page response: ' + JSON.stringify(paymentPageResponse) + '\n\nlead: '
+                          + JSON.stringify(component.get("v.lead"));
             helper.logError(
                 component,
                 'SSFApplicationController',
