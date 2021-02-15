@@ -29,6 +29,10 @@
                 <behavior>Edit</behavior>
                 <field>Shared_Solar_System_Order__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Acquisition_Type__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

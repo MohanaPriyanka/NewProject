@@ -25,6 +25,10 @@
                 <behavior>Edit</behavior>
                 <field>Type__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Acquisition_Type__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
