@@ -4,7 +4,7 @@
  *              used in the loan change order and contingent contracting process
  * Test: DocuSignHelperTest,LeadTriggerHandlerTest,CAPControllerTest
  *************************************************************************************/
-
+@SuppressWarnings('PMD')
 public without sharing class DocuSignHelper {
     public static DocuSignAPI.APIServiceSoap dsAPI;
     @TestVisible
@@ -366,7 +366,7 @@ public without sharing class DocuSignHelper {
                 dsAPI.CreateEnvelopeFromTemplatesAndForms(envelope, compositeTemplates, true);
             } catch (CalloutException e) {
                 String errorMessage = e.getMessage();
-                if (attempt <= maxAttempts && errorMessage.contains('Exceeded maximum time allotted for callout')) {
+                if (attempt <= maxAttempts && errorMessage.contains('Exceeded maximum time allotted for callout') && !Test.isRunningTest()) {
                     System.enqueueJob(new AutoRetryContractSend(dsAPI, envelope, compositeTemplates, true, attempt++));
                 } else {
                     String message = 'Tried to send contracts ' + attempt + ' times, but it failed.'
