@@ -543,6 +543,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Credits_Applied__c</field>
+            <value>
+                <elementReference>Credits_Applied</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Date_of_Transfer__c</field>
             <value>
                 <elementReference>Date_of_Transfer</elementReference>
@@ -1015,6 +1021,15 @@
             <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(250, 251, 252); font-size: 14px; font-family: &amp;quot;Source Sans Pro&amp;quot;, sans-serif; color: rgb(40, 44, 51);&quot;&gt;Actual $ Amount Transferred by Utility&lt;/span&gt;&lt;/p&gt;</helpText>
             <isRequired>false</isRequired>
             <scale>6</scale>
+        </fields>
+        <fields>
+            <name>Credits_Applied</name>
+            <dataType>Currency</dataType>
+            <fieldText>Credits Applied</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;font-size: 11.36px; font-family: Arial, Helvetica, sans-serif; color: rgb(0, 0, 0);&quot;&gt;Number of dollar credits applied to customer bills this month&lt;/span&gt;&lt;/p&gt;</helpText>
+            <isRequired>false</isRequired>
+            <scale>0</scale>
         </fields>
         <fields>
             <name>MainTransferAmount_kWh</name>

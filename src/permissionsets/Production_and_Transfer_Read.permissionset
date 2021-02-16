@@ -195,6 +195,11 @@
         <field>Transfer_Part__c.Transfer_Transferred_To__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Transfer__c.Credits_Applied__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Production and Transfer Read</label>
     <objectPermissions>
