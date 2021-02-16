@@ -64,39 +64,39 @@ export default class BasicDatatable extends LightningElement {
         try {
             for (i = 0; i < dataFromApex.length; i++) {
                 let uasbData = new Object();
-                let customername = dataFromApex[i].SfUASB.PreGen_Name_on_Account__c;
+                let customername = dataFromApex[i].sfUASB.PreGen_Name_on_Account__c;
                 if (customername) {
                     let cutoff = Math.min(customername.length, 15);
-                    uasbData.customername = dataFromApex[i].SfUASB.PreGen_Name_on_Account__c.substring(0, cutoff);
-                    if (dataFromApex[i].SfUASB.Externally_Serviced__c) {
+                    uasbData.customername = dataFromApex[i].sfUASB.PreGen_Name_on_Account__c.substring(0, cutoff);
+                    if (dataFromApex[i].sfUASB.Externally_Serviced__c) {
                         cutoff = Math.min(customername.length, 5);
-                        uasbData.customername = dataFromApex[i].SfUASB.PreGen_Name_on_Account__c.substring(0, cutoff) + '**EXTERNAL';
+                        uasbData.customername = dataFromApex[i].sfUASB.PreGen_Name_on_Account__c.substring(0, cutoff) + '**EXTERNAL';
                     }
                 }
-                let final = dataFromApex[i].SfUASB.PreGen_IsPreGen__c;
+                let final = dataFromApex[i].sfUASB.PreGen_IsPreGen__c;
                 if (final) {
                     uasbData.finaled = 'FINALED_';
                 }
-                uasbData.Uniqueid = dataFromApex[i].SfUASB.Schedule_Z_Subscription__c;
-                uasbData.sfutilityaccount = dataFromApex[i].SfUASB.PreGen_Utility_Acct__c;
-                uasbData.sfproduction = dataFromApex[i].SfUASB.Subscription_Production_kWh_Static__c;
-                uasbData.sfcredits = dataFromApex[i].SfUASB.Credits_Allocated__c;
-                uasbData.sfcreditvalue = dataFromApex[i].SfUASB.NMC_Rate__c;
-                uasbData.trutilityaccount = dataFromApex[i].UtilUASB.PreGen_Utility_Acct__c;
-                uasbData.trproduction = dataFromApex[i].UtilUASB.Subscription_Production_kWh_Static__c;
-                uasbData.trcredits = dataFromApex[i].UtilUASB.Credits_Allocated__c;
-                uasbData.trcreditvalue = dataFromApex[i].UtilUASB.NMC_Rate__c;
-                if (dataFromApex[i].Status === 'MATCH') {
+                uasbData.Uniqueid = dataFromApex[i].sfUASB.Schedule_Z_Subscription__c;
+                uasbData.sfutilityaccount = dataFromApex[i].sfUASB.PreGen_Utility_Acct__c;
+                uasbData.sfproduction = dataFromApex[i].sfUASB.Subscription_Production_kWh_Static__c;
+                uasbData.sfcredits = dataFromApex[i].sfUASB.Credits_Allocated__c;
+                uasbData.sfcreditvalue = dataFromApex[i].sfUASB.NMC_Rate__c;
+                uasbData.trutilityaccount = dataFromApex[i].utilUASB.PreGen_Utility_Acct__c;
+                uasbData.trproduction = dataFromApex[i].utilUASB.Subscription_Production_kWh_Static__c;
+                uasbData.trcredits = dataFromApex[i].utilUASB.Credits_Allocated__c;
+                uasbData.trcreditvalue = dataFromApex[i].utilUASB.NMC_Rate__c;
+                if (dataFromApex[i].status === 'MATCH') {
                     uasbData.isMatch = true;
-                    uasbData.Resolution = 'UseSalesforce';
-                } else if (dataFromApex[i].Status === 'CREDIT_MISMATCH') {
+                    uasbData.resolution = 'UseSalesforce';
+                } else if (dataFromApex[i].status === 'CREDIT_MISMATCH') {
                     uasbData.isCreditMismatch = true;
-                    uasbData.Resolution = 'UseUtility';
-                } else if (dataFromApex[i].Status === 'MISSING_BILL') {
+                    uasbData.resolution = 'UseUtility';
+                } else if (dataFromApex[i].status === 'MISSING_BILL') {
                     uasbData.Uniqueid = 'missingBill' + i;
                     uasbData.isMissingBill = true;
-                    uasbData.Resolution = 'UseSalesforce';
-                } else if (dataFromApex[i].Status === 'MISSING_TRANSFER') {
+                    uasbData.resolution = 'UseSalesforce';
+                } else if (dataFromApex[i].status === 'MISSING_TRANSFER') {
                     uasbData.isMissingTransfer = true;
                 } else {
                     const event = new ShowToastEvent({title: 'Record without Match Status: ' + dataFromApex[i]});
@@ -131,7 +131,7 @@ export default class BasicDatatable extends LightningElement {
 
     setResolution(uniqueRowId, resolutionText) {
         let updatedRecord = this.uasbMap.get(uniqueRowId);
-        updatedRecord.Resolution = resolutionText;
+        updatedRecord.resolution = resolutionText;
         this.uasbMap.set(uniqueRowId, updatedRecord);
         this.checkForAllResolved();
         this.refreshDataTable();
@@ -141,8 +141,8 @@ export default class BasicDatatable extends LightningElement {
         let booleanAllClear = true;
         let dataMap = this.uasbMap;
         for (let lineItem of dataMap.values()) {
-            if (lineItem.Resolution !== 'UseUtility' &&
-                lineItem.Resolution !== 'UseSalesforce'){
+            if (lineItem.resolution !== 'UseUtility' &&
+                lineItem.resolution !== 'UseSalesforce'){
                 booleanAllClear = false;
                 break;
             }
