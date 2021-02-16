@@ -3286,10 +3286,20 @@ AND(ISPICKVAL(Product__r.Customer_Subscription_Type__c, &quot;Electricity Cost (
 OR(ISBLANK(Maximum_Subscription_Cost__c ),
 Maximum_Subscription_Cost__c = 0)), 
 
+/*Needs to have some sort of underwriting criteria set: None, FICO, or financial docs*/
+AND( 
 
+NOT(Do_Not_Underwrite__c),
+
+OR(
+
+NOT(Available_SMB_Underwriting_Method_FICO__c),
 ISBLANK(Credit_Score_Requirement__c),
-Credit_Score_Requirement__c = 0,
-AND(Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c)
+Credit_Score_Requirement__c = 0
+),
+
+NOT(Available_SMB_Underwriting_Method_Docs__c)
+)
 )
 )</errorConditionFormula>
         <errorMessage>Can&apos;t set a SSS as Open without:
