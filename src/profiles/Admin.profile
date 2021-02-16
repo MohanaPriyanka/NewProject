@@ -1552,6 +1552,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraCreditMemoBatchSend</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraDataQueryService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -4667,6 +4671,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Bill_Adjustment__c.Distributed_Among_System_Bills__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Bill_Adjustment__c.Effective_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

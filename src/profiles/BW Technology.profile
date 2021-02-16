@@ -17070,6 +17070,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Bill_Adjustment__c.Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Bill_Adjustment__c.Externally_Serviced__c</field>
         <readable>true</readable>

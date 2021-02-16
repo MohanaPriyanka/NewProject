@@ -46,8 +46,10 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
                 batchApply.startApplication();
                 batchApply.runBatch();
             }
+
             if (Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c')) {
                 List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
+                stampEffectiveDate();
                 adjustmentsToUpdate.addAll(adjustToUpdateSet);
                 update adjustmentsToUpdate;
             }
@@ -55,5 +57,16 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
             Logger.logLater('ZuoraCreditMemoBatchSend', 'finish', excep.getMessage() + '\n' + excep.getStackTraceString());
         }
         Logger.flushLogs();
+    }
+
+    private void stampEffectiveDate() {
+        for (Bill_Adjustment__c adjustment : adjustToUpdateSet){
+            if (adjustment.Effective__c == 'Post on Next Bill') {
+                //Production Adjustments are always "Post Next Bill" and should be populated with the Invoice Date (passed by Bill Gen Console)
+                adjustment.Effective_Date__c = effectiveDate;
+            } else {
+                adjustment.Effective_Date__c = System.today();
+            }
+        }
     }
 }

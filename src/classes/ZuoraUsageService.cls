@@ -142,7 +142,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return Datetime.newInstance(d.year(), d.month(), 1);
     }
 
-    public static Map<String, List<SObject>> handleAPIResponse(List<ZuoraUsage> attemptedUsageList, HttpResponse response){
+    public static Map<String, List<SObject>> handleAPIResponse(List<ZuoraUsage> attemptedUsageList, HttpResponse response, Date invoiceDate){
         // Returns list of Usage Id, or Error Message:
         List<ZuoraResponse> zResponses = new List<ZuoraResponse>();
         zResponses = (List<ZuoraResponse>)JSON.deserialize(response.getBody(), List<ZuoraResponse>.class);
@@ -166,8 +166,10 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                 } else if (objectType == Bill_Adjustment__c.sObjectType){
                     Bill_Adjustment__c adjustToUpdate = new Bill_Adjustment__c(
                         Id = sfId,
-                        Zuora_Id__c = usageLine.Id
+                        Zuora_Id__c = usageLine.Id,
+                        Effective_Date__c = invoiceDate
                     );
+                    //TOOD: Do we populate the effective date here for production adjustments?
                     adjustmentsToUpdate.add(adjustToUpdate);
                 }
             } else {
