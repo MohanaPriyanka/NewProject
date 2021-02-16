@@ -112,9 +112,11 @@ private with sharing class GlyntUploadServiceTest {
         ];
         System.assertEquals(1, errorLogs.size(), 'Expected an error when executing the queueable');
         // Between start/stop test, UDRTrigger commits the enqueueJob, but stopTest runs the queueable should should callout
-        // to create the document. If it tries, we should get an uncommitted work pending error:
-        System.assert(errorLogs[0].Message__c.contains('You have uncommitted work pending'),
-            'We expect the queueable to execute which does the createDocument callout resulting in an exception, but got this: ' +
+        // to create the document. If it tries, we should get an uncommitted work pending error. But with Spring 21, the UDR
+        // is committed and the callout is attempted.
+        System.assert(errorLogs[0].Message__c.contains('You have uncommitted work pending') || errorLogs[0].Message__c.contains('Could not upload document'),
+            'We expect the queueable to execute which does the createDocument callout resulting in a callout exception, or ' +
+                'attempts the callout which results in an error from the mock, but got this: ' +
                 errorLogs[0].Message__c);
     }
 

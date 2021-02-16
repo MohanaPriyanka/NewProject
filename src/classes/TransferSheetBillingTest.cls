@@ -233,12 +233,12 @@ public class TransferSheetBillingTest {
 
         System.assertEquals(2300,uasbOne.Subscription_Production_kWh_Static__c);
         System.assertEquals(2500,uasbTwo.Subscription_Production_kWh_Static__c);
-        System.assertEquals(0,uasbThree.Subscription_Production_kWh_Static__c);
-        System.assertEquals(0,uasbFour.Subscription_Production_kWh_Static__c);
-        System.assertEquals(0,uasbFive.Subscription_Production_kWh_Static__c);
+        System.assertEquals(null,uasbThree.Subscription_Production_kWh_Static__c);
+        System.assertEquals(null,uasbFour.Subscription_Production_kWh_Static__c);
+        System.assertEquals(null,uasbFive.Subscription_Production_kWh_Static__c);
 
-        System.assertEquals(0,uasbOne.NMC_Rate__c);
-        System.assertEquals(0,uasbTwo.NMC_Rate__c);
+        System.assertEquals(null,uasbOne.NMC_Rate__c);
+        System.assertEquals(null,uasbTwo.NMC_Rate__c);
         System.assertEquals(0.1355,uasbThree.NMC_Rate__c);
         System.assertEquals(0.1447,uasbFour.NMC_Rate__c);
         System.assertEquals(0.1355,uasbFive.NMC_Rate__c);
@@ -285,33 +285,32 @@ public class TransferSheetBillingTest {
             2 missing transfers (record in SF is not on transfer sheet)
             1 missing bill (transfer record is not in SF)
         */
-        for (TransferSheetService.UASBWithStatus lineItem : matchList){
-            String utilityNumber = '';
-            if (lineItem.SfUASB.PreGen_Utility_Acct__c != null){
-                utilityNumber = lineItem.SfUASB.PreGen_Utility_Acct__c;
-            }
-            if (utilityNumber == '12-34-56-789'){
-                System.assertEquals('MATCH',lineItem.Status);
-                System.assert(lineItem.Overdue);
-            } else if (utilityNumber == '23 23 224'){
-                System.assertEquals('MATCH',lineItem.Status);
-                System.assert(lineItem.Overdue);
-            } else if (utilityNumber == '223232'){
-                System.assertEquals(141.49,lineItem.SfUASB.Credits_Allocated__c);
-                System.assertEquals('Credits Allocated Mismatch',lineItem.MatchMessage);
-                System.assertEquals('CREDIT_MISMATCH',lineItem.Status);
-                System.assert(lineItem.Overdue);
-            } else if (utilityNumber == ' 00 12 34 56789'){
-                System.assertEquals(158.77,lineItem.SfUASB.Credits_Allocated__c);
-                System.assertEquals('Credits Allocated Mismatch',lineItem.MatchMessage);
-                System.assertEquals('CREDIT_MISMATCH',lineItem.Status);
-                System.assert(lineItem.Overdue);
-            } else if (utilityNumber == '777888'){
-                System.assertEquals('MISSING_TRANSFER',lineItem.Status);
-                System.assert(!lineItem.Overdue);
-            } else {
-                countOfLineItemsWithoutSZS += 1;
-                System.assertEquals('MISSING_BILL',lineItem.Status);
+        for (TransferSheetService.UASBWithStatus lineItem : matchList) {
+            String utilityNumber = lineItem.sfUASB.PreGen_Utility_Acct__c;
+            switch on utilityNumber {
+                when '12-34-56-789' {
+                    System.assertEquals('MATCH', lineItem.status);
+                    System.assert(lineItem.overdue);
+                } when '23 23 224' {
+                    System.assertEquals('MATCH', lineItem.status);
+                    System.assert(lineItem.overdue);
+                } when '223232' {
+                    System.assertEquals(141.49, lineItem.sfUASB.Credits_Allocated__c);
+                    System.assertEquals('Credits Allocated Mismatch', lineItem.matchMessage);
+                    System.assertEquals('CREDIT_MISMATCH', lineItem.status);
+                    System.assert(lineItem.overdue);
+                } when ' 00 12 34 56789' {
+                    System.assertEquals(158.77, lineItem.sfUASB.Credits_Allocated__c);
+                    System.assertEquals('Credits Allocated Mismatch', lineItem.matchMessage);
+                    System.assertEquals('CREDIT_MISMATCH', lineItem.status);
+                    System.assert(lineItem.overdue);
+                } when '777888' {
+                    System.assertEquals('MISSING_TRANSFER', lineItem.status);
+                    System.assert(!lineItem.overdue);
+                } when else {
+                    countOfLineItemsWithoutSZS += 1;
+                    System.assertEquals('MISSING_BILL', lineItem.status);
+                }
             }
         }
         System.assertEquals(1,countOfLineItemsWithoutSZS);
@@ -355,30 +354,65 @@ public class TransferSheetBillingTest {
             1 missing bill (transfer record is not in SF)
         */
 
-        for (TransferSheetService.UASBWithStatus lineItem : matchList){
-            String utilityNumber = '';
-            if (lineItem.SfUASB.PreGen_Utility_Acct__c != null){
-                utilityNumber = lineItem.SfUASB.PreGen_Utility_Acct__c;
-            }
-            if (utilityNumber == '12-34-56-789'){
-                System.assertEquals('CREDIT_MISMATCH',lineItem.Status);
-                System.assertEquals('Production kWh Mismatch',lineItem.MatchMessage);
-            } else if (utilityNumber == '23 23 224'){
-                System.assertEquals('CREDIT_MISMATCH',lineItem.Status);
-                System.assertEquals('NMC Rate mismatch',lineItem.MatchMessage);
-            } else if (utilityNumber == '223232'){
-                System.assertEquals('MATCH', lineItem.Status);
-            } else if (utilityNumber == ' 00 12 34 56789'){
-                System.assertEquals('MATCH',lineItem.Status);
-            } else if (utilityNumber == '777888'){
-                System.assertEquals('MISSING_TRANSFER',lineItem.Status);
-            } else {
-                countOfLineItemsWithoutSZS += 1;
-                System.assertEquals('MISSING_BILL',lineItem.Status);
+        for (TransferSheetService.UASBWithStatus lineItem : matchList) {
+            String utilityNumber = lineItem.sfUASB.PreGen_Utility_Acct__c;
+            switch on utilityNumber {
+                when '12-34-56-789' {
+                    System.assertEquals('CREDIT_MISMATCH', lineItem.status);
+                    System.assertEquals('Production kWh Mismatch', lineItem.matchMessage);
+                } when '23 23 224' {
+                    System.assertEquals('CREDIT_MISMATCH', lineItem.status);
+                    System.assertEquals('NMC Rate mismatch', lineItem.matchMessage);
+                } when '223232' {
+                    System.assertEquals('MATCH', lineItem.status);
+                } when ' 00 12 34 56789' {
+                    System.assertEquals('MATCH', lineItem.status);
+                } when '777888' {
+                    System.assertEquals('MISSING_TRANSFER', lineItem.status);
+                } when else {
+                    countOfLineItemsWithoutSZS += 1;
+                    System.assertEquals('MISSING_BILL', lineItem.status);
+                }
             }
         }
         System.assertEquals(1,countOfLineItemsWithoutSZS);
     }
+
+    @IsTest
+    private static void testCompareSFBillsToTransferWithZerosAndNulls(){
+        useMocks();
+
+        // First, Get SF Generated Bills:
+        Transfer__c transfer = getTestTransfer();
+        List<UASB__c> sfUASBs = BillGenerationService.calculateUASBsFromTransfer(transfer,BillGenerationService.BillType.ONTIME);
+        System.assertEquals(5,sfUASBs.size());
+
+        // Second, Get Transfer Sheet Bills:
+        String transferSheetData = 'UtilityNumber,Credits,Production,CreditValue\n' +
+            '0012 3456789,158.77,,\n' +
+            '0012 3456789,,,\n' +
+            '223232,0,859,0.1848\n';
+        Map<Integer, List<String>> rowNumberToDataMap = Util.readCSV(transferSheetData);
+        Map<String,UASB__c> transferUASBs = TransferSheetService.convertTransferSheetToUASBs(rowNumberToDataMap);
+
+        // Third, Compare SF to Transfer:
+        List<TransferSheetService.UASBWithStatus> matchList;
+        matchList = TransferSheetService.compareSFBillsToTransferSheet(sfUASBs, transferUASBs);
+        for (TransferSheetService.UASBWithStatus lineItem : matchList){
+            String utilityNumber = lineItem.sfUASB?.PreGen_Utility_Acct__c;
+            if (utilityNumber == '223232') {
+                System.assertEquals('CREDIT_MISMATCH', lineItem.status,
+                    'Utility number 223232 should not have matches because credits on the transfer sheet is 0: ' +
+                        JSON.serializePretty(lineItem));
+                System.assertEquals('Credits Allocated Mismatch', lineItem.matchMessage);
+            } else if (utilityNumber == ' 00 12 34 56789') {
+                System.assertEquals('MATCH', lineItem.status,
+                    'Utility number 00 12 34 56789 should have matched even though Production and Credit Value on the' +
+                        ' transfer are null: ' + JSON.serializePretty(lineItem));
+            }
+        }
+    }
+
 
     @IsTest
     private static void testResolveLWC(){
@@ -391,9 +425,9 @@ public class TransferSheetBillingTest {
         // 4 UASBs being Resolved:
         System.assertEquals(4,uasbWithStatusList.size());
         for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList){
-            if (uasbStatus.Status == 'CREDIT_MISMATCH'){
-                System.assert(!uasbStatus.Overdue);
-                uasbStatus.Overdue = true;
+            if (uasbStatus.status == 'CREDIT_MISMATCH'){
+                System.assert(!uasbStatus.overdue);
+                uasbStatus.overdue = true;
             }
         }
 
@@ -424,11 +458,11 @@ public class TransferSheetBillingTest {
         Id creditMismatchRecord = 'a54540000001oN2AAI';
         Boolean confirmRecordExists = false;
         for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList){
-            if (uasbStatus.Status == 'CREDIT_MISMATCH'){
-                System.assertEquals(149.22,uasbStatus.SfUASB.Credits_Allocated__c);
-                System.assertEquals(251.33,uasbStatus.UtilUASB.Credits_Allocated__c);
-                System.assertEquals(1015.18,uasbStatus.SfUASB.Subscription_Production_kWh_Static__c);
-                System.assertEquals(0,uasbStatus.UtilUASB.Subscription_Production_kWh_Static__c);
+            if (uasbStatus.status == 'CREDIT_MISMATCH'){
+                System.assertEquals(149.22,uasbStatus.sfUASB.Credits_Allocated__c);
+                System.assertEquals(251.33,uasbStatus.utilUASB.Credits_Allocated__c);
+                System.assertEquals(1015.18,uasbStatus.sfUASB.Subscription_Production_kWh_Static__c);
+                System.assertEquals(0,uasbStatus.utilUASB.Subscription_Production_kWh_Static__c);
                 confirmRecordExists = true;
             }
         }
@@ -460,11 +494,11 @@ public class TransferSheetBillingTest {
 
         Boolean confirmRecordExists = false;
         for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList){
-            if (uasbStatus.Status == 'CREDIT_MISMATCH'){
-                System.assertEquals(149.22,uasbStatus.SfUASB.Credits_Allocated__c);
-                System.assertEquals(251.33,uasbStatus.UtilUASB.Credits_Allocated__c);
-                System.assertEquals(1015.18,uasbStatus.SfUASB.Subscription_Production_kWh_Static__c);
-                System.assertEquals(0,uasbStatus.UtilUASB.Subscription_Production_kWh_Static__c);
+            if (uasbStatus.status == 'CREDIT_MISMATCH'){
+                System.assertEquals(149.22,uasbStatus.sfUASB.Credits_Allocated__c);
+                System.assertEquals(251.33,uasbStatus.utilUASB.Credits_Allocated__c);
+                System.assertEquals(1015.18,uasbStatus.sfUASB.Subscription_Production_kWh_Static__c);
+                System.assertEquals(0,uasbStatus.utilUASB.Subscription_Production_kWh_Static__c);
                 confirmRecordExists = true;
             }
         }
@@ -506,9 +540,9 @@ public class TransferSheetBillingTest {
         // Update MISSING_TRANSFER bill to be Overdue = true, and a $0 bill will be made
         // even though it has a "UseUtility" resolution (ie, no bill)
         for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList){
-            if (uasbStatus.Status == 'MISSING_TRANSFER'){
-                System.assert(!uasbStatus.Overdue);
-                uasbStatus.Overdue = true;
+            if (uasbStatus.status == 'MISSING_TRANSFER'){
+                System.assert(!uasbStatus.overdue);
+                uasbStatus.overdue = true;
             }
         }
 
@@ -619,9 +653,6 @@ public class TransferSheetBillingTest {
     }
 
     public class MockSZSSelector extends MockProvider {
-        public MockSZSSelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             String szsOne = '{"Id":"szsOne_ID","Customer_Subscription_kW_DC__c": 26.00,"Percent_Share__c" : 1.7982,' +
                 '"System_Size_kW_DC__c" : 1445.86,' +
@@ -710,9 +741,6 @@ public class TransferSheetBillingTest {
     }
 
     public class MockPESelector extends MockProvider {
-        public MockPESelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             Map<Id, List<Product_Escalator__c>> escalatorMap = new Map<Id, List<Product_Escalator__c>>();
             Product_Escalator__c firstPeriod = new Product_Escalator__c (
@@ -750,9 +778,6 @@ public class TransferSheetBillingTest {
     }
 
     public class MockAccountSelector extends MockProvider {
-        public MockAccountSelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             Map<Id,Account> accountMap = new Map<Id,Account>();
             Date todayDate = System.Today();
@@ -779,9 +804,6 @@ public class TransferSheetBillingTest {
     }
 
     public class MockTransferSelector extends MockProvider {
-        public MockTransferSelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'getUnbilledTransfersBySSS' {
