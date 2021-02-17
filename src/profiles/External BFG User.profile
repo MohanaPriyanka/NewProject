@@ -7644,6 +7644,31 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Default_Utility_Fee__c.End_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Default_Utility_Fee__c.Method_for_UCB_Utility_Admin__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Default_Utility_Fee__c.Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Default_Utility_Fee__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Default_Utility_Fee__c.Utility_Admin_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Default_Utility_Fee__c.Utility__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46106,6 +46131,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Deal__c-Deal Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Default_Utility_Fee__c-Default Utility Fee Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Disbursal__c-Disbursal Layout</layout>
