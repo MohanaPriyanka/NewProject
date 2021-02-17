@@ -150,7 +150,6 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         Integer count = 0;
         List<UASB__c> uasbsToUpdate = new List<UASB__c>();
         List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
-
         for (ZuoraUsage attemptedUsage : attemptedUsageList){
             ZuoraResponse usageLine = zResponses[count];
             count += 1;
@@ -169,7 +168,6 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                         Zuora_Id__c = usageLine.Id,
                         Effective_Date__c = invoiceDate
                     );
-                    //TOOD: Do we populate the effective date here for production adjustments?
                     adjustmentsToUpdate.add(adjustToUpdate);
                 }
             } else {

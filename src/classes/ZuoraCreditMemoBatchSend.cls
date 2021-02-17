@@ -62,7 +62,7 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     private void stampEffectiveDate() {
         for (Bill_Adjustment__c adjustment : adjustToUpdateSet){
             if (adjustment.Effective__c == 'Post on Next Bill') {
-                //Production Adjustments are always "Post Next Bill" and should be populated with the Invoice Date (passed by Bill Gen Console)
+                //Production Adjustments are always "Post on Next Bill" and should be populated with the Invoice Date (passed by Bill Gen Console)
                 adjustment.Effective_Date__c = effectiveDate;
             } else {
                 adjustment.Effective_Date__c = System.today();

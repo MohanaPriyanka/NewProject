@@ -55,6 +55,7 @@ public class ZuoraUsageServiceTest {
             Account__c = uasbList[0].Utility_Account_Subscription__r.Opportunity__r.AccountId,
             UASB__c = uasbList[0].Id,
             Adjustment_Type__c = 'Production',
+            Effective__c = 'Post on Next Bill',
             Transfer__c = transfer.Id,
             Adjustment_Amount__c = 90,
             Credits_Allocated__c = 100,
@@ -68,6 +69,7 @@ public class ZuoraUsageServiceTest {
             Account__c = uasbList[0].Utility_Account_Subscription__r.Opportunity__r.AccountId,
             UASB__c = uasbList[0].Id,
             Adjustment_Type__c = 'Production',
+            Effective__c = 'Post on Next Bill',
             Transfer__c = transfer.Id,
             Adjustment_Amount__c = 45,
             Credits_Allocated__c = 50,
@@ -203,21 +205,22 @@ public class ZuoraUsageServiceTest {
         ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
-
+        Date invoiceDate = System.today().addDays(3);
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.ADJUSTMENTS, System.today());
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.ADJUSTMENTS, invoiceDate);
         zSend.executeBatch();
         Test.stopTest();
 
         // API Mock returns 14 rows, 3 errors, 11 successes:
         System.assertEquals(true, Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c'));
         List<Bill_Adjustment__c> adjustList = [
-            SELECT Id, Name, Zuora_Id__c
+            SELECT Id, Name, Zuora_Id__c, Effective_Date__c
             FROM Bill_Adjustment__c
             WHERE Zuora_Id__c != NULL
         ];
         System.assertEquals(1, adjustList.size());
+        System.assertEquals(invoiceDate, adjustList[0].Effective_Date__c, 'Adjustments posted to Zuora should get Effective Date = Invoice Date');
 
         List<Error_Log__c> errors = [
             SELECT Id, Message__c
