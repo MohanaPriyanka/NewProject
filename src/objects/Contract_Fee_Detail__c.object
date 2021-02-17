@@ -159,7 +159,8 @@
         <externalId>false</externalId>
         <inlineHelpText>When checked, this fee will only be valid for anchors that are Investment Grade</inlineHelpText>
         <label>Acq Anchor Qualif: Investment-Grade</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -169,7 +170,8 @@
         <externalId>false</externalId>
         <inlineHelpText>When checked, this fee will valid for anchors that are not Investment Grade (ie, Financial Review)</inlineHelpText>
         <label>Acq Anchor Qualif: Not Investment-Grade</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -179,7 +181,8 @@
         <externalId>false</externalId>
         <inlineHelpText>True if this fee is valid for customers acquired by BCS</inlineHelpText>
         <label>Acq Channels: BCS Acquired</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -189,7 +192,8 @@
         <externalId>false</externalId>
         <inlineHelpText>When lead is acquired by Client but Closed by BlueWave</inlineHelpText>
         <label>Acq Channels: Client Acquired/BCS Closed</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -199,7 +203,8 @@
         <externalId>false</externalId>
         <inlineHelpText>True if this fee is valid for customers who were not acquired by BCS</inlineHelpText>
         <label>Acq Channels: Non-BCS Acquired</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -210,7 +215,8 @@
         <inlineHelpText>True if this fee is valid for customers with the Customer Group = Anchor.
 Small offtake (ie, Residential and Non-Residential Customer Groups) can be labeled as &quot;non-Demand Customers&quot; and Anchors can be labeled as &quot;Demand Customers&quot; in client contracts.</inlineHelpText>
         <label>Acquisition Cust. Group: Anchor</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -221,7 +227,8 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <inlineHelpText>True if valid fee for customers with Customer Group = Non-Residential.
 Small offtake (ie, Residential and Non-Residential Customer Groups) can be labeled as &quot;non-Demand Customers&quot; and Anchors can be labeled as &quot;Demand Customers&quot; in client contracts.</inlineHelpText>
         <label>Acquisition Cust. Group: Non-Residential</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -232,7 +239,7 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <inlineHelpText>True if this CFD applies to Opportunities without a Customer Group specified (typically the case)</inlineHelpText>
         <label>Acq Cust. Sub-Group: Not Specified</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -243,7 +250,7 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <inlineHelpText>True if this CFD is valid for customers with the Customer Sub-Group = Public Offtake.</inlineHelpText>
         <label>Acq Cust. Sub-Group: Public Offtake</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -254,7 +261,8 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <inlineHelpText>True if valid fee for customers with the Customer Group = Residential.
 Small offtake (ie, Residential and Non-Residential Customer Groups) can be labeled as &quot;non-Demand Customers&quot; and Anchors can be labeled as &quot;Demand Customers&quot; in client contracts.</inlineHelpText>
         <label>Acquisition Cust. Group: Residential</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -264,7 +272,8 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <externalId>false</externalId>
         <inlineHelpText>True if this fee is valid for decreases in a customer subscription (- kW)</inlineHelpText>
         <label>Acquisition Sizing Type: Downsizing</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -274,7 +283,8 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <externalId>false</externalId>
         <inlineHelpText>True if this fee is valid for increases in a customer subscription (+ kW)</inlineHelpText>
         <label>Acquisition Sizing Type: Upsizing</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -284,7 +294,8 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <externalId>false</externalId>
         <inlineHelpText>As opposed to Reacquistion. True if this fee is valid for acquistion</inlineHelpText>
         <label>Acquisition Type: Acquisition</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -294,7 +305,8 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <externalId>false</externalId>
         <inlineHelpText>As opposed to Acquistion. True if this fee is valid for reacquistion</inlineHelpText>
         <label>Acquisition Type: Reacquisition</label>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -662,7 +674,7 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <relationshipName>Contract_Fee_Detail</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
