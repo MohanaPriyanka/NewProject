@@ -33731,6 +33731,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Transfer__c.Credits_Applied__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Transfer__c.Date_of_Transfer__c</field>
         <readable>true</readable>
     </fieldPermissions>

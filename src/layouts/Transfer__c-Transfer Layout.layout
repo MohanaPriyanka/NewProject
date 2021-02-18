@@ -82,6 +82,10 @@
                 <behavior>Readonly</behavior>
                 <field>Total_Transferred__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Credits_Applied__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
