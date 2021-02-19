@@ -678,17 +678,17 @@
     </fields>
     <fields>
         <fullName>Interconnection__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Temp - in order to remove former Interconnection M-D from promotions. Delete this field in a later promotion.</description>
         <externalId>false</externalId>
         <label>Interconnection</label>
         <referenceTo>Interconnection__c</referenceTo>
         <relationshipLabel>Incentives</relationshipLabel>
         <relationshipName>Incentives</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Market_Sector__c</fullName>
