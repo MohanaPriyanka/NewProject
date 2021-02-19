@@ -543,6 +543,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Credits_Applied__c</field>
+            <value>
+                <elementReference>Credits_Applied</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Date_of_Transfer__c</field>
             <value>
                 <elementReference>Date_of_Transfer</elementReference>
@@ -1024,6 +1030,15 @@
             <scale>6</scale>
         </fields>
         <fields>
+            <name>Credits_Applied</name>
+            <dataType>Currency</dataType>
+            <fieldText>Credits Applied</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;font-size: 11.36px; font-family: Arial, Helvetica, sans-serif; color: rgb(0, 0, 0);&quot;&gt;Number of dollar credits applied to customer bills this month&lt;/span&gt;&lt;/p&gt;</helpText>
+            <isRequired>false</isRequired>
+            <scale>0</scale>
+        </fields>
+        <fields>
             <name>MainTransferAmount_kWh</name>
             <dataType>Number</dataType>
             <defaultValue>
@@ -1107,6 +1122,11 @@
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
             <scale>6</scale>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;font-family: Calibri, sans-serif; font-size: 11pt;&quot;&gt;Default credit value must be greater than $0.01 and less than $0.50. The value should always be positive.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Default_Credit_Value} &gt;0.01
+ &amp;&amp; {!Default_Credit_Value} &lt; 0.5</formulaExpression>
+            </validationRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
