@@ -418,11 +418,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Incentive__c.Statement_of_Qualification_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Incentive__c.Total_Battery_Size_Approved_kW_AC__c</field>
         <readable>true</readable>
     </fieldPermissions>
