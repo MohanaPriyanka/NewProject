@@ -46,7 +46,6 @@
     <description>Master-Detail to the Project to summarize Stage 3 and Stage 4</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -179,6 +178,15 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Bid_Set_Design_Engineering__c</fullName>
+        <externalId>false</externalId>
+        <label>Bid Set Design/Engineering</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Bid_Yield_kWh_kWp_yr__c</fullName>
         <externalId>false</externalId>
         <label>Bid Yield (kWh/kWp/yr)</label>
@@ -189,6 +197,15 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Building_Permit_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>Building Permit Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Building_Permit_Actual_Date__c</fullName>
@@ -207,6 +224,15 @@
         <formula>Project__r.Building_Permit_Anticipated_Date__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Building Permit Anticipated Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Building_Permit_Est__c</fullName>
+        <externalId>false</externalId>
+        <label>Building Permit Est</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -241,6 +267,15 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Certified_Mechanical_Completion_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>Certified Mechanical Completion Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Change_Orders__c</fullName>
@@ -357,6 +392,53 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>EPC_Bid_Evaluation__c</fullName>
+        <externalId>false</externalId>
+        <label>EPC Bid Evaluation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Not Started</fullName>
+                    <default>false</default>
+                    <label>Not Started</label>
+                </value>
+                <value>
+                    <fullName>In Progress</fullName>
+                    <default>false</default>
+                    <label>In Progress</label>
+                </value>
+                <value>
+                    <fullName>Complete</fullName>
+                    <default>false</default>
+                    <label>Complete</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>EPC_Bid_Review_Meeting__c</fullName>
+        <externalId>false</externalId>
+        <label>EPC Bid Review Meeting</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>EPC_Contract_Executed__c</fullName>
+        <externalId>false</externalId>
+        <label>EPC Contract Executed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>EPC_Costs__c</fullName>
         <externalId>false</externalId>
         <formula>HYPERLINK(&quot;/00O0a000005FJBs?&quot;&amp;Id,&quot;EPC Summary&quot;)</formula>
@@ -424,6 +506,15 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Electrical_Permit_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>Electrical Permit Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Electrical_Permit_Actual_Date__c</fullName>
         <externalId>false</externalId>
         <formula>Project__r.Electrical_Permit_Actual_Date__c</formula>
@@ -440,6 +531,15 @@
         <formula>Project__r.Electrical_Permit_Anticipated_Date__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Electrical Permit Anticipated Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Electrical_Permit_Est__c</fullName>
+        <externalId>false</externalId>
+        <label>Electrical Permit Est</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -483,6 +583,24 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Final_Completion_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>Final Completion Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Final_Completion_Est__c</fullName>
+        <externalId>false</externalId>
+        <label>Final Completion Est</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Final_Cost_Date__c</fullName>
         <externalId>false</externalId>
         <label>Final Cost Date</label>
@@ -516,6 +634,42 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Final_EPC_Bids_Received__c</fullName>
+        <externalId>false</externalId>
+        <label>Final EPC Bids Received</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Final_EPC_Bids_Solicited__c</fullName>
+        <externalId>false</externalId>
+        <label>Final EPC Bids Solicited</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Final_NTP_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>Final NTP Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Final_SWPPP_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>Final SWPPP Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Final_System_Size_MWdc__c</fullName>
@@ -570,6 +724,78 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Limited_NTP_or_DSA__c</fullName>
+        <externalId>false</externalId>
+        <label>Limited NTP or DSA</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Mechanical_Completion_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>Mechanical Completion Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Mechanical_Completion_Est__c</fullName>
+        <externalId>false</externalId>
+        <label>Mechanical Completion Est</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Modules_Completion__c</fullName>
+        <externalId>false</externalId>
+        <label>Modules Completion</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>NPDES_Permit_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>NPDES Permit Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>NPDES_Permit_Est__c</fullName>
+        <externalId>false</externalId>
+        <label>NPDES Permit Est</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PTO_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>PTO Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PTO_Est__c</fullName>
+        <externalId>false</externalId>
+        <label>PTO Est</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Potential_Cost_Impact__c</fullName>
         <externalId>false</externalId>
         <label>Potential Cost Impact</label>
@@ -599,6 +825,15 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Production_Test__c</fullName>
+        <externalId>false</externalId>
+        <label>Production Test</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Project_Footprint__c</fullName>
@@ -723,15 +958,132 @@
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Req_Cert_Mechanical_Completion__c</fullName>
+        <fullName>Racking_Completion__c</fullName>
         <externalId>false</externalId>
-        <formula>Actual_Mechanical_Completion__c + 10</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Required Certification of MC Date</label>
+        <label>Racking Completion</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Recommendation_to_Award_RTA_Approved__c</fullName>
+        <externalId>false</externalId>
+        <label>Recommendation to Award (RTA) Approved</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Recommendation_to_Award_RTA__c</fullName>
+        <externalId>false</externalId>
+        <label>Recommendation to Award (RTA)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Req_Cert_Mechanical_Completion__c</fullName>
+        <externalId>false</externalId>
+        <formula>Mechanical_Completion_Act__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Required Certification of MC Est</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Required_Certification_of_MC__c</fullName>
+        <externalId>false</externalId>
+        <label>Required Certification of MC</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Schedule_Items__c</fullName>
+        <externalId>false</externalId>
+        <label>Schedule Items</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Install DAS</fullName>
+                    <default>false</default>
+                    <label>Install DAS</label>
+                </value>
+                <value>
+                    <fullName>Install Erosion Controls</fullName>
+                    <default>false</default>
+                    <label>Install Erosion Controls</label>
+                </value>
+                <value>
+                    <fullName>Install Modules</fullName>
+                    <default>false</default>
+                    <label>Install Modules</label>
+                </value>
+                <value>
+                    <fullName>Install Posts</fullName>
+                    <default>false</default>
+                    <label>Install Posts</label>
+                </value>
+                <value>
+                    <fullName>Install Racking</fullName>
+                    <default>false</default>
+                    <label>Install Racking</label>
+                </value>
+                <value>
+                    <fullName>Install Roads</fullName>
+                    <default>false</default>
+                    <label>Install Roads</label>
+                </value>
+                <value>
+                    <fullName>Pour Equipment Pad</fullName>
+                    <default>false</default>
+                    <label>Pour Equipment Pad</label>
+                </value>
+                <value>
+                    <fullName>Set Inverter</fullName>
+                    <default>false</default>
+                    <label>Set Inverter</label>
+                </value>
+                <value>
+                    <fullName>Set Switchgear</fullName>
+                    <default>false</default>
+                    <label>Set Switchgear</label>
+                </value>
+                <value>
+                    <fullName>Set Transformer</fullName>
+                    <default>false</default>
+                    <label>Set Transformer</label>
+                </value>
+                <value>
+                    <fullName>Site Work/Grading</fullName>
+                    <default>false</default>
+                    <label>Site Work/Grading</label>
+                </value>
+                <value>
+                    <fullName>Trenching</fullName>
+                    <default>false</default>
+                    <label>Trenching</label>
+                </value>
+                <value>
+                    <fullName>Wire Inverter/Switchgear/Transformer</fullName>
+                    <default>false</default>
+                    <label>Wire Inverter/Switchgear/Transformer</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
     </fields>
     <fields>
         <fullName>Scheduled_Mechanical_Completion_Date__c</fullName>
@@ -752,6 +1104,42 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Site_Mobilization__c</fullName>
+        <externalId>false</externalId>
+        <label>Site Mobilization</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Site_Preparation__c</fullName>
+        <externalId>false</externalId>
+        <label>Site Preparation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Substantial_Completion_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>Substantial Completion Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Substantial_Completion_Est__c</fullName>
+        <externalId>false</externalId>
+        <label>Substantial Completion Est</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Superintendent_Construction_Manager__c</fullName>
@@ -777,6 +1165,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Weekly_Project_Meetings__c</fullName>
+        <externalId>false</externalId>
+        <label>Weekly Project Meetings</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Witness_Test_Actual_Date__c</fullName>
         <externalId>false</externalId>
         <formula>Project__r.Current_Estimated_Witness_Test_Date__c</formula>
@@ -798,6 +1197,24 @@
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
+    <fields>
+        <fullName>Witness_Test_Completion_Act__c</fullName>
+        <externalId>false</externalId>
+        <label>Witness Test  Completion Act</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Witness_Test_Completion_Est__c</fullName>
+        <externalId>false</externalId>
+        <label>Witness Test Completion Est</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
     <label>Construction</label>
     <listViews>
         <fullName>All</fullName>
@@ -814,7 +1231,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Construction</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
