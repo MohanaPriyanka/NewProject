@@ -408,11 +408,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Incentive__c.Application_Approved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Incentive__c.Application_Fee_Due__c</field>
         <readable>true</readable>
     </fieldPermissions>
