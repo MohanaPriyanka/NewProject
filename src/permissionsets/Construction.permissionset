@@ -413,11 +413,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Incentive__c.Pre_Statement_of_Qualification_Expires__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Incentive__c.Pre_Statement_of_Qualification_Received__c</field>
         <readable>true</readable>
     </fieldPermissions>
