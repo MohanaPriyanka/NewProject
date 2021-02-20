@@ -416,11 +416,6 @@
         <field>Incentive__c.Public_Private__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Incentive__c.Total_Inverter_Size_Approved_kW_AC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Construction</label>
     <license>Salesforce</license>
