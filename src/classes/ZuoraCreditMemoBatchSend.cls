@@ -5,8 +5,9 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     public Set<Bill_Adjustment__c> adjustToUpdateSet = new Set<Bill_Adjustment__c>();
     public String queryString;
     public Date effectiveDate;
-    public enum AdjustmentType {PostWhenApproved, PostNextBill}
-    public AdjustmentType mode = AdjustmentType.PostNextBill;
+    public enum AdjustmentType {
+        POST_WHEN_APPROVED, POST_NEXT_BILL}
+    public AdjustmentType mode = AdjustmentType.POST_NEXT_BILL;
 
     public void executeBatch(){
         // 7 callouts to create a debit memo from an invoice, so a max of 14 memos per transaction to stay under 100 callouts
@@ -41,7 +42,7 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     public void finish(Database.BatchableContext bc) {
         try {
             // No more than one executeBatch can be called from a test method
-            if (mode == AdjustmentType.PostWhenApproved && !Test.isRunningTest()){
+            if (mode == AdjustmentType.POST_WHEN_APPROVED && !Test.isRunningTest()){
                 ZuoraMemoBatchApply batchApply = new ZuoraMemoBatchApply();
                 batchApply.startApplication();
                 batchApply.runBatch();
