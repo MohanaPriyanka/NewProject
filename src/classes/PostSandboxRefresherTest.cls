@@ -198,21 +198,21 @@ private class PostSandboxRefresherTest {
         solarSystemHelper.execute();
         Test.startTest();
         try {
-        	CSRecordLoader.TransferHelper transferHelper = new CSRecordLoader.TransferHelper(csDataSetting);
-       		transferHelper.execute();
+            CSRecordLoader.TransferHelper transferHelper = new CSRecordLoader.TransferHelper(csDataSetting);
+            transferHelper.execute();
         } catch (Exception e) {
             System.assert(false, e.getMessage() + e.getStackTraceString());
         }
         Test.stopTest();
         try {
-        	CSRecordLoader.TransferHelper2 transferHelper2 = new CSRecordLoader.TransferHelper2(csDataSetting);
-        	transferHelper2.execute(null);
+            CSRecordLoader.TransferHelper2 transferHelper2 = new CSRecordLoader.TransferHelper2(csDataSetting);
+            transferHelper2.execute(null);
         } catch (Exception e) {
             System.assert(false, e.getMessage() + e.getStackTraceString());
         }
         try {
-        	CSRecordLoader.TransferHelper3 transferHelper3 = new CSRecordLoader.TransferHelper3(csDataSetting);
-        	transferHelper3.execute(null);
+            CSRecordLoader.TransferHelper3 transferHelper3 = new CSRecordLoader.TransferHelper3(csDataSetting);
+            transferHelper3.execute(null);
         } catch (Exception e) {
             System.assert(false, e.getMessage() + e.getStackTraceString());
         }
