@@ -128,32 +128,35 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <type>Default</type>
-    </actionOverrides>
-    <actionOverrides>
-        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Incentive_Record_Page</content>
         <formFactor>Large</formFactor>
-        <type>Default</type>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Incentive_Record_Page</content>
         <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>Custom_Compact_Layout</compactLayoutAssignment>
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
-        <fields>Name</fields>
-        <fields>FERC_Docket_Filed_Date__c</fields>
-        <fields>FERC_Docket_Number__c</fields>
-        <fields>Date_Application_Submitted__c</fields>
-        <fields>Application_Fee_Amount__c</fields>
-        <fields>Date_Application_Fee_Paid__c</fields>
-        <fields>Date_Application_Approved__c</fields>
-        <fields>Facility_ID__c</fields>
-        <fields>Allocated_Size_KW_AC__c</fields>
-        <fields>ACA_Host__c</fields>
+        <fields>Project__c</fields>
+        <fields>Incentive_Type__c</fields>
+        <fields>Application_Submitted__c</fields>
+        <fields>Application_Fee__c</fields>
+        <fields>Application_Fee_Due__c</fields>
+        <fields>Application_Approved__c</fields>
+        <fields>Host__c</fields>
         <label>Custom Compact Layout</label>
     </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
@@ -393,9 +396,47 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Application_Approved__c</fullName>
+        <externalId>false</externalId>
+        <label>Application Approved</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Application_Fee_Amount__c</fullName>
         <externalId>false</externalId>
         <label>Application Fee Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Application_Fee_Due__c</fullName>
+        <externalId>false</externalId>
+        <label>Application Fee Due</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Application_Fee_Paid__c</fullName>
+        <externalId>false</externalId>
+        <label>Application Fee Paid</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Application_Fee__c</fullName>
+        <externalId>false</externalId>
+        <label>Application Fee</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -413,6 +454,15 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Application_Submitted__c</fullName>
+        <externalId>false</externalId>
+        <label>Application Submitted</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Base_Compensation_Rate_Amount__c</fullName>
@@ -633,6 +683,28 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Host__c</fullName>
+        <externalId>false</externalId>
+        <label>Host</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Incentive_Program_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Incentive Program ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Incentive_Type__c</fullName>
         <externalId>false</externalId>
         <label>Incentive Type</label>
@@ -650,14 +722,29 @@
                     <label>Federal</label>
                 </value>
                 <value>
-                    <fullName>MASS ACA</fullName>
+                    <fullName>MA ACA</fullName>
                     <default>false</default>
-                    <label>MASS ACA</label>
+                    <label>MA ACA</label>
                 </value>
                 <value>
-                    <fullName>SMART</fullName>
+                    <fullName>MA SMART</fullName>
                     <default>false</default>
-                    <label>SMART</label>
+                    <label>MA SMART</label>
+                </value>
+                <value>
+                    <fullName>NEPOOL</fullName>
+                    <default>false</default>
+                    <label>NEPOOL</label>
+                </value>
+                <value>
+                    <fullName>Netmetering</fullName>
+                    <default>false</default>
+                    <label>Netmetering</label>
+                </value>
+                <value>
+                    <fullName>Renewble Energy Credits</fullName>
+                    <default>false</default>
+                    <label>Renewble Energy Credits</label>
                 </value>
                 <value>
                     <fullName>SREC</fullName>
@@ -714,15 +801,69 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Public_Private__c</fullName>
+        <fullName>Original_Expiration__c</fullName>
         <externalId>false</externalId>
-        <label>Public / Private</label>
-        <length>255</length>
+        <label>Original Expiration</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Pre_Statement_of_Qualification_Expires__c</fullName>
+        <externalId>false</externalId>
+        <label>Pre-Statement of Qualification Expires</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Pre_Statement_of_Qualification_Received__c</fullName>
+        <externalId>false</externalId>
+        <label>Pre-Statement of Qualification Received</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <externalId>false</externalId>
+        <label>Project</label>
+        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
+        <relationshipLabel>Incentives</relationshipLabel>
+        <relationshipName>Incentives</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Public_Private__c</fullName>
+        <externalId>false</externalId>
+        <label>Public / Private</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Public</fullName>
+                    <default>false</default>
+                    <label>Public</label>
+                </value>
+                <value>
+                    <fullName>Private</fullName>
+                    <default>false</default>
+                    <label>Private</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Reservation_Extension_Fee_Amount__c</fullName>
@@ -750,6 +891,16 @@
         <fullName>SMART_Allocation_Expiration_Date__c</fullName>
         <externalId>false</externalId>
         <label>SMART Allocation Expiration Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Statement_of_Qualification_Received__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the final statement.</inlineHelpText>
+        <label>Statement of Qualification Received</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -801,11 +952,36 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
+    <fields>
+        <fullName>Total_Battery_Size_Approved_kW_AC__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Battery Size Approved (kW AC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Inverter_Size_Approved_kW_AC__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Inverter Size Approved (kW AC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
     <label>Incentive</label>
     <nameField>
+        <displayFormat>Incv-{YYYYMMDD}-{0}</displayFormat>
         <label>Incentive</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Incentives</pluralLabel>
     <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
@@ -1286,15 +1462,11 @@
         </picklistValues>
     </recordTypes>
     <searchLayouts>
-        <searchResultsAdditionalFields>FERC_Docket_Filed_Date__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>FERC_Docket_Number__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Date_Application_Submitted__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Application_Fee_Amount__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Date_Application_Fee_Paid__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Date_Application_Approved__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Facility_ID__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Allocated_Size_KW_AC__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>ACA_Host__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Application_Submitted__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Application_Fee__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Application_Fee_Due__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Application_Approved__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Host__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
