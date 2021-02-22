@@ -4,7 +4,7 @@
  * Test: PartnerCommissionServiceTest, UtilityAccountSubscriptionHandlerTest
  */
 
-public class PartnerCommissionHandler{
+public without sharing class PartnerCommissionHandler{
     @TestVisible
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
     @TestVisible
@@ -17,6 +17,8 @@ public class PartnerCommissionHandler{
     private Map<String, String> acctToJournalEntryMap = new Map<String, String>();
     @TestVisible
     private static FeatureService featureService = new FeatureService();
+    @TestVisible
+    private static Set<Id> accountIdsFromJournalEntries = new Set<Id>();
 
     public Set<Id> queuedIds = new Set<Id>();
 
@@ -31,28 +33,11 @@ public class PartnerCommissionHandler{
         }
     }
 
-    public static void onAfterInvoiceInsert(List<Zuora__ZInvoice__c> zInvoices) {
-        Set<Id> accountIds = new Set<Id>();
-        for (Zuora__ZInvoice__c inv : zInvoices){
-            accountIds.add(inv.Zuora__Account__c);
-        }
-        updatePendingCommission(accountIds);
-    }
-
-    public static void onAfterPaymentInsert(List<Zuora__Payment__c> zPayments) {
-        Set<Id> accountIds = new Set<Id>();
-        for (Zuora__Payment__c pay : zPayments){
-            accountIds.add(pay.Zuora__Account__c);
-        }
-        updatePendingCommission(accountIds);
-    }
-
     @Future
-    public static void updatePendingCommission(Set<Id> accountIds) {
+    public static void upsertCommissions(Set<Id> accountIds) {
         try {
             PartnerCommissionHandler service = new PartnerCommissionHandler();
             PendingBillCommission oppsToUpdate = service.findUninvoicedCommission(accountIds);
-
             if (oppsToUpdate.firstBillOpps.size() > 0) {
                 callPartnerCommissionService(oppsToUpdate.firstBillOpps, PartnerCommissionService.CommissionType.FIRSTBILLSENT);
             }
@@ -72,7 +57,6 @@ public class PartnerCommissionHandler{
     public PendingBillCommission findUninvoicedCommission(Set<Id> accountIds) {
         PendingBillCommission oppsPendingCommission = new PendingBillCommission();
         Set<String> accountsToCheck = getOpportunitiesWithoutCommission(accountIds);
-
         if (accountsToCheck.size() > 0) {
             setJournalEntryMap(accountsToCheck);
             addEligibleOppToPending(oppsWithoutInvoiceCommission, 'InvoiceItem', oppsPendingCommission.firstBillOpps);
@@ -185,20 +169,18 @@ public class PartnerCommissionHandler{
         if (featureService.isEnabled('Switch_New_Partner_Data_Model') && opp.Partner_Account__c != null) {
             return (opp.StageName == 'Complete'
                 && opp.Product_Line__c == 'Community Solar'
-                && opp.Partner_Account__c != null
-                && opp.Partner_Account__r.Name != 'Placeholder Partner'
-                && opp.Partner_Account__r.Name != 'Bluewave Test Partner'
-                && opp.Partner_Account__r.Name != 'BlueWave Inside Sales'
-                && opp.Partner_Account__r.RecordType.Name != 'Client Account'
+                && opp.Partner_Account__r?.Name != 'Placeholder Partner'
+                && opp.Partner_Account__r?.Name != 'Bluewave Test Partner'
+                && opp.Partner_Account__r?.Name != 'BlueWave Inside Sales'
+                && opp.Partner_Account__r?.RecordType.Name != 'Client Account'
             );
         } else {
             return (opp.StageName == 'Complete'
                 && opp.Product_Line__c == 'Community Solar'
-                && opp.Partner_tag_lookup__c != null
-                && opp.Partner_tag_lookup__r.Name != 'Placeholder Partner'
-                && opp.Partner_tag_lookup__r.Name != 'Bluewave Test Partner'
-                && opp.Partner_tag_lookup__r.Name != 'BlueWave Inside Sales'
-                && opp.Partner_tag_lookup__r.Account__r.RecordType.Name != 'Client Account'
+                && opp.Partner_tag_lookup__r?.Name != 'Placeholder Partner'
+                && opp.Partner_tag_lookup__r?.Name != 'Bluewave Test Partner'
+                && opp.Partner_tag_lookup__r?.Name != 'BlueWave Inside Sales'
+                && opp.Partner_tag_lookup__r?.Account__r.RecordType.Name != 'Client Account'
             );
         }
     }
@@ -209,5 +191,11 @@ public class PartnerCommissionHandler{
         contractExecution.opportunitiesToRun = oppList;
         contractExecution.typeOfCommission = type;
         newService.createCommissionRecords(contractExecution);
+    }
+
+    public static void createCommissionPaymentsFromJournalEntries() {
+        List<Journal_Entry__c> commissionableJournalEntries = glSelector.getCommissionableEntriesFromToday();
+        accountIdsFromJournalEntries = CollectionUtil.mapByIdField(commissionableJournalEntries, Journal_Entry__c.Customer_Lookup__r.Id).keySet();
+        upsertCommissions(accountIdsFromJournalEntries);
     }
 }

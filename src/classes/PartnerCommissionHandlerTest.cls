@@ -184,39 +184,6 @@ public class PartnerCommissionHandlerTest {
     }
 
     @IsTest
-    private static void testZuoraTriggers(){
-        Account property = new Account(name = 'Account Property');
-        insert property;
-
-        Zuora__CustomerAccount__c billingAccount = new Zuora__CustomerAccount__c(
-            Name = 'Test BillingAccount',
-            Zuora__Zuora_Id__c = 'XXXXXXXXXX123',
-            Zuora__Account__c = property.Id
-        );
-        insert billingAccount;
-
-        Zuora__ZInvoice__c zInvoice = new Zuora__ZInvoice__c(
-            Zuora__Zuora_Id__c = '12345',
-            Zuora__Account__c = property.Id
-        );
-
-        Zuora__Payment__c zPayment = new Zuora__Payment__c(
-            Zuora__External_Id__c = '12445',
-            Zuora__BillingAccount__c = billingAccount.Id,
-            Zuora__Account__c = property.Id
-        );
-
-        insert zPayment;
-        insert zInvoice;
-
-        List<Zuora__Payment__c> payments = [
-            SELECT Id
-            FROM Zuora__Payment__c
-        ];
-        System.assert(payments.size() > 0);
-    }
-
-    @IsTest
     private static void testOpportunityTriggers(){
         Util.disableAllTriggers();
         UtilityAccountSubscriptionHandlerTest.setupData();
@@ -281,7 +248,7 @@ public class PartnerCommissionHandlerTest {
         insert propertyTwo;
         // No mocks, so no Opportunities returned from Query:
         Test.startTest();
-            PartnerCommissionHandler.updatePendingCommission(new Set<Id>{propertyOne.Id, propertyTwo.Id});
+            PartnerCommissionHandler.upsertCommissions(new Set<Id>{propertyOne.Id, propertyTwo.Id});
         Test.stopTest();
 
         List<Error_Log__c> logs = [
@@ -475,6 +442,15 @@ public class PartnerCommissionHandlerTest {
         System.assertEquals(0,afterLogs.size());
     }
 
+    @IsTest
+    private static void testCreateCommissionPaymentsFromJournalEntries() {
+        useMocks();
+        Test.startTest();
+        PartnerCommissionHandler.createCommissionPaymentsFromJournalEntries();
+        Test.stopTest();
+        System.assertEquals(7, PartnerCommissionHandler.accountIdsFromJournalEntries.size());
+    }
+
     private static void useMocks() {
         PartnerCommissionHandler.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector(null, null));
     }
@@ -628,10 +604,8 @@ public class PartnerCommissionHandlerTest {
     }
 
     public class MockPartnerCommissionHandler extends MockProvider {
-        public MockPartnerCommissionHandler() {}
         public override Object handleMethodCall(MethodCall methodCall) {
             return null;
         }
-
     }
 }

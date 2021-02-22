@@ -317,6 +317,51 @@ public class ZuoraGLServiceTest {
     }
 
     @IsTest
+    private static void testPaymentPartIVInsertAndCommissionPayments() {
+        List<Journal_Entry__c> originalJE = [
+            SELECT Id
+            FROM Journal_Entry__c
+            WHERE Object_Type__c = 'PaymentPart'
+        ];
+
+        ZuoraDataQueryService.DataQueryResult result = new ZuoraDataQueryService.DataQueryResult();
+        ZuoraDataQueryService.DataQueryData dataResult = new ZuoraDataQueryService.DataQueryData();
+        dataResult.Id = '7742a20c-18ea-4fde-b185-4aed364ce22c';
+        result.data = dataResult;
+
+        ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
+        methodToRunAfter.className = 'ZuoraGLService';
+        methodToRunAfter.methodName = 'PaymentPart_IV';
+        Map<String,Date> optionalDates = new Map<String,Date>();
+        optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
+        methodToRunAfter.optionalDates = optionalDates;
+
+        Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
+            Query__c = '',
+            Processing_Parameter__c = JSON.serialize(methodToRunAfter)
+        );
+        insert zuoraDataQuery;
+
+        ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
+        queryRequest.recordId = zuoraDataQuery.Id;
+
+        Test.startTest();
+        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, queryRequest);
+        Test.stopTest();
+
+        List<Journal_Entry__c> updatedJE = [
+            SELECT Id
+            FROM Journal_Entry__c
+            WHERE Object_Type__c = 'PaymentPart'
+        ];
+        System.assertEquals(0,originalJE.size());
+        System.assertEquals(14,updatedJE.size());
+
+        System.assertNotEquals(0, PartnerCommissionHandler.accountIdsFromJournalEntries.size(),
+            'PartnerCommissionHandler should evaluate 14 Accounts for Commission Payments');
+    }
+
+    @IsTest
     private static void testUpdateCreditMemoInClosedAccountingPeriod(){
         Journal_Entry__c attemptedDelete = new Journal_Entry__c();
         attemptedDelete.Amount__c = 10;
