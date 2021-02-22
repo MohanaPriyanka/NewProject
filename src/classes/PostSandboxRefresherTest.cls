@@ -131,7 +131,8 @@ private class PostSandboxRefresherTest {
         }
         Test.stopTest();
     }
-    static testMethod void testBatchUpdateFailure() {
+    @IsTest
+    static void testBatchUpdateFailure() {
         List<Lead> leadList = [SELECT Id, Company
                                FROM Lead
                                WHERE Email LIKE '%@email.com'];
@@ -143,9 +144,9 @@ private class PostSandboxRefresherTest {
         Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Upsert'));
         Test.stopTest();
         System.assertEquals(MessagingService.emailsSent.size(), 1);
-        System.debug(LoggingLevel.INFO, MessagingService.emailsSent);
     }
-    static testMethod void testBatchInsertFailures() {
+    @IsTest
+    static void testBatchInsertFailures() {
         List<Lead> leadList = new List<Lead>();
         Lead lead = new Lead(FirstName = 'Test',
                              LastName = 'Tester');
@@ -157,19 +158,18 @@ private class PostSandboxRefresherTest {
         Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Insert'));
         Test.stopTest();
         System.assertEquals(MessagingService.emailsSent.size(), 1);
-        System.debug(LoggingLevel.INFO, MessagingService.emailsSent);
         errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(1, errorLogs.size());
     }
     @IsTest
     static void testAccountHelper() {
-        PostSandboxRefresher.CSDataSetting csDataSetting = new PostSandboxRefresher.CSDataSetting(24);
-        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader(csDataSetting);
-        csRecordLoader.execute(null);
-        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper(csDataSetting);
-        solarSystemHelper.execute(null);
+        CSRecordLoader.CSDataSetting csDataSetting = new CSRecordLoader.CSDataSetting(24);
+        CSRecordLoader csRecordLoader = new CSRecordLoader(csDataSetting);
+        csRecordLoader.execute();
+        CSRecordLoader.SolarSystemHelper solarSystemHelper = new CSRecordLoader.SolarSystemHelper(csDataSetting);
+        solarSystemHelper.execute();
         Test.startTest();
-        PostSandboxRefresher.FirstAccountHelper firstAccountHelper = new PostSandboxRefresher.FirstAccountHelper(csDataSetting);
+        CSRecordLoader.FirstAccountHelper firstAccountHelper = new CSRecordLoader.FirstAccountHelper(csDataSetting);
         System.enqueueJob(firstAccountHelper);
         Test.stopTest();
         List<Opportunity> opportunities = [SELECT Id FROM Opportunity WHERE Product_Line__c != 'Community Solar'];
@@ -177,13 +177,13 @@ private class PostSandboxRefresherTest {
     }
     @IsTest
     static void testSecondAccountHelper() {
-        PostSandboxRefresher.CSDataSetting csDataSetting = new PostSandboxRefresher.CSDataSetting(24);
-        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader(csDataSetting);
-        csRecordLoader.execute(null);
-        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper(csDataSetting);
-        solarSystemHelper.execute(null);
+        CSRecordLoader.CSDataSetting csDataSetting = new CSRecordLoader.CSDataSetting(24);
+        CSRecordLoader csRecordLoader = new CSRecordLoader(csDataSetting);
+        csRecordLoader.execute();
+        CSRecordLoader.SolarSystemHelper solarSystemHelper = new CSRecordLoader.SolarSystemHelper(csDataSetting);
+        solarSystemHelper.execute();
         Test.startTest();
-        PostSandboxRefresher.SecondAccountHelper secondAccountHelper = new PostSandboxRefresher.SecondAccountHelper(csDataSetting);
+        CSRecordLoader.SecondAccountHelper secondAccountHelper = new CSRecordLoader.SecondAccountHelper(csDataSetting);
         System.enqueueJob(secondAccountHelper);
         Test.stopTest();
         List<Opportunity> opportunities = [SELECT Id FROM Opportunity WHERE Product_Line__c != 'Community Solar'];
@@ -191,40 +191,40 @@ private class PostSandboxRefresherTest {
     }
     @IsTest
     static void testTransferHelper() {
-        PostSandboxRefresher.CSDataSetting csDataSetting = new PostSandboxRefresher.CSDataSetting(24);
-        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader(csDataSetting);
-        csRecordLoader.execute(null);
-        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper(csDataSetting);
-        solarSystemHelper.execute(null);
+        CSRecordLoader.CSDataSetting csDataSetting = new CSRecordLoader.CSDataSetting(24);
+        CSRecordLoader csRecordLoader = new CSRecordLoader(csDataSetting);
+        csRecordLoader.execute();
+        CSRecordLoader.SolarSystemHelper solarSystemHelper = new CSRecordLoader.SolarSystemHelper(csDataSetting);
+        solarSystemHelper.execute();
+        Test.startTest();
         try {
-        	PostSandboxRefresher.TransferHelper transferHelper = new PostSandboxRefresher.TransferHelper(csDataSetting);
-       		transferHelper.execute(null);
+        	CSRecordLoader.TransferHelper transferHelper = new CSRecordLoader.TransferHelper(csDataSetting);
+       		transferHelper.execute();
         } catch (Exception e) {
             System.assert(false, e.getMessage() + e.getStackTraceString());
         }
-        Test.startTest();
+        Test.stopTest();
         try {
-        	PostSandboxRefresher.TransferHelper2 transferHelper2 = new PostSandboxRefresher.TransferHelper2(csDataSetting);
+        	CSRecordLoader.TransferHelper2 transferHelper2 = new CSRecordLoader.TransferHelper2(csDataSetting);
         	transferHelper2.execute(null);
         } catch (Exception e) {
             System.assert(false, e.getMessage() + e.getStackTraceString());
         }
         try {
-        	PostSandboxRefresher.TransferHelper3 transferHelper3 = new PostSandboxRefresher.TransferHelper3(csDataSetting);
+        	CSRecordLoader.TransferHelper3 transferHelper3 = new CSRecordLoader.TransferHelper3(csDataSetting);
         	transferHelper3.execute(null);
         } catch (Exception e) {
             System.assert(false, e.getMessage() + e.getStackTraceString());
         }
-        Test.stopTest();
     }
     @IsTest
     static void testDeleteCSRecords() {
-        PostSandboxRefresher.Name fooBar = new PostSandboxRefresher.Name('Foo', 'Bar', 1);
-        PostSandboxRefresher.insertAccountsAndContacts(new List<PostSandboxRefresher.Name>{fooBar});
-        List<Account> accounts = [SELECT Id FROM Account WHERE CreatedDate = :PostSandboxRefresher.csDataDate];
+        CSRecordLoader.CustomerName fooBar = new CSRecordLoader.CustomerName('Foo', 'Bar', 1);
+        CSRecordLoader.insertAccountsAndContacts(new List<CSRecordLoader.CustomerName>{fooBar});
+        List<Account> accounts = [SELECT Id FROM Account WHERE CreatedDate = :CSRecordLoader.csDataDate];
         System.assertEquals(2, accounts.size(), 'Expected two accounts to be created, parent and property');
-        PostSandboxRefresher.deleteCSRecords();
-        accounts = [SELECT Id FROM Account WHERE CreatedDate = :PostSandboxRefresher.csDataDate];
+        CSRecordLoader.deleteCSRecords();
+        accounts = [SELECT Id FROM Account WHERE CreatedDate = :CSRecordLoader.csDataDate];
         System.assertEquals(0, accounts.size(), 'deleteCSRecords should have deleted the accounts that were created');
     }
     @IsTest

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>34.0</apiVersion>
+    <apiVersion>51.0</apiVersion>
     <packageVersions>
         <majorNumber>5</majorNumber>
         <minorNumber>2</minorNumber>
@@ -8,7 +8,7 @@
     </packageVersions>
     <packageVersions>
         <majorNumber>9</majorNumber>
-        <minorNumber>26</minorNumber>
+        <minorNumber>33</minorNumber>
         <namespace>zqu</namespace>
     </packageVersions>
     <status>Active</status>
