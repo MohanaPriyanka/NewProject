@@ -123,4 +123,11 @@ public class JournalEntrySelectorTest {
         Map<String, Journal_Entry__c> entries = selector.getEntriesMapByIds(externalIds);
         System.assertEquals(2,entries.size());
     }
+
+    @IsTest
+    public static void testGetCommissionableEntriesFromToday() {
+        JournalEntrySelector selector = new JournalEntrySelector();
+        List<Journal_Entry__c> entries = selector.getCommissionableEntriesFromToday();
+        System.assertEquals(9,entries.size());
+    }
 }
