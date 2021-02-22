@@ -15,10 +15,10 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         public Datetime startDateTime;
         public String subscriptionNumber;
         public String description;
-        public String projectName_Zcustom;
-        public Decimal solarSavings_Zcustom;
-        public Decimal utilityCredit_Zcustom;
-        public String crm_ID_Zcustom;
+        public String projectNameZcustom;
+        public Decimal solarSavingsZcustom;
+        public Decimal utilityCreditZcustom;
+        public String crmIdZcustom;
         public String uom = 'Dollars';
     }
 
@@ -93,12 +93,12 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         // UASB Date__c is the date of the production update, favored over using the Billing Period Start and End Date
         usage.startDateTime = firstOfTheMonth(uasb.Date__c);
         usage.endDateTime = firstOfTheMonth(uasb.Date__c) + 1;
-        usage.projectName_Zcustom = uasb.Shared_Solar_System__r.Name;
+        usage.projectNameZcustom = uasb.Shared_Solar_System__r.Name;
         usage.description = '#'
             + uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
-        usage.solarSavings_Zcustom = uasb.Savings__c;
-        usage.utilityCredit_Zcustom = Util.roundValue(uasb.Net_Metering_Credits_Allocated__c, 2, 'HALF_UP');
-        usage.crm_ID_Zcustom = uasb.Id;
+        usage.solarSavingsZcustom = uasb.Savings__c;
+        usage.utilityCreditZcustom = Util.roundValue(uasb.Net_Metering_Credits_Allocated__c, 2, 'HALF_UP');
+        usage.crmIdZcustom = uasb.Id;
         return usage;
     }
 
@@ -128,13 +128,13 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         usage.quantity = adjust.Adjustment_Amount__c;
         usage.startDateTime = firstOfTheMonth(invoiceDate);
         usage.endDateTime = firstOfTheMonth(invoiceDate) + 1;
-        usage.projectName_Zcustom = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Name;
+        usage.projectNameZcustom = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Name;
         usage.description = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Utility__r.Name
             + ' #'
             + adjust.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
-        usage.solarSavings_Zcustom = adjust.Discount__c;
-        usage.utilityCredit_Zcustom = Util.roundValue(adjust.Credits_Allocated__c, 2, 'HALF_UP');
-        usage.crm_ID_Zcustom = adjust.Id;
+        usage.solarSavingsZcustom = adjust.Discount__c;
+        usage.utilityCreditZcustom = Util.roundValue(adjust.Credits_Allocated__c, 2, 'HALF_UP');
+        usage.crmIdZcustom = adjust.Id;
         return usage;
     }
 
@@ -154,7 +154,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
             ZuoraResponse usageLine = zResponses[count];
             count += 1;
             if (usageLine.success == 'true'){
-                Id sfID = attemptedUsage.crm_ID_Zcustom;
+                Id sfID = attemptedUsage.crmIdZcustom;
                 Schema.SObjectType objectType = sfId.getSObjectType();
                 if (objectType == UASB__c.sObjectType){
                     UASB__c uasbToUpdate = new UASB__c(
@@ -171,7 +171,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                     adjustmentsToUpdate.add(adjustToUpdate);
                 }
             } else {
-                String errorMessage = attemptedUsage.crm_ID_Zcustom + '_' + String.valueOf(usageLine.errors);
+                String errorMessage = attemptedUsage.crmIdZcustom + '_' + String.valueOf(usageLine.errors);
                 Logger.logLater('ZuoraUsageService', 'handleAPIResponse', errorMessage);
             }
         }

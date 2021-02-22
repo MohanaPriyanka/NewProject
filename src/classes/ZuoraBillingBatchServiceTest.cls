@@ -51,7 +51,7 @@ public with sharing class ZuoraBillingBatchServiceTest {
     *************/
     public class MockZuoraAccountSelector implements StubProvider {
         public MockZuoraAccountSelector() {}
-        @SuppressWarnings('PMD.ExcessiveParameterList')
+        @SuppressWarnings('PMD.ExcessiveParameterList, PMD.AvoidHardcodingId')
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             switch on stubbedMethodName {
