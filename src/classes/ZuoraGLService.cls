@@ -1,6 +1,7 @@
 /*************************************************************************************
 Created By Jordan Pentaleri 08/2019
 Tested By: ZuoraGLServiceTest
+Description: Scheduled job runs every day
 *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryService.Processor {
@@ -34,22 +35,23 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         ZuoraDataQueryService.callFromApex(queryString,methodToRunAfter);
     }
 
+
     private class GeneralLedgerItem {
-        public String Project;
-        public String Client;
-        public String CustomerAccount;
-        public String CRMId;
-        public Date GLDate;
-        public Datetime GLDatetime;
-        public Decimal Amount;
-        public String ReasonCode;
-        public String ExternalId;
-        public String Gateway;
-        public String Lockbox;
-        public String PaymentMethod;
-        public String ArchivedChargentData;
-        public String AppliedRecordId;
-        public String Comments;
+        public String project;
+        public String client;
+        public String customerAccount;
+        public String crmId;
+        public Date glDate;
+        public Datetime glDatetime;
+        public Decimal amount;
+        public String reasonCode;
+        public String externalId;
+        public String gateway;
+        public String lockbox;
+        public String paymentMethod;
+        public String archivedChargentData;
+        public String appliedRecordId;
+        public String comments;
     }
 
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
@@ -92,6 +94,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             }
             when 'PaymentPart_IV' {
                 generalGLRecordInsert(response, method);
+                PartnerCommissionHandler.createCommissionPaymentsFromJournalEntries();
             }
         }
     }
@@ -158,7 +161,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
 
     private Journal_Entry__c setArchivedPaymentFields(GeneralLedgerItem ledger, Journal_Entry__c entry) {
         ZuoraAPI.ArchivedChargentData chargentData;
-        chargentData = (ZuoraAPI.ArchivedChargentData)System.JSON.deserialize(ledger.ArchivedChargentData, ZuoraAPI.ArchivedChargentData.class);
+        chargentData = (ZuoraAPI.ArchivedChargentData)System.JSON.deserialize(ledger.archivedChargentData, ZuoraAPI.ArchivedChargentData.class);
         entry.Paid_To_Client__c = chargentData.ClientNumber;
         entry.Deposit_Account__c = chargentData.GatewayName;
         entry.Payment_Method__c = chargentData.PaymentMethod;
@@ -166,24 +169,24 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
     }
 
     private Journal_Entry__c setZuoraPaymentFields(GeneralLedgerItem ledger, Journal_Entry__c entry){
-        if (ledger.Gateway != null){
-            entry.Deposit_Account__c = ledger.Gateway;
-            if (depositAccountToClientMap.containsKey(ledger.Gateway)){
-                entry.Paid_To_Client__c = depositAccountToClientMap.get(ledger.Gateway);
+        if (ledger.gateway != null){
+            entry.Deposit_Account__c = ledger.gateway;
+            if (depositAccountToClientMap.containsKey(ledger.gateway)){
+                entry.Paid_To_Client__c = depositAccountToClientMap.get(ledger.gateway);
             } else {
                 Logger.logLater('ZuoraGLService','Map Gateway to Client','Could not find client for gateway: ' + JSON.serialize(ledger));
             }
-        } else if (ledger.Lockbox != null) {
+        } else if (ledger.lockbox != null) {
             try {
                 // Assumes Lockbox naming convention of (Lockbox Name)_(Client Number)
-                entry.Deposit_Account__c = ledger.Lockbox.split('_')[0];
-                entry.Paid_To_Client__c = ledger.Lockbox.split('_')[1];
+                entry.Deposit_Account__c = ledger.lockbox.split('_')[0];
+                entry.Paid_To_Client__c = ledger.lockbox.split('_')[1];
             } catch (Exception excep){
                 Logger.logLater('ZuoraGLService','Map Lockbox to Client','Could not find client for lockbox: ' + JSON.serialize(ledger));
             }
         }
-        if (ledger.PaymentMethod != null){
-            entry.Payment_Method__c = ledger.PaymentMethod;
+        if (ledger.paymentMethod != null){
+            entry.Payment_Method__c = ledger.paymentMethod;
         }
         return entry;
     }
@@ -202,31 +205,31 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             Journal_Entry__c entry = new Journal_Entry__c();
             entry.Object_Type__c = objectType;
             entry.Query_Type__c = methodName;
-            entry.Project__c = ledger.Project;
-            entry.Client__c = ledger.Client;
-            entry.Amount__c = ledger.Amount;
+            entry.Project__c = ledger.project;
+            entry.Client__c = ledger.client;
+            entry.Amount__c = ledger.amount;
             entry.Reason_Code__c = ledger.reasonCode;
-            entry.External_Id__c = ledger.ExternalId;
-            entry.Customer_Account__c = ledger.CustomerAccount;
-            entry.Applied_Record_Id__c = ledger.AppliedRecordId;
+            entry.External_Id__c = ledger.externalId;
+            entry.Customer_Account__c = ledger.customerAccount;
+            entry.Applied_Record_Id__c = ledger.appliedRecordId;
 
             // Use CRMId as a switch for historical data v. new data in Zuora
-            if (objectType == 'PaymentPart' && ledger.CRMId == null) {
+            if (objectType == 'PaymentPart' && ledger.crmId == null) {
                 // Going forward, we will report on payments when they are applied:
-                Datetime dateAsDateTime = ledger.GLDatetime;
+                Datetime dateAsDateTime = ledger.glDatetime;
                 entry.Date__c = Date.newInstance(dateAsDateTime.Year(), dateAsDateTime.Month(),dateAsDateTime.Day());
                 entry = setZuoraPaymentFields(ledger, entry);
             } else {
                 // Historical Migration, we reported on transactions when they were made.
-                entry.Date__c = ledger.GLDate;
+                entry.Date__c = ledger.glDate;
             }
 
             if ((objectType == 'DebitMemo' && (ledger.reasonCode == 'Returned Payment' || ledger.reasonCode == 'Refund')) || objectType == 'PaymentPart') {
                 if (ledger.reasonCode == 'Returned Payment'){
                     //Comments example: Original Payment 2c92a00b71c96bdf0171dfcabc4e34c7, PaymentPartItem 2c92a00a71c95c4a0171dfcaf46f5343
-                    entry.Returned_PaymentPart_Id__c = ledger.Comments.substringAfter('PaymentPartItem ');
+                    entry.Returned_PaymentPart_Id__c = ledger.comments.substringAfter('PaymentPartItem ');
                 }
-                if (ledger.ArchivedChargentData == null){
+                if (ledger.archivedChargentData == null){
                     entry = setZuoraPaymentFields(ledger, entry);
                 } else {
                     entry = setArchivedPaymentFields(ledger, entry);
@@ -271,9 +274,8 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         } else if (!inUpsertList) {
             // If SF record is still in an open period, but no longer exists in Zuora, delete it:
             entriesSafeToDelete.add(sfEntry);
-        } else {
-            // Records that are inUpsertList and !inClosedPeriod: safe to upsert, so continue
         }
+        // Records that are inUpsertList and !inClosedPeriod: safe to upsert, so continue
         Logger.flushLogs();
     }
 
