@@ -7,6 +7,7 @@ public abstract class Promise implements Queueable, Database.AllowsCallouts {
     public List<Promise> promises = new List<Promise>();
     public Object passThrough;
     public Boolean continueChainAfterFailure = true;
+    protected Chain chain;
 
     public Promise then(Object toAdd) {
         promises.add((Promise) toAdd);
@@ -16,11 +17,8 @@ public abstract class Promise implements Queueable, Database.AllowsCallouts {
     abstract public void execute();
 
     public virtual void execute(QueueableContext context) {
-        try {
-            execute();
-        } finally {
-            Finalizer chain = new Chain(this.promises, this.passThrough, this.continueChainAfterFailure);
-            System.attachFinalizer(chain);
-        }
+        chain = new Chain(this.promises, this.passThrough, this.continueChainAfterFailure);
+        System.attachFinalizer(chain);
+        execute();
     }
 }

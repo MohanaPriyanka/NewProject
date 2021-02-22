@@ -24,6 +24,10 @@ public class Chain implements Finalizer {
         this.continueAfterFailure = continueAfterFailure;
     }
 
+    public void updatePassThrough(Object passThrough) {
+        this.passThrough = passThrough;
+    }
+
     /**
      * @description Queues the next promise in the chain, unless the current queueable failed and continueAfterFailure
      * is false

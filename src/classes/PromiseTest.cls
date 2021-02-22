@@ -89,6 +89,8 @@ public with sharing class PromiseTest {
             if (this.passThrough != null) {
                 this.passThrough = 1 + (Integer) this.passThrough;
                 acct.BillingStreet = String.valueOf(this.passThrough);
+                chain.updatePassThrough(this.passThrough);
+
             }
             update acct;
         }
