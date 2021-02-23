@@ -38,7 +38,7 @@ public without sharing class AdjustmentSelector {
             queryString += 'OR Adjustment_Amount__c < 0) ';
         }
 
-        if (mode == ZuoraCreditMemoBatchSend.AdjustmentType.PostWhenApproved){
+        if (mode == ZuoraCreditMemoBatchSend.AdjustmentType.POST_WHEN_APPROVED){
             queryString += 'AND Effective__c = \'Post When Approved\' ';
         }
 

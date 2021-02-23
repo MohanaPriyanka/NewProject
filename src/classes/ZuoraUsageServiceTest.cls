@@ -55,6 +55,7 @@ public class ZuoraUsageServiceTest {
             Account__c = uasbList[0].Utility_Account_Subscription__r.Opportunity__r.AccountId,
             UASB__c = uasbList[0].Id,
             Adjustment_Type__c = 'Production',
+            Effective__c = 'Post on Next Bill',
             Transfer__c = transfer.Id,
             Adjustment_Amount__c = 90,
             Credits_Allocated__c = 100,
@@ -68,6 +69,7 @@ public class ZuoraUsageServiceTest {
             Account__c = uasbList[0].Utility_Account_Subscription__r.Opportunity__r.AccountId,
             UASB__c = uasbList[0].Id,
             Adjustment_Type__c = 'Production',
+            Effective__c = 'Post on Next Bill',
             Transfer__c = transfer.Id,
             Adjustment_Amount__c = 45,
             Credits_Allocated__c = 50,
@@ -102,7 +104,7 @@ public class ZuoraUsageServiceTest {
         }
         System.assertEquals(12, i);
 
-        queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(true, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
+        queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(true, ZuoraCreditMemoBatchSend.AdjustmentType.POST_NEXT_BILL);
         iterator = queryLocator.iterator();
         i = 0;
         while (iterator.hasNext()) {
@@ -203,21 +205,22 @@ public class ZuoraUsageServiceTest {
         ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
-
+        Date invoiceDate = System.today().addDays(3);
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.ADJUSTMENTS, System.today());
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.ADJUSTMENTS, invoiceDate);
         zSend.executeBatch();
         Test.stopTest();
 
         // API Mock returns 14 rows, 3 errors, 11 successes:
         System.assertEquals(true, Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c'));
         List<Bill_Adjustment__c> adjustList = [
-            SELECT Id, Name, Zuora_Id__c
+            SELECT Id, Name, Zuora_Id__c, Effective_Date__c
             FROM Bill_Adjustment__c
             WHERE Zuora_Id__c != NULL
         ];
         System.assertEquals(1, adjustList.size());
+        System.assertEquals(invoiceDate, adjustList[0].Effective_Date__c, 'Adjustments posted to Zuora should get Effective Date = Invoice Date');
 
         List<Error_Log__c> errors = [
             SELECT Id, Message__c
@@ -226,7 +229,7 @@ public class ZuoraUsageServiceTest {
         ];
         System.assertEquals(1, errors.size());
 
-        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(true, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(true, ZuoraCreditMemoBatchSend.AdjustmentType.POST_NEXT_BILL);
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<Bill_Adjustment__c> failedAdjust = new List<Bill_Adjustment__c>();
         while (iterator.hasNext()) {
@@ -310,8 +313,8 @@ public class ZuoraUsageServiceTest {
             '"Account":{"Id":"0013I00000I77l7QAB","Zuora_Id__c":"2c92c0f871bae3ce0171bc5bc5634378"}}}}';
         UASB__c uasb = (UASB__c) JSON.deserialize(uasbJSON, UASB__c.class);
         ZuoraUsageService.ZuoraUsage zuoraUsage = ZuoraUsageService.convertUASBToUsage(uasb);
-        System.assertEquals('A-S00029335', zuoraUsage.SubscriptionNumber);
-        System.assertEquals('C-00048346', zuoraUsage.ChargeNumber);
+        System.assertEquals('A-S00029335', zuoraUsage.subscriptionNumber);
+        System.assertEquals('C-00048346', zuoraUsage.chargeNumber);
     }
 
     @IsTest
@@ -327,7 +330,7 @@ public class ZuoraUsageServiceTest {
             '"Utility_Account_Log__r":{"Id":"a1b3I000000Hk6eQAC","Name":"0000235"}},"Client__r":{"Id":"0013I00000I77klQAB","Account_Number__c":"BW-0021776"}}';
         Bill_Adjustment__c billAdjustment = (Bill_Adjustment__c) JSON.deserialize(adjustmentJSON, Bill_Adjustment__c.class);
         ZuoraUsageService.ZuoraUsage zuoraUsage = ZuoraUsageService.convertAdjustToUsage(billAdjustment, System.today());
-        System.assertEquals('A-S00029335', zuoraUsage.SubscriptionNumber);
-        System.assertEquals('C-00048346', zuoraUsage.ChargeNumber);
+        System.assertEquals('A-S00029335', zuoraUsage.subscriptionNumber);
+        System.assertEquals('C-00048346', zuoraUsage.chargeNumber);
     }
 }

@@ -142,7 +142,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
 
         // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
-        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.POST_NEXT_BILL);
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
         Integer i = 0;
@@ -159,18 +159,26 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         // Credit Memos:
         List<Bill_Adjustment__c> creditList = [
-            SELECT Id, Name, Zuora_Id__c
+            SELECT Id, Name, Zuora_Id__c, Effective__c, Effective_Date__c
             FROM Bill_Adjustment__c
             WHERE Zuora_Id__c = '2c92c0fa6a3458e1016a45ac238e0d74'
         ];
         System.assertEquals(3, creditList.size());
+        for (Bill_Adjustment__c credit : creditList) {
+            System.assertNotEquals(null, credit.Effective_Date__c, 'Effective Date populated on Adjustment when posted to Zuora');
+        }
 
         // Debit Memos:
         List<Bill_Adjustment__c> debitList = [
-            SELECT Id, Name, Zuora_Id__c
+            SELECT Id, Name, Zuora_Id__c, Effective__c, Effective_Date__c
             FROM Bill_Adjustment__c
             WHERE Zuora_Id__c = '2c92c0fa6a3458e1016a45ac238e0d66'
         ];
+
+        for (Bill_Adjustment__c debit : debitList) {
+            System.assertNotEquals(null, debit.Effective_Date__c, 'Effective Date populated on Adjustment when posted to Zuora');
+        }
+
         System.assertEquals(2, debitList.size());
     }
 
@@ -186,7 +194,7 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         // 8 adjustments exist, but one should be excluded, because already has a zuora ID and 2 should be
         // excluded because they are not approved:
-        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.POST_NEXT_BILL);
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
         Integer i = 0;
@@ -216,7 +224,7 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         // 8 adjustments exist, but one should be excluded, because already has a zuora ID and 2 should be
         // excluded because they are not approved:
-        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.POST_NEXT_BILL);
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
         Integer i = 0;
@@ -242,7 +250,7 @@ public class ZuoraCreditDebitMemoServiceTest {
 
     @IsTest
     private static void testCallWithoutUpdatingAdjustment() {
-        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.POST_NEXT_BILL);
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
         Integer i = 0;
@@ -299,7 +307,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             FROM Bill_Adjustment__c
             WHERE Zuora_Id__c != null
         ];
-        system.assertEquals(3,afterAdjustments.size());
+        System.assertEquals(3,afterAdjustments.size());
     }
 
     @IsTest

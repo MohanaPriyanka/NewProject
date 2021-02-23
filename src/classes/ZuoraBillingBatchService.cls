@@ -57,7 +57,7 @@ public with sharing class ZuoraBillingBatchService implements ZuoraDataQueryServ
         usageList = (List<ZuoraUsageService.ZuoraUsage>) System.JSON.deserialize(response, List<ZuoraUsageService.ZuoraUsage>.class);
         Set<String> accountsWithUsage = new Set<String>();
         for (ZuoraUsageService.ZuoraUsage usage : usageList){
-            accountsWithUsage.add(usage.AccountId);
+            accountsWithUsage.add(usage.accountId);
         }
         return accountsWithUsage;
     }
