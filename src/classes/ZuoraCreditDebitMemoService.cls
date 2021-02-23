@@ -246,7 +246,7 @@ public class ZuoraCreditDebitMemoService {
 
         if (adjustmentsToUpload){
             ZuoraCreditMemoBatchSend batchSend = new ZuoraCreditMemoBatchSend();
-            batchSend.mode = ZuoraCreditMemoBatchSend.AdjustmentType.PostWhenApproved;
+            batchSend.mode = ZuoraCreditMemoBatchSend.AdjustmentType.POST_WHEN_APPROVED;
             batchSend.executeBatch();
         }
     }

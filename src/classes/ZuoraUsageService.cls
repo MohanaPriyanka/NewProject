@@ -8,29 +8,29 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
     }
 
     public class ZuoraUsage {
-        public String AccountId;
-        public String ChargeNumber;
-        public Datetime EndDateTime;
-        public Decimal Quantity;
-        public Datetime StartDateTime;
-        public String SubscriptionNumber;
-        public String Description;
-        public String ProjectName_Zcustom;
-        public Decimal SolarSavings_Zcustom;
-        public Decimal UtilityCredit_Zcustom;
-        public String CRM_ID_Zcustom;
-        public String UOM = 'Dollars';
+        public String accountId;
+        public String chargeNumber;
+        public Datetime endDateTime;
+        public Decimal quantity;
+        public Datetime startDateTime;
+        public String subscriptionNumber;
+        public String description;
+        public String projectNameZcustom;
+        public Decimal solarSavingsZcustom;
+        public Decimal utilityCreditZcustom;
+        public String crmIdZcustom;
+        public String uom = 'Dollars';
     }
 
     public class ZuoraResponse {
-        public String Success;
-        public String Id;
-        public List<ZuoraError> Errors;
+        public String success;
+        public String id;
+        public List<ZuoraError> errors;
     }
 
     public class ZuoraError {
-        public String Code;
-        public String Message;
+        public String code;
+        public String message;
     }
 
     public static ZuoraUsageItems convertSFUsageToZuoraUsage (List<SObject> sfUsageRecord, Date invoiceDate){
@@ -42,13 +42,13 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                 if (sfUsage.Id.getSObjectType() == UASB__c.sObjectType) {
                     UASB__c uasb = (UASB__c) sfUsage;
                     ZuoraUsage usage = convertUASBToUsage(uasb);
-                    if (usage.ChargeNumber != null && usage.SubscriptionNumber != null){
+                    if (usage.chargeNumber != null && usage.subscriptionNumber != null){
                         zuoraUsageLineItems.add(usage);
                     }
                 } else if (sfUsage.Id.getSObjectType() == Bill_Adjustment__c.sObjectType) {
                     Bill_Adjustment__c adjust = (Bill_Adjustment__c) sfUsage;
                     ZuoraUsage usage = convertAdjustToUsage(adjust, invoiceDate);
-                    if (usage.ChargeNumber != null && usage.SubscriptionNumber != null){
+                    if (usage.chargeNumber != null && usage.subscriptionNumber != null){
                         zuoraUsageLineItems.add(usage);
                     }
                 }
@@ -86,19 +86,19 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
             subscriptionNumber = subscription.getSubscriptionNumber();
             chargeNumber = subscription.getChargeNumber(client, project);
         }
-        usage.AccountId = zuoraAcctId;
-        usage.SubscriptionNumber = subscriptionNumber;
-        usage.ChargeNumber = chargeNumber;
-        usage.Quantity = uasb.Discounted_Bill__c;
+        usage.accountId = zuoraAcctId;
+        usage.subscriptionNumber = subscriptionNumber;
+        usage.chargeNumber = chargeNumber;
+        usage.quantity = uasb.Discounted_Bill__c;
         // UASB Date__c is the date of the production update, favored over using the Billing Period Start and End Date
-        usage.StartDateTime = firstOfTheMonth(uasb.Date__c);
-        usage.EndDateTime = firstOfTheMonth(uasb.Date__c) + 1;
-        usage.ProjectName_Zcustom = uasb.Shared_Solar_System__r.Name;
-        usage.Description = '#'
+        usage.startDateTime = firstOfTheMonth(uasb.Date__c);
+        usage.endDateTime = firstOfTheMonth(uasb.Date__c) + 1;
+        usage.projectNameZcustom = uasb.Shared_Solar_System__r.Name;
+        usage.description = '#'
             + uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
-        usage.SolarSavings_Zcustom = uasb.Savings__c;
-        usage.UtilityCredit_Zcustom = Util.roundValue(uasb.Net_Metering_Credits_Allocated__c, 2, 'HALF_UP');
-        usage.CRM_ID_Zcustom = uasb.Id;
+        usage.solarSavingsZcustom = uasb.Savings__c;
+        usage.utilityCreditZcustom = Util.roundValue(uasb.Net_Metering_Credits_Allocated__c, 2, 'HALF_UP');
+        usage.crmIdZcustom = uasb.Id;
         return usage;
     }
 
@@ -122,19 +122,19 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
             subscriptionNumber = subscription.getSubscriptionNumber();
             chargeNumber = subscription.getChargeNumber(client, project);
         }
-        usage.AccountId = zuoraAcctId;
-        usage.SubscriptionNumber = subscriptionNumber;
-        usage.ChargeNumber = chargeNumber;
-        usage.Quantity = adjust.Adjustment_Amount__c;
-        usage.StartDateTime = firstOfTheMonth(invoiceDate);
-        usage.EndDateTime = firstOfTheMonth(invoiceDate) + 1;
-        usage.ProjectName_Zcustom = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Name;
-        usage.Description = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Utility__r.Name
+        usage.accountId = zuoraAcctId;
+        usage.subscriptionNumber = subscriptionNumber;
+        usage.chargeNumber = chargeNumber;
+        usage.quantity = adjust.Adjustment_Amount__c;
+        usage.startDateTime = firstOfTheMonth(invoiceDate);
+        usage.endDateTime = firstOfTheMonth(invoiceDate) + 1;
+        usage.projectNameZcustom = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Name;
+        usage.description = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Utility__r.Name
             + ' #'
             + adjust.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
-        usage.SolarSavings_Zcustom = adjust.Discount__c;
-        usage.UtilityCredit_Zcustom = Util.roundValue(adjust.Credits_Allocated__c, 2, 'HALF_UP');
-        usage.CRM_ID_Zcustom = adjust.Id;
+        usage.solarSavingsZcustom = adjust.Discount__c;
+        usage.utilityCreditZcustom = Util.roundValue(adjust.Credits_Allocated__c, 2, 'HALF_UP');
+        usage.crmIdZcustom = adjust.Id;
         return usage;
     }
 
@@ -142,7 +142,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return Datetime.newInstance(d.year(), d.month(), 1);
     }
 
-    public static Map<String, List<SObject>> handleAPIResponse(List<ZuoraUsage> attemptedUsageList, HttpResponse response){
+    public static Map<String, List<SObject>> handleAPIResponse(List<ZuoraUsage> attemptedUsageList, HttpResponse response, Date invoiceDate){
         // Returns list of Usage Id, or Error Message:
         List<ZuoraResponse> zResponses = new List<ZuoraResponse>();
         zResponses = (List<ZuoraResponse>)JSON.deserialize(response.getBody(), List<ZuoraResponse>.class);
@@ -150,28 +150,28 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         Integer count = 0;
         List<UASB__c> uasbsToUpdate = new List<UASB__c>();
         List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
-
         for (ZuoraUsage attemptedUsage : attemptedUsageList){
             ZuoraResponse usageLine = zResponses[count];
             count += 1;
-            if (usageLine.Success == 'true'){
-                Id sfID = attemptedUsage.CRM_ID_Zcustom;
+            if (usageLine.success == 'true'){
+                Id sfID = attemptedUsage.crmIdZcustom;
                 Schema.SObjectType objectType = sfId.getSObjectType();
                 if (objectType == UASB__c.sObjectType){
                     UASB__c uasbToUpdate = new UASB__c(
                         Id = sfId,
-                        Zuora_Id__c = usageLine.Id
+                        Zuora_Id__c = usageLine.id
                     );
                     uasbsToUpdate.add(uasbToUpdate);
                 } else if (objectType == Bill_Adjustment__c.sObjectType){
                     Bill_Adjustment__c adjustToUpdate = new Bill_Adjustment__c(
                         Id = sfId,
-                        Zuora_Id__c = usageLine.Id
+                        Zuora_Id__c = usageLine.id,
+                        Effective_Date__c = invoiceDate
                     );
                     adjustmentsToUpdate.add(adjustToUpdate);
                 }
             } else {
-                String errorMessage = attemptedUsage.CRM_ID_Zcustom + '_' + String.valueOf(usageLine.Errors);
+                String errorMessage = attemptedUsage.crmIdZcustom + '_' + String.valueOf(usageLine.errors);
                 Logger.logLater('ZuoraUsageService', 'handleAPIResponse', errorMessage);
             }
         }
