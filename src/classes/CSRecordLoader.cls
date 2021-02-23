@@ -166,7 +166,7 @@ public without sharing class CSRecordLoader extends Promise {
             insert partnerSharedSolarSystemEligibilities;
         }
 
-        private void insertTariffsForProduct(Id productId, Id eversourceId, Id nationalGridId) {
+        @TestVisible private void insertTariffsForProduct(Id productId, Id eversourceId, Id nationalGridId) {
             Utility_NMC_Tariff__c eversourceG1 =  new Utility_NMC_Tariff__c(
                 Value_of_Net_Metering_Credit__c = .70578,
                 Name = 'Eversource G1',
