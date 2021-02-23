@@ -782,6 +782,13 @@
                 <elementReference>Lookup_Utility.Id</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Non-UCB</stringValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Default_Utility_Fee__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
