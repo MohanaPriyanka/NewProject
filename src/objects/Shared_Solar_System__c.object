@@ -440,7 +440,8 @@
         <fullName>Available_SMB_Underwriting_Method_FICO__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Available SMB Underwriting Method: FICO</label>
+        <inlineHelpText>Used by the QualificationService for both SMB and Resi customers</inlineHelpText>
+        <label>Available Underwriting Method: FICO</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
