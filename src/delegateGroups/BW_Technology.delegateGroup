@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DelegateGroup xmlns="http://soap.sforce.com/2006/04/metadata">
     <groups>Investor Account Access</groups>
+    <groups>Soltage (Client)</groups>
     <label>BW Technology</label>
     <loginAccess>true</loginAccess>
     <permissionSets>PM BlueWave Surveys</permissionSets>
@@ -90,8 +91,6 @@
     <permissionSets>User Stories View All</permissionSets>
     <permissionSets>DMTracking</permissionSets>
     <permissionSets>CS Cancellation</permissionSets>
-    <permissionSets>Chargent Admin (Base)</permissionSets>
-    <permissionSets>Chargent User (Base)</permissionSets>
     <permissionSets>Bill Adjustment Creation</permissionSets>
     <permissionSets>Partner &amp; SSS Junction Management</permissionSets>
     <permissionSets>Managing Loan Portfolios</permissionSets>
@@ -126,7 +125,7 @@
     <permissionSets>Commission Structure Management</permissionSets>
     <permissionSets>Commission Payment Management</permissionSets>
     <permissionSets>Chargent Transactions and Orders</permissionSets>
-    <permissionSets>LASER Credit Access</permissionSets>
+    <permissionSets>LASER Credit Access Admin</permissionSets>
     <permissionSets>Modify Cases and Tasks</permissionSets>
     <permissionSets>View All</permissionSets>
     <permissionSets>Manage External Users</permissionSets>
@@ -197,9 +196,10 @@
     <permissionSets>Underwriting Screen Access</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
+    <permissionSets>LASER Credit Access Site Guest User</permissionSets>
+    <permissionSets>LASER Credit Access User</permissionSets>
     <permissionSets>Limit Monitoring App</permissionSets>
     <permissionSets>Lightning</permissionSets>
-    <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
     <permissionSets>DocuSign Administrator</permissionSets>
     <permissionSets>DocuSign User</permissionSets>
     <permissionSets>Milestones PM+ Full Access</permissionSets>
