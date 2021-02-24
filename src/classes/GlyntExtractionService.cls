@@ -2,11 +2,10 @@
  * @description: Creates an extraction request, and retrieves extraction results (queueing again if incomplete).
  * Tested By: GlyntExtractionServiceTest
  */
-public without sharing class GlyntExtractionService implements Queueable, Processor, Database.AllowsCallouts {
+public without sharing class GlyntExtractionService extends Promise implements Processor {
     private static GlyntAPIHelper apiHelper = new GlyntAPIHelper();
-    private static String extractionsEndpoint = '/v6/data-pools/' + GlyntAPIHelper.dataPoolId + '/extractions/';
+    @TestVisible private static String extractionsEndpoint = '/v6/data-pools/' + GlyntAPIHelper.dataPoolId + '/extractions/';
     private Datetime retryUntil;
-    private List<String> extractionsToRetrieve;
     @TestVisible private static GlyntExtractionService extractionRetryService;
 
     /**
@@ -26,22 +25,22 @@ public without sharing class GlyntExtractionService implements Queueable, Proces
     /**
      * @description Constructor used to retrieve extractions
      * @param retryUntil Timeout, after which this class should not queue to retrieve extractions
-     * @param extractionsToRetrieve List of Glynt extraction ids to retrieve
      */
-    public GlyntExtractionService(Datetime retryUntil, List<String> extractionsToRetrieve) {
+    public GlyntExtractionService(Datetime retryUntil) {
         this.retryUntil = retryUntil;
-        this.extractionsToRetrieve = extractionsToRetrieve;
     }
 
     /**
-     * @description Queueable execute
-     * @param context Unused
+     * @description Starts querying for extraction results for the extraction ids in passThrough (the Promise variable)
      */
-    public void execute(QueueableContext context) {
+    public override void execute() {
+        if (passThrough == null) {
+            return;
+        }
         List<String> incompleteExtractions = new List<String>();
         List<GlyntAPI.ExtractionResponse> completeExtractions = new List<GlyntAPI.ExtractionResponse>();
         try {
-            for (String extractionId : extractionsToRetrieve) {
+            for (String extractionId : (List<String>) passThrough) {
                 GlyntAPI.ExtractionResponse response = retrieveExtraction(extractionId);
                 if (response.finished) {
                     completeExtractions.add(response);
@@ -69,7 +68,8 @@ public without sharing class GlyntExtractionService implements Queueable, Proces
 
     private void requeueExtractionRetrieval(List<String> incompleteExtractions) {
         if (System.now() <= retryUntil) {
-            extractionRetryService = new GlyntExtractionService(retryUntil, incompleteExtractions);
+            extractionRetryService = new GlyntExtractionService(retryUntil);
+            extractionRetryService.passThrough = incompleteExtractions;
             if (!Test.isRunningTest()) {
                 System.enqueueJob(extractionRetryService);
             }
