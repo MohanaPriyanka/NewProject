@@ -90,10 +90,7 @@
     <permissionSets>User Stories View All</permissionSets>
     <permissionSets>DMTracking</permissionSets>
     <permissionSets>CS Cancellation</permissionSets>
-    <permissionSets>Chargent Admin (Base)</permissionSets>
-    <permissionSets>Chargent User (Base)</permissionSets>
     <permissionSets>Bill Adjustment Creation</permissionSets>
-    <permissionSets>Partner &amp; SSS Junction Management</permissionSets>
     <permissionSets>Managing Loan Portfolios</permissionSets>
     <permissionSets>Manage Gateways and Entites</permissionSets>
     <permissionSets>Underwriting Permission</permissionSets>
@@ -197,9 +194,9 @@
     <permissionSets>Underwriting Screen Access</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
-    <permissionSets>Limit Monitoring App</permissionSets>
+    <permissionSets>Project, Construction, Incentive, Adder</permissionSets>
+    <permissionSets>Project, Construction, Incentive, Adder for Platform license</permissionSets>
     <permissionSets>Lightning</permissionSets>
-    <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
     <permissionSets>DocuSign Administrator</permissionSets>
     <permissionSets>DocuSign User</permissionSets>
     <permissionSets>Milestones PM+ Full Access</permissionSets>
