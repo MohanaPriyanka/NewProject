@@ -1923,11 +1923,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Sale_Portfolio_Projection__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Sale_Portfolio__c</field>
         <readable>true</readable>
     </fieldPermissions>
