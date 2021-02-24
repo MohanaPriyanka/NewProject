@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <applicationVisibilities>
-        <application>Project_Construction_App</application>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <description>Project and related objects (Feb 2021)</description>
+    <description>Project and related objects (Feb 2021), but not console App, which isn&apos;t available to platform users</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Adder_Extension__c.Adder_Type__c</field>
@@ -2331,7 +2327,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
-    <label>Project, Construction, Incentive, Adder</label>
+    <label>Project, Construction, Incentive, Adder for Platform license</label>
     <license>Salesforce</license>
     <objectPermissions>
         <allowCreate>true</allowCreate>
