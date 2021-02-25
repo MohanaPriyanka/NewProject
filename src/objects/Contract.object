@@ -1146,7 +1146,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <description>Field used to get the original contract sent to the customer.</description>
         <externalId>false</externalId>
         <inlineHelpText>Field used to get the original contract sent to the customer.</inlineHelpText>
-        <label>Override Countersig Template Id</label>
+        <label>Override Countersign Template Id</label>
         <length>100</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
