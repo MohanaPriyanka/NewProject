@@ -250,7 +250,7 @@ public with sharing class RESTRouterV2Test {
     }
 
     @IsTest
-    public static void testPostLeadSuccess() {
+    public static void testGetLeadSuccess() {
         // <setup>
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
