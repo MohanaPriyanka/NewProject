@@ -84,6 +84,10 @@ global without sharing class RESTRouterV2 {
                     String leadId = req.params.get('leadId');
                     String email = req.params.get('email');
                     controller.getLead(leadId, email);
+                } when '/contracts' {
+                    String leadId = req.params.get('leadId');
+                    String email = req.params.get('email');
+                    controller.getContracts(leadId, email);
                 } when else {
                     envelope.addError('Path not found');
                     RestContext.response.statusCode = 404;
