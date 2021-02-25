@@ -90,6 +90,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             response.statusCode = statusCode.badRequest;
         } else {
             Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
+            if (leadToReturn == null || leadToReturn.Email != email) {
+                throw new Util.AuthorizationBWException('Invalid authorization, the leadId (' + leadId + ') does not match the email (' + email + ')');
+            }
             RestLead responseLead = formatRestLeadFromLeadAndChildren(leadToReturn, false);
             Integer numberOfContracts = responseLead.numberOfContractDocs;
             Integer filesReady = responseLead.contentDocs != null ? responseLead.contentDocs.size() : 0;
