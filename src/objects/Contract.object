@@ -383,7 +383,8 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
     <fields>
         <fullName>Conga_Template_ID_Countersigned__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(
+        <formula>BLANKVALUE( Override_Countersign_Template_Id__c, 
+IF(
  ISPICKVAL(Contract_Type__c,&quot;Generic&quot;),
 
 &quot;[Terms and Conditions (Countersigned)]&quot;&amp;Product__r.Generic_Terms_Template_Countersigned__c,
@@ -399,7 +400,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
 &quot;[Community Solar Agreement (Countersigned)]&quot;&amp;Product__r.Project_Specific_Template_Countersigned__c
 
 )
-)</formula>
+))</formula>
         <label>Conga Template ID (Countersigned)</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -1134,6 +1135,19 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <externalId>false</externalId>
         <label>Other Party(s)</label>
         <length>150</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Override_Countersign_Template_Id__c</fullName>
+        <description>Field used to get the original contract sent to the customer.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field used to get the original contract sent to the customer.</inlineHelpText>
+        <label>Override Countersig Template Id</label>
+        <length>100</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
