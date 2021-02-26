@@ -2,56 +2,72 @@
  * @description: Uploads utility bills to Glynt and starts an extraction
  * Tested By: GlyntUploadServiceTest
  */
-public without sharing class GlyntUploadService implements Queueable, Database.AllowsCallouts {
+public without sharing class GlyntUploadService extends Promise {
     private static GlyntAPIHelper apiHelper = new GlyntAPIHelper();
     @TestVisible private static ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
     @TestVisible private static GlyntExtractionService extractionService = new GlyntExtractionService();
-    @TestVisible private static GlyntExtractionService extractionRetrievalService;
-    @TestVisible private Set<Id> utilityDataRequestsToUpload;
+    private Id sobjectToUpload;
+
+    @SuppressWarnings('PMD.EmptyStatementBlock')
+    public GlyntUploadService() {
+    }
+
+    public GlyntUploadService(Id sObjectId) {
+        sobjectToUpload = sObjectId;
+    }
 
      /**
      * @description Starts the upload to Glynt via queueable for any UDRs with Service Provider of Glynt
      * @param utilityDataRequests List of Utility Data Requests, with Service Provider
      */
     public void queueGlyntUpload(List<Utility_Data_Request__c> utilityDataRequests) {
-        Set<Id> utilityDataRequestsForGlynt = new Set<Id>();
+        Promise firstUploadPromise;
+        Promise lastUploadPromise;
         for (Utility_Data_Request__c udr : utilityDataRequests) {
             if (udr.Service_Provider__c == 'Glynt') {
-                utilityDataRequestsForGlynt.add(udr.Id);
+                if (firstUploadPromise == null) {
+                    firstUploadPromise = lastUploadPromise = new GlyntUploadService(udr.Id);
+                } else {
+                    lastUploadPromise = lastUploadPromise.then(new GlyntUploadService(udr.Id));
+                }
             }
         }
-        if (!utilityDataRequestsForGlynt.isEmpty()) {
-            GlyntUploadService uploadService = new GlyntUploadService();
-            uploadService.utilityDataRequestsToUpload = utilityDataRequestsForGlynt;
-            System.enqueueJob(uploadService);
+        if (firstUploadPromise != null) {
+            lastUploadPromise.then(new GlyntExtractionService(System.now().addMinutes(GlyntAPIHelper.extractionQueryTimeout)));
+            System.enqueueJob(firstUploadPromise);
         }
     }
 
     /**
-     * @description Queueable execution
-     * @param context Unused
+     * @description Uploads the content docs related to the first sObject and starts the extraction,  then queues the
+     *  remaining objects to upload (if any). Once all are uploaded to Glynt with extractions started, it starts querying
+     *  for completed extractions. This assumes that the sObject (e.g. a Utility Data Request) will have a single content
+     *  doc, or all content docs will fit in the available heap.
      */
-    public void execute(QueueableContext context) {
+    public override void execute() {
         try {
             List<ContentDocumentLink> contentDocumentLinks =
-                contentDocumentSelector.selectByLinkedEntities(utilityDataRequestsToUpload);
-            List<String> extractions = new List<String>();
+                contentDocumentSelector.selectByLinkedEntity(sobjectToUpload);
             for (ContentDocumentLink cdl : contentDocumentLinks) {
                 String glyntDocumentId = createDocument(cdl);
                 GlyntAPI.ExtractionResponse extractionResponse =
                     extractionService.createExtraction(new GlyntAPI.ExtractionRequest(glyntDocumentId, cdl.LinkedEntityId));
-                extractions.add(extractionResponse.id);
-            }
-            extractionRetrievalService =
-                new GlyntExtractionService(System.now().addMinutes(GlyntAPIHelper.extractionQueryTimeout), extractions);
-            if (!Test.isRunningTest()) {
-                System.enqueueJob(extractionRetrievalService);
+                updatePassThrough(extractionResponse.id);
             }
         } catch (Exception e) {
             Logger.logLater('GlyntUploadService', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         } finally {
             Logger.flushLogs();
         }
+    }
+
+    private void updatePassThrough(String extractionResponseId) {
+        if (passThrough == null) {
+            passThrough = new List<String>{extractionResponseId};
+        } else {
+            ((List<String>) passThrough).add(extractionResponseId);
+        }
+        chain.updatePassThrough(passThrough);
     }
 
     /**

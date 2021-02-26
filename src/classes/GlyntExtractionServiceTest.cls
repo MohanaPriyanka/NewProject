@@ -2,7 +2,8 @@
 private with sharing class GlyntExtractionServiceTest {
     @IsTest
     private static void testRetrieveCompletedExtractions() {
-        GlyntExtractionService extractionService = new GlyntExtractionService(System.now(), new List<String>{'123', '456'});
+        GlyntExtractionService extractionService = new GlyntExtractionService(System.now());
+        extractionService.passThrough = new List<String>{'123', '456'};
         Test.startTest();
         Cache.Org.put('GlyntAuthToken', '123qweasd');
         Test.setMock(HttpCalloutMock.class, new GlyntMockCompleteExtractions());
@@ -25,11 +26,12 @@ private with sharing class GlyntExtractionServiceTest {
 
     @IsTest
     private static void testRetrieveIncompleteExtractions() {
-        GlyntExtractionService extractionService = new GlyntExtractionService(System.now().addMinutes(5), new List<String>{'123', '456'});
+        GlyntExtractionService extractionService = new GlyntExtractionService(System.now().addMinutes(5));
+        extractionService.passThrough = new List<String>{'123', '456'};
         Test.startTest();
         Cache.Org.put('GlyntAuthToken', '123qweasd');
         Test.setMock(HttpCalloutMock.class, new GlyntMockIncompleteExtractions());
-        extractionService.execute(null);
+        System.enqueueJob(extractionService);
         Test.stopTest();
         System.assertEquals(2, GlyntAPIHelper.endpointsCalled.size(), 'Expected two callouts to retrieve two extractions');
         System.assert(GlyntAPIHelper.endpointsCalled[0].endpoint.contains('extractions'),
@@ -48,11 +50,12 @@ private with sharing class GlyntExtractionServiceTest {
 
     @IsTest
     private static void testRetrievalTimeout() {
-        GlyntExtractionService extractionService = new GlyntExtractionService(System.now().addMinutes(-5), new List<String>{'123', '456'});
+        GlyntExtractionService extractionService = new GlyntExtractionService(System.now().addMinutes(-5));
+        extractionService.passThrough = new List<String>{'123', '456'};
         Test.startTest();
         Cache.Org.put('GlyntAuthToken', '123qweasd');
         Test.setMock(HttpCalloutMock.class, new GlyntMockIncompleteExtractions());
-        extractionService.execute(null);
+        System.enqueueJob(extractionService);
         Test.stopTest();
         System.assertEquals(null, GlyntExtractionService.extractionRetryService,
             'Should have an extractionRetryService to retrieve the extractions again');
