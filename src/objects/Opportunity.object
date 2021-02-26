@@ -8230,6 +8230,18 @@ DOER_Solar_Loan__c ==TRUE,(( Monthly_Payment__c *   Product__r.Loan_Term__c )+( 
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>UCB__c</fullName>
+        <description>Used in the SSF UCB Countersignature welcome email template for conditional text.</description>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.UCB__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Used in the SSF UCB Countersignature welcome email template for conditional text.</inlineHelpText>
+        <label>UCB</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>UCC_Filing_Submission_Date__c</fullName>
         <externalId>false</externalId>
         <label>UCC Filing Submission Date</label>
