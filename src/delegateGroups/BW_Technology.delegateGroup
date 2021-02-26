@@ -124,7 +124,7 @@
     <permissionSets>Commission Structure Management</permissionSets>
     <permissionSets>Commission Payment Management</permissionSets>
     <permissionSets>Chargent Transactions and Orders</permissionSets>
-    <permissionSets>LASER Credit Access</permissionSets>
+    <permissionSets>LASER Credit Access Admin</permissionSets>
     <permissionSets>Modify Cases and Tasks</permissionSets>
     <permissionSets>View All</permissionSets>
     <permissionSets>Manage External Users</permissionSets>
@@ -195,6 +195,8 @@
     <permissionSets>Underwriting Screen Access</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
+    <permissionSets>LASER Credit Access Site Guest User</permissionSets>
+    <permissionSets>LASER Credit Access User</permissionSets>
     <permissionSets>Limit Monitoring App</permissionSets>
     <permissionSets>Project, Construction, Incentive, Adder</permissionSets>
     <permissionSets>Project, Construction, Incentive, Adder for Platform license</permissionSets>
