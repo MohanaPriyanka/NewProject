@@ -216,6 +216,14 @@ Amount__c /Production__r.Credits_Available_for_Allocation__c,
         <type>Percent</type>
     </fields>
     <fields>
+        <fullName>Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Externally_Serviced_Bill_Adjustment__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
