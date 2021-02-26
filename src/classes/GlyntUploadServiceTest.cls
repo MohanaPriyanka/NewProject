@@ -76,6 +76,30 @@ private with sharing class GlyntUploadServiceTest {
         insert new List<ContentDocumentLink>{cdl, cdl2, cdl3};
     }
     @IsTest
+    private static void systemTest() {
+        Lead lead = [SELECT Id FROM Lead WHERE FirstName = 'Test' LIMIT 1];
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new GlyntMockUploadSuccess());
+        GlyntAPIHelper.extractionProcessor = 'GlyntExtractionService';
+        Chain.callQueueableChain = true;
+        UtilityDataRequestBuilder.create(new List<String>{lead.Id});
+        Test.stopTest();
+        List<Error_Log__c> infoLogsFromExtractionResults = [
+            SELECT Class__c, Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.INFO
+        ];
+        System.assertEquals(1, infoLogsFromExtractionResults.size(),
+            'Three documents uploaded to two UALs should have resulted in one info log with three results, but got this: ' +
+                infoLogsFromExtractionResults);
+        List<GlyntAPI.ExtractionResult> results =
+            (List<GlyntAPI.ExtractionResult>) JSON.deserialize(infoLogsFromExtractionResults[0].Message__c, List<GlyntAPI.ExtractionResult>.class);
+        System.assertEquals(3, results.size(),
+            'GlyntExtractionService.processExtractions should have logged three results, but logged this: ' +
+                infoLogsFromExtractionResults[0].Message__c);
+    }
+
+    @IsTest
     private static void testContentAssociationAndQueueingUpload() {
         Lead lead = [SELECT Id FROM Lead WHERE FirstName = 'Test' LIMIT 1];
         List<Utility_Data_Request__c> utilityDataRequests = [SELECT Id FROM Utility_Data_Request__c];
@@ -87,7 +111,7 @@ private with sharing class GlyntUploadServiceTest {
         Test.stopTest();
 
         utilityDataRequests = [SELECT Id FROM Utility_Data_Request__c];
-        System.assertEquals(3, utilityDataRequests.size(), 'Wrong number of UDRs created, one for each document in the two UAL');
+        System.assertEquals(3, utilityDataRequests.size(), 'Wrong number of UDRs created, one for each document in the two UALs');
 
         List<ContentDocumentLink> contentDocumentLinks = [
             SELECT Id, ContentDocument.Title
@@ -128,19 +152,16 @@ private with sharing class GlyntUploadServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new GlyntMockUploadSuccess());
-        GlyntUploadService uploadService = new GlyntUploadService();
         // GlyntUploadService will upload a doc from any object, it doesn't need to be a UDR
-        uploadService.utilityDataRequestsToUpload = new Set<Id>{ual.Id};
-        uploadService.execute(null);
+        GlyntUploadService uploadService = new GlyntUploadService(ual.Id);
+        System.enqueueJob(uploadService);
         Test.stopTest();
-        System.assertEquals(2, GlyntAPIHelper.endpointsCalled.size(),
-            'Expected two callouts to createDocument but got: ' + JSON.serializePretty(GlyntAPIHelper.endpointsCalled));
+        System.assertEquals(4, GlyntAPIHelper.endpointsCalled.size(),
+            'Expected four callouts, a create document/start extract pair for two documents but got: ' + JSON.serializePretty(GlyntAPIHelper.endpointsCalled));
         System.assert(GlyntAPIHelper.endpointsCalled[0].endpoint.contains('document'),
             'Expected to post to /v6/data-pools/dataPoolId/documents, but got: ' + GlyntAPIHelper.endpointsCalled[0].endpoint);
         System.assert(GlyntAPIHelper.endpointsCalled[0].jsonBody.contains('content'),
             'Should have sent a GlyntAPI.DocumentUpload, but sent: ' + GlyntAPIHelper.endpointsCalled[0].jsonBody);
-        System.assertNotEquals(GlyntUploadService.extractionRetrievalService, null,
-            'Should have set a queueable to retrieve the extraction results');
     }
 
     @IsTest
@@ -149,17 +170,14 @@ private with sharing class GlyntUploadServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new GlyntMockUploadFailure());
-        GlyntUploadService uploadService = new GlyntUploadService();
-        uploadService.utilityDataRequestsToUpload = new Set<Id>{ual.Id};
-        uploadService.execute(null);
+        GlyntUploadService uploadService = new GlyntUploadService(ual.Id);
+        System.enqueueJob(uploadService);
         Test.stopTest();
         System.assertEquals(1, GlyntAPIHelper.endpointsCalled.size(),
             'Expected one callout to createDocument that fails');
         System.assert(GlyntAPIHelper.endpointsCalled[0].endpoint.contains('document'),
             'Expected to post to /v6/data-pools/dataPoolId/documents, but got: ' + GlyntAPIHelper.endpointsCalled[0].endpoint);
-        System.assertEquals(null, GlyntUploadService.extractionRetrievalService,
-            'Should have gotten an exception before queueing the retrieval service');
-        List<Error_Log__c> errorLogs = [ 
+        List<Error_Log__c> errorLogs = [
             SELECT Id, Message__c
             FROM Error_Log__c
             WHERE Class__c = 'GlyntUploadService'
@@ -185,15 +203,33 @@ private with sharing class GlyntUploadServiceTest {
     private class GlyntMockUploadSuccess implements HttpCalloutMock {
         public HttpResponse respond(HttpRequest request) {
             HttpResponse httpResponse = new HttpResponse();
-            httpResponse.setHeader('Content-Type', 'application/json');
-            httpResponse.setStatusCode(201);
-            httpResponse.setBody('{"id":"123qwe"}');
+            if (request.getEndpoint().contains('documents')) {
+                httpResponse.setHeader('Content-Type', 'application/json');
+                httpResponse.setStatusCode(201);
+                httpResponse.setBody('{"id":"123qwe"}');
+            } else if (request.getEndpoint().contains('extractions')) {
+                if (request.getMethod() == 'POST') {
+                    httpResponse.setHeader('Content-Type', 'application/json');
+                    httpResponse.setStatusCode(201);
+                    httpResponse.setBody(JSON.serialize(new GlyntAPI.ExtractionResponse('Success', false)));
+                } else {
+                    httpResponse.setHeader('Content-Type', 'application/json');
+                    httpResponse.setStatusCode(200);
+                    httpResponse.setBody(JSON.serialize(new GlyntAPI.ExtractionResponse('Success', true)));
+                }
+            }
             return httpResponse;
         }
     }
 
     public class MockedGlyntExtractionService extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
+            GlyntAPIHelper.EndpointCall endpointCall = new GlyntAPIHelper.EndpointCall(
+                GlyntExtractionService.extractionsEndpoint,
+                JSON.serialize(new GlyntAPI.ExtractionRequest('documentid', 'linkedentityid')),
+                'response body'
+            );
+            GlyntAPIHelper.endpointsCalled.add(endpointCall);
             GlyntAPI.ExtractionResponse extractionResponse = new GlyntAPI.ExtractionResponse('Complete', true);
             extractionResponse.id = 'extractionId';
             return extractionResponse;
