@@ -117,4 +117,35 @@ public with sharing class MessagingServiceTest {
             'Expected the mock unknown error, but got: ' + Logger.logs.values()[0][0].message);
 
     }
+    
+    @IsTest
+    public static void testInvocableMessagingService(){
+        List<Contact> contactList = new List<Contact>();
+        Contact contactA = new Contact(FirstName = 'Contact A', 
+                                       LastName = 'Last', 
+                                       Email = 'kwhiteA@bluewavesolar.com');
+        Contact contactB = new Contact(FirstName = 'Contact B', 
+                                       LastName = 'Last', 
+                                       Email = 'kwhiteB@bluewavesolar.com');
+        insert (new List<Contact>{contactA, contactB});
+        contactList.add(contactA);
+        contactList.add(contactB);
+        
+        List<FlowMap> templateValues = new List<FlowMap>();
+        FlowMap tempInput1 = new FlowMap('', 'testSolarFarm');
+        FlowMap tempInput2 = new FlowMap('', 'testSolarFarm');
+        templateValues.add(tempInput1);
+        templateValues.add(tempInput2);
+        
+        InvocableMessagingService.EmailTemplateSendInfo testInfo = 
+            new InvocableMessagingService.EmailTemplateSendInfo(
+            'Change in COD Date', contactList, templateValues);
+        List<InvocableMessagingService.EmailTemplateSendInfo> emailInfo = 
+            new List<InvocablemessagingService.EmailTemplateSendInfo>();
+        emailInfo.add(testInfo);
+        
+        InvocableMessagingService.sendEmailTemplate(emailInfo);
+        
+        System.assertEquals(2, MessagingService.emailsSent.size(), 'There should be one email sent for each contact in the contactList - in this case 2.');
+    }
 }

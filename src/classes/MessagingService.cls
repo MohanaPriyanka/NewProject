@@ -65,9 +65,9 @@ public without sharing class MessagingService {
     public static EmailTemplate getHtml (String templateName) {
         if (emailTemplateMap.get(templateName) == null) {
             List<EmailTemplate> templates = [
-                SELECT Id, HtmlValue, Body
+                SELECT Id, HtmlValue, Body, Subject
                 FROM EmailTemplate
-                WHERE DeveloperName = :templateName
+                WHERE (DeveloperName = :templateName OR Name = :templateName)
                 AND (IsActive = TRUE OR IsActive = : onlyUseActiveTemplates)
                 LIMIT 1
             ];

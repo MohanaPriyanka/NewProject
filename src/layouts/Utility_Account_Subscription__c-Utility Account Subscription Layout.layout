@@ -371,9 +371,15 @@
         <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
+        <fields>Date__c</fields>
+        <fields>Credits_Allocated__c</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>UASB__c.Utility_Account_Subscription__c</relatedList>
+        <sortField>Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
