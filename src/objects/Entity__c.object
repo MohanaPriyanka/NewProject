@@ -857,6 +857,20 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Payment_Gateway__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Payment Gateway</label>
+        <referenceTo>Zuora__PaymentGateway__c</referenceTo>
+        <relationshipLabel>Entities</relationshipLabel>
+        <relationshipName>Entities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Phone_Number__c</fullName>
         <description>This is displayed on Maine contracts in the Project Sponsor table.</description>
         <externalId>false</externalId>

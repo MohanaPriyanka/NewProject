@@ -22886,6 +22886,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Entity__c.Payment_Gateway__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Entity__c.Phone_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
