@@ -199,7 +199,7 @@ public class UtilityAccountSubscriptionHandlerTest {
             LIMIT 1
         ];
 
-        System.assertEquals(opp.Shared_Solar_System__c, checkUAS.Shared_Solar_System__c);
+        System.assertEquals(opp.Shared_Solar_System__c, checkUAS.Shared_Solar_System__c, 'SSS on UAS should match Opportunity');
     }
 
     @IsTest
@@ -235,7 +235,7 @@ public class UtilityAccountSubscriptionHandlerTest {
         ];
 
         //Should be null because opp is null
-        System.assertEquals(null, nullUAS.Shared_Solar_System__c);
+        System.assertEquals(null, nullUAS.Shared_Solar_System__c,'UAS SSS should be null because it does not have an opportunity');
 
         nullUAS.Opportunity__c = opp.Id;
         update nullUAS;
@@ -248,8 +248,8 @@ public class UtilityAccountSubscriptionHandlerTest {
         ];
 
         //Will now be populated because UAS has opportunity now
-        System.assertNotEquals(null, checkUAS.Shared_Solar_System__c);
-        System.assertEquals(opp.Shared_Solar_System__c, checkUAS.Shared_Solar_System__c);
+        System.assertNotEquals(null, checkUAS.Shared_Solar_System__c, 'SSS should be populated on UAS after Opportunity is populated');
+        System.assertEquals(opp.Shared_Solar_System__c, checkUAS.Shared_Solar_System__c,'SSS on UAS should match SSS on Opportunity');
     }
 
     @IsTest
@@ -284,7 +284,7 @@ public class UtilityAccountSubscriptionHandlerTest {
             LIMIT 1
         ];
 
-        System.assertEquals(opps[0].Shared_Solar_System__c, uas.Shared_Solar_System__c);
+        System.assertEquals(opps[0].Shared_Solar_System__c, uas.Shared_Solar_System__c,'Opp and UAS SSS should match before attempting to change them');
 
         // Change Opportunity - therefore SSS changes
         Shared_Solar_System__c sss2 = [
@@ -296,17 +296,11 @@ public class UtilityAccountSubscriptionHandlerTest {
         update opps[1];
 
         uas.Opportunity__c = opps[1].Id;
-        update uas;
-
-        uas = [
-            SELECT Id, Shared_Solar_System__c
-            FROM Utility_Account_Subscription__c
-            WHERE Id = : uas.id
-            LIMIT 1
-        ];
-
-        System.assertNotEquals(null, uas.Shared_Solar_System__c);
-        System.assertEquals(sss2.Id, uas.Shared_Solar_System__c);
+        try {
+            update uas;
+        }  catch (System.DmlException e) {
+            System.assertEquals('FIELD_CUSTOM_VALIDATION_EXCEPTION' , e.getDmlStatusCode(0),'Updating the SSS on UAS should trigger a validation rule to prevent the txn' );
+        }
     }
 
     @IsTest
@@ -317,7 +311,7 @@ public class UtilityAccountSubscriptionHandlerTest {
             WHERE Name = 'BOpp'
             LIMIT 1
         ];
-        System.assertNotEquals(null, anchorOpp.AccountId);
+        System.assertNotEquals(null, anchorOpp.AccountId,'Anchor opp used for testing should link to an account');
         anchorOpp.Customer_Group__c = 'Anchor';
         update anchorOpp;
 
@@ -329,9 +323,9 @@ public class UtilityAccountSubscriptionHandlerTest {
             LIMIT 1
         ];
 
-        System.assertNotEquals(null, anchorUAS);
-        System.assertEquals(null, anchorUAS.Annual_Subscription_Production_Summary__c);
-        System.assertEquals(anchorOpp.Id, anchorUAS.Opportunity__c);
+        System.assertNotEquals(null, anchorUAS,'UASs with a Customer Group = Anchor should exist');
+        System.assertEquals(null, anchorUAS.Annual_Subscription_Production_Summary__c,'Anchor UASs should not have any annual production before we rollup the data');
+        System.assertEquals(anchorOpp.Id, anchorUAS.Opportunity__c,'The Anchor Opp and Anchor UAS should have the same Opportunity ID');
 
         Date billDate = System.today();
 
@@ -375,6 +369,6 @@ public class UtilityAccountSubscriptionHandlerTest {
             LIMIT 1
         ];
 
-        System.assertEquals(300, anchorUAS.Annual_Subscription_Production_Summary__c);
+        System.assertEquals(300, anchorUAS.Annual_Subscription_Production_Summary__c,'The rollup of Anchor production should = 300');
     }
 }
