@@ -23,7 +23,7 @@ public without sharing class AdjustmentSelector {
                 // handle various UCB and externally serviced permutations
                 'AND (' +
                     '(Utility_Account_Subscription__r.Shared_Solar_System__r.UCB__c = TRUE AND Utility_Account_Subscription__r.Externally_Serviced_Override__c = \'Internally Serviced\') ' +
-                    'OR (Utility_Account_Subscription__r.Shared_Solar_System__r.UCB__c = FALSE AND Utility_Account_Subscription__r.Externally_Serviced__c = FALSE)' +
+                    'OR (Utility_Account_Subscription__r.Shared_Solar_System__r.UCB__c = FALSE AND Externally_Serviced__c = FALSE)' +
                 ') ' +
                 // Ignore Returns, because we'll always create a debit memo for returned payments in Zuora
                 'AND Adjustment_Type__c != \'Returned Payment\' ' +
