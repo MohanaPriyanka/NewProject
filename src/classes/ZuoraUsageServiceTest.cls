@@ -87,8 +87,20 @@ public class ZuoraUsageServiceTest {
             Approval_Status__c = 'Approved',
             Client__c = clientAccount.Id,
             Reason_For_Adjustment__c = 'Needs adjustment');
-
-        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree};
+        Bill_Adjustment__c adjustFour   = new Bill_Adjustment__c(
+            Name = 'UASoneAdjustment2',
+            Utility_Account_Subscription__c = uasbList[0].Utility_Account_Subscription__r.Id,
+            Account__c = uasbList[0].Utility_Account_Subscription__r.Opportunity__r.AccountId,
+            UASB__c = uasbList[0].Id,
+            Adjustment_Type__c = 'Production',
+            Effective__c = 'Post on Next Bill',
+            Transfer__c = transfer.Id,
+            Adjustment_Amount__c = 0,
+            Credits_Allocated__c = -50,
+            Approval_Status__c = 'Approved',
+            Client__c = clientAccount.Id,
+            Reason_For_Adjustment__c = 'Needs adjustment');
+        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree, adjustFour};
     }
 
     @IsTest
@@ -111,7 +123,7 @@ public class ZuoraUsageServiceTest {
             iterator.next();
             i++;
         }
-        System.assertEquals(2, i);
+        System.assertEquals(3, i, 'There are 3 Adjustments not yet pushed to Zuora');
         Test.stopTest();
     }
 
@@ -219,7 +231,9 @@ public class ZuoraUsageServiceTest {
             FROM Bill_Adjustment__c
             WHERE Zuora_Id__c != NULL
         ];
-        System.assertEquals(1, adjustList.size());
+
+        System.assertEquals(2, adjustList.size());
+
         System.assertEquals(invoiceDate, adjustList[0].Effective_Date__c, 'Adjustments posted to Zuora should get Effective Date = Invoice Date');
 
         List<Error_Log__c> errors = [

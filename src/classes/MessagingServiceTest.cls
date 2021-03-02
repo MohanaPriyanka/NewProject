@@ -132,8 +132,8 @@ public with sharing class MessagingServiceTest {
         contactList.add(contactB);
         
         List<FlowMap> templateValues = new List<FlowMap>();
-        FlowMap tempInput1 = new FlowMap('', 'testSolarFarm');
-        FlowMap tempInput2 = new FlowMap('', 'testSolarFarm');
+        FlowMap tempInput1 = new FlowMap('<solar farm name>', 'testSolarFarm');
+        FlowMap tempInput2 = new FlowMap('<season/year>', 'testSeason');
         templateValues.add(tempInput1);
         templateValues.add(tempInput2);
         

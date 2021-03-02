@@ -15,7 +15,7 @@ public without sharing class InvocableMessagingService {
     public static void sendEmailTemplate(List<EmailTemplateSendInfo> emailInfo) {
         EmailTemplateSendInfo infoObject = emailInfo[0];
         String templateName = infoObject.getTemplateName();
-        List<Contact> contactList = infoObject.getcontactList();
+        List<Contact> contactList = infoObject.getContactList();
         Map<String, String> templateValues = infoObject.getReplacementMap();
         
         OrgWideEmailAddress owa = MessagingService.getCustomerCareEmail();
@@ -51,6 +51,9 @@ public without sharing class InvocableMessagingService {
                            description='List of FlowMap objects, with the keys being replaced by the value')
         public List<FlowMap> templateValues;
         
+        public EmailTemplateSendInfo(){
+            // EmailTemplateSendInfo needs a no-arg constructor
+        }
         public EmailTemplateSendInfo(String emailTemplateName, List<Contact>contactList, List<FlowMap> templateValues){
             this.emailTemplateName = emailTemplateName;
             this.contactList = contactList;
