@@ -1,5 +1,5 @@
 // JP 1/10/20 : Rename this "BillGenerationServiceTest" after migration away from SB / AB and delete existing
-@SuppressWarnings('PMD.AvoidHardcodingId')
+@SuppressWarnings('PMD.AvoidHardcodingId, PMD.ExcessivePublicCount')
 @IsTest
 public class TransferSheetBillingTest {
 
