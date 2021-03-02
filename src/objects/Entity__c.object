@@ -860,6 +860,7 @@
         <fullName>Payment_Gateway__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
+        <inlineHelpText>Zuora will use the gateway specified here. If blank, Zuora will use the default gateway (BCS Single Gateway)</inlineHelpText>
         <label>Payment Gateway</label>
         <referenceTo>Zuora__PaymentGateway__c</referenceTo>
         <relationshipLabel>Entities</relationshipLabel>
