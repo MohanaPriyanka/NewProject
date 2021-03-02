@@ -46221,6 +46221,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Transfer_Part__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Transfer_Part__c.Externally_Serviced_Bill_Adjustment__c</field>
         <readable>true</readable>
     </fieldPermissions>
