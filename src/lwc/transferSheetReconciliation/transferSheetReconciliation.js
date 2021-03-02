@@ -1,16 +1,27 @@
-import { LightningElement, track, api, wire } from 'lwc';
+import { LightningElement, track, api } from 'lwc';
 import getUASBs from '@salesforce/apex/TransferSheetService.getTransferFromId';
 import insertUASBs from '@salesforce/apex/TransferSheetService.handleTransferSheetResolutions';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent'
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class BasicDatatable extends LightningElement {
-    @track uasbdata;
-    @track uasbMap = new Map();
-    @track apexData;
-    @track allResolved;
     @api recordId;
     @api categoryTypeTransfer = 'Transfer Sheet';
     @api fileTypes = ['.csv'];
+    @api UCB;
+
+    @track allResolved;
+    @track apexData;
+    @track readyState = false;
+    @track uasbData;
+    @track uasbMap = new Map();
+
+    connectedCallback() {
+        this.refreshData();
+    }
+
+    get titleSupplement() {
+        return this.UCB ? '(UCB)' : '';
+    }
 
     get options() {
         return [
@@ -19,105 +30,115 @@ export default class BasicDatatable extends LightningElement {
         ];
     }
 
-    connectedCallback() {
-        this.refreshData();
+    get missingTransferHelptext() {
+        return `If you don't want to send bill, choose Use Utility, if you want to send bill as we calculated it, choose Use Salesforce`;
     }
 
-    refreshData(){
-        getUASBs({transferRecordId: this.recordId})
+    async refreshData() {
+        this.readyState = false;
+        await getUASBs({
+            transferRecordId: this.recordId
+        })
         .then(result => {
             this.apexData = JSON.stringify(result);
             this.readApexData(result);
+            this.readyState = true;
         })
         .catch(error => {
-            var errorMessage = '_';
-            if (error.body.message){
-                errorMessage = error.body.message;
-            }
+            const errorMessage = error.body && error.body.message ? error.body.message : '_';
             if (errorMessage.includes('Bills Already Generated')){
-                const event = new ShowToastEvent({
-                    title: 'Bills Already Generated for this Transfer',
-                    mode: 'sticky'
-                });
-                this.dispatchEvent(event);
+                this.showToast('Bills Already Generated for this Transfer', null, 'warning', 'pester');
             } else if (errorMessage.includes('There is another transfer')) {
-                const event = new ShowToastEvent({
-                    title: 'Older Unbilled Transfer Found',
-                    mode: 'sticky',
-                    message: errorMessage
-                });
-                this.dispatchEvent(event);
+                this.showToast('Older Un-billed Transfer Found', errorMessage, 'warning', 'sticky');
             } else {
-                const event = new ShowToastEvent({
-                    title: 'Could not load UASB list',
-                    mode: 'sticky',
-                    message: errorMessage
-                });
-                this.dispatchEvent(event);
+                this.showToast('Could not load UASB list', errorMessage, 'warning', 'sticky');
             }
+            this.readyState = true;
         });
     }
 
     readApexData(dataFromApex) {
         let formattedDataMap = new Map();
-        var i;
         try {
+            let i;
             for (i = 0; i < dataFromApex.length; i++) {
-                let uasbData = new Object();
-                let customername = dataFromApex[i].sfUASB.PreGen_Name_on_Account__c;
-                if (customername) {
-                    let cutoff = Math.min(customername.length, 15);
-                    uasbData.customername = dataFromApex[i].sfUASB.PreGen_Name_on_Account__c.substring(0, cutoff);
-                    if (dataFromApex[i].sfUASB.Externally_Serviced__c) {
-                        cutoff = Math.min(customername.length, 5);
-                        uasbData.customername = dataFromApex[i].sfUASB.PreGen_Name_on_Account__c.substring(0, cutoff) + '**EXTERNAL';
-                    }
-                }
-                let final = dataFromApex[i].sfUASB.PreGen_IsPreGen__c;
-                if (final) {
-                    uasbData.finaled = 'FINALED_';
-                }
-                uasbData.Uniqueid = dataFromApex[i].sfUASB.Schedule_Z_Subscription__c;
-                uasbData.sfutilityaccount = dataFromApex[i].sfUASB.PreGen_Utility_Acct__c;
-                uasbData.sfproduction = dataFromApex[i].sfUASB.Subscription_Production_kWh_Static__c;
-                uasbData.sfcredits = dataFromApex[i].sfUASB.Credits_Allocated__c;
-                uasbData.sfcreditvalue = dataFromApex[i].sfUASB.NMC_Rate__c;
-                uasbData.trutilityaccount = dataFromApex[i].utilUASB.PreGen_Utility_Acct__c;
-                uasbData.trproduction = dataFromApex[i].utilUASB.Subscription_Production_kWh_Static__c;
-                uasbData.trcredits = dataFromApex[i].utilUASB.Credits_Allocated__c;
-                uasbData.trcreditvalue = dataFromApex[i].utilUASB.NMC_Rate__c;
-                if (dataFromApex[i].status === 'MATCH') {
-                    uasbData.isMatch = true;
-                    uasbData.resolution = 'UseSalesforce';
-                } else if (dataFromApex[i].status === 'CREDIT_MISMATCH') {
-                    uasbData.isCreditMismatch = true;
-                    uasbData.resolution = 'UseUtility';
-                } else if (dataFromApex[i].status === 'MISSING_BILL') {
-                    uasbData.Uniqueid = 'missingBill' + i;
-                    uasbData.isMissingBill = true;
-                    uasbData.resolution = 'UseSalesforce';
-                } else if (dataFromApex[i].status === 'MISSING_TRANSFER') {
-                    uasbData.isMissingTransfer = true;
-                } else {
-                    const event = new ShowToastEvent({title: 'Record without Match Status: ' + dataFromApex[i]});
-                    this.dispatchEvent(event);
-                }
-                formattedDataMap.set(uasbData.Uniqueid, uasbData);
+                let uasbData = {};
+                this.setRowValues(uasbData, dataFromApex[i]);
+                this.setRowMatchData(uasbData, dataFromApex[i], i);
+                formattedDataMap.set(uasbData.uniqueId, uasbData);
             }
             this.uasbMap = formattedDataMap;
         } catch (err){
-            const event = new ShowToastEvent({
-                title: 'System Error Reading UASB List',
-                mode: 'sticky',
-                message: 'ERROR THROWN: ' + err
-            });
-            this.dispatchEvent(event);
+            this.showToast('System Error Reading UASB List', 'ERROR THROWN: ' + err, 'error', 'sticky');
         }
         this.refreshDataTable();
     }
 
+    setRowValues(uasbData, dataFromApex) {
+        uasbData.customerName = this.setCustomerName(uasbData, dataFromApex);
+        uasbData.finaled = dataFromApex.sfUASB.PreGen_IsPreGen__c ? 'FINALED_' : '';
+        uasbData.uniqueId = dataFromApex.sfUASB.Schedule_Z_Subscription__c;
+        uasbData.sfUtilityAccount = dataFromApex.sfUASB.PreGen_Utility_Acct__c;
+        uasbData.sfProduction = dataFromApex.sfUASB.Subscription_Production_kWh_Static__c;
+        uasbData.sfCredits = dataFromApex.sfUASB.Credits_Allocated__c;
+        uasbData.sfCreditValue = dataFromApex.sfUASB.NMC_Rate__c;
+        uasbData.trUtilityAccount = dataFromApex.utilUASB.PreGen_Utility_Acct__c;
+        uasbData.trProduction = dataFromApex.utilUASB.Subscription_Production_kWh_Static__c;
+        uasbData.trCredits = dataFromApex.utilUASB.Credits_Allocated__c;
+        uasbData.trCreditValue = dataFromApex.utilUASB.NMC_Rate__c;
+    }
+
+    setCustomerName(uasbData, dataFromApex) {
+        let returnVal;
+        const customerName = dataFromApex.sfUASB.PreGen_Name_on_Account__c;
+        if (customerName) {
+            let cutoff = Math.min(customerName.length, 15);
+            returnVal = dataFromApex.sfUASB.PreGen_Name_on_Account__c.substring(0, cutoff);
+            if (dataFromApex.sfUASB.Externally_Serviced__c) {
+                cutoff = Math.min(customerName.length, 5);
+                returnVal = dataFromApex.sfUASB.PreGen_Name_on_Account__c.substring(0, cutoff) + '**EXTERNAL';
+            }
+        }
+        return returnVal;
+    }
+
+    setRowMatchData(uasbData, dataFromApex, iteration) {
+        switch (dataFromApex.status) {
+            case 'MATCH':
+                uasbData.isMatch = true;
+                uasbData.resolution = 'UseSalesforce';
+                uasbData.rowStyle = 'slds-theme_shade';
+                uasbData.leftPanelStyle = 'slds-p-around--xx-small';
+                uasbData.rightPanelStyle = 'slds-p-around--xx-small';
+                break;
+            case 'CREDIT_MISMATCH':
+                uasbData.isCreditMismatch = true;
+                uasbData.resolution = 'UseUtility';
+                uasbData.rowStyle = 'slds-theme_shade slds-theme_warning';
+                uasbData.leftPanelStyle = 'slds-p-around--xx-small';
+                uasbData.rightPanelStyle = 'slds-p-around--xx-small';
+                break;
+            case 'MISSING_BILL':
+                uasbData.uniqueId = 'missingBill' + iteration;
+                uasbData.isMissingBill = true;
+                uasbData.resolution = 'UseSalesforce';
+                uasbData.rowStyle = 'slds-theme_shade';
+                uasbData.leftPanelStyle = 'slds-p-around--xx-small slds-theme_error';
+                uasbData.rightPanelStyle = 'slds-p-around--xx-small';
+                break;
+            case 'MISSING_TRANSFER':
+                uasbData.isMissingTransfer = true;
+                uasbData.rowStyle = 'slds-theme_shade';
+                uasbData.leftPanelStyle = 'slds-p-around--xx-small';
+                uasbData.rightPanelStyle = 'slds-p-around--xx-small slds-theme_error';
+                break;
+            default:
+                this.showToast('Record without Match Status: ' + dataFromApex, null, 'info', 'sticky');
+        }
+    }
+
     refreshDataTable() {
-        this.uasbdata = this.uasbMap.values();
+        this.uasbData = this.uasbMap.values();
         this.checkForAllResolved();
     }
 
@@ -141,8 +162,7 @@ export default class BasicDatatable extends LightningElement {
         let booleanAllClear = true;
         let dataMap = this.uasbMap;
         for (let lineItem of dataMap.values()) {
-            if (lineItem.resolution !== 'UseUtility' &&
-                lineItem.resolution !== 'UseSalesforce'){
+            if (lineItem.resolution !== 'UseUtility' && lineItem.resolution !== 'UseSalesforce') {
                 booleanAllClear = false;
                 break;
             }
@@ -150,31 +170,34 @@ export default class BasicDatatable extends LightningElement {
         this.allResolved = booleanAllClear;
     }
 
-    insertBills(){
+    insertBills() {
+        this.readyState = false;
         this.allResolved = false;
         let dataList = [];
         for (let lineItem of this.uasbMap.values()) {
             dataList.push(JSON.stringify(lineItem));
         }
-        insertUASBs({pregenBills : this.apexData, overrideValues : dataList})
+        insertUASBs({
+            pregenBills : this.apexData,
+            overrideValues : dataList
+        })
         .then(result => {
-            const event = new ShowToastEvent({
-                title: 'Success! UASBs Inserted',
-                mode: 'sticky'
-            });
-            this.dispatchEvent(event);
+            this.showToast('Success! UASBs Inserted', null, 'success', 'pester');
+            this.readyState = true;
         })
         .catch(error => {
-            var errorMessage = '_';
-            if (error.body.message){
-                errorMessage = error.body.message;
-            }
-            const event = new ShowToastEvent({
-                title: 'Could not load UASB list',
-                mode: 'sticky',
-                message: errorMessage
-            });
-            this.dispatchEvent(event);
+            const err = error.body.message;
+            this.showToast('Could not load UASB list', err ? err : '_', 'error', 'sticky');
+            this.readyState = true;
         });
+    }
+
+    showToast(title, message, variant, mode) {
+        this.dispatchEvent(new ShowToastEvent({
+            title: title,
+            mode: mode,
+            message: message,
+            variant: variant
+        }));
     }
 }

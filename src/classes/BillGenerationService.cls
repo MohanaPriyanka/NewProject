@@ -5,59 +5,120 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class BillGenerationService {
-    public static Map<Id, List<Product_Escalator__c>> productEscalatorMap;
-    public static ScheduleZSubscriptionSelector szsSelector = new ScheduleZSubscriptionSelector();
+
+    public static DefaultUtilityFeeSelector feeSelector = new DefaultUtilityFeeSelector();
     public static ProductEscalatorSelector escalatorSelector = new ProductEscalatorSelector();
+    public static ScheduleZSubscriptionSelector szsSelector = new ScheduleZSubscriptionSelector();
+    public static UASBSelector uasbSelector = new UASBSelector();
+    public BillType operationType;
+    public Boolean isLightningContext;
+    public Boolean isUCB;
+    public Default_Utility_Fee__c utilityAdminFee;
+    public List<Schedule_Z_Subscription__c> szsList;
+    public Map<String,UASB__c> priorUASBMap;
+    public Map<String,UASB__c> transferUASBs;
+    public Map<Id,List<Product_Escalator__c>> productEscalatorMap;
+    public Transfer__c transfer;
+    public enum BillType { ONTIME, OVERDUE, BOTH }
+    @TestVisible private static Quiddity testQuiddityOverride;
 
-    public enum BillType {ONTIME, OVERDUE, BOTH}
+    public BillGenerationService(Transfer__c tx, BillType opType) {
+        this.transfer = tx;
+        this.operationType = opType;
+        this.productEscalatorMap = escalatorSelector.getProductEscalations();
+        this.szsList = getScheduleZSubscriptionList();
+        this.isUCB = tx.Shared_Solar_System__r.UCB__c;
 
-    // Archive once we are creating only UASBs:
-    public static List<Schedule_Z_Subscription__c> getScheduleZSubscriptionList(Set<Id> scheduleZIds){
-        List<Schedule_Z_Subscription__c> onTimeSZSes;
-        List<Schedule_Z_Subscription__c> overdueSZSes;
-        Set<Id> uasIdsAlreadyBilling = new Set<Id>();
+        Quiddity context = testQuiddityOverride == null ? Request.getCurrent().getQuiddity() : testQuiddityOverride;
+        this.isLightningContext = context == System.Quiddity.AURA;
 
-        onTimeSZSes = ScheduleZSubscriptionSelector.getListForBilling(scheduleZIds);
-        for (Schedule_Z_Subscription__c szs : onTimeSZSes) {
-            uasIdsAlreadyBilling.add(szs.Utility_Account_Subscription__c);
+        // If UCB, pass in generated transfer UASBs originating from utility transfer .csv
+        // UASBs generated with Salesforce data need elements that only exist on the Utility's transfer .csv
+        // Also get other stuff we need for UCB transfer QC / UASB creation
+        if (this.isUCB) {
+            this.transferUASBs = getUASBsFromUtilityTransferSheet();
+            this.priorUASBMap = uasbSelector.getLatestUcbUasbBySzs(szsList);
+            this.utilityAdminFee = feeSelector.getActiveUCBRecordForUtility(transfer.Shared_Solar_System__r.System_Utility__c);
         }
-        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
-        Decimal minimumBalance = Util.nullToZero(sysProp.Minimum_Balance_Bills_for_Cancelled__c);
-        Date maxPastDueDate = Date.today().addDays(-(Integer.valueOf(Util.nullToZero(sysProp.Days_Generate_Bills_For_Cancelled__c))));
-        overdueSZSes = ScheduleZSubscriptionSelector.getOverdueSZSubscriptions(
-            minimumBalance,
-            maxPastDueDate,
-            uasIdsAlreadyBilling
-        );
-        onTimeSZSes.addAll(overdueSZSes);
-        return onTimeSZSes;
     }
 
-    // Called from Preview Bills Screen on Transfer:
+    /**
+     * @description Method to instance this class from static context and return SF-calc'ed UASBs from a transfer record.
+     *              Called from Preview Bills Screen on Transfer
+     * @param transfer Transfer in question
+     * @param operationType Operation type (Enum)
+     * @return List of SF-generated UASB__c records for the transfer
+     */
     @AuraEnabled
     public static List<UASB__c> calculateUASBsFromTransfer(Transfer__c transfer, BillType operationType) {
-        return calculateUASBsFromTransfer(transfer, operationType, true);
+        BillGenerationService service = new BillGenerationService(transfer, operationType);
+        return service.calculateUASBsFromTransfer();
     }
 
-    public static List<UASB__c> calculateUASBsFromTransfer(Transfer__c transfer, BillType operationType, Boolean isAura) {
-        BillGenerationService billGenService = new BillGenerationService();
-        String errorMessage = billGenService.checkRequiredTransferFields(transfer);
-        if (isAura && errorMessage != null){
+    @TestVisible
+    private List<UASB__c> calculateUASBsFromTransfer() {
+        String errorMessage = checkRequiredTransferFields();
+        if (isLightningContext && errorMessage != null) {
             throw Util.createAuraExceptionWithMessage(errorMessage);
-        } else if (errorMessage != null){
+        } else if (errorMessage != null) {
             throw new Util.BWException(errorMessage);
         }
-        List<UASB__c> uasbs = billGenService.calculateUASBesFromSZSes(billGenService.getScheduleZSubscriptionList(transfer, operationType), transfer);
+
+        List<UASB__c> uasbs = calculateUASBesFromSZSes(null);
         return uasbs;
     }
 
     @TestVisible
-    private List<Schedule_Z_Subscription__c> getScheduleZSubscriptionList(Transfer__c transfer, BillType operationType) {
+    private List<UASB__c> calculateUASBesFromSZSes(List<Schedule_Z_Subscription__c> szsListOverride) {
+        List<UASB__c> uasbsToInsert = new List<UASB__c>();
+        szsList = szsListOverride != null ? szsListOverride : szsList; // list override only exists for legacy system test
+        for (Schedule_Z_Subscription__c szs : szsList) {
+            uasbsToInsert.add(getUASB(szs));
+        }
+        return uasbsToInsert;
+    }
+
+    private UASB__c getUASB(Schedule_Z_Subscription__c szs) {
+        UASB__c uasb = new UASB__c();
+        Boolean normalBill = szs.Schedule_Z__c == transfer.Allocation_Schedule__c && !szs.Stop_Credit_Transfer__c;
+        if (normalBill && !isUCB) {
+            uasb = new UASB(szs, transfer, productEscalatorMap).getSObject();
+        } else if (normalBill && isUCB) {
+            String utilityNumber = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
+            UASB__c ucbParsedTransferUASB = transferUASBs?.get(utilityNumber);
+            UASB__c priorUASB = priorUASBMap?.get(szs.Id);
+            uasb = new UcbUASB(szs, transfer, productEscalatorMap, priorUASB, ucbParsedTransferUASB, utilityAdminFee).getSObject();
+        } else {
+            // Likely a zero-dollar bill. This bill type concept is subject to deprecation in the future
+            uasb = new ZeroDollarUASB(szs, transfer).getSObject();
+        }
+        return uasb;
+    }
+
+    private Map<String,UASB__c> getUASBsFromUtilityTransferSheet() {
+        Map<String,UASB__c> transferUASBs = new Map<String,UASB__c>();
+        try {
+            TransferSheetService.initializeClass(transfer);
+            Map<Integer,List<String>> csvData = TransferSheetService.getDataFromMostRecentDocumentUpload(transfer);
+            transferUASBs = TransferSheetService.convertTransferCsvToUASBs(csvData);
+        } catch (Exception e) {
+            String error = 'Unable to retrieve utility data from transfer sheet .csv. Error: \n'+ e.getMessage();
+            if (isLightningContext != null) {
+                throw Util.createAuraExceptionWithMessage(error);
+            } else {
+                throw new Util.BWException(error);
+            }
+        }
+        return transferUASBs;
+    }
+
+    @TestVisible
+    private List<Schedule_Z_Subscription__c> getScheduleZSubscriptionList() {
         List<Schedule_Z_Subscription__c> onTimeSZSes;
         List<Schedule_Z_Subscription__c> overdueSZSes;
 
         onTimeSZSes = szsSelector.getOnTimeListForBillingOffTransfer(new Set<Id>{transfer.Allocation_Schedule__c});
-        overdueSZSes = getOverdueSZSList(transfer,onTimeSZSes);
+        overdueSZSes = getOverdueSZSList(onTimeSZSes);
 
         switch on operationType {
             when ONTIME {
@@ -73,180 +134,29 @@ public without sharing class BillGenerationService {
         }
     }
 
-    private List<Schedule_Z_Subscription__c> getOverdueSZSList(Transfer__c transfer, List<Schedule_Z_Subscription__c> onTimeSZSes) {
+    private List<Schedule_Z_Subscription__c> getOverdueSZSList (List<Schedule_Z_Subscription__c> onTimeSZSes) {
         Set<Id> uasIdsAlreadyBilling = new Set<Id>();
         for (Schedule_Z_Subscription__c szs : onTimeSZSes) {
             uasIdsAlreadyBilling.add(szs.Utility_Account_Subscription__c);
         }
-        return szsSelector.getOverdueSZSForBillingOffTransfer(new Set<Id>{transfer.Shared_Solar_System__c}, uasIdsAlreadyBilling);
+        return szsSelector.getOverdueSZSForBillingOffTransfer(
+            new Set<Id>{transfer.Shared_Solar_System__c}, uasIdsAlreadyBilling
+        );
     }
 
-    @TestVisible
-    private List<UASB__c> calculateUASBesFromSZSes(List<Schedule_Z_Subscription__c> szsList, Transfer__c transfer){
-        checkRequiredTransferFields(transfer);
-        List<UASB__c> uasbsToInsert = new List<UASB__c>();
-        for (Schedule_Z_Subscription__c szs : szsList){
-            if (szs.Schedule_Z__c == transfer.Allocation_Schedule__c && !szs.Stop_Credit_Transfer__c){
-                uasbsToInsert.add(setUASBFields(szs, transfer));
-            } else {
-                uasbsToInsert.add(setZeroDollarUASBFields(szs, transfer));
-            }
-        }
-        return uasbsToInsert;
-    }
-
-    private String checkRequiredTransferFields(Transfer__c transfer){
+    private String checkRequiredTransferFields() {
         String errorMessage = 'Cannot make UASBs from a Transfer ';
-        if (transfer.Allocation_Schedule__c == null){
+        if (transfer.Allocation_Schedule__c == null) {
             errorMessage += 'because the Transfer does not have an Allocation Schedule populated';
-        } else if (transfer.Attempted_kWh_Transfer__c == null || transfer.Attempted_Transfer__c == null){
+        } else if (transfer.Attempted_kWh_Transfer__c == null || transfer.Attempted_Transfer__c == null) {
             errorMessage += 'without Attempted kWh Transfer & Attempted Transfer populated';
-        } else if (transfer.Default_Credit_Value__c == null){
+        } else if (transfer.Default_Credit_Value__c == null) {
             errorMessage += 'without Default Credit Value populated';
-        } else if (transfer.Bill_Period__c == null || transfer.Bill_Period__r.Bill_Date__c == null || transfer.Date_of_Transfer__c == null){
+        } else if (transfer.Bill_Period__c == null || transfer.Bill_Period__r.Bill_Date__c == null || transfer.Date_of_Transfer__c == null) {
             errorMessage += 'without Date of Transfer & Bill Period Date populated';
         } else {
             errorMessage = null;
         }
         return errorMessage;
-    }
-
-    @TestVisible
-    private UASB__c setUASBFields(Schedule_Z_Subscription__c szs, Transfer__c transfer){
-        Product_Escalator__c escalatorForThisTransfer;
-        if (szs.Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c != null){
-            Integer billedProductionPeriodsBeforeThisTransfer =
-                (Integer)szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c;
-            escalatorForThisTransfer = getProductEscalator(szs, billedProductionPeriodsBeforeThisTransfer + 1);
-        }
-        Decimal shareOfSystem = szs.Percent_Share__c;
-        String creditsRoundingMethod = szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c;
-        Integer productionDecimalRounding = (Integer) szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.UASB_Number_of_Decimals__c;
-
-        // Calculate % Share of Production (kWh)
-        Decimal subscriptionProduction = ((shareOfSystem/100) * transfer.Attempted_kWh_Transfer__c).setScale(productionDecimalRounding, roundingMode.HALF_UP);
-
-        // Calculate Credits Allocated to Customer, either as % of kWh or % of $. Xcel Applies rate in 2 stages:
-        Decimal subscriptionNMCs = 0;
-        String billingMethod = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c;
-
-        if (billingMethod == 'NMC'){
-            subscriptionNMCs = (shareOfSystem/100) * transfer.Attempted_Transfer__c;
-            subscriptionNMCs = Util.roundValue(subscriptionNMCs, 2, creditsRoundingMethod);
-        } else if (billingMethod == 'kWh') {
-            subscriptionNMCs = ((transfer.Default_Credit_Value__c - 0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP) + ((0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP);
-        }
-
-        UASB__c generatedUASB = new UASB__c(
-            Customer_Subscription_KW_DC__c = szs.Customer_Subscription_kW_DC__c,
-            Date__c = transfer.Bill_Period__r.Bill_Date__c,
-            Transfer__c = transfer.Id,
-            Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
-            PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
-            PreGen_IsPreGen__c = szs.Utility_Account_Subscription__r.Finaled__c,
-            Account__c =  szs.Utility_Account_Subscription__r.Opportunity__r.AccountId,
-            Opportunity__c = szs.Utility_Account_Subscription__r.Opportunity__c,
-            Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
-            Billing_Period_Start_Date__c = transfer.Date_of_Transfer__c,
-            Billing_Period_End_Date__c = transfer.Date_of_Transfer__c.addMonths(1),
-            Externally_Serviced__c = szs.Utility_Account_Subscription__r.Externally_Serviced__c,
-            NMC_Discount__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,
-            Total_System_Size_kW_DC__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
-            NM_Rate_Floor__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
-            Pricing_Structure__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
-            Solar_Electricity_Rate__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
-            NMC_Rate__c = transfer.Default_Credit_Value__c,
-            Share_of_System__c = shareOfSystem,
-            Credits_Allocated__c = subscriptionNMCs,
-            Total_System_NMCs__c = transfer.Attempted_Transfer__c,
-            Total_System_Production_kWh__c = transfer.Attempted_kWh_Transfer__c,
-            Subscription_Production_kWh_Static__c = subscriptionProduction,
-            Schedule_Z_Subscription__c = szs.Id
-        );
-
-        String customerName = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c;
-        if (customerName != null){
-            generatedUASB.PreGen_Name_on_Account__c = customerName.substring(0,Math.min(customerName.length(),49));
-        }
-
-        if (billingMethod == 'NMC'){
-            generatedUASB.Size_off_NMCs__c = true;
-        }
-        
-        if (szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c != null) {
-            generatedUASB.PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c;
-        }
-
-        if (escalatorForThisTransfer != null){
-            generatedUASB.NMC_Discount__c = escalatorForThisTransfer.New_NMC_Discount__c;
-            generatedUASB.Solar_Electricity_Rate__c = escalatorForThisTransfer.New_Solar_Electricity_Rate__c;
-        }
-
-        return generatedUASB;
-    }
-
-    @TestVisible
-    private UASB__c setZeroDollarUASBFields(Schedule_Z_Subscription__c szs, Transfer__c transfer){
-        // Zero dollar bill for cancelled customers:
-        UASB__c zeroDollarUASB = new UASB__c(
-            Date__c = transfer.Bill_Period__r.Bill_Date__c,
-            Transfer__c = transfer.Id,
-            Schedule_Z_Subscription__c = szs.Id,
-            Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
-            PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
-            PreGen_IsPreGen__c = szs.Utility_Account_Subscription__r.Finaled__c,
-            Account__c =  szs.Utility_Account_Subscription__r.Opportunity__r.AccountId,
-            Opportunity__c = szs.Utility_Account_Subscription__r.Opportunity__c,
-            Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
-            Billing_Period_Start_Date__c = transfer.Date_of_Transfer__c,
-            Billing_Period_End_Date__c = transfer.Date_of_Transfer__c.addMonths(1),
-            Externally_Serviced__c = szs.Utility_Account_Subscription__r.Externally_Serviced__c,
-            Total_System_NMCs__c = 0,
-            Total_System_Production_kWh__c = 0,
-            Subscription_Production_kWh_Static__c = 0,
-            NMC_Rate__c = 0,
-            Share_of_System__c = 0,
-            Credits_Allocated__c = 0
-        );
-
-        String customerName = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c;
-        if (customerName != null){
-            zeroDollarUASB.PreGen_Name_on_Account__c = customerName.substring(0,Math.min(customerName.length(),49));
-        }
-
-        if (szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c != null) {
-            zeroDollarUASB.PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c;
-        }
-        return zeroDollarUASB;
-    }
-
-    @TestVisible
-    private Product_Escalator__c getProductEscalator(Schedule_Z_Subscription__c szs, Integer productionCount){
-        if (productEscalatorMap == null){
-            Map<Id, List<Product_Escalator__c>> productMap = escalatorSelector.getProductEscalations();
-            productEscalatorMap = productMap;
-        }
-
-        List<Product_Escalator__c> escalatorList = new List<Product_Escalator__c>();
-        Product_Escalator__c activeEscalator = null;
-
-        String mapKeyScheduleId = szs.Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c;
-        if (productEscalatorMap.containsKey(mapKeyScheduleId)) {
-            escalatorList = productEscalatorMap.get(mapKeyScheduleId);
-            for (Product_Escalator__c escalator : escalatorList) {
-                if (escalator.Starting_Credit_Transfer__c <= productionCount) {
-                    activeEscalator = escalator;
-                    break;
-                }
-            }
-        }
-        return activeEscalator;
-    }
-
-    @AuraEnabled
-    public static void insertUASBs(List<UASB__c> uasbsToInsert, Transfer__c transfer) {
-        insert uasbsToInsert;
-        transfer.Bills_Generated__c = true;
-        update transfer;
     }
 }

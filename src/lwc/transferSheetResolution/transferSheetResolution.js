@@ -12,11 +12,11 @@ export default class transferSheetResolution extends LightningElement {
         ];
     }
 
-    handlechange(event) {
-        if (event.detail.value == 'UseUtility'){
+    handleChange(event) {
+        if (event.detail.value === 'UseUtility'){
             const utilEvent = new CustomEvent('useutility', {detail: this.recordNumber});
             this.dispatchEvent(utilEvent);
-        } else if (event.detail.value == 'UseSalesforce'){
+        } else if (event.detail.value === 'UseSalesforce'){
             const sfEvent = new CustomEvent('usesalesforce', {detail: this.recordNumber});
             this.dispatchEvent(sfEvent);
         }
