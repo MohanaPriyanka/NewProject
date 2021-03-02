@@ -563,10 +563,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LightningReportsController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LoanHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>

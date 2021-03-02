@@ -1892,10 +1892,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LightningReportsController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LiveText__AcceptedConversationInfo</apexClass>
         <enabled>true</enabled>
     </classAccesses>

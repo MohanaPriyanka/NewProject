@@ -2623,10 +2623,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LightningReportsController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LiveText__AcceptedConversationInfo</apexClass>
         <enabled>false</enabled>
     </classAccesses>
