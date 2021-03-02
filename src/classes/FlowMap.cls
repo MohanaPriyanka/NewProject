@@ -10,6 +10,10 @@ public class FlowMap {
     @AuraEnabled
     public String value;
     
+    public FlowMap(){
+        // FlowMap needs a no-arg constructor
+    }
+    
     public FlowMap(String key, String value){
         this.key = key;
         this.value = value;
