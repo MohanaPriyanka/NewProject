@@ -423,13 +423,11 @@ public without sharing class TransferSheetService {
     private static UASB__c resolveCreditMismatch(UASBWithStatus data) {
         UASB__c uasbToModify = data.sfUASB;
         if (data.resolution == 'UseUtility') {
-            if (data.utilUASB.Credits_Allocated__c != 0) {
-                uasbToModify.Credits_Allocated__c = data.utilUASB.Credits_Allocated__c;
-            }
-            if (data.utilUASB.Subscription_Production_kWh_Static__c != 0) {
+            uasbToModify.Credits_Allocated__c = data.utilUASB.Credits_Allocated__c;
+            if (data.utilUASB.Subscription_Production_kWh_Static__c != null) {
                 uasbToModify.Subscription_Production_kWh_Static__c = data.utilUASB.Subscription_Production_kWh_Static__c;
             }
-            if (data.utilUASB.NMC_Rate__c != 0) {
+            if (data.utilUASB.NMC_Rate__c != null) {
                 uasbToModify.NMC_Rate__c = data.utilUASB.NMC_Rate__c;
             }
         }
