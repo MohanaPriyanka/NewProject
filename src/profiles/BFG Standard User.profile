@@ -11309,6 +11309,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.UCB_Savings__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Unapplied_Overpayments__c</field>
         <readable>true</readable>
     </fieldPermissions>
