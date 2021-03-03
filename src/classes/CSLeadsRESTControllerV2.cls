@@ -83,6 +83,29 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         envelope.setJSONResponse(response);
     }
 
+    public virtual void getContracts(String leadId, String email) {
+        RestResponse response = RestContext.response;
+        if (leadId == null || email == null) {
+            envelope.addError('Request did not include correct fields to retrieve contract files');
+            response.statusCode = statusCode.badRequest;
+        } else {
+            Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
+            if (leadToReturn == null || leadToReturn.Email != email) {
+                throw new Util.AuthorizationBWException('Invalid authorization, the leadId (' + leadId + ') does not match the email (' + email + ')');
+            }
+            RestLead responseLead = formatRestLeadFromLeadAndChildren(leadToReturn, false);
+            Integer numberOfContracts = responseLead.numberOfContractDocs;
+            Integer filesReady = responseLead.contentDocs != null ? responseLead.contentDocs.size() : 0;
+            if (filesReady < numberOfContracts) {
+                response.statusCode = statusCode.noContent;
+            } else {
+                envelope.setData(responseLead.contentDocs);
+                response.statusCode = statusCode.ok;
+            }
+        }
+        envelope.setJSONResponse(response);
+    }
+
     /**
      * Called by (Aura) SSFApplication/SSFApplicationDTC on SSF application completion
      * <br><br>

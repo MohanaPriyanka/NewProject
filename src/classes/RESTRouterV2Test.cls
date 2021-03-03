@@ -596,6 +596,26 @@ public with sharing class RESTRouterV2Test {
     }
 
     @IsTest
+    private static void testGetContracts() {
+        // Test Setup
+        Lead lead = createLead();
+
+        // Specific test begin
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/contracts';
+        req.addParameter('leadId', lead.Id);
+        req.addParameter('email', lead.Email);
+        req.httpMethod = 'GET';
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+        RESTRouterV2.getRequest();
+
+        // Since no Contract files have been inserted in this test case, response should be 204
+        System.assertEquals(204, RestContext.response.statusCode, 'This GET on /contracts should return 204 - No Content');
+    }
+
+    @IsTest
     private static void testPatchApplicationSuccessRegenDocs() {
         // <setup>
         Lead lead = createLead();
@@ -666,6 +686,8 @@ public with sharing class RESTRouterV2Test {
         System.assertEquals(null, returnedLead.contentDocs, 'No ContentDocumentLinks should be returned, as docs exist and changes were made to the lead');
         System.assertEquals(Date.today().addDays(-1), returnedLead.mostRecentContractGen.date(), 'mostRecentContractGen should be returned, as docs exist and changes were made to the lead');
     }
+
+
 
     private static String getApplicationJson(Id leadId, Id acctId, Id ualId) {
         return '{' +
