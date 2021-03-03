@@ -52,7 +52,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     @IsTest
     private static void testGetLeadSuccess() {
         useMocks();
-        controller.getLead(Util.getfakeId(Lead.SObjectType), SAMPLE_EMAIL);
+        controller.getLead(Util.getFakeId(Lead.SObjectType), SAMPLE_EMAIL);
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed GET request should succeed');
     }
     @IsTest
@@ -87,6 +87,22 @@ public with sharing class CSLeadsRESTControllerV2Test {
         useMocks((Lead) fabbedLead.toSObject());
         controller.getLead(Util.getFakeId(Lead.SObjectType), SAMPLE_EMAIL);
         System.assertEquals(400, RestContext.response.statusCode, 'Method should return error when lead has multiple property accounts');
+    }
+    /*******************
+     ** getContracts() **
+     *******************/
+    @IsTest
+    private static void testGetContractsSuccess() {
+        useMocks();
+        controller.contentSelector = (ContentDocumentSelector) Test.createStub(ContentDocumentSelector.class, new MockContentDocumentSelector());
+        controller.getContracts(Util.getFakeId(Lead.SObjectType), SAMPLE_EMAIL);
+        System.assertEquals(200, RestContext.response.statusCode, 'Contracts GET request should have returned 200');
+    }
+    @IsTest
+    private static void testGetContractsNoData() {
+        useMocks();
+        controller.getContracts(Util.getFakeId(Lead.SObjectType), SAMPLE_EMAIL);
+        System.assertEquals(204, RestContext.response.statusCode, 'GET request for contracts should fail since none were gen\'d');
     }
     /*******************
      *** patchLead() ***
@@ -1538,6 +1554,47 @@ public with sharing class CSLeadsRESTControllerV2Test {
             CapacityService.ZipcodeResponse response =
                 (CapacityService.ZipcodeResponse) JSON.deserialize(zipResponseWithCapacity, CapacityService.ZipcodeResponse.class);
             return response;
+        }
+    }
+    private class MockContentDocumentSelector extends MockProvider {
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'selectByLinkedEntities' {
+                    ContentVersion content = new ContentVersion(
+                        Title = 'Test',
+                        PathOnClient = 'Community Solar Agreement (Review).csv',
+                        VersionData = Blob.valueOf('Test'),
+                        IsMajorVersion = true
+                    );
+                    insert content;
+                    ContentDocumentLink cdl = new ContentDocumentLink(
+                        LinkedEntityId = [SELECT Id FROM Utility__c LIMIT 1].Id,
+                        ContentDocumentId = [SELECT Id FROM ContentDocument LIMIT 1].Id,
+                        ShareType = 'V',
+                        Visibility = 'AllUsers'
+                    );
+                    insert cdl;
+                    List<ContentDocumentLink> mockResult = [
+                        SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize,ContentDocument.CreatedDate,
+                            ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title,
+                            ContentDocument.LatestPublishedVersion.VersionData,ContentDocument.LatestPublishedVersion.FileExtension
+                        FROM ContentDocumentLink WHERE Id =: cdl.Id
+                    ];
+                    return mockResult;
+                }
+                when 'getPublicDistributionLinkByDocId' {
+                    return 'a1MS0000008BldpMAC';
+                }
+                when 'selectByLinkedEntitiesWithoutData' {
+                    String contentDocumentLink = '{' +
+                        '"ContentDocumentId": "a1MS0000008BldpMAC",' +
+                        '"LinkedEntityId": "a1MS0000008BldpMAC"' +
+                    '}';
+                    ContentDocumentLink cdlInstance = (ContentDocumentLink) JSON.deserialize(contentDocumentLink, ContentDocumentLink.class);
+                    return new List<ContentDocumentLink>{cdlInstance};
+                }
+            }
+            return null;
         }
     }
     private class MockDuplicateService extends MockProvider {

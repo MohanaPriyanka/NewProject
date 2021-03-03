@@ -11,7 +11,7 @@ public inherited sharing class StateSelector {
         State__c selectedState = [
             SELECT Id, Name, State_Abbreviation__c, Avg_Annual_Resi_kWh__c
             FROM State__c 
-            WHERE Name = :stateName
+            WHERE Name = :stateName OR State_Abbreviation__c = :stateName
         ];
         
         return selectedState;

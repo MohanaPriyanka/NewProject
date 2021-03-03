@@ -4119,7 +4119,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
     <fields>
         <fullName>Total_Savings__c</fullName>
         <externalId>false</externalId>
-        <formula>Savings_Adjustments__c + Savings_UASB__c</formula>
+        <formula>Savings_Adjustments__c + Savings_UASB__c + UCB_Savings__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Total Savings</label>
         <precision>18</precision>
@@ -4174,6 +4174,16 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>UCB_Savings__c</fullName>
+        <externalId>false</externalId>
+        <label>UCB Savings</label>
+        <summarizedField>UASB__c.Net_Member_Credits__c</summarizedField>
+        <summaryForeignKey>UASB__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Unapplied_Overpayments__c</fullName>
