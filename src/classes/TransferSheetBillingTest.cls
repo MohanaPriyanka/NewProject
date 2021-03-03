@@ -491,7 +491,7 @@ public class TransferSheetBillingTest {
                 System.assertEquals(149.22,uasbStatus.sfUASB.Credits_Allocated__c);
                 System.assertEquals(251.33,uasbStatus.utilUASB.Credits_Allocated__c);
                 System.assertEquals(1015.18,uasbStatus.sfUASB.Subscription_Production_kWh_Static__c);
-                System.assertEquals(0,uasbStatus.utilUASB.Subscription_Production_kWh_Static__c);
+                System.assertEquals(null,uasbStatus.utilUASB.Subscription_Production_kWh_Static__c);
                 confirmRecordExists = true;
             }
         }
@@ -527,7 +527,7 @@ public class TransferSheetBillingTest {
                 System.assertEquals(149.22,uasbStatus.sfUASB.Credits_Allocated__c);
                 System.assertEquals(251.33,uasbStatus.utilUASB.Credits_Allocated__c);
                 System.assertEquals(1015.18,uasbStatus.sfUASB.Subscription_Production_kWh_Static__c);
-                System.assertEquals(0,uasbStatus.utilUASB.Subscription_Production_kWh_Static__c);
+                System.assertEquals(null,uasbStatus.utilUASB.Subscription_Production_kWh_Static__c);
                 confirmRecordExists = true;
             }
         }
@@ -1125,8 +1125,11 @@ public class TransferSheetBillingTest {
             '"Subscription_Production_kWh_Static__c":1015.18,"Schedule_Z_Subscription__c":"a54540000001oN2AAI","Size_off_NMCs__c":true},' +
             '"Status":"CREDIT_MISMATCH",' +
             '"UtilUASB":{' +
-            '"PreGen_Utility_Acct__c":"0000234",' +
-            '"Credits_Allocated__c":251.33,"Subscription_Production_kWh_Static__c":0,"NMC_Rate__c":0.1848}}';
+                '"PreGen_Utility_Acct__c":"0000234",' +
+                '"Credits_Allocated__c":251.33,' +
+                '"Subscription_Production_kWh_Static__c":null,' +
+                '"NMC_Rate__c":0.1848}' +
+            '}';
         apexData += ']';
         return apexData;
     }
