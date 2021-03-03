@@ -298,6 +298,7 @@ public class UtilityAccountSubscriptionHandlerTest {
         uas.Opportunity__c = opps[1].Id;
         try {
             update uas;
+            System.assert(false, 'The update should have thrown an exception from a validation rule before this assertion');
         }  catch (System.DmlException e) {
             System.assertEquals('FIELD_CUSTOM_VALIDATION_EXCEPTION' , e.getDmlStatusCode(0),'Updating the SSS on UAS should trigger a validation rule to prevent the txn' );
         }
