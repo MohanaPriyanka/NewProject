@@ -125,7 +125,8 @@
         <label>Gateway Information</label>
         <layoutColumns>
             <layoutItems>
-                <emptySpace>true</emptySpace>
+                <behavior>Edit</behavior>
+                <field>Payment_Gateway__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -177,9 +178,9 @@
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
         <label>Custom Links</label>
-        <layoutColumns />
-        <layoutColumns />
-        <layoutColumns />
+        <layoutColumns/>
+        <layoutColumns/>
+        <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
     <relatedLists>
@@ -194,19 +195,6 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Shared_Solar_System__c.BWC_Project_Entity_Manual__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>ChargentBase__Merchant_ID__c</fields>
-        <fields>ChargentBase__Security_Key__c</fields>
-        <fields>ChargentBase__Require_AVS__c</fields>
-        <fields>ChargentBase__Require_CCV__c</fields>
-        <fields>ChargentBase__Test_Mode__c</fields>
-        <fields>RECORDTYPE</fields>
-        <fields>ChargentBase__Active__c</fields>
-        <fields>ChargentBase__Debug__c</fields>
-        <fields>ChargentBase__Use_Tokenization__c</fields>
-        <relatedList>ChargentBase__Gateway__c.Entity__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>

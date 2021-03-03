@@ -22891,6 +22891,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Entity__c.Payment_Gateway__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Entity__c.Phone_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -49488,6 +49493,11 @@
         <editable>true</editable>
         <field>Zuora__ObjectStub__c.Zuora__User__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__PaymentGateway__c.Client_Owner__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
