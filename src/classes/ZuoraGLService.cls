@@ -35,7 +35,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         ZuoraDataQueryService.callFromApex(queryString,methodToRunAfter);
     }
 
-
+    @SuppressWarnings('PMD.FieldNamingConventions')
     private class GeneralLedgerItem {
         public String Project;
         public String Client;
