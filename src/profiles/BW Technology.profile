@@ -49485,6 +49485,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__PaymentGateway__c.Client_Owner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Zuora__PaymentGateway__c.Zuora__EntityID__c</field>
         <readable>true</readable>
