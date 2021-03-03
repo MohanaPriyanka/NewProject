@@ -29,7 +29,12 @@ public class StateSelectorTest {
         State__c selectedState = controller.selectByName('Georgia');
         System.assertEquals(selectedState.Name, 'Georgia', 'The returned State object should be Georgia.');
         System.assertEquals(selectedState.State_Abbreviation__c, 'GA', 'The abbreviation is a formula dependent on the State Name.');
-        System.assertEquals(selectedState.Avg_Annual_Resi_kWh__c, 1234, 'The test Avg_Annual_Resi_kWh__c should be 1234.56');
+        System.assertEquals(selectedState.Avg_Annual_Resi_kWh__c, 1234, 'The test Avg_Annual_Resi_kWh__c should be 1234');
+        
+        State__c selectedStateAb = controller.selectByName('AL');
+        System.assertEquals(selectedStateAb.Name, 'Alabama', 'The returned State object should be Alabama.');
+        System.assertEquals(selectedStateAb.State_Abbreviation__c, 'AL', 'The abbreviation is a formula dependent on the State Name.');
+        System.assertEquals(selectedStateAb.Avg_Annual_Resi_kWh__c, 9876, 'The test Avg_Annual_Resi_kWh__c should be 9876');
     }
     
 }
