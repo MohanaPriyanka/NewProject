@@ -327,8 +327,8 @@ public class ZuoraUsageServiceTest {
             '"Account":{"Id":"0013I00000I77l7QAB","Zuora_Id__c":"2c92c0f871bae3ce0171bc5bc5634378"}}}}';
         UASB__c uasb = (UASB__c) JSON.deserialize(uasbJSON, UASB__c.class);
         ZuoraUsageService.ZuoraUsage zuoraUsage = ZuoraUsageService.convertUASBToUsage(uasb);
-        System.assertEquals('A-S00029335', zuoraUsage.subscriptionNumber);
-        System.assertEquals('C-00048346', zuoraUsage.chargeNumber);
+        System.assertEquals('A-S00029335', zuoraUsage.SubscriptionNumber);
+        System.assertEquals('C-00048346', zuoraUsage.ChargeNumber);
     }
 
     @IsTest
@@ -344,7 +344,7 @@ public class ZuoraUsageServiceTest {
             '"Utility_Account_Log__r":{"Id":"a1b3I000000Hk6eQAC","Name":"0000235"}},"Client__r":{"Id":"0013I00000I77klQAB","Account_Number__c":"BW-0021776"}}';
         Bill_Adjustment__c billAdjustment = (Bill_Adjustment__c) JSON.deserialize(adjustmentJSON, Bill_Adjustment__c.class);
         ZuoraUsageService.ZuoraUsage zuoraUsage = ZuoraUsageService.convertAdjustToUsage(billAdjustment, System.today());
-        System.assertEquals('A-S00029335', zuoraUsage.subscriptionNumber);
-        System.assertEquals('C-00048346', zuoraUsage.chargeNumber);
+        System.assertEquals('A-S00029335', zuoraUsage.SubscriptionNumber);
+        System.assertEquals('C-00048346', zuoraUsage.ChargeNumber);
     }
 }
