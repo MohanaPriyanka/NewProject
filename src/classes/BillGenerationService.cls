@@ -6,21 +6,21 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class BillGenerationService {
 
-    public static DefaultUtilityFeeSelector feeSelector = new DefaultUtilityFeeSelector();
-    public static ProductEscalatorSelector escalatorSelector = new ProductEscalatorSelector();
-    public static ScheduleZSubscriptionSelector szsSelector = new ScheduleZSubscriptionSelector();
-    public static UASBSelector uasbSelector = new UASBSelector();
-    public BillType operationType;
-    public Boolean isLightningContext;
-    public Boolean isUCB;
-    public Default_Utility_Fee__c utilityAdminFee;
-    public List<Schedule_Z_Subscription__c> szsList;
-    public Map<String,UASB__c> priorUASBMap;
-    public Map<String,UASB__c> transferUASBs;
-    public Map<Id,List<Product_Escalator__c>> productEscalatorMap;
-    public Transfer__c transfer;
     public enum BillType { ONTIME, OVERDUE, BOTH }
+    @TestVisible private static DefaultUtilityFeeSelector feeSelector = new DefaultUtilityFeeSelector();
+    @TestVisible private static ProductEscalatorSelector escalatorSelector = new ProductEscalatorSelector();
+    @TestVisible private static ScheduleZSubscriptionSelector szsSelector = new ScheduleZSubscriptionSelector();
+    @TestVisible private static UASBSelector uasbSelector = new UASBSelector();
     @TestVisible private static Quiddity testQuiddityOverride;
+    @TestVisible private Map<Id,List<Product_Escalator__c>> productEscalatorMap;
+    private BillType operationType;
+    private Boolean isLightningContext;
+    private Boolean isUCB;
+    private Default_Utility_Fee__c utilityAdminFee;
+    private List<Schedule_Z_Subscription__c> szsList;
+    private Map<String,UASB__c> priorUASBMap;
+    private Map<String,UASB__c> transferUASBs;
+    private Transfer__c transfer;
 
     public BillGenerationService(Transfer__c tx, BillType opType) {
         this.transfer = tx;

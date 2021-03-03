@@ -7,7 +7,8 @@
 public class ZeroDollarUASB extends UASB {
 
     public ZeroDollarUASB(Schedule_Z_Subscription__c szs, Transfer__c transfer) {
-        super(szs, transfer);
+        super.szs = szs;
+        super.transfer = transfer;
     }
 
     /**

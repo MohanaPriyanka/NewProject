@@ -6,22 +6,20 @@
 @SuppressWarnings('PMD.EmptyBlockStatements')
 public virtual class UASB {
 
-    public static final System.RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
-    public Decimal subscriptionProduction;
-    public String billingMethod;
+    private static final System.RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
+
     public Schedule_Z_Subscription__c szs;
     public Transfer__c transfer;
     public UASB__c uasb = new UASB__c();
-    public Decimal nmcDiscountOverride;
-    public Decimal solarElectricityRateOverride;
+    private Decimal subscriptionProduction;
+    private String billingMethod;
+    private Decimal nmcDiscountOverride;
+    private Decimal solarElectricityRateOverride;
 
     /**
-     * @description Zero-Dollar Bill Constructor
-     * Can be removed with the elimination of the zero-dollar bill concept along with ZeroDollarUASB.cls
+     * @description No-arg default constructor
      */
-    public UASB(Schedule_Z_Subscription__c szs, Transfer__c transfer) {
-        this.szs = szs;
-        this.transfer = transfer;
+    public UASB(){
     }
 
     /**
@@ -68,7 +66,7 @@ public virtual class UASB {
     /**
      * @description Sets fields which are common to all UASBs, regardless of type
      */
-    public void setCommonFields() {
+    private void setCommonFields() {
         uasb.Account__c = szs.Utility_Account_Subscription__r.Opportunity__r.AccountId;
         uasb.Opportunity__c = szs.Utility_Account_Subscription__r.Opportunity__c;
         uasb.Transfer__c = transfer.Id;

@@ -2,13 +2,14 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class TransferSheetService {
 
-    public static final Map<String,String> GENERIC_UASB_FIELDS = new Map<String,String>{
+    // Field mappings for .csv import headers => SObject fields
+    @TestVisible private static final Map<String,String> GENERIC_UASB_FIELDS = new Map<String,String>{
         'UtilityNumber' => 'PreGen_Utility_Acct__c', // Should always be in column 1
         'Credits' => 'Credits_Allocated__c', // Should always be in column 2
         'Production' => 'Subscription_Production_kWh_Static__c',
         'CreditValue' => 'NMC_Rate__c'
     };
-    public static final Map<String,String> UCB_UASB_FIELDS = new Map<String,String>{
+    @TestVisible private static final Map<String,String> UCB_UASB_FIELDS = new Map<String,String>{
         'UtilityNumber' => 'PreGen_Utility_Acct__c', // Should always be in column 1
         'Credits' => 'Credits_Allocated__c', // Should always be in column 2
         'Production' => 'Subscription_Production_kWh_Static__c',
@@ -24,13 +25,12 @@ public without sharing class TransferSheetService {
         'UtilityAdminFee' => 'Utility_Admin_Fee__c',
         'CDGSponsorPayment' => 'CDG_Sponsor_Payment__c'
     };
-
-    public static AccountsSelector accountsSelector = new AccountsSelector();
-    public static Boolean isUCB;
-    public static ContentDocumentSelector docSelector = new ContentDocumentSelector();
-    public static Integer expectedColumnCount;
-    public static List<String> uasbFields;
-    public static TransferSelector transferSelector = new TransferSelector();
+    @TestVisible private static AccountsSelector accountsSelector = new AccountsSelector();
+    @TestVisible private static ContentDocumentSelector docSelector = new ContentDocumentSelector();
+    @TestVisible private static TransferSelector transferSelector = new TransferSelector();
+    private static Boolean isUCB;
+    private static Integer expectedColumnCount;
+    private static List<String> uasbFields;
 
     /**
      * @description Object intended for JSON-encoding for transferSheetReconciliation.lwc (Transfer QC)
@@ -92,7 +92,7 @@ public without sharing class TransferSheetService {
             }
             postUASBInsertProcessing(transfer, overrideValues);
         } catch (Exception e) {
-            logGenericError(e, 'handleTransferSheetResolutions', true);
+            throw Util.createAuraExceptionWithMessage(e.getMessage() + '\n' + e.getStackTraceString());
         }
     }
 
@@ -379,14 +379,6 @@ public without sharing class TransferSheetService {
         return transferAmount != null && sfAmount != transferAmount;
     }
 
-    private static void logGenericError(Exception e, String methodName, Boolean postAuraException) {
-        String errorMessage = e.getMessage() + '___' + e.getStackTraceString();
-        if (postAuraException) {
-            throw Util.createAuraExceptionWithMessage(errorMessage);
-        }
-        Logger.logNow('TransferSheetService', methodName, errorMessage);
-    }
-
     private static void insertZeroDollarBills(Transfer__c transfer) {
         List<UASB__c> overdueUASBs = BillGenerationService.calculateUASBsFromTransfer(
             transfer, BillGenerationService.BillType.OVERDUE
@@ -468,20 +460,15 @@ public without sharing class TransferSheetService {
 
     @TestVisible
     private static void postUASBInsertProcessing(Transfer__c transfer, List<String> overrideValues) {
-        try {
-            transfer.Bills_Generated__c = true;
-            update transfer;
+        transfer.Bills_Generated__c = true;
+        update transfer;
 
-            Bill_Period__c billPeriodToUpdate = new Bill_Period__c(
-                Id = transfer.Bill_Period__c,
-                Bill_Status__c = 'Generated'
-            );
-            update billPeriodToUpdate;
-
-            saveResultsAsCSVToRecord(transfer.Id, overrideValues);
-        } catch (Exception e) {
-            logGenericError(e, 'postUASBInsertProcessing', false);
-        }
+        Bill_Period__c billPeriodToUpdate = new Bill_Period__c(
+            Id = transfer.Bill_Period__c,
+            Bill_Status__c = 'Generated'
+        );
+        update billPeriodToUpdate;
+        saveResultsAsCSVToRecord(transfer.Id, overrideValues);
     }
 
     private static void saveResultsAsCSVToRecord(Id transferId, List<String> overrideValues) {
