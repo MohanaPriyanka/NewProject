@@ -359,7 +359,7 @@
             </value>
         </filters>
         <filters>
-            <field>Credits_Transferred__c</field>
+            <field>Credits_Billed__c</field>
             <operator>EqualTo</operator>
             <value>
                 <numberValue>0.0</numberValue>
@@ -1626,7 +1626,7 @@
             <targetReference>Lookup_SSS</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>ProductionNameFormula</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
