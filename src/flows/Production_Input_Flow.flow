@@ -814,7 +814,7 @@
     <recordLookups>
         <name>Get_Active_Production</name>
         <label>Get Active Production</label>
-        <locationX>1114</locationX>
+        <locationX>1112</locationX>
         <locationY>2319</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -864,7 +864,7 @@
         <name>Get_ProductionLastMonth</name>
         <label>Get_ProductionLastMonth</label>
         <locationX>885</locationX>
-        <locationY>2007</locationY>
+        <locationY>2009</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AssignActiveProduction</targetReference>
@@ -875,13 +875,6 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Credits_Transferred__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <numberValue>0.0</numberValue>
             </value>
         </filters>
         <filters>
@@ -1499,8 +1492,8 @@
     <screens>
         <name>scrSelect_Production</name>
         <label>Select Production</label>
-        <locationX>1412</locationX>
-        <locationY>2445</locationY>
+        <locationX>1400</locationX>
+        <locationY>2381</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
