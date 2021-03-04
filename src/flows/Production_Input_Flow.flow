@@ -66,7 +66,7 @@
         <name>AssignActiveProduction</name>
         <label>Assign Active Production</label>
         <locationX>879</locationX>
-        <locationY>2275</locationY>
+        <locationY>2276</locationY>
         <assignmentItems>
             <assignToReference>sov_ActiveProduction</assignToReference>
             <operator>Assign</operator>
@@ -96,10 +96,35 @@
         </connector>
     </assignments>
     <decisions>
+        <name>Active_Production_Found</name>
+        <label>Active Production Found</label>
+        <locationX>1103</locationX>
+        <locationY>2444</locationY>
+        <defaultConnector>
+            <targetReference>scr_MainTransfer</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_Active_Production_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Active_Production</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scrSelect_Production</targetReference>
+            </connector>
+            <label>No Active Production Found</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>dec_Additional_Transfers_0_0</name>
         <label>Additional Transfers</label>
-        <locationX>1112</locationX>
-        <locationY>2779</locationY>
+        <locationX>1115</locationX>
+        <locationY>2900</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>out_Additional_Transfers_0_0</name>
@@ -287,8 +312,8 @@
     <decisions>
         <name>DecExpect_Unsubscribed_Credits</name>
         <label>Expect Unsubscribed Credits?</label>
-        <locationX>1113</locationX>
-        <locationY>2929</locationY>
+        <locationX>1116</locationX>
+        <locationY>3050</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Expect_Unsub_Credits</name>
@@ -321,6 +346,48 @@
             <label>Don&apos;t Expect Unsub Credits</label>
         </rules>
     </decisions>
+    <dynamicChoiceSets>
+        <name>manual_ProductionSelection</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Shared_Solar_System__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Lookup_SSS.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Credits_Transferred__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </filters>
+        <object>Production__c</object>
+        <outputAssignments>
+            <assignToReference>sov_ActiveProduction.Credits_Available_for_Allocation__c</assignToReference>
+            <field>Credits_Available_for_Allocation__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sov_ActiveProduction.Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sov_ActiveProduction.Main_Transfer_Default_Credit_Value_Input__c</assignToReference>
+            <field>Main_Transfer_Default_Credit_Value_Input__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sov_ActiveProduction.Main_Transfer_Default_Credit_Value__c</assignToReference>
+            <field>Main_Transfer_Default_Credit_Value__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>sov_ActiveProduction.Production_kWh__c</assignToReference>
+            <field>Production_kWh__c</field>
+        </outputAssignments>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
     <dynamicChoiceSets>
         <name>picklist_ProdDetailType</name>
         <dataType>Picklist</dataType>
@@ -424,8 +491,8 @@
     <recordCreates>
         <name>Create_AdditionalTransfer</name>
         <label>Create_AdditionalTransfer</label>
-        <locationX>906</locationX>
-        <locationY>2626</locationY>
+        <locationX>908</locationX>
+        <locationY>2754</locationY>
         <connector>
             <targetReference>scr_Additional_Transfers</targetReference>
         </connector>
@@ -507,8 +574,8 @@
     <recordCreates>
         <name>Create_Main_Transfer</name>
         <label>Create Main Transfer</label>
-        <locationX>1123</locationX>
-        <locationY>2514</locationY>
+        <locationX>1118</locationX>
+        <locationY>2684</locationY>
         <connector>
             <targetReference>scr_Additional_Transfers</targetReference>
         </connector>
@@ -696,8 +763,8 @@
     <recordCreates>
         <name>Create_Unsubscribed_ProductionDetail</name>
         <label>Create_Unsubscribed_ProductionDetail</label>
-        <locationX>923</locationX>
-        <locationY>3134</locationY>
+        <locationX>926</locationX>
+        <locationY>3254</locationY>
         <connector>
             <targetReference>Update_Bill_Period</targetReference>
         </connector>
@@ -747,11 +814,11 @@
     <recordLookups>
         <name>Get_Active_Production</name>
         <label>Get Active Production</label>
-        <locationX>1121</locationX>
-        <locationY>2271</locationY>
+        <locationX>1114</locationX>
+        <locationY>2319</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>scr_MainTransfer</targetReference>
+            <targetReference>Active_Production_Found</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -873,8 +940,8 @@
     <recordUpdates>
         <name>Update_Bill_Period</name>
         <label>Update Bill Period</label>
-        <locationX>1119</locationX>
-        <locationY>3134</locationY>
+        <locationX>1122</locationX>
+        <locationY>3254</locationY>
         <connector>
             <targetReference>scrDone</targetReference>
         </connector>
@@ -898,8 +965,8 @@
     <screens>
         <name>scr_Additional_Transfers</name>
         <label>Additional Transfers</label>
-        <locationX>1120</locationX>
-        <locationY>2639</locationY>
+        <locationX>1124</locationX>
+        <locationY>2789</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1004,8 +1071,8 @@
     <screens>
         <name>scr_MainTransfer</name>
         <label>scr_MainTransfer</label>
-        <locationX>1123</locationX>
-        <locationY>2382</locationY>
+        <locationX>1112</locationX>
+        <locationY>2588</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1134,8 +1201,8 @@
     <screens>
         <name>scr_UnsubscribedProduction</name>
         <label>scr_UnsubscribedProduction</label>
-        <locationX>922</locationX>
-        <locationY>2929</locationY>
+        <locationX>926</locationX>
+        <locationY>3050</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1213,8 +1280,8 @@
     <screens>
         <name>scrAdditional_Transfers</name>
         <label>Additional Transfers</label>
-        <locationX>903</locationX>
-        <locationY>2776</locationY>
+        <locationX>906</locationX>
+        <locationY>2898</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1234,7 +1301,8 @@
             </defaultValue>
             <fieldText>Amount ($)</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
+            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;This is a required field. Enter 0 if there is no Amount ($).&lt;/span&gt;&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
             <scale>8</scale>
         </fields>
         <fields>
@@ -1245,7 +1313,8 @@
             </defaultValue>
             <fieldText>Amount (kWh)</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
+            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;This is a required field. Enter 0 if there is no Amount ($).&lt;/span&gt;&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
             <scale>0</scale>
         </fields>
         <fields>
@@ -1361,8 +1430,8 @@
     <screens>
         <name>scrDone</name>
         <label>Done</label>
-        <locationX>1119</locationX>
-        <locationY>3294</locationY>
+        <locationX>1124</locationX>
+        <locationY>3401</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1423,6 +1492,33 @@
                 <assignToReference>var_ManualUtilityFeesNeeded</assignToReference>
                 <name>value</name>
             </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>scrSelect_Production</name>
+        <label>Select Production</label>
+        <locationX>1412</locationX>
+        <locationY>2445</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_Active_Production</targetReference>
+        </connector>
+        <fields>
+            <name>txt_ManualProduction</name>
+            <fieldText>&lt;p&gt;We were not able to automatically select the production period that applies. Manually select the production period below:&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>manualProduction</name>
+            <choiceReferences>manual_ProductionSelection</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Production</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -1537,7 +1633,7 @@
             <targetReference>Lookup_SSS</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>ProductionNameFormula</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
