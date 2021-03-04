@@ -668,14 +668,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CSCLPController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CSCLPTestclass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CSCancellationScheduler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1897,14 +1889,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LightningConnectQuickstart</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningReportsController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningReportsControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -3477,18 +3461,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>OpportunityTriggerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PCRPublicRecordHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PCRTradeAccountHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PCRTradeAccountHandlerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
