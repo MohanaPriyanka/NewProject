@@ -47,6 +47,9 @@ public without sharing class CustomerAssignmentService {
      */
     @InvocableMethod(Label='assignSOsAssignmentAgreement')
     public static void assignSOsAssignmentAgreement(List<ContractAssignmentBundle> assignmentBundles) {
+        if (assignmentBundles[0].contracts == null) {
+            return;
+        }
         List<Subscription_Order__c> approvedSubscriptionOrdersByContract =
             subscriptionOrderSelector.selectApprovedByContractIds(CollectionUtil.getIdSet(assignmentBundles[0].contracts), assignmentBundles[0].cutoffDate);
         Map<Id, Id> contractsToAssignmentAgreementMap = new Map<Id, Id>();
