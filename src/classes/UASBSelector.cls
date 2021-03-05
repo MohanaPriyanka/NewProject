@@ -2,6 +2,7 @@
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UASBSelector {
+
     public static Database.QueryLocator uasbsNotYetInZuora(Date invoiceDate) {
         String query =
             'SELECT Id, Name, Date__c, System_Bill__c,' +
@@ -50,14 +51,13 @@ public without sharing class UASBSelector {
         return new List<UASB__c>([
             SELECT Id, Externally_Serviced__c, Transfer__c, Credits_Allocated__c
             FROM UASB__c
-            WHERE Externally_Serviced__c = true
-            AND Ready_for_Production_Detail__c = true
+            WHERE Externally_Serviced__c = TRUE
+            AND Ready_For_Production_Detail__c = TRUE
             LIMIT : batchSize
         ]);
     }
 
     public List<AggregateResult> selectAggregateAnchorUASBs() {
-
         List<AggregateResult> activeAnchorRollups = [
             SELECT SUM(Subscription_Production_kWh_Static__c) productionSummary,
                 Utility_Account_Subscription__c uasId
@@ -67,8 +67,36 @@ public without sharing class UASBSelector {
                 Utility_Account_Subscription__r.Opportunity__r.Customer_Sub_Group__c = 'Public Offtake')
             AND Utility_Account_Subscription__r.Externally_Serviced__c = FALSE
             GROUP BY Utility_Account_Subscription__c
-            ];
+        ];
 
         return activeAnchorRollups;
+    }
+
+    /**
+     * @description Retrieves the latest UASB by BILL DATE (if one exists) for the specified Allocation Schedule Subscription
+     * @param szsList List of SZS'es (Allocation Schedule Subscriptions or ALSS's)
+     * @return Map of SZS Id to latest UASB__c (latest bill) for the subscription account
+     */
+    public Map<String,UASB__c> getLatestUcbUasbBySzs(List<Schedule_Z_Subscription__c> szsList) {
+        Map<Id,Id> uasToSzs = new Map<Id,Id>();
+        for (Schedule_Z_Subscription__c szs : szsList) {
+            uasToSzs.put(szs.Utility_Account_Subscription__c, szs.Id);
+        }
+
+        Map<String,UASB__c> priorUasbBySzs = new Map<String,UASB__c>();
+        for (Utility_Account_Subscription__c uas :
+            [SELECT Id,
+                (SELECT Id, Ending_Banked_Credits__c, Bill_Date__c
+                 FROM Utility_Account_Subscription_Bills__r
+                 WHERE Billing_Method__c = 'UCB'
+                 ORDER BY Bill_Date__c DESC LIMIT 1)
+            FROM Utility_Account_Subscription__c
+            WHERE Id IN : uasToSzs.keySet()])
+        {
+            UASB__c priorUasb = uas.Utility_Account_Subscription_Bills__r.isEmpty() ? null : uas.Utility_Account_Subscription_Bills__r[0];
+            priorUasbBySzs.put(uasToSzs.get(uas.Id), priorUasb);
+        }
+
+        return priorUasbBySzs;
     }
 }
