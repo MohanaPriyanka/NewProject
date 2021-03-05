@@ -1,5 +1,6 @@
-@isTest
+@IsTest
 public class BillGenerationServiceTest {
+
     @TestSetup
     public static void testSetup() {
         TestBillCreationForCancelledCustomers.testSetupBillRecords();
@@ -107,8 +108,6 @@ public class BillGenerationServiceTest {
         );
 
         insert new List<Transfer__c>{transferB1, transferA1};
-
-
         return new List<Transfer__c>{transferA1, transferB1};
     }
 
@@ -145,71 +144,12 @@ public class BillGenerationServiceTest {
 
         System_Properties__c property = new System_Properties__c(
             Name = 'System',
-            Days_Generate_Bills_for_Cancelled__c = daysToLookBack,
+            Days_Generate_Bills_For_Cancelled__c = daysToLookBack,
             Minimum_Balance_Bills_for_Cancelled__c = 0);
         insert property;
     }
 
-    @isTest
-    public static void testGetScheduleZSubscriptions() {
-        Set<Id> firstScheduleZIds = new Set<Id>();
-        Set<Id> secondScheduleZIds = new Set<Id>();
-        List<Schedule_Z_Subscription__c> firstSZSList;
-        List<Schedule_Z_Subscription__c> secondSZSList;
-        List<Schedule_Z_Subscription__c> thirdSZSList;
-
-        List<Schedule_Z__c> scheduleZs = [
-            SELECT Id
-            FROM Schedule_Z__c
-        ];
-        System.assertEquals(2, scheduleZs.size());
-        for (Schedule_Z__c schZ : scheduleZs){
-            firstScheduleZIds.add(schZ.Id);
-        }
-
-        firstSZSList = BillGenerationService.getScheduleZSubscriptionList(firstScheduleZIds);
-
-        List<Opportunity> oppsToUpdate = new List<Opportunity>();
-        List<Utility_Account_Subscription__c> uasesToDeactivate = [
-            SELECT Id, Name, Opportunity__r.Id
-            FROM Utility_Account_Subscription__c
-            WHERE Opportunity__r.Name = 'acA A_SSS1'
-            OR Opportunity__r.Name = 'acC C_SSS1'
-            ORDER BY Opportunity__r.Name
-            LIMIT 2
-        ];
-        for (Utility_Account_Subscription__c uas : uasesToDeactivate){
-            uas.Next_Schedule_Z_Status__c = 'Inactive Subscription';
-            Opportunity oppToUpdate = new Opportunity();
-            oppToUpdate.Id = uas.Opportunity__r.Id;
-            oppToUpdate.StageName = 'Cancelled';
-            oppsToUpdate.add(oppToUpdate);
-        }
-        update uasesToDeactivate;
-        update oppsToUpdate;
-
-        setCollectionsWindow(0);
-
-        List<Transfer__c> transfers = insertSecondMonthProduction();
-        for (Transfer__c transfer : transfers) {
-            secondScheduleZIds.add(transfer.Allocation_Schedule__c);
-        }
-
-        secondSZSList = BillGenerationService.getScheduleZSubscriptionList(secondScheduleZIds);
-
-        setCollectionsWindow(90);
-
-        thirdSZSList = BillGenerationService.getScheduleZSubscriptionList(secondScheduleZIds);
-
-        // All 6 UASes are included because none are marked as cancelled:
-        System.assertEquals(6,firstSZSList.size());
-        // 2 Cancelled UASes are excluded, because collections window is set to 0 days
-        System.assertEquals(4,secondSZSList.size());
-        // 2 Cancelled UASes are included, because the collections window is set to 90 days
-        System.assertEquals(6,thirdSZSList.size());
-    }
-
-    @isTest
+    @IsTest
     public static void testGetCancelledCustomers(){
         List<Opportunity> oppsToUpdate = new List<Opportunity>();
         List<Utility_Account_Subscription__c> uasesToDeactivate = [
@@ -251,7 +191,7 @@ public class BillGenerationServiceTest {
         System.assertEquals(2,overdue.size());
     }
 
-    @isTest
+    @IsTest
     public static void testAsyncJob() {
         List<UASB__c> beforeUASBs = queryForBills();
 
@@ -266,7 +206,7 @@ public class BillGenerationServiceTest {
         System.assertEquals(14,afterUASBs.size());
     }
 
-    @isTest
+    @IsTest
     public static void testAsyncBatchJob() {
         List<UASB__c> beforeUASBs = queryForBills();
 

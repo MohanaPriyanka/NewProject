@@ -43,11 +43,18 @@ public class BillGenerationAsyncService implements Database.Batchable<Transfer__
         }
     }
 
-    private void createBillsUpdateTransfer(Transfer__c transfer){
+    private void createBillsUpdateTransfer(Transfer__c transfer) {
         List<UASB__c> uasbsToInsert = new List<UASB__c>();
-        BillGenerationService.BillType operationType = BillGenerationService.BillType.BOTH;
-        uasbsToInsert.addAll(BillGenerationService.calculateUASBsFromTransfer(transfer, operationType, false));
+
+        // As of this implementation, UCB projects should not have bills generated here because transfer sheets
+        // are required for specific UASB data (e.g. we need utility data on UCB customers before we can generate UASBs)
+        if (transfer.Shared_Solar_System__r.UCB__c) {
+            throw new Util.BWException('UCB bills should be generated through Transfer QC. Ref: transfer '+ transfer.Id);
+        }
+
+        uasbsToInsert.addAll(BillGenerationService.calculateUASBsFromTransfer(transfer, BillGenerationService.BillType.BOTH));
         insert uasbsToInsert;
+
         // Checking this box could increase the Number of Billed Production Periods by 1
         // so it is important to do at the end of each batch instead of in the finish
         transfer.Bills_Generated__c = true;

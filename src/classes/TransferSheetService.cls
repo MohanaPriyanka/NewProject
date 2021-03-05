@@ -1,24 +1,47 @@
 // Tested by TransferSheetBillingTest
-
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class TransferSheetService {
-    public static ContentDocumentSelector docSelector = new ContentDocumentSelector();
-    public static AccountsSelector accountsSelector = new AccountsSelector();
-    public static TransferSelector transferSelector = new TransferSelector();
 
+    // Field mappings for .csv import headers => SObject fields
+    @TestVisible private static final Map<String,String> GENERIC_UASB_FIELDS = new Map<String,String>{
+        'UtilityNumber' => 'PreGen_Utility_Acct__c', // Should always be in column 1
+        'Credits' => 'Credits_Allocated__c', // Should always be in column 2
+        'Production' => 'Subscription_Production_kWh_Static__c',
+        'CreditValue' => 'NMC_Rate__c'
+    };
+    @TestVisible private static final Map<String,String> UCB_UASB_FIELDS = new Map<String,String>{
+        'UtilityNumber' => 'PreGen_Utility_Acct__c', // Should always be in column 1
+        'Credits' => 'Credits_Allocated__c', // Should always be in column 2
+        'Production' => 'Subscription_Production_kWh_Static__c',
+        'CreditValue' => 'NMC_Rate__c',
+        'StartingBankedCredits' => 'Starting_Banked_Credits__c',
+        'NewAvailableCredits' => 'New_available_credits__c',
+        'TotalAvailableCredits' => 'Total_Available_Credits__c',
+        'SatelliteCharges' => 'Satellite_Charges__c',
+        'CalculatedCredits' => 'Calculated_Credits__c',
+        'NetMemberCredits' => 'Net_Member_Credits__c',
+        'EndingBankedCredits' => 'Ending_Banked_Credits__c',
+        'CDGSubscriptionFee' => 'CDG_Subscription_Fee__c',
+        'UtilityAdminFee' => 'Utility_Admin_Fee__c',
+        'CDGSponsorPayment' => 'CDG_Sponsor_Payment__c'
+    };
+    @TestVisible private static AccountsSelector accountsSelector = new AccountsSelector();
+    @TestVisible private static ContentDocumentSelector docSelector = new ContentDocumentSelector();
+    @TestVisible private static TransferSelector transferSelector = new TransferSelector();
+    private static Boolean isUCB;
+    private static Integer expectedColumnCount;
+    private static List<String> uasbFields;
+
+    /**
+     * @description Object intended for JSON-encoding for transferSheetReconciliation.lwc (Transfer QC)
+     */
     public class UASBWithStatus {
-        @AuraEnabled
-        public UASB__c sfUASB;
-        @AuraEnabled
-        public UASB__c utilUASB;
-        @AuraEnabled
-        public String status; // MATCH, CREDIT_MISMATCH, MISSING_BILL, MISSING_TRANSFER
-        @AuraEnabled
-        public String matchMessage;
-        @AuraEnabled
-        public String resolution; // UseUtility, UseSalesforce
-        @AuraEnabled
-        public Boolean overdue;
+        @AuraEnabled public UASB__c sfUASB;
+        @AuraEnabled public UASB__c utilUASB;
+        @AuraEnabled public String status; // MATCH, CREDIT_MISMATCH, MISSING_BILL, MISSING_TRANSFER
+        @AuraEnabled public String matchMessage;
+        @AuraEnabled public String resolution; // UseUtility, UseSalesforce
+        @AuraEnabled public Boolean overdue;
     }
 
     public class TransferResolutionData {
@@ -26,14 +49,100 @@ public without sharing class TransferSheetService {
         public String resolution;
     }
 
+    /**
+     * @description Retrieves UASBWithStatus object list (used by LWC) for Transfer QC
+     * @param transferRecordId Record ID of Transfer__c record in question
+     * @return List of UASBWithStatus apex objects to pass to LWC
+     */
     @AuraEnabled
     public static List<UASBWithStatus> getTransferFromId(Id transferRecordId) {
         Transfer__c transfer = transferSelector.getTransferById(transferRecordId);
+        initializeClass(transfer);
+
         if (transfer.Bills_Generated__c) {
             throw Util.createAuraExceptionWithMessage('Bills Already Generated for this Transfer');
         }
         preventBillingTransferOutOfOrder(transfer);
         return getUASBListFromTransferSheet(transfer);
+    }
+
+    /**
+     * @description LWC server-side method to handle resolution on Transfer Sheet QC and insert UASB__c's into DB
+     * @param pregenBills JSON string of previously-generated List<UASBWithStatus> records
+     * @param overrideValues JSON array of resolution data from Transfer QC
+     */
+    @AuraEnabled
+    public static void handleTransferSheetResolutions(String pregenBills, List<String> overrideValues) {
+        try {
+            // Deserialize content from LWC, load needed vars
+            List<UASBWithStatus> uasbWithStatusList = (List<UASBWithStatus>) System.JSON.deserialize(pregenBills, List<UASBWithStatus>.class);
+            Transfer__c transfer = transferSelector.getTransferById(uasbWithStatusList[0].sfUASB.Transfer__c);
+            initializeClass(transfer);
+
+            // Read data from LWC
+            Map<Id, String> resolutionMap = readDataFromLWC(overrideValues);
+
+            // Resolve data conflicts and insert UASBs
+            List<UASB__c> resolvedUasbs = resolveUASBs(uasbWithStatusList, resolutionMap);
+            insert resolvedUasbs;
+
+            // Perform final steps
+            if (!isUCB) {
+                insertZeroDollarBills(transfer);
+            }
+            postUASBInsertProcessing(transfer, overrideValues);
+        } catch (Exception e) {
+            throw Util.createAuraExceptionWithMessage(e.getMessage() + '\n' + e.getStackTraceString());
+        }
+    }
+
+    /**
+     * @description Static class initializer to set static class vars
+     * @param transfer Transfer__c record to initialize class for
+     */
+    public static void initializeClass(Transfer__c transfer) {
+        isUCB = transfer.Shared_Solar_System__r.UCB__c;
+        expectedColumnCount = isUCB ? UCB_UASB_FIELDS.size() : GENERIC_UASB_FIELDS.size();
+        uasbFields = isUCB ? UCB_UASB_FIELDS.values() : GENERIC_UASB_FIELDS.values();
+    }
+
+    /**
+     * @description Converts raw csv data in Map format to Map of UAL# => UASB__c for specified transfer
+     * @param rowNumberToDataMap Raw csv data provided by getDataFromMostRecentDocumentUpload()
+     * @return Map of Utility Account Number => UASB__c for specified transfer
+     */
+    public static Map<String,UASB__c> convertTransferCsvToUASBs(Map<Integer,List<String>> rowNumberToDataMap) {
+        Map<String,UASB__c> uasbsFromTransfer = new Map<String,UASB__c>();
+
+        // Run validation check on the utility transfer sheet (.csv)
+        validateCsv(rowNumberToDataMap);
+        rowNumberToDataMap.remove(0); // Strip header column
+
+        // For each row of data, process into a UASB record
+        for (List<String> rowData : rowNumberToDataMap.values()) {
+            addUASBFromTransfer(uasbsFromTransfer, rowData);
+        }
+
+        return uasbsFromTransfer;
+    }
+
+    /**
+     * @description Gets csv data from latest utility transfer sheet csv (uploaded & attached to Transfer__c) in Map form
+     * @param transfer Transfer__c record in question
+     * @return csv data map
+     */
+    public static Map<Integer,List<String>> getDataFromMostRecentDocumentUpload(Transfer__c transfer) {
+        ContentDocument document;
+        try {
+            document = docSelector.getMostRecentTransferSheet(transfer);
+            return Util.readCSV(document.LatestPublishedVersion.VersionData.toString());
+        } catch (Exception e) {
+            // If no transfer sheet is uploaded, treat the same as if there is a transfer sheet with no rows:
+            List<String> columnHeaders = getColumnHeaders();
+            Map<Integer, List<String>> blankMap = new Map<Integer, List<String>>();
+            blankMap.put(0, columnHeaders);
+            return blankMap;
+        }
     }
 
     @TestVisible
@@ -50,104 +159,120 @@ public without sharing class TransferSheetService {
         }
     }
 
-    public static List<UASBWithStatus> getUASBListFromTransferSheet(Transfer__c transfer) {
+    @TestVisible
+    private static List<UASBWithStatus> getUASBListFromTransferSheet(Transfer__c transfer) {
         try {
-            Map<Integer, List<String>> csvData = getDataFromMostRecentDocumentUpload(transfer);
-            Map<String, UASB__c> transferUASBs = convertTransferSheetToUASBs(csvData);
+            Map<Integer,List<String>> csvData = getDataFromMostRecentDocumentUpload(transfer);
+            Map<String,UASB__c> transferUASBs = convertTransferCsvToUASBs(csvData);
             List<UASB__c> pregeneratedSFBills = BillGenerationService.calculateUASBsFromTransfer(
-                transfer,
-                BillGenerationService.BillType.ONTIME
+                transfer, BillGenerationService.BillType.ONTIME
             );
             return compareSFBillsToTransferSheet(pregeneratedSFBills, transferUASBs);
         } catch (Exception excep) {
-            throw Util.createAuraExceptionWithMessage(String.valueOf(excep.getMessage()) + String.valueOf(excep.getStackTraceString()));
-        }
-    }
-
-    private static Map<Integer, List<String>> getDataFromMostRecentDocumentUpload(Transfer__c transfer) {
-        ContentDocument document;
-        try {
-            document = docSelector.getMostRecentTransferSheet(transfer);
-            return Util.readCSV(document.LatestPublishedVersion.VersionData.toString());
-        } catch (Exception docExcep) {
-            // If no transfer sheet is uploaded, treat the same as if there is a transfer sheet with no rows:
-            Map<Integer, List<String>> blankMap = new Map<Integer, List<String>>();
-            blankMap.put(0, new List<String>{
-                'UtilityNumber', 'Credits', 'Production', 'CreditValue'
-            });
-            return blankMap;
-        }
-    }
-
-    @TestVisible
-    private static Map<String, UASB__c> convertTransferSheetToUASBs(Map<Integer, List<String>> rowNumberToDataMap) {
-        Map<String, UASB__c> uasbsFromTransfer = new Map<String, UASB__c>();
-        enforceTransferSheetTemplate(rowNumberToDataMap.get(0));
-        rowNumberToDataMap.remove(0);
-
-        for (List<String> rowData : rowNumberToDataMap.values()) {
-            if (rowData.size() < 4) {
-                throw Util.createAuraExceptionWithMessage('Expected 4 data points in CSV row: ' + rowData);
-            }
-            String utilityNumKey = cleanUtilityNumber(rowData[0]);
-            Decimal credits = getDecimalFromCSV(rowData[1]);
-            Decimal production = getDecimalFromCSV(rowData[2]);
-            Decimal nmcRate = getDecimalFromCSV(rowData[3]);
-            if (credits != null && credits.scale() > 2) {
-                throw Util.createAuraExceptionWithMessage('Fractional decimals present in transfer sheet: ' + rowData);
-            }
-
-            addUASBFromTransfer(uasbsFromTransfer, utilityNumKey, credits, nmcRate, production, rowData);
-        }
-        return uasbsFromTransfer;
-    }
-
-    private static void addUASBFromTransfer(Map<String, UASB__c> uasbsFromTransfer, String utilityNumKey, Decimal credits, Decimal nmcRate, Decimal production, List<String> rowData) {
-        if (uasbsFromTransfer.containsKey(utilityNumKey)) {
-            // If the transfer sheet has 2 rows for the same utility account, take the SUM of the rows
-            // Except for production (kWh), because it is used to calculate credits allocated.
-            // For ex. in some programs, a 100 kWh transfer is multiplied by two separate Credit Rates,
-            // (say, $0.02/kWh and $0.13/kWh) to get a total credits allocated = $2 + $13 = $15
-            // but production is only 100kWh not 200kWh, even though it is listed twice
-            UASB__c uasbToUpdate = uasbsFromTransfer.get(utilityNumKey);
-            uasbToUpdate.Credits_Allocated__c =
-                uasbToUpdate.Credits_Allocated__c == null ? credits : uasbToUpdate.Credits_Allocated__c + Util.nullToZero(credits);
-            uasbToUpdate.NMC_Rate__c =
-                uasbToUpdate.NMC_Rate__c == null ? nmcRate : uasbToUpdate.NMC_Rate__c + Util.nullToZero(nmcRate);
-            uasbToUpdate.Subscription_Production_kWh_Static__c =
-                uasbToUpdate.Subscription_Production_kWh_Static__c == null ? production : Math.max(Util.nullToZero(production), uasbToUpdate.Subscription_Production_kWh_Static__c);
-            uasbsFromTransfer.put(utilityNumKey, uasbToUpdate);
-        } else {
-            UASB__c transferSheetUASB = new UASB__c(
-                PreGen_Utility_Acct__c = rowData[0],
-                Credits_Allocated__c = credits,
-                Subscription_Production_kWh_Static__c = production,
-                NMC_Rate__c = nmcRate
+            throw Util.createAuraExceptionWithMessage(String.valueOf(
+                excep.getMessage()) + String.valueOf(excep.getStackTraceString())
             );
-            uasbsFromTransfer.put(utilityNumKey, transferSheetUASB);
         }
     }
 
-    private static void enforceTransferSheetTemplate(List<String> columnTitles) {
-        String message = 'Enforce Transfer Sheet Template: ';
-        if (columnTitles.size() < 4) {
-            message += 'Expected 4 Columns in CSV data found ' + String.valueOf(columnTitles.size());
+    private static void validateCsv(Map<Integer,List<String>> rowNumberToDataMap) {
+        List<String> columnTitles = rowNumberToDataMap.get(0);
+        List<String> columnHeaders = getColumnHeaders();
+        
+        String message = '';
+        if (columnTitles.size() < expectedColumnCount) {
+            message += 'Expected ' + expectedColumnCount + ' Columns in CSV data. Found ' + columnTitles.size();
         } else {
-            if (!columnTitles[0].contains('UtilityNumber')) {
-                message += 'Expected first column named UtilityNumber, found ' + columnTitles[0];
-            }
-            if (!columnTitles[1].contains('Credits')) {
-                message += 'Expected second column named Credits, found ' + columnTitles[1];
-            }
-            if (!columnTitles[2].contains('Production')) {
-                message += 'Expected third column named Production, found ' + columnTitles[2];
-            }
-            if (!columnTitles[3].contains('CreditValue')) {
-                message += 'Expected fourth column named CreditValue, found ' + columnTitles[3];
+            for (Integer i = 0; i < expectedColumnCount; i++) {
+                if (!columnTitles[i].contains(columnHeaders[i])) {
+                    message += 'Expected column '+String.valueOf(i+1)+' named '+columnHeaders[i]+', found '+columnTitles[i];
+                }
             }
         }
-        if (message != 'Enforce Transfer Sheet Template: ') {
-            throw Util.createAuraExceptionWithMessage(message);
+        if (message != '') {
+            String errorMessage = 'Enforce Transfer Sheet Template: ' + message;
+            throw Util.createAuraExceptionWithMessage(errorMessage);
+        }
+    }
+
+    private static List<String> getColumnHeaders() {
+        return isUCB ? new List<String>(UCB_UASB_FIELDS.keySet()) : new List<String>(GENERIC_UASB_FIELDS.keySet());
+    }
+
+    private static void addUASBFromTransfer(Map<String,UASB__c> uasbsFromTransfer, List<String> rowData) {
+        String utilityNumberKey = cleanUtilityNumber(rowData[0]);
+        UASB__c uasb;
+
+        // Run validation check on data row
+        validateRowData(rowData);
+
+        // Build UASB depending on scenario
+        if (!uasbsFromTransfer.containsKey(utilityNumberKey)) {
+            // Typical scenario, no duplicates found in csv
+            uasb = getParsedUASB(rowData);
+        } else {
+            // Duplicate key found, indicating 2+ rows for same account number in transfer .csv, fix existing entry
+            uasb = getParsedUASBWithDuplicateRows(uasbsFromTransfer.get(utilityNumberKey), rowData);
+        }
+
+        uasbsFromTransfer.put(utilityNumberKey, uasb);
+    }
+
+    private static void validateRowData(List<String> rowData) {
+        // Check if columns are missing
+        if (rowData.size() < expectedColumnCount) {
+            throw Util.createAuraExceptionWithMessage('Expected ' + expectedColumnCount + ' data points in CSV row: ' + rowData);
+        }
+
+        // Check if credits field contains fractional decimal
+        Decimal credits = getDecimalFromCSV(rowData[1]);
+        if (credits != null && credits.scale() > 2) {
+            throw Util.createAuraExceptionWithMessage('Fractional decimals present in transfer sheet: ' + rowData);
+        }
+    }
+
+    private static UASB__c getParsedUASB(List<String> rowData) {
+        UASB__c newParsedUasb = new UASB__c();
+        newParsedUasb.put(uasbFields[0], cleanUtilityNumber(rowData[0])); // Key field, use string
+        for (Integer i = 1; i < expectedColumnCount; i++) {
+            String uasbFieldName = uasbFields[i];
+            Decimal fieldValue = getDecimalFromCSV(rowData[i]); // Default .csv field data type is Decimal
+            newParsedUasb.put(uasbFieldName, fieldValue);
+        }
+        return newParsedUasb;
+    }
+
+    private static UASB__c getParsedUASBWithDuplicateRows(UASB__c duplicateUasbToUpdate, List<String> rowData) {
+        // If the transfer sheet has 2+ rows for the same utility account, take the SUM of the rows
+        // Except for production (kWh), because it is used to calculate credits allocated.
+        // For ex. in some programs, a 100 kWh transfer is multiplied by two separate Credit Rates,
+        // (say, $0.02/kWh and $0.13/kWh) to get a total credits allocated = $2 + $13 = $15
+        // but production is only 100kWh not 200kWh, even though it is listed twice
+        for (Integer i = 1; i < expectedColumnCount; i++) {
+            if (uasbFields[i] == 'Subscription_Production_kWh_Static__c') {
+                handleDuplicateProductionKwh(duplicateUasbToUpdate, getDecimalFromCSV(rowData[i]));
+            } else {
+                handleDuplicateGenericField(duplicateUasbToUpdate, getDecimalFromCSV(rowData[i]), uasbFields[i]);
+            }
+        }
+        return duplicateUasbToUpdate;
+    }
+
+    private static void handleDuplicateProductionKwh(UASB__c uasb, Decimal newData) {
+        Decimal existingData = uasb.Subscription_Production_kWh_Static__c;
+        if (existingData == null) {
+            uasb.Subscription_Production_kWh_Static__c = newData;
+        } else {
+            uasb.Subscription_Production_kWh_Static__c = Math.max(Util.nullToZero(newData), existingData);
+        }
+    }
+
+    private static void handleDuplicateGenericField(UASB__c uasb, Decimal newData, String fieldName) {
+        Decimal existingData = (Decimal) uasb.get(fieldName);
+        if (existingData == null) {
+            uasb.put(fieldName, newData);
+        } else {
+            uasb.put(fieldName, Util.nullToZero(newData) + existingData);
         }
     }
 
@@ -159,14 +284,14 @@ public without sharing class TransferSheetService {
     }
 
     private static Decimal getDecimalFromCSV(String csvValue) {
-        String csvString = String.isBlank(csvValue.stripHtmlTags())?null:csvValue.stripHtmlTags();
+        String csvString = String.isBlank(csvValue.stripHtmlTags()) ? null : csvValue.stripHtmlTags();
         csvString = csvString?.replace('$', '');
-        Decimal csvDecimal = csvString==null?null:Decimal.valueOf(csvString);
+        Decimal csvDecimal = csvString==null ? null : Decimal.valueOf(csvString);
         return csvDecimal;
     }
 
     @TestVisible
-    private static List<UASBWithStatus> compareSFBillsToTransferSheet(List<UASB__c> sfBills, Map<String, UASB__c> transferSheetBills) {
+    private static List<UASBWithStatus> compareSFBillsToTransferSheet(List<UASB__c> sfBills, Map<String,UASB__c> transferSheetBills) {
         List<UASBWithStatus> conglomeratedUASBList = new List<UASBWithStatus>();
 
         for (UASB__c sfBill : sfBills) {
@@ -235,7 +360,6 @@ public without sharing class TransferSheetService {
             To avoid having to hard code for each circumstance, only check variables that are provided
             and throw error if no data is provided.
         */
-
         lineItem.status = 'CREDIT_MISMATCH';
         if (isNotNullAndDifferent(transferCredits, sfCredits)) {
             lineItem.matchMessage = 'Credits Allocated Mismatch';
@@ -255,33 +379,16 @@ public without sharing class TransferSheetService {
         return transferAmount != null && sfAmount != transferAmount;
     }
 
-    @AuraEnabled
-    public static void handleTransferSheetResolutions(String pregenBills, List<String> overrideValues) {
-        try {
-            List<UASBWithStatus> uasbWithStatusList = (List<UASBWithStatus>) System.JSON.deserialize(pregenBills, List<UASBWithStatus>.class);
-            Map<Id, String> resolutionMap = readDataFromLWC(overrideValues);
-            List<UASB__c> onTimeUASBs = resolveUASBs(uasbWithStatusList, resolutionMap);
-            insert onTimeUASBs;
-            Transfer__c transfer = transferSelector.getTransferById(onTimeUASBs[0].Transfer__c);
-            insertZeroDollarBills(transfer);
-            postUASBInsertProcessing(transfer, overrideValues);
-        } catch (Exception excep) {
-            Logger.logNow('TransferSheetService', 'handleTransferSheetResolutions', excep.getMessage() + '___' + excep.getStackTraceString());
-            throw Util.createAuraExceptionWithMessage(excep.getMessage());
-        }
-    }
-
-    private static void insertZeroDollarBills(Transfer__c transfer){
+    private static void insertZeroDollarBills(Transfer__c transfer) {
         List<UASB__c> overdueUASBs = BillGenerationService.calculateUASBsFromTransfer(
-            transfer,
-            BillGenerationService.BillType.OVERDUE
+            transfer, BillGenerationService.BillType.OVERDUE
         );
         insert overdueUASBs;
     }
 
     @TestVisible
-    private static Map<Id, String> readDataFromLWC(List<String> overrideValues) {
-        Map<Id, String> resolutionMap = new Map<Id, String>();
+    private static Map<Id,String> readDataFromLWC(List<String> overrideValues) {
+        Map<Id,String> resolutionMap = new Map<Id,String>();
         for (String lineItem : overrideValues) {
             TransferResolutionData overrideData = (TransferResolutionData) System.JSON.deserialize(lineItem, TransferResolutionData.class);
             if (!overrideData.uniqueid.contains('missingBill')) {
@@ -294,19 +401,17 @@ public without sharing class TransferSheetService {
     @TestVisible
     private static List<UASB__c> resolveUASBs(List<UASBWithStatus> uasbWithStatusList, Map<Id, String> resolutionMap) {
         List<UASB__c> uasbsToInsert = new List<UASB__c>();
-        for (UASBWithStatus uasbStatus : uasbWithStatusList) {
-            uasbStatus.resolution = resolutionMap.get(uasbStatus.sfUASB.Schedule_Z_Subscription__c);
-            uasbStatus.sfUASB.Transfer_Sheet_Resolution__c = uasbStatus.resolution;
-            switch on uasbStatus.status {
+        for (UASBWithStatus uasbWrapper : uasbWithStatusList) {
+            uasbWrapper.resolution = resolutionMap.get(uasbWrapper.sfUASB.Schedule_Z_Subscription__c);
+            uasbWrapper.sfUASB.Transfer_Sheet_Resolution__c = uasbWrapper.resolution;
+            switch on uasbWrapper.status {
                 when 'MATCH' {
-                    uasbsToInsert.add(uasbStatus.sfUASB);
+                    uasbsToInsert.add(uasbWrapper.sfUASB);
                 } when 'CREDIT_MISMATCH' {
-                    uasbsToInsert.add(resolveCreditMismatch(uasbStatus));
-                // } when 'MISSING_BILL' {
-                    // No bill to insert, do nothing
+                    uasbsToInsert.add(resolveCreditMismatch(uasbWrapper));
                 } when 'MISSING_TRANSFER' {
-                    UASB__c bill = resolveMissingTransfer(uasbStatus);
-                    if (uasbStatus.resolution == 'UseSalesforce' || uasbStatus.overdue) {
+                    UASB__c bill = resolveMissingTransfer(uasbWrapper);
+                    if (uasbWrapper.resolution == 'UseSalesforce' || uasbWrapper.overdue) {
                         uasbsToInsert.add(bill);
                     }
                 }
@@ -315,57 +420,53 @@ public without sharing class TransferSheetService {
         return uasbsToInsert;
     }
 
-    private static UASB__c resolveCreditMismatch(UASBWithStatus uasbWithStatus) {
-        UASB__c uasbToModify = uasbWithStatus.sfUASB;
-        if (uasbWithStatus.resolution == 'UseUtility') {
-            if (uasbWithStatus.utilUASB.Credits_Allocated__c != 0) {
-                uasbToModify.Credits_Allocated__c = uasbWithStatus.utilUASB.Credits_Allocated__c;
+    private static UASB__c resolveCreditMismatch(UASBWithStatus data) {
+        UASB__c uasbToModify = data.sfUASB;
+        if (data.resolution == 'UseUtility') {
+            uasbToModify.Credits_Allocated__c = data.utilUASB.Credits_Allocated__c;
+            if (data.utilUASB.Subscription_Production_kWh_Static__c != null) {
+                uasbToModify.Subscription_Production_kWh_Static__c = data.utilUASB.Subscription_Production_kWh_Static__c;
             }
-            if (uasbWithStatus.utilUASB.Subscription_Production_kWh_Static__c != 0) {
-                uasbToModify.Subscription_Production_kWh_Static__c = uasbWithStatus.utilUASB.Subscription_Production_kWh_Static__c;
-            }
-            if (uasbWithStatus.utilUASB.NMC_Rate__c != 0) {
-                uasbToModify.NMC_Rate__c = uasbWithStatus.utilUASB.NMC_Rate__c;
+            if (data.utilUASB.NMC_Rate__c != null) {
+                uasbToModify.NMC_Rate__c = data.utilUASB.NMC_Rate__c;
             }
         }
         return uasbToModify;
     }
 
-    private static UASB__c resolveMissingTransfer(UASBWithStatus uasbWithStatus) {
+    private static UASB__c resolveMissingTransfer(UASBWithStatus data) {
         // If a pre-generated bill is not on the transfer sheet and we want to use the utility's value
         // we can either not insert a bill at all or insert a $0 bill. For overdue customers, we want a $0 bill
-
         UASB__c uasbToModify;
-        if (uasbWithStatus.resolution == 'UseUtility') {
-            uasbToModify = uasbWithStatus.sfUASB;
-            uasbToModify.Total_System_NMCs__c = 0;
-            uasbToModify.Total_System_Production_kWh__c = 0;
-            uasbToModify.Subscription_Production_kWh_Static__c = 0;
-            uasbToModify.NMC_Rate__c = 0;
-            uasbToModify.Share_of_System__c = 0;
-            uasbToModify.Credits_Allocated__c = 0;
-        } else if (uasbWithStatus.resolution == 'UseSalesforce') {
-            uasbToModify = uasbWithStatus.sfUASB;
+        if (data.resolution == 'UseUtility') {
+            uasbToModify = data.sfUASB;
+            setMissingTransferFields(uasbToModify);
+        } else if (data.resolution == 'UseSalesforce') {
+            uasbToModify = data.sfUASB;
         }
         return uasbToModify;
+    }
+    
+    private static void setMissingTransferFields(UASB__c uasb) {
+        uasb.Total_System_NMCs__c = 0;
+        uasb.Total_System_Production_kWh__c = 0;
+        uasb.Subscription_Production_kWh_Static__c = 0;
+        uasb.NMC_Rate__c = 0;
+        uasb.Share_of_System__c = 0;
+        uasb.Credits_Allocated__c = 0;
     }
 
     @TestVisible
     private static void postUASBInsertProcessing(Transfer__c transfer, List<String> overrideValues) {
-        try {
-            transfer.Bills_Generated__c = true;
-            update transfer;
+        transfer.Bills_Generated__c = true;
+        update transfer;
 
-            Bill_Period__c billPeriodToUpdate = new Bill_Period__c(
-                Id = transfer.Bill_Period__c,
-                Bill_Status__c = 'Generated'
-            );
-            update billPeriodToUpdate;
-
-            saveResultsAsCSVToRecord(transfer.Id, overrideValues);
-        } catch (Exception excep) {
-            Logger.logNow('TransferSheetService', 'PostUASBInsertProcessing', excep.getMessage() + '_' + excep.getStackTraceString());
-        }
+        Bill_Period__c billPeriodToUpdate = new Bill_Period__c(
+            Id = transfer.Bill_Period__c,
+            Bill_Status__c = 'Generated'
+        );
+        update billPeriodToUpdate;
+        saveResultsAsCSVToRecord(transfer.Id, overrideValues);
     }
 
     private static void saveResultsAsCSVToRecord(Id transferId, List<String> overrideValues) {
