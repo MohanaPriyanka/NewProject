@@ -133,6 +133,20 @@ public with sharing class CustomerAssignmentServiceTest {
     }
 
     @IsTest
+    private static void testUpdateAssignmentAgreementsForNoContracts() {
+        CustomerAssignmentService.subscriptionOrderSelector =
+            (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
+        Util.mockDML = true;
+
+        CustomerAssignmentService.ContractAssignmentBundle assignmentBundle = new CustomerAssignmentService.ContractAssignmentBundle();
+        assignmentBundle.contracts = null; // If the user proceeds with the flow and there are no contracts to assign
+        assignmentBundle.cutoffDate = Date.newInstance(2021,1,1);
+        CustomerAssignmentService.assignSOsAssignmentAgreement(new List<CustomerAssignmentService.ContractAssignmentBundle>{assignmentBundle});
+        List<Subscription_Order__c> subscriptionOrdersToUpdate = (List<Subscription_Order__c>) Util.objectsUpdatedIfMockingDML;
+        System.assertEquals(null, subscriptionOrdersToUpdate, 'Expected no errors, and no updates');
+    }
+
+    @IsTest
     private static void systemTestAssignmentAgreementRejection() {
         Util.disableTrigger('Disable_SubscriptionOrder_Trigger__c');
         Account clientAccount = new Account(
