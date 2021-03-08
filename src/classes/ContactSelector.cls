@@ -43,4 +43,20 @@ public inherited sharing class ContactSelector {
         ];
         return contacts.size() > 0 ? contacts[0] : null;
     }
+
+    public static List<Contact> selectSendBillsContactBySSSId(Id  sharedSolarSystemId) {
+        List<Contact> sendBillsContacts = new List<Contact>();
+        List<Opportunity> getSendBillsContactsFromOpp =  [
+            SELECT Account.Send_Bills_Contact__r.Id,  Account.Send_Bills_Contact__r.Email
+            FROM Opportunity 
+            WHERE Shared_Solar_System__c = :sharedSolarSystemId
+            AND Opportunity.StageName = 'Complete'
+        ];
+        for (Opportunity opportunity : getSendBillsContactsFromOpp) {
+            sendBillsContacts.add(opportunity.Account.Send_Bills_Contact__r);
+            }
+        
+        return sendBillsContacts;
+        
+    }
 }

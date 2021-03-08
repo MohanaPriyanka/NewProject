@@ -24,8 +24,8 @@ public with sharing class ContactSelectorTest {
         ContactSelector contactSelector = new ContactSelector();
         List<Contact> contactsWithZuoraContacts =
             contactSelector.getContactsWithZuoraContacts(new Set<Id>{contactOne.Id, contactTwo.Id});
-        System.assertEquals(1, contactsWithZuoraContacts.size());
-        System.assertEquals(contactTwo.Id, contactsWithZuoraContacts[0].Id);
+        System.assertEquals(1, contactsWithZuoraContacts.size(),'We should only find one contact with a Zuora ID');
+        System.assertEquals(contactTwo.Id, contactsWithZuoraContacts[0].Id,'The contact found should have a Zuora ID');
     }
 
     @IsTest
@@ -53,8 +53,8 @@ public with sharing class ContactSelectorTest {
         insert new List<Contact>{contactOne, contactTwo, contactThree};
 
         List<Contact> checkContacts = ContactSelector.selectByParentAccountIds(new List<Id>{parent.Id});
-        System.assertEquals(2, checkContacts.size());
-        System.assertEquals(parent.Id, checkContacts[0].AccountId);
+        System.assertEquals(2, checkContacts.size(),'We should find two contacts for our parent Account');
+        System.assertEquals(parent.Id, checkContacts[0].AccountId,'The ID on the selected contact should match the parent account ID');
     }
 
     @IsTest
@@ -80,4 +80,70 @@ public with sharing class ContactSelectorTest {
         Contact returnedSalesRep = ContactSelector.selectContactBySalesRepId(salesTeam.Id);
         System.assertEquals(salesRep.Id, returnedSalesRep.Id, 'Expected a sales rep Contact to be returned');
     }
+
+    @IsTest
+    private static void testSelectSendBillsContactBySSSId() {
+        Shared_Solar_System__c sss = new Shared_Solar_System__c(
+            Name = 'Test SSS'
+        );
+        insert sss;
+
+        Account account1 = new Account(
+            Name = 'Account with Complete Opp'
+        );
+        insert account1;
+
+        Account account2 = new Account(
+            Name = 'Account without Complete Opp'
+        );
+        insert account2;
+
+        Contact completeContact = new Contact(
+            FirstName = 'Complete',
+            LastName = 'Contact',
+            AccountId = account1.Id
+        );
+        insert completeContact;
+
+        Contact incompleteContact = new Contact(
+            FirstName = 'InComplete',
+            LastName = 'Contact',
+            AccountId = account2.Id
+        );
+        insert incompleteContact;
+
+        account1.Send_Bills_Contact__c = completeContact.Id;
+        update account1;
+
+        account2.Send_Bills_Contact__c = incompleteContact.Id;
+        update account2;
+
+        Opportunity opportunityComplete = new Opportunity(
+            Name = 'Complete Opp',
+            AccountId = account1.Id,
+            Shared_Solar_System__c = sss.Id,
+            StageName = 'Complete',
+            CloseDate = System.today()
+        );
+        insert opportunityComplete;
+
+        
+        Opportunity opportunityInComplete = new Opportunity(
+            Name = 'Incomplete Opp',
+            AccountId = account2.Id,
+            Shared_Solar_System__c = sss.Id,
+            StageName = 'New',
+            CloseDate = System.today()
+        );
+        insert opportunityInComplete;
+
+        List<Contact> checkSendBillsContact = ContactSelector.selectSendBillsContactBySSSId(sss.Id);
+        
+        System.Debug (checkSendBillsContact);
+
+
+        System.assertEquals(1, checkSendBillsContact.size(), 'There is only one send bills contact that should be found');
+        System.assertEquals(completeContact.Id, checkSendBillsContact[0].Id,'The contact ID that is returned should be the complete contact');
+    }
+
 }

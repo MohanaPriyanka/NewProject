@@ -780,7 +780,15 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvocableMessagingService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>InvocableQualifiedSSSSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableSendBillsContactsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
