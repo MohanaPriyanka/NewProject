@@ -96,7 +96,7 @@ public with sharing class ZuoraGLSelector {
             'py.Gateway as Gateway, ' +
             'py.Lockbox__c as Lockbox, ' +
             'pm.type as PaymentMethod, ' +
-            'p.debitmemoitemid as AppliedRecordId, ' +
+            'm.Id as AppliedRecordId, ' +
             'py.ArchivedChargentData__c as ArchivedChargentData, ' +
             'p.Id as ExternalId ' +
             'FROM PaymentPartItem p ' +
