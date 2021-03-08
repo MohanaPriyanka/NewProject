@@ -53,16 +53,6 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
-        <fullName>Active__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Active</label>
-        <trackFeedHistory>true</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Cents_kW_DC_First_Bill_Paid__c</fullName>
         <defaultValue>0</defaultValue>
         <description>Enter the cents per kW DC the partner receives when the customer pays their first bill. This could be zero if they get the second part of their commission after the first bill is sent.</description>
@@ -153,7 +143,6 @@
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Active__c</columns>
         <columns>Partner__c</columns>
         <columns>Product__c</columns>
         <columns>CREATEDBY_USER</columns>

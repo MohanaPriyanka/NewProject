@@ -15576,11 +15576,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Commission_Structure__c.Active__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Commission_Structure__c.Cents_kW_DC_First_Bill_Paid__c</field>
         <readable>true</readable>
     </fieldPermissions>

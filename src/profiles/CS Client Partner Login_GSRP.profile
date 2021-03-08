@@ -19811,11 +19811,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Commission_Structure__c.Active__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Commission_Structure__c.Cents_kW_DC_First_Bill_Paid__c</field>
         <readable>false</readable>
     </fieldPermissions>
