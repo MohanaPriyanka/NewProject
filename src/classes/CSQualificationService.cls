@@ -28,8 +28,8 @@ public without sharing class CSQualificationService {
         }
 
         List<LASERCA__Personal_Credit_Report__c> completedPCRs = [
-                SELECT Id, LASERCA__Lead__c, LASERCA__Lead__r.Personal_Credit_Report__c, Approval_Status__c,
-                        LASERCA__Contact__c, LASERCA__Sum_of_monthly_Personal_Debt__c, Lead_from_Contact__c,
+                SELECT Id, LASERCA__Lead__c, LASERCA__Lead__r.Personal_Credit_Report__c, LASERCA__Lead__r.Application_Complete_Date__c,
+                        Approval_Status__c,LASERCA__Contact__c, LASERCA__Sum_of_monthly_Personal_Debt__c, Lead_from_Contact__c,
                         Maximum_Disbursement_Monthly__c, LASERCA__Credit_Score__c, LASERCA__Credit_Score_TransUnion__c
                 FROM LASERCA__Personal_Credit_Report__c
                 WHERE Id = :pcrIds
@@ -67,7 +67,7 @@ public without sharing class CSQualificationService {
                 pcr.LASERCA__Credit_Score__c = '9999';
                 creditScore = 9999;
                 updatePCRs.add(pcr);
-                if (lead.LeadSource == 'CSAP') {
+                if (lead.LeadSource == 'CSAP' || lead.Application_Complete_Date__c != null) {
                     CaseFactory noMatchFactory  = new CaseFactory();
                     noMatchFactory.setLead(lead);
                     noMatchFactory.setQueueType('No FICO Match');
