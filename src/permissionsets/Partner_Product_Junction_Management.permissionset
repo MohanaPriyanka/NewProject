@@ -25,11 +25,6 @@
         <field>Partner_Shared_Solar_System_Eligibility__c.Commission_Structure__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Partner_Shared_Solar_System_Eligibility__c.Compound_Key__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Partner &amp; SSS Junction Management</label>
     <objectPermissions>

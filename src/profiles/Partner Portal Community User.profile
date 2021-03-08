@@ -41371,11 +41371,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Partner_Shared_Solar_System_Eligibility__c.Compound_Key__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Partner_Task__c.Action_Label__c</field>
         <readable>false</readable>
     </fieldPermissions>
