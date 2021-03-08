@@ -25,7 +25,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 BWC_Project_Entity_Manual__c, Total_System_Size_kWh_DC__c,
                 Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c, Public__c,
                 Do_Not_Underwrite__c, Do_Not_Ask_for_Payment_Method__c,
-            (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE)
+            (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE Id IN :sssIds
         ];
@@ -56,7 +56,7 @@ public inherited sharing class SharedSolarSystemsSelector {
             'Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c, Estimated_COD_Date_Manual__c,' +
             'Project_Capacity_Available_kW_DC__c, Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c, Utility__c, ' +
             'Service_Territories__c, Assignment_Order__c, RiskCalc_Minimum__c,' +
-            '(SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE) ' +
+            '(SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE) ' +
             'FROM Shared_Solar_System__c ' +
             'WHERE Capacity_Available_to_be_Reserved__c > 0 ' +
             'AND Open__c = true ' +
@@ -128,7 +128,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Maximum_Subscription_Capacity_kWDC__c,Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
                 Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c,BWC_Project_Entity_Manual__c,
                 Total_System_Size_kWh_DC__c,Public__c,
-            (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE)
+            (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE Open__c = TRUE
             AND Capacity_Available_to_be_Reserved__c > 0
@@ -142,7 +142,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Credit_Score_Requirement__c, Product__r.Name, Utility__r.Name, Public__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
                 Do_Not_Underwrite__c, Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
                 RiskCalc_Minimum__c, Do_Not_Ask_for_Payment_Method__c, Product__r.Parent_Product__c,
-            (SELECT Id, Account__c, Account__r.Partner__c, Account__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE)
+            (SELECT Id, Account__c, Account__r.Partner__c, Account__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE (Product__c = :productId OR Product__r.Parent_Product__c = :productId)
             AND Utility__c IN :utilityIds
@@ -177,6 +177,14 @@ public inherited sharing class SharedSolarSystemsSelector {
             )
             FROM Shared_Solar_System__c
             WHERE Id IN :sssList
+        ];
+    }
+
+    public List<Shared_Solar_System__Share> getSSSSharesForUsers(List<User> users) {
+        return [
+            SELECT ParentId, UserOrGroupId
+            FROM Shared_Solar_System__Share
+            WHERE UserOrGroupId IN :users
         ];
     }
 }

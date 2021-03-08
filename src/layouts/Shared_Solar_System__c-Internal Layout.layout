@@ -595,16 +595,6 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>PrintableView</actionName>
-            <actionType>StandardButton</actionType>
-            <sortOrder>9</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Shared_Solar_System__c.Billing_Case</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
             <actionName>FeedItem.TextPost</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
@@ -645,9 +635,19 @@
             <sortOrder>8</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
+            <actionName>PrintableView</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>9</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
             <actionName>ChangeRecordType</actionName>
             <actionType>StandardButton</actionType>
             <sortOrder>10</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Preview_Next_Schedule_Z</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>11</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>New_Shared_Solar_System_Order</actionName>
@@ -660,9 +660,9 @@
             <sortOrder>13</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Preview_Next_Schedule_Z</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>11</sortOrder>
+            <actionName>Shared_Solar_System__c.Billing_Case</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <relatedLists>
@@ -684,7 +684,9 @@
         <excludeButtons>MassChangeOwner</excludeButtons>
         <fields>NAME</fields>
         <fields>Partner_Name__c</fields>
-        <fields>Active__c</fields>
+        <fields>IsActive__c</fields>
+        <fields>Start_Date__c</fields>
+        <fields>End_Date__c</fields>
         <fields>Commission_Structure__c</fields>
         <relatedList>Partner_Shared_Solar_System_Eligibility__c.Shared_Solar_System__c</relatedList>
         <sortField>Partner_Name__c</sortField>
@@ -725,19 +727,6 @@
         <fields>Opportunity_Id__c</fields>
         <fields>Opportunity__c</fields>
         <relatedList>System_Bill__c.Shared_Solar_System__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>ChargentBase__Merchant_ID__c</fields>
-        <fields>ChargentBase__Security_Key__c</fields>
-        <fields>ChargentBase__Require_AVS__c</fields>
-        <fields>ChargentBase__Require_CCV__c</fields>
-        <fields>ChargentBase__Test_Mode__c</fields>
-        <fields>RECORDTYPE</fields>
-        <fields>ChargentBase__Active__c</fields>
-        <fields>ChargentBase__Debug__c</fields>
-        <fields>ChargentBase__Use_Tokenization__c</fields>
-        <relatedList>ChargentBase__Gateway__c.Shared_Solar_System__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>CASES.CASE_NUMBER</fields>
@@ -804,7 +793,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h05000000Ej19</masterLabel>
+        <masterLabel>00h0r000000IA8z</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

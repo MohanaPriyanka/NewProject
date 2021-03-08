@@ -239,8 +239,8 @@ public with sharing class SharedSolarSystemsTest {
                 partnerSharedSolarSystemEligibilities.add(new Partner_Shared_Solar_System_Eligibility__c(
                     Shared_Solar_System__c = sss.Id,
                     Account__c = partnerAccount.Id,
-                    Active__c = true,
-                    Commission_Structure__c = commissionStructureMap.get(csKey).Id
+                    Commission_Structure__c = commissionStructureMap.get(csKey).Id,
+                    Start_Date__c = Date.newInstance(2020,1,1)
                 ));
             }
         }

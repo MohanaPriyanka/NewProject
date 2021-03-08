@@ -56,7 +56,8 @@
         <fullName>Active__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Active</label>
+        <inlineHelpText>No longer used</inlineHelpText>
+        <label>XXXActive</label>
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>

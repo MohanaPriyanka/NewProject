@@ -37,7 +37,7 @@ public with sharing class PartnerSSSEligibilitySelectorTest {
         Product2 product1 = new Product2(
             Name = '10% Product',
             ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True);
+            IsActive = true);
         insert product1;
 
         Commission_Structure__c commissionOne = new Commission_Structure__c(
@@ -45,7 +45,6 @@ public with sharing class PartnerSSSEligibilitySelectorTest {
             Partner__c = partner.Id,
             Partner_Account__c = partnerAccount.Id,
             Product__c = product1.Id,
-            Active__c = true,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
             Cents_kW_DC_First_Bill_Paid__c = 0.11
@@ -56,7 +55,6 @@ public with sharing class PartnerSSSEligibilitySelectorTest {
             Partner__c = partner2.Id,
             Partner_Account__c = partnerAccount2.Id,
             Product__c = product1.Id,
-            Active__c = true,
             Cents_kW_DC_Up_Front__c = 0.12,
             Cents_kW_DC_First_Bill_Paid__c = 0.50
         );
@@ -67,7 +65,7 @@ public with sharing class PartnerSSSEligibilitySelectorTest {
                 Account__c = partnerAccount.Id,
                 Shared_Solar_System__c = sss.Id,
                 Commission_Structure__c = commissionOne.Id,
-                Active__c = true
+                Start_Date__c = Date.newInstance(2020,1,1)
             );
 
         Partner_Shared_Solar_System_Eligibility__c partner2Eligibility =
@@ -75,7 +73,8 @@ public with sharing class PartnerSSSEligibilitySelectorTest {
                 Account__c = partnerAccount2.Id,
                 Shared_Solar_System__c = sss.Id,
                 Commission_Structure__c = commissionTwo.Id,
-                Active__c = false
+                Start_Date__c = Date.newInstance(2020,1,1),
+                End_Date__c = Date.newInstance(2020,2,1)
             );
         insert new List<Partner_Shared_Solar_System_Eligibility__c>{partner1Eligibility, partner2Eligibility};
     }

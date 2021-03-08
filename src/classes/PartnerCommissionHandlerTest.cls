@@ -205,7 +205,6 @@ public class PartnerCommissionHandlerTest {
             Name = 'Commission Structure One',
             Partner__c = opportunities[1].Partner_tag_lookup__c,
             Product__c = opportunities[1].Product__c,
-            Active__c = true,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
             Cents_kW_DC_First_Bill_Paid__c = 0.11
@@ -223,7 +222,6 @@ public class PartnerCommissionHandlerTest {
             Name = 'Commission Structure Two',
             Partner__c = opportunities[1].Partner_tag_lookup__c,
             Product__c = opportunities[1].Product__c,
-            Active__c = false,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
             Cents_kW_DC_First_Bill_Paid__c = 0.11
@@ -285,7 +283,6 @@ public class PartnerCommissionHandlerTest {
             Partner__c = opportunities[0].Partner_tag_lookup__c,
             Partner_Account__c = opportunities[0].Partner_Account__c,
             Product__c = opportunities[0].Product__c,
-            Active__c = true,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
             Cents_kW_DC_First_Bill_Paid__c = 0.11
@@ -297,7 +294,7 @@ public class PartnerCommissionHandlerTest {
                 Account__c = opportunities[0].Partner_Account__c,
                 Shared_Solar_System__c = opportunities[0].Shared_Solar_System__c,
                 Commission_Structure__c = commissionOne.Id,
-                Active__c = true
+                Start_Date__c = Date.newInstance(2020,1,1)
             );
         insert partnerEligibility;
 
@@ -342,7 +339,6 @@ public class PartnerCommissionHandlerTest {
             Partner__c = opportunities[0].Partner_tag_lookup__c,
             Partner_Account__c = opportunities[0].Partner_Account__c,
             Product__c = opportunities[0].Product__c,
-            Active__c = true,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
             Cents_kW_DC_First_Bill_Paid__c = 0.11
@@ -354,7 +350,7 @@ public class PartnerCommissionHandlerTest {
                 Account__c = opportunities[0].Partner_Account__c,
                 Shared_Solar_System__c = opportunities[0].Shared_Solar_System__c,
                 Commission_Structure__c = commissionOne.Id,
-                Active__c = true
+                Start_Date__c = Date.newInstance(2020,1,1)
             );
         insert partnerEligibility;
 
@@ -391,14 +387,10 @@ public class PartnerCommissionHandlerTest {
         );
         insert cp;
 
-        commissionOne.Active__c = false;
-        update commissionOne;
-
         Commission_Structure__c commissionTwo = new Commission_Structure__c(
             Name = 'Commission Structure Two',
             Partner__c = opportunities[0].Partner_tag_lookup__c,
             Product__c = opportunities[0].Product__c,
-            Active__c = true,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
             Cents_kW_DC_First_Bill_Paid__c = 0.11

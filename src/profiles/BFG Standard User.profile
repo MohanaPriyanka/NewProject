@@ -648,6 +648,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSRecordLoader</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSSubscriptionEnroller</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3188,6 +3192,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PartnerSSSEligibilities</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PartnerSSSEligibilitiesTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PartnerSSSEligibilitySelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3376,6 +3388,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SharedSolarSystemSharingScheduler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SharedSolarSystemSharingService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SharedSolarSystemSharingServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3521,6 +3541,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UASSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UserAndGroupSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UserAndGroupSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -35036,7 +35064,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.End_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.IsActive__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Partner_Shared_Solar_System_Eligibility__c.Partner_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner_Shared_Solar_System_Eligibility__c.Start_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

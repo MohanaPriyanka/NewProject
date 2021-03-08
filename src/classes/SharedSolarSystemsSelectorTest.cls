@@ -242,4 +242,14 @@ public with sharing class SharedSolarSystemsSelectorTest {
         List<Shared_Solar_System__c> sssList = (new Map<Id, Shared_Solar_System__c>([SELECT Id FROM Shared_Solar_System__c])).values();
         System.assertEquals(5, new SharedSolarSystemsSelector().getSSSWithActiveUASes(sssList).size());
     }
+
+    @IsTest
+    private static void testGetSSSSharesForUsers() {
+        try {
+            new SharedSolarSystemsSelector().getSSSSharesForUsers(new List<User>());
+            System.assert(true, 'Expected to getSSSSharesForUsers without exception');
+        } catch (Exception e) {
+            System.assert(false, e.getMessage() + '\n' + e.getStackTraceString());
+        }
+    }
 }
