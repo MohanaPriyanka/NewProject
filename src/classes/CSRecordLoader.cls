@@ -158,7 +158,8 @@ public without sharing class CSRecordLoader extends Promise {
                     partnerSharedSolarSystemEligibilities.add(
                         new Partner_Shared_Solar_System_Eligibility__c(
                             Shared_Solar_System__c = sss.Id,
-                            Account__c = partner.Id
+                            Account__c = partner.Id,
+                            Start_Date__c = Date.newInstance(2020,1,1)
                         )
                     );
                 }
@@ -850,6 +851,7 @@ public without sharing class CSRecordLoader extends Promise {
             Util.disableAllTriggers();
             delete [SELECT Id FROM CS_Bill_Setting__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Client_Allocation_Schedule_Subscription__c];
+            delete [SELECT Id FROM Bill_Adjustment__c];
             delete [SELECT Id FROM Transfer_Part__c];
             delete [SELECT Id FROM Transfer__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Utility_Account_Bill__c WHERE CreatedDate = :csDataDate];
@@ -867,6 +869,8 @@ public without sharing class CSRecordLoader extends Promise {
             delete [SELECT Id FROM Case WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Contact WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Account WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Subscription_Order__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Shared_Solar_System_Order__c];
             delete [SELECT Id FROM Shared_Solar_System__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Utility__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Entity__c WHERE CreatedDate = :csDataDate];

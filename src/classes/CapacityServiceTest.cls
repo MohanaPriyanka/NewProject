@@ -431,13 +431,11 @@ public with sharing class CapacityServiceTest {
 
     @IsTest
     private static void testFindCapacityByZipCodeNoPartners() {
-        Account partner = [SELECT Id FROM Account WHERE Name = 'ACE Solar'];
-        List<Partner_Shared_Solar_System_Eligibility__c> eligibilities = [
-            SELECT Id
-            FROM Partner_Shared_Solar_System_Eligibility__c
-            WHERE Account__c = :partner.Id
-        ];
-        delete eligibilities;
+        Account partner = new Account(
+            Name = 'No Eligibility Partner',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
+        insert partner;
 
         CapacityService service = new CapacityService();
         CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345', partner.Id);

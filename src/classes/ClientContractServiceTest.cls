@@ -89,10 +89,6 @@ public with sharing class ClientContractServiceTest {
         Contract managementContract = new Contract(
             Id = Util.getFakeId(Contract.SObjectType)
         );
-        Contract acquisitionContract = new Contract(
-            Id = Util.incrementFakeId(managementContract.Id)
-        );
-
         Client_Contract__c clientContractForManagement = new Client_Contract__c(
             Id = Util.getFakeId(Client_Contract__c.SObjectType),
             Contract__c = managementContract.Id,
@@ -269,9 +265,6 @@ public with sharing class ClientContractServiceTest {
       *** MOCKS ***
       *************/
     public class MockClientContractService extends MockProvider {
-        public MockClientContractService() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'setActiveContractsOnAllSSSes' {

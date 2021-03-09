@@ -54,13 +54,7 @@ public inherited sharing class ClientContracts {
         return clientContract.Id != existingCC.Id &&
             clientContract.Shared_Solar_System__c == existingCC.Shared_Solar_System__c &&
             overlapsType(existingCC, clientContract) &&
-            (overlapsDates(existingCC, clientContract) || overlapsDates(clientContract, existingCC));
-    }
-
-    private static Boolean overlapsDates(Client_Contract__c clientContract1, Client_Contract__c clientContract2) {
-        return DateUtil.between(clientContract1.Effective_Date__c, clientContract2.Effective_Date__c, clientContract1.End_Date__c) ||
-            DateUtil.between(clientContract1.Effective_Date__c, clientContract2.End_Date__c, clientContract1.End_Date__c) ||
-            (clientContract1.Effective_Date__c <= clientContract2.Effective_Date__c && clientContract1.End_Date__c >= clientContract2.End_Date__c);
+            DateUtil.overlapsDates(existingCC.Effective_Date__c, existingCC.End_Date__c, clientContract.Effective_Date__c, clientContract.End_Date__c);
     }
 
     private static Boolean overlapsType(Client_Contract__c clientContract1, Client_Contract__c clientContract2) {

@@ -48,5 +48,44 @@ public with sharing class DateUtilTest {
         System.assert(DateUtil.between(older, middle, newer), 'Same date is considered to be between');
         System.assert(!DateUtil.between(middle, older, newer));
         System.assert(DateUtil.between(older, newer, middle), 'Same date is considered to be between');
+        System.assert(!DateUtil.between(older, null, newer), 'Null end dates are a far out date');
+        System.assert(DateUtil.between(older, newer, null), 'Null end dates are a far out date');
+        System.assert(DateUtil.between(older, null, null), 'Null end dates are considered equal');
+    }
+
+    @IsTest
+    private static void testOverlapsDates() {
+        System.assert(
+            DateUtil.overlapsDates(Date.newInstance(2020,1,1), null, Date.newInstance(2020,1,1), null),
+            'Two objects, both with null end dates, should overlap'
+        );
+        System.assert(
+            !DateUtil.overlapsDates(Date.newInstance(2020,1,1), Date.newInstance(2020,1,31), Date.newInstance(2020,2,1), null),
+            '1/1/2020 - 1/31/2020 and 2/1/2020 - null should not overlap'
+        );
+        System.assert(
+            DateUtil.overlapsDates(Date.newInstance(2019,1,1), null, Date.newInstance(2020,1,1), Date.newInstance(2020,1,31)),
+            '1/1/2019 - null and 1/1/2020 - 1/31/2020 should overlap'
+        );
+        System.assert(
+            DateUtil.overlapsDates(Date.newInstance(2019,1,1), null, Date.newInstance(2020,1,1), null),
+            '1/1/2019 - null and 1/1/2020 - null should overlap'
+        );
+        System.assert(
+            DateUtil.overlapsDates(Date.newInstance(2020,1,1), Date.newInstance(2020,1,31), Date.newInstance(2019,1,1), null),
+            '1/1/2020 - 1/31/2020 and 1/1/2019 - null should overlap'
+        );
+        System.assert(
+            DateUtil.overlapsDates(Date.newInstance(2020,1,1), Date.newInstance(2020,1,31), Date.newInstance(2019,12,1), Date.newInstance(2020,1,1)),
+            '1/1/2020 - 1/31/2020 and 12/1/2019 - 1/1/2020 should overlap'
+        );
+        System.assert(
+            DateUtil.overlapsDates(Date.newInstance(2020,1,1), Date.newInstance(2020,1,31), Date.newInstance(2019,12,1), Date.newInstance(2020,12,1)),
+            '1/1/2020 - 1/31/2020 and 12/1/2019 - 12/1/2020 should overlap'
+        );
+        System.assert(
+            !DateUtil.overlapsDates(Date.newInstance(2020,1,1), Date.newInstance(2020,1,31), Date.newInstance(2020,12,1), Date.newInstance(2020,12,1)),
+            '1/1/2020 - 1/31/2020 and 12/1/2020 - 12/1/2020 should not overlap'
+        );
     }
 }
