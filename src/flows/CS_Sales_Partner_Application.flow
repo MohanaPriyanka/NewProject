@@ -21,6 +21,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Assign_Account_Fields</name>
         <label>Assign Account Fields</label>
@@ -377,6 +378,12 @@
         <name>BuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -746,8 +753,8 @@
     <screens>
         <name>scr_CompanyInfo</name>
         <label>scr_CompanyInfo</label>
-        <locationX>991</locationX>
-        <locationY>64</locationY>
+        <locationX>992</locationX>
+        <locationY>65</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -843,6 +850,10 @@
             <fieldText>Year Established</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Please enter the four digit year established, for example: 2021.&lt;/p&gt;</errorMessage>
+                <formulaExpression>LEN({!txtYear_Established})&lt;5</formulaExpression>
+            </validationRule>
         </fields>
         <fields>
             <name>txt_FileUpload</name>
@@ -1047,7 +1058,7 @@ REGEX({!txtBusiness_Phone},&quot;\\D*?(\\d\\D*?){10}&quot;)
     <screens>
         <name>scrCompany_Background</name>
         <label>Company Background</label>
-        <locationX>1189</locationX>
+        <locationX>1190</locationX>
         <locationY>66</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
