@@ -251,9 +251,9 @@
     </fields>
     <fields>
         <fullName>Credits_Transferred__c</fullName>
-        <description>Rollup of parts with Type = Transfer and &quot;Reduce for Allocation&quot; checkbox = false</description>
+        <description>Rollup of parts with Type = &quot;Transfer&quot; and &quot;Reduce for Allocation&quot; checkbox = false.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Rollup of parts with Type = Transfer and &quot;Reduce for Allocation&quot; checkbox = false</inlineHelpText>
+        <inlineHelpText>Rollup of parts with Type = &quot;Transfer&quot; and &quot;Reduce for Allocation&quot; checkbox = false.</inlineHelpText>
         <label>Credits Transferred</label>
         <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
         <summaryFilterItems>
@@ -453,8 +453,9 @@
     </fields>
     <fields>
         <fullName>Untransferred_Credits__c</fullName>
+        <description>Untransferred credits. If the project isn’t fully subscribed, non-transferred credits remain on the host account. Credits Generated - Credits Transferred</description>
         <externalId>false</externalId>
-        <formula>Credits_Available_for_Allocation__c  -  Credits_Transferred__c - Unsubscribed_Credits__c</formula>
+        <formula>Credits_Available_for_Allocation__c - Credits_Transferred__c - Unsubscribed_Credits__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Untransferred credits. If the project isn’t fully subscribed, non-transferred credits remain on the host account. Credits Generated - Credits Transferred</inlineHelpText>
         <label>Unallocated ($)</label>
@@ -466,8 +467,9 @@
     </fields>
     <fields>
         <fullName>Untransferred_kWh__c</fullName>
+        <description>Untransferred credits. If the project isn’t fully subscribed, non-transferred credits remain on the host account. Credits Generated - Credits Transferred</description>
         <externalId>false</externalId>
-        <formula>Production_kWh__c -  kWh_Transferred__c - Unsubscribed_kWh__c</formula>
+        <formula>Production_kWh__c - kWh_Transferred__c - Unsubscribed_kWh__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Untransferred credits. If the project isn’t fully subscribed, non-transferred credits remain on the host account. Credits Generated - Credits Transferred</inlineHelpText>
         <label>Unallocated (kWh)</label>
@@ -525,6 +527,11 @@
         <externalId>false</externalId>
         <label>kWh Transferred</label>
         <summarizedField>Transfer_Part__c.kWh_Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Transfer</value>
+        </summaryFilterItems>
         <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackTrending>false</trackTrending>

@@ -80,6 +80,10 @@
                 <behavior>Readonly</behavior>
                 <field>Credits_Available_for_Allocation__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Unsubscribed_Credits__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
