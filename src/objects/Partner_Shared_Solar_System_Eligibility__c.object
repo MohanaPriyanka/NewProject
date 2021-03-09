@@ -218,6 +218,28 @@ https://goravseth.com/preventing-duplicate-junction-object-records</description>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>End_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date after which this record ceases to be active</inlineHelpText>
+        <label>End Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>IsActive__c</fullName>
+        <externalId>false</externalId>
+        <formula>AND( TODAY() &gt;= Start_Date__c,
+     OR(ISBLANK(End_Date__c), TODAY() &lt;= End_Date__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Checked, if today is between the start and end date (or end date is blank). Once active, this record is locked.</inlineHelpText>
+        <label>Active</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Partner_Name__c</fullName>
         <description>Couldn&apos;t deploy the account name on the related list without this formula</description>
         <externalId>false</externalId>
@@ -245,6 +267,16 @@ https://goravseth.com/preventing-duplicate-junction-object-records</description>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date on which this record begins to be active</inlineHelpText>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
     <label>Partner Shared Solar System Access</label>
     <nameField>
         <displayFormat>PSSA-{0000}</displayFormat>
@@ -256,13 +288,29 @@ https://goravseth.com/preventing-duplicate-junction-object-records</description>
     <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
+        <fullName>Record_Locked</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND ( OR(ISCHANGED( Commission_Structure__c ), 
+         AND(ISCHANGED( Start_Date__c ), NOT(ISBLANK(PRIORVALUE(Start_Date__c)))),
+         ISCHANGED( Account__c ) ,
+         ISCHANGED( Shared_Solar_System__c ),
+         /* Since the end date can change, but it shouldn&apos;t make the current day inactive */
+         AND(ISCHANGED( End_Date__c ), End_Date__c &lt; TODAY())), 
+      TODAY() &gt; Start_Date__c,
+      NOT( $Profile.Name = &apos;System Administrator&apos;)
+)</errorConditionFormula>
+        <errorMessage>This record is locked because it is, or was, active. To change it, set an end date to today, and create a new one.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Required_Commission_Structure</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
 ISBLANK( Commission_Structure__c ), 
 NOT( Partner_Name__c = &apos;BlueWave Inside Sales&apos;),
 NOT( Partner_Name__c = &apos;BlueWave Test Partner&apos;),
-NOT( Partner_Name__c = &apos;Placeholder Partner&apos;))</errorConditionFormula>
+NOT( Partner_Name__c = &apos;Placeholder Partner&apos;),
+NOT( $Profile.Name = &apos;System Administrator&apos;)
+)</errorConditionFormula>
         <errorMessage>Commission Structure is required.</errorMessage>
     </validationRules>
     <visibility>Public</visibility>

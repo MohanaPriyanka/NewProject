@@ -108,7 +108,7 @@ public without sharing class CSAPController {
         sssResult.sssCreditQualification = 'Ready for Credit Check';
         Lead lead = [SELECT Id, Status, Partner_Lookup__c, Partner_Name__c, Application_Source_Phase_2__c, LoadZone__c, Utility_relationship__c FROM Lead WHERE Id = :leadId];
         String sssQuery = 'SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__r.Name , Product__c, Product__r.Program__c, Public__c, ' +
-            '(SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE) ';
+            '(SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE) ';
         sssQuery +=       'FROM Shared_Solar_System__c ';
         sssQuery +=       'WHERE Open__c = true ';
         sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
@@ -256,7 +256,7 @@ public without sharing class CSAPController {
             return false;
         }
         String sssQuery = 'SELECT Id, Product__r.Name, Public__c, ' +
-            '(SELECT Id, Account__c, Account__r.Name, Account__r.Partner__c, Account__r.Partner__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE Active__c = TRUE) ';
+            '(SELECT Id, Account__c, Account__r.Name, Account__r.Partner__c, Account__r.Partner__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE) ';
         sssQuery +=       'FROM Shared_Solar_System__c ';
         sssQuery +=       'WHERE Open__c = true ';
         sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';

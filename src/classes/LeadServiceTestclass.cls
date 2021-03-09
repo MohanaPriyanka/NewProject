@@ -2,6 +2,7 @@
  * Created by SarahRenfro on 6/4/2019.
  */
 
+@SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
 public class LeadServiceTestclass {
     @TestSetup
@@ -171,10 +172,10 @@ public class LeadServiceTestclass {
         List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities =
             SharedSolarSystemsTest.getPartnerEligibilities(new List<Shared_Solar_System__c>{sss1, sss2}, new List<Account>{partnerAccount2});
         partnerEligibilities.add(new Partner_Shared_Solar_System_Eligibility__c(
-                Shared_Solar_System__c = sss1.Id,
-                Account__c = partnerAccount1.Id
-            )
-        );
+            Shared_Solar_System__c = sss1.Id,
+            Account__c = partnerAccount1.Id,
+            Start_Date__c = Date.newInstance(2020,1,1)
+        ));
         insert partnerEligibilities;
 
         BSST__c salesRep1 = new BSST__c(

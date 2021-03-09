@@ -33,7 +33,8 @@ private without sharing class UserTriggerHandlerTest {
         Partner_Shared_Solar_System_Eligibility__c eligibility = new Partner_Shared_Solar_System_Eligibility__c(
             Account__c = partnerAccount.Id,
             Shared_Solar_System__c = sss.Id,
-            Commission_Structure__c = commissionStructure.Id
+            Commission_Structure__c = commissionStructure.Id,
+            Start_Date__c = Date.newInstance(2020,1,1)
         );
         insert eligibility;
 

@@ -48,7 +48,7 @@ public with sharing class UserAndGroupSelectorTest {
 
     @IsTest
     private static void testGetUsersByAccountIds() {
-        MultiMap usersByAccountId = new UserAndGroupSelector().getUsersByAccountIds(new Set<Id>());
-        System.assertNotEquals(null, usersByAccountId, 'Should always get a multi map back, even when there are no users');
+        List<User> users = new UserAndGroupSelector().getUsersByAccountIds(new Set<Id>());
+        System.assertNotEquals(null, users, 'Should always get a list of users, even when there are no users');
     }
 }

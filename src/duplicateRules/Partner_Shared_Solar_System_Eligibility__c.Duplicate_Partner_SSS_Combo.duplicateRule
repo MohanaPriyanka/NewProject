@@ -10,7 +10,7 @@
         <matchingRule>Partner_Shared_Solar_System_Access</matchingRule>
         <objectMapping xsi:nil="true"/>
     </duplicateRuleMatchRules>
-    <isActive>true</isActive>
+    <isActive>false</isActive>
     <masterLabel>Duplicate Partner/SSS Combo</masterLabel>
     <securityOption>BypassSharingRules</securityOption>
     <sortOrder>1</sortOrder>
