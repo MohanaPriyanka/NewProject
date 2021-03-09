@@ -20461,11 +20461,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Commission_Structure__c.Active__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Commission_Structure__c.Cents_kW_DC_First_Bill_Paid__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -40377,11 +40372,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Partner_Shared_Solar_System_Eligibility__c.Commission_Structure__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Partner_Shared_Solar_System_Eligibility__c.Compound_Key__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
