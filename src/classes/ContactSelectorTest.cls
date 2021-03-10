@@ -82,11 +82,12 @@ public with sharing class ContactSelectorTest {
     }
 
     @IsTest
-        private static void testInvocableSendBillsContactsSelector() {
-            List<List<Contact>> testContactSelector = InvocableSendBillsContactsSelector.getSendBillsContactsBySSSId(new List<Id> {Util.getFakeId(Shared_Solar_System__c.SObjectType)} );
-            System.debug(LoggingLevel.ERROR,testContactSelector );
-            System.assertEquals(1,testContactSelector.size(),'One record (an error) should be returned');
+    private static void testInvocableSendBillsContactsSelector() {
+        List<List<Contact>> contactListWrapper = InvocableSendBillsContactsSelector.getSendBillsContactsBySSSId(new List<Id> {Util.getFakeId(Shared_Solar_System__c.SObjectType)} );
+        System.assertEquals(1,contactListWrapper.size(),'The InvocableSendBillsContactSelector should always return' + 
+        'a list of contact lists (even if the contact list has no contacts in it');
+        System.assertEquals(0,contactListWrapper[0].size(),'There should be no Send Bills Contacts for a SSS that is not found in the database');
 
-        }
+    }
 
 }
