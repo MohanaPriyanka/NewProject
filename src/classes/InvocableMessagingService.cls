@@ -51,8 +51,9 @@ public without sharing class InvocableMessagingService {
                            required=true)
         public List<FlowMap> templateValues;
         
+        @SuppressWarnings('PMD.EmptyStatementBlock')
         public EmailTemplateSendInfo(){
-            // EmailTemplateSendInfo needs a no-arg constructor
+            // Invocable types need a no-arg constructor
         }
         public EmailTemplateSendInfo(String emailTemplateName, List<Contact>contactList, List<FlowMap> templateValues){
             this.emailTemplateName = emailTemplateName;
