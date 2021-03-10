@@ -54,7 +54,7 @@ public inherited sharing class ContactSelector {
         ];
         for (Opportunity opportunity : getSendBillsContactsFromOpp) {
             sendBillsContacts.add(opportunity.Account.Send_Bills_Contact__r);
-            }
+        }
         return new List<Contact>(sendBillsContacts);
         
     }
