@@ -45,7 +45,7 @@ public inherited sharing class ContactSelector {
     }
 
     public static List<Contact> selectSendBillsContactBySSSId(Id  sharedSolarSystemId) {
-        List<Contact> sendBillsContacts = new List<Contact>();
+        Set<Contact> sendBillsContacts = new Set<Contact>();
         List<Opportunity> getSendBillsContactsFromOpp =  [
             SELECT Account.Send_Bills_Contact__r.Id,  Account.Send_Bills_Contact__r.Email
             FROM Opportunity 
@@ -55,8 +55,7 @@ public inherited sharing class ContactSelector {
         for (Opportunity opportunity : getSendBillsContactsFromOpp) {
             sendBillsContacts.add(opportunity.Account.Send_Bills_Contact__r);
             }
-        
-        return sendBillsContacts;
+        return new List<Contact>(sendBillsContacts);
         
     }
 }

@@ -82,68 +82,11 @@ public with sharing class ContactSelectorTest {
     }
 
     @IsTest
-    private static void testSelectSendBillsContactBySSSId() {
-        Shared_Solar_System__c sss = new Shared_Solar_System__c(
-            Name = 'Test SSS'
-        );
-        insert sss;
+        private static void testInvocableSendBillsContactsSelector() {
+            List<List<Contact>> testContactSelector = InvocableSendBillsContactsSelector.getSendBillsContactsBySSSId(new List<Id> {Util.getFakeId(Shared_Solar_System__c.SObjectType)} );
+            System.debug(LoggingLevel.ERROR,testContactSelector );
+            System.assertEquals(1,testContactSelector.size(),'One record (an error) should be returned');
 
-        Account account1 = new Account(
-            Name = 'Account with Complete Opp'
-        );
-        insert account1;
-
-        Account account2 = new Account(
-            Name = 'Account without Complete Opp'
-        );
-        insert account2;
-
-        Contact completeContact = new Contact(
-            FirstName = 'Complete',
-            LastName = 'Contact',
-            AccountId = account1.Id
-        );
-        insert completeContact;
-
-        Contact incompleteContact = new Contact(
-            FirstName = 'InComplete',
-            LastName = 'Contact',
-            AccountId = account2.Id
-        );
-        insert incompleteContact;
-
-        account1.Send_Bills_Contact__c = completeContact.Id;
-        update account1;
-
-        account2.Send_Bills_Contact__c = incompleteContact.Id;
-        update account2;
-
-        Opportunity opportunityComplete = new Opportunity(
-            Name = 'Complete Opp',
-            AccountId = account1.Id,
-            Shared_Solar_System__c = sss.Id,
-            StageName = 'Complete',
-            CloseDate = System.today()
-        );
-        insert opportunityComplete;
-
-        
-        Opportunity opportunityInComplete = new Opportunity(
-            Name = 'Incomplete Opp',
-            AccountId = account2.Id,
-            Shared_Solar_System__c = sss.Id,
-            StageName = 'New',
-            CloseDate = System.today()
-        );
-        insert opportunityInComplete;
-
-        List<Contact> checkSendBillsContact = ContactSelector.selectSendBillsContactBySSSId(sss.Id);
-        
-        System.Debug (checkSendBillsContact);
-
-
-        System.assertEquals(1, checkSendBillsContact.size(), 'There is only one send bills contact that should be found');
-        System.assertEquals(completeContact.Id, checkSendBillsContact[0].Id,'The contact ID that is returned should be the complete contact');
-    }
+        }
 
 }
