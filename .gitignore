@@ -407,3 +407,5 @@ src/package.xml
 /IlluminatedCloud/
 /.idea/illuminatedCloud.xml
 SMP.iml
+
+.pmdCache
