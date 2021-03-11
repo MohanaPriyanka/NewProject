@@ -410,15 +410,6 @@ Time_to_Close__c
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Case_Alert_Status__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(Case_Alerts__c=IMAGE(&quot;/img/msg_icons/confirm16.png&quot;,&quot;All Clear&quot;),FALSE,TRUE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Case Alert Status</label>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Case_Detail__c</fullName>
         <externalId>false</externalId>
         <label>Case Detail</label>
