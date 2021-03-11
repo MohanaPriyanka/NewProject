@@ -1616,6 +1616,12 @@
         </picklistValues>
     </recordTypes>
     <recordTypes>
+        <fullName>Inspire_Planner_Task</fullName>
+        <active>true</active>
+        <description>Used for Inspire Planner tasks, in conjunction with Inspire Planner Project Task object</description>
+        <label>Inspire Planner Task</label>
+    </recordTypes>
+    <recordTypes>
         <fullName>Project_Management</fullName>
         <active>true</active>
         <description>Project Management tasks (Site Acq, Project Dev, Interconnect, Construction, Asset Mgmt, etc)</description>
