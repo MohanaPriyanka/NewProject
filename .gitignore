@@ -407,3 +407,6 @@ src/package.xml
 /IlluminatedCloud/
 /.idea/illuminatedCloud.xml
 SMP.iml
+
+#pmdCache file is used for the PMD plugin in VS Code
+.pmdCache
