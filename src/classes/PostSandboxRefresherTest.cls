@@ -402,7 +402,7 @@ private class PostSandboxRefresherTest {
         // RunAs to get a new context to avoid
         // MIXED_DML_OPERATION, DML operation on setup object is not permitted after you have updated a non-setup object
         // (or vice versa): User, original object: MPM4_BASE__Milestone1_Resource__c
-        User currentUser = [SELECT Id FROM User WHERE Id = :UserInfo.getUserId()];
+        User currentUser = [SELECT Id FROM User WHERE Id = :systemAdminUser.Id];
         System.runAs(currentUser) {
             Test.startTest();
             PostSandboxRefresher psr = new PostSandboxRefresher();
