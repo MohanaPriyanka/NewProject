@@ -4,6 +4,15 @@
         <enabled>true</enabled>
         <name>Allow_Edit_of_SSS_Address</name>
     </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>SSS_Management</name>
+    </customPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>EmailMessage.Message_Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Meter_Reading_Schedule__c.April_Meter_Read_Date__c</field>

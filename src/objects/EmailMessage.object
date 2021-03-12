@@ -69,6 +69,15 @@
         <fullName>MessageSize</fullName>
     </fields>
     <fields>
+        <fullName>Message_Details__c</fullName>
+        <description>Used in the SSS update flow to track details related to the email send</description>
+        <externalId>false</externalId>
+        <label>Message Details</label>
+        <length>1000</length>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
         <fullName>ParentId</fullName>
         <type>Lookup</type>
     </fields>

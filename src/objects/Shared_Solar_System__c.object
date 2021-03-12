@@ -151,7 +151,7 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <deprecated>false</deprecated>
     <description n1:nil="true" />
-    <enableActivities>false</enableActivities>
+    <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableDivisions>false</enableDivisions>
     <enableEnhancedLookup>false</enableEnhancedLookup>

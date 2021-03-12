@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Since we can&apos;t update the sysadmin profile to enable the enhanced template builder,we&apos;ll use this permission set in sandboxes instead.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Access Drag and Drop Template builder</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>AccessContentBuilder</name>
+    </userPermissions>
+</PermissionSet>
