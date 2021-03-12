@@ -410,60 +410,6 @@ Time_to_Close__c
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Case_Alert_Details__c</fullName>
-        <externalId>false</externalId>
-        <formula>&quot;Current Case Alerts: &quot;&amp;IF(Case_Alert_Status__c,&quot;&quot;,&quot;N/A&quot;)&amp;
-TRIM(
-IF(Pending_Reply__c &gt; 0,BR()&amp;&quot;Replies Pending: &quot;&amp;TEXT(Pending_Reply__c),&quot;&quot;)&amp;
-IF(ISBLANK(First_Response_Date_Time__c)&amp;&amp;CreatedDate&lt;NOW()-1,BR()&amp;&quot;Aged without Response: &quot;&amp;TEXT(ROUND(NOW()-CreatedDate,2)),&quot;&quot;)
-)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Case Alert Details</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Case_Alert_Status__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(Case_Alerts__c=IMAGE(&quot;/img/msg_icons/confirm16.png&quot;,&quot;All Clear&quot;),FALSE,TRUE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Case Alert Status</label>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Case_Alerts_Text__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(Pending_Reply__c &gt; 0 || ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-2,&quot;Alert: &quot;,
-IF(Pending_Reply__c &gt; 0,&quot;Reply Pending&quot;, 
-IF(ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, &quot;Over 1 Day&quot;,&quot;All Clear&quot;)))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Case Alerts</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Case_Alerts__c</fullName>
-        <externalId>false</externalId>
-        <formula>TRIM(
-
-IF(Pending_Reply__c &gt; 0 || ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-2,&apos; &apos; ,IMAGE(&quot;/img/msg_icons/confirm16.png&quot;,&quot;All Clear&quot;))&amp;&quot; &quot;&amp;
-
-IF(Pending_Reply__c &gt; 0,IMAGE(&quot;/img/func_icons/util/mailFrontEnv16.gif&quot;,&quot;Reply Pending&quot;),&quot;&quot;)&amp;&quot; &quot;&amp;
-
-IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IMAGE(&quot;/img/icon/dashboards16.png&quot;,&quot;Overdue Case&quot;),&quot;&quot;))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Case Alerts</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Case_Detail__c</fullName>
         <externalId>false</externalId>
         <label>Case Detail</label>
@@ -1089,46 +1035,6 @@ IF(Account.RecordTypeId=&quot;012j00000010Ha3&quot;,&quot;%26&amp;isParentAcct%3
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Finance_Category__c</fullName>
-        <externalId>false</externalId>
-        <label>Finance Category</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Debt Capital Markets / Structured Transactions</fullName>
-                    <default>false</default>
-                    <label>Debt Capital Markets / Structured Transactions</label>
-                </value>
-                <value>
-                    <fullName>Equity Capital Markets / Strategic Partnerships</fullName>
-                    <default>false</default>
-                    <label>Equity Capital Markets / Strategic Partnerships</label>
-                </value>
-                <value>
-                    <fullName>1603 Compliance / Loan Support</fullName>
-                    <default>false</default>
-                    <label>1603 Compliance / Loan Support</label>
-                </value>
-                <value>
-                    <fullName>Corporate Finance</fullName>
-                    <default>false</default>
-                    <label>Corporate Finance</label>
-                </value>
-                <value>
-                    <fullName>Platform Finance</fullName>
-                    <default>false</default>
-                    <label>Platform Finance</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>First_Name__c</fullName>
         <externalId>false</externalId>
         <label>First Name</label>
@@ -1169,19 +1075,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>Forwarded_Email_Count__c</fullName>
-        <description>Created by OpFocus</description>
-        <externalId>false</externalId>
-        <label>Forwarded Email Count</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>How_Can_We_Help__c</fullName>
@@ -1241,20 +1134,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>New_Email_Count__c</fullName>
-        <defaultValue>0</defaultValue>
-        <description>Created by OpFocus</description>
-        <externalId>false</externalId>
-        <label>New Email Count</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Origin</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
@@ -1271,19 +1150,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Pending_Reply__c</fullName>
-        <externalId>false</externalId>
-        <formula>New_Email_Count__c - Sent_Email_Count__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Pending Reply</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Permission_Set_Expiration_Date_Time__c</fullName>
@@ -1588,20 +1454,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         </valueSet>
     </fields>
     <fields>
-        <fullName>Read_Email_Count__c</fullName>
-        <defaultValue>0</defaultValue>
-        <description>Created by OpFocus</description>
-        <externalId>false</externalId>
-        <label>Read Email Count</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Reason</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
@@ -1839,20 +1691,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         </valueSet>
     </fields>
     <fields>
-        <fullName>Sent_Email_Count__c</fullName>
-        <defaultValue>0</defaultValue>
-        <description>Created by OpFocus</description>
-        <externalId>false</externalId>
-        <label>Sent Email Count</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Shared_Solar_System__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -1968,19 +1806,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <trackHistory>true</trackHistory>
         <trackTrending>true</trackTrending>
         <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Unread_Messages__c</fullName>
-        <externalId>false</externalId>
-        <formula>New_Email_Count__c - Read_Email_Count__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Unread Messages</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Utility_Follow_Up_Required__c</fullName>
@@ -2745,29 +2570,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Finance_Category__c</picklist>
-            <values>
-                <fullName>1603 Compliance %2F Loan Support</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Corporate Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Platform Finance</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Origin</picklist>
             <values>
                 <fullName>Chatter Answers</fullName>
@@ -3059,29 +2861,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>UAS Marked as Cancelled%3A On Transfer Sheet</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Finance_Category__c</picklist>
-            <values>
-                <fullName>1603 Compliance %2F Loan Support</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Corporate Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Platform Finance</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3513,29 +3292,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Finance_Category__c</picklist>
-            <values>
-                <fullName>1603 Compliance %2F Loan Support</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Corporate Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Platform Finance</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Origin</picklist>
             <values>
                 <fullName>Chatter Answers</fullName>
@@ -3954,29 +3710,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Finance_Category__c</picklist>
-            <values>
-                <fullName>1603 Compliance %2F Loan Support</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Corporate Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Platform Finance</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Origin</picklist>
             <values>
                 <fullName>Chatter Answers</fullName>
@@ -4236,29 +3969,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <picklist>Category__c</picklist>
             <values>
                 <fullName>Billing</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Finance_Category__c</picklist>
-            <values>
-                <fullName>1603 Compliance %2F Loan Support</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Corporate Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Platform Finance</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -4613,29 +4323,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Subscription Change</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Finance_Category__c</picklist>
-            <values>
-                <fullName>1603 Compliance %2F Loan Support</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Corporate Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Platform Finance</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -5089,29 +4776,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Underwriting</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Finance_Category__c</picklist>
-            <values>
-                <fullName>1603 Compliance %2F Loan Support</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Corporate Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Platform Finance</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

@@ -17,7 +17,6 @@ public without sharing class InvocableMessagingService {
         String templateName = infoObject.getTemplateName();
         List<Contact> contactList = infoObject.getContactList();
         Map<String, String> templateValues = infoObject.getReplacementMap();
-        
         OrgWideEmailAddress owa = MessagingService.getCustomerCareEmail();
         EmailTemplate emailTemplate = MessagingService.getHtml(templateName);
         String htmlBody = MessagingService.getHtmlWithReplacements(templateName, templateValues);
@@ -48,11 +47,13 @@ public without sharing class InvocableMessagingService {
         public List<Contact> contactList;
         
         @InvocableVariable(label='Template Values' 
-                           description='List of FlowMap objects, with the keys being replaced by the value')
+                           description='List of FlowMap objects, with the keys being replaced by the value'
+                           required=true)
         public List<FlowMap> templateValues;
         
+        @SuppressWarnings('PMD.EmptyStatementBlock')
         public EmailTemplateSendInfo(){
-            // EmailTemplateSendInfo needs a no-arg constructor
+            // Invocable types need a no-arg constructor
         }
         public EmailTemplateSendInfo(String emailTemplateName, List<Contact>contactList, List<FlowMap> templateValues){
             this.emailTemplateName = emailTemplateName;
