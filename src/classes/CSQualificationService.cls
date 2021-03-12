@@ -22,6 +22,9 @@ public without sharing class CSQualificationService {
         }
 
         leadMap = LeadSelector.getLeadMap(leadIds);
+        if (leadMap.values().size()== 0 ) {
+            return;
+        }
 
         if (triggerOldMap == null) {
             for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
