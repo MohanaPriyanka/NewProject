@@ -1616,6 +1616,35 @@
         </picklistValues>
     </recordTypes>
     <recordTypes>
+        <fullName>Inspire_Planner_Task</fullName>
+        <active>true</active>
+        <description>Used for Inspire Planner tasks, in conjunction with Inspire Planner Project Task object</description>
+        <label>Inspire Planner Task</label>
+        <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Deferred</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Started</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Waiting on someone else</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
         <fullName>Project_Management</fullName>
         <active>true</active>
         <description>Project Management tasks (Site Acq, Project Dev, Interconnect, Construction, Asset Mgmt, etc)</description>
