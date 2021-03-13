@@ -219,6 +219,7 @@ public without sharing class LeadSelector {
     public static Map<Id, Lead> getLeadMap(List<Id> leadIds) {
         return new Map<Id, Lead>([
             SELECT Id,
+                Application_Complete_Date__c,
                 Company,
                 Electricity_Provider__c,
                 LASERCA__Home_Address__c,
