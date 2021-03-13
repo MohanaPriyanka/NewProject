@@ -205,6 +205,8 @@ public class CSQualificationTestclass {
     @IsTest
     public static void testNoPCRMatchSwitchLead() {
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
+        lead.Application_Complete_Date__c = System.today();
+        update lead;
 
         Test.startTest();
         pullCreditForLead(lead.Id, 'No Match');
@@ -220,7 +222,7 @@ public class CSQualificationTestclass {
         System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
         System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 9999');
-        System.assertEquals(0, new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size(), 'QC for No Match PCRs should not be created for SSF leads (this is done from SSF directly)');
+        System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size(), 'QC for No Match PCRs should only be created for completed SSF leads');
     }
 
     @IsTest
