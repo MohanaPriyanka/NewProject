@@ -2,16 +2,13 @@
 Tested By: ClientInvoicingFeeWaiveServiceTest
  */
 public without sharing class ClientInvoicingFeeWaiveService {
-    @TestVisible
-    private static ClientInvoicingMemoSelector clientInvoicingMemoSelector = new ClientInvoicingMemoSelector();
-    @TestVisible
-    private static SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
-    @TestVisible
-    private MultiMap sssIdToTotalWaivedkWMap;
-    @TestVisible
-    private Map<Id,Decimal> uasToAssignedCapacityMap;
-    @TestVisible
-    private static ClientInvoicingFeeAssignmentService assignmentService;
+    @TestVisible private static ClientInvoicingMemoSelector clientInvoicingMemoSelector = new ClientInvoicingMemoSelector();
+    @TestVisible private static SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
+    @TestVisible private static ClientInvoicingFeeAssignmentService assignmentService;
+    private static ClientContractSelector clientContractSelector = new ClientContractSelector();
+    @TestVisible private MultiMap sssIdToTotalWaivedkWMap;
+    @TestVisible private Map<Id,Decimal> uasToAssignedCapacityMap;
+    @TestVisible private List<Client_Contract__c> clientContractsWaivingByProjectContract;
 
     @TestVisible
     private fflib_SObjectUnitOfWork uow;
@@ -48,20 +45,25 @@ public without sharing class ClientInvoicingFeeWaiveService {
     }
 
     private void queryData(List<Subscription_Order__c> subOrders) {
-        Set<Id> sssIds = new Set<Id>();
+        Set<Id> sssIdsBeingWaivedToMaxPercent = new Set<Id>();
         Set<Id> uasIds = new Set<Id>();
+        Set<Id> sssIdsRequiringProjectContracts = new Set<Id>();
 
         for (Subscription_Order__c order : subOrders) {
             if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c) {
                 uasIds.add(order.Utility_Account_Subscription__c);
             }
             if (order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c != null) {
-                sssIds.add(order.Utility_Account_Subscription__r.Shared_Solar_System__c);
+                sssIdsBeingWaivedToMaxPercent.add(order.Utility_Account_Subscription__r.Shared_Solar_System__c);
+            }
+            if (order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c == 'Project Contract: Effective Date') {
+                sssIdsRequiringProjectContracts.add(order.Utility_Account_Subscription__r.Shared_Solar_System__c);
             }
         }
 
-        sssIdToTotalWaivedkWMap = clientInvoicingMemoSelector.getWaivedFeesBySSS(sssIds);
+        sssIdToTotalWaivedkWMap = clientInvoicingMemoSelector.getWaivedFeesBySSS(sssIdsBeingWaivedToMaxPercent);
         uasToAssignedCapacityMap = subscriptionOrderSelector.getSubscriptionOrdersAssignedToClient(uasIds);
+        clientContractsWaivingByProjectContract = clientContractSelector.getClientContracts(sssIdsRequiringProjectContracts);
     }
 
     /**
@@ -205,7 +207,7 @@ public without sharing class ClientInvoicingFeeWaiveService {
     }
 
     /**
-     * Calculates the milestone date (if populated) for a Subscription Order.
+     * @description Calculates the milestone date (if populated) for a Subscription Order.
      * @param order The subscription order for which the milestone date should be calculated. Depending on the milestoneDateType,
      * needs to have related Contract, SSS, or Assignment Agreement fields.
      * @param milestoneDateType An option from Contract_Fee_Detail__c.Waive_Reacquisition_Fee_Project_Date__c
@@ -220,6 +222,9 @@ public without sharing class ClientInvoicingFeeWaiveService {
         Date milestoneDate;
 
         switch on milestoneDateType {
+            when 'Project Contract: Effective Date' {
+                milestoneDate = getProjectContractEffectiveDate(order);
+            }
             when 'Contract: Effective Date' {
                 milestoneDate = order.Contract_Fee_Detail__r.Contract__r.StartDate;
             }
@@ -266,5 +271,22 @@ public without sharing class ClientInvoicingFeeWaiveService {
         );
         uow.registerNew(memo);
         return memo;
+    }
+
+    private Date getProjectContractEffectiveDate(Subscription_Order__c order) {
+        for (Client_Contract__c clientContract : clientContractsWaivingByProjectContract) {
+            if (order.Contract_Fee_Detail__r.Contract__c == clientContract.Contract__c &&
+                order.Utility_Account_Subscription__r.Shared_Solar_System__c == clientContract.Shared_Solar_System__c &&
+                DateUtil.between(clientContract.Effective_Date__c, DateUtil.convertGmtToDate(order.Effective_Date__c), clientContract.End_Date__c)) {
+                return clientContract.Effective_Date__c;
+            }
+        }
+        Logger.logLater(
+            'ClientInvoicingFeeWaiveService',
+            'getProjectContractEffectiveDate',
+            'Could not find Project Contract Effective Date for so: ' + order.Id,
+            Logger.ERROR
+        );
+        return null;
     }
 }

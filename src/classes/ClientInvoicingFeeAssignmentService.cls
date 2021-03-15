@@ -3,11 +3,11 @@
   Tested By: ClientInvoicingFeeAssignmentServiceTest, ClientInvoicingFeeWaiveServiceTest
  */
 public without sharing class ClientInvoicingFeeAssignmentService {
-    @TestVisible
-    private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
-    @TestVisible
-    private static SubscriptionOrderSelector subscripOrderSelector = new SubscriptionOrderSelector();
-
+    @TestVisible private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
+    @TestVisible private static SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
+    private List<SubscriptionOrder> subOrdersAsFeeQualifications = new List<SubscriptionOrder>();
+    private Set<Id> subscriptionOrderIds;
+    private List<Subscription_Order__c> queriedSOs;
     private MultiMap contractToFeeDetailMap;
     @TestVisible
     private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
@@ -15,6 +15,27 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             Subscription_Order__c.SObjectType
         }
     );
+
+    public ClientInvoicingFeeAssignmentService(Set<Id> subscriptionOrderIds) {
+        this.subscriptionOrderIds = subscriptionOrderIds;
+        init();
+    }
+
+    private void init() {
+        queriedSOs = subscriptionOrderSelector.selectByIds(subscriptionOrderIds);
+        Set<Id> contractIds = new Set<Id>();
+        for (Subscription_Order__c subOrder : queriedSOs) {
+            if (hasRequiredFieldsForAssignment(subOrder)) {
+                SubscriptionOrder feeQualifier = new SubscriptionOrder(subOrder);
+                subOrdersAsFeeQualifications.add(feeQualifier);
+                contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c);
+                contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c);
+            }
+        }
+
+        List<Contract_Fee_Detail__c> feeDetailList = contractFeeDetailSelector.getContractDetailFromContract(contractIds);
+        contractToFeeDetailMap = convertContractFeeListToFeeDetailMap(feeDetailList);
+    }
 
     @TestVisible
     private virtual class FeeQualification {
@@ -171,24 +192,23 @@ public without sharing class ClientInvoicingFeeAssignmentService {
      */
     @Future
     public static void setSubOrderContractFeeDetailInFuture(Set<Id> subscriptionOrderIds){
-        ClientInvoicingFeeAssignmentService feeJob = new ClientInvoicingFeeAssignmentService();
-        feeJob.setSubOrderContractFeeDetail(subscriptionOrderIds);
+        ClientInvoicingFeeAssignmentService feeJob = new ClientInvoicingFeeAssignmentService(subscriptionOrderIds);
+        feeJob.setSubOrderContractFeeDetail();
     }
 
     /**
      * @description Instance method to assign CFDs and generate CIMs for use in anonymous apex
      * @param subscriptionOrderIds Set of Subscription Order Ids to assign
      */
-    public void setSubOrderContractFeeDetail(Set<Id> subscriptionOrderIds){
+    public void setSubOrderContractFeeDetail() {
         try {
-            List<Subscription_Order__c> queriedSOs = subscripOrderSelector.selectByIds(subscriptionOrderIds);
-            setSubscriptionOrderAcquisitionFee(queriedSOs);
+            setSubscriptionOrderAcquisitionFee();
             uow.commitWork();
             Logger.flushLogs();
 
             uow = new fflib_SObjectUnitOfWork(new List<SObjectType> {Client_Invoicing_Memo__c.SObjectType});
 
-            List<Subscription_Order__c> ordersAfterFeesAreSet = subscripOrderSelector.selectByIds(subscriptionOrderIds);
+            List<Subscription_Order__c> ordersAfterFeesAreSet = subscriptionOrderSelector.selectByIds(subscriptionOrderIds);
             ClientInvoicingFeeWaiveService waiveService = new ClientInvoicingFeeWaiveService(this);
             waiveService.waiveFeesIfNecessary(ordersAfterFeesAreSet, uow);
             uow.commitWork();
@@ -200,23 +220,9 @@ public without sharing class ClientInvoicingFeeAssignmentService {
 
     /**
      * @description Finds a matching CFD for each Subscription Order and registers the SO for update
-     * @param subOrders List of Subscription Orders to get assigned to a CFD
      */
-    public void setSubscriptionOrderAcquisitionFee(List<Subscription_Order__c> subOrders){
-        List<SubscriptionOrder> subOrdersAsFeeQualifications = new List<SubscriptionOrder>();
-        Set<Id> contractIds = new Set<Id>();
-
-        for (Subscription_Order__c subOrder : subOrders) {
-            if (hasRequiredFieldsForAssignment(subOrder)) {
-                SubscriptionOrder feeQualifier = new SubscriptionOrder(subOrder);
-                subOrdersAsFeeQualifications.add(feeQualifier);
-                contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c);
-                contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c);
-            }
-        }
-
-        List<Contract_Fee_Detail__c> feeDetailList = contractFeeDetailSelector.getContractDetailFromContract(contractIds);
-        contractToFeeDetailMap = convertContractFeeListToFeeDetailMap(feeDetailList);
+    @TestVisible
+    private void setSubscriptionOrderAcquisitionFee() {
         for (SubscriptionOrder subOrder : subOrdersAsFeeQualifications) {
             matchSubscriptionOrderToFee(subOrder, contractToFeeDetailMap);
         }

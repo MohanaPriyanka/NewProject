@@ -58,9 +58,15 @@ public with sharing class DateUtil {
             effectiveDate2.surrounds(effectiveDate1);
     }
 
-
-    @TestVisible
-    private static Boolean between(Date startDate, Date dateToCheck, Date endDate) {
+    /**
+     * @description Returns true if the dateToCheck is between startDate and endDate, interpreting nulls as a a far
+     * off date
+     * @param startDate Cannot be null
+     * @param dateToCheck A date, or null
+     * @param endDate A date, or null
+     * @return Boolean
+     */
+    public static Boolean between(Date startDate, Date dateToCheck, Date endDate) {
         return (dateToCheck == null || dateToCheck >= startDate) && (endDate == null || dateToCheck <= endDate);
     }
 

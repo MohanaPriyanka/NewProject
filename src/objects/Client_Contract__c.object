@@ -266,14 +266,14 @@
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
-    <label>Client Contract</label>
+    <label>Project Contract</label>
     <nameField>
         <displayFormat>CC-{0000}</displayFormat>
-        <label>Client Contract Name</label>
+        <label>Project Contract Name</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Client Contracts</pluralLabel>
+    <pluralLabel>Project Contracts</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

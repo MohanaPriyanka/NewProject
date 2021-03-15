@@ -13,16 +13,16 @@ public class ClientInvoicingFeeWaiveServiceTest {
             Name = 'Client Contract A',
             AccountId = account.Id,
             RecordTypeId = clientRT.Id,
-            StartDate = System.today()
+            StartDate = System.today().addYears(-1)
         );
         insert contractA;
         Contract_Fee_Detail__c cfd = new Contract_Fee_Detail__c(
             Contract__c = contractA.Id,
             Fee__c = 0.10,
             Acquisition_Type_Reacquisition__c = true,
-            Waive_Reacquisition_Fee_Project_Date__c = 'Contract: Effective Date',
-            Waive_Reacquisition_Fee_Number_Months__c = 0,
-            Waive_Reacq_Fee_After_Initial_Period__c = true,
+            Waive_Reacquisition_Fee_Project_Date__c = 'Project Contract: Effective Date',
+            Waive_Reacquisition_Fee_Number_Months__c = 1,
+            Waive_Reacq_Fee_In_Initial_Period__c = true,
             Acquisition_Cust_Group_Residential__c = true,
             Acquisition_Channels_BCS_Acquired__c = false,
             Acquisition_Channels_Non_BCS_Acquired__c = true,
@@ -38,8 +38,15 @@ public class ClientInvoicingFeeWaiveServiceTest {
             WHERE Name = 'SSS 1'
             LIMIT 1
         ];
-        sss.Client_Management_Contract__c = contractA.Id;
-        sss.Client_Acquisition_Contract__c = contractA.Id;
+
+        Client_Contract__c clientContract = new Client_Contract__c(
+            Shared_Solar_System__c = sss.Id,
+            Contract__c = contractA.Id,
+            CS_Services_Type__c = 'Acquisition & Management',
+            Effective_Date__c = System.today(),
+            End_Date__c = System.today().addYears(1)
+        );
+        insert clientContract;
         sss.Reacquisition_Start_Date__c = System.today().addYears(-1);
         update sss;
 
@@ -72,8 +79,8 @@ public class ClientInvoicingFeeWaiveServiceTest {
         List<Error_Log__c> errorLogs = [SELECT Message__c FROM Error_Log__c];
         System.assert(errorLogs.isEmpty(), errorLogs);
 
-        ClientInvoicingFeeAssignmentService assignmentService = new ClientInvoicingFeeAssignmentService();
-        assignmentService.setSubOrderContractFeeDetail(new Set<Id>{so.Id});
+        ClientInvoicingFeeAssignmentService assignmentService = new ClientInvoicingFeeAssignmentService(new Set<Id>{so.Id});
+        assignmentService.setSubOrderContractFeeDetail();
 
         cims = [
             SELECT Id
@@ -91,8 +98,8 @@ public class ClientInvoicingFeeWaiveServiceTest {
         request.invoiceId = invoice.Id;
         InvocableClientInvoiceLineItemGenerator.generateLineItem(new List<InvocableClientInvoiceLineItemGenerator.LineItemRequest>{request});
 
-        assignmentService = new ClientInvoicingFeeAssignmentService();
-        assignmentService.setSubOrderContractFeeDetail(new Set<Id>{so.Id});
+        assignmentService = new ClientInvoicingFeeAssignmentService(new Set<Id>{so.Id});
+        assignmentService.setSubOrderContractFeeDetail();
 
         cims = [
             SELECT Id
@@ -425,6 +432,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
         sfab_FabricatedSObject fabbedCFD = new sfab_FabricatedSObject(Contract_Fee_Detail__c.class, cfdValues);
         fabbedSO.setParent('Contract_Fee_Detail__r', fabbedCFD);
         Map<SObjectField, Object> contractValues = new Map<SObjectField, Object> {
+            Contract.Id => Util.getFakeId(Contract.SObjectType),
             Contract.StartDate => Date.newInstance(2020,5,1)
         };
         sfab_FabricatedSObject fabbedContract = new sfab_FabricatedSObject(Contract.class, contractValues);

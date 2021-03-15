@@ -3,7 +3,7 @@
 public class ClientInvoicingFeeAssignmentServiceTest {
     @IsTest
     private static void testCFDsSpecificToSSSes() {
-        ClientInvoicingFeeAssignmentService assignmentService = new ClientInvoicingFeeAssignmentService();
+        ClientInvoicingFeeAssignmentService assignmentService = new ClientInvoicingFeeAssignmentService(null);
 
         Contract_Fee_Detail__c defaultSSS = new Contract_Fee_Detail__c(
             Id = Util.getFakeId(Contract_Fee_Detail__c.SObjectType),
@@ -105,8 +105,8 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         useMocks();
         List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
         System.assertEquals(14,ordersToRun.size());
-        ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService();
-        service.setSubscriptionOrderAcquisitionFee(ordersToRun);
+        ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService(CollectionUtil.getIdSet(ordersToRun));
+        service.setSubscriptionOrderAcquisitionFee();
         List<Subscription_Order__c> ordersToUpdate = (List<Subscription_Order__c>)
             FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Subscription_Order__c');
         for (Subscription_Order__c order : ordersToUpdate){
@@ -224,8 +224,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         useMocks();
         List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
         System.assertEquals(14, ordersToRun.size());
-        ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService();
-        service.setSubscriptionOrderAcquisitionFee(ordersToRun);
+        ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService(CollectionUtil.getIdSet(ordersToRun));
         System.assertEquals(0.14,service.getCancellationFee(ordersToRun[0]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
         System.assertEquals(0.15,service.getCancellationFee(ordersToRun[1]), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
         System.assertEquals(0.14,service.getCancellationFee(ordersToRun[2]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
@@ -296,7 +295,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
     }
     private static void useMocks() {
         ClientInvoicingFeeAssignmentService.contractFeeDetailSelector = (ContractFeeDetailSelector) Test.createStub(ContractFeeDetailSelector.class, new MockFeeDetailSelector());
-        ClientInvoicingFeeAssignmentService.subscripOrderSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
+        ClientInvoicingFeeAssignmentService.subscriptionOrderSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
     }
     private class MockFeeDetailSelector extends MockProvider {
         @SuppressWarnings('PMD.ApexDoc')
