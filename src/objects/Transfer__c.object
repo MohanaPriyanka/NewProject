@@ -457,6 +457,16 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
+    <fields>
+        <fullName>UCB__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.UCB__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>UCB</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
     <label>Transfer</label>
     <listViews>
         <fullName>All</fullName>

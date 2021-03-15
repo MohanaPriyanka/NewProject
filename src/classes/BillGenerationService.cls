@@ -38,7 +38,7 @@ public without sharing class BillGenerationService {
         if (this.isUCB) {
             this.transferUASBs = getUASBsFromUtilityTransferSheet();
             this.priorUASBMap = uasbSelector.getLatestUcbUasbBySzs(szsList);
-            this.utilityAdminFee = feeSelector.getActiveUCBRecordForUtility(transfer.Shared_Solar_System__r.System_Utility__c);
+            this.utilityAdminFee = feeSelector.getActiveUCBRecordForUtility(transfer.Shared_Solar_System__r.Utility__c);
         }
     }
 

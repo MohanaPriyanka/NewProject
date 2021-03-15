@@ -23,7 +23,8 @@ public without sharing class TransferSheetService {
         'EndingBankedCredits' => 'Ending_Banked_Credits__c',
         'CDGSubscriptionFee' => 'CDG_Subscription_Fee__c',
         'UtilityAdminFee' => 'Utility_Admin_Fee__c',
-        'CDGSponsorPayment' => 'CDG_Sponsor_Payment__c'
+        'CDGSponsorPayment' => 'CDG_Sponsor_Payment__c',
+        'SatelliteBillDate' => 'Satellite_Bill_Date__c'
     };
     @TestVisible private static AccountsSelector accountsSelector = new AccountsSelector();
     @TestVisible private static ContentDocumentSelector docSelector = new ContentDocumentSelector();
@@ -31,6 +32,7 @@ public without sharing class TransferSheetService {
     private static Boolean isUCB;
     private static Integer expectedColumnCount;
     private static List<String> uasbFields;
+    private static Decimal mismatchTolerance;
 
     /**
      * @description Object intended for JSON-encoding for transferSheetReconciliation.lwc (Transfer QC)
@@ -102,6 +104,7 @@ public without sharing class TransferSheetService {
      */
     public static void initializeClass(Transfer__c transfer) {
         isUCB = transfer.Shared_Solar_System__r.UCB__c;
+        mismatchTolerance = transfer.Shared_Solar_System__r.Utility__r.Transfer_Mismatch_Tolerance__c;
         expectedColumnCount = isUCB ? UCB_UASB_FIELDS.size() : GENERIC_UASB_FIELDS.size();
         uasbFields = isUCB ? UCB_UASB_FIELDS.values() : GENERIC_UASB_FIELDS.values();
     }
@@ -236,8 +239,13 @@ public without sharing class TransferSheetService {
         newParsedUasb.put(uasbFields[0], cleanUtilityNumber(rowData[0])); // Key field, use string
         for (Integer i = 1; i < expectedColumnCount; i++) {
             String uasbFieldName = uasbFields[i];
-            Decimal fieldValue = getDecimalFromCSV(rowData[i]); // Default .csv field data type is Decimal
-            newParsedUasb.put(uasbFieldName, fieldValue);
+            switch on uasbFieldName {
+                when 'Satellite_Bill_Date__c' {
+                    newParsedUasb.put('Satellite_Bill_Date__c', getDateFromCSV(rowData[i]));
+                } when else {
+                    newParsedUasb.put(uasbFieldName, getDecimalFromCSV(rowData[i])); // Default .csv field type is Decimal
+                }
+            }
         }
         return newParsedUasb;
     }
@@ -249,10 +257,15 @@ public without sharing class TransferSheetService {
         // (say, $0.02/kWh and $0.13/kWh) to get a total credits allocated = $2 + $13 = $15
         // but production is only 100kWh not 200kWh, even though it is listed twice
         for (Integer i = 1; i < expectedColumnCount; i++) {
-            if (uasbFields[i] == 'Subscription_Production_kWh_Static__c') {
-                handleDuplicateProductionKwh(duplicateUasbToUpdate, getDecimalFromCSV(rowData[i]));
-            } else {
-                handleDuplicateGenericField(duplicateUasbToUpdate, getDecimalFromCSV(rowData[i]), uasbFields[i]);
+            String uasbFieldName = uasbFields[i];
+            switch on uasbFieldName {
+                when 'Subscription_Production_kWh_Static__c' {
+                    handleDuplicateProductionKwh(duplicateUasbToUpdate, getDecimalFromCSV(rowData[i]));
+                } when 'Satellite_Bill_Date__c' {
+                    duplicateUasbToUpdate.put('Satellite_Bill_Date__c', getDateFromCSV(rowData[i])); // No handling of dupes here
+                } when else {
+                    handleDuplicateGenericField(duplicateUasbToUpdate, getDecimalFromCSV(rowData[i]), uasbFields[i]);
+                }
             }
         }
         return duplicateUasbToUpdate;
@@ -286,8 +299,14 @@ public without sharing class TransferSheetService {
     private static Decimal getDecimalFromCSV(String csvValue) {
         String csvString = String.isBlank(csvValue.stripHtmlTags()) ? null : csvValue.stripHtmlTags();
         csvString = csvString?.replace('$', '');
-        Decimal csvDecimal = csvString==null ? null : Decimal.valueOf(csvString);
+        Decimal csvDecimal = csvString == null ? null : Decimal.valueOf(csvString);
         return csvDecimal;
+    }
+
+    private static Date getDateFromCSV(String csvValue) {
+        String csvString = String.isBlank(csvValue.stripHtmlTags()) ? null : csvValue.stripHtmlTags();
+        Date csvDate = csvString == null ? null : Date.valueOf(csvString);
+        return csvDate;
     }
 
     @TestVisible
@@ -300,7 +319,7 @@ public without sharing class TransferSheetService {
             String cleanUALName = cleanUtilityNumber(sfBill.PreGen_Utility_Acct__c);
             if (transferSheetBills.containsKey(cleanUALName)) {
                 UASB__c transferUASB = transferSheetBills.get(cleanUALName);
-                lineItem = compareUASBFields(lineItem, transferUASB);
+                compareUASBFields(lineItem, transferUASB);
                 lineItem.utilUASB = transferUASB;
                 transferSheetBills.remove(cleanUALName);
             } else {
@@ -346,13 +365,22 @@ public without sharing class TransferSheetService {
         return pregeneratedBills;
     }
 
-    private static UASBWithStatus compareUASBFields(UASBWithStatus lineItem, UASB__c transferBill) {
-        Decimal transferCredits = transferBill.Credits_Allocated__c;
-        Decimal transferProduction = transferBill.Subscription_Production_kWh_Static__c;
-        Decimal transferNMCRate = transferBill.NMC_Rate__c;
+    private static void compareUASBFields(UASBWithStatus lineItem, UASB__c transferBill) {
         Decimal sfCredits = lineItem.sfUASB.Credits_Allocated__c;
         Decimal sfProduction = lineItem.sfUASB.Subscription_Production_kWh_Static__c;
         Decimal sfNMCRate = lineItem.sfUASB.NMC_Rate__c;
+        Decimal sfTotalAvailableCredits = lineItem.sfUASB.Total_Available_Credits__c;
+        Decimal sfNetMemberCredits = lineItem.sfUASB.Net_Member_Credits__c;
+        Decimal sfEndingBankedCredits = lineItem.sfUASB.Ending_Banked_Credits__c;
+        Decimal sfCDGSponsorPayment = lineItem.sfUASB.CDG_Sponsor_Payment__c;
+
+        Decimal transferCredits = transferBill.Credits_Allocated__c;
+        Decimal transferProduction = transferBill.Subscription_Production_kWh_Static__c;
+        Decimal transferNMCRate = transferBill.NMC_Rate__c;
+        Decimal transferTotalAvailableCredits = transferBill.Total_Available_Credits__c;
+        Decimal transferNetMemberCredits = transferBill.Net_Member_Credits__c;
+        Decimal transferEndingBankedCredits = transferBill.Ending_Banked_Credits__c;
+        Decimal transferCDGSponsorPayment = transferBill.CDG_Sponsor_Payment__c;
 
         /*  Depending on the utility and program, we may only get 1 of these 3 categories.
             For ex.) Xcel in MN gives us Production (kWh) and NMC Rate ($/kWh), but
@@ -368,15 +396,23 @@ public without sharing class TransferSheetService {
         } else if (isNotNullAndDifferent(transferNMCRate, sfNMCRate)) {
             lineItem.matchMessage = 'NMC Rate mismatch';
         } else if (transferCredits == null && transferProduction == null && transferNMCRate == null) {
-            lineItem.matchMessage = 'All Values are Null';
+            lineItem.matchMessage = 'Values on Transfer are null: Credits, Production, NMC Rate';
+        } else if (isNotNullAndDifferent(sfTotalAvailableCredits, transferTotalAvailableCredits)) {
+            lineItem.matchMessage = 'Total Available Credits Mismatch';
+        } else if (isNotNullAndDifferent(sfNetMemberCredits, transferNetMemberCredits)) {
+            lineItem.matchMessage = 'Net Member Credits Mismatch';
+        } else if (isNotNullAndDifferent(sfEndingBankedCredits, transferEndingBankedCredits)) {
+            lineItem.matchMessage = 'Ending Banked Credits Mismatch';
+        } else if (isNotNullAndDifferent(sfCDGSponsorPayment, transferCDGSponsorPayment)) {
+            lineItem.matchMessage = 'CDG Sponsor Payment Mismatch';
         } else {
             lineItem.status = 'MATCH';
         }
-        return lineItem;
     }
 
     private static Boolean isNotNullAndDifferent(Decimal transferAmount, Decimal sfAmount) {
-        return transferAmount != null && sfAmount != transferAmount;
+        Decimal tolerance = mismatchTolerance != null ? mismatchTolerance : 1.00; // Default 1.00 tolerance for mismatch
+        return transferAmount != null && Math.abs(sfAmount - transferAmount) > tolerance;
     }
 
     private static void insertZeroDollarBills(Transfer__c transfer) {
@@ -406,7 +442,9 @@ public without sharing class TransferSheetService {
             uasbWrapper.sfUASB.Transfer_Sheet_Resolution__c = uasbWrapper.resolution;
             switch on uasbWrapper.status {
                 when 'MATCH' {
-                    uasbsToInsert.add(uasbWrapper.sfUASB);
+                    UASB__c uasbToInsert = uasbWrapper.sfUASB;
+                    setUseUtilityFields(uasbWrapper.sfUASB, uasbWrapper); // Use our object data, but use utility field values
+                    uasbsToInsert.add(uasbToInsert);
                 } when 'CREDIT_MISMATCH' {
                     uasbsToInsert.add(resolveCreditMismatch(uasbWrapper));
                 } when 'MISSING_TRANSFER' {
@@ -423,15 +461,19 @@ public without sharing class TransferSheetService {
     private static UASB__c resolveCreditMismatch(UASBWithStatus data) {
         UASB__c uasbToModify = data.sfUASB;
         if (data.resolution == 'UseUtility') {
-            uasbToModify.Credits_Allocated__c = data.utilUASB.Credits_Allocated__c;
-            if (data.utilUASB.Subscription_Production_kWh_Static__c != null) {
-                uasbToModify.Subscription_Production_kWh_Static__c = data.utilUASB.Subscription_Production_kWh_Static__c;
-            }
-            if (data.utilUASB.NMC_Rate__c != null) {
-                uasbToModify.NMC_Rate__c = data.utilUASB.NMC_Rate__c;
-            }
+            setUseUtilityFields(uasbToModify, data);
         }
         return uasbToModify;
+    }
+    
+    private static void setUseUtilityFields(UASB__c uasbToModify, UASBWithStatus data) {
+        for (Integer i=1; i < uasbFields.size(); i++) {
+            // uasbFields[0] is UAL# key field, no need to modify
+            String uasbFieldName = uasbFields[i];
+            if (data.utilUASB.get(uasbFieldName) != null) {
+                uasbToModify.put(uasbFieldName, data.utilUASB.get(uasbFieldName));
+            }
+        }
     }
 
     private static UASB__c resolveMissingTransfer(UASBWithStatus data) {

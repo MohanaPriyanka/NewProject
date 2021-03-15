@@ -14,7 +14,8 @@ public without sharing class TransferSelector {
                 Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Attempted_kWh_Transfer__c,
                 Total_Transferred__c, Transfer_Amount__c, Transfer_kWh__c, Transfer_Type__c, Date_of_Transfer__c, Bill_Period__r.Name,
                 Bill_Period__r.Bill_Status__c, Allocation_Schedule__r.Name, Allocation_Schedule__r.Id,
-                Shared_Solar_System__r.UCB__c
+                Shared_Solar_System__r.UCB__c, Shared_Solar_System__r.Utility__c,
+                Shared_Solar_System__r.Utility__r.Transfer_Mismatch_Tolerance__c
             FROM Transfer__c
             WHERE CALENDAR_MONTH(Bill_Period__r.Bill_Date__c) = :billMonth
             AND CALENDAR_YEAR(Bill_Period__r.Bill_Date__c) = :billYear
@@ -40,7 +41,8 @@ public without sharing class TransferSelector {
                 Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Attempted_kWh_Transfer__c,
                 Total_Transferred__c, Transfer_Amount__c, Transfer_Type__c, Date_of_Transfer__c, Bill_Period__r.Name,
                 Bill_Period__r.Bill_Status__c, Allocation_Schedule__r.Name, Allocation_Schedule__r.Id,
-                Allocation_Schedule__r.Date_Enacted_by_Utility__c, Shared_Solar_System__r.UCB__c
+                Allocation_Schedule__r.Date_Enacted_by_Utility__c, Shared_Solar_System__r.UCB__c,
+                Shared_Solar_System__r.Utility__c, Shared_Solar_System__r.Utility__r.Transfer_Mismatch_Tolerance__c
             FROM Transfer__c
             WHERE Id IN : transferIdList
             AND Transfer_Type__c != 'One-Off'
@@ -55,7 +57,8 @@ public without sharing class TransferSelector {
                 Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Attempted_kWh_Transfer__c,
                 Total_Transferred__c, Transfer_Amount__c, Transfer_Type__c, Date_of_Transfer__c, Bill_Period__r.Name,
                 Bill_Period__r.Bill_Status__c, Allocation_Schedule__r.Name, Allocation_Schedule__r.Id,
-                Shared_Solar_System__r.UCB__c
+                Shared_Solar_System__r.UCB__c, Shared_Solar_System__r.Utility__c,
+                Shared_Solar_System__r.Utility__r.Transfer_Mismatch_Tolerance__c
             FROM Transfer__c
             WHERE Shared_Solar_System__r.Id IN :sssIds
             AND (Attempted_kWh_Transfer__c != NULL OR Attempted_Transfer__c != NULL)
@@ -82,7 +85,8 @@ public without sharing class TransferSelector {
                 Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Attempted_kWh_Transfer__c,
                 Total_Transferred__c, Transfer_Amount__c, Transfer_Type__c, Date_of_Transfer__c, Bill_Period__r.Name,
                 Bill_Period__r.Bill_Status__c, Allocation_Schedule__r.Id, Allocation_Schedule__r.Name,
-                Shared_Solar_System__r.UCB__c
+                Shared_Solar_System__r.UCB__c, Shared_Solar_System__r.Utility__c,
+                Shared_Solar_System__r.Utility__r.Transfer_Mismatch_Tolerance__c
             FROM Transfer__c
             WHERE Bill_Period__c IN : billPeriodIds
             AND Bills_Generated__c = FALSE
@@ -98,7 +102,8 @@ public without sharing class TransferSelector {
                 Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Attempted_kWh_Transfer__c,
                 Total_Transferred__c, Transfer_Amount__c, Transfer_Type__c, Date_of_Transfer__c, Bill_Period__r.Name,
                 Bill_Period__r.Bill_Status__c, Allocation_Schedule__r.Id, Allocation_Schedule__r.Name,
-                Shared_Solar_System__r.UCB__c
+                Shared_Solar_System__r.UCB__c, Shared_Solar_System__r.Utility__c,
+                Shared_Solar_System__r.Utility__r.Transfer_Mismatch_Tolerance__c
             FROM Transfer__c
             WHERE Shared_Solar_System__c = :sssIds
             AND Bills_Generated__c = FALSE

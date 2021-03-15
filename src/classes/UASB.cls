@@ -3,11 +3,12 @@
  *
  * Tested By: TransferSheetBillingTest
  */
-@SuppressWarnings('PMD.EmptyBlockStatements')
+@SuppressWarnings('PMD.EmptyStatementBlock')
 public virtual class UASB {
 
-    private static final System.RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
+    public static final System.RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
 
+    public Integer productionDecimalRounding;
     public Schedule_Z_Subscription__c szs;
     public Transfer__c transfer;
     public UASB__c uasb = new UASB__c();
@@ -36,6 +37,7 @@ public virtual class UASB {
         this.szs = szs;
         this.transfer = transfer;
         this.billingMethod = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c;
+        this.productionDecimalRounding =(Integer) szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.UASB_Number_of_Decimals__c;
         this.subscriptionProduction = getSubscriptionProduction();
         setEscalatorOverrides(productEscalatorMap);
     }
@@ -48,9 +50,7 @@ public virtual class UASB {
         try {
             createSObject();
         } catch (Exception e) {
-            throw new Util.BWException('Failed to generate UASB for szs ' + szs.Id + '. Reason: ' + e.getMessage() +
-                '\n' + e.getStackTraceString()
-            );
+            throw new Util.BWException('Failed to generate UASB for Subscription ' + szs.Id + '. Reason: ' + e.getMessage());
         }
         return uasb;
     }
@@ -190,9 +190,7 @@ public virtual class UASB {
 
     // Calculate % Share of Production (kWh)
     private Decimal getSubscriptionProduction() {
-        Integer productionDecimalRounding = (Integer) szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.UASB_Number_of_Decimals__c;
-        Decimal production = (
-            (szs.Percent_Share__c / 100) * transfer.Attempted_kWh_Transfer__c)
+        Decimal production = ((szs.Percent_Share__c / 100) * transfer.Attempted_kWh_Transfer__c)
             .setScale(productionDecimalRounding, DEFAULT_ROUND);
         return production;
     }
