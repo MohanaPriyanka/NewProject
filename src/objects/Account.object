@@ -3276,6 +3276,11 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <inlineHelpText>Rollup summary of Savings on UASBs linked to the Account</inlineHelpText>
         <label>Savings UASB</label>
         <summarizedField>UASB__c.Savings__c</summarizedField>
+        <summaryFilterItems>
+            <field>UASB__c.Zuora_Id__c</field>
+            <operation>notEqual</operation>
+            <value></value>
+        </summaryFilterItems>
         <summaryForeignKey>UASB__c.Account__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
