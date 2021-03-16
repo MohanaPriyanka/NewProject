@@ -57,7 +57,7 @@ public with sharing class PromiseTest {
     @IsTest
     private static void testNoExecutionAfterFailure() {
         Chain finalizer = new Chain(new List<Promise>{new DemoPromise(Util.getFakeId(Account.SObjectType))}, null, false);
-        finalizer.execute(null, ParentJobResult.UNHANDLED_EXCEPTION, 'Test exception message');
+        finalizer.execute(null, ParentJobResult.UNHANDLED_EXCEPTION, new Util.BWException('Test exception message'));
         System.assertEquals(null, Chain.nextPromise,
             'Should not queue the next promise in the chain, if continueAfterFailure is false');
         System.assertEquals(1, [SELECT Id FROM Error_Log__c WHERE Class__c = 'Chain' AND Severity__c = :Logger.ERROR].size(),
@@ -67,7 +67,7 @@ public with sharing class PromiseTest {
     @IsTest
     private static void testExecutionAfterFailure() {
         Chain finalizer = new Chain(new List<Promise>{new DemoPromise(Util.getFakeId(Account.SObjectType))}, null, true);
-        finalizer.execute(null, ParentJobResult.UNHANDLED_EXCEPTION, 'Test exception message');
+        finalizer.execute(null, ParentJobResult.UNHANDLED_EXCEPTION, new Util.BWException('Test exception message'));
         System.assertNotEquals(null, Chain.nextPromise,
             'Should queue the next promise in the chain, if continueAfterFailure is true');
         System.assertEquals(1, [SELECT Id FROM Error_Log__c WHERE Class__c = 'Chain' AND Severity__c = :Logger.ERROR].size(),
