@@ -311,7 +311,6 @@ public class CSQualificationTestclass {
 
         Lead lead = new Lead(
             Id = leadId,
-            Personal_Credit_Report__c = pcr.Id, 
             Moody_s_Risk_Calc__c = 'Aaa'
         );
         update lead;
