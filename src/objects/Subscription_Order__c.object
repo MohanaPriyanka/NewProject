@@ -567,12 +567,13 @@ Utility_Account_Subscription__r.Date_Removed_from_Project__c
     <fields>
         <fullName>Potential_Client_Invoicing_Fee__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(
+        <formula>IF(Client_Invoicing_Type__c = &quot;Transfer&quot;, 0, /* Client Invoicing Type is Transfer only for SOs that have already been assigned, CFDs for these SOs might not apply for downsizing, so we don&apos;t want to bill the client for any part of the transfer */
+IF(
 ISPICKVAL(Contract_Fee_Detail__r.Fee_Unit__c, &quot;per W&quot;),
 Contract_Fee_Detail__r.Fee__c * ( Approved_Change_in_Subscription__c * 1000),
-null)</formula>
+null))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Multiplies CFD Fee by the Approved Change in Subscription, but unused if this is a downsizing Subscription Order created post-assignment, with a CFD that doesn&apos;t allow for downsizing.</inlineHelpText>
+        <inlineHelpText>Multiplies CFD Fee by the Approved Change in Subscription, but unused if this is a downsizing Subscription Order created post-assignment, with a CFD that doesn&apos;t allow for downsizing. Also set to 0 for Client Invoicing Type of Transfer</inlineHelpText>
         <label>Potential Client Invoicing Fee</label>
         <precision>18</precision>
         <required>false</required>
