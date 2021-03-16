@@ -9,101 +9,82 @@ public without sharing class CSQualificationService {
     private static SharedSolarSystemsSelector systemsSelector = new SharedSolarSystemsSelector();
     private static CreditReportSelector creditReportSelector = new CreditReportSelector();
     private static Map<Id, Lead> leadMap = new Map<Id, Lead>();
+    private static List<LASERCA__Personal_Credit_Report__c> pcrsToUpsert = new List<LASERCA__Personal_Credit_Report__c>();
 
-    public static void checkCreditReportLog(
-        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap,
-        Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
+    @TestVisible
+    private  fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+        new List<Schema.SObjectType> {
+            LASERCA__Personal_Credit_Report__c.SObjectType,
+            Lead.SObjectType
+        }
+    );
+
+    public void checkCreditReportLog(Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap, Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
         Set<Id> pcrIds = new Set<Id>();
-        List<LASERCA__Credit_Report_Log__c> errorLogs = new List<LASERCA__Credit_Report_Log__c>();
+        List<LASERCA__Credit_Report_Log__c> errorCRLs = new List<LASERCA__Credit_Report_Log__c>();
 
         List<String> leadIds = new List<String>();
         for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
             leadIds.add(crl.LASERCA__Lead__c);
-        }
+            if (crl.LASERCA__Status__c == 'ERROR') {
+                errorCRLs.add(crl);
+            } else {
+                pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
+            }
 
+        }
         leadMap = LeadSelector.getLeadMap(leadIds);
-        if (leadMap.values().size()== 0 ) {
-            return;
-        }
-
-        if (triggerOldMap == null) {
-            for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
-                switch on crl.LASERCA__Status__c {
-                    when 'Completed' {
-                        pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
-                    } when 'Error' {
-                        errorLogs.add(crl);
-                    }
-                }
-            }
-        } else {
-            for (Id oldId : triggerOldMap.keySet()) {
-                if (triggerNewMap.get(oldId).LASERCA__Status__c == 'Completed' &&
-                        triggerOldMap.get(oldId).LASERCA__Status__c != 'Completed') {
-                    pcrIds.add(triggerNewMap.get(oldId).LASERCA__Personal_Credit_Report__c);
-                }
-            }
+        if (errorCRLs.size() > 0 ) {
+            handleErrorCRL(errorCRLs[0]);
         }
 
         List<LASERCA__Personal_Credit_Report__c> completedPCRs = creditReportSelector.getCompletedPCRs(pcrIds);
-        List<Lead> updateLeads = new List<Lead>();
-        updateLeads = underwriteLeadWithFICO(completedPCRs);
-        if (errorLogs.size() > 0 ) {
-           updateLeads.addAll(handleNoMatchCreditPull(errorLogs));
+        underwriteLeadWithFICO(completedPCRs);
+
+        try {
+            uow.commitWork();
+        } catch (Exception e) {
+            Logger.logLater(
+                'CSQualificationService',
+                'checkCreditReportLog',
+                e.getMessage() + '\n' + e.getStackTraceString()
+            );
+        }
+    }
+
+    public void handleErrorCRL(LASERCA__Credit_Report_Log__c errorCRL) {
+        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c();
+        if (errorCRL.LASERCA__Personal_Credit_Report__c == null) {
+            pcr.Name = 'NO MATCH for Lead: ';
+            pcr.LASERCA__Lead__c = errorCRL.LASERCA__Lead__c;
+            insert pcr;
+        } else {
+            pcr = creditReportSelector.getCompletedPCRs(new Set<Id>{errorCRL.LASERCA__Personal_Credit_Report__c})[0];
         }
 
-        update updateLeads;
+
+        Lead lead = leadMap.get(errorCRL.LASERCA__Lead__c);
+        lead.Personal_Credit_Report__c = pcr.Id;
+        uow.registerDirty(lead);
+        underwriteLeadWithFICO(new List<LASERCA__Personal_Credit_Report__c>{pcr});
     }
-    public static List<Lead> underwriteLeadWithFICO(List<LASERCA__Personal_Credit_Report__c> pcrs) {
+
+    public void underwriteLeadWithFICO(List<LASERCA__Personal_Credit_Report__c> pcrs) {
         SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(systemsSelector.getSharedSolarSystemsForEnrollment());
-        List<Lead> leadsToUpdate = new List<Lead>();
         for (LASERCA__Personal_Credit_Report__c creditReport : pcrs) {
             Lead lead = leadMap.get(creditReport.LASERCA__Lead__c);
             Decimal creditScore = 0;
-            if (creditReport.LASERCA__Credit_Score__c != null){
+            if (creditReport.LASERCA__Credit_Score__c == null) {
+                creditScore = 9999;
+                handleNoMatchCreditPull(creditReport, lead);
+            } else {
                 creditScore = Decimal.valueOf(creditReport.LASERCA__Credit_Score__c);
                 closeReportMissingCases(lead);
             }
-            if (creditReport.Approval_Status__c =='Declined') {
-                CaseFactory lowMatchFactory = new CaseFactory();
-                lowMatchFactory.setLead(lead);
-                lowMatchFactory.setQueueType('Low FICO Match');
-                System.enqueueJob(lowMatchFactory);
-            }
+
             lead.Status = sharedSolarSystems.checkCSQualification(lead, creditScore);
-            leadsToUpdate.add(lead);
+            uow.registerDirty(lead);
         }
-        return leadsToUpdate;
-    }
-
-    public static List<Lead> handleNoMatchCreditPull(List<LASERCA__Credit_Report_Log__c> creditReportLogs) {
-        List<Lead> leadsToUpdate = new List<Lead>();
-        SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(systemsSelector.getSharedSolarSystemsForEnrollment());
-        List<LASERCA__Personal_Credit_Report__c> updatePCRs = new List<LASERCA__Personal_Credit_Report__c>();
-        for (LASERCA__Credit_Report_Log__c crl : creditReportLogs) {
-            Lead lead = leadMap.get(crl.LASERCA__Lead__c);
-            lead.Status = 'Unqualified';
-            //TODO: Once we decide how to handle change in PCRs being returned by LASERCA, we can just remove this block
-            if (crl.LASERCA__Personal_Credit_Report__c != null) {
-                LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
-                    Id = crl.LASERCA__Personal_Credit_Report__c,
-                    LASERCA__Credit_Score_TransUnion__c = '9999',
-                    LASERCA__Credit_Score__c = '9999');
-
-                updatePCRs.add(pcr);
-                lead.Status = sharedSolarSystems.checkCSQualification(lead, 9999);
-            }
-            update updatePCRs;
-
-            if (lead.LeadSource == 'CSAP' || lead.Application_Complete_Date__c != null) {
-                CaseFactory noMatchFactory  = new CaseFactory();
-                noMatchFactory.setLead(lead);
-                noMatchFactory.setQueueType('No FICO Match');
-                leadsToUpdate.add(lead);
-                System.enqueueJob(noMatchFactory);
-            }
-        }
-        return leadsToUpdate;
     }
 
     public String underwriteWithFinancialReview(Lead lead){
@@ -129,6 +110,49 @@ public without sharing class CSQualificationService {
             result = sharedSolarSystems.checkCSQualification(lead, null);
         }
         return result;
+    }
+
+    public void handleNoMatchCreditPull(LASERCA__Personal_Credit_Report__c noMatchPCR, Lead lead) {
+        noMatchPCR.LASERCA__Credit_Score_TransUnion__c = '9999';
+        noMatchPCR.LASERCA__Credit_Score__c = '9999';
+        uow.registerDirty(noMatchPCR);
+
+        if (lead.LeadSource == 'CSAP' || lead.Application_Complete_Date__c != null) {
+            createNoMatchFICOCase(lead);
+        }
+    }
+
+    private void createNoMatchFICOCase(Lead lead) {
+        CaseFactory noMatchFactory  = new CaseFactory();
+        noMatchFactory.setLead(lead);
+        noMatchFactory.setQueueType('No FICO Match');
+        System.enqueueJob(noMatchFactory);
+    }
+
+    public static void handleLeadUnqualifiedDueToFICO(Id leadId) {
+        Lead lead = new LeadSelector().selectOne(leadId);
+        lead.Unqualified_due_to_FICO__c = true;
+        update lead;
+        sendAdverseCreditNotice(lead);
+    }
+
+    private static void sendAdverseCreditNotice(Lead lead) {
+        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
+        ee.emailTemplateName = 'CS_Customer_Credit_Denied';
+        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
+        ee.addressList = new List<String>{lead.Email};
+        ee.subjectLine = 'Your BlueWave Community Solar Application Has Been Denied';
+        ee.sobjectId = lead.Id;
+        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.FirstName}', lead.Name);
+        MessagingService.ReplacementText creditDate = new MessagingService.ReplacementText('{!Lead.Date_of_Credit_Report__c}', lead.Date_of_Credit_Report__c.format());
+        MessagingService.ReplacementText creditScore = new MessagingService.ReplacementText('{!Lead.LASER_Credit_Score__c}', lead.LASER_Credit_Score__c);
+        MessagingService.ReplacementText detail1 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_1__c}', lead.Credit_Report_Detail_1__c);
+        MessagingService.ReplacementText detail2 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_2__c}', lead.Credit_Report_Detail_2__c);
+        MessagingService.ReplacementText detail3 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_3__c}', lead.Credit_Report_Detail_3__c);
+        MessagingService.ReplacementText detail4 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_4__c}', lead.Credit_Report_Detail_4__c);
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName, creditDate, creditScore, detail1, detail2, detail3, detail4 };
+
+        MessagingService.sendEmailTemplate(ee);
     }
 
     public virtual class QualificationMatch {
@@ -232,11 +256,11 @@ public without sharing class CSQualificationService {
                 matchResult.isUnderwritten = meetsUnderwritingCriteria == meetsPaymentCriteria;
 
                 if (matchResult.isOpen &&
-                        matchResult.hasCapacity &&
-                        matchResult.hasLZ &&
-                        matchResult.hasPartner &&
-                        matchResult.isUnderwritten
-                        ) {
+                    matchResult.hasCapacity &&
+                    matchResult.hasLZ &&
+                    matchResult.hasPartner &&
+                    matchResult.isUnderwritten
+                    ) {
                     matchResult.completeMatch = true;
                 }
 
@@ -254,7 +278,9 @@ public without sharing class CSQualificationService {
     }
 
     public static void closeReportMissingCases(Lead lead) {
-        List<Case> cases = new CaseSelector().selectOpenNoMatchCasesFromLead(lead);
+        CaseSelector caseSelector = new CaseSelector();
+        List<Case> cases = caseSelector.selectOpenNoMatchCasesFromLead(lead);
+        cases.addAll(caseSelector.selectOpenLowMatchCasesFromLead(lead));
         if (cases.size() > 0) {
             for (Case c : cases) {
                 c.Status = 'Closed';
@@ -262,7 +288,6 @@ public without sharing class CSQualificationService {
             update cases;
         }
     }
-
 
     /**
     * @description Returns a semi-colon delimited list of partners from the list of Partner SSS Eligibility records

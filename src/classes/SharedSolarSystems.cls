@@ -18,6 +18,7 @@ public inherited sharing class SharedSolarSystems {
         'Caa1', 'Caa2', 'Ca', 'C'};
     private List<Shared_Solar_System__c> records;
     private Lead virtualLead;
+    private Boolean unqualifiedFICO = true;
 
     /**
      * @description Default constructor used in most cases
@@ -200,6 +201,9 @@ public inherited sharing class SharedSolarSystems {
                 return 'Qualified';
             }
         }
+        if (unqualifiedFICO) {
+           CSQualificationService.handleLeadUnqualifiedDueToFICO(lead.Id);
+        }
         return 'Unqualified';
     }
 
@@ -276,8 +280,10 @@ public inherited sharing class SharedSolarSystems {
             when 'FICO' {
                 meetsCriteria = meetsFICOUnderwriting(lead, sss, creditScore);
             } when 'Financial Review' {
+                unqualifiedFICO = false;
                 meetsCriteria = meetsFinancialReviewUnderwriting(lead, sss);
             } when else {
+                unqualifiedFICO = false;
                 meetsCriteria = true;
             }
         }
@@ -296,7 +302,9 @@ public inherited sharing class SharedSolarSystems {
         } else if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
             creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
         }
-
+        if (unqualifiedFICO) {
+            unqualifiedFICO = creditScore < sss.Credit_Score_Requirement__c;
+        }
         return creditScore >= sss.Credit_Score_Requirement__c;
     }
 
