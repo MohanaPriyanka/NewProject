@@ -34,13 +34,17 @@ public class Chain implements Finalizer {
      * @param context FinalizerContext
      */
     public void execute(FinalizerContext context) {
-        Id parentQueueableJobId = context.getAsyncApexJobId();
-        switch on context.getResult() {
+        execute(context.getAsyncApexJobId(), context.getResult(), context.getException());
+    }
+
+    @TestVisible
+    private void execute(Id parentQueueableJobId, ParentJobResult result, Exception e) {
+        switch on result {
             when SUCCESS {
                 queueNext();
             }
             when UNHANDLED_EXCEPTION {
-                handleFailedQueueableJob(parentQueueableJobId, context.getException()?.getMessage());
+                handleFailedQueueableJob(parentQueueableJobId, e?.getMessage() + '\n' + e?.getStackTraceString());
             }
         }
     }

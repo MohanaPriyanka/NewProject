@@ -83,6 +83,12 @@ private with sharing class GlyntUploadServiceTest {
         GlyntAPIHelper.extractionProcessor = 'GlyntExtractionService';
         Chain.callQueueableChain = true;
         UtilityDataRequestBuilder.create(new List<String>{lead.Id});
+        // Since finalizers in tests cause this, we'll run the last promise explicitly:
+        // https://salesforce.stackexchange.com/questions/336329/apex-tests-using-finalizers-causes-metadata-api-deploy-to-result-in-limit-exceed
+        GlyntExtractionService extractionService =
+            new GlyntExtractionService(System.now().addMinutes(GlyntAPIHelper.extractionQueryTimeout));
+        extractionService.passThrough = new List<String>{'123qwe', '123qwf', '123qwg'};
+        extractionService.execute();
         Test.stopTest();
         List<Error_Log__c> infoLogsFromExtractionResults = [
             SELECT Class__c, Message__c
