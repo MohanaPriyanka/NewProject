@@ -13,7 +13,8 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         setupBWTestPartner();
         setupDataForReportTest();
         schedulePostSandboxJob();
-        CSRecordLoader.loadCSData();
+        // Run this manually: as of Spring 21, it might be causing the class to not be run after sandbox refresh
+        // CSRecordLoader.loadCSData();
     }
 
     @TestVisible
