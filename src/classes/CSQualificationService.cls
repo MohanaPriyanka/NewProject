@@ -54,14 +54,9 @@ public without sharing class CSQualificationService {
 
     public void handleErrorCRL(LASERCA__Credit_Report_Log__c errorCRL) {
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c();
-        if (errorCRL.LASERCA__Personal_Credit_Report__c == null) {
-            pcr.Name = 'NO MATCH for Lead: ';
-            pcr.LASERCA__Lead__c = errorCRL.LASERCA__Lead__c;
-            insert pcr;
-        } else {
-            pcr = creditReportSelector.getCompletedPCRs(new Set<Id>{errorCRL.LASERCA__Personal_Credit_Report__c})[0];
-        }
-
+        pcr.Name = 'NO MATCH for Lead: ';
+        pcr.LASERCA__Lead__c = errorCRL.LASERCA__Lead__c;
+        insert pcr;
 
         Lead lead = leadMap.get(errorCRL.LASERCA__Lead__c);
         lead.Personal_Credit_Report__c = pcr.Id;

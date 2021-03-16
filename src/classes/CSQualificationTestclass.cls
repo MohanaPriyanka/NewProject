@@ -235,8 +235,6 @@ public class CSQualificationTestclass {
         pullCreditForLead(lead.Id, 'No Match');
         Test.stopTest();
 
-        //List<SObject> dirtyLeads = FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(CSQualificationService.uow, 'Lead');
-       // Lead checkLead = (Lead) dirtyLeads[0];
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
                 Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c
@@ -305,6 +303,7 @@ public class CSQualificationTestclass {
 
         if (type == 'No Match') {
             crLog.LASERCA__Status__c = 'Error';
+            crLog.LASERCA__Personal_Credit_Report__c = null;
         } else {
             crLog.LASERCA__Status__c = 'Completed';
         }
