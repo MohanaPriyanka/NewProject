@@ -3,12 +3,10 @@
   Tested By: ClientInvoicingFeeAssignmentServiceTest, ClientInvoicingFeeWaiveServiceTest
  */
 public without sharing class ClientInvoicingFeeAssignmentService {
-    @TestVisible private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
     @TestVisible private static SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
     private List<SubscriptionOrder> subOrdersAsFeeQualifications = new List<SubscriptionOrder>();
     private Set<Id> subscriptionOrderIds;
     private List<Subscription_Order__c> queriedSOs;
-    private MultiMap contractToFeeDetailMap;
     @TestVisible
     private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<SObjectType> {
@@ -32,158 +30,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
                 contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c);
             }
         }
-
-        List<Contract_Fee_Detail__c> feeDetailList = contractFeeDetailSelector.getContractDetailFromContract(contractIds);
-        contractToFeeDetailMap = convertContractFeeListToFeeDetailMap(feeDetailList);
-    }
-
-    @TestVisible
-    private virtual class FeeQualification {
-        @TestVisible
-        private Boolean acquisition;
-        @TestVisible
-        private Boolean reacquisition;
-        @TestVisible
-        private Boolean bcsAcquired;
-        @TestVisible
-        private Boolean notBCSAcquired;
-        @TestVisible
-        private Boolean closedByBCS;
-        @TestVisible
-        private Boolean anchor;
-        @TestVisible
-        private Boolean publicOfftake;
-        @TestVisible
-        private Boolean notPublicOfftake;
-        @TestVisible
-        private Boolean residential;
-        @TestVisible
-        private Boolean nonResidential;
-        @TestVisible
-        private Boolean investmentGradeAnchor;
-        @TestVisible
-        private Boolean notInvestmentGradeAnchor;
-        @TestVisible
-        private Boolean downsizing;
-        @TestVisible
-        private Boolean upsizing;
-        private List<Id> contractIds;
-        private Id recordId;
-        private Decimal amount;
-        @TestVisible
-        private Id sharedSolarSystemId;
-    }
-
-    @TestVisible
-    private class SubscriptionOrder extends FeeQualification {
-        private Id contractFeeDetailId;
-        @SuppressWarnings('PMD.EmptyStatementBlock')
-        @TestVisible
-        private SubscriptionOrder() {
-        }
-        @TestVisible
-        private SubscriptionOrder(Subscription_Order__c subOrder) {
-            String partnerType = subOrder.Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name;
-            Date reacqStartDate = subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c;
-            List<Id> contractIds = new List<Id>(new Set<Id>{
-                subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c,
-                subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c
-            });
-            this.recordId = subOrder.Id;
-            this.contractIds = contractIds;
-            this.closedByBCS = subOrder.Utility_Account_Subscription__r.Opportunity__r.Acquired_By_Client_Closed_By_BlueWave__c;
-            this.bcsAcquired = partnerType != 'Client Account';
-            this.notBCSAcquired = partnerType == 'Client Account';
-            this.anchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Anchor';
-            this.publicOfftake = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake';
-            this.notPublicOfftake = !publicOfftake;
-            this.residential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Residential';
-            this.nonResidential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Non-Residential';
-            this.investmentGradeAnchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Underwriting_Criteria__c == 'Investment-Grade';
-            this.notInvestmentGradeAnchor = !investmentGradeAnchor;
-            this.downsizing = subOrder.Approved_Change_in_Subscription__c < 0;
-            this.upsizing = subOrder.Approved_Change_in_Subscription__c >= 0;
-            this.acquisition = reacqStartDate == null || reacqStartDate > subOrder.Effective_Date__c;
-            this.reacquisition = !acquisition;
-            this.contractFeeDetailId = subOrder.Contract_Fee_Detail__c;
-            this.sharedSolarSystemId = subOrder.Utility_Account_Subscription__r.Shared_Solar_System__c;
-        }
-
-        @TestVisible
-        private Boolean matches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail){
-            return (this.customerGroupMatches(feeDetail) &&
-                this.customerSubGroupMatches(feeDetail) &&
-                this.acqChannelMatches(feeDetail) &&
-                this.anchorQualifierMatches(feeDetail) &&
-                this.acquisitionTypeMatches(feeDetail) &&
-                this.sssMatches(feeDetail)
-            );
-        }
-
-        private Boolean acquisitionTypeMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail){
-            return (this.acquisition && feeDetail.acquisition ||
-                this.reacquisition && feeDetail.reacquisition
-            );
-        }
-
-        private Boolean customerGroupMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail){
-            return (this.anchor && feeDetail.anchor ||
-                this.residential && feeDetail.residential ||
-                this.nonResidential && feeDetail.nonResidential
-            );
-        }
-
-        private Boolean customerSubGroupMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail) {
-            return (this.publicOfftake && feeDetail.publicOfftake ||
-                this.notPublicOfftake && feeDetail.notPublicOfftake);
-        }
-
-        private Boolean anchorQualifierMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail) {
-            return (!this.anchor ||
-                (this.investmentGradeAnchor && feeDetail.investmentGradeAnchor ||
-                    this.notInvestmentGradeAnchor && feeDetail.notInvestmentGradeAnchor)
-            );
-        }
-
-        private Boolean acqChannelMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail) {
-            return (this.closedByBCS == feeDetail.closedByBCS &&
-                (this.bcsAcquired && feeDetail.bcsAcquired ||
-                    this.notBCSAcquired && feeDetail.notBCSAcquired)
-            );
-        }
-
-        private Boolean sssMatches(ClientInvoicingFeeAssignmentService.ContractFeeDetail feeDetail) {
-            return (this.sharedSolarSystemId == feeDetail.sharedSolarSystemId ||
-                feeDetail.sharedSolarSystemId == null);
-        }
-    }
-
-    @TestVisible
-    private class ContractFeeDetail extends FeeQualification {
-        @SuppressWarnings('PMD.EmptyStatementBlock')
-        @TestVisible
-        private ContractFeeDetail() {
-        }
-        private ContractFeeDetail(Contract_Fee_Detail__c feeDetail) {
-            this.recordId = feeDetail.Id;
-            this.contractIds = new List<Id>{feeDetail.Contract__c};
-            this.closedByBCS = feeDetail.Acquisition_Channels_Closed_by_BCS__c;
-            this.bcsAcquired = feeDetail.Acquisition_Channels_BCS_Acquired__c;
-            this.notBCSAcquired = feeDetail.Acquisition_Channels_Non_BCS_Acquired__c;
-            this.anchor = feeDetail.Acquisition_Cust_Group_Anchor__c;
-            this.publicOfftake = feeDetail.Acquisition_Cust_Group_Public_Offtake__c;
-            this.notPublicOfftake = feeDetail.Acquisition_Cust_Group_Not_Specified__c;
-            this.residential = feeDetail.Acquisition_Cust_Group_Residential__c;
-            this.nonResidential = feeDetail.Acquisition_Cust_Group_Non_Residential__c;
-            this.investmentGradeAnchor = feeDetail.Acq_Anchor_Qualif_Investment_Grade__c;
-            this.notInvestmentGradeAnchor = feeDetail.Acq_Anchor_Qualif_Not_Investment_Grade__c;
-            this.downsizing = feeDetail.Acquisition_Sizing_Type_Downsizing__c;
-            this.upsizing = feeDetail.Acquisition_Sizing_Type_Upsizing__c;
-            this.acquisition = feeDetail.Acquisition_Type_Acquisition__c;
-            this.reacquisition = feeDetail.Acquisition_Type_Reacquisition__c;
-            this.amount = feeDetail.Fee__c;
-            this.sharedSolarSystemId = feeDetail.Shared_Solar_System__c;
-        }
+        ContractRepository.initFromContractIds(contractIds);
     }
 
     /**
@@ -198,7 +45,6 @@ public without sharing class ClientInvoicingFeeAssignmentService {
 
     /**
      * @description Instance method to assign CFDs and generate CIMs for use in anonymous apex
-     * @param subscriptionOrderIds Set of Subscription Order Ids to assign
      */
     public void setSubOrderContractFeeDetail() {
         try {
@@ -209,12 +55,17 @@ public without sharing class ClientInvoicingFeeAssignmentService {
             uow = new fflib_SObjectUnitOfWork(new List<SObjectType> {Client_Invoicing_Memo__c.SObjectType});
 
             List<Subscription_Order__c> ordersAfterFeesAreSet = subscriptionOrderSelector.selectByIds(subscriptionOrderIds);
-            ClientInvoicingFeeWaiveService waiveService = new ClientInvoicingFeeWaiveService(this);
+            ClientInvoicingFeeWaiveService waiveService = new ClientInvoicingFeeWaiveService();
             waiveService.waiveFeesIfNecessary(ordersAfterFeesAreSet, uow);
             uow.commitWork();
             Logger.flushLogs();
-        } catch (Exception excep){
-            Logger.logNow('ClientInvoicingFeeAssignmentService', 'setSubOrderContractFeeDetail', excep, JSON.serialize(subscriptionOrderIds), 'ERROR');
+        } catch (Exception e){
+            Logger.logNow(
+                'ClientInvoicingFeeAssignmentService',
+                'setSubOrderContractFeeDetail',
+                e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serialize(subscriptionOrderIds),
+                Logger.ERROR
+            );
         }
     }
 
@@ -224,7 +75,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     @TestVisible
     private void setSubscriptionOrderAcquisitionFee() {
         for (SubscriptionOrder subOrder : subOrdersAsFeeQualifications) {
-            matchSubscriptionOrderToFee(subOrder, contractToFeeDetailMap);
+            matchSubscriptionOrderToFee(subOrder);
         }
     }
 
@@ -235,12 +86,12 @@ public without sharing class ClientInvoicingFeeAssignmentService {
      * @return A Subscription Order with a potentially populated CFD
      */
     @TestVisible
-    private Subscription_Order__c matchSubscriptionOrderToFee(SubscriptionOrder subscriptionOrder, MultiMap contractToFeeDetailMap) {
-        List<ClientInvoicingFeeAssignmentService.ContractFeeDetail> contractFeeDetails = getContractFeeDetailsFromContracts(subscriptionOrder, contractToFeeDetailMap);
+    private Subscription_Order__c matchSubscriptionOrderToFee(SubscriptionOrder subscriptionOrder) {
+        List<ContractFeeDetail> contractFeeDetails = getContractFeeDetailsFromContracts(subscriptionOrder, ContractRepository.getContractToContractFeeDetails());
         Subscription_Order__c orderToUpdate;
         MultiMap multiMapForDuplicateCFDCheck = MultiMap.newListInstance();
-        for (ClientInvoicingFeeAssignmentService.ContractFeeDetail cfd : contractFeeDetails) {
-            if (!subscriptionOrder.matches(cfd) || subscriptionOrder.contractFeeDetailId == cfd.recordId) {
+        for (ContractFeeDetail cfd : contractFeeDetails) {
+            if (!cfd.matches(subscriptionOrder) || subscriptionOrder.contractFeeDetailId == cfd.recordId) {
                 continue;
             }
             orderToUpdate = handleMatchingCFD(orderToUpdate, subscriptionOrder, cfd, multiMapForDuplicateCFDCheck);
@@ -270,7 +121,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
      * @return The subscriptionOrderSObj, which might be initialized to a new SO.
      */
     private Subscription_Order__c handleMatchingCFD(Subscription_Order__c subscriptionOrderSObj, SubscriptionOrder subscriptionOrder,
-        ClientInvoicingFeeAssignmentService.ContractFeeDetail cfd, MultiMap multiMapForDuplicateCFDCheck) {
+        ContractFeeDetail cfd, MultiMap multiMapForDuplicateCFDCheck) {
         multiMapForDuplicateCFDCheck.putValue(cfd.sharedSolarSystemId, cfd);
         if (subscriptionOrderSObj == null) {
             // This must be the first matching CFD, so we'll assign it to the SO independent of whether there's a
@@ -289,25 +140,13 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         return subscriptionOrderSObj;
     }
 
-    private List<ClientInvoicingFeeAssignmentService.ContractFeeDetail> getContractFeeDetailsFromContracts(SubscriptionOrder subOrder, MultiMap contractToFeeDetailMap) {
+    private List<ContractFeeDetail> getContractFeeDetailsFromContracts(SubscriptionOrder subOrder, MultiMap contractToFeeDetailMap) {
         List<ContractFeeDetail> contractDetails = new List<ContractFeeDetail>();
         // Max 2 contracts per Subscription Order (1 Acq, 1 Mgmt)
         for (Id contractId : subOrder.contractIds) {
             CollectionUtil.toTypedList(contractToFeeDetailMap.getValues(contractId), contractDetails);
         }
         return contractDetails;
-    }
-
-    @TestVisible
-    private MultiMap convertContractFeeListToFeeDetailMap(List<Contract_Fee_Detail__c> contractFeeDetail) {
-        MultiMap feeDetailMap = MultiMap.newListInstance();
-
-        for (Contract_Fee_Detail__c feeDetail : contractFeeDetail){
-            ContractFeeDetail feeQualifier = new ContractFeeDetail(feeDetail);
-            feeDetailMap.putValue(feeDetail.Contract__c, feeQualifier);
-        }
-
-        return feeDetailMap;
     }
 
     private Boolean hasRequiredFieldsForAssignment(Subscription_Order__c subOrder){
@@ -322,37 +161,5 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         } else {
             return false;
         }
-    }
-
-    /**
-     * @description Returns the upsizing reacquisition fee is relevant for this customer type (ie, the fee at which a customer will be replaced)
-     * @param order The Subscription Order for which this gets the cancellation fee
-     * @return Cancellation Rate for the Subscription Order
-     */
-    public Decimal getCancellationFee(Subscription_Order__c order){
-        SubscriptionOrder subOrder = new SubscriptionOrder(order);
-        subOrder.upsizing = true;
-        subOrder.downsizing = false;
-        subOrder.acquisition = false;
-        subOrder.reacquisition = true;
-
-        Set<Object> contractDetails = new Set<Object>();
-        // Max 2 contracts per Subscription Order (1 Acq, 1 Mgmt)
-        for (Id contractId : subOrder.contractIds){
-            contractDetails.addAll(contractToFeeDetailMap.getValues(contractId));
-        }
-
-        for (Object feeDetailObj : contractDetails){
-            ContractFeeDetail feeDetail = (ContractFeeDetail)feeDetailObj;
-            if (subOrder.matches(feeDetail)) {
-                return feeDetail.amount;
-            }
-        }
-        Logger.logNow(
-            'ClientInvoicingFeeAssignmentService',
-            'getCancellationRate',
-            'Sub Order: ' + JSON.serialize(order) + ' and contract fee details: ' + JSON.serialize(contractDetails)
-        );
-        throw new Util.BWException('Could not get cancellation rate for Sub Order: ' + JSON.serialize(order));
     }
 }

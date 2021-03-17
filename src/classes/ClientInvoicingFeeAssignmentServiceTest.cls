@@ -53,43 +53,39 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             Approval_Status__c = 'Approved'
         );
 
-        ClientInvoicingFeeAssignmentService.SubscriptionOrder subscriptionOrder =
-            new ClientInvoicingFeeAssignmentService.SubscriptionOrder(getSubscriptionOrder());
+        SubscriptionOrder subscriptionOrder =
+            new SubscriptionOrder(getSubscriptionOrder());
         Subscription_Order__c subscriptionOrderWithCFD;
 
-        MultiMap nullSSSFeeDetailMap =
-            assignmentService.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS});
+        ContractRepository.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS});
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder, nullSSSFeeDetailMap);
+            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
         System.assertEquals(defaultSSS.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'Since there are no system specific CFDs, we expect the SO to match the non-system specific one'
         );
 
-        MultiMap nullSSSAndMatchingSSSFeeDetailMap =
-            assignmentService.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific});
+        ContractRepository.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific});
         System.assertEquals(sssSpecific.Shared_Solar_System__c, subscriptionOrder.sharedSolarSystemId,
             'The test setup should have a SSS-specific CFD and a SO specifying that system');
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder, nullSSSAndMatchingSSSFeeDetailMap);
+            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
         System.assertEquals(sssSpecific.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'Expected to get an SO to update with the SSS-Specific CFD'
         );
 
-        MultiMap nullSSSAndOtherSSSFeeDetailMap =
-            assignmentService.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, otherSSSSpecific});
+        ContractRepository.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, otherSSSSpecific});
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder, nullSSSAndOtherSSSFeeDetailMap);
+            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
         System.assertEquals(defaultSSS.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'There is another SSS-specific CFD, but not the SSS that is on the SO, so the match should use the default CFD'
         );
 
         System.assertEquals(null, Logger.logs, 'There should be no logs before matching with duplicates');
-        MultiMap allCFDsIncludingDuplicatesMap =
-            assignmentService.convertContractFeeListToFeeDetailMap(
-                new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific, otherSSSSpecific, duplicateSSSSpecific}
-            );
+        ContractRepository.convertContractFeeListToFeeDetailMap(
+            new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific, otherSSSSpecific, duplicateSSSSpecific}
+        );
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder, allCFDsIncludingDuplicatesMap);
+            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
         System.assert(
             sssSpecific.Id == subscriptionOrderWithCFD.Contract_Fee_Detail__c ||
                 duplicateSSSSpecific.Id == subscriptionOrderWithCFD.Contract_Fee_Detail__c,
@@ -222,20 +218,20 @@ public class ClientInvoicingFeeAssignmentServiceTest {
     @IsTest
     private static void testGetCancellationRate (){
         useMocks();
+        ContractRepository.initFromContractIds(new Set<Id>());
         List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
         System.assertEquals(14, ordersToRun.size());
-        ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService(CollectionUtil.getIdSet(ordersToRun));
-        System.assertEquals(0.14,service.getCancellationFee(ordersToRun[0]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
-        System.assertEquals(0.15,service.getCancellationFee(ordersToRun[1]), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
-        System.assertEquals(0.14,service.getCancellationFee(ordersToRun[2]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
-        System.assertEquals(0.15,service.getCancellationFee(ordersToRun[3]), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
-        System.assertEquals(0.14,service.getCancellationFee(ordersToRun[4]), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
+        System.assertEquals(0.14,new SubscriptionOrder(ordersToRun[0]).getCancellationFee(), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
+        System.assertEquals(0.15,new SubscriptionOrder(ordersToRun[1]).getCancellationFee(), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
+        System.assertEquals(0.14,new SubscriptionOrder(ordersToRun[2]).getCancellationFee(), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
+        System.assertEquals(0.15,new SubscriptionOrder(ordersToRun[3]).getCancellationFee(), 'Expected upsizing reacq rate for NON-BCS Acquired Small Offtake');
+        System.assertEquals(0.14,new SubscriptionOrder(ordersToRun[4]).getCancellationFee(), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
     }
     @IsTest
     private static void testMatchingLogic() {
-        ClientInvoicingFeeAssignmentService.SubscriptionOrder so = new ClientInvoicingFeeAssignmentService.SubscriptionOrder();
+        SubscriptionOrder so = new SubscriptionOrder(new Subscription_Order__c());
         setDefaultBooleans(so);
-        ClientInvoicingFeeAssignmentService.ContractFeeDetail cfd = new ClientInvoicingFeeAssignmentService.ContractFeeDetail();
+        ContractFeeDetail cfd = new ContractFeeDetail();
         setDefaultBooleans(cfd);
 
         so.residential = true;
@@ -251,24 +247,24 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         cfd.bcsAcquired = true;
         cfd.publicOfftake = false;
         cfd.notPublicOfftake = true;
-        System.assert(so.matches(cfd), 'Simple Acquisition SO and CFD should match');
+        System.assert(cfd.matches(so), 'Simple Acquisition SO and CFD should match');
 
         cfd.sharedSolarSystemId = Util.getFakeId(Shared_Solar_System__c.SObjectType);
-        System.assert(so.matches(cfd), 'CFD should match SO if they both have the same system');
+        System.assert(cfd.matches(so), 'CFD should match SO if they both have the same system');
 
         cfd.sharedSolarSystemId = Util.incrementFakeId(cfd.sharedSolarSystemId);
-        System.assert(!so.matches(cfd), 'CFD should not match SO if they do not have the same system');
+        System.assert(!cfd.matches(so), 'CFD should not match SO if they do not have the same system');
 
         cfd.sharedSolarSystemId = null;
         so.publicOfftake = true;
         so.notPublicOfftake = false;
-        System.assert(!so.matches(cfd),
+        System.assert(!cfd.matches(so),
             'SOs are usually not public offtake. ' +
                 'This should no longer match the CFD, since the CFD does not apply to public offtake or not public offtake');
 
         cfd.publicOfftake = true;
         cfd.notPublicOfftake = true;
-        System.assert(so.matches(cfd),
+        System.assert(cfd.matches(so),
             'The Not Public Offtake checkbox is checked by default on CFD, and a validation requires that,' +
                 ' or the Public Offtake checkbox, or both, to be checked, so this should match now');
 
@@ -284,17 +280,17 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         cfd.notPublicOfftake = true;
         cfd.investmentGradeAnchor = false;
         cfd.notInvestmentGradeAnchor = true;
-        System.assert(so.matches(cfd),
+        System.assert(cfd.matches(so),
             'A non-investment grade anchor SO should match a non-investment grade anchor CFD');
 
         so.investmentGradeAnchor = true;
         so.notInvestmentGradeAnchor = false;
-        System.assert(!so.matches(cfd),
+        System.assert(!cfd.matches(so),
             'An investment grade anchor SO should NOT match a non-investment grade anchor CFD');
 
     }
     private static void useMocks() {
-        ClientInvoicingFeeAssignmentService.contractFeeDetailSelector = (ContractFeeDetailSelector) Test.createStub(ContractFeeDetailSelector.class, new MockFeeDetailSelector());
+        ContractRepository.contractFeeDetailSelector = (ContractFeeDetailSelector) Test.createStub(ContractFeeDetailSelector.class, new MockFeeDetailSelector());
         ClientInvoicingFeeAssignmentService.subscriptionOrderSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
     }
     private class MockFeeDetailSelector extends MockProvider {
@@ -754,7 +750,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         return (Subscription_Order__c) fabbedSO.toSObject();
     }
 
-    private static void setDefaultBooleans(ClientInvoicingFeeAssignmentService.FeeQualification feeQualification) {
+    private static void setDefaultBooleans(FeeQualification feeQualification) {
         feeQualification.acquisition = false;
         feeQualification.reacquisition = false;
         feeQualification.bcsAcquired = false;

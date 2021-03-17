@@ -8,12 +8,17 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     public void runApexClass(SandboxContext context) {
-        updateLetterStreamToTestConfig();
-        updateDocusignToDemoConfig();
-        setupBWTestPartner();
-        setupDataForReportTest();
-        schedulePostSandboxJob();
-        CSRecordLoader.loadCSData();
+        try {
+            updateLetterStreamToTestConfig();
+            updateDocusignToDemoConfig();
+            setupBWTestPartner();
+            setupDataForReportTest();
+            schedulePostSandboxJob();
+            // Run this manually: as of Spring 21, it might be causing the class to not be run after sandbox refresh
+            // CSRecordLoader.loadCSData();
+        } catch (Exception e) {
+            Logger.logLater('PostSandboxRefresher', 'runApexClass', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
     }
 
     @TestVisible
@@ -125,6 +130,7 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         Integer minute = Datetime.now().addMinutes(30).minute();
         // Starting 30m from now to allow the queueable CS job to finish. Job will self-cancel once successful.
         String cronString = '0 ' + minute + ' * * * ?';
-        System.schedule(PostSandboxSchedulable.POST_SANDBOX_SCHEDULED_JOB_NAME, cronString, new PostSandboxSchedulable());
+        String cronId = System.schedule(PostSandboxSchedulable.POST_SANDBOX_SCHEDULED_JOB_NAME, cronString, new PostSandboxSchedulable());
+        Logger.logLater('PostSandboxRefresher', 'schedulePostSandboxJob', 'Created ' + cronId + ' for post post sandbox actions', Logger.ERROR);
     }
 }

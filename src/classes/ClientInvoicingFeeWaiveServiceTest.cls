@@ -119,7 +119,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testWaiveForProjectDates() {
-        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService(null);
+        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType
         });
@@ -192,7 +192,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testWaiveForInitialPeriod() {
-        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService(null);
+        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType
         });
@@ -236,7 +236,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testWaiveWithMaxProjectPercentCap() {
-        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService(null);
+        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType
         });
@@ -286,10 +286,9 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testWaiveByCustomerAssignment() {
-        ClientInvoicingFeeAssignmentService assignmentService =
-            (ClientInvoicingFeeAssignmentService) Test.createStub(ClientInvoicingFeeAssignmentService.class, new MockAssignmentService());
+        mockCancellationCFD();
 
-        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService(assignmentService);
+        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType
         });
@@ -342,10 +341,9 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testWaiveForEstimatedCODOrCustomerAssignment() {
-        ClientInvoicingFeeAssignmentService assignmentService =
-            (ClientInvoicingFeeAssignmentService) Test.createStub(ClientInvoicingFeeAssignmentService.class, new MockAssignmentService());
+        mockCancellationCFD();
 
-        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService(assignmentService);
+        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType
         });
@@ -455,7 +453,8 @@ public class ClientInvoicingFeeWaiveServiceTest {
         Map<SObjectField, Object> opportunityValues = new Map<SObjectField, Object> {
             Opportunity.Id => Util.getFakeId(Opportunity.SObjectType),
             Opportunity.Customer_Group__c => 'Residential',
-            Opportunity.Partner_tag_lookup__c => Util.getFakeId(Partner__c.SObjectType)
+            Opportunity.Partner_tag_lookup__c => Util.getFakeId(Partner__c.SObjectType),
+            Opportunity.Acquired_By_Client_Closed_By_BlueWave__c => true
         };
         sfab_FabricatedSObject fabbedOpp = new sfab_FabricatedSObject(Opportunity.class, opportunityValues);
         Map<SObjectField, Object> customerContractValues = new Map<SObjectField, Object> {
@@ -488,15 +487,19 @@ public class ClientInvoicingFeeWaiveServiceTest {
         return (Subscription_Order__c) fabbedSO.toSObject();
     }
 
-    public class MockAssignmentService extends MockProvider {
-        public override Object handleMethodCall(MethodCall methodCall) {
-            switch on methodCall.stubbedMethodName {
-                when 'getCancellationFee' {
-                    return .10;
-                }
-            }
-            return null;
-        }
+    private static void mockCancellationCFD() {
+        ContractRepository.contractToFeeDetailMap = MultiMap.newListInstance();
+        ContractFeeDetail mockCancellationCFD = new ContractFeeDetail();
+        mockCancellationCFD.upsizing = true;
+        mockCancellationCFD.downsizing = false;
+        mockCancellationCFD.acquisition = false;
+        mockCancellationCFD.reacquisition = true;
+        mockCancellationCFD.anchor = true;
+        mockCancellationCFD.residential = true;
+        mockCancellationCFD.notPublicOfftake = true;
+        mockCancellationCFD.bcsAcquired = true;
+        mockCancellationCFD.closedByBCS = true;
+        mockCancellationCFD.amount = .10;
+        ContractRepository.contractToFeeDetailMap.putValue((Id) Util.getFakeId(Contract.SObjectType), mockCancellationCFD);
     }
-
 }
