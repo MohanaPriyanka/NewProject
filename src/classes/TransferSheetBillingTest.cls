@@ -323,12 +323,10 @@ public class TransferSheetBillingTest {
                 } when '223232' {
                     System.assertEquals(141.49, lineItem.sfUASB.Credits_Allocated__c);
                     System.assertEquals('MATCH', lineItem.status);
-                    System.assertEquals(null, lineItem.matchMessage);
                     System.assert(lineItem.overdue);
                 } when ' 00 12 34 56789' {
                     System.assertEquals(158.77, lineItem.sfUASB.Credits_Allocated__c);
                     System.assertEquals('CREDIT_MISMATCH', lineItem.status);
-                    System.assertEquals('Credits Allocated Mismatch', lineItem.matchMessage);
                     System.assert(lineItem.overdue);
                 } when '777888' {
                     System.assertEquals('MISSING_TRANSFER', lineItem.status);
@@ -387,10 +385,8 @@ public class TransferSheetBillingTest {
             switch on utilityNumber {
                 when '12-34-56-789' {
                     System.assertEquals('CREDIT_MISMATCH', lineItem.status);
-                    System.assertEquals('Production kWh Mismatch', lineItem.matchMessage);
                 } when '23 23 224' {
                     System.assertEquals('MATCH', lineItem.status);
-                    System.assertEquals(null, lineItem.matchMessage);
                 } when '223232' {
                     System.assertEquals('MATCH', lineItem.status);
                 } when ' 00 12 34 56789' {
@@ -434,7 +430,6 @@ public class TransferSheetBillingTest {
                 System.assertEquals('CREDIT_MISMATCH', lineItem.status,
                     'Utility number 223232 should not have matches because credits on the transfer sheet is 0: ' +
                         JSON.serializePretty(lineItem));
-                System.assertEquals('Credits Allocated Mismatch', lineItem.matchMessage);
             } else if (utilityNumber == ' 00 12 34 56789') {
                 System.assertEquals('MATCH', lineItem.status,
                     'Utility number 00 12 34 56789 should have matched even though Production and Credit Value on the' +
@@ -695,7 +690,7 @@ public class TransferSheetBillingTest {
             System.assertEquals('UCB', uasb.sfUASB.Billing_Method__c, 'Incorrect billing method for UCB UASBs');
             System.assertNotEquals(null, uasb.sfUASB);
             System.assertNotEquals(null, uasb.utilUASB);
-            System.assertNotEquals('MISSING_TRANSFER', uasb.matchMessage, 'UCB UASB should not have a match status of MISSING_TRANSFER');
+            System.assertNotEquals('MISSING_TRANSFER', uasb.status, 'UCB UASB should not have a match status of MISSING_TRANSFER');
         }
 
         // Assertions on UASB for mock SZS with ID 'szsOne_ID' -- see Mock impl for raw data

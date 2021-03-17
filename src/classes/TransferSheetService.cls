@@ -382,29 +382,23 @@ public without sharing class TransferSheetService {
         Decimal transferEndingBankedCredits = transferBill.Ending_Banked_Credits__c;
         Decimal transferCDGSponsorPayment = transferBill.CDG_Sponsor_Payment__c;
 
-        /*  Depending on the utility and program, we may only get 1 of these 3 categories.
+        /*  Depending on the utility and program, we may only get 1 of these 3 categories:
+                transferCredits, transferProduction, transferNMCRate
             For ex.) Xcel in MN gives us Production (kWh) and NMC Rate ($/kWh), but
             National Grid in MA gives us Credits Allocated ($) only.
             To avoid having to hard code for each circumstance, only check variables that are provided
-            and throw error if no data is provided.
         */
-        lineItem.status = 'CREDIT_MISMATCH';
-        if (isNotNullAndDifferent(transferCredits, sfCredits)) {
+        if (isNotNullAndDifferent(transferCredits, sfCredits) ||
+            isNotNullAndDifferent(transferProduction, sfProduction) ||
+            isNotNullAndDifferent(transferNMCRate, sfNMCRate) ||
+            isNotNullAndDifferent(sfTotalAvailableCredits, transferTotalAvailableCredits) ||
+            isNotNullAndDifferent(sfNetMemberCredits, transferNetMemberCredits) ||
+            isNotNullAndDifferent(sfEndingBankedCredits, transferEndingBankedCredits) ||
+            isNotNullAndDifferent(sfCDGSponsorPayment, transferCDGSponsorPayment) ||
+            transferCredits == null && transferProduction == null && transferNMCRate == null)
+        {
+            lineItem.status = 'CREDIT_MISMATCH';
             lineItem.matchMessage = 'Credits Allocated Mismatch';
-        } else if (isNotNullAndDifferent(transferProduction, sfProduction)) {
-            lineItem.matchMessage = 'Production kWh Mismatch';
-        } else if (isNotNullAndDifferent(transferNMCRate, sfNMCRate)) {
-            lineItem.matchMessage = 'NMC Rate mismatch';
-        } else if (transferCredits == null && transferProduction == null && transferNMCRate == null) {
-            lineItem.matchMessage = 'Values on Transfer are null: Credits, Production, NMC Rate';
-        } else if (isNotNullAndDifferent(sfTotalAvailableCredits, transferTotalAvailableCredits)) {
-            lineItem.matchMessage = 'Total Available Credits Mismatch';
-        } else if (isNotNullAndDifferent(sfNetMemberCredits, transferNetMemberCredits)) {
-            lineItem.matchMessage = 'Net Member Credits Mismatch';
-        } else if (isNotNullAndDifferent(sfEndingBankedCredits, transferEndingBankedCredits)) {
-            lineItem.matchMessage = 'Ending Banked Credits Mismatch';
-        } else if (isNotNullAndDifferent(sfCDGSponsorPayment, transferCDGSponsorPayment)) {
-            lineItem.matchMessage = 'CDG Sponsor Payment Mismatch';
         } else {
             lineItem.status = 'MATCH';
         }
@@ -467,9 +461,10 @@ public without sharing class TransferSheetService {
     }
     
     private static void setUseUtilityFields(UASB__c uasbToModify, UASBWithStatus data) {
-        for (Integer i=1; i < uasbFields.size(); i++) {
-            // uasbFields[0] is UAL# key field, no need to modify
-            String uasbFieldName = uasbFields[i];
+        for (String uasbFieldName : uasbFields) {
+            if (uasbFieldName == 'PreGen_Utility_Acct__c') {
+                continue;
+            }
             if (data.utilUASB.get(uasbFieldName) != null) {
                 uasbToModify.put(uasbFieldName, data.utilUASB.get(uasbFieldName));
             }

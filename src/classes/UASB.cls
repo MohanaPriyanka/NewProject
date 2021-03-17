@@ -7,7 +7,6 @@
 public virtual class UASB {
 
     public static final System.RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
-
     public Integer productionDecimalRounding;
     public Schedule_Z_Subscription__c szs;
     public Transfer__c transfer;
@@ -50,7 +49,9 @@ public virtual class UASB {
         try {
             createSObject();
         } catch (Exception e) {
-            throw new Util.BWException('Failed to generate UASB for Subscription ' + szs.Id + '. Reason: ' + e.getMessage());
+            String err = 'Failed to generate UASB for Subscription ' + szs.Id + '. Reason: \n' +
+                e.getMessage() + '\n' + e.getStackTraceString();
+            throw new Util.BWException(err);
         }
         return uasb;
     }
