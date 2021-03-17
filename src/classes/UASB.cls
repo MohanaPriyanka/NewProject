@@ -6,11 +6,11 @@
 @SuppressWarnings('PMD.EmptyStatementBlock')
 public virtual class UASB {
 
-    public static final System.RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
-    public Integer productionDecimalRounding;
-    public Schedule_Z_Subscription__c szs;
-    public Transfer__c transfer;
-    public UASB__c uasb = new UASB__c();
+    @TestVisible protected final System.RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
+    protected Integer productionDecimalRounding;
+    protected Schedule_Z_Subscription__c szs;
+    protected Transfer__c transfer;
+    protected UASB__c uasb = new UASB__c();
     private Decimal subscriptionProduction;
     private String billingMethod;
     private Decimal nmcDiscountOverride;

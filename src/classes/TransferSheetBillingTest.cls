@@ -712,7 +712,7 @@ public class TransferSheetBillingTest {
         Decimal expectedEndingBankedCredits = expectedTotalAvailCredits - uasbs[0].sfUASB.Calculated_Credits__c;
         Decimal expectedDiscountedBill = uasbs[0].sfUASB.Satellite_Charges__c - uasbs[0].sfUASB.Net_Member_Credits__c;
         Decimal expectedCDGSubFee = uasbs[0].sfUASB.Calculated_Credits__c - uasbs[0].sfUASB.Net_Member_Credits__c;
-        Decimal expectedAdminFee = (0.01 * uasbs[0].sfUASB.CDG_Subscription_Fee__c).setScale(2,UASB.DEFAULT_ROUND);
+        Decimal expectedAdminFee = (0.01 * uasbs[0].sfUASB.CDG_Subscription_Fee__c).setScale(2,new UASB().DEFAULT_ROUND);
         Decimal expectedCDGSponsorPayment =  expectedCDGSubFee - expectedAdminFee;
 
         System.assertEquals(expectedNetMemberCredits, uasbs[0].sfUASB.Net_Member_Credits__c, 'Incorrect Net Member Credits');
