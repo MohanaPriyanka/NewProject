@@ -9,7 +9,6 @@ public without sharing class CSQualificationService {
     private static SharedSolarSystemsSelector systemsSelector = new SharedSolarSystemsSelector();
     private static CreditReportSelector creditReportSelector = new CreditReportSelector();
     private static Map<Id, Lead> leadMap = new Map<Id, Lead>();
-    private static List<LASERCA__Personal_Credit_Report__c> pcrsToUpsert = new List<LASERCA__Personal_Credit_Report__c>();
 
     @TestVisible
     private  fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
@@ -52,7 +51,13 @@ public without sharing class CSQualificationService {
         }
     }
 
-    public void handleErrorCRL(LASERCA__Credit_Report_Log__c errorCRL) {
+    /**
+     * @description If a Credit Report is returned with Status = ERROR, we create a blank PCR to be used in
+     * underwriting. The blank PCR will be populated with a score of 9999, resulting in a case to resolve
+     *
+     * @param errorCRL CRL with Status = Error
+     */
+    private void handleErrorCRL(LASERCA__Credit_Report_Log__c errorCRL) {
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c();
         pcr.Name = 'NO MATCH for Lead: ';
         pcr.LASERCA__Lead__c = errorCRL.LASERCA__Lead__c;
@@ -64,7 +69,13 @@ public without sharing class CSQualificationService {
         underwriteLeadWithFICO(new List<LASERCA__Personal_Credit_Report__c>{pcr});
     }
 
-    public void underwriteLeadWithFICO(List<LASERCA__Personal_Credit_Report__c> pcrs) {
+    /**
+     * @description Reads the PCR for a lead and runs qualification logic based off credit score.
+     * If credit score is a real score, close all related FICO Cases.
+     *
+     * @param pcrs Personal Credit Reports to be evaluated
+     */
+    private void underwriteLeadWithFICO(List<LASERCA__Personal_Credit_Report__c> pcrs) {
         SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(systemsSelector.getSharedSolarSystemsForEnrollment());
         for (LASERCA__Personal_Credit_Report__c creditReport : pcrs) {
             Lead lead = leadMap.get(creditReport.LASERCA__Lead__c);
@@ -107,7 +118,14 @@ public without sharing class CSQualificationService {
         return result;
     }
 
-    public void handleNoMatchCreditPull(LASERCA__Personal_Credit_Report__c noMatchPCR, Lead lead) {
+    /**
+     * @description If score is missing, populates PCR with 9999 to be resolved later. Creates a case to resolve
+     * missing credit score for completed applications.
+     *
+     * @param noMatchPCR Personal Credit Report missing a credit score
+     * @param lead Lead related to the PCR
+     */
+    private void handleNoMatchCreditPull(LASERCA__Personal_Credit_Report__c noMatchPCR, Lead lead) {
         noMatchPCR.LASERCA__Credit_Score_TransUnion__c = '9999';
         noMatchPCR.LASERCA__Credit_Score__c = '9999';
         uow.registerDirty(noMatchPCR);
@@ -124,11 +142,18 @@ public without sharing class CSQualificationService {
         System.enqueueJob(noMatchFactory);
     }
 
-    public static void handleLeadUnqualifiedDueToFICO(Id leadId) {
-        Lead lead = new LeadSelector().selectOne(leadId);
-        lead.Unqualified_due_to_FICO__c = true;
-        update lead;
-        sendAdverseCreditNotice(lead);
+    /**
+     * @description If after running qualification logic (SharedSolarSystems) the lead's credit score does not meet
+     * any of the open project's credit minimum, the Lead should be flagged as "Unqualified due to FICO" and have an
+     * Adverse Credit Notice email sent automatically
+     *
+     * @param lead Lead that is unqualified due to FICO
+     */
+    public static void handleLeadUnqualifiedDueToFICO(Lead lead) {
+        if (!lead.Unqualified_due_to_FICO__c){
+            lead.Unqualified_due_to_FICO__c = true;
+            sendAdverseCreditNotice(lead);
+        }
     }
 
     private static void sendAdverseCreditNotice(Lead lead) {
@@ -147,7 +172,7 @@ public without sharing class CSQualificationService {
         MessagingService.ReplacementText detail4 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_4__c}', lead.Credit_Report_Detail_4__c);
         ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName, creditDate, creditScore, detail1, detail2, detail3, detail4 };
 
-        MessagingService.sendEmailTemplate(ee);
+        Messaging.SendEmailResult[] results = MessagingService.sendEmailTemplate(ee);
     }
 
     public virtual class QualificationMatch {

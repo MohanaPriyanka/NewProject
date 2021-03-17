@@ -252,6 +252,7 @@ public without sharing class LeadSelector {
                 Product_line__c,
                 Sales_Person__c,
                 Status,
+                Unqualified_due_to_FICO__c,
                 Utility_relationship__c,
                 Utility_relationship__r.Id,
                 Utility_relationship__r.Name,

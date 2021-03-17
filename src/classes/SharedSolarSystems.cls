@@ -190,7 +190,8 @@ public inherited sharing class SharedSolarSystems {
     }
 
     /**
-     * @description Gets the lead's qualification based on Utility, Service Territory, Partner, Product, and Credit Score
+     * @description Gets the lead's qualification based on Utility, Service Territory, Partner, Product, and Credit Score.
+     * If the lead does not meet any of the project's credit requirement, the lead is "Unqualified due to FICO"
      * @param lead The lead to check
      * @param creditScore The lead's credit score
      * @return Qualified or Unqualified
@@ -202,7 +203,7 @@ public inherited sharing class SharedSolarSystems {
             }
         }
         if (unqualifiedFICO) {
-           CSQualificationService.handleLeadUnqualifiedDueToFICO(lead.Id);
+           CSQualificationService.handleLeadUnqualifiedDueToFICO(lead);
         }
         return 'Unqualified';
     }
@@ -302,6 +303,7 @@ public inherited sharing class SharedSolarSystems {
         } else if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
             creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
         }
+
         if (unqualifiedFICO) {
             unqualifiedFICO = creditScore < sss.Credit_Score_Requirement__c;
         }

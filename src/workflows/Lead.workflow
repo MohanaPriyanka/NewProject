@@ -1018,7 +1018,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <name>CS_Lead_Status_Unqualified</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Lead.Credit_Approval_Status2__c</field>
             <operation>equals</operation>
@@ -1160,7 +1160,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <name>Credit_Partner_Alert_Text</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Lead.Product_line__c</field>
             <operation>equals</operation>
@@ -1419,7 +1419,7 @@ Logic moved into POST lead API</description>
             <name>RL_Installer_Notification_Lead_Unqualified</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Lead.Product_line__c</field>
             <operation>equals</operation>
@@ -1442,7 +1442,7 @@ Logic moved into POST lead API</description>
             <name>EMAIL_LOG_RL_Installer_Notification_Lead_has_been_Created</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2</booleanFilter>
         <criteriaItems>
             <field>Lead.Unfinished_Lead__c</field>
@@ -1488,7 +1488,7 @@ Logic moved into POST lead API</description>
             <name>Lead_DOER_Credit_Denial_Email</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <description>Send email if: 
 Manual credit is checked 
 if it&apos;s DOER 
@@ -1512,7 +1512,7 @@ Product_line__c = &apos;Residential Loan&apos;,
             <name>RS_Change_Order_Rejected</name>
             <type>Alert</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>ISPICKVAL(Change_Order_Status__c, &quot;Reviewed - Rejected&quot;)</formula>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
@@ -1526,7 +1526,7 @@ Product_line__c = &apos;Residential Loan&apos;,
             <name>EMAIL_LOG_RS_Email_Manual_Credit_Decline</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <description>Send email if:
 Manual credit is checked
 if it&apos;s not DOER
