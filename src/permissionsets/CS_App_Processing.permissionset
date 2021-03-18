@@ -101,13 +101,4 @@
     </flowAccesses>
     <hasActivationRequired>false</hasActivationRequired>
     <label>CS App Processing</label>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>ChargentOrders__ChargentOrder__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
 </PermissionSet>

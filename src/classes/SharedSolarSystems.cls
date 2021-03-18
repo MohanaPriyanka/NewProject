@@ -18,6 +18,7 @@ public inherited sharing class SharedSolarSystems {
         'Caa1', 'Caa2', 'Ca', 'C'};
     private List<Shared_Solar_System__c> records;
     private Lead virtualLead;
+    private Boolean unqualifiedFICO = true;
 
     /**
      * @description Default constructor used in most cases
@@ -189,7 +190,8 @@ public inherited sharing class SharedSolarSystems {
     }
 
     /**
-     * @description Gets the lead's qualification based on Utility, Service Territory, Partner, Product, and Credit Score
+     * @description Gets the lead's qualification based on Utility, Service Territory, Partner, Product, and Credit Score.
+     * If the lead does not meet any of the project's credit requirement, the lead is "Unqualified due to FICO"
      * @param lead The lead to check
      * @param creditScore The lead's credit score
      * @return Qualified or Unqualified
@@ -199,6 +201,9 @@ public inherited sharing class SharedSolarSystems {
             if (qualifiedForSystem(lead, sss, creditScore)) {
                 return 'Qualified';
             }
+        }
+        if (unqualifiedFICO) {
+           CSQualificationService.handleLeadUnqualifiedDueToFICO(lead);
         }
         return 'Unqualified';
     }
@@ -276,8 +281,10 @@ public inherited sharing class SharedSolarSystems {
             when 'FICO' {
                 meetsCriteria = meetsFICOUnderwriting(lead, sss, creditScore);
             } when 'Financial Review' {
+                unqualifiedFICO = false;
                 meetsCriteria = meetsFinancialReviewUnderwriting(lead, sss);
             } when else {
+                unqualifiedFICO = false;
                 meetsCriteria = true;
             }
         }
@@ -297,6 +304,9 @@ public inherited sharing class SharedSolarSystems {
             creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
         }
 
+        if (unqualifiedFICO) {
+            unqualifiedFICO = creditScore < sss.Credit_Score_Requirement__c;
+        }
         return creditScore >= sss.Credit_Score_Requirement__c;
     }
 

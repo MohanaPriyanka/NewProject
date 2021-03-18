@@ -259,7 +259,8 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c, 
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Personal_Credit_Report__r.Approval_Status__c
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Personal_Credit_Report__r.Approval_Status__c,
+                Unqualified_Due_to_FICO__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -268,14 +269,17 @@ public class CSQualificationTestclass {
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
         System.assertEquals('Declined', checkLead.Personal_Credit_Report__r.Approval_Status__c, 'PCR should be declined because FICO lower than 680');
         System.assertEquals('200', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 200');
-        System.assertEquals(1, new CaseSelector().selectOpenLowMatchCasesFromLead(lead).size(), 'Low credit score ' +
-            'requires AAN action, therefore a low FICO case should be created.');
+        System.assertEquals(true, checkLead.Unqualified_due_to_FICO__c, 'Lead should be flagged as Unqualified due to FICO');
+        Messaging.SingleEmailMessage sentEmail = (Messaging.SingleEmailMessage) MessagingService.emailsSent[0];
+        System.assertNotEquals(null, sentEmail, 'ACN should be automatically sent to customer');
+        System.assert(!sentEmail.htmlBody.contains('{!Lead.FirstName}'), 'Merge fields should be replaced with data from record');
     }
 
     public static void pullCreditForLead(Id leadId, String type) {
 
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
-            LASERCA__Lead__c = leadId
+            LASERCA__Lead__c = leadId,
+            LASERCA__Date_of_Credit_Report__c = System.today()
         );
         if (type == 'High FICO') {
             pcr.LASERCA__Credit_Score__c = '700';
@@ -299,6 +303,7 @@ public class CSQualificationTestclass {
 
         if (type == 'No Match') {
             crLog.LASERCA__Status__c = 'Error';
+            crLog.LASERCA__Personal_Credit_Report__c = null;
         } else {
             crLog.LASERCA__Status__c = 'Completed';
         }
@@ -306,7 +311,6 @@ public class CSQualificationTestclass {
 
         Lead lead = new Lead(
             Id = leadId,
-            Personal_Credit_Report__c = pcr.Id, 
             Moody_s_Risk_Calc__c = 'Aaa'
         );
         update lead;
