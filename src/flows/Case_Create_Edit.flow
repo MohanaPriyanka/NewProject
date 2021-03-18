@@ -22,6 +22,7 @@
         <connector>
             <targetReference>myDecision13</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <processMetadataValues>
                 <name>dataType</name>
@@ -66,70 +67,110 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
+        <processMetadataValues>
+            <name>ActionCallType</name>
+            <value>
+                <stringValue>flow</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>flowSelection</name>
+            <value>
+                <stringValue>Send Customer Support Survey</stringValue>
+            </value>
+        </processMetadataValues>
         <name>myRule_3_A1</name>
-        <label>Send Survey Invitation</label>
+        <label>Send Customer Support Survey</label>
         <locationX>300</locationX>
         <locationY>200</locationY>
-        <actionName>sendSurveyInvitation</actionName>
-        <actionType>sendSurveyInvitation</actionType>
+        <actionName>Send_Customer_Support_Survey</actionName>
+        <actionType>flow</actionType>
         <connector>
             <targetReference>myDecision5</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>surveyName</name>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>varCaseId</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>varCaseId</name>
             <value>
-                <stringValue>{!Environment.VAR_SURVEY NAME: Customer and Partner Case Feedback}</stringValue>
+                <elementReference>myVariable_current.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>emailTemplateName</name>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>varContactId</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>varContactId</name>
             <value>
-                <stringValue>Customer_Ops_Case_Close_1588293285409</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>isUnauthenticatedResponse</name>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>autoExpiryDays</name>
-        </inputParameters>
-        <inputParameters>
-            <name>surveySubjectEntity</name>
-            <value>
-                <stringValue>{!myVariable_current.Id}</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>surveyQuestionName</name>
-            <value>
-                <stringValue>q_c6cd3271_c105_4351_b09e_492375cb03fb</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>personalInvitation</name>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>anonymousReponse</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>recipientType</name>
-            <value>
-                <stringValue>Contact</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>recipient</name>
-            <value>
-                <stringValue>{!myVariable_current.Contact.Id}</stringValue>
+                <elementReference>myVariable_current.ContactId</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -146,6 +187,7 @@
         <locationY>200</locationY>
         <actionName>Case.Case_Open_Email_Alert</actionName>
         <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -172,6 +214,7 @@
         <locationY>200</locationY>
         <actionName>Permission_Set_Requestor_Processor</actionName>
         <actionType>flow</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <processMetadataValues>
                 <name>dataType</name>
@@ -357,6 +400,7 @@
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_14_event_0_postWaitExecutionAssignment</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -364,6 +408,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>myWaitAssignment_myWait_myRule_14</name>
         <label>myWaitAssignment_myWait_myRule_14</label>
@@ -2480,7 +2525,7 @@
             </processMetadataValues>
             <field>SurveyId</field>
             <value>
-                <stringValue>{!Environment.VAR_SURVEY Customer and Partner Case feedback}</stringValue>
+                <stringValue>0Kd0a000000TN2hCAG</stringValue>
             </value>
         </inputAssignments>
         <object>SurveyInvitation</object>
@@ -2517,6 +2562,7 @@
         <connector>
             <targetReference>myDecision2</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
