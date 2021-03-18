@@ -5651,6 +5651,16 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Unqualified_due_to_FICO__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked when Lead&apos;s Credit Score does not meet FICO requirements for any qualifying and open projects</inlineHelpText>
+        <label>Unqualified due to FICO</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Update_Dummy__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

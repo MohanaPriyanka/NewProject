@@ -186,6 +186,19 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Transfer_Mismatch_Tolerance__c</fullName>
+        <description>The dollar variance allowed in the transfer sheet QC to still produce a Match</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The dollar variance allowed in the transfer sheet QC to still produce a Match</inlineHelpText>
+        <label>Transfer Mismatch Tolerance</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>UASB_Number_of_Decimals__c</fullName>
         <defaultValue>2</defaultValue>
         <externalId>false</externalId>

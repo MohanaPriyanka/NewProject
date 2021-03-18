@@ -6,6 +6,7 @@
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
     <excludeButtons>Convert</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <excludeButtons>XClean</excludeButtons>
@@ -243,6 +244,10 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Credit_Approval_Status2__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Unqualified_due_to_FICO__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

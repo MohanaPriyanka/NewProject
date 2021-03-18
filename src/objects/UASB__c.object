@@ -719,6 +719,17 @@ MONTH(Billing_Period_End_Date__c),
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Satellite_Bill_Date__c</fullName>
+        <description>Date of subscriber&apos;s utility bill to which credits were applied</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date of subscriber&apos;s utility bill to which credits were applied</inlineHelpText>
+        <label>Satellite Bill Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Satellite_Charges__c</fullName>
         <externalId>false</externalId>
         <label>Satellite Charges</label>

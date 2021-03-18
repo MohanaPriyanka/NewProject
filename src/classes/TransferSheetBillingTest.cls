@@ -306,9 +306,9 @@ public class TransferSheetBillingTest {
         List<TransferSheetService.UASBWithStatus> matchList = setupTestSFBillsToTransferMA();
         Integer countOfLineItemsWithoutSZS = 0;
         /*
-            Expect 2 matches (same between transfer sheet and SF)
-            2 credit mismatches (found utility number in both, but credits allocated are different)
-            2 missing transfers (record in SF is not on transfer sheet)
+            Expect 3 matches (same between transfer sheet and SF OR within tolerance)
+            1 credit mismatches (found utility number in both, but credits allocated are different)
+            1 missing transfer (record in SF is not on transfer sheet)
             1 missing bill (transfer record is not in SF)
         */
         for (TransferSheetService.UASBWithStatus lineItem : matchList) {
@@ -322,12 +322,10 @@ public class TransferSheetBillingTest {
                     System.assert(lineItem.overdue);
                 } when '223232' {
                     System.assertEquals(141.49, lineItem.sfUASB.Credits_Allocated__c);
-                    System.assertEquals('Credits Allocated Mismatch', lineItem.matchMessage);
-                    System.assertEquals('CREDIT_MISMATCH', lineItem.status);
+                    System.assertEquals('MATCH', lineItem.status);
                     System.assert(lineItem.overdue);
                 } when ' 00 12 34 56789' {
                     System.assertEquals(158.77, lineItem.sfUASB.Credits_Allocated__c);
-                    System.assertEquals('Credits Allocated Mismatch', lineItem.matchMessage);
                     System.assertEquals('CREDIT_MISMATCH', lineItem.status);
                     System.assert(lineItem.overdue);
                 } when '777888' {
@@ -376,8 +374,8 @@ public class TransferSheetBillingTest {
         Integer countOfLineItemsWithoutSZS = 0;
 
         /*
-            Expect 2 matches (same between transfer sheet and SF)
-            2 credit mismatches (found utility number in both, but credits allocated are different)
+            Expect 3 matches (same between transfer sheet and SF OR within tolerance)
+            1 credit mismatch (found utility number, but credits allocated are different)
             2 missing transfers (record in SF is not on transfer sheet)
             1 missing bill (transfer record is not in SF)
         */
@@ -387,10 +385,8 @@ public class TransferSheetBillingTest {
             switch on utilityNumber {
                 when '12-34-56-789' {
                     System.assertEquals('CREDIT_MISMATCH', lineItem.status);
-                    System.assertEquals('Production kWh Mismatch', lineItem.matchMessage);
                 } when '23 23 224' {
-                    System.assertEquals('CREDIT_MISMATCH', lineItem.status);
-                    System.assertEquals('NMC Rate mismatch', lineItem.matchMessage);
+                    System.assertEquals('MATCH', lineItem.status);
                 } when '223232' {
                     System.assertEquals('MATCH', lineItem.status);
                 } when ' 00 12 34 56789' {
@@ -434,7 +430,6 @@ public class TransferSheetBillingTest {
                 System.assertEquals('CREDIT_MISMATCH', lineItem.status,
                     'Utility number 223232 should not have matches because credits on the transfer sheet is 0: ' +
                         JSON.serializePretty(lineItem));
-                System.assertEquals('Credits Allocated Mismatch', lineItem.matchMessage);
             } else if (utilityNumber == ' 00 12 34 56789') {
                 System.assertEquals('MATCH', lineItem.status,
                     'Utility number 00 12 34 56789 should have matched even though Production and Credit Value on the' +
@@ -445,6 +440,7 @@ public class TransferSheetBillingTest {
 
     @IsTest
     private static void testResolveLWC(){
+        TransferSheetService.initializeClass(mockTransferServiceInitObjectNonUCB());
         String apexDataAsJSON = mockGetApexDataFromLWC();
         List<String> overrideValues = mockGetResolutionDataFromLWC();
         List<TransferSheetService.UASBWithStatus> uasbWithStatusList;
@@ -478,6 +474,7 @@ public class TransferSheetBillingTest {
 
     @IsTest
     private static void testResolveCreditMismatchUseUtility(){
+        TransferSheetService.initializeClass(mockTransferServiceInitObjectNonUCB());
         String apexDataAsJSON = mockGetApexDataFromLWC();
         List<String> overrideValues = mockGetResolutionDataFromLWC();
         List<TransferSheetService.UASBWithStatus> uasbWithStatusList;
@@ -515,6 +512,7 @@ public class TransferSheetBillingTest {
 
     @IsTest
     private static void testResolveCreditMismatchUseSF(){
+        TransferSheetService.initializeClass(mockTransferServiceInitObjectNonUCB());
         String apexDataAsJSON = mockGetApexDataFromLWC();
         List<String> overrideValues = mockGetResolutionDataFromLWC();
         List<TransferSheetService.UASBWithStatus> uasbWithStatusList;
@@ -552,6 +550,7 @@ public class TransferSheetBillingTest {
 
     @IsTest
     private static void testResolveLWCWithOverdue(){
+        TransferSheetService.initializeClass(mockTransferServiceInitObjectNonUCB());
         String apexDataAsJSON = mockGetApexDataFromLWC();
         List<String> overrideValues = mockGetResolutionDataFromLWC();
         List<TransferSheetService.UASBWithStatus> uasbWithStatusList;
@@ -691,7 +690,7 @@ public class TransferSheetBillingTest {
             System.assertEquals('UCB', uasb.sfUASB.Billing_Method__c, 'Incorrect billing method for UCB UASBs');
             System.assertNotEquals(null, uasb.sfUASB);
             System.assertNotEquals(null, uasb.utilUASB);
-            System.assertNotEquals('MISSING_TRANSFER', uasb.matchMessage, 'UCB UASB should not have a match status of MISSING_TRANSFER');
+            System.assertNotEquals('MISSING_TRANSFER', uasb.status, 'UCB UASB should not have a match status of MISSING_TRANSFER');
         }
 
         // Assertions on UASB for mock SZS with ID 'szsOne_ID' -- see Mock impl for raw data
@@ -706,12 +705,14 @@ public class TransferSheetBillingTest {
             uasbs[0].sfUASB.Calculated_Credits__c,
             'Incorrect calculated credits'
         );
+        System.assertEquals(Date.valueOf('2021-03-09'),uasbs[0].sfUASB.Satellite_Bill_Date__c, 'Incorrect Satellite Bill Date');
+        System.assertEquals(Date.valueOf('2021-03-09'),uasbs[0].utilUASB.Satellite_Bill_Date__c, 'Incorrect Satellite Bill Date');
 
-        Decimal expectedNetMemberCredits = uasbs[0].sfUASB.Calculated_Credits__c * 12; // 12 comes from Mock SZS impl
+        Decimal expectedNetMemberCredits = uasbs[0].sfUASB.Calculated_Credits__c * .12; // .12 comes from Mock SZS impl
         Decimal expectedEndingBankedCredits = expectedTotalAvailCredits - uasbs[0].sfUASB.Calculated_Credits__c;
         Decimal expectedDiscountedBill = uasbs[0].sfUASB.Satellite_Charges__c - uasbs[0].sfUASB.Net_Member_Credits__c;
         Decimal expectedCDGSubFee = uasbs[0].sfUASB.Calculated_Credits__c - uasbs[0].sfUASB.Net_Member_Credits__c;
-        Decimal expectedAdminFee = 0.01 * uasbs[0].sfUASB.CDG_Subscription_Fee__c;
+        Decimal expectedAdminFee = (0.01 * uasbs[0].sfUASB.CDG_Subscription_Fee__c).setScale(2,new UASB().DEFAULT_ROUND);
         Decimal expectedCDGSponsorPayment =  expectedCDGSubFee - expectedAdminFee;
 
         System.assertEquals(expectedNetMemberCredits, uasbs[0].sfUASB.Net_Member_Credits__c, 'Incorrect Net Member Credits');
@@ -773,7 +774,7 @@ public class TransferSheetBillingTest {
                 '"System_Size_kW_DC__c" : 1445.86,' +
                 '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
-                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2}}},' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2, "Transfer_Mismatch_Tolerance__c":1.00}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_One", ' +
                 '"Utility_Account_Log__r" : {"Name" : "07777", "Premise_Number__c" : "12-34-56-789"},' +
                 '"Opportunity__r" : {"Id":"0000000AAA","Name":"Oppty A",' +
@@ -786,7 +787,7 @@ public class TransferSheetBillingTest {
                 '"System_Size_kW_DC__c" : 1445.86,' +
                 '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
-                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2}}},' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2, "Transfer_Mismatch_Tolerance__c":1.00}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Two", ' +
                 '"Utility_Account_Log__r" : {"Name" : "23 23 224"},' +
                 '"Opportunity__r" : {"Id":"0000000BBB","Name":"Oppty B", "Product_Escalation_Schedule__c" : "a6o19000000CsuGAAS",' +
@@ -812,7 +813,7 @@ public class TransferSheetBillingTest {
                 '"System_Size_kW_DC__c" : 1445.86,' +
                 '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
-                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2}}},' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2, "Transfer_Mismatch_Tolerance__c":1.00}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Four", ' +
                 '"Utility_Account_Log__r" : {"Name" : " 00 12 34 56789"},' +
                 '"Opportunity__r" : {"Id":"0000000DDD","Name":"Oppty D",' +
@@ -825,7 +826,7 @@ public class TransferSheetBillingTest {
                 '"System_Size_kW_DC__c" : 1445.86,' +
                 '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
-                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2}}},' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2, "Transfer_Mismatch_Tolerance__c":1.00}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Five", ' +
                 '"Utility_Account_Log__r" : {"Name" : "777888"},' +
                 '"Opportunity__r" : {"Id":"0000000EEE","Name":"Oppty E",' +
@@ -861,7 +862,7 @@ public class TransferSheetBillingTest {
                 '"System_Size_kW_DC__c" : 1445.86,' +
                 '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
-                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2}}},' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2, "Transfer_Mismatch_Tolerance__c":1.00}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_One", ' +
                 '"Utility_Account_Log__r" : {"Name" : "001519510481"},' +
                 '"Opportunity__r" : {"Id":"0000000AAA","Name":"Oppty A",' +
@@ -874,7 +875,7 @@ public class TransferSheetBillingTest {
                 '"System_Size_kW_DC__c" : 1445.86,' +
                 '"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Schedule_Z__r" : {"Name" : "SZ_NYSEG", ' +
-                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2}}},' +
+                '"Shared_Solar_System__r" : { "Utility__r" : {"UASB_Number_of_Decimals__c" : 2, "Transfer_Mismatch_Tolerance__c":1.00}}},' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Two", ' +
                 '"Utility_Account_Log__r" : {"Name" : "001519510482"},' +
                 '"Opportunity__r" : {"Id":"0000000BBB","Name":"Oppty B", "Product_Escalation_Schedule__c" : "a6o19000000CsuGAAS",' +
@@ -1035,7 +1036,8 @@ public class TransferSheetBillingTest {
             '0.0', // EndingBankedCredits
             '0.0', // CDGSubscriptionFee
             '0.0', // UtilityAdminFee
-            '0.0' // CDGSponsorPayment
+            '0.0', // CDGSponsorPayment
+            '2021-03-09' // Satellite Bill Date
         };
         public List<String> csvRow2 = new List<String>{
             '001519510482', // Utility Account Number
@@ -1051,7 +1053,8 @@ public class TransferSheetBillingTest {
             '0.0', // EndingBankedCredits
             '0.0', // CDGSubscriptionFee
             '0.0', // UtilityAdminFee
-            '0.0' // CDGSponsorPayment
+            '0.0', // CDGSponsorPayment
+            '2021-03-09' // Satellite Bill Date
         };
         public String transferCsv =
             transferSheetCsvHeaders + '\n' + String.join(csvRow1,',') + '\n' + String.join(csvRow2,',') + '\n';
@@ -1144,5 +1147,10 @@ public class TransferSheetBillingTest {
         String lineFour = '{"Uniqueid":"missingBill04","trcreditvalue":0.1848,' +
             '"isMatch":true,"Resolution":"UseSalesforce"}';
         return new List<String>{lineOne, lineTwo, lineThree, lineFour};
+    }
+
+    private static Transfer__c mockTransferServiceInitObjectNonUCB() {
+        String jsonString = '{"id":"a54540000001oN7AAI","Shared_Solar_System__r":{"UCB__c":"false"}}';
+        return (Transfer__c) JSON.deserialize(jsonString, Transfer__c.class);
     }
 }

@@ -48,12 +48,14 @@ public class UcbUASB extends UASB {
         uasb.Total_Available_Credits__c = uasb.Starting_Banked_Credits__c + uasb.New_available_credits__c;
         uasb.Satellite_Charges__c = Util.nullToZero(ucbParsedTransferUASB?.Satellite_Charges__c);
         uasb.Calculated_Credits__c = Math.min(uasb.Total_Available_Credits__c, uasb.Satellite_Charges__c);
-        uasb.Net_Member_Credits__c = uasb.Calculated_Credits__c * uasb.NMC_Discount__c;
+        uasb.Net_Member_Credits__c = (uasb.Calculated_Credits__c * uasb.NMC_Discount__c / 100)
+            .setScale(productionDecimalRounding, DEFAULT_ROUND);
         uasb.Ending_Banked_Credits__c = uasb.Total_Available_Credits__c - uasb.Calculated_Credits__c;
         uasb.Discounted_Utility_Bill__c = uasb.Satellite_Charges__c - uasb.Net_Member_Credits__c;
         uasb.CDG_Subscription_Fee__c = uasb.Calculated_Credits__c - uasb.Net_Member_Credits__c;
         uasb.Utility_Admin_Fee__c = getUtilityAdminFee();
         uasb.CDG_Sponsor_Payment__c = uasb.CDG_Subscription_Fee__c - uasb.Utility_Admin_Fee__c;
+        uasb.Satellite_Bill_Date__c = ucbParsedTransferUASB?.Satellite_Bill_Date__c;
     }
 
     /**
@@ -65,7 +67,9 @@ public class UcbUASB extends UASB {
             return 0; // No prior UASB, likely first bill. Start banked credits at 0.
         }
         if (ucbPriorUASB.Ending_Banked_Credits__c == null) {
-            throw new Util.BWException('Prior UASB for UCB SZS ' + szs.Id + ' does not have any value for Ending_Banked_Credits__c');
+            throw new Util.BWException('Prior UASB for UCB Subscription ' + szs.Id +
+                ' does not have any value for Ending_Banked_Credits__c ... '
+            );
         }
         return ucbPriorUASB.Ending_Banked_Credits__c;
     }
@@ -73,7 +77,9 @@ public class UcbUASB extends UASB {
     private Decimal getUtilityAdminFee() {
         Decimal utilityAdminFee = 0;
         if (activeUtilityAdminFee == null) {
-            throw new Util.BWException('No Default_Utility_Fee__c found for UCB SZS ' + szs.Id);
+            throw new Util.BWException('No Default_Utility_Fee__c record found for Utility ' +
+                transfer.Shared_Solar_System__r.Utility__c + ' ... '
+            );
         }
         switch on activeUtilityAdminFee.Method_for_UCB_Utility_Admin__c {
             when 'Calculated Credits' {
@@ -83,6 +89,6 @@ public class UcbUASB extends UASB {
                 utilityAdminFee = activeUtilityAdminFee.Utility_Admin_Fee__c * uasb.CDG_Subscription_Fee__c;
             }
         }
-        return utilityAdminFee;
+        return utilityAdminFee.setScale(productionDecimalRounding, DEFAULT_ROUND);
     }
 }

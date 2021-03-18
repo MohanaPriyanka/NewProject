@@ -251,7 +251,7 @@ const getContractDocuments = (component) => {
             insertLog({
                 className: 'ssf',
                 methodName: 'getContractDocuments',
-                message: `Unexpected error occurred for Lead ${component.lead.id}: \n\n Error: ${error}`,
+                message: `Unexpected error occurred for Lead ${component.lead.id}: \n\n Error: ${JSON.stringify(error)}`,
                 severity: 'Error'
             });
         });

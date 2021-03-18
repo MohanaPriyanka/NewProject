@@ -3900,6 +3900,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UASB</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UASBSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3914,6 +3918,10 @@
     <classAccesses>
         <apexClass>UASSelectorTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UcbUASB</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>UserAndGroupSelector</apexClass>
@@ -28366,6 +28374,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Unqualified_due_to_FICO__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Update_Dummy__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46321,6 +46334,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Transfer__c.UCB__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UASB__c.Above_NM_Rate_Floor__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46562,6 +46580,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>UASB__c.Ready_For_Production_Detail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Satellite_Bill_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -48408,6 +48431,11 @@
         <editable>true</editable>
         <field>Utility__c.Supplier_Account_Number__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Transfer_Mismatch_Tolerance__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>

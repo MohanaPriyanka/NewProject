@@ -1,11 +1,13 @@
 <template>
-    <lightning-combobox
-      class="slds-theme_shade"
-      label="resolution"
-      variant="label-hidden"
-      placeholder="Choose"
-      value={defaultValue}
-      options={picklistOptions}
-      onchange={handleChange}>
-    </lightning-combobox>
+    <div class="container">
+        <lightning-combobox
+          class="slds-theme_shade input-field"
+          label="resolution"
+          variant="label-hidden"
+          placeholder="Choose"
+          value={defaultValue}
+          options={picklistOptions}
+          onchange={handleChange}>
+        </lightning-combobox>
+    </div>
 </template>
