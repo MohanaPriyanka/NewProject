@@ -268,12 +268,12 @@
         <active>true</active>
         <errorConditionFormula>AND ( OR(ISCHANGED( Commission_Structure__c ), 
          AND(ISCHANGED( Start_Date__c ), NOT(ISBLANK(PRIORVALUE(Start_Date__c)))),
+         AND(NOT(IsActive__c), PRIORVALUE(IsActive__c)),
          ISCHANGED( Account__c ) ,
          ISCHANGED( Shared_Solar_System__c ),
          /* Since the end date can change, but it shouldn&apos;t make the current day inactive */
          AND(ISCHANGED( End_Date__c ), End_Date__c &lt; TODAY())), 
-      TODAY() &gt; Start_Date__c,
-      NOT( $Profile.Name = &apos;System Administrator&apos;)
+      PRIORVALUE(Start_Date__c) &lt;= TODAY()
 )</errorConditionFormula>
         <errorMessage>This record is locked because it is, or was, active. To change it, set an end date to today, and create a new one.</errorMessage>
     </validationRules>
