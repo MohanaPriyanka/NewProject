@@ -1,4 +1,4 @@
-import { LightningElement, track, api } from 'lwc';
+import { LightningElement, track, api, wire } from 'lwc';
 import getUASBs from '@salesforce/apex/TransferSheetService.getTransferFromId';
 import insertUASBs from '@salesforce/apex/TransferSheetService.handleTransferSheetResolutions';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -31,7 +31,7 @@ export default class BasicDatatable extends LightningElement {
     }
 
     get missingTransferHelptext() {
-        return `If you don't want to send bill, choose Use Utility, if you want to send bill as we calculated it, choose Use Salesforce`;
+        return `If you don't want to create bill, choose Use Utility, if you want to create bill as we calculated it, choose Use Salesforce`;
     }
 
     async refreshData() {
@@ -76,16 +76,29 @@ export default class BasicDatatable extends LightningElement {
 
     setRowValues(uasbData, dataFromApex) {
         uasbData.customerName = this.setCustomerName(uasbData, dataFromApex);
+        uasbData.trUtilityAccount = dataFromApex.utilUASB.PreGen_Utility_Acct__c;
+        uasbData.sfUtilityAccount = dataFromApex.sfUASB.PreGen_Utility_Acct__c;
         uasbData.finaled = dataFromApex.sfUASB.PreGen_IsPreGen__c ? 'FINALED_' : '';
         uasbData.uniqueId = dataFromApex.sfUASB.Schedule_Z_Subscription__c;
-        uasbData.sfUtilityAccount = dataFromApex.sfUASB.PreGen_Utility_Acct__c;
-        uasbData.sfProduction = dataFromApex.sfUASB.Subscription_Production_kWh_Static__c;
-        uasbData.sfCredits = dataFromApex.sfUASB.Credits_Allocated__c;
-        uasbData.sfCreditValue = dataFromApex.sfUASB.NMC_Rate__c;
-        uasbData.trUtilityAccount = dataFromApex.utilUASB.PreGen_Utility_Acct__c;
-        uasbData.trProduction = dataFromApex.utilUASB.Subscription_Production_kWh_Static__c;
-        uasbData.trCredits = dataFromApex.utilUASB.Credits_Allocated__c;
-        uasbData.trCreditValue = dataFromApex.utilUASB.NMC_Rate__c;
+        if (this.UCB) {
+            uasbData.sfNewAvailableCredits = dataFromApex.sfUASB.New_available_credits__c;
+            uasbData.sfTotalAvailableCredits = dataFromApex.sfUASB.Total_Available_Credits__c;
+            uasbData.sfNetMemberCredits = dataFromApex.sfUASB.Net_Member_Credits__c;
+            uasbData.sfEndingBankedCredits = dataFromApex.sfUASB.Ending_Banked_Credits__c;
+            uasbData.sfCDGSponsorPayment = dataFromApex.sfUASB.CDG_Sponsor_Payment__c;
+            uasbData.trNewAvailableCredits = dataFromApex.utilUASB.New_available_credits__c;
+            uasbData.trTotalAvailableCredits = dataFromApex.utilUASB.Total_Available_Credits__c;
+            uasbData.trNetMemberCredits = dataFromApex.utilUASB.Net_Member_Credits__c;
+            uasbData.trEndingBankedCredits = dataFromApex.utilUASB.Ending_Banked_Credits__c;
+            uasbData.trCDGSponsorPayment = dataFromApex.utilUASB.CDG_Sponsor_Payment__c;
+        } else {
+            uasbData.sfProduction = dataFromApex.sfUASB.Subscription_Production_kWh_Static__c;
+            uasbData.sfCredits = dataFromApex.sfUASB.Credits_Allocated__c;
+            uasbData.sfCreditValue = dataFromApex.sfUASB.NMC_Rate__c;
+            uasbData.trProduction = dataFromApex.utilUASB.Subscription_Production_kWh_Static__c;
+            uasbData.trCredits = dataFromApex.utilUASB.Credits_Allocated__c;
+            uasbData.trCreditValue = dataFromApex.utilUASB.NMC_Rate__c;
+        }
     }
 
     setCustomerName(uasbData, dataFromApex) {
@@ -187,7 +200,7 @@ export default class BasicDatatable extends LightningElement {
         })
         .catch(error => {
             const err = error.body.message;
-            this.showToast('Could not load UASB list', err ? err : '_', 'error', 'sticky');
+            this.showToast('Could not insert UASBs', err ? err : '_', 'error', 'sticky');
             this.readyState = true;
         });
     }

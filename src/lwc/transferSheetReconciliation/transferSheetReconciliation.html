@@ -1,8 +1,8 @@
 <template>
     <!-- HEADER -->
     <div class="slds-box slds-theme_inverse slds-theme_alert-texture slds-grid slds-wrap">
-        <div class="slds-size--3-of-3 slds-text-heading_medium">Transfer Sheet Reconciliation {titleSupplement}</div>
-        <div class="slds-col slds-size--1-of-4 slds-p-bottom--medium slds-align--absolute-center">
+        <div class="slds-size_3-of-3 slds-text-heading_medium">Transfer Sheet Reconciliation {titleSupplement}</div>
+        <div class="slds-col slds-size_1-of-4 slds-p-bottom_medium slds-align_absolute-center">
             <c-bluewave-file-upload
               record-id={recordId}
               category-type={categoryTypeTransfer}
@@ -10,8 +10,8 @@
               onfileuploaded={refreshData}>
             </c-bluewave-file-upload>
         </div>
-        <div class="slds-col slds-size--2-of-4">
-            <div class="slds-align--absolute-center">
+        <div class="slds-col slds-size_2-of-4">
+            <div class="slds-align_absolute-center">
                 <lightning-button-icon
                   icon-name="utility:sync"
                   variant="bare-inverse"
@@ -19,10 +19,10 @@
                   size="large"
                   class="slds-m-left_xx-small">
                 </lightning-button-icon>
-                <div class="slds-text-heading_small slds-p-left--small">Recalculate</div>
+                <div class="slds-text-heading_small slds-p-left_small">Recalculate</div>
             </div>
         </div>
-        <div class="slds-col slds-size--1-of-4 slds-align--absolute-center">
+        <div class="slds-col slds-size_1-of-4 slds-align_absolute-center">
             <template if:true={allResolved}>
                 <lightning-button
                   label="Insert UASBs"
@@ -38,33 +38,30 @@
         <div class="slds-theme_default">
             <!-- START NON-UCB TRANSFER DATA -->
             <template if:false={UCB}>
-                <!-- SECTION HEADERS -->
                 <table>
-                    <tr class="slds-p-around--medium">
-                        <th class="slds-size--5-of-12 slds-theme_inverse">
-                            <div class="slds-align--absolute-center">Bluewave Calculated</div>
+                    <tr>
+                        <th class="slds-theme_inverse" colspan="5">
+                            <div class="slds-align_absolute-center">Bluewave Calculated</div>
                         </th>
-                        <th class="slds-size--3-of-12 slds-theme_alt-inverse slds-theme_alert-texture">
-                            <div class="slds-align--absolute-center">COMPARISON</div>
+                        <th class="slds-theme_alt-inverse slds-theme_alert-texture" colspan="2">
+                            <div class="slds-align_absolute-center">COMPARISON</div>
                         </th>
-                        <th class="slds-size--4-of-12 slds-theme_inverse">
-                            <div class="slds-align--absolute-center">Utility Transfer Sheet</div>
+                        <th class="slds-theme_inverse" colspan="4">
+                            <div class="slds-align_absolute-center">Utility Transfer Sheet</div>
                         </th>
                     </tr>
-                </table>
-                <table>
                     <tr class="slds-theme_alt-inverse slds-theme_alert-texture">
-                        <th class="slds-size--1-of-12 slds-p-around--xx-small">Customer Name</th>
-                        <th class="slds-size--1-of-12 slds-p-around--xx-small">Utility Number</th>
-                        <th class="slds-size--1-of-12 slds-p-around--xx-small">Production</th>
-                        <th class="slds-size--1-of-12 slds-p-around--xx-small">Credits</th>
-                        <th class="slds-size--1-of-12 slds-p-around--xx-small">Credit Value</th>
-                        <th class="slds-size--2-of-12 slds-p-around--xx-small slds-align--absolute-center">Match Status</th>
-                        <th class="slds-size--1-of-12 slds-p-around--xx-small">Resolution</th>
-                        <th class="slds-size--1-of-12 slds-p-around--xx-small">Utility Number</th>
-                        <th class="slds-size--1-of-12 slds-p-around--xx-small">Production</th>
-                        <th class="slds-size--1-of-12 slds-p-around--xx-small">Credits</th>
-                        <th class="slds-size--1-of-12 slds-p-around--xx-small">Credit Value</th>
+                        <th class="slds-p-around_xx-small nameColumn">Customer Name</th>
+                        <th class="slds-p-around_xx-small">Utility Number</th>
+                        <th class="slds-p-around_xx-small">Production</th>
+                        <th class="slds-p-around_xx-small">Credits</th>
+                        <th class="slds-p-around_xx-small">Credit Value</th>
+                        <th class="slds-p-around_xx-small matchText matchStatusColumn">Match Status</th>
+                        <th class="slds-p-around_xx-small matchText">Resolution</th>
+                        <th class="slds-p-around_xx-small">Utility Number</th>
+                        <th class="slds-p-around_xx-small">Production</th>
+                        <th class="slds-p-around_xx-small">Credits</th>
+                        <th class="slds-p-around_xx-small">Credit Value</th>
                     </tr>
                     <template for:each={uasbData} for:item='item'>
                         <tr key={item.uniqueId} class={item.rowStyle}>
@@ -75,27 +72,27 @@
                             <td class={item.leftPanelStyle}>{item.sfCreditValue}</td>
                             <!-- MATCHING ROW -->
                             <template if:true={item.isMatch}>
-                                <td class="slds-p-around--xx-small slds-theme_success slds-align--absolute-center">
-                                    MATCH
+                                <td class="slds-p-around_xx-small slds-theme_success matchText matchStatusColumn">
+                                    <span>MATCH</span>
                                 </td>
-                                <td class="slds-p-around--xx-small slds-theme_success">Not Needed</td>
+                                <td class="resolutionColumn matchText slds-p-around_xx-small slds-theme_success">Not Needed</td>
                             </template>
                             <!-- CREDIT MISMATCH ROW -->
                             <template if:true={item.isCreditMismatch}>
-                                <td class="slds-p-around--xx-small slds-align--absolute-center">
+                                <td class="slds-p-around_xx-small slds-theme_shade slds-theme_warning matchText matchStatusColumn">
                                     <lightning-helptext
                                       icon-name="utility:back"
-                                      class= "slds-p-around--xx-small"
+                                      class= "slds-p-around_xx-small"
                                       content="Do you want to bill off transfer sheet or salesforce value?">
                                     </lightning-helptext>
-                                    CREDIT_MISMATCH
+                                    <span>CREDIT MISMATCH</span>
                                     <lightning-helptext
                                       icon-name="utility:forward"
-                                      class= "slds-p-around--xx-small"
+                                      class= "slds-p-around_xx-small"
                                       content="Do you want to bill off transfer sheet or salesforce value?">
                                     </lightning-helptext>
                                 </td>
-                                <td>
+                                <td class="resolutionColumn slds-theme_shade slds-theme_warning">
                                     <c-transfer-sheet-resolution
                                       default-value="UseUtility"
                                       record-number={item.uniqueId}
@@ -106,29 +103,29 @@
                             </template>
                             <!-- MISSING BILL ROW -->
                             <template if:true={item.isMissingBill}>
-                                <td class="slds-p-around--xx-small slds-align--absolute-center slds-theme_error">
+                                <td class="slds-p-around_xx-small slds-theme_error matchText matchStatusColumn">
                                     <lightning-helptext
                                       icon-name="utility:back"
-                                      class= "slds-p-around--xx-small slds-theme_error"
+                                      class= "slds-p-around_xx-small slds-theme_error"
                                       content="Will not send bill because there is not a SF account to link to">
                                     </lightning-helptext>
-                                    MISSING_BILL
+                                    <span>MISSING BILL</span>
                                 </td>
-                                <td class="slds-p-around--xx-small slds-theme_error">
-                                    Use Salesforce
+                                <td class="resolutionColumn slds-p-around_xx-small slds-theme_error">
+                                    <span class="matchText">Use Salesforce</span>
                                 </td>
                             </template>
                             <!-- MISSING TRANSFER ROW -->
                             <template if:true={item.isMissingTransfer}>
-                                <td class="slds-p-around--xx-small slds-align--absolute-center slds-theme_error">
-                                    MISSING_TRANSFER
+                                <td class="slds-p-around_xx-small slds-theme_error matchText matchStatusColumn">
+                                    <span>MISSING TRANSFER</span>
                                     <lightning-helptext
                                       icon-name="utility:forward"
-                                      class= "slds-p-around--xx-small slds-theme_error"
+                                      class= "slds-p-around_xx-small slds-theme_error"
                                       content={missingTransferHelptext}>
                                     </lightning-helptext>
                                 </td>
-                                <td>
+                                <td class="resolutionColumn slds-theme_error">
                                     <c-transfer-sheet-resolution
                                       record-number={item.uniqueId}
                                       onuseutility={utilityResolution}
@@ -148,7 +145,116 @@
 
             <!--- START UCB TRANSFER DATA --->
             <template if:true={UCB}>
-                <!-- NOTE: TO BE WORKED ON IN SUBSEQUENT WORK REQUEST -->
+                <table>
+                    <tr>
+                        <th class="slds-theme_inverse" colspan="7">
+                            <div class="slds-align_absolute-center">Bluewave Calculated</div>
+                        </th>
+                        <th class="slds-theme_alt-inverse slds-theme_alert-texture" colspan="2">
+                            <div class="slds-align_absolute-center">COMPARISON</div>
+                        </th>
+                        <th class="slds-theme_inverse" colspan="6">
+                            <div class="slds-align_absolute-center">Utility Transfer Sheet</div>
+                        </th>
+                    </tr>
+                    <tr class="slds-theme_alt-inverse slds-theme_alert-texture">
+                        <th class="slds-p-around_xx-small nameColumn">Customer Name</th>
+                        <th class="slds-p-around_xx-small">Utility Number</th>
+                        <th class="slds-p-around_xx-small">New Available Credits</th>
+                        <th class="slds-p-around_xx-small">Total Available Credits</th>
+                        <th class="slds-p-around_xx-small">Net Member Credits</th>
+                        <th class="slds-p-around_xx-small">Ending Banked Credits</th>
+                        <th class="slds-p-around_xx-small">CDG Sponsor Payment</th>
+                        <th class="slds-p-around_xx-small matchText matchStatusColumn">Match Status</th>
+                        <th class="slds-p-around_xx-small matchText">Resolution</th>
+                        <th class="slds-p-around_xx-small">Utility Number</th>
+                        <th class="slds-p-around_xx-small">New Available Credits</th>
+                        <th class="slds-p-around_xx-small">Total Available Credits</th>
+                        <th class="slds-p-around_xx-small">Net Member Credits</th>
+                        <th class="slds-p-around_xx-small">Ending Banked Credits</th>
+                        <th class="slds-p-around_xx-small">CDG Sponsor Payment</th>
+                    </tr>
+                    <template for:each={uasbData} for:item='item'>
+                        <tr key={item.uniqueId} class={item.rowStyle}>
+                            <td class={item.leftPanelStyle}>{item.customerName}</td>
+                            <td class={item.leftPanelStyle}>{item.finaled}{item.sfUtilityAccount}</td>
+                            <td class={item.leftPanelStyle}>{item.sfNewAvailableCredits}</td>
+                            <td class={item.leftPanelStyle}>{item.sfTotalAvailableCredits}</td>
+                            <td class={item.leftPanelStyle}>{item.sfNetMemberCredits}</td>
+                            <td class={item.leftPanelStyle}>{item.sfEndingBankedCredits}</td>
+                            <td class={item.leftPanelStyle}>{item.sfCDGSponsorPayment}</td>
+                            <!-- MATCHING ROW -->
+                            <template if:true={item.isMatch}>
+                                <td class="slds-p-around_xx-small slds-theme_success matchText matchStatusColumn">
+                                    <span>MATCH</span>
+                                </td>
+                                <td class="resolutionColumn matchText slds-p-around_xx-small slds-theme_success">Not Needed</td>
+                            </template>
+                            <!-- CREDIT MISMATCH ROW -->
+                            <template if:true={item.isCreditMismatch}>
+                                <td class="matchText slds-p-around_xx-small slds-theme_shade slds-theme_warning matchStatusColumn">
+                                    <lightning-helptext
+                                      icon-name="utility:back"
+                                      class= "slds-p-around_xx-small"
+                                      content="Do you want to bill off transfer sheet or salesforce value?">
+                                    </lightning-helptext>
+                                    <span>CREDIT MISMATCH</span>
+                                    <lightning-helptext
+                                      icon-name="utility:forward"
+                                      class= "slds-p-around_xx-small"
+                                      content="Do you want to bill off transfer sheet or salesforce value?">
+                                    </lightning-helptext>
+                                </td>
+                                <td class="resolutionColumn slds-theme_shade slds-theme_warning">
+                                    <c-transfer-sheet-resolution
+                                      default-value="UseUtility"
+                                      record-number={item.uniqueId}
+                                      onuseutility={utilityResolution}
+                                      onusesalesforce={salesforceResolution}>
+                                    </c-transfer-sheet-resolution>
+                                </td>
+                            </template>
+                            <!-- MISSING BILL ROW -->
+                            <template if:true={item.isMissingBill}>
+                                <td class="slds-p-around_xx-small slds-theme_error matchText matchStatusColumn">
+                                    <lightning-helptext
+                                      icon-name="utility:back"
+                                      class= "slds-p-around_xx-small slds-theme_error"
+                                      content="Will not generate bill because there is not a SF account to link to">
+                                    </lightning-helptext>
+                                    <span>MISSING BILL</span>
+                                </td>
+                                <td class="resolutionColumn matchText slds-p-around_xx-small slds-theme_error">
+                                    <span>Use Salesforce</span>
+                                </td>
+                            </template>
+                            <!-- MISSING TRANSFER ROW -->
+                            <template if:true={item.isMissingTransfer}>
+                                <td class="slds-p-around_xx-small slds-theme_error matchText matchStatusColumn">
+                                    <span>MISSING TRANSFER</span>
+                                    <lightning-helptext
+                                      icon-name="utility:forward"
+                                      class= "slds-p-around_xx-small slds-theme_error"
+                                      content={missingTransferHelptext}>
+                                    </lightning-helptext>
+                                </td>
+                                <td class="resolutionColumn slds-theme_error">
+                                    <c-transfer-sheet-resolution
+                                      record-number={item.uniqueId}
+                                      onuseutility={utilityResolution}
+                                      onusesalesforce={salesforceResolution}>
+                                    </c-transfer-sheet-resolution>
+                                </td>
+                            </template>
+                            <td class={item.rightPanelStyle}>{item.trUtilityAccount}</td>
+                            <td class={item.rightPanelStyle}>{item.trNewAvailableCredits}</td>
+                            <td class={item.rightPanelStyle}>{item.trTotalAvailableCredits}</td>
+                            <td class={item.rightPanelStyle}>{item.trNetMemberCredits}</td>
+                            <td class={item.rightPanelStyle}>{item.trEndingBankedCredits}</td>
+                            <td class={item.rightPanelStyle}>{item.trCDGSponsorPayment}</td>
+                        </tr>
+                    </template>
+                </table>
             </template>
             <!-- END UCB TRANSFER DATA -->
         </div>

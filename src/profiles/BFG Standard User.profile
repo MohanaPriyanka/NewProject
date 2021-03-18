@@ -3536,6 +3536,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UASB</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UASBSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3549,6 +3553,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UASSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UcbUASB</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -40647,6 +40655,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Transfer__c.UCB__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UASB__c.Above_NM_Rate_Floor__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -40833,6 +40846,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>UASB__c.Production_Update__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UASB__c.Satellite_Bill_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -42564,6 +42582,11 @@
         <editable>false</editable>
         <field>Utility__c.Supplier_Account_Number__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Transfer_Mismatch_Tolerance__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
