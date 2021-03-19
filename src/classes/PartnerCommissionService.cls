@@ -302,6 +302,7 @@ public without sharing class PartnerCommissionService{
         newCase.Origin = 'Other';
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
+        newCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Partner Care Case').getRecordTypeId();
         uow.registerNew(newCase);
     }
 
