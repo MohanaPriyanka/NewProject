@@ -687,10 +687,12 @@ UASB__r.Adjustment_Amount__c != Adjustment_Amount__c)</errorConditionFormula>
     <validationRules>
         <fullName>Transfer_for_Production_Adjustment</fullName>
         <active>true</active>
-        <description>When Bill Adjustment has the type &apos;Production,&apos; the Transfer lookup must be populated</description>
-        <errorConditionFormula>AND ( ISPICKVAL( Adjustment_Type__c, &quot;Production&quot;), ISBLANK( Transfer__c ))</errorConditionFormula>
-        <errorDisplayField>Transfer__c</errorDisplayField>
-        <errorMessage>When Bill Adjustment has the type &apos;Production,&apos; the Transfer lookup must be populated</errorMessage>
+        <description>The Transfer lookup must be populated when Bill Adjustment has the type &quot;Production&quot; or if the credits allocated are greater than 0.</description>
+        <errorConditionFormula>AND(ISBLANK( Transfer__c ),
+OR(
+ISPICKVAL( Adjustment_Type__c, &quot;Production&quot; ), (Credits_Allocated__c &gt; 0)
+))</errorConditionFormula>
+        <errorMessage>The Transfer lookup must be populated when Bill Adjustment has the type &quot;Production&quot; or if the credits allocated are greater than 0.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Usage_Must_Be_Posted_on_Next_Bill</fullName>
