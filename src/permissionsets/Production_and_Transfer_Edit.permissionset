@@ -350,6 +350,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Transfer__c.UCB__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UASB__c.Transfer__c</field>
         <readable>true</readable>
     </fieldPermissions>

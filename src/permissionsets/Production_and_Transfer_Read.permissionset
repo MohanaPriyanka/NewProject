@@ -290,6 +290,11 @@
         <field>Transfer__c.Transferred_To__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Transfer__c.UCB__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Production and Transfer Read</label>
     <objectPermissions>
