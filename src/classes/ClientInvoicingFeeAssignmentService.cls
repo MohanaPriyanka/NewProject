@@ -39,8 +39,12 @@ public without sharing class ClientInvoicingFeeAssignmentService {
      */
     @Future
     public static void setSubOrderContractFeeDetailInFuture(Set<Id> subscriptionOrderIds){
-        ClientInvoicingFeeAssignmentService feeJob = new ClientInvoicingFeeAssignmentService(subscriptionOrderIds);
-        feeJob.setSubOrderContractFeeDetail();
+        try {
+            ClientInvoicingFeeAssignmentService feeJob = new ClientInvoicingFeeAssignmentService(subscriptionOrderIds);
+            feeJob.setSubOrderContractFeeDetail();
+        } catch (Exception e) {
+            Logger.logNow('ClientInvoicingFeeAssignmentService', 'setSubOrderContractFeeDetailInFuture', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
     }
 
     /**

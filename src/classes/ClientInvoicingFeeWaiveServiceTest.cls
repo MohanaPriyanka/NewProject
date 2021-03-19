@@ -60,11 +60,14 @@ public class ClientInvoicingFeeWaiveServiceTest {
         Subscription_Order__c so = new Subscription_Order__c(
             Effective_Date__c = System.today(),
             Utility_Account_Subscription__c = uas.Id,
-            Approval_Status__c = 'Approved',
             New_Annual_kWh__c = 4800,
             Previous_Annual_kwh__c = 0
         );
         Test.startTest();
+        // This should test a new transaction, but the ContractRepository's static variables aren't reset here, so we
+        // need to do so explicitly.
+        ContractRepository.clientContracts = null;
+        ContractRepository.contractToFeeDetailMap = null;
         insert so;
         Test.stopTest();
 

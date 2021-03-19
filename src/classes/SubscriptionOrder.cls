@@ -8,6 +8,9 @@ public without sharing class SubscriptionOrder extends FeeQualification {
     private Subscription_Order__c order;
     private String milestoneDateType;
     private Date milestoneDate;
+    private Map<Id,Decimal> uasToAssignedCapacityMap;
+    private MultiMap sssIdToTotalWaivedkWMap;
+    private fflib_SObjectUnitOfWork uow;
 
     public SubscriptionOrder(Subscription_Order__c subOrder) {
         String partnerType = subOrder.Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name;
@@ -39,7 +42,14 @@ public without sharing class SubscriptionOrder extends FeeQualification {
         this.milestoneDate = getMilestoneDate();
     }
 
-    public Client_Invoicing_Memo__c registerClientInvoicingMemo(fflib_SObjectUnitOfWork uow, Map<Id,Decimal> uasToAssignedCapacityMap,  MultiMap sssIdToTotalWaivedkWMap) {
+    public Client_Invoicing_Memo__c registerClientInvoicingMemo(
+        fflib_SObjectUnitOfWork uow,
+        Map<Id,Decimal> uasToAssignedCapacityMap,
+        MultiMap sssIdToTotalWaivedkWMap)
+    {
+        this.uow = uow;
+        this.uasToAssignedCapacityMap = uasToAssignedCapacityMap;
+        this.sssIdToTotalWaivedkWMap = sssIdToTotalWaivedkWMap;
         // Allow negative subscription orders for Customer: Assignment Date guarantees because we don't use the SO
         // amount, we use the customer size at assignment. (The fee waive is triggered by a cancelled customer
         // decreasing in size, so we want to allow negative values)
@@ -54,43 +64,49 @@ public without sharing class SubscriptionOrder extends FeeQualification {
                 return null;
             }
             Decimal assignmentAgreementSize = uasToAssignedCapacityMap.get(order.Utility_Account_Subscription__c);
-            return registerInvoiceMemoBasedOnCustomerDate(order, order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c, assignmentAgreementSize, sssIdToTotalWaivedkWMap, uow);
+            return registerInvoiceMemoBasedOnCustomerDate(
+                order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c,
+                assignmentAgreementSize
+            );
         } else if (order.Approved_Change_in_Subscription__c > 0) {
             if (shouldWaiveInInitialPeriod()) {
-                // We don't handle Max % of Project in the initial period right now, because that includes logic includes an annual clause
-                // that is only applicable after the milestone date
-                return registerInvoiceMemoBasedOnProjectDate(order, null, sssIdToTotalWaivedkWMap, uow);
+                // We don't handle Max % of Project in the initial period right now, because that includes logic includes
+                // an annual clause that is only applicable after the milestone date
+                return registerInvoiceMemoBasedOnProjectDate(null);
             } else if (shouldWaiveAfterInitialPeriod()) {
-                return registerInvoiceMemoBasedOnProjectDate(order, order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c, sssIdToTotalWaivedkWMap, uow);
+                return registerInvoiceMemoBasedOnProjectDate(order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c);
             }
         }
         return null;
     }
 
-    private Client_Invoicing_Memo__c registerInvoiceMemoBasedOnCustomerDate(Subscription_Order__c order, Decimal maxPercentOfProjectToWaive, Decimal assignmentAgreementSize, MultiMap sssIdToTotalWaivedkWMap, fflib_SObjectUnitOfWork uow) {
+    private Client_Invoicing_Memo__c registerInvoiceMemoBasedOnCustomerDate(
+        Decimal maxPercentOfProjectToWaive,
+        Decimal assignmentAgreementSize)
+    {
         if (shouldWaiveInInitialPeriod()) {
             // We don't handle Max % of Project in the initial period right now, because that includes logic includes an annual clause
             // that is only applicable after the milestone date
-            return registerClientInvoiceMemo(order, -assignmentAgreementSize * 1000 * getCancellationFee(), uow);
+            return registerClientInvoiceMemo(-assignmentAgreementSize * 1000 * getCancellationFee());
         } else if (shouldWaiveAfterInitialPeriod()) {
-            return registerInvoiceMemoUnderMaxPercent(maxPercentOfProjectToWaive, assignmentAgreementSize, sssIdToTotalWaivedkWMap, uow);
+            return registerInvoiceMemoUnderMaxPercent(maxPercentOfProjectToWaive, assignmentAgreementSize);
         }
         return null;
     }
 
-    private Client_Invoicing_Memo__c registerInvoiceMemoBasedOnProjectDate(Subscription_Order__c order, Decimal maxPercentOfProjectToWaive, MultiMap sssIdToTotalWaivedkWMap, fflib_SObjectUnitOfWork uow) {
+    private Client_Invoicing_Memo__c registerInvoiceMemoBasedOnProjectDate(Decimal maxPercentOfProjectToWaive) {
         // No need to waive negative fees (ie, credits to client)
         if (order.Approved_Change_in_Subscription__c <= 0) {
             return null;
         }
         if (maxPercentOfProjectToWaive == null) {
-            return registerClientInvoiceMemo(order, -order.Contract_Fee_Detail__r.Fee__c * order.Approved_Change_in_Subscription__c * 1000, uow);
+            return registerClientInvoiceMemo(-order.Contract_Fee_Detail__r.Fee__c * order.Approved_Change_in_Subscription__c * 1000);
         } else {
-            return registerInvoiceMemoUnderMaxPercent(maxPercentOfProjectToWaive, order.Approved_Change_in_Subscription__c, sssIdToTotalWaivedkWMap, uow);
+            return registerInvoiceMemoUnderMaxPercent(maxPercentOfProjectToWaive, order.Approved_Change_in_Subscription__c);
         }
     }
 
-    private Client_Invoicing_Memo__c registerInvoiceMemoUnderMaxPercent(Decimal maxPercentOfProjectToWaive, Decimal maxKwToWaive, MultiMap sssIdToTotalWaivedkWMap, fflib_SObjectUnitOfWork uow) {
+    private Client_Invoicing_Memo__c registerInvoiceMemoUnderMaxPercent(Decimal maxPercentOfProjectToWaive, Decimal maxKwToWaive) {
         maxPercentOfProjectToWaive = maxPercentOfProjectToWaive / 100;
         Id sssId = order.Utility_Account_Subscription__r.Shared_Solar_System__c;
         Decimal totalSystemSize = order.Utility_Account_Subscription__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
@@ -105,7 +121,7 @@ public without sharing class SubscriptionOrder extends FeeQualification {
         Decimal kWToWaive = Math.min(kwLeftToWaive, maxKwToWaive);
         if (kWToWaive > 0) {
             sssIdToTotalWaivedkWMap.putValue(sssId, new ClientInvoicingMemo(sssId, order.Effective_Date__c, kWToWaive));
-            return registerClientInvoiceMemo(order, -1 * order.Contract_Fee_Detail__r.Fee__c * (kWToWaive * 1000), uow);
+            return registerClientInvoiceMemo(-1 * order.Contract_Fee_Detail__r.Fee__c * (kWToWaive * 1000));
         }
         return null;
     }
@@ -134,7 +150,11 @@ public without sharing class SubscriptionOrder extends FeeQualification {
       SO Effective Date: 1/1/2022
       The year to evaluate the total kW already waived: 4/1/2021 -> 3/30/2022
      */
-    private Decimal calculateTotalkWDCWaivedForAnnualPeriod(List<ClientInvoicingMemo> waivedFees, Date milestoneDate, Date effectiveDate) {
+    private Decimal calculateTotalkWDCWaivedForAnnualPeriod(
+        List<ClientInvoicingMemo> waivedFees,
+        Date milestoneDate,
+        Date effectiveDate)
+    {
         if (effectiveDate < milestoneDate) {
             return 0;
         }
@@ -161,7 +181,8 @@ public without sharing class SubscriptionOrder extends FeeQualification {
     }
 
     /**
-     * @description Returns the upsizing reacquisition fee is relevant for this customer type (ie, the fee at which a customer will be replaced)
+     * @description Returns the upsizing reacquisition fee is relevant for this customer type (ie, the fee at which a
+     * customer will be replaced)
      * @return Cancellation Rate for the Subscription Order
      */
     public Decimal getCancellationFee(){
@@ -192,7 +213,7 @@ public without sharing class SubscriptionOrder extends FeeQualification {
         throw new Util.BWException('Could not get cancellation rate for Sub Order: ' + JSON.serialize(order));
     }
 
-    private Client_Invoicing_Memo__c registerClientInvoiceMemo(Subscription_Order__c order, Decimal amount, fflib_SObjectUnitOfWork uow) {
+    private Client_Invoicing_Memo__c registerClientInvoiceMemo(Decimal amount) {
         Client_Invoicing_Memo__c memo = new Client_Invoicing_Memo__c(
             Subscription_Order__c = order.Id,
             Amount__c = amount.setScale(2, RoundingMode.HALF_UP),
