@@ -472,6 +472,7 @@ private class PostSandboxRefresherTest {
         List<Account> accounts = [
             SELECT Id
             FROM Account
+            WHERE RecordType.Name != 'Partner Account'
         ];
 
         List<Attachment> allAttachments = new List<Attachment>();

@@ -534,6 +534,11 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
                     <label>Project Specific</label>
                 </value>
                 <value>
+                    <fullName>Client Acquired Customer Assignment</fullName>
+                    <default>false</default>
+                    <label>Client Acquired Customer Assignment</label>
+                </value>
+                <value>
                     <fullName>Lease Agreement</fullName>
                     <default>false</default>
                     <isActive>false</isActive>
@@ -1597,6 +1602,77 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <active>true</active>
         <description>Generated when customers are assigned from BW to a client</description>
         <label>Assignment Agreement</label>
+        <picklistValues>
+            <picklist>Contract_Type__c</picklist>
+            <values>
+                <fullName>Anchor Customer Contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BPD Scout Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Acquired Customer Assignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Service Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consumer Disclosure Form</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Assignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Contract Template</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering%2C Procurement and Construction Contract %28EPC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financing Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Generic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lease Option Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Membership Interest Purchase Agreement %28MIPA%29 and Ancillary Documents</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NDA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Specific</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Partner Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Small-Offtake Customer Contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor Agreement</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Status</picklist>
             <values>

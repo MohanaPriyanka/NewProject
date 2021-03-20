@@ -1,3 +1,3 @@
-Id,Name
-BlueWaveInsideSales,Bluewave Inside Sales
-TestPartner,Partner
+Id,Name,Account__c
+BlueWaveInsideSales,Bluewave Inside Sales,BlueWaveInsideSalesAccount
+TestPartner,Partner,TestPartnerAccount

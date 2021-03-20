@@ -24,6 +24,7 @@ public with sharing class ZuoraAccountAsyncServiceTest {
         List<Account> accountsToCreate = [
             SELECT Id, Name
             FROM Account
+            WHERE RecordType.Name != 'Partner Account'
         ];
         for (Account account : accountsToCreate) {
             account.Zuora_Id__c = null;
@@ -42,6 +43,7 @@ public with sharing class ZuoraAccountAsyncServiceTest {
         accountsToCreate = [
             SELECT Id, Send_Bills_Contact__c, Zuora_Id__c
             FROM Account
+            WHERE RecordType.Name != 'Partner Account'
         ];
         // Still 27 accounts, all of which should now have a Zuora Id
         System.assertEquals(27, accountsToCreate.size());

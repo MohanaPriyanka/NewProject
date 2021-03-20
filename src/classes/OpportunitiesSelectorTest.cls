@@ -118,16 +118,20 @@ public with sharing class OpportunitiesSelectorTest {
 
     @IsTest
     public static void testSelectOpportunitiesForClientAssignment(){
-        List<Entity__c> entities = [
+        Entity__c entity = [
             SELECT Id
             FROM Entity__c
+            WHERE Name = 'BarrettProjCo'
             LIMIT 1
         ];
-        System.assert(entities.size() > 0);
         List<Opportunity> opportunities =
-            OpportunitiesSelector.selectOpportunitiesForClientAssignment(entities[0].Id, System.today());
-
-        System.assertNotEquals(null, opportunities, 'Expected a non-null list of opportunities');
+            OpportunitiesSelector.selectOpportunitiesForClientAssignment(entity.Id, System.today(), false);
+        System.assert(opportunities.size() > 0,
+            'The TestCSOpportunities resource should load all BlueWave Acquired customers, but selectOpportunitiesForClientAssignment found none');
+        opportunities =
+            OpportunitiesSelector.selectOpportunitiesForClientAssignment(entity.Id, System.today(), true);
+        System.assertEquals(0, opportunities.size(),
+            'The TestCSOpportunities resource should load no Client Acquired customers');
     }
 
     @IsTest
