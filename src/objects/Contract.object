@@ -1605,72 +1605,12 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <picklistValues>
             <picklist>Contract_Type__c</picklist>
             <values>
-                <fullName>Anchor Customer Contract</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BPD Scout Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Client Acquired Customer Assignment</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Client Service Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Consumer Disclosure Form</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Customer Assignment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Contract Template</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering%2C Procurement and Construction Contract %28EPC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financing Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Generic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lease Option Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Membership Interest Purchase Agreement %28MIPA%29 and Ancillary Documents</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NDA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Specific</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sales Partner Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Small-Offtake Customer Contract</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Vendor Agreement</fullName>
-                <default>false</default>
+                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
