@@ -4,12 +4,13 @@
         <name>Assign_SOs_to_Assignment_Agreement</name>
         <label>Assign SOs to Assignment Agreement</label>
         <locationX>182</locationX>
-        <locationY>2702</locationY>
+        <locationY>2822</locationY>
         <actionName>CustomerAssignmentService</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Done_Screen</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>contracts</name>
             <value>
@@ -24,36 +25,22 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
-        <name>ContractGenericBatchUpdate</name>
-        <label>ContractGenericBatchUpdate</label>
-        <locationX>50</locationX>
-        <locationY>2486</locationY>
-        <actionName>GenericBatchDMLOperation</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Assign_SOs_to_Assignment_Agreement</targetReference>
-        </connector>
-        <dataTypeMappings>
-            <typeName>T__recordsToUpdate</typeName>
-            <typeValue>Contract</typeValue>
-        </dataTypeMappings>
-        <inputParameters>
-            <name>recordsToUpdate</name>
-            <value>
-                <elementReference>ContractsToUpdate</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
-    <actionCalls>
         <name>getContracts</name>
         <label>getContracts</label>
         <locationX>182</locationX>
-        <locationY>974</locationY>
+        <locationY>1310</locationY>
         <actionName>ContractSelector</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Loop_through_contracts</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>clientAcquiredCustomers</name>
+            <value>
+                <elementReference>Acquisition_Type</elementReference>
+            </value>
+        </inputParameters>
         <inputParameters>
             <name>cutoffDate</name>
             <value>
@@ -75,12 +62,13 @@
         <name>InvocableEntitySelector</name>
         <label>InvocableEntitySelector</label>
         <locationX>182</locationX>
-        <locationY>398</locationY>
+        <locationY>734</locationY>
         <actionName>InvocableEntitySelector</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Select_Contract_Assignment_Entity</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>clientAccountIds</name>
             <value>
@@ -97,7 +85,7 @@
         <name>Add_Contract_To_Update_List</name>
         <label>Add Contract To Update List</label>
         <locationX>270</locationX>
-        <locationY>2150</locationY>
+        <locationY>2486</locationY>
         <assignmentItems>
             <assignToReference>ContractsToUpdate</assignToReference>
             <operator>Add</operator>
@@ -113,7 +101,7 @@
         <name>Assign_Contract_Assignment_Entity_Names_and_Ids</name>
         <label>Assign Contract Assignment Entity Names and Ids</label>
         <locationX>270</locationX>
-        <locationY>758</locationY>
+        <locationY>1094</locationY>
         <assignmentItems>
             <assignToReference>loopVarEntities.Id</assignToReference>
             <operator>Assign</operator>
@@ -129,7 +117,7 @@
         <name>Set_Assignment_Agreement_contract</name>
         <label>Set Assignment Agreement</label>
         <locationX>270</locationX>
-        <locationY>2030</locationY>
+        <locationY>2366</locationY>
         <assignmentItems>
             <assignToReference>ContractLoopVar2.Assignment_Agreement__c</assignToReference>
             <operator>Assign</operator>
@@ -145,7 +133,7 @@
         <name>Set_Contract_To_Insert_Fields</name>
         <label>Set Contract To Insert Fields</label>
         <locationX>182</locationX>
-        <locationY>1670</locationY>
+        <locationY>2006</locationY>
         <assignmentItems>
             <assignToReference>ContractToInsert.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -178,7 +166,14 @@
             <assignToReference>ContractToInsert.BlueWave_Entity__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>selectedContractAssignmentEntityId</elementReference>
+                <elementReference>loopVarEntities.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ContractToInsert.Contract_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ContractType</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -186,10 +181,42 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Set_Contract_Type_to_BlueWave_Acquired</name>
+        <label>Set Contract Type to BlueWave Acquired</label>
+        <locationX>314</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>ContractType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Customer Assignment</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Customers_To_Client_Agreement</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Contract_Type_to_Client_Acquired_Customer_Assignment</name>
+        <label>Set Contract Type to Client Acquired Customer Assignment</label>
+        <locationX>50</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>ContractType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Client Acquired Customer Assignment</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Customers_To_Client_Agreement</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>UpdateContractRecordCount</name>
         <label>UpdateContractRecordCount</label>
         <locationX>270</locationX>
-        <locationY>1214</locationY>
+        <locationY>1550</locationY>
         <assignmentItems>
             <assignToReference>ContractRecordCount</assignToReference>
             <operator>Add</operator>
@@ -201,29 +228,45 @@
             <targetReference>Loop_through_contracts</targetReference>
         </connector>
     </assignments>
+    <choices>
+        <name>BlueWaveAcquired</name>
+        <choiceText>BlueWave Acquired</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ClientAcquired</name>
+        <choiceText>Client Acquired</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </choices>
     <decisions>
-        <name>IsRecordCountMore50</name>
-        <label>IsRecordCountMoreThan50</label>
+        <name>Set_Acquisition_Type_for_Contract</name>
+        <label>Set Acquisition Type for Contract</label>
         <locationX>182</locationX>
-        <locationY>2366</locationY>
+        <locationY>278</locationY>
         <defaultConnector>
-            <targetReference>Update_Contracts_Small</targetReference>
+            <targetReference>Set_Contract_Type_to_BlueWave_Acquired</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Less Than 50</defaultConnectorLabel>
+        <defaultConnectorLabel>BlueWave Acquired</defaultConnectorLabel>
         <rules>
-            <name>More_Than_50</name>
+            <name>Client_Acquired</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>ContractRecordCount</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
+                <leftValueReference>Acquisition_Type</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <numberValue>50.0</numberValue>
+                    <elementReference>ClientAcquired</elementReference>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>ContractGenericBatchUpdate</targetReference>
+                <targetReference>Set_Contract_Type_to_Client_Acquired_Customer_Assignment</targetReference>
             </connector>
-            <label>More Than 50</label>
+            <label>Client Acquired</label>
         </rules>
     </decisions>
     <description>Contract-feature only, with cutoff date</description>
@@ -243,7 +286,7 @@
         <name>Get_Contract_Assignment_Entity_Ids</name>
         <label>Get Contract Assignment Entity Ids</label>
         <locationX>182</locationX>
-        <locationY>638</locationY>
+        <locationY>974</locationY>
         <collectionReference>SelectedDatatableEntities</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -257,7 +300,7 @@
         <name>Loop_through_contracts</name>
         <label>Loop through contracts</label>
         <locationX>182</locationX>
-        <locationY>1094</locationY>
+        <locationY>1430</locationY>
         <assignNextValueToReference>ContractLoopVar1</assignNextValueToReference>
         <collectionReference>ContractsToAssign</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -272,7 +315,7 @@
         <name>Loop_Through_Contracts_Two</name>
         <label>Loop Through Contracts</label>
         <locationX>182</locationX>
-        <locationY>1910</locationY>
+        <locationY>2246</locationY>
         <assignNextValueToReference>ContractLoopVar2</assignNextValueToReference>
         <collectionReference>ContractsToAssign</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -280,7 +323,7 @@
             <targetReference>Set_Assignment_Agreement_contract</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>IsRecordCountMore50</targetReference>
+            <targetReference>Update_Contracts_Small</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -306,7 +349,7 @@
         <name>Create_Contract</name>
         <label>Create Contract</label>
         <locationX>182</locationX>
-        <locationY>1790</locationY>
+        <locationY>2126</locationY>
         <connector>
             <targetReference>Loop_Through_Contracts_Two</targetReference>
         </connector>
@@ -316,7 +359,7 @@
         <name>AssignmentAgreementRecordType</name>
         <label>AssignmentAgreementRecordType</label>
         <locationX>182</locationX>
-        <locationY>1550</locationY>
+        <locationY>1886</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Set_Contract_To_Insert_Fields</targetReference>
@@ -336,8 +379,8 @@
     <recordUpdates>
         <name>Update_Contracts_Small</name>
         <label>Update Contracts</label>
-        <locationX>314</locationX>
-        <locationY>2486</locationY>
+        <locationX>182</locationX>
+        <locationY>2702</locationY>
         <connector>
             <targetReference>Assign_SOs_to_Assignment_Agreement</targetReference>
         </connector>
@@ -347,7 +390,7 @@
         <name>Assign_Customers_To_Client_Agreement</name>
         <label>Assign Customers To Client Agreement</label>
         <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationY>614</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -376,6 +419,7 @@
                     <stringValue>Contract</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -386,7 +430,7 @@
         <name>ConfirmContractsUpdateScreen</name>
         <label>ConfirmContractsUpdateScreen</label>
         <locationX>182</locationX>
-        <locationY>1430</locationY>
+        <locationY>1766</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -395,7 +439,7 @@
         </connector>
         <fields>
             <name>debugContractsScreen</name>
-            <fieldText>&lt;p&gt;Found &lt;b style=&quot;color: rgb(26, 160, 255);&quot;&gt;{!ContractRecordCount}&lt;/b&gt; complete contracts linked to those entities that do not yet have an assignment agreement.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;When you click Next, these contracts will be linked to a newly created assignment agreement.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If the record count is &amp;gt;50, this will run in the background and take a moment to complete.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Found &lt;b style=&quot;color: rgb(26, 160, 255);&quot;&gt;{!ContractRecordCount}&lt;/b&gt; complete contracts linked to those entities that do not yet have an assignment agreement.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;When you click Next, these contracts will be linked to a newly created assignment agreement.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -410,7 +454,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Assign_Customers_To_Client_Agreement</targetReference>
+            <targetReference>Set_Acquisition_Type_for_Contract</targetReference>
         </connector>
         <fields>
             <name>CutoffDateText</name>
@@ -427,6 +471,21 @@
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
+        <fields>
+            <name>AcquisitionTypeText</name>
+            <fieldText>&lt;p&gt;Should this flow assign BlueWave Acquired customers to the client, or create a placeholder contract for Client Acquired customers?&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Acquisition_Type</name>
+            <choiceReferences>BlueWaveAcquired</choiceReferences>
+            <choiceReferences>ClientAcquired</choiceReferences>
+            <dataType>Boolean</dataType>
+            <defaultSelectedChoiceReference>BlueWaveAcquired</defaultSelectedChoiceReference>
+            <fieldText>Acquisition Type</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -434,13 +493,13 @@
         <name>Done_Screen</name>
         <label>Done Screen</label>
         <locationX>182</locationX>
-        <locationY>2822</locationY>
+        <locationY>2942</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>DoneMessage</name>
-            <fieldText>&lt;p&gt;Done! You created a client assignment agreement: {!ContractToInsert.Id}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;If there are more than 50 customers to assign, you will have to wait a few moments for all the customers to be linked. &lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Done! You created a client assignment agreement: {!ContractToInsert.Id}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -450,7 +509,7 @@
         <name>Select_Contract_Assignment_Entity</name>
         <label>Select Contract Assignment Entity</label>
         <locationX>182</locationX>
-        <locationY>518</locationY>
+        <locationY>854</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -496,6 +555,7 @@
                     <elementReference>SelectedDatatableEntities</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>One</assignToReference>
@@ -574,6 +634,13 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Contract</objectType>
+    </variables>
+    <variables>
+        <name>ContractType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>EntitiesFromSOQL</name>

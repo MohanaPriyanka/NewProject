@@ -106,6 +106,9 @@ public with sharing class ZuoraInvoiceService {
     private Map<String, ContentVersion> insertContentVersions(List<ZuoraAPI.Invoice> zuoraInvoices) {
         Map<String, ContentVersion> zuoraInvoiceIdToConventVersion = new Map<String, ContentVersion>();
         for (ZuoraAPI.Invoice zuoraInvoice : zuoraInvoices) {
+            if (zuoraInvoice.Body == null) {
+                throw new Util.BWException('No invoice data found for invoice ' + zuoraInvoice.id);
+            }
             ContentVersion cv = new ContentVersion(
                 ContentLocation = 'S',
                 VersionData = EncodingUtil.base64Decode(zuoraInvoice.Body),

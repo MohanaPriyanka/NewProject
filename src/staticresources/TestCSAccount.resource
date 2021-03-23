@@ -26,3 +26,5 @@ APizza,APizza Shop,Landowner,012j00000010HeQAAU,United States,United States,true
 APizzaParentAccount,APizza Shop Parent,Landowner,012j00000010Ha3AAE,United States,United States,true,,,"",,
 ABike,ABike Shop,Landowner,012j00000010HeQAAU,United States,United States,true,,,ABike Shop Parent,,2c92c0f86ab120de016ab427c9032378
 ABikeParentAccount,ABike Shop Parent,Landowner,012j00000010Ha3AAE,United States,United States,true,,,"",,
+BlueWaveInsideSalesAccount,BlueWaveInsideSales,Partner,0120a000000uhu2AAA,United States,United States,true,5231 Xerxes Ave S,No Payment Due,,,
+TestPartnerAccount,TestPartnerAccount,Partner,0120a000000uhu2AAA,United States,United States,true,5231 Xerxes Ave S,No Payment Due,,,

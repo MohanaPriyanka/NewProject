@@ -5,7 +5,11 @@ public inherited sharing class ContractSelector {
     @InvocableMethod(Label='selectContractsForClientAssignment' Description='Gets Contract without Assignment Agreement for a list of entities')
     public static List<List<Contract>> selectContractsForClientAssignment(List<AssignmentAgreementRequest> assignmentAgreementRequests) {
         List<Opportunity> oppList =
-            OpportunitiesSelector.selectOpportunitiesForClientAssignment(assignmentAgreementRequests[0].entityId, assignmentAgreementRequests[0].cutoffDate);
+            OpportunitiesSelector.selectOpportunitiesForClientAssignment(
+                assignmentAgreementRequests[0].entityId,
+                assignmentAgreementRequests[0].cutoffDate,
+                assignmentAgreementRequests[0].clientAcquiredCustomers
+            );
 
         Set<Id> oppIdSet = new Set<Id>();
         for (Opportunity opp : oppList){
@@ -45,5 +49,8 @@ public inherited sharing class ContractSelector {
 
         @InvocableVariable
         public Date cutoffDate;
+
+        @InvocableVariable
+        public Boolean clientAcquiredCustomers;
     }
 }
