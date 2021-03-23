@@ -318,7 +318,7 @@ const validCSAgreement = (component) => {
 }
 
 const validConsentEmail = (component) => {
-    if (component.lead.email !== component.consentEmail) {
+    if (component.lead.email.toLowerCase() !== component.consentEmail.toLowerCase()) {
         showWarningToast(
             component,
             'Sorry',
