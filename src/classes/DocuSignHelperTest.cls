@@ -9,6 +9,8 @@ public with sharing class DocuSignHelperTest {
         Util.disableTrigger('Disable_OpportunityTrigger__c');
         Util.disableTrigger('Disable_LoanTrigger__c');
 
+        Test.loadData(Contact.SObjectType, 'TestCSContact');
+        Test.loadData(Account.SObjectType, 'TestCSAccount');
         Test.loadData(Partner__c.SObjectType, 'TestRLPartner');
         Test.loadData(BSST__c.SObjectType, 'TestRLBSST');
         Test.loadData(Loan_Data__c.SObjectType, 'TestRLLoanData');

@@ -148,23 +148,24 @@ public without sharing class OpportunitiesSelector {
         return firstCustomerDateMap;
     }
 
-    public static List<Opportunity> selectOpportunitiesForClientAssignment(Id entityId, Date cutoffDate) {
-        return [
-            SELECT Id, Assignment_Agreement__c
-            FROM Opportunity
-            WHERE Id IN (
-                SELECT Opportunity__c
-                FROM Utility_Account_Subscription__c
-                WHERE Opportunity__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId
-                AND Opportunity__r.Contract_Close_Date__c <= :cutoffDate
-                AND Next_Schedule_Z_Status__c = 'Active Subscription'
-                AND Opportunity__r.Assignment_Agreement__c = NULL
-                AND Opportunity__r.Customer_Group__c != 'Anchor'
-                AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.DeveloperName != 'Client_Account'
-                AND Opportunity__r.Account.Account_Temperature__c != 'Hot'
-                AND Opportunity__r.StageName = 'Complete'
-            )
-        ];
+    @SuppressWarnings('PMD.ApexSOQLInjection')
+    public static List<Opportunity> selectOpportunitiesForClientAssignment(Id entityId, Date cutoffDate, Boolean clientAcquiredCustomers) {
+        String soql =
+            'SELECT Id, Assignment_Agreement__c\n' +
+                '  FROM Opportunity\n' +
+                '  WHERE Id IN (\n' +
+                '      SELECT Opportunity__c\n' +
+                '      FROM Utility_Account_Subscription__c\n' +
+                '      WHERE Opportunity__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId\n' +
+                '      AND Opportunity__r.Contract_Close_Date__c <= :cutoffDate\n' +
+                '      AND Next_Schedule_Z_Status__c = \'Active Subscription\'\n' +
+                '      AND Opportunity__r.Assignment_Agreement__c = NULL\n' +
+                '      AND Opportunity__r.Customer_Group__c != \'Anchor\'\n' +
+                '      AND Opportunity__r.Account.Account_Temperature__c != \'Hot\'\n' +
+                '      AND Opportunity__r.StageName = \'Complete\'\n' +
+                '      AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.DeveloperName ' + (clientAcquiredCustomers?'=':'!=') + '\'Client_Account\'\n' +
+                '  )';
+        return Database.query(soql);
     }
     public List<Opportunity> getCompleteOppsWithoutContracts() {
         return [

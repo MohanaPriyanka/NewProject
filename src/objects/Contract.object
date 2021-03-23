@@ -534,6 +534,11 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
                     <label>Project Specific</label>
                 </value>
                 <value>
+                    <fullName>Client Acquired Customer Assignment</fullName>
+                    <default>false</default>
+                    <label>Client Acquired Customer Assignment</label>
+                </value>
+                <value>
                     <fullName>Lease Agreement</fullName>
                     <default>false</default>
                     <isActive>false</isActive>
@@ -1597,6 +1602,17 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <active>true</active>
         <description>Generated when customers are assigned from BW to a client</description>
         <label>Assignment Agreement</label>
+        <picklistValues>
+            <picklist>Contract_Type__c</picklist>
+            <values>
+                <fullName>Client Acquired Customer Assignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Assignment</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Status</picklist>
             <values>
