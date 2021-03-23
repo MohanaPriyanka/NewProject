@@ -155,7 +155,7 @@
             SELECT Id, Message__c
             FROM Error_Log__c
             WHERE Class__c = 'ZuoraInvoiceService'
-            AND Severity__c = :Logger.DEBUG
+            AND Severity__c = :Logger.FINE
         ];
         System.assertEquals(1, errorLogs.size());
         System.assertEquals('Queuing 1 invoices to download', errorLogs[0].Message__c);
@@ -189,7 +189,7 @@
             SELECT Id, Message__c
             FROM Error_Log__c
             WHERE Class__c = 'ZuoraInvoiceService'
-            AND Severity__c = :Logger.DEBUG
+            AND Severity__c = :Logger.FINE
         ];
         System.assertEquals(1, errorLogs.size());
         System.assertEquals('Queuing 1 invoices to download', errorLogs[0].Message__c);
