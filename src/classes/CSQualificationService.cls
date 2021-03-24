@@ -5,8 +5,7 @@
  */
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class
-CSQualificationService {
+public without sharing class CSQualificationService {
     private static SharedSolarSystemsSelector systemsSelector = new SharedSolarSystemsSelector();
     private static CreditReportSelector creditReportSelector = new CreditReportSelector();
     private static Map<Id, Lead> leadMap = new Map<Id, Lead>();
