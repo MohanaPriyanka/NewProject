@@ -161,7 +161,6 @@ public without sharing class OpportunitiesSelector {
                 '      AND Next_Schedule_Z_Status__c = \'Active Subscription\'\n' +
                 '      AND Opportunity__r.Assignment_Agreement__c = NULL\n' +
                 '      AND Opportunity__r.Customer_Group__c != \'Anchor\'\n' +
-                '      AND Opportunity__r.Account.Account_Temperature__c != \'Hot\'\n' +
                 '      AND Opportunity__r.StageName = \'Complete\'\n' +
                 '      AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.DeveloperName ' + (clientAcquiredCustomers?'=':'!=') + '\'Client_Account\'\n' +
                 '  )';
