@@ -4,7 +4,7 @@
  *              sorts by date and returns list of items with balance
  * Test: ZuoraCreditMemoAllocationTest
  *************************************************************************************/
-@SuppressWarnings('PMD.VariableNamingConventions,PMD.ExcessivePublicCount')
+@SuppressWarnings('PMD.VariableNamingConventions,PMD.ExcessivePublicCount,PMD.FieldNamingConventions,PMD.PropertyNamingConventions')
 public class ZuoraOutstandingItemsService {
     private static ZuoraInvoiceSelector invoiceSelector = new ZuoraInvoiceSelector();
 
@@ -35,6 +35,10 @@ public class ZuoraOutstandingItemsService {
     }
 
     public class OutstandingItem implements Comparable {
+        public String Id;
+        public String ParentId;
+        public Boolean IsInvoiceItem; // Only DebitMemo or InvoiceItem
+        public Decimal AmountToApply;
         @AuraEnabled
         public Decimal AmountOutstanding  {get; set;}
         @AuraEnabled
@@ -43,10 +47,6 @@ public class ZuoraOutstandingItemsService {
         public String Project {get; set;}
         @AuraEnabled
         public String Client {get; set;}
-        public String Id;
-        public String ParentId;
-        public Boolean IsInvoiceItem; // Only DebitMemo or InvoiceItem
-        public Decimal AmountToApply;
         @AuraEnabled
         public String PaymentGatewayId {get; set;}
 
@@ -121,14 +121,6 @@ public class ZuoraOutstandingItemsService {
                 }
                 itemsToApply.add(outstandingItemToApply);
             }
-        }
-        if (itemsToApply.size() == 0) {
-            Logger.logLater(
-                'ZuoraOutstandingItemsService',
-                'applyToOutstandingItems',
-                'Tried to apply ' + amountToApply + ' for ' + project + ', ' + client + ', ' + entity + ', but could' +
-                    'not find anything in outstanding items: ' + JSON.serializePretty(outstandingItems),
-                Logger.WARN);
         }
         return itemsToApply;
     }

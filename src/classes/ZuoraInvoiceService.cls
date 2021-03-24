@@ -45,7 +45,7 @@ public with sharing class ZuoraInvoiceService {
         updateZuoraInvoicesAsDownloaded(contentDocumentLinks, zuoraInvoiceIdToConventVersion, invoiceMap);
         Logger.flushLogs();
         if (!sfdcZuoraInvoices.isEmpty()) {
-            Logger.logNow('ZuoraInvoiceService', 'downloadPDFs', 'Queuing ' + sfdcZuoraInvoices.size() + ' invoices to download', Logger.DEBUG);
+            Logger.logNow('ZuoraInvoiceService', 'downloadPDFs', 'Queuing ' + sfdcZuoraInvoices.size() + ' invoices to download', Logger.FINE);
             if (!Test.isRunningTest()) {
                 ZuoraInvoiceAsyncService asyncService = new ZuoraInvoiceAsyncService(sfdcZuoraInvoices);
                 System.enqueueJob(asyncService);
@@ -180,9 +180,7 @@ public with sharing class ZuoraInvoiceService {
             }
         }
 
-        if (!invalidAddressCases.isEmpty()) {
-            insert invalidAddressCases;
-        }
+        insert invalidAddressCases;
 
         List<ContentDocument> documents = contentDocumentSelector.selectById(docIds);
 
@@ -208,15 +206,11 @@ public with sharing class ZuoraInvoiceService {
     @TestVisible
     private Boolean invoiceAddressValid(Zuora__ZInvoice__c invoice) {
         // Zuora__BillingAccount__r.Zuora__Account__r is the Property Account
-        if (invoice.Zuora__BillingAccount__r.Zuora__Account__r != null
+        return invoice.Zuora__BillingAccount__r.Zuora__Account__r != null
             && invoice.Zuora__BillingAccount__r.Zuora__Account__r.BillingStreet != null
             && invoice.Zuora__BillingAccount__r.Zuora__Account__r.BillingCity != null
             && invoice.Zuora__BillingAccount__r.Zuora__Account__r.BillingPostalCode != null
-            && invoice.Zuora__BillingAccount__r.Zuora__Account__r.BillingState != null) {
-            return true;
-        } else {
-            return false;
-        }
+            && invoice.Zuora__BillingAccount__r.Zuora__Account__r.BillingState != null;
     }
 
     @TestVisible
@@ -261,14 +255,14 @@ public with sharing class ZuoraInvoiceService {
 
         for (ZuoraInvoiceAsyncService.DecoratedInvoice decoratedInvoice : decoratedInvoices) {
             LetterStream_Insert__c letterStreamInsert = insertMap.get(LetterStreamInsertSelector.getInvoiceKey(decoratedInvoice));
-            if (letterStreamInsert == null) {
+            if (letterStreamInsert != null) {
+                decoratedInvoice.invoice.LetterStream_Insert__c = letterStreamInsert.Id;
+            } else if (!decoratedInvoice.anchor) {
                 Logger.logLater(
                     'ZuoraInvoiceService',
                     'setFirstBillInsert',
                     'Did not find an insert for this invoice: ' + JSON.serialize(decoratedInvoice) + '\n' + JSON.serialize(insertMap),
                     Logger.ERROR);
-            } else {
-                decoratedInvoice.invoice.LetterStream_Insert__c = letterStreamInsert.Id;
             }
             decoratedInvoice.invoice.First_Bill__c = true;
             invoicesToUpdate.add(decoratedInvoice.invoice);
