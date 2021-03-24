@@ -293,7 +293,7 @@ public without sharing class PartnerCommissionService{
     private void createCaseForSupportFollowUp(String description, Id opportunityId){
         CaseFactory caseFactory = new CaseFactory();
         Case newCase;
-        newCase = caseFactory.getCase('Customer_Care');
+        newCase = caseFactory.getCase('Partner_Care_Case');
         newCase.Subject = 'Issue with Creation of Commission Payment';
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';

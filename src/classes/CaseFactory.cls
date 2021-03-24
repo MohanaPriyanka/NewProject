@@ -8,12 +8,14 @@
 public without sharing class CaseFactory implements Queueable {
     public static RecordType customerCare;
     public static RecordType productSupport;
+    public static RecordType partnerCareCase;
     public static OrgWideEmailAddress customerCareEmail;
     public static Group customerCareQueue;
     public static Group productQueue;
     public static Group collectionsQueue;
     public static Group dataOpsQueue;
     public static Group customerQCQueue;
+    public static Group partnerSupportQueue;
     public static Case newCase;
     private Lead lead;
 
@@ -29,22 +31,33 @@ public without sharing class CaseFactory implements Queueable {
         this.queueType = queueType;
     }
 
+    public void assignTypes(List<RecordType> typeList){
+        for(RecordType type : typeList){
+            if(type.DeveloperName=='Product_Support'){
+                productSupport = type;
+            } else if(type.DeveloperName=='Customer_Care'){
+                customerCare = type;
+            } else if(type.DeveloperName=='Partner_Care_Case'){
+                partnerCareCase = type;
+            }
+        }
+    }
+
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void queryForRecordTypesAndQueues() {
         if (customerCare == null || productSupport == null) {
             List<RecordType> caseRecordTypes = [
-                SELECT Id, Name
+                SELECT Id, Name, DeveloperName
                 FROM RecordType
                 WHERE SobjectType = 'Case'
-                AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care')
+                AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care' OR DeveloperName = 'Partner_Care_Case')
                 ORDER BY DeveloperName
             ];
 
-            if (caseRecordTypes.size() != 2) {
+            if (caseRecordTypes.size() != 3) {
                 Logger.logNow('CaseFactory', 'constructor', 'Missing RecordType for case. Available RecordTypes: ' + caseRecordTypes);
             } else {
-                customerCare = caseRecordTypes[0];
-                productSupport = caseRecordTypes[1];
+                assignTypes(caseRecordTypes);
             }
         }
 
@@ -63,17 +76,18 @@ public without sharing class CaseFactory implements Queueable {
                 FROM Group
                 WHERE Type = 'Queue'
                 AND (DeveloperName = 'Collections' OR DeveloperName = 'Customer_Care' OR DeveloperName = 'Customer_QC'
-                OR DeveloperName = 'Data_Ops'OR DeveloperName = 'Product_Support')
+                OR DeveloperName = 'Data_Ops' OR DeveloperName = 'Product_Support' OR DeveloperName = 'Partner_Support')
                 ORDER BY DeveloperName
             ];
-            if (assignmentGroups.size() != 5) {
+            if (assignmentGroups.size() != 6) {
                 Logger.logNow('CaseFactory', 'constructor', 'Missing Groups for assignment. Available Groups: ' + assignmentGroups);
             } else {
                 collectionsQueue = assignmentGroups[0];
                 customerCareQueue = assignmentGroups[1];
                 customerQCQueue = assignmentGroups[2];
                 dataOpsQueue = assignmentGroups[3];
-                productQueue = assignmentGroups[4];
+                partnerSupportQueue = assignmentGroups[4];
+                productQueue = assignmentGroups[5];
             }
         }
     }
@@ -107,6 +121,10 @@ public without sharing class CaseFactory implements Queueable {
             newCase.RecordTypeId = customerCare.Id;
             newCase.RecordType = customerCare;
             newCase.OwnerId = dataOpsQueue.Id;
+        } else if (type == 'Partner_Care_Case') {
+            newCase.RecordTypeId = partnerCareCase.Id;
+            newCase.RecordType = partnerCareCase;
+            newCase.OwnerId = partnerSupportQueue.Id;
         }
         return newCase;
     }
