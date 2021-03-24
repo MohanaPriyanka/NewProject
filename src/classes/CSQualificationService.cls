@@ -5,7 +5,8 @@
  */
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class CSQualificationService {
+public without sharing class
+CSQualificationService {
     private static SharedSolarSystemsSelector systemsSelector = new SharedSolarSystemsSelector();
     private static CreditReportSelector creditReportSelector = new CreditReportSelector();
     private static Map<Id, Lead> leadMap = new Map<Id, Lead>();
@@ -83,7 +84,7 @@ public without sharing class CSQualificationService {
             if (creditReport.LASERCA__Credit_Score__c == null) {
                 creditScore = 9999;
                 handleNoMatchCreditPull(creditReport, lead);
-            } else {
+            } else if (creditReport.LASERCA__Credit_Score__c != '9999') {
                 creditScore = Decimal.valueOf(creditReport.LASERCA__Credit_Score__c);
                 closeReportMissingCases(lead);
             }
