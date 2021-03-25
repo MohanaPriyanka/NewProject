@@ -31,7 +31,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             if (customMessage.contains('FIELD_CUSTOM_VALIDATION_EXCEPTION')){
                 Integer location = customMessage.indexOf('FIELD_CUSTOM_VALIDATION_EXCEPTION');
                 Integer length = customMessage.length();
-                customMessage = customMessage.subString(location + 35, length);
+                customMessage = customMessage.substring(location + 35, length);
             }
             return customMessage;
         }
@@ -73,28 +73,33 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         List<Utility_Account_Subscription__c> committedSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
         List<Utility_Account_Subscription__c> committedAnchorCapacityList = new List<Utility_Account_Subscription__c>();
         List<Utility_Account_Subscription__c> pendingAnchorCapacityList = new List<Utility_Account_Subscription__c>();
-        Decimal pendingSmallCSCapacity = 0;
-        Decimal committedSmallCSCapacity = 0;
-        Decimal pendingAnchorCapacity = 0;
-        Decimal committedAnchorCapacity = 0;
-
         for (Utility_Account_Subscription__c uas : sssWithActiveUASes.Utility_Account_Subscriptions__r) {
-            if (!isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete') {
-                committedSmallCSCapacityList.add(uas);
-            } else if (!isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
-                pendingSmallCSCapacityList.add(uas);
-            } else if (isAnchorOrPublicOfftake(uas) && uas.Opportunity_Stage__c == 'Complete') {
-                committedAnchorCapacityList.add(uas);
-            } else if (isAnchorOrPublicOfftake(uas) && !isCancelledStatus(uas)) {
-                pendingAnchorCapacityList.add(uas);
+            if (isAnchorOrPublicOfftake(uas)) {
+                addCapacityToCapacityList(uas, committedAnchorCapacityList, pendingAnchorCapacityList);
+            } else {
+                addCapacityToCapacityList(uas, committedSmallCSCapacityList, pendingSmallCSCapacityList);
             }
         }
-        pendingSmallCSCapacity = sumCapacity(pendingSmallCSCapacityList);
-        committedSmallCSCapacity = sumCapacity(committedSmallCSCapacityList);
-        pendingAnchorCapacity = sumCapacity(pendingAnchorCapacityList);
-        committedAnchorCapacity = sumCapacity(committedAnchorCapacityList);
+        registerCapacityChanges(
+            sssToUpdate,
+            uow,
+            sumCapacity(pendingSmallCSCapacityList),
+            sumCapacity(committedSmallCSCapacityList),
+            sumCapacity(pendingAnchorCapacityList),
+            sumCapacity(committedAnchorCapacityList)
+        );
+    }
 
-        registerCapacityChanges(sssToUpdate, uow, pendingSmallCSCapacity, committedSmallCSCapacity, pendingAnchorCapacity, committedAnchorCapacity);
+    private void addCapacityToCapacityList(
+        Utility_Account_Subscription__c uas,
+        List<Utility_Account_Subscription__c> committedCapacityList,
+        List<Utility_Account_Subscription__c> pendingCapacityList)
+    {
+        if (uas.Opportunity_Stage__c == 'Complete') {
+            committedCapacityList.add(uas);
+        } else if (!isCancelledStatus(uas)) {
+            pendingCapacityList.add(uas);
+        }
     }
 
     private void registerCapacityChanges(
@@ -164,7 +169,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                 sssWithChangedBrandKey.add(newSSS.Id);
             }
             if (newSSS.Reacquisition_Start_Date__c != oldSSS.Reacquisition_Start_Date__c &&
-                newSSS.Reacquisition_Start_Date__c < System.Today()){
+                newSSS.Reacquisition_Start_Date__c < System.today()){
                 sssWithChangedReacqStartDate.put(newSSS.Id,newSSS);
             }
         }
@@ -182,24 +187,25 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         System.enqueueJob(brandService);
     }
 
-    private void reacquisitionStartDateChange(Map<Id,Shared_Solar_System__c> sssWithChangedReacqStartDate){
+    private void reacquisitionStartDateChange(Map<Id,Shared_Solar_System__c> sssWithChangedReacqStartDate) {
         Set<Id> ordersToUpdate = new Set<Id>();
         // We don't want to prevent the enactment of an Allocation Schedule if we hit an error here, so use try/catch:
         try {
-            for (Id sssId : sssWithChangedReacqStartDate.keySet()){
+            for (Id sssId : sssWithChangedReacqStartDate.keySet()) {
                 Date newReacqStartDate = sssWithChangedReacqStartDate.get(sssId).Reacquisition_Start_Date__c;
                 // Query within a loop isn't ideal, but it allows us to limit the number of Subscription Orders
                 // that are returned by the query by filtering for date and SSS at the same time
                 Map<Id, Subscription_Order__c> soMap = subscripOrderSelector.getAcquisitionOrdersBySSS(sssId,newReacqStartDate);
                 ordersToUpdate.addAll(soMap.keySet());
             }
-            ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService();
-            service.setSubOrderContractFeeDetail(ordersToUpdate);
-        } catch (Exception excep){
+            ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService(ordersToUpdate);
+            service.setSubOrderContractFeeDetail();
+        } catch (Exception e) {
             Logger.logNow(
                 'SharedSolarSystemHandler',
                 'reacquisitionStartDateChange',
-                excep.getMessage() + excep.getStackTraceString() + JSON.serialize(ordersToUpdate)
+                e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serialize(ordersToUpdate),
+                Logger.ERROR
             );
         }
     }
