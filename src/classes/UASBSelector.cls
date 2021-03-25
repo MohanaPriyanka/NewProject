@@ -21,8 +21,8 @@ public without sharing class UASBSelector {
             'AND Date__c <= ' + String.valueOf(invoiceDate) + ' ' +
             // handle various UCB and externally serviced permutations
             'AND (' +
-                '(Utility_Account_Subscription__r.Shared_Solar_System__r.UCB__c = TRUE ' + 'AND Utility_Account_Subscription__r.Externally_Serviced_Override__c = \'Internally Serviced\') ' +
-                'OR (Utility_Account_Subscription__r.Shared_Solar_System__r.UCB__c = FALSE AND Externally_Serviced__c = FALSE)' +
+                '(Billing_Method__c = \'UCB\' ' + 'AND Utility_Account_Subscription__r.Externally_Serviced_Override__c = \'Internally Serviced\') ' +
+                'OR (Billing_Method__c = null AND Externally_Serviced__c = FALSE)' +
             ') ' +
             'ORDER BY Utility_Account_Subscription__r.Opportunity__r.AccountId, Date__c';
         return Database.getQueryLocator(query);
