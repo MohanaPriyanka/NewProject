@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
+        <fullName>Project Contract: Effective Date</fullName>
+        <default>false</default>
+        <label>Project Contract: Effective Date</label>
+    </customValue>
+    <customValue>
         <fullName>Contract: Effective Date</fullName>
         <default>false</default>
         <label>Contract: Effective Date</label>
@@ -41,18 +46,6 @@
         <label>Project: Estimated COD or Customer: Assignment Date</label>
     </customValue>
     <customValue>
-        <fullName>PTO</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>PTO</label>
-    </customValue>
-    <customValue>
-        <fullName>First Bill</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>First Bill</label>
-    </customValue>
-    <customValue>
         <fullName>First Customer Bill Date</fullName>
         <default>false</default>
         <isActive>false</isActive>
@@ -71,10 +64,22 @@
         <label>COD</label>
     </customValue>
     <customValue>
+        <fullName>PTO</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>PTO</label>
+    </customValue>
+    <customValue>
         <fullName>Contract Effective Date</fullName>
         <default>false</default>
         <isActive>false</isActive>
         <label>Contract Effective Date</label>
+    </customValue>
+    <customValue>
+        <fullName>First Bill</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>First Bill</label>
     </customValue>
     <masterLabel>Client Invoicing Events</masterLabel>
     <sorted>false</sorted>
