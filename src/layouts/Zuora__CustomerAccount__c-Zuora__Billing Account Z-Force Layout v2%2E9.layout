@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customButtons>Open_in_Zuora</customButtons>
+    <excludeButtons>ChangeOwnerOne</excludeButtons>
+    <excludeButtons>ChangeRecordType</excludeButtons>
+    <excludeButtons>Clone</excludeButtons>
+    <excludeButtons>Delete</excludeButtons>
+    <excludeButtons>Edit</excludeButtons>
+    <excludeButtons>IsotopeSubscription</excludeButtons>
+    <excludeButtons>PrintableView</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -237,6 +245,7 @@
         <fields>Zuora__PaymentMethod__c</fields>
         <fields>Zuora__Effective_Date__c</fields>
         <fields>Payment_Status__c</fields>
+        <fields>Zuora__ReferenceId__c</fields>
         <fields>Zuora__Amount__c</fields>
         <fields>Zuora__SubmittedOn__c</fields>
         <fields>Zuora__GatewayStatus__c</fields>

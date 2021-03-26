@@ -1135,6 +1135,25 @@ IF(  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardType__c, &quot;
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
     <webLinks>
+        <fullName>Open_in_Zuora</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Open in Zuora</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://www.zuora.com/apps/CustomerAccount.do?method=view&amp;id={!Zuora__CustomerAccount__c.Zuora__Zuora_Id__c}</url>
+    </webLinks>
+    <webLinks>
         <fullName>Zuora__Sync_Data_from_ZBilling</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
