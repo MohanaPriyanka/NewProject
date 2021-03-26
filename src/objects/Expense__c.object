@@ -140,61 +140,48 @@
         <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
-    <allowInChatterGroups>false</allowInChatterGroups>
+    <allowInChatterGroups>true</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <deprecated>false</deprecated>
-    <enableActivities>false</enableActivities>
+    <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
-    <enableReports>false</enableReports>
+    <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ReadWrite</externalSharingModel>
+    <externalSharingModel>Private</externalSharingModel>
     <fields>
-        <fullName>Client_Owner__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <fullName>Amount__c</fullName>
         <externalId>false</externalId>
-        <label>Client Owner</label>
-        <referenceTo>Account</referenceTo>
-        <relationshipLabel>Payment Gateways</relationshipLabel>
-        <relationshipName>Payment_Gateways</relationshipName>
+        <label>Amount</label>
+        <precision>18</precision>
         <required>false</required>
+        <scale>2</scale>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Zuora__External_Id__c</fullName>
-        <caseSensitive>true</caseSensitive>
-        <deprecated>false</deprecated>
-        <externalId>true</externalId>
-        <label>External Id</label>
-        <length>255</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>true</unique>
-    </fields>
-    <fields>
-        <fullName>Zuora__IsDefault__c</fullName>
-        <deprecated>false</deprecated>
+        <fullName>Date_Incurred__c</fullName>
         <externalId>false</externalId>
-        <label>IsDefault</label>
-        <length>80</length>
+        <label>Date Incurred</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Date</type>
     </fields>
-    <label>Payment Gateway</label>
+    <label>Expense</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
-        <label>PaymentGateway Name</label>
+        <label>Expense Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Payment Gateways</pluralLabel>
+    <pluralLabel>Expenses</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

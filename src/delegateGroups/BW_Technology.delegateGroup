@@ -3,9 +3,7 @@
     <groups>Investor Account Access</groups>
     <label>BW Technology</label>
     <loginAccess>true</loginAccess>
-    <permissionSets>PM BlueWave Surveys</permissionSets>
     <permissionSets>Manage Call Centers</permissionSets>
-    <permissionSets>Loan Servicing</permissionSets>
     <permissionSets>UAL Recalculate</permissionSets>
     <permissionSets>Trailhead Admin</permissionSets>
     <permissionSets>Trailhead Assigner</permissionSets>
@@ -14,15 +12,9 @@
     <permissionSets>Send Emails</permissionSets>
     <permissionSets>Inline Editing</permissionSets>
     <permissionSets>CS Billing Edit</permissionSets>
-    <permissionSets>Loan Servicing Visibility</permissionSets>
-    <permissionSets>Loan Servicing Editing</permissionSets>
     <permissionSets>Shared Solar System Management</permissionSets>
     <permissionSets>CS Subscription Management</permissionSets>
-    <permissionSets>Disbursal Management for Sales</permissionSets>
     <permissionSets>Waive Late Fees</permissionSets>
-    <permissionSets>Edit Loans</permissionSets>
-    <permissionSets>Edit Loan Disbursal Dates</permissionSets>
-    <permissionSets>Edit Sales Agent field on Loan object</permissionSets>
     <permissionSets>Branch Management Permissions Manage</permissionSets>
     <permissionSets>Branch Management Permissions View</permissionSets>
     <permissionSets>Commit Changes</permissionSets>
@@ -92,25 +84,20 @@
     <permissionSets>CS Cancellation</permissionSets>
     <permissionSets>Bill Adjustment Creation</permissionSets>
     <permissionSets>Partner &amp; SSS Junction Management</permissionSets>
-    <permissionSets>Managing Loan Portfolios</permissionSets>
     <permissionSets>Manage Gateways and Entites</permissionSets>
     <permissionSets>Underwriting Permission</permissionSets>
     <permissionSets>Conga</permissionSets>
     <permissionSets>View and Edit Converted Leads</permissionSets>
-    <permissionSets>SSN Field Access</permissionSets>
     <permissionSets>Sales Analytics Admin</permissionSets>
     <permissionSets>Sales Analytics User</permissionSets>
     <permissionSets>Set Audit Fields on Record Creation</permissionSets>
-    <permissionSets>Disable Loan Originations &amp; Enable CS</permissionSets>
     <permissionSets>AccessToModifyCSPortal</permissionSets>
-    <permissionSets>Partner QC Editing</permissionSets>
     <permissionSets>Marketing Cloud Connector</permissionSets>
     <permissionSets>Marketing Cloud Connector Admin</permissionSets>
     <permissionSets>Marketing Cloud Connector Partner Community User</permissionSets>
     <permissionSets>Marketing Cloud System User</permissionSets>
     <permissionSets>Marketing Cloud Connected App</permissionSets>
     <permissionSets>CRM User</permissionSets>
-    <permissionSets>Modify Chargent Order Read Only Fields</permissionSets>
     <permissionSets>LiveMessage Admin</permissionSets>
     <permissionSets>LiveMessage Agent</permissionSets>
     <permissionSets>LiveMessage Manager</permissionSets>
@@ -123,7 +110,6 @@
     <permissionSets>Milestones PM+ Time Tracking Admin</permissionSets>
     <permissionSets>Commission Structure Management</permissionSets>
     <permissionSets>Commission Payment Management</permissionSets>
-    <permissionSets>Chargent Transactions and Orders</permissionSets>
     <permissionSets>LASER Credit Access Admin</permissionSets>
     <permissionSets>Modify Cases and Tasks</permissionSets>
     <permissionSets>View All</permissionSets>
@@ -148,7 +134,6 @@
     <permissionSets>Work Request Change Management</permissionSets>
     <permissionSets>Lightning Email Template Report Folder Creation</permissionSets>
     <permissionSets>Full Macro Access</permissionSets>
-    <permissionSets>Personal Credit Report visibility - Loan</permissionSets>
     <permissionSets>Loan Document Visibility</permissionSets>
     <permissionSets>Client Subscription Reporting Object Access</permissionSets>
     <permissionSets>Presence Status Access</permissionSets>
@@ -158,7 +143,6 @@
     <permissionSets>SSS Customer Facing Info Management</permissionSets>
     <permissionSets>Production and Transfer Admin</permissionSets>
     <permissionSets>Manage Entities (Legal)</permissionSets>
-    <permissionSets>Update ALSS Date Enacted</permissionSets>
     <permissionSets>Einstein Search</permissionSets>
     <permissionSets>Composer Administrator</permissionSets>
     <permissionSets>Composer User</permissionSets>
@@ -192,11 +176,11 @@
     <permissionSets>Opportunity Product Management</permissionSets>
     <permissionSets>Edit Products</permissionSets>
     <permissionSets>Import Custom Objects</permissionSets>
-    <permissionSets>Underwriting Screen Access</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
     <permissionSets>Inspire Planner Standard User - v1.12 Permissions</permissionSets>
     <permissionSets>Access Drag and Drop Template builder</permissionSets>
+    <permissionSets>Expense object (Custom)</permissionSets>
     <permissionSets>Netsuite Project ID</permissionSets>
     <permissionSets>Project, Construction, Incentive, Adder</permissionSets>
     <permissionSets>LASER Credit Access Site Guest User</permissionSets>
@@ -207,14 +191,12 @@
     <permissionSets>DocuSign Administrator</permissionSets>
     <permissionSets>DocuSign User</permissionSets>
     <permissionSets>Milestones PM+ Full Access</permissionSets>
-    <permissionSets>DocuSign User (Partners)</permissionSets>
     <permissionSets>Wave Analytics</permissionSets>
     <permissionSets>Agile Accelerator Admin</permissionSets>
     <permissionSets>Agile Accelerator User</permissionSets>
     <permissionSets>Salesforce Console User</permissionSets>
     <permissionSets>CS Servicing Visibility</permissionSets>
     <permissionSets>Report Access</permissionSets>
-    <permissionSets>Set Audit Fields upon Record Creation</permissionSets>
     <profiles>BWC Executive</profiles>
     <profiles>IT Support</profiles>
     <profiles>PM Force.com user</profiles>
