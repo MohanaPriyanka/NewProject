@@ -11375,6 +11375,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Zuora_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Zuora_Payment_Ref_Id_Expiration_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
