@@ -679,6 +679,18 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>UCB_Rate__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Determines whether the rate is applied to a UCB or non-UCB project</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines whether the rate is applied to a UCB or non-UCB project</inlineHelpText>
+        <label>UCB Rate</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Utilization_Adjustment_Amount__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>For every 1% decrease in utilization, the management fee will decrease by this $ amount.</inlineHelpText>
@@ -953,6 +965,12 @@ NOT(ISPICKVAL(Recurring_Frequency__c,&quot;&quot;))
      NOT( Acq_Anchor_Qualif_Not_Investment_Grade__c ))</errorConditionFormula>
         <errorDisplayField>Acquisition_Cust_Group_Anchor__c</errorDisplayField>
         <errorMessage>For this anchor CFD, please specify whether it applies to Investment Grade or Non-Investment Grade customers, or both (otherwise, it won&apos;t apply to any anchors).</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>UCB_Rate_Only_For_Management_CFD</fullName>
+        <active>true</active>
+        <errorConditionFormula>UCB_Rate__c == TRUE &amp;&amp; Management_Fee__c == FALSE</errorConditionFormula>
+        <errorMessage>UCB Rate cannot be checked if the Contract Fee Detail is not a Management type (indicated by the Management_Fee__c checkbox)</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Utilization_Amount_Type_Match</fullName>

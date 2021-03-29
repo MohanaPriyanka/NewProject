@@ -24,11 +24,9 @@ public with sharing class BillPeriodService {
         if (verifiedBillPeriods.size() > 0 ) {
             productionsToUpdate = productionService.verifyProductions(verifiedBillPeriods);
         }
-
         if (completedBillPeriods.size() > 0) {
             productionsToUpdate = productionService.markFirstBillDate(completedBillPeriods);
         }
-
         updateRecords(productionsToUpdate);
     }
 
@@ -43,7 +41,7 @@ public with sharing class BillPeriodService {
                     } when 'Credit Transfers QCed' {
                         bp.Date_Credit_Transfers_QCed__c = Date.today();
                     } when 'Generated' {
-                        bp.Date_Generated__c = Date.Today();
+                        bp.Date_Generated__c = Date.today();
                     } when 'Bill Run Complete' {
                         completedBillPeriods.put(bp.Id, bp);
                     }
@@ -72,17 +70,15 @@ public with sharing class BillPeriodService {
         }
 
         Set<Id> sssIds = sssToBillPeriod.keySet();
-
         List<Transfer__c> allTransfers = TransferSelector.getTransfersForBillPeriods(sssIds);
         List<Transfer__c> updatedTransfers = new List<Transfer__c>();
 
         for (Transfer__c transfer : allTransfers) {
-            if (sssToBillPeriod.get(transfer.Shared_Solar_System__c).Bill_Date__c - 30 > transfer.Date_of_Transfer__c ) {
+            if (sssToBillPeriod.get(transfer.Shared_Solar_System__c).Bill_Date__c - 30 > transfer.Date_of_Transfer__c) {
                 transfer.Bill_Period__c = sssToBillPeriod.get(transfer.Shared_Solar_System__c).Id;
                 updatedTransfers.add(transfer);
             }
         }
-
         return updatedTransfers;
     }
 
@@ -96,28 +92,38 @@ public with sharing class BillPeriodService {
         }
     }
 
-    public static Integer markBillPeriodsAsBillRunComplete(Date invoiceDate){
+    public static Integer markBillPeriodsAsBillRunComplete(Date invoiceDate) {
         try {
             List<Bill_Period__c> billPeriodsToUpdate;
-            billPeriodsToUpdate = BillPeriodSelector.getBillPeriodsByMonth(invoiceDate.Month(), invoiceDate.Year());
-            List<Shared_Solar_System__c> systemsToUpdate = new List<Shared_Solar_System__c>();
-
-            for (Bill_Period__c billPeriod : billPeriodsToUpdate){
+            billPeriodsToUpdate = BillPeriodSelector.getBillPeriodsByMonth(invoiceDate.month(), invoiceDate.year());
+            for (Bill_Period__c billPeriod : billPeriodsToUpdate) {
                 billPeriod.Bill_Status__c = 'Bill Run Complete';
-                if (billPeriod.Shared_Solar_System__r.First_Bill_Date__c == null){
-                    Shared_Solar_System__c sssToUpdate = new Shared_Solar_System__c(
-                        Id = billPeriod.Shared_Solar_System__c,
-                        First_Bill_Date__c = billPeriod.Bill_Date__c
-                    );
-                    systemsToUpdate.add(sssToUpdate);
-                }
             }
             update billPeriodsToUpdate;
-            update systemsToUpdate;
+            update sssToUpdateOnBillRunComplete(billPeriodsToUpdate);
             return billPeriodsToUpdate.size();
         } catch (Exception excep){
             Logger.logNow('BillPeriodService','markBillPeriodsAsBillRunComplete',excep.getMessage() + '__' + excep.getStackTraceString());
             return 0;
         }
+    }
+
+    private static List<Shared_Solar_System__c> sssToUpdateOnBillRunComplete(List<Bill_Period__c> billPeriods) {
+        List<Shared_Solar_System__c> systemsToUpdate = new List<Shared_Solar_System__c>();
+        for (Bill_Period__c billPeriod : billPeriods) {
+            Shared_Solar_System__c sssToUpdate = new Shared_Solar_System__c(Id = billPeriod.Shared_Solar_System__c);
+            Date sssFirstBillDate = billPeriod.Shared_Solar_System__r.First_Bill_Date__c;
+            Date sssUcbFirstBillDate = billPeriod.Shared_Solar_System__r.UCB_First_Bill_Date__c;
+            if (sssFirstBillDate == null) {
+                sssToUpdate.First_Bill_Date__c = billPeriod.Bill_Date__c;
+            }
+            if (sssUcbFirstBillDate == null && billPeriod.Shared_Solar_System__r.UCB__c) {
+                sssToUpdate.UCB_First_Bill_Date__c = billPeriod.Bill_Date__c;
+            }
+            if (sssFirstBillDate == null || sssUcbFirstBillDate == null) {
+                systemsToUpdate.add(sssToUpdate);
+            }
+        }
+        return systemsToUpdate;
     }
 }
