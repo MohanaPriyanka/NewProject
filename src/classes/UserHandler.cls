@@ -5,9 +5,8 @@ public without sharing class UserHandler implements Queueable{
     @TestVisible
     private UserAndGroupSelector userSelector = new UserAndGroupSelector();
 
-    public UserHandler() {
-        contactsToCreateUsers = new List<Contact>();
-    }
+    @SuppressWarnings('PMD.EmptyStatementBlock')
+    public UserHandler() {}
 
     public UserHandler(List<Contact> userContacts) {
         this.contactsToCreateUsers = userContacts;
@@ -55,11 +54,10 @@ public without sharing class UserHandler implements Queueable{
     public static void attemptInsert(Map<Id, User> usersToInsertMap) {
         Database.SaveResult[] saveResults = Database.insert(usersToInsertMap.values(), false);
 
-        Integer i = 0;
-        for(User currentUser : usersToInsertMap.values()){
+        for(Integer i = 0; i < saveResults.size(); i++){
             Database.SaveResult result = saveResults[i];
             if (!result.isSuccess()) {
-                Id contactId = currentUser.ContactId;
+                Id contactId = usersToInsertMap.values()[i].ContactId;
                 Database.Error err = result.getErrors()[0];
                 String response = err.getMessage();
 
@@ -72,9 +70,7 @@ public without sharing class UserHandler implements Queueable{
                     String message = 'Unhandled Error: ' + response + '\nUser to insert: ' + contactId;
                     Logger.logLater('UserHandler', 'attemptInsert', message);
                 }
-
             }
-            i++;
         }
         Logger.flushLogs();
     }
