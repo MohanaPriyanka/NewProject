@@ -112,7 +112,8 @@ public class UserHandlerTest {
 		insert new List<Opportunity>{oppOne, oppTwo, oppThree};
 	}
 
-	@IsTest public static void testSuccessfulUserCreation() {
+	@IsTest
+	public static void testSuccessfulUserCreation() {
 		List<Contact> contactList = [SELECT Id, FirstName, LastName, Email, AccountId FROM Contact];
 
 		List<User> oldUserList = [SELECT Id, ContactId FROM User WHERE IsActive = TRUE];
@@ -124,13 +125,16 @@ public class UserHandlerTest {
 		Test.stopTest();
 
 		List<User> userListUpdated = [SELECT Id, ContactId FROM User WHERE IsActive = TRUE];
-		System.assertEquals(previousNumberUsers + 3, userListUpdated.size());
+
+		System.assertEquals(previousNumberUsers + 1, userListUpdated.size(), 'Attempting the insert the 5 contacts ' +
+				'from testSetup(). Only 3 of the 5 qualify in execute() and those 3 will go to attemptInsert(). ' +
+				'Of those 3 only 1 is successfully inserted. The other 2 contacts have the same username/nickname. ' +
+				'So the previousNumberUsers List size should be 1 higher than the userListUpdated List size.');
 	}
 
-	@IsTest public static void testFailedUserCreation() {
+	@IsTest
+	public static void testFailedUserCreation() {
 		List<Contact> newContactList = new List<Contact>();
-
-		// 3 Contacts with same username/nickname: can fix the second but not the third:
 		for (Contact contactToEdit : [SELECT Id, FirstName, LastName, Email, AccountId FROM Contact]) {
 			contactToEdit.FirstName = 'First';
 			contactToEdit.LastName = 'NotUniqueLast1234';
@@ -146,10 +150,15 @@ public class UserHandlerTest {
 		Test.stopTest();
 
 		List<User> userListUpdated = [SELECT Id, ContactId FROM User WHERE IsActive = TRUE];
-		System.assertEquals(previousNumberUsers + 2, userListUpdated.size());
+
+		System.assertEquals(previousNumberUsers + 1, userListUpdated.size(), 'Attempting the insert the 5 contacts ' +
+				'from testSetup(). Only 4 of the 5 qualify in execute() and those 4 will go to attemptInsert(). ' +
+				'Of those 4 only 1 is successfully inserted. The other 3 contacts have the same username/nickname. ' +
+				'So the previousNumberUsers List size should be 1 higher than the userListUpdated List size.');
 	}
 
-	@IsTest public static void testAlreadyActivatedPortal() {
+	@IsTest
+	public static void testAlreadyActivatedPortal() {
 		List<Contact> contactList = [SELECT Id, FirstName, LastName, Email, AccountId FROM Contact];
 
 		List<User> firstUserList = [SELECT Id, ContactId FROM User WHERE IsActive = TRUE];
@@ -166,7 +175,10 @@ public class UserHandlerTest {
 		List<User> newUserList = [SELECT Id, ContactId FROM User WHERE IsActive = TRUE];
 		Integer newNumberUsers = newUserList.size();
 
-		System.assertEquals(firstNumberUsers + 3, newNumberUsers);
+		System.assertEquals(firstNumberUsers + 1, newNumberUsers, 'Attempting the insert the 5 contacts ' +
+				'from testSetup(). Only 3 of the 5 qualify in execute() and those 3 will go to attemptInsert(). ' +
+				'Of those 3 only 1 is successfully inserted. The other 2 contacts have the same username/nickname. ' +
+				'So the previousNumberUsers List size should be 1 higher than the userListUpdated List size.');
 	}
 
 	@IsTest public static void testPortalActivation() {
