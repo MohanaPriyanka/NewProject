@@ -75,15 +75,6 @@ public without sharing class UserHandler implements Queueable{
         Logger.flushLogs();
     }
 
-    public static Map<Id, User> catchPreviouslyUsedValues(Map<Id, User> usersToInsertMap, Integer recordNumber) {
-        // If the customer's email is already used as a username, create a fake bluewave email for them:
-        User userWithError = usersToInsertMap.values()[recordNumber];
-        userWithError.Username = userWithError.FirstName.left(40) + userWithError.LastName.left(40) + '@bluewavesolar.com';
-        userWithError.CommunityNickname = userWithError.LastName.left(5) + userWithError.FirstName.left(25);
-        usersToInsertMap.put(userWithError.ContactId, userWithError);
-        return usersToInsertMap;
-    }
-
     public void createPortalActivationEmailLog(Set<Id> userIdSet){
         try {
             List<Task> tasksToInsert = new List<Task>();
