@@ -8854,6 +8854,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Addendum_Sent_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Anchor_Acquisition_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
