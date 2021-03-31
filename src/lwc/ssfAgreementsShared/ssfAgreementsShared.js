@@ -396,21 +396,23 @@ const disclosureLanguage2 = () => {
 }
 
 const ficoLanguage1 = (component) => {
-    return `By checking this box, and clicking the “${component.continueButtonLabel}” button, I am providing my electronic` +
-           ` signature and signing an electronic record that is my written authorization giving BlueWave permission to` +
-           ` perform a soft pull of a consumer report showing my credit history (which will NOT impact my credit score)`+
-           ` and to access my electric utility billing history. I am also giving BlueWave my permission to use my credit`+
-           ` history and my electric utility billing history to process my application and for any other lawful purpose`;
+    return  `By checking this box, and clicking the “${component.continueButtonLabel}” button, I am providing my electronic`+
+            ` signature and signing an electronic record that is my written authorization giving BlueWave and/or its designee(s)`+
+            ` and/or sales partners permission to perform one or more soft pulls of one or more consumer reports showing my credit`+
+            ` history (which will NOT impact my credit score) and to access my electric utility billing history. I am also giving`+
+            ` BlueWave and/or its designee(s) and/or sales partners my permission to use my credit history and my electric utility`+
+            ` billing history to determine whether I qualify to participate in one or more community solar projects and for any`+
+            ` other lawful purpose`;
 }
-
 const ficoLanguage2 = () => {
-    return `. I understand that BlueWave may share my consumer report with third parties that participate in the transaction`+
-           ` contemplated by my application (including but not limited to the owner or developer of the community solar project)`+
-           ` and/or any party that intends to use the information as a potential investor, servicer or insurer in connection with`+
-           ` a valuation of or an assessment or the risks associated with any agreement I enter into with BlueWave pursuant to`+
-           ` my application. I understand that if I ask BlueWave whether it checked my credit, BlueWave will tell me, and if it`+
-           ` did, provide the name and address of the consumer reporting agency that provided the information. `;
-}
+    return `. I understand that BlueWave and/or its designee(s) and/or sales partners may share my consumer`+
+            ` report(s) with third parties that participate in the transaction(s) contemplated by my application (including but not`+
+            ` limited to the owner or developer of a community solar project) and/or any party that intends to use the information as`+
+            ` a potential investor, servicer or insurer in connection with a valuation of or an assessment or the risks associated`+
+            ` with any agreement I enter into with BlueWave pursuant to my application. I understand that if I ask BlueWave whether`+
+            ` it checked my credit, it will tell me, and if it did, provide the name and address of the consumer reporting agency or`+
+            ` agencies that provided the information. `;
+        }
 
 const finDocsLanguage1 = () => {
     return `Customer will promptly provide to us, in connection with Customer’s application and from time to time in connection`+
