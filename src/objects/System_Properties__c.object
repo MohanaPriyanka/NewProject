@@ -422,6 +422,17 @@ Production: BlueWave Inside Sales</description>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Log_Limit_Threshold__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Overrides the log level for error logs with a Max Limit Used over this percent</inlineHelpText>
+        <label>Log Limit Threshold</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
         <fullName>Minimum_Balance_Bills_for_Cancelled__c</fullName>
         <externalId>false</externalId>
         <label>Minimum Balance Bills for Cancelled</label>

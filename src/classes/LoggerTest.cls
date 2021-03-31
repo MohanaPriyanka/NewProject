@@ -43,16 +43,13 @@ public with sharing class LoggerTest {
         Logger.logLater('Class3', 'Method1', 'Info', Logger.INFO);
         // Error log 6
         Logger.logLater('Class3', 'Method', 'Fine', Logger.FINE);
-        // Error log 7
-        Exception excep = new Util.BWException('Test Exception');
-        Logger.logLater('Class4', 'Method', excep, 'AdditionalMessage Error','ERROR');
 
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size());
 
         Logger.flushLogs();
         errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
-        System.assertEquals(7, errorLogs.size());
+        System.assertEquals(6, errorLogs.size());
         for (Error_Log__c errorLog : errorLogs) {
             if (errorLog.Severity__c == Logger.DEBUG) {
                 System.assertEquals('Warn', errorLog.Message__c);
@@ -60,6 +57,40 @@ public with sharing class LoggerTest {
                 System.assert(errorLog.Message__c.contains(errorLog.Severity__c));
             }
         }
+    }
+
+    @SuppressWarnings('PMD.UnusedLocalVariable')
+    @IsTest static void testLimitLogging() {
+        List<Account> accounts = [SELECT Id FROM Account];
+        Logger.systemProperty = new System_Properties__c(
+            Log_Level__c = 'Debug',
+            Log_Limit_Threshold__c = 80
+        );
+        Logger.logNow('Class3', 'Method', 'Fine', Logger.FINE);
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Message__c, Max_Limit_Used__c, Limits_SOQL_Queries_Used__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.FINE
+        ];
+        System.assertEquals(0, errorLogs.size(),
+            'Should not have logged this FINE error log because the log level is set to DEBUG and the limit threshold is 80% ' +
+                'which we would not have hit be doing one query: ' + errorLogs);
+
+        Logger.systemProperty = new System_Properties__c(
+            Log_Level__c = 'Debug',
+            Log_Limit_Threshold__c = -1
+        );
+        Logger.logNow('Class3', 'Method', 'Fine', Logger.FINE);
+        errorLogs = [
+            SELECT Id, Message__c, Max_Limit_Used__c, Limits_SOQL_Queries_Used__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.FINE
+        ];
+        System.assertEquals(1, errorLogs.size(),
+            'Should have logged this FINE error log even with the log level is set to DEBUG because the limit threshold is -1% ' +
+                'which we would have been over: ' + errorLogs);
+        System.assertEquals(2, errorLogs[0].Limits_SOQL_Queries_Used__c,
+            'Should have logged two queries used, but got: ' + errorLogs[0]);
     }
 
     @IsTest static void testLogSettings() {
