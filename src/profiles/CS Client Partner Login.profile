@@ -20276,6 +20276,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.UCB_Rate__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Daily_Production_Update__c.Date__c</field>
         <readable>true</readable>
@@ -41103,6 +41108,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_System_Size_kWh_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.UCB_First_Bill_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -62429,6 +62439,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contract-Contract Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contract_Fee_Detail__c-Contract Fee Detail Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Daily_Production_Update__c-Daily Production Update Layout</layout>

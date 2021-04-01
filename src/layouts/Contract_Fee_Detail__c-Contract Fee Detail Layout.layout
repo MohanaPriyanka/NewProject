@@ -217,6 +217,10 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>UCB_Rate__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Project_Capacity_Group_Anchor__c</field>
             </layoutItems>
             <layoutItems>
