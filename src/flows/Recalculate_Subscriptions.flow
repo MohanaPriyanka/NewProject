@@ -520,7 +520,7 @@
             <targetReference>getUAL</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>newRateClass</name>
         <dataType>String</dataType>

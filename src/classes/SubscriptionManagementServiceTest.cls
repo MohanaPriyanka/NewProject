@@ -235,7 +235,6 @@ public class SubscriptionManagementServiceTest {
         System.assertEquals(2, soList.size());
     }
     private static void useMocks(Boolean featureOn) {
-        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
         SubscriptionManagementService.uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         SubscriptionManagementService.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockSSSSelector());
         SubscriptionManagementService.soSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSOSelector());
