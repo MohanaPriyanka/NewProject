@@ -2068,6 +2068,16 @@ Total_System_Size_kWh_DC__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>UCB_First_Bill_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>UCB First Bill Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>UCB__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

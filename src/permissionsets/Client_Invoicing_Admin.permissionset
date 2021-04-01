@@ -198,6 +198,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract_Fee_Detail__c.UCB_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract_Fee_Detail__c.Utilization_Adjustment_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -357,11 +362,11 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>Client_Invoicing_Generate_Invoice</flow>
+        <flow>Client_Invoicing_Add_SO_or_CIM_to_Invoice</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>Client_Invoicing_Add_SO_or_CIM_to_Invoice</flow>
+        <flow>Client_Invoicing_Generate_Invoice</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
