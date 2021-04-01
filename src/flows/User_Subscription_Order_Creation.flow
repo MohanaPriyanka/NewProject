@@ -13,8 +13,15 @@
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>uasList</name>
+            <name>soComments</name>
+            <value>
+                <elementReference>var_SOComments</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>uasListToUpdate</name>
             <value>
                 <elementReference>socv_UAS</elementReference>
             </value>
@@ -1263,6 +1270,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>sovSizingMethod</assignToReference>
@@ -1428,6 +1436,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
                     <elementReference>sov_SOTransferTo.Utility_Account_Subscription__c</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>sov_SOTransferTo.Utility_Account_Subscription__c</assignToReference>

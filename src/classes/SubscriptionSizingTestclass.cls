@@ -513,7 +513,15 @@ public with sharing class SubscriptionSizingTestclass {
         }
         update uasList;
         Test.startTest();
-        InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(new List<List<Utility_Account_Subscription__c>>{uasList});
+        InvocableSizingMethodRecalculation.UAStoUpdateInfo testInfo =
+            new InvocableSizingMethodRecalculation.UAStoUpdateInfo(
+                uasList,'Test Comment'
+            );
+        List<InvocableSizingMethodRecalculation.UAStoUpdateInfo> uasInfo =
+            new List<InvocableSizingMethodRecalculation.UAStoUpdateInfo>();
+        uasInfo.add(testInfo);
+        
+        InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(uasInfo);
         Test.stopTest();
 
         List<Subscription_Order__c> soOrders = new List<Subscription_Order__c>();
@@ -568,10 +576,17 @@ public with sharing class SubscriptionSizingTestclass {
         update uasList;
 
         Test.startTest();
+
+        InvocableSizingMethodRecalculation.UAStoUpdateInfo testInfo =
+            new InvocableSizingMethodRecalculation.UAStoUpdateInfo(
+                uasList,'Test Comment'
+            );
+        List<InvocableSizingMethodRecalculation.UAStoUpdateInfo> uasInfo =
+            new List<InvocableSizingMethodRecalculation.UAStoUpdateInfo>();
+        uasInfo.add(testInfo);
+
         try {
-            InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(new List<List<Utility_Account_Subscription__c>>{
-                uasList
-            });
+            InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(uasInfo);
             throw new Util.BWException('An exception should have been thrown because the Sizing Method is missing a Size Ratio');
         } catch (Exception e) {
             Boolean expectedExceptionThrown =  e.getMessage().contains('Failed to create a Subscription Order') ? true : false;

@@ -40,6 +40,7 @@ public class SubscriptionManagementServiceTest {
         insert new List<Shared_Solar_System_Order__c>{sssoSize, sssoUpdate};
     }
     @IsTest
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     static void testHandleSSSChange() {
         useMocks(true);
         SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
@@ -70,6 +71,7 @@ public class SubscriptionManagementServiceTest {
         System.assertNotEquals(sssId, subscriptionManagementService.uasOrders[1].uas.Shared_Solar_System__c);
     }
     @IsTest
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     static void testSubscriptionOrderInsert() {
         useMocks(true);
         Subscription_Order__c so = new Subscription_Order__c(
@@ -183,7 +185,7 @@ public class SubscriptionManagementServiceTest {
         UASSelector uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{ssso.Shared_Solar_System__c});
         SubscriptionManagementService service = new SubscriptionManagementService();
-        List<Subscription_Order__c> soToInsert = service.createSystemChangeSubscriptionOrders(uasList, ssso);
+        List<Subscription_Order__c> soToInsert = service.createSystemChangeSubscriptionOrders(uasList, ssso, null);
         System.assertEquals(2, soToInsert.size());
     }
     @IsTest
@@ -192,7 +194,7 @@ public class SubscriptionManagementServiceTest {
         SubscriptionManagementService service = new SubscriptionManagementService();
         UASSelector uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         List<Utility_Account_Subscription__c> mockUASes = uasSelector.selectByOpp(null);
-        List<Subscription_Order__c> checkSOs = service.createSystemChangeSubscriptionOrders(mockUASes, null);
+        List<Subscription_Order__c> checkSOs = service.createSystemChangeSubscriptionOrders(mockUASes, null, null);
         System.assertEquals(2, checkSOs.size());
         System.assertEquals('Resize', checkSOs[0].Type__c);
         System.assertEquals(null, checkSOs[0].Shared_Solar_System_Order__c);
@@ -222,6 +224,7 @@ public class SubscriptionManagementServiceTest {
     }
 
     @IsTest
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     static void testSubscriptionOrdersForTestSetup() {
         useMocks(true);
         UASSelector uasSelector  = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
@@ -238,6 +241,7 @@ public class SubscriptionManagementServiceTest {
         SubscriptionManagementService.soSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSOSelector());
         SubscriptionManagementService.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
     }
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     public class MockSSSSelector extends MockProvider {
         public MockSSSSelector() {
         }
@@ -420,6 +424,7 @@ public class SubscriptionManagementServiceTest {
             return null;
         }
     }
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     public class MockOppSelector extends MockProvider {
         public MockOppSelector() {
         }
