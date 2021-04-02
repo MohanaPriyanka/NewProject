@@ -495,6 +495,11 @@ Time_to_Close__c
                     <label>SREC</label>
                 </value>
                 <value>
+                    <fullName>Billing</fullName>
+                    <default>false</default>
+                    <label>Billing-Issue</label>
+                </value>
+                <value>
                     <fullName>Subscription Change</fullName>
                     <default>false</default>
                     <label>Subscription Transfer</label>
