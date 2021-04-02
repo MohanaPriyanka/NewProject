@@ -35580,6 +35580,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Product2.Addendum_Template_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Product2.Anniversary_Term_Text__c</field>
         <readable>true</readable>
     </fieldPermissions>

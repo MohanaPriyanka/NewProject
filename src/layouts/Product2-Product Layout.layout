@@ -82,6 +82,10 @@
                 <behavior>Edit</behavior>
                 <field>Generic_Terms_Conga_Template__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Addendum_Template_Id__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

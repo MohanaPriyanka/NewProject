@@ -39,6 +39,17 @@
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <enableFeeds>true</enableFeeds>
     <fields>
+        <fullName>Addendum_Template_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>Addendum Template Id</label>
+        <length>180</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Anniversary_Term_Text__c</fullName>
         <externalId>false</externalId>
         <formula>IF (Loan_Term__c = 126 , &quot;twelfth&quot;,
