@@ -213,7 +213,6 @@ public with sharing class SubscriptionSizingTestclass {
             System_Assignment__c = 'Automatic - Assignment Order'));
         insert switchLead;
 
-
         Opportunity opportunityA = new Opportunity(
             Name = 'Ashley Smith',
             Shared_Solar_System__c = kwhSSS.Id,
@@ -368,7 +367,6 @@ public with sharing class SubscriptionSizingTestclass {
         // transaction for platform events
         System.assertNotEquals(0, opp.Total_Subscribed_kW_DC__c);
 
-
         List<Subscription_Order__c> soList = [
             SELECT Id, Utility_Account_Subscription__r.Opportunity__r.Id
             FROM Subscription_Order__c
@@ -400,7 +398,6 @@ public with sharing class SubscriptionSizingTestclass {
         // Manually setting the Total Subscribed KW DC in testSetup above - can only run Test.start and stop once per
         // transaction for platform events
         System.assertEquals(6.998400, opp.Total_Subscribed_kW_DC__c);
-
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c
@@ -435,7 +432,6 @@ public with sharing class SubscriptionSizingTestclass {
         System.assertEquals(2, soList.size(), 'Resize Subscription Order should be inserted');
         System.assertEquals(9.3312, opp.Total_Subscribed_kW_DC__c,'Opportunity Total Subscribed kW DC should be updated via ' +
             'Subscription_Order_Change_Event');
-
     }
     @IsTest
     public static void testMultipleOpportunitySubscriptions() {
@@ -677,8 +673,6 @@ public with sharing class SubscriptionSizingTestclass {
             System.assertEquals(so.Utility_NMC_Tariff__r.Size_Ratio__c, so.Size_Ratio__c,
                 'SO should be stamped with the Size Ratio from its Sizing Method');
         }
-        
-        
     }
 
     @IsTest

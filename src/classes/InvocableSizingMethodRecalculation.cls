@@ -16,18 +16,18 @@
 public without sharing class InvocableSizingMethodRecalculation {
     /**
      * @description Creates Subscription Orders for a UAS after changing the sizing method
-     * @param uasList is a list with one UAStoUpdateInfo object 
-     * The UAStoUpdateInfo object consists of the UAS to update and comments that should go on the related SO 
+     * @param uasInfo is a list with one UAStoUpdateInfo object 
+     * The UAStoUpdateInfo object consists of the UAS to update and comments that should go on the related Subscription
      */
     @InvocableMethod(label='Change Sizing Method for Subscriptions')
-    public static void recalculateSubscriptionWithSizingMethod(List<UAStoUpdateInfo> uasList) {
-        UAStoUpdateInfo infoObject = uasList[0];
-        List<List<Utility_Account_Subscription__c>> uasListOfLists = new List<List<Utility_Account_Subscription__c>>();
-        uasListOfLists.add(infoObject.getUASListToUpdate());
-        String soCommentsToInsert = infoObject.getSOComments();
+    public static void recalculateSubscriptionWithSizingMethod(List<UAStoUpdateInfo> uasInfo) {
+        UAStoUpdateInfo infoObject = uasInfo[0];
+        List<Utility_Account_Subscription__c> uasList = (infoObject.uasListToUpdate);
+        String soCommentsToInsert = infoObject.soComments;
+
         try {
             SubscriptionManagementService service = new SubscriptionManagementService();
-            List<Subscription_Order__c> soList =  service.createSystemChangeSubscriptionOrders(uasListOfLists[0], null, soCommentsToInsert);
+            List<Subscription_Order__c> soList =  service.createSystemChangeSubscriptionOrders(uasList, null, soCommentsToInsert);
             insert soList;
         } catch (Exception e) {
             Logger.logNow('InvocableSizingMethodRecalculation', 'recalculateSubscriptionWithSizingMethod', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
@@ -57,10 +57,6 @@ public without sharing class InvocableSizingMethodRecalculation {
 
         public List<Utility_Account_Subscription__c> getUASListToUpdate(){
             return this.uasListToUpdate;
-        }
-
-        public String getSOComments() {
-            return this.soComments;
         }
     }
 }
