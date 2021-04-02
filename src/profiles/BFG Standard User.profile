@@ -544,6 +544,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AllocationScheduleSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AllocationScheduleSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -16741,6 +16745,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.EndDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Generate_Addendum__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

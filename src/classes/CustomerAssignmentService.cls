@@ -6,7 +6,6 @@
 public without sharing class CustomerAssignmentService {
     @TestVisible private static SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
     @TestVisible private static OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
-    @TestVisible private static FeatureService featureService = new FeatureService();
     @TestVisible private static ContractSelector contractSelector = new ContractSelector();
     @TestVisible private static Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
 
@@ -122,6 +121,31 @@ public without sharing class CustomerAssignmentService {
             sosWithUpdatedAssignmentAgreements.add(so);
         }
         return sosWithUpdatedAssignmentAgreements;
+    }
+
+    /**
+    * @description Searches for related Contracts that are in need of a Project Specific Addendum (sent to MA customers
+    * after they have been assigned) after a Allocation Schedule has been created
+    * @param uasList List of Subscriptions from an Allocation Schedule
+    */
+    public void generateAddendumsFromSubscriptions(List<Utility_Account_Subscription__c> uasList) {
+        Set<Id> contractIds = new Set<Id>();
+        for (Utility_Account_Subscription__c uas : uasList) {
+            contractIds.add(uas.Opportunity__r.ContractId);
+        }
+
+        List<Contract> contractsToUpdate = contractSelector.getCustomerContractsForAddendum(contractIds);
+        for (Contract contract : contractsToUpdate) {
+            contract.Generate_Addendum__c = true;
+        }
+
+        GenericBatchDMLOperation batchUpdate = new GenericBatchDMLOperation(contractsToUpdate, 'Update');
+        try {
+            Database.executeBatch(batchUpdate);
+        } catch (Exception e) {
+            Logger.logNow('CustomerAssignmentService', 'generateAddendumsFromSubscriptions',
+                e.getMessage() + '\n' + e.getStackTraceString());
+        }
     }
 
     /**

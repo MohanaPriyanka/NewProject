@@ -17,6 +17,7 @@ public with sharing class CustomerAssignmentServiceTest {
         '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","CompanySignedDate": ' + null + '}' + //not signed
         '}';
 
+
     @IsTest
     private static void testSignedAssignmentAgreement() {
         Map<Id, Contract> oldContractMap = (Map<Id, Contract>) JSON.deserialize(signedAssignmentAgreementOldMap, Map<Id, Contract>.class);
@@ -147,6 +148,22 @@ public with sharing class CustomerAssignmentServiceTest {
     }
 
     @IsTest
+    static void testGenerateAddendumsFromSubscriptions() {
+        CustomerAssignmentService.contractSelector =
+            (ContractSelector) Test.createStub(ContractSelector.class, new MockContractSelector());
+
+        CustomerAssignmentService service = new CustomerAssignmentService();
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
+        Test.startTest();
+        service.generateAddendumsFromSubscriptions(uasList);
+        Test.stopTest();
+
+        for (Contract contract : [SELECT Id, Generate_Addendum__c FROM Contract] ) {
+            System.assert(contract.Generate_Addendum__c, 'Contract should have an Addendum generated');
+        }
+    }
+
+    @IsTest
     private static void systemTestAssignmentAgreementRejection() {
         Util.disableTrigger('Disable_SubscriptionOrder_Trigger__c');
         Account clientAccount = new Account(
@@ -239,6 +256,40 @@ public with sharing class CustomerAssignmentServiceTest {
             switch on methodCall.stubbedMethodName {
                 when 'selectFirstCustomerSignedDateByAssignmentAgreement' {
                     return sssFirstCustomerDateMap;
+                }
+            }
+            return null;
+        }
+    }
+
+    public class MockContractSelector extends MockProvider {
+        public override Object handleMethodCall(MethodCall methodCall) {
+            Product2 productProjectSpecific = new Product2(
+                Name = 'Project Specific Product',
+                Addendum_Template_Id__c = 'AAAABBBB'
+            );
+            insert productProjectSpecific;
+            Account acct = new Account(
+                Name = 'Test Account'
+            );
+            insert acct;
+            Contract contractAddendum1 = new Contract(
+                Name = 'Project Specific Customer Contract',
+                AccountId = acct.Id,
+                Generate_Addendum__c = false,
+                Product__c = productProjectSpecific.Id
+            );
+            Contract contractAddendum2 = new Contract(
+                Name = 'Project Specific Customer Contract',
+                AccountId = acct.Id,
+                Generate_Addendum__c = false,
+                Product__c = productProjectSpecific.Id
+            );
+            insert new List<Contract>{contractAddendum1, contractAddendum2};
+
+            switch on methodCall.stubbedMethodName {
+                when 'getCustomerContractsForAddendum' {
+                    return new List<Contract>{contractAddendum1, contractAddendum2};
                 }
             }
             return null;
