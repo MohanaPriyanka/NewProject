@@ -93,6 +93,17 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Addendum_Sent_Date__c</fullName>
+        <description>Filled when the customer received the project specific disclosure form.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Filled when the customer received the project specific disclosure form.</inlineHelpText>
+        <label>Addendum Sent Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Anchor_Acquisition_Fee__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Contracted $ / W for Anchor customers. Entered manually by CSBD.</inlineHelpText>
