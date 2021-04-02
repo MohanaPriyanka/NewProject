@@ -695,11 +695,6 @@ Time_to_Close__c
                     <label>Billing-Issue</label>
                 </value>
                 <value>
-                    <fullName>Billing-Payment</fullName>
-                    <default>false</default>
-                    <label>Billing-Payment</label>
-                </value>
-                <value>
                     <fullName>Collections</fullName>
                     <default>false</default>
                     <label>Collections</label>
@@ -864,10 +859,6 @@ Time_to_Close__c
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
                 <valueName>Billing-Issue</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>Billing-Payment</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
