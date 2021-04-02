@@ -102,7 +102,7 @@ public with sharing class ZuoraGLSelector {
             'FROM PaymentPartItem p ' +
             'INNER JOIN PaymentPart pt ON p.paymentpartid = pt.Id ' +
             'INNER JOIN Payment py ON pt.paymentid = py.Id ' +
-            'INNER JOIN PaymentMethod pm ON py.paymentmethodId = pm.Id ' +
+            'LEFT OUTER JOIN PaymentMethod pm ON py.paymentmethodId = pm.Id ' +
             'INNER JOIN DebitMemoItem d ON p.debitmemoitemid = d.Id ' +
             'INNER JOIN DebitMemo m ON d.debitMemoId = m.Id ' +
             'INNER JOIN Account a ON m.accountid = a.Id';
@@ -137,7 +137,7 @@ public with sharing class ZuoraGLSelector {
             'FROM PaymentPartItem p ' +
             'INNER JOIN PaymentPart pt ON p.paymentpartid = pt.Id ' +
             'INNER JOIN Payment py ON pt.paymentid = py.Id ' +
-            'INNER JOIN PaymentMethod pm ON py.paymentmethodId = pm.Id ' +
+            'LEFT OUTER JOIN PaymentMethod pm ON py.paymentmethodId = pm.Id ' +
             'INNER JOIN InvoiceItem it ON p.invoiceitemid = it.Id ' +
             'INNER JOIN RatePlanCharge rp ON it.rateplanchargeid = rp.Id ' +
             'INNER JOIN Invoice iv ON it.invoiceid = iv.Id '+
