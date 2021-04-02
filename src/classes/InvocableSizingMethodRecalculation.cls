@@ -54,9 +54,5 @@ public without sharing class InvocableSizingMethodRecalculation {
             this.uasListToUpdate = uasListToUpdate;
             this.soComments = soComments;
         }
-
-        public List<Utility_Account_Subscription__c> getUASListToUpdate(){
-            return this.uasListToUpdate;
-        }
     }
 }
