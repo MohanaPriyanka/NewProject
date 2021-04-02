@@ -10,9 +10,15 @@
 public without sharing class ScheduleZTriggerHandler {
     @TestVisible
     private static UASSelector uasSelector = new UASSelector();
+    @TestVisible
+    private static CustomerAssignmentService customerAssignmentService = new CustomerAssignmentService();
 
-    // For newly enacted Schedule Zs, we want to set the previous Schedule Z to retired, and update any UASes that
+    /**
+     * @description For newly enacted Schedule Zs, we want to set the previous Schedule Z to retired, and update any UASes that
     // that aren't on the new Schedule Z.
+     * @param newScheduleZS List of Schedule Zs inserted or updated
+     * @param oldMap Historical map of Schedule Zs for update
+     */
     public void handleNewlyEnactedScheduleZ(Map<Id, Schedule_Z__c> oldMap, List<Schedule_Z__c> newScheduleZS) {
         List<Schedule_Z__c> enactedScheduleZS = new List<Schedule_Z__c>();
 
@@ -135,27 +141,21 @@ public without sharing class ScheduleZTriggerHandler {
             sssIds.add(scheduleZ.Shared_Solar_System__c);
             scheduleZIds.add(scheduleZ.Id);
         }
-        //This is basically the same as the query below except that it excludes 0 kwdc subscriptions
-        List<Utility_Account_Subscription__c> accountSubscriptions = uasSelector.selectActiveUASBySSS(sssIds);
-        //why are we querying for the schedule zs again?
-        //List<Schedule_Z__c> scheduleZListWithSystemSize = alsSelector.selectAll(scheduleZIds);
 
+        List<Utility_Account_Subscription__c> accountSubscriptions = uasSelector.selectActiveUASBySSS(sssIds);
         MultiMap sssToSubscriptions = MultiMap.newSetInstance();
         for (Utility_Account_Subscription__c uas : accountSubscriptions) {
             sssToSubscriptions.putValue(uas.Shared_Solar_System__c, uas);
         }
 
         List<Schedule_Z_Subscription__c> szsToInsert = createSubscriptions(scheduleZMap, sssToSubscriptions);
-
         try {
             insert szsToInsert;
         } catch (Exception e) {
             Logger.logNow('ScheduleZTriggerHandler', 'insertSubscriptionsForNewALS', 'Failed to insert ALSS due to error: '
                 + e.getMessage() + '\n' + e.getStackTraceString());
         }
-
-        CustomerAssignmentService assignmentService = new CustomerAssignmentService();
-        assignmentService.generateAddendumsFromSubscriptions(accountSubscriptions);
+        customerAssignmentService.generateAddendumsFromSubscriptions(accountSubscriptions);
     }
 
     private List<Schedule_Z_Subscription__c> createSubscriptions(Map<Id, Schedule_Z__c> scheduleZMap, MultiMap sssToSubscriptions) {
