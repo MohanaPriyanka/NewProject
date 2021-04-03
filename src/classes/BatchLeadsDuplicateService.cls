@@ -18,7 +18,7 @@ public with sharing class BatchLeadsDuplicateService implements Database.Batchab
         }
     }
     public void finish(Database.BatchableContext bc) {
-        Logger.logNow('CSLeadsDuplicateServive', 'finish','Merge Batch Finished', Logger.INFO);
+        Logger.logNow('CSLeadsDuplicateServive', 'finish','Merge Batch Finished', Logger.FINE);
     }
 
 }

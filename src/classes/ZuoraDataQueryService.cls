@@ -7,6 +7,11 @@ Tested By: ZuoraDataQueryServiceTest,ZuoraPaymentServiceTest (for retry testing)
 // ZuoraDataQueryService and ZuoraDataQueryAsyncService, its hard to mark many as private:
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ExcessivePublicCount')
 public without sharing class ZuoraDataQueryService implements Schedulable{
+    private static final String RETRY_ON_EXCEPTION = 'RetryOnException';
+    private static final String CONTINUE_ON_NO_DATA = 'ContinueOnNoData';
+    public DataQueryRequest scheduledQuery;
+    @TestVisible private static final String RETRY_ATTEMPT = 'RetryAttempt';
+
     private class DataQuery {
         private String compression;
         private DataQueryOutput output;
@@ -74,10 +79,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public Map<String, Integer> optionalIntegers;
         public Map<String, String> optionalStrings;
         public Map<String, Boolean> optionalBooleans;
-        private final String RETRY_ON_EXCEPTION = 'RetryOnException';
-        @TestVisible
-        private final String RETRY_ATTEMPT = 'RetryAttempt';
-        private final String CONTINUE_ON_NO_DATA = 'ContinueOnNoData';
+        @SuppressWarnings('PMD.EmptyStatementBlock')
         public ProcessingParameter() {
         }
         public ProcessingParameter(String className) {
@@ -139,6 +141,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public String queryString;
         public Integer numberOfRetries;
         public Id recordId;
+        @SuppressWarnings('PMD.EmptyStatementBlock')
         public DataQueryRequest() {
         }
         public DataQueryRequest(Zuora_Data_Query__c zuoraDataQuery) {
@@ -147,8 +150,6 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
             this.recordId = zuoraDataQuery.Id;
         }
     }
-
-    public DataQueryRequest scheduledQuery;
 
     /*  Fired off insertion of Data Query record
         Even though this can handle >1 query at once, Zuora in practice, does not perform
@@ -255,7 +256,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         if (method != null && method.className != null) {
             Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
             jobToProcess.executePostQueryJob(method, response);
-            Logger.logNow('ZuoraDataQueryService', 'handlePostQueryJob', Util.getLimits() + '\n' + JSON.serialize(method), Logger.INFO);
+            Logger.logNow('ZuoraDataQueryService', 'handlePostQueryJob', Util.getLimits() + '\n' + JSON.serialize(method), Logger.FINE);
         }
     }
 

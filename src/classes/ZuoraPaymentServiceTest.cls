@@ -249,7 +249,7 @@ public with sharing class ZuoraPaymentServiceTest {
             paymentService.applyToMultiGatewayBalance(response, processingParameter);
             System.assert(false, 'Expected to throw a RetriableException');
         } catch (ZuoraDataQueryService.RetriableException re) {
-            System.assertEquals(1, processingParameter.optionalIntegers.get(processingParameter.RETRY_ATTEMPT),
+            System.assertEquals(1, processingParameter.optionalIntegers.get(ZuoraDataQueryService.RETRY_ATTEMPT),
                 'Expected the processing parameter retry attempt to be incremented when retrying');
         }
     }
