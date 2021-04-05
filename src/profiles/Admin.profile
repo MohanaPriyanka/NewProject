@@ -760,6 +760,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvocableAddendumGenerator</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>InvocableCSFeeSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>

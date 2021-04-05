@@ -4,7 +4,7 @@
         <name>Assign_SOs_to_Assignment_Agreement</name>
         <label>Assign SOs to Assignment Agreement</label>
         <locationX>182</locationX>
-        <locationY>3158</locationY>
+        <locationY>2942</locationY>
         <actionName>CustomerAssignmentService</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -21,6 +21,24 @@
             <name>cutoffDate</name>
             <value>
                 <elementReference>Cutoff_Date</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Generate_Addendums</name>
+        <label>Generate Addendums</label>
+        <locationX>182</locationX>
+        <locationY>2822</locationY>
+        <actionName>InvocableAddendumGenerator</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Assign_SOs_to_Assignment_Agreement</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>contracts</name>
+            <value>
+                <elementReference>ContractsToUpdate</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -84,8 +102,8 @@
     <assignments>
         <name>Add_Contract_To_Update_List</name>
         <label>Add Contract To Update List</label>
-        <locationX>402</locationX>
-        <locationY>2822</locationY>
+        <locationX>270</locationX>
+        <locationY>2486</locationY>
         <assignmentItems>
             <assignToReference>ContractsToUpdate</assignToReference>
             <operator>Add</operator>
@@ -114,26 +132,9 @@
         </connector>
     </assignments>
     <assignments>
-        <description>Checks the &quot;Generate Addendum&quot; checkbox that triggers Conga</description>
-        <name>Generate_Addendum</name>
-        <label>Generate Addendum</label>
-        <locationX>270</locationX>
-        <locationY>2606</locationY>
-        <assignmentItems>
-            <assignToReference>ContractLoopVar2.Generate_Addendum__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_Contract_To_Update_List</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Set_Assignment_Agreement_contract</name>
         <label>Set Assignment Agreement</label>
-        <locationX>402</locationX>
+        <locationX>270</locationX>
         <locationY>2366</locationY>
         <assignmentItems>
             <assignToReference>ContractLoopVar2.Assignment_Agreement__c</assignToReference>
@@ -143,7 +144,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Evaluate_Contract_Addendum</targetReference>
+            <targetReference>Add_Contract_To_Update_List</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -261,38 +262,6 @@
             <booleanValue>true</booleanValue>
         </value>
     </choices>
-    <decisions>
-        <name>Evaluate_Contract_Addendum</name>
-        <label>Evaluate Contract Addendum</label>
-        <locationX>402</locationX>
-        <locationY>2486</locationY>
-        <defaultConnector>
-            <targetReference>Add_Contract_To_Update_List</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Needs_Addendum</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>ContractLoopVar2.Product__r.Addendum_Template_Id__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>ContractLoopVar2.Customer_Signature_Date_Time__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Generate_Addendum</targetReference>
-            </connector>
-            <label>Needs Addendum</label>
-        </rules>
-    </decisions>
     <decisions>
         <name>Set_Acquisition_Type_for_Contract</name>
         <label>Set Acquisition Type for Contract</label>
@@ -429,9 +398,9 @@
         <name>Update_Contracts_Small</name>
         <label>Update Contracts</label>
         <locationX>182</locationX>
-        <locationY>3038</locationY>
+        <locationY>2702</locationY>
         <connector>
-            <targetReference>Assign_SOs_to_Assignment_Agreement</targetReference>
+            <targetReference>Generate_Addendums</targetReference>
         </connector>
         <inputReference>ContractsToUpdate</inputReference>
     </recordUpdates>
@@ -542,7 +511,7 @@
         <name>Done_Screen</name>
         <label>Done Screen</label>
         <locationX>182</locationX>
-        <locationY>3278</locationY>
+        <locationY>3062</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>

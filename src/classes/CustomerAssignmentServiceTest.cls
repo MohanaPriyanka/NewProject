@@ -17,7 +17,6 @@ public with sharing class CustomerAssignmentServiceTest {
         '"800000000000000AAA" : {"Id":"800000000000000AAA","RecordTypeId":"0120a0000010S8hAAE","CompanySignedDate": ' + null + '}' + //not signed
         '}';
 
-
     @IsTest
     private static void testSignedAssignmentAgreement() {
         Map<Id, Contract> oldContractMap = (Map<Id, Contract>) JSON.deserialize(signedAssignmentAgreementOldMap, Map<Id, Contract>.class);
@@ -145,22 +144,6 @@ public with sharing class CustomerAssignmentServiceTest {
         CustomerAssignmentService.assignSOsAssignmentAgreement(new List<CustomerAssignmentService.ContractAssignmentBundle>{assignmentBundle});
         List<Subscription_Order__c> subscriptionOrdersToUpdate = (List<Subscription_Order__c>) Util.objectsUpdatedIfMockingDML;
         System.assertEquals(null, subscriptionOrdersToUpdate, 'Expected no errors, and no updates');
-    }
-
-    @IsTest
-    static void testGenerateAddendumsFromSubscriptions() {
-        CustomerAssignmentService.contractSelector =
-            (ContractSelector) Test.createStub(ContractSelector.class, new MockContractSelector());
-
-        CustomerAssignmentService service = new CustomerAssignmentService();
-        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
-        Test.startTest();
-        service.generateAddendumsFromSubscriptions(uasList);
-        Test.stopTest();
-
-        for (Contract contract : [SELECT Id, Generate_Addendum__c FROM Contract] ) {
-            System.assert(contract.Generate_Addendum__c, 'Contract should have an Addendum generated');
-        }
     }
 
     @IsTest
@@ -293,6 +276,22 @@ public with sharing class CustomerAssignmentServiceTest {
                 }
             }
             return null;
+        }
+    }
+
+    @IsTest
+    static void testGenerateAddendumsFromSubscriptions() {
+        CustomerAssignmentService.contractSelector =
+            (ContractSelector) Test.createStub(ContractSelector.class, new MockContractSelector());
+
+        CustomerAssignmentService service = new CustomerAssignmentService();
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
+        Test.startTest();
+        service.generateAddendumsFromSubscriptions(uasList);
+        Test.stopTest();
+
+        for (Contract contract : [SELECT Id, Generate_Addendum__c FROM Contract] ) {
+            System.assert(contract.Generate_Addendum__c, 'Contract should have an Addendum generated');
         }
     }
 

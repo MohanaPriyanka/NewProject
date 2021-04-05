@@ -16,7 +16,7 @@ public inherited sharing class ContractSelector {
             oppIdSet.add(opp.Id);
         }
         List<Contract> contracts = [
-            SELECT Id, Assignment_Agreement__c, Customer_Signature_Date_Time__c, Product__c
+            SELECT Id, Assignment_Agreement__c
             FROM Contract
             WHERE Id IN (
                 SELECT ContractId
@@ -34,7 +34,7 @@ public inherited sharing class ContractSelector {
 
     public List<Contract> getCustomerContractsByAssignmentAgreement(Set<Id> assignmentAgreementIds) {
         return [
-            SELECT Id, Name
+            SELECT Id, Name, Parent_Contract__c
             FROM Contract
             WHERE Assignment_Agreement__c = : assignmentAgreementIds
         ];
