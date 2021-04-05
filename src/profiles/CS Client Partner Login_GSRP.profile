@@ -7970,10 +7970,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>customIdSwapOppTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dsfs__APIError</apexClass>
         <enabled>true</enabled>
     </classAccesses>
