@@ -35,17 +35,7 @@ public without sharing class ScheduleZTriggerHandler {
             }
         }
 
-        List<Shared_Solar_System__c> sharedSolarSystemsWithEnactedSZs = [
-            SELECT Id, Reacquisition_Start_Date__c,
-            (SELECT Id, Date_Enacted_by_Utility__c
-            FROM Schedule_Zs__r
-            WHERE Date_Schedule_Z_Retired_by_Utility__c = NULL
-            AND Date_Enacted_by_Utility__c != NULL
-            ORDER BY Date_Enacted_by_Utility__c DESC)
-            FROM Shared_Solar_System__c
-            WHERE Id IN :systemIdsWithEnactedSZs
-        ];
-
+        List<Shared_Solar_System__c> sharedSolarSystemsWithEnactedSZs = new SharedSolarSystemsSelector().getSharedSolarSystemsWithEnactedSZs(systemIdsWithEnactedSZs);
         retireUASesAndScheduleZs(sharedSolarSystemsWithEnactedSZs);
 
         List<Utility_Account_Subscription__c> uasesToUpdate = matchALSSToUAS(enactedScheduleZS);
