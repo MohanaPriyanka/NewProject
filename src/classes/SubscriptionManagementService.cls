@@ -5,7 +5,8 @@
  *
  * Tested By: SubscriptionManagementServiceTest, SubscriptionSizingTestclass
  */
-public without sharing class SubscriptionManagementService implements Queueable{
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class SubscriptionManagementService {
     @TestVisible
     private static UASSelector uasSelector = new UASSelector();
     @TestVisible
@@ -14,78 +15,31 @@ public without sharing class SubscriptionManagementService implements Queueable{
     private static SubscriptionOrderSelector soSelector = new SubscriptionOrderSelector();
     @TestVisible
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
-    @TestVisible
-    private static FeatureService featureService = new FeatureService();
-    public Set<Id> oppIdsWithChangedNMCTariff;
-    public Set<Id> oppIdsWithChangedSSS;
-    public List<CSUtilityAccountSubscriptionFactory.UASOrder> uasOrders = new List<CSUtilityAccountSubscriptionFactory.UASOrder>();
-    public List<Utility_Account_Subscription__c> upsertUASes = new List<Utility_Account_Subscription__c>();
-    public List<Subscription_Order__c> soInsertList = new List<Subscription_Order__c>();
-
-    public void execute(QueueableContext context) {
-        if (oppIdsWithChangedNMCTariff != null && featureService.isEnabled('Subscription_Orders')) {
-            changeNMCTariff(oppIdsWithChangedNMCTariff);
-        }
-        if (oppIdsWithChangedSSS != null && featureService.isEnabled('Subscription_Orders')) {
-            try {
-                transferSubscriptionsOnSSSChange();
-                //Upsert UASes - for deactivating a uas, update; for inserting new uas, insert
-                upsert upsertUASes;
-                for (CSUtilityAccountSubscriptionFactory.UASOrder uasOrder : uasOrders){
-                    uasOrder.sOrder.Utility_Account_Subscription__c = uasOrder.uas.Id;
-                    soInsertList.add(uasOrder.sOrder);
-                }
-                insert soInsertList;
-            } catch (Exception e) {
-                Logger.logNow('SubscriptionManagementService', 'handleSSSChange',
-                    'Error trying to update Subscriptions after Shared Solar System change on Opportunities:  ' + oppIdsWithChangedSSS +
-                        '\n' + e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR
-                );
-            }
-        }
-    }
-
-    @SuppressWarnings('PMD.ApexCRUDViolation')
-    public void changeNMCTariff(Set<Id> oppIds) {
-        List<Utility_Account_Subscription__c> uases = uasSelector.selectByOpp(oppIds);
-        List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uases, null);
-        if (soList.size() > 0 ) {
-            insert soList;
-        }
-    }
 
     public void populateSubscriptionOrder(List<Subscription_Order__c> soList) {
-        Set<Id> uasIds = new Set<Id>();
-        for (Subscription_Order__c so : soList) {
-            uasIds.add(so.Utility_Account_Subscription__c);
-        }
+        Map<Id, SObject> subscriptionOrdersByUASId =
+            CollectionUtil.mapByIdField(soList, Subscription_Order__c.Utility_Account_Subscription__c);
+        Set<Id> uasIds = subscriptionOrdersByUASId.keySet();
         Map<Id, Utility_Account_Subscription__c> uasMap = uasSelector.getUASMap(uasIds);
         for (Subscription_Order__c so : soList) {
             Utility_Account_Subscription__c uas = uasMap.get(so.Utility_Account_Subscription__c);
-            if (uas != null) {
-                so.Previous_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c;
-                so.Previous_Annual_kwh__c = uas.Annual_kWh_Subscription_Future_Rollup__c;
-                so.Previous_kw_DC_Subscription__c = uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                so.Previous_Percent_Share_of_System__c = uas.Future_Share_of_System_Rollup__c;
-                so.Client_Account__c = uas.Shared_Solar_System__r.Client_Account__c;
-                so.Expected_Yield_kWh_kW__c = uas.Shared_Solar_System__r.Expected_Yield_kWh_kW__c;
-                so.Total_System_Size_kW_DC__c = uas.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
-                so.Utility_Number_of_Decimal_Places__c = uas.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c;
-                so.Product__c = uas.Opportunity__r.Product__c;
-                if(FeatureService.isEnabled('Sizing_Method')) {
-                    so.Utility_NMC_Tariff__c = uas.Sizing_Method__c;
-                    so.Value_of_NMC__c = uas.Sizing_Method__r.Value_of_NMC__c;
-                    so.Size_Ratio__c = uas.Sizing_Method__r.Size_Ratio__c;
-                } else {
-                    so.Utility_NMC_Tariff__c = uas.Opportunity__r.NMC_Tariff__c;
-                    so.Value_of_NMC__c = uas.Opportunity__r.NMC_Tariff__r.Value_of_NMC__c;
-                }
-                if (so.Approval_Status__c == 'Approved') {
-                    // Only want to set to "Approved" if we are confident the formulas and calculations were successful
-                    // A SO is set to "Approved" in the after trigger context with stampApprovedValues()
-                    // but do not want to throw error if a DataLoad or Test class inserts SOs as "Approved"
-                    so.Approval_Status__c = null;
-                }
+            so.Previous_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c;
+            so.Previous_Annual_kwh__c = uas.Annual_kWh_Subscription_Future_Rollup__c;
+            so.Previous_kw_DC_Subscription__c = uas.Future_Customer_Subscription_KWDC_Rollup__c;
+            so.Previous_Percent_Share_of_System__c = uas.Future_Share_of_System_Rollup__c;
+            so.Client_Account__c = uas.Shared_Solar_System__r.Client_Account__c;
+            so.Expected_Yield_kWh_kW__c = uas.Shared_Solar_System__r.Expected_Yield_kWh_kW__c;
+            so.Total_System_Size_kW_DC__c = uas.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
+            so.Utility_Number_of_Decimal_Places__c = uas.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c;
+            so.Product__c = uas.Opportunity__r.Product__c;
+            so.Utility_NMC_Tariff__c = uas.Sizing_Method__c;
+            so.Value_of_NMC__c = uas.Sizing_Method__r.Value_of_NMC__c;
+            so.Size_Ratio__c = uas.Sizing_Method__r.Size_Ratio__c;
+            if (so.Approval_Status__c == 'Approved') {
+                // Only want to set to "Approved" if we are confident the formulas and calculations were successful
+                // A SO is set to "Approved" in the after trigger context with stampApprovedValues()
+                // but do not want to throw error if a DataLoad or Test class inserts SOs as "Approved"
+                so.Approval_Status__c = null;
             }
         }
     }
@@ -117,6 +71,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
 
         try {
             publishSubscriptionOrderChangeEvents(sOrdersToApprove);
+            ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(soMap.keySet());
         } catch (Exception e) {
             Logger.logNow(
                 'SubscriptionManagementService',
@@ -124,17 +79,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 'Did not publish subscription change events, or set CFDs on these SOs:\n' + JSON.serialize(soMap.keySet()) + '\n' +
                     e.getMessage() + '\n' + e.getStackTraceString(),
                 Logger.ERROR);
-            return;
-        }
-
-        try {
-            ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(soMap.keySet());
-        } catch (Exception excep){
-            String errorMessage = 'Could not run ClientInvoicingFeeAssignmentService ' +
-                excep.getStackTraceString() + ' ' +
-                excep.getMessage() + ' ' +
-                JSON.serialize(soMap.keySet());
-            Logger.logNow('SubscriptionManagementService', 'setSubOrderContractFeeDetailInFuture', errorMessage);
         }
     }
 
@@ -151,10 +95,12 @@ public without sharing class SubscriptionManagementService implements Queueable{
             }
             so.Approved_Change_in_Percent_Share__c = so.System_Change_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
             so.Approved_Change_in_Subscription__c = so.System_Change_kW_DC_Rounded__c - so.Previous_kw_DC_Subscription__c;
-            if (so.Product__r.Customer_Subscription_Type__c == 'kWh') {
-                so.Change_in_Annual_kWh__c = so.New_Annual_kWh__c - so.Previous_Annual_kwh__c;
-            } else {
-                so.Change_in_Annual_Cost__c = so.New_Annual_Cost__c - so.Previous_Annual_Cost__c;
+            switch on so.Product__r.Customer_Subscription_Type__c {
+                when 'kWh' {
+                    so.Change_in_Annual_kWh__c = so.New_Annual_kWh__c - so.Previous_Annual_kwh__c;
+                } when else {
+                    so.Change_in_Annual_Cost__c = so.New_Annual_Cost__c - so.Previous_Annual_Cost__c;
+                }
             }
             so.Approval_Status__c = 'Approved';
         }
@@ -197,14 +143,10 @@ public without sharing class SubscriptionManagementService implements Queueable{
                 Utility_Account_Subscription__c = uas.Id,
                 Effective_Date__c = System.now(),
                 New_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
-                New_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c
+                New_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
+                Shared_Solar_System_Order__c = ssso?.Id,
+                Type__c = (ssso != null) ? 'Shared Solar System Update' : 'Resize'
             );
-            if (ssso != null) {
-                so.Type__c = 'Shared Solar System Update';
-                so.Shared_Solar_System_Order__c = ssso.Id;
-            } else {
-                so.Type__c = 'Resize';
-            }
             soList.add(so);
         }
         return soList;
@@ -222,60 +164,6 @@ public without sharing class SubscriptionManagementService implements Queueable{
 
 
     /**
-     * When the SSS on an Opportunity changes, the existing subscription must be zeroed (via SO) and set to Inactive. A clone is
-     * then created with the same subscription (via SO) and assigned to the new SSS.
-     */
-    @TestVisible
-    private void transferSubscriptionsOnSSSChange() {
-        //Get all createable fields for Active Subscriptions - if we add more fields later, this query will still grab them
-        List<Utility_Account_Subscription__c> uasList = uasSelector.getUASForCloneByOpp(oppIdsWithChangedSSS);
-        Map<Id, Opportunity> oppMap = oppSelector.selectOpportunityMap(oppIdsWithChangedSSS);
-        for (Utility_Account_Subscription__c uas : uasList) {
-            Utility_Account_Subscription__c cloneUAS = uas.clone(false, true, false, false );
-            cloneUAS.Shared_Solar_System__c = oppMap.get(uas.Opportunity__c).Shared_Solar_System__c;
-            String comments = 'UAS created as transfer from  ' + uas.Shared_Solar_System__r.Name + ' to ' +
-                oppMap.get(uas.Opportunity__c).Shared_Solar_System__r.Name + '; ' +
-                (cloneUAS.Subscription_Comment_c__c != NULL ? cloneUAS.Subscription_Comment_c__c : '' );
-            cloneUAS.Subscription_Comment_c__c = (comments.length() >= 255 ?  comments.substring(0, 255) : comments);
-            upsertUASes.add(cloneUAS);
-            CSUtilityAccountSubscriptionFactory.UASOrder uasOrder = new CSUtilityAccountSubscriptionFactory.UASOrder();
-            uasOrder.uas = cloneUAS;
-            Subscription_Order__c so = new Subscription_Order__c(
-                Type__c = 'Transfer',
-                New_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
-                New_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
-                Approval_Status__c = 'Approved',
-                Effective_Date__c = System.now()
-            );
-            uasOrder.sOrder = so;
-            uasOrders.add(uasOrder);
-            uas.Next_Schedule_Z_Status__c = 'Inactive Subscription';
-            upsertUASes.add(uas);
-        }
-        soInsertList.addAll(zeroSubscriptions(uasList, 'Transfer'));
-    }
-
-    public List<Subscription_Order__c> zeroSubscriptions(List<Utility_Account_Subscription__c> uasList, String zeroType) {
-        List<Subscription_Order__c> zeroedSOs = new List<Subscription_Order__c>();
-        for (Utility_Account_Subscription__c uas : uasList) {
-            Subscription_Order__c zeroedSO = new Subscription_Order__c(
-                Type__c = zeroType,
-                Approval_Status__c = 'Approved',
-                Effective_Date__c = System.now(),
-                Utility_Account_Subscription__c = uas.Id,
-                Comments__c = 'Subscription Order was created to zero out UAS'
-            );
-            if (uas.Subscription_Type__c == 'kWh') {
-                zeroedSO.New_Annual_kWh__c = 0;
-            } else {
-                zeroedSO.New_Annual_Cost__c = 0;
-            }
-            zeroedSOs.add(zeroedSO);
-        }
-        return zeroedSOs;
-    }
-
-    /**
         * @description In order to get the related Opportunity from the deleted Subscription Orders and UASes, we have to query
         * for the related UAS (as the relationships for the deleted record have already been removed). Method publishes
         * platform event for Opportunity to reevaluate subscription totals
@@ -286,7 +174,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
     public void publishSubscriptionOrderChangeEventsOnDelete(List<Subscription_Order__c> subscriptionOrders, Map<Id, Utility_Account_Subscription__c> deletedUASMap) {
         Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>();
         if (deletedUASMap == null) {
-            uasMap = UASSelector.getUASMap(new Set<Id>{subscriptionOrders[0].Utility_Account_Subscription__c});
+            uasMap = uasSelector.getUASMap(new Set<Id>{subscriptionOrders[0].Utility_Account_Subscription__c});
         } else {
             uasMap = deletedUASMap;
         }
@@ -330,10 +218,9 @@ public without sharing class SubscriptionManagementService implements Queueable{
      * @param changeEvents Subscription Order Change Events with Opportunity Ids to evaluate
      */
     public void handleSubscriptionOrderChangeEvents(List<Subscription_Order_Change_Event__e> changeEvents) {
-        Set<Id> oppIds = new Set<Id>();
-        for (Subscription_Order_Change_Event__e event : changeEvents) {
-            oppIds.add(event.Opportunity_Id__c);
-        }
+        Set<Object> opportunityIds =
+            CollectionUtil.multiMapByField(changeEvents, Subscription_Order_Change_Event__e.Opportunity_Id__c).keySet();
+        Set<Id> oppIds = CollectionUtil.toIds(opportunityIds);
         Map<Id, Decimal> oppSubscriptionMap = oppSelector.getAggregateOpportunitySubscriptions(oppIds);
         List<Opportunity> oppsToUpdate = new List<Opportunity>();
         for (Id oppId : oppIds) {
@@ -352,16 +239,10 @@ public without sharing class SubscriptionManagementService implements Queueable{
      * TEST ONLY METHOD TO CREATE SUBSCRIPTION ORDERS EVERY TIME A UAS IS INSERTED IN A TEST SETUP METHOD
      *****************************************************************************************************/
     public void insertSubscriptionOrdersForTests(List<Utility_Account_Subscription__c> uasList) {
-        List<Subscription_Order__c> soList = createSubscriptionOrdersForTests(uasList);
-        insert soList;
-    }
-    public List<Subscription_Order__c> createSubscriptionOrdersForTests(List<Utility_Account_Subscription__c> uasList) {
-        List<Subscription_Order__c> soInserts = new List<Subscription_Order__c>();
-        Set<Id> oppIds = new Set<Id>();
+        List<Subscription_Order__c> soList = new List<Subscription_Order__c>();
         //Do not want to create subscription orders for the leads that have undergone Conversion (automatically get SOs)
-        for (Utility_Account_Subscription__c uas : uasList) {
-            oppIds.add(uas.Opportunity__c);
-        }
+        Set<Object> opportunityKeys = CollectionUtil.multiMapByField(uasList, Utility_Account_Subscription__c.Opportunity__c).keySet();
+        Set<Id> oppIds = CollectionUtil.toIds(opportunityKeys);
         Map<Id, Opportunity> oppToSOMap = oppSelector.getOppsForTestMethods(oppIds);
         for (Utility_Account_Subscription__c uas : uasList) {
             //Do not want to create "Initial" subscription orders for uases inserted as a result of SSS change on Opp
@@ -371,14 +252,16 @@ public without sharing class SubscriptionManagementService implements Queueable{
                     Type__c = 'Initial',
                     Effective_Date__c = System.now()
                 );
-                if (uas.Subscription_Type__c == 'kWh') {
-                    so.New_Annual_kWh__c = uas.Annual_kwh_subscription_future__c;
-                } else {
-                    so.New_Annual_Cost__c = uas.Subscribed_Annual_Cost_of_Electricity__c;
+                switch on uas.Subscription_Type__c {
+                    when 'kWh' {
+                        so.New_Annual_kWh__c = uas.Annual_kwh_subscription_future__c;
+                    } when else {
+                        so.New_Annual_Cost__c = uas.Subscribed_Annual_Cost_of_Electricity__c;
+                    }
                 }
-                soInserts.add(so);
+                soList.add(so);
             }
         }
-        return soInserts;
+        insert soList;
     }
 }

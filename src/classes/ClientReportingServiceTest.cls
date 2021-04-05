@@ -362,8 +362,8 @@ public with sharing class ClientReportingServiceTest {
             WHERE Id != :opp.Shared_Solar_System__c
             LIMIT 1
         ];
-        opp.Shared_Solar_System__c = sss2.Id;
-        update opp;
+        SubscriptionTransferService subscriptionTransferService = new SubscriptionTransferService();
+        subscriptionTransferService.changeOpportunitySSS(opp.Id, sss2.Id);
         Test.stopTest();
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Shared_Solar_System_Name__c, Shared_Solar_System__r.Name, Next_Schedule_Z_Status__c, Subscription_Comment_c__c
