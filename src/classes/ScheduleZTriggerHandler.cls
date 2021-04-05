@@ -12,6 +12,8 @@ public without sharing class ScheduleZTriggerHandler {
     private static UASSelector uasSelector = new UASSelector();
     @TestVisible
     private static CustomerAssignmentService customerAssignmentService = new CustomerAssignmentService();
+    @TestVisible
+    private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
 
     /**
      * @description For newly enacted Schedule Zs, we want to set the previous Schedule Z to retired, and update any UASes that
@@ -35,7 +37,7 @@ public without sharing class ScheduleZTriggerHandler {
             }
         }
 
-        List<Shared_Solar_System__c> sharedSolarSystemsWithEnactedSZs = new SharedSolarSystemsSelector().getSharedSolarSystemsWithEnactedSZs(systemIdsWithEnactedSZs);
+        List<Shared_Solar_System__c> sharedSolarSystemsWithEnactedSZs = sssSelector.getSharedSolarSystemsWithEnactedSZs(systemIdsWithEnactedSZs);
         retireUASesAndScheduleZs(sharedSolarSystemsWithEnactedSZs);
 
         List<Utility_Account_Subscription__c> uasesToUpdate = matchALSSToUAS(enactedScheduleZS);
