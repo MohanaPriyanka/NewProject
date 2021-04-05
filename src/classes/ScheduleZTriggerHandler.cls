@@ -141,13 +141,14 @@ public without sharing class ScheduleZTriggerHandler {
         }
 
         List<Schedule_Z_Subscription__c> szsToInsert = createSubscriptions(scheduleZMap, sssToSubscriptions);
+        List<Contract> contractsToUpdate = customerAssignmentService.generateAddendumsFromSubscriptions(accountSubscriptions);
         try {
             insert szsToInsert;
+            update contractsToUpdate;
         } catch (Exception e) {
-            Logger.logNow('ScheduleZTriggerHandler', 'insertSubscriptionsForNewALS', 'Failed to insert ALSS due to error: '
+            Logger.logNow('ScheduleZTriggerHandler', 'insertSubscriptionsForNewALS', 'Failed to insert ALSS or update Contracts due to error: '
                 + e.getMessage() + '\n' + e.getStackTraceString());
         }
-        customerAssignmentService.generateAddendumsFromSubscriptions(accountSubscriptions);
     }
 
     private List<Schedule_Z_Subscription__c> createSubscriptions(Map<Id, Schedule_Z__c> scheduleZMap, MultiMap sssToSubscriptions) {

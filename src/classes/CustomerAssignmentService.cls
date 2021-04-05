@@ -128,7 +128,7 @@ public without sharing class CustomerAssignmentService {
     * after they have been assigned) after a Allocation Schedule has been created
     * @param uasList List of Subscriptions from an Allocation Schedule
     */
-    public void generateAddendumsFromSubscriptions(List<Utility_Account_Subscription__c> uasList) {
+    public List<Contract> generateAddendumsFromSubscriptions(List<Utility_Account_Subscription__c> uasList) {
         Set<Id> contractIds = new Set<Id>();
         for (Utility_Account_Subscription__c uas : uasList) {
             contractIds.add(uas.Opportunity__r.ContractId);
@@ -139,13 +139,7 @@ public without sharing class CustomerAssignmentService {
             contract.Generate_Addendum__c = true;
         }
 
-        GenericBatchDMLOperation batchUpdate = new GenericBatchDMLOperation(contractsToUpdate, 'Update');
-        try {
-            Database.executeBatch(batchUpdate);
-        } catch (Exception e) {
-            Logger.logNow('CustomerAssignmentService', 'generateAddendumsFromSubscriptions',
-                e.getMessage() + '\n' + e.getStackTraceString());
-        }
+       return contractsToUpdate;
     }
 
     /**
