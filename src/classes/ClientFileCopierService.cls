@@ -64,10 +64,11 @@ public without sharing class ClientFileCopierService {
             } else {
                 parentIdToFileNames.put(uas.Opportunity__r.Personal_Credit_Report2__c,new List<String>{fileName});
             }
-            if (parentIdToFileNames.containsKey(uas.Opportunity__r.ContractId)){
-                parentIdToFileNames.get(uas.Opportunity__r.ContractId).add(fileName);
+            Id contractId = uas.Opportunity__r.Contract.Parent_Contract__c != null ? uas.Opportunity__r.Contract.Parent_Contract__c : uas.Opportunity__r.ContractId;
+            if (parentIdToFileNames.containsKey(contractId)) {
+                parentIdToFileNames.get(contractId).add(fileName);
             } else {
-                parentIdToFileNames.put(uas.Opportunity__r.ContractId,new List<String>{fileName});
+                parentIdToFileNames.put(contractId, new List<String>{fileName});
             }
         }
         return parentIdToFileNames;
@@ -81,7 +82,9 @@ public without sharing class ClientFileCopierService {
         if (docType == CUSTOMER_AGREEMENT || docType == DISCLOSURE){
             List<Contract> contracts = contractSelector.getCustomerContractsByAssignmentAgreement(assignmentAgreementId);
             for (Contract contract : contracts){
-                parentRecordIds.add(contract.Id);
+                //Only need to send Generic Contract (Parent Contract) and not Project Specific Addendum
+                Id parentRecordId = contract.Parent_Contract__c != null ? contract.Parent_Contract__c : contract.Id;
+                parentRecordIds.add(parentRecordId);
             }
         } else if (docType == CREDIT_REPORT) {
             List<Opportunity> oppList = oppSelector.getCustomerOpportunitiesByAssignmentAgreement(assignmentAgreementId);
