@@ -764,20 +764,6 @@
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Interconnection__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <description>Temp - in order to remove former Interconnection M-D from promotions. Delete this field in a later promotion.</description>
-        <externalId>false</externalId>
-        <label>Interconnection</label>
-        <referenceTo>Interconnection__c</referenceTo>
-        <relationshipLabel>Incentives</relationshipLabel>
-        <relationshipName>Incentives</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Market_Sector__c</fullName>
         <externalId>false</externalId>
         <label>Market Sector</label>
