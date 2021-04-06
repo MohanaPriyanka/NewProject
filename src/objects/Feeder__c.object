@@ -52,7 +52,6 @@ If a new Feeder Utility and Voltage needs to be added:
 2) Edit the field &apos;Assumed Remaining Capacity&apos; by editing the formula and adding an additional line for the &apos;if&apos; scenario related to the new utility and voltage that was added in step one, and enter an assumed total distributed generation capacity for that specific utility and voltage line in kW</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -289,9 +288,9 @@ If a new Feeder Utility and Voltage needs to be added:
     <fields>
         <fullName>Project__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
-        <description>AB aiming to associate a Project with a Feeder via the Project Name lookup field</description>
+        <description>Deprecated - use FeederProjectAssociation. AB aiming to associate a Project with a Feeder via the Project Name lookup field</description>
         <externalId>false</externalId>
-        <label>Project</label>
+        <label>xxxProject</label>
         <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
         <relationshipLabel>Feeders</relationshipLabel>
         <relationshipName>Feeders</relationshipName>
@@ -423,7 +422,7 @@ If a new Feeder Utility and Voltage needs to be added:
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
