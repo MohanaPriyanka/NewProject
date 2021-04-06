@@ -233,16 +233,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Case_Alert_Status__c</field>
-            <table>Case</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>Case_Alerts__c</field>
-            <table>Case</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>Expand__c</field>
             <table>Case</table>
         </columns>
@@ -289,11 +279,6 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>Unread_Messages__c</field>
-            <table>Case</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>Case_Alerts_Text__c</field>
             <table>Case</table>
         </columns>
         <columns>
