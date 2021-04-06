@@ -48,7 +48,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void changeNMCTariff(Set<Id> oppIds) {
         List<Utility_Account_Subscription__c> uases = uasSelector.selectByOpp(oppIds);
-        List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uases, null);
+        List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uases, null, null);
         if (soList.size() > 0 ) {
             insert soList;
         }
@@ -171,7 +171,7 @@ public without sharing class SubscriptionManagementService implements Queueable{
             Shared_Solar_System__c sss = updateSSSFromSSSO(ssso);
             sssToUpdate.add(sss);
             List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{ssso.Shared_Solar_System__c});
-            List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uasList, ssso);
+            List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uasList, ssso, null);
             soListToInsert.addAll(soList);
         }
         update sssToUpdate;
@@ -190,14 +190,15 @@ public without sharing class SubscriptionManagementService implements Queueable{
         return sssToUpdate;
     }
 
-    public List<Subscription_Order__c> createSystemChangeSubscriptionOrders(List<Utility_Account_Subscription__c> uasList, Shared_Solar_System_Order__c ssso) {
+    public List<Subscription_Order__c> createSystemChangeSubscriptionOrders(List<Utility_Account_Subscription__c> uasList, Shared_Solar_System_Order__c ssso, String soComments) {
         List<Subscription_Order__c> soList = new List<Subscription_Order__c>();
         for (Utility_Account_Subscription__c uas : uasList) {
             Subscription_Order__c so = new Subscription_Order__c(
                 Utility_Account_Subscription__c = uas.Id,
                 Effective_Date__c = System.now(),
                 New_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
-                New_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c
+                New_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
+                Comments__c = soComments
             );
             if (ssso != null) {
                 so.Type__c = 'Shared Solar System Update';
