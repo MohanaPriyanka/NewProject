@@ -1,5 +1,5 @@
 /**
- * Created by SarahRenfro on 11/15/2019.
+ * @description Created by SarahRenfro on 11/15/2019.
  *
  * Description: Used to create/update/insert Subscription Orders and Shared Solar System Orders
  *
@@ -15,6 +15,8 @@ public without sharing class SubscriptionManagementService {
     private static SubscriptionOrderSelector soSelector = new SubscriptionOrderSelector();
     @TestVisible
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+
+
 
     public void populateSubscriptionOrder(List<Subscription_Order__c> soList) {
         Map<Id, SObject> subscriptionOrdersByUASId =
@@ -117,7 +119,7 @@ public without sharing class SubscriptionManagementService {
             Shared_Solar_System__c sss = updateSSSFromSSSO(ssso);
             sssToUpdate.add(sss);
             List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{ssso.Shared_Solar_System__c});
-            List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uasList, ssso);
+            List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uasList, ssso, null);
             soListToInsert.addAll(soList);
         }
         update sssToUpdate;
@@ -136,7 +138,7 @@ public without sharing class SubscriptionManagementService {
         return sssToUpdate;
     }
 
-    public List<Subscription_Order__c> createSystemChangeSubscriptionOrders(List<Utility_Account_Subscription__c> uasList, Shared_Solar_System_Order__c ssso) {
+    public List<Subscription_Order__c> createSystemChangeSubscriptionOrders(List<Utility_Account_Subscription__c> uasList, Shared_Solar_System_Order__c ssso, String soComments) {
         List<Subscription_Order__c> soList = new List<Subscription_Order__c>();
         for (Utility_Account_Subscription__c uas : uasList) {
             Subscription_Order__c so = new Subscription_Order__c(
@@ -145,7 +147,8 @@ public without sharing class SubscriptionManagementService {
                 New_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
                 New_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
                 Shared_Solar_System_Order__c = ssso?.Id,
-                Type__c = (ssso != null) ? 'Shared Solar System Update' : 'Resize'
+                Type__c = (ssso != null) ? 'Shared Solar System Update' : 'Resize',
+                Comments__c = soComments
             );
             soList.add(so);
         }

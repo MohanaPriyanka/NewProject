@@ -1,5 +1,5 @@
 /**
- * Created by SarahRenfro on 11/15/2019.
+ * @description Created by SarahRenfro on 11/15/2019.
  */
 @SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
@@ -41,7 +41,10 @@ public class SubscriptionManagementServiceTest {
         insert new List<Shared_Solar_System_Order__c>{sssoSize, sssoUpdate};
     }
 
+
+
     @IsTest
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     static void testSubscriptionOrderInsert() {
         useMocks(true);
         Subscription_Order__c so = new Subscription_Order__c(
@@ -155,7 +158,7 @@ public class SubscriptionManagementServiceTest {
         UASSelector uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{ssso.Shared_Solar_System__c});
         SubscriptionManagementService service = new SubscriptionManagementService();
-        List<Subscription_Order__c> soToInsert = service.createSystemChangeSubscriptionOrders(uasList, ssso);
+        List<Subscription_Order__c> soToInsert = service.createSystemChangeSubscriptionOrders(uasList, ssso, null);
         System.assertEquals(2, soToInsert.size());
     }
     @IsTest
@@ -164,7 +167,7 @@ public class SubscriptionManagementServiceTest {
         SubscriptionManagementService service = new SubscriptionManagementService();
         UASSelector uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         List<Utility_Account_Subscription__c> mockUASes = uasSelector.selectByOpp(null);
-        List<Subscription_Order__c> checkSOs = service.createSystemChangeSubscriptionOrders(mockUASes, null);
+        List<Subscription_Order__c> checkSOs = service.createSystemChangeSubscriptionOrders(mockUASes, null, null);
         System.assertEquals(2, checkSOs.size());
         System.assertEquals('Resize', checkSOs[0].Type__c);
         System.assertEquals(null, checkSOs[0].Shared_Solar_System_Order__c);
@@ -193,13 +196,15 @@ public class SubscriptionManagementServiceTest {
         }
     }
 
+
+
     private static void useMocks(Boolean featureOn) {
-        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
         SubscriptionManagementService.uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         SubscriptionManagementService.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockSSSSelector());
         SubscriptionManagementService.soSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSOSelector());
         SubscriptionManagementService.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
     }
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     public class MockSSSSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             return new Shared_Solar_System__c(
@@ -376,6 +381,7 @@ public class SubscriptionManagementServiceTest {
             return null;
         }
     }
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     public class MockOppSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             Opportunity opp = new Opportunity(

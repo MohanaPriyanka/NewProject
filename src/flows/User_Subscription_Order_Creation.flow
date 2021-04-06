@@ -48,7 +48,13 @@
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>uasList</name>
+            <name>soComments</name>
+            <value>
+                <elementReference>var_SOComments</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>uasListToUpdate</name>
             <value>
                 <elementReference>socv_UAS</elementReference>
             </value>

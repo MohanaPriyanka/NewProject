@@ -111,17 +111,34 @@ private with sharing class CSApplicationStatusEvaluatorTest {
         List<Application_Status_Change__e> applicationStatusChanges = new List<Application_Status_Change__e>{
             new Application_Status_Change__e(LeadId__c = Util.getFakeId(Lead.SObjectType))
         };
-        List<CronTrigger> cronTriggers = [SELECT Id FROM CronTrigger WHERE CreatedDate >= :testStarted];
-        System.assertEquals(0, cronTriggers.size(), 'There should be no scheduled jobs created since this test started, but got: ' + cronTriggers);
+        List<CronTrigger> cronTriggers = [
+            SELECT Id
+            FROM CronTrigger
+            WHERE CronJobDetail.Name LIKE '%ApplicationStatusChangeEvaluatorAutoSchedule%'
+            AND CreatedDate >= :testStarted
+        ];
+        System.assertEquals(0, cronTriggers.size(),
+            'There should be no ApplicationStatusChangeEvaluatorAutoSchedule jobs created since this test started, but got: ' + cronTriggers);
         Test.startTest();
         CSApplicationStatusEvaluator evaluator = new CSApplicationStatusEvaluator(applicationStatusChanges);
         evaluator.updatePartnerApplicationStatus();
 
-        cronTriggers = [SELECT Id, CronJobDetail.Name FROM CronTrigger WHERE CreatedDate >= :testStarted];
+        cronTriggers = [
+            SELECT Id
+            FROM CronTrigger
+            WHERE CronJobDetail.Name LIKE '%ApplicationStatusChangeEvaluatorAutoSchedule%'
+            AND CreatedDate >= :testStarted
+        ];
         System.assertEquals(1, cronTriggers.size(), 'Should have scheduled the evaluator since the mock threw a Record Currently Unavailable exception');
         System.assert(cronTriggers[0].CronJobDetail.Name.contains('ApplicationStatusChangeEvaluatorAutoSchedule'), 'Cron trigger name should contain auto schedule: ' + cronTriggers[0].CronJobDetail.Name);
         Test.stopTest();
-        cronTriggers = [SELECT Id, CronJobDetail.Name FROM CronTrigger WHERE CreatedDate >= :testStarted AND Id != :cronTriggers[0].Id];
+        cronTriggers = [
+            SELECT Id, CronJobDetail.Name
+            FROM CronTrigger
+            WHERE CronJobDetail.Name = '%ApplicationStatusChangeEvaluatorAutoSchedule%'
+            AND CreatedDate >= :testStarted
+            AND Id != :cronTriggers[0].Id
+        ];
         System.assertEquals(1, cronTriggers.size(), 'Expected the evaluator to schedule a new job if the record is still unavailable');
     }
 
