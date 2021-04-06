@@ -907,6 +907,16 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>Generate_Addendum__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Generates Project Specific Addendum for Contract (MA only)</inlineHelpText>
+        <label>Generate Addendum</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Generate_Countersigned_Version__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

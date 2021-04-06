@@ -86,6 +86,18 @@
         <useDeadLetterQueue>false</useDeadLetterQueue>
     </outboundMessages>
     <outboundMessages>
+        <fullName>Generate_Addendum_Documents</fullName>
+        <apiVersion>51.0</apiVersion>
+        <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
+        <fields>Conga_Addendum__c</fields>
+        <fields>Id</fields>
+        <includeSessionId>true</includeSessionId>
+        <integrationUser>srenfro18@bluewavesolar.com</integrationUser>
+        <name>Generate Addendum Documents</name>
+        <protected>false</protected>
+        <useDeadLetterQueue>false</useDeadLetterQueue>
+    </outboundMessages>
+    <outboundMessages>
         <fullName>Generate_Review_Version</fullName>
         <apiVersion>48.0</apiVersion>
         <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
@@ -121,6 +133,20 @@
         <protected>false</protected>
         <useDeadLetterQueue>false</useDeadLetterQueue>
     </outboundMessages>
+    <rules>
+        <fullName>Generate Addendum Documents</fullName>
+        <actions>
+            <name>Generate_Addendum_Documents</name>
+            <type>OutboundMessage</type>
+        </actions>
+        <active>false</active>
+        <criteriaItems>
+            <field>Contract.Generate_Addendum__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
     <rules>
         <fullName>Generate Review Version</fullName>
         <actions>
