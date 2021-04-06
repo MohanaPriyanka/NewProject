@@ -130,12 +130,11 @@ private with sharing class CSApplicationStatusEvaluatorTest {
             AND CreatedDate >= :testStarted
         ];
         System.assertEquals(1, cronTriggers.size(), 'Should have scheduled the evaluator since the mock threw a Record Currently Unavailable exception');
-        System.assert(cronTriggers[0].CronJobDetail.Name.contains('ApplicationStatusChangeEvaluatorAutoSchedule'), 'Cron trigger name should contain auto schedule: ' + cronTriggers[0].CronJobDetail.Name);
         Test.stopTest();
         cronTriggers = [
             SELECT Id, CronJobDetail.Name
             FROM CronTrigger
-            WHERE CronJobDetail.Name = '%ApplicationStatusChangeEvaluatorAutoSchedule%'
+            WHERE CronJobDetail.Name LIKE '%ApplicationStatusChangeEvaluatorAutoSchedule%'
             AND CreatedDate >= :testStarted
             AND Id != :cronTriggers[0].Id
         ];
