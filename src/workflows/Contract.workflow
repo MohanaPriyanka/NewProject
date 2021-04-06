@@ -92,7 +92,7 @@
         <fields>Conga_Addendum__c</fields>
         <fields>Id</fields>
         <includeSessionId>true</includeSessionId>
-        <integrationUser>srenfro18@bluewavesolar.com</integrationUser>
+        <integrationUser>api@bluewavesolar.com</integrationUser>
         <name>Generate Addendum Documents</name>
         <protected>false</protected>
         <useDeadLetterQueue>false</useDeadLetterQueue>
@@ -139,7 +139,7 @@
             <name>Generate_Addendum_Documents</name>
             <type>OutboundMessage</type>
         </actions>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Contract.Generate_Addendum__c</field>
             <operation>equals</operation>
