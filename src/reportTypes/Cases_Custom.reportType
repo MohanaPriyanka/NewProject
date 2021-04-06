@@ -233,11 +233,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Case_Alert_Details__c</field>
-            <table>Case</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>Case_Alert_Status__c</field>
             <table>Case</table>
         </columns>
