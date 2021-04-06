@@ -13,8 +13,9 @@
         <faultConnector>
             <targetReference>ErrorScreen</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>uasList</name>
+            <name>uasListToUpdate</name>
             <value>
                 <elementReference>RateClassUASes</elementReference>
             </value>
@@ -188,6 +189,12 @@
         <name>BuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -452,6 +459,7 @@
                     <stringValue>Annual_kWh_Subscription_Future_Rollup__c</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -495,6 +503,7 @@
                     <stringValue>Utility_Account_Log__c</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>newRateClass</assignToReference>

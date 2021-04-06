@@ -14,18 +14,45 @@
 */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class InvocableSizingMethodRecalculation {
+    /**
+     * @description Creates Subscription Orders for a UAS after changing the sizing method
+     * @param uasInfo is a list with one UAStoUpdateInfo object 
+     * The UAStoUpdateInfo object consists of the UAS to update and comments that should go on the related Subscription
+     */
     @InvocableMethod(label='Change Sizing Method for Subscriptions')
-    public static void recalculateSubscriptionWithSizingMethod(List<List<Utility_Account_Subscription__c>> uasList) {
+    public static void recalculateSubscriptionWithSizingMethod(List<UAStoUpdateInfo> uasInfo) {
+        UAStoUpdateInfo infoObject = uasInfo[0];
+        List<Utility_Account_Subscription__c> uasList = (infoObject.uasListToUpdate);
+        String soCommentsToInsert = infoObject.soComments;
+
         try {
-            FeatureService featureService = new FeatureService();
             SubscriptionManagementService service = new SubscriptionManagementService();
-            List<Subscription_Order__c> soList =  service.createSystemChangeSubscriptionOrders(uasList[0], null);
-            if (featureService.isEnabled('Sizing_Method')) {
-                insert soList;
-            }
+            List<Subscription_Order__c> soList =  service.createSystemChangeSubscriptionOrders(uasList, null, soCommentsToInsert);
+            insert soList;
         } catch (Exception e) {
             Logger.logNow('InvocableSizingMethodRecalculation', 'recalculateSubscriptionWithSizingMethod', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
             throw new Util.BWException('Failed to create a Subscription Order to reflect the change in Sizing Method. Confirm the new Sizing Method has the appropriate size factor populated (Size Ratio or Value of NMC)');
+        }
+    }
+    
+    public class UAStoUpdateInfo {
+        @InvocableVariable( Label='UAS Collection to Update'
+                            description='Collection of UAS\'s to update Sizing Method'
+                            required=true)
+        public List<Utility_Account_Subscription__c> uasListToUpdate;
+
+        @InvocableVariable( Label ='SO Comment'
+                            description='Comments to add to SO\'s that are created')
+        public String soComments;
+
+        @SuppressWarnings('PMD.EmptyStatementBlock')
+        public UAStoUpdateInfo(){
+            // Invocable types need a no-arg constructor
+        }
+
+        public UAStoUpdateInfo(List<Utility_Account_Subscription__c> uasListToUpdate, String soComments){
+            this.uasListToUpdate = uasListToUpdate;
+            this.soComments = soComments;
         }
     }
 }

@@ -11,7 +11,6 @@ public with sharing class SubscriptionSizingTestclass {
 
     @TestSetup
     public static void testSetup() {
-        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(true));
 
         Id partnerAccountRTID = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId();
         Account partnerAccount = new Account(
@@ -214,7 +213,6 @@ public with sharing class SubscriptionSizingTestclass {
             System_Assignment__c = 'Automatic - Assignment Order'));
         insert switchLead;
 
-
         Opportunity opportunityA = new Opportunity(
             Name = 'Ashley Smith',
             Shared_Solar_System__c = kwhSSS.Id,
@@ -369,7 +367,6 @@ public with sharing class SubscriptionSizingTestclass {
         // transaction for platform events
         System.assertNotEquals(0, opp.Total_Subscribed_kW_DC__c);
 
-
         List<Subscription_Order__c> soList = [
             SELECT Id, Utility_Account_Subscription__r.Opportunity__r.Id
             FROM Subscription_Order__c
@@ -401,7 +398,6 @@ public with sharing class SubscriptionSizingTestclass {
         // Manually setting the Total Subscribed KW DC in testSetup above - can only run Test.start and stop once per
         // transaction for platform events
         System.assertEquals(6.998400, opp.Total_Subscribed_kW_DC__c);
-
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c
@@ -436,7 +432,6 @@ public with sharing class SubscriptionSizingTestclass {
         System.assertEquals(2, soList.size(), 'Resize Subscription Order should be inserted');
         System.assertEquals(9.3312, opp.Total_Subscribed_kW_DC__c,'Opportunity Total Subscribed kW DC should be updated via ' +
             'Subscription_Order_Change_Event');
-
     }
     @IsTest
     public static void testMultipleOpportunitySubscriptions() {
@@ -513,7 +508,15 @@ public with sharing class SubscriptionSizingTestclass {
         }
         update uasList;
         Test.startTest();
-        InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(new List<List<Utility_Account_Subscription__c>>{uasList});
+        InvocableSizingMethodRecalculation.UAStoUpdateInfo testInfo =
+            new InvocableSizingMethodRecalculation.UAStoUpdateInfo(
+                uasList,'Test Comment'
+            );
+        List<InvocableSizingMethodRecalculation.UAStoUpdateInfo> uasInfo =
+            new List<InvocableSizingMethodRecalculation.UAStoUpdateInfo>();
+        uasInfo.add(testInfo);
+        
+        InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(uasInfo);
         Test.stopTest();
 
         List<Subscription_Order__c> soOrders = new List<Subscription_Order__c>();
@@ -526,21 +529,15 @@ public with sharing class SubscriptionSizingTestclass {
             ORDER BY New_Annual_kWh__c ASC
         ];
 
-        FeatureService featureService = new FeatureService();
-        if (featureService.isEnabled('Sizing_Method')) {
-            System.assertEquals(2, soOrders.size());
-            System.assertEquals(sizingMethod.Id, soOrders[0].Utility_NMC_Tariff__c);
-            System.assertEquals(sizingMethod.Id, soOrders[1].Utility_NMC_Tariff__c);
-            System.assertEquals(1.5, soOrders[0].Size_Ratio__c);
-            System.assertEquals(1.5, soOrders[1].Size_Ratio__c);
-            System.assertEquals(7587, soOrders[0].New_Annual_kWh__c);
-            System.assertEquals(8.7480, soOrders[0].System_Change_kW_DC_Rounded__c);
-            System.assertEquals(14345, soOrders[1].New_Annual_kWh__c);
-            System.assertEquals(16.3296, soOrders[1].System_Change_kW_DC_Rounded__c);
-        } else {
-            System.assertEquals(0, soOrders.size(), 'When the Sizing_Method flag is turned off, we do not support changing' +
-                'the Sizing Method on UASes');
-        }
+        System.assertEquals(2, soOrders.size());
+        System.assertEquals(sizingMethod.Id, soOrders[0].Utility_NMC_Tariff__c);
+        System.assertEquals(sizingMethod.Id, soOrders[1].Utility_NMC_Tariff__c);
+        System.assertEquals(1.5, soOrders[0].Size_Ratio__c);
+        System.assertEquals(1.5, soOrders[1].Size_Ratio__c);
+        System.assertEquals(7587, soOrders[0].New_Annual_kWh__c);
+        System.assertEquals(8.7480, soOrders[0].System_Change_kW_DC_Rounded__c);
+        System.assertEquals(14345, soOrders[1].New_Annual_kWh__c);
+        System.assertEquals(16.3296, soOrders[1].System_Change_kW_DC_Rounded__c);
     }
 
     @IsTest
@@ -568,10 +565,17 @@ public with sharing class SubscriptionSizingTestclass {
         update uasList;
 
         Test.startTest();
+
+        InvocableSizingMethodRecalculation.UAStoUpdateInfo testInfo =
+            new InvocableSizingMethodRecalculation.UAStoUpdateInfo(
+                uasList,'Test Comment'
+            );
+        List<InvocableSizingMethodRecalculation.UAStoUpdateInfo> uasInfo =
+            new List<InvocableSizingMethodRecalculation.UAStoUpdateInfo>();
+        uasInfo.add(testInfo);
+
         try {
-            InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(new List<List<Utility_Account_Subscription__c>>{
-                uasList
-            });
+            InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(uasInfo);
             throw new Util.BWException('An exception should have been thrown because the Sizing Method is missing a Size Ratio');
         } catch (Exception e) {
             Boolean expectedExceptionThrown =  e.getMessage().contains('Failed to create a Subscription Order') ? true : false;
@@ -629,12 +633,8 @@ public with sharing class SubscriptionSizingTestclass {
             FROM Opportunity
             WHERE AccountId = :propertyAccount.Id
         ];
-        FeatureService featureService = new FeatureService();
-        if (featureService.isEnabled('Sizing_Method')) {
-            System.assertEquals(2, convertedOpps.size());
-        } else {
-            System.assertEquals(1, convertedOpps.size());
-        }
+        
+        System.assertEquals(2, convertedOpps.size());
         Test.stopTest();
 
         List<Utility_Account_Subscription__c> convertedUASes = [
@@ -643,24 +643,19 @@ public with sharing class SubscriptionSizingTestclass {
             FROM Utility_Account_Subscription__c
             WHERE Utility_Account_Log__c = :ual.Id
         ];
-        if (featureService.isEnabled('Sizing_Method')) {
-            System.assertEquals(2, convertedUASes.size());
-            for (Utility_Account_Subscription__c uas : convertedUASes) {
-                if (uas.Shared_Solar_System__r.Name == 'kWh Shared Solar System Two') {
-                    System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c, 'UAS should be stamped with Sizing Method from UALs Rate Class' );
-                    System.assertEquals(10866.67, uas.Annual_kWh_Subscription_Future_Rollup__c, 'Second UAS should be created as excess capacity from first SSS.');
-                    System.assertEquals(12.2472, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-                } else {
-                    System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c, 'UAS should be stamped with Sizing Method from UALs Rate Class');
-                    System.assertEquals(21933.33, uas.Annual_kWh_Subscription_Future_Rollup__c, 'First UAS should be maxed out by SSS max kWh after Rate Class Size Ratio has been applied.');
-                    System.assertEquals(25.0776, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-                }
+        System.assertEquals(2, convertedUASes.size());
+        for (Utility_Account_Subscription__c uas : convertedUASes) {
+            if (uas.Shared_Solar_System__r.Name == 'kWh Shared Solar System Two') {
+                System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c, 'UAS should be stamped with Sizing Method from UALs Rate Class' );
+                System.assertEquals(10866.67, uas.Annual_kWh_Subscription_Future_Rollup__c, 'Second UAS should be created as excess capacity from first SSS.');
+                System.assertEquals(12.2472, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+            } else {
+                System.assertEquals(rateClassR2.Utility_NMC_Tariff__c, uas.Sizing_Method__c, 'UAS should be stamped with Sizing Method from UALs Rate Class');
+                System.assertEquals(21933.33, uas.Annual_kWh_Subscription_Future_Rollup__c, 'First UAS should be maxed out by SSS max kWh after Rate Class Size Ratio has been applied.');
+                System.assertEquals(25.0776, uas.Future_Customer_Subscription_KWDC_Rollup__c);
             }
-        } else {
-            System.assertEquals(1, convertedUASes.size());
-            System.assertEquals(32800, convertedUASes[0].Annual_kWh_Subscription_Future_Rollup__c );
-            System.assertEquals(25.0776, convertedUASes[0].Future_Customer_Subscription_KWDC_Rollup__c);
         }
+    
 
         List<Subscription_Order__c> sOrders = [
             SELECT Id, Utility_NMC_Tariff__c, Size_Ratio__c, Utility_Account_Subscription__c, Utility_NMC_Tariff__r.Size_Ratio__c,
@@ -670,16 +665,13 @@ public with sharing class SubscriptionSizingTestclass {
             WHERE Utility_Account_Subscription__r.Utility_Account_Log__c = :ual.Id
         ];
 
-        if (featureService.isEnabled('Sizing_Method')) {
-            System.assertEquals(2, sOrders.size());
-            for (Subscription_Order__c so : sOrders) {
-                System.assertEquals(so.Utility_Account_Subscription__r.Sizing_Method__c, so.Utility_NMC_Tariff__c,
-                    'SO should be stamped with the Sizing Method from its UAS');
-                System.assertEquals(so.Utility_NMC_Tariff__r.Size_Ratio__c, so.Size_Ratio__c,
-                    'SO should be stamped with the Size Ratio from its Sizing Method');
-            }
-        } else {
-            System.assertEquals(1, sOrders.size());
+        
+        System.assertEquals(2, sOrders.size());
+        for (Subscription_Order__c so : sOrders) {
+            System.assertEquals(so.Utility_Account_Subscription__r.Sizing_Method__c, so.Utility_NMC_Tariff__c,
+                'SO should be stamped with the Sizing Method from its UAS');
+            System.assertEquals(so.Utility_NMC_Tariff__r.Size_Ratio__c, so.Size_Ratio__c,
+                'SO should be stamped with the Size Ratio from its Sizing Method');
         }
     }
 
@@ -715,8 +707,5 @@ public with sharing class SubscriptionSizingTestclass {
                 System.assertEquals(.28, uas.Future_Share_of_System_Rollup__c);
             }
         }
-    }
-    private static void useMocks(Boolean featureOn) {
-        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
     }
 }
