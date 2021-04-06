@@ -1,5 +1,6 @@
 /**
- * Created by PeterYao on 3/31/2021.
+ * @description Tests SubscriptionTransferCalculator, per
+ * https://github.com/BlueWaveFinanceGroup/SMP/files/6260320/SO.Math.xlsx
  */
 @IsTest
 public with sharing class SubscriptionTransferCalculatorTest {
@@ -17,8 +18,9 @@ public with sharing class SubscriptionTransferCalculatorTest {
         fabbedSizingMethod.setField(Utility_NMC_Tariff__c.Size_Ratio__c, 1.489);
         Utility_NMC_Tariff__c sizingMethod = (Utility_NMC_Tariff__c) fabbedSizingMethod.toSObject();
 
-        System.assertEquals(36113.32, new SubscriptionTransferCalculator().getAnnualkWh(sss, sizingMethod, 43.911414),
-            '');
+        System.assertEquals(36113.32, new SubscriptionTransferCalculator().getAnnualkWh(sss, sizingMethod, 43.911414, 0),
+            'A New_Annual_kWh__c of 36113 should result in an Approved_Change_in_Subscription__c of 43.860306 ' +
+                'which is just 0.051108 kWh from the desired 43.911414');
     }
 
     @IsTest
@@ -35,7 +37,7 @@ public with sharing class SubscriptionTransferCalculatorTest {
         fabbedSizingMethod.setField(Utility_NMC_Tariff__c.Value_of_NMC__c, .1686);
         Utility_NMC_Tariff__c sizingMethod = (Utility_NMC_Tariff__c) fabbedSizingMethod.toSObject();
 
-        System.assertEquals(5252.177025, new SubscriptionTransferCalculator().getAnnualCost(sss, sizingMethod, 25.005),
+        System.assertEquals(5252.177025, new SubscriptionTransferCalculator().getAnnualCost(sss, sizingMethod, 25.005, 0),
             'A New_Annual_Cost__c of 5252.177025 should result in an Approved_Change_in_Subscription__c of 24.9613 ' +
                 'which is just .0437 kWh from the desired 25.005');
     }
