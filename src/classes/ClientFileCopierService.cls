@@ -53,7 +53,6 @@ public without sharing class ClientFileCopierService {
     private Map<Id,List<String>> getFileNames(Id assignmentAgreementId, String docTypeAsString){
         Map<Id,List<String>> parentIdToFileNames = new Map<Id,List<String>>();
         List<Utility_Account_Subscription__c> uases = uasSelector.getUASesForAssignmentAgreement(assignmentAgreementId);
-
         for (Utility_Account_Subscription__c uas : uases){
             String fileName = uas.Opportunity__r.Shared_Solar_System__r.Name + ' - '
                 + docTypeAsString + ' - '
@@ -64,7 +63,8 @@ public without sharing class ClientFileCopierService {
             } else {
                 parentIdToFileNames.put(uas.Opportunity__r.Personal_Credit_Report2__c,new List<String>{fileName});
             }
-            Id contractId = uas.Opportunity__r.Contract.Parent_Contract__c != null ? uas.Opportunity__r.Contract.Parent_Contract__c : uas.Opportunity__r.ContractId;
+            //Customer Agreement is grabbed from Parent Contract when possible, otherwise files grabbed from Opp.Contract
+            Id contractId = docTypeAsString == 'Customer Agreement' && uas.Opportunity__r.Contract.Parent_Contract__c != null ? uas.Opportunity__r.Contract.Parent_Contract__c : uas.Opportunity__r.ContractId;
             if (parentIdToFileNames.containsKey(contractId)) {
                 parentIdToFileNames.get(contractId).add(fileName);
             } else {
@@ -82,8 +82,8 @@ public without sharing class ClientFileCopierService {
         if (docType == CUSTOMER_AGREEMENT || docType == DISCLOSURE){
             List<Contract> contracts = contractSelector.getCustomerContractsByAssignmentAgreement(assignmentAgreementId);
             for (Contract contract : contracts){
-                //Only need to send Generic Contract (Parent Contract) and not Project Specific Addendum
-                Id parentRecordId = contract.Parent_Contract__c != null ? contract.Parent_Contract__c : contract.Id;
+                //Only need to send Generic Contract (Parent Contract) and not Project Specific Addendum for Customer Agreements
+                Id parentRecordId = docType == CUSTOMER_AGREEMENT && contract.Parent_Contract__c != null ? contract.Parent_Contract__c : contract.Id;
                 parentRecordIds.add(parentRecordId);
             }
         } else if (docType == CREDIT_REPORT) {

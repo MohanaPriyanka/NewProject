@@ -48,7 +48,6 @@ public with sharing class ClientFileCopierServiceTest {
             FROM ContentDocumentLink
             WHERE LinkedEntityId = :afterFolders[0].Id
         ];
-
         // 7 Contracts, 1 doesn't have any files, 2 others have 2 UASes each = 7 - 1 + 2 = 8
         System.assertEquals(8, afterFiles.size());
     }
