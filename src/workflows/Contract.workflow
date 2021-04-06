@@ -89,9 +89,10 @@
         <fullName>Generate_Addendum_Documents</fullName>
         <apiVersion>51.0</apiVersion>
         <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
+        <fields>Conga_Addendum__c</fields>
         <fields>Id</fields>
         <includeSessionId>true</includeSessionId>
-        <integrationUser>srenfro18@bluewavesolar.com</integrationUser>
+        <integrationUser>api@bluewavesolar.com</integrationUser>
         <name>Generate Addendum Documents</name>
         <protected>false</protected>
         <useDeadLetterQueue>false</useDeadLetterQueue>

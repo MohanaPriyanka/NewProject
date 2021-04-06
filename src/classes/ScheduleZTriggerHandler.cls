@@ -9,19 +9,11 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ScheduleZTriggerHandler {
     @TestVisible
-    private static UASSelector uasSelector = new UASSelector();
-    @TestVisible
     private static CustomerAssignmentService customerAssignmentService = new CustomerAssignmentService();
-    @TestVisible
-    private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
 
-    /**
-     * @description For newly enacted Schedule Zs, we want to set the previous Schedule Z to retired, and update any UASes that
+    // For newly enacted Schedule Zs, we want to set the previous Schedule Z to retired, and update any UASes that
     // that aren't on the new Schedule Z.
-     * @param newScheduleZS List of Schedule Zs inserted or updated
-     * @param oldMap Historical map of Schedule Zs for update
-     */
-    public void handleNewlyEnactedScheduleZ(Map<Id, Schedule_Z__c> oldMap, List<Schedule_Z__c> newScheduleZS) {
+    public static void handleNewlyEnactedScheduleZ(Map<Id, Schedule_Z__c> oldMap, List<Schedule_Z__c> newScheduleZS) {
         List<Schedule_Z__c> enactedScheduleZS = new List<Schedule_Z__c>();
 
         // Create a list of the Sched Z's that changed Status__c
@@ -37,7 +29,17 @@ public without sharing class ScheduleZTriggerHandler {
             }
         }
 
-        List<Shared_Solar_System__c> sharedSolarSystemsWithEnactedSZs = sssSelector.getSharedSolarSystemsWithEnactedSZs(systemIdsWithEnactedSZs);
+        List<Shared_Solar_System__c> sharedSolarSystemsWithEnactedSZs = [
+            SELECT Id, Reacquisition_Start_Date__c,
+            (SELECT Id, Date_Enacted_by_Utility__c
+            FROM Schedule_Zs__r
+            WHERE Date_Schedule_Z_Retired_by_Utility__c = NULL
+            AND Date_Enacted_by_Utility__c != NULL
+            ORDER BY Date_Enacted_by_Utility__c DESC)
+            FROM Shared_Solar_System__c
+            WHERE Id IN :systemIdsWithEnactedSZs
+        ];
+
         retireUASesAndScheduleZs(sharedSolarSystemsWithEnactedSZs);
 
         List<Utility_Account_Subscription__c> uasesToUpdate = matchALSSToUAS(enactedScheduleZS);
@@ -126,50 +128,62 @@ public without sharing class ScheduleZTriggerHandler {
         return uasesToRetire;
     }
 
-    public void insertSubscriptionsForNewALS(Map<Id, Schedule_Z__c> scheduleZMap) {
+    public static void createSubscriptions(List<Schedule_Z__c> scheduleZList) {
         Set<Id> scheduleZIds = new Set<Id>();
-        Set<Id> sssIds = new Set<Id>();
-        for (Schedule_Z__c scheduleZ : scheduleZMap.values()) {
-            sssIds.add(scheduleZ.Shared_Solar_System__c);
+        Set<Id> sssList = new Set<Id>();
+        for (Schedule_Z__c scheduleZ : scheduleZList) {
+            sssList.add(scheduleZ.Shared_Solar_System__c);
             scheduleZIds.add(scheduleZ.Id);
         }
 
-        List<Utility_Account_Subscription__c> accountSubscriptions = uasSelector.selectActiveUASBySSS(sssIds);
-        MultiMap sssToSubscriptions = MultiMap.newSetInstance();
-        for (Utility_Account_Subscription__c uas : accountSubscriptions) {
-            sssToSubscriptions.putValue(uas.Shared_Solar_System__c, uas);
-        }
+        List<Utility_Account_Subscription__c> accountSubscriptions = [
+            SELECT Id, Name,
+            Annual_Cost_Future_Rollup__c,
+            Annual_kWh_Subscription_Future_Rollup__c,
+            Customer_Subscription_KW_DC__c,
+            Future_Customer_Subscription_KWDC_Rollup__c,
+            Future_Share_of_System_Rollup__c,
+            Next_Schedule_Z_Status__c,
+            Opportunity__c,
+            Opportunity_Stage__c,
+            Customer_Group__c,
+            Opportunity__r.Shared_Solar_System__c,
+            Opportunity__r.Customer_Sub_Group__c,
+            Opportunity__r.ContractId,
+            Shared_Solar_System__c,
+            SSS_Id__c
+        FROM Utility_Account_Subscription__c
+        WHERE Opportunity__r.Shared_Solar_System__c IN : sssList
+        AND Next_Schedule_Z_Status__c = 'Active Subscription'
+        AND Opportunity_Stage__c = 'Complete'
+        ];
 
-        List<Schedule_Z_Subscription__c> szsToInsert = createSubscriptions(scheduleZMap, sssToSubscriptions);
-        List<Contract> contractsToUpdate = customerAssignmentService.generateAddendumsFromSubscriptions(accountSubscriptions);
-        try {
-            insert szsToInsert;
-            update contractsToUpdate;
-        } catch (Exception e) {
-            Logger.logNow('ScheduleZTriggerHandler', 'insertSubscriptionsForNewALS', 'Failed to insert ALSS or update Contracts due to error: '
-                + e.getMessage() + '\n' + e.getStackTraceString());
-        }
-    }
+        List<Schedule_Z__c> scheduleZListWithSystemSize = [
+            SELECT Id, Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
+                Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c
+            FROM Schedule_Z__c
+            WHERE Id IN : scheduleZIds
+        ];
 
-    private List<Schedule_Z_Subscription__c> createSubscriptions(Map<Id, Schedule_Z__c> scheduleZMap, MultiMap sssToSubscriptions) {
         List<Schedule_Z_Subscription__c> scheduleZSubscriptions = new List<Schedule_Z_Subscription__c>();
-
-        for (Schedule_Z__c als : scheduleZMap.values()) {
-            List<Object> subscriptionsUntyped = sssToSubscriptions.getValues(als.Shared_Solar_System__c);
-            List<Utility_Account_Subscription__c> subscriptions = (List<Utility_Account_Subscription__c>) CollectionUtil.toTypedList(subscriptionsUntyped, new List<Utility_Account_Subscription__c>());
-            for (Utility_Account_Subscription__c uas : subscriptions) {
-                Decimal customerSubscriptionkWh = uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                Schedule_Z_Subscription__c newSubscription = new Schedule_Z_Subscription__c(
-                    Customer_Subscription_kW_DC__c = customerSubscriptionkWh,
-                    Utility_Account_Subscription__c = uas.Id,
-                    Schedule_Z__c = als.Id,
-                    Number_of_Decimal_Places__c = als.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
-                    System_Size_kW_DC__c = als.Shared_Solar_System__r.Total_System_Size_kWh_DC__c
-                );
-                scheduleZSubscriptions.add(newSubscription);
+        for (Schedule_Z__c scheduleZ : scheduleZListWithSystemSize) {
+            for (Utility_Account_Subscription__c uas : accountSubscriptions) {
+                if (scheduleZ.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c) {
+                    Schedule_Z_Subscription__c newSubscription = new Schedule_Z_Subscription__c(
+                        Customer_Subscription_kW_DC__c = uas.Future_Customer_Subscription_KWDC_Rollup__c,
+                        Utility_Account_Subscription__c = uas.Id,
+                        Schedule_Z__c = scheduleZ.Id,
+                        Number_of_Decimal_Places__c = scheduleZ.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
+                        System_Size_kW_DC__c = scheduleZ.Shared_Solar_System__r.Total_System_Size_kWh_DC__c
+                    );
+                    scheduleZSubscriptions.add(newSubscription);
+                }
             }
         }
-        return scheduleZSubscriptions;
+
+        List<Contract> contractsToUpdate = customerAssignmentService.generateAddendumsFromSubscriptions(accountSubscriptions);
+        update contractsToUpdate;
+        insert scheduleZSubscriptions;
     }
 
     public static List<Utility_Account_Subscription__c> matchALSSToUAS(List<Schedule_Z__c> enactedAllocationSchedules){
