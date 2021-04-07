@@ -296,10 +296,6 @@ src/package.xml
 !src/objects/APXT_BPM__*
 !src/objects/CongaWorkflow__*
 
-# Chargent
-*ChargentBase__*
-*ChargentOrders__*
-
 # Field Trip
 *Field_Trip__*
 !src/objects/Field_Trip__*
@@ -362,7 +358,9 @@ src/package.xml
 *standard__*
 !src/objects/standard__*
 
-
+#Inspire Planner
+*inspire1__*
+!src/objects/inspire1__*
 
 #If we want to promote page layout changes for installed pacakges, we can't ignore them.
 !src/layouts/*
@@ -378,6 +376,9 @@ src/package.xml
 
 #If we want to promote global value set changes for installed pacakges, we can't ignore them.
 !src/globalValueSets/*
+
+#If we want to promote tab changes for installed pacakges, we can't ignore them.
+!src/tabs/*
 
 
 #profiles and permission sets are complex Files. If your Org's 
