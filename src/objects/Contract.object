@@ -279,7 +279,7 @@ Account.Assignment_Agreement_Template__c
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Template_ID_Countersigned__c +
 &quot;&amp;qvar0id=a270a0000020q0rAAA?pv0=&quot; + Id +
-&quot;&amp;queryid=[ResiSig]a270a0000020q0qAAA?pv1={QVar0},[Opp]a270a0000020q0sAAA?pv1={QVar0},[UAS]a270a0000020q0vAAA?pv1={QVar0},[Tariff]{!Environment.Conga_Query_Contract_METariff_Countersign}?pv1={QVar0},[Biz]a270a0000020q0tAAA?pv1={QVar0},[Resi]a270a0000020q0qAAA?pv1={QVar0},[NonGuarantor]a270a00000211F2AAI?pv1={QVar0},[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id +
+&quot;&amp;queryid=[ResiSig]a270a0000020q0qAAA?pv1={QVar0},[Opp]a270a0000020q0sAAA?pv1={QVar0},[UAS]a270a0000020q0vAAA?pv1={QVar0},[Tariff]{!Environment.Conga_Query_Contract_METariff_Countersign}?pv1={QVar0},[Biz]a270a0000020q0tAAA?pv1={QVar0},[Resi]a270a0000020q0qAAA?pv1={QVar0},[NonGuarantor]a270a00000211F2AAI?pv1={QVar0},[UAL]{!Environment.conga_query_contractparentual}?pv4=&quot; + Lead__r.Id + &quot;,[Account]{!Environment.congaquery_countersignparentaccount}?pv3=&quot; + Account.Id + &quot;,[BizAcct]{!Environment.congaquery_parentbizaccount}?pv3=&quot; + Account.Id + &quot;,[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id + &quot;,[BizAcctSig]{!Environment.congaquery_businessacct}?pv0=&quot; + Id +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;defaultpdf=1&quot; +
 &quot;&amp;sc0=1&quot; +
