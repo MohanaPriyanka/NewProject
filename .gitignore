@@ -311,7 +311,6 @@ src/package.xml
 # Milestones PM
 *MPM4_BASE__*
 !src/objects/MPM4_BASE__*
-!src/tabs/MPM4_BASE__*
 
 # Docusign
 *dsfs__*
@@ -362,8 +361,6 @@ src/package.xml
 #Inspire Planner
 *inspire1__*
 !src/objects/inspire1__*
-
-
 
 #If we want to promote page layout changes for installed pacakges, we can't ignore them.
 !src/layouts/*
