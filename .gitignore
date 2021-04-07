@@ -315,6 +315,7 @@ src/package.xml
 # Milestones PM
 *MPM4_BASE__*
 !src/objects/MPM4_BASE__*
+!src/tabs/MPM4_BASE__*
 
 # Docusign
 *dsfs__*
