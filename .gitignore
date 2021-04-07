@@ -380,6 +380,9 @@ src/package.xml
 #If we want to promote tab changes for installed pacakges, we can't ignore them.
 !src/tabs/*
 
+#If we want to promote tab changes for installed pacakges, we can't ignore them.
+!src/objectTranslations/*
+
 
 #profiles and permission sets are complex Files. If your Org's 
 #metadata and Git are in sync, you can track incremental changes on 
