@@ -32,7 +32,7 @@ public without sharing class CSQualificationService {
             }
 
         }
-        leadMap = LeadSelector.getLeadMap(leadIds);
+        leadMap = new LeadSelector().getLeadMap(leadIds);
         if (errorCRLs.size() > 0 ) {
             handleErrorCRL(errorCRLs[0]);
         }

@@ -31,7 +31,8 @@ public inherited sharing class CustomerContractSelector {
     public List<Contract> selectByRelatedLeads(Set<Id> leadIds) {
         Id recordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByDeveloperName().get('Customer_Contract').getRecordTypeId();
         return [
-            SELECT Id, Customer_Signature_Date_Time__c, Generate_Review_Version__c, Generate_Signed_Version__c, Lead__c, Product__c
+            SELECT Id, Customer_Signature_Date_Time__c, Generate_Review_Version__c, Generate_Signed_Version__c, Lead__c,
+                Product__c, Product__r.Parent_Product__c, Contract_Type__c
             FROM Contract
             WHERE Lead__c = :leadIds AND RecordTypeId = :recordTypeId
             ORDER BY CreatedDate ASC

@@ -78,8 +78,27 @@
             RecordTypeId = RECORD_TYPE_ID,
             AccountId = opp.AccountId,
             Contract_Type__c = 'Project Specific',
-            Parent_Contract__c = parentContract.Id,
-            Customer_Signature_Date_Time__c = parentContract.Customer_Signature_Date_Time__c
+            Parent_Contract__c = parentContract.Id
         );
     }
+
+     /**
+       * @description Ensures that the Product on the Contract and Lead are in sync. However, we do not want to change
+       * the product on the "Generic" Contract when the lead is updated to the "Project Specific" Product upon conversion
+       *
+       * @param contracts List of contracts
+       * @param leadMap Map of related Leads
+       */
+     public void updateProductForCustomerContract(List<Contract> contracts, Map<Id, Lead> leadMap) {
+         List<Contract> contractsToUpdate = new List<Contract>();
+         for(Contract c : contracts) {
+             if (c.Contract_Type__c == 'Generic' && c.Product__c == leadMap.get(c.Lead__c).Product__r.Parent_Product__c) {
+                 continue;
+             } else {
+                 c.Product__c = leadMap.get(c.Lead__c).Product__c;
+                 contractsToUpdate.add(c);
+             }
+         }
+         Util.updateAndLog(contractsToUpdate, 'LeadService', 'updateRelatedContracts');
+     }
 }
