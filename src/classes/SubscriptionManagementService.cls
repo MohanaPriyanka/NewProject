@@ -16,45 +16,33 @@ public without sharing class SubscriptionManagementService {
     @TestVisible
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
 
-
-
-    @SuppressWarnings('PMD.ApexCRUDViolation')
-    public void changeNMCTariff(Set<Id> oppIds) {
-        List<Utility_Account_Subscription__c> uases = uasSelector.selectByOpp(oppIds);
-        List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uases, null, null);
-        if (soList.size() > 0 ) {
-            insert soList;
-        }
-    }
-
-
     public void populateSubscriptionOrder(List<Subscription_Order__c> soList) {
-        Map<Id, SObject> subscriptionOrdersByUASId =
-            CollectionUtil.mapByIdField(soList, Subscription_Order__c.Utility_Account_Subscription__c);
-        Set<Id> uasIds = subscriptionOrdersByUASId.keySet();
+        MultiMap subscriptionOrdersByUASId =
+            CollectionUtil.multiMapByField(soList, Subscription_Order__c.Utility_Account_Subscription__c);
+        Set<Id> uasIds = CollectionUtil.toIds(subscriptionOrdersByUASId.keySet());
         Map<Id, Utility_Account_Subscription__c> uasMap = uasSelector.getUASMap(uasIds);
         for (Subscription_Order__c so : soList) {
             Utility_Account_Subscription__c uas = uasMap.get(so.Utility_Account_Subscription__c);
-                so.Previous_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c;
-                so.Previous_Annual_kwh__c = uas.Annual_kWh_Subscription_Future_Rollup__c;
-                so.Previous_kw_DC_Subscription__c = uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                so.Previous_Percent_Share_of_System__c = uas.Future_Share_of_System_Rollup__c;
-                so.Client_Account__c = uas.Shared_Solar_System__r.Client_Account__c;
-                so.Expected_Yield_kWh_kW__c = uas.Shared_Solar_System__r.Expected_Yield_kWh_kW__c;
-                so.Total_System_Size_kW_DC__c = uas.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
-                so.Utility_Number_of_Decimal_Places__c = uas.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c;
-                so.Product__c = uas.Opportunity__r.Product__c;
-                    so.Utility_NMC_Tariff__c = uas.Sizing_Method__c;
-                    so.Value_of_NMC__c = uas.Sizing_Method__r.Value_of_NMC__c;
-                    so.Size_Ratio__c = uas.Sizing_Method__r.Size_Ratio__c;
-                if (so.Approval_Status__c == 'Approved') {
-                    // Only want to set to "Approved" if we are confident the formulas and calculations were successful
-                    // A SO is set to "Approved" in the after trigger context with stampApprovedValues()
-                    // but do not want to throw error if a DataLoad or Test class inserts SOs as "Approved"
-                    so.Approval_Status__c = null;
-                }
+            so.Previous_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c;
+            so.Previous_Annual_kwh__c = uas.Annual_kWh_Subscription_Future_Rollup__c;
+            so.Previous_kw_DC_Subscription__c = uas.Future_Customer_Subscription_KWDC_Rollup__c;
+            so.Previous_Percent_Share_of_System__c = uas.Future_Share_of_System_Rollup__c;
+            so.Client_Account__c = uas.Shared_Solar_System__r.Client_Account__c;
+            so.Expected_Yield_kWh_kW__c = uas.Shared_Solar_System__r.Expected_Yield_kWh_kW__c;
+            so.Total_System_Size_kW_DC__c = uas.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
+            so.Utility_Number_of_Decimal_Places__c = uas.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c;
+            so.Product__c = uas.Opportunity__r.Product__c;
+            so.Utility_NMC_Tariff__c = uas.Sizing_Method__c;
+            so.Value_of_NMC__c = uas.Sizing_Method__r.Value_of_NMC__c;
+            so.Size_Ratio__c = uas.Sizing_Method__r.Size_Ratio__c;
+            if (so.Approval_Status__c == 'Approved') {
+                // Only want to set to "Approved" if we are confident the formulas and calculations were successful
+                // A SO is set to "Approved" in the after trigger context with stampApprovedValues()
+                // but do not want to throw error if a DataLoad or Test class inserts SOs as "Approved"
+                so.Approval_Status__c = null;
             }
         }
+    }
 
     /**
      * @description Evaluate SOs and related records after insert. Must requery via soSelector to retrieve any relationship values
@@ -109,10 +97,10 @@ public without sharing class SubscriptionManagementService {
             so.Approved_Change_in_Subscription__c = so.System_Change_kW_DC_Rounded__c - so.Previous_kw_DC_Subscription__c;
             switch on so.Product__r.Customer_Subscription_Type__c {
                 when 'kWh' {
-                so.Change_in_Annual_kWh__c = so.New_Annual_kWh__c - so.Previous_Annual_kwh__c;
+                    so.Change_in_Annual_kWh__c = so.New_Annual_kWh__c - so.Previous_Annual_kwh__c;
                 } when else {
-                so.Change_in_Annual_Cost__c = so.New_Annual_Cost__c - so.Previous_Annual_Cost__c;
-            }
+                    so.Change_in_Annual_Cost__c = so.New_Annual_Cost__c - so.Previous_Annual_Cost__c;
+                }
             }
             so.Approval_Status__c = 'Approved';
         }
@@ -156,10 +144,8 @@ public without sharing class SubscriptionManagementService {
                 Effective_Date__c = System.now(),
                 New_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
                 New_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
-
                 Shared_Solar_System_Order__c = ssso?.Id,
                 Type__c = (ssso != null) ? 'Shared Solar System Update' : 'Resize',
-
                 Comments__c = soComments
             );
             soList.add(so);
@@ -269,10 +255,10 @@ public without sharing class SubscriptionManagementService {
                 );
                 switch on uas.Subscription_Type__c {
                     when 'kWh' {
-                    so.New_Annual_kWh__c = uas.Annual_kwh_subscription_future__c;
+                        so.New_Annual_kWh__c = uas.Annual_kwh_subscription_future__c;
                     } when else {
-                    so.New_Annual_Cost__c = uas.Subscribed_Annual_Cost_of_Electricity__c;
-                }
+                        so.New_Annual_Cost__c = uas.Subscribed_Annual_Cost_of_Electricity__c;
+                    }
                 }
                 soList.add(so);
             }
