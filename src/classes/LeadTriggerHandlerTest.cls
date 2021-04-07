@@ -262,7 +262,6 @@ public class LeadTriggerHandlerTest {
         System.assertEquals(opp.Lead__c, opp.Contract.Lead__c, 'Opportunity\'s Contract should have the same Lead as its Opportunity');
         System.assertEquals(opp.Product__c, opp.Contract.Product__c, 'Opportunity\'s Contract should have the same Product as its Opportunity');
         System.assertEquals('Project Specific', opp.Contract.Contract_Type__c, 'Opportunity\'s Contract type should be Project-Specific, as the parent Lead has a Generic contract type');
-        System.assertEquals(contract.Customer_Signature_Date_Time__c, opp.Contract.Customer_Signature_Date_Time__c, 'Opportunity\'s Contract should have the same customer signature date time as its parent Contract');
         System.assertEquals(contract.Id, opp.Contract.Parent_Contract__c, 'Opportunity\'s Contract should have the parent Lead\'s original Contract as its parent Contract');
 
     }
@@ -670,7 +669,6 @@ public class LeadTriggerHandlerTest {
             System.assertEquals(opp.Lead__c, opp.Contract.Lead__c, 'Opportunity\'s Contract should have the same Lead as its Opportunity');
             System.assertEquals(opp.Product__c, opp.Contract.Product__c, 'Opportunity\'s Contract should have the same Product as its Opportunity');
             System.assertEquals('Project Specific', opp.Contract.Contract_Type__c, 'Opportunity\'s Contract type should be Project-Specific, as the parent Lead has a Generic contract type');
-            System.assertEquals(contract.Customer_Signature_Date_Time__c, opp.Contract.Customer_Signature_Date_Time__c, 'Opportunity\'s Contract should have the same customer signature date time as its parent Contract');
             System.assertEquals(contract.Id, opp.Contract.Parent_Contract__c, 'Opportunity\'s Contract should have the parent Lead\'s original Contract as its parent Contract');
         }
 
