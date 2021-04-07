@@ -504,7 +504,7 @@ public with sharing class CSCancellationServiceTest {
 
         // Assert there are no Schedule Z's that qualify for cancellation
 
-        Date sixMonthsAgo = Date.Today().addDays(-181);
+        Date sixMonthsAgo = Date.today().addDays(-181);
 
         List<Schedule_Z_Subscription__c> qualifyingSchedZList = [
             SELECT Id, Utility_Account_Subscription__r.Opportunity__c
@@ -842,27 +842,18 @@ public with sharing class CSCancellationServiceTest {
 
         // Update UASes to match test scenarios in
         // https://www.lucidchart.com/documents/edit/28ddde15-529b-4b09-b858-35bba5e77e37/5
-        for (Utility_Account_Subscription__c utilityAccountSubscription : newUASes) {
-            switch on utilityAccountSubscription.Name {
-                when '0000236 Clone' {
-                    utilityAccountSubscription.Transferring_Subsc_to_Another_UAS__c = true;
-                    utilityAccountSubscription.Next_Schedule_Z_Status__c = 'Inactive Subscription';
-                } when '0000238 Clone' {
-                    utilityAccountSubscription.Transferring_Subsc_to_Another_UAS__c = false;
-                    utilityAccountSubscription.Next_Schedule_Z_Status__c = 'Inactive Subscription';
-                }
-            }
-        }
-        update newUASes;
-        for (Utility_Account_Subscription__c utilityAccountSubscription : uases) {
-            switch on utilityAccountSubscription.Name {
-                when '0000236', '0000238' {
-                    utilityAccountSubscription.Transferring_Subsc_to_Another_UAS__c = true;
-                    utilityAccountSubscription.Next_Schedule_Z_Status__c = 'Inactive Subscription';
-                }
-            }
-        }
-        update uases;
+        Map<Object, SObject> newUASesByName = CollectionUtil.mapByField(newUASes, Utility_Account_Subscription__c.Name);
+        ((Utility_Account_Subscription__c) newUASesByName.get('0000236 Clone')).Transferring_Subsc_to_Another_UAS__c = true;
+        ((Utility_Account_Subscription__c) newUASesByName.get('0000236 Clone')).Next_Schedule_Z_Status__c = 'Inactive Subscription';
+        ((Utility_Account_Subscription__c) newUASesByName.get('0000238 Clone')).Transferring_Subsc_to_Another_UAS__c = false;
+        ((Utility_Account_Subscription__c) newUASesByName.get('0000238 Clone')).Next_Schedule_Z_Status__c = 'Inactive Subscription';
+        update newUASesByName.values();
+        Map<Object, SObject> oldUASesByName = CollectionUtil.mapByField(uases, Utility_Account_Subscription__c.Name);
+        ((Utility_Account_Subscription__c) oldUASesByName.get('0000236')).Transferring_Subsc_to_Another_UAS__c = true;
+        ((Utility_Account_Subscription__c) oldUASesByName.get('0000236')).Next_Schedule_Z_Status__c = 'Inactive Subscription';
+        ((Utility_Account_Subscription__c) oldUASesByName.get('0000238')).Transferring_Subsc_to_Another_UAS__c = true;
+        ((Utility_Account_Subscription__c) oldUASesByName.get('0000238')).Next_Schedule_Z_Status__c = 'Inactive Subscription';
+        update oldUASesByName.values();
 
         List<UASB__c> uasbList = [
             SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
@@ -873,20 +864,16 @@ public with sharing class CSCancellationServiceTest {
         Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills());
         for (UASB__c uasb : uasbList) {
             Opportunity opp = opportunityMap.get(uasb.Opportunity__c);
-            if (opp != null) {
-                System.assert(Opportunities.finishedBilling(opp));
-                System.assert(!Opportunities.isCancelledWaitlist(opp));
-                switch on opp.Name {
-                    when 'Jordan Jordan 0000236' {
-                        System.assert(!Opportunities.hasActiveUASes(opp));
-                        System.assert(Opportunities.allUASesTransferring(opp));
-                    } when 'Jordan Jordan 0000238' {
-                        System.assert(!Opportunities.hasActiveUASes(opp));
-                        System.assert(!Opportunities.allUASesTransferring(opp));
-                    }
+            System.assert(Opportunities.finishedBilling(opp));
+            System.assert(!Opportunities.isCancelledWaitlist(opp));
+            switch on opp.Name {
+                when 'Jordan Jordan 0000236' {
+                    System.assert(!Opportunities.hasActiveUASes(opp));
+                    System.assert(Opportunities.allUASesTransferring(opp));
+                } when 'Jordan Jordan 0000238' {
+                    System.assert(!Opportunities.hasActiveUASes(opp));
+                    System.assert(!Opportunities.allUASesTransferring(opp));
                 }
-            } else {
-                System.assert(false, 'Didn\'t find an opportunity for system bill');
             }
         }
 
@@ -905,12 +892,15 @@ public with sharing class CSCancellationServiceTest {
         ];
         // The System Bill's opportunity should be cancelled, since it doesn't have an active UAS and hasn't had a recent bill generated
         System.assertEquals(3, oppList.size());
-        System.assertEquals('Jordan Jordan 0000234', oppList[0].Name);
-        System.assertEquals('Complete', oppList[0].StageName);
-        System.assertEquals('Jordan Jordan 0000236', oppList[1].Name);
-        System.assertEquals('Complete', oppList[1].StageName);
-        System.assertEquals('Jordan Jordan 0000238', oppList[2].Name);
-        System.assertEquals('Cancelled', oppList[2].StageName);
+        assertNameAndStage(oppList[0], 'Jordan Jordan 0000234', 'Complete');
+        assertNameAndStage(oppList[0], 'Jordan Jordan 0000236', 'Complete');
+        assertNameAndStage(oppList[0], 'Jordan Jordan 0000238', 'Cancelled');
+    }
+
+    @SuppressWarnings('PMD.ApexUnitTestMethodShouldHaveIsTestAnnotation')
+    private static void assertNameAndStage(Opportunity opp, String name, String stageName) {
+        System.assertEquals(name, opp.Name);
+        System.assertEquals(stageName, opp.StageName);
     }
 
     @IsTest static void testSetupDataForAccountDateRemovedIsCorrect() {
@@ -1528,7 +1518,7 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testAllAccountsAreClosed() {
         List<Account> acctsToClose = [
-            SELECT Id, Name, Client_Brand_key__c
+            SELECT Id, Name, Client_Brand_Key__c
             FROM Account
             WHERE RecordType.Name = 'Property'
         ];
@@ -1540,7 +1530,7 @@ public with sharing class CSCancellationServiceTest {
             acct.Cancellation_Reason__c = 'Customer Moved';
             acct.Cancellation_Request_Date__c = System.today();
             if (acct.Name == 'Prop Account 2'){
-                acct.Client_Brand_key__c = 'AmpRed';
+                acct.Client_Brand_Key__c = 'AmpRed';
             }
         }
 
@@ -1565,12 +1555,10 @@ public with sharing class CSCancellationServiceTest {
             FROM Opportunity
             WHERE AccountId = :acctIdList
         ];
-
-        for (Opportunity opp : oppsToCancel) {
-            opp.StageName = 'Cancelled';
-        }
-
-        update oppsToCancel;
+        Opportunities opportunities = new Opportunities(oppsToCancel);
+        Test.startTest();
+        opportunities.cancel();
+        Test.stopTest();
 
         acctsToClose = [
             SELECT Id, Status__c, Cancellation_Request_Date__c
