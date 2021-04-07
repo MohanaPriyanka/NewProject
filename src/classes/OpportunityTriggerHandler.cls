@@ -95,11 +95,14 @@ public without sharing class OpportunityTriggerHandler {
             SELECT Id, Name, dsfs__Parent_Status_Record__c, dsfs__Recipient_Status__c, dsfs__DocuSign_Recipient_Email__c
             FROM dsfs__DocuSign_Recipient_Status__c
             WHERE dsfs__DocuSign_Recipient_Email__c IN : emails
+            ORDER BY CreatedDate DESC
         ];
-        Map<Object, SObject> mapDocRS =
-            CollectionUtil.mapByField(docuSignRecipientStatuses, dsfs__DocuSign_Recipient_Status__c.dsfs__DocuSign_Recipient_Email__c);
+        MultiMap mapDocRS =
+            CollectionUtil.multiMapByField(docuSignRecipientStatuses, dsfs__DocuSign_Recipient_Status__c.dsfs__DocuSign_Recipient_Email__c);
         for (Opportunity opp : oppList) {
-            opp.DocuSign_Recipient__c = mapDocRS.get(opp.Email__c)?.Id;
+            dsfs__DocuSign_Recipient_Status__c recipientStatus =
+                (dsfs__DocuSign_Recipient_Status__c) CollectionUtil.getFirstItem(mapDocRS.getValues(opp.Email__c));
+            opp.DocuSign_Recipient__c = recipientStatus?.Id;
         }
     }
 
