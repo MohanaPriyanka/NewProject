@@ -202,7 +202,6 @@ public without sharing class CSSubscriptionEnroller {
         
         //Need to pass the property Account here (not converted Account)
         List<Opportunity> oppListToCreate = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, annualTotals, propertyAccountId);
-        System.debug('Opportunities to insert: ' + oppListToCreate.size());
         leadOppsMap.put(lead.Id, oppListToCreate);
         for(Opportunity opp : oppListToCreate) {
             List<Contract> leadContracts = leadIdToLeadWithChildren.get(lead.Id).Contracts__r;
