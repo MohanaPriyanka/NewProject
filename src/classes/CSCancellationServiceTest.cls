@@ -893,8 +893,8 @@ public with sharing class CSCancellationServiceTest {
         // The System Bill's opportunity should be cancelled, since it doesn't have an active UAS and hasn't had a recent bill generated
         System.assertEquals(3, oppList.size());
         assertNameAndStage(oppList[0], 'Jordan Jordan 0000234', 'Complete');
-        assertNameAndStage(oppList[0], 'Jordan Jordan 0000236', 'Complete');
-        assertNameAndStage(oppList[0], 'Jordan Jordan 0000238', 'Cancelled');
+        assertNameAndStage(oppList[1], 'Jordan Jordan 0000236', 'Complete');
+        assertNameAndStage(oppList[2], 'Jordan Jordan 0000238', 'Cancelled');
     }
 
     @SuppressWarnings('PMD.ApexUnitTestMethodShouldHaveIsTestAnnotation')
