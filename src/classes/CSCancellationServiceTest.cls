@@ -292,6 +292,46 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(1, caseList.size());
     }
 
+    @IsTest static void testDateRemovedFromProjectNotOverwritten() {
+        Utility_Account_Log__c ualToUpdate = [
+            SELECT Id, Date_Utility_Account_Cancelled__c
+            FROM Utility_Account_Log__c
+            WHERE Account__r.Name = 'Prop Account 1'
+        ];
+        ualToUpdate.Date_Utility_Account_Cancelled__c = Date.today();
+        update ualToUpdate;
+
+        List<Utility_Account_Subscription__c> uasUpdatedList = [
+            SELECT Id, Date_Removed_from_Project__c, Next_Schedule_Z_Status__c, Finaled__c,
+                Future_Customer_Subscription_KWDC_Rollup__c, Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+            WHERE Utility_Account_Log__r.Date_Utility_Account_Cancelled__c != NULL
+        ];
+
+        System.assertEquals(1, uasUpdatedList.size(),
+            'The finaled UAL should have a single UAS');
+        System.assertEquals(ualToUpdate.Date_Utility_Account_Cancelled__c, uasUpdatedList[0].Date_Removed_from_Project__c,
+            'The UAS should have the same Date Removed From Project as the UAL');
+
+        Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = uasUpdatedList[0].Shared_Solar_System__c,
+            Date_Enacted_by_Utility__c = Date.newInstance(2019,1,1),
+            Status__c = 'Enacted by Utility'
+        );
+        insert scheduleZ1;
+
+        uasUpdatedList = [
+            SELECT Id, Date_Removed_from_Project__c, Next_Schedule_Z_Status__c, Finaled__c,
+                Future_Customer_Subscription_KWDC_Rollup__c, Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+            WHERE Utility_Account_Log__r.Date_Utility_Account_Cancelled__c != NULL
+        ];
+
+        System.assertEquals(ualToUpdate.Date_Utility_Account_Cancelled__c, uasUpdatedList[0].Date_Removed_from_Project__c,
+            'The UAS should still have the same Date Removed From Project as the UAL');
+    }
+
     @IsTest static void testAllUASAreUpdated() {
         useMocks(false);
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();

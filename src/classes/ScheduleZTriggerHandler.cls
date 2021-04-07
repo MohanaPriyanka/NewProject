@@ -68,8 +68,11 @@ public without sharing class ScheduleZTriggerHandler {
             }
         }
         List<Schedule_Z__c> scheduleZsWithSubscriptions = [
-            SELECT Id,
-            (SELECT Id, Utility_Account_Subscription__c FROM Schedule_Z_Subscriptions__r)
+            SELECT Id, (
+                SELECT Id, Utility_Account_Subscription__c
+                FROM Schedule_Z_Subscriptions__r
+                WHERE Utility_Account_Subscription__r.Date_Removed_from_Project__c = NULL
+            )
             FROM Schedule_Z__c
             WHERE Id = :scheduleZIds
         ];
