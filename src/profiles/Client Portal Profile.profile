@@ -618,10 +618,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>customIdSwapOppTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>helperclass2</apexClass>
         <enabled>false</enabled>
     </classAccesses>

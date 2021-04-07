@@ -5,6 +5,8 @@
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UASSelector {
+    @TestVisible private static List<Utility_Account_Subscription__c> mockedUASes;
+
     public static List<Utility_Account_Subscription__c> selectUASesByAccounts(Set<Id> accounts) {
         return [
             SELECT Id,
@@ -61,12 +63,21 @@ public without sharing class UASSelector {
         ];
     }
     public static List<Utility_Account_Subscription__c> selectByIds(Set<Id> uasIds) {
+        if (mockedUASes != null) {
+            return mockedUASes;
+        }
         return [
             SELECT Id,
                 Name,
                 Opportunity__c,
                 Opportunity__r.Id,
-                Shared_Solar_System__c
+                Shared_Solar_System__c,
+                Subscription_Type__c,
+                Sizing_Method__r.Size_Ratio__c,
+                Sizing_Method__r.Value_of_NMC__c,
+                Future_Customer_Subscription_KWDC_Rollup__c,
+                Annual_kWh_Subscription_Future_Rollup__c,
+                Annual_Cost_Future_Rollup__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN :uasIds
         ];
@@ -144,12 +155,14 @@ public without sharing class UASSelector {
         ];
     }
 
+    @SuppressWarnings('PMD.ApexSOQLInjection')
     public List<Utility_Account_Subscription__c> getUASForCloneByOpp(Set<Id> oppIds) {
         String fields = Util.getCreatableFieldsSOQL('Utility_Account_Subscription__c');
-        String szStatus = 'Active Subscription';
         String soql = 'SELECT Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c, Subscription_Type__c, ' +
-            'Shared_Solar_System__r.Name,' + fields + ' WHERE Opportunity__c IN :oppIds AND Next_Schedule_Z_Status__c = :szStatus';
-        return Database.query(String.escapeSingleQuotes(soql));
+            'Future_Customer_Subscription_KWDC_Rollup__c, Shared_Solar_System__r.Name, Sizing_Method__r.Size_Ratio__c, ' +
+            'Sizing_Method__r.Value_of_NMC__c, ' + fields +
+            ' WHERE Opportunity__c IN :oppIds AND Next_Schedule_Z_Status__c = \'Active Subscription\'';
+        return Database.query(soql);
     }
 
     public Map<Id,Decimal> getUASSummaryByOpportunity(Set<Id> oppIds) {

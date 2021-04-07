@@ -16,13 +16,12 @@ trigger OpportunityTrigger on Opportunity (before insert, after insert, before u
         } when AFTER_INSERT {
             CSApplicationStatusEventPublisher.publishEvent(null, Trigger.new);
         } when BEFORE_UPDATE {
-            opportunityTriggerHandler.onBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
+            opportunityTriggerHandler.onBeforeUpdate(Trigger.new, Trigger.oldMap);
         } when AFTER_UPDATE {
             loanAction.onAfterOpportunityUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
             disbursalHandler.createDisbursalsFromOpportunity(Trigger.newMap, Trigger.oldMap);
             disbursalHandler.setContractDisbursalToReady(Trigger.new, Trigger.newMap, Trigger.oldMap);
             opportunityTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap);
-            opportunityTriggerHandler.queueNMCTariffChange(Trigger.new, Trigger.oldMap);
             CSApplicationStatusEventPublisher.publishEvent(Trigger.oldMap, Trigger.new);
         } when AFTER_DELETE {
             CSApplicationStatusEventPublisher.publishEventAfterDelete(Trigger.old);

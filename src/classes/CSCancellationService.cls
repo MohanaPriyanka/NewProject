@@ -17,7 +17,7 @@
 */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CSCancellationService {
-    private static String AUTOMATED_CANCELLATION_COMMENT = 'Automated Cancellation';
+    private static final String AUTOMATED_CANCELLATION_COMMENT = 'Automated Cancellation';
     @TestVisible
     private static final String CANCELLATION_PARAGRAPH_TWO_LABEL = '{!Cancellation_Paragraph_Two__c}';
     @TestVisible
@@ -58,7 +58,13 @@ public without sharing class CSCancellationService {
     public static void processSubscriptionCancellations(List<Utility_Account_Subscription__c> uasesToMarkInactive) {
         UtilityAccountSubscriptions subscriptions = new UtilityAccountSubscriptions(uasesToMarkInactive);
         subscriptions.removeFromNextScheduleZ();
-        subscriptions.zeroInactiveSubscriptions();
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Subscription_Order__c.SObjectType
+            }
+        );
+        subscriptions.registerSubscriptionOrdersToZeroOutUAS('Cancellation', uow);
+        uow.commitWork();
         sendCancellationConfirmationEmails(uasesToMarkInactive);
     }
 
@@ -173,7 +179,13 @@ public without sharing class CSCancellationService {
     public static void processFinaledUtilityAccounts(List<Utility_Account_Subscription__c> uasesToMarkInactive) {
         UtilityAccountSubscriptions subscriptions = new UtilityAccountSubscriptions(uasesToMarkInactive);
         subscriptions.handleFinaledAccounts();
-        subscriptions.zeroInactiveSubscriptions();
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Subscription_Order__c.SObjectType
+            }
+        );
+        subscriptions.registerSubscriptionOrdersToZeroOutUAS('Cancellation', uow);
+        uow.commitWork();
         createCaseToTransferOrTerminate(subscriptions);
     }
 
@@ -407,23 +419,23 @@ public without sharing class CSCancellationService {
             }
         }
 
-        if (!accountIds.isEmpty()) {
-            List<Account> acctsToCheck = AccountsSelector.selectNotClosed(accountIds);
-            for (Account acct : acctsToCheck) {
-                Boolean readyForClose = true;
-                for (Opportunity opp : acct.Opportunities) {
-                    if (isActive(opp)) {
-                        readyForClose = false;
-                        break;
-                    }
-                }
-
-                if (readyForClose) {
-                    accountsToClose.add(acct);
+        if (accountIds.isEmpty()) {
+            return accountsToClose;
+        }
+        List<Account> acctsToCheck = AccountsSelector.selectNotClosed(accountIds);
+        for (Account acct : acctsToCheck) {
+            Boolean readyForClose = true;
+            for (Opportunity opp : acct.Opportunities) {
+                if (isActive(opp)) {
+                    readyForClose = false;
+                    break;
                 }
             }
-        }
 
+            if (readyForClose) {
+                accountsToClose.add(acct);
+            }
+        }
         return accountsToClose;
     }
 

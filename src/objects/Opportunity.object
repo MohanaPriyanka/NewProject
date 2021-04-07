@@ -7249,6 +7249,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <fullName>Shared_Solar_System__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
+        <inlineHelpText>To change this system, use the Change SSS quick action</inlineHelpText>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
         <relationshipLabel>Opportunities</relationshipLabel>

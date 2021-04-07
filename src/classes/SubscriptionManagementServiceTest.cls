@@ -1,6 +1,7 @@
 /**
- * Created by SarahRenfro on 11/15/2019.
+ * @description Created by SarahRenfro on 11/15/2019.
  */
+@SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
 public class SubscriptionManagementServiceTest {
     @SuppressWarnings('PMD.AvoidHardcodingId')
@@ -39,39 +40,13 @@ public class SubscriptionManagementServiceTest {
         );
         insert new List<Shared_Solar_System_Order__c>{sssoSize, sssoUpdate};
     }
+
+
+
     @IsTest
     @SuppressWarnings('PMD.AvoidHardcodingId')
-    static void testHandleSSSChange() {
-        useMocks(true);
-        SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
-        subscriptionManagementService.transferSubscriptionsOnSSSChange();
-        System.assertEquals(2, subscriptionManagementService.uasOrders.size());
-        System.assertEquals(4, subscriptionManagementService.upsertUASes.size());
-        //Only going to have the zeroed subscription orders - cloned ones are added in execute method
-        System.assertEquals(2, subscriptionManagementService.soInsertList.size());
-        // loop through the 4, should have 2 inactive for one sss and 2 active for other sss
-        for (Utility_Account_Subscription__c uas : subscriptionManagementService.upsertUASes) {
-            if (uas.Shared_Solar_System__c != sssId) {
-                System.assertEquals('Active Subscription', uas.Next_Schedule_Z_Status__c);
-            } else {
-                System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
-            }
-        }
-        //Check Zeroed Subscription Orders
-        System.assertEquals(0, subscriptionManagementService.soInsertList[0].New_Annual_Cost__c);
-        System.assertEquals('a1d29000001C3xuAAC', subscriptionManagementService.soInsertList[0].Utility_Account_Subscription__c);
-        System.assertEquals(0, subscriptionManagementService.soInsertList[1].New_Annual_Cost__c);
-        System.assertEquals('a1d2900000222xuAAC', subscriptionManagementService.soInsertList[1].Utility_Account_Subscription__c);
-        //Check cloned Subscription Orders and UASes
-        System.assertEquals(2420, subscriptionManagementService.uasOrders[0].sOrder.New_Annual_Cost__c);
-        System.assertEquals('Active Subscription', subscriptionManagementService.uasOrders[0].uas.Next_Schedule_Z_Status__c);
-        System.assertNotEquals(sssId, subscriptionManagementService.uasOrders[0].uas.Shared_Solar_System__c);
-        System.assertEquals(3000, subscriptionManagementService.uasOrders[1].sOrder.New_Annual_Cost__c);
-        System.assertEquals('Active Subscription', subscriptionManagementService.uasOrders[1].uas.Next_Schedule_Z_Status__c);
-        System.assertNotEquals(sssId, subscriptionManagementService.uasOrders[1].uas.Shared_Solar_System__c);
-    }
-    @IsTest
-    @SuppressWarnings('PMD.AvoidHardcodingId')
+
+
     static void testSubscriptionOrderInsert() {
         useMocks(true);
         Subscription_Order__c so = new Subscription_Order__c(
@@ -223,17 +198,10 @@ public class SubscriptionManagementServiceTest {
         }
     }
 
-    @IsTest
-    @SuppressWarnings('PMD.AvoidHardcodingId')
-    static void testSubscriptionOrdersForTestSetup() {
-        useMocks(true);
-        UASSelector uasSelector  = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
-        List<Utility_Account_Subscription__c> uasList = uasSelector.selectByOpp(new Set<Id>{'00629000008boJ7AAI'});
-        System.assertEquals(2, uasList.size());
-        SubscriptionManagementService subscriptionService = new SubscriptionManagementService();
-        List<Subscription_Order__c> soList = subscriptionService.createSubscriptionOrdersForTests(uasList);
-        System.assertEquals(2, soList.size());
-    }
+
+
+
+
     private static void useMocks(Boolean featureOn) {
         SubscriptionManagementService.uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
         SubscriptionManagementService.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockSSSSelector());
@@ -242,8 +210,6 @@ public class SubscriptionManagementServiceTest {
     }
     @SuppressWarnings('PMD.AvoidHardcodingId')
     public class MockSSSSelector extends MockProvider {
-        public MockSSSSelector() {
-        }
         public override Object handleMethodCall(MethodCall methodCall) {
             return new Shared_Solar_System__c(
                 Name = 'Test SSS',
@@ -255,8 +221,6 @@ public class SubscriptionManagementServiceTest {
         }
     }
     public class MockSOSelector extends MockProvider {
-        public MockSOSelector() {
-        }
         public override Object handleMethodCall(MethodCall methodCall){
             String soList ='[{"attributes" : {"type" : "Subscription_Order__c","url" : "/services/data/v47.0/sobjects/Subscription_Order__c/a9W8A0000000xL5UAI"},' +
                 '"Id" : "a9W8A0000000xL5UAI",' +
@@ -295,8 +259,6 @@ public class SubscriptionManagementServiceTest {
         }
     }
     public class MockUASSelector extends MockProvider {
-        public MockUASSelector() {
-        }
         //TODO: Need to deprecate the Opp.UtilityNMCTariff fields when Sizing Method is live
         public override Object handleMethodCall(MethodCall methodCall) {
             String uasBySSS = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
@@ -425,8 +387,6 @@ public class SubscriptionManagementServiceTest {
     }
     @SuppressWarnings('PMD.AvoidHardcodingId')
     public class MockOppSelector extends MockProvider {
-        public MockOppSelector() {
-        }
         public override Object handleMethodCall(MethodCall methodCall) {
             Opportunity opp = new Opportunity(
                 Name = 'Test Opp',
