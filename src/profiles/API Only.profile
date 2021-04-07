@@ -7758,7 +7758,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.Parent_Contract__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
