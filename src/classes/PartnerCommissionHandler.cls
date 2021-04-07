@@ -114,8 +114,10 @@ public without sharing class PartnerCommissionHandler{
     }
 
     public void queueCalculatePartnerCommission(Set<Id> opportunityIds){
-        queuedIds = opportunityIds;
-        PartnerCommissionHandler.calculatePartnerCommission(opportunityIds);
+        if (opportunityIds != null && opportunityIds.size() > 0) {
+            queuedIds = opportunityIds;
+            PartnerCommissionHandler.calculatePartnerCommission(opportunityIds);
+        }
     }
 
     @InvocableMethod(

@@ -883,10 +883,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>customIdSwapOppTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>flowcomponents__LightningLookupController</apexClass>
         <enabled>true</enabled>
     </classAccesses>

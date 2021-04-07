@@ -23,10 +23,21 @@ public inherited sharing class UtilityAccountSubscriptions {
         update records;
     }
 
-    public void zeroInactiveSubscriptions() {
-        if (featureService.isEnabled('Subscription_Orders')) {
-            List<Subscription_Order__c> zeroOrders = subscriptionSerivce.zeroSubscriptions(records, 'Cancellation');
-            insert zeroOrders;
+    public void registerSubscriptionOrdersToZeroOutUAS(String zeroType, fflib_SObjectUnitOfWork uow) {
+        for (Utility_Account_Subscription__c uas : records) {
+            Subscription_Order__c zeroedSO = new Subscription_Order__c(
+                Type__c = zeroType,
+                Approval_Status__c = 'Approved',
+                Effective_Date__c = System.now(),
+                Utility_Account_Subscription__c = uas.Id,
+                Comments__c = 'Subscription Order was created to zero out UAS'
+            );
+            if (uas.Subscription_Type__c == 'kWh') {
+                zeroedSO.New_Annual_kWh__c = 0;
+            } else {
+                zeroedSO.New_Annual_Cost__c = 0;
+            }
+            uow.registerNew(zeroedSO);
         }
     }
 

@@ -9187,10 +9187,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>customIdSwapOppTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>datamask__AbortUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
