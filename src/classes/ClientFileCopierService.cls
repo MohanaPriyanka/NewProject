@@ -32,7 +32,7 @@ public without sharing class ClientFileCopierService {
 
     @InvocableMethod(
         Label='InvocableClientFileCopier'
-        Description='Takes list of 2 strings as parameters: AssignmentAgreementId and String ("Customer Agreement", "Customer Disclosure Form", "Addendum", or "Customer Credit Report")'
+        Description='Takes list of 2 strings as parameters: AssignmentAgreementId and String ("Customer Agreement", "Customer Disclosure Form", "Customer Addendum", or "Customer Credit Report")'
     )
     public static List<Id> invocableFindAndCloneDocuments (List<CloneInputs> parameters){
         ClientFileCopierService service = new ClientFileCopierService();

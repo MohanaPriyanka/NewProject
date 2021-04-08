@@ -163,8 +163,7 @@ public with sharing class ClientFileCopierServiceTest {
             WHERE LinkedEntityId = :afterFolders[0].Id
         ];
 
-        // 1 Contract with a Parent Contract so only one Addendum
-        System.assertEquals(1, afterFiles.size());
+        System.assertEquals(1, afterFiles.size(), 'Only one contract has an Addendum attachment');
     }
 
     @IsTest
