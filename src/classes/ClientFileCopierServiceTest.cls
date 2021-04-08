@@ -86,8 +86,8 @@ public with sharing class ClientFileCopierServiceTest {
             FROM ContentDocumentLink
             WHERE LinkedEntityId = :afterFolders[0].Id
         ];
-        // 7 Contracts, 2 of which have a disclosure form attachment, 1 of which has 2 UASes
-        System.assertEquals(3, afterFiles.size());
+        // 7 Contracts, 3 of which have a disclosure form attachment, 1 of which has 2 UASes
+        System.assertEquals(4, afterFiles.size());
     }
 
     @IsTest
@@ -127,6 +127,46 @@ public with sharing class ClientFileCopierServiceTest {
         // 4 Opportunities, 1 of which has 2 UASes
         System.assertEquals(5, afterFiles.size());
     }
+
+    @IsTest
+    private static void testAddendumMigration() {
+        useMocks(true);
+        Contract assignmentAgreement = [
+            SELECT Id
+            FROM Contract
+            WHERE Name = 'Assignment Agreement'
+            LIMIT 1
+        ];
+
+        List<Supporting_Document_Folder__c> beforeFolders = [
+            SELECT Id
+            FROM Supporting_Document_Folder__c
+            WHERE Assignment_Agreement__c = :assignmentAgreement.Id
+        ];
+        System.assertEquals(0, beforeFolders.size());
+
+        Test.startTest();
+        ClientFileCopierService service = new ClientFileCopierService();
+        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Addendum');
+        Test.stopTest();
+
+        List<Supporting_Document_Folder__c> afterFolders = [
+            SELECT Id
+            FROM Supporting_Document_Folder__c
+            WHERE Assignment_Agreement__c = :assignmentAgreement.Id
+        ];
+        System.assertEquals(1, afterFolders.size());
+
+        List<ContentDocumentLink> afterFiles = [
+            SELECT Id
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = :afterFolders[0].Id
+        ];
+
+        // 1 Contract with a Parent Contract so only one Addendum
+        System.assertEquals(1, afterFiles.size());
+    }
+
     @IsTest
     public static void testCreateSupportingDocumentsFolder() {
         useMocks(true);
@@ -164,7 +204,7 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"8002f000000Gew1AAC"},' +
                 '{"Id":"8002f000000Gew2AAC"},' +
                 '{"Id":"8002f000000GewFAAS"},' + // has 2 UASes
-                '{"Id":"8002f000000GewNAAS", "Parent_Contract__c" : "8002f000000GewNBBB"}]'; // Project Specific Addendum with Parent Contract
+                '{"Id":"8002f000000GewNAAS", "Parent_Contract__c" : "8002f000000GewNBBB"}]'; // Hybrid Customer with Generic and Project Specific Contracts
 
             switch on methodCall.stubbedMethodName {
                 when 'getCustomerContractsByAssignmentAgreement' {
@@ -221,6 +261,8 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"06A2f000004rUrNEAE","LinkedEntityId":"8002f000000Gew2AAC","ContentDocumentId":"0692f000001g9ujAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitbAAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
                 '{"Id":"06A2f000004rUqrEAE","LinkedEntityId":"8002f000000GewFAAS","ContentDocumentId":"0692f000001g9uVAAQ","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitgAAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}},' +
                 '{"Id":"06A2f000004rUqXEAE","LinkedEntityId":"8002f000000GewFAAS","ContentDocumentId":"0692f000001g9uxAAQ","ContentDocument":{"LatestPublishedVersionId":"0682f000001gittAAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
+                '{"Id":"06A2f000004rUqXCCC","LinkedEntityId":"8002f000000GewNAAS","ContentDocumentId":"0692f000001g9uxCCC","ContentDocument":{"LatestPublishedVersionId":"0682f000001gittCCC","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Customer Addendum"}}},' +
+                '{"Id":"06A2f000004rUqXDDD","LinkedEntityId":"8002f000000GewNAAS","ContentDocumentId":"0692f000001g9uxDDD","ContentDocument":{"LatestPublishedVersionId":"0682f000001gittDDD","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
                 '{"Id":"06A2f000004rUqOEBB","LinkedEntityId":"8002f000000GewNBBB","ContentDocumentId":"0692f000001g9u2AAB","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitDAAB","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Community Solar Agreement"}}}' +
                 ']';
 
@@ -279,6 +321,9 @@ public with sharing class ClientFileCopierServiceTest {
             ContentVersion fileTwentyTwo = new ContentVersion(Id = '0682f000001jitDAAQ', ContentDocumentId = '0692f000001g8u2AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
             ContentVersion fileTwentyThree = new ContentVersion(Id = '0682f000001kitDAAQ', ContentDocumentId = '0692f000001g0u2AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
             ContentVersion fileTwentyFour = new ContentVersion(Id = '0682f000001gitDAAB', ContentDocumentId = '0692f000001g0u2BBB', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileTwentyFive = new ContentVersion(Id = '0682f000001gittCCC', ContentDocumentId = '0692f000001g9uxCCC', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileTwentySix = new ContentVersion(Id = '0682f000001gittDDD', ContentDocumentId = '0692f000001g9uxDDD', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+
 
             Map<Id, ContentVersion> cvMap = new Map<Id, ContentVersion>();
             cvMap.put(fileOne.Id, fileOne);
@@ -294,6 +339,8 @@ public with sharing class ClientFileCopierServiceTest {
             cvMap.put(fileTwentyTwo.Id, fileTwentyTwo);
             cvMap.put(fileTwentyThree.Id, fileTwentyThree);
             cvMap.put(fileTwentyFour.Id, fileTwentyFour);
+            cvMap.put(fileTwentyFive.Id, fileTwentyFive);
+            cvMap.put(fileTwentySix.Id, fileTwentySix);
 
             switch on methodCall.stubbedMethodName {
                 when 'selectByIdWithData' {

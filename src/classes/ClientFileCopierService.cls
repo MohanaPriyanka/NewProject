@@ -21,9 +21,10 @@ public without sharing class ClientFileCopierService {
     private static final String CUSTOMER_AGREEMENT = 'Customer Agreement';
     private static final String DISCLOSURE = 'Customer Disclosure Form';
     private static final String CREDIT_REPORT = 'Customer Credit Report';
+    private static final String ADDENDUM = 'Customer Addendum';
 
     private void checkInputType(String typeAsString){
-        if (typeAsString != CUSTOMER_AGREEMENT && typeAsString != DISCLOSURE && typeAsString != CREDIT_REPORT){
+        if (typeAsString != CUSTOMER_AGREEMENT && typeAsString != DISCLOSURE && typeAsString != CREDIT_REPORT && typeAsString != ADDENDUM){
             throw new Util.BWException('Unsupported Document Type: ' + typeAsString);
         }
     }
@@ -31,7 +32,7 @@ public without sharing class ClientFileCopierService {
 
     @InvocableMethod(
         Label='InvocableClientFileCopier'
-        Description='Takes list of 2 strings as parameters: AssignmentAgreementId and String ("Customer Agreement", "Customer Disclosure Form", or "Customer Credit Report")'
+        Description='Takes list of 2 strings as parameters: AssignmentAgreementId and String ("Customer Agreement", "Customer Disclosure Form", "Addendum", or "Customer Credit Report")'
     )
     public static List<Id> invocableFindAndCloneDocuments (List<CloneInputs> parameters){
         ClientFileCopierService service = new ClientFileCopierService();
@@ -46,59 +47,66 @@ public without sharing class ClientFileCopierService {
     public Id findAndCloneDocuments(Id assignmentAgreementId, String docType){
         Id folderId = createSupportingDocumentsFolder(assignmentAgreementId, docType);
         Map<Id,Id> versionIdToLinkedEntityId = getDocumentIds(assignmentAgreementId, docType);
-        Map<Id,List<String>> linkedEntityIdToFileNames = getFileNames(assignmentAgreementId, docType);
+        MultiMap linkedEntityIdToFileNames = getFileNames(assignmentAgreementId, docType);
         return startBatchCloneJob(versionIdToLinkedEntityId,folderId,linkedEntityIdToFileNames);
     }
 
-    private Map<Id,List<String>> getFileNames(Id assignmentAgreementId, String docTypeAsString){
-        Map<Id,List<String>> parentIdToFileNames = new Map<Id,List<String>>();
+    private MultiMap getFileNames(Id assignmentAgreementId, String docTypeAsString){
+        MultiMap parentIdToFileNames = MultiMap.newListInstance();
         List<Utility_Account_Subscription__c> uases = uasSelector.getUASesForAssignmentAgreement(assignmentAgreementId);
         for (Utility_Account_Subscription__c uas : uases){
             String fileName = uas.Opportunity__r.Shared_Solar_System__r.Name + ' - '
                 + docTypeAsString + ' - '
                 + uas.Opportunity__r.Name + ' - '
                 + uas.Utility_Account_Log__r.Name;
-            if (parentIdToFileNames.containsKey(uas.Opportunity__r.Personal_Credit_Report2__c)){
-                parentIdToFileNames.get(uas.Opportunity__r.Personal_Credit_Report2__c).add(fileName);
+
+            //Customer Agreement is grabbed from Parent Contract when record exists, otherwise files grabbed from Opp.Contract
+            Id contractId;
+            if (docTypeAsString == 'Customer Agreement') {
+                contractId = uas.Opportunity__r.Contract.Parent_Contract__c != null ? uas.Opportunity__r.Contract.Parent_Contract__c : uas.Opportunity__r.ContractId;
             } else {
-                parentIdToFileNames.put(uas.Opportunity__r.Personal_Credit_Report2__c,new List<String>{fileName});
+                contractId = uas.Opportunity__r.ContractId;
             }
-            //Customer Agreement is grabbed from Parent Contract when possible, otherwise files grabbed from Opp.Contract
-            Id contractId = docTypeAsString == 'Customer Agreement' && uas.Opportunity__r.Contract.Parent_Contract__c != null ? uas.Opportunity__r.Contract.Parent_Contract__c : uas.Opportunity__r.ContractId;
-            if (parentIdToFileNames.containsKey(contractId)) {
-                parentIdToFileNames.get(contractId).add(fileName);
-            } else {
-                parentIdToFileNames.put(contractId, new List<String>{fileName});
-            }
+            parentIdToFileNames.putValue(contractId, fileName);
+            parentIdToFileNames.putValue(uas.Opportunity__r.Personal_Credit_Report2__c, fileName);
         }
         return parentIdToFileNames;
     }
 
+    /**
+     * @description Grabs attachments from appropriate parent record. For Customer Agreements, the file
+     * may live on the Parent Contract (if exists), otherwise, lives on the Opp.Contract
+     * @param assignmentAgreementId Id for Assignment Agreement Contract
+     * @param docType Type of document being queried
+     * @return Map of <Content Document Id, Linked Entity Id>
+     */
     private Map<Id,Id> getDocumentIds(Id assignmentAgreementId, String docType){
         Set<Id> parentRecordIds = new Set<Id>();
         List<ContentDocumentLink> docLinks;
-        Map<Id,Id> versionIdToLinkedEntityId = new Map<Id, Id>();
-
-        if (docType == CUSTOMER_AGREEMENT || docType == DISCLOSURE){
-            List<Contract> contracts = contractSelector.getCustomerContractsByAssignmentAgreement(assignmentAgreementId);
-            for (Contract contract : contracts){
-                //Only need to send Generic Contract (Parent Contract) and not Project Specific Addendum for Customer Agreements
-                Id parentRecordId = docType == CUSTOMER_AGREEMENT && contract.Parent_Contract__c != null ? contract.Parent_Contract__c : contract.Id;
-                parentRecordIds.add(parentRecordId);
-            }
-        } else if (docType == CREDIT_REPORT) {
-            List<Opportunity> oppList = oppSelector.getCustomerOpportunitiesByAssignmentAgreement(assignmentAgreementId);
-            for (Opportunity opp : oppList) {
-                if (opp.Personal_Credit_Report2__c != null) {
-                    parentRecordIds.add(opp.Personal_Credit_Report2__c);
+        switch on docType {
+            when 'Customer Agreement' {
+                List<Contract> contracts = contractSelector.getCustomerContractsByAssignmentAgreement(assignmentAgreementId);
+                for (Contract contract : contracts) {
+                    Id parentRecordId = contract.Parent_Contract__c != null ? contract.Parent_Contract__c : contract.Id;
+                    parentRecordIds.add(parentRecordId);
+                }
+            } when 'Customer Addendum', 'Customer Disclosure Form' {
+                List<Contract> contracts = contractSelector.getCustomerContractsByAssignmentAgreement(assignmentAgreementId);
+                for (Contract contract : contracts) {
+                    parentRecordIds.add(contract.Id);
+                }
+            } when 'Customer Credit Report' {
+                List<Opportunity> oppList = oppSelector.getCustomerOpportunitiesByAssignmentAgreement(assignmentAgreementId);
+                for (Opportunity opp : oppList) {
+                    if (opp.Personal_Credit_Report2__c != null) {
+                        parentRecordIds.add(opp.Personal_Credit_Report2__c);
+                    }
                 }
             }
         }
-        if (parentRecordIds.size() > 0) {
-            docLinks = contentDocumentSelector.selectByLinkedEntitiesWithoutData(parentRecordIds);
-            versionIdToLinkedEntityId = compareFileNameAndType(docLinks,docType);
-        }
-        return versionIdToLinkedEntityId;
+
+        docLinks = contentDocumentSelector.selectByLinkedEntitiesWithoutData(parentRecordIds);
+        return compareFileNameAndType(docLinks,docType);
     }
 
     private Map<Id,Id> compareFileNameAndType(List<ContentDocumentLink> docLinks, String docType) {
@@ -107,8 +115,9 @@ public without sharing class ClientFileCopierService {
             Boolean customerAgreement = docType == CUSTOMER_AGREEMENT  && link.ContentDocument.LatestPublishedVersion.Title.contains('Agreement');
             Boolean disclosure = docType == DISCLOSURE && link.ContentDocument.LatestPublishedVersion.Title.contains('Disclosure');
             Boolean creditReport = docType == CREDIT_REPORT;
+            Boolean addendum = docType == ADDENDUM && link.ContentDocument.LatestPublishedVersion.Title.contains('Addendum');
             Boolean countersigned = link.ContentDocument.LatestPublishedVersion.Signing_Status__c == 'Countersigned';
-            if ((countersigned && (customerAgreement || disclosure)) || creditReport) {
+            if ((countersigned && (customerAgreement || disclosure)) || creditReport || addendum) {
                 versionIdToLinkedEntityId.put(link.ContentDocument.LatestPublishedVersionId, link.LinkedEntityId);
             }
         }
@@ -125,7 +134,7 @@ public without sharing class ClientFileCopierService {
         return folder.Id;
     }
 
-    private Id startBatchCloneJob(Map<Id,Id> versionIdToLinkedEntityId, Id newFolderId, Map<Id,List<String>> linkedEntityIdToFileNames){
+    private Id startBatchCloneJob(Map<Id,Id> versionIdToLinkedEntityId, Id newFolderId, MultiMap linkedEntityIdToFileNames){
         BatchClientFileCopierService batchJob =
             new BatchClientFileCopierService(versionIdToLinkedEntityId, newFolderId, linkedEntityIdToFileNames);
         if (Test.isRunningTest()){
@@ -144,7 +153,7 @@ public without sharing class ClientFileCopierService {
      *
      * @return List of cloned ContentVersion
      */
-    public List<ContentVersion> cloneFiles(List<Id> versionIds, Map<Id,Id> versionIdToLinkedEntityId, Map<Id,List<String>> linkedEntityIdToFormattedFileNames){
+    public List<ContentVersion> cloneFiles(List<Id> versionIds, Map<Id,Id> versionIdToLinkedEntityId, MultiMap linkedEntityIdToFormattedFileNames){
         Map<Id,ContentVersion> filesWithData = contentVersionSelector.selectByIdWithData(new Set<Id>(versionIds));
         List<ContentVersion> clonedFilesToInsert = new List<ContentVersion>();
 
@@ -152,10 +161,11 @@ public without sharing class ClientFileCopierService {
         // fileNames is the list of file names to create, generated from a list of UASes. 1 fileName per UAS
         for (Id versionId : versionIds){
             Id parentId = versionIdToLinkedEntityId.get(versionId);
-            List<String> fileNames = linkedEntityIdToFormattedFileNames.get(parentId);
+            List<Object> fileNames = linkedEntityIdToFormattedFileNames.getValues(parentId);
             ContentVersion file = filesWithData.get(versionId);
             if (fileNames != null && file != null){
-                for (String fileName : fileNames){
+                for (Object value : fileNames){
+                    String fileName = (String) value;
                     clonedFilesToInsert.add(cloneContentVersion(file, fileName));
                 }
             }
