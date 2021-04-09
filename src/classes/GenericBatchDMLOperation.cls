@@ -15,12 +15,12 @@
 
 public without sharing class GenericBatchDMLOperation implements Database.Batchable<SObject>,Database.Stateful {
     
-    public Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Upsert','Delete','Convert'};
-    public String dmlOperation;
-    public List<SObject> sobjList = new List<SObject>();
-    public String log = '';
-    public List<String> triggersToDisable;
-    public LeadConvertOption leadConvertOption;
+    private Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Upsert','Delete','Convert'};
+    private String dmlOperation;
+    private List<SObject> sobjList = new List<SObject>();
+    private String log = '';
+    public List<String> triggersToDisable = new List<String>();
+    private LeadConvertOption leadConvertOption;
 
     public GenericBatchDMLOperation(List<SObject> sobjListPassed,
                                     String dmlOperationPassed) {
@@ -46,28 +46,32 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
     }
    
     public void execute(Database.BatchableContext batchableContext, List<SObject> scope) {
-        if (triggersToDisable != null){
-            for (String triggerAsString : triggersToDisable){
-                Util.disableTrigger(triggerAsString);
-            }
+        for (String triggerAsString : triggersToDisable) {
+            Util.disableTrigger(triggerAsString);
         }
         GenericResult[] resultList;
-        if (dmlOperation == 'Insert') {
-            resultList = saveResult2GR(Database.insert(scope, false));
-        } else if (dmlOperation == 'Update') {
-            resultList = saveResult2GR(Database.update(scope, false));
-        } else if (dmlOperation == 'Upsert') {
-            // Unfortunately, upsert with a field specification requires a concrete SObject type,
-            // so this isn't quite Generic.
-            // https://success.salesforce.com/ideaView?id=08730000000aNhVAAU
-            // Added upsert with externalID for EnergyUsageUpdateTriggerHandler
-            resultList = handleUpsertWithExternalIds(scope);
-        } else if (dmlOperation == 'Delete') {
-            resultList = deleteResult2GR(Database.delete(scope, false));
-        } else if (dmlOperation == 'Convert') {
-            resultList = handleLeadConversion(scope);
+        switch on dmlOperation {
+            when 'Insert' {
+                resultList = saveResult2GR(Database.insert(scope, false));
+            } when 'Update' {
+                resultList = saveResult2GR(Database.update(scope, false));
+            } when 'Upsert' {
+                // Unfortunately, upsert with a field specification requires a concrete SObject type,
+                // so this isn't quite Generic.
+                // https://success.salesforce.com/ideaView?id=08730000000aNhVAAU
+                // Added upsert with externalID for EnergyUsageUpdateTriggerHandler
+                resultList = handleUpsertWithExternalIds(scope);
+            } when 'Delete' {
+                resultList = deleteResult2GR(Database.delete(scope, false));
+            } when 'Convert' {
+                resultList = handleLeadConversion(scope);
+            }
         }
         updateErrorLog(resultList, scope);
+        Logger.logNow('GenericBatchDMLOperation', 'execute', 'Execute complete for ' + scope.size() + ' records', Logger.FINE);
+        for (String triggerString : triggersToDisable) {
+            Util.enableTrigger(triggerString);
+        }
     }
 
     private void updateErrorLog(GenericResult[] resultList, List<SObject> scope) {
@@ -128,11 +132,6 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
             email.setPlainTextBody(this.log);
             MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{email});
         }
-        if (triggersToDisable != null){
-            for (String triggerString : triggersToDisable){
-                Util.enableTrigger(triggerString);
-            }
-        }
     }
 
     // https://salesforce.stackexchange.com/questions/125880/do-the-result-objects-in-database-have-a-common-ancestor
@@ -166,17 +165,17 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
     }
 
     public class LeadConvertOption {
-        public String convertedStatus;
+        private String convertedStatus;
         public Boolean doNotCreateOpportunity = false;
-        public Boolean overwriteLeadSource = false;
-        public String ownerId = null;
-        public Boolean sendNotificationEmail = false;
+        private Boolean overwriteLeadSource = false;
+        private String ownerId = null;
+        private Boolean sendNotificationEmail = false;
 
         public LeadConvertOption(String convertedStatus) {
             this.convertedStatus = convertedStatus;
         }
 
-        public Database.LeadConvert getNewLeadConvert() {
+        private Database.LeadConvert getNewLeadConvert() {
             Database.LeadConvert leadConvert = new Database.LeadConvert();
             leadConvert.setConvertedStatus(convertedStatus);
             leadConvert.setDoNotCreateOpportunity(doNotCreateOpportunity);
@@ -187,34 +186,33 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
         }
     }
 
-    public class GenericResult
+    private class GenericResult
     {
-        final Id recordId;
-        final List<Database.Error> errors;
-        final Boolean isSuccess;
-        public Id getId() { return recordId; }
-        public List<Database.Error> getErrors() { return errors; }
-        public Boolean isSuccess() {return isSuccess; }
+        private final Id recordId;
+        private final List<Database.Error> errors;
+        private final Boolean isSuccess;
+        private List<Database.Error> getErrors() { return errors; }
+        private Boolean isSuccess() {return isSuccess; }
 
-        public GenericResult(Id recordId, List<Database.Error> errors, Boolean success)
+        private GenericResult(Id recordId, List<Database.Error> errors, Boolean success)
         {
             this.recordId = recordId;
             this.errors = (errors != null) ? errors : new List<Database.Error>();
             this.isSuccess = success;
         }
-        public GenericResult(Database.SaveResult result)
+        private GenericResult(Database.SaveResult result)
         {
             this(result.getId(), result.getErrors(), result.isSuccess());
         }
-        public GenericResult(Database.UpsertResult result)
+        private GenericResult(Database.UpsertResult result)
         {
             this(result.getId(), result.getErrors(), result.isSuccess());
         }
-        public GenericResult(Database.DeleteResult result)
+        private GenericResult(Database.DeleteResult result)
         {
             this(result.getId(), result.getErrors(), result.isSuccess());
         }
-        public GenericResult(Database.LeadConvertResult result)
+        private GenericResult(Database.LeadConvertResult result)
         {
             this(result.getLeadId(), result.getErrors(), result.isSuccess());
         }

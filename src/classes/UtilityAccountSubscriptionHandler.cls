@@ -57,7 +57,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
             );
             anchorUASes.add(anchorUAS);
         }
-
-        update anchorUASes;
+        GenericBatchDMLOperation batchDMLOperation = new GenericBatchDMLOperation(anchorUASes, 'Update');
+        Database.executeBatch(batchDMLOperation);
     }
 }

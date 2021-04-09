@@ -158,7 +158,7 @@ private class PostSandboxRefresherTest {
         Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Insert'));
         Test.stopTest();
         System.assertEquals(MessagingService.emailsSent.size(), 1);
-        errorLogs = [SELECT Id FROM Error_Log__c];
+        errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'GenericBatchDMLOperation' AND Severity__c = :Logger.ERROR];
         System.assertEquals(1, errorLogs.size());
     }
     @IsTest

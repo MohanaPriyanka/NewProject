@@ -1,6 +1,7 @@
 /**
  * Created by PeterYao on 4/30/2019.
  */
+@SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
 public with sharing class ZuoraAccountServiceTest {
     public static void useMocks() {
@@ -451,11 +452,6 @@ public with sharing class ZuoraAccountServiceTest {
         Map<Id, String> accountIdToZuoraIdMap = new Map<Id, String>();
         accountIdToZuoraIdMap.put(propertyAccount.Id, propertyAccount.Zuora_Id__c);
 
-        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
-        systemProperties[0].Use_Actual_Email_For_Zuora_Upload__c = true;
-        update systemProperties[0];
-        System.assertEquals(true, Util.getSystemPropertyCheckbox('Use_Actual_Email_For_Zuora_Upload__c'));
-
         List<Account> propertyAccounts = AccountsSelector.selectWithSendBillsContact(new Set<Id>{
             propertyAccount.Id
         });
@@ -466,53 +462,6 @@ public with sharing class ZuoraAccountServiceTest {
         System.assertEquals(1, Logger.logs.values()[0].size());
         // It should have pyao@bluewavesolar.com in it
         System.assert(Logger.logs.values()[0][0].message.contains(actualEmail));
-    }
-
-    @IsTest
-    public static void testContactEmailObfuscation() {
-        String actualEmail = 'pyao@bluewavesolar.com';
-        Contact contact = new Contact(
-            FirstName = 'Test',
-            LastName = 'Test',
-            Email = actualEmail
-        );
-        insert contact;
-
-        Account propertyAccount = new Account(
-            Name = 'Property',
-            Send_Bills_Contact__c = contact.Id,
-            Zuora_Id__c = '12345'
-        );
-        insert propertyAccount;
-
-        Map<Id, String> accountIdToZuoraIdMap = new Map<Id, String>();
-        accountIdToZuoraIdMap.put(propertyAccount.Id, propertyAccount.Zuora_Id__c);
-
-        System.assertEquals(false, Util.getSystemPropertyCheckbox('Use_Actual_Email_For_Zuora_Upload__c'));
-
-        List<Account> propertyAccounts = AccountsSelector.selectWithSendBillsContact(new Set<Id>{
-            propertyAccount.Id
-        });
-        ZuoraAccountService.createContact(propertyAccounts, accountIdToZuoraIdMap);
-        // There should be one list of logs for ZuoraAPIHelper, Fine
-        System.assertEquals(1, Logger.logs.values().size());
-        // There should be one log in that list of logs
-        System.assertEquals(1, Logger.logs.values()[0].size());
-        // It should have pyao@bluewavesolar.com.disabled in it
-        System.assert(Logger.logs.values()[0][0].message.contains(actualEmail + '.disabled'));
-        Logger.logs = null;
-
-        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
-        systemProperties[0].Zuora_Contact_Substitution_Email__c = 'sfdc-compliance@bluewavesolar.com';
-        update systemProperties[0];
-
-        ZuoraAccountService.createContact(propertyAccounts, accountIdToZuoraIdMap);
-        // There should be one list of logs for ZuoraAPIHelper, Fine
-        System.assertEquals(1, Logger.logs.values().size());
-        // There should be one log in that list of logs
-        System.assertEquals(1, Logger.logs.values()[0].size());
-        // It should have pyao@bluewavesolar.com.disabled in it
-        System.assert(Logger.logs.values()[0][0].message.contains(systemProperties[0].Zuora_Contact_Substitution_Email__c));
     }
 
     @IsTest
@@ -669,9 +618,6 @@ public with sharing class ZuoraAccountServiceTest {
       *** MOCKS ***
       *************/
     public class MockAccountsSelector extends MockProvider {
-        public MockAccountsSelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'selectAll' {

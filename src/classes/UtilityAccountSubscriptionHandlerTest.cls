@@ -359,9 +359,9 @@ public class UtilityAccountSubscriptionHandlerTest {
             Subscription_Production_kWh_Static__c = 100
         );
         insert new List<UASB__c>{billOne, billTwo, billThree, billLASTYEAR};
-
+        Test.startTest();
         UtilityAccountSubscriptionHandler.rollupAnchorUASes();
-
+        Test.stopTest();
         anchorUAS = [
             SELECT Id, Customer_Group__c, Opportunity__c,
                 Opportunity__r.AccountId, Annual_Subscription_Production_Summary__c
