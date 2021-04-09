@@ -117,7 +117,7 @@ public without sharing class CSLeadsDuplicateService{
                 System.assertEquals(mainLead.Id, res.getId());
                 Logger.logNow('CSLeadDuplicateService', 'mergeDuplicateAPILeads',
                         'Successfully merged leads into master lead: ' + res.getId() + '; Records were reparented to master lead: ' +
-                                res.getUpdatedRelatedIds(), 'INFO' );
+                                res.getUpdatedRelatedIds(), Logger.FINE);
             } else {
                 Logger.logNow('CSLeadDuplicateService', 'mergeDuplicateAPILeads',
                         'Failed to merge duplicate leads into master lead: ' + mainLead.Id + '; ' + '\n' + res.getErrors());

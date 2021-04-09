@@ -12,7 +12,7 @@ public without sharing class CapacitySnapshotService {
     public void createSnapshots() {
         uow.registerWork(new Logger());
         uow.registerNew(getSnapshots(systemSelector.getActiveSystemsWithSmallOfftakeUASes()));
-        Logger.logLater('CapacitySnapshotService', 'createSnapshots', Util.getLimits(), Logger.INFO);
+        Logger.logLater('CapacitySnapshotService', 'createSnapshots', Util.getLimits(), Logger.FINE);
         uow.commitWork();
     }
 
@@ -38,7 +38,17 @@ public without sharing class CapacitySnapshotService {
         Decimal futureShareOfSystemTotal = 0;
         Decimal futureCustomerSubscriptionTotal = 0;
 
-        for (Utility_Account_Subscription__c uas : sss.Utility_Account_Subscriptions__r) {
+        populateCapacitySnapshotFromUASes(sss.Utility_Account_Subscriptions__r, capacitySnapshot, futureShareOfSystemTotal, futureCustomerSubscriptionTotal);
+        if (futureShareOfSystemTotal > 0) {
+            capacitySnapshot.Available_Capacity__c =
+                futureCustomerSubscriptionTotal/(futureShareOfSystemTotal/100) - futureCustomerSubscriptionTotal;
+        }
+        return capacitySnapshot;
+    }
+
+    private void populateCapacitySnapshotFromUASes(List<Utility_Account_Subscription__c> uases, Capacity_Snapshot__c capacitySnapshot,
+        Decimal futureShareOfSystemTotal, Decimal futureCustomerSubscriptionTotal) {
+        for (Utility_Account_Subscription__c uas : uases) {
             if (uas.Opportunity__r.StageName == 'QC In Process' ||
                 uas.Opportunity__r.StageName == 'Pending Quality Control Signature' ||
                 uas.Opportunity__r.StageName == 'Pending BlueWave Signature') {
@@ -50,20 +60,18 @@ public without sharing class CapacitySnapshotService {
                 // The customer is taking up space on the project, so we use it for inputs to calculate available capacity
                 futureShareOfSystemTotal += uas.Future_Share_of_System_Rollup__c;
                 futureCustomerSubscriptionTotal += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-
-                if (uas.Opportunity__r.Customer_Group__c == 'Anchor') {
-                    continue;
-                } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 45 && uas.Opportunity__r.Account.Days_Past_Due__c < 60) {
-                    capacitySnapshot.X45_60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 60) {
-                    capacitySnapshot.X60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                }
+                populateDaysPastDue(uas, capacitySnapshot);
             }
         }
-        if (futureShareOfSystemTotal > 0) {
-            capacitySnapshot.Available_Capacity__c =
-                futureCustomerSubscriptionTotal/(futureShareOfSystemTotal/100) - futureCustomerSubscriptionTotal;
+    }
+
+    private void populateDaysPastDue(Utility_Account_Subscription__c uas, Capacity_Snapshot__c capacitySnapshot) {
+        if (uas.Opportunity__r.Customer_Group__c == 'Anchor') {
+            return;
+        } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 45 && uas.Opportunity__r.Account.Days_Past_Due__c < 60) {
+            capacitySnapshot.X45_60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+        } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 60) {
+            capacitySnapshot.X60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
         }
-        return capacitySnapshot;
     }
 }
