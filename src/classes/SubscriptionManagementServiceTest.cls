@@ -45,15 +45,16 @@ public class SubscriptionManagementServiceTest {
 
     @IsTest
     @SuppressWarnings('PMD.AvoidHardcodingId')
-
-
     static void testSubscriptionOrderInsert() {
         useMocks(true);
         Subscription_Order__c so = new Subscription_Order__c(
             Utility_Account_Subscription__c = 'a1d29000001C3xuAAC'
         );
+        Subscription_Order__c so2 = new Subscription_Order__c(
+            Utility_Account_Subscription__c = 'a1d29000001C3xuAAC'
+        );
         SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
-        subscriptionManagementService.populateSubscriptionOrder(new List<Subscription_Order__c> {so});
+        subscriptionManagementService.populateSubscriptionOrder(new List<Subscription_Order__c> {so, so2});
         System.assertNotEquals(null, so);
         System.assertEquals(1300, so.Expected_Yield_kWh_kW__c);
         System.assertEquals(1095.84, so.Total_System_Size_kW_DC__c);
@@ -197,8 +198,6 @@ public class SubscriptionManagementServiceTest {
             }
         }
     }
-
-
 
 
 
