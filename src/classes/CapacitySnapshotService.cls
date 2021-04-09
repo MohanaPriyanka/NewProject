@@ -35,33 +35,30 @@ public without sharing class CapacitySnapshotService {
             QC_Capacity__c = 0,
             Waitlist_Capacity__c = 0
         );
-        Decimal futureShareOfSystemTotal = 0;
-        Decimal futureCustomerSubscriptionTotal = 0;
-
-        populateCapacitySnapshotFromUASes(sss.Utility_Account_Subscriptions__r, capacitySnapshot, futureShareOfSystemTotal, futureCustomerSubscriptionTotal);
-        if (futureShareOfSystemTotal > 0) {
-            capacitySnapshot.Available_Capacity__c =
-                futureCustomerSubscriptionTotal/(futureShareOfSystemTotal/100) - futureCustomerSubscriptionTotal;
+        AvailableCapacityBasis availableCapacityBasis = new AvailableCapacityBasis();
+        for (Utility_Account_Subscription__c uas : sss.Utility_Account_Subscriptions__r) {
+            populateCapacitySnapshot(uas, capacitySnapshot, availableCapacityBasis);
+        }
+        if (availableCapacityBasis.futureShareOfSystemTotal > 0) {
+            capacitySnapshot.Available_Capacity__c = availableCapacityBasis.getAvailableCapacity();
         }
         return capacitySnapshot;
     }
 
-    private void populateCapacitySnapshotFromUASes(List<Utility_Account_Subscription__c> uases, Capacity_Snapshot__c capacitySnapshot,
-        Decimal futureShareOfSystemTotal, Decimal futureCustomerSubscriptionTotal) {
-        for (Utility_Account_Subscription__c uas : uases) {
-            if (uas.Opportunity__r.StageName == 'QC In Process' ||
-                uas.Opportunity__r.StageName == 'Pending Quality Control Signature' ||
-                uas.Opportunity__r.StageName == 'Pending BlueWave Signature') {
-                capacitySnapshot.QC_Capacity__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-            } else if (uas.Shared_Solar_System__r.Waitlist__c) {
-                capacitySnapshot.Waitlist_Capacity__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                continue;
-            } else {
-                // The customer is taking up space on the project, so we use it for inputs to calculate available capacity
-                futureShareOfSystemTotal += uas.Future_Share_of_System_Rollup__c;
-                futureCustomerSubscriptionTotal += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                populateDaysPastDue(uas, capacitySnapshot);
-            }
+    private void populateCapacitySnapshot(Utility_Account_Subscription__c uas, Capacity_Snapshot__c capacitySnapshot,
+        AvailableCapacityBasis availableCapacityBasis) {
+        if (uas.Opportunity__r.StageName == 'QC In Process' ||
+            uas.Opportunity__r.StageName == 'Pending Quality Control Signature' ||
+            uas.Opportunity__r.StageName == 'Pending BlueWave Signature') {
+            capacitySnapshot.QC_Capacity__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+        } else if (uas.Shared_Solar_System__r.Waitlist__c) {
+            capacitySnapshot.Waitlist_Capacity__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+            return;
+        } else {
+            // The customer is taking up space on the project, so we use it for inputs to calculate available capacity
+            availableCapacityBasis.futureShareOfSystemTotal += uas.Future_Share_of_System_Rollup__c;
+            availableCapacityBasis.futureCustomerSubscriptionTotal += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+            populateDaysPastDue(uas, capacitySnapshot);
         }
     }
 
@@ -72,6 +69,14 @@ public without sharing class CapacitySnapshotService {
             capacitySnapshot.X45_60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
         } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 60) {
             capacitySnapshot.X60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+        }
+    }
+
+    private class AvailableCapacityBasis {
+        Decimal futureShareOfSystemTotal = 0;
+        Decimal futureCustomerSubscriptionTotal = 0;
+        Decimal getAvailableCapacity() {
+            return futureCustomerSubscriptionTotal/(futureShareOfSystemTotal/100) - futureCustomerSubscriptionTotal;
         }
     }
 }
