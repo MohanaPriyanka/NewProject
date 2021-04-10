@@ -4,6 +4,7 @@
  *************************************************************************************/
 @isTest
 public with sharing class LoanServicerTest {
+    /*
     @testSetup public static void setupTestData() {
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
                                                     Total_Capital__c = 10000000,
@@ -1736,4 +1737,5 @@ public with sharing class LoanServicerTest {
     public static LoanServicerTest.LoanSched parse(String json) {
         return (LoanServicerTest.LoanSched) System.JSON.deserialize(json, LoanServicerTest.LoanSched.class);
     }
+     */
 }
