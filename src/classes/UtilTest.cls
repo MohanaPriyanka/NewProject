@@ -2,7 +2,7 @@
  * Created by mstackhouse on 9/21/2018.
  * Description:
  */
-
+@SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
 public with sharing class UtilTest {
     @IsTest
@@ -100,12 +100,6 @@ public with sharing class UtilTest {
         update product;
         Partner_Product_Junction__c ppj = new Partner_Product_Junction__c(Enabled_Product__c = product.Id,
             Partner__c = partner.Id);
-        Product2 bwsl = [
-            SELECT Id
-            FROM Product2
-            WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 5.99%'
-            LIMIT 1
-        ];
         insert ppj;
 
         System.assertEquals(8, Util.getActiveProducts(new List<String>{
@@ -291,13 +285,13 @@ public with sharing class UtilTest {
 
     @IsTest
     private static void testGetSystemPropertyString() {
-        System.assertEquals('', Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c'));
+        System.assertEquals('', Util.getSystemPropertyString('Log_Level__c'));
         System_Properties__c property = new System_Properties__c(
             Name = 'System',
-            Zuora_Contact_Substitution_Email__c = 'sfdc-compliance@bluewavesolar.com'
+            Log_Level__c = 'Fine'
         );
         insert property;
-        System.assertEquals('sfdc-compliance@bluewavesolar.com', Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c'));
+        System.assertEquals('Fine', Util.getSystemPropertyString('Log_Level__c'));
     }
 
     @IsTest
