@@ -171,15 +171,6 @@ Production: BlueWave Inside Sales</description>
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Disable_LoanServicer_Validation__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>This validation prevents updates to a Loan&apos;s Product, Financing Fee, or System Cost if the Loan&apos;s Opportunity Stage is Complete or Contract Pending. Updating those fields will recalculate the Loan Payment amort schedule.</inlineHelpText>
-        <label>Disable LoanServicer Validation</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Disable_LoanTrancheTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -257,15 +248,6 @@ Production: BlueWave Inside Sales</description>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Disable SubscriptionOrder Trigger</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Disable_TransactionApplication_Check__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>The check in TransactionApplicationHandler prevents deletion</inlineHelpText>
-        <label>Disable TransactionApplication Check</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>

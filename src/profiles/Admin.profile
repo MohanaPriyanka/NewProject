@@ -664,14 +664,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>Excel</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ExcelTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ExecuteSOQL</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -893,10 +885,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LoanHandlerTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LoanServicer</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1341,10 +1329,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TestcaseRecordDeleterTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TransactionApplicationHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
