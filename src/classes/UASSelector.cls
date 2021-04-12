@@ -146,6 +146,7 @@ public without sharing class UASSelector {
                 Customer_Group__c,
                 Opportunity__r.Shared_Solar_System__c,
                 Opportunity__r.Customer_Sub_Group__c,
+                Opportunity__r.ContractId,
                 Shared_Solar_System__c,
                 SSS_Id__c
             FROM Utility_Account_Subscription__c
@@ -194,6 +195,7 @@ public without sharing class UASSelector {
                 Opportunity__r.Name,
                 Opportunity__r.ContractId,
                 Opportunity__r.Contract.Assignment_Agreement__c,
+                Opportunity__r.Contract.Parent_Contract__c,
                 Opportunity__r.Personal_Credit_Report2__c,
                 Utility_Account_Log__r.Name
             FROM Utility_Account_Subscription__c

@@ -192,6 +192,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AllocationScheduleSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AllocationScheduleSelectorTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -753,6 +757,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ImageScrollerControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableAddendumGenerator</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -8951,6 +8959,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.EndDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Generate_Addendum__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

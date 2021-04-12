@@ -127,7 +127,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,Credit_Score_Requirement__c, Assignment_Order__c,
                 Maximum_Subscription_Capacity_kWDC__c,Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
                 Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c,BWC_Project_Entity_Manual__c,
-                Total_System_Size_kWh_DC__c,Public__c,
+                Total_System_Size_kWh_DC__c,Public__c, Waitlist__c,
             (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE Open__c = TRUE
@@ -141,7 +141,7 @@ public inherited sharing class SharedSolarSystemsSelector {
             SELECT Id, Name, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c,
                 Credit_Score_Requirement__c, Product__r.Name, Utility__r.Name, Public__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
                 Do_Not_Underwrite__c, Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
-                RiskCalc_Minimum__c, Do_Not_Ask_for_Payment_Method__c, Product__r.Parent_Product__c,
+                RiskCalc_Minimum__c, Do_Not_Ask_for_Payment_Method__c, Product__r.Parent_Product__c, Waitlist__c,
             (SELECT Id, Account__c, Account__r.Partner__c, Account__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE (Product__c = :productId OR Product__r.Parent_Product__c = :productId)
@@ -185,6 +185,18 @@ public inherited sharing class SharedSolarSystemsSelector {
             SELECT ParentId, UserOrGroupId
             FROM Shared_Solar_System__Share
             WHERE UserOrGroupId IN :users
+        ];
+    }
+
+    public List<Shared_Solar_System__c> getSharedSolarSystemsWithEnactedSZs (List<Id> sssIds) {
+        return [SELECT Id, Reacquisition_Start_Date__c,
+        (SELECT Id, Date_Enacted_by_Utility__c
+        FROM Schedule_Zs__r
+        WHERE Date_Schedule_Z_Retired_by_Utility__c = NULL
+        AND Date_Enacted_by_Utility__c != NULL
+        ORDER BY Date_Enacted_by_Utility__c DESC)
+        FROM Shared_Solar_System__c
+        WHERE Id IN :sssIds
         ];
     }
 }

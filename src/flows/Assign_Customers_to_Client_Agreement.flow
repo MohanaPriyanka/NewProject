@@ -4,7 +4,7 @@
         <name>Assign_SOs_to_Assignment_Agreement</name>
         <label>Assign SOs to Assignment Agreement</label>
         <locationX>182</locationX>
-        <locationY>2822</locationY>
+        <locationY>2942</locationY>
         <actionName>CustomerAssignmentService</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -21,6 +21,24 @@
             <name>cutoffDate</name>
             <value>
                 <elementReference>Cutoff_Date</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Generate_Addendums</name>
+        <label>Generate Addendums</label>
+        <locationX>182</locationX>
+        <locationY>2822</locationY>
+        <actionName>InvocableAddendumGenerator</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Assign_SOs_to_Assignment_Agreement</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>contracts</name>
+            <value>
+                <elementReference>ContractsToUpdate</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -382,7 +400,7 @@
         <locationX>182</locationX>
         <locationY>2702</locationY>
         <connector>
-            <targetReference>Assign_SOs_to_Assignment_Agreement</targetReference>
+            <targetReference>Generate_Addendums</targetReference>
         </connector>
         <inputReference>ContractsToUpdate</inputReference>
     </recordUpdates>
@@ -493,7 +511,7 @@
         <name>Done_Screen</name>
         <label>Done Screen</label>
         <locationX>182</locationX>
-        <locationY>2942</locationY>
+        <locationY>3062</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
