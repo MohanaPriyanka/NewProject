@@ -10,6 +10,7 @@
         <connector>
             <targetReference>Update_Bill_Periods_and_Rollup_Anchor_UASes</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
     </actionCalls>
     <actionCalls>
         <name>BillingBatchUpdate</name>
@@ -21,18 +22,20 @@
         <connector>
             <targetReference>Template_Assigner_Screen</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
     </actionCalls>
     <actionCalls>
         <description>Makes API call to Zuora to execute a bill run, which gets outstanding usage and creates invoices.</description>
         <name>FlowZuoraBillRun</name>
         <label>Bill Run Execute</label>
-        <locationX>1165</locationX>
-        <locationY>66</locationY>
+        <locationX>1170</locationX>
+        <locationY>88</locationY>
         <actionName>InvocableZuoraBillRun</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Apply_Memos</targetReference>
+            <targetReference>Download_Invoices_Screen</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>invoiceDates</name>
             <value>
@@ -48,13 +51,14 @@
         <description>Queries for invoices in SF that do not have a pdf, get that pdf from Zuora and download it as a file.</description>
         <name>InvoiceDownload</name>
         <label>InvoiceDownload</label>
-        <locationX>1521</locationX>
-        <locationY>63</locationY>
+        <locationX>1361</locationX>
+        <locationY>90</locationY>
         <actionName>InvocableZuoraInvoiceDownload</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Send_Via_Email_Screen</targetReference>
+            <targetReference>Apply_Memos</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
     </actionCalls>
     <actionCalls>
         <description>Gets zuora invoices marked as ready for paper send and uploads them to letterstream</description>
@@ -67,6 +71,7 @@
         <connector>
             <targetReference>Apply_Unapplied_Payments_Screen</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
     </actionCalls>
     <actionCalls>
         <description>Populates Annual Subscription Production Summary on Active Anchors serviced by BlueWave</description>
@@ -79,6 +84,7 @@
         <connector>
             <targetReference>Done_SCreen</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
     </actionCalls>
     <actionCalls>
         <description>Assigns bill templates to Zuora Accounts based on criteria (client, anchor v non anchor, etc)</description>
@@ -91,6 +97,7 @@
         <connector>
             <targetReference>Execute_Bill_Run_Screen</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
     </actionCalls>
     <actionCalls>
         <name>Update_Bill_Period_Status</name>
@@ -102,6 +109,7 @@
         <connector>
             <targetReference>Rollup_Anchor_UASes</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>invoiceDates</name>
             <value>
@@ -121,6 +129,7 @@
         <connector>
             <targetReference>Upload_Adjustments_To_Zuora_Screen</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>invoiceDates</name>
             <value>
@@ -139,18 +148,20 @@
         <connector>
             <targetReference>Send_Via_Paper_Screen</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
     </actionCalls>
     <actionCalls>
         <description>Queries outstanding credit memos in Zuora, and applies them to invoices by client and project</description>
         <name>Zuora_Memo_Apply</name>
         <label>Memo Apply</label>
-        <locationX>1317</locationX>
-        <locationY>60</locationY>
+        <locationX>1532</locationX>
+        <locationY>57</locationY>
         <actionName>InvocableZuoraMemoApply</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Download_Invoices_Screen</targetReference>
+            <targetReference>Send_Via_Email_Screen</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
     </actionCalls>
     <actionCalls>
         <description>Uploads bill adjustments in SF that are not yet in Zuora</description>
@@ -163,6 +174,7 @@
         <connector>
             <targetReference>Update_Batches</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>invoiceDates</name>
             <value>
@@ -170,6 +182,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <name>Skip_Bill_Period_Anchor_UAS_Update</name>
         <label>Skip Bill Period &amp; Anchor UAS Update</label>
@@ -227,7 +240,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Apply_Memos</targetReference>
+                <targetReference>Download_Invoices_Screen</targetReference>
             </connector>
             <label>Skip Bill Run outcome</label>
         </rules>
@@ -260,8 +273,8 @@
     <decisions>
         <name>Skip_Download_Invoices</name>
         <label>Skip Download Invoices</label>
-        <locationX>1425</locationX>
-        <locationY>196</locationY>
+        <locationX>1280</locationX>
+        <locationY>236</locationY>
         <defaultConnector>
             <targetReference>InvoiceDownload</targetReference>
         </defaultConnector>
@@ -277,7 +290,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Send_Via_Email_Screen</targetReference>
+                <targetReference>Apply_Memos</targetReference>
             </connector>
             <label>Skip Download Invoices Outcome</label>
         </rules>
@@ -310,8 +323,8 @@
     <decisions>
         <name>Skip_Memo_Application_Decision</name>
         <label>Skip Memo Application Decision</label>
-        <locationX>1268</locationX>
-        <locationY>229</locationY>
+        <locationX>1466</locationX>
+        <locationY>234</locationY>
         <defaultConnector>
             <targetReference>Zuora_Memo_Apply</targetReference>
         </defaultConnector>
@@ -327,7 +340,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Download_Invoices_Screen</targetReference>
+                <targetReference>Send_Via_Email_Screen</targetReference>
             </connector>
             <label>Skip Memo Applicaiton</label>
         </rules>
@@ -479,6 +492,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -488,7 +507,7 @@
     <screens>
         <name>Apply_Memos</name>
         <label>Apply Memos</label>
-        <locationX>1180</locationX>
+        <locationX>1378</locationX>
         <locationY>556</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -515,6 +534,7 @@
             <name>Bill_Status_memo_application</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -547,6 +567,7 @@
             <name>UnappliedCMp</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -569,6 +590,7 @@
             <name>BillStatus_Done</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -577,8 +599,8 @@
     <screens>
         <name>Download_Invoices_Screen</name>
         <label>Download Invoices</label>
-        <locationX>1389</locationX>
-        <locationY>550</locationY>
+        <locationX>1212</locationX>
+        <locationY>557</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -604,6 +626,7 @@
             <name>BillStatus_Download</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -639,6 +662,7 @@
             <name>BillStatus_ExecuteBilLRun</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -659,6 +683,7 @@
             <name>Bill_Gen_console</name>
             <extensionName>c:BillGenerationConsole</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -686,6 +711,7 @@
             <name>BillStatus_InvoiceDate</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -694,8 +720,8 @@
     <screens>
         <name>Send_Via_Email_Screen</name>
         <label>Send Via Email</label>
-        <locationX>1610</locationX>
-        <locationY>571</locationY>
+        <locationX>1614</locationX>
+        <locationY>572</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -721,6 +747,7 @@
             <name>BillStatus_Email</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -756,6 +783,7 @@
             <name>BillStatus_Letter</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -791,6 +819,7 @@
             <name>BillStatus_Templates</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -826,6 +855,7 @@
             <name>BillStatus_Batches</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -858,6 +888,7 @@
             <name>BPAnchorUAScmp</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -893,6 +924,7 @@
             <name>BillStatus_CreditMemo</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
@@ -928,6 +960,7 @@
             <name>BillStatus_Usage</name>
             <extensionName>c:BillStatusComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>false</showFooter>
