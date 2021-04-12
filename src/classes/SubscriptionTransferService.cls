@@ -128,11 +128,17 @@ public without sharing class SubscriptionTransferService {
             Approval_Status__c = 'Approved',
             Effective_Date__c = System.now()
         );
+        Decimal amountToTransfer = 0;
+        if (oldUAS.Future_Customer_Subscription_KWDC_Rollup__c == 0 && oldUAS.Subscription_Orders__r[0].Type__c == 'Cancellation') {
+            amountToTransfer = oldUAS.Subscription_Orders__r[0].Previous_kw_DC_Subscription__c;
+        } else {
+            amountToTransfer = oldUAS.Future_Customer_Subscription_KWDC_Rollup__c;
+        }
         Decimal annualkWhOrCost = calculator.getAnnualkWhOrCost(
             oldUAS.Subscription_Type__c,
             sss,
             oldUAS.Sizing_Method__r,
-            oldUAS.Future_Customer_Subscription_KWDC_Rollup__c,
+            amountToTransfer,
             // If the new UAS already exists, we want to include the current subscription when calculating the amount
             // to back into. But if it doesn't exist yet, it might be cloned and still have a
             // Future_Customer_Subscription_KWDC_Rollup__c value which we want to ignore
