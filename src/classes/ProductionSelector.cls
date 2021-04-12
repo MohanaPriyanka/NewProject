@@ -66,4 +66,14 @@ public inherited sharing class ProductionSelector {
         }
         return billedTransfersMap;
     }
+
+    public List<Production__c> getProductionsForTransfers() {
+        return [
+            SELECT Id, Name, Shared_Solar_System__c, CreatedDate, Credits_Transferred__c, Untransferred_Credits__c,
+                Credits_Available_for_Allocation__c, Billing_Method__c, Untransferred_kWh__c, kWh_Transferred__c
+            FROM Production__c
+            WHERE (Credits_Transferred__c = 0 OR Untransferred_Credits__c != 0) AND Production_kWh__c != 0
+            ORDER BY Start_Date__c ASC
+        ];
+    }
 }

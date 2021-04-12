@@ -243,4 +243,10 @@ private class ProductionSelectorTest {
         System.assertEquals(2,sssMap.get(sssList[0].Id));
         System.assertEquals(1,sssMap.get(sssList[1].Id));
     }
+
+    @IsTest
+    public static void testGetProductionsForTransfers() {
+        ProductionSelector selector = new ProductionSelector();
+        System.assertNotEquals(null, selector.getProductionsForTransfers(), 'Expected List of Productions to be returned');
+    }
 }
