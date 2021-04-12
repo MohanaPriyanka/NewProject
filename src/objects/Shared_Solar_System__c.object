@@ -3313,14 +3313,14 @@ NOT(Available_SMB_Underwriting_Method_Docs__c)
 )
 )
 )</errorConditionFormula>
-        <errorMessage>Can&apos;t set a SSS as Open without:
-1.) System Size &amp; Yield
-2.) Capacity Available to Be Reserved &gt; 0 
-3.) Product &amp; Utility NMC Tariff
-4.) Utility &amp; Service Territories
-5.) Maximum Subscription Cost &amp; kW &gt; 0
-6.) Credit Score Required
-7.) Underwriting</errorMessage>
+        <errorMessage>Can&apos;t set a SSS as Open without: 
+System Size &amp; Yield; 
+Capacity Available to Be Reserved &gt; 0; 
+Product, Assignment Order &amp; NMC Tariff; 
+Utility &amp; Service Territories; 
+Maximum Subscription Cost &amp; kW &gt; 0; 
+Credit Score Required; 
+Underwriting</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>PM_Team_Locks</fullName>
