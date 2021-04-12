@@ -16633,6 +16633,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contract.Conga_Addendum__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract.Conga_Countersigned_Contract__c</field>
         <readable>true</readable>
     </fieldPermissions>
