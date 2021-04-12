@@ -86,6 +86,18 @@
         <useDeadLetterQueue>false</useDeadLetterQueue>
     </outboundMessages>
     <outboundMessages>
+        <fullName>Generate_Addendum_Documents</fullName>
+        <apiVersion>51.0</apiVersion>
+        <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
+        <fields>Conga_Addendum__c</fields>
+        <fields>Id</fields>
+        <includeSessionId>true</includeSessionId>
+        <integrationUser>api@bluewavesolar.com</integrationUser>
+        <name>Generate Addendum Documents</name>
+        <protected>false</protected>
+        <useDeadLetterQueue>false</useDeadLetterQueue>
+    </outboundMessages>
+    <outboundMessages>
         <fullName>Generate_Review_Version</fullName>
         <apiVersion>48.0</apiVersion>
         <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>

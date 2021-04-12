@@ -11,6 +11,7 @@ public without sharing class LeadService {
     private UALService ualService = new UALService();
 
     private LeadSelector leadSelector = new LeadSelector();
+    private CustomerContractService contractService = new CustomerContractService();
 
 
     public void completeLeadConversion(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
@@ -119,21 +120,17 @@ public without sharing class LeadService {
 
     }
 
-
     public void updateRelatedContracts(List<Lead> triggerNew, Map<Id, Lead> triggerOldMap) {
-        Map<Id, Lead> leadsForContractUpdate = new Map<Id, Lead>();
+        List<Id> leadIds = new List<Id>();
         for(Lead lead : triggerNew) {
             if(lead.Product__c != triggerOldMap.get(lead.Id).Product__c) {
-                leadsForContractUpdate.put(lead.Id, lead);
+               leadIds.add(lead.Id);
             }
         }
-        if(!leadsForContractUpdate.isEmpty()) {
-            CustomerContractSelector ccSelect = new CustomerContractSelector();
-            List<Contract> contracts = ccSelect.selectByRelatedLeads(leadsForContractUpdate.keySet());
-            for(Contract c : contracts) {
-                c.Product__c = leadsForContractUpdate.get(c.Lead__c).Product__c;
-            }
-            Util.updateAndLog(contracts, 'LeadService', 'updateRelatedContracts');
+        if (leadIds.size()> 0) {
+            Map<Id, Lead> leadsForContractUpdate = leadSelector.getLeadMap(leadIds);
+            List<Contract> contracts = new CustomerContractSelector().selectByRelatedLeads(leadsForContractUpdate.keySet());
+            contractService.updateProductForCustomerContract(contracts, leadsForContractUpdate);
         }
     }
 

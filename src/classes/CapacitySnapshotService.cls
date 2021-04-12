@@ -12,7 +12,7 @@ public without sharing class CapacitySnapshotService {
     public void createSnapshots() {
         uow.registerWork(new Logger());
         uow.registerNew(getSnapshots(systemSelector.getActiveSystemsWithSmallOfftakeUASes()));
-        Logger.logLater('CapacitySnapshotService', 'createSnapshots', Util.getLimits(), Logger.INFO);
+        Logger.logLater('CapacitySnapshotService', 'createSnapshots', Util.getLimits(), Logger.FINE);
         uow.commitWork();
     }
 
@@ -35,35 +35,48 @@ public without sharing class CapacitySnapshotService {
             QC_Capacity__c = 0,
             Waitlist_Capacity__c = 0
         );
-        Decimal futureShareOfSystemTotal = 0;
-        Decimal futureCustomerSubscriptionTotal = 0;
-
+        AvailableCapacityBasis availableCapacityBasis = new AvailableCapacityBasis();
         for (Utility_Account_Subscription__c uas : sss.Utility_Account_Subscriptions__r) {
-            if (uas.Opportunity__r.StageName == 'QC In Process' ||
-                uas.Opportunity__r.StageName == 'Pending Quality Control Signature' ||
-                uas.Opportunity__r.StageName == 'Pending BlueWave Signature') {
-                capacitySnapshot.QC_Capacity__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-            } else if (uas.Shared_Solar_System__r.Waitlist__c) {
-                capacitySnapshot.Waitlist_Capacity__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                continue;
-            } else {
-                // The customer is taking up space on the project, so we use it for inputs to calculate available capacity
-                futureShareOfSystemTotal += uas.Future_Share_of_System_Rollup__c;
-                futureCustomerSubscriptionTotal += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-
-                if (uas.Opportunity__r.Customer_Group__c == 'Anchor') {
-                    continue;
-                } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 45 && uas.Opportunity__r.Account.Days_Past_Due__c < 60) {
-                    capacitySnapshot.X45_60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 60) {
-                    capacitySnapshot.X60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                }
-            }
+            populateCapacitySnapshot(uas, capacitySnapshot, availableCapacityBasis);
         }
-        if (futureShareOfSystemTotal > 0) {
-            capacitySnapshot.Available_Capacity__c =
-                futureCustomerSubscriptionTotal/(futureShareOfSystemTotal/100) - futureCustomerSubscriptionTotal;
+        if (availableCapacityBasis.futureShareOfSystemTotal > 0) {
+            capacitySnapshot.Available_Capacity__c = availableCapacityBasis.getAvailableCapacity();
         }
         return capacitySnapshot;
+    }
+
+    private void populateCapacitySnapshot(Utility_Account_Subscription__c uas, Capacity_Snapshot__c capacitySnapshot,
+        AvailableCapacityBasis availableCapacityBasis) {
+        if (uas.Opportunity__r.StageName == 'QC In Process' ||
+            uas.Opportunity__r.StageName == 'Pending Quality Control Signature' ||
+            uas.Opportunity__r.StageName == 'Pending BlueWave Signature') {
+            capacitySnapshot.QC_Capacity__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+        } else if (uas.Shared_Solar_System__r.Waitlist__c) {
+            capacitySnapshot.Waitlist_Capacity__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+            return;
+        } else {
+            // The customer is taking up space on the project, so we use it for inputs to calculate available capacity
+            availableCapacityBasis.futureShareOfSystemTotal += uas.Future_Share_of_System_Rollup__c;
+            availableCapacityBasis.futureCustomerSubscriptionTotal += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+            populateDaysPastDue(uas, capacitySnapshot);
+        }
+    }
+
+    private void populateDaysPastDue(Utility_Account_Subscription__c uas, Capacity_Snapshot__c capacitySnapshot) {
+        if (uas.Opportunity__r.Customer_Group__c == 'Anchor') {
+            return;
+        } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 45 && uas.Opportunity__r.Account.Days_Past_Due__c < 60) {
+            capacitySnapshot.X45_60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+        } else if (uas.Opportunity__r.Account.Days_Past_Due__c >= 60) {
+            capacitySnapshot.X60_Day_Past_Due_Active_kW__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
+        }
+    }
+
+    private class AvailableCapacityBasis {
+        Decimal futureShareOfSystemTotal = 0;
+        Decimal futureCustomerSubscriptionTotal = 0;
+        Decimal getAvailableCapacity() {
+            return futureCustomerSubscriptionTotal/(futureShareOfSystemTotal/100) - futureCustomerSubscriptionTotal;
+        }
     }
 }

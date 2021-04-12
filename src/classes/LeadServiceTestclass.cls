@@ -616,6 +616,53 @@ public class LeadServiceTestclass {
         System.assertEquals(newProduct.Id, [SELECT Product__c FROM Contract WHERE Id = :contract.Id LIMIT 1].Product__c, 'New product on Lead should be reflected by new product on Contract');
     }
 
+    @IsTest
+    private static void testGenericCustomerContractProductChange() {
+        Lead lead = [SELECT Id, Product__c, (SELECT Id FROM Accounts__r) FROM Lead LIMIT 1];
+        Product2 leadGenericProduct = [SELECT Id FROM Product2 WHERE Id = :lead.Product__c LIMIT 1];
+        Product2 projectSpecificProduct = new Product2(
+            Name = 'Project Specific Product',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            Program__c = 'VDER - Community Solar',
+            Sizing_Method__c = 'Project Ratio',
+            State__c = 'NY',
+            IsActive = true,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Customer_Subscription_Type__c = 'kWh',
+            Parent_Product__c = leadGenericProduct.Id
+        );
+       insert projectSpecificProduct;
+
+        Account a = new Account(
+            Lead__c = lead.Id,
+            Name = 'test property account',
+            BillingStreet = 'test street',
+            BillingCity = 'test city',
+            BillingStateCode = 'MA',
+            BillingPostalCode = '02633'
+        );
+        insert a;
+        Contract contract = new Contract(
+            Lead__c = lead.Id,
+            Product__c = lead.Product__c,
+            Contract_Type__c = 'Generic',
+            RecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByDeveloperName().get('Customer_Contract').getRecordTypeId(),
+            AccountId = a.Id
+        );
+        insert contract;
+
+        Test.startTest();
+        lead.Product__c = projectSpecificProduct.Id;
+        update lead;
+        Test.stopTest();
+
+        System.assertEquals(leadGenericProduct.Id, [SELECT Product__c FROM Contract WHERE Id = :contract.Id LIMIT 1].Product__c, 'Product should stay the same on the "Generic" Customer Contract ' +
+            'when the Leads product changes from Generic to Project Specific');
+    }
+
+
 
 
     public static void pullCreditForLead(Id leadId) {

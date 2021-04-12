@@ -34,9 +34,19 @@ public inherited sharing class ContractSelector {
 
     public List<Contract> getCustomerContractsByAssignmentAgreement(Set<Id> assignmentAgreementIds) {
         return [
-            SELECT Id, Name
+            SELECT Id, Name, Parent_Contract__c
             FROM Contract
             WHERE Assignment_Agreement__c = : assignmentAgreementIds
+        ];
+    }
+
+    public List<Contract> getCustomerContractsForAddendum(Set<Id> contractIds) {
+        return [
+            SELECT Id, Product__r.Addendum_Template_Id__c
+            FROM Contract
+            WHERE Id IN :contractIds
+            AND Product__r.Addendum_Template_Id__c != NULL
+            AND Customer_Signature_Date_Time__c = NULL
         ];
     }
 

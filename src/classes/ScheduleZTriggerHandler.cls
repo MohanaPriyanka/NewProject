@@ -9,7 +9,7 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ScheduleZTriggerHandler {
     @TestVisible
-    private static FeatureService featureService = new FeatureService();
+    private static CustomerAssignmentService customerAssignmentService = new CustomerAssignmentService();
 
     // For newly enacted Schedule Zs, we want to set the previous Schedule Z to retired, and update any UASes that
     // that aren't on the new Schedule Z.
@@ -140,8 +140,21 @@ public without sharing class ScheduleZTriggerHandler {
         }
 
         List<Utility_Account_Subscription__c> accountSubscriptions = [
-            SELECT Id, Customer_Subscription_KW_DC__c, Opportunity__r.Shared_Solar_System__c,
-                Future_Customer_Subscription_KWDC_Rollup__c
+            SELECT Id, Name,
+            Annual_Cost_Future_Rollup__c,
+            Annual_kWh_Subscription_Future_Rollup__c,
+            Customer_Subscription_KW_DC__c,
+            Future_Customer_Subscription_KWDC_Rollup__c,
+            Future_Share_of_System_Rollup__c,
+            Next_Schedule_Z_Status__c,
+            Opportunity__c,
+            Opportunity_Stage__c,
+            Customer_Group__c,
+            Opportunity__r.Shared_Solar_System__c,
+            Opportunity__r.Customer_Sub_Group__c,
+            Opportunity__r.ContractId,
+            Shared_Solar_System__c,
+            SSS_Id__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Shared_Solar_System__c IN : sssList
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
@@ -156,19 +169,11 @@ public without sharing class ScheduleZTriggerHandler {
         ];
 
         List<Schedule_Z_Subscription__c> scheduleZSubscriptions = new List<Schedule_Z_Subscription__c>();
-        Boolean soFeatureEnabled = featureService.isEnabled('Subscription_Orders');
-
         for (Schedule_Z__c scheduleZ : scheduleZListWithSystemSize) {
             for (Utility_Account_Subscription__c uas : accountSubscriptions) {
                 if (scheduleZ.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c) {
-                    Decimal customerSubscriptionkWh;
-                    if (soFeatureEnabled) {
-                        customerSubscriptionkWh = uas.Future_Customer_Subscription_KWDC_Rollup__c;
-                    } else {
-                        customerSubscriptionkWh = uas.Customer_Subscription_KW_DC__c;
-                    }
                     Schedule_Z_Subscription__c newSubscription = new Schedule_Z_Subscription__c(
-                        Customer_Subscription_kW_DC__c = customerSubscriptionkWh,
+                        Customer_Subscription_kW_DC__c = uas.Future_Customer_Subscription_KWDC_Rollup__c,
                         Utility_Account_Subscription__c = uas.Id,
                         Schedule_Z__c = scheduleZ.Id,
                         Number_of_Decimal_Places__c = scheduleZ.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
@@ -179,6 +184,8 @@ public without sharing class ScheduleZTriggerHandler {
             }
         }
 
+        List<Contract> contractsToUpdate = customerAssignmentService.generateAddendumsFromSubscriptions(accountSubscriptions);
+        update contractsToUpdate;
         insert scheduleZSubscriptions;
     }
 

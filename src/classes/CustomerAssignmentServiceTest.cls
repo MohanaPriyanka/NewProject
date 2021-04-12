@@ -146,6 +146,23 @@ public with sharing class CustomerAssignmentServiceTest {
         System.assertEquals(null, subscriptionOrdersToUpdate, 'Expected no errors, and no updates');
     }
 
+
+    @IsTest
+    static void testGenerateAddendumsFromSubscriptions() {
+        CustomerAssignmentService.contractSelector =
+            (ContractSelector) Test.createStub(ContractSelector.class, new MockContractSelector());
+
+        CustomerAssignmentService service = new CustomerAssignmentService();
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
+        Test.startTest();
+        List<Contract> contracts = service.generateAddendumsFromSubscriptions(uasList);
+        Test.stopTest();
+
+        for (Contract contract : contracts ) {
+            System.assert(contract.Generate_Addendum__c, 'Contract should have an Addendum generated');
+        }
+    }
+
     @IsTest
     private static void systemTestAssignmentAgreementRejection() {
         Util.disableTrigger('Disable_SubscriptionOrder_Trigger__c');
@@ -244,6 +261,25 @@ public with sharing class CustomerAssignmentServiceTest {
             return null;
         }
     }
+
+    public class MockContractSelector extends MockProvider {
+        public override Object handleMethodCall(MethodCall methodCall) {
+            String contractsAsString = '[' +
+                '{"Id":"8002f000000GebbAAC", "Generate_Addendum__c" : ' + false + '},' +
+                '{"Id":"8002f000000GevzAAC", "Generate_Addendum__c" : ' + false + '},' +
+                '{"Id":"8002f000000Gew0AAC", "Generate_Addendum__c" : ' + false + '},' +
+                '{"Id":"8002f000000GewNAAS", "Generate_Addendum__c" : ' + false + '}]';
+
+
+            switch on methodCall.stubbedMethodName {
+                when 'getCustomerContractsForAddendum' {
+                    return (List<Contract>) JSON.deserialize(contractsAsString, List<Contract>.class);
+                }
+            }
+            return null;
+        }
+    }
+
 
     public class MockSubscriptionOrderSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {

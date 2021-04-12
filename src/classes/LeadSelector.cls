@@ -221,7 +221,7 @@ public without sharing class LeadSelector {
         return leads[0];
     }
 
-    public static Map<Id, Lead> getLeadMap(List<Id> leadIds) {
+    public Map<Id, Lead> getLeadMap(List<Id> leadIds) {
         return new Map<Id, Lead>([
             SELECT Id, Name,
                 Application_Complete_Date__c,
@@ -245,6 +245,7 @@ public without sharing class LeadSelector {
                 No_Payment__c,
                 OwnerId,
                 Product__c,
+                Product__r.Parent_Product__c,
                 Partner_Lookup__r.Name,
                 Partner_Account__c,
                 Partner_Account__r.Name,

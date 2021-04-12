@@ -274,6 +274,34 @@ Account.Assignment_Agreement_Template__c
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Conga_Addendum__c</fullName>
+        <description>This field has the Conga parameters for generating the MA Addendum</description>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid=&quot; + Product__r.Addendum_Template_Id__c +
+&quot;&amp;OFN=CS Agreement Addendum&quot; +
+&quot;&amp;qvar0id=a270a0000020q0rAAA?pv0=&quot; + Id +
+&quot;&amp;queryid=[Opp]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNOPP}?pv1={QVar0},[UAS]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNUAS}?pv1={QVar0},[Percent]{!Environment.Conga_Query_Addendum_Sum_Share}?pv1={QVar0},[kWDC]{!Environment.Conga_Query_Addendum_kwdc}?pv1={QVar0},[Parent]{!Environment.Conga_query_MA_Addendum_parentcontract}?pv2=&quot; + Id +
+&quot;&amp;sc0=1&quot; +
+&quot;&amp;sc1=SalesforceFile&quot; +
+&quot;&amp;APDF=0&quot; +
+&quot;&amp;defaultpdf=1&quot; +
+&quot;&amp;qmode=SalesforceFile&quot; +
+&quot;&amp;UF0=1&quot; +
+&quot;&amp;MFTS0=Generate_Addendum__c&quot; +
+&quot;&amp;MFTSValue0=false&quot; +
+&quot;&amp;MFTS1=CompanySignedDate&quot; +
+&quot;&amp;MFTSValue1=&quot; + TEXT(TODAY())+
+&quot;&amp;ContentCustomFieldName=Signing_Status__c&quot; +
+&quot;&amp;ContentCustomFieldValue=Countersigned&quot;</formula>
+        <inlineHelpText>This field has the Conga parameters for generating the MA Addendum</inlineHelpText>
+        <label>Conga Addendum</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Conga_Countersigned_Contract__c</fullName>
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
@@ -907,6 +935,16 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>Generate_Addendum__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Generates Project Specific Addendum for Contract (MA only)</inlineHelpText>
+        <label>Generate Addendum</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Generate_Countersigned_Version__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -920,7 +958,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Generate_Disclosure_Form__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Generate Disclosure Form</label>
+        <label>Include Disclosure in Contract Package</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
