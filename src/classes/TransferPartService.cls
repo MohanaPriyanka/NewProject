@@ -56,11 +56,14 @@ public without sharing class TransferPartService {
 
 
     public void onAfterTransferParts(List<Transfer_Part__c> allTransferParts) {
-        List<Transfer__c> transfersToUpdate = rollupTransferPartsToTransfer(allTransferParts);
-
-        if (transfersToUpdate != null){
-            update transfersToUpdate;
+        Set<Id> transferIds = new Set<Id>();
+        for (Transfer_Part__c part : allTransferParts){
+            if (part.Type__c == 'Transfer'){
+                transferIds.add(part.Transfer__c);
+            }
         }
+        List<Transfer__c> transfersToUpdate = rollupTransferPartsToTransfer(transferIds);
+        update transfersToUpdate;
     }
 
     public void onBeforeDelete(Map<Id, Transfer_Part__c> deletedProductionDetails) {
@@ -73,39 +76,37 @@ public without sharing class TransferPartService {
         }
     }
 
-
-    public List<Transfer__c> rollupTransferPartsToTransfer(List<Transfer_Part__c> allTransferParts){
-        //When transfer parts are inserted or updated, they need to write back to their Transfer records
-        Set<Id> transferIds = new Set<Id>();
-        for (Transfer_Part__c part : allTransferParts){
-
-            if (part.Type__c == 'Transfer'){
-                transferIds.add(part.Transfer__c);
-            } else {
-                return null;
-            }
-        }
-
+    /**
+     * @description Summarizes total amount of credits/kwh transferred for a Transfer record after
+     * production details have been inserted, updated, or deleted
+     * @param transferIds Parent Transfer record to the related production details
+     * @return Updated Transfer
+     */
+    public List<Transfer__c> rollupTransferPartsToTransfer(Set<Id> transferIds){
         List<AggregateResult> results = [
             SELECT Transfer__c, SUM(Amount__c) partsAmount, SUM(kWh_Amount__c) kwhTotal
             FROM Transfer_Part__c
             WHERE Transfer__c IN : transferIds
+            AND Type__c = 'Transfer'
             GROUP BY Transfer__c
         ];
-
-
-        List<Transfer__c> updatedTransfers = new List<Transfer__c>();
+        Map<Id, Transfer__c> updatedTransferMap = new Map<Id, Transfer__c>();
+        for (Id transferId : transferIds) {
+            Transfer__c transfer = new Transfer__c(
+                Id = transferId,
+                Total_Transferred__c = 0,
+                Total_kWh_Transferred__c = 0
+            );
+            updatedTransferMap.put(transferId, transfer);
+        }
 
         for (AggregateResult result : results) {
-            Transfer__c transferRec = new Transfer__c();
+            Transfer__c transferRec = updatedTransferMap.get((Id)result.get('Transfer__c'));
             transferRec.Id = (Id)result.get('Transfer__c');
             transferRec.Total_Transferred__c = (Decimal)result.get('partsAmount');
             transferRec.Total_kWh_Transferred__c = (Decimal)result.get('kwhTotal');
-            updatedTransfers.add(transferRec);
         }
-        return updatedTransfers;
-
-
+        return updatedTransferMap.values();
     }
 
     public void createPartsFromTransfer(List<Transfer__c> transferList) {

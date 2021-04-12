@@ -499,6 +499,48 @@ private class TransferPartServiceTest {
         }
     }
 
+    @IsTest
+    public static void testDeleteProductionDetailsRollup() {
+        Transfer__c onTime = [
+            SELECT Id, Transfer_Amount__c, Shared_Solar_System__r.Name, Total_Transferred__c, Transfer_Type__c
+            FROM Transfer__c
+            WHERE Name = 'Main July Transfer'
+            LIMIT 1
+        ];
+
+        onTime.Transfer_Type__c = 'Main';
+        update onTime;
+
+        Transfer_Part__c productionDetail = [
+            SELECT Id, Production__r.Verification_Status__c, Transfer__c, Amount__c
+            FROM Transfer_Part__c
+            WHERE Production__r.Name = 'SSS 1 Production - May 2019'
+            AND Type__c = 'Transfer'
+            LIMIT 1
+        ];
+        System.assertNotEquals(null, productionDetail);
+        System.assertEquals(9950, productionDetail.Amount__c, 'Production Detail created to transfer out total amount from Transfer');
+
+        Transfer__c transfer = [
+            SELECT Id, Total_Transferred__c
+            FROM Transfer__c
+            WHERE Id = :productionDetail.Transfer__c
+            LIMIT 1
+        ];
+
+        System.assertEquals(9950, transfer.Total_Transferred__c, 'Transfer has total transferred updated after PD insert');
+        Test.startTest();
+        delete productionDetail;
+        Test.stopTest();
+
+        transfer = [
+            SELECT Id, Total_Transferred__c
+            FROM Transfer__c
+            WHERE Id = :transfer.Id
+            LIMIT 1
+        ];
+        System.assertEquals(0, transfer.Total_Transferred__c, 'Transfer should have no transferred credits after PD has been deleted');
+    }
 
 
 
