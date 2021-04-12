@@ -44,7 +44,7 @@ public with sharing class ClientFileCopierServiceTest {
         System.assertEquals(1, afterFolders.size());
 
         List<ContentDocumentLink> afterFiles = [
-            SELECT Id
+            SELECT Id, ContentDocument.LatestPublishedVersion.Title
             FROM ContentDocumentLink
             WHERE LinkedEntityId = :afterFolders[0].Id
         ];
@@ -86,8 +86,8 @@ public with sharing class ClientFileCopierServiceTest {
             FROM ContentDocumentLink
             WHERE LinkedEntityId = :afterFolders[0].Id
         ];
-        // 7 Contracts, 2 of which have a disclosure form attachment, 1 of which has 2 UASes
-        System.assertEquals(3, afterFiles.size());
+        // 7 Contracts, 3 of which have a disclosure form attachment, 1 of which has 2 UASes
+        System.assertEquals(4, afterFiles.size());
     }
 
     @IsTest
@@ -127,6 +127,45 @@ public with sharing class ClientFileCopierServiceTest {
         // 4 Opportunities, 1 of which has 2 UASes
         System.assertEquals(5, afterFiles.size());
     }
+
+    @IsTest
+    private static void testAddendumMigration() {
+        useMocks(true);
+        Contract assignmentAgreement = [
+            SELECT Id
+            FROM Contract
+            WHERE Name = 'Assignment Agreement'
+            LIMIT 1
+        ];
+
+        List<Supporting_Document_Folder__c> beforeFolders = [
+            SELECT Id
+            FROM Supporting_Document_Folder__c
+            WHERE Assignment_Agreement__c = :assignmentAgreement.Id
+        ];
+        System.assertEquals(0, beforeFolders.size());
+
+        Test.startTest();
+        ClientFileCopierService service = new ClientFileCopierService();
+        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Addendum');
+        Test.stopTest();
+
+        List<Supporting_Document_Folder__c> afterFolders = [
+            SELECT Id
+            FROM Supporting_Document_Folder__c
+            WHERE Assignment_Agreement__c = :assignmentAgreement.Id
+        ];
+        System.assertEquals(1, afterFolders.size());
+
+        List<ContentDocumentLink> afterFiles = [
+            SELECT Id
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = :afterFolders[0].Id
+        ];
+
+        System.assertEquals(1, afterFiles.size(), 'Only one contract has an Addendum attachment');
+    }
+
     @IsTest
     public static void testCreateSupportingDocumentsFolder() {
         useMocks(true);
@@ -164,7 +203,7 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"8002f000000Gew1AAC"},' +
                 '{"Id":"8002f000000Gew2AAC"},' +
                 '{"Id":"8002f000000GewFAAS"},' + // has 2 UASes
-                '{"Id":"8002f000000GewNAAS"}]';
+                '{"Id":"8002f000000GewNAAS", "Parent_Contract__c" : "8002f000000GewNBBB"}]'; // Hybrid Customer with Generic and Project Specific Contracts
 
             switch on methodCall.stubbedMethodName {
                 when 'getCustomerContractsByAssignmentAgreement' {
@@ -221,7 +260,9 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"06A2f000004rUrNEAE","LinkedEntityId":"8002f000000Gew2AAC","ContentDocumentId":"0692f000001g9ujAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitbAAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
                 '{"Id":"06A2f000004rUqrEAE","LinkedEntityId":"8002f000000GewFAAS","ContentDocumentId":"0692f000001g9uVAAQ","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitgAAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}},' +
                 '{"Id":"06A2f000004rUqXEAE","LinkedEntityId":"8002f000000GewFAAS","ContentDocumentId":"0692f000001g9uxAAQ","ContentDocument":{"LatestPublishedVersionId":"0682f000001gittAAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
-                '{"Id":"06A2f000004rUqOEAU","LinkedEntityId":"8002f000000GewNAAS","ContentDocumentId":"0692f000001g9u2AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitDAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}}' +
+                '{"Id":"06A2f000004rUqXCCC","LinkedEntityId":"8002f000000GewNAAS","ContentDocumentId":"0692f000001g9uxCCC","ContentDocument":{"LatestPublishedVersionId":"0682f000001gittCCC","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Customer Addendum"}}},' +
+                '{"Id":"06A2f000004rUqXDDD","LinkedEntityId":"8002f000000GewNAAS","ContentDocumentId":"0692f000001g9uxDDD","ContentDocument":{"LatestPublishedVersionId":"0682f000001gittDDD","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
+                '{"Id":"06A2f000004rUqOEBB","LinkedEntityId":"8002f000000GewNBBB","ContentDocumentId":"0692f000001g9u2AAB","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitDAAB","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Community Solar Agreement"}}}' +
                 ']';
 
             switch on methodCall.stubbedMethodName {
@@ -251,7 +292,7 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"a1d2f000000FYq9AAG","Name":"0002348","Opportunity__c":"0062f00000EllRqAAJ","Opportunity__r":{"Name":"Margaux Maldonado","Personal_Credit_Report2__c":"a0Fj000000EYyZ4EAL","ContractId":"8002f000000GewKAAS","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000GewKAAS","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"00002347"}},' +
                 '{"Id":"a1d2f000000FYqAAAW","Name":"0002349","Opportunity__c":"0062f00000EllRrAAJ","Opportunity__r":{"Name":"Conor Schmitt","Personal_Credit_Report2__c":"a0Fj000000EYyZ5EAL","ContractId":"8002f000000GewLAAS","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000GewLAAS","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"00002348"}},' +
                 '{"Id":"a1d2f000000FYqBAAW","Name":"00023410","Opportunity__c":"0062f00000EllRsAAJ","Opportunity__r":{"Name":"Akbar Boyce","Personal_Credit_Report2__c":"","ContractId":"8002f000000GewMAAS","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000GewMAAS","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"00002349"}},' +
-                '{"Id":"a1d2f000000FYqCAAW","Name":"00023411","Opportunity__c":"0062f00000EllRtAAJ","Opportunity__r":{"Name":"Viaan Faulkner","Personal_Credit_Report2__c":"","ContractId":"8002f000000GewNAAS","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000GewNAAS","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"000023410"}}' +
+                '{"Id":"a1d2f000000FYqCAAW","Name":"00023411","Opportunity__c":"0062f00000EllRtAAJ","Opportunity__r":{"Name":"Viaan Faulkner","Personal_Credit_Report2__c":"","ContractId":"8002f000000GewNAAS","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000GewNAAS", "Parent_Contract__c" : "8002f000000GewNBBB", "Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"000023410"}}' +
                 ']';
 
             switch on methodCall.stubbedMethodName {
@@ -278,6 +319,10 @@ public with sharing class ClientFileCopierServiceTest {
             ContentVersion fileNineteen = new ContentVersion(Id = '0682f000001fitDAAQ', ContentDocumentId = '0692f000001g5u2AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
             ContentVersion fileTwentyTwo = new ContentVersion(Id = '0682f000001jitDAAQ', ContentDocumentId = '0692f000001g8u2AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
             ContentVersion fileTwentyThree = new ContentVersion(Id = '0682f000001kitDAAQ', ContentDocumentId = '0692f000001g0u2AAA', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileTwentyFour = new ContentVersion(Id = '0682f000001gitDAAB', ContentDocumentId = '0692f000001g0u2BBB', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileTwentyFive = new ContentVersion(Id = '0682f000001gittCCC', ContentDocumentId = '0692f000001g9uxCCC', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+            ContentVersion fileTwentySix = new ContentVersion(Id = '0682f000001gittDDD', ContentDocumentId = '0692f000001g9uxDDD', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
+
 
             Map<Id, ContentVersion> cvMap = new Map<Id, ContentVersion>();
             cvMap.put(fileOne.Id, fileOne);
@@ -292,6 +337,9 @@ public with sharing class ClientFileCopierServiceTest {
             cvMap.put(fileNineteen.Id, fileNineteen);
             cvMap.put(fileTwentyTwo.Id, fileTwentyTwo);
             cvMap.put(fileTwentyThree.Id, fileTwentyThree);
+            cvMap.put(fileTwentyFour.Id, fileTwentyFour);
+            cvMap.put(fileTwentyFive.Id, fileTwentyFive);
+            cvMap.put(fileTwentySix.Id, fileTwentySix);
 
             switch on methodCall.stubbedMethodName {
                 when 'selectByIdWithData' {

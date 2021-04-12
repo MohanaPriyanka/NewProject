@@ -3,9 +3,9 @@
 public without sharing class BatchClientFileCopierService implements Database.Batchable<Id> {
     public Map<Id,Id> versionIdToLinkedEntityId;
     public Id newFolderId;
-    public Map<Id,List<String>> linkedEntityIdToFileNames;
+    public MultiMap linkedEntityIdToFileNames;
 
-    public BatchClientFileCopierService(Map<Id,Id> versionIdToLinkedEntityId, Id newFolderId, Map<Id,List<String>> linkedEntityIdToFileNames){
+    public BatchClientFileCopierService(Map<Id,Id> versionIdToLinkedEntityId, Id newFolderId, MultiMap linkedEntityIdToFileNames){
         this.versionIdToLinkedEntityId = versionIdToLinkedEntityId;
         this.newFolderId = newFolderId;
         this.linkedEntityIdToFileNames = linkedEntityIdToFileNames;

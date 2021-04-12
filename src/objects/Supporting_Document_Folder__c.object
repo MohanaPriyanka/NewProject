@@ -203,6 +203,11 @@
                     <default>false</default>
                     <label>Customer Credit Reports</label>
                 </value>
+                <value>
+                    <fullName>Customer Addendums</fullName>
+                    <default>false</default>
+                    <label>Customer Addendums</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
