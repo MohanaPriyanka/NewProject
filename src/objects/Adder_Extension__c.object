@@ -387,6 +387,14 @@
     <label>Adder or Extension</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Adder_Type__c</columns>
+        <columns>Incentive__c</columns>
+        <columns>Block__c</columns>
+        <columns>Extension_Expires__c</columns>
+        <columns>Extension_Fee_Paid__c</columns>
+        <columns>LAST_ACTIVITY</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
@@ -548,7 +556,17 @@
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts />
+    <searchLayouts>
+        <searchResultsAdditionalFields>RECORDTYPE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Adder_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Incentive__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Extension_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Extension_Expires__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Reservation_Expires__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Extension_Requested__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Extension_Request_Approved__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Base_Compensation_Rate__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
