@@ -97,7 +97,12 @@ public without sharing class GlyntExtractionService extends Promise implements P
         return extractionResponse;
     }
 
-    private GlyntAPI.ExtractionResponse retrieveExtraction(String extractionId) {
+    /**
+     * @description Retrieves a single extraction from Glynt via extractionId.
+     * @param extractionId Glynt Id used to request the extraction data
+     * @return An ExtractionResponse
+     */
+    public GlyntAPI.ExtractionResponse retrieveExtraction(String extractionId) {
         HttpResponse response = apiHelper.callJsonEndpoint('GET', extractionsEndpoint + extractionId, null, false);
         if (response.getStatusCode() != 200) {
             throw new Util.BWException('Could not get extraction details:\n' + response.getBody());

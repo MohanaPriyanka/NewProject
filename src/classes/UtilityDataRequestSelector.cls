@@ -14,7 +14,7 @@ public inherited sharing class UtilityDataRequestSelector {
             Utility_Account_Log__r.Lead__r.Product__r.X4_month_sizing_method__c, Customer_Name__c, Zip_Code__c,
             Utility_Account_Log__r.Lead__r.Customer_type__c, Num_UDRPs_Avg_Demand__c, City__c, 
             Old_Account_Number__c, Num_UDRPs_Annual_kWh__c, Address_Line_1__c, Address_Line_2__c,
-            Government_Credit_Code__c, LDC_Customer_Eligibility__c
+            Government_Credit_Code__c, LDC_Customer_Eligibility__c, Service_Provider__c
             FROM Utility_Data_Request__c 
             WHERE Id IN :(udrList)
         ]);

@@ -18,6 +18,7 @@ public without sharing class UtilityDataRequestService {
     @TestVisible private static UtilityDataRequestPeriodSelector udrpSelector = new UtilityDataRequestPeriodSelector();
     @TestVisible private static UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
     @TestVisible private static UALSelector ualSelector = new UALSelector();
+
     /**
      * Constructor for service class instance
      * @param oldUDRMap Trigger.oldMap
@@ -27,6 +28,7 @@ public without sharing class UtilityDataRequestService {
         this.oldUDRMap = oldUDRMap;
         this.newUDRMap = newUDRMap;
     }
+
     /**
      * @description Populates the UDR.Annual_kWh and the UAL.Annual_kWh with the value calculated in the getAnnualkWh method.
      * Only want to update where the UDR Request Status is being updated to Complete from something else.
@@ -44,6 +46,7 @@ public without sharing class UtilityDataRequestService {
         }
         Logger.flushLogs();
     }
+
     /**
      * @description Method used when a UDR record status is updated to 'Complete' from previously being something else
      * <p></p>
@@ -71,9 +74,13 @@ public without sharing class UtilityDataRequestService {
                 Utility_Account_Log__c.getSObjectType()
             }
         );
-        // Map completed UDRs for further processing
+        // Map completed UDRs for further processing if criteria is met
+        Map<Id,Utility_Data_Request__c> udrsWithServiceProviders = udrSelector.selectMapForKWHById(newUDRMap.values());
         for (Utility_Data_Request__c udr : newUDRMap.values()) {
-            if (udr.Request_Status_new__c == 'Complete' && oldUDRMap.get(udr.Id).Request_Status_new__c != 'Complete') {
+            if (udr.Request_Status_new__c == 'Complete' &&
+                oldUDRMap.get(udr.Id).Request_Status_new__c != 'Complete' &&
+                udrsWithServiceProviders.get(udr.Id)?.Service_Provider__c != 'Glynt') // Ignore Glynt UDRs, handled elsewhere
+            {
                 completedUDRMap.put(udr.Id,udr);
             }
         }
@@ -128,6 +135,7 @@ public without sharing class UtilityDataRequestService {
         // Register work
         uow.registerDirty(ualsWithCompletedUDRMap.values());
     }
+
     /**
      * @description Populates the UDRP.Rate_Class_Lookup__c where 
      * the Rate Class object's EDI_Rate_Class__c text matches the UDRP's Rate_Subclass__c text.
@@ -147,6 +155,7 @@ public without sharing class UtilityDataRequestService {
             }
         }
     }
+
     private Id setRateClassLookupOnUDRP(String rateSubclass, String rateClass, Utility_Data_Request_Period__c udrp) {
         Rate_Class__c rateSubclassSObj = rateClassWithEDIMap.get(rateSubclass);
         Rate_Class__c rateClassSObj = rateClassWithEDIMap.get(rateClass);
@@ -176,6 +185,7 @@ public without sharing class UtilityDataRequestService {
             ual.QC_Status__c = 'Pending BW Review';
         }
     }
+
     private String convertYesNo(String singleChar) {
         if (singleChar == 'N') {
             return 'No';
@@ -184,6 +194,7 @@ public without sharing class UtilityDataRequestService {
         }
         return null;
     }
+
     private Boolean ualNameAddressChange(Utility_Account_Log__c ual, Utility_Data_Request__c udr) {
         // returns true if there is no difference between the UDR and UAL addresses
         // returns false if there is a difference between the UDR and UAL addresses
@@ -217,6 +228,7 @@ public without sharing class UtilityDataRequestService {
         ual.Service_Zip_Code__c = cleanString(udr.Zip_Code__c);
         return false;
     }
+
     private String getComparisonString(String str) {
         if (str == 'null' || str == null) {
             return '';
@@ -226,6 +238,7 @@ public without sharing class UtilityDataRequestService {
         str = str.toUpperCase();
         return str;
     }
+
     private String cleanString(String str) {
         if (str == 'null' || str == null) {
             return '';

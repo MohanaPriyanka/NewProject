@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>Authorization_Type__c</field>
-        <value xsi:type="xsd:string">OAuth</value>
+        <value xsi:type="xsd:string">Basic</value>
     </values>
     <values>
         <field>Data_Pool_Id__c</field>
@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>Extraction_Processor__c</field>
-        <value xsi:type="xsd:string">GlyntExtractionService</value>
+        <value xsi:type="xsd:string">GlyntMaineCMPProcessor</value>
     </values>
     <values>
         <field>Extraction_Query_Timeout__c</field>
