@@ -125,7 +125,6 @@ public without sharing class TransferPartService {
     public void createPartsFromTransfer(List<Transfer__c> transferList) {
         List<Transfer__c> excessTransfers = new List<Transfer__c>();
         List<Transfer__c> onTimeTransfers = new List<Transfer__c>();
-        List<Transfer__c> returnedTransfers = new List<Transfer__c>();
 
         for (Transfer__c transfer : transferList) {
             switch on transfer.Transfer_Type__c {
@@ -133,8 +132,6 @@ public without sharing class TransferPartService {
                     excessTransfers.add(transfer);
                 } when 'Main' {
                     onTimeTransfers.add(transfer);
-                } when 'One-Off' {
-                    returnedTransfers.add(transfer);
                 }
             }
         }
@@ -144,6 +141,12 @@ public without sharing class TransferPartService {
         insertTransferParts(createOnTimeTransferParts(onTimeTransfers));
     }
 
+    /**
+     * @description The "Main" Transfer represents the monthly transfer of production credits to customers. It creates
+     * one Production Detail for the oldest Production record that has had 0 credits transferred yet
+     * @param onTimeTransfers Transfer records that will have their credits transferred to a single production
+     * @return Main transfer production details to be inserted
+     */
     public static List<Transfer_Part__c> createOnTimeTransferParts(List<Transfer__c> onTimeTransfers) {
         List<Transfer_Part__c> partsToInsert = new List<Transfer_Part__c>();
 
@@ -183,6 +186,13 @@ public without sharing class TransferPartService {
         return partsToInsert;
     }
 
+    /**
+     * @description Excess Transfers are the transfers paid out by the Utility to "true-up" any old Transfers or credits
+     * The Excess Transfer will generate multiple Production Details that will fill in any remained "untransferred credits"
+     * on production records, filling up the oldest record first
+     * @param excessTransfers Transfer record that will have its credits transferred to multiple production records
+     * @return Production Details to be inserted
+     */
     public static List<Transfer_Part__c> createExcessTransferParts(List<Transfer__c> excessTransfers) {
         List<Transfer_Part__c> partsToInsert = new List<Transfer_Part__c>();
         for (Transfer__c transfer : excessTransfers) {

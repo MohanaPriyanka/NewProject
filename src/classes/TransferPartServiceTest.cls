@@ -482,6 +482,57 @@ private class TransferPartServiceTest {
         System.assertEquals(7990, checkProd.Credits_Available_for_Allocation__c);
 
     }
+    @IsTest
+    public static void testRollupProductionDetails() {
+
+        Transfer__c transfer = [
+            SELECT Id, Transfer_Amount__c, Shared_Solar_System__r.Name, Total_Transferred__c, Transfer_Type__c
+            FROM Transfer__c
+            WHERE Name = 'Main May Transfer'
+            LIMIT 1
+        ];
+
+        Production__c prod = [
+            SELECT Id
+            FROM Production__c
+            WHERE Name = 'SSS 1 Production - May 2019'
+            LIMIT 1
+        ];
+
+        Transfer_Part__c bill = new Transfer_Part__c(
+            Name = 'Customer Bill',
+            Production__c = prod.Id,
+            Transfer__c = transfer.Id,
+            Type__c = 'Bill',
+            Amount__c = 50
+        );
+        insert bill;
+
+        //Create Main Transfer Production Detail
+        transfer.Transfer_Type__c = 'Main';
+        update transfer;
+
+        List<Transfer_Part__c> productionDetails = [
+            SELECT Id, Production__r.Verification_Status__c, Transfer__c, Amount__c, Type__c
+            FROM Transfer_Part__c
+            WHERE Transfer__c = :transfer.Id
+            ORDER BY Amount__c
+        ];
+        System.assertEquals(2, productionDetails.size(), 'Transfer should have 2 Production Details - one Main Transfer and one Fee');
+        System.assertEquals('Bill', productionDetails[0].Type__c, 'One PD should be a Bill of $50');
+        System.assertEquals(50, productionDetails[0].Amount__c, 'One PD should be a Bill of $50');
+        System.assertEquals('Transfer', productionDetails[1].Type__c, 'One PD should be a Transfer of $9950');
+        System.assertEquals(9950, productionDetails[1].Amount__c, 'One PD should be a Transfer of $9950');
+
+
+        transfer = [
+            SELECT Id,  Total_Transferred__c
+            FROM Transfer__c
+            WHERE Id = :transfer.Id
+            LIMIT 1
+        ];
+        System.assertEquals(9950, transfer.Total_Transferred__c, 'Transfer should have a rollup of only "Transfer" Parts');
+    }
 
     @IsTest
     public static void testDeleteProductionDetails() {
@@ -496,7 +547,7 @@ private class TransferPartServiceTest {
             delete productionDetail;
             System.assert(false, 'Expected delete to throw an exception - Production Detail cannot be deleted when Production is Verified');
         } catch (Exception e) {
-            System.assert(true, 'Expected delete to throw an exception - Production Detail cannot be deleted when Production is Verified');
+            System.assert(e.getMessage().contains('cannot be deleted'), 'Expected delete to throw an exception about deleting the PD - Production Detail cannot be deleted when Production is Verified');
         }
     }
 
@@ -505,7 +556,7 @@ private class TransferPartServiceTest {
         Transfer__c onTime = [
             SELECT Id, Transfer_Amount__c, Shared_Solar_System__r.Name, Total_Transferred__c, Transfer_Type__c
             FROM Transfer__c
-            WHERE Name = 'Main July Transfer'
+            WHERE Name = 'Main May Transfer'
             LIMIT 1
         ];
 
@@ -515,7 +566,7 @@ private class TransferPartServiceTest {
         Transfer_Part__c productionDetail = [
             SELECT Id, Production__r.Verification_Status__c, Transfer__c, Amount__c
             FROM Transfer_Part__c
-            WHERE Production__r.Name = 'SSS 1 Production - May 2019'
+            WHERE Transfer__c = :onTime.Id
             AND Type__c = 'Transfer'
             LIMIT 1
         ];
