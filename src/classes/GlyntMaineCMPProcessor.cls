@@ -3,7 +3,7 @@
  * Tested By: GlyntMaineCMPProcessorTest
  */
 @SuppressWarnings('PMD.ExcessivePublicCount')
-public without sharing class GlyntMaineCMPProcessor implements GlyntExtractionService.Processor, Queueable {
+public without sharing class GlyntMaineCMPProcessor implements GlyntExtractionService.Processor {
 
     /* CONSTANTS */
     private static final Integer NUMBER_OF_BILLS_REQUIRED = 3;
@@ -35,30 +35,6 @@ public without sharing class GlyntMaineCMPProcessor implements GlyntExtractionSe
      */
     @SuppressWarnings('PMD.EmptyStatementBlock')
     public GlyntMaineCMPProcessor() {
-    }
-
-    /**
-     * @description Constructor used for executing Queueable job to process average calculations on UAL for
-     *              Maine CMP data gathered by Glynt
-     */
-    public GlyntMaineCMPProcessor(List<Id> utilityDataRequestIds) {
-        udrsProcessedByGlynt = utilityDataRequestIds;
-    }
-
-    /**
-     * @description Queueable execution to assess Maine CMP averages and stamp data on the Utility Account Log (UAL)
-     */
-    public void execute(QueueableContext qc) {
-        uow = new fflib_SObjectUnitOfWork(new List<Schema.SObjectType>{Utility_Account_Log__c.SObjectType});
-        try {
-            setAnnualCostOnUtilityAccountLogs();
-        } catch (Exception e) {
-            String message = e.getMessage() + ' ' + e.getStackTraceString() + '\n\n' + 'UDRs processed in transaction: ' +
-                udrsProcessedByGlynt;
-            Logger.logLater('GlyntMaineCMPProcessor', 'setAnnualCostOnUtilityAccountLogs', message, 'Error');
-        }
-        uow.commitWork();
-        Logger.flushLogs();
     }
 
     /**
@@ -95,7 +71,7 @@ public without sharing class GlyntMaineCMPProcessor implements GlyntExtractionSe
 
         // Kick off the job to calculate average demand for CMP customers and insert data on UAL
         if (udrsProcessedByGlynt != null) {
-            System.enqueueJob(new GlyntMaineCMPProcessor(udrsProcessedByGlynt));
+            setAnnualCostOnUtilityAccountLogs();
         }
         Logger.flushLogs();
     }
@@ -105,13 +81,21 @@ public without sharing class GlyntMaineCMPProcessor implements GlyntExtractionSe
      *              (Method is publicly-exposed in the event of logic needing to be re-run for UALs via anon execute)
      */
     public void setAnnualCostOnUtilityAccountLogs() {
-        if (udrsProcessedByGlynt.size() != 0) {
-            determineUalsToSetAnnualCost();
+        uow = new fflib_SObjectUnitOfWork(new List<Schema.SObjectType>{Utility_Account_Log__c.SObjectType});
+        try {
+            if (udrsProcessedByGlynt.size() != 0) {
+                determineUalsToSetAnnualCost();
+            }
+            if (ualsToSetAnnualCost.size() != 0) {
+                buildSizingObjects();
+                updateUALWithSizing();
+            }
+        } catch (Exception e) {
+            String message = e.getMessage() + ' ' + e.getStackTraceString() + '\n\n' + 'UDRs processed in transaction: ' +
+                udrsProcessedByGlynt;
+            Logger.logLater('GlyntMaineCMPProcessor', 'setAnnualCostOnUtilityAccountLogs', message, 'Error');
         }
-        if (ualsToSetAnnualCost.size() != 0) {
-            buildSizingObjects();
-            updateUALWithSizing();
-        }
+        uow.commitWork();
     }
 
     /**

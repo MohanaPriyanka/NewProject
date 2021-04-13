@@ -5,24 +5,13 @@ public class GlyntMaineCMPProcessorTest {
     private static UALSelector ualSelector = new UALSelector();
 
     @IsTest
-    public static void testSampleGlyntExtraction() {
+    public static void testDataTranspositionAndSizingCalculations() {
         // Process Glynt JSON data into sObjects, then kick off Queueable job to process UAL sizing
+        List<GlyntAPI.ExtractionResponse> extractions = createSampleExtractions();
         Test.startTest();
-            List<GlyntAPI.ExtractionResponse> extractions = createSampleExtractions();
             GlyntMaineCMPProcessor processor = new GlyntMaineCMPProcessor();
             processor.processExtractions(extractions);
         Test.stopTest();
-
-        // Verify that the correct annual sizing value is set on the UAL
-        Utility_Account_Log__c ual = [SELECT Id,Annual_Cost_of_Electricity__c FROM Utility_Account_Log__c];
-        System.assertEquals(45955.31, ual.Annual_Cost_of_Electricity__c, 'Invalid annual sizing on UAL');
-    }
-
-    @IsTest
-    public static void testDataTranspositionAndSizingCalculations() {
-        List<GlyntAPI.ExtractionResponse> extractions = createSampleExtractions();
-        GlyntMaineCMPProcessor processor = new GlyntMaineCMPProcessor();
-        processor.processExtractions(extractions);
 
         // Verify UDR information has been transposed from Glynt Extractions
         List<Utility_Data_Request__c> utilityDataRequests = [
@@ -50,13 +39,6 @@ public class GlyntMaineCMPProcessorTest {
                 udr.Utility_Data_Request_Periods__r.size(), 'Incorrect number of avg usage periods captured');
         }
 
-        // Perform calculations to determine UAL annual cost sizing
-        Test.startTest();
-            processor = new GlyntMaineCMPProcessor(processor.udrsProcessedByGlynt);
-            processor.uow = new fflib_SObjectUnitOfWork(new List<Schema.SObjectType>{Utility_Account_Log__c.SObjectType});
-            processor.setAnnualCostOnUtilityAccountLogs();
-        Test.stopTest();
-
         // Verify that the annual sizing calculation is using the right values from Glynt Extractions
         // Refer to the sample Maine CMP Sizing .xlsx provided by Gina for calculating this data
         // NOTE: Excel may show rounded numbers in the sample document but uses non-rounded values in calculations!!
@@ -80,6 +62,10 @@ public class GlyntMaineCMPProcessorTest {
 
         System.assertEquals(502075, sizingObj.totalAnnualKwh.round(ROUND), 'Invalid total annual kwh calculated');
         System.assertEquals(51061.46, sizingObj.estimatedAnnualCost.setScale(2), 'Invalid estimated annual cost');
+
+        // Verify that the correct annual sizing value is set on the UAL
+        Utility_Account_Log__c ual = [SELECT Id,Annual_Cost_of_Electricity__c FROM Utility_Account_Log__c];
+        System.assertEquals(45955.31, ual.Annual_Cost_of_Electricity__c, 'Invalid annual sizing on UAL');
     }
 
     /**
