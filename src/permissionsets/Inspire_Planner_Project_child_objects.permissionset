@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Assigns permissions for custom IP Project fields and custom objects used with IP project object.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Inspire Planner Project, child objects</label>
+</PermissionSet>
