@@ -290,6 +290,19 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Inspire_Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Inspire Project</label>
+        <referenceTo>inspire1__Project__c</referenceTo>
+        <relationshipLabel>Incentives</relationshipLabel>
+        <relationshipName>Incentives</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Original_Expiration__c</fullName>
         <externalId>false</externalId>
         <label>Original Expiration</label>
