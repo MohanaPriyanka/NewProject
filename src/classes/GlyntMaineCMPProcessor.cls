@@ -314,7 +314,7 @@ public without sharing class GlyntMaineCMPProcessor implements GlyntExtractionSe
             }
             if (totalMonthlyUsageMap.size() < 12) {
                 // Calculation is different if we have fewer than 12 months of avg usage data, use average and multiply by 12
-                totalAnnualKwh = Math.round(totalAnnualKwh / totalMonthlyUsageMap.size() * 12);
+                totalAnnualKwh = totalAnnualKwh / totalMonthlyUsageMap.size() * 12;
             }
         }
 
