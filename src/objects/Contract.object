@@ -278,9 +278,8 @@ Account.Assignment_Agreement_Template__c
         <description>This field has the Conga parameters for generating the MA Addendum</description>
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
-&quot;&amp;templateid=&quot; + Product__r.Addendum_Template_Id__c +
-&quot;&amp;OFN=CS Agreement Addendum&quot; +
-&quot;&amp;qvar0id=a270a0000020q0rAAA?pv0=&quot; + Id +
+&quot;&amp;templateid=&quot; + &quot;[CS Agreement Addendum]&quot; + Product__r.Addendum_Template_Id__c + &quot;,[Disclosure Form]&quot; +  Product__r.Disclosure_Template_Countersigned__c +
+&quot;&amp;qvar0id=a277A000000ZhXVQA0?pv0=&quot; + Id +
 &quot;&amp;queryid=[Opp]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNOPP}?pv1={QVar0},[UAS]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNUAS}?pv1={QVar0},[Percent]{!Environment.Conga_Query_Addendum_Sum_Share}?pv1={QVar0},[kWDC]{!Environment.Conga_Query_Addendum_kwdc}?pv1={QVar0},[Parent]{!Environment.Conga_query_MA_Addendum_parentcontract}?pv2=&quot; + Id +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;sc1=SalesforceFile&quot; +
@@ -938,8 +937,8 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Generate_Addendum__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Generates Project Specific Addendum for Contract (MA only)</inlineHelpText>
-        <label>Generate Addendum</label>
+        <inlineHelpText>Generates Project Specific Addendum for Contract (MA only) and the SMART disclosure form (if it is a SMART contract).</inlineHelpText>
+        <label>Generate Addendum and Disclosure</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
