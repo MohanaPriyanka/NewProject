@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Easement</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Easements</value>
+    </caseValues>
+    <fields>
+        <label><!-- Easement Business Days Act --></label>
+        <name>Easement_Business_Days_Act__c</name>
+    </fields>
+    <fields>
+        <label><!-- Easement Business Days Est --></label>
+        <name>Easement_Business_Days_Est__c</name>
+    </fields>
+    <fields>
+        <label><!-- Easement Notes --></label>
+        <name>Easement_Notes__c</name>
+    </fields>
+    <fields>
+        <label><!-- Easement Party Name --></label>
+        <name>Easement_Party_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Easement Process Completed Act --></label>
+        <name>Easement_Process_Completed_Act__c</name>
+    </fields>
+    <fields>
+        <label><!-- Easement Process Completed Est --></label>
+        <name>Easement_Process_Completed_Est__c</name>
+    </fields>
+    <fields>
+        <label><!-- Easement Process Started Act --></label>
+        <name>Easement_Process_Started_Act__c</name>
+    </fields>
+    <fields>
+        <label><!-- Easement Process Started Est --></label>
+        <name>Easement_Process_Started_Est__c</name>
+    </fields>
+    <fields>
+        <label><!-- Easement Received from Utility --></label>
+        <name>Easement_Received_from_Utility__c</name>
+    </fields>
+    <fields>
+        <label><!-- Easement Sent --></label>
+        <name>Easement_Sent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Easement Type --></label>
+        <name>Easement_Type__c</name>
+        <picklistValues>
+            <masterLabel>Aerial</masterLabel>
+            <translation><!-- Aerial --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DOT</masterLabel>
+            <translation><!-- DOT --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Environmental</masterLabel>
+            <translation><!-- Environmental --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Land Owner</masterLabel>
+            <translation><!-- Land Owner --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ROW</masterLabel>
+            <translation><!-- ROW --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Transmission Corridor</masterLabel>
+            <translation><!-- Transmission Corridor --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Inspire Project --></label>
+        <name>Inspire_Project__c</name>
+        <relationshipLabel><!-- Easements --></relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>Interconnection Easement Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>
