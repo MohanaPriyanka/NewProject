@@ -35,6 +35,11 @@
         <type>Flexipage</type>
         <pageOrSobjectType>agf__ADM_Work__c</pageOrSobjectType>
     </actionOverrides>
+    <brand>
+        <headerColor>#387CDF</headerColor>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
+    </brand>
     <description>Used by teams that primarily function in Agile Accelerator</description>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
