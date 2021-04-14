@@ -346,6 +346,9 @@ const getCreditErrorToastMessage = (component) => {
     if (component.isFinDocsUnderwriting) {
         return 'Please check the checkbox to authorize financial and utility billing review';
     }
+    if (component.isUtilityDataConsentOnly) {
+        return 'Please check the checkbox to authorize utility billing review';
+    }
 }
 
 const getText = (component, identifier) => {
@@ -358,6 +361,8 @@ const getText = (component, identifier) => {
             return finDocsLanguage1();
         case 'finDocs2':
             return finDocsLanguage2();
+        case 'utilityDataReview':
+            return utilityDataReviewLanguage();
         case 'disclosure1':
             return disclosureLanguage1(component);
         case 'disclosure2':
@@ -382,6 +387,9 @@ const creditCheckLabel = (component) => {
     }
     else if (component.isFinDocsUnderwriting) {
         return 'Check to Authorize Financial and Utility Billing Review';
+    }
+    else if (component.isUtilityDataConsentOnly) {
+        return 'Check to Utility Billing Review';
     }
 }
 
@@ -441,6 +449,13 @@ const finDocsLanguage2 = () => {
            ` changes in stockholders equity, and statement of cash flows, including notes, and prepared in accordance with Generally`+
            ` Accepted Accounting Principles used by the Financial Accounting Standards Board or the American Institute of Certified`+
            ` Public Accountants.`;
+}
+
+const utilityDataReviewLanguage = () => {
+    return `By checking this box, and clicking the “Finish” button, I am providing my electronic signature and signing an electronic`+
+           ` record that is my written authorization giving BlueWave permission to access my electric utility billing history. I am`+
+           ` also giving BlueWave my permission to use my electric utility billing history to process my application and for any`+
+           ` other lawful purpose.`;
 }
 
 const agreementLanguage1 = (component) => {
