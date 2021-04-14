@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>apex_Include_Addendums</name>
+        <label>Include Addendums</label>
+        <locationX>469</locationX>
+        <locationY>912</locationY>
+        <actionName>ClientFileCopierService</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Get_Batch_Ids</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Fault_Screen</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>contractId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>documentType</name>
+            <value>
+                <elementReference>addendum_Choice</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>Include_Contracts</name>
         <label>Include Contracts</label>
         <locationX>473</locationX>
@@ -13,6 +41,7 @@
         <faultConnector>
             <targetReference>Fault_Screen</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>contractId</name>
             <value>
@@ -40,6 +69,7 @@
         <faultConnector>
             <targetReference>Fault_Screen</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>contractId</name>
             <value>
@@ -61,12 +91,10 @@
         <locationY>749</locationY>
         <actionName>ClientFileCopierService</actionName>
         <actionType>apex</actionType>
-        <connector>
-            <targetReference>Get_Batch_Ids</targetReference>
-        </connector>
         <faultConnector>
             <targetReference>Fault_Screen</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>contractId</name>
             <value>
@@ -81,11 +109,12 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Get_Batch_Ids</name>
         <label>Get Batch Ids</label>
-        <locationX>699</locationX>
-        <locationY>831</locationY>
+        <locationX>705</locationX>
+        <locationY>1041</locationY>
         <assignmentItems>
             <assignToReference>BatchIds</assignToReference>
             <operator>Add</operator>
@@ -112,6 +141,14 @@
         </connector>
     </assignments>
     <choices>
+        <name>addendum_Choice</name>
+        <choiceText>Customer Addendums</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>Addendum_Lookup_Value</elementReference>
+        </value>
+    </choices>
+    <choices>
         <name>contracts_choice</name>
         <choiceText>Customer Agreements</choiceText>
         <dataType>String</dataType>
@@ -136,6 +173,13 @@
         </value>
     </choices>
     <constants>
+        <name>Addendum_Lookup_Value</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Customer Addendum</stringValue>
+        </value>
+    </constants>
+    <constants>
         <name>Contracts_Lookup_Value</name>
         <dataType>String</dataType>
         <value>
@@ -156,6 +200,31 @@
             <stringValue>Customer Credit Report</stringValue>
         </value>
     </constants>
+    <decisions>
+        <name>Addendums_Decision</name>
+        <label>Addendums Decision</label>
+        <locationX>695</locationX>
+        <locationY>821</locationY>
+        <defaultConnector>
+            <targetReference>Get_Batch_Ids</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Addendums No</defaultConnectorLabel>
+        <rules>
+            <name>include_Addendums</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>choice_Customer_Addendums</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>apex_Include_Addendums</targetReference>
+            </connector>
+            <label>Addendums Yes</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Contracts_Decision</name>
         <label>Contracts Decision</label>
@@ -212,7 +281,7 @@
         <locationX>693</locationX>
         <locationY>640</locationY>
         <defaultConnector>
-            <targetReference>Get_Batch_Ids</targetReference>
+            <targetReference>Addendums_Decision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>PCRs No</defaultConnectorLabel>
         <rules>
@@ -264,6 +333,13 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>choice_Customer_Addendums</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>No_Selection_Screen</targetReference>
             </connector>
@@ -279,6 +355,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -288,8 +370,8 @@
     <screens>
         <name>Complete_Screen</name>
         <label>Complete Screen</label>
-        <locationX>700</locationX>
-        <locationY>980</locationY>
+        <locationX>707</locationX>
+        <locationY>1208</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -315,6 +397,7 @@
                     <stringValue>Client files are ready for download. You may close this window.</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -383,6 +466,13 @@
             <name>choice_Customer_Credit_Reports</name>
             <dataType>Boolean</dataType>
             <fieldText>Customer Credit Reports</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>choice_Customer_Addendums</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Customer Addendums</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
