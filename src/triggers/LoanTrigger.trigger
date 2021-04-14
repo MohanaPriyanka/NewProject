@@ -15,8 +15,7 @@ trigger LoanTrigger on Loan__c (before insert, before update, after insert, afte
         // Don't run trigger
     } else {
         LoanHandler lh = new LoanHandler();
-        LoanServicer servicer = new LoanServicer(Trigger.new, Trigger.oldMap, Trigger.IsInsert);
-    
+
         if (Trigger.isInsert && Trigger.isBefore && !LoanHandler.ranBeforeInsert) {
             LoanHandler.ranBeforeInsert = true;
             lh.setDaysPastDue(Trigger.new, null);
@@ -25,18 +24,15 @@ trigger LoanTrigger on Loan__c (before insert, before update, after insert, afte
         if (Trigger.isInsert && Trigger.isAfter && !LoanHandler.ranAfterInsert) {
             LoanHandler.ranAfterInsert = true;
             lh.OnAfterInsert(Trigger.new);
-            servicer.upsertLoanPayments();
         }
 
         if (Trigger.isUpdate && Trigger.isBefore && !LoanHandler.ranBeforeUpdate) {
             LoanHandler.ranBeforeUpdate = true;
-            servicer.validateLoanChange();
             lh.setDaysPastDue(Trigger.new, Trigger.oldMap);
         }
 
         if (Trigger.isUpdate && Trigger.isAfter && !LoanHandler.ranAfterUpdate) {
             LoanHandler.ranAfterUpdate = true;
-            servicer.upsertLoanPayments();
             disbursalHandler.updateDisbursalAmountsOnRLAChange(Trigger.newMap, Trigger.oldMap);
         }
     }
