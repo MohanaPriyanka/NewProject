@@ -160,7 +160,6 @@ public with sharing class LoanServicerTest {
         update loanPayments;
 
         Test.startTest();
-        TransactionApplicationHandler.batchSize = 20;
         insert taList;
         Test.stopTest();
         System.assert(true, 'TransactionApplicationTrigger will get deleted anyways');
