@@ -618,11 +618,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>inspire1__Project__c.Above_Requested_Pre_App_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>inspire1__Project__c.Access_Easement_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2093,11 +2088,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>inspire1__Project__c.Site_Acq_Priority__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>inspire1__Project__c.Site_Analysis_Complete__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2239,11 +2229,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>inspire1__Project__c.State_Wetland_Permitting_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>inspire1__Project__c.State__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
