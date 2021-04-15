@@ -281,16 +281,16 @@ Account.Assignment_Agreement_Template__c
 &quot;&amp;templateid=&quot; + &quot;[CS Agreement Addendum]&quot; + Product__r.Addendum_Template_Id__c + IF(ISBLANK(Product__r.Disclosure_Template_Countersigned__c),&quot;&quot;,&quot;,[Disclosure Form]&quot; +  Product__r.Disclosure_Template_Countersigned__c) +
 &quot;&amp;qvar0id=a270a0000020q0rAAA?pv0=&quot; + Id +
 &quot;&amp;queryid=[Opp]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNOPP}?pv1={QVar0},[UAS]{!Environment.VAR_QUERY_SSFCONTRACT_COUNTERSIGNUAS}?pv1={QVar0},[Percent]{!Environment.Conga_Query_Addendum_Sum_Share}?pv1={QVar0},[kWDC]{!Environment.Conga_Query_Addendum_kwdc}?pv1={QVar0},[Parent]{!Environment.Conga_query_MA_Addendum_parentcontract}?pv2=&quot; + Id +
-&quot;&amp;sc0=1&quot; +
 &quot;&amp;sc1=SalesforceFile&quot; +
-&quot;&amp;APDF=0&quot; +
 &quot;&amp;defaultpdf=1&quot; +
-&quot;&amp;qmode=SalesforceFile&quot; +
+&quot;&amp;sc0=1&quot; +
+&quot;&amp;apdf=0&quot; +
 &quot;&amp;UF0=1&quot; +
 &quot;&amp;MFTS0=Generate_Addendum__c&quot; +
 &quot;&amp;MFTSValue0=false&quot; +
 &quot;&amp;MFTS1=CompanySignedDate&quot; +
-&quot;&amp;MFTSValue1=&quot; + TEXT(TODAY())+
+&quot;&amp;MFTSValue1=&quot; + TEXT(TODAY()) +
+&quot;&amp;ContentWorkspaceId=0585b000000aDRHAA2&quot; +
 &quot;&amp;ContentCustomFieldName=Signing_Status__c&quot; +
 &quot;&amp;ContentCustomFieldValue=Countersigned&quot;</formula>
         <inlineHelpText>This field has the Conga parameters for generating the MA Addendum</inlineHelpText>
