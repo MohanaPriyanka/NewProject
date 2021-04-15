@@ -134,6 +134,20 @@
         <useDeadLetterQueue>false</useDeadLetterQueue>
     </outboundMessages>
     <rules>
+        <fullName>Generate Addendum Documents</fullName>
+        <actions>
+            <name>Generate_Addendum_Documents</name>
+            <type>OutboundMessage</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Contract.Generate_Addendum__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
         <fullName>Generate Review Version</fullName>
         <actions>
             <name>Conga_Generate_Review_Contract</name>

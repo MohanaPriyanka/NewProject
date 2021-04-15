@@ -7672,6 +7672,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Generate_Addendum__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Generate_Countersigned_Version__c</field>
         <readable>true</readable>
     </fieldPermissions>
