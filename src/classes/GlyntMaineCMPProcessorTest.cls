@@ -1,4 +1,5 @@
 @IsTest
+@SuppressWarnings('PMD.ApexUnitTestMethodShouldHaveIsTestAnnotation')
 public class GlyntMaineCMPProcessorTest {
 
     private static final System.RoundingMode ROUND = System.RoundingMode.HALF_UP;
@@ -42,7 +43,7 @@ public class GlyntMaineCMPProcessorTest {
         // Verify that the annual sizing calculation is using the right values from Glynt Extractions
         // Refer to the sample Maine CMP Sizing .xlsx provided by Gina for calculating this data
         // NOTE: Excel may show rounded numbers in the sample document but uses non-rounded values in calculations!!
-        GlyntMaineCMPProcessor.UtilityAccountSizing sizingObj = processor.sizingObjects[0];
+        GlyntMaineSizing sizingObj = processor.sizingObjects[0];
         System.assertEquals(4107.75, utilityDataRequests[0].Glynt_Amount_Due__c, 'Incorrect amount due on UDR 1');
         System.assertEquals(4345.08, utilityDataRequests[1].Glynt_Amount_Due__c, 'Incorrect amount due on UDR 2');
         System.assertEquals(4513.82, utilityDataRequests[2].Glynt_Amount_Due__c, 'Incorrect amount due on UDR 3');
@@ -73,7 +74,7 @@ public class GlyntMaineCMPProcessorTest {
      *              Test data is retrieved by Static Resource .txt files containing raw JSON e.g. 'GlyntCMPExtractSample1'
      * @return List<GlyntAPI.ExtractionResponse> for testing
      */
-    @SuppressWarnings('PMD.ApexUnitTestMethodShouldHaveIsTestAnnotation, PMD.OperationWithLimitsInLoop')
+    @SuppressWarnings('PMD.OperationWithLimitsInLoop')
     public static List<GlyntAPI.ExtractionResponse> createSampleExtractions() {
         List<GlyntAPI.ExtractionResponse> extractionResponses = new List<GlyntAPI.ExtractionResponse>();
         List<String> utilityDataRequestIds = buildUtilityDataRequests();

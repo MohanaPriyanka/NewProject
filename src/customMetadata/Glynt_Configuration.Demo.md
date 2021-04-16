@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>Authorization_Type__c</field>
-        <value xsi:type="xsd:string">Basic</value>
+        <value xsi:type="xsd:string">OAuth</value>
     </values>
     <values>
         <field>Data_Pool_Id__c</field>
