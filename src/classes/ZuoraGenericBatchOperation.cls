@@ -59,6 +59,6 @@ public without sharing class ZuoraGenericBatchOperation implements Database.Batc
         if (saveResults.isEmpty()) {
             return;
         }
-        Logger.logNow('ZuoraGenericBatchOperation','Finish Results',JSON.serialize(saveResults), 'FINE');
+        Logger.logNow('ZuoraGenericBatchOperation','Finish Results',JSON.serialize(saveResults), Logger.FINE);
     }
 }
