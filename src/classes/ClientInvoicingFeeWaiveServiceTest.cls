@@ -8,17 +8,24 @@ public class ClientInvoicingFeeWaiveServiceTest {
     @IsTest
     private static void systemTest() {
         Account account = [SELECT Id FROM Account LIMIT 1];
-        RecordType clientRT = [SELECT Id FROM RecordType WHERE Name = 'Client Contract' LIMIT 1];
         Contract contractA = new Contract(
             Name = 'Client Contract A',
             AccountId = account.Id,
-            RecordTypeId = clientRT.Id,
+            RecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Client Contract').getRecordTypeId(),
             StartDate = System.today().addYears(-1)
         );
-        insert contractA;
+        Contract clientAssignmentAgreement = new Contract(
+            Name = 'Client Assignment Agreement',
+            AccountId = account.Id,
+            RecordTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId(),
+            StartDate = System.today().addYears(-1),
+            CustomerSignedDate = System.today().addYears(-1)
+        );
+        insert new List<Contract>{contractA, clientAssignmentAgreement};
         Contract_Fee_Detail__c cfd = new Contract_Fee_Detail__c(
             Contract__c = contractA.Id,
             Fee__c = 0.10,
+            Fee_Unit__c = 'per W',
             Acquisition_Type_Reacquisition__c = true,
             Waive_Reacquisition_Fee_Project_Date__c = 'Project Contract: Effective Date',
             Waive_Reacquisition_Fee_Number_Months__c = 1,
@@ -51,17 +58,38 @@ public class ClientInvoicingFeeWaiveServiceTest {
         update sss;
 
         Utility_Account_Subscription__c uas = [
-            SELECT Id
+            SELECT Id, Opportunity__c, Opportunity__r.AccountId
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c = :sss.Opportunities__r[0].Id
             LIMIT 1
         ];
 
+        Contract customerContract = new Contract(
+            AccountId = uas.Opportunity__r.AccountId,
+            Assignment_Agreement__c = clientAssignmentAgreement.Id
+        );
+        insert customerContract;
+
+        Opportunity opportunity = new Opportunity(
+            Id = uas.Opportunity__c,
+            ContractId = customerContract.Id
+        );
+        update opportunity;
+
         Subscription_Order__c so = new Subscription_Order__c(
             Effective_Date__c = System.today(),
+            Type__c = 'Initial',
             Utility_Account_Subscription__c = uas.Id,
             New_Annual_kWh__c = 4800,
             Previous_Annual_kwh__c = 0
+        );
+        // so2 should have a Client Invoicing Type of Transfer, which will make Client Invoicing Fee $0, which we should not waive
+        Subscription_Order__c so2 = new Subscription_Order__c(
+            Effective_Date__c = System.today(),
+            Type__c = 'Transfer',
+            Utility_Account_Subscription__c = uas.Id,
+            New_Annual_kWh__c = 5000,
+            Previous_Annual_kwh__c = 4800
         );
         Test.startTest();
         // This should test a new transaction, but the ContractRepository's static variables aren't reset here, so we
@@ -69,12 +97,14 @@ public class ClientInvoicingFeeWaiveServiceTest {
         ContractRepository.clientContracts = null;
         ContractRepository.contractToFeeDetailMap = null;
         insert so;
+        insert so2;
         Test.stopTest();
 
         List<Client_Invoicing_Memo__c> cims = [
             SELECT Id
             FROM Client_Invoicing_Memo__c
             WHERE Subscription_Order__c = :so.Id
+            OR Subscription_Order__c = :so2.Id
         ];
         System.assertEquals(1, cims.size(), 'Expected to create one CIM since we are in the initial period. ' +
                 'Contract Start Date: ' + contractA.StartDate + ' SO Effective Date: ' + so.Effective_Date__c);
@@ -405,6 +435,25 @@ public class ClientInvoicingFeeWaiveServiceTest {
         cim = service.waiveFeeBasedOnDate(so);
         System.assertNotEquals(null, cim,
             'Should have gotten an invoicing memo to waive this fee, since the customer cancelled 20 days after being assigned');
+    }
+
+    @IsTest
+    private static void testCIMEffectiveSameAsSO() {
+        ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
+        service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
+            Client_Invoicing_Memo__c.SObjectType
+        });
+        Subscription_Order__c so = getSubscriptionOrder();
+        so.Effective_Date__c = Datetime.newInstanceGmt(2020,1,1);
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: COD';
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = System.today();
+        Client_Invoicing_Memo__c cim = service.waiveFeeBasedOnDate(so);
+        System.assertNotEquals(null, cim,
+            'Expected to get an Client Invoicing Memo for Project COD to be waived in the initial period');
+        System.assertEquals(DateUtil.convertGmtToDate(so.Effective_Date__c), cim.Effective_Date__c,
+            'Expected the CIM Effective Date to be the same as the SO');
     }
 
     private static Subscription_Order__c getSubscriptionOrder() {

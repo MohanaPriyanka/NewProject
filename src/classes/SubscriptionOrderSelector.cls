@@ -56,7 +56,7 @@ public inherited sharing class SubscriptionOrderSelector {
             (SELECT Id, Invoice_Line_Item__c FROM Client_Invoicing_Memos__r)
             FROM Subscription_Order__c
             WHERE Id IN :soIds
-            ORDER BY Effective_Date__c
+            ORDER BY Effective_Date__c, Name
         ];
     }
     public List<Subscription_Order__c> selectUnenactedByUASId(Set<Id> uasIds) {
