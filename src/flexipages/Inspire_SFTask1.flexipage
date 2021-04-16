@@ -33,10 +33,15 @@
             <componentInstance>
                 <componentName>inspire1:TaskPredecessorsComponent</componentName>
                 <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
                     <criteria>
                         <leftValue>{!$User.inspire1__Inspire_Planner_User__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>true</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.inspire1__Inspire_Task__r.Name}</leftValue>
+                        <operator>NE</operator>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -64,15 +69,6 @@
             </componentInstance>
         </itemInstances>
         <name>facet-e3e0a7bf-24d7-4016-aafd-2b217ea40dc1</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentName>inspire1:ChatterTask</componentName>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-90aa63f4-8056-4e4a-b166-b7dfb1ae538a</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -110,19 +106,6 @@
                 <componentName>flexipage:tab</componentName>
             </componentInstance>
         </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-90aa63f4-8056-4e4a-b166-b7dfb1ae538a</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>Standard.Tab.collaborate</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-            </componentInstance>
-        </itemInstances>
         <name>facet-19d558a9-03bc-4c16-9ff3-4c5d81ebb420</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -143,69 +126,31 @@
         <itemInstances>
             <componentInstance>
                 <componentName>inspire1:ChatterTask</componentName>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-8835ed62-2697-4150-8f3f-7cc96887c54e</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentName>inspire1:projectAndTaskHistoryViewer</componentName>
                 <visibilityRule>
+                    <booleanFilter>1 AND 2</booleanFilter>
                     <criteria>
                         <leftValue>{!$User.inspire1__Inspire_Planner_User__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>true</rightValue>
                     </criteria>
+                    <criteria>
+                        <leftValue>{!Record.RecordType.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Inspire Planner Task</rightValue>
+                    </criteria>
                 </visibilityRule>
             </componentInstance>
         </itemInstances>
-        <name>Facet-70aba663-0e8e-4393-a7c0-d4dfe76bab95</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentInstanceProperties>
-                    <name>active</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-8835ed62-2697-4150-8f3f-7cc96887c54e</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>Standard.Tab.collaborate</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-70aba663-0e8e-4393-a7c0-d4dfe76bab95</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>Project and Task History</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-ebf4c5bf-e247-446f-9828-283a58c1cb1b</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>tabs</name>
-                    <value>Facet-ebf4c5bf-e247-446f-9828-283a58c1cb1b</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tabset</componentName>
+                <componentName>forceChatter:recordFeedContainer</componentName>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.RecordType.Name}</leftValue>
+                        <operator>NE</operator>
+                        <rightValue>Inspire Planner Task</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>sidebar</name>
