@@ -1153,6 +1153,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>inspire1__Project__c.Feeder_Voltage_kV__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>inspire1__Project__c.Fenced_Acreage__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1728,6 +1733,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>inspire1__Project__c.PCUP_Expiration__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>inspire1__Project__c.PCUP_Submission_Act__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2248,6 +2258,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>inspire1__Project__c.Substation_3V0__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>inspire1__Project__c.Superintendent_Construction_Manager__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2464,6 +2479,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>inspire1__Project__c.Witness_Test_Completion_Est__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>inspire1__Project__c.Witness_Test_Cost_Est__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
