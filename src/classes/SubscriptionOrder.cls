@@ -217,7 +217,7 @@ public without sharing class SubscriptionOrder extends FeeQualification {
         Client_Invoicing_Memo__c memo = new Client_Invoicing_Memo__c(
             Subscription_Order__c = order.Id,
             Amount__c = amount.setScale(2, RoundingMode.HALF_UP),
-            Effective_Date__c = System.today()
+            Effective_Date__c = DateUtil.convertGmtToDate(order.Effective_Date__c)
         );
         uow.registerNew(memo);
         return memo;
