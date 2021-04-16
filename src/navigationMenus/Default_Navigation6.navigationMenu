@@ -11,15 +11,8 @@
         <type>InternalLink</type>
     </navigationMenuItem>
     <navigationMenuItem>
-        <label>Reporting</label>
-        <position>2</position>
-        <publiclyAvailable>false</publiclyAvailable>
-        <target>/report/Report/Recent</target>
-        <type>InternalLink</type>
-    </navigationMenuItem>
-    <navigationMenuItem>
         <label>Logout</label>
-        <position>3</position>
+        <position>2</position>
         <publiclyAvailable>false</publiclyAvailable>
         <target>https://bluewavememberportal.force.com/secur/logout.jsp</target>
         <targetPreference>OpenExternalLinkInSameTab</targetPreference>

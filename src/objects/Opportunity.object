@@ -353,6 +353,16 @@
         <fields>NextStep</fields>
         <label>BW Community Solar (BCS)</label>
     </compactLayouts>
+    <compactLayouts>
+        <fullName>CS_Layout</fullName>
+        <fields>Name</fields>
+        <fields>AccountId</fields>
+        <fields>Contract_Close_Date__c</fields>
+        <fields>Shared_Solar_System__c</fields>
+        <fields>Product__c</fields>
+        <fields>Partner_tag_lookup__c</fields>
+        <label>CS Layout</label>
+    </compactLayouts>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <externalSharingModel>Private</externalSharingModel>
@@ -10212,6 +10222,7 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <fullName>Community_Solar</fullName>
         <active>true</active>
         <businessProcess>Community Solar</businessProcess>
+        <compactLayoutAssignment>CS_Layout</compactLayoutAssignment>
         <description>Record Type for all CS Customers</description>
         <label>Community Solar</label>
         <picklistValues>
