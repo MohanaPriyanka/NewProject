@@ -236,11 +236,16 @@ private class ProductionSelectorTest {
             WHERE (Name = 'Project 1A' OR Name = 'Project 2B')
             ORDER BY Name
         ];
-
         ProductionSelector selector = new ProductionSelector();
         Map<Id,Integer> sssMap = selector.getBilledProductionBySSS(new Set<Id>{sssList[0].Id, sssList[1].Id});
 
         System.assertEquals(2,sssMap.get(sssList[0].Id));
         System.assertEquals(1,sssMap.get(sssList[1].Id));
+    }
+
+    @IsTest
+    public static void testGetProductionsForTransfers() {
+        ProductionSelector selector = new ProductionSelector();
+        System.assertNotEquals(null, selector.getProductionsForTransfers(), 'Expected List of Productions to be returned');
     }
 }
