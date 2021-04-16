@@ -130,7 +130,6 @@ public without sharing class GlyntMaineCMPProcessor implements GlyntExtractionSe
             );
             sizingObjects.add(sizingObj);
         }
-        ualsToSetAnnualCost = null; // Var no longer needed, deallocating heap
     }
 
     private void updateUALWithSizing() {

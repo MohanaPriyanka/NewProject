@@ -375,6 +375,26 @@ A91=Acct does not have service requested. See ESGData Dictionary for full list.<
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Glynt_Bill_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Bill End Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Glynt_Bill_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Bill Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Glynt_Blended_Rate__c</fullName>
         <externalId>false</externalId>
         <formula>Glynt_Amount_Due__c / Glynt_Monthly_kWh_Usage__c</formula>
