@@ -329,6 +329,89 @@ public with sharing class SubscriptionTransferServiceTest {
             'Since the Invocable Request\'s amount is 5896.40, we should see the resize SO have that amount');
     }
 
+    @IsTest
+    static void testTransferCancelledUAS() {
+        // Simulating transfer from a1d0a000001npxZAAQ to something else
+        sfab_FabricatedSObject fabbedUtility = new sfab_FabricatedSObject(Utility__c.class);
+        fabbedUtility.setField(Utility__c.Number_of_Decimal_Places__c, 2);
+        sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        fabbedSSS.setField(Shared_Solar_System__c.Expected_Yield_kWh_kW__c, 1266);
+        fabbedSSS.setField(Shared_Solar_System__c.Total_System_Size_kWh_DC__c, 1445);
+        fabbedSSS.setParent('Utility__r', fabbedUtility);
+        Shared_Solar_System__c sss = (Shared_Solar_System__c) fabbedSSS.toSObject();
+        SubscriptionTransferService.sssSelector =
+            (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector(sss));
+
+        sfab_FabricatedSObject fabbedSizingMethod = new sfab_FabricatedSObject(Utility_NMC_Tariff__c.class);
+        fabbedSizingMethod.setField(Utility_NMC_Tariff__c.Name, 'National Grid SEMA - Class 2 2018');
+        fabbedSizingMethod.setField(Utility_NMC_Tariff__c.Value_of_NMC__c, .186300);
+
+        sfab_FabricatedSObject fabbedOldUAS = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
+        Id oldUASId = Util.getFakeId(Utility_Account_Subscription__c.SObjectType);
+        fabbedOldUAS.setField(Utility_Account_Subscription__c.Id, oldUASId);
+        fabbedOldUAS.setField(Utility_Account_Subscription__c.Subscription_Type__c, 'Electricity Cost ($)');
+        fabbedOldUAS.setParent('Sizing_Method__r', fabbedSizingMethod);
+        fabbedOldUAS.setField(Utility_Account_Subscription__c.Future_Customer_Subscription_KWDC_Rollup__c, 0);
+
+        sfab_FabricatedSObject fabbedCancellationSO = new sfab_FabricatedSObject(Subscription_Order__c.class);
+        fabbedCancellationSO.setField(Subscription_Order__c.Type__c, 'Cancellation');
+        fabbedCancellationSO.setField(Subscription_Order__c.Previous_kw_DC_Subscription__c, 2.023000);
+        fabbedOldUAS.setChildren('Subscription_Orders__r', new List<sfab_FabricatedSObject>{fabbedCancellationSO});
+
+        sfab_FabricatedSObject fabbedNewUAS = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
+        Id newUASId = Util.incrementFakeId(oldUASId);
+        fabbedNewUAS.setField(Utility_Account_Subscription__c.Id, newUASId);
+        fabbedNewUAS.setField(Utility_Account_Subscription__c.Subscription_Type__c, 'Electricity Cost ($)');
+        fabbedNewUAS.setField(Utility_Account_Subscription__c.Annual_Cost_Future_Rollup__c, 3619.71);
+        fabbedNewUAS.setField(Utility_Account_Subscription__c.Shared_Solar_System__c, Util.getFakeId(Shared_Solar_System__c.SObjectType));
+        fabbedNewUAS.setField(Utility_Account_Subscription__c.Future_Customer_Subscription_KWDC_Rollup__c, 0);
+
+        List<Utility_Account_Subscription__c> mockedUASes =
+            new List<Utility_Account_Subscription__c>{
+                (Utility_Account_Subscription__c) fabbedOldUAS.toSObject(),
+                (Utility_Account_Subscription__c) fabbedNewUAS.toSObject()
+            };
+
+        UASSelector.mockedUASes = mockedUASes;
+
+        SubscriptionTransferService.uowForTransferSO = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Opportunity.SObjectType,
+                Subscription_Transfer__c.SObjectType,
+                Utility_Account_Subscription__c.SObjectType,
+                Subscription_Order__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+
+        SubscriptionTransferService.uowForResizeSO = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Subscription_Order__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+
+        Test.startTest();
+        InvocableSubscriptionTransferer.Request request = new InvocableSubscriptionTransferer.Request();
+        request.oldUASId = oldUASId;
+        request.newUASId = newUASId;
+        request.amount = 5896.40;
+        InvocableSubscriptionTransferer.transferSubscription(new List<InvocableSubscriptionTransferer.Request>{request});
+        Test.stopTest();
+        List<Subscription_Order__c> transferAndZeroSubscriptionOrders =
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(SubscriptionTransferService.uowForTransferSO, 'Subscription_Order__c');
+        System.assertEquals(1, transferAndZeroSubscriptionOrders.size(),
+            'Expected a transfer SO to transfer the old UAS to the new, but no SO to zero the old UAS because it is already 0');
+        System.assertEquals(477.14, transferAndZeroSubscriptionOrders[0].New_Annual_Cost__c.setScale(2),
+            'Per production SO a9W5b0000004whDEAQ, New annual Cost should be 477.15 to get an Approved Change of 2.023');
+
+        List<Subscription_Order__c> resizeSubscriptionOrders =
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(SubscriptionTransferService.uowForResizeSO, 'Subscription_Order__c');
+        System.assertEquals(1, resizeSubscriptionOrders.size(),
+            'Expected a resize SO for the new UAS');
+        System.assertEquals(5896.40, resizeSubscriptionOrders[0].New_Annual_Cost__c,
+            'Since the Invocable Request\'s amount is 5896.40, we should see the resize SO have that amount');
+    }
 
     public class MockedSSSSelector extends MockProvider {
         private Shared_Solar_System__c sss;

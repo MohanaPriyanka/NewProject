@@ -12,11 +12,12 @@ public without sharing class UASSelector {
             SELECT Id,
                 Subscription_Type__c,
                 Annual_kWh_Subscription_Future_Rollup__c,
+                Future_Customer_Subscription_KWDC_Rollup__c,
                 Annual_Cost_Future_Rollup__c,
                 Utility_Account_Log__r.Account__c,
                 Utility_Account_Log__r.Account__r.Id,
                 Utility_Account_Log__r.Account__r.Name,
-                Utility_Account_Log__r.Account__r.Client_Brand_key__c,
+                Utility_Account_Log__r.Account__r.Client_Brand_Key__c,
                 Utility_Account_Log__r.Account__r.Cancellation_Comments__c,
                 Utility_Account_Log__r.Account__r.Send_Bills_Contact__c,
                 Utility_Account_Log__r.Account__r.Send_Bills_Contact__r.Email,
@@ -35,6 +36,7 @@ public without sharing class UASSelector {
             SELECT Id,
                 Subscription_Type__c,
                 Annual_kWh_Subscription_Future_Rollup__c,
+                Future_Customer_Subscription_KWDC_Rollup__c,
                 Annual_Cost_Future_Rollup__c,
                 Utility_Account_Log__r.Name,
                 Utility_Account_Log__r.Account__c,
@@ -62,6 +64,12 @@ public without sharing class UASSelector {
             OR Customer_Subscription_KW_DC__c != 0)
         ];
     }
+
+    /**
+     * @description Includes the last approved Subscription Order to check if a cancelled UAS is being transferred
+     * @param uasIds Set of UAS Ids to select
+     * @return List of UASes
+     */
     public static List<Utility_Account_Subscription__c> selectByIds(Set<Id> uasIds) {
         if (mockedUASes != null) {
             return mockedUASes;
@@ -77,7 +85,13 @@ public without sharing class UASSelector {
                 Sizing_Method__r.Value_of_NMC__c,
                 Future_Customer_Subscription_KWDC_Rollup__c,
                 Annual_kWh_Subscription_Future_Rollup__c,
-                Annual_Cost_Future_Rollup__c
+                Annual_Cost_Future_Rollup__c, (
+                SELECT Id, Type__c, Previous_kw_DC_Subscription__c
+                FROM Subscription_Orders__r
+                WHERE Approval_Status__c = 'Approved'
+                ORDER BY Effective_Date__c DESC
+                LIMIT 1
+            )
             FROM Utility_Account_Subscription__c
             WHERE Id IN :uasIds
         ];

@@ -25,6 +25,10 @@ public inherited sharing class UtilityAccountSubscriptions {
 
     public void registerSubscriptionOrdersToZeroOutUAS(String zeroType, fflib_SObjectUnitOfWork uow) {
         for (Utility_Account_Subscription__c uas : records) {
+            if (uas.Future_Customer_Subscription_KWDC_Rollup__c == 0) {
+                // This is already zeroed, so it doesn't need another SO
+                continue;
+            }
             Subscription_Order__c zeroedSO = new Subscription_Order__c(
                 Type__c = zeroType,
                 Approval_Status__c = 'Approved',
