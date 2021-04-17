@@ -452,6 +452,120 @@ If a new Feeder Utility and Voltage needs to be added:
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Load_Zone__c</fullName>
+        <externalId>false</externalId>
+        <label>Load Zone</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>State__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetName>Load_Zone</valueSetName>
+            <valueSettings>
+                <controllingFieldValue>UT</controllingFieldValue>
+                <controllingFieldValue>VA</controllingFieldValue>
+                <controllingFieldValue>VT</controllingFieldValue>
+                <controllingFieldValue>WA</controllingFieldValue>
+                <controllingFieldValue>WI</controllingFieldValue>
+                <controllingFieldValue>WV</controllingFieldValue>
+                <controllingFieldValue>WY</controllingFieldValue>
+                <controllingFieldValue>DC</controllingFieldValue>
+                <controllingFieldValue>GA</controllingFieldValue>
+                <controllingFieldValue>HI</controllingFieldValue>
+                <controllingFieldValue>IA</controllingFieldValue>
+                <controllingFieldValue>ID</controllingFieldValue>
+                <controllingFieldValue>IL</controllingFieldValue>
+                <controllingFieldValue>IN</controllingFieldValue>
+                <controllingFieldValue>KS</controllingFieldValue>
+                <controllingFieldValue>KY</controllingFieldValue>
+                <controllingFieldValue>LA</controllingFieldValue>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <controllingFieldValue>AK</controllingFieldValue>
+                <controllingFieldValue>AL</controllingFieldValue>
+                <controllingFieldValue>AR</controllingFieldValue>
+                <controllingFieldValue>AZ</controllingFieldValue>
+                <controllingFieldValue>CA</controllingFieldValue>
+                <controllingFieldValue>CO</controllingFieldValue>
+                <controllingFieldValue>CT</controllingFieldValue>
+                <controllingFieldValue>DE</controllingFieldValue>
+                <controllingFieldValue>FL</controllingFieldValue>
+                <controllingFieldValue>MD</controllingFieldValue>
+                <controllingFieldValue>ME</controllingFieldValue>
+                <controllingFieldValue>MI</controllingFieldValue>
+                <controllingFieldValue>MN</controllingFieldValue>
+                <controllingFieldValue>MO</controllingFieldValue>
+                <controllingFieldValue>MS</controllingFieldValue>
+                <controllingFieldValue>MT</controllingFieldValue>
+                <controllingFieldValue>NC</controllingFieldValue>
+                <controllingFieldValue>ND</controllingFieldValue>
+                <controllingFieldValue>NE</controllingFieldValue>
+                <controllingFieldValue>NH</controllingFieldValue>
+                <controllingFieldValue>NJ</controllingFieldValue>
+                <controllingFieldValue>NM</controllingFieldValue>
+                <controllingFieldValue>NV</controllingFieldValue>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <controllingFieldValue>OH</controllingFieldValue>
+                <controllingFieldValue>OK</controllingFieldValue>
+                <controllingFieldValue>OR</controllingFieldValue>
+                <controllingFieldValue>PA</controllingFieldValue>
+                <controllingFieldValue>RI</controllingFieldValue>
+                <controllingFieldValue>SC</controllingFieldValue>
+                <controllingFieldValue>SD</controllingFieldValue>
+                <controllingFieldValue>TN</controllingFieldValue>
+                <controllingFieldValue>TX</controllingFieldValue>
+                <valueName>None</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <valueName>East</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <valueName>NEMA</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <valueName>SEMA</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <valueName>WCMA</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>West</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>ME</controllingFieldValue>
+                <valueName>BHE</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>ME</controllingFieldValue>
+                <valueName>MPD</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>Capital</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>Central</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>Genesee</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>Mohawk Valley</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>NGrid_DG_Database_Applied_kW__c</fullName>
         <externalId>false</externalId>
         <label>NGrid DG Database Applied kW</label>
@@ -708,6 +822,185 @@ If a new Feeder Utility and Voltage needs to be added:
         <unique>true</unique>
     </fields>
     <fields>
+        <fullName>Utility__c</fullName>
+        <externalId>false</externalId>
+        <label>Utility</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>State__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetName>Utility</valueSetName>
+            <valueSettings>
+                <controllingFieldValue>UT</controllingFieldValue>
+                <controllingFieldValue>VA</controllingFieldValue>
+                <controllingFieldValue>VT</controllingFieldValue>
+                <controllingFieldValue>WA</controllingFieldValue>
+                <controllingFieldValue>WI</controllingFieldValue>
+                <controllingFieldValue>WV</controllingFieldValue>
+                <controllingFieldValue>WY</controllingFieldValue>
+                <controllingFieldValue>DC</controllingFieldValue>
+                <controllingFieldValue>GA</controllingFieldValue>
+                <controllingFieldValue>HI</controllingFieldValue>
+                <controllingFieldValue>IA</controllingFieldValue>
+                <controllingFieldValue>ID</controllingFieldValue>
+                <controllingFieldValue>IL</controllingFieldValue>
+                <controllingFieldValue>IN</controllingFieldValue>
+                <controllingFieldValue>KS</controllingFieldValue>
+                <controllingFieldValue>KY</controllingFieldValue>
+                <controllingFieldValue>LA</controllingFieldValue>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <controllingFieldValue>AK</controllingFieldValue>
+                <controllingFieldValue>AL</controllingFieldValue>
+                <controllingFieldValue>AR</controllingFieldValue>
+                <controllingFieldValue>AZ</controllingFieldValue>
+                <controllingFieldValue>CA</controllingFieldValue>
+                <controllingFieldValue>CO</controllingFieldValue>
+                <controllingFieldValue>CT</controllingFieldValue>
+                <controllingFieldValue>DE</controllingFieldValue>
+                <controllingFieldValue>FL</controllingFieldValue>
+                <controllingFieldValue>MD</controllingFieldValue>
+                <controllingFieldValue>ME</controllingFieldValue>
+                <controllingFieldValue>MI</controllingFieldValue>
+                <controllingFieldValue>MN</controllingFieldValue>
+                <controllingFieldValue>MO</controllingFieldValue>
+                <controllingFieldValue>MS</controllingFieldValue>
+                <controllingFieldValue>MT</controllingFieldValue>
+                <controllingFieldValue>NC</controllingFieldValue>
+                <controllingFieldValue>ND</controllingFieldValue>
+                <controllingFieldValue>NE</controllingFieldValue>
+                <controllingFieldValue>NH</controllingFieldValue>
+                <controllingFieldValue>NJ</controllingFieldValue>
+                <controllingFieldValue>NM</controllingFieldValue>
+                <controllingFieldValue>NV</controllingFieldValue>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <controllingFieldValue>OH</controllingFieldValue>
+                <controllingFieldValue>OK</controllingFieldValue>
+                <controllingFieldValue>OR</controllingFieldValue>
+                <controllingFieldValue>PA</controllingFieldValue>
+                <controllingFieldValue>RI</controllingFieldValue>
+                <controllingFieldValue>SC</controllingFieldValue>
+                <controllingFieldValue>SD</controllingFieldValue>
+                <controllingFieldValue>TN</controllingFieldValue>
+                <controllingFieldValue>TX</controllingFieldValue>
+                <valueName>Not specified</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>VA</controllingFieldValue>
+                <valueName>Dominion Energy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>VT</controllingFieldValue>
+                <valueName>Green Mountain Power</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>VT</controllingFieldValue>
+                <valueName>Washington Electric Cooperative</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <controllingFieldValue>AL</controllingFieldValue>
+                <controllingFieldValue>CT</controllingFieldValue>
+                <controllingFieldValue>RI</controllingFieldValue>
+                <valueName>Eversource</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <valueName>Fitchburg G&amp;E (Unitil)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <controllingFieldValue>ME</controllingFieldValue>
+                <valueName>Municipal Electric Departments</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>MA</controllingFieldValue>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <controllingFieldValue>RI</controllingFieldValue>
+                <valueName>National Grid</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>ME</controllingFieldValue>
+                <valueName>Central Maine Power</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>ME</controllingFieldValue>
+                <valueName>Versant</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NJ</controllingFieldValue>
+                <valueName>Atlantic City Electric</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NJ</controllingFieldValue>
+                <valueName>Jersey Power &amp; Light</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NJ</controllingFieldValue>
+                <valueName>PSE&amp;G</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NJ</controllingFieldValue>
+                <valueName>Rockland Electric Company</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>Central Hudson Gas &amp; Electric</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>Con Edison</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>NYSEG</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>Orange &amp; Rockland</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>PSEG Long Island</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>NY</controllingFieldValue>
+                <valueName>RG&amp;E</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>PA</controllingFieldValue>
+                <valueName>Allegheny/West Penn Power Co.</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>PA</controllingFieldValue>
+                <valueName>Duquesne Light Co.</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>PA</controllingFieldValue>
+                <valueName>Metropolitan Edison Co.</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>PA</controllingFieldValue>
+                <valueName>Penn Power</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>PA</controllingFieldValue>
+                <valueName>Pennsylvania Electric Co.</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>PA</controllingFieldValue>
+                <valueName>PPL Utilities Corp.</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>SC</controllingFieldValue>
+                <valueName>SCE&amp;G</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>kw_Applied__c</fullName>
         <externalId>false</externalId>
         <label>Applied (kW AC)</label>
@@ -763,6 +1056,176 @@ If a new Feeder Utility and Voltage needs to be added:
         <fullName>Feeder</fullName>
         <active>true</active>
         <label>Feeder</label>
+        <picklistValues>
+            <picklist>Load_Zone__c</picklist>
+            <values>
+                <fullName>BHE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>East</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MPD</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Utility__c</picklist>
+            <values>
+                <fullName>Allegheny%2FWest Penn Power Co%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Atlantic City Electric</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bahamas Electricity Corporation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central Hudson Gas %26 Electric</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central Maine Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Con Edison</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dominion Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Duquesne Light Co%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eversource</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fitchburg G%26E %28Unitil%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Grand Bahama Power Company</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Green Mountain Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Jersey Power %26 Light</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Metropolitan Edison Co%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Municipal Electric Departments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NYSEG</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>National Grid</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not specified</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Orange %26 Rockland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PPL Utilities Corp%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PSE%26G</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PSEG Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Penn Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pennsylvania Electric Co%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RG%26E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rockland Electric Company</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SCE%26G</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Versant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Washington Electric Cooperative</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Feeder_Utility_and_Voltage__c</picklist>
             <values>
