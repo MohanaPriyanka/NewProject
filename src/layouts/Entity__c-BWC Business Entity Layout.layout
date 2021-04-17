@@ -110,9 +110,9 @@
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
         <label>Custom Links</label>
-        <layoutColumns />
-        <layoutColumns />
-        <layoutColumns />
+        <layoutColumns/>
+        <layoutColumns/>
+        <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
     <relatedLists>
@@ -126,6 +126,19 @@
         <fields>Foreign_Registration__c</fields>
         <fields>LAST_UPDATE</fields>
         <relatedList>State_Registration__c.Entity__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>inspire1__Description__c</fields>
+        <fields>inspire1__Project_Status__c</fields>
+        <fields>inspire1__Actual_Start_Date__c</fields>
+        <fields>inspire1__Actual_Finish_Date__c</fields>
+        <fields>inspire1__Baseline_Start_Date__c</fields>
+        <fields>inspire1__Baseline_Finish_Date__c</fields>
+        <fields>UPDATEDBY_USER</fields>
+        <fields>OWNER.FIRST_NAME</fields>
+        <fields>OWNER.LAST_NAME</fields>
+        <relatedList>inspire1__Project__c.BWC_Project_Entity__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
