@@ -5,7 +5,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -13,7 +33,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -21,7 +61,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -29,7 +89,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -37,7 +117,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
@@ -54,6 +154,7 @@ If a new Feeder Utility and Voltage needs to be added:
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
@@ -100,6 +201,34 @@ If a new Feeder Utility and Voltage needs to be added:
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Connected_DG_on_Feeder_MW__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Do not include BW</inlineHelpText>
+        <label>Connected DG on Feeder (MW)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Connected_DG_on_Substation_MW__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Do not include BW</inlineHelpText>
+        <label>Connected DG on Substation (MW)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>DG_Database_Applied_kW__c</fullName>
         <externalId>false</externalId>
         <label>DOER DG Database Applied kW</label>
@@ -107,7 +236,7 @@ If a new Feeder Utility and Voltage needs to be added:
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -120,7 +249,7 @@ If a new Feeder Utility and Voltage needs to be added:
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -131,7 +260,7 @@ If a new Feeder Utility and Voltage needs to be added:
         <label>DOER DG Database Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
@@ -154,7 +283,8 @@ If a new Feeder Utility and Voltage needs to be added:
     -( kw_Applied__c + Interconnected_kW_AC__c )
     )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Pre App Assumed Remaining Capacity</label>
+        <inlineHelpText>Formula: Latest Feeder Rating (MVA) *1000 - ( Applied (kW AC) + Interconnected_kW_AC__c )</inlineHelpText>
+        <label>Pre-App Assumed Remaining Capacity</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -162,6 +292,64 @@ If a new Feeder Utility and Voltage needs to be added:
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Feeder_Amperage__c</fullName>
+        <externalId>false</externalId>
+        <label>Feeder Amperage</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Feeder_Information_Source__c</fullName>
+        <externalId>false</externalId>
+        <label>Feeder Information Source</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>DOER Report</fullName>
+                    <color>#FFFFFF</color>
+                    <default>false</default>
+                    <label>DOER Report</label>
+                </value>
+                <value>
+                    <fullName>FERC Report</fullName>
+                    <color>#FFFFFF</color>
+                    <default>false</default>
+                    <label>FERC Report</label>
+                </value>
+                <value>
+                    <fullName>Hosting Capacity Map</fullName>
+                    <color>#FFFFFF</color>
+                    <default>false</default>
+                    <label>Hosting Capacity Map</label>
+                </value>
+                <value>
+                    <fullName>Utility</fullName>
+                    <color>#FFFFFF</color>
+                    <default>false</default>
+                    <label>Utility</label>
+                </value>
+                <value>
+                    <fullName>Pre-Application</fullName>
+                    <color>#FFFFFF</color>
+                    <default>false</default>
+                    <label>Pre-Application</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Feeder_Rating_2016_MVA__c</fullName>
@@ -179,10 +367,11 @@ If a new Feeder Utility and Voltage needs to be added:
     <fields>
         <fullName>Feeder_Utility_and_Voltage__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>See separate fields for Utility and Voltage</inlineHelpText>
         <label>Feeder Utility and Voltage</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -237,6 +426,19 @@ If a new Feeder Utility and Voltage needs to be added:
         </valueSet>
     </fields>
     <fields>
+        <fullName>Feeder_Voltage_kV__c</fullName>
+        <externalId>false</externalId>
+        <label>Feeder Voltage (kV)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Interconnected_kW_AC__c</fullName>
         <externalId>false</externalId>
         <label>Interconnected (kW AC)</label>
@@ -257,7 +459,7 @@ If a new Feeder Utility and Voltage needs to be added:
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -268,7 +470,7 @@ If a new Feeder Utility and Voltage needs to be added:
         <label>NGrid DG Database Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
@@ -280,7 +482,35 @@ If a new Feeder Utility and Voltage needs to be added:
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Pending_DG_on_Feeder_MW__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Do not include BW</inlineHelpText>
+        <label>Pending DG on Feeder (MW)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Pending_DG_on_Substation_MW__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Do not include BW</inlineHelpText>
+        <label>Pending DG on Substation (MW)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -301,6 +531,105 @@ If a new Feeder Utility and Voltage needs to be added:
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Remaining_Capacity_for_DG_on_Feeder_MW__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Do not include BW</inlineHelpText>
+        <label>Remaining Capacity for DG on Feeder (MW)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Remaining_Capacity_for_DG_on_Sub_MW__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Do not include BW</inlineHelpText>
+        <label>Remaining Cap. for DG on Substation (MW)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>State__c</fullName>
+        <externalId>false</externalId>
+        <label>State</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>State_abbreviations</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Substation_3V0__c</fullName>
+        <externalId>false</externalId>
+        <label>Substation 3V0</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Substation_Information_Source__c</fullName>
+        <externalId>false</externalId>
+        <label>Substation Information Source</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>DOER Report</fullName>
+                    <color>#FFFFFF</color>
+                    <default>false</default>
+                    <label>DOER Report</label>
+                </value>
+                <value>
+                    <fullName>FERC Report</fullName>
+                    <color>#FFFFFF</color>
+                    <default>false</default>
+                    <label>FERC Report</label>
+                </value>
+                <value>
+                    <fullName>Hosting Capacity Map</fullName>
+                    <color>#FFFFFF</color>
+                    <default>false</default>
+                    <label>Hosting Capacity Map</label>
+                </value>
+                <value>
+                    <fullName>Utility</fullName>
+                    <color>#FFFFFF</color>
+                    <default>false</default>
+                    <label>Utility</label>
+                </value>
+                <value>
+                    <fullName>Pre-Application</fullName>
+                    <color>#FFFFFF</color>
+                    <default>false</default>
+                    <label>Pre-Application</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Substation__c</fullName>
         <description>This is the substation to which the feeder is connected</description>
         <externalId>false</externalId>
@@ -311,6 +640,58 @@ If a new Feeder Utility and Voltage needs to be added:
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Feeder_Capacity_MW__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Feeder Capacity (MW)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Substation_Capacity_MW__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Substation Capacity (MW)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transformer_Rating_MVA__c</fullName>
+        <externalId>false</externalId>
+        <label>Transformer Rating (MVA)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transformers_count__c</fullName>
+        <externalId>false</externalId>
+        <label>Transformers (count)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -377,7 +758,7 @@ If a new Feeder Utility and Voltage needs to be added:
     </nameField>
     <pluralLabel>Feeders</pluralLabel>
     <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
-    <recordTypeTrackHistory>true</recordTypeTrackHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
     <recordTypes>
         <fullName>Feeder</fullName>
         <active>true</active>
