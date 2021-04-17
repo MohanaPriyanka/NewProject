@@ -215,6 +215,19 @@
         <relatedList>Account.Send_Bills_Contact__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <fields>NAME</fields>
+        <fields>inspire1__Description__c</fields>
+        <fields>inspire1__Project_Status__c</fields>
+        <fields>inspire1__Actual_Start_Date__c</fields>
+        <fields>inspire1__Actual_Finish_Date__c</fields>
+        <fields>inspire1__Baseline_Start_Date__c</fields>
+        <fields>inspire1__Baseline_Finish_Date__c</fields>
+        <fields>UPDATEDBY_USER</fields>
+        <fields>OWNER.FIRST_NAME</fields>
+        <fields>OWNER.LAST_NAME</fields>
+        <relatedList>inspire1__Project__c.Civil_Site_Engineer__c</relatedList>
+    </relatedLists>
+    <relatedLists>
         <fields>TASK.SUBJECT</fields>
         <fields>TASK.WHAT_NAME</fields>
         <fields>ACTIVITY.TASK</fields>
