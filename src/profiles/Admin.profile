@@ -37,6 +37,11 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>Inspire_Planner_Console</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>Loans</application>
         <default>false</default>
         <visible>true</visible>
@@ -50685,6 +50690,17 @@
         <layout>copado__User_Story__c-copado__User Story Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>inspire1__Project__c-inspire1__Inspire Project v1%2E75 Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>inspire1__Project__c-inspire1__Inspire Project v1%2E75 Layout</layout>
+        <recordType>inspire1__Project__c.Development_Project</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>inspire1__Project__c-inspire1__Inspire Project v1%2E75 Layout</layout>
+        <recordType>inspire1__Project__c.Other_Project</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>zqu__InvoiceTemplate__c-zqu__Invoice Template Layout</layout>
     </layoutAssignments>
     <objectPermissions>
@@ -54510,6 +54526,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>et4ae5__abTest__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>inspire1__Project__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

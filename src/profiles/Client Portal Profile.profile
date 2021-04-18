@@ -31,6 +31,11 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>Inspire_Planner_Console</application>
+        <default>false</default>
+        <visible>false</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>Loans</application>
         <default>false</default>
         <visible>false</visible>
@@ -52,6 +57,11 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>Service_Cloud_Console</application>
+        <default>false</default>
+        <visible>false</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
+        <application>Site_Acq_Central</application>
         <default>false</default>
         <visible>false</visible>
     </applicationVisibilities>
@@ -44751,6 +44761,17 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZipCode_Utility_Junction__c-ZipCode Utility Junction Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>inspire1__Project__c-inspire1__Inspire Project v1%2E75 Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>inspire1__Project__c-inspire1__Inspire Project v1%2E75 Layout</layout>
+        <recordType>inspire1__Project__c.Development_Project</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>inspire1__Project__c-inspire1__Inspire Project v1%2E75 Layout</layout>
+        <recordType>inspire1__Project__c.Other_Project</recordType>
     </layoutAssignments>
     <pageAccesses>
         <apexPage>AccountInfo</apexPage>

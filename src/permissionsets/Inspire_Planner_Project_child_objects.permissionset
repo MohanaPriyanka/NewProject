@@ -1323,6 +1323,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>inspire1__Project__c.IX_Notes_short__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>inspire1__Project__c.IX_Other_Holdback_Milestone_Pmt_Date_Est__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1424,6 +1429,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>inspire1__Project__c.Livestock_Acreage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>inspire1__Project__c.Load_Zone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2243,6 +2253,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>inspire1__Project__c.State__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>inspire1__Project__c.Street_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2424,6 +2439,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>inspire1__Project__c.USACE_Wetland_Permit_Submitted__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>inspire1__Project__c.Utility__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
