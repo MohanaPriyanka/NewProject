@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>inspire1__Project__c</entityName>
+    <fieldName>Interconnection_Status__c</fieldName>
+    <masterLabel>Interconnection Status</masterLabel>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This stage records the Interconnection Service Agreement executed between the customer (BlueWave) and the utility detailing utility planned system upgrades and the timeline of completion. It also contains the estimated cost to the customer and payment timeline information. All amendments or addendums to the initial Interconnection Service Agreement are also found in this section. &lt;/p&gt;</info>
+        <picklistValueName>Agreements</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This step details the utility requirements of the interconnection application process including all required project details and accompanying technical documents for the application packet.  &lt;/p&gt;</info>
+        <picklistValueName>Applications</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;After the 75% (or 100%) payment is made and the design process is finished, this step tracks the utility construction timeline as the utility orders and installs the construction equipment&lt;/p&gt;</info>
+        <picklistValueName>Construction</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;After the 25% (or 100%) payment is made, the utility begins the design project. This step tracks the design process and timeline as the utility creates the design of the project over several weeks and secures easements.  &lt;/p&gt;</info>
+        <picklistValueName>Design</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This stage lists the required utility forms during various stages of the interconnection process. Examples are legal forms containing project information, landowner information, net-metering agreements and retail agreements. Technical Study agreements (see Studies) and Standard Interconnection Agreements (see Agreements) are not included on this page. &lt;/p&gt;&lt;p&gt;&lt;b&gt; &lt;/b&gt;&lt;/p&gt;</info>
+        <picklistValueName>Forms</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This step tracks the various federal and state incentive timelines, fees and allocations for each project.  &lt;/p&gt;</info>
+        <picklistValueName>Incentives</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This step provides information from utility hosting capacity maps, pre-application reports and screening reports in order to assess the quality of the site. The distance from the project POI to nearest 3 phase feeder and substation, as well as the total remaining capacity of the connecting feeder and substation, are calculated to estimate the range of expected upgrade costs. &lt;/p&gt;</info>
+        <picklistValueName>Queue View</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This step tracks the timeline and estimated upgrade cost results from various utility studies such as Feasibility Studies, System Impact Studies and Restudies, Affected System Operators, and Group Studies. &lt;/p&gt;</info>
+        <picklistValueName>Studies</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This step involves removal of any telecommunication wires on the interconnection route that need to be removed/replaced during project construction. The telecommunication company will contact the customer after consulting with the utility and provide an invoice for the scope and cost estimate of construction which may include the removal or placement of poles and re-hanging of telecommunication wires. This work is usually done after the utility has completed construction on their portion of the system upgrades. &lt;/p&gt;</info>
+        <picklistValueName>Telecom</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This step details the transfer of assignment of all utility interconnection documents as well as the transfer of incentive applications to new project owners.  &lt;/p&gt;</info>
+        <picklistValueName>Transfer</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This step tracks the Witness Test process, including the Witness Test procedure and Witness Test checklist submissions to the utility, as well as the Witness Test itself. The Witness Test is scheduled between representatives from the utility and the project developer to test the live system and ensure the system interconnects properly to the grid.&lt;/p&gt;</info>
+        <picklistValueName>Witness Test</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>Development_Project</recordTypeName>
+</PathAssistant>
