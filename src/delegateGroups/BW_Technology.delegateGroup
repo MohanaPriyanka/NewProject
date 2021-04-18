@@ -182,6 +182,7 @@
     <permissionSets>Access Drag and Drop Template builder</permissionSets>
     <permissionSets>Expense object (Custom)</permissionSets>
     <permissionSets>Inspire Planner Project, child objects</permissionSets>
+    <permissionSets>Feeders</permissionSets>
     <permissionSets>Netsuite Project ID</permissionSets>
     <permissionSets>Project, Construction, Incentive, Adder</permissionSets>
     <permissionSets>LASER Credit Access Site Guest User</permissionSets>
