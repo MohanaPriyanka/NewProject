@@ -23482,6 +23482,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>FeederProjectAssociation__c.Inspire_Project__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Feeder__c.Assumed_Remaining_Capacity_per_DOER_DG__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -23536,6 +23541,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Feeder__c.Load_Zone__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Feeder__c.NGrid_DG_Database_Applied_kW__c</field>
         <readable>true</readable>
@@ -23564,6 +23574,11 @@
         <editable>false</editable>
         <field>Feeder__c.Unique_Feeder_Name__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Feeder__c.Utility__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -65331,6 +65346,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>inspire1__Project__c.Load_Zone__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>inspire1__Project__c.Utility__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>printsf__Collateral_Order_History__c.printsf__Amount_of_Total__c</field>
         <readable>true</readable>
@@ -76633,6 +76658,16 @@
         <default>false</default>
         <recordType>et4ae5__SendDefinition__c.et4ae5__Trackable_Send_Definition</recordType>
         <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>inspire1__Project__c.Development_Project</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>inspire1__Project__c.Other_Project</recordType>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
