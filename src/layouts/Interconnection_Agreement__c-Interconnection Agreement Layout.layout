@@ -27,19 +27,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Agreement_Payment_Est__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Agreement_Payment_Act__c</field>
+                <field>Agreement_Received_Act__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Agreement_Received_Est__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Agreement_Received_Act__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -102,6 +94,13 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>IX_Payment_Type__c</fields>
+        <fields>Payment_Amount__c</fields>
+        <fields>Payment_Due__c</fields>
+        <fields>Payment_Sent__c</fields>
+        <fields>X30_BD_Final_Deadline__c</fields>
+        <fields>X30_BD_Notice_Received__c</fields>
+        <fields>X30_BD_Sent__c</fields>
         <relatedList>Interconnection_Payment__c.Interconnection_Agreement__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

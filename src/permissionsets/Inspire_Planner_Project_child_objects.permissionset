@@ -283,16 +283,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Interconnection_Agreement__c.Agreement_Payment_Act__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Interconnection_Agreement__c.Agreement_Payment_Est__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Interconnection_Agreement__c.Agreement_Received_Act__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2444,11 +2434,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>inspire1__Project__c.Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>inspire1__Project__c.Utility_and_Load_Zone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
