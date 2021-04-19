@@ -14,6 +14,15 @@ public without sharing class InvocableClientInvoiceGenerator {
      */
     @InvocableMethod(Label='InvocableClientInvoiceGenerator' Description='Generates an Invoice and Invoice Line Items for the selected Shared Solar Systems')
     public static List<List<Invoice__c>> generateInvoice(List<InvoiceGenerationRequest> requests) {
+        try {
+            return generateInvoiceInner(requests);
+        } catch (Exception e) {
+            Logger.logNow('InvocableClientInvoiceGenerator', 'generateInvoice', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
+        return new List<List<Invoice__c>>();
+    }
+
+    private static List<List<Invoice__c>> generateInvoiceInner(List<InvoiceGenerationRequest> requests) {
         if (requests.size() != 1) {
             throw new Util.BWException('We only support one request at a time');
         }
@@ -28,7 +37,8 @@ public without sharing class InvocableClientInvoiceGenerator {
             sssIds,
             request.includeAssignmentFees,
             request.includeChangeFees,
-            request.effectiveDate
+            request.effectiveDate,
+            request.forAcquisition
         );
         return new List<List<Invoice__c>>{invoices};
     }
@@ -45,5 +55,7 @@ public without sharing class InvocableClientInvoiceGenerator {
         public Boolean includeChangeFees;
         @InvocableVariable(Label='Effective Date')
         public Datetime effectiveDate;
+        @InvocableVariable(Label='Acquisition?')
+        public Boolean forAcquisition;
     }
 }

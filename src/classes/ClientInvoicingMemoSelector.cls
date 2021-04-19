@@ -35,8 +35,9 @@ public inherited sharing class ClientInvoicingMemoSelector {
         return clientInvoicingMemosBySSS;
     }
 
-    public List<AggregateResult> getUninvoicedByClientAccounts(List<Id> clientAccounts, Datetime effectiveDatetime) {
+    public List<AggregateResult> getUninvoicedByClientAccounts(List<Id> clientAccounts, Datetime effectiveDatetime, Boolean forAcquisition) {
         Date effectiveDate = Date.newInstance(effectiveDatetime.year(), effectiveDatetime.month(), effectiveDatetime.day());
+        String acquisitionType = forAcquisition ? 'Acquisition' : 'Reacquisition';
         return [
             SELECT Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__c Id,
                 Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__r.Name SSSNAME,
@@ -50,6 +51,7 @@ public inherited sharing class ClientInvoicingMemoSelector {
             AND Effective_Date__c <= :effectiveDate
             AND Invoice_Line_Item__c = NULL
             AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
+            AND Subscription_Order__r.Acquisition_Type__c = :acquisitionType
             GROUP BY Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__r.Name,
                 Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__r.Name,
@@ -57,18 +59,21 @@ public inherited sharing class ClientInvoicingMemoSelector {
         ];
     }
 
-    public List<Client_Invoicing_Memo__c> getUninvoicedBySSS(List<Shared_Solar_System__c> sharedSolarSystems, Datetime effectiveDatetime) {
+    public List<Client_Invoicing_Memo__c> getUninvoicedBySSS(List<Shared_Solar_System__c> sharedSolarSystems, Datetime effectiveDatetime,
+        Boolean forAcquisition) {
+        String acquisitionType = forAcquisition ? 'Acquisition' : 'Reacquisition';
         Date effectiveDate = Date.newInstance(effectiveDatetime.year(), effectiveDatetime.month(), effectiveDatetime.day());
         return [
             SELECT Id, Amount__c, Subscription_Order__c, Subscription_Order__r.Client_Assignment_Agreement__c,
                 Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__c, Subscription_Order__r.Approved_Change_in_Subscription__c,
-                Subscription_Order__r.Contract_Fee_Detail__r.Fee__c, Subscription_Order__r.Contract_Fee_Detail__c, Type__c
+                Subscription_Order__r.Contract_Fee_Detail__r.Fee__c, Subscription_Order__r.Contract_Fee_Detail__c, Type__c, Subscription_Order__r.Acquisition_Type__c
             FROM Client_Invoicing_Memo__c
             WHERE Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__c IN :sharedSolarSystems
             AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'
             AND Effective_Date__c <= :effectiveDate
             AND Invoice_Line_Item__c = NULL
             AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
+            AND Subscription_Order__r.Acquisition_Type__c = :acquisitionType
         ];
     }
 }

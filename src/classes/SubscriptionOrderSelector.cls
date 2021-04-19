@@ -121,7 +121,8 @@ public inherited sharing class SubscriptionOrderSelector {
             WHERE Client_Assignment_Agreement__c IN :assignmentAgreementIds
         ];
     }
-    public List<AggregateResult> getUninvoicedByClientAccount(List<Id> clientAccountIds, Datetime effectiveDate) {	
+    public List<AggregateResult> getUninvoicedByClientAccount(List<Id> clientAccountIds, Datetime effectiveDate, Boolean forAcquisition) {
+        String acquisitionType = forAcquisition ? 'Acquisition' : 'Reacquisition';
         return [	
             SELECT Utility_Account_Subscription__r.Shared_Solar_System__c Id,	
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Name SSSNAME,	
@@ -137,6 +138,7 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Client_Invoicing_Fee__c != NULL	
             AND Client_Invoicing_Fee__c != 0
             AND Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
+            AND Acquisition_Type__c = :acquisitionType
             GROUP BY Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Name,	
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__r.Name,	
@@ -144,13 +146,15 @@ public inherited sharing class SubscriptionOrderSelector {
         ];	
     }	
 
-    public List<Subscription_Order__c> getUninvoicedBySSS(List<Shared_Solar_System__c> sharedSolarSystems, Datetime effectiveDate) {	
+    public List<Subscription_Order__c> getUninvoicedBySSS(List<Shared_Solar_System__c> sharedSolarSystems, Datetime effectiveDate,
+        Boolean includeAcquisition) {
+        String acquisitionType = includeAcquisition ? 'Acquisition' : 'Reacquisition';
         return [	
             SELECT Id, Client_Invoicing_Fee__c, Utility_Account_Subscription__r.Shared_Solar_System__c,	
                 Contract_Fee_Detail__c, Contract_Fee_Detail__r.Fee__c, Client_Assignment_Agreement__c,	
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c, Approved_Change_in_Subscription__c,	
                 Contract_Fee_Detail__r.Acquisition_Type_Acquisition__c, Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c,
-                Utility_Account_Subscription__r.Utility_Account_Log__r.Name
+                Utility_Account_Subscription__r.Utility_Account_Log__r.Name, Acquisition_Type__c
             FROM Subscription_Order__c	
             WHERE Utility_Account_Subscription__r.Shared_Solar_System__c IN :sharedSolarSystems	
             AND Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'	
@@ -158,6 +162,7 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Effective_Date__c <= :effectiveDate	
             AND Client_Invoicing_Fee__c != NULL	
             AND Client_Invoicing_Fee__c != 0
+            AND Acquisition_Type__c = :acquisitionType
             AND Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
         ];
     }
