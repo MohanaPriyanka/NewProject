@@ -27,9 +27,11 @@ public without sharing class ClientInvoiceGenerator {
      * @param includeAssignmentFees True if this should generate an Invoice Line Item for records related to Assignment Agreements
      * @param includeChangeFees True if this should generate an Invoice Line Item for records not related to Assignment Agreements
      * @param effectiveDate Cutoff date for Subscription Orders and Client Invoicing Memos
+     * @param forAcquisition True if the invoice should include acquisition, otherwise just reacquisition
      * @return List of Invoices
      */
-    public List<Invoice__c> generateInvoices(Set<Id> sssIds, Boolean includeAssignmentFees, Boolean includeChangeFees, Datetime effectiveDate) {
+    public List<Invoice__c> generateInvoices(Set<Id> sssIds, Boolean includeAssignmentFees, Boolean includeChangeFees,
+        Datetime effectiveDate, Boolean forAcquisition) {
         List<Shared_Solar_System__c> sharedSolarSystems = sharedSolarSystemsSelector.selectAll(sssIds);
         MultiMap sssByClientAccount =
             CollectionUtil.multiMapByField(sharedSolarSystems, Shared_Solar_System__c.Client_Account__c);
@@ -45,7 +47,8 @@ public without sharing class ClientInvoiceGenerator {
                     sharedSolarSystemsForClient,
                     includeAssignmentFees,
                     includeChangeFees,
-                    effectiveDate
+                    effectiveDate,
+                    forAcquisition
                 );
             invoices.add(clientInvoice);
         }
@@ -65,7 +68,8 @@ public without sharing class ClientInvoiceGenerator {
         List<Shared_Solar_System__c> sharedSolarSystems,
         Boolean includeAssignmentFees,
         Boolean includeChangeFees,
-        Datetime effectiveDate
+        Datetime effectiveDate,
+        Boolean forAcquisition
     ) {
         Invoice__c invoice = new Invoice__c(
             Name = clientName + ' ' + System.today().format(),
@@ -75,12 +79,12 @@ public without sharing class ClientInvoiceGenerator {
             Effective_Date__c = Date.newInstance(effectiveDate.year(), effectiveDate.month(), effectiveDate.day())
         );
         uow.registerNew(invoice);
-        List<Subscription_Order__c> subscriptionOrders = subscriptionOrderSelector.getUninvoicedBySSS(sharedSolarSystems, effectiveDate);
+        List<Subscription_Order__c> subscriptionOrders = subscriptionOrderSelector.getUninvoicedBySSS(sharedSolarSystems, effectiveDate, forAcquisition);
         Set<Id> subscriptionOrdersNettingToZero = getSubscriptionOrdersNettingToZero(subscriptionOrders);
         for (Subscription_Order__c subscriptionOrder : subscriptionOrders) {
             generateLineItemFromSO(subscriptionOrder, invoice, includeAssignmentFees, includeChangeFees, subscriptionOrdersNettingToZero);
         }
-        List<Client_Invoicing_Memo__c> clientInvoicingMemos = clientInvoicingMemoSelector.getUninvoicedBySSS(sharedSolarSystems, effectiveDate);
+        List<Client_Invoicing_Memo__c> clientInvoicingMemos = clientInvoicingMemoSelector.getUninvoicedBySSS(sharedSolarSystems, effectiveDate, forAcquisition);
         for (Client_Invoicing_Memo__c cim : clientInvoicingMemos) {
             generateLineItemFromCIM(cim, invoice, includeAssignmentFees, includeChangeFees);
         }

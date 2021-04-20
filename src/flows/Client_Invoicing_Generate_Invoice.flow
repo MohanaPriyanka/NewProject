@@ -3,8 +3,8 @@
     <actionCalls>
         <name>CSFeeSelector</name>
         <label>CSFeeSelector</label>
-        <locationX>601</locationX>
-        <locationY>806</locationY>
+        <locationX>611</locationX>
+        <locationY>805</locationY>
         <actionName>InvocableCSFeeSelector</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -13,6 +13,7 @@
         <faultConnector>
             <targetReference>Error</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>clientAccountId</name>
             <value>
@@ -25,6 +26,12 @@
                 <elementReference>Effective_Date</elementReference>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>forAcquisition</name>
+            <value>
+                <elementReference>AcquisitionOrReacquisition</elementReference>
+            </value>
+        </inputParameters>
         <outputParameters>
             <assignToReference>sharedSolarSystemSummaryJSON</assignToReference>
             <name>output</name>
@@ -33,7 +40,7 @@
     <actionCalls>
         <name>InvocableClientInvoiceGenerator</name>
         <label>InvocableClientInvoiceGenerator</label>
-        <locationX>601</locationX>
+        <locationX>612</locationX>
         <locationY>1046</locationY>
         <actionName>InvocableClientInvoiceGenerator</actionName>
         <actionType>apex</actionType>
@@ -43,6 +50,13 @@
         <faultConnector>
             <targetReference>Error</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>forAcquisition</name>
+            <value>
+                <elementReference>AcquisitionOrReacquisition</elementReference>
+            </value>
+        </inputParameters>
         <inputParameters>
             <name>effectiveDate</name>
             <value>
@@ -72,6 +86,7 @@
             <name>output</name>
         </outputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Set_Client_Account</name>
         <label>Set Client Account</label>
@@ -104,6 +119,54 @@
             <targetReference>CSFeeSelector</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Set_Client_Account_To_RecordId</name>
+        <label>Set Client Account</label>
+        <locationX>610</locationX>
+        <locationY>591</locationY>
+        <assignmentItems>
+            <assignToReference>clientAccount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>CSFeeSelector</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>ForAcquisition</name>
+        <choiceText>Acquisition</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ForAnchors</name>
+        <choiceText>Anchors</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ForReacquisition</name>
+        <choiceText>Reacquisition</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ForSmallOfftake</name>
+        <choiceText>Small Offtake</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </choices>
     <decisions>
         <name>Get_Client_Account</name>
         <label>Get Client Account?</label>
@@ -128,6 +191,28 @@
             </connector>
             <label>Collect Client</label>
         </rules>
+        <rules>
+            <name>RecordId_is_Account</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>001</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Client_Account_To_RecordId</targetReference>
+            </connector>
+            <label>RecordId is Account</label>
+        </rules>
     </decisions>
     <description>Generates a Client Invoice from selected Shared Solar Systems</description>
     <formulas>
@@ -136,7 +221,6 @@
         <expression>DATETIMEVALUE(TEXT(DATE(YEAR(TODAY()),MONTH(TODAY()),1)) + &apos; 03:59:59&apos;)</expression>
     </formulas>
     <interviewLabel>Client {!$Flow.CurrentDateTime}</interviewLabel>
-    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Client Invoicing: Generate Invoice</label>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -166,6 +250,7 @@
         <connector>
             <targetReference>Set_Client_Account</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -212,6 +297,7 @@
                     <stringValue>Shared_Solar_System__c</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -238,8 +324,8 @@
     <screens>
         <name>Invoices_Created</name>
         <label>Invoices Created</label>
-        <locationX>601</locationX>
-        <locationY>1166</locationY>
+        <locationX>614</locationX>
+        <locationY>1172</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -269,6 +355,7 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -287,6 +374,11 @@
             <targetReference>Get_Client_Account</targetReference>
         </connector>
         <fields>
+            <name>Introduction</name>
+            <fieldText>&lt;p&gt;This flow will preview and generate an Invoice record related to un-invoiced Subscription Orders and Client Invoicing Memos, for the systems that you&apos;ll select on the next screen.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
             <name>Effective_Date</name>
             <dataType>DateTime</dataType>
             <defaultValue>
@@ -297,13 +389,23 @@
             <helpText>&lt;p&gt;Pulls SOs and CIMs before this datetime  into the invoice. &lt;/p&gt;</helpText>
             <isRequired>false</isRequired>
         </fields>
+        <fields>
+            <name>AcquisitionOrReacquisition</name>
+            <choiceReferences>ForAcquisition</choiceReferences>
+            <choiceReferences>ForReacquisition</choiceReferences>
+            <dataType>Boolean</dataType>
+            <defaultSelectedChoiceReference>ForAcquisition</defaultSelectedChoiceReference>
+            <fieldText>Generate for Acquisition or Reacqusition</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Select_Systems_To_Invoice</name>
         <label>Select Systems To Invoice</label>
-        <locationX>601</locationX>
+        <locationX>612</locationX>
         <locationY>926</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -361,6 +463,7 @@
                     <stringValue>id</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>selectedSharedSolarSystemJSON</assignToReference>
