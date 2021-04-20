@@ -79,16 +79,15 @@
     </fields>
     <fields>
         <fullName>Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Project</label>
+        <label>Milestones Project</label>
         <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
         <relationshipLabel>FeederProjectAssociation</relationshipLabel>
-        <relationshipName>FeederProjectAssociation</relationshipName>
-        <relationshipOrder>1</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <relationshipName>FeedProjAssn</relationshipName>
+        <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <label>FeederProjectAssociation</label>
     <listViews>
