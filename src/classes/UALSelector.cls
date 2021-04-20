@@ -53,7 +53,6 @@ public without sharing class UALSelector {
     }
 
     public List<Utility_Account_Log__c> selectUalsWithUdrs(List<Id> leadIds) {
-
         return [
             SELECT Id, Name, Utility_lookup__r.Utility_DUNS_Number__c, Utility_lookup__c, Utility_lookup__r.Name,
                 Utility_lookup__r.Utility_Data_Collection_Mechanism__c, QC_Status__c, Premise_Number__c,
@@ -84,6 +83,26 @@ public without sharing class UALSelector {
             FROM Utility_Account_Log__c
             WHERE Name = :ualNumber
             AND Lead__r.LastName != 'Testcase'
+        ];
+    }
+
+    public List<Utility_Account_Log__c> selectUalsWithChildUdrs(List<Id> udrIds) {
+        Set<Id> utilityAccountLogIds = new Set<Id>();
+        List<Utility_Data_Request__c> udrs = [
+            SELECT Utility_Account_Log__c
+            FROM Utility_Data_Request__c
+            WHERE Id IN : udrIds
+        ];
+        for (Utility_Data_Request__c udr : udrs) {
+            utilityAccountLogIds.add(udr.Utility_Account_Log__c);
+        }
+        return [
+            SELECT Id,
+                (SELECT Request_Status_new__c, Glynt_Blended_Rate__c
+                 FROM Utility_Data_Requests__r
+                 ORDER BY Glynt_Bill_Start_Date__c DESC)
+            FROM Utility_Account_Log__c
+            WHERE Id IN : utilityAccountLogIds
         ];
     }
 }

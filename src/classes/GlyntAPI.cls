@@ -60,48 +60,46 @@ public with sharing class GlyntAPI {
         }
     }
 
-    public class ExtractionResult {
+    public class ExtractionResult extends CustomApexObject {
         public ExtractedData AccountNumber;
-        public ExtractedData CurrentCharges;
-        public ExtractedData PreviousBalance;
-        public ExtractedData StatementDueDate;
-        public ExtractedData StatementDate;
-        public ExtractedData ElecUsageKWH1;
-        public ExtractedData ElecUsageMonth1;
-        public ExtractedData EleUsageMonth2;
-        public ExtractedData ElecUsageMonth3;
-        public ExtractedData ElecUsageMonth4;
-        public ExtractedData ElecUsageMonth5;
-        public ExtractedData ElecUsageMonth6;
-        public ExtractedData ElecUsageMonth7;
-        public ExtractedData ElecUsageMonth8;
-        public ExtractedData ElecUsageKWH2;
-        public ExtractedData ElecUsageKWH3;
-        public ExtractedData ElecUsageKWH4;
-        public ExtractedData ElecUsageKWH5;
-        public ExtractedData ElecUsageKWH6;
-        public ExtractedData ElecUsageKWH7;
-        public ExtractedData ElecUsageKWH8;
-        public ExtractedData ElecUsageMonth9;
-        public ExtractedData ElecUsageKWH9;
-        public ExtractedData ElecUsageMonth10;
-        public ExtractedData ElecUsageMonth11;
-        public ExtractedData ElecUsageMonth12;
-        public ExtractedData ElecUsageKWH10;
-        public ExtractedData ElecUsageKWH11;
-        public ExtractedData ElecUsageKWH12;
-        public ExtractedData ElecUsageMonth6_2;
-        public ExtractedData ElecUsageMonth7_2;
-        public ExtractedData ElecUsageMonth9_2;
-        public ExtractedData ElecUsageMonth5_2;
-        public ExtractedData ElecUsageKWH5_2;
-        public ExtractedData ElecUsageKWH6_2;
-        public ExtractedData ElecUsageKWH7_2;
-        public ExtractedData ElecUsageKWH9_2;
+        public ExtractedData CustomerName;
+        public ExtractedData ServiceAddressL1;
+        public ExtractedData ServiceAddressL2;
+        public ExtractedData E_StartDate; // Bill start date
+        public ExtractedData E_EndDate; // Bill end date
+        public ExtractedData E_NumberDays; // Number of days in statement
+        public ExtractedData E_Usage; // Electric usage in current statement
+        public ExtractedData E_UsageUnits; // Electric usage unit of measurement
+        public ExtractedData E_MeterNumber;
+        public ExtractedData E_TotalDeliveryCharge;
+        public ExtractedData E_TotalSupplyCharge;
+        public ExtractedData E_PreviousUsage1;
+        public ExtractedData E_PreviousUsagekWh1;
+        public ExtractedData E_PreviousUsage2;
+        public ExtractedData E_PreviousUsagekWh2;
+        public ExtractedData E_PreviousUsage3;
+        public ExtractedData E_PreviousUsagekWh3;
+        public ExtractedData E_PreviousUsage4;
+        public ExtractedData E_PreviousUsagekWh4;
+        public ExtractedData E_PreviousUsage5;
+        public ExtractedData E_PreviousUsagekWh5;
+        public ExtractedData E_PreviousUsage6;
+        public ExtractedData E_PreviousUsagekWh6;
+        public ExtractedData E_PreviousUsage7;
+        public ExtractedData E_PreviousUsagekWh7;
+        public ExtractedData E_PreviousUsage8;
+        public ExtractedData E_PreviousUsagekWh8;
+        public ExtractedData E_PreviousUsage9;
+        public ExtractedData E_PreviousUsagekWh9;
+        public ExtractedData E_PreviousUsage10;
+        public ExtractedData E_PreviousUsagekWh10;
+        public ExtractedData E_PreviousUsage11;
+        public ExtractedData E_PreviousUsagekWh11;
+        public ExtractedData E_PreviousUsage12;
+        public ExtractedData E_PreviousUsagekWh12;
     }
 
     public class ExtractedData {
-        String content;
-
+        public String content;
     }
 }

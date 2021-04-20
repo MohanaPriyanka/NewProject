@@ -1,0 +1,3097 @@
+{
+  "id": "6L1is1",
+  "created_at": "2021-01-23T07:26:03.172879Z",
+  "updated_at": "2021-01-23T07:30:36.020538Z",
+  "url": "https://api.glynt.ai/v6/data-pools/f6qD82/extractions/6L1is1/",
+  "training_set": "https://api.glynt.ai/v6/data-pools/f6qD82/training-sets/r6bTm1/",
+  "extraction_batch": "https://api.glynt.ai/v6/data-pools/f6qD82/extraction-batches/anqgu1/",
+  "document": "https://api.glynt.ai/v6/data-pools/f6qD82/documents/DMANF1/",
+  "status": "Success",
+  "finished": true,
+  "tags": [],
+  "glynt_tags": [],
+  "results": {
+    "AccountNumber": {
+      "content": "3501 -2665-903",
+      "tokens": [
+        {
+          "id": "1-260",
+          "index": 260,
+          "page": 1,
+          "content": "3501",
+          "bbox": [
+            {
+              "x": 975,
+              "y": 205
+            },
+            {
+              "x": 1051,
+              "y": 205
+            },
+            {
+              "x": 1051,
+              "y": 233
+            },
+            {
+              "x": 975,
+              "y": 233
+            }
+          ]
+        },
+        {
+          "id": "1-261",
+          "index": 261,
+          "page": 1,
+          "content": "-2665-903",
+          "bbox": [
+            {
+              "x": 1061,
+              "y": 206
+            },
+            {
+              "x": 1228,
+              "y": 206
+            },
+            {
+              "x": 1228,
+              "y": 234
+            },
+            {
+              "x": 1061,
+              "y": 234
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "string"
+      ]
+    },
+    "CustomerName": {
+      "content": "AAA ENERGY SERVICE CO",
+      "tokens": [
+        {
+          "id": "1-265",
+          "index": 265,
+          "page": 1,
+          "content": "AAA",
+          "bbox": [
+            {
+              "x": 1347,
+              "y": 205
+            },
+            {
+              "x": 1420,
+              "y": 205
+            },
+            {
+              "x": 1420,
+              "y": 234
+            },
+            {
+              "x": 1347,
+              "y": 234
+            }
+          ]
+        },
+        {
+          "id": "1-266",
+          "index": 266,
+          "page": 1,
+          "content": "ENERGY",
+          "bbox": [
+            {
+              "x": 1434,
+              "y": 204
+            },
+            {
+              "x": 1589,
+              "y": 204
+            },
+            {
+              "x": 1589,
+              "y": 234
+            },
+            {
+              "x": 1434,
+              "y": 234
+            }
+          ]
+        },
+        {
+          "id": "1-267",
+          "index": 267,
+          "page": 1,
+          "content": "SERVICE",
+          "bbox": [
+            {
+              "x": 1602,
+              "y": 204
+            },
+            {
+              "x": 1762,
+              "y": 204
+            },
+            {
+              "x": 1762,
+              "y": 234
+            },
+            {
+              "x": 1602,
+              "y": 234
+            }
+          ]
+        },
+        {
+          "id": "1-268",
+          "index": 268,
+          "page": 1,
+          "content": "CO",
+          "bbox": [
+            {
+              "x": 1776,
+              "y": 203
+            },
+            {
+              "x": 1829,
+              "y": 203
+            },
+            {
+              "x": 1829,
+              "y": 232
+            },
+            {
+              "x": 1776,
+              "y": 232
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "string"
+      ]
+    },
+    "VendorName": {
+      "content": "CENTRAL MAINE",
+      "tokens": [
+        {
+          "id": "1-1",
+          "index": 1,
+          "page": 1,
+          "content": "CENTRAL",
+          "bbox": [
+            {
+              "x": 216,
+              "y": 227
+            },
+            {
+              "x": 455,
+              "y": 227
+            },
+            {
+              "x": 455,
+              "y": 268
+            },
+            {
+              "x": 216,
+              "y": 268
+            }
+          ]
+        },
+        {
+          "id": "1-2",
+          "index": 2,
+          "page": 1,
+          "content": "MAINE",
+          "bbox": [
+            {
+              "x": 477,
+              "y": 226
+            },
+            {
+              "x": 645,
+              "y": 226
+            },
+            {
+              "x": 645,
+              "y": 266
+            },
+            {
+              "x": 477,
+              "y": 266
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "string"
+      ]
+    },
+    "ServiceAddressL1": {
+      "content": "4 COMMERCIAL RD",
+      "tokens": [
+        {
+          "id": "1-269",
+          "index": 269,
+          "page": 1,
+          "content": "4",
+          "bbox": [
+            {
+              "x": 1347,
+              "y": 249
+            },
+            {
+              "x": 1365,
+              "y": 249
+            },
+            {
+              "x": 1365,
+              "y": 277
+            },
+            {
+              "x": 1347,
+              "y": 277
+            }
+          ]
+        },
+        {
+          "id": "1-270",
+          "index": 270,
+          "page": 1,
+          "content": "COMMERCIAL",
+          "bbox": [
+            {
+              "x": 1380,
+              "y": 248
+            },
+            {
+              "x": 1629,
+              "y": 248
+            },
+            {
+              "x": 1629,
+              "y": 278
+            },
+            {
+              "x": 1380,
+              "y": 278
+            }
+          ]
+        },
+        {
+          "id": "1-271",
+          "index": 271,
+          "page": 1,
+          "content": "RD",
+          "bbox": [
+            {
+              "x": 1644,
+              "y": 248
+            },
+            {
+              "x": 1693,
+              "y": 248
+            },
+            {
+              "x": 1693,
+              "y": 277
+            },
+            {
+              "x": 1644,
+              "y": 277
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "string"
+      ]
+    },
+    "ServiceAddressL2": {
+      "content": "SCARBOROUGH ME 04074",
+      "tokens": [
+        {
+          "id": "1-272",
+          "index": 272,
+          "page": 1,
+          "content": "SCARBOROUGH",
+          "bbox": [
+            {
+              "x": 1348,
+              "y": 292
+            },
+            {
+              "x": 1640,
+              "y": 292
+            },
+            {
+              "x": 1640,
+              "y": 322
+            },
+            {
+              "x": 1348,
+              "y": 322
+            }
+          ]
+        },
+        {
+          "id": "1-273",
+          "index": 273,
+          "page": 1,
+          "content": "ME",
+          "bbox": [
+            {
+              "x": 1656,
+              "y": 292
+            },
+            {
+              "x": 1707,
+              "y": 292
+            },
+            {
+              "x": 1707,
+              "y": 321
+            },
+            {
+              "x": 1656,
+              "y": 321
+            }
+          ]
+        },
+        {
+          "id": "1-274",
+          "index": 274,
+          "page": 1,
+          "content": "04074",
+          "bbox": [
+            {
+              "x": 1721,
+              "y": 291
+            },
+            {
+              "x": 1822,
+              "y": 291
+            },
+            {
+              "x": 1822,
+              "y": 321
+            },
+            {
+              "x": 1721,
+              "y": 321
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "string"
+      ]
+    },
+    "E_MeterNumber": {
+      "content": "L112537769",
+      "tokens": [
+        {
+          "id": "2-144",
+          "index": 144,
+          "page": 2,
+          "content": "L112537769",
+          "bbox": [
+            {
+              "x": 72,
+              "y": 1285
+            },
+            {
+              "x": 280,
+              "y": 1285
+            },
+            {
+              "x": 280,
+              "y": 1315
+            },
+            {
+              "x": 72,
+              "y": 1315
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_StartDate": {
+      "content": "2020-08-18",
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "date"
+      ]
+    },
+    "E_EndDate": {
+      "content": "2020-09-18",
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "date"
+      ]
+    },
+    "E_NumberDays": {
+      "content": "31",
+      "tokens": [
+        {
+          "content": "31",
+          "page": 2,
+          "index": 150,
+          "bbox": [
+            {
+              "x": 1733,
+              "y": 1282
+            },
+            {
+              "x": 1767,
+              "y": 1311
+            },
+            {
+              "x": 1733,
+              "y": 1311
+            },
+            {
+              "x": 1767,
+              "y": 1311
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_Usage": {
+      "content": "42120",
+      "tags": [],
+      "glynt_tags": [
+        "consumption",
+        "electricity",
+        "number"
+      ]
+    },
+    "E_UsageUnits": {
+      "content": "kWh",
+      "tokens": [
+        {
+          "id": "2-143",
+          "index": 143,
+          "page": 2,
+          "content": "kWh",
+          "bbox": [
+            {
+              "x": 2295,
+              "y": 1208
+            },
+            {
+              "x": 2370,
+              "y": 1208
+            },
+            {
+              "x": 2370,
+              "y": 1234
+            },
+            {
+              "x": 2295,
+              "y": 1234
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_Tariff": {
+      "content": "MGS Secondary 3 Phase",
+      "tokens": [
+        {
+          "id": "2-42",
+          "index": 42,
+          "page": 2,
+          "content": "MGS",
+          "bbox": [
+            {
+              "x": 424,
+              "y": 381
+            },
+            {
+              "x": 505,
+              "y": 381
+            },
+            {
+              "x": 505,
+              "y": 411
+            },
+            {
+              "x": 424,
+              "y": 411
+            }
+          ]
+        },
+        {
+          "id": "2-43",
+          "index": 43,
+          "page": 2,
+          "content": "Secondary",
+          "bbox": [
+            {
+              "x": 520,
+              "y": 380
+            },
+            {
+              "x": 695,
+              "y": 380
+            },
+            {
+              "x": 695,
+              "y": 415
+            },
+            {
+              "x": 520,
+              "y": 415
+            }
+          ]
+        },
+        {
+          "id": "2-44",
+          "index": 44,
+          "page": 2,
+          "content": "3",
+          "bbox": [
+            {
+              "x": 709,
+              "y": 380
+            },
+            {
+              "x": 726,
+              "y": 380
+            },
+            {
+              "x": 726,
+              "y": 408
+            },
+            {
+              "x": 709,
+              "y": 408
+            }
+          ]
+        },
+        {
+          "id": "2-45",
+          "index": 45,
+          "page": 2,
+          "content": "Phase",
+          "bbox": [
+            {
+              "x": 741,
+              "y": 379
+            },
+            {
+              "x": 844,
+              "y": 379
+            },
+            {
+              "x": 844,
+              "y": 407
+            },
+            {
+              "x": 741,
+              "y": 407
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_SupplierName1": {
+      "content": "Constellation Energy",
+      "tokens": [
+        {
+          "id": "4-117",
+          "index": 117,
+          "page": 4,
+          "content": "Constellation",
+          "bbox": [
+            {
+              "x": 666,
+              "y": 1548
+            },
+            {
+              "x": 879,
+              "y": 1548
+            },
+            {
+              "x": 879,
+              "y": 1578
+            },
+            {
+              "x": 666,
+              "y": 1578
+            }
+          ]
+        },
+        {
+          "id": "4-118",
+          "index": 118,
+          "page": 4,
+          "content": "Energy",
+          "bbox": [
+            {
+              "x": 894,
+              "y": 1548
+            },
+            {
+              "x": 1011,
+              "y": 1548
+            },
+            {
+              "x": 1011,
+              "y": 1584
+            },
+            {
+              "x": 894,
+              "y": 1584
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_SupplierName2": {
+      "content": "NextEra Energy Marketing LLC",
+      "tokens": [
+        {
+          "id": "4-121",
+          "index": 121,
+          "page": 4,
+          "content": "NextEra",
+          "bbox": [
+            {
+              "x": 1208,
+              "y": 1546
+            },
+            {
+              "x": 1338,
+              "y": 1546
+            },
+            {
+              "x": 1338,
+              "y": 1577
+            },
+            {
+              "x": 1208,
+              "y": 1577
+            }
+          ]
+        },
+        {
+          "id": "4-122",
+          "index": 122,
+          "page": 4,
+          "content": "Energy",
+          "bbox": [
+            {
+              "x": 1353,
+              "y": 1546
+            },
+            {
+              "x": 1469,
+              "y": 1546
+            },
+            {
+              "x": 1469,
+              "y": 1583
+            },
+            {
+              "x": 1353,
+              "y": 1583
+            }
+          ]
+        },
+        {
+          "id": "4-123",
+          "index": 123,
+          "page": 4,
+          "content": "Marketing",
+          "bbox": [
+            {
+              "x": 1483,
+              "y": 1546
+            },
+            {
+              "x": 1642,
+              "y": 1546
+            },
+            {
+              "x": 1642,
+              "y": 1582
+            },
+            {
+              "x": 1483,
+              "y": 1582
+            }
+          ]
+        },
+        {
+          "id": "4-124",
+          "index": 124,
+          "page": 4,
+          "content": "LLC",
+          "bbox": [
+            {
+              "x": 1658,
+              "y": 1545
+            },
+            {
+              "x": 1722,
+              "y": 1545
+            },
+            {
+              "x": 1722,
+              "y": 1575
+            },
+            {
+              "x": 1658,
+              "y": 1575
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "StatementNumber": {
+      "content": "707000914764",
+      "tokens": [
+        {
+          "id": "1-264",
+          "index": 264,
+          "page": 1,
+          "content": "707000914764",
+          "bbox": [
+            {
+              "x": 975,
+              "y": 339
+            },
+            {
+              "x": 1224,
+              "y": 339
+            },
+            {
+              "x": 1224,
+              "y": 368
+            },
+            {
+              "x": 975,
+              "y": 368
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "string"
+      ]
+    },
+    "E_TotalDeliveryCharge": {
+      "content": "1709.24",
+      "tags": [],
+      "glynt_tags": [
+        "USD",
+        "delivery",
+        "totaldeliverycharge",
+        "amount",
+        "electricity"
+      ]
+    },
+    "E_TotalSupplyCharge": {
+      "content": "2398.51",
+      "tags": [],
+      "glynt_tags": [
+        "USD",
+        "supply",
+        "totalsupplycharge",
+        "amount",
+        "electricity"
+      ]
+    },
+    "E_ReadCycle": {
+      "content": "11",
+      "tokens": [
+        {
+          "content": "11",
+          "page": 2,
+          "index": 125,
+          "bbox": [
+            {
+              "x": 1214,
+              "y": 1146
+            },
+            {
+              "x": 1245,
+              "y": 1175
+            },
+            {
+              "x": 1214,
+              "y": 1175
+            },
+            {
+              "x": 1245,
+              "y": 1175
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_UsageScalingRatio": {
+      "content": "11190",
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage1": {
+      "content": "2020 Sep",
+      "tokens": [
+        {
+          "id": "1-332",
+          "index": 332,
+          "page": 1,
+          "content": "2020",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2029
+            },
+            {
+              "x": 1017,
+              "y": 2029
+            }
+          ]
+        },
+        {
+          "id": "1-345",
+          "index": 345,
+          "page": 1,
+          "content": "Sep",
+          "bbox": [
+            {
+              "x": 1962,
+              "y": 1954
+            },
+            {
+              "x": 2026,
+              "y": 1954
+            },
+            {
+              "x": 2026,
+              "y": 1991
+            },
+            {
+              "x": 1962,
+              "y": 1991
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh1": {
+      "content": "1359",
+      "tokens": [
+        {
+          "id": "1-362",
+          "index": 362,
+          "page": 1,
+          "content": "1359",
+          "bbox": [
+            {
+              "x": 1963,
+              "y": 1999
+            },
+            {
+              "x": 2026,
+              "y": 1999
+            },
+            {
+              "x": 2026,
+              "y": 2028
+            },
+            {
+              "x": 1963,
+              "y": 2028
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage2": {
+      "content": "2020 Aug",
+      "tokens": [
+        {
+          "id": "1-344",
+          "index": 344,
+          "page": 1,
+          "content": "Aug",
+          "bbox": [
+            {
+              "x": 1856,
+              "y": 1954
+            },
+            {
+              "x": 1920,
+              "y": 1954
+            },
+            {
+              "x": 1920,
+              "y": 1991
+            },
+            {
+              "x": 1856,
+              "y": 1991
+            }
+          ]
+        },
+        {
+          "id": "1-332",
+          "index": 332,
+          "page": 1,
+          "content": "2020",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2029
+            },
+            {
+              "x": 1017,
+              "y": 2029
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh2": {
+      "content": "1456",
+      "tokens": [
+        {
+          "id": "1-361",
+          "index": 361,
+          "page": 1,
+          "content": "1456",
+          "bbox": [
+            {
+              "x": 1858,
+              "y": 1999
+            },
+            {
+              "x": 1922,
+              "y": 1999
+            },
+            {
+              "x": 1922,
+              "y": 2028
+            },
+            {
+              "x": 1858,
+              "y": 2028
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage3": {
+      "content": "2020 Jul",
+      "tokens": [
+        {
+          "id": "1-332",
+          "index": 332,
+          "page": 1,
+          "content": "2020",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2029
+            },
+            {
+              "x": 1017,
+              "y": 2029
+            }
+          ]
+        },
+        {
+          "id": "1-343",
+          "index": 343,
+          "page": 1,
+          "content": "Jul",
+          "bbox": [
+            {
+              "x": 1761,
+              "y": 1954
+            },
+            {
+              "x": 1806,
+              "y": 1954
+            },
+            {
+              "x": 1806,
+              "y": 1984
+            },
+            {
+              "x": 1761,
+              "y": 1984
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh3": {
+      "content": "1463",
+      "tokens": [
+        {
+          "id": "1-360",
+          "index": 360,
+          "page": 1,
+          "content": "1463",
+          "bbox": [
+            {
+              "x": 1753,
+              "y": 1999
+            },
+            {
+              "x": 1817,
+              "y": 1999
+            },
+            {
+              "x": 1817,
+              "y": 2028
+            },
+            {
+              "x": 1753,
+              "y": 2028
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage4": {
+      "content": "2020 Jun",
+      "tokens": [
+        {
+          "id": "1-332",
+          "index": 332,
+          "page": 1,
+          "content": "2020",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2029
+            },
+            {
+              "x": 1017,
+              "y": 2029
+            }
+          ]
+        },
+        {
+          "id": "1-342",
+          "index": 342,
+          "page": 1,
+          "content": "Jun",
+          "bbox": [
+            {
+              "x": 1650,
+              "y": 1954
+            },
+            {
+              "x": 1707,
+              "y": 1954
+            },
+            {
+              "x": 1707,
+              "y": 1984
+            },
+            {
+              "x": 1650,
+              "y": 1984
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh4": {
+      "content": "1484",
+      "tokens": [
+        {
+          "id": "1-359",
+          "index": 359,
+          "page": 1,
+          "content": "1484",
+          "bbox": [
+            {
+              "x": 1649,
+              "y": 2000
+            },
+            {
+              "x": 1712,
+              "y": 2000
+            },
+            {
+              "x": 1712,
+              "y": 2029
+            },
+            {
+              "x": 1649,
+              "y": 2029
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage5": {
+      "content": "2020 May",
+      "tokens": [
+        {
+          "id": "1-332",
+          "index": 332,
+          "page": 1,
+          "content": "2020",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2029
+            },
+            {
+              "x": 1017,
+              "y": 2029
+            }
+          ]
+        },
+        {
+          "id": "1-341",
+          "index": 341,
+          "page": 1,
+          "content": "May",
+          "bbox": [
+            {
+              "x": 1543,
+              "y": 1955
+            },
+            {
+              "x": 1610,
+              "y": 1955
+            },
+            {
+              "x": 1610,
+              "y": 1992
+            },
+            {
+              "x": 1543,
+              "y": 1992
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh5": {
+      "content": "1381",
+      "tokens": [
+        {
+          "id": "1-358",
+          "index": 358,
+          "page": 1,
+          "content": "1381",
+          "bbox": [
+            {
+              "x": 1545,
+              "y": 2000
+            },
+            {
+              "x": 1604,
+              "y": 2000
+            },
+            {
+              "x": 1604,
+              "y": 2029
+            },
+            {
+              "x": 1545,
+              "y": 2029
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage6": {
+      "content": "2020 Apr",
+      "tokens": [
+        {
+          "id": "1-332",
+          "index": 332,
+          "page": 1,
+          "content": "2020",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2029
+            },
+            {
+              "x": 1017,
+              "y": 2029
+            }
+          ]
+        },
+        {
+          "id": "1-340",
+          "index": 340,
+          "page": 1,
+          "content": "Apr",
+          "bbox": [
+            {
+              "x": 1443,
+              "y": 1955
+            },
+            {
+              "x": 1501,
+              "y": 1955
+            },
+            {
+              "x": 1501,
+              "y": 1993
+            },
+            {
+              "x": 1443,
+              "y": 1993
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh6": {
+      "content": "1440",
+      "tokens": [
+        {
+          "id": "1-357",
+          "index": 357,
+          "page": 1,
+          "content": "1440",
+          "bbox": [
+            {
+              "x": 1441,
+              "y": 2000
+            },
+            {
+              "x": 1504,
+              "y": 2000
+            },
+            {
+              "x": 1504,
+              "y": 2029
+            },
+            {
+              "x": 1441,
+              "y": 2029
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage7": {
+      "content": "2020 Mar",
+      "tokens": [
+        {
+          "id": "1-332",
+          "index": 332,
+          "page": 1,
+          "content": "2020",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2029
+            },
+            {
+              "x": 1017,
+              "y": 2029
+            }
+          ]
+        },
+        {
+          "id": "1-339",
+          "index": 339,
+          "page": 1,
+          "content": "Mar",
+          "bbox": [
+            {
+              "x": 1339,
+              "y": 1955
+            },
+            {
+              "x": 1400,
+              "y": 1955
+            },
+            {
+              "x": 1400,
+              "y": 1985
+            },
+            {
+              "x": 1339,
+              "y": 1985
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh7": {
+      "content": "1252",
+      "tokens": [
+        {
+          "id": "1-356",
+          "index": 356,
+          "page": 1,
+          "content": "1252",
+          "bbox": [
+            {
+              "x": 1338,
+              "y": 2001
+            },
+            {
+              "x": 1401,
+              "y": 2001
+            },
+            {
+              "x": 1401,
+              "y": 2030
+            },
+            {
+              "x": 1338,
+              "y": 2030
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage8": {
+      "content": "2020 Feb",
+      "tokens": [
+        {
+          "id": "1-332",
+          "index": 332,
+          "page": 1,
+          "content": "2020",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2029
+            },
+            {
+              "x": 1017,
+              "y": 2029
+            }
+          ]
+        },
+        {
+          "id": "1-338",
+          "index": 338,
+          "page": 1,
+          "content": "Feb",
+          "bbox": [
+            {
+              "x": 1236,
+              "y": 1955
+            },
+            {
+              "x": 1295,
+              "y": 1955
+            },
+            {
+              "x": 1295,
+              "y": 1985
+            },
+            {
+              "x": 1236,
+              "y": 1985
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh8": {
+      "content": "1263",
+      "tokens": [
+        {
+          "id": "1-355",
+          "index": 355,
+          "page": 1,
+          "content": "1263",
+          "bbox": [
+            {
+              "x": 1235,
+              "y": 2000
+            },
+            {
+              "x": 1296,
+              "y": 2000
+            },
+            {
+              "x": 1296,
+              "y": 2029
+            },
+            {
+              "x": 1235,
+              "y": 2029
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage9": {
+      "content": "2020 Jan",
+      "tokens": [
+        {
+          "id": "1-332",
+          "index": 332,
+          "page": 1,
+          "content": "2020",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2000
+            },
+            {
+              "x": 1083,
+              "y": 2029
+            },
+            {
+              "x": 1017,
+              "y": 2029
+            }
+          ]
+        },
+        {
+          "id": "1-337",
+          "index": 337,
+          "page": 1,
+          "content": "Jan",
+          "bbox": [
+            {
+              "x": 1131,
+              "y": 1955
+            },
+            {
+              "x": 1188,
+              "y": 1955
+            },
+            {
+              "x": 1188,
+              "y": 1984
+            },
+            {
+              "x": 1131,
+              "y": 1984
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh9": {
+      "content": "1236",
+      "tokens": [
+        {
+          "id": "1-354",
+          "index": 354,
+          "page": 1,
+          "content": "1236",
+          "bbox": [
+            {
+              "x": 1129,
+              "y": 2000
+            },
+            {
+              "x": 1194,
+              "y": 2000
+            },
+            {
+              "x": 1194,
+              "y": 2029
+            },
+            {
+              "x": 1129,
+              "y": 2029
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage10": {
+      "content": "2019 Dec",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-348",
+          "index": 348,
+          "page": 1,
+          "content": "Dec",
+          "bbox": [
+            {
+              "x": 2276,
+              "y": 1953
+            },
+            {
+              "x": 2340,
+              "y": 1953
+            },
+            {
+              "x": 2340,
+              "y": 1983
+            },
+            {
+              "x": 2276,
+              "y": 1983
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh10": {
+      "content": "1296",
+      "tokens": [
+        {
+          "id": "1-377",
+          "index": 377,
+          "page": 1,
+          "content": "1296",
+          "bbox": [
+            {
+              "x": 2276,
+              "y": 2043
+            },
+            {
+              "x": 2340,
+              "y": 2043
+            },
+            {
+              "x": 2340,
+              "y": 2072
+            },
+            {
+              "x": 2276,
+              "y": 2072
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage11": {
+      "content": "2019 Nov",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-347",
+          "index": 347,
+          "page": 1,
+          "content": "Nov",
+          "bbox": [
+            {
+              "x": 2171,
+              "y": 1953
+            },
+            {
+              "x": 2235,
+              "y": 1953
+            },
+            {
+              "x": 2235,
+              "y": 1983
+            },
+            {
+              "x": 2171,
+              "y": 1983
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh11": {
+      "content": "1130",
+      "tokens": [
+        {
+          "id": "1-376",
+          "index": 376,
+          "page": 1,
+          "content": "1130",
+          "bbox": [
+            {
+              "x": 2172,
+              "y": 2043
+            },
+            {
+              "x": 2235,
+              "y": 2043
+            },
+            {
+              "x": 2235,
+              "y": 2072
+            },
+            {
+              "x": 2172,
+              "y": 2072
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage12": {
+      "content": "2019 Oct",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-346",
+          "index": 346,
+          "page": 1,
+          "content": "Oct",
+          "bbox": [
+            {
+              "x": 2071,
+              "y": 1953
+            },
+            {
+              "x": 2126,
+              "y": 1953
+            },
+            {
+              "x": 2126,
+              "y": 1983
+            },
+            {
+              "x": 2071,
+              "y": 1983
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh12": {
+      "content": "1231",
+      "tokens": [
+        {
+          "id": "1-375",
+          "index": 375,
+          "page": 1,
+          "content": "1231",
+          "bbox": [
+            {
+              "x": 2068,
+              "y": 2043
+            },
+            {
+              "x": 2127,
+              "y": 2043
+            },
+            {
+              "x": 2127,
+              "y": 2072
+            },
+            {
+              "x": 2068,
+              "y": 2072
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage13": {
+      "content": "2019 Sep",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-345",
+          "index": 345,
+          "page": 1,
+          "content": "Sep",
+          "bbox": [
+            {
+              "x": 1962,
+              "y": 1954
+            },
+            {
+              "x": 2026,
+              "y": 1954
+            },
+            {
+              "x": 2026,
+              "y": 1991
+            },
+            {
+              "x": 1962,
+              "y": 1991
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh13": {
+      "content": "1301",
+      "tokens": [
+        {
+          "id": "1-374",
+          "index": 374,
+          "page": 1,
+          "content": "1301",
+          "bbox": [
+            {
+              "x": 1963,
+              "y": 2043
+            },
+            {
+              "x": 2022,
+              "y": 2043
+            },
+            {
+              "x": 2022,
+              "y": 2072
+            },
+            {
+              "x": 1963,
+              "y": 2072
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage14": {
+      "content": "2019 Aug",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-344",
+          "index": 344,
+          "page": 1,
+          "content": "Aug",
+          "bbox": [
+            {
+              "x": 1856,
+              "y": 1954
+            },
+            {
+              "x": 1920,
+              "y": 1954
+            },
+            {
+              "x": 1920,
+              "y": 1991
+            },
+            {
+              "x": 1856,
+              "y": 1991
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh14": {
+      "content": "1321",
+      "tokens": [
+        {
+          "id": "1-373",
+          "index": 373,
+          "page": 1,
+          "content": "1321",
+          "bbox": [
+            {
+              "x": 1858,
+              "y": 2043
+            },
+            {
+              "x": 1918,
+              "y": 2043
+            },
+            {
+              "x": 1918,
+              "y": 2072
+            },
+            {
+              "x": 1858,
+              "y": 2072
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage15": {
+      "content": "2019 Jul",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-343",
+          "index": 343,
+          "page": 1,
+          "content": "Jul",
+          "bbox": [
+            {
+              "x": 1761,
+              "y": 1954
+            },
+            {
+              "x": 1806,
+              "y": 1954
+            },
+            {
+              "x": 1806,
+              "y": 1984
+            },
+            {
+              "x": 1761,
+              "y": 1984
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh15": {
+      "content": "1301",
+      "tokens": [
+        {
+          "id": "1-372",
+          "index": 372,
+          "page": 1,
+          "content": "1301",
+          "bbox": [
+            {
+              "x": 1753,
+              "y": 2043
+            },
+            {
+              "x": 1813,
+              "y": 2043
+            },
+            {
+              "x": 1813,
+              "y": 2072
+            },
+            {
+              "x": 1753,
+              "y": 2072
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage16": {
+      "content": "2019 Jun",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-342",
+          "index": 342,
+          "page": 1,
+          "content": "Jun",
+          "bbox": [
+            {
+              "x": 1650,
+              "y": 1954
+            },
+            {
+              "x": 1707,
+              "y": 1954
+            },
+            {
+              "x": 1707,
+              "y": 1984
+            },
+            {
+              "x": 1650,
+              "y": 1984
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh16": {
+      "content": "1171",
+      "tokens": [
+        {
+          "id": "1-371",
+          "index": 371,
+          "page": 1,
+          "content": "1171",
+          "bbox": [
+            {
+              "x": 1649,
+              "y": 2043
+            },
+            {
+              "x": 1708,
+              "y": 2043
+            },
+            {
+              "x": 1708,
+              "y": 2072
+            },
+            {
+              "x": 1649,
+              "y": 2072
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage17": {
+      "content": "2019 May",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-341",
+          "index": 341,
+          "page": 1,
+          "content": "May",
+          "bbox": [
+            {
+              "x": 1543,
+              "y": 1955
+            },
+            {
+              "x": 1610,
+              "y": 1955
+            },
+            {
+              "x": 1610,
+              "y": 1992
+            },
+            {
+              "x": 1543,
+              "y": 1992
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh17": {
+      "content": "1357",
+      "tokens": [
+        {
+          "id": "1-370",
+          "index": 370,
+          "page": 1,
+          "content": "1357",
+          "bbox": [
+            {
+              "x": 1545,
+              "y": 2044
+            },
+            {
+              "x": 1608,
+              "y": 2044
+            },
+            {
+              "x": 1608,
+              "y": 2073
+            },
+            {
+              "x": 1545,
+              "y": 2073
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage18": {
+      "content": "2019 Apr",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-340",
+          "index": 340,
+          "page": 1,
+          "content": "Apr",
+          "bbox": [
+            {
+              "x": 1443,
+              "y": 1955
+            },
+            {
+              "x": 1501,
+              "y": 1955
+            },
+            {
+              "x": 1501,
+              "y": 1993
+            },
+            {
+              "x": 1443,
+              "y": 1993
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh18": {
+      "content": "1262",
+      "tokens": [
+        {
+          "id": "1-369",
+          "index": 369,
+          "page": 1,
+          "content": "1262",
+          "bbox": [
+            {
+              "x": 1442,
+              "y": 2044
+            },
+            {
+              "x": 1504,
+              "y": 2044
+            },
+            {
+              "x": 1504,
+              "y": 2073
+            },
+            {
+              "x": 1442,
+              "y": 2073
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage19": {
+      "content": "2019 Mar",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-339",
+          "index": 339,
+          "page": 1,
+          "content": "Mar",
+          "bbox": [
+            {
+              "x": 1339,
+              "y": 1955
+            },
+            {
+              "x": 1400,
+              "y": 1955
+            },
+            {
+              "x": 1400,
+              "y": 1985
+            },
+            {
+              "x": 1339,
+              "y": 1985
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh19": {
+      "content": "1341",
+      "tokens": [
+        {
+          "id": "1-368",
+          "index": 368,
+          "page": 1,
+          "content": "1341",
+          "bbox": [
+            {
+              "x": 1338,
+              "y": 2045
+            },
+            {
+              "x": 1397,
+              "y": 2045
+            },
+            {
+              "x": 1397,
+              "y": 2074
+            },
+            {
+              "x": 1338,
+              "y": 2074
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage20": {
+      "content": "2019 Feb",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-338",
+          "index": 338,
+          "page": 1,
+          "content": "Feb",
+          "bbox": [
+            {
+              "x": 1236,
+              "y": 1955
+            },
+            {
+              "x": 1295,
+              "y": 1955
+            },
+            {
+              "x": 1295,
+              "y": 1985
+            },
+            {
+              "x": 1236,
+              "y": 1985
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh20": {
+      "content": "1332",
+      "tokens": [
+        {
+          "id": "1-367",
+          "index": 367,
+          "page": 1,
+          "content": "1332",
+          "bbox": [
+            {
+              "x": 1235,
+              "y": 2044
+            },
+            {
+              "x": 1296,
+              "y": 2044
+            },
+            {
+              "x": 1296,
+              "y": 2074
+            },
+            {
+              "x": 1235,
+              "y": 2074
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage21": {
+      "content": "2019 Jan",
+      "tokens": [
+        {
+          "id": "1-334",
+          "index": 334,
+          "page": 1,
+          "content": "2019",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2044
+            },
+            {
+              "x": 1083,
+              "y": 2073
+            },
+            {
+              "x": 1017,
+              "y": 2073
+            }
+          ]
+        },
+        {
+          "id": "1-337",
+          "index": 337,
+          "page": 1,
+          "content": "Jan",
+          "bbox": [
+            {
+              "x": 1131,
+              "y": 1955
+            },
+            {
+              "x": 1188,
+              "y": 1955
+            },
+            {
+              "x": 1188,
+              "y": 1984
+            },
+            {
+              "x": 1131,
+              "y": 1984
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh21": {
+      "content": "1332",
+      "tokens": [
+        {
+          "id": "1-366",
+          "index": 366,
+          "page": 1,
+          "content": "1332",
+          "bbox": [
+            {
+              "x": 1129,
+              "y": 2044
+            },
+            {
+              "x": 1194,
+              "y": 2044
+            },
+            {
+              "x": 1194,
+              "y": 2073
+            },
+            {
+              "x": 1129,
+              "y": 2073
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage22": {
+      "content": "2018 Dec",
+      "tokens": [
+        {
+          "id": "1-336",
+          "index": 336,
+          "page": 1,
+          "content": "2018",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2088
+            },
+            {
+              "x": 1083,
+              "y": 2088
+            },
+            {
+              "x": 1083,
+              "y": 2117
+            },
+            {
+              "x": 1017,
+              "y": 2117
+            }
+          ]
+        },
+        {
+          "id": "1-348",
+          "index": 348,
+          "page": 1,
+          "content": "Dec",
+          "bbox": [
+            {
+              "x": 2276,
+              "y": 1953
+            },
+            {
+              "x": 2340,
+              "y": 1953
+            },
+            {
+              "x": 2340,
+              "y": 1983
+            },
+            {
+              "x": 2276,
+              "y": 1983
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh22": {
+      "content": "1193",
+      "tokens": [
+        {
+          "id": "1-389",
+          "index": 389,
+          "page": 1,
+          "content": "1193",
+          "bbox": [
+            {
+              "x": 2276,
+              "y": 2087
+            },
+            {
+              "x": 2340,
+              "y": 2087
+            },
+            {
+              "x": 2340,
+              "y": 2116
+            },
+            {
+              "x": 2276,
+              "y": 2116
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage23": {
+      "content": "2018 Nov",
+      "tokens": [
+        {
+          "id": "1-336",
+          "index": 336,
+          "page": 1,
+          "content": "2018",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2088
+            },
+            {
+              "x": 1083,
+              "y": 2088
+            },
+            {
+              "x": 1083,
+              "y": 2117
+            },
+            {
+              "x": 1017,
+              "y": 2117
+            }
+          ]
+        },
+        {
+          "id": "1-347",
+          "index": 347,
+          "page": 1,
+          "content": "Nov",
+          "bbox": [
+            {
+              "x": 2171,
+              "y": 1953
+            },
+            {
+              "x": 2235,
+              "y": 1953
+            },
+            {
+              "x": 2235,
+              "y": 1983
+            },
+            {
+              "x": 2171,
+              "y": 1983
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh23": {
+      "content": "1124",
+      "tokens": [
+        {
+          "id": "1-388",
+          "index": 388,
+          "page": 1,
+          "content": "1124",
+          "bbox": [
+            {
+              "x": 2172,
+              "y": 2087
+            },
+            {
+              "x": 2235,
+              "y": 2087
+            },
+            {
+              "x": 2235,
+              "y": 2115
+            },
+            {
+              "x": 2172,
+              "y": 2115
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    },
+    "E_PreviousUsage24": {
+      "content": "2018 Oct",
+      "tokens": [
+        {
+          "id": "1-336",
+          "index": 336,
+          "page": 1,
+          "content": "2018",
+          "bbox": [
+            {
+              "x": 1017,
+              "y": 2088
+            },
+            {
+              "x": 1083,
+              "y": 2088
+            },
+            {
+              "x": 1083,
+              "y": 2117
+            },
+            {
+              "x": 1017,
+              "y": 2117
+            }
+          ]
+        },
+        {
+          "id": "1-346",
+          "index": 346,
+          "page": 1,
+          "content": "Oct",
+          "bbox": [
+            {
+              "x": 2071,
+              "y": 1953
+            },
+            {
+              "x": 2126,
+              "y": 1953
+            },
+            {
+              "x": 2126,
+              "y": 1983
+            },
+            {
+              "x": 2071,
+              "y": 1983
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "string"
+      ]
+    },
+    "E_PreviousUsagekWh24": {
+      "content": "1123",
+      "tokens": [
+        {
+          "id": "1-387",
+          "index": 387,
+          "page": 1,
+          "content": "1123",
+          "bbox": [
+            {
+              "x": 2067,
+              "y": 2086
+            },
+            {
+              "x": 2130,
+              "y": 2086
+            },
+            {
+              "x": 2130,
+              "y": 2115
+            },
+            {
+              "x": 2067,
+              "y": 2115
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "glynt_tags": [
+        "electricity",
+        "number"
+      ]
+    }
+  },
+  "classify": false
+}
