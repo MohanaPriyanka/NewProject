@@ -12,16 +12,6 @@ private with sharing class GlyntExtractionServiceTest {
         System.assertEquals(2, GlyntAPIHelper.endpointsCalled.size(), 'Expected two callouts to retrieve two extractions');
         System.assert(GlyntAPIHelper.endpointsCalled[0].endpoint.contains('extractions'),
             'Expected to post to /v6/data-pools/dataPoolId/extractions, but got: ' + GlyntAPIHelper.endpointsCalled[0].endpoint);
-        List<Error_Log__c> errorLogs = [
-            SELECT Id, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'GlyntExtractionService'
-            AND Severity__c = 'Info'
-        ];
-        System.assertEquals(1, errorLogs.size(), 'Expected a single error log for both extractions');
-        List<GlyntAPI.ExtractionResponse> extractionResponses =
-            (List<GlyntAPI.ExtractionResponse>) JSON.deserialize(errorLogs[0].Message__c, List<GlyntAPI.ExtractionResponse>.class);
-        System.assertEquals(2, extractionResponses.size(), 'Expected two responses to be serialized in the error log');
     }
 
     @IsTest
