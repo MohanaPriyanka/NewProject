@@ -360,6 +360,70 @@ A91=Acct does not have service requested. See ESGData Dictionary for full list.<
         <visibleLines>10</visibleLines>
     </fields>
     <fields>
+        <fullName>Glynt_Amount_Due__c</fullName>
+        <description>Amount due on utility bill processed by Glynt (e.g. Maine CMP)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Amount due on utility bill processed by Glynt (e.g. Maine CMP)</inlineHelpText>
+        <label>Amount Due</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Glynt_Bill_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Bill End Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Glynt_Bill_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Bill Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Glynt_Blended_Rate__c</fullName>
+        <externalId>false</externalId>
+        <formula>Glynt_Amount_Due__c / Glynt_Monthly_kWh_Usage__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Blended Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>15</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Glynt_Monthly_kWh_Usage__c</fullName>
+        <description>Monthly kWh Usage as indicated on bill processed by Glynt (e.g. Maine CMP)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Monthly kWh Usage as indicated on bill processed by Glynt (e.g. Maine CMP)</inlineHelpText>
+        <label>Monthly kWh Usage</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Government_Credit_Code__c</fullName>
         <description>N=No, account does not have a NYPA Discount
 Y=Yes, account does have a NYPA Discount</description>

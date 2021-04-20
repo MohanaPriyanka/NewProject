@@ -2101,6 +2101,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CustomApexObject</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CustomApexObjectTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CustomerAssignmentService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -2298,6 +2306,22 @@
     </classAccesses>
     <classAccesses>
         <apexClass>GenericQueryLocatorBatchDMLOperation</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntAPI</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntExtractionService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntMaineCMPProcessor</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GlyntMaineCMPProcessorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -4362,6 +4386,22 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UtilityAccountSubscriptions</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UtilityDataRequestBuilder</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UtilityDataRequestPeriodSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UtilityDataRequestSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UtilityDataRequestService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -47846,6 +47886,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Data_Request_Period__c.Glynt_Average_Daily_Usage__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Data_Request_Period__c.Load_Profile_Description__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -47952,6 +47997,31 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Data_Request__c.Exception_Reason_Description__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Glynt_Amount_Due__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Glynt_Bill_End_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Glynt_Bill_Start_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Glynt_Blended_Rate__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Data_Request__c.Glynt_Monthly_kWh_Usage__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -72015,7 +72085,15 @@
         <layout>Utility_Bill_Line_Item__c-Utility Bill Line Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Utility_Data_Request_Period__c-Utility Data Request Period Layout</layout>
+        <layout>Utility_Data_Request_Period__c-EDI Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Utility_Data_Request_Period__c-EDI Layout</layout>
+        <recordType>Utility_Data_Request_Period__c.EDI</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Utility_Data_Request_Period__c-Glynt Layout</layout>
+        <recordType>Utility_Data_Request_Period__c.Glynt</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_Data_Request__c-Utility Data Request Layout</layout>
@@ -81635,6 +81713,16 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_on_Schedule_Z</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Utility_Data_Request_Period__c.EDI</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Utility_Data_Request_Period__c.Glynt</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

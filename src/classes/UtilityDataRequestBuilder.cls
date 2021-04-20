@@ -50,6 +50,7 @@ public without sharing class UtilityDataRequestBuilder {
         }
     }
 
+    @TestVisible
     private static Utility_Data_Request__c constructNewUDR(Utility_Account_Log__c ual) {
         Utility_Data_Request__c udr = new Utility_Data_Request__c(
             Account_Number__c       = ual.Name,
@@ -60,7 +61,7 @@ public without sharing class UtilityDataRequestBuilder {
             Header_Status__c        = 'Pending',
             Detail_Status__c        = 'Pending',
             Premise_Number__c       = ual.Premise_Number__c,
-            Service_Provider__c     = ual.Utility_lookup__r.Use_Glynt__c?'Glynt':'ESG'
+            Service_Provider__c     = ual.Utility_lookup__r.Use_Glynt__c ? 'Glynt' : 'ESG'
         );
         uow.registerNew(udr);
         ual.QC_Status__c = 'Pending Utility Data';
