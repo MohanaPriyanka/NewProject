@@ -131,6 +131,7 @@ public with sharing class ClientInvoiceGeneratorTest {
         InvocableCSFeeSelector.FeeRequest feeRequest = new InvocableCSFeeSelector.FeeRequest();
         feeRequest.clientAccountId = subscriptionOrders[0].Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c;
         feeRequest.effectiveDate = System.now();
+        feeRequest.forAcquisition = false;
         // Tests InvocableCSFeeSelector.getFeesToInvoice
         List<String> serializedSSS = InvocableCSFeeSelector.getFeesToInvoice(new List<InvocableCSFeeSelector.FeeRequest>{feeRequest});
         List<SharedSolarSystem> sharedSolarSystems =
@@ -149,6 +150,7 @@ public with sharing class ClientInvoiceGeneratorTest {
         generationRequest.includeAssignmentFees = true;
         generationRequest.includeChangeFees = true;
         generationRequest.effectiveDate = System.now();
+        generationRequest.forAcquisition = false;
 
         List<InvocableClientInvoiceGenerator.InvoiceGenerationRequest> generationRequests =
             new List<InvocableClientInvoiceGenerator.InvoiceGenerationRequest>{generationRequest};

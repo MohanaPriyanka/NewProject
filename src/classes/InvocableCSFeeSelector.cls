@@ -18,10 +18,11 @@ public without sharing class InvocableCSFeeSelector {
         }
         List<Id> clientAccountIds = new List<Id>{requests[0].clientAccountId};
         Datetime effectiveDate = requests[0].effectiveDate;
+        Boolean forAcquisition = requests[0].forAcquisition;
         List<AggregateResult> uninvoicedSOs =
-            subscriptionOrderSelector.getUninvoicedByClientAccount(clientAccountIds, effectiveDate);
+            subscriptionOrderSelector.getUninvoicedByClientAccount(clientAccountIds, effectiveDate, forAcquisition);
         List<AggregateResult> uninvoicedCIMs =
-            clientInvoicingMemoSelector.getUninvoicedByClientAccounts(clientAccountIds, effectiveDate);
+            clientInvoicingMemoSelector.getUninvoicedByClientAccounts(clientAccountIds, effectiveDate, forAcquisition);
         Map<Id, SharedSolarSystem> sharedSolarSystemSummaries = new Map<Id, SharedSolarSystem>();
         updateSummariesWithTotals(uninvoicedSOs, sharedSolarSystemSummaries);
         updateSummariesWithTotals(uninvoicedCIMs, sharedSolarSystemSummaries);
@@ -53,5 +54,7 @@ public without sharing class InvocableCSFeeSelector {
         public Id clientAccountId;
         @InvocableVariable(Label='Effective Date')
         public Datetime effectiveDate;
+        @InvocableVariable(Label='For Acquisition?')
+        public Boolean forAcquisition;
     }
 }
