@@ -70,8 +70,12 @@ export default class SsfAgreementsDTC extends LightningElement {
         return this.underwriting === 'Financial Review';
     }
 
+    get isUtilityDataConsentOnly() {
+        return this.underwriting === 'None';
+    }
+
     get renderCreditCheckLanguage() {
-        return this.isFicoUnderwriting || this.isFinDocsUnderwriting;
+        return this.isFicoUnderwriting || this.isFinDocsUnderwriting || this.isUtilityDataConsentOnly;
     }
 
     get continueButtonLabel() {
@@ -92,6 +96,10 @@ export default class SsfAgreementsDTC extends LightningElement {
 
     get finDocsLanguageSecondSegment() {
         return getText(this, 'finDocs2');
+    }
+
+    get utilityDataReviewLanguage(){
+        return getText(this, 'utilityDataReview')
     }
 
     get disclosureLanguageFirstSegment() {

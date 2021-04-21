@@ -72,6 +72,11 @@
             </template>
           </p>
         </template>
+        <template if:true={isUtilityDataConsentOnly}>
+          <p class="small slds-var-m-around_small">
+            {utilityDataReviewLanguage}
+          </p>
+        </template>
       </template>
     </template>
     <template if:true={showCSAgreement}>
