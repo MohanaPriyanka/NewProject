@@ -1661,10 +1661,6 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
                 <default>false</default>
             </values>
             <values>
-                <fullName>In Approval Process</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Rejected</fullName>
                 <default>false</default>
             </values>
