@@ -67,15 +67,16 @@
     </fields>
     <fields>
         <fullName>Inspire_Project__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Inspire Project</label>
         <referenceTo>inspire1__Project__c</referenceTo>
         <relationshipLabel>Feeders</relationshipLabel>
         <relationshipName>Feeders</relationshipName>
-        <required>false</required>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Project__c</fullName>
