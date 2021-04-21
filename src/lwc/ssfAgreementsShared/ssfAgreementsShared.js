@@ -389,7 +389,7 @@ const creditCheckLabel = (component) => {
         return 'Check to Authorize Financial and Utility Billing Review';
     }
     else if (component.isUtilityDataConsentOnly) {
-        return 'Check to Utility Billing Review';
+        return 'Check to Authorize Utility Billing Review';
     }
 }
 

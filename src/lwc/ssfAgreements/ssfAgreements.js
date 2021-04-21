@@ -71,7 +71,7 @@ export default class SsfAgreements extends LightningElement {
     }
 
     get isUtilityDataConsentOnly() {
-        return this.underwriting == 'None';
+        return this.underwriting === 'None';
     }
 
     get renderCreditCheckLanguage() {

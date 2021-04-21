@@ -71,7 +71,7 @@ export default class SsfAgreementsDTC extends LightningElement {
     }
 
     get isUtilityDataConsentOnly() {
-        return this.underwriting == 'None';
+        return this.underwriting === 'None';
     }
 
     get renderCreditCheckLanguage() {
@@ -96,6 +96,10 @@ export default class SsfAgreementsDTC extends LightningElement {
 
     get finDocsLanguageSecondSegment() {
         return getText(this, 'finDocs2');
+    }
+
+    get utilityDataReviewLanguage(){
+        return getText(this, 'utilityDataReview')
     }
 
     get disclosureLanguageFirstSegment() {
