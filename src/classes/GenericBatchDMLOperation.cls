@@ -21,6 +21,7 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
     private String log = '';
     public List<String> triggersToDisable = new List<String>();
     private LeadConvertOption leadConvertOption;
+    private String postBatchOperationClass;
 
     public GenericBatchDMLOperation(List<SObject> sobjListPassed,
                                     String dmlOperationPassed) {
@@ -39,6 +40,10 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
 
     public void setLeadConvertOption(LeadConvertOption leadConvertOption) {
         this.leadConvertOption = leadConvertOption;
+    }
+
+    public void setPostBatchOperation(String className) {
+        this.postBatchOperationClass = className;
     }
 
     public List<SObject> start(Database.BatchableContext bc) {
@@ -114,24 +119,31 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
         return resultList;
     }
 
-    public void finish(Database.BatchableContext batchableContext) {
-        String emailErrorsTo;
-        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
-        if (systemProperties.isEmpty() ||
-            systemProperties[0].Error_Email__c == null) {
-            emailErrorsTo = 'product@bluewavesolar.com';
-        } else {
-            emailErrorsTo = systemProperties[0].Error_Email__c;
-        }            
 
+    public interface PostBatchOperation {
+        Object executePostBatch();
+    }
+
+    public void finish(Database.BatchableContext batchableContext) {
         if (!String.isEmpty(this.log)) {
-            Logger.logNow('GenericBatchDMLOperation', 'finish', this.log);
-            Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
-            email.setToAddresses(new List<String> {emailErrorsTo});
-            email.setSubject('Error in Batch DML process!');
-            email.setPlainTextBody(this.log);
-            MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{email});
+            Logger.logNow('GenericBatchDMLOperation', 'finish', this.log, Logger.ERROR);
         }
+        executePostBatchOperation(postBatchOperationClass);
+    }
+
+    /**
+     * @description Instantiates a class that implements PostBatchOperation and calls the executePostBatch method
+     * @param operationClass The class to instantiate
+     * @return An object, to aid with testing
+     */
+    public static Object executePostBatchOperation(String operationClass) {
+        if (operationClass != null) {
+            PostBatchOperation postBatchOperation = (PostBatchOperation) Type.forName(operationClass).newInstance();
+            Object obj = postBatchOperation.executePostBatch();
+            Logger.logNow('GenericBatchDMLOperation', 'executePostBatchOperation', 'PostBatchOperation Finished for ' + operationClass, Logger.FINE);
+            return obj;
+        }
+        return null;
     }
 
     // https://salesforce.stackexchange.com/questions/125880/do-the-result-objects-in-database-have-a-common-ancestor
@@ -216,6 +228,5 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
         {
             this(result.getLeadId(), result.getErrors(), result.isSuccess());
         }
-
     }
 }

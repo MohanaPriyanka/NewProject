@@ -4,7 +4,7 @@
  * Test: PartnerCommissionServiceTest, UtilityAccountSubscriptionHandlerTest
  */
 
-public without sharing class PartnerCommissionHandler{
+public without sharing class PartnerCommissionHandler implements GenericBatchDMLOperation.PostBatchOperation {
     @TestVisible
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
     @TestVisible
@@ -33,19 +33,14 @@ public without sharing class PartnerCommissionHandler{
         }
     }
 
-    @Future
     public static void upsertCommissions(Set<Id> accountIds) {
         try {
             PartnerCommissionHandler service = new PartnerCommissionHandler();
             PendingBillCommission oppsToUpdate = service.findUninvoicedCommission(accountIds);
-            if (oppsToUpdate.firstBillOpps.size() > 0) {
-                callPartnerCommissionService(oppsToUpdate.firstBillOpps, PartnerCommissionService.CommissionType.FIRSTBILLSENT);
-            }
-            if (oppsToUpdate.firstPaymentOpps.size() > 0) {
-                callPartnerCommissionService(oppsToUpdate.firstPaymentOpps, PartnerCommissionService.CommissionType.FIRSTBILLPAID);
-            }
+            callPartnerCommissionService(oppsToUpdate.firstBillOpps, PartnerCommissionService.CommissionType.FIRSTBILLSENT);
+            callPartnerCommissionService(oppsToUpdate.firstPaymentOpps, PartnerCommissionService.CommissionType.FIRSTBILLPAID);
         } catch (Exception excep){
-            Logger.LogNow(
+            Logger.logNow(
                 'PartnerCommissionHandler',
                 'updatePendingCommission',
                 excep.getMessage() + '\n' + excep.getStackTraceString() + '\n' + 'AcctIds: ' + JSON.serialize(accountIds),
@@ -129,11 +124,10 @@ public without sharing class PartnerCommissionHandler{
     }
 
     /**
-            Future method that filters opportunities that have undergone a milestone change to ensure they are equipped
-            for appropriate Commission Payment.
-
-           @param opportunityIds Opportunities that have experienced some milestone change that requires a Partner Commission
-       **/
+      @description Future method that filters opportunities that have undergone a milestone change to ensure they are equipped
+      for appropriate Commission Payment.
+      @param opportunityIds Opportunities that have experienced some milestone change that requires a Partner Commission
+    **/
     @Future
     public static void calculatePartnerCommission(Set<Id> opportunityIds){
         try {
@@ -144,11 +138,9 @@ public without sharing class PartnerCommissionHandler{
                     opportunitiesPendingCommission.add(opportunity);
                 }
             }
-            if (opportunitiesPendingCommission.size() > 0){
-                callPartnerCommissionService(opportunitiesPendingCommission, PartnerCommissionService.CommissionType.CONTRACTEXECUTION);
-            }
+            callPartnerCommissionService(opportunitiesPendingCommission, PartnerCommissionService.CommissionType.CONTRACTEXECUTION);
         } catch (Exception excep){
-            Logger.LogNow(
+            Logger.logNow(
                 'PartnerCommissionHandler',
                 'recalculatePartnerCommission',
                 excep.getMessage() + '\n' + excep.getStackTraceString() + '\n' + 'OppIds: ' + JSON.serialize(opportunityIds),
@@ -188,6 +180,9 @@ public without sharing class PartnerCommissionHandler{
     }
 
     private static void callPartnerCommissionService(List<Opportunity> oppList, PartnerCommissionService.CommissionType type){
+        if (oppList.isEmpty()) {
+            return;
+        }
         PartnerCommissionService newService = new PartnerCommissionService();
         PartnerCommissionService.PendingCommission contractExecution = new PartnerCommissionService.PendingCommission();
         contractExecution.opportunitiesToRun = oppList;
@@ -195,9 +190,11 @@ public without sharing class PartnerCommissionHandler{
         newService.createCommissionRecords(contractExecution);
     }
 
-    public static void createCommissionPaymentsFromJournalEntries() {
+    public Object executePostBatch() {
         List<Journal_Entry__c> commissionableJournalEntries = glSelector.getCommissionableEntriesFromToday();
-        accountIdsFromJournalEntries = CollectionUtil.mapByIdField(commissionableJournalEntries, Journal_Entry__c.Customer_Lookup__r.Id).keySet();
+        Set<Object> multiMapKeys = CollectionUtil.multiMapByField(commissionableJournalEntries, Journal_Entry__c.Customer_Lookup__c).keySet();
+        accountIdsFromJournalEntries = CollectionUtil.toIds(multiMapKeys);
         upsertCommissions(accountIdsFromJournalEntries);
+        return accountIdsFromJournalEntries;
     }
 }

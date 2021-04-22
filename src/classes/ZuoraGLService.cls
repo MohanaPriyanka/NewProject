@@ -35,7 +35,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         ZuoraDataQueryService.callFromApex(queryString,methodToRunAfter);
     }
 
-    @SuppressWarnings('PMD.FieldNamingConventions')
+    @SuppressWarnings('PMD.VariableNamingConventions,PMD.FieldNamingConventions')
     private class GeneralLedgerItem {
         public String Project;
         public String Client;
@@ -93,29 +93,29 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
                 ZuoraDataQueryService.callFromApex(queryString, method);
             }
             when 'PaymentPart_IV' {
-                generalGLRecordInsert(response, method);
-                PartnerCommissionHandler.createCommissionPaymentsFromJournalEntries();
+                generalGLRecordInsert(response, method, 'PartnerCommissionHandler');
             }
         }
     }
 
     @TestVisible
     private void saveAccountingPeriodCloseDate(Date periodCloseDate) {
-        try {
-            Zuora_Custom_Setting__c zuoraSetting = Zuora_Custom_Setting__c.getOrgDefaults();
-            zuoraSetting.Last_Accounting_Period_Close_Date__c = periodCloseDate;
-            if (zuoraSetting == null || zuoraSetting.Id == null){
-                insert zuoraSetting;
-            } else {
-                update zuoraSetting;
-            }
-        } catch (Exception excep){
-            Logger.logNow('ZuoraGLService','saveAccountingPeriodCloseDate',excep.getMessage() + excep.getStackTraceString());
+        Zuora_Custom_Setting__c zuoraSetting = Zuora_Custom_Setting__c.getOrgDefaults();
+        zuoraSetting.Last_Accounting_Period_Close_Date__c = periodCloseDate;
+        if (zuoraSetting == null || zuoraSetting.Id == null){
+            insert zuoraSetting;
+        } else {
+            update zuoraSetting;
         }
     }
 
     @TestVisible
-    private void generalGLRecordInsert(String response, ZuoraDataQueryService.ProcessingParameter method){
+    private void generalGLRecordInsert(String response, ZuoraDataQueryService.ProcessingParameter method) {
+        generalGLRecordInsert(response, method, null);
+    }
+
+    @TestVisible
+    private void generalGLRecordInsert(String response, ZuoraDataQueryService.ProcessingParameter method, String postBatchClass) {
         List<GeneralLedgerItem> ledgerItems = new List<GeneralLedgerItem>();
         Map<String, Journal_Entry__c> zuoraJournalEntries = new Map<String, Journal_Entry__c>();
 
@@ -131,16 +131,16 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         Date periodCloseDate = method.optionalDates.get('PeriodCloseDate');
         checkForClosedPeriodUpdates(zuoraJournalEntries,sfEntries,periodCloseDate);
 
-        if (entriesSafeToDelete.size() > 0){
-            delete entriesSafeToDelete;
-        }
-        if (reconciliationItems.size() > 0){
-            upsert reconciliationItems External_Id__c;
-        }
+        delete entriesSafeToDelete;
+        upsert reconciliationItems External_Id__c;
+
         if (entriesToUpsert.size() > 200){
-            Database.executeBatch(new GenericBatchDMLOperation(entriesToUpsert, 'Upsert'));
+            GenericBatchDMLOperation batchDMLOperation = new GenericBatchDMLOperation(entriesToUpsert, 'Upsert');
+            batchDMLOperation.setPostBatchOperation(postBatchClass);
+            Database.executeBatch(batchDMLOperation);
         } else {
             upsert entriesToUpsert External_Id__c;
+            GenericBatchDMLOperation.executePostBatchOperation(postBatchClass);
         }
         Logger.flushLogs();
     }
@@ -213,34 +213,38 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             entry.Customer_Account__c = ledger.CustomerAccount;
             entry.Applied_Record_Id__c = ledger.AppliedRecordId;
 
-            // Use CRMId as a switch for historical data v. new data in Zuora
-            if (objectType == 'PaymentPart' && ledger.CRMId == null) {
-                // Going forward, we will report on payments when they are applied:
-                Datetime dateAsDateTime = ledger.GLDatetime;
-                entry.Date__c = Date.newInstance(dateAsDateTime.Year(), dateAsDateTime.Month(),dateAsDateTime.Day());
-                entry = setZuoraPaymentFields(ledger, entry);
-            } else {
-                // Historical Migration, we reported on transactions when they were made.
-                entry.Date__c = ledger.GLDate;
-            }
-
-            if ((objectType == 'DebitMemo' && (ledger.ReasonCode == 'Returned Payment' || ledger.ReasonCode == 'Refund')) || objectType == 'PaymentPart') {
-                if (ledger.ReasonCode == 'Returned Payment'){
-                    //Comments example: Original Payment 2c92a00b71c96bdf0171dfcabc4e34c7, PaymentPartItem 2c92a00a71c95c4a0171dfcaf46f5343
-                    entry.Returned_PaymentPart_Id__c = ledger.Comments.substringAfter('PaymentPartItem ');
-                }
-                if (ledger.ArchivedChargentData == null){
-                    entry = setZuoraPaymentFields(ledger, entry);
-                } else {
-                    entry = setArchivedPaymentFields(ledger, entry);
-                }
-            }
+            populateJournalEntry(objectType, ledger, entry);
             journalEntriesMap.put(entry.External_Id__c, entry);
         }
         return journalEntriesMap;
     }
 
-    private void checkForClosedPeriodUpdates(Map<String, Journal_Entry__c> zuoraEntriesToUpsert, List<Journal_Entry__c> sfEntries, Date periodCloseDate){
+    private void populateJournalEntry(String objectType, GeneralLedgerItem ledger, Journal_Entry__c entry) {
+        // Use CRMId as a switch for historical data v. new data in Zuora
+        if (objectType == 'PaymentPart' && ledger.CRMId == null) {
+            // Going forward, we will report on payments when they are applied:
+            Datetime dateAsDateTime = ledger.GLDatetime;
+            entry.Date__c = Date.newInstance(dateAsDateTime.year(), dateAsDateTime.month(), dateAsDateTime.day());
+            entry = setZuoraPaymentFields(ledger, entry);
+        } else {
+            // Historical Migration, we reported on transactions when they were made.
+            entry.Date__c = ledger.GLDate;
+        }
+
+        if ((objectType == 'DebitMemo' && (ledger.ReasonCode == 'Returned Payment' || ledger.ReasonCode == 'Refund')) || objectType == 'PaymentPart') {
+            if (ledger.ReasonCode == 'Returned Payment') {
+                //Comments example: Original Payment 2c92a00b71c96bdf0171dfcabc4e34c7, PaymentPartItem 2c92a00a71c95c4a0171dfcaf46f5343
+                entry.Returned_PaymentPart_Id__c = ledger.Comments.substringAfter('PaymentPartItem ');
+            }
+            if (ledger.ArchivedChargentData == null) {
+                entry = setZuoraPaymentFields(ledger, entry);
+            } else {
+                entry = setArchivedPaymentFields(ledger, entry);
+            }
+        }
+    }
+
+    private void checkForClosedPeriodUpdates(Map<String, Journal_Entry__c> zuoraEntriesToUpsert, List<Journal_Entry__c> sfEntries, Date periodCloseDate) {
         entriesSafeToDelete = new List<Journal_Entry__c>();
         reconciliationItems = new List<Case>();
         entriesToUpsert  = new List<Journal_Entry__c>();
@@ -268,10 +272,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
                 reconciliationItems.add(createRecItem('Update', JSON.serialize(sfEntry) + JSON.serialize(zuoraRecord), sfEntry.External_Id__c));
             }
             zuoraEntriesToUpsert.remove(sfEntry.External_Id__c);
-        } else if (!inUpsertList && inClosedPeriod) {
-            // We expected to see closed period SF records in Zuora, but they do not exist:
-            reconciliationItems.add(createRecItem('Delete', JSON.serialize(sfEntry), sfEntry.External_Id__c));
-        } else if (!inUpsertList) {
+        } else if (!inUpsertList && !inClosedPeriod) {
             // If SF record is still in an open period, but no longer exists in Zuora, delete it:
             entriesSafeToDelete.add(sfEntry);
         }
@@ -282,8 +283,6 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
     private void checkForInsertions(Journal_Entry__c zuoraEntry, Date periodCloseDate){
         if (zuoraEntry.Date__c > periodCloseDate) {
             entriesToUpsert.add(zuoraEntry);
-        } else {
-            reconciliationItems.add(createRecItem('Insert', JSON.serialize(zuoraEntry), zuoraEntry.External_Id__c));
         }
     }
 

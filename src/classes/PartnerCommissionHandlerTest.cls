@@ -1,45 +1,62 @@
 @isTest
 public class PartnerCommissionHandlerTest {
     @testSetup public static void testDataSetup() {
+        Account customerAccount1 = new Account(
+            Name = 'Customer 1'
+        );
+        Account customerAccount2 = new Account(
+            Name = 'Customer 2'
+        );
+        Account customerAccount4 = new Account(
+            Name = 'Customer 3'
+        );
+        insert new List<Account>{customerAccount1, customerAccount2, customerAccount4};
         Journal_Entry__c entryOne = new Journal_Entry__c(
             Project__c = 'SSS-0002',
             Customer_Account__c = 'BW-00001',
+            Customer_Lookup__c = customerAccount1.Id,
             Amount__c = 10,
             Object_Type__c = 'PaymentPart'
         );
         Journal_Entry__c entryTwo = new Journal_Entry__c(
             Project__c = 'SSS-0002',
             Customer_Account__c = 'BW-00001',
+            Customer_Lookup__c = customerAccount1.Id,
             Amount__c = 12,
             Object_Type__c = 'InvoiceItem'
         );
         Journal_Entry__c entryThree = new Journal_Entry__c(
             Project__c = 'SSS-0002',
             Customer_Account__c = 'BW-00004',
+            Customer_Lookup__c = customerAccount4.Id,
             Amount__c = 12,
             Object_Type__c = 'InvoiceItem'
         );
         Journal_Entry__c entryFour = new Journal_Entry__c(
             Project__c = 'SSS-0003',
             Customer_Account__c = 'BW-00004',
+            Customer_Lookup__c = customerAccount4.Id,
             Amount__c = 10,
             Object_Type__c = 'PaymentPart'
         );
         Journal_Entry__c entryFive = new Journal_Entry__c(
             Project__c = 'SSS-0003',
             Customer_Account__c = 'BW-00002',
+            Customer_Lookup__c = customerAccount2.Id,
             Amount__c = 10,
             Object_Type__c = 'PaymentPart'
         );
         Journal_Entry__c entrySix = new Journal_Entry__c(
             Project__c = 'SSS-0003',
             Customer_Account__c = 'BW-00002',
+            Customer_Lookup__c = customerAccount2.Id,
             Amount__c = 10,
             Object_Type__c = 'PaymentPart'
         );
         Journal_Entry__c entrySeven = new Journal_Entry__c(
             Project__c = 'SSS-0002',
             Customer_Account__c = 'BW-00001',
+            Customer_Lookup__c = customerAccount1.Id,
             Amount__c = 10,
             Object_Type__c = 'InvoiceItem'
         );
@@ -438,9 +455,10 @@ public class PartnerCommissionHandlerTest {
     private static void testCreateCommissionPaymentsFromJournalEntries() {
         useMocks();
         Test.startTest();
-        PartnerCommissionHandler.createCommissionPaymentsFromJournalEntries();
+        Object accountsWithCommissionableJournalEntries = new PartnerCommissionHandler().executePostBatch();
         Test.stopTest();
-        System.assertEquals(7, PartnerCommissionHandler.accountIdsFromJournalEntries.size());
+        System.assertEquals(3, ((Set<Id>) accountsWithCommissionableJournalEntries).size(),
+            'Expected to run the PartnerCommissionHandler with three accounts');
     }
 
     private static void useMocks() {

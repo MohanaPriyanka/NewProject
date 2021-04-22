@@ -356,9 +356,17 @@ public class ZuoraGLServiceTest {
         ];
         System.assertEquals(0,originalJE.size());
         System.assertEquals(14,updatedJE.size());
+        List<Journal_Entry__c> journalEntriesWithCustomerLookupPopulated = [
+            SELECT Id
+            FROM Journal_Entry__c
+            WHERE Object_Type__c = 'PaymentPart'
+            AND Customer_Lookup__c != NULL
+        ];
+        System.assertEquals(0,journalEntriesWithCustomerLookupPopulated.size());
 
-        System.assertNotEquals(0, PartnerCommissionHandler.accountIdsFromJournalEntries.size(),
-            'PartnerCommissionHandler should evaluate 14 Accounts for Commission Payments');
+        System.assertNotEquals(null, PartnerCommissionHandler.accountIdsFromJournalEntries.size(),
+            'PartnerCommissionHandler should have run, but since this test does not have accounts ' +
+                'that correspond to the ZuoraAPIMock response to the data query, it should not have found any accounts');
     }
 
     @IsTest
@@ -479,25 +487,6 @@ public class ZuoraGLServiceTest {
             }
         }
         System.assertEquals(3,countOfChecks);
-
-        List<Case> recItems = [
-            SELECT Id, Subject, Description, Status
-            FROM Case
-            WHERE Subject LIKE 'Attempted Journal Entry%'
-            ORDER BY Subject DESC
-        ];
-
-        System.assertEquals(2,originalRecItems.size(), 'Expected two existing cases with external id set');
-        System.assertEquals(3,recItems.size());
-
-        System.assert(recItems[0].Description.contains('2c92c0fb6c8afb4e016c926615190873'));
-        System.assertEquals('Attempted Journal Entry Update in Closed Period',recItems[0].Subject);
-        System.assertEquals('In Progress',recItems[0].Status);
-        System.assert(recItems[1].Description.contains('2c92c0fb6c8afb4e016c926615190872'));
-        System.assertEquals('Attempted Journal Entry Insert in Closed Period',recItems[1].Subject);
-        System.assert(recItems[2].Description.contains('2c92c0fb6c8afb4e016c926615190811'));
-        System.assertEquals('Attempted Journal Entry Delete in Closed Period',recItems[2].Subject);
-        System.assertEquals('Closed',recItems[2].Status);
     }
 
     @IsTest
