@@ -420,10 +420,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LoanServicerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LoanTestRecordWarehouse</apexClass>
         <enabled>false</enabled>
     </classAccesses>

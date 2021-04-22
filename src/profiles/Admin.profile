@@ -917,10 +917,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LoanServicerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LoanTestRecordWarehouse</apexClass>
         <enabled>true</enabled>
     </classAccesses>
