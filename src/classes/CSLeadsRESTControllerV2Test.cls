@@ -1254,7 +1254,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    private static void testContractFilesCompilation_NoRateClass() {
+    private static void testContractFilesCompilationWithNoRateClass() {
         // Mock data
         CSLeadsRESTControllerV2Test.RestLeadTestDataset dataSet = new CSLeadsRESTControllerV2Test.RestLeadTestDataset();
         dataSet.generateTestData(true);
