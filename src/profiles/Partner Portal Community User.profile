@@ -4097,14 +4097,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ReportSender</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ReportSenderTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>RestLead</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -28397,11 +28389,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Approval_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Automatic_Product_Assignment__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -28752,11 +28739,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Credit_Approval__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Credit_Check_Acknowledged__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -29008,11 +28990,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.FICO_Score_Approval__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.FICO_Score__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

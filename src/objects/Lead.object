@@ -875,35 +875,6 @@
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Approval_Status__c</fullName>
-        <externalId>false</externalId>
-        <label>FICO Approval Status (DEACTIVE)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>New</fullName>
-                    <default>true</default>
-                    <label>New</label>
-                </value>
-                <value>
-                    <fullName>Approved</fullName>
-                    <default>false</default>
-                    <label>Approved</label>
-                </value>
-                <value>
-                    <fullName>Denied</fullName>
-                    <default>false</default>
-                    <label>Denied</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Automatic_Product_Assignment__c</fullName>
         <defaultValue>true</defaultValue>
         <externalId>false</externalId>
@@ -1976,18 +1947,6 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Approval_Status__c, &quot;Decl
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Credit_Approval__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(isblank( FICO_Score__c ),&quot;None&quot;, IF( FICO_Score__c &gt; 679,&quot;Approved&quot;, &quot;Denied&quot;))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Credit Approval?</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Credit_Check_Acknowledged__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -2582,19 +2541,6 @@ This field can be changed to a formula consistent with the other factors if LASE
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>FICO_Score__c</fullName>
-        <externalId>false</externalId>
-        <label>FICO Score</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Fax</fullName>
@@ -8500,21 +8446,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Business_Type__c</picklist>
             <values>
                 <fullName>Arts%2FEntertainment%2FMedia</fullName>
@@ -9571,21 +9502,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Something else%2E%2E%2E</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -10652,21 +10568,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Business_Type__c</picklist>
             <values>
                 <fullName>Arts%2FEntertainment%2FMedia</fullName>
@@ -11707,21 +11608,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Something else%2E%2E%2E</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -12803,21 +12689,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Business_Type__c</picklist>
             <values>
                 <fullName>Arts%2FEntertainment%2FMedia</fullName>
@@ -13893,21 +13764,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Something else%2E%2E%2E</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -14990,21 +14846,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Business_Type__c</picklist>
             <values>
                 <fullName>Arts%2FEntertainment%2FMedia</fullName>
@@ -16080,21 +15921,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Something else%2E%2E%2E</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -17177,21 +17003,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Business_Type__c</picklist>
             <values>
                 <fullName>Arts%2FEntertainment%2FMedia</fullName>
@@ -18270,21 +18081,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Business_Type__c</picklist>
             <values>
                 <fullName>Arts%2FEntertainment%2FMedia</fullName>
@@ -19352,21 +19148,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Something else%2E%2E%2E</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -20456,21 +20237,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Business_Type__c</picklist>
             <values>
                 <fullName>Arts%2FEntertainment%2FMedia</fullName>
@@ -21208,21 +20974,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Prof%2E</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -23657,21 +23408,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Business_Type__c</picklist>
             <values>
                 <fullName>Arts%2FEntertainment%2FMedia</fullName>
@@ -24740,21 +24476,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Something else%2E%2E%2E</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -26817,21 +26538,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Approval_Status__c</picklist>
-            <values>
-                <fullName>Approved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Denied</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>New</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
