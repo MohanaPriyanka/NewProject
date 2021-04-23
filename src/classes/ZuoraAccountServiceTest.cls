@@ -94,7 +94,6 @@ public with sharing class ZuoraAccountServiceTest {
 
     @IsTest
     static void testZuoraAccountCreationSwitchLead() {
-
         User apiUser = [
             SELECT Id, Name, Username
             FROM User
@@ -110,7 +109,6 @@ public with sharing class ZuoraAccountServiceTest {
             AND Program__c = 'SMART - Community Solar'
             LIMIT 1
         ];
-
         Lead residentialLead = CSAPControllerTest.getLeadForTest();
 
         residentialLead.Status = 'Qualified';
@@ -144,8 +142,7 @@ public with sharing class ZuoraAccountServiceTest {
         insert ual;
 
         Test.startTest();
-        ZuoraAccountService.createAccounts(new List<Account> {propertyAccount});
-
+            ZuoraAccountService.createAccounts(new Set<Id>{residentialLead.Id});
         Test.stopTest();
 
         residentialLead = [

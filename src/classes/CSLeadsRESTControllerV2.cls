@@ -5,6 +5,13 @@
  */
 @SuppressWarnings('PMD.TooManyFields')
 public virtual without sharing class CSLeadsRESTControllerV2 extends RESTController {
+    public static final Map<String, String> APP_STATUS_TO_LOCATION = new Map<String, String>{
+        'Started' => 'info',
+        'Customer Info Completed' => 'agree',
+        'Contracts Signed' => 'pay',
+        'Application Completed' => 'complete'
+    };
+    @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
     @TestVisible private LeadService leadService = new LeadService();
     @TestVisible private AccountService accountService = new AccountService();
     @TestVisible private UALService ualService = new UALService();
@@ -13,14 +20,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible private CustomerContractService customerContractService = new CustomerContractService();
     @TestVisible private RateClassesSelector rcSelector = new RateClassesSelector();
     @TestVisible private CSQualificationService qualificationService = new CSQualificationService();
-    @TestVisible protected LeadSelector leadSelector = new LeadSelector();
     @TestVisible private AccountsSelector accountsSelector = new AccountsSelector();
     @TestVisible private UALSelector ualSelector = new UALSelector();
     @TestVisible private ContentDocumentSelector contentSelector = new ContentDocumentSelector();
     @TestVisible private CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     @TestVisible private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
-    @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
-
     @TestVisible private Map<String, String> contractLeadFields = new Map<String, String>{
         'FirstName' => 'firstName',
         'LastName' => 'lastName',
@@ -34,14 +38,12 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         'LASERCA__Home_Zip__c' => 'zipCode',
         'Business_Title__c' => 'businessTitle'
     };
-
     @TestVisible private Map<String, String> contractUALFields = new Map<String, String>{
         'Service_Address__c' => 'serviceStreet',
         'Service_City__c' => 'serviceCity',
         'Service_State__c' => 'serviceState',
         'Service_Zip_Code__c' => 'servicePostalCode'
     };
-
     @TestVisible private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<Schema.SObjectType> {
             ContentVersion.SObjectType,
@@ -53,13 +55,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             ContentDocumentLink.SObjectType
         }
     );
-
-    public static final Map<String, String> APP_STATUS_TO_LOCATION = new Map<String, String>{
-        'Started' => 'info',
-        'Customer Info Completed' => 'agree',
-        'Contracts Signed' => 'pay',
-        'Application Completed' => 'complete'
-    };
+    @TestVisible protected LeadSelector leadSelector = new LeadSelector();
 
     public virtual void getLead(String leadId, String email) {
         RestResponse response = RestContext.response;
@@ -148,8 +144,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             createQCCaseForNoMatchPCR(lead);
         }
         if (applicationNowComplete && !lead.No_Payment__c) {
-            // Payment information is captured, setup Zuora account for customer
-            ZuoraAccountService.createAccounts(accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{lead.Id}));
+            // Payment information is captured, setup Zuora account for customer in separate thread
+            ZuoraAccountService.createAccounts(new Set<Id>{lead.Id});
         }
 
         RestLead responseLead = new RestLead(lead);
