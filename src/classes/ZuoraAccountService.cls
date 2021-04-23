@@ -11,11 +11,17 @@ public without sharing class ZuoraAccountService {
 
     @Future (Callout=true)
     public static void createAccounts(Set<Id> leadIds) {
-        List<Account> propertyAccounts = accountSelector.selectPropertyAccountsByLeadIds(leadIds);
-        if (propertyAccounts == null) {
-            return;
+        try {
+            List<Account> propertyAccounts = accountSelector.selectPropertyAccountsByLeadIds(leadIds);
+            if (propertyAccounts == null) {
+                return;
+            }
+            createAccounts(propertyAccounts, null);
+        } catch (Exception e) {
+            String err = 'Error when attempting to create Zuora account for lead(s): ' + leadIds + ':\n\n' +
+                e.getMessage() + '\n\n' + e.getStackTraceString();
+            Logger.logNow('ZuoraAccountService', 'createAccounts', err, Logger.ERROR);
         }
-        createAccounts(propertyAccounts, null);
     }
 
     public static void createAccountsFromLeads(List<Id> convertedLeadIds) {
