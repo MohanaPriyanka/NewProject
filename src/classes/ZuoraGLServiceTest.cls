@@ -416,13 +416,6 @@ public class ZuoraGLServiceTest {
         existinRecItemForClosedPeriod.Status = 'In Progress';
         insert new List<Case>{existingRecItemForDelete, existinRecItemForClosedPeriod};
 
-        List<Case> originalRecItems = [
-            SELECT Id, Subject, Description
-            FROM Case
-            WHERE Subject LIKE 'Attempted Journal Entry%'
-            AND External_Id__c != NULL
-        ];
-
         List<Journal_Entry__c> originalJE = [
             SELECT Id
             FROM Journal_Entry__c
