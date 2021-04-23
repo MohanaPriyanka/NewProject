@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This should only be assigned on a case by case basis. It was originally created to give people the ability to insert historical data for UASs and SOs. It shouldn&apos;t be permanently assigned to users.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Subscription__c.Shared_Solar_System__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>CS Subscription Admin</label>
+</PermissionSet>
