@@ -10226,6 +10226,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <description>Record Type for all CS Customers</description>
         <label>Community Solar</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
                 <fullName>Anchor</fullName>
