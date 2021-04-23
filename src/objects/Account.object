@@ -930,7 +930,7 @@ CASE(TEXT(Cancellation_Reason__c),
         <fullName>Cancellation_Reason__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Reason the customer cancelled their CS Subscription</inlineHelpText>
-        <label>Cancellation Reason</label>
+        <label>Cancellation Reason - Internal</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
