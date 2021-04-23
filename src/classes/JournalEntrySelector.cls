@@ -66,7 +66,7 @@ public inherited sharing class JournalEntrySelector {
         return [
             SELECT Customer_Lookup__c
             FROM Journal_Entry__c
-            WHERE LastModifiedDate = TODAY
+            WHERE CreatedDate = TODAY
             AND (Object_Type__c = 'InvoiceItem' OR Object_Type__c = 'PaymentPart')
         ];
     }
