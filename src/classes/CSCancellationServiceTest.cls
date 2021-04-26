@@ -942,7 +942,7 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testNoAccountIsUpdated() {
         Test.startTest();
-        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
+        CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate());
         Test.stopTest();
 
         List<Account> propAccts = [
@@ -1039,7 +1039,7 @@ public with sharing class CSCancellationServiceTest {
         opportunities[0].StageName = 'Cancelled';
         update opportunities[0];
 
-        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
+        CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate());
 
         // We shouldn't have marked Prop Account 1 as Removed from Project, since it has one of two UASes marked as Removed
         List<Account> propAccts = [
@@ -1078,7 +1078,7 @@ public with sharing class CSCancellationServiceTest {
         opportunities[0].StageName = 'Cancelled';
         update opportunities[0];
 
-        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
+        CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate());
 
         propAccts = [
             SELECT Id, Name, Date_Removed_from_Project__c,
@@ -1095,6 +1095,7 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(twentyDaysAgo, propAccts[0].Date_Removed_from_Project__c);
         System.assertEquals(null, propAccts[1].Date_Removed_from_Project__c);
         System.assertEquals(null, propAccts[2].Date_Removed_from_Project__c);
+        System.debug(LoggingLevel.ERROR, JSON.serialize(MessagingService.emailsSent));
         Util.printSOQLLimit('a');
         Util.printCPULimit('b');
     }
@@ -1122,7 +1123,7 @@ public with sharing class CSCancellationServiceTest {
         update uasToUpdate;
 
         Test.startTest();
-        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
+        CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate());
         Test.stopTest();
 
         List<Account> propAccts = [
@@ -1172,12 +1173,12 @@ public with sharing class CSCancellationServiceTest {
         update opportunitiesToMarkCancelled;
 
         Test.startTest();
-        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
+        CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate());
         Test.stopTest();
 
         List<Account> propAccts = [
             SELECT Id, Name, Date_Removed_from_Project__c,
-            (SELECT Id, Account__c FROM Utility_Account_Logs__r)
+            (SELECT Id, Name, Account__c FROM Utility_Account_Logs__r)
             FROM Account
             WHERE RecordType.Name = 'Property'
             ORDER BY Name
@@ -1191,10 +1192,23 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(dateRemoved, propAccts[0].Date_Removed_from_Project__c);
         System.assertEquals(dateRemoved, propAccts[1].Date_Removed_from_Project__c);
         System.assertEquals(dateRemoved, propAccts[2].Date_Removed_from_Project__c);
+        String utilityAccountNumberForAccount1 = propAccts[0].Utility_Account_Logs__r[0].Name;
+        String utilityAccountNumberForAccount2 = propAccts[1].Utility_Account_Logs__r[0].Name;
+        String utilityAccountNumberForAccount3 = propAccts[2].Utility_Account_Logs__r[0].Name;
 
         for (Messaging.Email email : MessagingService.emailsSent) {
             Messaging.SingleEmailMessage sem = (Messaging.SingleEmailMessage) email;
-            System.assert(sem.getHtmlBody().contains(dateRemovedString));
+            System.assert(sem.getHtmlBody().contains(dateRemovedString),
+                'The date removed from project email message should have ' + dateRemovedString + ' but is just this: ' + sem.getHtmlBody());
+            System.assert(
+                sem.getHtmlBody().contains(utilityAccountNumberForAccount1) ||
+                    sem.getHtmlBody().contains(utilityAccountNumberForAccount2) ||
+                    sem.getHtmlBody().contains(utilityAccountNumberForAccount3),
+                'The date removed from project email message should have one of the utility account numbers (' +
+                    utilityAccountNumberForAccount1 + ', ' +
+                    utilityAccountNumberForAccount2 + ', or ' +
+                    utilityAccountNumberForAccount3 + ') ' +
+                    ', but is just this: ' + sem.getHtmlBody());
         }
     }
 
@@ -1764,7 +1778,7 @@ public with sharing class CSCancellationServiceTest {
             '"Number_of_Active_Opportunities__c":"0",' +
             '"Opportunities":{"totalSize":0,"done":true,"records":[]}}]';
         accounts = (List<Account>) JSON.deserialize(accountWithOneExpiredOppNotRemoved, List<Account>.class);
-        System.assertEquals(0, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
+        System.assertEquals(0, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
 
         String accountWithTwoCancelledButNotRemovedOpps =
             '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001Tf2j2AAB"},' +
@@ -1775,7 +1789,7 @@ public with sharing class CSCancellationServiceTest {
             '"Number_of_Active_Opportunities__c":"0",' +
             '"Opportunities":{"totalSize":0,"done":true,"records":[]}}]';
         accounts = (List<Account>) JSON.deserialize(accountWithTwoCancelledButNotRemovedOpps, List<Account>.class);
-        System.assertEquals(0, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
+        System.assertEquals(0, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
 
         String accountWithDuplicateAndNotRemovedOpps =
             '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001ZKcEvAAL"},' +
@@ -1787,7 +1801,7 @@ public with sharing class CSCancellationServiceTest {
             '"Opportunities":{"totalSize":0,"done":true,"records":[]}}]';
 
         accounts = (List<Account>) JSON.deserialize(accountWithDuplicateAndNotRemovedOpps, List<Account>.class);
-        System.assertEquals(0, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
+        System.assertEquals(0, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
 
         Datetime removedDate = Datetime.newInstance(2019,3,25);
         String accountWithCancelledAndRemovedOpp =
@@ -1800,10 +1814,10 @@ public with sharing class CSCancellationServiceTest {
             '"Opportunities":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006j000000VVn3EAAT"},"AccountId":"001j0000011mR6LAAU","Id":"006j000000VVn3EAAT","Date_Removed_from_Project__c":"'+removedDate.format('yyyy-MM-dd')+'","StageName":"Cancelled"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003j000001LJTYKAA5"},"Id":"003j000001LJTYKAA5","FirstName":"James","Email":"foo@bar.com","Additional_Email__c":"foo@bar.com"}}]';
 
         accounts = (List<Account>) JSON.deserialize(accountWithCancelledAndRemovedOpp, List<Account>.class);
-        System.assertEquals(1, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected an account to get Date Removed set');
+        System.assertEquals(1, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected an account to get Date Removed set');
         System.assertEquals(
             removedDate.date(),
-            CSCancellationService.getAccountsWithDateRemovedSet(accounts)[0].Date_Removed_from_Project__c,
+            CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts)[0].Date_Removed_from_Project__c,
             'Expected Date Removed From Project to get set with the latest Opp Date Removed From Project');
 
         Datetime laterRemovedDate = Datetime.newInstance(2020,1,13);
@@ -1816,7 +1830,7 @@ public with sharing class CSCancellationServiceTest {
             '"Number_of_Active_Opportunities__c":"2",' +
             '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"'+laterRemovedDate.format('yyyy-MM-dd')+'","StageName":"Complete"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","Date_Removed_from_Project__c":"2019-07-26","StageName":"Complete"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
         accounts = (List<Account>) JSON.deserialize(accountWithTwoCompleteAndRemovedOpps, List<Account>.class);
-        System.assertEquals(0, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected to not get a Date Removed From Project until the opps are cancelled');
+        System.assertEquals(0, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected to not get a Date Removed From Project until the opps are cancelled');
 
         String accountWithTwoCancelledAndRemovedOpps =
             '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001Pw94HAAR"},' +
@@ -1827,10 +1841,10 @@ public with sharing class CSCancellationServiceTest {
                 '"Number_of_Active_Opportunities__c":"0",' +
                 '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"'+laterRemovedDate.format('yyyy-MM-dd')+'","StageName":"Cancelled"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","Date_Removed_from_Project__c":"2019-07-26","StageName":"Cancelled"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
         accounts = (List<Account>) JSON.deserialize(accountWithTwoCancelledAndRemovedOpps, List<Account>.class);
-        System.assertEquals(1, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected to not get a Date Removed From Project until the opps are cancelled');
+        System.assertEquals(1, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected to not get a Date Removed From Project until the opps are cancelled');
         System.assertEquals(
             laterRemovedDate.date(),
-            CSCancellationService.getAccountsWithDateRemovedSet(accounts)[0].Date_Removed_from_Project__c,
+            CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts)[0].Date_Removed_from_Project__c,
             'Expected Date Removed From Project to get set with the latest Opp Date Removed From Project');
 
         String accountWithOneRemovedOneDuplicateOpp =
@@ -1842,10 +1856,10 @@ public with sharing class CSCancellationServiceTest {
             '"Number_of_Active_Opportunities__c":"0",' +
             '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"'+laterRemovedDate.format('yyyy-MM-dd')+'","StageName":"Cancelled"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","StageName":"DUPLICATE"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
         accounts = (List<Account>) JSON.deserialize(accountWithOneRemovedOneDuplicateOpp, List<Account>.class);
-        System.assertEquals(1, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected an account to get Date Removed set');
+        System.assertEquals(1, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected an account to get Date Removed set');
         System.assertEquals(
             laterRemovedDate.date(),
-            CSCancellationService.getAccountsWithDateRemovedSet(accounts)[0].Date_Removed_from_Project__c,
+            CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts)[0].Date_Removed_from_Project__c,
             'Expected Date Removed From Project to get set with the latest Opp Date Removed From Project, ignoring non-active opps');
     }
 

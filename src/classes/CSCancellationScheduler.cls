@@ -127,15 +127,14 @@ public without sharing class CSCancellationScheduler implements Schedulable{
 
     public String handleAccountsToRemove(Boolean preview) {
         String outputMessage = CSCancellationScheduler.ACCOUNT_REMOVAL_DESCRIPTION;
-        accountsRemovedFromAllProjects = CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate();
+        accountsRemovedFromAllProjects = CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate();
         if (!preview) {
             outputMessage = outputMessage.replace('will get', 'got');
-            accountsRemovedFromAllProjects = CSCancellationService.processAccountsRemovedFromAllProjects(accountsRemovedFromAllProjects);
+            accountsRemovedFromAllProjects = CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(accountsRemovedFromAllProjects);
         }
         for (Account account : accountsRemovedFromAllProjects) {
             outputMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
         }
         return outputMessage;
-
     }
 }
