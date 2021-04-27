@@ -398,14 +398,8 @@ public class ZuoraCreditMemoAllocationTest {
         batchJob.creditMemosToApply.remove(1);
         batchJob.runBatch();
         Test.stopTest();
-
-        List<Error_Log__c> errorLogs = [
-            SELECT Id, Class__c, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'ZuoraMemoBatchApply'
-        ];
-
-        System.assertEquals('ZuoraMemoBatchApply has finished', errorLogs[0].Message__c);
+        System.assertEquals(5, ZuoraAPIHelper.endpointsCalled.size(),
+            'Expected 5 callouts: all creditmemos, creditmemo, creditmemo, query, and debitmemos');
     }
 
     @IsTest
