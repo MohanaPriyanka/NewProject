@@ -9,11 +9,19 @@ public without sharing class ZuoraAccountService {
     private static final List<String> ZUORA_FIELDS_TO_UPDATE =
         new List<String>{'Address_Attn__c','BillingStreet','BillingCity','BillingState','BillingPostalCode','BillingCountry','Send_Bills_Contact__c'};
 
-    public static void createAccounts(List<Account> propertyAccounts) {
-        if (propertyAccounts == null) {
-            return;
+    @Future (Callout=true)
+    public static void createAccounts(Set<Id> leadIds) {
+        try {
+            List<Account> propertyAccounts = accountSelector.selectPropertyAccountsByLeadIds(leadIds);
+            if (propertyAccounts == null) {
+                return;
+            }
+            createAccounts(propertyAccounts, null);
+        } catch (Exception e) {
+            String err = 'Error when attempting to create Zuora account for lead(s): ' + leadIds + ':\n\n' +
+                e.getMessage() + '\n\n' + e.getStackTraceString();
+            Logger.logNow('ZuoraAccountService', 'createAccounts', err, Logger.ERROR);
         }
-        createAccounts(propertyAccounts, null);
     }
 
     public static void createAccountsFromLeads(List<Id> convertedLeadIds) {
@@ -37,7 +45,7 @@ public without sharing class ZuoraAccountService {
 
     // Since we want to insert Zuora Contacts and update the Account with a Zuora Id as system
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    private static void createAccounts(List<Account> propertyAccounts, Map<Id, Lead> accountIdToLeadMap) {
+    public static void createAccounts(List<Account> propertyAccounts, Map<Id, Lead> accountIdToLeadMap) {
         Map<Id, String> accountIdToZuoraIdMap =
             createAccountShells(propertyAccounts);
 

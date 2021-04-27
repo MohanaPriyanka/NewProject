@@ -1,13 +1,10 @@
 /**
  * Created by SarahRenfro on 5/22/2019.
  */
-
 @IsTest
 public class CSQualificationTestclass {
-    @TestSetup
-    public static void setupTestData() {
-        Test.startTest();
 
+    @TestSetup public static void setupTestData() {
         Id partnerAccountRTID = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId();
         Account partnerAccount = new Account(
             Name = 'Mass Renewables',
@@ -24,6 +21,7 @@ public class CSQualificationTestclass {
             Account__c = partnerAccount.Id
         );
         insert partner;
+
         partnerAccount.Partner__c = partner.Id;
         update partnerAccount;
 
@@ -38,7 +36,8 @@ public class CSQualificationTestclass {
         partner.Default_Sales_Rep__c = salesRep.Id;
         update partner;
 
-        Product2 vderProduct = new Product2(Name = 'VDER',
+        Product2 vderProduct = new Product2(
+            Name = 'VDER',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Program__c = 'VDER - Community Solar',
@@ -49,14 +48,15 @@ public class CSQualificationTestclass {
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
             Days_in_Bill_Period__c = 20,
-            Monthly_Late_Fee__c = 1);
+            Monthly_Late_Fee__c = 1
+        );
+        insert vderProduct;
 
         Utility__c nyseg = new Utility__c(
             Name = 'NYS Electric and Gas',
             Number_of_Decimal_Places__c = 2,
             EIA_ID__c = '1234'
         );
-
         Utility__c central = new Utility__c(
             Name = 'Central Hudson Gas and Electric',
             Number_of_Decimal_Places__c = 2,
@@ -71,8 +71,6 @@ public class CSQualificationTestclass {
             LZ__c = 'Hudson Valley',
             Town__c = 'Albany'
         );
-
-
         Load_U__c loadZone2 = new Load_U__c(
             Name = '56789',
             LZ__c = 'Mohawk Valley'
@@ -155,26 +153,19 @@ public class CSQualificationTestclass {
         Database.DMLOptions dmo = new Database.DMLOptions();
         dmo.assignmentRuleHeader.useDefaultRule = true;
         resiLead.setOptions(dmo);
-
         insert resiLead;
-
-        Test.stopTest();
     }
 
     @IsTest
     public static void testCheckCSQualification() {
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
-
         pullCreditForLead(lead.Id, 'High FICO');
-
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
                 Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c 
             FROM Lead
             WHERE Id = :lead.Id
         ];
-
-
         System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
         System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 700');
@@ -196,7 +187,6 @@ public class CSQualificationTestclass {
             FROM Lead
             WHERE Id = :lead.Id
         ];
-
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
         System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 700');
@@ -247,20 +237,20 @@ public class CSQualificationTestclass {
         System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 9999');
         System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size(), '9999 credit score ' +
             'implies no match, therefore a no match case should be created.');
-
     }
+
     @IsTest
     public static void testLowFico() {
         Lead lead = [SELECT Id, Name FROM Lead LIMIT 1];
 
         Test.startTest();
-        pullCreditForLead(lead.Id, 'Low FICO');
+            pullCreditForLead(lead.Id, 'Low FICO');
         Test.stopTest();
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c, 
                 Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Personal_Credit_Report__r.Approval_Status__c,
-                Unqualified_Due_to_FICO__c
+                Unqualified_due_to_FICO__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -276,7 +266,6 @@ public class CSQualificationTestclass {
     }
 
     public static void pullCreditForLead(Id leadId, String type) {
-
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadId,
             LASERCA__Date_of_Credit_Report__c = System.today()
@@ -316,9 +305,9 @@ public class CSQualificationTestclass {
         update lead;
     }
 
-
     @IsTest
-    private static void testFinancialReviewQualification() {
+    private static void testQualifyLead() {
+        // Test Financial Review qualification without associated Fin Doc records
         Lead lead = [
             SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, 
             	Moody_s_Risk_Calc__c
@@ -329,20 +318,24 @@ public class CSQualificationTestclass {
         update lead;
 
         CSQualificationService qualService = new CSQualificationService();
-        String newStatus = qualService.underwriteWithFinancialReview(lead);
-        System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as there are no Financial Underwriting Document records associated with the lead.');
+        qualService.qualifyLead(lead);
+        System.assertEquals('Unqualified', lead.Status, 'The lead status should be Unqualified, as there are no ' +
+            'Financial Underwriting Document records associated with the lead.');
 
+        // Test Financial Review qualification with associated Fin Doc records, but no required file attachments
         Financial_Underwriting_Document__c fud = new Financial_Underwriting_Document__c(Lead__c = lead.Id);
         insert fud;
         lead = [
-            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, 
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Underwriting_Criteria__c,
             	Moody_s_Risk_Calc__c, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             WHERE Id = :lead.Id
         ];
-        newStatus = qualService.underwriteWithFinancialReview(lead);
-        System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as the lead\'s child Financial Underwriting Document record has no files attached.');
+        qualService.qualifyLead(lead);
+        System.assertEquals('Unqualified', lead.Status, 'The lead status should be Unqualified, as the lead\'s child ' +
+            'Financial Underwriting Document record has no files attached.');
 
+        // Test Financial Review qualification with associated Fin Doc records and required attachments
         ContentVersion cvFinDoc = new ContentVersion(
             ContentLocation = 'S',
             VersionData = EncodingUtil.base64Decode('financial document'),
@@ -367,9 +360,11 @@ public class CSQualificationTestclass {
             FROM Lead
             WHERE Id = :lead.Id
         ];
-        newStatus = qualService.underwriteWithFinancialReview(lead);
-        System.assertEquals('Qualified', newStatus, 'The lead status should be Qualified, as the lead\'s child Financial Underwriting Document record has files attached and there is a matching SSS.');
+        qualService.qualifyLead(lead);
+        System.assertEquals('Qualified', lead.Status, 'The lead status should be Qualified, as the lead\'s child ' +
+            'Financial Underwriting Document record has files attached and there is a matching SSS.');
 
+        // Test 'None' underwriting criteria, but where there is also no matching SSS for qualification
         Utility__c newUtility = [SELECT Id FROM Utility__c WHERE Name = 'Central Hudson Gas and Electric' LIMIT 1];
         lead.Utility_relationship__c = newUtility.Id;
         update lead;
@@ -380,10 +375,11 @@ public class CSQualificationTestclass {
             FROM Lead
             LIMIT 1
         ];
-        newStatus = qualService.underwriteWithFinancialReview(lead);
-        System.assertEquals('Unqualified', newStatus, 'The lead status should be Unqualified, as there is no open SSS matching the lead\'s utility.');
+        lead.Underwriting_Criteria__c = 'None';
+        qualService.qualifyLead(lead);
+        System.assertEquals('Unqualified', lead.Status, 'The lead status should be Unqualified, as there is no open ' +
+            'SSS matching the lead\'s utility.');
     }
-
 
     @IsTest
     public static void testQualificationWidgetWithInputs() {
@@ -404,16 +400,14 @@ public class CSQualificationTestclass {
         String underwriting = 'FICO';
 
         allMatches = CSQualificationService.getQualificationMatches(null, productId, partnerId, zipCode, underwriting);
-
         System.assertEquals(1, allMatches.size(), 'There should be one qualification match');
         System.assert(allMatches[0].completeMatch, 'The qualification match should be a complete match');
     }
 
     @IsTest
     public static void testQualificationWidgetHalfMatch() {
-        //We expect to still see the SSS returned as a potential match but completeMatch is False
+        // We expect to still see the SSS returned as a potential match but completeMatch is False
         // because the fico is not eligible for the project
-
         Partner__c partner = [
             SELECT Id
             FROM Partner__c

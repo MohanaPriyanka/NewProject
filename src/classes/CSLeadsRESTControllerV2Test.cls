@@ -1254,7 +1254,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    private static void testContractFilesCompilation_NoRateClass() {
+    private static void testContractFilesCompilationWithNoRateClass() {
         // Mock data
         CSLeadsRESTControllerV2Test.RestLeadTestDataset dataSet = new CSLeadsRESTControllerV2Test.RestLeadTestDataset();
         dataSet.generateTestData(true);
@@ -1632,17 +1632,20 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
     private class MockQualificationService implements StubProvider {
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
-            List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
-                if(stubbedMethodName == 'underwriteWithFinancialReview') {
-                    return 'Qualified';
-                }
-                return null;
+            List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs)
+        {
+            if (stubbedMethodName == 'qualifyLead') {
+                Lead lead = (Lead) listOfArgs[0];
+                lead.Status = 'Qualified';
+            }
+            return null;
         }
     }
     private class MockFeatureSelector implements StubProvider {
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
-            List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
-            if(stubbedMethodName == 'getSystemDefaults') {
+            List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs)
+        {
+            if (stubbedMethodName == 'getSystemDefaults') {
                 sfab_FabricatedSObject fabbedSystemDefault = new sfab_FabricatedSObject(System_Default__mdt.class);
                 fabbedSystemDefault.setField(System_Default__mdt.Application_Complete_Email_Template__c, 'MockTemplate');
                 return fabbedSystemDefault.toSObject();

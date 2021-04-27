@@ -52,9 +52,9 @@ public without sharing class ZuoraAccountAsyncService implements Queueable, Data
     }
 
     public void execute(Database.BatchableContext batchableContext, List<Account> scope) {
-        if (mode == OperationType.CREATE) {
+        if (mode == OperationType.CREATE && scope != null) {
             try {
-                ZuoraAccountService.createAccounts(scope);
+                ZuoraAccountService.createAccounts(scope, null);
             } catch (Exception e) {
                 Logger.flushLogs();
                 Logger.logNow('ZuoraAccountAsyncService', 'execute',
