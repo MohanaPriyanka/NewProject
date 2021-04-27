@@ -5,23 +5,26 @@
  */
 @SuppressWarnings('PMD.TooManyFields')
 public virtual without sharing class CSLeadsRESTControllerV2 extends RESTController {
+    public static final Map<String, String> APP_STATUS_TO_LOCATION = new Map<String, String>{
+        'Started' => 'info',
+        'Customer Info Completed' => 'agree',
+        'Contracts Signed' => 'pay',
+        'Application Completed' => 'complete'
+    };
+    @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
     @TestVisible private LeadService leadService = new LeadService();
     @TestVisible private AccountService accountService = new AccountService();
     @TestVisible private UALService ualService = new UALService();
     @TestVisible private CSLeadsDuplicateService duplicateService = new CSLeadsDuplicateService();
     @TestVisible private CapacityService capacityService = new CapacityService();
     @TestVisible private CustomerContractService customerContractService = new CustomerContractService();
-    @TestVisible private ContentService contentService = new ContentService();
     @TestVisible private RateClassesSelector rcSelector = new RateClassesSelector();
     @TestVisible private CSQualificationService qualificationService = new CSQualificationService();
-    @TestVisible protected LeadSelector leadSelector = new LeadSelector();
     @TestVisible private AccountsSelector accountsSelector = new AccountsSelector();
     @TestVisible private UALSelector ualSelector = new UALSelector();
     @TestVisible private ContentDocumentSelector contentSelector = new ContentDocumentSelector();
     @TestVisible private CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     @TestVisible private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
-    @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
-
     @TestVisible private Map<String, String> contractLeadFields = new Map<String, String>{
         'FirstName' => 'firstName',
         'LastName' => 'lastName',
@@ -35,14 +38,12 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         'LASERCA__Home_Zip__c' => 'zipCode',
         'Business_Title__c' => 'businessTitle'
     };
-
     @TestVisible private Map<String, String> contractUALFields = new Map<String, String>{
         'Service_Address__c' => 'serviceStreet',
         'Service_City__c' => 'serviceCity',
         'Service_State__c' => 'serviceState',
         'Service_Zip_Code__c' => 'servicePostalCode'
     };
-
     @TestVisible private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<Schema.SObjectType> {
             ContentVersion.SObjectType,
@@ -54,13 +55,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             ContentDocumentLink.SObjectType
         }
     );
-
-    public static final Map<String, String> APP_STATUS_TO_LOCATION = new Map<String, String>{
-        'Started' => 'info',
-        'Customer Info Completed' => 'agree',
-        'Contracts Signed' => 'pay',
-        'Application Completed' => 'complete'
-    };
+    @TestVisible protected LeadSelector leadSelector = new LeadSelector();
 
     public virtual void getLead(String leadId, String email) {
         RestResponse response = RestContext.response;
@@ -107,8 +102,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     /**
-     * Called by (Aura) SSFApplication/SSFApplicationDTC on SSF application completion
-     * <br><br>
+     * @description Called by (Aura) SSFApplication/SSFApplicationDTC on SSF application completion
      * Sets return envelope data to pass back to UI
      * @param jsonRequest Incoming PATCH request body
      */
@@ -116,8 +110,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         RestResponse response = RestContext.response;
         Lead leadToUpdate = leadSelector.selectOne(requestLead.id);
-        Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
+        Map<String,Object> requestMap = (Map<String,Object>) JSON.deserializeUntyped(jsonRequest);
         Boolean applicationNowComplete = false;
+
         if (leadToUpdate == null) {
             response.statusCode = statusCode.notFound;
             envelope.setJSONResponse(response);
@@ -129,29 +124,30 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             envelope.setJSONResponse(response);
             return;
         }
-        // Handle Application Complete state
         if (requestLead.applicationCompleteDate != null && leadToUpdate.Application_Complete_Date__c == null) {
             applicationNowComplete = true;
-            if (requestLead.underwritingCriteria == 'Financial Review') {
-                leadToUpdate.Status = qualificationService.underwriteWithFinancialReview(leadToUpdate);
-            }
-            // Send Zuora callout
-            List<Account> propertyAccounts = accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{requestLead.Id});
-            ZuoraAccountService.createAccounts(propertyAccounts);
+            qualificationService.qualifyLead(leadToUpdate);
         }
-        // Update Lead with fields from PATCH
+
+        // Update Lead, with JSON data from SSF, e.g. fill Application_Complete_Date__c
         requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
         Lead lead = leadService.updateLead(leadToUpdate);
-        // Check & Update "Application Status" if necessary
+
+        // Check & Update "Application Status" field on Lead if necessary
         updateLeadApplicationStatus(lead.Id);
-        // Handle other non-Lead database changes if the application is newly marked as "Application Complete"
-        // Placed last because we want to ensure Lead properly updates before queueing other object changes
+
+        // Handle other Non-Lead changes if the application is newly marked as "Application Complete"
+        // Placed last because we want to ensure Lead properly updates before enqueueing other actions
         if (applicationNowComplete) {
-            UtilityDataRequestBuilder.create(new List<Id>{requestLead.id});
+            UtilityDataRequestBuilder.create(new List<Id>{lead.Id});
  			createAndSendCSPartnerEmail(lead.Id);
             createQCCaseForNoMatchPCR(lead);
         }
-        // Set return envelope
+        if (applicationNowComplete && !lead.No_Payment__c) {
+            // Payment information is captured, setup Zuora account for customer in separate thread
+            ZuoraAccountService.createAccounts(new Set<Id>{lead.Id});
+        }
+
         RestLead responseLead = new RestLead(lead);
         envelope.setData(responseLead);
         response.statusCode = statusCode.ok;
@@ -772,10 +768,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     /**
-     * Updates Lead Application Status based on Lead criteria and specific logic.
-     * <br>
+     * @description Updates Lead Application Status based on Lead criteria and specific logic.
      * Operates similar to a Trigger on Lead.
-     *
      * @param leadId Lead to update
      */
     @SuppressWarnings('PMD.ApexOpenRedirect')

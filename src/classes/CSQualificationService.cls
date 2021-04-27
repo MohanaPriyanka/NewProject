@@ -1,27 +1,50 @@
 /**
  * Created by SarahRenfro on 5/22/2019.
- *
- * Test: CSQualificationTestclass
+ * Tested by: CSQualificationTestclass
  */
-
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CSQualificationService {
     private static SharedSolarSystemsSelector systemsSelector = new SharedSolarSystemsSelector();
     private static CreditReportSelector creditReportSelector = new CreditReportSelector();
     private static Map<Id, Lead> leadMap = new Map<Id, Lead>();
 
-    @TestVisible
-    private  fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+    @TestVisible private  fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<Schema.SObjectType> {
             LASERCA__Personal_Credit_Report__c.SObjectType,
             Lead.SObjectType
         }
     );
 
-    public void checkCreditReportLog(Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap, Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
+    /**
+     * @description Sets the qualification Status for a Lead generated on the SSF platform when the application
+     * is marked as 'Complete'.
+     * <br><br>
+     * NOTE: Qualification for Leads with FICO underwriting is processed by the CreditReportLogTrigger and not
+     * handled in this method. See CSQualificationService.underwriteLeadWithFICO()
+     * @param lead Lead record
+     */
+    public void qualifyLead(Lead lead) {
+        String leadStatus;
+        switch on lead.Underwriting_Criteria__c {
+            when 'Financial Review' {
+                leadStatus = underwriteWithFinancialReview(lead);
+            }
+            when 'None' {
+                SharedSolarSystems qualDomain = new SharedSolarSystems(systemsSelector.getSharedSolarSystemsForEnrollment());
+                leadStatus = qualDomain.checkCSQualification(lead, null);
+            }
+        }
+        lead.Status = leadStatus != null ? leadStatus : lead.Status;
+    }
+
+    /**
+     * @description Run from CreditReportLogTrigger on LASERCA__Credit_Report_Log__c generation to auto-qualify lead
+     * @param triggerNewMap LASERCA__Credit_Report_Log__c Trigger.NEW
+     * @param triggerOldMap LASERCA__Credit_Report_Log__c Trigger.OLD
+     */
+    public void checkCreditReportLog(Map<Id,LASERCA__Credit_Report_Log__c> triggerNewMap, Map<Id,LASERCA__Credit_Report_Log__c> triggerOldMap) {
         Set<Id> pcrIds = new Set<Id>();
         List<LASERCA__Credit_Report_Log__c> errorCRLs = new List<LASERCA__Credit_Report_Log__c>();
-
         List<String> leadIds = new List<String>();
         for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
             leadIds.add(crl.LASERCA__Lead__c);
@@ -30,13 +53,11 @@ public without sharing class CSQualificationService {
             } else {
                 pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
             }
-
         }
         leadMap = new LeadSelector().getLeadMap(leadIds);
         if (errorCRLs.size() > 0 ) {
             handleErrorCRL(errorCRLs[0]);
         }
-
         List<LASERCA__Personal_Credit_Report__c> completedPCRs = creditReportSelector.getCompletedPCRs(pcrIds);
         underwriteLeadWithFICO(completedPCRs);
 
@@ -87,24 +108,28 @@ public without sharing class CSQualificationService {
                 creditScore = Decimal.valueOf(creditReport.LASERCA__Credit_Score__c);
                 closeReportMissingCases(lead);
             }
-
             lead.Status = sharedSolarSystems.checkCSQualification(lead, creditScore);
             uow.registerDirty(lead);
         }
     }
 
-    public String underwriteWithFinancialReview(Lead lead){
-        if( lead == null) {
+    /**
+     * @description Returns the qualification status for a Lead which utilizes Financial Review underwriting
+     * @param lead Lead record
+     * @return String
+     */
+    private String underwriteWithFinancialReview(Lead lead) {
+        Set<Id> financialUnderwritingIds = new Set<Id>();
+        if (lead == null) {
             return null;
         }
-
-        Set<Id> financialUnderwritingIds = new Set<Id>();
         if (lead.Underwrite_Financial_Documents__r != null) {
-            for(Financial_Underwriting_Document__c fud : lead.Underwrite_Financial_Documents__r) {
+            for (Financial_Underwriting_Document__c fud : lead.Underwrite_Financial_Documents__r) {
                 financialUnderwritingIds.add(fud.Id);
             }
         }
 
+        // Verify that we have financial documents to review
         List<ContentDocumentLink> contentDocLinks = new List<ContentDocumentLink>();
         if (!financialUnderwritingIds.isEmpty()) {
             contentDocLinks = [SELECT Id, LinkedEntityId FROM ContentDocumentLink WHERE LinkedEntityId = :financialUnderwritingIds];
@@ -129,7 +154,6 @@ public without sharing class CSQualificationService {
         noMatchPCR.LASERCA__Credit_Score_TransUnion__c = '9999';
         noMatchPCR.LASERCA__Credit_Score__c = '9999';
         uow.registerDirty(noMatchPCR);
-
         if (lead.LeadSource == 'CSAP' || lead.Application_Complete_Date__c != null) {
             createNoMatchFICOCase(lead);
         }
@@ -171,29 +195,19 @@ public without sharing class CSQualificationService {
         MessagingService.ReplacementText detail3 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_3__c}', lead.Credit_Report_Detail_3__c);
         MessagingService.ReplacementText detail4 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_4__c}', lead.Credit_Report_Detail_4__c);
         ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName, creditDate, creditScore, detail1, detail2, detail3, detail4 };
-
-        Messaging.SendEmailResult[] results = MessagingService.sendEmailTemplate(ee);
+        MessagingService.sendEmailTemplate(ee);
     }
 
     public virtual class QualificationMatch {
-        @AuraEnabled
-        public Shared_Solar_System__c sss;
-        @AuraEnabled
-        public Boolean completeMatch = false;
-        @AuraEnabled
-        public Boolean isOpen = false;
-        @AuraEnabled
-        public Boolean hasCapacity = false;
-        @AuraEnabled
-        public Boolean hasLZ = false;
-        @AuraEnabled
-        public Boolean hasPartner = false;
-        @AuraEnabled
-        public Boolean isUnderwritten = false;
-        @AuraEnabled
-        public String eligiblePartners;
-        @AuraEnabled
-        public String underwritingOptions;
+        @AuraEnabled public Shared_Solar_System__c sss;
+        @AuraEnabled public Boolean completeMatch = false;
+        @AuraEnabled public Boolean isOpen = false;
+        @AuraEnabled public Boolean hasCapacity = false;
+        @AuraEnabled public Boolean hasLZ = false;
+        @AuraEnabled public Boolean hasPartner = false;
+        @AuraEnabled public Boolean isUnderwritten = false;
+        @AuraEnabled public String eligiblePartners;
+        @AuraEnabled public String underwritingOptions;
     }
 
     public class QualificationInput {
@@ -230,7 +244,7 @@ public without sharing class CSQualificationService {
         }
 
         private void assignUtilityAndLoadZones(String zipcode) {
-            List<ZipCode_Utility_Junction__c> zipCodeUtilityJunctions = ZipcodeUtilitiesSelector.selectZipcodeUtilitiesAndLoadzones(zipCode);
+            List<ZipCode_Utility_Junction__c> zipCodeUtilityJunctions = ZipcodeUtilitiesSelector.selectZipcodeUtilitiesAndLoadzones(zipcode);
             for (ZipCode_Utility_Junction__c junction : zipCodeUtilityJunctions) {
                 this.utilityIds.add(junction.Utility__c);
             }
@@ -239,8 +253,7 @@ public without sharing class CSQualificationService {
 
         /**
          * @description Evaluates qualifying attributes for each pairing of Lead to SSS. Creates a list
-          * of boolean maps (match Results)  that are used in the CSQualificationTable LWC.
-         *
+         * of boolean maps (match Results)  that are used in the CSQualificationTable LWC.
          */
         public void createQualificationList() {
             SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();

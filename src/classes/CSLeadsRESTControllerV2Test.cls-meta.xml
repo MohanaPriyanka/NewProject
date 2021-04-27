@@ -3,12 +3,12 @@
     <apiVersion>43.0</apiVersion>
     <packageVersions>
         <majorNumber>8</majorNumber>
-        <minorNumber>179</minorNumber>
+        <minorNumber>198</minorNumber>
         <namespace>APXTConga4</namespace>
     </packageVersions>
     <packageVersions>
-        <majorNumber>4</majorNumber>
-        <minorNumber>14</minorNumber>
+        <majorNumber>5</majorNumber>
+        <minorNumber>8</minorNumber>
         <namespace>LASERCA</namespace>
     </packageVersions>
     <status>Active</status>
