@@ -286,6 +286,7 @@ src/package.xml
 *copado__*
 !src/objects/copado__*
 !src/layouts/copado__*
+!src/permissionsets/copado__*
 
 
 # Conga
