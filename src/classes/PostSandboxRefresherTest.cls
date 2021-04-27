@@ -133,17 +133,27 @@ private class PostSandboxRefresherTest {
     }
     @IsTest
     static void testBatchUpdateFailure() {
-        List<Lead> leadList = [SELECT Id, Company
-                               FROM Lead
-                               WHERE Email LIKE '%@email.com'];
-        System.assertEquals(MessagingService.emailsSent, null);
+        System.assertEquals(0, [SELECT Id FROM Error_Log__c WHERE Severity__c = :Logger.ERROR].size(),
+            'Should start with no error logs');
+        List<Lead> leadList = [
+            SELECT Id, Company
+            FROM Lead
+            WHERE Email LIKE '%@email.com'
+        ];
+
         Test.startTest();
         for (Lead lead : leadList) {
             lead.Company = null;
         }
         Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Upsert'));
         Test.stopTest();
-        System.assertEquals(MessagingService.emailsSent.size(), 1);
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Class__c, Method__c, Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(1, errorLogs.size(),
+            'Should have gotten one error log about a failure, but got: ' + JSON.serialize(errorLogs));
     }
     @IsTest
     static void testBatchInsertFailures() {
@@ -151,13 +161,11 @@ private class PostSandboxRefresherTest {
         Lead lead = new Lead(FirstName = 'Test',
                              LastName = 'Tester');
         leadList.add(lead);
-        System.assertEquals(null, MessagingService.emailsSent);
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size());
         Test.startTest();
         Database.executeBatch(new GenericBatchDMLOperation(leadList, 'Insert'));
         Test.stopTest();
-        System.assertEquals(MessagingService.emailsSent.size(), 1);
         errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'GenericBatchDMLOperation' AND Severity__c = :Logger.ERROR];
         System.assertEquals(1, errorLogs.size());
     }

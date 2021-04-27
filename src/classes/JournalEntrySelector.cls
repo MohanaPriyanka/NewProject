@@ -64,7 +64,7 @@ public inherited sharing class JournalEntrySelector {
 
     public List<Journal_Entry__c> getCommissionableEntriesFromToday() {
         return [
-            SELECT Customer_Lookup__r.Id, Customer_Lookup__c
+            SELECT Customer_Lookup__c
             FROM Journal_Entry__c
             WHERE CreatedDate = TODAY
             AND (Object_Type__c = 'InvoiceItem' OR Object_Type__c = 'PaymentPart')
