@@ -34,6 +34,12 @@ public without sharing class CSCancellationScheduler implements Schedulable{
         if (schedule != null) {
             handleAccountsAndOpportunities(schedule.Preview__c, schedule);
         }
+        Logger.logNow(
+            'CSCancellationScheduler',
+            'execute',
+            'CSCancellationScheduler Complete, logging in case this transaction is close to limits',
+            Logger.FINE
+        );
     }
 
     @TestVisible

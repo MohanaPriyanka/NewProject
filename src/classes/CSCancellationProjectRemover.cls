@@ -1,6 +1,7 @@
 /**
  * @description: Handles accounts that have been removed from all projects by updating them and emailing customers they
  * have been fully removed
+ * Tested By: CSCancellationServiceTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class CSCancellationProjectRemover {
