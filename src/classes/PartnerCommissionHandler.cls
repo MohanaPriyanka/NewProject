@@ -190,6 +190,11 @@ public without sharing class PartnerCommissionHandler implements GenericBatchDML
         newService.createCommissionRecords(contractExecution);
     }
 
+    /**
+     * @description Implements the PostBatchOperation interface to create commission payments from Journal Entries, after
+     * Journal Entries are upserted in batch by the ZuoraGLService
+     * @return A Set<Id>, account ids that should be checked for commissionable transactions
+     */
     public Object executePostBatch() {
         List<Journal_Entry__c> commissionableJournalEntries = glSelector.getCommissionableEntriesFromToday();
         Set<Object> multiMapKeys = CollectionUtil.multiMapByField(commissionableJournalEntries, Journal_Entry__c.Customer_Lookup__c).keySet();
