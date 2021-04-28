@@ -26,7 +26,7 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
                 subscriptionManagementService.insertSubscriptionOrdersForTests(Trigger.new);
             }
         } when AFTER_UPDATE {
-            CSCancellationService.handleOpportunitiesRemovedFromProject(Trigger.oldMap, Trigger.newMap);
+            CSCancellationProjectRemover.handleOpportunitiesRemovedFromProject(Trigger.oldMap, Trigger.newMap);
             ClientReportingService.updateClientUAS(Trigger.new, Trigger.oldMap);
         }
     }
