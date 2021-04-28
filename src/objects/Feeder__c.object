@@ -923,6 +923,10 @@ If a new Feeder Utility and Voltage needs to be added:
                 <valueName>National Grid</valueName>
             </valueSettings>
             <valueSettings>
+                <controllingFieldValue>CT</controllingFieldValue>
+                <valueName>United Illuminating</valueName>
+            </valueSettings>
+            <valueSettings>
                 <controllingFieldValue>ME</controllingFieldValue>
                 <valueName>Central Maine Power</valueName>
             </valueSettings>
@@ -1057,57 +1061,6 @@ If a new Feeder Utility and Voltage needs to be added:
         <active>true</active>
         <label>Feeder</label>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>BHE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Capital</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Central</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>East</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Genesee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MPD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mohawk Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>West</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Utility__c</picklist>
             <values>
                 <fullName>Allegheny%2FWest Penn Power Co%2E</fullName>
@@ -1218,11 +1171,66 @@ If a new Feeder Utility and Voltage needs to be added:
                 <default>false</default>
             </values>
             <values>
+                <fullName>United Illuminating</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Versant</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Washington Electric Cooperative</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Load_Zone__c</picklist>
+            <values>
+                <fullName>BHE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>East</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MPD</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

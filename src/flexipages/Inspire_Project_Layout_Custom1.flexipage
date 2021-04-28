@@ -4029,6 +4029,11 @@
                 <fieldItem>Record.Shading_Analysis_Status__c</fieldItem>
             </fieldInstance>
         </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.Dual_Use_Types__c</fieldItem>
+            </fieldInstance>
+        </itemInstances>
         <name>Facet-063c804a-73bc-4caa-9c47-668c4627e064</name>
         <type>Facet</type>
     </flexiPageRegions>
