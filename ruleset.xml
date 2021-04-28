@@ -9,16 +9,44 @@
    <rule ref="category/apex/performance.xml/OperationWithLimitsInLoop" />
 
    <!-- Design -->
+   <!--
+   These three rules are the ones that Copado runs with. Uncomment them to see Copado's results.
+
+   <rule ref="category/apex/design.xml/CyclomaticComplexity"/>
+   <rule ref="category/apex/design.xml/StdCyclomaticComplexity"/>
+   <rule ref="category/apex/design.xml/CognitiveComplexity"/>
+   -->
+   <!--
+   These three rules have a lower threshold than the default to see if we're about to hit the default SCA limit.
+   -->
+   <rule ref="category/apex/design.xml/CyclomaticComplexity" message="The {0} {1} has a {2} cyclomatic complexity of {3} (Reporting >= 30, default >= 40)">
+      <properties>
+         <property name="classReportLevel" value="30" default="40"/>
+         <property name="methodReportLevel" value="8" default="10"/>
+      </properties>
+
+   </rule>
+   <rule ref="category/apex/design.xml/StdCyclomaticComplexity">
+      <properties>
+         <property name="reportLevel" value="8" default="10"/>
+         <property name="showClassesComplexity" value="true" />
+         <property name="showMethodsComplexity" value="true" />
+      </properties>
+   </rule>
+   <rule ref="category/apex/design.xml/CognitiveComplexity" message="The {0} has a {2} cognitive complexity of {3} (Reporting >= 40, default >= 50)">
+      <properties>
+         <property name="classReportLevel" value="40" default="50" />
+         <property name="methodReportLevel" value="10" default="15"/>
+      </properties>
+   </rule>
+
    <rule ref="category/apex/design.xml/AvoidDeeplyNestedIfStmts" deprecated="true" />
    <rule ref="category/apex/design.xml/ExcessiveClassLength" deprecated="true" />
    <rule ref="category/apex/design.xml/ExcessivePublicCount" deprecated="true" />
    <rule ref="category/apex/design.xml/NcssConstructorCount" deprecated="true" />
    <rule ref="category/apex/design.xml/NcssMethodCount" deprecated="true" />
    <rule ref="category/apex/design.xml/NcssTypeCount" deprecated="true" />
-   <rule ref="category/apex/design.xml/CyclomaticComplexity" deprecated="true" />
-   <rule ref="category/apex/design.xml/StdCyclomaticComplexity" deprecated="true" />
    <rule ref="category/apex/design.xml/TooManyFields" deprecated="true" />
-   <rule ref="category/apex/design.xml/CognitiveComplexity" />
 
    <!-- Security -->
    <rule ref="category/apex/security.xml/ApexBadCrypto" deprecated="true" />
@@ -67,7 +95,7 @@
    <rule ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveAsserts" deprecated="true" />
    <rule ref="category/apex/bestpractices.xml/ApexUnitTestShouldNotUseSeeAllDataTrue" deprecated="true" />
    <rule ref="category/apex/bestpractices.xml/UnusedLocalVariable" />
-         
+
    <!-- VF -->
    <rule ref="category/vf/security.xml/VfCsrf" />
    <rule ref="category/vf/security.xml/VfUnescapeEl" />
