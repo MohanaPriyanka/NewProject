@@ -34,6 +34,12 @@ public without sharing class CSCancellationScheduler implements Schedulable{
         if (schedule != null) {
             handleAccountsAndOpportunities(schedule.Preview__c, schedule);
         }
+        Logger.logNow(
+            'CSCancellationScheduler',
+            'execute',
+            'CSCancellationScheduler Complete, logging in case this transaction is close to limits',
+            Logger.FINE
+        );
     }
 
     @TestVisible
@@ -127,15 +133,14 @@ public without sharing class CSCancellationScheduler implements Schedulable{
 
     public String handleAccountsToRemove(Boolean preview) {
         String outputMessage = CSCancellationScheduler.ACCOUNT_REMOVAL_DESCRIPTION;
-        accountsRemovedFromAllProjects = CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate();
+        accountsRemovedFromAllProjects = CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate();
         if (!preview) {
             outputMessage = outputMessage.replace('will get', 'got');
-            accountsRemovedFromAllProjects = CSCancellationService.processAccountsRemovedFromAllProjects(accountsRemovedFromAllProjects);
+            accountsRemovedFromAllProjects = CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(accountsRemovedFromAllProjects);
         }
         for (Account account : accountsRemovedFromAllProjects) {
             outputMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
         }
         return outputMessage;
-
     }
 }

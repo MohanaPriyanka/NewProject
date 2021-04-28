@@ -45,7 +45,7 @@ private class CSCancellationSchedulerTest {
         oppFor236.StageName  = 'Cancelled';
         oppFor236.Date_Removed_from_Project__c = ual.Date_Utility_Account_Cancelled__c;
         update oppFor236;
-        List<Account> accountsToRemoveFromLastProject = CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate();
+        List<Account> accountsToRemoveFromLastProject = CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate();
         System.assertEquals(1, accountsToRemoveFromLastProject.size(),
             'Expected one Account to be ready to be marked with a Removed From Project date');
         System.assertEquals(oppFor236.AccountId, accountsToRemoveFromLastProject[0].Id,

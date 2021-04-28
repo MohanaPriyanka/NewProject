@@ -152,7 +152,7 @@ public without sharing class CSCancellationService {
         return createCSEmail(account, template, subject, new Map<String, String>{'{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName});
     }
 
-    private static Messaging.SingleEmailMessage createCSEmail(Account account, String template, String subject, Map<String, String> replacements) {
+    public static Messaging.SingleEmailMessage createCSEmail(Account account, String template, String subject, Map<String, String> replacements) {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
         mail.setSubject(subject);
@@ -269,132 +269,6 @@ public without sharing class CSCancellationService {
         return oppsToCancel;
     }
 
-    // W-008424: When ALL UASes with a Schedule Z Subscription have a "Date Removed from Project" (which is set when
-    // Ops marks a Utility Account Log as Finaled or a customer has cancelled), we want to update the latest
-    // Date Removed from Project on the Account and confirm with the removal with the customer.
-    // W-013146: Keep track of Opportunities removed from projects, since we may have Inactive UASes that are just waiting
-    // to be put on a project that should prevent an account from being marked as removed.
-    public static void handleOpportunitiesRemovedFromProject(Map<Id, Utility_Account_Subscription__c> oldMap, Map<Id, Utility_Account_Subscription__c> newMap) {
-        Set<Id> oppIdsToCheckForRemoval = new Set<Id>();
-        for (Utility_Account_Subscription__c uas : newMap.values()) {
-            if (oldMap.get(uas.Id).Date_Removed_from_Project__c == null && uas.Date_Removed_from_Project__c != null ||
-                oldMap.get(uas.Id).Next_Schedule_Z_Status__c != uas.Next_Schedule_Z_Status__c ||
-                oldMap.get(uas.Id).Transferring_Subsc_to_Another_UAS__c != uas.Transferring_Subsc_to_Another_UAS__c) {
-                oppIdsToCheckForRemoval.add(uas.Opportunity__c);
-            }
-        }
-        List<Opportunity> oppsWithRemovedUASes = OpportunitiesSelector.selectAllCompleteCSWithUASes(oppIdsToCheckForRemoval);
-        List<Opportunity> oppsToUpdate = new List<Opportunity>();
-        for (Opportunity opp : oppsWithRemovedUASes) {
-            Date dateRemovedFromLastProject = null;
-            if (!Opportunities.anyEnactedUASes(opp) ||
-                Opportunities.hasActiveUASes(opp) ||
-                !Opportunities.allEnactedUASesAreRemoved(opp) ||
-                Opportunities.allUASesTransferring(opp)) {
-                continue;
-            }
-            for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
-                dateRemovedFromLastProject = DateUtil.max(dateRemovedFromLastProject, uas.Date_Removed_from_Project__c);
-            }
-            if (opp.Date_Removed_from_Project__c != dateRemovedFromLastProject) {
-                opp.Date_Removed_from_Project__c = dateRemovedFromLastProject;
-                oppsToUpdate.add(opp);
-            }
-        }
-        update oppsToUpdate;
-    }
-
-
-    public static List<Account> processAccountsRemovedFromAllProjects(List<Account> acctsReadyForCancellation) {
-        Map<Id, Messaging.SingleEmailMessage> confirmationEmailMap = new Map<Id, Messaging.SingleEmailMessage>();
-
-        for (Account acct : acctsReadyForCancellation) {
-            if (!confirmationEmailMap.containsKey(acct.Id)) {
-                String utilityAccountNumbers = getRemovedUtilityAccountNumbers(acct);
-                Datetime dateRemovedDT = Datetime.newInstance(
-                    acct.Date_Removed_from_Project__c.year(),
-                    acct.Date_Removed_from_Project__c.month(),
-                    acct.Date_Removed_from_Project__c.day()
-                );
-                String dateRemoved = dateRemovedDT.format('MM/dd/yyyy');
-                try {
-                    confirmationEmailMap.put(
-                        acct.Id,
-                        createCSEmail(
-                            acct,
-                            'CS_Project_Removal_Confirmation',
-                            'Subscription Removal Confirmation',
-                            new Map<String, String>{
-                                '{!Contact.FirstName}' => acct.Send_Bills_Contact__r.FirstName,
-                                '{!Date_Removed_from_Project__c}' => dateRemoved,
-                                '{!Utility_Account_Numbers}' => utilityAccountNumbers
-                            }
-                        )
-                    );
-                } catch (Util.BWException bwe) {
-                    Logger.logLater('CSCancellationService', 'processAccountsRemovedFromAllProjects', bwe.getMessage());
-                }
-            }
-        }
-
-        if (!acctsReadyForCancellation.isEmpty()){
-            update acctsReadyForCancellation;
-            sendCancellationEmails(confirmationEmailMap.values());
-            Logger.flushLogs();
-        }
-        return acctsReadyForCancellation;
-    }
-
-    @TestVisible
-    private static String getRemovedUtilityAccountNumbers(Account acct) {
-        Set<String> utilityAccounts = new Set<String>();
-        for (Utility_Account_Log__c ual : acct.Utility_Account_Logs__r) {
-            if (ual.Number_of_Removed_UASes__c > 0) {
-                utilityAccounts.add(ual.Name);
-            }
-        }
-        // foo,bar should read "foo and bar"
-        // foo,bar,baz should read "foo, bar, and baz"
-        String utilityAccountNumbers = String.join(new List<String>(utilityAccounts), ',');
-        if (utilityAccountNumbers.countMatches(',') == 1) {
-            utilityAccountNumbers = utilityAccountNumbers.replace(',', ' and ');
-        } else if (utilityAccountNumbers.countMatches(',') > 1) {
-            utilityAccountNumbers =
-                utilityAccountNumbers.substring(0, utilityAccountNumbers.lastIndexOf(',')) + ' and ' +
-                    utilityAccountNumbers.substring(utilityAccountNumbers.lastIndexOf(',')+1);
-            utilityAccountNumbers = utilityAccountNumbers.replace(',', ', ');
-        }
-        return utilityAccountNumbers;
-    }
-
-    public static List<Account> getAccountsRemovedFromAllProjectsWithUpdatedDate() {
-        List<Account> csAccounts = AccountsSelector.selectCSNotRemoved();
-        return getAccountsWithDateRemovedSet(csAccounts);
-    }
-
-    @TestVisible
-    private static List<Account> getAccountsWithDateRemovedSet(List<Account> csAccounts) {
-        List<Account> accountsToCancel = new List<Account>();
-        for (Account account : csAccounts) {
-            Boolean isRemoved = true;
-            Date latestDateRemoved = null;
-            for (Opportunity opp : account.Opportunities) {
-                if (isActive(opp)) {
-                    isRemoved = false;
-                    break;
-                } else {
-                    latestDateRemoved = DateUtil.max(latestDateRemoved, opp.Date_Removed_from_Project__c);
-                }
-            }
-            // latestDateRemoved can be null if there aren't any active opps (e.g. DUPLICATE) and none of them have
-            // been removed. In this case, we don't want to cancel the account - it was never on a project.
-            if (isRemoved && latestDateRemoved != null) {
-                account.Date_Removed_from_Project__c = latestDateRemoved;
-                accountsToCancel.add(account);
-            }
-        }
-        return accountsToCancel;
-    }
 
     private static Boolean isActive(Opportunity opp) {
         return (opp.StageName != 'Cancelled' &&
@@ -472,7 +346,7 @@ public without sharing class CSCancellationService {
         }
     }
 
-    private static void sendCancellationEmails(List<Messaging.SingleEmailMessage> emails) {
+    public static void sendCancellationEmails(List<Messaging.SingleEmailMessage> emails) {
         if (Util.getSystemPropertyCheckbox('Send_CS_Cancellation_Emails__c')) {
             MessagingService.sendEmail(emails);
         } else {
