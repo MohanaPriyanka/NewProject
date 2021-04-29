@@ -127,16 +127,6 @@ public without sharing class Util {
         return 'https://' + d.Domain + '/' + n.UrlPathPrefix;
     }
 
-    // Because Math.min and Math.max only supports two arguments
-    public static Decimal min(List<Decimal> decimalValues) {
-        decimalValues.sort();
-        return(decimalValues[0]);
-    }
-    public static Decimal max(List<Decimal> decimalValues) {
-        decimalValues.sort();
-        return(decimalValues[decimalValues.size()-1]);
-    }
-
     // Converts string rounding method to System.RoundingMode
     public static Decimal roundValue(Decimal valueToRound, Integer numPlaces, String roundMethod) {
         Decimal newvalue;
@@ -210,11 +200,11 @@ public without sharing class Util {
     public class FatalBWException extends Exception {}
     public class AuthorizationBWException extends Exception {}
 
-    public static String removeSpecialCharacters(String value) {
+    private static String removeSpecialCharacters(String value) {
         return value.replaceAll('(?i)[^a-z0-9 ._]', '');
     }
 
-    public static String removeNewLine(String value) {
+    private static String removeNewLine(String value) {
         return value.replaceAll('\n', '');
     }
 
@@ -279,38 +269,6 @@ public without sharing class Util {
             }
         }
         upsert property;
-    }
-
-    public static String obscureText(String text, Integer trailingCharacters) {
-        Integer length = text.length();
-        if (length < trailingCharacters) {
-            trailingCharacters = length;
-        }
-        String remainingCharacters = text.substring(length - trailingCharacters);
-        String obscuredText = '';
-        for (Integer i = 0; i < (length - trailingCharacters); i++) {
-            obscuredText += '*';
-        }
-        obscuredText += remainingCharacters;
-        return obscuredText;
-    }
-
-    public static void reparentAttachments(List<Attachment> attachmentsToReparent, Id newParentId) {
-        List<Attachment> reparentedAttachments = new List<Attachment>();
-        for (Attachment attachment : attachmentsToReparent) {
-            reparentedAttachments.add(new Attachment(
-                Name = attachment.Name,
-                Body = attachment.Body,
-                parentId = newParentId,
-                ContentType = attachment.ContentType,
-                Description = attachment.Description
-            ));
-        }
-
-        if (!reparentedAttachments.isEmpty()) {
-            insert reparentedAttachments;
-            delete attachmentsToReparent;
-        }
     }
 
     // Checkboxes can be null, but this should only return true or false.

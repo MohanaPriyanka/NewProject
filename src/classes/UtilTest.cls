@@ -90,14 +90,6 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    private static void testMinAndMax() {
-        List<Decimal> listOfNumbers = new List<Decimal>{12,342,1,342,-12,10000};
-
-        System.assertEquals(-12, Util.min(listOfNumbers));
-        System.assertEquals(10000, Util.max(listOfNumbers));
-    }
-
-    @IsTest
     private static void testPrintLimits() {
         Boolean errorCaught = false;
         try {
@@ -187,75 +179,6 @@ public with sharing class UtilTest {
         Util.disableAllTriggers();
         System.assertEquals(true, Util.isDisabled('Disable_LoanTrigger__c'));
         System.assertEquals(true, Util.isDisabled('Disable_LeadTrigger__c'));
-    }
-
-    @IsTest
-    private static void testObscureText() {
-        String textToObscure = 'secret1234';
-        String expectedAll = '**********';
-        String expectedLast1 = '*********4';
-        String expectedLast2 = '********34';
-        String expectedLast3 = '*******234';
-        String expectedLast4 = '******1234';
-        String expectedSameAsLength = 'secret1234';
-
-        System.assertEquals(expectedAll, Util.obscureText(textToObscure, 0));
-        System.assertEquals(expectedLast1, Util.obscureText(textToObscure, 1));
-        System.assertEquals(expectedLast2, Util.obscureText(textToObscure, 2));
-        System.assertEquals(expectedLast3, Util.obscureText(textToObscure, 3));
-        System.assertEquals(expectedLast4, Util.obscureText(textToObscure, 4));
-        System.assertEquals(expectedSameAsLength, Util.obscureText(textToObscure, textToObscure.length()));
-        System.assertEquals(expectedSameAsLength, Util.obscureText(textToObscure, 9999));
-    }
-
-    @IsTest
-    private static void testReparentAttachment() {
-        Lead residentialLead = new Lead(
-            LastName = 'testcase',
-            Company = 'Util'
-        );
-        insert residentialLead;
-
-        Attachment bill = new Attachment(
-            Name = 'file.pdf',
-            Body = Blob.valueOf('body'),
-            ParentId = residentialLead.Id,
-            Description = 'Electric Bill'
-        );
-        Attachment notBill = new Attachment(
-            Name = 'file.pdf',
-            Body = Blob.valueOf('body'),
-            ParentId = residentialLead.Id,
-            Description = 'Other Document'
-        );
-
-        List<Attachment> newLeadAttachments = new List<Attachment>{bill, notBill};
-
-        insert newLeadAttachments ;
-
-        Utility_Account_Log__c utilityAccountLog = new Utility_Account_Log__c(
-            Name = 'testLeadAttachmentsMovedToUAL',
-            Lead__c = residentialLead.Id
-        );
-
-        insert utilityAccountLog;
-
-        Util.reparentAttachments(newLeadAttachments , utilityAccountLog.Id);
-
-        List<Attachment> leadAttachments = [
-            SELECT Name, Description
-            FROM Attachment
-            WHERE ParentId = : utilityAccountLog.Lead__c
-        ];
-
-        List<Attachment> ualAttachments = [
-            SELECT Name, Description
-            FROM Attachment
-            WHERE ParentId = : utilityAccountLog.Id
-        ];
-
-        System.assertEquals(0, leadAttachments.size());
-        System.assertEquals(2, ualAttachments.size());
     }
 
     @IsTest
