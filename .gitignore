@@ -385,8 +385,8 @@ src/package.xml
 !src/objectTranslations/*
 
 ##If we want to promote matching and duplicate rules for installed packages, we can't ignore them.
-!src/DuplicateRule/*
-!src/MatchingRule/*
+!src/duplicateRules/*
+!src/matchingRules/*
 
 
 #profiles and permission sets are complex Files. If your Org's 
