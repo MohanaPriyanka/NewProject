@@ -131,6 +131,11 @@
         <label>SCE&amp;G</label>
     </customValue>
     <customValue>
+        <fullName>United Illuminating</fullName>
+        <default>false</default>
+        <label>United Illuminating</label>
+    </customValue>
+    <customValue>
         <fullName>Versant</fullName>
         <default>false</default>
         <label>Versant</label>

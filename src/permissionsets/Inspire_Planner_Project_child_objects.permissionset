@@ -987,6 +987,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>inspire1__Project__c.Dual_Use_Types__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>inspire1__Project__c.Due_Diligence_Stage__c</field>
         <readable>true</readable>
@@ -1364,11 +1369,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>inspire1__Project__c.Landowner_Consent_Received_by_Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>inspire1__Project__c.Lead_Originated_By__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
