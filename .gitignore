@@ -384,6 +384,10 @@ src/package.xml
 #If we want to promote tab changes for installed pacakges, we can't ignore them.
 !src/objectTranslations/*
 
+##If we want to promote matching and duplicate rules for installed packages, we can't ignore them.
+!src/DuplicateRule/*
+!src/MatchingRule/*
+
 
 #profiles and permission sets are complex Files. If your Org's 
 #metadata and Git are in sync, you can track incremental changes on 
