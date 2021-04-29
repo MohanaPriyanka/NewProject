@@ -83,31 +83,6 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    private static void testGetActiveProducts() {
-        LoanTestRecordWarehouse.partnerSetup();
-        insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
-        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
-        Product2 product = [
-            SELECT Id, Name, Product_Type__c, Program__c, State__c,
-                Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c
-            FROM Product2
-            WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 6.49% (Low FICO)'
-            AND Require_Junctions_to_Enable__c = TRUE
-            LIMIT 1
-        ];
-        // Let the product be seen by getActiveProducts below...
-        product.Hide_in_Requested_Product__c = false;
-        update product;
-        Partner_Product_Junction__c ppj = new Partner_Product_Junction__c(Enabled_Product__c = product.Id,
-            Partner__c = partner.Id);
-        insert ppj;
-
-        System.assertEquals(8, Util.getActiveProducts(new List<String>{
-            'MA'
-        }, partner.Id, 'Residential Loan').size());
-    }
-
-    @IsTest
     private static void testGetCommunitySiteURL() {
         String siteURL = Util.getCommunitySiteURL('Apply');
         System.assert(siteURL.contains('bluewavememberportal'), 'Should contain link to BlueWave Member Portal');

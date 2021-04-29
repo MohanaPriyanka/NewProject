@@ -241,7 +241,7 @@ private class PostSandboxRefresherTest {
         List<Partner__c> partners = [
             SELECT Id, Name
             FROM Partner__c
-            WHERE Name = 'BlueWave Test Partner'
+            WHERE Name = 'Solar Test Partner'
         ];
         System.assertEquals(1, partners.size());
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
@@ -259,13 +259,7 @@ private class PostSandboxRefresherTest {
         ];
         System.assertEquals(1, partnerAccounts.size());
     }
-    @IsTest
-    static void testDataSetupForReportTest() {
-        PostSandboxRefresher.setupDataForReportTest();
-        List<Lead> leads = [SELECT Id FROM Lead WHERE LastName = 'TestLightningReports'];
-        // Should be one lead set up by the setup method
-        System.assertEquals(1, leads.size());
-    }
+
     @IsTest
     static void testGenericBatchDMLTriggerOff() {
         List<Error_Log__c> triggerOffWarning = [

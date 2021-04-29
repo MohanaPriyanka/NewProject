@@ -147,24 +147,51 @@ public without sharing class CSRecordLoader extends Promise {
             Shared_Solar_System__c sss2 = getSolarSystem('Project B Main St', '2', clientAccount, eversizeNMC, normalCSProduct, entity2, eversource);
             Shared_Solar_System__c sss3 = getSolarSystem('Project C Second St', '3', clientAccount, eversizeNMC, normalSRECProduct, entity2, eversource);
             Shared_Solar_System__c sss4 = getSolarSystem('Project D Dee St', '4', clientAccount, nationalGridNMC, normalSRECProduct, entity2, nationalGrid);
-            Shared_Solar_System__c sss5 = getSolarSystem('Project E Dog St', '5', clientAccount, nationalGridNMC, normalCSProduct, entity2, nationalGrid);
+            Shared_Solar_System__c sss5 = getSolarSystem('Project E UCB', '5', clientAccount, nationalGridNMC, normalCSProduct, entity2, nationalGrid);
+            sss5.UCB__c = true;
             List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5};
             insert sharedSolarSystems;
-            List<Account> partners = [SELECT Id FROM Account WHERE RecordType.Name = 'Partner Account'];
-            List<Partner_Shared_Solar_System_Eligibility__c> partnerSharedSolarSystemEligibilities =
-                new List<Partner_Shared_Solar_System_Eligibility__c>();
+            Default_Utility_Fee__c ucbAdminFee = new Default_Utility_Fee__c(
+                Utility__c = nationalGrid.Id,
+                Description__c = 'UCB Admin Fee',
+                Type__c = 'UCB',
+                Method_for_UCB_Utility_Admin__c = 'Calculated Credits',
+                Start_Date__c = Date.today().addMonths(-1),
+                End_Date__c = Date.today().addYears(1),
+                Utility_Admin_Fee__c = .1
+            );
+            insert ucbAdminFee;
+            List<Account> partners = [SELECT Id, Name, Partner__c FROM Account WHERE RecordType.Name = 'Partner Account'];
+            fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+                new List<SObjectType>{
+                    Commission_Structure__c.SObjectType,
+                    Partner_Shared_Solar_System_Eligibility__c.SObjectType
+                }
+            );
             for (Shared_Solar_System__c sss : sharedSolarSystems) {
                 for (Account partner : partners) {
-                    partnerSharedSolarSystemEligibilities.add(
+                    Commission_Structure__c commissionStructure = new Commission_Structure__c(
+                        Name = partner.Name + ' $.06 / $.02',
+                        Cents_kW_DC_Up_Front__c = .06,
+                        Cents_kW_DC_First_Bill__c = 0,
+                        Cents_kW_DC_First_Bill_Paid__c = .02,
+                        Partner__c = partner.Partner__c,
+                        Partner_Account__c = partner.Id,
+                        Product__c = sss.Product__c,
+                        CreatedDate = csDataDate
+                    );
+                    uow.registerNew(commissionStructure);
+                    Partner_Shared_Solar_System_Eligibility__c eligibility =
                         new Partner_Shared_Solar_System_Eligibility__c(
                             Shared_Solar_System__c = sss.Id,
                             Account__c = partner.Id,
-                            Start_Date__c = Date.newInstance(2020,1,1)
-                        )
-                    );
+                            Start_Date__c = Date.newInstance(2020,1,1),
+                            CreatedDate = csDataDate
+                        );
+                    uow.registerNew(eligibility, Partner_Shared_Solar_System_Eligibility__c.Commission_Structure__c, commissionStructure);
                 }
             }
-            insert partnerSharedSolarSystemEligibilities;
+            uow.commitWork();
         }
 
         @TestVisible private void insertTariffsForProduct(Id productId, Id eversourceId, Id nationalGridId) {
@@ -364,10 +391,9 @@ public without sharing class CSRecordLoader extends Promise {
         }
         public override void execute() {
             try {
-                Util.enableAllTriggers();
                 innerExecute();
             } catch (Exception e) {
-                Logger.logLater('TransferHelper', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+                Logger.logNow('TransferHelper', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
             }
         }
         private void innerExecute() {
@@ -381,7 +407,7 @@ public without sharing class CSRecordLoader extends Promise {
             Date threeMonthsAgo = today.addMonths(-3);
             Date twoMonthsAgo = today.addMonths(-2);
             Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
-                Name = '2016 - sssA',
+                Name = sssList[0].Name + ' ' + (Date.today()-90).format(),
                 Shared_Solar_System__c = sssList[0].Id,
                 Status__c = 'Billing',
                 Date_Enacted_by_Utility__c = Date.today()-90,
@@ -389,7 +415,7 @@ public without sharing class CSRecordLoader extends Promise {
             );
             insert scheduleZ1;
             Schedule_Z__c scheduleZ2 = new Schedule_Z__c(
-                Name = '2016 - sssB',
+                Name = sssList[1].Name + ' ' + (Date.today()-90).format(),
                 Shared_Solar_System__c = sssList[1].Id,
                 Status__c = 'Billing',
                 Date_Enacted_by_Utility__c = Date.today()-90,
@@ -397,20 +423,20 @@ public without sharing class CSRecordLoader extends Promise {
             );
             insert scheduleZ2;
             Bill_Period__c bpA = new Bill_Period__c(
-                Name = 'sssA - August 2016',
+                Name = sssList[0].Name + ' - ' + threeMonthsAgo.format(),
                 Shared_Solar_System__c = sssList[0].Id,
                 Bill_Date__c = threeMonthsAgo,
                 CreatedDate = csDataDate
             );
             Bill_Period__c bpB = new Bill_Period__c(
-                Name = 'sssB - August 2016',
+                Name = sssList[1].Name + ' - ' + threeMonthsAgo.format(),
                 Shared_Solar_System__c = sssList[1].Id,
                 Bill_Date__c = threeMonthsAgo,
                 CreatedDate = csDataDate
             );
             insert new List<Bill_Period__c>{bpB, bpA};
             Production__c prodA = new Production__c(
-                Name = 'sssA August Production',
+                Name = sssList[0].Name + ' Production ' + threeMonthsAgo.format(),
                 Shared_Solar_System__c = sssList[0].Id,
                 Start_Date__c = threeMonthsAgo,
                 End_Date__c = twoMonthsAgo,
@@ -419,7 +445,7 @@ public without sharing class CSRecordLoader extends Promise {
                 CreatedDate = csDataDate
             );
             Production__c prodB = new Production__c(
-                Name = 'sssB August Production',
+                Name = sssList[1].Name + ' Production ' + threeMonthsAgo.format(),
                 Shared_Solar_System__c = sssList[1].Id,
                 Start_Date__c = threeMonthsAgo,
                 End_Date__c = twoMonthsAgo,
@@ -429,7 +455,7 @@ public without sharing class CSRecordLoader extends Promise {
             );
             insert new List<Production__c>{prodB, prodA};
             Transfer__c transferA = new Transfer__c(
-                Name = 'Main Transfer - sssA August',
+                Name = sssList[0].Name + ' Main Transfer - ' + threeMonthsAgo.format(),
                 Bill_Period__c = bpA.Id,
                 Bill_By__c = 'UASB',
                 Date_of_Transfer__c = twoMonthsAgo,
@@ -443,7 +469,7 @@ public without sharing class CSRecordLoader extends Promise {
                 CreatedDate = csDataDate
             );
             Transfer__c transferB = new Transfer__c(
-                Name = 'Main Transfer - sssB August',
+                Name = sssList[1].Name + ' Main Transfer - ' + threeMonthsAgo.format(),
                 Bill_Period__c = bpB.Id,
                 Bill_By__c = 'UASB',
                 Date_of_Transfer__c = twoMonthsAgo,
@@ -460,12 +486,14 @@ public without sharing class CSRecordLoader extends Promise {
             TransferPartService transferPartService = new TransferPartService();
             transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA, transferB});
 
-            BillGenerationAsyncService ee = new BillGenerationAsyncService(new List<Bill_Period__c>{bpA, bpB});
+            generateUASBsForUCB(transferA);
+            BillGenerationAsyncService ee = new BillGenerationAsyncService(new List<Bill_Period__c>{bpB});
             ee.executeBatchJob();
             if (!Test.isRunningTest()) {
                 callTransferHelper2Future(JSON.serialize(csDataSetting));
             }
         }
+
     }
     // Because the AllocationScheduleService is queued to run, we can't also directly queue the TransferHelper2 class,
     // so we'll use a future method to queue it.
@@ -483,7 +511,7 @@ public without sharing class CSRecordLoader extends Promise {
             try {
                 innerExecute();
             } catch (Exception e) {
-                Logger.logLater('TransferHelper2', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+                Logger.logNow('TransferHelper2', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
             }
         }
         private void innerExecute() {
@@ -496,23 +524,23 @@ public without sharing class CSRecordLoader extends Promise {
             Date today = Date.today();
             Date twoMonthsAgo = today.addMonths(-2);
             Date oneMonthAgo = today.addMonths(-1);
-            Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssA'];
-            Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssB'];
+            Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = :(sssList[0].Name + ' ' + (Date.today()-90).format())];
+            Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = :(sssList[1].Name + ' ' + (Date.today()-90).format())];
             Bill_Period__c bpA = new Bill_Period__c(
-                Name = 'sssA - September 2016',
+                Name = sssList[0].Name + ' - ' + twoMonthsAgo.format(),
                 Shared_Solar_System__c = sssList[0].Id,
                 Bill_Date__c = twoMonthsAgo,
                 CreatedDate = csDataDate
             );
             Bill_Period__c bpB = new Bill_Period__c(
-                Name = 'sssB - September 2016',
+                Name = sssList[1].Name + ' - ' + twoMonthsAgo.format(),
                 Shared_Solar_System__c = sssList[1].Id,
                 Bill_Date__c = twoMonthsAgo,
                 CreatedDate = csDataDate
             );
             insert new List<Bill_Period__c>{bpB, bpA};
             Production__c prodA = new Production__c(
-                Name = 'sssA September Production',
+                Name = sssList[0].Name + ' Production ' + twoMonthsAgo.format(),
                 Shared_Solar_System__c = sssList[0].Id,
                 Start_Date__c = twoMonthsAgo,
                 End_Date__c = oneMonthAgo,
@@ -521,7 +549,7 @@ public without sharing class CSRecordLoader extends Promise {
                 CreatedDate = csDataDate
             );
             Production__c prodB = new Production__c(
-                Name = 'sssB September Production',
+                Name = sssList[1].Name + ' Production ' + twoMonthsAgo.format(),
                 Shared_Solar_System__c = sssList[1].Id,
                 Start_Date__c = twoMonthsAgo,
                 End_Date__c = oneMonthAgo,
@@ -531,7 +559,7 @@ public without sharing class CSRecordLoader extends Promise {
             );
             insert new List<Production__c>{prodB, prodA};
             Transfer__c transferA = new Transfer__c(
-                Name = 'Main Transfer - sssA September',
+                Name = sssList[0].Name + ' Main Transfer - ' + twoMonthsAgo.format(),
                 Bill_Period__c = bpA.Id,
                 Bill_By__c = 'UASB',
                 Date_of_Transfer__c = oneMonthAgo,
@@ -545,7 +573,7 @@ public without sharing class CSRecordLoader extends Promise {
                 CreatedDate = csDataDate
             );
             Transfer__c transferB = new Transfer__c(
-                Name = 'Main Transfer - sssB September',
+                Name = sssList[1].Name + ' Main Transfer - ' + twoMonthsAgo.format(),
                 Bill_Period__c = bpB.Id,
                 Bill_By__c = 'UASB',
                 Date_of_Transfer__c = oneMonthAgo,
@@ -561,7 +589,8 @@ public without sharing class CSRecordLoader extends Promise {
             insert new List<Transfer__c>{transferB, transferA};
             TransferPartService transferPartService = new TransferPartService();
             transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA, transferB});
-            BillGenerationAsyncService ee = new BillGenerationAsyncService(new List<Bill_Period__c>{bpA, bpB});
+            generateUASBsForUCB(transferA);
+            BillGenerationAsyncService ee = new BillGenerationAsyncService(new List<Bill_Period__c>{bpB});
             ee.executeBatchJob();
             if (!Test.isRunningTest()) {
                 callTransferHelper3Future(JSON.serialize(csDataSetting));
@@ -582,7 +611,7 @@ public without sharing class CSRecordLoader extends Promise {
             try {
                 innerExecute();
             } catch (Exception e) {
-                Logger.logLater('TransferHelper3', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+                Logger.logNow('TransferHelper3', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
             }
         }
         private void innerExecute() {
@@ -594,23 +623,23 @@ public without sharing class CSRecordLoader extends Promise {
             ];
             Date today = Date.today();
             Date oneMonthAgo = today.addMonths(-1);
-            Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssA'];
-            Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssB'];
+            Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = :(sssList[0].Name + ' ' + (Date.today()-90).format())];
+            Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = :(sssList[1].Name + ' ' + (Date.today()-90).format())];
             Bill_Period__c bpA = new Bill_Period__c(
-                Name = 'sssA - October 2016',
+                Name = sssList[0].Name + ' - ' + oneMonthAgo.format(),
                 Shared_Solar_System__c = sssList[0].Id,
                 Bill_Date__c = oneMonthAgo,
                 CreatedDate = csDataDate
             );
             Bill_Period__c bpB = new Bill_Period__c(
-                Name = 'sssB - October 2016',
+                Name = sssList[1].Name + ' - ' + oneMonthAgo.format(),
                 Shared_Solar_System__c = sssList[1].Id,
                 Bill_Date__c = oneMonthAgo,
                 CreatedDate = csDataDate
             );
             insert new List<Bill_Period__c>{bpB, bpA};
             Production__c prodA = new Production__c(
-                Name = 'sssA October Production',
+                Name = sssList[0].Name + ' Production ' + oneMonthAgo.format(),
                 Shared_Solar_System__c = sssList[0].Id,
                 Start_Date__c = oneMonthAgo,
                 End_Date__c = oneMonthAgo.addMonths(1),
@@ -620,7 +649,7 @@ public without sharing class CSRecordLoader extends Promise {
             );
 
             Production__c prodB = new Production__c(
-                Name = 'sssB October Production',
+                Name = sssList[1].Name + ' Production ' + oneMonthAgo.format(),
                 Shared_Solar_System__c = sssList[1].Id,
                 Start_Date__c = oneMonthAgo,
                 End_Date__c = oneMonthAgo.addMonths(1),
@@ -630,7 +659,7 @@ public without sharing class CSRecordLoader extends Promise {
             );
             insert new List<Production__c>{prodB, prodA};
             Transfer__c transferA = new Transfer__c(
-                Name = 'Main Transfer - sssA October',
+                Name = sssList[0].Name + ' Main Transfer - ' + oneMonthAgo.format(),
                 Bill_Period__c = bpA.Id,
                 Bill_By__c = 'UASB',
                 Date_of_Transfer__c = oneMonthAgo.addMonths(1),
@@ -644,7 +673,7 @@ public without sharing class CSRecordLoader extends Promise {
                 CreatedDate = csDataDate
             );
             Transfer__c transferB = new Transfer__c(
-                Name = 'Main Transfer - sssB October',
+                Name = sssList[1].Name + ' Main Transfer - ' + oneMonthAgo.format(),
                 Bill_Period__c = bpB.Id,
                 Bill_By__c = 'UASB',
                 Date_of_Transfer__c = oneMonthAgo.addMonths(1),
@@ -660,7 +689,8 @@ public without sharing class CSRecordLoader extends Promise {
             insert new List<Transfer__c>{transferB, transferA};
             TransferPartService transferPartService = new TransferPartService();
             transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA, transferB});
-            BillGenerationAsyncService ee = new BillGenerationAsyncService(new List<Bill_Period__c>{bpA, bpB});
+            generateUASBsForUCB(transferA);
+            BillGenerationAsyncService ee = new BillGenerationAsyncService(new List<Bill_Period__c>{bpB});
             ee.executeBatchJob();
         }
     }
@@ -724,12 +754,12 @@ public without sharing class CSRecordLoader extends Promise {
         );
         return ualog1;
     }
-    private static Opportunity getOpportunity(String accountName1, Account propAccount1, Shared_Solar_System__c sss) {
+    private static Opportunity getOpportunityInQC(String accountName1, Account propAccount1, Shared_Solar_System__c sss) {
         Opportunity opportunity1 = new Opportunity(
             Name = accountName1,
             AccountId = propAccount1.Id,
             Shared_Solar_System__c = sss.Id,
-            StageName = 'Complete',
+            StageName = 'QC In Process',
             Customer_Group__c = 'Residential',
             Product__c = sss.Product__r.Id,
             CloseDate = System.today(),
@@ -828,13 +858,18 @@ public without sharing class CSRecordLoader extends Promise {
         List<Opportunity> opportunities = new List<Opportunity>();
         for (Integer i = 0; i < names.size(); i++) {
             if (i == 0) {
-                opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
-                opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex == 0 ? 1 : 0]));
+                opportunities.add(getOpportunityInQC(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
+                opportunities.add(getOpportunityInQC(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex == 0 ? 1 : 0]));
             } else {
-                opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
+                opportunities.add(getOpportunityInQC(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
             }
         }
         insert setOpportunityPartner(opportunities);
+        // To generate commissions, we need to update opps to Complete (not create them as complete)
+        for (Opportunity opp : opportunities) {
+            opp.StageName = 'Complete';
+        }
+        update opportunities;
         return opportunities;
     }
     private static void insertSubscriptions(List<CustomerName> names, List<Utility_Account_Log__c> uals, List<Opportunity> opportunities) {
@@ -846,6 +881,25 @@ public without sharing class CSRecordLoader extends Promise {
         }
         uow.commitWork();
     }
+
+    public static void generateUASBsForUCB(Transfer__c transferA) {
+        Transfer__c transfer = new TransferSelector().getTransferById(transferA.Id);
+        List<UASB__c> uasbs = BillGenerationService.calculateUASBsFromTransfer(
+            transfer, BillGenerationService.BillType.ONTIME
+        );
+        List<TransferSheetService.UASBWithStatus> uasbWithStatuses = new List<TransferSheetService.UASBWithStatus>();
+        for (UASB__c uasb : uasbs) {
+            TransferSheetService.UASBWithStatus lineItem = new TransferSheetService.UASBWithStatus();
+            lineItem.sfUASB = uasb;
+            lineItem.status = 'MATCH';
+            lineItem.utilUASB = new UASB__c(Credits_Allocated__c = 125.15);
+            uasbWithStatuses.add(lineItem);
+        }
+        TransferSheetService.handleTransferSheetResolutions(JSON.serialize(uasbWithStatuses), new List<String>{
+            '{"uniqueid": "missingBill", "resolution": "UseSalesforce"}'
+        });
+    }
+
     public static void deleteCSRecords() {
         if (Util.isSandboxOrTest()) {
             Util.disableAllTriggers();
@@ -854,6 +908,7 @@ public without sharing class CSRecordLoader extends Promise {
             delete [SELECT Id FROM Bill_Adjustment__c];
             delete [SELECT Id FROM Transfer_Part__c];
             delete [SELECT Id FROM Transfer__c WHERE CreatedDate = :csDataDate];
+            delete [SELECT Id FROM Commission_Structure__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Utility_Account_Bill__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Account_Bill__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM System_Bill__c WHERE CreatedDate = :csDataDate];

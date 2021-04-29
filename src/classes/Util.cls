@@ -10,8 +10,7 @@ public without sharing class Util {
     // System.DmlException: Insert failed. First exception on row 0; first error:
     // UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record
     // Granular Locking is already turned on, so instead, we'll re-try 10 times if we get this error
-    @TestVisible
-    private static Integer MAX_TRIES = 10;
+    private static final Integer MAX_TRIES = 10;
     @TestVisible
     private static Boolean mockDML = false;
     @TestVisible
@@ -120,44 +119,6 @@ public without sharing class Util {
 
     public static String nullToZero(String value) {
         return (String.isBlank(value)?'0':value);
-    }
-
-    public static List<Product2> getActiveProducts(List<String> states, Id partnerId, String productType) {
-        return getActiveProductsInternal(states, partnerId, productType, false);
-    }
-
-    public static List<Product2> getActiveProductsIncludingHidden(List<String> states, Id partnerId, String productType) {
-        return getActiveProductsInternal(states, partnerId, productType, true);
-    }
-
-    // Used to show the installer a list of products to apply for (SLPAddCustomer, SLPSendEmailApplication)
-    // or to generate a quick sales sheet (SLPQuickSalesSheet).
-    @SuppressWarnings('PMD.ExcessiveParameterList')
-    private static List<Product2> getActiveProductsInternal(List<String> states, Id partnerId, String productType, Boolean showHidden) {
-        List<Product2> productList = [SELECT Id, Name, Program__c, External_Name__c, Require_Junctions_to_Enable__c, Hide_in_Requested_Product__c,
-                                      (SELECT Id FROM Partner_Product_Junctions__r
-                                       WHERE Partner__c = :partnerId
-                                       AND Active__c = true)
-                                      FROM Product2
-                                      WHERE Product_Type__c = :productType
-                                      AND IsActive = true
-                                      AND State__c IN : states
-                                      ORDER BY State__c, Loan_Term__c];
-        Set<Product2> productSet = new Set<Product2>();
-        for (Product2 prod : productList) {
-            if (prod.Require_Junctions_to_Enable__c) {
-                if ((prod.Partner_Product_Junctions__r.size() > 0) && (!prod.Hide_in_Requested_Product__c || showHidden)) {
-                    productSet.add(prod);
-                }
-            } else {
-                if (!prod.Hide_in_Requested_Product__c || showHidden) {
-                    productSet.add(prod);
-                }
-            }
-        }
-        List<Product2> enabledProducts = new List<Product2>();
-        enabledProducts.addAll(productSet);
-        return enabledProducts;
     }
 
     public static String getCommunitySiteURL(String communityName) {
@@ -288,7 +249,7 @@ public without sharing class Util {
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (systemProperties.size() > 0) {
             systemProperties[0].put(triggerType, onOrOff);
-            update systemProperties[0];
+            Util.updateSObjs(systemProperties);
         } else {
             System_Properties__c property = new System_Properties__c(Name = 'System');
             property.put(triggerType, onOrOff);

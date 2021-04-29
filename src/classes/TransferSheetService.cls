@@ -86,7 +86,7 @@ public without sharing class TransferSheetService {
 
             // Resolve data conflicts and insert UASBs
             List<UASB__c> resolvedUasbs = resolveUASBs(uasbWithStatusList, resolutionMap);
-            insert resolvedUasbs;
+            Util.insertSObjs(resolvedUasbs);
 
             // Perform final steps
             if (!isUCB) {
@@ -94,7 +94,11 @@ public without sharing class TransferSheetService {
             }
             postUASBInsertProcessing(transfer, overrideValues);
         } catch (Exception e) {
-            throw Util.createAuraExceptionWithMessage(e.getMessage() + '\n' + e.getStackTraceString());
+            if (Request.getCurrent().getQuiddity() == System.Quiddity.AURA) {
+                throw Util.createAuraExceptionWithMessage(e.getMessage() + '\n' + e.getStackTraceString());
+            } else {
+                throw new Util.BWException(e.getMessage() + '\n' + e.getStackTraceString());
+            }
         }
     }
 
