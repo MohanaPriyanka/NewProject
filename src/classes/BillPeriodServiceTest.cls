@@ -245,7 +245,7 @@ private class BillPeriodServiceTest {
 
         // Run test
         Test.startTest();
-        BillPeriodService.markBillPeriodsAsBillRunComplete(invoiceDate);
+        new BillPeriodService().markBillPeriodsAsBillRunComplete(invoiceDate);
         Test.stopTest();
 
         // Validate bill periods
@@ -275,7 +275,7 @@ private class BillPeriodServiceTest {
 
         // Run test
         Test.startTest();
-        BillPeriodService.markBillPeriodsAsBillRunComplete(Date.newInstance(2019, 7, 20));
+        new BillPeriodService().markBillPeriodsAsBillRunComplete(Date.newInstance(2019, 7, 20));
         Test.stopTest();
 
         List<Bill_Period__c> billPeriods = [SELECT Id FROM Bill_Period__c WHERE Bill_Status__c = 'Bill Run Complete'];

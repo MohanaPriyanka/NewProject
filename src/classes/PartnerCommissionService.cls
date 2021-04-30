@@ -19,29 +19,32 @@ public without sharing class PartnerCommissionService{
     private Map<Id, Commission_Structure__c> commissionStructureMap = new Map<Id, Commission_Structure__c>();
     private Map<Id,Commission_Payment__c> oppToExistingContractExecutionPaymentMap = new Map<Id,Commission_Payment__c>();
     private Map<String,Invoice__c> partnerToOldestOpenInvoiceMap = new Map<String,Invoice__c>();
-    private Date dueDate;
 
     public enum CommissionType {CONTRACTEXECUTION, FIRSTBILLSENT, FIRSTBILLPAID}
+    private Map<CommissionType, String> commissionTypeEnumToString = new Map<CommissionType, String>{
+        CommissionType.CONTRACTEXECUTION => 'Contract Execution',
+        CommissionType.FIRSTBILLSENT => 'First Bill Sent',
+        CommissionType.FIRSTBILLPAID => 'First Bill Paid'
+    };
 
     public class PendingCommission {
         public List<Opportunity> opportunitiesToRun;
         public CommissionType typeOfCommission;
     }
 
-    public fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
-        new List<SObjectType> {
-            Opportunity.SObjectType,
-            Commission_Payment__c.SObjectType,
-            Case.SObjectType
-        }
-    );
-
-    public void createCommissionRecords(PendingCommission pendingCommission){
+    public void createCommissionRecords(PendingCommission pendingCommission) {
         try {
-            calculateCommissionRecords(pendingCommission);
+            fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+                new List<SObjectType> {
+                    Opportunity.SObjectType,
+                    Commission_Payment__c.SObjectType,
+                    Case.SObjectType
+                }
+            );
+            calculateCommissionRecords(pendingCommission, uow);
             Util.commitWorkWithRetry(uow,10);
-        } catch (Exception excep){
-            Logger.logNow('PartnerCommissionService','createCommissionRecords', excep.getStackTraceString() + ' ' + excep.getMessage(),'ERROR');
+        } catch (Exception e) {
+            Logger.logNow('PartnerCommissionService','createCommissionRecords', e.getStackTraceString() + '\n' + e.getMessage(),'ERROR');
         }
         // Flush error logs together to limit number of error logs created / DML calls (no callouts).
         // Most logs are marked as 'info' if we need to dig into it farther, but real notification is via Case to Ops
@@ -49,28 +52,28 @@ public without sharing class PartnerCommissionService{
     }
 
     /**
-        We only set opportunity fields CS_Capacity_Allocated__c & Commission_Structure__c
+        @description We only set opp fields CS_Capacity_Allocated__c & Commission_Structure__c
         when Opportunity is set to Complete and we calculate the contract execution commission.
         They should not change after the contract execution commission record has been created as those fields
         will be used to calculate other commission types (first bill, first pay, etc)
 
         @param PendingCommission Wrapper object for all Opportunities that either need Commission Payments created or
         updated AND the type of Commission (Contract Execution, First Bill Sent, or First Bill Paid)
+        @param unitOfWork uow to use for the transaction
     **/
-    @TestVisible
-    private void calculateCommissionRecords(PendingCommission pendingCommission){
+    public void calculateCommissionRecords(PendingCommission pendingCommission, fflib_SObjectUnitOfWork unitOfWork) {
         if (pendingCommission.typeOfCommission == CommissionType.CONTRACTEXECUTION){
             populateContractExecutionMaps(pendingCommission.opportunitiesToRun);
-            setOpportunityFields(pendingCommission.opportunitiesToRun);
+            setOpportunityFields(pendingCommission.opportunitiesToRun, unitOfWork);
         }
         getAndCreatePartnerInvoices(pendingCommission.opportunitiesToRun);
-        calculateCommissionPayments(pendingCommission);
+        calculateCommissionPayments(pendingCommission, unitOfWork);
     }
 
-    private void calculateCommissionPayments(PendingCommission pendingCommission){
+    private void calculateCommissionPayments(PendingCommission pendingCommission, fflib_SObjectUnitOfWork unitOfWork) {
         Date dueDate = getDueDate();
-        Date dueToAccountingDate = Date.newInstance(dueDate.Year(),dueDate.month(),3);
-        String commissionPaymentType = convertCommissionTypeEnumToPicklist(pendingCommission.typeOfCommission);
+        Date dueToAccountingDate = Date.newInstance(dueDate.year(),dueDate.month(),3);
+        String commissionPaymentType = commissionTypeEnumToString.get(pendingCommission.typeOfCommission);
 
         for (Opportunity opp : pendingCommission.opportunitiesToRun){
             if (missingRequiredFields(opp)){
@@ -91,35 +94,35 @@ public without sharing class PartnerCommissionService{
                 Due_Date__c = dueDate,
                 Due_to_Accounting__c = dueToAccountingDate,
                 Invoice__c = partnerInvoice.Id,
-                Name = (opp.Partner_tag_lookup__r.Name + ' - ' + opp.Name + ' - ' + commissionPaymentType).LEFT(80),
+                Name = (opp.Partner_tag_lookup__r.Name + ' - ' + opp.Name + ' - ' + commissionPaymentType).left(80),
                 Opportunity__c = opp.Id,
                 Status__c = 'Pending Approval',
                 Commission_Type__c = commissionPaymentType
             );
-            upsertCommissionPayments(payment, pendingCommission.typeOfCommission);
+            upsertCommissionPayments(payment, pendingCommission.typeOfCommission, unitOfWork);
         }
     }
 
     /**
-        Ensures that we only update and insert Commission Payments that register a change
+        @description Ensures that we only update and insert Commission Payments that register a change
         @param payment Commission Payment that will either be inserted as new payment or update a Pending payment
         @param type Commission Payment type
+        @param unitOfWork uow
     **/
-    private void upsertCommissionPayments(Commission_Payment__c payment, CommissionType type){
+    private void upsertCommissionPayments(Commission_Payment__c payment, CommissionType type, fflib_SObjectUnitOfWork unitOfWork) {
         Commission_Payment__c existingContractExecutionPayment;
         if (type == CommissionType.CONTRACTEXECUTION) {
             existingContractExecutionPayment = oppToExistingContractExecutionPaymentMap.get(payment.Opportunity__c);
         }
         if (existingContractExecutionPayment == null){
-            uow.registerNew(payment);
+            unitOfWork.registerNew(payment);
         } else if (existingContractExecutionPayment != null
             && (existingContractExecutionPayment.Amount_Due__c != payment.Amount_Due__c
             || existingContractExecutionPayment.Commission_Structure__c != payment.Commission_Structure__c)){
             payment.Id = existingContractExecutionPayment.Id;
-            uow.registerDirty(payment);
-        } else {
-            // update not required because commission amount and structure is the same
+            unitOfWork.registerDirty(payment);
         }
+        // otherwise, update not required because commission amount and structure is the same
     }
 
     private Boolean missingRequiredFields(Opportunity opp){
@@ -130,39 +133,25 @@ public without sharing class PartnerCommissionService{
         );
     }
 
-    private String convertCommissionTypeEnumToPicklist(CommissionType enumValue){
-        if (enumValue == CommissionType.CONTRACTEXECUTION){
-            return 'Contract Execution';
-        } else if (enumValue == CommissionType.FIRSTBILLSENT){
-            return 'First Bill Sent';
-        } else if (enumValue == CommissionType.FIRSTBILLPAID){
-            return 'First Bill Paid';
-        } else {
-            return null;
-        }
-    }
-
-    private Decimal getCommissionAmount(Opportunity opp, CommissionType enumValue){
-        if (enumValue == CommissionType.CONTRACTEXECUTION){
-            return opp.CS_Capacity_Allocated__c*opp.Commission_Structure__r.Cents_kW_DC_Up_Front__c *1000;
-        } else if (enumValue == CommissionType.FIRSTBILLSENT){
-            return opp.CS_Capacity_Allocated__c*opp.Commission_Structure__r.Cents_kW_DC_First_Bill__c*1000;
-        } else if (enumValue == CommissionType.FIRSTBILLPAID){
-            return opp.CS_Capacity_Allocated__c*opp.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c *1000;
-        } else {
-            return 0;
+    private Decimal getCommissionAmount(Opportunity opp, CommissionType enumValue) {
+        switch on enumValue {
+            when CONTRACTEXECUTION {
+                return opp.CS_Capacity_Allocated__c*opp.Commission_Structure__r.Cents_kW_DC_Up_Front__c *1000;
+            } when FIRSTBILLSENT {
+                return opp.CS_Capacity_Allocated__c*opp.Commission_Structure__r.Cents_kW_DC_First_Bill__c*1000;
+            } when FIRSTBILLPAID {
+                return opp.CS_Capacity_Allocated__c*opp.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c *1000;
+            } when else {
+                return 0;
+            }
         }
     }
 
     private void populateContractExecutionMaps(List<Opportunity> opportunities){
         Set<Id> oppIds = CollectionUtil.getIdSet(opportunities);
-        populateUASMap(oppIds);
+        oppToUASSummaryMap = utilityaccountSelector.getUASSummaryByOpportunity(oppIds);
         populateCommissionStructureMap(opportunities);
         populateExistingPaymentsMap(oppIds);
-    }
-
-    private void populateUASMap(Set<Id> oppIds){
-        oppToUASSummaryMap = utilityaccountSelector.getUASSummaryByOpportunity(oppIds);
     }
 
     /**
@@ -194,7 +183,7 @@ public without sharing class PartnerCommissionService{
     }
 
     private void populateExistingPaymentsMap(Set<Id> oppIds){
-        String contractExecutionType = convertCommissionTypeEnumToPicklist(CommissionType.CONTRACTEXECUTION);
+        String contractExecutionType = commissionTypeEnumToString.get(CommissionType.CONTRACTEXECUTION);
         List<Commission_Payment__c> payments;
         payments = commissionPaySelector.getPendingCommissionPayments(oppIds, contractExecutionType);
         for (Commission_Payment__c payment : payments){
@@ -235,29 +224,29 @@ public without sharing class PartnerCommissionService{
         }
     }
 
-    private void setOpportunityFields(List<Opportunity> opportunities){
+    private void setOpportunityFields(List<Opportunity> opportunities, fflib_SObjectUnitOfWork unitOfWork) {
         for (Opportunity opportunity : opportunities){
-            setUASSummary(opportunity);
-            setActiveCommissionStructure(opportunity);
+            setUASSummary(opportunity, unitOfWork);
+            setActiveCommissionStructure(opportunity, unitOfWork);
         }
     }
 
-    private void setUASSummary(Opportunity opportunity){
-        Decimal uasSummary = oppToUASSummaryMap.get(opportunity.Id);
+    private void setUASSummary(Opportunity opp, fflib_SObjectUnitOfWork unitOfWork) {
+        Decimal uasSummary = oppToUASSummaryMap.get(opp.Id);
         if (uasSummary == null ){
             Logger.logLater(
                 'PartnerCommissionService',
                 'setUASSummary',
-                'Could not get UAS summmary for opp: ' + String.valueOf(opportunity.Id) + 'and map: ' + JSON.serialize(oppToUASSummaryMap),
+                'Could not get UAS summmary for opp: ' + String.valueOf(opp.Id) + 'and map: ' + JSON.serialize(oppToUASSummaryMap),
                 'INFO'
             );
             return;
         }
 
-        if ((opportunity.CS_Capacity_Allocated__c == null || opportunity.CS_Capacity_Allocated__c == 0) &&
-            opportunity.CS_Capacity_Allocated__c != uasSummary){
-            opportunity.CS_Capacity_Allocated__c = uasSummary;
-            uow.registerDirty(opportunity);
+        if ((opp.CS_Capacity_Allocated__c == null || opp.CS_Capacity_Allocated__c == 0) &&
+            opp.CS_Capacity_Allocated__c != uasSummary){
+            opp.CS_Capacity_Allocated__c = uasSummary;
+            unitOfWork.registerDirty(opp, new List<SObjectField>{Opportunity.CS_Capacity_Allocated__c});
         }
     }
 
@@ -265,32 +254,35 @@ public without sharing class PartnerCommissionService{
      * @description Assigns Commission Structure to Opportunity using Partner and SSS assignment. If no commission
      * structure found, create case. Have to use commissionStructureMap to assign Commission_Structure__r in order
      * to maintain data related to Commission Structure record for calculateCommissionPayments()
-     * @param opportunity Opportunity having Commission Structure assigned
+     * @param opp Opportunity having Commission Structure assigned
+     * @param unitOfWork uow
      */
-    private void setActiveCommissionStructure(Opportunity opportunity) {
-        if (opportunity.Commission_Structure__c == null) {
-            String eligibilityKey = (opportunity.Partner_Account__c == null ? opportunity.Partner_tag_lookup__r.Account__c : opportunity.Partner_Account__c)
-                + '-' + opportunity.Shared_Solar_System__c;
-            Id structureId = eligibleCommissionStructureMap.get(eligibilityKey);
-            if (structureId == null) {
-                String partnerName = String.valueOf((opportunity.Partner_Account__c == null ? opportunity.Partner_tag_lookup__r.Name : opportunity.Partner_Account__r.Name));
-                    createCaseForSupportFollowUp('During creation of contract execution commission payment record, ' +
-                    'could not find commission structure for Partner: ' +
-                    partnerName + 'and Shared Solar System: ' +
-                    String.valueOf(opportunity.Shared_Solar_System__r.Name) + 'on opportunity: ' +
-                    String.valueOf(opportunity.Id) + ' (' + String.valueOf(opportunity.Name) + '). ' +
-                    'Confirm there is a Partner Shared Solar System Access record for this Partner & SSS combo.',
-                    opportunity.Id
-                );
-            } else {
-                opportunity.Commission_Structure__c = structureId;
-                opportunity.Commission_Structure__r = commissionStructureMap.get(structureId);
-                uow.registerDirty(opportunity);
-            }
+    private void setActiveCommissionStructure(Opportunity opp, fflib_SObjectUnitOfWork unitOfWork) {
+        if (opp.Commission_Structure__c != null) {
+            return;
+        }
+        String eligibilityKey = (opp.Partner_Account__c == null ? opp.Partner_tag_lookup__r.Account__c : opp.Partner_Account__c)
+            + '-' + opp.Shared_Solar_System__c;
+        Id structureId = eligibleCommissionStructureMap.get(eligibilityKey);
+        if (structureId == null) {
+            String partnerName = String.valueOf((opp.Partner_Account__c == null ? opp.Partner_tag_lookup__r.Name : opp.Partner_Account__r.Name));
+            createCaseForSupportFollowUp('During creation of contract execution commission payment record, ' +
+                'could not find commission structure for Partner: ' +
+                partnerName + 'and Shared Solar System: ' +
+                String.valueOf(opp.Shared_Solar_System__r.Name) + 'on opportunity: ' +
+                String.valueOf(opp.Id) + ' (' + String.valueOf(opp.Name) + '). ' +
+                'Confirm there is a Partner Shared Solar System Access record for this Partner & SSS combo.',
+                opp.Id,
+                unitOfWork
+            );
+        } else {
+            opp.Commission_Structure__c = structureId;
+            opp.Commission_Structure__r = commissionStructureMap.get(structureId);
+            unitOfWork.registerDirty(opp, new List<SObjectField>{Opportunity.Commission_Structure__c});
         }
     }
 
-    private void createCaseForSupportFollowUp(String description, Id opportunityId){
+    private void createCaseForSupportFollowUp(String description, Id opportunityId, fflib_SObjectUnitOfWork unitOfWork) {
         CaseFactory caseFactory = new CaseFactory();
         Case newCase;
         newCase = caseFactory.getCase('Partner_Care_Case');
@@ -302,19 +294,19 @@ public without sharing class PartnerCommissionService{
         newCase.Origin = 'Other';
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
-        uow.registerNew(newCase);
+        unitOfWork.registerNew(newCase);
     }
 
     @TestVisible
-    private Invoice__c createPartnerInvoice(Id partnerId, String partnerName, Id accountId){
+    private Invoice__c createPartnerInvoice(Id partnerId, String partnerName, Id accountId) {
         Date dueDate = getDueDate();
         Id recordTypeId = Schema.SObjectType.Invoice__c.getRecordTypeInfosByDeveloperName().get('Partner_Invoice').getRecordTypeId();
-        Date dueToAccountingDate = Date.newInstance(dueDate.Year(),dueDate.month(),3);
+        Date dueToAccountingDate = Date.newInstance(dueDate.year(),dueDate.month(),3);
         Datetime dueDatetime = Datetime.newInstance(dueDate.year(), dueDate.month(),dueDate.day());
         String monthName = dueDatetime.format('MMMMM');
 
         Invoice__c invoiceToCreate = new Invoice__c(
-            Name = (partnerName + ' ' + monthName + ' ' + String.valueOf(dueDate.Year())).LEFT(80),
+            Name = (partnerName + ' ' + monthName + ' ' + String.valueOf(dueDate.year())).left(80),
             Due_Date__c = dueDate,
             Due_to_Accounting__c = dueToAccountingDate,
             Invoice_Type__c = 'Direct',
@@ -327,11 +319,8 @@ public without sharing class PartnerCommissionService{
         return invoiceToCreate;
     }
 
-    private Date getDueDate(){
-        if (dueDate == null){
-            Date monthFromToday = System.today().addMonths(1);
-            dueDate = Date.newInstance(monthFromToday.year(),monthFromToday.month(),15);
-        }
-        return dueDate;
+    private Date getDueDate() {
+        Date monthFromToday = System.today().addMonths(1);
+        return Date.newInstance(monthFromToday.year(),monthFromToday.month(),15);
     }
 }

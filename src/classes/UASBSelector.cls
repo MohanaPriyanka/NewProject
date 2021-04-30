@@ -99,4 +99,22 @@ public without sharing class UASBSelector {
 
         return priorUasbBySzs;
     }
+
+    /**
+     * @description Used to update the Property Account's First CS Bill Date, and generate commissions
+     * @param transfers UCB Transfers
+     * @return List of UASBs
+     */
+    public List<UASB__c> getUasbsByTransfer(List<Transfer__c> transfers) {
+        return [
+            SELECT Id, Date__c,
+                Utility_Account_Subscription__c,
+                Utility_Account_Subscription__r.Opportunity__c,
+                Utility_Account_Subscription__r.Opportunity__r.AccountId,
+                Utility_Account_Subscription__r.Opportunity__r.Account.First_CS_Bill_Date__c
+            FROM UASB__c
+            WHERE Transfer__c IN :transfers
+            AND Shared_Solar_System__r.UCB__c = TRUE
+        ];
+    }
 }

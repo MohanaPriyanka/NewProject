@@ -5,8 +5,27 @@
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public without sharing class OpportunitiesSelector {
-    @TestVisible
-    private static FeatureService featureService = new FeatureService();
+    private static String fieldsToGenerateCommissions = 'Id, \n' +
+        'Name, \n' +
+        'AccountId, \n' +
+        'Account.Account_Number__c, \n' +
+        'Shared_Solar_System__r.Unique_ID__c,\n' +
+        'Shared_Solar_System__r.Name, \n' +
+        'CS_Capacity_Allocated__c,\n' +
+        'Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,\n' +
+        'Commission_Structure__r.Cents_kW_DC_First_Bill__c, \n' +
+        'StageName, \n' +
+        'Product_Line__c,\n' +
+        'Commission_Structure__c, \n' +
+        'Partner_tag_lookup__c, \n' +
+        'Partner_tag_lookup__r.Id, \n' +
+        'Partner_tag_lookup__r.Name, \n' +
+        'Partner_tag_lookup__r.Account__c, \n' +
+        'Partner_tag_lookup__r.Account__r.RecordType.Name,\n' +
+        'Partner_Account__c, \n' +
+        'Partner_Account__r.Name, \n' +
+        'Partner_Account__r.RecordType.Name';
+
     // To be used when cancelling opportunities, so we also exclude Anchors and Public Offtake
     public static List<Opportunity> selectAllCompleteCSWithUASesAndSystemBills() {
         return [
@@ -66,40 +85,56 @@ public without sharing class OpportunitiesSelector {
         ]);
         return oppMap;
     }
-    public List<Opportunity> selectWithoutFirstInvoiceCommission(Set<Id> accountIds){
-        return [
-            SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
-                Shared_Solar_System__r.Name, CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,
-                Commission_Structure__r.Cents_kW_DC_First_Bill__c, StageName, Product_Line__c,
-                Commission_Structure__c, Partner_tag_lookup__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name, 
-            	Partner_tag_lookup__r.Account__c, Partner_tag_lookup__r.Account__r.RecordType.Name,
-                Partner_Account__c, Partner_Account__r.Name, Partner_Account__r.RecordType.Name
-            FROM Opportunity
-            WHERE Commission_Structure__r.Cents_kW_DC_First_Bill__c != null
-            AND Commission_Structure__r.Cents_kW_DC_First_Bill__c != 0
-            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = 'First Bill Sent')
-            AND Account.Zuora_Id__c != null
-            AND Shared_Solar_System__r.Number_of_Billed_Production_Periods__c > 0
-            AND AccountId IN : accountIds
-        ];
+
+    private String defaultCommissionQueryString() {
+        return 'SELECT ' + fieldsToGenerateCommissions + '\n' +
+            'FROM Opportunity\n' +
+            'WHERE StageName = \'Complete\' \n' +
+            'AND Shared_Solar_System__r.Number_of_Billed_Production_Periods__c > 0 \n';
     }
-    public List<Opportunity> selectWithoutFirstPaymentCommission(Set<Id> accountIds){
-        return [
-            SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c, Shared_Solar_System__r.Name,
-                CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,
-                Commission_Structure__r.Cents_kW_DC_First_Bill__c, StageName, Product_Line__c,
-                Commission_Structure__c,  Partner_tag_lookup__c, Partner_tag_lookup__r.Id, Partner_tag_lookup__r.Name, 
-            	Partner_tag_lookup__r.Account__c, Partner_tag_lookup__r.Account__r.RecordType.Name,
-                Partner_Account__c, Partner_Account__r.Name, Partner_Account__r.RecordType.Name
-            FROM Opportunity
-            WHERE Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != null
-            AND Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != 0
-            AND ID NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = 'First Bill Paid')
-            AND Account.Zuora_Id__c != null
-            AND Shared_Solar_System__r.Number_of_Billed_Production_Periods__c > 0
-            AND AccountId IN : accountIds
-        ];
+
+    private String firstBillSentCommissionQueryString() {
+        return defaultCommissionQueryString() +
+            'AND Id NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = \'First Bill Sent\') \n' +
+            'AND Commission_Structure__r.Cents_kW_DC_First_Bill__c != NULL \n' +
+            'AND Commission_Structure__r.Cents_kW_DC_First_Bill__c != 0 \n';
     }
+
+    private String firstBillPaidCommissionQueryString() {
+        return defaultCommissionQueryString() +
+            'AND Id NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = \'First Bill Paid\') \n' +
+            'AND Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != NULL \n' +
+            'AND Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != 0 \n';
+    }
+
+    @SuppressWarnings('PMD.ApexSOQLInjection')
+    public List<Opportunity> selectWithoutFirstInvoiceCommission(Set<Id> accountIds) {
+        String query = firstBillSentCommissionQueryString() +
+            'AND AccountId IN :accountIds';
+        return Database.query(query);
+    }
+
+    @SuppressWarnings('PMD.ApexSOQLInjection')
+    public List<Opportunity> selectWithoutFirstPaymentCommission(Set<Id> accountIds) {
+        String query = firstBillPaidCommissionQueryString() +
+            'AND AccountId IN :accountIds';
+        return Database.query(query);
+    }
+
+    @SuppressWarnings('PMD.ApexSOQLInjection')
+    public List<Opportunity> selectWithoutFirstInvoiceCommissionByOpp(Set<Id> opportunityIds) {
+        String query = firstBillSentCommissionQueryString() +
+            'AND Id IN :opportunityIds';
+        return Database.query(query);
+    }
+
+    @SuppressWarnings('PMD.ApexSOQLInjection')
+    public List<Opportunity> selectWithoutFirstPaymentCommissionByOpp(Set<Id> opportunityIds) {
+        String query = firstBillPaidCommissionQueryString() +
+            'AND Id IN :opportunityIds';
+        return Database.query(query);
+    }
+
     public List<Opportunity> selectByIdWithCommissionPayment(Set<Id> opportunityIds) {
         return [
             SELECT Id, StageName, Product_Line__c,  Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,

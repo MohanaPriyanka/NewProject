@@ -10,8 +10,16 @@ public with sharing class BillPeriodService {
     private Set<Id> verifiedBillPeriods = new Set<Id>();
     public Map<Id, Bill_Period__c> completedBillPeriods = new Map<Id, Bill_Period__c>();
 
-    @TestVisible
-    private static ProductionService productionService = new ProductionService();
+    @TestVisible private static ProductionService productionService = new ProductionService();
+    private static UASBSelector uasbSelector = new UASBSelector();
+    private static OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
+    private static PartnerCommissionService commissionService = new PartnerCommissionService();
+    private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+        new List<SObjectType>{
+            Account.SObjectType,
+            Commission_Payment__c.SObjectType
+        }
+    );
 
     public void onAfterInsert(List<Bill_Period__c> bpList) {
         List<Transfer__c> transfers = assignTransfers(bpList);
@@ -92,23 +100,34 @@ public with sharing class BillPeriodService {
         }
     }
 
-    public static Integer markBillPeriodsAsBillRunComplete(Date invoiceDate) {
+    /**
+     * @description Sets Bill Periods to "Bill Run Complete", update First Bill Date on SSS, and for UCB bill periods,
+     * potentially generates partner commissions and updates First Bill Date on property accounts.
+     * @param invoiceDate Invoice date, to select the appropriate BIll Periods
+     * @return Number of Bill Periods updated
+     */
+    public Integer markBillPeriodsAsBillRunComplete(Date invoiceDate) {
+        List<Bill_Period__c> billPeriodsToUpdate;
         try {
-            List<Bill_Period__c> billPeriodsToUpdate;
             billPeriodsToUpdate = BillPeriodSelector.getBillPeriodsByMonth(invoiceDate.month(), invoiceDate.year());
+            List<Transfer__c> ucbTransfersThisPeriod = new List<Transfer__c>();
             for (Bill_Period__c billPeriod : billPeriodsToUpdate) {
                 billPeriod.Bill_Status__c = 'Bill Run Complete';
+                if (billPeriod.Shared_Solar_System__r.UCB__c) {
+                    ucbTransfersThisPeriod.addAll(billPeriod.Transfers__r);
+                }
             }
             update billPeriodsToUpdate;
             update sssToUpdateOnBillRunComplete(billPeriodsToUpdate);
-            return billPeriodsToUpdate.size();
-        } catch (Exception excep){
-            Logger.logNow('BillPeriodService','markBillPeriodsAsBillRunComplete',excep.getMessage() + '__' + excep.getStackTraceString());
-            return 0;
+            handleUCBTransfers(ucbTransfersThisPeriod);
+            Logger.logNow('BillPeriodService', 'markBillPeriodsAsBillRunComplete', 'Check limits', Logger.FINE);
+        } catch (Exception e){
+            Logger.logNow('BillPeriodService','markBillPeriodsAsBillRunComplete',e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         }
+        return billPeriodsToUpdate.size();
     }
 
-    private static List<Shared_Solar_System__c> sssToUpdateOnBillRunComplete(List<Bill_Period__c> billPeriods) {
+    private List<Shared_Solar_System__c> sssToUpdateOnBillRunComplete(List<Bill_Period__c> billPeriods) {
         List<Shared_Solar_System__c> systemsToUpdate = new List<Shared_Solar_System__c>();
         for (Bill_Period__c billPeriod : billPeriods) {
             Shared_Solar_System__c sssToUpdate = new Shared_Solar_System__c(Id = billPeriod.Shared_Solar_System__c);
@@ -125,5 +144,40 @@ public with sharing class BillPeriodService {
             }
         }
         return systemsToUpdate;
+    }
+
+    /**
+     * @description Updates First CS Bill Date for accounts that have this as their first transfer, and generates
+     * commissions for corresponding opportunities
+     * @param transfers UCB Transfers
+     */
+    @TestVisible
+    private void handleUCBTransfers(List<Transfer__c> transfers) {
+        List<UASB__c> uasbs = uasbSelector.getUasbsByTransfer(transfers);
+        Set<Id> opportunityIdsGettingBilled = new Set<Id>();
+        for (UASB__c uasb : uasbs) {
+            opportunityIdsGettingBilled.add(uasb.Utility_Account_Subscription__r.Opportunity__c);
+            if (uasb.Utility_Account_Subscription__r.Opportunity__r.Account.First_CS_Bill_Date__c == null) {
+                Account account = new Account(
+                    Id = uasb.Utility_Account_Subscription__r.Opportunity__r.AccountId,
+                    First_CS_Bill_Date__c = uasb.Date__c
+                );
+                uow.registerDirty(account);
+            }
+        }
+
+        List<Opportunity> opportunitiesForFirstBillSent = opportunitiesSelector.selectWithoutFirstInvoiceCommissionByOpp(opportunityIdsGettingBilled);
+        PartnerCommissionService.PendingCommission firstBillSent = new PartnerCommissionService.PendingCommission();
+        firstBillSent.opportunitiesToRun = opportunitiesForFirstBillSent;
+        firstBillSent.typeOfCommission = PartnerCommissionService.CommissionType.FIRSTBILLSENT;
+        commissionService.calculateCommissionRecords(firstBillSent, uow);
+
+        List<Opportunity> opportunitiesForFirstBillPaid = opportunitiesSelector.selectWithoutFirstPaymentCommissionByOpp(opportunityIdsGettingBilled);
+        PartnerCommissionService.PendingCommission firstBillPaid = new PartnerCommissionService.PendingCommission();
+        firstBillPaid.opportunitiesToRun = opportunitiesForFirstBillPaid;
+        firstBillPaid.typeOfCommission = PartnerCommissionService.CommissionType.FIRSTBILLPAID;
+        commissionService.calculateCommissionRecords(firstBillPaid, uow);
+
+        uow.commitWork();
     }
 }
