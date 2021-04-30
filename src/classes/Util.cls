@@ -10,8 +10,7 @@ public without sharing class Util {
     // System.DmlException: Insert failed. First exception on row 0; first error:
     // UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record
     // Granular Locking is already turned on, so instead, we'll re-try 10 times if we get this error
-    @TestVisible
-    private static Integer MAX_TRIES = 10;
+    private static final Integer MAX_TRIES = 10;
     @TestVisible
     private static Boolean mockDML = false;
     @TestVisible
@@ -122,58 +121,10 @@ public without sharing class Util {
         return (String.isBlank(value)?'0':value);
     }
 
-    public static List<Product2> getActiveProducts(List<String> states, Id partnerId, String productType) {
-        return getActiveProductsInternal(states, partnerId, productType, false);
-    }
-
-    public static List<Product2> getActiveProductsIncludingHidden(List<String> states, Id partnerId, String productType) {
-        return getActiveProductsInternal(states, partnerId, productType, true);
-    }
-
-    // Used to show the installer a list of products to apply for (SLPAddCustomer, SLPSendEmailApplication)
-    // or to generate a quick sales sheet (SLPQuickSalesSheet).
-    @SuppressWarnings('PMD.ExcessiveParameterList')
-    private static List<Product2> getActiveProductsInternal(List<String> states, Id partnerId, String productType, Boolean showHidden) {
-        List<Product2> productList = [SELECT Id, Name, Program__c, External_Name__c, Require_Junctions_to_Enable__c, Hide_in_Requested_Product__c,
-                                      (SELECT Id FROM Partner_Product_Junctions__r
-                                       WHERE Partner__c = :partnerId
-                                       AND Active__c = true)
-                                      FROM Product2
-                                      WHERE Product_Type__c = :productType
-                                      AND IsActive = true
-                                      AND State__c IN : states
-                                      ORDER BY State__c, Loan_Term__c];
-        Set<Product2> productSet = new Set<Product2>();
-        for (Product2 prod : productList) {
-            if (prod.Require_Junctions_to_Enable__c) {
-                if ((prod.Partner_Product_Junctions__r.size() > 0) && (!prod.Hide_in_Requested_Product__c || showHidden)) {
-                    productSet.add(prod);
-                }
-            } else {
-                if (!prod.Hide_in_Requested_Product__c || showHidden) {
-                    productSet.add(prod);
-                }
-            }
-        }
-        List<Product2> enabledProducts = new List<Product2>();
-        enabledProducts.addAll(productSet);
-        return enabledProducts;
-    }
-
     public static String getCommunitySiteURL(String communityName) {
         Domain d = [SELECT Domain, DomainType FROM Domain WHERE Domain LIKE '%memberportal%' LIMIT 1];
         Network n = [SELECT Name,UrlPathPrefix FROM Network WHERE Name = :communityName LIMIT 1];
         return 'https://' + d.Domain + '/' + n.UrlPathPrefix;
-    }
-
-    // Because Math.min and Math.max only supports two arguments
-    public static Decimal min(List<Decimal> decimalValues) {
-        decimalValues.sort();
-        return(decimalValues[0]);
-    }
-    public static Decimal max(List<Decimal> decimalValues) {
-        decimalValues.sort();
-        return(decimalValues[decimalValues.size()-1]);
     }
 
     // Converts string rounding method to System.RoundingMode
@@ -249,11 +200,11 @@ public without sharing class Util {
     public class FatalBWException extends Exception {}
     public class AuthorizationBWException extends Exception {}
 
-    public static String removeSpecialCharacters(String value) {
+    private static String removeSpecialCharacters(String value) {
         return value.replaceAll('(?i)[^a-z0-9 ._]', '');
     }
 
-    public static String removeNewLine(String value) {
+    private static String removeNewLine(String value) {
         return value.replaceAll('\n', '');
     }
 
@@ -288,7 +239,7 @@ public without sharing class Util {
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (systemProperties.size() > 0) {
             systemProperties[0].put(triggerType, onOrOff);
-            update systemProperties[0];
+            Util.updateSObjs(systemProperties);
         } else {
             System_Properties__c property = new System_Properties__c(Name = 'System');
             property.put(triggerType, onOrOff);
@@ -318,38 +269,6 @@ public without sharing class Util {
             }
         }
         upsert property;
-    }
-
-    public static String obscureText(String text, Integer trailingCharacters) {
-        Integer length = text.length();
-        if (length < trailingCharacters) {
-            trailingCharacters = length;
-        }
-        String remainingCharacters = text.substring(length - trailingCharacters);
-        String obscuredText = '';
-        for (Integer i = 0; i < (length - trailingCharacters); i++) {
-            obscuredText += '*';
-        }
-        obscuredText += remainingCharacters;
-        return obscuredText;
-    }
-
-    public static void reparentAttachments(List<Attachment> attachmentsToReparent, Id newParentId) {
-        List<Attachment> reparentedAttachments = new List<Attachment>();
-        for (Attachment attachment : attachmentsToReparent) {
-            reparentedAttachments.add(new Attachment(
-                Name = attachment.Name,
-                Body = attachment.Body,
-                parentId = newParentId,
-                ContentType = attachment.ContentType,
-                Description = attachment.Description
-            ));
-        }
-
-        if (!reparentedAttachments.isEmpty()) {
-            insert reparentedAttachments;
-            delete attachmentsToReparent;
-        }
     }
 
     // Checkboxes can be null, but this should only return true or false.

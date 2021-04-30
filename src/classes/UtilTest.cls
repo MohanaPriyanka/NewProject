@@ -83,43 +83,10 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    private static void testGetActiveProducts() {
-        LoanTestRecordWarehouse.partnerSetup();
-        insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
-        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
-        Product2 product = [
-            SELECT Id, Name, Product_Type__c, Program__c, State__c,
-                Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c
-            FROM Product2
-            WHERE Name = 'BlueWave Solar Loan - MA - 10 Year Term - 6.49% (Low FICO)'
-            AND Require_Junctions_to_Enable__c = TRUE
-            LIMIT 1
-        ];
-        // Let the product be seen by getActiveProducts below...
-        product.Hide_in_Requested_Product__c = false;
-        update product;
-        Partner_Product_Junction__c ppj = new Partner_Product_Junction__c(Enabled_Product__c = product.Id,
-            Partner__c = partner.Id);
-        insert ppj;
-
-        System.assertEquals(8, Util.getActiveProducts(new List<String>{
-            'MA'
-        }, partner.Id, 'Residential Loan').size());
-    }
-
-    @IsTest
     private static void testGetCommunitySiteURL() {
         String siteURL = Util.getCommunitySiteURL('Apply');
         System.assert(siteURL.contains('bluewavememberportal'), 'Should contain link to BlueWave Member Portal');
         System.assert(siteURL.contains('apply'), 'Should include apply in the URL');
-    }
-
-    @IsTest
-    private static void testMinAndMax() {
-        List<Decimal> listOfNumbers = new List<Decimal>{12,342,1,342,-12,10000};
-
-        System.assertEquals(-12, Util.min(listOfNumbers));
-        System.assertEquals(10000, Util.max(listOfNumbers));
     }
 
     @IsTest
@@ -212,75 +179,6 @@ public with sharing class UtilTest {
         Util.disableAllTriggers();
         System.assertEquals(true, Util.isDisabled('Disable_LoanTrigger__c'));
         System.assertEquals(true, Util.isDisabled('Disable_LeadTrigger__c'));
-    }
-
-    @IsTest
-    private static void testObscureText() {
-        String textToObscure = 'secret1234';
-        String expectedAll = '**********';
-        String expectedLast1 = '*********4';
-        String expectedLast2 = '********34';
-        String expectedLast3 = '*******234';
-        String expectedLast4 = '******1234';
-        String expectedSameAsLength = 'secret1234';
-
-        System.assertEquals(expectedAll, Util.obscureText(textToObscure, 0));
-        System.assertEquals(expectedLast1, Util.obscureText(textToObscure, 1));
-        System.assertEquals(expectedLast2, Util.obscureText(textToObscure, 2));
-        System.assertEquals(expectedLast3, Util.obscureText(textToObscure, 3));
-        System.assertEquals(expectedLast4, Util.obscureText(textToObscure, 4));
-        System.assertEquals(expectedSameAsLength, Util.obscureText(textToObscure, textToObscure.length()));
-        System.assertEquals(expectedSameAsLength, Util.obscureText(textToObscure, 9999));
-    }
-
-    @IsTest
-    private static void testReparentAttachment() {
-        Lead residentialLead = new Lead(
-            LastName = 'testcase',
-            Company = 'Util'
-        );
-        insert residentialLead;
-
-        Attachment bill = new Attachment(
-            Name = 'file.pdf',
-            Body = Blob.valueOf('body'),
-            ParentId = residentialLead.Id,
-            Description = 'Electric Bill'
-        );
-        Attachment notBill = new Attachment(
-            Name = 'file.pdf',
-            Body = Blob.valueOf('body'),
-            ParentId = residentialLead.Id,
-            Description = 'Other Document'
-        );
-
-        List<Attachment> newLeadAttachments = new List<Attachment>{bill, notBill};
-
-        insert newLeadAttachments ;
-
-        Utility_Account_Log__c utilityAccountLog = new Utility_Account_Log__c(
-            Name = 'testLeadAttachmentsMovedToUAL',
-            Lead__c = residentialLead.Id
-        );
-
-        insert utilityAccountLog;
-
-        Util.reparentAttachments(newLeadAttachments , utilityAccountLog.Id);
-
-        List<Attachment> leadAttachments = [
-            SELECT Name, Description
-            FROM Attachment
-            WHERE ParentId = : utilityAccountLog.Lead__c
-        ];
-
-        List<Attachment> ualAttachments = [
-            SELECT Name, Description
-            FROM Attachment
-            WHERE ParentId = : utilityAccountLog.Id
-        ];
-
-        System.assertEquals(0, leadAttachments.size());
-        System.assertEquals(2, ualAttachments.size());
     }
 
     @IsTest

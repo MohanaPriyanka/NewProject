@@ -53,7 +53,7 @@ public class BillGenerationAsyncService implements Database.Batchable<Transfer__
         }
 
         uasbsToInsert.addAll(BillGenerationService.calculateUASBsFromTransfer(transfer, BillGenerationService.BillType.BOTH));
-        insert uasbsToInsert;
+        Util.insertSObjs(uasbsToInsert);
 
         // Checking this box could increase the Number of Billed Production Periods by 1
         // so it is important to do at the end of each batch instead of in the finish
