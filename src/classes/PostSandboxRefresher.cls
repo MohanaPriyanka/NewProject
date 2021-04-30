@@ -1,26 +1,18 @@
 /*
   Author: Peter Yao
-  Description: 1. Changes emails in Leads and Contacts so we don't accidentally email them
-                  Courtesy of http://www.soliantconsulting.com/blog/2016/03/salesforce-sandboxpostcopy-interface
-               2. Deletes the Recurring Billing scheduled job
+  Description: Sets up a developer or full sandbox to have a minimal set of data to be able to test CS changes
   Tested By: PostSandboxRefresherTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     public void runApexClass(SandboxContext context) {
         try {
-        updateLetterStreamToTestConfig();
-        updateDocusignToDemoConfig();
-        setupBWTestPartner();
-        setupDataForReportTest();
-        schedulePostSandboxJob();
-        // Run this manually: as of Spring 21, it might be causing the class to not be run after sandbox refresh
-        // CSRecordLoader.loadCSData();
-
+            updateLetterStreamToTestConfig();
+            updateDocusignToDemoConfig();
+            schedulePostSandboxJob();
         } catch (Exception e) {
-            Logger.logLater('PostSandboxRefresher', 'runApexClass', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+            Logger.logNow('PostSandboxRefresher', 'runApexClass', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         }
-
     }
 
     @TestVisible
@@ -44,9 +36,8 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         upsert newLetterStreamSetting;
     }
 
-    @TestVisible
-    private static void setupBWTestPartner() {
-        Partner__c partner = new Partner__c(Name = 'BlueWave Test Partner');
+    public static void setupBWTestPartner() {
+        Partner__c partner = new Partner__c(Name = 'Solar Test Partner');
         insert partner;
         BSST__c salesRep = new BSST__c(Name = 'Joe Bob', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@bluewavesolar.com.test');
         insert salesRep;
@@ -58,7 +49,8 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
         sysProp.Default_CS_Partner__c = partner.Id;
         update partner;
         update sysProp;
-        Account partnerAccount = new Account(Name='BlueWave Test Partner',
+        Account partnerAccount = new Account(
+            Name='Solar Test Partner',
             Partner__c = partner.Id,
             RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId(),
             State_Market__c = states,
@@ -110,21 +102,6 @@ public without sharing class PostSandboxRefresher implements SandboxPostCopy {
             product2.Contract_Docusign_Template__c = 'e03c7f33-0754-4abb-9d8e-42a46923e512';
         }
         update docuSignEnabledProducts;
-    }
-
-    // With Winter '19, the LightningReportsControllerTest.testSummaryReportReponse started failing.
-    // It looks as if Reports.ReportManager methods in the test doesn't see the data created in the test method,
-    // just the SeeAllData=true data. So we'll create that data here.
-    @TestVisible
-    private static void setupDataForReportTest() {
-        Account clientAccount = new Account(Name = 'Client Account');
-        insert clientAccount;
-        Lead lead = new Lead(FirstName='Cole',
-            LastName='TestLightningReports',
-            Company='Cole Swain',
-            Annual_Income_Currency__c = 100000,
-            Parent_Account__c = clientAccount.Id);
-        insert lead;
     }
 
     @TestVisible

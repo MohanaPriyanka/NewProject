@@ -15,6 +15,16 @@ public without sharing class PostSandboxSchedulable implements Schedulable {
             deleteAttachments();
             deleteEmailMessages();
             deleteFiles();
+            // Moved out of the initial runApexClass because we get this error - maybe shares haven't been set up when
+            // the SandboxPostCopy is run?
+            // 20:05:57.59 (24059896636)|EXCEPTION_THROWN|[68]|System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, AccountTrigger: execution of BeforeInsert
+            //caused by: line 183, column 45: Dependent class is invalid and needs recompilation:
+            // Class AccountTriggerHandler : Dependent class is invalid and needs recompilation:
+            // Class UtilityAccountSubscriptions : Dependent class is invalid and needs recompilation:
+            // Class SubscriptionManagementService : Dependent class is invalid and needs recompilation:
+            // Class SharedSolarSystemsSelector : Invalid type: Shared_Solar_System__Share: []
+            PostSandboxRefresher.setupBWTestPartner();
+            CSRecordLoader.loadCSData();
         } catch (Exception e) {
             Logger.logNow('PostSandboxSchedulable', 'setSystemAdmins', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         }
