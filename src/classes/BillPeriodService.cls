@@ -11,10 +11,10 @@ public with sharing class BillPeriodService {
     public Map<Id, Bill_Period__c> completedBillPeriods = new Map<Id, Bill_Period__c>();
 
     @TestVisible private static ProductionService productionService = new ProductionService();
-    private static UASBSelector uasbSelector = new UASBSelector();
-    private static OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
-    private static PartnerCommissionService commissionService = new PartnerCommissionService();
-    private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+    @TestVisible private static UASBSelector uasbSelector = new UASBSelector();
+    @TestVisible private static OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
+    @TestVisible private static PartnerCommissionService commissionService = new PartnerCommissionService();
+    @TestVisible private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<SObjectType>{
             Account.SObjectType,
             Commission_Payment__c.SObjectType
@@ -150,9 +150,11 @@ public with sharing class BillPeriodService {
      * @description Updates First CS Bill Date for accounts that have this as their first transfer, and generates
      * commissions for corresponding opportunities
      * @param transfers UCB Transfers
+     * @return Set of opportunity Ids that are getting billed by the transfers, to be used as inputs for the
+     * PartnerCommissionService
      */
     @TestVisible
-    private void handleUCBTransfers(List<Transfer__c> transfers) {
+    private Set<Id> handleUCBTransfers(List<Transfer__c> transfers) {
         List<UASB__c> uasbs = uasbSelector.getUasbsByTransfer(transfers);
         Set<Id> opportunityIdsGettingBilled = new Set<Id>();
         for (UASB__c uasb : uasbs) {
@@ -179,5 +181,6 @@ public with sharing class BillPeriodService {
         commissionService.calculateCommissionRecords(firstBillPaid, uow);
 
         uow.commitWork();
+        return opportunityIdsGettingBilled;
     }
 }
