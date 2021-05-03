@@ -351,6 +351,19 @@ CASE(Utility__c,
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Number_of_Days_to_Enact_ALS__c</fullName>
+        <externalId>false</externalId>
+        <formula>Date_Enacted_by_Utility__c-Date_Submitted_to_Utility__c</formula>
+        <inlineHelpText>Calculates the number of days from day submitted to day enacted.</inlineHelpText>
+        <label>Number of Days to Enact ALS</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Project_ID__c</fullName>
         <description>The ID for the Project Associated with the Shared Solar System.</description>
         <externalId>false</externalId>
