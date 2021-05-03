@@ -129,7 +129,9 @@ public without sharing class SubscriptionTransferService {
             Effective_Date__c = System.now()
         );
         Decimal amountToTransfer = 0;
-        if (oldUAS.Future_Customer_Subscription_KWDC_Rollup__c == 0 && oldUAS.Subscription_Orders__r[0].Type__c == 'Cancellation') {
+        if (oldUAS.Future_Customer_Subscription_KWDC_Rollup__c == 0 &&
+            !oldUAS.Subscription_Orders__r.isEmpty() &&
+            oldUAS.Subscription_Orders__r[0].Type__c == 'Cancellation') {
             amountToTransfer = oldUAS.Subscription_Orders__r[0].Previous_kw_DC_Subscription__c;
         } else {
             amountToTransfer = oldUAS.Future_Customer_Subscription_KWDC_Rollup__c;
