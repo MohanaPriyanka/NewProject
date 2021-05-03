@@ -142,6 +142,19 @@
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Interconnection_Agreement_Compact_Custom</fullName>
+        <fields>Inspire_Project__c</fields>
+        <fields>Name</fields>
+        <fields>Agreement_Iteration__c</fields>
+        <fields>Agreement_Payment_Est__c</fields>
+        <fields>Agreement_Payment_Act__c</fields>
+        <fields>Agreement_Received_Est__c</fields>
+        <fields>Agreement_Received_Act__c</fields>
+        <fields>Executed_Agreement_Sent__c</fields>
+        <fields>Agreement_Counter_Signed_by_Utility__c</fields>
+        <label>Interconnection Agreement Compact Custom</label>
+    </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>

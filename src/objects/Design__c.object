@@ -142,6 +142,20 @@
     </actionOverrides>
     <allowInChatterGroups>true</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Design_Compact_Custom</fullName>
+        <fields>Inspire_Project__c</fields>
+        <fields>Name</fields>
+        <fields>Selected_Design__c</fields>
+        <fields>Distribution_Design_Started__c</fields>
+        <fields>Distribution_Design_Business_Days__c</fields>
+        <fields>Distribution_Design_Finished_Est__c</fields>
+        <fields>Substation_Design_Started__c</fields>
+        <fields>Substation_Design_Business_Days__c</fields>
+        <fields>Substation_Design_Finished_Est__c</fields>
+        <fields>On_Site_Meeting__c</fields>
+        <label>Design Compact Custom</label>
+    </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Multiple designs may be created, one will be chosen for Constuction</description>
     <enableActivities>true</enableActivities>
