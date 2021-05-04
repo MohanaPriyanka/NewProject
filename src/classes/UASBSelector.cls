@@ -105,7 +105,7 @@ public without sharing class UASBSelector {
      * @param transfers UCB Transfers
      * @return List of UASBs
      */
-    public List<UASB__c> getUasbsByTransfer(List<Transfer__c> transfers) {
+    public List<UASB__c> getUasbsForUCBTransfers(List<Transfer__c> transfers) {
         return [
             SELECT Id, Date__c,
                 Utility_Account_Subscription__c,

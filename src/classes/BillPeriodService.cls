@@ -155,7 +155,7 @@ public with sharing class BillPeriodService {
      */
     @TestVisible
     private Set<Id> handleUCBTransfers(List<Transfer__c> transfers) {
-        List<UASB__c> uasbs = uasbSelector.getUasbsByTransfer(transfers);
+        List<UASB__c> uasbs = uasbSelector.getUasbsForUCBTransfers(transfers);
         Set<Id> opportunityIdsGettingBilled = new Set<Id>();
         for (UASB__c uasb : uasbs) {
             opportunityIdsGettingBilled.add(uasb.Utility_Account_Subscription__r.Opportunity__c);
