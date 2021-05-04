@@ -1,6 +1,6 @@
-@isTest
+@IsTest
+@SuppressWarnings('PMD.AvoidHardcodingId')
 public class PartnerCommissionServiceTest {
-
     @IsTest
     private static void testContractExecution(){
         useMocks();
@@ -27,19 +27,27 @@ public class PartnerCommissionServiceTest {
         }
 
         Test.startTest();
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType> {
+                Opportunity.SObjectType,
+                Commission_Payment__c.SObjectType,
+                Case.SObjectType
+            }
+        );
         PartnerCommissionService service = new PartnerCommissionService();
-        service.calculateCommissionRecords(pendingComm);
+        service.calculateCommissionRecords(pendingComm, uow);
         Test.stopTest();
 
         List<Opportunity> opportunitiesToUpdate = (List<Opportunity>)
-            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Opportunity');
+            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(uow, 'Opportunity');
         List<Case> casesToInsert = (List<Case>)
-            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'Case');
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Case');
         List<Commission_Payment__c> commissionPaymentRecordsToInsert = (List<Commission_Payment__c>)
-            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'Commission_Payment__c');
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Commission_Payment__c');
         List<Commission_Payment__c> commissionPaymentRecordsToUpdate = (List<Commission_Payment__c>)
-            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Commission_Payment__c');
+            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(uow, 'Commission_Payment__c');
 
+        System.debug(LoggingLevel.ERROR, JSON.serialize(opportunitiesToUpdate));
         System.assertEquals(10,opportunitiesToUpdate.size());
         System.assertEquals(1,casesToInsert.size());
         System.assertEquals(7,commissionPaymentRecordsToInsert.size());
@@ -84,18 +92,24 @@ public class PartnerCommissionServiceTest {
         pendingComm.typeOfCommission = PartnerCommissionService.CommissionType.FIRSTBILLPAID;
 
         System.assertEquals(10,pendingComm.opportunitiesToRun.size());
-
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType> {
+                Opportunity.SObjectType,
+                Commission_Payment__c.SObjectType,
+                Case.SObjectType
+            }
+        );
         PartnerCommissionService service = new PartnerCommissionService();
-        service.calculateCommissionRecords(pendingComm);
+        service.calculateCommissionRecords(pendingComm, uow);
 
         List<Opportunity> opportunitiesToUpdate = (List<Opportunity>)
-            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Opportunity');
+            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(uow, 'Opportunity');
         List<Case> casesToInsert = (List<Case>)
-            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'Case');
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Case');
         List<Commission_Payment__c> commissionPaymentRecordsToInsert = (List<Commission_Payment__c>)
-            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'Commission_Payment__c');
+            FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Commission_Payment__c');
         List<Commission_Payment__c> commissionPaymentRecordsToUpdate = (List<Commission_Payment__c>)
-            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Commission_Payment__c');
+            FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(uow, 'Commission_Payment__c');
 
 
         // Only Contract Execution Type should update opportunities, update comm. payments or insert cases:
@@ -158,9 +172,6 @@ public class PartnerCommissionServiceTest {
     }
 
     public class MockUASSelector extends MockProvider {
-        public MockUASSelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             String queryData = '{' +
                 '"0063K000003pyqPQAQ":10.0,' +
@@ -184,9 +195,6 @@ public class PartnerCommissionServiceTest {
     }
 
     public class MockCommStructureSelector extends MockProvider {
-        public MockCommStructureSelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             //Same Partner
                 // 2 are for same product
@@ -211,9 +219,6 @@ public class PartnerCommissionServiceTest {
     }
 
     public class MockPartnerSSSEligibilitySelector extends MockProvider {
-        public MockPartnerSSSEligibilitySelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             //Same partner, different SSS, different Commission Structure
             String queryData = '[' +
@@ -230,9 +235,6 @@ public class PartnerCommissionServiceTest {
     }
 
     public class MockCommPaySelector extends MockProvider {
-        public MockCommPaySelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             String queryData = '[' +
                 '{"Id":"a4v3K0000000HLKQA2","Opportunity__c":"0063K000003pyqPQAQ", "Future_Customer_Subscription_kW_DC__c": "15.0"},' +
@@ -248,9 +250,6 @@ public class PartnerCommissionServiceTest {
     }
 
     public class MockPartnerInvoiceSelector extends MockProvider {
-        public MockPartnerInvoiceSelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             Date monthFromToday = System.today().addMonths(1);
             Date today = System.today();
@@ -258,17 +257,17 @@ public class PartnerCommissionServiceTest {
             Invoice__c nextMonthsInvoice = new Invoice__c(
                 Id = 'a0c3K000000F0pUQAS',
                 Partner__c = 'a0s3K0000006wCRQAY',
-                Due_Date__c = Date.newInstance(monthFromToday.Year(), monthFromToday.month(), 15)
+                Due_Date__c = Date.newInstance(monthFromToday.year(), monthFromToday.month(), 15)
             );
             Invoice__c thisMonthsInvoicePartner1 = new Invoice__c(
                 Id = 'a0c3K000000F0pUQAS',
                 Partner__c = 'a0s3K0000006wCRQAY',
-                Due_Date__c = Date.newInstance(today.Year(), today.month(), 15)
+                Due_Date__c = Date.newInstance(today.year(), today.month(), 15)
             );
             Invoice__c thisMonthsInvoicePartner2 = new Invoice__c(
                 Id = 'a0c3K000000F0pUQAT',
                 Partner__c = 'a0s3K0000006wCMQAY',
-                Due_Date__c = Date.newInstance(today.Year(), today.month(), 15)
+                Due_Date__c = Date.newInstance(today.year(), today.month(), 15)
             );
 
             switch on methodCall.stubbedMethodName {

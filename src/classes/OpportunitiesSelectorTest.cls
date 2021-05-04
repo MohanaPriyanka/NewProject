@@ -81,13 +81,15 @@ public with sharing class OpportunitiesSelectorTest {
         oppList[0].Commission_Structure__c = onlyBill.Id;
         oppList[1].Commission_Structure__c = both.Id;
         oppList[2].Commission_Structure__c = onlyPayment.Id;
-
+        update oppList;
         Account newAccount = new Account(Name = 'Test Acct');
         insert newAccount;
         Set<Id> accountIdSet = new Set<Id>{newAccount.Id};
         OpportunitiesSelector selector = new OpportunitiesSelector();
         System.assertEquals(0, selector.selectWithoutFirstInvoiceCommission(accountIdSet).size());
         System.assertEquals(0, selector.selectWithoutFirstPaymentCommission(accountIdSet).size());
+        System.assertEquals(0, selector.selectWithoutFirstInvoiceCommissionByOpp(CollectionUtil.getIdSet(oppList)).size());
+        System.assertEquals(0, selector.selectWithoutFirstPaymentCommissionByOpp(CollectionUtil.getIdSet(oppList)).size());
     }
 
     @IsTest
