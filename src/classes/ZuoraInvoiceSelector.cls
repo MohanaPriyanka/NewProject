@@ -131,7 +131,7 @@ public with sharing class ZuoraInvoiceSelector {
 
     public List<Zuora__ZInvoice__c> getAll(Set<Id> invoiceIds) {
         return [
-            SELECT Id, Zuora__Account__c, Zuora__InvoiceDate__c, First_Bill__c
+            SELECT Id, Zuora__Account__c, Zuora__InvoiceDate__c, First_Bill__c, Zuora__Account__r.First_CS_Bill_Date__c
             FROM Zuora__ZInvoice__c
             WHERE Id = :invoiceIds
         ];

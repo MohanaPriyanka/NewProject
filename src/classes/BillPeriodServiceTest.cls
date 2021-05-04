@@ -245,7 +245,7 @@ private class BillPeriodServiceTest {
 
         // Run test
         Test.startTest();
-        BillPeriodService.markBillPeriodsAsBillRunComplete(invoiceDate);
+        new BillPeriodService().markBillPeriodsAsBillRunComplete(invoiceDate);
         Test.stopTest();
 
         // Validate bill periods
@@ -275,7 +275,7 @@ private class BillPeriodServiceTest {
 
         // Run test
         Test.startTest();
-        BillPeriodService.markBillPeriodsAsBillRunComplete(Date.newInstance(2019, 7, 20));
+        new BillPeriodService().markBillPeriodsAsBillRunComplete(Date.newInstance(2019, 7, 20));
         Test.stopTest();
 
         List<Bill_Period__c> billPeriods = [SELECT Id FROM Bill_Period__c WHERE Bill_Status__c = 'Bill Run Complete'];
@@ -289,4 +289,85 @@ private class BillPeriodServiceTest {
         System.assertEquals(bp.Bill_Date__c, productionList[0].First_Date_Production_Billed__c);
         System.assertEquals(null, productionList[1].First_Date_Production_Billed__c);
     }
+
+    @IsTest
+    private static void testCreateUCBCommissionsAfterBillPeriodUpdate() {
+        BillPeriodService.commissionService =
+            (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new MockPartnerCommissionService());
+
+        BillPeriodService.uasbSelector =
+            (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector(null, System.today()));
+        BillPeriodService.uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Account.SObjectType,
+                Commission_Payment__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+        Set<Id> oppIdsGettingBilled = new BillPeriodService().handleUCBTransfers(new List<Transfer__c>());
+        System.assertEquals(1, oppIdsGettingBilled.size(),
+            'Expected one UCB opportunity to be used to look for opps that need to a commission paid');
+        List<SObject> updatedObjects = FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(BillPeriodService.uow, 'Account');
+        System.assertEquals(1, updatedObjects.size(),
+            'Expected one account to be registered for update');
+        System.assertEquals(System.today(), updatedObjects[0].get(Account.First_CS_Bill_Date__c),
+            'Expected First CS Bill Date to be set to today, the Date on the UASB, since it was null');
+
+        BillPeriodService.uasbSelector =
+            (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector(System.today().addYears(-1), System.today()));
+        BillPeriodService.uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Account.SObjectType,
+                Commission_Payment__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+        oppIdsGettingBilled = new BillPeriodService().handleUCBTransfers(new List<Transfer__c>());
+        System.assertEquals(1, oppIdsGettingBilled.size(),
+            'Expected one UCB opportunity to be used to look for opps that need to a commission paid');
+        updatedObjects = FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(BillPeriodService.uow, 'Account');
+        System.assertEquals(0, updatedObjects.size(),
+            'Expected no accounts to be registered for update, since they already had a First CS Bill Date');
+    }
+
+    public class MockUASBSelector extends MockProvider {
+        private Date firstCSBillDate;
+        private Date uasbDate;
+        public MockUASBSelector(Date firstCSBillDate, Date uasbDate) {
+            this.firstCSBillDate = firstCSBillDate;
+            this.uasbDate = uasbDate;
+        }
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'getUasbsForUCBTransfers' {
+                    sfab_FabricatedSObject fabbedAccount = new sfab_FabricatedSObject(Account.class);
+                    fabbedAccount.setField(Account.Id, Util.getFakeId(Account.SObjectType));
+                    fabbedAccount.setField(Account.First_CS_Bill_Date__c, firstCSBillDate);
+
+                    sfab_FabricatedSObject fabbedOpp = new sfab_FabricatedSObject(Opportunity.class);
+                    fabbedOpp.setField(Opportunity.Id, Util.getFakeId(Opportunity.SObjectType));
+                    fabbedOpp.setField(Opportunity.AccountId, Util.getFakeId(Account.SObjectType));
+                    fabbedOpp.setParent('Account', fabbedAccount);
+
+                    sfab_FabricatedSObject fabbedUAS = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
+                    fabbedUAS.setParent('Opportunity__r', fabbedOpp);
+
+                    sfab_FabricatedSObject fabbedUASB = new sfab_FabricatedSObject(UASB__c.class);
+                    fabbedUASB.setField(UASB__c.Date__c, uasbDate);
+                    fabbedUASB.setField(UASB__c.Utility_Account_Subscription__c, Util.getFakeId(Utility_Account_Subscription__c.SObjectType));
+                    fabbedUASB.setParent('Utility_Account_Subscription__r', fabbedUAS);
+                    return new List<UASB__c>{(UASB__c) fabbedUASB.toSObject()};
+                }
+            }
+            return null;
+        }
+    }
+
+    // PartnerCommissionServiceTest tests the PartnerCommissionService, so we mock it out here.
+    public class MockPartnerCommissionService extends MockProvider {
+        public override Object handleMethodCall(MethodCall methodCall) {
+            return null;
+        }
+    }
+
 }
