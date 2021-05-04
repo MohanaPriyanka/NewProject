@@ -24,6 +24,9 @@
                         <valueListItems>
                             <value>PrintableView</value>
                         </valueListItems>
+                        <valueListItems>
+                            <value>Schedule_Z__c.Client_File_Download</value>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
@@ -128,6 +131,43 @@
                     <value>maintabs</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>checkboxFileContaining</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>childRelationshipNames</name>
+                    <value>Supporting_Document_Folders__r</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>componentCardTitle</name>
+                    <value>Mass File Downloads</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideContactIcon</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideRenewSubscribeHeaderBar</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideSettingsIcon</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideSupportIcon</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hideTitleHeaderBar</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentName>DownloadFiles:MassFileDownloadRelatedFilesLightningComponent</componentName>
             </componentInstance>
         </itemInstances>
         <mode>Replace</mode>

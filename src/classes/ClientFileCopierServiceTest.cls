@@ -1,7 +1,10 @@
 @IsTest
 public with sharing class ClientFileCopierServiceTest {
-    @TestSetup
-    public static void testSetup() {
+
+    public static Boolean testForAssignmentAgreement = false;
+    public static Boolean testForAllocationSchedule = false;
+
+    public static Contract setupAssignmentAgreementData() {
         Account clientAccount = new Account(Name = 'Client');
         insert clientAccount;
         Id rtAssign = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
@@ -12,17 +15,24 @@ public with sharing class ClientFileCopierServiceTest {
             AccountId = clientAccount.Id
         );
         insert assignmentAgreement;
+        return assignmentAgreement;
+    }
+
+    public static Id setupAllocationScheduleData() {
+        Shared_Solar_System__c sss = new Shared_Solar_System__c(Name='Test System');
+        insert sss;
+
+        Schedule_Z__c allocationSchedule = new Schedule_Z__c(
+            Shared_Solar_System__c = sss.Id
+        );
+        insert allocationSchedule;
+        return allocationSchedule.Id;
     }
 
     @IsTest
     public static void testCustomerAgreementMigration() {
-        useMocks(true);
-        Contract assignmentAgreement = [
-            SELECT Id
-            FROM Contract
-            WHERE Name = 'Assignment Agreement'
-            LIMIT 1
-        ];
+        testForAssignmentAgreement = true;
+        Contract assignmentAgreement = setupAssignmentAgreementData();
 
         List<Supporting_Document_Folder__c> beforeFolders = [
             SELECT Id
@@ -32,8 +42,12 @@ public with sharing class ClientFileCopierServiceTest {
         System.assertEquals(0, beforeFolders.size());
 
         Test.startTest();
-        ClientFileCopierService service = new ClientFileCopierService();
-        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Agreement');
+            useMocks(true);
+            ClientFileCopierService.CloneInputs inputs = new ClientFileCopierService.CloneInputs();
+            inputs.parentSobjectId = assignmentAgreement.Id;
+            inputs.documentType = 'Customer Agreement';
+            inputs.deleteExisting = false;
+            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -54,13 +68,8 @@ public with sharing class ClientFileCopierServiceTest {
 
     @IsTest
     public static void testCustomerDisclosureMigration() {
-        useMocks(true);
-        Contract assignmentAgreement = [
-            SELECT Id
-            FROM Contract
-            WHERE Name = 'Assignment Agreement'
-            LIMIT 1
-        ];
+        testForAssignmentAgreement = true;
+        Contract assignmentAgreement = setupAssignmentAgreementData();
 
         List<Supporting_Document_Folder__c> beforeFolders = [
             SELECT Id
@@ -70,8 +79,12 @@ public with sharing class ClientFileCopierServiceTest {
         System.assertEquals(0, beforeFolders.size());
 
         Test.startTest();
-        ClientFileCopierService service = new ClientFileCopierService();
-        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Disclosure Form');
+            useMocks(true);
+            ClientFileCopierService.CloneInputs inputs = new ClientFileCopierService.CloneInputs();
+            inputs.parentSobjectId = assignmentAgreement.Id;
+            inputs.documentType = 'Customer Disclosure Form';
+            inputs.deleteExisting = false;
+            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -92,13 +105,8 @@ public with sharing class ClientFileCopierServiceTest {
 
     @IsTest
     public static void testPCRMigration() {
-        useMocks(false);
-        Contract assignmentAgreement = [
-            SELECT Id
-            FROM Contract
-            WHERE Name = 'Assignment Agreement'
-            LIMIT 1
-        ];
+        testForAssignmentAgreement = true;
+        Contract assignmentAgreement = setupAssignmentAgreementData();
 
         List<Supporting_Document_Folder__c> beforeFolders = [
             SELECT Id
@@ -108,8 +116,12 @@ public with sharing class ClientFileCopierServiceTest {
         System.assertEquals(0, beforeFolders.size());
 
         Test.startTest();
-        ClientFileCopierService service = new ClientFileCopierService();
-        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Credit Report');
+            useMocks(false);
+            ClientFileCopierService.CloneInputs inputs = new ClientFileCopierService.CloneInputs();
+            inputs.parentSobjectId = assignmentAgreement.Id;
+            inputs.documentType = 'Customer Credit Report';
+            inputs.deleteExisting = false;
+            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -130,13 +142,8 @@ public with sharing class ClientFileCopierServiceTest {
 
     @IsTest
     private static void testAddendumMigration() {
-        useMocks(true);
-        Contract assignmentAgreement = [
-            SELECT Id
-            FROM Contract
-            WHERE Name = 'Assignment Agreement'
-            LIMIT 1
-        ];
+        testForAssignmentAgreement = true;
+        Contract assignmentAgreement = setupAssignmentAgreementData();
 
         List<Supporting_Document_Folder__c> beforeFolders = [
             SELECT Id
@@ -146,8 +153,12 @@ public with sharing class ClientFileCopierServiceTest {
         System.assertEquals(0, beforeFolders.size());
 
         Test.startTest();
-        ClientFileCopierService service = new ClientFileCopierService();
-        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Addendum');
+            useMocks(true);
+            ClientFileCopierService.CloneInputs inputs = new ClientFileCopierService.CloneInputs();
+            inputs.parentSobjectId = assignmentAgreement.Id;
+            inputs.documentType = 'Customer Addendum';
+            inputs.deleteExisting = false;
+            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -162,33 +173,66 @@ public with sharing class ClientFileCopierServiceTest {
             FROM ContentDocumentLink
             WHERE LinkedEntityId = :afterFolders[0].Id
         ];
-
         System.assertEquals(1, afterFiles.size(), 'Only one contract has an Addendum attachment');
     }
 
     @IsTest
     public static void testCreateSupportingDocumentsFolder() {
-        useMocks(true);
-        Contract assignmentAgreement = [
-            SELECT Id
-            FROM Contract
-            WHERE Name = 'Assignment Agreement'
-            LIMIT 1
-        ];
+        testForAssignmentAgreement = true;
+        Contract assignmentAgreement = setupAssignmentAgreementData();
+
         Test.startTest();
-        ClientFileCopierService service = new ClientFileCopierService();
-        service.findAndCloneDocuments(assignmentAgreement.Id, 'Customer Agreement');
+            useMocks(true);
+            ClientFileCopierService.CloneInputs inputs = new ClientFileCopierService.CloneInputs();
+            inputs.parentSobjectId = assignmentAgreement.Id;
+            inputs.documentType = 'Customer Agreement';
+            inputs.deleteExisting = false;
+            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
+
         Supporting_Document_Folder__c folder = [SELECT Name, Id,Type__c FROM Supporting_Document_Folder__c LIMIT 1];
         System.assertEquals('Customer Agreements', folder.Name, 'Folder name should be the same as the type passed through the docType param with a trailing s.');
     }
+
+    @IsTest
+    public static void testDisclosureCopyForAllocationSchedule() {
+        testForAllocationSchedule = true;
+        Id allocationScheduleId = setupAllocationScheduleData();
+
+        Test.startTest();
+            useMocks(true);
+            ClientFileCopierService.CloneInputs inputs = new ClientFileCopierService.CloneInputs();
+            inputs.parentSobjectId = allocationScheduleId;
+            inputs.documentType = 'Customer Disclosure Form';
+            inputs.deleteExisting = false;
+            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
+        Test.stopTest();
+
+        List<Supporting_Document_Folder__c> afterFolders = [
+            SELECT Id
+            FROM Supporting_Document_Folder__c
+            WHERE Allocation_Schedule__c =: allocationScheduleId
+        ];
+        System.assertEquals(1, afterFolders.size());
+
+        List<ContentDocumentLink> afterFiles = [
+            SELECT Id, ContentDocumentId
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = :afterFolders[0].Id
+        ];
+        // 5 Allocation Schedule Subscriptions / UASes, 2 of which utilize the same Contract & disclosure documents
+        // There should be 5 Disclosure files copied into the Supporting Docs folder, and only 3 unique documents
+        System.assertEquals(5, afterFiles.size(), '5 files should have been copied for Allocation Schedule client file download');
+    }
+
     private static void useMocks(Boolean returnContractDocs) {
         ClientFileCopierService.contractSelector = (ContractSelector) Test.createStub(ContractSelector.class, new MockContractSelector());
         ClientFileCopierService.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
         ClientFileCopierService.uasSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
-        ClientFileCopierService.contentVersionSelector = (ContentVersionSelector) Test.createStub(ContentVersionSelector.class, new MockContentVersionSelector());
+        ClientFileCopierService.scheduleZSubSelector = (ScheduleZSubscriptionSelector) Test.createStub(ScheduleZSubscriptionSelector.class, new MockScheduleZSubscriptionSelector());
+        BatchClientFileCopierService.contentVersionSelector = (ContentVersionSelector) Test.createStub(ContentVersionSelector.class, new MockContentVersionSelector());
         if (returnContractDocs) {
-            ClientFileCopierService.contentDocumentSelector = (ContentDocumentSelector) Test.createStub(ContentDocumentSelector.class, new MockContentDocumentContractSelector());
+            ClientFileCopierService.contentDocumentSelector = (ContentDocumentSelector) Test.createStub(ContentDocumentSelector.class, new MockContentDocumentSelector());
         } else {
             ClientFileCopierService.contentDocumentSelector = (ContentDocumentSelector) Test.createStub(ContentDocumentSelector.class, new MockContentDocumentOpportunitySelector());
         }
@@ -204,7 +248,6 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"8002f000000Gew2AAC"},' +
                 '{"Id":"8002f000000GewFAAS"},' + // has 2 UASes
                 '{"Id":"8002f000000GewNAAS", "Parent_Contract__c" : "8002f000000GewNBBB"}]'; // Hybrid Customer with Generic and Project Specific Contracts
-
             switch on methodCall.stubbedMethodName {
                 when 'getCustomerContractsByAssignmentAgreement' {
                     return (List<Contract>) JSON.deserialize(contractsAsString, List<Contract>.class);
@@ -221,8 +264,7 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"0062f00000EllRwAAJ","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL"},' + // 2 UASes
                 '{"Id":"0062f00000EllRqAAJ","Personal_Credit_Report2__c":"a0Fj000000EYyZ4EAL"},' +
                 '{"Id":"0062f00000EllRrAAJ","Personal_Credit_Report2__c":"a0Fj000000EYyZ5EAL"}' +
-                ']';
-
+            ']';
             switch on methodCall.stubbedMethodName {
                 when 'getCustomerOpportunitiesByAssignmentAgreement' {
                     return (List<Opportunity>) JSON.deserialize(oppAsString, List<Opportunity>.class);
@@ -239,7 +281,7 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"06A2f000005tUqOEAU","LinkedEntityId":"a0Fj000000EYyZ4EAL","ContentDocumentId":"0692f000001g5u2AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001fitDAAQ","LatestPublishedVersion":{"Title":"LASERCA_FileName"}}},' +
                 '{"Id":"06A2f000008tUqOEAU","LinkedEntityId":"a0Fj000000EYyV2EAL","ContentDocumentId":"0692f000001g8u2AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001jitDAAQ","LatestPublishedVersion":{"Title":"LASERCA_FileName"}}},' +
                 '{"Id":"06A2f000009tUqOEAU","LinkedEntityId":"a0Fj000000EYyV1EAL","ContentDocumentId":"0692f000001g0u2AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001kitDAAQ","LatestPublishedVersion":{"Title":"LASERCA_FileName"}}}' +
-                ']';
+            ']';
 
             switch on methodCall.stubbedMethodName {
                 when 'selectByLinkedEntitiesWithoutData' {
@@ -250,9 +292,9 @@ public with sharing class ClientFileCopierServiceTest {
         }
     }
 
-    public class MockContentDocumentContractSelector extends MockProvider {
+    public class MockContentDocumentSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
-            String docLinkAsString = '[' +
+            String docLinksForAssignmentAgreement = '[' +
                 '{"Id":"06A2f000004rUrQEAU","LinkedEntityId":"8002f000000GevzAAC","ContentDocumentId":"0692f000001g9v4AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}},' +
                 '{"Id":"06A2f000004rUrLEAU","LinkedEntityId":"8002f000000Gew0AAC","ContentDocumentId":"0692f000001g9uzAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuAAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}},' +
                 '{"Id":"06A2f000004rUrGEAU","LinkedEntityId":"8002f000000Gew1AAC","ContentDocumentId":"0692f000001g9uuAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giu5AAA","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Credit Allocation Agreement"}}},' +
@@ -263,11 +305,33 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"06A2f000004rUqXCCC","LinkedEntityId":"8002f000000GewNAAS","ContentDocumentId":"0692f000001g9uxCCC","ContentDocument":{"LatestPublishedVersionId":"0682f000001gittCCC","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Customer Addendum"}}},' +
                 '{"Id":"06A2f000004rUqXDDD","LinkedEntityId":"8002f000000GewNAAS","ContentDocumentId":"0692f000001g9uxDDD","ContentDocument":{"LatestPublishedVersionId":"0682f000001gittDDD","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
                 '{"Id":"06A2f000004rUqOEBB","LinkedEntityId":"8002f000000GewNBBB","ContentDocumentId":"0692f000001g9u2AAB","ContentDocument":{"LatestPublishedVersionId":"0682f000001gitDAAB","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Community Solar Agreement"}}}' +
-                ']';
+            ']';
+            String docLinksForAllocationSchedule = '[' +
+                '{"Id":"06A2f000004rUrQEAU","LinkedEntityId":"8000a0000012jqUAAQ","ContentDocumentId":"0692f000001g9v4AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
+                '{"Id":"06A2f000004rUqXCCC","LinkedEntityId":"8000a0000012igyAAA","ContentDocumentId":"0692f000001g9uuAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
+                '{"Id":"06A2f000004rUqXDDD","LinkedEntityId":"8000a0000012nz3AAA","ContentDocumentId":"0692f000001g9uxDDD","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}}' +
+            ']';
+            if (methodCall.stubbedMethodName == 'selectByLinkedEntitiesWithoutData' && testForAssignmentAgreement) {
+                return (List<ContentDocumentLink>) JSON.deserialize(docLinksForAssignmentAgreement, List<ContentDocumentLink>.class);
+            } else if (methodCall.stubbedMethodName == 'selectByLinkedEntitiesWithoutData' && testForAllocationSchedule) {
+                return (List<ContentDocumentLink>) JSON.deserialize(docLinksForAllocationSchedule, List<ContentDocumentLink>.class);
+            }
+            return null;
+        }
+    }
 
+    public class MockScheduleZSubscriptionSelector extends MockProvider {
+        public override Object handleMethodCall(MethodCall methodCall) {
+            String alssAsString = '[' +
+                '{"Id":"a545b000000VHFqAAO","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012jqUAAQ"}}},'+
+                '{"Id":"a545b000000VHFtAAO","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012igyAAA"}}},'+
+                '{"Id":"a545b000000VHFuAAO","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012igyAAA"}}},'+
+                '{"Id":"a545b000000VHFvAAO","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012nz3AAA"}}},'+
+                '{"Id":"a545b000000VHFwAAO","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012nz3AAA"}}}'+
+            ']';
             switch on methodCall.stubbedMethodName {
-                when 'selectByLinkedEntitiesWithoutData' {
-                    return (List<ContentDocumentLink>) JSON.deserialize(docLinkAsString, List<ContentDocumentLink>.class);
+                when 'getALSSforClientFileDownload' {
+                    return (List<Schedule_Z_Subscription__c>) JSON.deserialize(alssAsString, List<Schedule_Z_Subscription__c>.class);
                 }
             }
             return null;
@@ -276,7 +340,7 @@ public with sharing class ClientFileCopierServiceTest {
 
     public class MockUASSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
-            String uasesAsString = '[' +
+            String uasesForAssignmentAgreement = '[' +
                 '{"Id":"a1d2f000000FYqDAAW","Name":"0002340","Opportunity__c":"0062f00000EllRvAAJ","Opportunity__r":{"Name":"Joshua Phillips","Personal_Credit_Report2__c":"a0Fj000000EYyV1EAL","ContractId":"8002f000000GevzAAC","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8002f000000GevzAAC","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0000234"}},' +
                 '{"Id":"a1d2f000000FZqDAAW","Name":"0002300","Opportunity__c":"8002f000000GebbAAC","Opportunity__r":{"Name":"Joshua River","Personal_Credit_Report2__c":"a0Fj000000EZZV1EAL","ContractId":"8002f000000GennAAC","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8002f000000GennAAC","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"00002340"}},' +
                 '{"Id":"a1d2f000000FYqEAAW","Name":"0002340","Opportunity__c":"0062f00000EllRwAAJ","Opportunity__r":{"Name":"Joshua Phillips","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL","ContractId":"8002f000000Gew0AAC","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000Gew0AAC","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0000235"}},' +
@@ -293,11 +357,20 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"a1d2f000000FYqAAAW","Name":"0002349","Opportunity__c":"0062f00000EllRrAAJ","Opportunity__r":{"Name":"Conor Schmitt","Personal_Credit_Report2__c":"a0Fj000000EYyZ5EAL","ContractId":"8002f000000GewLAAS","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000GewLAAS","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"00002348"}},' +
                 '{"Id":"a1d2f000000FYqBAAW","Name":"00023410","Opportunity__c":"0062f00000EllRsAAJ","Opportunity__r":{"Name":"Akbar Boyce","Personal_Credit_Report2__c":"","ContractId":"8002f000000GewMAAS","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000GewMAAS","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"00002349"}},' +
                 '{"Id":"a1d2f000000FYqCAAW","Name":"00023411","Opportunity__c":"0062f00000EllRtAAJ","Opportunity__r":{"Name":"Viaan Faulkner","Personal_Credit_Report2__c":"","ContractId":"8002f000000GewNAAS","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8002f000000GewNAAS", "Parent_Contract__c" : "8002f000000GewNBBB", "Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"000023410"}}' +
-                ']';
-
+            ']';
+            String uasesForAllocationSchedule = '[' +
+                '{"Id":"a1d2f000000FYqDAAW","Name":"0002301","Opportunity__c":"0062f00000EllRvAAJ","Opportunity__r":{"Name":"Test 1","Personal_Credit_Report2__c":"a0Fj000000EYyV1EAL","ContractId":"8000a0000012jqUAAQ","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8000a0000012jqUAAQ","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0002301"}},' +
+                '{"Id":"a1d2f000000FZqDAAW","Name":"0002302","Opportunity__c":"8002f000000GebbAAC","Opportunity__r":{"Name":"Test 2a","Personal_Credit_Report2__c":"a0Fj000000EZZV1EAL","ContractId":"8000a0000012igyAAA","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8000a0000012igyAAA","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0002302"}},' +
+                '{"Id":"a1d2f000000FYqEAAW","Name":"0002303","Opportunity__c":"0062f00000EllRwAAJ","Opportunity__r":{"Name":"Test 2b","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL","ContractId":"8000a0000012igyAAA","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8000a0000012igyAAA","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0002303"}},' +
+                '{"Id":"a1d2f000000FYqFAAW","Name":"0002304","Opportunity__c":"0062f00000EllRwAAJ","Opportunity__r":{"Name":"Test 3a","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL","ContractId":"8000a0000012nz3AAA","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8000a0000012nz3AAA","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0002304"}},' +
+                '{"Id":"a1d2f000000FYqGAAW","Name":"0002305","Opportunity__c":"0062f00000EllRxAAJ","Opportunity__r":{"Name":"Test 3b","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL","ContractId":"8000a0000012nz3AAA","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8000a0000012nz3AAA","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0002305"}}' +
+            ']';
             switch on methodCall.stubbedMethodName {
                 when 'getUASesForAssignmentAgreement' {
-                    return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasesAsString, List<Utility_Account_Subscription__c>.class);
+                    return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasesForAssignmentAgreement, List<Utility_Account_Subscription__c>.class);
+                }
+                when 'getNonAnchorUASesForAllocationSchedule' {
+                    return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasesForAllocationSchedule, List<Utility_Account_Subscription__c>.class);
                 }
             }
             return null;
@@ -323,30 +396,35 @@ public with sharing class ClientFileCopierServiceTest {
             ContentVersion fileTwentyFive = new ContentVersion(Id = '0682f000001gittCCC', ContentDocumentId = '0692f000001g9uxCCC', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
             ContentVersion fileTwentySix = new ContentVersion(Id = '0682f000001gittDDD', ContentDocumentId = '0692f000001g9uxDDD', VersionData = Blob.valueOf('textBody'), Signing_Status__c = 'Countersigned');
 
-
-            Map<Id, ContentVersion> cvMap = new Map<Id, ContentVersion>();
-            cvMap.put(fileOne.Id, fileOne);
-            cvMap.put(fileTwo.Id, fileTwo);
-            cvMap.put(fileThree.Id, fileThree);
-            cvMap.put(fileFour.Id, fileFour);
-            cvMap.put(fileFive.Id, fileFive);
-            cvMap.put(fileSix.Id, fileSix);
-            cvMap.put(fileSeven.Id, fileSeven);
-            cvMap.put(fileTweleve.Id, fileTweleve);
-            cvMap.put(fileEighteen.Id, fileEighteen);
-            cvMap.put(fileNineteen.Id, fileNineteen);
-            cvMap.put(fileTwentyTwo.Id, fileTwentyTwo);
-            cvMap.put(fileTwentyThree.Id, fileTwentyThree);
-            cvMap.put(fileTwentyFour.Id, fileTwentyFour);
-            cvMap.put(fileTwentyFive.Id, fileTwentyFive);
-            cvMap.put(fileTwentySix.Id, fileTwentySix);
+            Map<Id,ContentVersion> assignmentAgreementCvs = new Map<Id,ContentVersion>{
+                fileOne.Id => fileOne,
+                fileTwo.Id => fileTwo,
+                fileThree.Id => fileThree,
+                fileFour.Id => fileFour,
+                fileFive.Id => fileFive,
+                fileSix.Id => fileSix,
+                fileSeven.Id => fileSeven,
+                fileTweleve.Id => fileTweleve,
+                fileEighteen.Id => fileEighteen,
+                fileNineteen.Id => fileNineteen,
+                fileTwentyTwo.Id => fileTwentyTwo,
+                fileTwentyThree.Id => fileTwentyThree,
+                fileTwentyFour.Id => fileTwentyFour,
+                fileTwentyFive.Id => fileTwentyFive,
+                fileTwentySix.Id => fileTwentySix
+            };
+            Map<Id,ContentVersion> allocationScheduleCvs = new Map<Id,ContentVersion>{
+                fileOne.Id => fileOne,
+                fileThree.Id => fileThree,
+                fileTwentySix.Id => fileTwentySix
+            };
 
             switch on methodCall.stubbedMethodName {
                 when 'selectByIdWithData' {
-                    return cvMap;
+                    return testForAssignmentAgreement ? assignmentAgreementCvs : allocationScheduleCvs;
                 }
                 when 'selectById' {
-                    Map<Id, ContentVersion> versionMap = new Map<Id, ContentVersion>([
+                    Map<Id,ContentVersion> versionMap = new Map<Id,ContentVersion>([
                         SELECT Id, ContentDocumentId
                         FROM ContentVersion
                     ]);
