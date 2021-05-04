@@ -30395,6 +30395,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Schedule_Z__c.Number_of_Days_to_Enact_ALS__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Schedule_Z__c.Project_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
