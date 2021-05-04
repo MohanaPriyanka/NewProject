@@ -141,7 +141,7 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>true</allowInChatterGroups>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Easement_Compact</compactLayoutAssignment>
     <compactLayouts>
         <fullName>Easement_Compact</fullName>
         <fields>Name</fields>
