@@ -142,6 +142,19 @@
     </actionOverrides>
     <allowInChatterGroups>true</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Project_Application_Compact_Custom</fullName>
+        <fields>Inspire_Project__c</fields>
+        <fields>Name</fields>
+        <fields>App_ID_W0__c</fields>
+        <fields>App_Iteration__c</fields>
+        <fields>Application_Fee__c</fields>
+        <fields>IX_Application_Submitted__c</fields>
+        <fields>IX_Application_Deemed_Complete_Est__c</fields>
+        <fields>IX_Application_Deemed_Complete_Act__c</fields>
+        <fields>IX_Application_Receipt_Confirmed__c</fields>
+        <label>Project Application Compact Custom</label>
+    </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Applications related to Inspire Planner projects</description>
     <enableActivities>true</enableActivities>

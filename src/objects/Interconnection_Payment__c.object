@@ -142,6 +142,19 @@
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Interconnection_Payment_Compact_Custom</fullName>
+        <fields>Interconnection_Agreement__c</fields>
+        <fields>Name</fields>
+        <fields>IX_Payment_Type__c</fields>
+        <fields>Payment_Amount__c</fields>
+        <fields>Payment_Due__c</fields>
+        <fields>Payment_Sent__c</fields>
+        <fields>X30_BD_Final_Deadline__c</fields>
+        <fields>X30_BD_Notice_Received__c</fields>
+        <fields>X30_BD_Sent__c</fields>
+        <label>Interconnection Payment Compact Custom</label>
+    </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Payments for Interconnection Service Agreements</description>
     <enableActivities>true</enableActivities>
