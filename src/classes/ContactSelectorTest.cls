@@ -83,7 +83,20 @@ public with sharing class ContactSelectorTest {
 
     @IsTest
     private static void testInvocableSendBillsContactsSelector() {
-        List<List<Contact>> contactListWrapper = InvocableSendBillsContactsSelector.getSendBillsContactsBySSSId(new List<Id> {Util.getFakeId(Shared_Solar_System__c.SObjectType)} );
+        Id sssId =  (Util.getFakeId(Shared_Solar_System__c.SObjectType));
+        Boolean includeActiveOnly = TRUE;
+       
+        InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo sendBillsContactRequest =
+            new InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo();
+
+        sendBillsContactRequest.sharedSolarSystemId = sssId;
+        sendBillsContactRequest.includeActiveALSOnly = includeActiveOnly;
+        
+        List<List<Contact>> contactListWrapper = 
+            InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSId(new List<InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo>{sendBillsContactRequest});
+
+
+
         System.assertEquals(1,contactListWrapper.size(),'The InvocableSendBillsContactSelector should always return' + 
         'a list of contact lists (even if the contact list has no contacts in it');
         System.assertEquals(0,contactListWrapper[0].size(),'There should be no Send Bills Contacts for a SSS that is not found in the database');
