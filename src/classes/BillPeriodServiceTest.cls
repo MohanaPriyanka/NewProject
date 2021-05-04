@@ -339,7 +339,7 @@ private class BillPeriodServiceTest {
         }
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
-                when 'getUasbsByTransfer' {
+                when 'getUasbsForUCBTransfers' {
                     sfab_FabricatedSObject fabbedAccount = new sfab_FabricatedSObject(Account.class);
                     fabbedAccount.setField(Account.Id, Util.getFakeId(Account.SObjectType));
                     fabbedAccount.setField(Account.First_CS_Bill_Date__c, firstCSBillDate);
