@@ -142,6 +142,20 @@
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Study_compact_custom</fullName>
+        <fields>Inspire_Project__c</fields>
+        <fields>Study_Type__c</fields>
+        <fields>Name</fields>
+        <fields>Study_Cost__c</fields>
+        <fields>Date_Report_Received__c</fields>
+        <fields>Study_Begins_Est__c</fields>
+        <fields>Study_Begins_Act__c</fields>
+        <fields>Utility_Completed_Study__c</fields>
+        <fields>Extension_Payment_Due__c</fields>
+        <fields>Extension_Payment_Sent__c</fields>
+        <label>Study compact custom</label>
+    </compactLayouts>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>

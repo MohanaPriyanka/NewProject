@@ -431,7 +431,7 @@ If a new Feeder Utility and Voltage needs to be added:
         <label>Feeder Voltage (kV)</label>
         <precision>18</precision>
         <required>false</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
