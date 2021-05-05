@@ -310,7 +310,7 @@
     <formulas>
         <name>ffConfirmation</name>
         <dataType>String</dataType>
-        <expression>&quot;The date(s) have been updated&quot;&amp; IF({!Yes_notify_customers},&quot; and emails have been sent&quot;,&quot;&quot;)&amp;&quot;!&quot;</expression>
+        <expression>&quot;The date(s) have been updated&quot;&amp; IF({!Yes_notify_customers},&quot; and emails have been sent&quot;,&quot;&quot;)&amp;&quot;! Click Next to log the email message on the Shared Solar System&quot;</expression>
     </formulas>
     <formulas>
         <description>Email template name that will be sent based on the type of date that is being updated</description>

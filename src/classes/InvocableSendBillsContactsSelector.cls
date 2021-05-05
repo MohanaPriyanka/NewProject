@@ -5,7 +5,6 @@
  */
 
 public without sharing class InvocableSendBillsContactsSelector {
-
     @InvocableMethod(Label='Get Send Bills Contacts for a Shared Solar System')
 
     public static List<List<Contact>> getSendBillsContactsBySSSId(List<GetSendBillsContactsBySSSIdInfo> sssInfo) {
