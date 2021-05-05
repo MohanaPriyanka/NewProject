@@ -141,7 +141,7 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Study_compact_custom</compactLayoutAssignment>
     <compactLayouts>
         <fullName>Study_compact_custom</fullName>
         <fields>Inspire_Project__c</fields>
