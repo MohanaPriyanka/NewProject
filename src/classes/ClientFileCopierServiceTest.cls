@@ -47,7 +47,7 @@ public with sharing class ClientFileCopierServiceTest {
             inputs.parentSobjectId = assignmentAgreement.Id;
             inputs.documentType = 'Customer Agreement';
             inputs.deleteExisting = false;
-            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
+            ClientFileCopierService.findAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -84,7 +84,7 @@ public with sharing class ClientFileCopierServiceTest {
             inputs.parentSobjectId = assignmentAgreement.Id;
             inputs.documentType = 'Customer Disclosure Form';
             inputs.deleteExisting = false;
-            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
+            ClientFileCopierService.findAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -121,7 +121,7 @@ public with sharing class ClientFileCopierServiceTest {
             inputs.parentSobjectId = assignmentAgreement.Id;
             inputs.documentType = 'Customer Credit Report';
             inputs.deleteExisting = false;
-            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
+            ClientFileCopierService.findAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -158,7 +158,7 @@ public with sharing class ClientFileCopierServiceTest {
             inputs.parentSobjectId = assignmentAgreement.Id;
             inputs.documentType = 'Customer Addendum';
             inputs.deleteExisting = false;
-            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
+            ClientFileCopierService.findAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [
@@ -187,7 +187,7 @@ public with sharing class ClientFileCopierServiceTest {
             inputs.parentSobjectId = assignmentAgreement.Id;
             inputs.documentType = 'Customer Agreement';
             inputs.deleteExisting = false;
-            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
+            ClientFileCopierService.findAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
 
         Supporting_Document_Folder__c folder = [SELECT Name, Id,Type__c FROM Supporting_Document_Folder__c LIMIT 1];
@@ -205,7 +205,7 @@ public with sharing class ClientFileCopierServiceTest {
             inputs.parentSobjectId = allocationScheduleId;
             inputs.documentType = 'Customer Disclosure Form';
             inputs.deleteExisting = false;
-            ClientFileCopierService.invocableFindAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
+            ClientFileCopierService.findAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
         Test.stopTest();
 
         List<Supporting_Document_Folder__c> afterFolders = [

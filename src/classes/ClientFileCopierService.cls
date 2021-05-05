@@ -30,26 +30,29 @@ public without sharing class ClientFileCopierService {
     public Boolean deleteExistingFiles;
     public Id parentSobjectId;
     public Id supportingDocumentFolderId;
-    public List<FileToCopy> filesToCopy;
-    public Map<Id,Integer> numberOfCopiesByLinkedEntity = new Map<Id,Integer>();
-    public Map<Id,String> newFilenameByLinkedEntityMap = new Map<Id,String>();
+    public Map<Id,ContentDocumentLink> documentsByLinkedEntity = new Map<Id,ContentDocumentLink>();
+    public List<FileToCopy> filesToCopy = new List<FileToCopy>();
+    public List<Utility_Account_Subscription__c> subscriptions;
     public SObjectType parentSobjectType;
     public String requestedDocumentType;
 
     @InvocableMethod(
         Label='InvocableClientFileCopier'
         Description='Copies client files related to specified record and attaches them to a new related Supporting Documents Folder')
-    public static List<Id> invocableFindAndCloneDocuments (List<CloneInputs> parameters) {
+    public static List<Id> findAndCloneDocuments(List<CloneInputs> parameters) {
         ClientFileCopierService service = new ClientFileCopierService();
         service.parentSobjectId = parameters[0].parentSobjectId;
         service.requestedDocumentType = parameters[0].documentType;
         service.deleteExistingFiles = parameters[0].deleteExisting != null ? parameters[0].deleteExisting : false;
+
         service.validateParentSobjectInput();
         service.validateRequestedDocumentType();
+
         service.deleteExistingFolderAndAttachments();
         service.createSupportingDocumentsFolder();
-        service.retrieveFilesToCopy();
-        service.buildNewFileMetadata();
+        service.retrieveDocumentLinks();
+        service.retrieveSubscriptionData();
+        service.constructNewFileMetadata();
 
         Id batchJobId;
         batchJobId = service.startBatchCloneJob();
@@ -72,10 +75,8 @@ public without sharing class ClientFileCopierService {
 
     public class FileToCopy {
         public Id contentVersionId;
-        public Id originalLinkedEntityId;
         public Id supportingDocumentFolderId;
         public String newFileName;
-        public Integer numberOfCopies;
     }
 
     private void validateParentSobjectInput() {
@@ -98,8 +99,7 @@ public without sharing class ClientFileCopierService {
     private void deleteExistingFolderAndAttachments() {
         if (deleteExistingFiles) {
             // TODO: Build this out if requested in the future
-            // If Ops is ever re-copying files because of changes to subscriptions, pruning the "old" copied files
-            // might be a good idea to clean things up. It also will be better for the Mass File Downloader tool
+            throw new Util.BWException('Delete functionality not yet implemented.');
         }
     }
 
@@ -117,14 +117,11 @@ public without sharing class ClientFileCopierService {
         supportingDocumentFolderId = folder.Id;
     }
 
-    private void retrieveFilesToCopy() {
-        Set<Id> relatedRecordIds = new Set<Id>();
-        List<ContentDocumentLink> docLinks;
-        if (parentSobjectType == Contract.SObjectType) {
-            relatedRecordIds = getRecordsRelatedToAssignmentAgreement();
-        } else {
-            relatedRecordIds = getRecordsRelatedToAllocationSchedule();
-        }
+    private void retrieveDocumentLinks() {
+        List<ContentDocumentLink> docLinks = new List<ContentDocumentLink>();
+        Set<Id> relatedRecordIds = parentSobjectType == Contract.SObjectType ?
+            getRecordsRelatedToAssignmentAgreement() :
+            getRecordsRelatedToAllocationSchedule();
 
         try {
             docLinks = contentDocumentSelector.selectByLinkedEntitiesWithoutData(relatedRecordIds);
@@ -135,7 +132,25 @@ public without sharing class ClientFileCopierService {
             }
             throw new Util.BWException(errorMessage != null ? errorMessage : e.getMessage());
         }
-        filesToCopy = compileFilesToCopy(docLinks);
+
+        for (ContentDocumentLink doc : docLinks) {
+            String documentName = doc.ContentDocument.LatestPublishedVersion.Title;
+            Boolean countersigned = doc.ContentDocument.LatestPublishedVersion.Signing_Status__c == 'Countersigned';
+            Boolean customerAgreement = requestedDocumentType == CUSTOMER_AGREEMENT && documentName.contains('Agreement');
+            Boolean disclosure = requestedDocumentType == DISCLOSURE && documentName.contains('Disclosure');
+            Boolean creditReport = requestedDocumentType == CREDIT_REPORT;
+            Boolean addendum = requestedDocumentType == ADDENDUM && documentName.contains('Addendum');
+
+            if ((countersigned && (customerAgreement || disclosure)) || creditReport || addendum) {
+                documentsByLinkedEntity.put(doc.LinkedEntityId, doc);
+            }
+        }
+    }
+
+    private void retrieveSubscriptionData() {
+        subscriptions = parentSobjectType == Contract.SObjectType ?
+            uasSelector.getUASesForAssignmentAgreement(parentSobjectId) :
+            uasSelector.getNonAnchorUASesForAllocationSchedule(parentSobjectId);
     }
 
     private Set<Id> getRecordsRelatedToAssignmentAgreement() {
@@ -180,68 +195,36 @@ public without sharing class ClientFileCopierService {
         return relatedRecordIds;
     }
 
-    private List<FileToCopy> compileFilesToCopy(List<ContentDocumentLink> docLinks) {
-        List<FileToCopy> filesToCopy = new List<FileToCopy>();
-        for (ContentDocumentLink link : docLinks) {
-            String documentName = link.ContentDocument.LatestPublishedVersion.Title;
-            Boolean countersigned = link.ContentDocument.LatestPublishedVersion.Signing_Status__c == 'Countersigned';
-            Boolean customerAgreement = requestedDocumentType == CUSTOMER_AGREEMENT && documentName.contains('Agreement');
-            Boolean disclosure = requestedDocumentType == DISCLOSURE && documentName.contains('Disclosure');
-            Boolean creditReport = requestedDocumentType == CREDIT_REPORT;
-            Boolean addendum = requestedDocumentType == ADDENDUM && documentName.contains('Addendum');
+    private void constructNewFileMetadata() {
+        for (Utility_Account_Subscription__c uas : subscriptions) {
+            Id relatedRecordWhereDocumentIsAttached;
+            switch on requestedDocumentType {
+                when 'Customer Agreement' {
+                    // Customer Agreement is grabbed from Parent Contract when record exists, otherwise files grabbed from Opp.Contract
+                    relatedRecordWhereDocumentIsAttached = uas.Opportunity__r.Contract.Parent_Contract__c != null ?
+                        uas.Opportunity__r.Contract.Parent_Contract__c :
+                        uas.Opportunity__r.ContractId;
+                }
+                when 'Customer Credit Report' {
+                    relatedRecordWhereDocumentIsAttached = uas.Opportunity__r.Personal_Credit_Report2__c;
+                }
+                when else {
+                    relatedRecordWhereDocumentIsAttached = uas.Opportunity__r.ContractId;
+                }
+            }
 
-            if ((countersigned && (customerAgreement || disclosure)) || creditReport || addendum) {
+            ContentDocumentLink document = documentsByLinkedEntity.get(relatedRecordWhereDocumentIsAttached);
+            if (document != null) {
                 FileToCopy fileToCopy = new FileToCopy();
-                fileToCopy.contentVersionId = link.ContentDocument.LatestPublishedVersionId;
-                fileToCopy.originalLinkedEntityId = link.LinkedEntityId;
+                fileToCopy.contentVersionId = document.ContentDocument.LatestPublishedVersionId;
                 fileToCopy.supportingDocumentFolderId = supportingDocumentFolderId;
+                fileToCopy.newFileName = buildNewFileName(uas);
                 filesToCopy.add(fileToCopy);
             }
         }
-        return filesToCopy;
     }
 
-    private void buildNewFileMetadata() {
-        mapSubscriptionMetadata();
-        for (FileToCopy file : filesToCopy) {
-            file.newFileName = newFilenameByLinkedEntityMap.get(file.originalLinkedEntityId);
-            file.numberOfCopies = numberOfCopiesByLinkedEntity.get(file.originalLinkedEntityId);
-        }
-    }
-
-    private void mapSubscriptionMetadata() {
-        List<Utility_Account_Subscription__c> uases = retrieveSubscriptionData();
-        for (Utility_Account_Subscription__c uas : uases) {
-            Id contractId;
-            String newFileName = constructNewFileName(uas);
-
-            if (requestedDocumentType == 'Customer Agreement') {
-                // Customer Agreement is grabbed from Parent Contract when record exists, otherwise files grabbed from Opp.Contract
-                contractId = uas.Opportunity__r.Contract.Parent_Contract__c != null ? uas.Opportunity__r.Contract.Parent_Contract__c : uas.Opportunity__r.ContractId;
-            } else {
-                contractId = uas.Opportunity__r.ContractId;
-            }
-
-            // For Assignment Agreements (Contract), the file's linked entity is a LASERCA__Personal_Credit_Report__c or
-            // a Contract, depending on the requested document type. Adding both options to the filename map for later use.
-            newFilenameByLinkedEntityMap.put(contractId, newFileName);
-            newFilenameByLinkedEntityMap.put(uas.Opportunity__r.Personal_Credit_Report2__c, newFileName);
-
-            setNumberOfCopiesByLinkedEntity(new List<Id>{contractId, uas.Opportunity__r.Personal_Credit_Report2__c});
-        }
-    }
-
-    private List<Utility_Account_Subscription__c> retrieveSubscriptionData() {
-        List<Utility_Account_Subscription__c> subscriptions;
-        if (parentSobjectType == Contract.SObjectType) {
-            subscriptions = uasSelector.getUASesForAssignmentAgreement(parentSobjectId);
-        } else {
-            subscriptions = uasSelector.getNonAnchorUASesForAllocationSchedule(parentSobjectId);
-        }
-        return subscriptions;
-    }
-
-    private String constructNewFileName(Utility_Account_Subscription__c uas) {
+    private String buildNewFileName(Utility_Account_Subscription__c uas) {
         String newFileName;
         if (parentSobjectType == Contract.SObjectType) {
             newFileName = uas.Opportunity__r.Shared_Solar_System__r.Name + ' - ' + requestedDocumentType + ' - ' +
@@ -252,23 +235,6 @@ public without sharing class ClientFileCopierService {
                 uas.Utility_Account_Log__r.Cleaned_Utility_Account_Number__c;
         }
         return newFileName;
-    }
-
-    /**
-     * @description Per utility or gov't requirement, sometimes in the case of multiple subscriptions to the same SSS by
-     * the same customer, there is a requirement for multiple of the same document present in our file uploads to them.
-     * As such, here we track the number of duplicates we should create of each file for each linked entity Id.
-     * @param entityIds List of linked entity Ids
-     */
-    private void setNumberOfCopiesByLinkedEntity(List<Id> entityIds) {
-        for (Id entityId : entityIds) {
-            Integer numberOfCopies = numberOfCopiesByLinkedEntity.get(entityId);
-            if (numberOfCopies == null) {
-                numberOfCopiesByLinkedEntity.put(entityId, 1);
-            } else {
-                numberOfCopiesByLinkedEntity.put(entityId, numberOfCopies + 1);
-            }
-        }
     }
 
     private Id startBatchCloneJob() {

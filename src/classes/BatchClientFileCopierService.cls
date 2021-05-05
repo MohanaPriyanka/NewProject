@@ -51,23 +51,15 @@ public without sharing class BatchClientFileCopierService implements Database.Ba
         for (ClientFileCopierService.FileToCopy fileMetadata : filesToCopy) {
             ContentVersion originalData = filesWithData.get(fileMetadata.contentVersionId);
             if (originalData != null && fileMetadata.newFileName != null) {
-                clonedFilesToInsert.addAll(cloneFiles(originalData, fileMetadata));
+                clonedFilesToInsert.add(new ContentVersion(
+                    ContentLocation = 'S',
+                    VersionData = originalData.VersionData,
+                    Title = fileMetadata.newFileName,
+                    PathOnClient = '/' + fileMetadata.newFileName + '.pdf'
+                ));
             }
         }
         return clonedFilesToInsert;
-    }
-
-    private List<ContentVersion> cloneFiles(ContentVersion oldFile, ClientFileCopierService.FileToCopy fileMetadata) {
-        List<ContentVersion> newFiles = new List<ContentVersion>();
-        for (Integer i=0; i < fileMetadata.numberOfCopies; i++) { 
-            newFiles.add(new ContentVersion(
-                ContentLocation = 'S',
-                VersionData = oldFile.VersionData,
-                Title = fileMetadata.newFileName,
-                PathOnClient = '/' + fileMetadata.newFileName + '.pdf'
-            ));
-        }
-        return newFiles;
     }
 
     private void linkNewFilesToFolder(List<ContentVersion> clonedFiles, Id newFolderId) {
