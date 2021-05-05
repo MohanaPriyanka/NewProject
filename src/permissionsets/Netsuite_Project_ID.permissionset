@@ -3,7 +3,7 @@
     <description>Gives access to the Netsuite Project ID field. Should only be assigned to members of Accounting.</description>
     <fieldPermissions>
         <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Netsuite_Project_ID__c</field>
+        <field>inspire1__Project__c.Netsuite_Project_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
