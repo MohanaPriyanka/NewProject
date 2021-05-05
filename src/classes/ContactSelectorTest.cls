@@ -88,14 +88,11 @@ public with sharing class ContactSelectorTest {
        
         InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo sendBillsContactRequest =
             new InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo();
-
         sendBillsContactRequest.sharedSolarSystemId = sssId;
         sendBillsContactRequest.includeActiveALSOnly = includeActiveOnly;
         
         List<List<Contact>> contactListWrapper = 
             InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSId(new List<InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo>{sendBillsContactRequest});
-
-
 
         System.assertEquals(1,contactListWrapper.size(),'The InvocableSendBillsContactSelector should always return' + 
         'a list of contact lists (even if the contact list has no contacts in it');

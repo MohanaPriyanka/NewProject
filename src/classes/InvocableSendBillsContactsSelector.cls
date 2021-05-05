@@ -13,25 +13,22 @@ public without sharing class InvocableSendBillsContactsSelector {
         Boolean includeActiveALSOnly = sssINfo[0].includeActiveALSOnly;
         
         if (includeActiveALSOnly) {
-            return new List<List<Contact>>{contactSelector.selectActiveALSSendBillsContactBySSSId(sssId)};
+            return new List<List<Contact>>{contactSelector.selectActiveAlsSendBillsContactBySSSId(sssId)};
         }
         else{
-        return new List<List<Contact>>{contactSelector.selectSendBillsContactBySSSId(sssId)};
+            return new List<List<Contact>>{contactSelector.selectSendBillsContactBySSSId(sssId)};
         }
     }
 
     public class GetSendBillsContactsBySSSIdInfo {
-        @InvocableVariable(label='Shared Solar System ID'
+        @InvocableVariable( label='Shared Solar System ID'
                             description='The SSS Id to find related Send Bills Contacts'
                             required=true)
             public Id sharedSolarSystemId;
 
-        @invocableVariable(label='Include Contacts on Active ALS only'
+        @invocableVariable( label='Include Contacts on Active ALS only'
                             description='If yes, only send bill contacts with an active ALS will be returned'
                             required=true)
             public boolean includeActiveALSOnly;
         }
-
-
-    
 }

@@ -60,10 +60,11 @@ public inherited sharing class ContactSelector {
         
     }
 
-    public static List<Contact> selectActiveALSSendBillsContactBySSSId(Id  sharedSolarSystemId) {
+    public static List<Contact> selectActiveAlsSendBillsContactBySSSId(Id  sharedSolarSystemId) {
         Set<Contact> sendBillsContacts = new Set<Contact>();
         List<Schedule_Z_Subscription__c> getSendBillsContactsfromALS =  [
-            SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__c
+            SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__r.Id,
+                Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__r.Email
             FROM Schedule_Z_Subscription__c 
             WHERE Schedule_Z__r.Shared_Solar_System__c = :sharedSolarSystemId
             AND Schedule_Z__r.Status__c IN ('Submitted to Utility', 'Enacted by Utility')
