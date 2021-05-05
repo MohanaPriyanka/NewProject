@@ -175,7 +175,14 @@ public without sharing class UASSelector {
         String fields = Util.getCreatableFieldsSOQL('Utility_Account_Subscription__c');
         String soql = 'SELECT Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c, Subscription_Type__c, ' +
             'Future_Customer_Subscription_KWDC_Rollup__c, Shared_Solar_System__r.Name, Sizing_Method__r.Size_Ratio__c, ' +
-            'Sizing_Method__r.Value_of_NMC__c, ' + fields +
+            'Sizing_Method__r.Value_of_NMC__c, (\n' +
+            '  SELECT Id, Type__c, Previous_kw_DC_Subscription__c\n' +
+            '  FROM Subscription_Orders__r\n' +
+            '  WHERE Approval_Status__c = \'Approved\'\n' +
+            '  ORDER BY Effective_Date__c DESC\n' +
+            '  LIMIT 1\n' +
+            '), \n' +
+            fields +
             ' WHERE Opportunity__c IN :oppIds AND Next_Schedule_Z_Status__c = \'Active Subscription\'';
         return Database.query(soql);
     }

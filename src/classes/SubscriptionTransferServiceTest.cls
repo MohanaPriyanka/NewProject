@@ -89,8 +89,14 @@ public with sharing class SubscriptionTransferServiceTest {
             Account__c = propAcct1.Id,
             Annual_Cost_of_Electricity__c = 10000,
             Name_on_Account__c = 'Name two');
+
+        Utility_Account_Log__c ualog3 = new Utility_Account_Log__c(
+            Name = '0000238',
+            Account__c = propAcct1.Id,
+            Annual_Cost_of_Electricity__c = 10000,
+            Name_on_Account__c = 'Name three');
         insert new List<Utility_Account_Log__c>{
-            ualog1, ualog2
+            ualog1, ualog2, ualog3
         };
 
         Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
@@ -119,7 +125,16 @@ public with sharing class SubscriptionTransferServiceTest {
                 NMC_Tariff__c = everbillNMC.Id,
                 Product_Line__c = 'Community Solar',
                 CloseDate = System.today());
-        insert opportunityOne;
+        Opportunity opportunityThree =
+            new Opportunity(Name = 'Jordan Jordan 0000238',
+                AccountId = propAcct1.Id,
+                Shared_Solar_System__c = sss1.Id,
+                StageName = 'Complete',
+                Product__c = normalCSProduct.Id,
+                NMC_Tariff__c = everbillNMC.Id,
+                Product_Line__c = 'Community Solar',
+                CloseDate = System.today());
+        insert new List<Opportunity>{opportunityOne, opportunityThree};
 
         Utility_Account_Subscription__c uasOne =
             new Utility_Account_Subscription__c(Name = '0000234',
@@ -140,8 +155,17 @@ public with sharing class SubscriptionTransferServiceTest {
                 Annual_kwh_subscription_future__c = 8000,
                 calculated_annual_cost_of_electricity__c = 8000,
                 Subscribed_Annual_Cost_of_Electricity__c = 8000);
+        Utility_Account_Subscription__c uasThree =
+            new Utility_Account_Subscription__c(Name = '0000238',
+                Utility_Account_Log__c = ualog3.Id,
+                Opportunity__c = opportunityThree.Id,
+                Sizing_Method__c = everbillNMC.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 0,
+                calculated_annual_cost_of_electricity__c = 0,
+                Subscribed_Annual_Cost_of_Electricity__c = 0);
         insert new List<Utility_Account_Subscription__c>{
-            uasOne, uasTwo
+            uasOne, uasTwo, uasThree
         };
     }
 
@@ -243,6 +267,53 @@ public with sharing class SubscriptionTransferServiceTest {
         );
         System.assertEquals(4000, resizeSubscriptionOrders[0].New_Annual_kWh__c,
             'Expected a resize SO to get back to the original UASes Annual kWh amount');
+    }
+
+    @IsTest
+    private static void oppsWithNoSizeShouldBeAbleToMoveSystems() {
+        List<Utility_Account_Subscription__c> utilityAccountSubscriptions = [
+            SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c, Opportunity__c, Opportunity__r.Shared_Solar_System__c, (
+                SELECT Id FROM Subscription_Orders__r
+            )
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000238'
+        ];
+        System.assert(utilityAccountSubscriptions.size() == 1 &&
+            utilityAccountSubscriptions[0].Future_Customer_Subscription_KWDC_Rollup__c == 0 &&
+            utilityAccountSubscriptions[0].Subscription_Orders__r.size() == 1,
+            'Expected one UAS with 0 Future Customer Subscription kWDC Rollup with a single SO, like UAS a1d5b0000084OjPAAU,' +
+                ' but got ' + JSON.serialize(utilityAccountSubscriptions));
+        List<Shared_Solar_System__c> sharedSolarSystems = [
+            SELECT Id, Name
+            FROM Shared_Solar_System__c
+        ];
+
+        Map<Object, SObject> sssMap = CollectionUtil.mapByField(sharedSolarSystems, Shared_Solar_System__c.Name);
+        System.assertEquals(sssMap.get('SSS1').Id, utilityAccountSubscriptions[0].Opportunity__r.Shared_Solar_System__c,
+            'The opportunity should start with SSS1 and get moved to SSS2'
+        );
+
+        Test.startTest();
+        InvocableOpportunitySystemUpdater.Request request = new InvocableOpportunitySystemUpdater.Request();
+        request.opportunityId = utilityAccountSubscriptions[0].Opportunity__c;
+        request.sssId = sssMap.get('SSS2').Id;
+        InvocableOpportunitySystemUpdater.changeSystem(new List<InvocableOpportunitySystemUpdater.Request>{request});
+        Test.stopTest();
+
+        utilityAccountSubscriptions = [
+            SELECT Id, Future_Customer_Subscription_KWDC_Rollup__c, Opportunity__c, Opportunity__r.Shared_Solar_System__c, (
+                SELECT Id FROM Subscription_Orders__r
+            )
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000238'
+            ORDER BY CreatedDate
+        ];
+        System.assert(utilityAccountSubscriptions.size() == 2 &&
+            utilityAccountSubscriptions[0].Opportunity__c == utilityAccountSubscriptions[1].Opportunity__c &&
+            utilityAccountSubscriptions[1].Opportunity__r.Shared_Solar_System__c == request.sssId,
+            'Expected 2 UASes, both to the same Opportunity, which has an updated SSSId, but got \n' +
+                JSON.serialize(utilityAccountSubscriptions)
+        );
     }
 
     @IsTest
