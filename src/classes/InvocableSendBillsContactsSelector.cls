@@ -9,7 +9,7 @@ public without sharing class InvocableSendBillsContactsSelector {
 
     public static List<List<Contact>> getSendBillsContactsBySSSId(List<GetSendBillsContactsBySSSIdInfo> sssInfo) {
         Id sssId = sssInfo[0].sharedSolarSystemId;
-        Boolean includeActiveALSOnly = sssINfo[0].includeActiveALSOnly;
+        Boolean includeActiveALSOnly = sssInfo[0].includeActiveALSOnly;
         
         if (includeActiveALSOnly) {
             return new List<List<Contact>>{contactSelector.selectActiveAlsSendBillsContactBySSSId(sssId)};

@@ -95,8 +95,19 @@ public with sharing class ContactSelectorTest {
             InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSId(new List<InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo>{sendBillsContactRequest});
 
         System.assertEquals(1,contactListWrapper.size(),'The InvocableSendBillsContactSelector should always return' + 
-        'a list of contact lists (even if the contact list has no contacts in it');
+        'a list of contact lists (even if the contact list has no contacts in it) when looking for customers with an active ALSS') ;
         System.assertEquals(0,contactListWrapper[0].size(),'There should be no Send Bills Contacts for a SSS that is not found in the database');
+        
+        includeActiveOnly = FALSE;
+        sendBillsContactRequest.includeActiveALSOnly = includeActiveOnly;
+
+        contactListWrapper =
+            InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSId(new List<InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo>{sendBillsContactRequest});
+         
+        System.assertEquals(1,contactListWrapper.size(),'The InvocableSendBillsContactSelector should always return' + 
+        'a list of contact lists (even if the contact list has no contacts in it) when looking for customers with an inactive ALSS') ;
+        System.assertEquals(0,contactListWrapper[0].size(),'There should be no Send Bills Contacts for a SSS that is not found in the database');
+
 
     }
 
