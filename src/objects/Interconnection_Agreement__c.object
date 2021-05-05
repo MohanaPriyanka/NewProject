@@ -141,7 +141,7 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Interconnection_Agreement_Compact_Custom</compactLayoutAssignment>
     <compactLayouts>
         <fullName>Interconnection_Agreement_Compact_Custom</fullName>
         <fields>Inspire_Project__c</fields>
@@ -283,6 +283,7 @@
     </fields>
     <fields>
         <fullName>Inspire_Project__c</fullName>
+        <description>Child of Inspire Project</description>
         <externalId>false</externalId>
         <label>Inspire Project</label>
         <referenceTo>inspire1__Project__c</referenceTo>
@@ -302,9 +303,10 @@
         <label>All</label>
     </listViews>
     <nameField>
+        <displayFormat>ISA-{00000}</displayFormat>
         <label>Interconnection Agreement</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Interconnection Agreements</pluralLabel>
     <searchLayouts>
