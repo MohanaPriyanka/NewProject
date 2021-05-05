@@ -232,7 +232,7 @@ public without sharing class ClientFileCopierService {
         } else {
             newFileName = uas.Opportunity__r.Shared_Solar_System__r.Name + ' - ' + 'Disclosure Form' + ' - ' +
                 uas.Utility_Account_Log__r.Name_on_Account__c + ' - ' + uas.Opportunity__r.Account.Name + ' - ' +
-                uas.Utility_Account_Log__r.Cleaned_Utility_Account_Number__c;
+                uas.Utility_Account_Log__r.Name;
         }
         return newFileName;
     }
