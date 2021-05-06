@@ -230,7 +230,8 @@ public without sharing class UASSelector {
                 Opportunity__r.Contract.Assignment_Agreement__c,
                 Opportunity__r.Contract.Parent_Contract__c,
                 Opportunity__r.Personal_Credit_Report2__c,
-                Utility_Account_Log__r.Name
+                Utility_Account_Log__r.Name,
+                Utility_Account_Log__r.Name_on_Account__c
             FROM Utility_Account_Subscription__c
             WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
             AND Id IN
