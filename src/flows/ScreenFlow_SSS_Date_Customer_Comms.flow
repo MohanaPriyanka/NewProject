@@ -49,6 +49,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>attachmentStatus</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>templateValues</name>
             <value>
                 <elementReference>mapTemplateReplacement</elementReference>
@@ -940,17 +946,17 @@ MONTH({!New_Est_PTO_Date} ),
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>selDate</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <elementReference>choiceActualCODDate</elementReference>
-                    </rightValue>
-                </conditions>
-                <conditions>
                     <leftValueReference>Notify_Customers</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>choiceNotifyCustomersYes</elementReference>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>selDate</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>choiceActualCODDate</elementReference>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -965,7 +971,7 @@ MONTH({!New_Est_PTO_Date} ),
             <targetReference>getSSSData</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>ttContactQuery</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
