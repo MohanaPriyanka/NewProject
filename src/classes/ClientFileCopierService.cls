@@ -56,6 +56,7 @@ public without sharing class ClientFileCopierService {
 
         Id batchJobId;
         batchJobId = service.startBatchCloneJob();
+        Logger.flushLogs();
         return new List<Id>{batchJobId};
     }
 
@@ -220,6 +221,10 @@ public without sharing class ClientFileCopierService {
                 fileToCopy.supportingDocumentFolderId = supportingDocumentFolderId;
                 fileToCopy.newFileName = buildNewFileName(uas);
                 filesToCopy.add(fileToCopy);
+            } else {
+                Logger.logLater('ClientFileCopierSerivce', 'constructNewFileMetadata',
+                    'When attempting to copy client files, could not locate Countersigned ' + requestedDocumentType
+                    + ' for UAS ' + uas.Id, Logger.INFO);
             }
         }
     }
