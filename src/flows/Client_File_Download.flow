@@ -4,7 +4,7 @@
         <name>apex_Include_Addendums</name>
         <label>Include Addendums</label>
         <locationX>469</locationX>
-        <locationY>912</locationY>
+        <locationY>1044</locationY>
         <actionName>ClientFileCopierService</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -15,9 +15,9 @@
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
-            <name>contractId</name>
+            <name>deleteExisting</name>
             <value>
-                <elementReference>recordId</elementReference>
+                <booleanValue>false</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -26,13 +26,19 @@
                 <elementReference>addendum_Choice</elementReference>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>parentSobjectId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
         <name>Include_Contracts</name>
         <label>Include Contracts</label>
         <locationX>473</locationX>
-        <locationY>321</locationY>
+        <locationY>453</locationY>
         <actionName>ClientFileCopierService</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -43,9 +49,9 @@
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>contractId</name>
+            <name>deleteExisting</name>
             <value>
-                <elementReference>recordId</elementReference>
+                <booleanValue>false</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -54,13 +60,19 @@
                 <elementReference>contracts_choice</elementReference>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>parentSobjectId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
         <name>Include_Disclosures</name>
         <label>Include Disclosures</label>
         <locationX>471</locationX>
-        <locationY>539</locationY>
+        <locationY>671</locationY>
         <actionName>ClientFileCopierService</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -71,9 +83,9 @@
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>contractId</name>
+            <name>deleteExisting</name>
             <value>
-                <elementReference>recordId</elementReference>
+                <booleanValue>false</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -82,13 +94,19 @@
                 <elementReference>disclosure_forms_choice</elementReference>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>parentSobjectId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
         <name>Include_PCRs</name>
         <label>Include PCRs</label>
         <locationX>468</locationX>
-        <locationY>749</locationY>
+        <locationY>857</locationY>
         <actionName>ClientFileCopierService</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -96,15 +114,21 @@
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>contractId</name>
+            <name>deleteExisting</name>
             <value>
-                <elementReference>recordId</elementReference>
+                <booleanValue>false</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>documentType</name>
             <value>
                 <elementReference>PCRs_choice</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>parentSobjectId</name>
+            <value>
+                <elementReference>recordId</elementReference>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -114,7 +138,7 @@
         <name>Get_Batch_Ids</name>
         <label>Get Batch Ids</label>
         <locationX>705</locationX>
-        <locationY>1041</locationY>
+        <locationY>1173</locationY>
         <assignmentItems>
             <assignToReference>BatchIds</assignToReference>
             <operator>Add</operator>
@@ -204,7 +228,7 @@
         <name>Addendums_Decision</name>
         <label>Addendums Decision</label>
         <locationX>695</locationX>
-        <locationY>821</locationY>
+        <locationY>953</locationY>
         <defaultConnector>
             <targetReference>Get_Batch_Ids</targetReference>
         </defaultConnector>
@@ -229,7 +253,7 @@
         <name>Contracts_Decision</name>
         <label>Contracts Decision</label>
         <locationX>696</locationX>
-        <locationY>201</locationY>
+        <locationY>333</locationY>
         <defaultConnector>
             <targetReference>Disclosures_Decision</targetReference>
         </defaultConnector>
@@ -254,7 +278,7 @@
         <name>Disclosures_Decision</name>
         <label>Disclosures Decision</label>
         <locationX>696</locationX>
-        <locationY>409</locationY>
+        <locationY>541</locationY>
         <defaultConnector>
             <targetReference>PCRs_Decision</targetReference>
         </defaultConnector>
@@ -279,7 +303,7 @@
         <name>PCRs_Decision</name>
         <label>PCRs Decision</label>
         <locationX>693</locationX>
-        <locationY>640</locationY>
+        <locationY>772</locationY>
         <defaultConnector>
             <targetReference>Addendums_Decision</targetReference>
         </defaultConnector>
@@ -304,7 +328,7 @@
         <name>Selection_Made</name>
         <label>Selection Made</label>
         <locationX>855</locationX>
-        <locationY>60</locationY>
+        <locationY>192</locationY>
         <defaultConnector>
             <targetReference>Contracts_Decision</targetReference>
         </defaultConnector>
@@ -346,8 +370,9 @@
             <label>No Choice Selected</label>
         </rules>
     </decisions>
+    <description>Copies client files related to Assignment Agreement (Contract)</description>
     <interviewLabel>Client File Download {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Client File Download</label>
+    <label>Client File Download (Assignment Agreement)</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -371,7 +396,7 @@
         <name>Complete_Screen</name>
         <label>Complete Screen</label>
         <locationX>707</locationX>
-        <locationY>1208</locationY>
+        <locationY>1340</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -408,7 +433,7 @@
         <name>Fault_Screen</name>
         <label>Fault Screen</label>
         <locationX>152</locationX>
-        <locationY>539</locationY>
+        <locationY>671</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -425,7 +450,7 @@
         <name>No_Selection_Screen</name>
         <label>No Selection Screen</label>
         <locationX>868</locationX>
-        <locationY>312</locationY>
+        <locationY>444</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
         <allowPause>false</allowPause>
@@ -440,14 +465,19 @@
     <screens>
         <name>Type_Selection</name>
         <label>Type Selection</label>
-        <locationX>704</locationX>
-        <locationY>51</locationY>
+        <locationX>863</locationX>
+        <locationY>50</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
             <targetReference>Selection_Made</targetReference>
         </connector>
+        <fields>
+            <name>AssignmentAgreementText</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;Please select which documents related to this Assignment Agreement you would like to copy:&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>choice_Customer_Agreements</name>
             <dataType>Boolean</dataType>
@@ -480,8 +510,8 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>207</locationX>
-        <locationY>99</locationY>
+        <locationX>413</locationX>
+        <locationY>53</locationY>
         <connector>
             <targetReference>Type_Selection</targetReference>
         </connector>

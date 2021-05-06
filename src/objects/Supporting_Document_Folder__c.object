@@ -154,6 +154,19 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Allocation_Schedule__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Allocation Schedule</label>
+        <referenceTo>Schedule_Z__c</referenceTo>
+        <relationshipLabel>Supporting Document Folders</relationshipLabel>
+        <relationshipName>Supporting_Document_Folders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Assignment_Agreement__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

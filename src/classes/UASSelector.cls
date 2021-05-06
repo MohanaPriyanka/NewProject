@@ -224,4 +224,29 @@ public without sharing class UASSelector {
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
         ];
     }
+
+    public List<Utility_Account_Subscription__c> getNonAnchorUASesForAllocationSchedule(Id allocationScheduleId) {
+        return [
+            SELECT Id,
+                Name,
+                Opportunity__c,
+                Opportunity__r.Id,
+                Opportunity__r.Shared_Solar_System__r.Name,
+                Opportunity__r.Account.Name,
+                Opportunity__r.Name,
+                Opportunity__r.ContractId,
+                Opportunity__r.Contract.Assignment_Agreement__c,
+                Opportunity__r.Contract.Parent_Contract__c,
+                Opportunity__r.Personal_Credit_Report2__c,
+                Utility_Account_Log__r.Name,
+                Utility_Account_Log__r.Name_on_Account__c
+            FROM Utility_Account_Subscription__c
+            WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
+            AND Id IN
+            (SELECT Utility_Account_Subscription__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c =: allocationScheduleId
+            AND Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != 'Anchor')
+        ];
+    }
 }

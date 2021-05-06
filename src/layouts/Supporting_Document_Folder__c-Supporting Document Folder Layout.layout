@@ -8,7 +8,7 @@
         <label>Information</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
+                <behavior>Required</behavior>
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
@@ -21,6 +21,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Assignment_Agreement__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Allocation_Schedule__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
