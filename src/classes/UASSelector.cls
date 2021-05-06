@@ -225,6 +225,7 @@ public without sharing class UASSelector {
                 Opportunity__c,
                 Opportunity__r.Id,
                 Opportunity__r.Shared_Solar_System__r.Name,
+                Opportunity__r.Account.Name,
                 Opportunity__r.Name,
                 Opportunity__r.ContractId,
                 Opportunity__r.Contract.Assignment_Agreement__c,
