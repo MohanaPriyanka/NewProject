@@ -128,6 +128,16 @@ public with sharing class ScheduleZSubscriptionSelector {
         return allocationSubscriptions;
     }
 
+    public List<Schedule_Z_Subscription__c> getALSSforClientFileDownload(Id allocationScheduleId) {
+        return [
+            SELECT Id, Utility_Account_Subscription__r.Opportunity__r.ContractId
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c =: allocationScheduleId
+            AND Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != 'Anchor'
+                // Anchor customers are specifically excluded from disclosure form packets
+        ];
+    }
+
     public List<Schedule_Z_Subscription__c> getOnTimeListForBillingOffTransfer(Set<Id> scheduleZs) {
         String queryString = getQueryString(whereClauseForBilling, null);
         queryString.replaceAll('Last_Bill_Send_Date_New_Charges__c','Last_Bill_Send_Date_New_Charges_Zuora__c');

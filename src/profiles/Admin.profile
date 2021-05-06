@@ -32125,6 +32125,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Supporting_Document_Folder__c.Allocation_Schedule__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Supporting_Document_Folder__c.Assignment_Agreement__c</field>
         <readable>true</readable>
     </fieldPermissions>

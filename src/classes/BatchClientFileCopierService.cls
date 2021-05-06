@@ -1,33 +1,81 @@
-// Tested by ClientFileCopierServiceTest
+/**
+ * @description Batch inserts new ContentVersions and ContentDocumentLinks based on passed-in metadata from ClientFileCopierService
+ * Constructs a 'Supporting Documents Folder' (SObject record) to house copied files which looks up to the parent record
+ * Tested by: ClientFileCopierServiceTest
+ */
+public without sharing class BatchClientFileCopierService implements Database.Batchable<ClientFileCopierService.FileToCopy> {
 
-public without sharing class BatchClientFileCopierService implements Database.Batchable<Id> {
-    public Map<Id,Id> versionIdToLinkedEntityId;
-    public Id newFolderId;
-    public MultiMap linkedEntityIdToFileNames;
+    @TestVisible private static ContentVersionSelector contentVersionSelector = new ContentVersionSelector();
+    public List<ClientFileCopierService.FileToCopy> filesToCopy;
+    public fflib_SObjectUnitOfWork uow;
 
-    public BatchClientFileCopierService(Map<Id,Id> versionIdToLinkedEntityId, Id newFolderId, MultiMap linkedEntityIdToFileNames){
-        this.versionIdToLinkedEntityId = versionIdToLinkedEntityId;
-        this.newFolderId = newFolderId;
-        this.linkedEntityIdToFileNames = linkedEntityIdToFileNames;
+    public BatchClientFileCopierService(List<ClientFileCopierService.FileToCopy> files) {
+        this.filesToCopy = files;
     }
 
-    public List<Id> start(Database.BatchableContext bc) {
-        return new List<Id>(versionIdToLinkedEntityId.keySet());
+    public List<ClientFileCopierService.FileToCopy> start(Database.BatchableContext bc) {
+        return filesToCopy;
     }
 
-    public void execute(Database.BatchableContext batchableContext, List<Id> versionIds) {
+    public void execute(Database.BatchableContext ctx, List<ClientFileCopierService.FileToCopy> filesToCopy) {
+        uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{ContentDocumentLink.SObjectType});
         try {
-            ClientFileCopierService service = new ClientFileCopierService();
-            List<ContentVersion> filesToClone = service.cloneFiles(versionIds, versionIdToLinkedEntityId, linkedEntityIdToFileNames);
+            List<ContentVersion> filesToClone = cloneFiles(filesToCopy);
             insert filesToClone;
-            service.linkNewFilesToFolder(filesToClone, newFolderId);
-            service.uow.commitWork();
-        } catch (Exception excep){
-            Logger.logNow('BatchClientFileCopierService','execute',excep,JSON.serialize(versionIds),'ERROR');
+            linkNewFilesToFolder(filesToClone, filesToCopy[0].supportingDocumentFolderId);
+            uow.commitWork();
+        } catch (Exception e) {
+            Logger.logNow('ClientFileCopierService.Batch', 'execute', e, JSON.serialize(filesToCopy), 'ERROR');
         }
     }
 
+    @SuppressWarnings('PMD.EmptyStatementBlock')
     public void finish(Database.BatchableContext batchableContext) {
-        // Nothing to do
+    }
+
+    /**
+     * @description Creates new copies of ContentVersion records corresponding to inputs
+     * @param filesToCopy List of ClientFileCopierService.FileToCopy objects, which store information on the file being copied
+     * @return List of ContentVersion records to insert into the database which represent copies of original documents
+     */
+    private List<ContentVersion> cloneFiles(List<ClientFileCopierService.FileToCopy> filesToCopy) {
+        // Retrieve the ContentVersion data in batch context
+        Set<Id> contentVersionIds = new Set<Id>();
+        for (ClientFileCopierService.FileToCopy fileMetadata : filesToCopy) {
+            contentVersionIds.add(fileMetadata.contentVersionId);
+        }
+        Map<Id,ContentVersion> filesWithData = contentVersionSelector.selectByIdWithData(new Set<Id>(contentVersionIds));
+
+        // Clone the documents now that we have all data and metadata
+        List<ContentVersion> clonedFilesToInsert = new List<ContentVersion>();
+        for (ClientFileCopierService.FileToCopy fileMetadata : filesToCopy) {
+            ContentVersion originalData = filesWithData.get(fileMetadata.contentVersionId);
+            if (originalData != null && fileMetadata.newFileName != null) {
+                clonedFilesToInsert.add(new ContentVersion(
+                    ContentLocation = 'S',
+                    VersionData = originalData.VersionData,
+                    Title = fileMetadata.newFileName,
+                    PathOnClient = '/' + fileMetadata.newFileName + '.pdf'
+                ));
+            }
+        }
+        return clonedFilesToInsert;
+    }
+
+    private void linkNewFilesToFolder(List<ContentVersion> clonedFiles, Id newFolderId) {
+        Set<Id> versionIds = new Set<Id>();
+        for (ContentVersion version : clonedFiles) {
+            versionIds.add(version.Id);
+        }
+        // Query for newly inserted ContentVersions to get ContentDocumentId:
+        clonedFiles = contentVersionSelector.selectById(versionIds).values();
+        for (ContentVersion content : clonedFiles) {
+            ContentDocumentLink cdl = new ContentDocumentLink();
+            cdl.LinkedEntityId = newFolderId;
+            cdl.Visibility = 'InternalUsers';
+            cdl.ShareType = 'V';
+            cdl.ContentDocumentId = content.ContentDocumentId;
+            uow.registerNew(cdl);
+        }
     }
 }
