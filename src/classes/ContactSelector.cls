@@ -60,6 +60,26 @@ public inherited sharing class ContactSelector {
         
     }
 
+
+    public static List<Contact> selectSendBillsContactByContract(Set<Id> contractIds){
+        List<Id> contactIdList = new List<Id>();
+        List<Contract> contractList = [
+            SELECT Id, Account.Send_Bills_Contact__r.Id
+            FROM Contract 
+            WHERE Id IN :contractIds
+        ];
+        for(Contract con : contractList){
+            contactIdList.add(con.Account.Send_Bills_Contact__r.Id);
+        }
+        List<Contact> returnList = [
+            SELECT Id, Email, FirstName
+            FROM Contact 
+            WHERE Id IN :contactIdList
+        ];
+        return returnList;
+    }
+    
+
     public static List<Contact> selectActiveAlsSendBillsContactBySSSId(Id  sharedSolarSystemId) {
         Set<Contact> sendBillsContacts = new Set<Contact>();
         List<Schedule_Z_Subscription__c> getSendBillsContactsfromALS =  [
@@ -74,5 +94,9 @@ public inherited sharing class ContactSelector {
             sendBillsContacts.add(sendBillsContactfromALS.Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__r);
         }
         return new List<Contact>(sendBillsContacts);
+
+
     }
+    
+
 }

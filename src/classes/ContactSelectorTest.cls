@@ -94,6 +94,7 @@ public with sharing class ContactSelectorTest {
         List<List<Contact>> contactListWrapper = 
             InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSId(new List<InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo>{sendBillsContactRequest});
 
+
         System.assertEquals(1,contactListWrapper.size(),'The InvocableSendBillsContactSelector should always return' + 
         'a list of contact lists (even if the contact list has no contacts in it) when looking for customers with an active ALSS') ;
         System.assertEquals(0,contactListWrapper[0].size(),'There should be no Send Bills Contacts for a SSS that is not found in the database');
@@ -108,6 +109,31 @@ public with sharing class ContactSelectorTest {
         'a list of contact lists (even if the contact list has no contacts in it) when looking for customers with an inactive ALSS') ;
         System.assertEquals(0,contactListWrapper[0].size(),'There should be no Send Bills Contacts for a SSS that is not found in the database');
 
+
+    }
+    
+    @IsTest
+    private static void testSelectSendBillsContactByContract() {
+        Contact testContact1 = new Contact(
+            FirstName = 'TestContact1',
+            LastName = 'Test'
+        );
+        insert testContact1;
+        
+        Account testAccount1 = new Account(
+            Name = 'TestAccount1',
+            Send_Bills_Contact__c = testContact1.Id
+        );
+        insert testAccount1;
+        
+        Contract testContract1 = new Contract(
+            AccountId = testAccount1.Id
+        );
+        insert testContract1;
+        
+        List<Contact> result = ContactSelector.selectSendBillsContactByContract(new Set<Id>{testContract1.Id});
+        System.assertEquals('TestContact1', result[0].FirstName);
+        System.assertEquals(1, result.size());
 
     }
 
