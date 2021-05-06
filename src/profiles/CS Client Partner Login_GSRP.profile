@@ -1300,14 +1300,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DynamicToStaticSubscriptionHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DynamicToStaticSubscriptionHandlerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>EmailService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
