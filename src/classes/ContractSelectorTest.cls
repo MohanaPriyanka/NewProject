@@ -5,15 +5,15 @@ public with sharing class ContractSelectorTest {
         Product2 productA = new Product2(
             Name = 'Generic Product'
         );
-
+        
         Product2 productB = new Product2(
             Name = 'Project Specific Product',
             Addendum_Template_Id__c = 'AAABBB'
         );
         insert new List<Product2>{productA, productB};
-
+            
         List<Opportunity> oppList = [
-            SELECT Id, Name, AccountId
+            SELECT Id, Name, AccountId, ContractId
             FROM Opportunity
         ];
 
@@ -32,16 +32,52 @@ public with sharing class ContractSelectorTest {
         );
         insert newContractTwo;
         oppList[1].ContractId = newContractTwo.Id;
-
+        
         Contract newContractThree = new Contract(
             Name = oppList[2].Name,
             AccountId = oppList[2].AccountId,
-            Product__c = productB.Id,
-            Customer_Signature_Date_Time__c = System.today()
+            Product__c = productB.Id
         );
         insert newContractThree;
 
         update oppList;
+        
+        
+        Product2 testProduct1 = new Product2(
+            Name = 'testProduct1',
+            Addendum_Template_Id__c = 'testId01'
+        );
+        insert testProduct1;
+        
+        Contact testContact1 = new Contact(
+            Department = 'testContact1',
+            LastName = 'testContact1'
+        );
+        insert testContact1;
+        
+        Account testAccount1 = new Account(
+            Send_Bills_Contact__c = testContact1.Id,
+            Name = 'testAccount1'
+        );
+        insert testAccount1;
+        
+        Contract testContract1 = new Contract(
+            AccountId = testAccount1.Id,
+            Addendum_Sent_Date__c = null,
+            Name = 'testContract1'
+        );
+        insert testContract1;
+        
+        Opportunity testOpp1 = new Opportunity(
+            zqu__DeliveryInstallationStatus__c ='Completed',
+            Status_of_Financials__c = 'Approved',
+            Product__c = testProduct1.Id,
+            ContractId = testContract1.Id,
+            Name = 'testOpp1Name',
+            StageName = 'testOpp1StageName',
+            CloseDate = Date.today()
+        );
+        insert testOpp1;
     }
 
     @IsTest public static void testSelectContractsForClientAssignment() {
@@ -89,7 +125,7 @@ public with sharing class ContractSelectorTest {
         contracts = selector.getCustomerContractsByAssignmentAgreement(new Set<Id>{assignmentAgreement.Id});
         System.assert(contracts.size() > 0);
     }
-
+    
     @IsTest
     private static void testGetcustomerContractsForAddendum() {
         List<Contract> contractList = [
@@ -104,10 +140,9 @@ public with sharing class ContractSelectorTest {
         List<Contract> contracts;
         ContractSelector selector = new ContractSelector();
         contracts = selector.getCustomerContractsForAddendum(contractIds);
-        System.assertEquals(1, contracts.size(), 'Query should only return the Contract that is both assigned to the Addendum product ' +
-            'and has not already been signed');
+        System.assertEquals(2, contracts.size(), 'Query should return the Contracts that are assigned to the Addendum product');
     }
-
+    
     @IsTest
     private static void testInvocableAddendumGenerator() {
         List<Contract> contractList = [
@@ -125,11 +160,38 @@ public with sharing class ContractSelectorTest {
             FROM Contract
         ];
         for (Contract c : contracts) {
-            if (c.Customer_Signature_Date_Time__c != null || c.Product__r.Addendum_Template_Id__c == null) {
-                System.assertEquals(false, c.Generate_Addendum__c, 'Contract should not have an Addendum Generated');
+            if (c.Product__r.Addendum_Template_Id__c == null) {
+                System.assertEquals(false, c.Generate_Addendum__c, 'Contract should not have an Addendum Generated for contract: ' + c.Product__r.Addendum_Template_Id__c + ' & ' + c.Customer_Signature_Date_Time__c);
             } else {
-                System.assert(c.Generate_Addendum__c, 'Contract should have Addendum Generated');
+                System.assert(c.Generate_Addendum__c, 'Contract should have Addendum Generated for contract: ' + c.Product__r.Addendum_Template_Id__c + ' & ' + c.Customer_Signature_Date_Time__c);
             }
         }
     }
+    
+    
+    @IsTest
+    public static void testGetContractsWithUnsentAddendumsById(){
+        ContractSelector selector = new ContractSelector();
+        Contract testContract = [SELECT Id, Addendum_Sent_Date__c, Account.Send_Bills_Contact__r.Id, Name FROM Contract WHERE Name = 'testContract1'];
+        Contact testContact = [SELECT Id, Department FROM Contact WHERE Department = 'testContact1'];
+        List<Id> contactIdList = new List<Id>();
+        contactIdList.add(testContact.Id);
+        
+        Map<Id, Contract> resultMap = selector.getContractsWithUnsentAddendumsById(contactIdList);
+        Contract resultContract = resultMap.get(testContract.Id);
+        System.assertEquals(testContract.Id, resultContract.Id);
+        System.assertEquals(testContact.Id, resultContract.Account.Send_Bills_Contact__r.Id);
+    }
+    
+    @IsTest
+    public static void testGetSingleContractWithUnsentAddendumsById(){
+        ContractSelector selector = new ContractSelector();
+        Contract testContract = [SELECT Id, Addendum_Sent_Date__c, Account.Send_Bills_Contact__r.Id, Name FROM Contract WHERE Name = 'testContract1'];
+        Contact testContact = [SELECT Id, Department FROM Contact WHERE Department = 'testContact1'];
+        
+        Contract resultContract = selector.getSingleContractWithUnsentAddendumsById(testContact.Id);
+        System.assertEquals(testContract.Id, resultContract.Id);
+        System.assertEquals(testContact.Id, resultContract.Account.Send_Bills_Contact__r.Id);
+    }
+    
 }

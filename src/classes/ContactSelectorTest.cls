@@ -83,11 +83,56 @@ public with sharing class ContactSelectorTest {
 
     @IsTest
     private static void testInvocableSendBillsContactsSelector() {
-        List<List<Contact>> contactListWrapper = InvocableSendBillsContactsSelector.getSendBillsContactsBySSSId(new List<Id> {Util.getFakeId(Shared_Solar_System__c.SObjectType)} );
+        Id sssId =  (Util.getFakeId(Shared_Solar_System__c.SObjectType));
+        Boolean includeActiveOnly = TRUE;
+       
+        InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo sendBillsContactRequest =
+            new InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo();
+        sendBillsContactRequest.sharedSolarSystemId = sssId;
+        sendBillsContactRequest.includeActiveALSOnly = includeActiveOnly;
+        
+        List<List<Contact>> contactListWrapper = 
+            InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSId(new List<InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo>{sendBillsContactRequest});
+
         System.assertEquals(1,contactListWrapper.size(),'The InvocableSendBillsContactSelector should always return' + 
-        'a list of contact lists (even if the contact list has no contacts in it');
+        'a list of contact lists (even if the contact list has no contacts in it) when looking for customers with an active ALSS') ;
+        System.assertEquals(0,contactListWrapper[0].size(),'There should be no Send Bills Contacts for a SSS that is not found in the database');
+        
+        includeActiveOnly = FALSE;
+        sendBillsContactRequest.includeActiveALSOnly = includeActiveOnly;
+
+        contactListWrapper =
+            InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSId(new List<InvocableSendBillsContactsSelector.GetSendBillsContactsBySSSIdInfo>{sendBillsContactRequest});
+         
+        System.assertEquals(1,contactListWrapper.size(),'The InvocableSendBillsContactSelector should always return' + 
+        'a list of contact lists (even if the contact list has no contacts in it) when looking for customers with an inactive ALSS') ;
         System.assertEquals(0,contactListWrapper[0].size(),'There should be no Send Bills Contacts for a SSS that is not found in the database');
 
+
+    }
+    
+    @IsTest
+    private static void testSelectSendBillsContactByContract() {
+        Contact testContact1 = new Contact(
+            FirstName = 'TestContact1',
+            LastName = 'Test'
+        );
+        insert testContact1;
+        
+        Account testAccount1 = new Account(
+            Name = 'TestAccount1',
+            Send_Bills_Contact__c = testContact1.Id
+        );
+        insert testAccount1;
+        
+        Contract testContract1 = new Contract(
+            AccountId = testAccount1.Id
+        );
+        insert testContract1;
+        
+        List<Contact> result = ContactSelector.selectSendBillsContactByContract(new Set<Id>{testContract1.Id});
+        System.assertEquals('TestContact1', result[0].FirstName);
+        System.assertEquals(1, result.size());
     }
 
 }

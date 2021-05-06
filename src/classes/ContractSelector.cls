@@ -39,7 +39,7 @@ public inherited sharing class ContractSelector {
             WHERE Assignment_Agreement__c = : assignmentAgreementIds
         ];
     }
-
+    
     public List<Contract> getCustomerContractsForAddendum(Set<Id> contractIds) {
         return [
             SELECT Id, Product__r.Addendum_Template_Id__c
@@ -48,6 +48,33 @@ public inherited sharing class ContractSelector {
             AND Product__r.Addendum_Template_Id__c != NULL
             AND Customer_Signature_Date_Time__c = NULL
         ];
+    }
+    
+    public Map<Id, Contract> getContractsWithUnsentAddendumsById(List<Id> contactIds) {
+        Map<Id, Contract> contractsWithUnsentAddendumsById = new Map<Id, Contract>();
+        for(Contract currentContract : [
+            SELECT Id, Addendum_Sent_Date__c, Account.Send_Bills_Contact__r.Id
+            FROM Contract
+            WHERE Addendum_Sent_Date__c = null 
+            AND Account.Send_Bills_Contact__r.Id IN : contactIds
+            AND Id IN (SELECT ContractId 
+                       FROM Opportunity 
+                       WHERE Product__r.Addendum_Template_Id__c != null)
+        ]){
+            contractsWithUnsentAddendumsById.put(currentContract.Id, currentContract);
+        }
+        return contractsWithUnsentAddendumsById;
+    }
+    
+    public Contract getSingleContractWithUnsentAddendumsById(Id contactId){
+        return [
+            SELECT Id, Addendum_Sent_Date__c, Account.Send_Bills_Contact__r.Id
+            FROM Contract
+            WHERE Addendum_Sent_Date__c = null 
+            AND Account.Send_Bills_Contact__r.Id =:contactId
+            AND Id IN (SELECT ContractId 
+                       FROM Opportunity 
+                       WHERE Product__r.Addendum_Template_Id__c != null)];
     }
 
     /**
