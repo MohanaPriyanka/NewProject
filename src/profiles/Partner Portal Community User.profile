@@ -3965,10 +3965,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PostSandboxSchedulable</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProductEscalationTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
