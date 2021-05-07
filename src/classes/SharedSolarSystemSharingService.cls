@@ -71,12 +71,10 @@ public without sharing class SharedSolarSystemSharingService {
                 AND StageName = 'Complete'
                 AND Parent_Account_ID__c IN :parentAccountIdToUserListMap.keySet()
         ]) {
-            if (opp.Shared_Solar_System__c != null) {
-                sssShareList.addAll(generateSSSAccess(
-                    new List<Id>{opp.Shared_Solar_System__c},
-                    parentAccountIdToUserListMap.get(opp.Parent_Account_ID__c),
-                    'Read'));
-            }
+            sssShareList.addAll(generateSSSAccess(
+                new List<Id>{opp.Shared_Solar_System__c},
+                parentAccountIdToUserListMap.get(opp.Parent_Account_ID__c),
+                'Read'));
         }
         Util.insertAndLog(sssShareList, 'SharedSolarSystemApexSharing', 'evaluateSharingViaUser');
     }
@@ -175,10 +173,13 @@ public without sharing class SharedSolarSystemSharingService {
     }
     private List<Shared_Solar_System__Share> generateSSSAccess(List<Id> sssIds, List<Id> userIdList, String accessLevel, String rowClause) {
         List<Shared_Solar_System__Share> shareRecords = new List<Shared_Solar_System__Share>();
-        for (Id record : sssIds) {
+        for (Id sssId : sssIds) {
+            if (sssId == null) {
+                continue;
+            }
             for (Id userId : userIdList) {
                 Shared_Solar_System__Share sssShare = new Shared_Solar_System__Share();
-                sssShare.ParentId = record;
+                sssShare.ParentId = sssId;
                 sssShare.UserOrGroupId = userId;
                 sssShare.AccessLevel = accessLevel;
                 sssShare.RowCause = rowClause;
