@@ -6,13 +6,9 @@
  **/
 public without sharing class PostSandboxRefresher implements SandboxPostCopy {
     public void runApexClass(SandboxContext context) {
-        try {
-            Integer minute = Datetime.now().addMinutes(30).minute();
-            // Starting 30m from now to allow the sandbox user table to finish setting up. Job will self-cancel once successful.
-            String cronString = '0 ' + minute + ' * * * ?';
-            System.schedule(PostSandboxAdminSwitcher.POST_SANDBOX_ADMIN_SWITCHER_JOB_NAME, cronString, new PostSandboxAdminSwitcher());
-        } catch (Exception e) {
-            Logger.logNow('PostSandboxRefresher', 'runApexClass', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
-        }
+        Integer minute = Datetime.now().addMinutes(30).minute();
+        // Starting 30m from now to allow the sandbox user table to finish setting up. Job will self-cancel once successful.
+        String cronString = '0 ' + minute + ' * * * ?';
+        System.schedule(PostSandboxAdminSwitcher.POST_SANDBOX_ADMIN_SWITCHER_JOB_NAME, cronString, new PostSandboxAdminSwitcher());
     }
 }
