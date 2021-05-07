@@ -400,18 +400,6 @@
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Availability__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( Capacity_Available_to_be_Reserved__c &gt; 0 , &quot;There is Additional Capacity Available to be Reserved&quot;, &quot;The Project is Full&quot;)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXAvailability</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Available_Anchor_Capacity__c</fullName>
         <externalId>false</externalId>
         <formula>Reserved_Anchor_Capacity__c - Anchor_Capacity_Reserved__c</formula>
@@ -448,19 +436,6 @@
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Average_Subscription_Size__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXAverage Subscription Size</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>BWC_Project_Entity_Manual__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -474,27 +449,6 @@
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Bill_Due_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>Bill_Send_Date__c + 20</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXBill Due Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Bill_Send_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXBill Send Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Billing_Anchors__c</fullName>
@@ -523,28 +477,6 @@
         </valueSet>
     </fields>
     <fields>
-        <fullName>Billing_Cycle_Group_Number__c</fullName>
-        <externalId>false</externalId>
-        <label>xxUtility Billing Cycle Group Number</label>
-        <length>50</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Billing_Cycle_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>xxUtility Billing Cycle Start Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Billing_Method__c</fullName>
         <externalId>false</externalId>
         <label>Billing Method</label>
@@ -568,26 +500,6 @@
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Billing_Period_End_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXBW Billing Period End Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Billing_Period_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXBW Billing Period Start Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>CDG_Host_Account__c</fullName>
@@ -797,20 +709,6 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Contracts_Needed_to_COD__c</fullName>
-        <externalId>false</externalId>
-        <formula>kW_needed_to_hit_payment_threshold__c  /  Average_Subscription_Size__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXContracts Needed to COD</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Conversion_Rate__c</fullName>
         <externalId>false</externalId>
         <formula>Total_System_Size_kWh_DC__c/Total_System_Size_kW_AC__c</formula>
@@ -850,20 +748,6 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Customer_Acquisition__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>XXXCustomer Acquisition</label>
-        <referenceTo>Partner__c</referenceTo>
-        <relationshipLabel>Shared Solar Systems</relationshipLabel>
-        <relationshipName>Shared_Solar_Systems_del</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Customer_Assignment_Date__c</fullName>
         <description>Populated with the Company Signature Date from the first Assignment Agreement signed by the Client</description>
         <externalId>false</externalId>
@@ -874,30 +758,6 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Days_until_NTP__c</fullName>
-        <externalId>false</externalId>
-        <formula>NTP_Target_Date__c - today()</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXDays until NTP</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Description__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXDescription</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>TextArea</type>
     </fields>
     <fields>
         <fullName>Do_Not_Ask_for_Payment_Method__c</fullName>
@@ -923,16 +783,6 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Energy_Analytics_del__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXEnergy Analytics</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Url</type>
-    </fields>
-    <fields>
         <fullName>Est_Utility_NMC_Transfer_to_Host_Date__c</fullName>
         <externalId>false</externalId>
         <label>Est Credit Generation Start Date</label>
@@ -953,22 +803,6 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Est_of_Subscribers__c</fullName>
-        <description>This is an estimate and is used in DocuSign.</description>
-        <externalId>false</externalId>
-        <formula>Total_CS_Capacity_kW_DC_Formula__c / Maximum_Subscription_Capacity_kWDC__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This is an estimate and is used in DocuSign.</inlineHelpText>
-        <label>XXXEst # of Subscribers</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Estimated_COD_Date_Manual__c</fullName>
@@ -1119,16 +953,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Graph_Box__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>XXXGraph Box</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Home_Electricity_Offset__c</fullName>
         <externalId>false</externalId>
         <formula>Metric_Tons_of_CO2_Offset__c /5.734</formula>
@@ -1214,18 +1038,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Latitude_and_Longitude__c</fullName>
-        <displayLocationInDecimal>false</displayLocationInDecimal>
-        <externalId>false</externalId>
-        <label>XXXLatitude and Longitude</label>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Location</type>
-    </fields>
-    <fields>
         <fullName>Management_Fee_Escalator_Start_Date__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Date escalation percentage applies to management fee as specified in contract. Entered by Operations as part of project onboarding process.</inlineHelpText>
@@ -1276,16 +1088,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Meter_Installed_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXMeter Installed Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Meter_Reading_Schedule__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>This is a lookup to the Meter Reading Schedule, which determines when the dates at which the host account meter will be read. The group can be found on the host account bill. This field is populated by the IX team.</description>
@@ -1329,24 +1131,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Min_Schedule_Z_to_Utility_Date__c</fullName>
-        <description>This field is populated with the Minimum date from the &quot;Date Submitted to Utility&quot; field from all related schedule z records with statuses of Submitted to Utility &gt;&gt;&gt; Contact Utility to get it Enacted, Rejected, Enacted by Utility, Replaced with newly Enacted Schedule Z. If it needs to be updated, please update the Schedule Z record.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Minimum date from the Date Submitted to Utility field from related sched z records with statuses of Submitted to Utility &gt;&gt;&gt; Contact Utility to get Enacted, Rejected, Enacted by Utility, Replaced with newly Enacted Sched Z. To update, edit Sched Z record.</inlineHelpText>
-        <label>XXXMin Schedule Z to Utility Date</label>
-        <summarizedField>Schedule_Z__c.Date_Submitted_to_Utility__c</summarizedField>
-        <summaryFilterItems>
-            <field>Schedule_Z__c.Status__c</field>
-            <operation>equals</operation>
-            <value>Submitted to Utility &gt;&gt;&gt; Contact Utility to get it Enacted, Rejected, Enacted by Utility, Replaced with newly Enacted Schedule Z</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>NMC_Value__c</fullName>
         <externalId>false</externalId>
         <formula>Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c</formula>
@@ -1358,69 +1142,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>NTP_Target_Date__c</fullName>
-        <description>Target date to hit NTP offtake</description>
-        <externalId>false</externalId>
-        <label>XXXNTP Target Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>NTP_Target__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_System_Size_kWh_DC__c * 0.40</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXNTP Target</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>NTP_Threshold__c</fullName>
-        <description>% subscribed to hit NTP for project</description>
-        <externalId>false</externalId>
-        <label>XXXNTP % Threshold</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>Next_Schedule_Z_Date__c</fullName>
-        <description>This field is populated with the maximum Next Schedule Z Date field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This field is populated with the maximum Next Schedule Z Date field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</inlineHelpText>
-        <label>XXXNext Schedule Z Date</label>
-        <summarizedField>Schedule_Z__c.Next_Schedule_Z_Date__c</summarizedField>
-        <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Next_Schedule_Z_Label__c</fullName>
-        <externalId>false</externalId>
-        <formula>Name&amp;&quot; #&quot;&amp; TEXT(Count_of_Schedule_Zs__c + 1)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXNext Schedule Z Label</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -1447,31 +1168,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Partner_Assignment__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXPartner Assignment</label>
-        <length>100</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Payment_Threshold__c</fullName>
-        <description>Percent of project that needs to be filled to get paid</description>
-        <externalId>false</externalId>
-        <label>XXXPayment Threshold %</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
     </fields>
     <fields>
         <fullName>Pending_Anchor_Capacity__c</fullName>
@@ -1770,27 +1466,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Sales_Target_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>Estimated_COD_Date_Manual__c - 7</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXSales Target Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>ScheduleZ_Filed__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( ISBLANK( Min_Schedule_Z_to_Utility_Date__c ), FALSE, TRUE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Allocation Schedule Filed</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Service_Territories__c</fullName>
         <externalId>false</externalId>
         <label>Service Territories</label>
@@ -1946,29 +1621,6 @@ Total_System_Size_kWh_DC__c
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>System_Type__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXSystem Type</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>System_Update__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXSystem Update</label>
-        <length>32768</length>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
     </fields>
     <fields>
         <fullName>System_Utility__c</fullName>
@@ -2144,18 +1796,6 @@ null)</formula>
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>User__c</fullName>
-        <externalId>false</externalId>
-        <formula>$User.Id</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXUser</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Utility_NMC_Tariff__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -2204,35 +1844,6 @@ null)</formula>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>kW_Needed_To_Hit_NTP_Threshold__c</fullName>
-        <description>kW needed to hit NTP</description>
-        <externalId>false</externalId>
-        <formula>(  Total_System_Size_kWh_DC__c  * NTP_Threshold__c )-( Anchor_Capacity_Reserved__c + Capacity_Committed_kW_DC__c )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXkW Needed To Hit NTP Threshold</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>kW_needed_to_hit_payment_threshold__c</fullName>
-        <externalId>false</externalId>
-        <formula>( Total_System_Size_kWh_DC__c *  Payment_Threshold__c )-( Anchor_Capacity_Reserved__c + Capacity_Committed_kW_DC__c )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXkW Needed To Hit Payment Threshold</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
         <unique>false</unique>
     </fields>
     <gender n1:nil="true" />
@@ -2299,7 +1910,6 @@ null)</formula>
         <columns>Picklist__c</columns>
         <columns>Billing_Anchors__c</columns>
         <columns>Host_Utility_Account_Number__c</columns>
-        <columns>Billing_Cycle_Group_Number__c</columns>
         <columns>Estimated_PTO_Date_MANUAL__c</columns>
         <columns>Actual_PTO_Date_MANUAL__c</columns>
         <columns>Actual_Utility_NMC_Transfer_to_Host_Date__c</columns>
@@ -2334,7 +1944,6 @@ null)</formula>
         <columns>Picklist__c</columns>
         <columns>Billing_Anchors__c</columns>
         <columns>Host_Utility_Account_Number__c</columns>
-        <columns>Billing_Cycle_Group_Number__c</columns>
         <columns>Estimated_PTO_Date_MANUAL__c</columns>
         <columns>Actual_PTO_Date_MANUAL__c</columns>
         <columns>Actual_Utility_NMC_Transfer_to_Host_Date__c</columns>
@@ -2395,7 +2004,6 @@ null)</formula>
         <columns>Service_Territories__c</columns>
         <columns>Open__c</columns>
         <columns>Capacity_Available_to_be_Reserved__c</columns>
-        <columns>Partner_Assignment__c</columns>
         <columns>System_Utility__c</columns>
         <columns>Utility__c</columns>
         <columns>Service_Territory__c</columns>
@@ -3472,46 +3080,5 @@ ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
         <openType>sidebar</openType>
         <protected>false</protected>
         <url>&quot;/00Oj00000048bbR?pv0={!Shared_Solar_System__c.Name}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>XXNext_Schedule_Z</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <height>600</height>
-        <linkType>url</linkType>
-        <masterLabel>XXNext Schedule Z</masterLabel>
-        <openType>sidebar</openType>
-        <protected>false</protected>
-        <url>/00Oj0000004i4Un?pv2={!Shared_Solar_System__c.Name}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>XXSchedule_Z</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <height>600</height>
-        <linkType>url</linkType>
-        <masterLabel>XXSchedule Z</masterLabel>
-        <openType>sidebar</openType>
-        <protected>false</protected>
-        <url>/00Oj0000004hQoa?pv2={!Shared_Solar_System__c.Name}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>XXUpdate_Subscriptions</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>XXUpdate Subscriptions</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
-{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)} 
-if (confirm(&apos;Are you sure you want to update the subscriptions?&apos;)) { 
-var result = sforce.apex.execute(&quot;DynamicToStaticSubscriptionHandler&quot;,&quot;DynamicToStaticSubscriptionHandler&quot;, 
-{sssId:&quot;{!Shared_Solar_System__c.Id}&quot;}); 
-alert(result); 
-window.location.reload(); 
-}</url>
     </webLinks>
 </CustomObject>
