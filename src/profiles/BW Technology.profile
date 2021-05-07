@@ -23926,6 +23926,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Invoice__c.Netsuite_Invoice_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Invoice__c.Notes__c</field>
         <readable>true</readable>
@@ -23938,6 +23943,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Invoice__c.Product_Line__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Invoice__c.Reconciliation_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
