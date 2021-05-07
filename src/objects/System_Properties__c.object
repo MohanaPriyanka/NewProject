@@ -382,17 +382,6 @@ Production: BlueWave Inside Sales</description>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Last_Lease_Dimensions_File_Processed__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Name of the last Lease Dimensions Payment Report file imported as Transaction Applications. Set by the Lease Dimensions Import visualforce page</inlineHelpText>
-        <label>Last Lease Dimensions File Processed</label>
-        <length>255</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Log_Level__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Maximum log level to log, Fine, Info, Debug, Warn, Error.</inlineHelpText>
