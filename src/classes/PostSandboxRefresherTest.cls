@@ -547,33 +547,4 @@ private class PostSandboxRefresherTest {
 
         System.assertEquals(0, deletedEmailMessages.size());
     }
-
-    @IsTest
-    public static void testDeleteFiles() {
-        List<ContentVersion> files = new List<ContentVersion>();
-        for (Integer i = 0; i < 10; i++) {
-            ContentVersion cv = new ContentVersion();
-            cv.Title = 'Test Document';
-            cv.PathOnClient = 'TestDocument.pdf';
-            cv.VersionData = Blob.valueOf('Test Content');
-            cv.IsMajorVersion = true;
-            files.add(cv);
-        }
-        insert files;
-
-        List<ContentDocument> checkFiles = [
-            SELECT Id
-            FROM ContentDocument
-        ];
-        System.assertEquals(10, checkFiles.size());
-        PostSandboxSchedulable refresher = new PostSandboxSchedulable();
-        refresher.deleteFiles();
-
-        List<ContentDocument> deletedFiles = [
-            SELECT Id
-            FROM ContentDocument
-        ];
-
-        System.assertEquals(0, deletedFiles.size());
-    }
 }

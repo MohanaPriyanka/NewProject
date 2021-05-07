@@ -1,0 +1,84 @@
+/**
+ * Created by peteryao on 12/28/19.
+ * Description: Because of the reasons described in this post (https://salesforce.stackexchange.com/a/240183/47356),
+ *  this handles profile updates via a job scheduled by the PostSandboxRefresher
+ * Tested By: PostSandboxRefresherTest
+ */
+
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class PostSandboxSchedulable implements Schedulable {
+    public static final String POST_SANDBOX_SCHEDULED_JOB_NAME = 'PostSandboxSchedulable';
+    public void execute(SchedulableContext context) {
+        try {
+            setSystemAdmins();
+            cancelPostSandboxCronJob();
+            deleteAttachments();
+            deleteEmailMessages();
+            deleteFiles();
+            // Moved out of the initial runApexClass because we get this error - maybe shares haven't been set up when
+            // the SandboxPostCopy is run?
+            // 20:05:57.59 (24059896636)|EXCEPTION_THROWN|[68]|System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, AccountTrigger: execution of BeforeInsert
+            //caused by: line 183, column 45: Dependent class is invalid and needs recompilation:
+            // Class AccountTriggerHandler : Dependent class is invalid and needs recompilation:
+            // Class UtilityAccountSubscriptions : Dependent class is invalid and needs recompilation:
+            // Class SubscriptionManagementService : Dependent class is invalid and needs recompilation:
+            // Class SharedSolarSystemsSelector : Invalid type: Shared_Solar_System__Share: []
+        } catch (Exception e) {
+            Logger.logNow('PostSandboxSchedulable', 'setSystemAdmins', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
+    }
+
+    private void setSystemAdmins() {
+        if (!Util.isSandboxOrTest()) {
+            throw new Util.BWException('Only set system admins in sandboxes!');
+        }
+        Profile sysAdminProfile = [SELECT Id FROM Profile WHERE Name = 'System Administrator'];
+
+        List<User> usersToMakeSysAdmins = [
+            SELECT Id, ProfileId
+            FROM User
+            WHERE Profile.Name = 'BW Technology'
+            AND IsActive = TRUE
+        ];
+        for (User user : usersToMakeSysAdmins) {
+            user.ProfileId = sysAdminProfile.Id;
+        }
+        update usersToMakeSysAdmins;
+    }
+
+    private void cancelPostSandboxCronJob() {
+        List<CronTrigger> triggerList = [
+            SELECT Id
+            FROM CronTrigger
+            WHERE CronJobDetail.Name LIKE :POST_SANDBOX_SCHEDULED_JOB_NAME
+        ];
+        for (CronTrigger t : triggerList) {
+            System.abortJob(t.Id);
+        }
+    }
+
+    private void deleteAttachments() {
+        // Call to batch to delete all Attachments (100K+)
+        String queryString = 'SELECT Id FROM Attachment';
+        GenericQueryLocatorBatchDMLOperation dataDeleter = new GenericQueryLocatorBatchDMLOperation(queryString, 'Delete');
+        Database.executeBatch(dataDeleter);
+    }
+
+    private void deleteEmailMessages() {
+        // Call batch to delete all email messages (54K+)
+        String queryString = 'SELECT Id FROM EmailMessage';
+        GenericQueryLocatorBatchDMLOperation dataDeleter = new GenericQueryLocatorBatchDMLOperation(queryString, 'Delete');
+        Database.executeBatch(dataDeleter);
+    }
+
+    @TestVisible
+    private void deleteFiles() {
+        //query for all files to delete (~300 records)
+        List<ContentDocument> allFiles = [
+            SELECT Id
+            FROM ContentDocument
+        ];
+
+        delete allFiles;
+    }
+}
