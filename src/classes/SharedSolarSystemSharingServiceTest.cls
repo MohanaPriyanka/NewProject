@@ -68,8 +68,17 @@ private class SharedSolarSystemSharingServiceTest {
                 StageName = 'Complete'
         );
 
+        Opportunity opp3 = new Opportunity(
+            Name = 'Access TestOpp',
+            AccountId = propertyAccount.Id,
+            Product_Line__c = 'Community Solar',
+            CloseDate = System.today(),
+            StageName = 'Complete'
+        );
+
+
         insert new List<Opportunity>{
-                opp, opp2
+                opp, opp2, opp3
         };
 
         Account partnerAccount = new Account(
@@ -250,6 +259,12 @@ private class SharedSolarSystemSharingServiceTest {
         System.assertEquals(sssList[1].Id, sssShares[0].ParentId, 'The SSS Id should match');
         System.assertEquals(customerUser.Id, sssShares[0].UserOrGroupId, 'User Id should match');
         System.assertEquals('Read', sssShares[0].AccessLevel, 'Only read access should be added');
+
+        List<Error_Log__c> errorLogs = [
+            SELECT Class__c, Method__c, Message__c FROM Error_Log__c WHERE Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(0, errorLogs.size(),
+            'Expected no errors when creating shares, but found this: ' + errorLogs);
     }
 
     @IsTest
