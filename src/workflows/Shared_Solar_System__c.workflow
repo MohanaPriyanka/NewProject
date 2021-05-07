@@ -85,16 +85,6 @@
         <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>Update_Graph_box</fullName>
-        <field>Graph_Box__c</field>
-        <literalValue>1</literalValue>
-        <name>Update Graph box</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-        <reevaluateOnChange>true</reevaluateOnChange>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Update_SSS_on_Customer_Reservation</fullName>
         <description>Updates the Shared Solar System&apos;s Reserved Capacity when the Customer Reservation field is changed on the Opportunity.</description>
         <field>Update_Dummy__c</field>
