@@ -1,37 +1,140 @@
 /**
      @description CSRecordLoader loads community solar records for testing. Currently, bill numbers aren't advanced
      because roll-up summaries aren't recalculated before the next bills are loaded, but updating the
-     last bill number will allow total due to show in the customer portal. Occasionally the Energy Usage Update Handler
-     hits UNABLE_TO_LOCK_ROW which we should investigate.
+     last bill number will allow total due to show in the customer portal.
      To avoid governor limits, the methods below chain queueable methods, loading in this order:
      - Insert Load Zones and Tariffs
      - Insert a Product, Utility_NMC_Tariff, Entity, Utility, and Shared Solar Systems
      - Insert Gateways
      - Insert Parent Account, Contact, Property Account, Utility Account Log, Opportunity, and Utility Account Subscription
-     - Insert Schedule Z, Bill Periods, Productions, and Transfers - then call EEUTH them to generate UASBs, System Bills, and Account Bills
-     - Update Account Bills to publish them
+     - Insert Schedule Z, Bill Periods, Productions, and Transfers
      Tested By: PostSandboxRefresherTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class CSRecordLoader extends Promise {
+public without sharing class CSRecordLoader implements Queueable {
     @TestVisible private static Date csDataDate = Date.newInstance(2000,1,1);
+    public static final String POST_SANDBOX_RECORD_LOADER_JOB_NAME = 'PostSandboxRecordLoader';
     private CSDataSetting csDataSetting;
 
-    public static void loadCSData() {
-        CSDataSetting csDataSetting = new CSDataSetting(24);
-        CSRecordLoader recordLoader = new CSRecordLoader(csDataSetting);
-        recordLoader.then(new SolarSystemHelper(csDataSetting))
-            .then(new GatewayHelper(csDataSetting))
-            .then(new FirstAccountHelper(csDataSetting))
-            .then(new SecondAccountHelper(csDataSetting))
-            .then(new TransferHelper(csDataSetting));
-        System.enqueueJob(recordLoader);
+    public CSRecordLoader() {
+        this.csDataSetting = new CSDataSetting(24);
     }
-    @TestVisible private CSRecordLoader(CSDataSetting csDataSetting) {
+
+    public CSRecordLoader(CSDataSetting csDataSetting) {
         this.csDataSetting = csDataSetting;
     }
 
-    public override void execute() {
+    public void execute(QueueableContext context) {
+        cancelCronJobs();
+        updateLetterStreamToTestConfig();
+        updateDocusignToDemoConfig();
+        setupBWTestPartner();
+        startCSRecordLoad();
+    }
+
+    private void cancelCronJobs() {
+        List<CronTrigger> triggerList = [
+            SELECT Id
+            FROM CronTrigger
+            WHERE CronJobDetail.Name = :POST_SANDBOX_RECORD_LOADER_JOB_NAME
+            OR CronJobDetail.Name = :PostSandboxAdminSwitcher.POST_SANDBOX_ADMIN_SWITCHER_JOB_NAME
+        ];
+        for (CronTrigger t : triggerList) {
+            System.abortJob(t.Id);
+        }
+    }
+
+    @TestVisible
+    private static void updateLetterStreamToTestConfig() {
+        if (!Util.isSandboxOrTest()) {
+            throw new Util.BWException('Dont\'t update LetterStream config in production this way');
+        }
+        List<LetterStream_Settings__c> letterStreamSettings = [
+            SELECT Id, API_Id__c, API_Key__c
+            FROM LetterStream_Settings__c
+        ];
+        LetterStream_Settings__c newLetterStreamSetting = new LetterStream_Settings__c();
+        if (!letterStreamSettings.isEmpty()) {
+            newLetterStreamSetting.Id = letterStreamSettings[0].Id;
+        }
+        // credentials for bluewavetestAPI (see wiki)
+        newLetterStreamSetting.Name = 'Test Config';
+        newLetterStreamSetting.API_Id__c = 'ft5eh41g_test';
+        newLetterStreamSetting.API_Key__c = 'fhv4d7bèv9v6n7_test';
+        newLetterStreamSetting.API_Endpoint__c = 'https://secure.letterstream.com/apis/';
+        upsert newLetterStreamSetting;
+    }
+
+    @TestVisible
+    private static void updateDocusignToDemoConfig() {
+        if (!Util.isSandboxOrTest()) {
+            throw new Util.BWException('Don\'t update DocuSign config in production this way');
+        }
+        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        if (systemProperties.isEmpty()) {
+            return;
+        }
+        systemProperties[0].DocuSign_API_Account_ID__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
+        systemProperties[0].DocuSign_Customer_Care_User__c = 'pyao@bluewavesolar.com';
+        systemProperties[0].DocuSign_Guest_User__c = 'pyao@bluewave-capital.com';
+        systemProperties[0].DocuSign_Guest_User_Credential__c = '137Newbury';
+        systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
+        update systemProperties[0];
+
+        List<Product2> docuSignEnabledProducts = [
+            SELECT Id
+            FROM Product2
+            WHERE Contract_Docusign_Template__c != NULL
+        ];
+        for (Product2 product2 : docuSignEnabledProducts) {
+            // All products will point to a valid template in the demo docusign environment so DocuSign will at least
+            // produce some document by default
+            product2.Contract_Docusign_Template__c = 'e03c7f33-0754-4abb-9d8e-42a46923e512';
+        }
+        update docuSignEnabledProducts;
+    }
+
+    public static void setupBWTestPartner() {
+        Partner__c partner = new Partner__c(Name = 'Solar Test Partner');
+        insert partner;
+        BSST__c salesRep = new BSST__c(Name = 'Joe Bob', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@bluewavesolar.com.test');
+        insert salesRep;
+        BSST__c salesRepExec = new BSST__c(Name = 'Mr Executive', Partner__c = partner.Id, Custom_ID__c = 'exec', Email__c = 'executive@bluewavesolar.com.test');
+        insert salesRepExec;
+        String states = 'AK;AL;AR;AZ;CA;CO;CT;DE;FL;GA;HI;IA;ID;IL;IN;KS;KY;LA;MA;MD;ME;MI;MN;MO;MS;MT;NC;ND;NE;NH;NJ;NM;NV;NY;OH;OK;OR;PA;RI;SC;SD;TN;TX;UT;VA;VT;WA;WI;WV;WY';
+        partner.Default_Sales_Rep__c = salesRepExec.Id;
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        sysProp.Default_CS_Partner__c = partner.Id;
+        update partner;
+        update sysProp;
+        Account partnerAccount = new Account(
+            Name='Solar Test Partner',
+            Partner__c = partner.Id,
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId(),
+            State_Market__c = states,
+            Enable_CS_Application_in_Portal__c = true,
+            Community_Solar_Application_Type__c = 'CSAP'
+        );
+        insert partnerAccount;
+        partner.Account__c = partnerAccount.Id;
+        update partnerAccount;
+        Contact execContact = new Contact(  FirstName='Joe',
+            LastName='Bob',
+            AccountId = partnerAccount.Id,
+            Partner_Lookup__c = partner.Id,
+            RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByName().get('Partner Contact').getRecordTypeId(),
+            Sales_Representative__c = salesRep.Id);
+        insert execContact;
+        Contact salesRepContact = new Contact(  FirstName='Mr',
+            LastName='Executive',
+            AccountId = partnerAccount.Id,
+            Partner_Lookup__c = partner.Id,
+            RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByName().get('Partner Contact').getRecordTypeId(),
+            Sales_Representative__c = salesRepExec.Id);
+        insert salesRepContact;
+    }
+
+    public void startCSRecordLoad() {
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(
             Name = 'Eversource SEMA Class 2',
             Utility__c = 'Eversource',
@@ -80,14 +183,17 @@ public without sharing class CSRecordLoader extends Promise {
         if (fileUploadShares.isEmpty()) {
             insert new Custom_File_Upload_Share__c(Name = 'Apply Site');
         }
+        if (!Test.isRunningTest()) {
+            System.enqueueJob(new CSRecordLoader.SolarSystemHelper(csDataSetting));
+        }
     }
 
-    @TestVisible private without sharing class SolarSystemHelper extends Promise {
+    @TestVisible private without sharing class SolarSystemHelper implements Queueable {
         private CSDataSetting csDataSetting;
         @TestVisible private SolarSystemHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
-        public override void execute() {
+        public void execute(QueueableContext context) {
             Product2 normalCSProduct = [SELECT Id FROM Product2 WHERE ProductCode = 'CS-MA-7' LIMIT 1];
             Product2 normalSRECProduct = [SELECT Id FROM Product2 WHERE ProductCode = 'CS-MA-8' LIMIT 1];
 
@@ -192,6 +298,9 @@ public without sharing class CSRecordLoader extends Promise {
                 }
             }
             uow.commitWork();
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new CSRecordLoader.GatewayHelper(csDataSetting));
+            }
         }
 
         @TestVisible private void insertTariffsForProduct(Id productId, Id eversourceId, Id nationalGridId) {
@@ -319,12 +428,12 @@ public without sharing class CSRecordLoader extends Promise {
             return sss;
         }
     }
-    @TestVisible private without sharing class GatewayHelper extends Promise {
+    @TestVisible private without sharing class GatewayHelper implements Queueable {
         private CSDataSetting csDataSetting;
         private GatewayHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
-        public override void execute() {
+        public void execute(QueueableContext context) {
             Entity__c defaultEntity = new Entity__c(
                 Name = 'BWC Holdings, LLC',
                 CreatedDate = csDataDate
@@ -333,14 +442,18 @@ public without sharing class CSRecordLoader extends Promise {
             Entity__c entity1 = [SELECT Id FROM Entity__c WHERE Name = 'Project A Oak Road' LIMIT 1];
             Entity__c entity2 = [SELECT Id FROM Entity__c WHERE Name = 'Project B Main St' LIMIT 1];
             update new List<Entity__c>{entity1, entity2};
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new CSRecordLoader.FirstAccountHelper(csDataSetting));
+            }
+
         }
     }
-    @TestVisible private without sharing class FirstAccountHelper extends Promise {
+    @TestVisible private without sharing class FirstAccountHelper implements Queueable {
         private CSDataSetting csDataSetting;
         @TestVisible private FirstAccountHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
-        public override void execute() {
+        public void execute(QueueableContext context) {
             // Can't do more than 12 because the Update SSS On Opportunity Complete PB fails with
             // "DUPLICATE_VALUE: Maximum number of duplicate updates in one batch (12 allowed)"
             Integer batchNumber = csDataSetting.numberOfAccountBatches;
@@ -358,14 +471,17 @@ public without sharing class CSRecordLoader extends Promise {
             names.add(new CustomerName('Viaan', 'Faulkner', batchNumber));
             names.add(new CustomerName('Ritchie', 'Ho', batchNumber));
             createSubscriptions(0, names);
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new CSRecordLoader.SecondAccountHelper(csDataSetting));
+            }
         }
     }
-    @TestVisible private without sharing class SecondAccountHelper extends Promise {
+    @TestVisible private without sharing class SecondAccountHelper implements Queueable {
         private CSDataSetting csDataSetting;
         @TestVisible private SecondAccountHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
-        public override void execute() {
+        public void execute(QueueableContext context) {
             Integer batchNumber = csDataSetting.numberOfAccountBatches;
             List<CustomerName> names = new List<CustomerName>();
             names.add(new CustomerName('Joshua', 'Phillips', batchNumber));
@@ -381,15 +497,24 @@ public without sharing class CSRecordLoader extends Promise {
             names.add(new CustomerName('Mollie', 'Hassan', batchNumber));
             names.add(new CustomerName('Harrison', 'Harris', batchNumber));
             createSubscriptions(1, names);
+            if (!Test.isRunningTest()) {
+                if (batchNumber > 1) {
+                    csDataSetting.numberOfAccountBatches--;
+                    System.enqueueJob(new CSRecordLoader.FirstAccountHelper(csDataSetting));
+                } else {
+                    Util.enableAllTriggers();
+                    System.enqueueJob(new CSRecordLoader.TransferHelper(csDataSetting));
+                }
+            }
         }
     }
 
-    @TestVisible private without sharing class TransferHelper extends Promise {
+    @TestVisible private without sharing class TransferHelper implements Queueable {
         private CSDataSetting csDataSetting;
         @TestVisible private TransferHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
-        public override void execute() {
+        public void execute(QueueableContext context) {
             try {
                 innerExecute();
             } catch (Exception e) {
@@ -694,9 +819,9 @@ public without sharing class CSRecordLoader extends Promise {
             ee.executeBatchJob();
         }
     }
-    @TestVisible private without sharing class CSDataSetting {
+    public without sharing class CSDataSetting {
         private Integer numberOfAccountBatches;
-        @TestVisible private CSDataSetting(Integer numberOfAccounts) {
+        public CSDataSetting(Integer numberOfAccounts) {
             this.numberOfAccountBatches = (Integer) Math.rint(numberOfAccounts/24);
         }
     }
