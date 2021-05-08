@@ -108,7 +108,7 @@ private class PostSandboxRefresherTest {
             );
         }
         Test.startTest();
-        PostSandboxRefresher.updateLetterStreamToTestConfig();
+        CSRecordLoader.updateLetterStreamToTestConfig();
         Test.stopTest();
         List<LetterStream_Settings__c> letterStreamSettings = [
             SELECT Id, Name, API_Id__c, API_Key__c
@@ -125,7 +125,7 @@ private class PostSandboxRefresherTest {
     static void testSandboxRefresh() {
         Test.startTest();
         try {
-            PostSandboxRefresher.updateDocusignToDemoConfig();
+            CSRecordLoader.updateDocusignToDemoConfig();
         } catch (Exception e) {
             System.assert(e.getMessage().contains('Don\'t update DocuSign'), 'Do not need to update Docusign Config for test');
         }
@@ -173,9 +173,9 @@ private class PostSandboxRefresherTest {
     static void testAccountHelper() {
         CSRecordLoader.CSDataSetting csDataSetting = new CSRecordLoader.CSDataSetting(24);
         CSRecordLoader csRecordLoader = new CSRecordLoader(csDataSetting);
-        csRecordLoader.execute();
+        csRecordLoader.execute((QueueableContext) null);
         CSRecordLoader.SolarSystemHelper solarSystemHelper = new CSRecordLoader.SolarSystemHelper(csDataSetting);
-        solarSystemHelper.execute();
+        solarSystemHelper.execute((QueueableContext) null);
         Test.startTest();
         CSRecordLoader.FirstAccountHelper firstAccountHelper = new CSRecordLoader.FirstAccountHelper(csDataSetting);
         System.enqueueJob(firstAccountHelper);
@@ -187,9 +187,9 @@ private class PostSandboxRefresherTest {
     static void testSecondAccountHelper() {
         CSRecordLoader.CSDataSetting csDataSetting = new CSRecordLoader.CSDataSetting(24);
         CSRecordLoader csRecordLoader = new CSRecordLoader(csDataSetting);
-        csRecordLoader.execute();
+        csRecordLoader.execute((QueueableContext) null);
         CSRecordLoader.SolarSystemHelper solarSystemHelper = new CSRecordLoader.SolarSystemHelper(csDataSetting);
-        solarSystemHelper.execute();
+        solarSystemHelper.execute((QueueableContext) null);
         Test.startTest();
         CSRecordLoader.SecondAccountHelper secondAccountHelper = new CSRecordLoader.SecondAccountHelper(csDataSetting);
         System.enqueueJob(secondAccountHelper);
@@ -201,13 +201,13 @@ private class PostSandboxRefresherTest {
     static void testTransferHelper() {
         CSRecordLoader.CSDataSetting csDataSetting = new CSRecordLoader.CSDataSetting(24);
         CSRecordLoader csRecordLoader = new CSRecordLoader(csDataSetting);
-        csRecordLoader.execute();
+        csRecordLoader.execute((QueueableContext) null);
         CSRecordLoader.SolarSystemHelper solarSystemHelper = new CSRecordLoader.SolarSystemHelper(csDataSetting);
-        solarSystemHelper.execute();
+        solarSystemHelper.execute((QueueableContext) null);
         Test.startTest();
         try {
             CSRecordLoader.TransferHelper transferHelper = new CSRecordLoader.TransferHelper(csDataSetting);
-            transferHelper.execute();
+            transferHelper.execute(null);
         } catch (Exception e) {
             System.assert(false, e.getMessage() + e.getStackTraceString());
         }
@@ -237,7 +237,7 @@ private class PostSandboxRefresherTest {
     }
     @IsTest
     static void testPartnerSetup() {
-        PostSandboxRefresher.setupBWTestPartner();
+        CSRecordLoader.setupBWTestPartner();
         List<Partner__c> partners = [
             SELECT Id, Name
             FROM Partner__c
@@ -407,8 +407,7 @@ private class PostSandboxRefresherTest {
         User currentUser = [SELECT Id FROM User WHERE Id = :systemAdminUser.Id];
         System.runAs(currentUser) {
             Test.startTest();
-            PostSandboxRefresher psr = new PostSandboxRefresher();
-            psr.schedulePostSandboxJob();
+            new PostSandboxRefresher().runApexClass(null);
             Test.stopTest();
         }
         users = [
@@ -469,82 +468,5 @@ private class PostSandboxRefresherTest {
         System.assertEquals(1, leads.size());
     }
 
-    @IsTest
-    private static void testPostSandboxRefresherDataDeleterAttachments() {
-        List<Account> accounts = [
-            SELECT Id
-            FROM Account
-            WHERE RecordType.Name != 'Partner Account'
-        ];
 
-        List<Attachment> allAttachments = new List<Attachment>();
-        Blob b = Blob.valueOf('Test data');
-        for (Account acc : accounts) {
-            Attachment att = new Attachment(
-                ParentId = acc.Id,
-                Description = 'Attachment for deletion',
-                Name = 'Attachment for Deletion',
-                Body = b
-            );
-            allAttachments.add(att);
-        }
-        insert allAttachments;
-
-        List<Attachment> checkAttachments = [
-            SELECT Id
-            FROM Attachment
-        ];
-        System.assertEquals(28, checkAttachments.size());
-
-        Test.startTest();
-        String queryString = 'SELECT Id FROM Attachment';
-        GenericQueryLocatorBatchDMLOperation dataDeleter = new GenericQueryLocatorBatchDMLOperation(queryString, 'Delete');
-        Database.executeBatch(dataDeleter);
-        Test.stopTest();
-
-        List<Attachment> deletedAttachments = [
-            SELECT Id
-            FROM Attachment
-        ];
-
-        System.assertEquals(0, deletedAttachments.size());
-    }
-
-    @IsTest
-    private static void testPostSandboxRefresherDataDeleterEmailMessages() {
-        Case c = new Case(
-            Subject = 'Test Case'
-        );
-        insert c;
-
-        List<EmailMessage> allEmails = new List<EmailMessage>();
-        for (Integer i = 0 ; i < 10 ; i++) {
-            EmailMessage email = new EmailMessage();
-            email.Subject = 'Test Email';
-            email.HtmlBody = 'Test Email';
-            email.ParentId = c.Id;
-            allEmails.add(email);
-        }
-
-        insert allEmails;
-        List<EmailMessage> checkEmailMessages = [
-            SELECT Id
-            FROM EmailMessage
-        ];
-
-        System.assertEquals(10, checkEmailMessages.size());
-
-        Test.startTest();
-        String queryString = 'SELECT Id FROM EmailMessage';
-        GenericQueryLocatorBatchDMLOperation dataDeleter = new GenericQueryLocatorBatchDMLOperation(queryString, 'Delete');
-        Database.executeBatch(dataDeleter);
-        Test.stopTest();
-
-        List<EmailMessage> deletedEmailMessages = [
-            SELECT Id
-            FROM EmailMessage
-        ];
-
-        System.assertEquals(0, deletedEmailMessages.size());
-    }
 }
