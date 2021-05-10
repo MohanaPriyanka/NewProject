@@ -10,18 +10,6 @@ public with sharing class PostSandboxAdminSwitcher implements Schedulable {
     public static final String POST_SANDBOX_ADMIN_SWITCHER_JOB_NAME = 'PostSandboxAdminSwitcher';
 
     public void execute(SchedulableContext context) {
-        try {
-            setSystemAdmins();
-            queueRecordLoader();
-        } catch (Exception e) {
-            Logger.logNow('PostSandboxAdminSwitcher', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
-        }
-    }
-
-    private void setSystemAdmins() {
-        if (!Util.isSandboxOrTest()) {
-            throw new Util.BWException('Only set system admins in sandboxes!');
-        }
         Profile sysAdminProfile = [SELECT Id FROM Profile WHERE Name = 'System Administrator'];
 
         List<User> usersToMakeSysAdmins = [
@@ -35,10 +23,4 @@ public with sharing class PostSandboxAdminSwitcher implements Schedulable {
         }
         update usersToMakeSysAdmins;
     }
-
-    private void queueRecordLoader() {
-        CSRecordLoader recordLoader = new CSRecordLoader();
-        System.enqueueJob(recordLoader);
-    }
-
 }
