@@ -4,7 +4,6 @@
     <label>BW Technology</label>
     <loginAccess>true</loginAccess>
     <permissionSets>Manage Call Centers</permissionSets>
-    <permissionSets>UAL Recalculate</permissionSets>
     <permissionSets>Trailhead Admin</permissionSets>
     <permissionSets>Trailhead Assigner</permissionSets>
     <permissionSets>Trailhead User</permissionSets>
