@@ -35,10 +35,10 @@ public without sharing class SharedSolarSystemSharingService {
     private void evaluateSharingViaProperties(List<Id> propertyIdList) {
         Set<Id> parentAccountIdSet = new Set<Id>();
         List<Id> userIdList = new List<Id>();
-        for (Account acc : [SELECT Id, Parent_Account__c FROM Account WHERE Id IN :propertyIdList AND Parent_Account__c != null]) {
+        for (Account acc : [SELECT Id, Parent_Account__c FROM Account WHERE Id IN :propertyIdList AND Parent_Account__c != NULL]) {
             parentAccountIdSet.add(acc.Parent_Account__c);
         }
-        for (User user : [SELECT Id FROM User WHERE IsActive = true AND AccountId IN :parentAccountIdSet]) {
+        for (User user : [SELECT Id FROM User WHERE IsActive = TRUE AND AccountId IN :parentAccountIdSet]) {
             userIdList.add(user.Id);
         }
         evaluateSharingViaUsers(userIdList);
@@ -47,7 +47,7 @@ public without sharing class SharedSolarSystemSharingService {
     //Evaluates the Apex based SSS Sharing for the user list
     public void evaluateSharingViaUsers(List<Id> userIdList) {
         Map<Id, List<Id>> parentAccountIdToUserListMap = new Map<Id, List<Id>>();
-        for (User user : [SELECT Id, AccountId FROM User WHERE Id IN :userIdList AND AccountId != null]) {
+        for (User user : [SELECT Id, AccountId FROM User WHERE Id IN :userIdList AND AccountId != NULL]) {
             List<Id> uIdList = parentAccountIdToUserListMap.get(user.AccountId);
             if (uIdList == null) {
                 uIdList = new List<Id>();
@@ -71,9 +71,10 @@ public without sharing class SharedSolarSystemSharingService {
                 AND StageName = 'Complete'
                 AND Parent_Account_ID__c IN :parentAccountIdToUserListMap.keySet()
         ]) {
-            sssShareList.addAll(generateSSSAccess(new List<Id>{
-                    opp.Shared_Solar_System__c
-            }, parentAccountIdToUserListMap.get(opp.Parent_Account_ID__c), 'Read'));
+            sssShareList.addAll(generateSSSAccess(
+                new List<Id>{opp.Shared_Solar_System__c},
+                parentAccountIdToUserListMap.get(opp.Parent_Account_ID__c),
+                'Read'));
         }
         Util.insertAndLog(sssShareList, 'SharedSolarSystemApexSharing', 'evaluateSharingViaUser');
     }
@@ -172,10 +173,13 @@ public without sharing class SharedSolarSystemSharingService {
     }
     private List<Shared_Solar_System__Share> generateSSSAccess(List<Id> sssIds, List<Id> userIdList, String accessLevel, String rowClause) {
         List<Shared_Solar_System__Share> shareRecords = new List<Shared_Solar_System__Share>();
-        for (Id record : sssIds) {
+        for (Id sssId : sssIds) {
+            if (sssId == null) {
+                continue;
+            }
             for (Id userId : userIdList) {
                 Shared_Solar_System__Share sssShare = new Shared_Solar_System__Share();
-                sssShare.ParentId = record;
+                sssShare.ParentId = sssId;
                 sssShare.UserOrGroupId = userId;
                 sssShare.AccessLevel = accessLevel;
                 sssShare.RowCause = rowClause;
