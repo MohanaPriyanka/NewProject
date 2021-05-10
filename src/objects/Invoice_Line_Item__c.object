@@ -209,6 +209,7 @@
     </fields>
     <fields>
         <fullName>Invoice__c</fullName>
+        <description>Related Invoice</description>
         <externalId>false</externalId>
         <label>Invoice</label>
         <referenceTo>Invoice__c</referenceTo>
