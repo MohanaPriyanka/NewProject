@@ -106,7 +106,6 @@
     <permissionSets>CS Financial Doc Visibility</permissionSets>
     <permissionSets>Returned Payments</permissionSets>
     <permissionSets>High Velocity Sales User</permissionSets>
-    <permissionSets>Einstein Analytics for Sales Cloud HVS</permissionSets>
     <permissionSets>High Velocity Sales Cadence Creator</permissionSets>
     <permissionSets>Opportunity Product Management</permissionSets>
     <permissionSets>Edit Products</permissionSets>
