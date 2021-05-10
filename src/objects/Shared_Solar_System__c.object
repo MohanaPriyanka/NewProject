@@ -1824,6 +1824,19 @@ null)</formula>
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Vendor_ID__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used on Allocation Schedules in National Grid NY</inlineHelpText>
+        <label>Vendor ID</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Waitlist__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
