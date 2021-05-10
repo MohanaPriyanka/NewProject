@@ -33,14 +33,14 @@ private class PostSandboxRefresherTest {
         List<Lead> leadList = new List<Lead>();
         for (Integer i=0; i<2; i++) {
             Contact c = new Contact(FirstName = 'test',
-                                    LastName = 'testerson',
-                                    Email = 'ttesterson'+i+'@email.com',
-                                    Account = testAcct);
+                LastName = 'testerson',
+                Email = 'ttesterson'+i+'@email.com',
+                Account = testAcct);
             contactList.add(c);
             Lead l = new Lead(FirstName = 'test',
-                              LastName = 'testerson',
-                              Company = 'test',
-                              Email = 'ttesterson'+i+'@email.com');
+                LastName = 'testerson',
+                Company = 'test',
+                Email = 'ttesterson'+i+'@email.com');
             leadList.add(l);
         }
         insert contactList;
@@ -159,7 +159,7 @@ private class PostSandboxRefresherTest {
     static void testBatchInsertFailures() {
         List<Lead> leadList = new List<Lead>();
         Lead lead = new Lead(FirstName = 'Test',
-                             LastName = 'Tester');
+            LastName = 'Tester');
         leadList.add(lead);
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size());
@@ -295,12 +295,12 @@ private class PostSandboxRefresherTest {
         newZuoraAccountOne.Zuora__AutoPay__c = true;
         newZuoraAccountTwo.Zuora__AutoPay__c = true;
         Test.startTest();
-            GenericBatchDMLOperation batchDML = new GenericBatchDMLOperation(zAccounts, 'Update');
-            batchDML.triggersToDisable = new List<String>{
-                'Disable_Billing_Account_Trigger__c',
-                'Disable_AccountTrigger__c'
-            };
-            Database.executeBatch(batchDML);
+        GenericBatchDMLOperation batchDML = new GenericBatchDMLOperation(zAccounts, 'Update');
+        batchDML.triggersToDisable = new List<String>{
+            'Disable_Billing_Account_Trigger__c',
+            'Disable_AccountTrigger__c'
+        };
+        Database.executeBatch(batchDML);
         Test.stopTest();
         List<Zuora__CustomerAccount__c> billingAccounts = [
             SELECT Id, Zuora__AutoPay__c
@@ -467,6 +467,4 @@ private class PostSandboxRefresherTest {
         leads = [SELECT Id FROM Lead WHERE Id IN :leads AND IsConverted = TRUE];
         System.assertEquals(1, leads.size());
     }
-
-
 }
