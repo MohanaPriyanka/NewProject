@@ -278,6 +278,19 @@
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Netsuite_Invoice_ID__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is populated by Accounting with the ID of the matching invoice in Netsuite.</inlineHelpText>
+        <label>Netsuite Invoice ID #</label>
+        <length>25</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Notes__c</fullName>
         <externalId>false</externalId>
         <label>Notes</label>
@@ -304,6 +317,33 @@
         <label>Ready for Paper Bill Queue</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Reconciliation_Status__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is populated by Accounting when the invoice in Salesforce is reconciled with the invoice in Netsuite.</inlineHelpText>
+        <label>Reconciliation Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Approved</fullName>
+                    <default>false</default>
+                    <label>Approved</label>
+                </value>
+                <value>
+                    <fullName>Issues found</fullName>
+                    <default>false</default>
+                    <label>Issues found</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Statement__c</fullName>
