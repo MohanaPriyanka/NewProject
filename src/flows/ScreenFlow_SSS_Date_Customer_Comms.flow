@@ -3,8 +3,8 @@
     <actionCalls>
         <name>get_Send_Bills_Contacts</name>
         <label>get Send Bills Contacts</label>
-        <locationX>534</locationX>
-        <locationY>1022</locationY>
+        <locationX>204</locationX>
+        <locationY>974</locationY>
         <actionName>InvocableSendBillsContactsSelector</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -28,8 +28,8 @@
     <actionCalls>
         <name>Send_Email_to_Contacts</name>
         <label>Send Email to Contacts</label>
-        <locationX>534</locationX>
-        <locationY>2078</locationY>
+        <locationX>204</locationX>
+        <locationY>2030</locationY>
         <actionName>InvocableMessagingService</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -65,8 +65,8 @@
     <assignments>
         <name>Add_Replacement_text_to_Collection</name>
         <label>Add Replacement text to Collection</label>
-        <locationX>402</locationX>
-        <locationY>1502</locationY>
+        <locationX>72</locationX>
+        <locationY>1454</locationY>
         <assignmentItems>
             <assignToReference>mapTemplateReplacement</assignToReference>
             <operator>Add</operator>
@@ -81,8 +81,8 @@
     <assignments>
         <name>Add_Solar_Farm_Name_Replacement_Text_to_FlowMap</name>
         <label>Add Solar Farm Name Replacement Text to FlowMap</label>
-        <locationX>534</locationX>
-        <locationY>1958</locationY>
+        <locationX>204</locationX>
+        <locationY>1910</locationY>
         <assignmentItems>
             <assignToReference>mapTemplateReplacement</assignToReference>
             <operator>Add</operator>
@@ -97,8 +97,8 @@
     <assignments>
         <name>Assign_Solar_Farm_Date_Replacement_Text</name>
         <label>Assign Solar Farm Date Replacement Text</label>
-        <locationX>402</locationX>
-        <locationY>1382</locationY>
+        <locationX>72</locationX>
+        <locationY>1334</locationY>
         <assignmentItems>
             <assignToReference>varTemplateReplacement.key</assignToReference>
             <operator>Assign</operator>
@@ -120,8 +120,8 @@
     <assignments>
         <name>Assign_Solar_Farm_Name_Replacement_Text</name>
         <label>Assign Solar Farm Name Replacement Text</label>
-        <locationX>534</locationX>
-        <locationY>1838</locationY>
+        <locationX>204</locationX>
+        <locationY>1790</locationY>
         <assignmentItems>
             <assignToReference>varTemplateReplacement.key</assignToReference>
             <operator>Assign</operator>
@@ -199,8 +199,8 @@
     <decisions>
         <name>Additional_Input_required_before_sending_email</name>
         <label>Additional Input required before sending email?</label>
-        <locationX>534</locationX>
-        <locationY>1142</locationY>
+        <locationX>204</locationX>
+        <locationY>1094</locationY>
         <defaultConnector>
             <targetReference>Get_Email_Template</targetReference>
         </defaultConnector>
@@ -224,8 +224,8 @@
     <decisions>
         <name>decisionNotify_Customers</name>
         <label>Notify Customers</label>
-        <locationX>776</locationX>
-        <locationY>902</locationY>
+        <locationX>446</locationX>
+        <locationY>854</locationY>
         <defaultConnector>
             <targetReference>Confirmation_Screen</targetReference>
         </defaultConnector>
@@ -264,8 +264,8 @@
     <decisions>
         <name>What_Date_is_being_updated</name>
         <label>What Date is being updated?</label>
-        <locationX>776</locationX>
-        <locationY>566</locationY>
+        <locationX>446</locationX>
+        <locationY>518</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>EstimatedDates</name>
@@ -380,7 +380,7 @@ MONTH({!New_Est_PTO_Date} ),
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -393,8 +393,8 @@ MONTH({!New_Est_PTO_Date} ),
     <recordCreates>
         <name>Log_Email_Send</name>
         <label>Log Email Send</label>
-        <locationX>533</locationX>
-        <locationY>2268</locationY>
+        <locationX>204</locationX>
+        <locationY>2150</locationY>
         <connector>
             <targetReference>Confirmation_Screen</targetReference>
         </connector>
@@ -440,8 +440,8 @@ MONTH({!New_Est_PTO_Date} ),
     <recordLookups>
         <name>Get_Email_Messages</name>
         <label>Get Email Messages</label>
-        <locationX>776</locationX>
-        <locationY>326</locationY>
+        <locationX>446</locationX>
+        <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SSS_Date_Updates</targetReference>
@@ -463,8 +463,8 @@ MONTH({!New_Est_PTO_Date} ),
     <recordLookups>
         <name>Get_Email_Template</name>
         <label>Get Email Template</label>
-        <locationX>534</locationX>
-        <locationY>1718</locationY>
+        <locationX>204</locationX>
+        <locationY>1670</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Solar_Farm_Name_Replacement_Text</targetReference>
@@ -484,8 +484,8 @@ MONTH({!New_Est_PTO_Date} ),
     <recordLookups>
         <name>getSSSData</name>
         <label>getSSSData</label>
-        <locationX>776</locationX>
-        <locationY>206</locationY>
+        <locationX>446</locationX>
+        <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Email_Messages</targetReference>
@@ -505,8 +505,8 @@ MONTH({!New_Est_PTO_Date} ),
     <recordUpdates>
         <name>Update_SSS_Actual_PTO_Date</name>
         <label>Update SSS Actual PTO Date</label>
-        <locationX>908</locationX>
-        <locationY>686</locationY>
+        <locationX>578</locationX>
+        <locationY>638</locationY>
         <connector>
             <targetReference>decisionNotify_Customers</targetReference>
         </connector>
@@ -535,8 +535,8 @@ MONTH({!New_Est_PTO_Date} ),
     <recordUpdates>
         <name>Update_SSS_COD_Date</name>
         <label>Update SSS COD Date</label>
-        <locationX>644</locationX>
-        <locationY>686</locationY>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
         <connector>
             <targetReference>decisionNotify_Customers</targetReference>
         </connector>
@@ -559,8 +559,8 @@ MONTH({!New_Est_PTO_Date} ),
     <recordUpdates>
         <name>Update_SSS_PTO_Date</name>
         <label>Update SSS PTO Date</label>
-        <locationX>380</locationX>
-        <locationY>686</locationY>
+        <locationX>50</locationX>
+        <locationY>638</locationY>
         <connector>
             <targetReference>decisionNotify_Customers</targetReference>
         </connector>
@@ -589,8 +589,8 @@ MONTH({!New_Est_PTO_Date} ),
     <screens>
         <name>Confirmation_Screen</name>
         <label>Confirmation Screen</label>
-        <locationX>796</locationX>
-        <locationY>2376</locationY>
+        <locationX>446</locationX>
+        <locationY>2366</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -605,8 +605,8 @@ MONTH({!New_Est_PTO_Date} ),
     <screens>
         <name>Review_SSS_Merge_Fields</name>
         <label>Review SSS Merge Fields</label>
-        <locationX>402</locationX>
-        <locationY>1262</locationY>
+        <locationX>72</locationX>
+        <locationY>1214</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -719,8 +719,8 @@ MONTH({!New_Est_PTO_Date} ),
     <screens>
         <name>SSS_Date_Updates</name>
         <label>SSS Date Updates</label>
-        <locationX>776</locationX>
-        <locationY>446</locationY>
+        <locationX>446</locationX>
+        <locationY>398</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -965,8 +965,8 @@ MONTH({!New_Est_PTO_Date} ),
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>650</locationX>
-        <locationY>48</locationY>
+        <locationX>320</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>getSSSData</targetReference>
         </connector>
