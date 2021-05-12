@@ -112,17 +112,17 @@
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
-    <permissionSets>LASER Credit Access Site Guest User</permissionSets>
-    <permissionSets>LASER Credit Access User</permissionSets>
     <permissionSets>Netsuite Project ID</permissionSets>
     <permissionSets>Project, Construction, Incentive, Adder</permissionSets>
-    <permissionSets>Access Drag and Drop Template builder</permissionSets>
-    <permissionSets>Inspire Planner Standard User - v1.12 Permissions</permissionSets>
+    <permissionSets>LASER Credit Access Site Guest User</permissionSets>
+    <permissionSets>LASER Credit Access User</permissionSets>
     <permissionSets>Project, Construction, related, Platform</permissionSets>
+    <permissionSets>Inspire Planner Standard User - v1.12 Permissions</permissionSets>
+    <permissionSets>Access Drag and Drop Template builder</permissionSets>
     <permissionSets>Expense object (Custom)</permissionSets>
     <permissionSets>Inspire Planner Project, child objects</permissionSets>
-    <permissionSets>Feeders</permissionSets>
     <permissionSets>Limit Monitoring App</permissionSets>
+    <permissionSets>Feeders</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>DocuSign Administrator</permissionSets>
     <permissionSets>DocuSign User</permissionSets>

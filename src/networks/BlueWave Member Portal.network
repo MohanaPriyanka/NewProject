@@ -31,8 +31,8 @@
         <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
         <profile>customer community plus login user</profile>
+        <profile>community solar community user</profile>
         <profile>Community Solar User</profile>
-        <profile>Community Solar Community User</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
