@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>myWaitAssignment_myWait_myRule_3</name>
         <label>myWaitAssignment_myWait_myRule_3</label>
@@ -422,7 +423,7 @@
 &amp;&amp;
 [User].AccountId != null
 &amp;&amp;
-[User].Profile.Name == &apos;Community Solar Community User&apos;</stringValue>
+OR( [User].Profile.Name == &apos;Community Solar Community User&apos;, [User].Profile.Name == &apos;Community Solar User&apos;)</stringValue>
             </value>
         </processMetadataValues>
         <name>formula_myRule_1</name>
@@ -433,9 +434,9 @@
 &amp;&amp;
 {!myVariable_current.AccountId} != null
 &amp;&amp;
-{!myVariable_current.Profile.Name} == &apos;Community Solar Community User&apos;</expression>
+OR( {!myVariable_current.Profile.Name} == &apos;Community Solar Community User&apos;, {!myVariable_current.Profile.Name} == &apos;Community Solar User&apos;)</expression>
     </formulas>
-    <interviewLabel>Active_Communities_User_Contact_Activation-6_InterviewLabel</interviewLabel>
+    <interviewLabel>Active_Communities_User_Contact_Activation-7_InterviewLabel</interviewLabel>
     <label>Active Communities User - Contact Activation</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -540,6 +541,7 @@
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_3_event_0_postWaitExecutionAssignment</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>

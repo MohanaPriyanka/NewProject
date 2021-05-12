@@ -14,7 +14,7 @@ public without sharing class UserHandler implements Queueable{
 
     public void execute(QueueableContext context) {
         Map<Id, User> usersToInsertMap = new Map<Id, User>();
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar User'];
 
         for (Contact userContact : contactsToCreateUsers){
             if (userContact.Email != null &&
