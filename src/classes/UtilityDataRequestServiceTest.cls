@@ -1,12 +1,9 @@
 /**
  * Created by: Kristin White on 9/29/2020
- * 
  */
-
 @IsTest
 private class UtilityDataRequestServiceTest {
     
-    @TestVisible
     private static UtilityDataRequestPeriodSelector udrpSelector = new UtilityDataRequestPeriodSelector();
     
     @TestSetup
@@ -22,7 +19,9 @@ private class UtilityDataRequestServiceTest {
             Name = 'testUtility',
             Utility_DUNS_Number__c = '1234567890',
             Utility_Data_Collection_Mechanism__c = 'EDI',
-            Collect_Customer_POD_Number__c = true
+            Collect_Customer_POD_Number__c = true,
+            Auto_QC_Maximum_Demand__c = 25,
+            Auto_QC_Minimum_kWH__c = 1000
         );
         insert testUtility;
         
@@ -46,7 +45,6 @@ private class UtilityDataRequestServiceTest {
             Partner_Lookup__c = testPartner.Id,
             Utility_relationship__c = testUtility.Id
         );
-        
         Lead resiLead = new Lead(
             Product__c = testProduct.Id,
         	Customer_type__c = 'Residential',
@@ -54,7 +52,6 @@ private class UtilityDataRequestServiceTest {
             Company = 'testBlueWave2',
             Partner_Lookup__c = testPartner.Id
         );
-        
         List<Lead> testLeadList = new List<Lead>{nonResiLead, resiLead};
         insert testLeadList;
         
@@ -68,8 +65,8 @@ private class UtilityDataRequestServiceTest {
             Service_State__c = 'MA',
             Service_Zip_Code__c = '02115'
         );
-        
         Utility_Account_Log__c testUAL2 = new Utility_Account_Log__c(
+            Utility_lookup__c = testUtility.Id,
             Lead__c = resiLead.Id,
             Username__c = 'testUAL2',
             Name_on_Account__c = 'Tim',
@@ -78,8 +75,8 @@ private class UtilityDataRequestServiceTest {
             Service_State__c = 'ma',
             Service_Zip_Code__c = '02138'
         );
-        
         Utility_Account_Log__c testUAL3 = new Utility_Account_Log__c(
+            Utility_lookup__c = testUtility.Id,
             Lead__c = nonResiLead.Id,
             Username__c = 'testUAL3',
             Name_on_Account__c = 'Jim',
@@ -88,8 +85,8 @@ private class UtilityDataRequestServiceTest {
             Service_State__c = 'MA',
             Service_Zip_Code__c = '02145'
         );
-        
         Utility_Account_Log__c testUAL4 = new Utility_Account_Log__c(
+            Utility_lookup__c = testUtility.Id,
             Lead__c = resiLead.Id,
             Username__c = 'testUAL4',
             Name_on_Account__c = 'Bill',
@@ -98,8 +95,8 @@ private class UtilityDataRequestServiceTest {
             Service_State__c = 'MA',
             Service_Zip_Code__c = '02149'
         );
-        
         Utility_Account_Log__c testUAL5 = new Utility_Account_Log__c(
+            Utility_lookup__c = testUtility.Id,
             Lead__c = resiLead.Id,
             Username__c = 'testUAL5',
             Name_on_Account__c = 'Bob',
@@ -108,8 +105,8 @@ private class UtilityDataRequestServiceTest {
             Service_State__c = 'MA',
             Service_Zip_Code__c = '02134'
         );
-        
-        Utility_Account_Log__c testUAL6 = new Utility_Account_Log__c(	        
+        Utility_Account_Log__c testUAL6 = new Utility_Account_Log__c(
+            Utility_lookup__c = testUtility.Id,
             Lead__c = resiLead.Id,
             Username__c = 'testUAL6',
             Name_on_Account__c = 'Kris',
@@ -118,8 +115,8 @@ private class UtilityDataRequestServiceTest {
             Service_State__c = 'ma',
             Service_Zip_Code__c = '02138'
         );
-        
-        Utility_Account_Log__c testUAL7 = new Utility_Account_Log__c(	        
+        Utility_Account_Log__c testUAL7 = new Utility_Account_Log__c(
+            Utility_lookup__c = testUtility.Id,
             Lead__c = resiLead.Id,
             Username__c = 'testUAL7',
             Name_on_Account__c = 'Kristin',
@@ -150,13 +147,11 @@ private class UtilityDataRequestServiceTest {
             Name = 'testRateClass1',
             Utility__c = testUtility.Id
         );
-        
         Rate_Class__c testRateClass2 = new Rate_Class__c(
             EDI_Rate_Class__c = 'Test EDI Rate Class 2',
             Name = 'testRateClass2',
             Utility__c = testUtility.Id
         );
-        
         List<Rate_Class__c> testRateClassList = new List<Rate_Class__c>{testRateClass1, testRateClass2};
         insert testRateClassList;
 
@@ -277,8 +272,9 @@ private class UtilityDataRequestServiceTest {
         return testUDRP;
     }
 
-    private static Utility_Data_Request__c getPendingTestUDR(Utility_Account_Log__c testUAL1, String oldAccountNumber, Utility__c testUtility,
-        String name, String addressLine1, String addressLine2, String city, String state, String zip) {
+    private static Utility_Data_Request__c getPendingTestUDR(Utility_Account_Log__c testUAL1, String oldAccountNumber, 
+        Utility__c testUtility, String name, String addressLine1, String addressLine2, String city, String state, String zip) 
+    {
         Utility_Data_Request__c testUDR1 = new Utility_Data_Request__c(
             Header_Status__c = 'Pending',
             Detail_Status__c = 'Pending',
@@ -314,7 +310,8 @@ private class UtilityDataRequestServiceTest {
                 Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
             	Num_UDRPs_Annual_kWh__c, Num_UDRPs_Avg_Demand__c, NYPA__c, RNY__c, Address_Update__c,
             	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
-            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c
+            	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c,
+                Auto_QC_Reject_Reason__c, Utility_lookup__r.Auto_QC_Maximum_Demand__c, Utility_lookup__r.Auto_QC_Minimum_kWH__c
             FROM Utility_Account_Log__c
             WHERE Id = :ualId
         ];
@@ -367,7 +364,9 @@ private class UtilityDataRequestServiceTest {
 
     @IsTest
     static void testRateClass() {
-        List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c WHERE Class__c = 'UtilityDataRequestService'];
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Class__c, Method__c, Message__c, Severity__c 
+            FROM Error_Log__c WHERE Class__c = 'UtilityDataRequestService'];
         System.assertEquals(0, errorLogs.size());
         
         Utility_Data_Request__c testUDR1 = getTestUDR('testUDR1');
@@ -382,23 +381,22 @@ private class UtilityDataRequestServiceTest {
         Rate_Class__c testRateClass2 = getTestRateClass('testRateClass2');
         
         System.assertEquals(testRateClass1.Id, testUDRPList[0].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for ' + testUDRPList[0].Load_Profile_Description__c + ' should now be testRateClass1.');
+            'The Rate_Class_Lookup__c for ' + testUDRPList[0].Load_Profile_Description__c + ' should now be testRateClass1.');
         System.assertEquals(testRateClass2.Id, testUDRPList[1].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for ' + testUDRPList[1].Load_Profile_Description__c + ' should now be testRateClass2.');
+            'The Rate_Class_Lookup__c for ' + testUDRPList[1].Load_Profile_Description__c + ' should now be testRateClass2.');
         System.assertEquals(testRateClass2.Id, testUDRPList[2].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for ' + testUDRPList[2].Load_Profile_Description__c + ' should now be testRateClass2.');
+            'The Rate_Class_Lookup__c for ' + testUDRPList[2].Load_Profile_Description__c + ' should now be testRateClass2.');
         System.assertEquals(null, testUDRPList[3].Rate_Class_Lookup__c,
-                            'The Rate_Class_Lookup__c for ' + testUDRPList[3].Load_Profile_Description__c + ' should be null because ' 
-                            + 'the Rate_Class__c text was null, so no Rate Class object could be found for it.');
+            'The Rate_Class_Lookup__c for ' + testUDRPList[3].Load_Profile_Description__c + ' should be null because ' 
+            + 'the Rate_Class__c text was null, so no Rate Class object could be found for it.');
         System.assertEquals(null, testUDRPList[4].Rate_Class_Lookup__c,
-                            'The Rate_Class_Lookup__c for ' + testUDRPList[4].Load_Profile_Description__c + ' should be null because ' 
-                            + 'the Rate_Class__c text did not match any Rate_Class__c.EDI_Rate_Class__c fields');
+            'The Rate_Class_Lookup__c for ' + testUDRPList[4].Load_Profile_Description__c + ' should be null because ' 
+            + 'the Rate_Class__c text did not match any Rate_Class__c.EDI_Rate_Class__c fields');
         System.assertEquals(testUAL1.Utility_Rate_Class__c, testUDRPList[2].Rate_Class_Lookup__c,  
-                            'The "Rate Class" (Utility_Rate_Class__c) for the UAL on testUDR1 should be the same as the Rate Class for testUDRP3,' 
-                            + 'becuase testUDRP3 has the most recent Service Start Date of the all UDRPs for testUDR1.');
+            'The "Rate Class" (Utility_Rate_Class__c) for the UAL on testUDR1 should be the same as the Rate Class for testUDRP3,' 
+            + 'becuase testUDRP3 has the most recent Service Start Date of the all UDRPs for testUDR1.');
         System.assertEquals(testRateClass1.Id, testUDRPList[5].Rate_Class_Lookup__c, 
-                            'The Rate_Class_Lookup__c for ' + testUDRPList[5].Load_Profile_Description__c + ' should now be testRateClass1.');
-        
+            'The Rate_Class_Lookup__c for ' + testUDRPList[5].Load_Profile_Description__c + ' should now be testRateClass1.');
     }
     
     @IsTest
@@ -408,12 +406,10 @@ private class UtilityDataRequestServiceTest {
         testUDR1.Header_Status__c = 'Complete';
         update testUDR1;
         testUDR1 = [SELECT Id, Request_Status_new__c FROM Utility_Data_Request__c WHERE Id = :testUDR1.Id];
-        System.assertEquals(testUDR1.Request_Status_new__c,'Partial Data Received','Expect request status to be partial data received '
-                                                          + 'because details have not been returned');
-
+        System.assertEquals(testUDR1.Request_Status_new__c,'Partial Data Received',
+            'Expect request status to be partial data received because details have not been returned');
         
         List<Utility_Data_Request_Period__c> testUDRPList = getTestUDRPList(testUDR1.Id);
-        
         System.assertEquals(testUDRPList[0].Rate_Class_Lookup__c, null,
                             'The Rate_Class_Lookup__c for testUDRP1 should still be null becuase ' 
                             + 'the status on the related UDR was not updated to Complete.');
@@ -429,7 +425,6 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals(testUDRPList[4].Rate_Class_Lookup__c, null,
                             'The Rate_Class_Lookup__c for testUDRP5 should still be null becuase ' 
                             + 'the status on the related UDR was not updated to Complete.');
-
     }
     
     @IsTest
@@ -463,206 +458,226 @@ private class UtilityDataRequestServiceTest {
             'The most recent UDRP has a null Rate Class, so the Utility_Rate_Class__c on  UAL should still be null'
         );
     }
+
+    @IsTest
+    static void testUALUpdateForAboveMaxAvgDemand() {
+        // Run test
+        Utility_Data_Request__c UDR = getTestUDR('testUDR1');
+        UDR.Header_Status__c = 'Complete';
+        UDR.Detail_Status__c = 'Complete';
+        update UDR;
+        
+        // Verify results
+        Utility_Account_Log__c UAL = getTestUAL(UDR.Utility_Account_Log__c);
+        UDR = getTestUDR('testUDR1');
+        
+        // Check UDR fields
+        System.assertEquals(31613.93, UDR.Annual_kWh__c, 'UDR1 has 5 KH UDRP so the Annual kWh should be '
+            + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.');
+        System.assertEquals(2205.75, UDR.Average_Demand__c, 'UDR1 has 5 K1 UDRP so the Average Demand should be '
+            + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.');
+        System.assertEquals(6, UDR.Num_UDRPs_Annual_kWh__c);
+        System.assertEquals(5, UDR.Num_UDRPs_Avg_Demand__c);
+
+        // Check UAL fields
+        System.assertEquals(31613.93, UAL.Annual_kWh__c, 'UAL field value does not match UDR');
+        System.assertEquals(2205.75, UAL.Average_Demand__c, 'UAL field value does not match UDR');
+        System.assertEquals(6, UAL.Num_UDRPs_Annual_kWh__c, 'UAL field value does not match UDR');
+        System.assertEquals(5, UAL.Num_UDRPs_Avg_Demand__c, 'UAL field value does not match UDR');
+        System.assertEquals('No', UAL.NYPA__c, 'NYPA__c should be "No"');
+        System.assertEquals('No', UAL.RNY__c , 'RNY__c should be "No"');
+        System.assertEquals(false, UAL.Address_Update__c, 'Addresses should have matched');
+        System.assertEquals('Pending BW Review', UAL.QC_Status__c, 'Avg Demand is too high for Auto-QC to mark "Complete"');
+
+        // Check Auto QC rejection reason field
+        System.assert(UAL.Auto_QC_Reject_Reason__c.contains('Above Max Avg Demand'), 'Reason should include Above Max Avg Demand');
+    }
     
     @IsTest
-    static void testUALFieldUpdates() {
+    static void testUALUpdateForContainsDiscountRates() {
+        // Run test
+        Utility_Data_Request__c UDR = getTestUDR('testUDR3');
+        UDR.Header_Status__c = 'Complete';
+        UDR.Detail_Status__c = 'Complete';
+        update UDR;
         
+        // Verify Results
+        Utility_Account_Log__c UAL = getTestUAL(UDR.Utility_Account_Log__c);
+        UDR = getTestUDR('testUDR3');
+        
+        // Check UDR fields
+        System.assertEquals(165200, UDR.Annual_kWh__c, 'UDR3 has 1 KH UDRP, it is a non-Residential customer, and the '
+            + 'Product.X4_month_sizing_method__c == State Average Annual Usage, so the Annual kWh should be the related '
+            + 'State Avg Annual Resi kWh. Result should be 165200 since the test State Avg Annual Resi kWh is 165200.');
+        System.assertEquals(506.77, UDR.Average_Demand__c, 'UDR3 has 2 K1 UDRP so the Average Demand should be '
+            + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.'
+            + 'In this case the answer should be 506.77.');
+        System.assertEquals(1, UDR.Num_UDRPs_Annual_kWh__c);
+        System.assertEquals(2, UDR.Num_UDRPs_Avg_Demand__c);
+        
+        // Check UAL fields
+        System.assertEquals(165200, UAL.Annual_kWh__c, 'UAL field value does not match UDR');
+        System.assertEquals(506.77, UAL.Average_Demand__c, 'UAL field value does not match UDR');
+        System.assertEquals(1, UAL.Num_UDRPs_Annual_kWh__c, 'UAL field value does not match UDR');
+        System.assertEquals(2, UAL.Num_UDRPs_Avg_Demand__c, 'UAL field value does not match UDR');
+        System.assertEquals('No', UAL.NYPA__c, 'NYPA__c should be "No"');
+        System.assertEquals('Yes', UAL.RNY__c, 'RNY__c should be "Yes"');
+        System.assertEquals(false, UAL.Address_Update__c, 'The addresses should have matched');
+        System.assertEquals('Pending BW Review', UAL.QC_Status__c, 'Avg Demand is too high, Discount Rates present');
+
+        // Check Auto QC rejection reason field
+        System.assert(UAL.Auto_QC_Reject_Reason__c.contains('Has Discount Rates'), 'Reason should include Discount Rates');
+    }
+    
+    @IsTest
+    static void testUALUpdateAutoQCFailureMultipleReasons1() {
+        // Run test
+        Utility_Data_Request__c UDR = getTestUDR('testUDR4');
+        UDR.Header_Status__c = 'Complete';
+        UDR.Detail_Status__c = 'Complete';
+        update UDR;
+        
+        // Verify results
+        UDR = getTestUDR('testUDR4');
+        Utility_Account_Log__c UAL = getTestUAL(UDR.Utility_Account_Log__c);
+
+        // Check UDR fields
+        System.assertEquals(90609.75, UDR.Annual_kWh__c, 'UDR4 has 3 KH UDRP and is a Residential customer, so the Annual '
+            + 'kWh should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.');
+        System.assertEquals(714.43, UDR.Average_Demand__c, 'UDR4 has 3 K1 UDRP, so the Average Demand is '
+            + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.');
+        System.assertEquals(3, UDR.Num_UDRPs_Annual_kWh__c);
+        System.assertEquals(3, UDR.Num_UDRPs_Avg_Demand__c);
+
+        // Check UAL fields
+        System.assertEquals(90609.75, UAL.Annual_kWh__c, 'UAL field value does not match UDR');
+        System.assertEquals(714.43, UAL.Average_Demand__c, 'UAL field value does not match UDR');
+        System.assertEquals(3, UAL.Num_UDRPs_Annual_kWh__c, 'UAL field value does not match UDR');
+        System.assertEquals(3, UAL.Num_UDRPs_Avg_Demand__c, 'UAL field value does not match UDR');
+        System.assertEquals('Yes', UAL.NYPA__c, 'NYPA__c should be "Yes"');
+        System.assertEquals('No', UAL.RNY__c, 'RNY__c should be "No"');
+        System.assertEquals(true, UAL.Address_Update__c, 'The addresses should not have matched');
+        System.assertEquals('Bill', UAL.Previous_Name_on_Utility_Account__c, 'Address field invalid');
+        System.assertEquals('459  Broadway', UAL.Previous_Service_Address__c, 'Address field invalid');
+        System.assertEquals('Everett', UAL.Previous_Service_City__c, 'Address field invalid');
+        System.assertEquals('MA', UAL.Previous_Service_State__c, 'Address field invalid');
+        System.assertEquals('02149', UAL.Previous_Service_Zip_Code__c, 'Address field invalid');
+        System.assertEquals('Bill', UAL.Name_on_Account__c, 'Address field invalid');
+        System.assertEquals('458 Broadway', UAL.Service_Address__c, 'Address field invalid');
+        System.assertEquals('Everett', UAL.Service_City__c, 'Address field invalid');
+        System.assertEquals('MA', UAL.Service_State__c, 'Address field invalid');
+        System.assertEquals('02149', UAL.Service_Zip_Code__c, 'Address field invalid');
+        System.assertEquals('Pending BW Review', UAL.QC_Status__c, 'Auto QC should have failed');
+        
+        // Check Auto QC rejection reason field
+        System.assert(UAL.Auto_QC_Reject_Reason__c.contains('Has Discount Rates'), 'Reason should include Discount Rates');
+        System.assert(UAL.Auto_QC_Reject_Reason__c.contains('Address Change'), 'Reason should include Address Change');
+        System.assert(UAL.Auto_QC_Reject_Reason__c.contains('Above Max Avg Demand'), 'Reason should include Above Max Avg Demand');
+    }
+    
+    @IsTest
+    static void testUALUpdateAutoQCFailureMultipleReasons2() {
+        // Run test
+        Utility_Data_Request__c UDR = getTestUDR('testUDR5');
+        UDR.Header_Status__c = 'Complete';
+        UDR.Detail_Status__c = 'Complete';
+        update UDR;
+        
+        // Verify results
+        UDR = getTestUDR('testUDR5');
+        Utility_Account_Log__c UAL = getTestUAL(UDR.Utility_Account_Log__c);
+        
+        // Check UDR fields
+        System.assertEquals(152289.54, UDR.Annual_kWh__c, 'UDR5 has 14 KH UDRP and is a Residential customer, '
+            + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.');
+        System.assertEquals(1943.84, UDR.Average_Demand__c, 'UDR5 has 12 K1 UDRP and is a Residential customer, '
+            + 'so the Average Demand should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.');
+        System.assertEquals(11, UDR.Num_UDRPs_Annual_kWh__c);
+        System.assertEquals(11, UDR.Num_UDRPs_Avg_Demand__c);
+        
+        // Check UAL fields
+        System.assertEquals(152289.54, UAL.Annual_kWh__c, 'UAL field value does not match UDR');
+        System.assertEquals(1943.84, UAL.Average_Demand__c, 'UAL field value does not match UDR');
+        System.assertEquals(11, UAL.Num_UDRPs_Annual_kWh__c, 'UAL field value does not match UDR');
+        System.assertEquals(11, UAL.Num_UDRPs_Avg_Demand__c, 'UAL field value does not match UDR');
+        System.assertEquals('Yes', UAL.NYPA__c, 'NYPA__c should be "Yes"');
+        System.assertEquals('Yes', UAL.RNY__c, 'RNY__c should be "Yes"');
+        System.assertEquals(true, UAL.Address_Update__c, 'The addresses should not have matched');
+        System.assertEquals('Bob', UAL.Previous_Name_on_Utility_Account__c, 'Address field invalid');
+        System.assertEquals('1 brighton ave, 20', UAL.Previous_Service_Address__c, 'Address field invalid');
+        System.assertEquals('Allston', UAL.Previous_Service_City__c, 'Address field invalid');
+        System.assertEquals('MA', UAL.Previous_Service_State__c, 'Address field invalid');
+        System.assertEquals('02134', UAL.Previous_Service_Zip_Code__c, 'Address field invalid');
+        System.assertEquals('Bob', UAL.Name_on_Account__c, 'Address field invalid');
+        System.assertEquals('1 Brighton Ave Unit 20', UAL.Service_Address__c, 'Address field invalid');
+        System.assertEquals('Allston', UAL.Service_City__c, 'Address field invalid');
+        System.assertEquals('Ma', UAL.Service_State__c, 'Address field invalid');
+        System.assertEquals('02134', UAL.Service_Zip_Code__c, 'Address field invalid');
+        System.assertEquals('Pending BW Review', UAL.QC_Status__c, 'Auto QC should have failed');
+
+        // Check Auto QC rejection reason
+        System.assert(UAL.Auto_QC_Reject_Reason__c.contains('Has Discount Rates'), 'Reason should include Discount Rates');
+        System.assert(UAL.Auto_QC_Reject_Reason__c.contains('Address Change'), 'Reason should indicate Address Change');
+        System.assert(UAL.Auto_QC_Reject_Reason__c.contains('Above Max Avg Demand'), 'Reason should indicate Above Max Avg Demand');
+    }
+    
+    @IsTest
+    static void testUALUpdateNoUDRPs() {
+        // Run Test
+        Utility_Data_Request__c UDR = getTestUDR('testUDR6');
+        UDR.Header_Status__c = 'Complete';
+        UDR.Detail_Status__c = 'Complete';
+        update UDR;
+        
+        // Verify Results
+        Utility_Account_Log__c UAL = getTestUAL(UDR.Utility_Account_Log__c);
+
+        // Check UAL fields
+        System.assertEquals('No', UAL.NYPA__c, 'NYPA__c should be "No"');
+        System.assertEquals('No', UAL.RNY__c, 'RNY__c should be "No"');
+        System.assertEquals(true, UAL.Address_Update__c, 'The addresses should not have matched');
+        System.assertEquals('Pending BW Review', UAL.QC_Status__c, 'Auto QC should have failed');
+
+        // Check Auto QC rejection reason
+        System.assert(UAL.Auto_QC_Reject_Reason__c.contains('Address Change'), 'Reason should include Address Change');
+        System.assert(UAL.Auto_QC_Reject_Reason__c.contains('Missing Sizing Data'), 'Reason should indicate Missing Sizing Data');
+    }
+
+    @IsTest
+    static void testUDRPUtilization() {
         Utility_Data_Request__c testUDR1 = getTestUDR('testUDR1');
         Utility_Data_Request__c testUDR3 = getTestUDR('testUDR3');
         Utility_Data_Request__c testUDR4 = getTestUDR('testUDR4');
         Utility_Data_Request__c testUDR5 = getTestUDR('testUDR5');
-        Utility_Data_Request__c testUDR6 = getTestUDR('testUDR6');	
         Utility_Data_Request__c testUDR7 = getTestUDR('testUDR7');
-        
-        testUDR1.Header_Status__c = 'Complete';
-        testUDR1.Detail_Status__c = 'Complete';
-        testUDR3.Header_Status__c = 'Complete';
-        testUDR3.Detail_Status__c = 'Complete';
-        testUDR4.Header_Status__c = 'Complete';
-        testUDR4.Detail_Status__c = 'Complete';
-        testUDR5.Header_Status__c = 'Complete';
-        testUDR5.Detail_Status__c = 'Complete';
-        testUDR6.Header_Status__c = 'Complete';
-        testUDR6.Detail_Status__c = 'Complete';
-        testUDR7.Header_Status__c = 'Complete';
-        testUDR7.Detail_Status__c = 'Complete';
-        
-        List<Utility_Data_Request__c> testUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5, testUDR6, testUDR7};	
-        update testUDRList;
-        
-        Utility_Account_Log__c testUAL1 = getTestUAL(testUDR1.Utility_Account_Log__c);
-        Utility_Account_Log__c testUAL3 = getTestUAL(testUDR3.Utility_Account_Log__c);
-        Utility_Account_Log__c testUAL4 = getTestUAL(testUDR4.Utility_Account_Log__c);
-        Utility_Account_Log__c testUAL5 = getTestUAL(testUDR5.Utility_Account_Log__c);
-        Utility_Account_Log__c testUAL6 = getTestUAL(testUDR6.Utility_Account_Log__c);	
-        Utility_Account_Log__c testUAL7 = getTestUAL(testUDR7.Utility_Account_Log__c);
-        
-        Utility_Data_Request__c updatedTestUDR1 = getTestUDR('testUDR1');
-        Utility_Data_Request__c updatedTestUDR3 = getTestUDR('testUDR3');
-        Utility_Data_Request__c updatedTestUDR4 = getTestUDR('testUDR4');
-        Utility_Data_Request__c updatedTestUDR5 = getTestUDR('testUDR5');
-        Utility_Data_Request__c updatedTestUDR7 = getTestUDR('testUDR7');
-        
-        System.assertEquals(31613.93, updatedTestUDR1.Annual_kWh__c, 'UDR1 has 5 KH UDRP so the Annual kWh should be ' 
-                            + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.'
-                            + 'In this case the answer should be 31613.93.');
-        System.assertEquals(2205.75, updatedTestUDR1.Average_Demand__c, 'UDR1 has 5 K1 UDRP so the Average Demand should be ' 
-                            + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 2205.75.');
-        System.assertEquals(6, updatedTestUDR1.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(5, updatedTestUDR1.Num_UDRPs_Avg_Demand__c);
-        
-        System.assertEquals(31613.93, testUAL1.Annual_kWh__c, 'UAL1 is related to UDR1,' 
-                            + ' which has 5 KH UDRPs so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.'
-                            + 'In this case the answer should be 31613.93.');
-        System.assertEquals(2205.75, testUAL1.Average_Demand__c, 'UAL1 is related to UDR1,' 
-                            + ' which has 5 K1 UDRPs so the Average Demand should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30..'
-                            + 'In this case the answer should be 2205.75.');
-        System.assertEquals(6, testUAL1.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(5, testUAL1.Num_UDRPs_Avg_Demand__c);
+        List<Utility_Data_Request__c> UDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5, testUDR7};
+        for (Utility_Data_Request__c udr : UDRList) {
+            udr.Header_Status__c = 'Complete';
+            udr.Detail_Status__c = 'Complete';
+        }
+        update UDRList;
 
-        System.assertEquals(165200, updatedTestUDR3.Annual_kWh__c, 'UDR3 has 1 KH UDRP, it is a non-Residential customer, and the Product.X4_month_sizing_method__c == State Average Annual Usage' 
-                            + 'so the Annual kWh should be the related State Avg Annual Resi kWh.'
-                            + 'In this case the answer should be 165200 since the test State Avg Annual Resi kWh is 165200.');
-        System.assertEquals(506.77, updatedTestUDR3.Average_Demand__c, 'UDR3 has 2 K1 UDRP so the Average Demand should be ' 
-                            + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 506.77.');
-        System.assertEquals(1, updatedTestUDR3.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(2, updatedTestUDR3.Num_UDRPs_Avg_Demand__c);
-        
-        System.assertEquals(165200, testUAL3.Annual_kWh__c, 'UAL3 is related to UDR3,' 
-                            + ' which has 1 KH UDRP, it is a non-Residential customer, and the Product.X4_month_sizing_method__c == State Average Annual Usage, ' 
-                            + 'so the Annual kWh should be the related State Avg Annual Resi kWh.'
-                            + 'In this case the answer should be 165200 since the test State Avg Annual Resi kWh is 165200.');
-        System.assertEquals(506.77, testUAL3.Average_Demand__c, 'UAL3 is related to UDR3, which has 2 K1 UDRP, so the Average Demand is' 
-                            + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 506.77.');
-        System.assertEquals(1, testUAL3.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(2, testUAL3.Num_UDRPs_Avg_Demand__c);
-        
-        System.assertEquals(90609.75, updatedTestUDR4.Annual_kWh__c, 'UDR4 has 3 KH UDRP and is a Residential customer, ' 
-                            + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.'
-                            + 'In this case the answer should be 90609.75.');
-        System.assertEquals(714.43, updatedTestUDR4.Average_Demand__c, 'UDR4 has 3 K1 UDRP, so the Average Demand is ' 
-                            + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 714.43.');
-        System.assertEquals(3, updatedTestUDR4.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(3, updatedTestUDR4.Num_UDRPs_Avg_Demand__c);
-        
-        System.assertEquals(90609.75, testUAL4.Annual_kWh__c, 'UAL4 is related to UDR4,' 
-                            + ' which has 3 KH UDRPs and is a Residential customer, ' 
-                            + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.'
-                            + 'In this case the answer should be 90609.75.');
-        System.assertEquals(714.43, testUAL4.Average_Demand__c, 'UAL4 is related to UDR4,' 
-                            + ' which has 3 K1 UDRPs, so the Average Demand is the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 714.43.');
-        System.assertEquals(3, testUAL4.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(3, testUAL4.Num_UDRPs_Avg_Demand__c);
-        
-        System.assertEquals(152289.54, updatedTestUDR5.Annual_kWh__c, 'UDR5 has 14 KH UDRP and is a Residential customer, ' 
-                            + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.'
-                            + 'In this case the answer should be 152289.54.');
-        System.assertEquals(1943.84, updatedTestUDR5.Average_Demand__c, 'UDR5 has 12 K1 UDRP and is a Residential customer, ' 
-                            + 'so the Average Demand should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 1943.84.');
-        System.assertEquals(11, updatedTestUDR5.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(11, updatedTestUDR5.Num_UDRPs_Avg_Demand__c);
-        
-        System.assertEquals(152289.54, testUAL5.Annual_kWh__c, 'UAL5 is related to UDR5,' 
-                            + ' which has 14 KH UDRPs and is a Residential customer, ' 
-                            + 'so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.'
-                            + 'In this case the answer should be 152289.54.');
-        System.assertEquals(1943.84, testUAL5.Average_Demand__c, 'UAL5 is related to UDR5,' 
-                            + ' which has 12 K1 UDRPs and is a Residential customer, ' 
-                            + 'so the Average Demand should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 1943.84.');
-        System.assertEquals(11, testUAL5.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(11, testUAL5.Num_UDRPs_Avg_Demand__c);
-        
-        System.assertEquals(582.45, updatedTestUDR7.Annual_kWh__c, 'UDR7 has 3 KH UDRP so the Annual kWh should be ' 
-                            + 'the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.'
-                            + 'In this case the answer should be 582.45.');
-        System.assertEquals(117.65, updatedTestUDR7.Average_Demand__c, 'UDR7 has 1 K1 UDRP so the Average Demand should be ' 
-                            + 'the UDRP.Quantity__c value divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 117.65.');
-        System.assertEquals(3, updatedTestUDR7.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(2, updatedTestUDR7.Num_UDRPs_Avg_Demand__c);
-        
-        System.assertEquals(582.45, testUAL7.Annual_kWh__c, 'UAL7 is related to UDR7,' 
-                            + ' which has 3 KH UDRPs so the Annual kWh should be the sum of the UDRP.Quantity__c values divided by the number of days and multiplied by 365.'
-                            + 'In this case the answer should be 582.45.');
-        System.assertEquals(117.65, testUAL7.Average_Demand__c, 'UAL7 is related to UDR7,' 
-                            + ' which has 1 K1 UDRPs so the Average Demand should be the UDRP.Quantity__c value divided by the number of days and multiplied by 30.'
-                            + 'In this case the answer should be 117.65.');
-        System.assertEquals(3, testUAL7.Num_UDRPs_Annual_kWh__c);
-        System.assertEquals(2, testUAL7.Num_UDRPs_Avg_Demand__c);
-        
-        List<Utility_Data_Request__c> updatedTestUDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5, testUDR7};
-            List<Utility_Data_Request_Period__c> khUDRPList= udrpSelector.selectTypeByUDR(updatedTestUDRList, 'KH', new List<String>{'51'});
-        List<Utility_Data_Request_Period__c> k1UDRPList= udrpSelector.selectTypeByUDR(updatedTestUDRList, 'K1', new List<String>{'51', '41', '42', '43'});
-        
-        for(Utility_Data_Request_Period__c udrp : khUDRPList) {
-            if(udrp.Load_Profile_Description__c == 'testUDRP12' || udrp.Load_Profile_Description__c == 'testUDRP21' || udrp.Load_Profile_Description__c == 'testUDRP23') {
+        List<Utility_Data_Request_Period__c> khUDRPList= udrpSelector.selectTypeByUDR(UDRList, 'KH', new List<String>{'51'});
+        List<Utility_Data_Request_Period__c> k1UDRPList= udrpSelector.selectTypeByUDR(UDRList, 'K1', new List<String>{'51', '41', '42', '43'});
+        for (Utility_Data_Request_Period__c udrp : khUDRPList) {
+            if (udrp.Load_Profile_Description__c == 'testUDRP12' ||
+                udrp.Load_Profile_Description__c == 'testUDRP21' ||
+                udrp.Load_Profile_Description__c == 'testUDRP23')
+            {
                 System.assertEquals(false, udrp.Used_in_Annual_kWh_Calculation__c, 'UDRP not used in kWh calculation, should be false. UDRP: ' + udrp);
             } else {
                 System.assertEquals(true, udrp.Used_in_Annual_kWh_Calculation__c, 'UDRP used in kWh Calculation, should be true. UDRP: ' + udrp);
             }
         }
-        
-        for(Utility_Data_Request_Period__c udrp : k1UDRPList) {
-            if(udrp.Load_Profile_Description__c == 'testUDRP36' || udrp.Load_Profile_Description__c == 'testUDRP47') {
+        for (Utility_Data_Request_Period__c udrp : k1UDRPList) {
+            if (udrp.Load_Profile_Description__c == 'testUDRP36' ||
+                udrp.Load_Profile_Description__c == 'testUDRP47')
+            {
                 System.assertEquals(false, udrp.Used_in_Average_Demand_Calculation__c, 'UDRP not used in avg demand calculation, should be false. UDRP: ' + udrp);
             } else {
                 System.assertEquals(true, udrp.Used_in_Average_Demand_Calculation__c, 'UDRP used in avg demand Calculation, should be true. UDRP: ' + udrp);
             }
         }
-        
-        System.assertEquals('No', testUAL1.NYPA__c);
-        System.assertEquals('No', testUAL1.RNY__c);
-        System.assertEquals('No', testUAL3.NYPA__c);
-        System.assertEquals('Yes', testUAL3.RNY__c);
-        System.assertEquals('Yes', testUAL4.NYPA__c);
-        System.assertEquals('No', testUAL4.RNY__c);
-        System.assertEquals('Yes', testUAL5.NYPA__c);
-        System.assertEquals('Yes', testUAL5.RNY__c);
-        System.assertEquals('No', testUAL6.NYPA__c);
-        System.assertEquals('No', testUAL6.RNY__c);
-        
-        System.assertEquals(false, testUAL1.Address_Update__c, 'The addresses should have matched, so the Address_Update__c should be false.');
-        System.assertEquals(false, testUAL3.Address_Update__c, 'The addresses should have matched, so the Address_Update__c should be false.');
-        System.assertEquals(true, testUAL4.Address_Update__c, 'The addresses should not have matched, so the Address_Update__c should be true.');
-        System.assertEquals(true, testUAL5.Address_Update__c, 'The addresses should not have matched, so the Address_Update__c should be true.');
-        System.assertEquals(true, testUAL6.Address_Update__c, 'The addresses should not have matched, so the Address_Update__c should be true.');	
-        
-        System.assertEquals('Bill', testUAL4.Previous_Name_on_Utility_Account__c);
-        System.assertEquals('459  Broadway', testUAL4.Previous_Service_Address__c);
-        System.assertEquals('Everett', testUAL4.Previous_Service_City__c);
-        System.assertEquals('MA', testUAL4.Previous_Service_State__c);
-        System.assertEquals('02149', testUAL4.Previous_Service_Zip_Code__c);
-        
-        System.assertEquals('Bill', testUAL4.Name_on_Account__c);
-        System.assertEquals('458 Broadway', testUAL4.Service_Address__c);
-        System.assertEquals('Everett', testUAL4.Service_City__c);
-        System.assertEquals('MA', testUAL4.Service_State__c);
-        System.assertEquals('02149', testUAL4.Service_Zip_Code__c);
-        
-        System.assertEquals('Bob', testUAL5.Previous_Name_on_Utility_Account__c);
-        System.assertEquals('1 brighton ave, 20', testUAL5.Previous_Service_Address__c);
-        System.assertEquals('Allston', testUAL5.Previous_Service_City__c);
-        System.assertEquals('MA', testUAL5.Previous_Service_State__c);
-        System.assertEquals('02134', testUAL5.Previous_Service_Zip_Code__c);
-        
-        System.assertEquals('Bob', testUAL5.Name_on_Account__c);
-        System.assertEquals('1 Brighton Ave Unit 20', testUAL5.Service_Address__c);
-        System.assertEquals('Allston', testUAL5.Service_City__c);
-        System.assertEquals('Ma', testUAL5.Service_State__c);
-        System.assertEquals('02134', testUAL5.Service_Zip_Code__c);
-                
-        System.assertEquals('Complete', testUAL1.QC_Status__c, 'The addresses should have matched, and the NYPA/RNY fields are No, so the status should be Complete.');        	
-        System.assertEquals('Pending BW Review', testUAL3.QC_Status__c, 'The addresses should have matched, but the NYPA/RNY fields are No/Yes, so the status should be Pending BW Review.');
-        System.assertEquals('Pending BW Review', testUAL4.QC_Status__c, 'The addresses should not have matched, and the NYPA/RNY fields are Yes/No, so the status should be Pending BW Review.');	
-        System.assertEquals('Pending BW Review', testUAL5.QC_Status__c, 'The addresses should not have matched, and the NYPA/RNY fields are Yes/Yes, so the status should be Pending BW Review.');
-        System.assertEquals('Pending BW Review', testUAL6.QC_Status__c, 'The NYPA/RNY fields are no, but the addresses should not have matched, so the status should be Pending BW Review.');	        
     }
 
     @IsTest
@@ -730,5 +745,4 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals('Pending Utility Data', udrs[0].Utility_Account_Log__r.QC_Status__c, 'UAL status incorrect for pending UDR');
         System.assertEquals(ual.Premise_Number__c, udrs[0].Premise_Number__c, 'PoD ID not copied from UAL when it should be');
     }
-    
 }

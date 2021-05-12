@@ -6,18 +6,20 @@
  */
 @SuppressWarnings('ApexDocValidation')
 public without sharing class UtilityDataRequestService {
+
+    /* STATIC PROPERTIES */
+    @TestVisible private static RateClassesSelector rateClassesSelector = new RateClassesSelector();
+    @TestVisible private static UtilityDataRequestPeriodSelector udrpSelector = new UtilityDataRequestPeriodSelector();
+    @TestVisible private static UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
+
+    /* INSTANCE PROPERTIES */
     @TestVisible private Map<Id,Utility_Data_Request__c> completedUDRMap = new Map<Id,Utility_Data_Request__c>();
     @TestVisible private Map<Id,Utility_Data_Request__c> newUDRMap;
     @TestVisible private Map<Id,Utility_Data_Request__c> oldUDRMap;
     @TestVisible private Map<String,Rate_Class__c> rateClassWithEDIMap;
-    @TestVisible private Map<Id,Utility_Account_Log__c> ualsWithCompletedUDRMap;
     @TestVisible private Map<Id,Id> udrToRateClassMap = new Map<Id,Id>();
     @TestVisible private Map<Id,List<Utility_Data_Request_Period__c>> completedUDRToUdrpMap;
     @TestVisible private fflib_SObjectUnitOfWork uow;
-    @TestVisible private static RateClassesSelector rateClassesSelector = new RateClassesSelector();
-    @TestVisible private static UtilityDataRequestPeriodSelector udrpSelector = new UtilityDataRequestPeriodSelector();
-    @TestVisible private static UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
-    @TestVisible private static UALSelector ualSelector = new UALSelector();
 
     /**
      * Constructor for service class instance
@@ -87,9 +89,6 @@ public without sharing class UtilityDataRequestService {
         // Retrieve Rate Classes, UDR->UDRPs, and UALs for Completed UDRs
         rateClassWithEDIMap = rateClassesSelector.selectWithEDI();
         completedUDRToUdrpMap = udrpSelector.selectByUDR(completedUDRMap.keySet());
-        ualsWithCompletedUDRMap = ualSelector.selectAllMap(
-            CollectionUtil.mapByIdField(completedUDRMap.values(), Utility_Data_Request__c.Utility_Account_Log__c).keySet()
-        );
     }
 
     private void setAnnualkWhAndAvgDemandOnUDRs(){
@@ -127,13 +126,8 @@ public without sharing class UtilityDataRequestService {
     }
 
     private void updateUALForCompletedUDRs() {
-        for (Id udrId : completedUDRMap.keySet()) {
-            Utility_Account_Log__c ual = ualsWithCompletedUDRMap.get(completedUDRMap.get(udrId).Utility_Account_Log__c);
-            ual.Utility_Rate_Class__c = udrToRateClassMap.get(udrId);
-            populateFieldsOnUAL(ual, completedUDRMap.get(udrId));
-        }
-        // Register work
-        uow.registerDirty(ualsWithCompletedUDRMap.values());
+        List<Utility_Account_Log__c> uals = new UtilityAccountLogs(completedUDRMap, udrToRateClassMap).getSObjects();
+        uow.registerDirty(uals);
     }
 
     /**
@@ -165,84 +159,5 @@ public without sharing class UtilityDataRequestService {
             return rateClassSObj.Id;
         }
         return null;
-    }
-
-    private void populateFieldsOnUAL(Utility_Account_Log__c ual, Utility_Data_Request__c udr) {
-        ual.Annual_kWh__c = udr.Annual_kWh__c;
-        ual.Average_Demand__c = udr.Average_Demand__c;
-
-        ual.Num_UDRPs_Annual_kWh__c = udr.Num_UDRPs_Annual_kWh__c;
-        ual.Num_UDRPs_Avg_Demand__c = udr.Num_UDRPs_Avg_Demand__c;
-
-        ual.NYPA__c = convertYesNo(udr.Government_Credit_Code__c);
-        ual.RNY__c = convertYesNo(udr.LDC_Customer_Eligibility__c);
-        Boolean addressStatus = ualNameAddressChange(ual, udr);
-        if (ual.NYPA__c == 'Yes' || ual.RNY__c == 'Yes') {
-            ual.QC_Status__c = 'Pending BW Review';
-        } else if (addressStatus) {
-            ual.QC_Status__c = 'Complete';
-        } else {
-            ual.QC_Status__c = 'Pending BW Review';
-        }
-    }
-
-    private String convertYesNo(String singleChar) {
-        if (singleChar == 'N') {
-            return 'No';
-        } else if (singleChar == 'Y') {
-            return 'Yes';
-        }
-        return null;
-    }
-
-    private Boolean ualNameAddressChange(Utility_Account_Log__c ual, Utility_Data_Request__c udr) {
-        // returns true if there is no difference between the UDR and UAL addresses
-        // returns false if there is a difference between the UDR and UAL addresses
-        String udrName = getComparisonString(udr.Customer_Name__c);
-        String udrAddress1 = getComparisonString(udr.Address_Line_1__c);
-        String udrAddress2 = getComparisonString(udr.Address_Line_2__c);
-        String udrAddress = udrAddress1 + udrAddress2;
-        String udrCity = getComparisonString(udr.City__c);
-        String udrState = getComparisonString(udr.State__c);
-        String udrZip = getComparisonString(udr.Zip_Code__c);
-        String ualName = getComparisonString(ual.Name_on_Account__c);
-        String ualAddress = getComparisonString(ual.Service_Address__c);
-        String ualCity = getComparisonString(ual.Service_City__c);
-        String ualState = getComparisonString(ual.Service_State__c);
-        String ualZip = getComparisonString(ual.Service_Zip_Code__c);
-        if (udrName + '|' + udrAddress + '|' + udrCity + '|' + udrState + '|' + udrZip !=
-            ualName + '|' + ualAddress + '|' + ualCity + '|' + ualState + '|' + ualZip) {
-            ual.Address_Update__c = true;
-        } else {
-            return true;
-        }
-        ual.Previous_Name_on_Utility_Account__c = cleanString(ual.Name_on_Account__c);
-        ual.Previous_Service_Address__c = cleanString(ual.Service_Address__c);
-        ual.Previous_Service_City__c = cleanString(ual.Service_City__c);
-        ual.Previous_Service_State__c = cleanString(ual.Service_State__c);
-        ual.Previous_Service_Zip_Code__c = cleanString(ual.Service_Zip_Code__c);
-        ual.Name_on_Account__c = cleanString(udr.Customer_Name__c);
-        ual.Service_Address__c = cleanString(udr.Address_Line_1__c) + ' ' + cleanString(udr.Address_Line_2__c);
-        ual.Service_City__c = cleanString(udr.City__c);
-        ual.Service_State__c = cleanString(udr.State__c);
-        ual.Service_Zip_Code__c = cleanString(udr.Zip_Code__c);
-        return false;
-    }
-
-    private String getComparisonString(String str) {
-        if (str == 'null' || str == null) {
-            return '';
-        }
-        str = str.replaceAll('\\s+','');
-        str = str.replaceAll('[^a-zA-Z0-9]','');
-        str = str.toUpperCase();
-        return str;
-    }
-
-    private String cleanString(String str) {
-        if (str == 'null' || str == null) {
-            return '';
-        }
-        return str;
     }
 }

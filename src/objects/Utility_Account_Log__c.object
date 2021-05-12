@@ -249,6 +249,18 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Auto_QC_Reject_Reason__c</fullName>
+        <description>If UAL went through Auto-QC, indicates when auto-QC was run and why auto-QC failed</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If UAL went through Auto-QC, indicates when auto-QC was run and why auto-QC failed</inlineHelpText>
+        <label>Auto QC Reject Reason</label>
+        <length>5000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Average_Demand__c</fullName>
         <description>Value from most recent UDR.</description>
         <externalId>false</externalId>

@@ -3621,6 +3621,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UtilityAccountLogs</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UtilityAccountSubscriptionHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -41262,6 +41266,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Log__c.Auto_QC_Reject_Reason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Log__c.Average_Demand__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -42468,6 +42477,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Auto_QC_Maximum_Demand__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Auto_QC_Minimum_kWH__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
