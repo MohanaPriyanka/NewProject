@@ -2071,10 +2071,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DeepClone</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>DefaultUtilityFeeSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
