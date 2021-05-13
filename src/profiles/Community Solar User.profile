@@ -2507,10 +2507,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>JoinCollections</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>JournalEntrySelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
