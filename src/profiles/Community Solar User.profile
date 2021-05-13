@@ -2215,10 +2215,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>EvaluateFormula</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ExecuteSOQL</apexClass>
         <enabled>false</enabled>
     </classAccesses>
