@@ -10,7 +10,7 @@ public with sharing class ContentDocumentSelectorTest {
         // So this will need to create the data
         ContentVersion cv = new ContentVersion(
             ContentLocation = 'S',
-            VersionData = EncodingUtil.base64Decode('invoice body'),
+            VersionData = EncodingUtil.base64Decode('shorter invoice body'),
             Title = 'InvoiceNumber.pdf',
             PathOnClient = '/InvoiceNumber.pdf'
         );
@@ -40,13 +40,16 @@ public with sharing class ContentDocumentSelectorTest {
             Default_Credit_Value__c = 0.1848
         );
         insert transfer;
+        
     }
 
     @IsTest
     private static void testSelectById() {
+        List<String> titleList = new List<String>{'InvoiceNumber.pdf', 'InvoiceNumber2.pdf'};
         List<ContentVersion> cvList = [
             SELECT Id, ContentDocumentId, ContentDocument.ContentSize
             FROM ContentVersion
+            WHERE Title IN :titleList
             ORDER BY Title
         ];
         ContentVersion cv = cvList[0];
@@ -161,8 +164,9 @@ public with sharing class ContentDocumentSelectorTest {
             LeadSource = 'Switch'
         );
         insert l;
-
-        List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion];
+        
+        List<String> titleList = new List<String>{'InvoiceNumber.pdf', 'InvoiceNumber2.pdf'};
+        List<ContentVersion> cvList = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Title IN :titleList];
         System.assertEquals(2, cvList.size());
         Test.setCreatedDate(cvList[0].ContentDocumentId, Datetime.now().addDays(-70));
 
@@ -219,4 +223,55 @@ public with sharing class ContentDocumentSelectorTest {
 
         System.assertEquals(2, links.size());
     }
+    
+    @IsTest
+    private static void testSelectCountersignedByLinkedEntities(){
+        Account account1 = new Account(
+            Name = 'testAccount1'
+        );
+        insert account1;
+        
+        Contract contract1 = new Contract(
+            Name = 'testContract1',
+            AccountId = account1.Id
+        );
+        insert contract1;
+        
+        ContentVersion cv3 = new ContentVersion(
+            VersionData = EncodingUtil.base64Decode('df'),
+            Title = 'Disclosure Form.pdf',
+            PathOnClient = '/Disclosure_Form.pdf',
+            Signing_Status__c = 'Countersigned'
+        );
+        insert cv3;
+        
+         List<Contract> contractList = [
+            SELECT Id, Name, AccountId, Account.Send_Bills_Contact__r.Id
+            FROM Contract 
+            WHERE Name = 'testContract1'
+        ];
+        List<ContentVersion> cvList = [
+            SELECT Id, ContentDocumentId, ContentDocument.ContentSize, Signing_Status__c
+            FROM ContentVersion
+            ORDER BY Title
+        ];
+        ContentVersion cv = cvList[0];
+
+        ContentDocumentLink linkOne = new ContentDocumentLink(LinkedEntityId = contractList[0].Id, ContentDocumentId = cv.ContentDocumentId);
+        insert linkOne;
+
+        ContentDocumentSelector documentSelector = new ContentDocumentSelector();
+
+        Test.startTest();
+        
+        Map<Id,Contract> contractMap = new Map<Id,Contract>();
+        contractMap.put(contractList[0].Id, contractList[0]);
+        
+        MultiMap links = documentSelector.selectCountersignedByLinkedEntities(contractMap);
+        
+        Test.stopTest();
+
+        System.assertEquals(1, links.size());
+    }
+    
 }

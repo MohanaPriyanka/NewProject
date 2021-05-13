@@ -187,16 +187,34 @@ public inherited sharing class SharedSolarSystemsSelector {
             WHERE UserOrGroupId IN :users
         ];
     }
-
+    
     public List<Shared_Solar_System__c> getSharedSolarSystemsWithEnactedSZs (List<Id> sssIds) {
         return [SELECT Id, Reacquisition_Start_Date__c,
-        (SELECT Id, Date_Enacted_by_Utility__c
-        FROM Schedule_Zs__r
-        WHERE Date_Schedule_Z_Retired_by_Utility__c = NULL
-        AND Date_Enacted_by_Utility__c != NULL
-        ORDER BY Date_Enacted_by_Utility__c DESC)
-        FROM Shared_Solar_System__c
-        WHERE Id IN :sssIds
-        ];
+                (SELECT Id, Date_Enacted_by_Utility__c
+                 FROM Schedule_Zs__r
+                 WHERE Date_Schedule_Z_Retired_by_Utility__c = NULL
+                 AND Date_Enacted_by_Utility__c != NULL
+                 ORDER BY Date_Enacted_by_Utility__c DESC)
+                FROM Shared_Solar_System__c
+                WHERE Id IN :sssIds
+               ];
     }
+    
+    public Shared_Solar_System__c getSSSForContract(Id contractId) {
+        Contract givenContract = [
+            SELECT Id, Opportunity__r.Shared_Solar_System__c 
+            FROM Contract 
+            WHERE Id =:contractId
+        ];
+        
+        Shared_Solar_System__c resultSSS = [
+            SELECT Id, Name, Address__c, City__c, State__c, Zip_Code__c, 
+            Total_System_Size_kWh_DC__c, Home_Electricity_Offset__c
+            FROM Shared_Solar_System__c 
+            WHERE Id =:givenContract.Opportunity__r.Shared_Solar_System__c
+        ];
+        
+        return resultSSS;
+    }
+    
 }

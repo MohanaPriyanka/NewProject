@@ -61,6 +61,7 @@ public inherited sharing class ContactSelector {
     }
 
 
+
     public static List<Contact> selectSendBillsContactByContract(Set<Id> contractIds){
         List<Id> contactIdList = new List<Id>();
         List<Contract> contractList = [
@@ -79,6 +80,7 @@ public inherited sharing class ContactSelector {
         return returnList;
     }
     
+
 
     public static List<Contact> selectActiveAlsSendBillsContactBySSSId(Id  sharedSolarSystemId) {
         Set<Contact> sendBillsContacts = new Set<Contact>();
