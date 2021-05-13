@@ -4339,10 +4339,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>QueryWithLimit</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>RESTController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
