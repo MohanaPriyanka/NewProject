@@ -81659,9 +81659,6 @@
         <layout>Survey-Survey Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>SurveyEngagementContext__mdt-SurveyEngagementContext Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>SurveyInvitation-Survey Invitation Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
