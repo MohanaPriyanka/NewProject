@@ -4515,10 +4515,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SortCollectionTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>StateSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
