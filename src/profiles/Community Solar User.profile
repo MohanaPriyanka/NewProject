@@ -2283,10 +2283,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>FilterByCollection</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>FilterCollection</apexClass>
         <enabled>false</enabled>
     </classAccesses>
