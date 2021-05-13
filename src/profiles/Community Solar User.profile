@@ -1427,10 +1427,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>AddOrInsertRecord</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>AddQuotesToFields</apexClass>
         <enabled>false</enabled>
     </classAccesses>
