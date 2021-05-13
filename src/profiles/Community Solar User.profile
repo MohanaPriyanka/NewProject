@@ -2283,10 +2283,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>FindCommonAndUniqueRecords</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>FindCommonAndUniqueRecordsTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
