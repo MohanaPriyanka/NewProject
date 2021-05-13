@@ -2427,10 +2427,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>InvocableMessagingServiceTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>InvocableOpportunitySystemUpdater</apexClass>
         <enabled>false</enabled>
     </classAccesses>
