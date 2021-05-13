@@ -2303,10 +2303,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>GenerateCollectionReport</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>GenericBatchDMLOperation</apexClass>
         <enabled>false</enabled>
     </classAccesses>
