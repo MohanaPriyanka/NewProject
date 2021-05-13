@@ -13803,6 +13803,7 @@
         <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
+    <description>We no longer assign users this profile by default since it uses a Plus Login license version. Instead, we use the Community Solar User profile. But we still need to maintain this profile since users can&apos;t be migrated across licensing levels.</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>API_Credential__c.Credential_Id__c</field>

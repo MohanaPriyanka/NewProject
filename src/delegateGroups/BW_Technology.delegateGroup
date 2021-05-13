@@ -4,7 +4,6 @@
     <label>BW Technology</label>
     <loginAccess>true</loginAccess>
     <permissionSets>Manage Call Centers</permissionSets>
-    <permissionSets>UAL Recalculate</permissionSets>
     <permissionSets>Trailhead Admin</permissionSets>
     <permissionSets>Trailhead Assigner</permissionSets>
     <permissionSets>Trailhead User</permissionSets>
@@ -15,71 +14,7 @@
     <permissionSets>Shared Solar System Management</permissionSets>
     <permissionSets>CS Subscription Management</permissionSets>
     <permissionSets>Waive Late Fees</permissionSets>
-    <permissionSets>Branch Management Permissions Manage</permissionSets>
-    <permissionSets>Branch Management Permissions View</permissionSets>
-    <permissionSets>Commit Changes</permissionSets>
-    <permissionSets>Compliance Hub</permissionSets>
-    <permissionSets>Continuous Integration Manage</permissionSets>
-    <permissionSets>Continuous Integration View</permissionSets>
     <permissionSets>Copado User</permissionSets>
-    <permissionSets>Create Environmental Variables</permissionSets>
-    <permissionSets>Deploy Commit</permissionSets>
-    <permissionSets>Deployment Flows Manage</permissionSets>
-    <permissionSets>Deployment Flows View</permissionSets>
-    <permissionSets>Deployments Manage</permissionSets>
-    <permissionSets>Deployments View</permissionSets>
-    <permissionSets>Epics Manage</permissionSets>
-    <permissionSets>Epics View</permissionSets>
-    <permissionSets>Git Repositories Manage</permissionSets>
-    <permissionSets>Git Repositories View</permissionSets>
-    <permissionSets>Git Snapshot Manage</permissionSets>
-    <permissionSets>Org Credentials Edit</permissionSets>
-    <permissionSets>Org Credentials Modify All</permissionSets>
-    <permissionSets>Org Credentials Read Only</permissionSets>
-    <permissionSets>Org Credentials View All</permissionSets>
-    <permissionSets>Org Differences Edit</permissionSets>
-    <permissionSets>Org Differences Modify All</permissionSets>
-    <permissionSets>Org Differences Read Only</permissionSets>
-    <permissionSets>Org Differences View All</permissionSets>
-    <permissionSets>Persona &amp; Permission Manager</permissionSets>
-    <permissionSets>Projects Manage</permissionSets>
-    <permissionSets>Projects View</permissionSets>
-    <permissionSets>Promotions Manage</permissionSets>
-    <permissionSets>Promotions View</permissionSets>
-    <permissionSets>Releases Manage</permissionSets>
-    <permissionSets>Releases View</permissionSets>
-    <permissionSets>Run Apex Test</permissionSets>
-    <permissionSets>Selenium Locators Manage</permissionSets>
-    <permissionSets>Selenium Locators View</permissionSets>
-    <permissionSets>Selenium Settings Manage</permissionSets>
-    <permissionSets>Selenium Settings View</permissionSets>
-    <permissionSets>Selenium Test Cases Manage</permissionSets>
-    <permissionSets>Selenium Test Cases View</permissionSets>
-    <permissionSets>Selenium Test Groups Manage</permissionSets>
-    <permissionSets>Selenium Test Groups View</permissionSets>
-    <permissionSets>Selenium Test Runs Manage</permissionSets>
-    <permissionSets>Selenium Test Runs View</permissionSets>
-    <permissionSets>Selenium Test Suites Manage</permissionSets>
-    <permissionSets>Selenium Test Suites View</permissionSets>
-    <permissionSets>Snapshot Differences Edit</permissionSets>
-    <permissionSets>Snapshot Differences Modify All</permissionSets>
-    <permissionSets>Snapshot Differences Read Only</permissionSets>
-    <permissionSets>Snapshot Differences View All</permissionSets>
-    <permissionSets>Sprints Manage</permissionSets>
-    <permissionSets>Sprints View</permissionSets>
-    <permissionSets>Static Code Analysis</permissionSets>
-    <permissionSets>Test Runs Edit</permissionSets>
-    <permissionSets>Test Runs Modify All</permissionSets>
-    <permissionSets>Test Runs Read Only</permissionSets>
-    <permissionSets>Test Runs View All</permissionSets>
-    <permissionSets>Test Scripts Edit</permissionSets>
-    <permissionSets>Test Scripts Modify All</permissionSets>
-    <permissionSets>Test Scripts Read Only</permissionSets>
-    <permissionSets>Test Scripts View All</permissionSets>
-    <permissionSets>User Stories Edit</permissionSets>
-    <permissionSets>User Stories Modify All</permissionSets>
-    <permissionSets>User Stories Read Only</permissionSets>
-    <permissionSets>User Stories View All</permissionSets>
     <permissionSets>DMTracking</permissionSets>
     <permissionSets>CS Cancellation</permissionSets>
     <permissionSets>Bill Adjustment Creation</permissionSets>
@@ -171,24 +106,23 @@
     <permissionSets>CS Financial Doc Visibility</permissionSets>
     <permissionSets>Returned Payments</permissionSets>
     <permissionSets>High Velocity Sales User</permissionSets>
-    <permissionSets>Einstein Analytics for Sales Cloud HVS</permissionSets>
     <permissionSets>High Velocity Sales Cadence Creator</permissionSets>
     <permissionSets>Opportunity Product Management</permissionSets>
     <permissionSets>Edit Products</permissionSets>
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
-    <permissionSets>Inspire Planner Standard User - v1.12 Permissions</permissionSets>
-    <permissionSets>Access Drag and Drop Template builder</permissionSets>
-    <permissionSets>Expense object (Custom)</permissionSets>
-    <permissionSets>Inspire Planner Project, child objects</permissionSets>
-    <permissionSets>Feeders</permissionSets>
     <permissionSets>Netsuite Project ID</permissionSets>
     <permissionSets>Project, Construction, Incentive, Adder</permissionSets>
     <permissionSets>LASER Credit Access Site Guest User</permissionSets>
     <permissionSets>LASER Credit Access User</permissionSets>
     <permissionSets>Project, Construction, related, Platform</permissionSets>
+    <permissionSets>Inspire Planner Standard User - v1.12 Permissions</permissionSets>
+    <permissionSets>Access Drag and Drop Template builder</permissionSets>
+    <permissionSets>Expense object (Custom)</permissionSets>
+    <permissionSets>Inspire Planner Project, child objects</permissionSets>
     <permissionSets>Limit Monitoring App</permissionSets>
+    <permissionSets>Feeders</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>DocuSign Administrator</permissionSets>
     <permissionSets>DocuSign User</permissionSets>
@@ -205,6 +139,7 @@
     <profiles>CS Client Partner Login</profiles>
     <profiles>CS Client Partner Login_GSRP</profiles>
     <profiles>BFG Marketing User</profiles>
+    <profiles>Community Solar User</profiles>
     <profiles>PM Standard User</profiles>
     <profiles>HR Admin</profiles>
     <profiles>BFG Standard User</profiles>
