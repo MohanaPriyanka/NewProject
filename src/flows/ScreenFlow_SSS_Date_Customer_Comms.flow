@@ -3,13 +3,20 @@
     <actionCalls>
         <name>get_Send_Bills_Contacts</name>
         <label>get Send Bills Contacts</label>
-        <locationX>446</locationX>
-        <locationY>278</locationY>
+        <locationX>204</locationX>
+        <locationY>974</locationY>
         <actionName>InvocableSendBillsContactsSelector</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>assignNumber_of_Contacts</targetReference>
+            <targetReference>Additional_Input_required_before_sending_email</targetReference>
         </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>includeActiveALSOnly</name>
+            <value>
+                <elementReference>forActiveALSOnly</elementReference>
+            </value>
+        </inputParameters>
         <inputParameters>
             <name>sharedSolarSystemId</name>
             <value>
@@ -22,12 +29,13 @@
         <name>Send_Email_to_Contacts</name>
         <label>Send Email to Contacts</label>
         <locationX>204</locationX>
-        <locationY>2150</locationY>
+        <locationY>2030</locationY>
         <actionName>InvocableMessagingService</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Log_Email_Send</targetReference>
         </connector>
+        <flowTransactionModel>NewTransaction</flowTransactionModel>
         <inputParameters>
             <name>contactList</name>
             <value>
@@ -38,6 +46,12 @@
             <name>emailTemplateName</name>
             <value>
                 <elementReference>ffEmailTemplateName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>attachmentStatus</name>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -52,7 +66,7 @@
         <name>Add_Replacement_text_to_Collection</name>
         <label>Add Replacement text to Collection</label>
         <locationX>72</locationX>
-        <locationY>1574</locationY>
+        <locationY>1454</locationY>
         <assignmentItems>
             <assignToReference>mapTemplateReplacement</assignToReference>
             <operator>Add</operator>
@@ -68,7 +82,7 @@
         <name>Add_Solar_Farm_Name_Replacement_Text_to_FlowMap</name>
         <label>Add Solar Farm Name Replacement Text to FlowMap</label>
         <locationX>204</locationX>
-        <locationY>2030</locationY>
+        <locationY>1910</locationY>
         <assignmentItems>
             <assignToReference>mapTemplateReplacement</assignToReference>
             <operator>Add</operator>
@@ -84,7 +98,7 @@
         <name>Assign_Solar_Farm_Date_Replacement_Text</name>
         <label>Assign Solar Farm Date Replacement Text</label>
         <locationX>72</locationX>
-        <locationY>1454</locationY>
+        <locationY>1334</locationY>
         <assignmentItems>
             <assignToReference>varTemplateReplacement.key</assignToReference>
             <operator>Assign</operator>
@@ -107,7 +121,7 @@
         <name>Assign_Solar_Farm_Name_Replacement_Text</name>
         <label>Assign Solar Farm Name Replacement Text</label>
         <locationX>204</locationX>
-        <locationY>1910</locationY>
+        <locationY>1790</locationY>
         <assignmentItems>
             <assignToReference>varTemplateReplacement.key</assignToReference>
             <operator>Assign</operator>
@@ -124,22 +138,6 @@
         </assignmentItems>
         <connector>
             <targetReference>Add_Solar_Farm_Name_Replacement_Text_to_FlowMap</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>assignNumber_of_Contacts</name>
-        <label>Assign Number of Contacts</label>
-        <locationX>446</locationX>
-        <locationY>398</locationY>
-        <assignmentItems>
-            <assignToReference>varContactCount</assignToReference>
-            <operator>AssignCount</operator>
-            <value>
-                <elementReference>get_Send_Bills_Contacts</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Get_Email_Messages</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -202,7 +200,7 @@
         <name>Additional_Input_required_before_sending_email</name>
         <label>Additional Input required before sending email?</label>
         <locationX>204</locationX>
-        <locationY>1214</locationY>
+        <locationY>1094</locationY>
         <defaultConnector>
             <targetReference>Get_Email_Template</targetReference>
         </defaultConnector>
@@ -227,7 +225,7 @@
         <name>decisionNotify_Customers</name>
         <label>Notify Customers</label>
         <locationX>446</locationX>
-        <locationY>1094</locationY>
+        <locationY>854</locationY>
         <defaultConnector>
             <targetReference>Confirmation_Screen</targetReference>
         </defaultConnector>
@@ -243,7 +241,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Additional_Input_required_before_sending_email</targetReference>
+                <targetReference>get_Send_Bills_Contacts</targetReference>
             </connector>
             <label>Yes, notify customers</label>
         </rules>
@@ -267,7 +265,7 @@
         <name>What_Date_is_being_updated</name>
         <label>What Date is being updated?</label>
         <locationX>446</locationX>
-        <locationY>758</locationY>
+        <locationY>518</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>EstimatedDates</name>
@@ -318,7 +316,7 @@
     <formulas>
         <name>ffConfirmation</name>
         <dataType>String</dataType>
-        <expression>&quot;The date(s) have been updated&quot;&amp; IF({!Yes_notify_customers},&quot; and emails have been sent&quot;,&quot;&quot;)&amp;&quot;!&quot;</expression>
+        <expression>&quot;The date(s) have been updated&quot;&amp; IF({!Yes_notify_customers},&quot; and emails have been sent!&quot;,&quot;&quot;)</expression>
     </formulas>
     <formulas>
         <description>Email template name that will be sent based on the type of date that is being updated</description>
@@ -365,6 +363,12 @@ MONTH({!New_Est_PTO_Date} ),
         <dataType>Date</dataType>
         <expression>BLANKVALUE({!New_Est_COD_Date},BLANKVALUE({!New_Est_PTO_Date},{!New_Actual_PTO_Date})+28)</expression>
     </formulas>
+    <formulas>
+        <description>Determines if we should only notify customers with an active ALS</description>
+        <name>forActiveALSOnly</name>
+        <dataType>Boolean</dataType>
+        <expression>IF({!ActualCOD_Date},TRUE,FALSE)</expression>
+    </formulas>
     <interviewLabel>ScreenFlow: SSS Date &amp; Customer Comms {!$Flow.CurrentDateTime}</interviewLabel>
     <label>ScreenFlow: SSS Date &amp; Customer Comms</label>
     <processMetadataValues>
@@ -390,7 +394,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>Log_Email_Send</name>
         <label>Log Email Send</label>
         <locationX>204</locationX>
-        <locationY>2270</locationY>
+        <locationY>2150</locationY>
         <connector>
             <targetReference>Confirmation_Screen</targetReference>
         </connector>
@@ -437,7 +441,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>Get_Email_Messages</name>
         <label>Get Email Messages</label>
         <locationX>446</locationX>
-        <locationY>518</locationY>
+        <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SSS_Date_Updates</targetReference>
@@ -460,7 +464,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>Get_Email_Template</name>
         <label>Get Email Template</label>
         <locationX>204</locationX>
-        <locationY>1790</locationY>
+        <locationY>1670</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Solar_Farm_Name_Replacement_Text</targetReference>
@@ -484,7 +488,7 @@ MONTH({!New_Est_PTO_Date} ),
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>get_Send_Bills_Contacts</targetReference>
+            <targetReference>Get_Email_Messages</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -502,7 +506,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>Update_SSS_Actual_PTO_Date</name>
         <label>Update SSS Actual PTO Date</label>
         <locationX>578</locationX>
-        <locationY>878</locationY>
+        <locationY>638</locationY>
         <connector>
             <targetReference>decisionNotify_Customers</targetReference>
         </connector>
@@ -532,7 +536,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>Update_SSS_COD_Date</name>
         <label>Update SSS COD Date</label>
         <locationX>314</locationX>
-        <locationY>878</locationY>
+        <locationY>638</locationY>
         <connector>
             <targetReference>decisionNotify_Customers</targetReference>
         </connector>
@@ -556,7 +560,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>Update_SSS_PTO_Date</name>
         <label>Update SSS PTO Date</label>
         <locationX>50</locationX>
-        <locationY>878</locationY>
+        <locationY>638</locationY>
         <connector>
             <targetReference>decisionNotify_Customers</targetReference>
         </connector>
@@ -586,7 +590,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>Confirmation_Screen</name>
         <label>Confirmation Screen</label>
         <locationX>446</locationX>
-        <locationY>2486</locationY>
+        <locationY>2366</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -602,7 +606,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>Review_SSS_Merge_Fields</name>
         <label>Review SSS Merge Fields</label>
         <locationX>72</locationX>
-        <locationY>1334</locationY>
+        <locationY>1214</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -705,6 +709,7 @@ MONTH({!New_Est_PTO_Date} ),
                     <elementReference>Get_Email_Messages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -715,7 +720,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>SSS_Date_Updates</name>
         <label>SSS Date Updates</label>
         <locationX>446</locationX>
-        <locationY>638</locationY>
+        <locationY>398</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -843,16 +848,10 @@ MONTH({!New_Est_PTO_Date} ),
             <dataType>String</dataType>
             <fieldText>Notify Customers?</fieldText>
             <fieldType>RadioButtons</fieldType>
+            <helpText>&lt;p&gt;This only applies if the project has customers assigned.&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>varContactCount</leftValueReference>
-                    <operator>GreaterThan</operator>
-                    <rightValue>
-                        <numberValue>0.0</numberValue>
-                    </rightValue>
-                </conditions>
                 <conditions>
                     <leftValueReference>selDate</leftValueReference>
                     <operator>NotEqualTo</operator>
@@ -936,6 +935,7 @@ MONTH({!New_Est_PTO_Date} ),
                     <elementReference>Get_Email_Messages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -946,17 +946,17 @@ MONTH({!New_Est_PTO_Date} ),
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>selDate</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <elementReference>choiceActualCODDate</elementReference>
-                    </rightValue>
-                </conditions>
-                <conditions>
                     <leftValueReference>Notify_Customers</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>choiceNotifyCustomersYes</elementReference>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>selDate</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>choiceActualCODDate</elementReference>
                     </rightValue>
                 </conditions>
             </visibilityRule>
