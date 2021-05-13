@@ -252,4 +252,35 @@ public with sharing class SharedSolarSystemsSelectorTest {
             System.assert(false, e.getMessage() + '\n' + e.getStackTraceString());
         }
     }
+    
+    @IsTest
+    private static void testGetSSSForContract() {
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
+            Name = 'test1SSS'
+        );
+        insert sss1;
+        
+        Opportunity opp1 = new Opportunity(
+            Shared_Solar_System__c = sss1.Id,
+            StageName = 'testOpp1stgName',
+            CloseDate = Date.today(),
+            Name = 'testOpp1'
+        );
+        insert opp1;
+        
+        Account account1 = new Account(Name = 'testAccount1');
+        insert account1;
+        
+        Contract contract1 = new Contract(
+            Opportunity__c = opp1.Id,
+            AccountId = account1.Id
+        );
+        insert contract1;
+        
+        SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+        
+        Shared_Solar_System__c resultSSS = sssSelector.getSSSForContract(contract1.Id);
+        
+        System.assertEquals('test1SSS', resultSSS.Name);
+    }
 }

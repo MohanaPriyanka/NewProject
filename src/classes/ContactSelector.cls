@@ -59,4 +59,46 @@ public inherited sharing class ContactSelector {
         return new List<Contact>(sendBillsContacts);
         
     }
+
+
+
+    public static List<Contact> selectSendBillsContactByContract(Set<Id> contractIds){
+        List<Id> contactIdList = new List<Id>();
+        List<Contract> contractList = [
+            SELECT Id, Account.Send_Bills_Contact__r.Id
+            FROM Contract 
+            WHERE Id IN :contractIds
+        ];
+        for(Contract con : contractList){
+            contactIdList.add(con.Account.Send_Bills_Contact__r.Id);
+        }
+        List<Contact> returnList = [
+            SELECT Id, Email, FirstName
+            FROM Contact 
+            WHERE Id IN :contactIdList
+        ];
+        return returnList;
+    }
+    
+
+
+    public static List<Contact> selectActiveAlsSendBillsContactBySSSId(Id  sharedSolarSystemId) {
+        Set<Contact> sendBillsContacts = new Set<Contact>();
+        List<Schedule_Z_Subscription__c> getSendBillsContactsfromALS =  [
+            SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__r.Id,
+                Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__r.Email
+            FROM Schedule_Z_Subscription__c 
+            WHERE Schedule_Z__r.Shared_Solar_System__c = :sharedSolarSystemId
+            AND Schedule_Z__r.Status__c IN ('Submitted to Utility', 'Enacted by Utility')
+            AND Schedule_Z__r.Date_Submitted_to_Utility__c !=NULL
+        ];
+        for (Schedule_Z_Subscription__c sendBillsContactfromALS : getSendBillsContactsfromALS) {
+            sendBillsContacts.add(sendBillsContactfromALS.Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__r);
+        }
+        return new List<Contact>(sendBillsContacts);
+
+
+    }
+    
+
 }

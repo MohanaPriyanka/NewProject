@@ -865,8 +865,9 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
     </fields>
     <fields>
         <fullName>Customer_Signature_Date_Time__c</fullName>
+        <description>This is the date the document was generated for project specific contracts that have a parent contract</description>
         <externalId>false</externalId>
-        <inlineHelpText>This is the date/time field used for customer contract</inlineHelpText>
+        <inlineHelpText>This is the date the document was generated for project specific contracts that have a parent contract</inlineHelpText>
         <label>Customer Signature Date/Time</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>

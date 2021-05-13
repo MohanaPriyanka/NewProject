@@ -3,7 +3,7 @@
  * Called by the "Assign Customers to Client Agreement" Flow
  * TestedBy: ContractSelectorTest
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class InvocableAddendumGenerator {
     @TestVisible private static ContractSelector contractSelector = new ContractSelector();
 
@@ -18,7 +18,9 @@ public inherited sharing class InvocableAddendumGenerator {
 
         for (Contract contract : contractsToUpdate) {
             contract.Generate_Addendum__c = true;
+            contract.Customer_Signature_Date_Time__c = System.now();
         }
+        
         try {
             update contractsToUpdate;
         } catch (Exception e) {
