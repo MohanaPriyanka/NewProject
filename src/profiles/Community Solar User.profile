@@ -2311,10 +2311,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>GetChildCollection</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>GetFirst</apexClass>
         <enabled>false</enabled>
     </classAccesses>
