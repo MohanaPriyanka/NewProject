@@ -3583,10 +3583,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MPM4_BASE__Milestone1_Calendar_Item</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MPM4_BASE__Milestone1_Charts_Gantt_Helper</apexClass>
         <enabled>false</enabled>
     </classAccesses>
