@@ -650,15 +650,15 @@ private class UtilityDataRequestServiceTest {
         Utility_Data_Request__c testUDR4 = getTestUDR('testUDR4');
         Utility_Data_Request__c testUDR5 = getTestUDR('testUDR5');
         Utility_Data_Request__c testUDR7 = getTestUDR('testUDR7');
-        List<Utility_Data_Request__c> UDRList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5, testUDR7};
-        for (Utility_Data_Request__c udr : UDRList) {
+        List<Utility_Data_Request__c> udrList = new List<Utility_Data_Request__c>{testUDR1, testUDR3, testUDR4, testUDR5, testUDR7};
+        for (Utility_Data_Request__c udr : udrList) {
             udr.Header_Status__c = 'Complete';
             udr.Detail_Status__c = 'Complete';
         }
-        update UDRList;
+        update udrList;
 
-        List<Utility_Data_Request_Period__c> khUDRPList= udrpSelector.selectTypeByUDR(UDRList, 'KH', new List<String>{'51'});
-        List<Utility_Data_Request_Period__c> k1UDRPList= udrpSelector.selectTypeByUDR(UDRList, 'K1', new List<String>{'51', '41', '42', '43'});
+        List<Utility_Data_Request_Period__c> khUDRPList= udrpSelector.selectTypeByUDR(udrList, 'KH', new List<String>{'51'});
+        List<Utility_Data_Request_Period__c> k1UDRPList= udrpSelector.selectTypeByUDR(udrList, 'K1', new List<String>{'51', '41', '42', '43'});
         for (Utility_Data_Request_Period__c udrp : khUDRPList) {
             if (udrp.Load_Profile_Description__c == 'testUDRP12' ||
                 udrp.Load_Profile_Description__c == 'testUDRP21' ||
