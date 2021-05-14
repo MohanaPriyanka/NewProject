@@ -54,6 +54,34 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
+        <fullName>Auto_QC_Maximum_Demand__c</fullName>
+        <defaultValue>25</defaultValue>
+        <description>Maximum Demand (kW) permitted for a UAL under this utility to be marked as &apos;Complete&apos; by Auto-QC</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum Demand (kW) permitted for a UAL under this utility to be marked as &apos;Complete&apos; by Auto-QC</inlineHelpText>
+        <label>Auto QC Maximum Demand</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Auto_QC_Minimum_kWH__c</fullName>
+        <defaultValue>1000</defaultValue>
+        <description>Minimum Annual kWH permitted for a UAL under this utility to be marked as &apos;Complete&apos; by Auto-QC</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Minimum Annual kWH permitted for a UAL under this utility to be marked as &apos;Complete&apos; by Auto-QC</inlineHelpText>
+        <label>Auto QC Minimum Annual kWH</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Collect_Customer_POD_Number__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
