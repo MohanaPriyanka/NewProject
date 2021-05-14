@@ -126,8 +126,9 @@ public without sharing class UtilityDataRequestService {
     }
 
     private void updateUALForCompletedUDRs() {
-        List<Utility_Account_Log__c> uals = new UtilityAccountLogs(completedUDRMap, udrToRateClassMap).getSObjects();
-        uow.registerDirty(uals);
+        UtilityAccountLogs uals = new UtilityAccountLogs(completedUDRMap, udrToRateClassMap);
+        uals.updateOnEDIRequestComplete();
+        uow.registerDirty(uals.getSObjects());
     }
 
     /**

@@ -2,7 +2,7 @@
  * Created by jeffparlin on 5/6/21.
  * @description Handles appropriate modifications to Utility_Account_Log__c records when mandated from other contexts
  * Specifically is built to handle updating UALs when Utility_Data_Request__c records are marked as 'Complete'
- * 
+ *
  * Tested by: UtilityDataRequestServiceTest
  */
 public without sharing class UtilityAccountLogs {
@@ -12,9 +12,9 @@ public without sharing class UtilityAccountLogs {
 
     /* INSTANCE PROPERTIES */
     private List<UtilityAccountData> utilityAccountDataList = new List<UtilityAccountData>();
-    public qcMethod autoQcMethod;
+    public QCMethod autoQcMethod;
 
-    public enum qcMethod {EDI, GLYNT}
+    public enum QCMethod {EDI, GLYNT}
 
     /**
      * @description Constructor for when EDI Utility Data Requests are marked as 'Complete' and updates need to happen
@@ -23,7 +23,6 @@ public without sharing class UtilityAccountLogs {
      * @param udrRateClassMap Map of Utility_Data_Request__c => Rate_Class__c reference
      */
     public UtilityAccountLogs(Map<Id,Utility_Data_Request__c> completedUDRs, Map<Id,Id> udrRateClassMap) {
-        autoQcMethod = qcMethod.EDI;
         Map<Id,Utility_Account_Log__c> uals = ualSelector.selectAllMap(
             CollectionUtil.mapByIdField(completedUDRs.values(), Utility_Data_Request__c.Utility_Account_Log__c).keySet()
         );
@@ -34,7 +33,6 @@ public without sharing class UtilityAccountLogs {
             data.rateClassId = udrRateClassMap.get(udr.Id);
             utilityAccountDataList.add(data);
         }
-        updateOnEDIRequestComplete();
     }
 
     /**
@@ -63,7 +61,8 @@ public without sharing class UtilityAccountLogs {
         Boolean missingSizingData = false;
     }
 
-    private void updateOnEDIRequestComplete() {
+    public void updateOnEDIRequestComplete() {
+        autoQcMethod = QCMethod.EDI;
         setFieldsFromEDI();
         checkForAddressChange();
         checkForDuplicates();
@@ -113,15 +112,17 @@ public without sharing class UtilityAccountLogs {
 
     private void checkSizingParameters() {
         for (UtilityAccountData data : utilityAccountDataList) {
-            Decimal demand = data.ual.Average_Demand__c;
-            Decimal maxDemandAllowable = data.ual.Utility_lookup__r.Auto_QC_Maximum_Demand__c;
-            data.isAboveMaxAvgDemand = maxDemandAllowable != null && demand != null ? demand > maxDemandAllowable : false;
-
             Decimal annualKwh = data.ual.Annual_kWh__c;
             Decimal minKwhAllowable = data.ual.Utility_lookup__r.Auto_QC_Minimum_kWH__c;
             data.isBelowMinKwh = minKwhAllowable != null && annualKwh != null ? annualKwh < minKwhAllowable : false;
 
-            data.missingSizingData = demand == null || annualKwh == null || demand == 0;
+            Decimal demand = data.ual.Average_Demand__c;
+            Decimal maxDemandAllowable = data.ual.Utility_lookup__r.Auto_QC_Maximum_Demand__c;
+            if (demand != null && demand != 0) { // Only check demand if a value exists (some customers don't get this data)
+                data.isAboveMaxAvgDemand = maxDemandAllowable != null ? demand > maxDemandAllowable : false;
+            }
+
+            data.missingSizingData = annualKwh == null;
         }
     }
 
@@ -153,24 +154,13 @@ public without sharing class UtilityAccountLogs {
 
     private void qcForEDI(UtilityAccountData data) {
         String rejectReason;
-        if (data.hasAddressChange) {
-            rejectReason = 'Address Change';
-        }
-        if (data.hasDuplicateUAL) {
-            rejectReason = rejectReason == null ? 'Duplicate UAL Found' : rejectReason + ', Duplicate UAL Found';
-        }
-        if (data.hasDiscountRates) {
-            rejectReason = rejectReason == null ? 'Has Discount Rates' : rejectReason + ', Has Discount Rates';
-        }
-        if (data.isAboveMaxAvgDemand) {
-            rejectReason = rejectReason == null ? 'Above Max Avg Demand' : rejectReason + ', Above Max Avg Demand';
-        }
-        if (data.isBelowMinKwh) {
-            rejectReason = rejectReason == null ? 'Below Min kWH' : rejectReason + ', Below Min kWH';
-        }
-        if (data.missingSizingData) {
-            rejectReason = rejectReason == null ? 'Missing Sizing Data' : rejectReason + ', Missing Sizing Data';
-        }
+        rejectReason = appendRejectReason(data.hasAddressChange, rejectReason, 'Address Change');
+        rejectReason = appendRejectReason(data.hasDuplicateUAL, rejectReason, 'Duplicate UAL Found');
+        rejectReason = appendRejectReason(data.hasDiscountRates, rejectReason, 'Has Discount Rates');
+        rejectReason = appendRejectReason(data.isAboveMaxAvgDemand, rejectReason, 'Above Max Avg Demand');
+        rejectReason = appendRejectReason(data.isBelowMinKwh, rejectReason, 'Below Min kWh');
+        rejectReason = appendRejectReason(data.missingSizingData, rejectReason, 'Missing Sizing Data');
+
         if (rejectReason != null) { // A reason to auto-reject the UAL was found
             data.ual.QC_Status__c = 'Pending BW Review';
             rejectReason = Datetime.now().format() + ' | ' + rejectReason;
@@ -178,6 +168,16 @@ public without sharing class UtilityAccountLogs {
                 data.ual.Auto_QC_Reject_Reason__c + '\n' + rejectReason;
         } else {
             data.ual.QC_Status__c = 'Complete';
+        }
+    }
+
+    private static String appendRejectReason(Boolean append, String currentReason, String nextReason) {
+        if (!append) {
+            return currentReason;
+        } else if (currentReason == null) {
+            return nextReason;
+        } else {
+            return currentReason + ', ' + nextReason;
         }
     }
 
