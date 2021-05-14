@@ -30068,7 +30068,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Underwriting_Criteria__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -38009,6 +38009,11 @@
         <editable>false</editable>
         <field>Opportunity.CampaignId</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Cancellation_Request_Date__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -70999,7 +71004,7 @@
         <layout>Commission_Payment__c-Commission Payment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Commission_Structure__c-Commission Structure Layout</layout>
+        <layout>Commission_Structure__c-Partner Portal</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CommunityMemberLayout-Partner Community Member Layout</layout>
@@ -71570,7 +71575,7 @@
         <layout>Partner_Product_Junction__c-Partner Product Junction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Partner_Shared_Solar_System_Eligibility__c-Partner Shared Solar System Access Layout</layout>
+        <layout>Partner_Shared_Solar_System_Eligibility__c-Partner Portal</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner_Task__c-Child Partner Task</layout>
@@ -80819,176 +80824,6 @@
         <default>false</default>
         <recordType>Case.Product_Support</recordType>
         <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Astropay</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>true</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Authorizenet</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Barclays_ePDQ</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__BlueSnap</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Braintree</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Cybersource</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__EPX_payments</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Ezidebit</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__FatZebra</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Forte</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Linked2Pay</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Litle</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__MerchantWarrior</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__ModusLink</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Moneris_CA</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Moneris_US</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Netbanx</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Network_Merchants_NMI</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Orbital</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__PayTrace</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__PayU</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__PayflowProPayPal</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__PlanetPayment</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Platinum_Payments</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Realex_Payment</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__SecureCo</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Stripe</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__TransactPro</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Trident_Gateway_MeS</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__USAePay</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__VeriPay</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__eProcessingNetwork</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__eWay</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__iATS</recordType>
-        <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
