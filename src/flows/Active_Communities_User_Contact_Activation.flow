@@ -78,7 +78,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_3</name>
-            <conditionLogic>(1 OR 3) AND 2</conditionLogic>
+            <conditionLogic>(1 OR 3 OR 4) AND 2</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -170,6 +170,37 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>00ej0000000DgVh</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Community Solar User</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -189,7 +220,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myPreWaitRule_myWait_myRule_3</name>
-            <conditionLogic>(1 OR 3) AND 2</conditionLogic>
+            <conditionLogic>(1 OR 3 OR 4) AND 2</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -281,6 +312,37 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>00ej0000000DgVh</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Community Solar User</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -315,7 +377,7 @@
         </rules>
         <rules>
             <name>myRule_3_pmetrule</name>
-            <conditionLogic>(1 OR 3) AND 2</conditionLogic>
+            <conditionLogic>(1 OR 3 OR 4) AND 2</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -409,6 +471,37 @@
                     <stringValue>00ej0000000DgVh</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_old.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Community Solar User</stringValue>
+                </rightValue>
+            </conditions>
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
@@ -423,7 +516,7 @@
 &amp;&amp;
 [User].AccountId != null
 &amp;&amp;
-OR( [User].Profile.Name == &apos;Community Solar Community User&apos;, [User].Profile.Name == &apos;Community Solar User&apos;)</stringValue>
+[User].Profile.Name == &apos;Community Solar Community User&apos;</stringValue>
             </value>
         </processMetadataValues>
         <name>formula_myRule_1</name>
@@ -434,9 +527,9 @@ OR( [User].Profile.Name == &apos;Community Solar Community User&apos;, [User].Pr
 &amp;&amp;
 {!myVariable_current.AccountId} != null
 &amp;&amp;
-OR( {!myVariable_current.Profile.Name} == &apos;Community Solar Community User&apos;, {!myVariable_current.Profile.Name} == &apos;Community Solar User&apos;)</expression>
+{!myVariable_current.Profile.Name} == &apos;Community Solar Community User&apos;</expression>
     </formulas>
-    <interviewLabel>Active_Communities_User_Contact_Activation-7_InterviewLabel</interviewLabel>
+    <interviewLabel>Active_Communities_User_Contact_Activation-9_InterviewLabel</interviewLabel>
     <label>Active Communities User - Contact Activation</label>
     <processMetadataValues>
         <name>ObjectType</name>
