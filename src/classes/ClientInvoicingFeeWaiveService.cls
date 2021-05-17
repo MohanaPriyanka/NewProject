@@ -19,7 +19,9 @@ public without sharing class ClientInvoicingFeeWaiveService {
         deleteExistingCIMs(subOrders);
         queryData(subOrders);
         for (Subscription_Order__c order : subOrders) {
-            if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c && order.Client_Invoicing_Fee__c != 0) {
+            if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c &&
+                order.Client_Invoicing_Fee__c != null &&
+                order.Client_Invoicing_Fee__c != 0) {
                 waiveFeeBasedOnDate(order);
             }
         }
