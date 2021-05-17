@@ -51,9 +51,9 @@
         <label>Dunwoodie</label>
     </customValue>
     <customValue>
-        <fullName>N.Y.C</fullName>
+        <fullName>N.Y.C.</fullName>
         <default>false</default>
-        <label>N.Y.C</label>
+        <label>N.Y.C.</label>
     </customValue>
     <customValue>
         <fullName>Millwood</fullName>
