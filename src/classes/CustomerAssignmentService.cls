@@ -40,8 +40,8 @@ public without sharing class CustomerAssignmentService {
         if (signedAAIds.size() > 0 ) {
             List<Shared_Solar_System__c> sssList = populateFirstCustomerAssignmentDate(signedAAIds);
             Util.updateSObjs(sssList);
-            String emailTemplateName = 'Project Assignment (Hybrid MA Product)';
-            sendDisclosureFormEmail(contractMap, emailTemplateName);
+            // String emailTemplateName = 'Project Assignment (Hybrid MA Product)';
+            // sendDisclosureFormEmail(contractMap, emailTemplateName);
         }
     }
 
