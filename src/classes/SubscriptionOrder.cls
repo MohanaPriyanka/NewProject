@@ -1,6 +1,6 @@
 /**
  * @description Created by PeterYao on 3/12/2021.
- * Tested By: SubscriptionOrderTest
+ * Tested By: ClientInvoicingFeeAssignmentServiceTest
  */
 
 public without sharing class SubscriptionOrder extends FeeQualification {
@@ -53,7 +53,6 @@ public without sharing class SubscriptionOrder extends FeeQualification {
         // Allow negative subscription orders for Customer: Assignment Date guarantees because we don't use the SO
         // amount, we use the customer size at assignment. (The fee waive is triggered by a cancelled customer
         // decreasing in size, so we want to allow negative values)
-        // Otherwise, there is no need to waive a negative fee.
         if (milestoneDateType == 'Customer: Assignment Date' ||
             milestoneDateType == 'Project: Estimated COD or Customer: Assignment Date') {
             // Since we're giving the client a customer guarantee, for instance, if the customer cancels within a year,
@@ -68,7 +67,7 @@ public without sharing class SubscriptionOrder extends FeeQualification {
                 order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c,
                 assignmentAgreementSize
             );
-        } else if (order.Approved_Change_in_Subscription__c > 0) {
+        } else {
             if (shouldWaiveInInitialPeriod()) {
                 // We don't handle Max % of Project in the initial period right now, because that includes logic includes
                 // an annual clause that is only applicable after the milestone date
@@ -95,8 +94,10 @@ public without sharing class SubscriptionOrder extends FeeQualification {
     }
 
     private Client_Invoicing_Memo__c registerInvoiceMemoBasedOnProjectDate(Decimal maxPercentOfProjectToWaive) {
-        // No need to waive negative fees (ie, credits to client)
-        if (order.Approved_Change_in_Subscription__c <= 0) {
+        // Don't create a CIM if there's no invoicing fee, but per W-022613, we can create a positive CIM to charge the
+        // customer for downsizing that is included in an acquisition agreement (otherwise, the client could get too much
+        // of a credit)
+        if (order.Client_Invoicing_Fee__c == null || order.Client_Invoicing_Fee__c == 0) {
             return null;
         }
         if (maxPercentOfProjectToWaive == null) {
@@ -119,11 +120,8 @@ public without sharing class SubscriptionOrder extends FeeQualification {
         );
         Decimal kwLeftToWaive = Math.max((maxPercentOfProjectToWaive * totalSystemSize) - kwAlreadyWaived, 0);
         Decimal kWToWaive = Math.min(kwLeftToWaive, maxKwToWaive);
-        if (kWToWaive > 0) {
-            sssIdToTotalWaivedkWMap.putValue(sssId, new ClientInvoicingMemo(sssId, order.Effective_Date__c, kWToWaive));
-            return registerClientInvoiceMemo(-1 * order.Contract_Fee_Detail__r.Fee__c * (kWToWaive * 1000));
-        }
-        return null;
+        sssIdToTotalWaivedkWMap.putValue(sssId, new ClientInvoicingMemo(sssId, order.Effective_Date__c, kWToWaive));
+        return registerClientInvoiceMemo(-1 * order.Contract_Fee_Detail__r.Fee__c * (kWToWaive * 1000));
     }
 
     private Boolean shouldWaiveInInitialPeriod() {
@@ -217,7 +215,8 @@ public without sharing class SubscriptionOrder extends FeeQualification {
         Client_Invoicing_Memo__c memo = new Client_Invoicing_Memo__c(
             Subscription_Order__c = order.Id,
             Amount__c = amount.setScale(2, RoundingMode.HALF_UP),
-            Effective_Date__c = DateUtil.convertGmtToDate(order.Effective_Date__c)
+            Effective_Date__c = DateUtil.convertGmtToDate(order.Effective_Date__c),
+            Type__c = 'Waived Acquisition / Reacquisition Fee'
         );
         uow.registerNew(memo);
         return memo;

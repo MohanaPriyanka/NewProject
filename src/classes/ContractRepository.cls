@@ -56,6 +56,26 @@ public without sharing class ContractRepository {
     }
 
     /**
+     * @description Initializes the repository with Contract Fee Details from a set of Contract Ids
+     * @param subscriptionOrders List of Subscription Orders from which to find contracts
+     */
+    public static void initFromSubscriptionOrders(List<Subscription_Order__c> subscriptionOrders) {
+        Set<Id> contractIds = new Set<Id>();
+        Set<Id> sssIdsRequiringProjectContracts = new Set<Id>();
+        for (Subscription_Order__c subOrder : subscriptionOrders) {
+            contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c);
+            contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c);
+            if (subOrder.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c == 'Project Contract: Effective Date') {
+                sssIdsRequiringProjectContracts.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__c);
+            }
+        }
+
+        initFromContractIds(contractIds);
+        initFromSharedSolarSystems(sssIdsRequiringProjectContracts);
+    }
+
+
+    /**
      * @description Used after initializing the repository with Contract Ids to get a MultiMap of Contract to Contract Fee Details
      * @return MultiMap
      */
