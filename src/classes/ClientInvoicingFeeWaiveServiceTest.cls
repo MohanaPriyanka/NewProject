@@ -229,21 +229,35 @@ public class ClientInvoicingFeeWaiveServiceTest {
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType
         });
-        Subscription_Order__c so = getSubscriptionOrder();
+        Subscription_Order__c so = getSubscriptionOrder(25, -100);
         so.Effective_Date__c = Date.newInstance(2020,10,1);
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: COD';
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
         so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = Date.newInstance(2020,10,1);
-        Client_Invoicing_Memo__c cim = service.waiveFeeBasedOnDate(so);
-
         so.Approved_Change_in_Subscription__c = -12;
-        cim = service.waiveFeeBasedOnDate(so);
-        System.assertEquals(null, cim,
-            'Should not get a fee waive for reductions');
+        Client_Invoicing_Memo__c cim = service.waiveFeeBasedOnDate(so);
+        System.assert(cim != null && so.Client_Invoicing_Fee__c != null,
+            'Should get a fee waive for reductions, as long as Client Invoicing Fee is set');
 
-        so.Approved_Change_in_Subscription__c = 12;
+        so = getSubscriptionOrder(25, 0);
+        so.Effective_Date__c = Date.newInstance(2020,10,1);
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: COD';
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
+        so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = Date.newInstance(2020,10,1);
+        so.Approved_Change_in_Subscription__c = 0;
+        cim = service.waiveFeeBasedOnDate(so);
+        System.assert(cim == null && so.Client_Invoicing_Fee__c == 0,
+            'Should not get a fee waive if there is no Client Invoicing Fee');
+
+        so = getSubscriptionOrder(25, 100);
+        so.Effective_Date__c = Date.newInstance(2020,10,1);
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: COD';
+        so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = false;
+        so.Utility_Account_Subscription__r.Shared_Solar_System__r.Actual_COD_Date__c = Date.newInstance(2020,10,1);
+        so.Approved_Change_in_Subscription__c = 12;
         cim = service.waiveFeeBasedOnDate(so);
         System.assertEquals(null, cim,
             'Should not get a fee waive in the initial period if the CFD does not enable that option');
@@ -326,7 +340,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
             Client_Invoicing_Memo__c.SObjectType
         });
         // Since System Change Rounded is not writable, we have to set it when creating the SO...
-        Subscription_Order__c so = getSubscriptionOrderWithSystemChangeRounded(25);
+        Subscription_Order__c so = getSubscriptionOrder(25);
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Customer: Assignment Date';
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c = true;
@@ -335,7 +349,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
         System.assertEquals(null, cim,
             'Should have not gotten an invoicing memo since the system change on the order is not 0');
 
-        so = getSubscriptionOrderWithSystemChangeRounded(0);
+        so = getSubscriptionOrder(0);
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Customer: Assignment Date';
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = true;
@@ -349,7 +363,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
         System.assertEquals(-subscriptionSizeAtTimeOfAssignment * .10 * 1000, cim.Amount__c,
             'Expected the invoicing memo to be based on the size at time of Assignment, not the latest Approved Change in Subscription');
 
-        so = getSubscriptionOrderWithSystemChangeRounded(0);
+        so = getSubscriptionOrder(0);
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Customer: Assignment Date';
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_In_Initial_Period__c = false;
@@ -381,7 +395,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
             Client_Invoicing_Memo__c.SObjectType
         });
         // Since System Change Rounded is not writable, we have to set it when creating the SO...
-        Subscription_Order__c so = getSubscriptionOrderWithSystemChangeRounded(25);
+        Subscription_Order__c so = getSubscriptionOrder(25);
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: Estimated COD or Customer: Assignment Date';
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_After_Initial_Period__c = false;
@@ -390,7 +404,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
         System.assertEquals(null, cim,
             'Should have not gotten an invoicing memo since the system change on the order is not 0');
 
-        so = getSubscriptionOrderWithSystemChangeRounded(0);
+        so = getSubscriptionOrder(0);
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: Estimated COD or Customer: Assignment Date';
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_Estimated_COD__c = System.today();
@@ -406,7 +420,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
         System.assertEquals(-subscriptionSizeAtTimeOfAssignment * so.Contract_Fee_Detail__r.Fee__c * 1000, cim.Amount__c,
             'Expected the invoicing memo to be based on the size at time of Assignment, not the latest Approved Change in Subscription');
 
-        so = getSubscriptionOrderWithSystemChangeRounded(0);
+        so = getSubscriptionOrder(0);
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: Estimated COD or Customer: Assignment Date';
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_Estimated_COD__c = System.today().addMonths(-2);
@@ -422,7 +436,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
                 'there is no Assignment Agreement, the SO Effective date is today, ' +
                 'and we only waive fees for one month');
 
-        so = getSubscriptionOrderWithSystemChangeRounded(0);
+        so = getSubscriptionOrder(0);
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c = 'Project: Estimated COD or Customer: Assignment Date';
         so.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Number_Months__c = 1;
         so.Contract_Fee_Detail__r.Waive_Reacq_Fee_Estimated_COD__c = System.today().addMonths(-2);
@@ -457,16 +471,20 @@ public class ClientInvoicingFeeWaiveServiceTest {
     }
 
     private static Subscription_Order__c getSubscriptionOrder() {
-        return getSubscriptionOrderWithSystemChangeRounded(25);
+        return getSubscriptionOrder(25, 100);
     }
-    private static Subscription_Order__c getSubscriptionOrderWithSystemChangeRounded(Decimal systemChangeRounded) {
+    private static Subscription_Order__c getSubscriptionOrder(Decimal systemChangeRounded) {
+        return getSubscriptionOrder(systemChangeRounded, 100);
+    }
+    private static Subscription_Order__c getSubscriptionOrder(Decimal systemChangeRounded, Decimal clientInvoicingFee) {
         Date today = System.today();
         Map<SObjectField, Object> subscriptionOrderValues = new Map<SObjectField, Object> {
             Subscription_Order__c.Id => Util.getFakeId(Subscription_Order__c.SObjectType),
             Subscription_Order__c.Effective_Date__c => today,
             Subscription_Order__c.Utility_Account_Subscription__c => Util.getFakeId(Utility_Account_Subscription__c.SObjectType),
             Subscription_Order__c.Approved_Change_in_Subscription__c => 12,
-            Subscription_Order__c.System_Change_kW_DC_Rounded__c => systemChangeRounded
+            Subscription_Order__c.System_Change_kW_DC_Rounded__c => systemChangeRounded,
+            Subscription_Order__c.Client_Invoicing_Fee__c => clientInvoicingFee
         };
         sfab_FabricatedSObject fabbedSO = new sfab_FabricatedSObject(Subscription_Order__c.class, subscriptionOrderValues);
         Map<SObjectField, Object> cfdValues = new Map<SObjectField, Object> {

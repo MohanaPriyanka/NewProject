@@ -19,18 +19,20 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         init();
     }
 
+    public void init(Set<Id> subscriptionOrderIds) {
+        this.subscriptionOrderIds = subscriptionOrderIds;
+        init();
+    }
+
     private void init() {
         queriedSOs = subscriptionOrderSelector.selectByIds(subscriptionOrderIds);
-        Set<Id> contractIds = new Set<Id>();
+        ContractRepository.initFromSubscriptionOrders(queriedSOs);
         for (Subscription_Order__c subOrder : queriedSOs) {
             if (hasRequiredFieldsForAssignment(subOrder)) {
                 SubscriptionOrder feeQualifier = new SubscriptionOrder(subOrder);
                 subOrdersAsFeeQualifications.add(feeQualifier);
-                contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c);
-                contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c);
             }
         }
-        ContractRepository.initFromContractIds(contractIds);
     }
 
     /**
@@ -86,7 +88,6 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     /**
      * @description Registers a Subscription Order with a CFD update with this service's UOW.
      * @param subscriptionOrder The Subscription Order to get assigned a Contract Fee Detail
-     * @param contractToFeeDetailMap A MultiMap of Contract Ids to CFDs, to be used to find potential CFDs for that SO
      * @return A Subscription Order with a potentially populated CFD
      */
     @TestVisible
