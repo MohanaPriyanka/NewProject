@@ -63,6 +63,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Date_Removed_from_Project__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_Account_Log__c.Date_Utility_Account_Cancelled__c</field>
         <readable>true</readable>
     </fieldPermissions>
