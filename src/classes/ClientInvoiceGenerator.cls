@@ -5,7 +5,7 @@
  */
 
 public without sharing class ClientInvoiceGenerator {
-    private static SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
+    @TestVisible private static SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
     private static ClientInvoicingMemoSelector clientInvoicingMemoSelector = new ClientInvoicingMemoSelector();
     private static SharedSolarSystemsSelector sharedSolarSystemsSelector = new SharedSolarSystemsSelector();
     private static Id clientInvoicingRecordTypeId =
@@ -63,6 +63,7 @@ public without sharing class ClientInvoiceGenerator {
         uow.commitWork();
     }
 
+    @TestVisible
     private Invoice__c generateInvoiceForClient(Id clientAccountId,
         String clientName,
         List<Shared_Solar_System__c> sharedSolarSystems,
@@ -79,16 +80,35 @@ public without sharing class ClientInvoiceGenerator {
             Effective_Date__c = Date.newInstance(effectiveDate.year(), effectiveDate.month(), effectiveDate.day())
         );
         uow.registerNew(invoice);
-        List<Subscription_Order__c> subscriptionOrders = subscriptionOrderSelector.getUninvoicedBySSS(sharedSolarSystems, effectiveDate, forAcquisition);
-        Set<Id> subscriptionOrdersNettingToZero = getSubscriptionOrdersNettingToZero(subscriptionOrders);
-        for (Subscription_Order__c subscriptionOrder : subscriptionOrders) {
-            generateLineItemFromSO(subscriptionOrder, invoice, includeAssignmentFees, includeChangeFees, subscriptionOrdersNettingToZero);
+        List<Subscription_Order__c> subscriptionOrdersIncludedInInvoice =
+            getSubscriptionOrdersIncludedInInvoice(sharedSolarSystems, effectiveDate, forAcquisition, includeAssignmentFees, includeChangeFees);
+        Set<Id> subscriptionOrdersNettingToZero = getSubscriptionOrdersNettingToZero(subscriptionOrdersIncludedInInvoice);
+        for (Subscription_Order__c subscriptionOrder : subscriptionOrdersIncludedInInvoice) {
+            generateLineItemFromSO(subscriptionOrder, invoice, subscriptionOrdersNettingToZero);
         }
         List<Client_Invoicing_Memo__c> clientInvoicingMemos = clientInvoicingMemoSelector.getUninvoicedBySSS(sharedSolarSystems, effectiveDate, forAcquisition);
         for (Client_Invoicing_Memo__c cim : clientInvoicingMemos) {
             generateLineItemFromCIM(cim, invoice, includeAssignmentFees, includeChangeFees);
         }
         return invoice;
+    }
+
+    private List<Subscription_Order__c> getSubscriptionOrdersIncludedInInvoice(
+        List<Shared_Solar_System__c> sharedSolarSystems,
+        Datetime effectiveDate,
+        Boolean forAcquisition,
+        Boolean includeAssignmentFees,
+        Boolean includeChangeFees
+    ) {
+        List<Subscription_Order__c> subscriptionOrders = subscriptionOrderSelector.getUninvoicedBySSS(sharedSolarSystems, effectiveDate, forAcquisition);
+        List<Subscription_Order__c> subscriptionOrdersIncludedInInvoice = new List<Subscription_Order__c>();
+        for (Subscription_Order__c subscriptionOrder : subscriptionOrders) {
+            if ((includeAssignmentFees && subscriptionOrder.Client_Assignment_Agreement__c != null) ||
+                (includeChangeFees && subscriptionOrder.Client_Assignment_Agreement__c == null)) {
+                subscriptionOrdersIncludedInInvoice.add(subscriptionOrder);
+            }
+        }
+        return subscriptionOrdersIncludedInInvoice;
     }
 
     /**
@@ -129,8 +149,6 @@ public without sharing class ClientInvoiceGenerator {
      * @description Registers a new Invoice Line Item with this class's UOW
      * @param subscriptionOrder The Subscription Order to relate to an Invoice
      * @param invoice The Invoice to relate to the Subscription Order
-     * @param includeAssignmentFees If True, generates an Invoice Line Item if the SO is related to an Assignment Agreement
-     * @param includeChangeFees If True, generates an Invoice Line Item if the SO is not related to an Assignment Agreement
      * @param subscriptionOrdersNettingToZero If subscriptionOrder is in this set of subscription order ids that net to zero,
      * generateLineItemFromSO will set the Nets to Zero flag on the invoice line item
      * @return The Invoice Line Item, or null if none was registered
@@ -138,28 +156,23 @@ public without sharing class ClientInvoiceGenerator {
     public Invoice_Line_Item__c generateLineItemFromSO(
         Subscription_Order__c subscriptionOrder,
         Invoice__c invoice,
-        Boolean includeAssignmentFees,
-        Boolean includeChangeFees,
         Set<Id> subscriptionOrdersNettingToZero
     ) {
-        if ((includeAssignmentFees && subscriptionOrder.Client_Assignment_Agreement__c != null) ||
-            (includeChangeFees && subscriptionOrder.Client_Assignment_Agreement__c == null)) {
-            LineItemDetails details = new LineItemDetails(subscriptionOrder);
-            Invoice_Line_Item__c invoiceLineItem = new Invoice_Line_Item__c(
-                Subscription_Order__c = subscriptionOrder.Id,
-                Assignment_Agreement_Contract__c = subscriptionOrder.Client_Assignment_Agreement__c,
-                Shared_Solar_System__c = subscriptionOrder.Utility_Account_Subscription__r.Shared_Solar_System__c,
-                Amount__c = subscriptionOrder.Client_Invoicing_Fee__c,
-                Details__c = JSON.serializePretty(details),
-                Nets_to_Zero__c = subscriptionOrdersNettingToZero.contains(subscriptionOrder.Id)
-            );
-            uow.registerNew(invoiceLineItem, Invoice_Line_Item__c.Invoice__c, invoice);
-            subscriptionOrder.Invoice_Date__c = invoice.Effective_Date__c==null?System.today():invoice.Effective_Date__c;
-            uow.registerDirty(subscriptionOrder, Subscription_Order__c.Invoice_Line_Item__c, invoiceLineItem);
-            return invoiceLineItem;
-        }
-        return null;
+        LineItemDetails details = new LineItemDetails(subscriptionOrder);
+        Invoice_Line_Item__c invoiceLineItem = new Invoice_Line_Item__c(
+            Subscription_Order__c = subscriptionOrder.Id,
+            Assignment_Agreement_Contract__c = subscriptionOrder.Client_Assignment_Agreement__c,
+            Shared_Solar_System__c = subscriptionOrder.Utility_Account_Subscription__r.Shared_Solar_System__c,
+            Amount__c = subscriptionOrder.Client_Invoicing_Fee__c,
+            Details__c = JSON.serializePretty(details),
+            Nets_to_Zero__c = subscriptionOrdersNettingToZero.contains(subscriptionOrder.Id)
+        );
+        uow.registerNew(invoiceLineItem, Invoice_Line_Item__c.Invoice__c, invoice);
+        subscriptionOrder.Invoice_Date__c = invoice.Effective_Date__c==null?System.today():invoice.Effective_Date__c;
+        uow.registerDirty(subscriptionOrder, Subscription_Order__c.Invoice_Line_Item__c, invoiceLineItem);
+        return invoiceLineItem;
     }
+
 
     /**
      * @description Registers a new Invoice Line Item with this class's UOW
