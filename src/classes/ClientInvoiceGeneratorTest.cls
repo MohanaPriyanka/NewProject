@@ -292,7 +292,84 @@ public with sharing class ClientInvoiceGeneratorTest {
         subscriptionOrders.add(getSO('123-45', Util.incrementFakeId(sssId), 10));
         System.assertEquals(2, clientInvoiceGenerator.getSubscriptionOrdersNettingToZero(subscriptionOrders).size(),
             'Since the latest SO has the same UAN and project, it should net out');
+    }
 
+    @IsTest
+    private static void netsToZeroShouldRespectAssignmentsVsChanges() {
+        Subscription_Order__c assignmentSO = getSO('01234', Util.getFakeId(Shared_Solar_System__c.SObjectType), 10);
+        assignmentSO.Client_Assignment_Agreement__c = Util.getFakeId(Contract.SObjectType);
+        Subscription_Order__c changeSO = getSO('01234', Util.getFakeId(Shared_Solar_System__c.SObjectType), -10);
+
+        MockSubscriptionOrderSelector mockSubscriptionOrderSelector = new MockSubscriptionOrderSelector(
+            new List<Subscription_Order__c>{
+                assignmentSO, changeSO
+            }
+        );
+        ClientInvoiceGenerator.subscriptionOrderSelector =
+            (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, mockSubscriptionOrderSelector);
+
+        new ClientInvoiceGenerator().generateInvoiceForClient(
+            Util.getFakeId(Account.SObjectType),
+            'Test Client',
+            new List<Shared_Solar_System__c>(),
+            true, // includeAssignment
+            true, // includeChanges
+            System.now(),
+            true // forAcquisition
+        );
+        List<Invoice_Line_Item__c> invoiceLineItems =
+            (List<Invoice_Line_Item__c>) FFLibHelperTest.getRegisterNewListFromUnitOfWork(ClientInvoiceGenerator.uow, 'Invoice_Line_Item__c');
+        System.assertEquals(2, invoiceLineItems.size(), 'There should be a line item for the assignment SO and one for the change');
+        System.assertEquals(true, invoiceLineItems[0].Nets_to_Zero__c,
+            'The first line item should have Nets_To_Zero__c checked');
+        System.assertEquals(true, invoiceLineItems[1].Nets_to_Zero__c,
+            'The second line item should have Nets_To_Zero__c checked');
+
+        ClientInvoiceGenerator.uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType> {
+                Invoice__c.SObjectType,
+                Invoice_Line_Item__c.SObjectType,
+                Subscription_Order__c.SObjectType,
+                Client_Invoicing_Memo__c.SObjectType
+            }
+        );
+        new ClientInvoiceGenerator().generateInvoiceForClient(
+            Util.getFakeId(Account.SObjectType),
+            'Test Client',
+            new List<Shared_Solar_System__c>(),
+            true, // includeAssignment
+            false, // includeChanges
+            System.now(),
+            true // forAcquisition
+        );
+        invoiceLineItems =
+            (List<Invoice_Line_Item__c>) FFLibHelperTest.getRegisterNewListFromUnitOfWork(ClientInvoiceGenerator.uow, 'Invoice_Line_Item__c');
+        System.assertEquals(1, invoiceLineItems.size(), 'There should be one line item for the assignment SO');
+        System.assertEquals(false, invoiceLineItems[0].Nets_to_Zero__c, 'Since there is only one invoice line item, ' +
+            'and it does not net to zero with anything else, Nets_To_Zero__c should not be checked');
+
+        ClientInvoiceGenerator.uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType> {
+                Invoice__c.SObjectType,
+                Invoice_Line_Item__c.SObjectType,
+                Subscription_Order__c.SObjectType,
+                Client_Invoicing_Memo__c.SObjectType
+            }
+        );
+        new ClientInvoiceGenerator().generateInvoiceForClient(
+            Util.getFakeId(Account.SObjectType),
+            'Test Client',
+            new List<Shared_Solar_System__c>(),
+            false, // includeAssignment
+            true, // includeChanges
+            System.now(),
+            true // forAcquisition
+        );
+        invoiceLineItems =
+            (List<Invoice_Line_Item__c>) FFLibHelperTest.getRegisterNewListFromUnitOfWork(ClientInvoiceGenerator.uow, 'Invoice_Line_Item__c');
+        System.assertEquals(1, invoiceLineItems.size(), 'There should be one line item for the change SO');
+        System.assertEquals(false, invoiceLineItems[0].Nets_to_Zero__c, 'Since there is only one invoice line item, ' +
+            'and it does not net to zero with anything else, Nets_To_Zero__c should not be checked');
     }
 
     private static Subscription_Order__c getSO(String utilityAccountNumber, Id sssId, Decimal clientInvoicingFee) {
@@ -309,9 +386,6 @@ public with sharing class ClientInvoiceGeneratorTest {
         return (Subscription_Order__c) fabbedSO.toSObject();
     }
 
-    /**
-     * @description MOCKS ***
-     **/
     public class MockClientInvoiceGenerator extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
@@ -325,9 +399,6 @@ public with sharing class ClientInvoiceGeneratorTest {
         }
     }
 
-    /**
-     * @description MOCKS ***
-     **/
     public class MockClientInvoicingMemoSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
@@ -337,6 +408,21 @@ public with sharing class ClientInvoiceGeneratorTest {
                         Amount__c = 100
                     );
                     return new List<Client_Invoicing_Memo__c>{clientInvoicingMemo};
+                }
+            }
+            return null;
+        }
+    }
+
+    public class MockSubscriptionOrderSelector extends MockProvider {
+        private List<Subscription_Order__c> subscriptionOrders;
+        public MockSubscriptionOrderSelector(List<Subscription_Order__c> subscriptionOrdersToReturn) {
+            this.subscriptionOrders = subscriptionOrdersToReturn;
+        }
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'getUninvoicedBySSS' {
+                    return subscriptionOrders;
                 }
             }
             return null;

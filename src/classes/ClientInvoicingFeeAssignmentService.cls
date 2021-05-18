@@ -19,11 +19,6 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         init();
     }
 
-    public void init(Set<Id> subscriptionOrderIds) {
-        this.subscriptionOrderIds = subscriptionOrderIds;
-        init();
-    }
-
     private void init() {
         queriedSOs = subscriptionOrderSelector.selectByIds(subscriptionOrderIds);
         ContractRepository.initFromSubscriptionOrders(queriedSOs);
@@ -96,12 +91,12 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         Subscription_Order__c orderToUpdate;
         MultiMap multiMapForDuplicateCFDCheck = MultiMap.newListInstance();
         for (ContractFeeDetail cfd : contractFeeDetails) {
-            if (!cfd.matches(subscriptionOrder) || subscriptionOrder.contractFeeDetailId == cfd.recordId) {
+            if (!cfd.matches(subscriptionOrder)) {
                 continue;
             }
             orderToUpdate = handleMatchingCFD(orderToUpdate, subscriptionOrder, cfd, multiMapForDuplicateCFDCheck);
         }
-        if (orderToUpdate != null) {
+        if (orderToUpdate != null && subscriptionOrder.contractFeeDetailId != orderToUpdate.Contract_Fee_Detail__c) {
             uow.registerDirty(orderToUpdate);
         }
         for (Object sharedSolarSystemId : multiMapForDuplicateCFDCheck.keySet()) {
