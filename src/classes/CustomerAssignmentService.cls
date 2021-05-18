@@ -40,11 +40,11 @@ public without sharing class CustomerAssignmentService {
         if (signedAAIds.size() > 0 ) {
             List<Shared_Solar_System__c> sssList = populateFirstCustomerAssignmentDate(signedAAIds);
             Util.updateSObjs(sssList);
-            String emailTemplateName = 'Project Assignment (Hybrid MA Product)';
+            // String emailTemplateName = 'Project Assignment (Hybrid MA Product)';
             // sendDisclosureFormEmail(contractMap, emailTemplateName);
         }
     }
-    
+
     public static void sendDisclosureFormEmail(Map<Id,Contract> contractMap, String emailTemplateName){
         for(Contract aa : contractMap.values()){
             Set<Id> contractIds = new Set<Id>();
@@ -94,6 +94,11 @@ public without sharing class CustomerAssignmentService {
         List<Subscription_Order__c> sosWithUpdatedAssignmentAgreements =
             getSOsToUpdateFromContracts(approvedSubscriptionOrdersByContract, contractsToAssignmentAgreementMap);
         Util.updateSObjs(sosWithUpdatedAssignmentAgreements);
+
+        ClientInvoicingFeeAssignmentService assignmentService =
+            new ClientInvoicingFeeAssignmentService(CollectionUtil.getIdSet(sosWithUpdatedAssignmentAgreements));
+        assignmentService.setSubOrderContractFeeDetail();
+        Logger.logNow('CustomerAssignmentService', 'assignSOsAssignmentAgreement', 'Check limits', Logger.FINE);
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -157,10 +162,11 @@ public without sharing class CustomerAssignmentService {
     }
     
     /**
-    * @description Searches for related Contracts that are in need of a Project Specific Addendum (sent to MA customers
-    * after they have been assigned) after a Allocation Schedule has been created
-    * @param uasList List of Subscriptions from an Allocation Schedule
-    */
+     * @description Searches for related Contracts that are in need of a Project Specific Addendum (sent to MA customers
+     * after they have been assigned) after a Allocation Schedule has been created
+     * @param uasList List of Subscriptions from an Allocation Schedule
+     * @return List of Contract
+     */
     public List<Contract> generateAddendumsFromSubscriptions(List<Utility_Account_Subscription__c> uasList) {
         Set<Id> contractIds = new Set<Id>();
         for (Utility_Account_Subscription__c uas : uasList) {
