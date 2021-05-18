@@ -94,6 +94,16 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         System.assertEquals(1, Logger.logs.size(), 'There should be a single list of messages for matchSubscriptionOrderToFee');
         System.assertEquals(1, Logger.logs.values()[0].size(), 'There should just be one log later message for duplicate CFDs found');
         System.assert(Logger.logs.values()[0][0].message.contains('Multiple CFDs found for SO'), Logger.logs.values()[0][0].message);
+
+        ContractRepository.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific});
+        System.assertEquals(sssSpecific.Shared_Solar_System__c, subscriptionOrder.sharedSolarSystemId,
+            'The test setup should have a SSS-specific CFD and a SO specifying that system');
+        subscriptionOrder.contractFeeDetailId = sssSpecific.Id;
+        subscriptionOrderWithCFD =
+            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+        System.assertEquals(sssSpecific.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
+            'The SO already had the system-specific CFD on it, and should retain it after running fee assignment'
+        );
     }
 
     @IsTest
