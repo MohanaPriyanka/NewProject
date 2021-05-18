@@ -238,7 +238,7 @@ public class UserHandlerTest {
 			WHERE IsActive = TRUE
 		];
 
-		System.assertEquals(previousNumberUsers + 1, userListUpdated.size());
+		System.assertEquals(previousNumberUsers + 1, userListUpdated.size(),'We should only create a user for a completed opportunity once');
 	}
 
 	@IsTest public static void testLoanOpp() {
@@ -250,9 +250,9 @@ public class UserHandlerTest {
 		Test.stopTest();
 
 		List<User> accounts = [SELECT Id FROM User WHERE LastName = 'Account'];
-		System.assertEquals(0, accounts.size());
+		System.assertEquals(0, accounts.size(),'We should not create a user when a loan opp is completed');
 		List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c WHERE Class__c = 'UserHandler'];
-		System.assertEquals(0, errors.size());
+		System.assertEquals(0, errors.size(),'We should not attempt to create a user and have an error when a loan opp is completed');
 	}
 
 	@IsTest
@@ -275,7 +275,7 @@ public class UserHandlerTest {
 			WHERE WhoId = : newContact.Id
 			AND Subject LIKE '%Portal Activation%'
 		];
-		System.assertEquals(0,beforeTasks.size());
+		System.assertEquals(0,beforeTasks.size(),'There should not be any Portal Activation tasks prior to a user being created');
 
 		Test.startTest();
 			User newUser = insertUser(newContact);
@@ -291,11 +291,11 @@ public class UserHandlerTest {
 			WHERE WhoId = : newContact.Id
 			AND Subject LIKE '%Portal Activation%'
 		];
-		System.assertEquals(1,afterTasks.size());
+		System.assertEquals(1,afterTasks.size(), 'We should create a Portal Activation task after a user is created');
 	}
 
 	private static User insertUser(Contact contact) {
-		Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Community Solar Community User'];
+		Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Community Solar User'];
 
 		User userToInsert = new User(
 			FirstName = contact.FirstName,
