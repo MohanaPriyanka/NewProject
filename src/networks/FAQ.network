@@ -4,14 +4,14 @@
     <allowMembersToFlag>false</allowMembersToFlag>
     <changePasswordTemplate>CS_Application_Email_Notifications/CommunityChangePasswordEmailTemplate</changePasswordTemplate>
     <communityRoles/>
-    <disableReputationRecordConversations>true</disableReputationRecordConversations>
+    <disableReputationRecordConversations>false</disableReputationRecordConversations>
     <emailSenderAddress>customercare@bluewavesolar.com</emailSenderAddress>
     <emailSenderName>BlueWave</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>true</enableDirectMessages>
     <enableGuestChatter>true</enableGuestChatter>
     <enableGuestFileAccess>true</enableGuestFileAccess>
-    <enableGuestMemberVisibility>true</enableGuestMemberVisibility>
+    <enableGuestMemberVisibility>false</enableGuestMemberVisibility>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
     <enableMemberVisibility>true</enableMemberVisibility>
@@ -30,11 +30,10 @@
         <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
         <profile>api only</profile>
-        <profile>external bfg user</profile>
-        <profile>bfg standard user</profile>
         <profile>bw technology</profile>
-        <profile>bwc executive</profile>
         <profile>bfg marketing user</profile>
+        <profile>bfg standard user</profile>
+        <profile>external bfg user</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
