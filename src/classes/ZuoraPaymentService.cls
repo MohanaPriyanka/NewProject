@@ -9,6 +9,7 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
     private ZuoraOutstandingItemsService outstandingItemsService = new ZuoraOutstandingItemsService();
     private ZuoraAccountSelector zuoraAccountSelector = new ZuoraAccountSelector();
 
+    @SuppressWarnings('PMD.EmptyStatementBlock')
     public ZuoraPaymentService() {
     }
     public ZuoraPaymentService(List<ZuoraAPI.Payment> paymentsToApply) {
@@ -51,7 +52,8 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
         ZuoraPaymentPageController.PaymentResponse result =
             (ZuoraPaymentPageController.PaymentResponse) System.JSON.deserialize(response.getBody(), ZuoraPaymentPageController.PaymentResponse.class);
         if (!result.success) {
-            if (response.getBody().contains('optimistic locking failed')) {
+            if (response.getBody().contains('optimistic locking failed') ||
+                response.getBody().contains('please retry later')) {
                 throw new Util.BWException(response.getBody() + '\n' + JSON.serialize(successfulPayment) + '\n' + JSON.serialize(application));
             } else {
                 throw new Util.FatalBWException('Payment application failure in Zuora:\n' +
@@ -91,28 +93,34 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
             item.AmountOutstanding = item.AmountOutstanding.setScale(2, RoundingMode.HALF_UP);
             applicationAmount = Math.min(paymentAmount,item.AmountOutstanding);
             paymentAmount -= applicationAmount;
-            if (item.IsInvoiceItem) {
-                if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
-                    application.invoices.add(new ZuoraAPI.ZuoraInvoiceApplication(item.Id, applicationAmount));
-                } else {
-                    application.invoices.add(new ZuoraAPI.ZuoraInvoiceApplication(item.ParentId, item.Id, applicationAmount));
-                }
-            } else {
-                if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
-                    application.debitMemos.add(new ZuoraAPI.ZuoraDebitMemoApplication(item.Id, applicationAmount));
-                } else {
-                    application.debitMemos.add(new ZuoraAPI.ZuoraDebitMemoApplication(item.ParentId, item.Id, applicationAmount));
-                }
-            }
+            addItemToApplication(item, outstandingItemsAreDebitMemosOrInvoicesNotItems, application, applicationAmount);
             if (item.EffectiveDate > effectiveDate) {
                 effectiveDate = item.EffectiveDate;
             }
         }
-        if (paymentAmount > 0){
-            Logger.logLater('ZuoraPaymentService','applyPaymentToOutstandingItems','Payment was not completely applied: ' + String.valueOf(payment), Logger.WARN);
-        }
         application.effectiveDate = DateUtil.convertGmtToDate(effectiveDate);
         return application;
+    }
+
+    private void addItemToApplication(
+        ZuoraOutstandingItemsService.OutstandingItem item,
+        Boolean outstandingItemsAreDebitMemosOrInvoicesNotItems,
+        ZuoraAPI.ZuoraPaymentApplication application,
+        Decimal applicationAmount
+    ) {
+        if (item.IsInvoiceItem) {
+            if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
+                application.invoices.add(new ZuoraAPI.ZuoraInvoiceApplication(item.Id, applicationAmount));
+            } else {
+                application.invoices.add(new ZuoraAPI.ZuoraInvoiceApplication(item.ParentId, item.Id, applicationAmount));
+            }
+        } else {
+            if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
+                application.debitMemos.add(new ZuoraAPI.ZuoraDebitMemoApplication(item.Id, applicationAmount));
+            } else {
+                application.debitMemos.add(new ZuoraAPI.ZuoraDebitMemoApplication(item.ParentId, item.Id, applicationAmount));
+            }
+        }
     }
 
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
