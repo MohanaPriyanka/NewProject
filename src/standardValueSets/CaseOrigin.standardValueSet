@@ -31,4 +31,9 @@
         <default>false</default>
         <label>Partner Portal</label>
     </standardValue>
+    <standardValue>
+        <fullName>Internal</fullName>
+        <default>false</default>
+        <label>Internal</label>
+    </standardValue>
 </StandardValueSet>
