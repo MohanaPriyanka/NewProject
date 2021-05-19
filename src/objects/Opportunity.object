@@ -1566,6 +1566,17 @@ Annual_Consumption__c &gt; 0 , Annual_Consumption__c   / Shared_Solar_System__r.
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Cancellation_Request_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account.Cancellation_Request_Date__c</formula>
+        <inlineHelpText>This is the Cancellation Request Date for the Account.</inlineHelpText>
+        <label>Cancellation Request Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Cancellation_policy__c</fullName>
         <externalId>false</externalId>
         <label>Cancellation policy</label>
