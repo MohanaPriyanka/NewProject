@@ -3,8 +3,32 @@
     <active>true</active>
     <dataCategory>
         <dataCategory>
+            <label>Client Reporting</label>
+            <name>Client_Reporting</name>
+        </dataCategory>
+        <dataCategory>
+            <label>CS Management</label>
+            <name>QS_Management</name>
+        </dataCategory>
+        <dataCategory>
+            <label>Customer Billing</label>
+            <name>Customer_Billing</name>
+        </dataCategory>
+        <dataCategory>
             <label>Customer Support</label>
             <name>Customer_Support</name>
+        </dataCategory>
+        <dataCategory>
+            <label>Partner Support</label>
+            <name>Partner_Support</name>
+        </dataCategory>
+        <dataCategory>
+            <label>QC / Onboarding</label>
+            <name>QC_Management</name>
+        </dataCategory>
+        <dataCategory>
+            <label>Suscription Management</label>
+            <name>Suscription_Management</name>
         </dataCategory>
         <label>All</label>
         <name>All</name>
