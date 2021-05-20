@@ -94003,7 +94003,7 @@
         <tab>zqu__ZuoraConfig__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
-    <userLicense>Partner Community Login</userLicense>
+    <userLicense>Partner Community</userLicense>
     <userPermissions>
         <enabled>false</enabled>
         <name>AICreateInsightObjects</name>
