@@ -48912,11 +48912,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Contracts_Needed_to_COD__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Conversion_Rate__c</field>
         <readable>true</readable>
     </fieldPermissions>
