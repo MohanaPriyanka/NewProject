@@ -14,12 +14,6 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
-        <object>Commission_Structure__c</object>
-        <objectField>Partner_Account__c</objectField>
-        <userField>Account</userField>
-    </accessMappings>
-    <accessMappings>
-        <accessLevel>Read</accessLevel>
         <object>Contact</object>
         <objectField>Account</objectField>
         <userField>Account</userField>
@@ -50,6 +44,6 @@
     </accessMappings>
     <description>Community Sharing Set for the Manager Users Portal Partner.</description>
     <name>Partner Portal Manager Sharing Set</name>
-    <profiles>Partner Portal Community Manager</profiles>
-    <profiles>Partner Portal Community Manager Log in</profiles>
+    <profiles>partner portal community manager</profiles>
+    <profiles>partner portal community manager user</profiles>
 </SharingSet>

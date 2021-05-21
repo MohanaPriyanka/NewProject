@@ -32,8 +32,7 @@
         <profile>admin</profile>
         <profile>partner portal community manager</profile>
         <profile>bw technology</profile>
-        <profile>partner portal community manager log in</profile>
-        <profile>partner portal community user login</profile>
+        <profile>partner portal community manager user</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
