@@ -51,5 +51,4 @@
     <description>Grants read access to SSS (and read access to detail objects in master details relationships where SSS is the master) and Opportunity based off of client lookup.
 Specifically for Client profile with Related Account access on Contact.</description>
     <name>Client Portal - Related Accounts</name>
-    <profiles>cs client partner login_related accounts</profiles>
 </SharingSet>
