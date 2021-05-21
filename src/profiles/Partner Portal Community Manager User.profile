@@ -49077,11 +49077,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Next_Schedule_Z_Label__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Number_of_Billed_Production_Periods__c</field>
         <readable>true</readable>
     </fieldPermissions>
