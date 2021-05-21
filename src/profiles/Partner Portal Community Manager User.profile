@@ -49072,11 +49072,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Min_Schedule_Z_to_Utility_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.NMC_Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
