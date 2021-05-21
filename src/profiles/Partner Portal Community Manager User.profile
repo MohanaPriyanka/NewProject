@@ -49277,11 +49277,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.User__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Utility_NMC_Tariff__c</field>
         <readable>true</readable>
     </fieldPermissions>
