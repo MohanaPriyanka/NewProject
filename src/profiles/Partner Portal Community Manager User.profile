@@ -48942,11 +48942,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Energy_Analytics_del__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Est_Utility_NMC_Transfer_to_Host_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
