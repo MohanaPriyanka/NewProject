@@ -48842,11 +48842,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Billing_Cycle_Group_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Billing_Cycle_Start_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
