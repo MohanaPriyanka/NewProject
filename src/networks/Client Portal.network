@@ -32,7 +32,7 @@
         <profile>admin</profile>
         <profile>cs client partner login</profile>
         <profile>cs client partner login_gsrp</profile>
-        <profile>cs client partner user</profile>
+        <profile>CS Client Partner User</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>

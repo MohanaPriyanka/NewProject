@@ -5,6 +5,7 @@
     <changePasswordTemplate>CSPartnerEmails/Partner_Portal_Password_Reset</changePasswordTemplate>
     <communityRoles/>
     <disableReputationRecordConversations>false</disableReputationRecordConversations>
+    <emailFooterLogo>Communities_Shared_Document_Folder/BlueLogo_png.png</emailFooterLogo>
     <emailSenderAddress>partnersupport@bluewavesolar.com</emailSenderAddress>
     <emailSenderName>BlueWave Solar</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
@@ -32,7 +33,7 @@
         <profile>admin</profile>
         <profile>partner portal community manager</profile>
         <profile>bw technology</profile>
-        <profile>partner portal community manager user</profile>
+        <profile>Partner Portal Community Manager User</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
