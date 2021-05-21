@@ -49297,11 +49297,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.kW_Needed_To_Hit_NTP_Threshold__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.kW_needed_to_hit_payment_threshold__c</field>
         <readable>true</readable>
     </fieldPermissions>
