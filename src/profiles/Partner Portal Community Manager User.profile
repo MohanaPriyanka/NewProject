@@ -49037,11 +49037,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Latitude_and_Longitude__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Management_Fee_Escalator_Start_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
