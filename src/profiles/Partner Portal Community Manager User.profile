@@ -49297,11 +49297,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.kW_needed_to_hit_payment_threshold__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Snapshot_Report_Object__c.Active_Customer_Users__c</field>
         <readable>false</readable>
     </fieldPermissions>
