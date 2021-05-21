@@ -14,12 +14,6 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
-        <object>Commission_Structure__c</object>
-        <objectField>Partner_Account__c</objectField>
-        <userField>Account</userField>
-    </accessMappings>
-    <accessMappings>
-        <accessLevel>Read</accessLevel>
         <object>Contact</object>
         <objectField>Id</objectField>
         <userField>Contact</userField>
@@ -44,6 +38,5 @@
     </accessMappings>
     <description>Sharing set for the Partner Portal. This is for non-manager users, who should only have access to their own deals.</description>
     <name>Partner Portal User Sharing Set</name>
-    <profiles>Partner Portal Community User</profiles>
-    <profiles>Partner Portal Community User Login</profiles>
+    <profiles>partner portal community user</profiles>
 </SharingSet>
