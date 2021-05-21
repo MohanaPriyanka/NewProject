@@ -48952,11 +48952,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Est_of_Subscribers__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Estimated_COD_Date_Manual__c</field>
         <readable>true</readable>
     </fieldPermissions>
