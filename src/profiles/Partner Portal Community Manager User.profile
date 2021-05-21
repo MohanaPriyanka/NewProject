@@ -49057,11 +49057,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Meter_Installed_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Meter_Reading_Schedule__c</field>
         <readable>true</readable>
     </fieldPermissions>
