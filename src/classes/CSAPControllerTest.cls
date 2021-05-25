@@ -232,7 +232,7 @@ public with sharing class CSAPControllerTest {
         Partner__c partner = [SELECT Id, Account__c FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
         Contact contactPartner = [SELECT Id FROM Contact WHERE Lastname = 'SWAIN' LIMIT 1];
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Portal Community Manager User'];
         Contact referralContact = [SELECT Id FROM Contact WHERE Lastname='Customer' LIMIT 1];
         Utility__c eversource = [SELECT Id FROM Utility__c WHERE Name = 'Eversource' LIMIT 1];
 
@@ -461,7 +461,7 @@ public with sharing class CSAPControllerTest {
     }
 
     @isTest static void testDefaultReferral(){
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Portal Community Manager User'];
         Contact customerContact = [SELECT Id FROM Contact WHERE Lastname='Customer' LIMIT 1];
         Contact contactPartner = [SELECT Id FROM Contact WHERE Lastname = 'SWAIN' LIMIT 1];
         Utility__c eversource = [SELECT Id FROM Utility__c WHERE Name = 'Eversource' LIMIT 1];
@@ -578,7 +578,7 @@ public with sharing class CSAPControllerTest {
     }
 
     @IsTest static void testSLPortalCSAPApplication() {
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Portal Community Manager User'];
 
         Id partnerAccountRTID = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId();
         Account account = new Account(
@@ -847,7 +847,7 @@ public with sharing class CSAPControllerTest {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
         Contact contactPartner = [SELECT Id FROM Contact WHERE Lastname = 'SWAIN' LIMIT 1];
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Portal Community Manager User'];
         Contact customerContact = [SELECT Id FROM Contact WHERE Lastname='Customer' LIMIT 1];
         Utility__c eversource = [SELECT Id FROM Utility__c WHERE Name = 'Eversource' LIMIT 1];
 
@@ -978,7 +978,7 @@ public with sharing class CSAPControllerTest {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
         Contact contactPartner = [SELECT Id FROM Contact WHERE Lastname = 'SWAIN' LIMIT 1];
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Portal Community Manager User'];
         Contact customerContact = [SELECT Id FROM Contact WHERE Lastname='Customer' LIMIT 1];
         Utility__c nationalGrid = [SELECT Id FROM Utility__c WHERE Name = 'National Grid' LIMIT 1];
 
