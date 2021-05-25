@@ -55,6 +55,7 @@ public without sharing class MarketingJourneyEnrollerTest {
             'Should be no success Logger.FINE logs for ' + numberOfEnrollments + ' journey enrollments');
     }
 
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     private static List<MarketingAPI.JourneyEnrollment> createEnrollments(Integer numOfEnrollments) {
         List<MarketingAPI.JourneyEnrollment> enrollments = new List<MarketingAPI.JourneyEnrollment>();
         for (Integer i=0; i<numOfEnrollments; i++) {
