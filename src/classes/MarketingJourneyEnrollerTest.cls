@@ -1,5 +1,10 @@
 @IsTest
 public without sharing class MarketingJourneyEnrollerTest {
+    
+    @TestSetup
+    private static void setConfigs() {
+        insert new System_Properties__c(Name='Default', Log_Level__c='Fine');
+    }
 
     @IsTest
     private static void testJourneyEnrollmentSuccess() {

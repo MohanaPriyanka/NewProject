@@ -6,7 +6,6 @@ public without sharing class MarketingAPIHelper {
 
     public static final Integer ACCESS_TOKEN_TIMEOUT_SECONDS = 18 * 60; // 18 minutes as recommended
     public static final String BASE_URL = 'https://mc68nc16-b6dfhmx3r9080lpklwm.rest.marketingcloudapis.com';
-    public static Boolean logResults;
     public static Boolean publishToAPI;
     public static Integer calloutsPerTransaction;
     @TestVisible private static MarketingAPISelector marketingAPISelector = new MarketingAPISelector();
@@ -16,7 +15,6 @@ public without sharing class MarketingAPIHelper {
         if (configs.isEmpty()) {
             return;
         }
-        logResults = Logger.shouldLog(Logger.FINE) || Test.isRunningTest();
         publishToAPI = !Util.isSandboxOrTest() || Test.isRunningTest() || configs[0]?.Sandbox_Publish_to_Prod__c;
         calloutsPerTransaction = Integer.valueOf(Util.nullToZero(configs[0]?.Callouts_Per_Transaction__c));
     }
@@ -61,16 +59,14 @@ public without sharing class MarketingAPIHelper {
             request.setBody(JSON.serialize(body));
         }
         HttpResponse response = new Http().send(request);
-        if (logResults) {
-            Logger.logLater(
-                'MarketingAPIHelper',
-                'callJsonEndpoint',
-                'Request Endpoint: ' + request.getEndpoint() + '\n' +
-                    'Request Body: ' + request.getBody() + '\n\n' +
-                    'Response Status: ' + response.getStatus() + '\n' +
-                    'Response Body: ' + response.getBody(),
-                Logger.FINE);
-        }
+        Logger.logLater(
+            'MarketingAPIHelper',
+            'callJsonEndpoint',
+            'Request Endpoint: ' + request.getEndpoint() + '\n' +
+                'Request Body: ' + request.getBody() + '\n\n' +
+                'Response Status: ' + response.getStatus() + '\n' +
+                'Response Body: ' + response.getBody(),
+            Logger.FINE);
         return response;
     }
 }

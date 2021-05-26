@@ -43,7 +43,7 @@ public without sharing class MarketingJourneyEnroller implements Queueable, Data
 
     private void enrollContact(Object payload) {
         HttpResponse response = api.callJsonEndpoint('POST', ENDPOINT, payload);
-        if (response?.getStatusCode() == 201 && MarketingAPIHelper.logResults) {
+        if (response?.getStatusCode() == 201) {
             String message = 'Successful Marketing Cloud journey enrollment!\nRequest: ' + JSON.serialize(payload) +
                 '\nResponse: ' + response.getBody() + '\n\n';
             Logger.logLater('MarketingJourneyEnroller', 'enrollContact', message, Logger.FINE);
