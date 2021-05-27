@@ -36921,6 +36921,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Rate_Class__c.EDI_Rate_Class__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Rate_Class__c.LDC_Rate_Class__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -59670,7 +59675,7 @@
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
+        <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Rate_Class__c</object>
         <viewAllRecords>false</viewAllRecords>
