@@ -28120,11 +28120,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>FeederProjectAssociation__c.Inspire_Project__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Feeder__c.Assumed_Remaining_Capacity_per_DOER_DG__c</field>
         <readable>false</readable>
     </fieldPermissions>
