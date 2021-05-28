@@ -4031,10 +4031,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MapCollection</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MapPCRtoLeadHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
