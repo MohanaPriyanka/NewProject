@@ -74275,11 +74275,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>inspire1__Project__c.Lead_Originated_By__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>inspire1__Project__c.Lease_Amendment_Executed__c</field>
         <readable>false</readable>
     </fieldPermissions>
