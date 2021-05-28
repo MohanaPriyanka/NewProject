@@ -4387,10 +4387,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ReportSenderTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>RestLead</apexClass>
         <enabled>false</enabled>
     </classAccesses>
