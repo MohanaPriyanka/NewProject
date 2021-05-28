@@ -1459,10 +1459,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>AssertionIterators</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>AsyncApexJobSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
