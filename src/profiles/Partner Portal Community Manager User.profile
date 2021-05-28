@@ -50510,11 +50510,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SurveyEngagementContext__mdt.test__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>SurveyInvitation.Case__c</field>
         <readable>false</readable>
     </fieldPermissions>
