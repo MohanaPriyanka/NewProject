@@ -2311,10 +2311,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>GetLookupCollection</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>GlyntAPI</apexClass>
         <enabled>false</enabled>
     </classAccesses>
