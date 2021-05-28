@@ -1995,10 +1995,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CopyCollection</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CountRecordsAndFields</apexClass>
         <enabled>false</enabled>
     </classAccesses>
