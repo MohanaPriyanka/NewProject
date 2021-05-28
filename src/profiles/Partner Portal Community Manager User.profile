@@ -28460,11 +28460,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Incentive__c.Inspire_Project__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Incentive__c.Original_Expiration__c</field>
         <readable>false</readable>
     </fieldPermissions>
