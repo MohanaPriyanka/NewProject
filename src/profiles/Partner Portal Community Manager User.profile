@@ -4699,10 +4699,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>UpsertRecordsTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>UserAndGroupSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
