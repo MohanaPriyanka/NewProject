@@ -4379,10 +4379,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>RemoveRecordInCollection</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ReportFolderAuditor</apexClass>
         <enabled>false</enabled>
     </classAccesses>
