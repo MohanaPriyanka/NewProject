@@ -4427,10 +4427,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SObjectDeepCloneTests</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ScheduleZSubscriptionSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
