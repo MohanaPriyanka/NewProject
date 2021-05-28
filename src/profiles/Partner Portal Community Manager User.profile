@@ -1815,10 +1815,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CollectionProcessorsUtils</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CollectionUtil</apexClass>
         <enabled>false</enabled>
     </classAccesses>
