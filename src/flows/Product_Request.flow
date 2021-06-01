@@ -10,6 +10,7 @@
         <connector>
             <targetReference>asgAttachFiles</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>subjectNameOrId</name>
             <value>
@@ -33,14 +34,16 @@
         <connector>
             <targetReference>Navigate_to_record</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
     </actionCalls>
     <actionCalls>
         <name>Navigate_to_record</name>
         <label>Navigate to record</label>
-        <locationX>1894</locationX>
-        <locationY>1229</locationY>
+        <locationX>1897</locationX>
+        <locationY>1265</locationY>
         <actionName>autocomp:navigate</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>destinationAction</name>
             <value>
@@ -78,6 +81,7 @@
         <connector>
             <targetReference>Your_case_has_been_opened</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>emailBody</name>
             <value>
@@ -103,6 +107,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>51.0</apiVersion>
     <assignments>
         <name>asgAssign_CS_Prod_Mgmt_variables</name>
         <label>Assign CS Prod Mgmt variables</label>
@@ -132,13 +137,6 @@
         <locationX>1693</locationX>
         <locationY>713</locationY>
         <assignmentItems>
-            <assignToReference>varDueDateDescription</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inp_Date_Reason_Legal</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>varDetails</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -146,17 +144,17 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varDueDate</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inp_Delivery_Date_Legal</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>varSubject</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>inpTitle_Legal</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varPriority</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>pcPriority</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -302,8 +300,8 @@
     <assignments>
         <name>asgFileNames</name>
         <label>Assign File Names</label>
-        <locationX>414</locationX>
-        <locationY>1302</locationY>
+        <locationX>332</locationX>
+        <locationY>1594</locationY>
         <assignmentItems>
             <assignToReference>varFileNames</assignToReference>
             <operator>Add</operator>
@@ -407,7 +405,7 @@
     </assignments>
     <choices>
         <name>Bug</name>
-        <choiceText>Support Request, Data Update or Question</choiceText>
+        <choiceText>Support Case, Data Update or Question</choiceText>
         <dataType>String</dataType>
         <value>
             <stringValue>Bug</stringValue>
@@ -439,7 +437,7 @@
     </choices>
     <choices>
         <name>Improvement</name>
-        <choiceText>Improvement</choiceText>
+        <choiceText>New Feature or Improvement</choiceText>
         <dataType>String</dataType>
         <value>
             <stringValue>Improvement</stringValue>
@@ -656,6 +654,7 @@
         <name>drcProductTag</name>
         <dataType>String</dataType>
         <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Exclude_from_Work_Request_form__c</field>
             <operator>EqualTo</operator>
@@ -690,6 +689,7 @@
         <name>drcTeam</name>
         <dataType>String</dataType>
         <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Category__c</field>
             <operator>EqualTo</operator>
@@ -815,6 +815,12 @@
         <name>BuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
@@ -962,6 +968,7 @@
         <connector>
             <targetReference>loopLoop_through_files</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>LinkedEntityId</field>
             <operator>EqualTo</operator>
@@ -982,6 +989,7 @@
         <connector>
             <targetReference>asgConfirmation</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -1004,6 +1012,7 @@
         <connector>
             <targetReference>Get_Product_Owner_Name</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -1020,12 +1029,13 @@
     <recordLookups>
         <name>rlContentDocName</name>
         <label>Lookup Content Doc Name</label>
-        <locationX>423</locationX>
-        <locationY>1059</locationY>
+        <locationX>323</locationX>
+        <locationY>1291</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>asgFileNames</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -1048,6 +1058,7 @@
         <connector>
             <targetReference>What_group_is_your_request_for</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>User__c</field>
             <operator>EqualTo</operator>
@@ -1070,6 +1081,7 @@
         <connector>
             <targetReference>rcCreate_Work</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -1092,6 +1104,7 @@
         <connector>
             <targetReference>decFoundChatterGroupId</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -1132,6 +1145,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1161,6 +1175,7 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1177,7 +1192,7 @@
         <locationX>2223</locationX>
         <locationY>404</locationY>
         <allowBack>true</allowBack>
-        <allowFinish>false</allowFinish>
+        <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
             <targetReference>rcCreateCase</targetReference>
@@ -1198,6 +1213,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1261,6 +1277,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1336,6 +1353,7 @@
                     <stringValue>IsActive = TRUE AND License_Type__c = &apos;Standard&apos;</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>varRequestorId</assignToReference>
@@ -1351,7 +1369,7 @@
         <locationX>1999</locationX>
         <locationY>590</locationY>
         <allowBack>true</allowBack>
-        <allowFinish>false</allowFinish>
+        <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
             <targetReference>asgAssign_Product_variables</targetReference>
@@ -1372,6 +1390,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1465,6 +1484,7 @@
                     <elementReference>forCurrentUserName</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>varRequestorId</assignToReference>
@@ -1501,6 +1521,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1553,13 +1574,12 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>dispAttnyClient_Legal</name>
-            <fieldText>Attorney Client Communication - Privileged and Confidential
-
-P4 = Lowest Priority → P0 = Highest Priority</fieldText>
+            <fieldText>&lt;p&gt;Attorney Client Communication - Privileged and Confidential&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1573,7 +1593,7 @@ P4 = Lowest Priority → P0 = Highest Priority</fieldText>
         <fields>
             <name>inpTitle_Legal</name>
             <dataType>String</dataType>
-            <fieldText>Title</fieldText>
+            <fieldText>Work Request Title</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -1591,50 +1611,17 @@ P4 = Lowest Priority → P0 = Highest Priority</fieldText>
             <isRequired>true</isRequired>
         </fields>
         <fields>
-            <name>Does_this_request_have_a_hard_delivery_date</name>
-            <choiceReferences>Yes_legal</choiceReferences>
-            <choiceReferences>No_legal</choiceReferences>
+            <name>inpLegal_Priority</name>
+            <choiceReferences>pcPriority</choiceReferences>
             <dataType>String</dataType>
-            <fieldText>Does this request have a hard delivery date?</fieldText>
-            <fieldType>RadioButtons</fieldType>
+            <fieldText>Please set a priority for the request</fieldText>
+            <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <fields>
-            <name>inp_Delivery_Date_Legal</name>
-            <dataType>Date</dataType>
-            <fieldText>What is the required/realistic delivery date for completing this work?</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>Does_this_request_have_a_hard_delivery_date</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <elementReference>Yes_legal</elementReference>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
-        </fields>
-        <fields>
-            <name>inp_Date_Reason_Legal</name>
-            <fieldText>What is driving this delivery date?</fieldText>
-            <fieldType>LargeTextArea</fieldType>
-            <isRequired>true</isRequired>
-            <validationRule>
-                <errorMessage>&lt;p&gt;This field is limited to 255 characters.&lt;/p&gt;</errorMessage>
-                <formulaExpression>len({!inp_Date_Reason_Legal})&lt;255</formulaExpression>
-            </validationRule>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>Does_this_request_have_a_hard_delivery_date</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <elementReference>Yes_legal</elementReference>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
+            <name>dispLegalPriorities</name>
+            <fieldText>&lt;ul&gt;&lt;li&gt;P0 – business critical requiring other work and meetings to be delayed to accommodate; requires exec leadership approval.&amp;nbsp;&lt;/li&gt;&lt;li&gt;P1 – important to move forward and may require other work and meetings to be delayed.&lt;/li&gt;&lt;li&gt;P2 – important but does not require other work and meetings to be delayed.&lt;/li&gt;&lt;li&gt;P3 – important but timing is flexible.&lt;/li&gt;&lt;li&gt;P4 – aspirational but not necessary for success of business.&lt;/li&gt;&lt;/ul&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>Files_Legal</name>
@@ -1651,7 +1638,7 @@ P4 = Lowest Priority → P0 = Highest Priority</fieldText>
         <locationY>590</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>asgAssign_Marketing_variables</targetReference>
         </connector>
@@ -1671,6 +1658,7 @@ P4 = Lowest Priority → P0 = Highest Priority</fieldText>
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1734,7 +1722,7 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
         <locationY>184</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
             <name>outNoTeam</name>
             <fieldText>This team has not been setup in the request tool. Please contact productsupport@bluewavesolar.com for assistance.</fieldText>
@@ -1750,7 +1738,7 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
         <locationY>601</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>asgAssign_Office_Mgmt_variables</targetReference>
         </connector>
@@ -1770,6 +1758,7 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1829,7 +1818,7 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
         <locationY>531</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>asgOps_Variable_Assignments</targetReference>
         </connector>
@@ -1849,6 +1838,7 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1919,7 +1909,7 @@ P4 = This would be nice to have</helpText>
         <name>scrProduct_Team_Request</name>
         <label>Tech Team Request</label>
         <locationX>1726</locationX>
-        <locationY>382</locationY>
+        <locationY>381</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1942,12 +1932,13 @@ P4 = This would be nice to have</helpText>
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Request_Type</name>
-            <choiceReferences>Bug</choiceReferences>
             <choiceReferences>Improvement</choiceReferences>
+            <choiceReferences>Bug</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Request Type</fieldText>
             <fieldType>RadioButtons</fieldType>
@@ -1971,7 +1962,7 @@ P4 = This would be nice to have</helpText>
         <locationX>811</locationX>
         <locationY>213</locationY>
         <allowBack>true</allowBack>
-        <allowFinish>false</allowFinish>
+        <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
             <targetReference>asgSet_Stage_to_Enter_Details</targetReference>
@@ -1992,6 +1983,7 @@ P4 = This would be nice to have</helpText>
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -2033,6 +2025,7 @@ P4 = This would be nice to have</helpText>
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -2068,6 +2061,7 @@ P4 = This would be nice to have</helpText>
                     <stringValue>large</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>varCategory</assignToReference>
@@ -2081,7 +2075,7 @@ P4 = This would be nice to have</helpText>
         <name>Your_case_has_been_opened</name>
         <label>Your case has been opened</label>
         <locationX>2607</locationX>
-        <locationY>1043</locationY>
+        <locationY>1041</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -2133,16 +2127,19 @@ P4 = This would be nice to have</helpText>
     <status>Active</status>
     <textTemplates>
         <name>ttLegalDescription</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>Supervisor Name: {!scrSupervisor_Name_Lgl}
 
 Description: {!inpDescription_Legal}</text>
     </textTemplates>
     <textTemplates>
         <name>ttNewLine</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;br/&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>ttNewWorkItem</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>@[{!varChatterGroupId}] New improvement created by @[{!forCurrentUserId}]!
 
 {!scrSubjectImp_Prod}</text>
