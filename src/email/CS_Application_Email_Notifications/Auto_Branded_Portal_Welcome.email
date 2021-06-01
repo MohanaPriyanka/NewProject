@@ -315,7 +315,7 @@
 
 
     </apex:outputPanel>
-    <apex:outputPanel rendered="{!recipient.Client_Brand_Key__c=='BluewaveLogo'}">
+    <apex:outputPanel rendered="{!recipient.Client_Brand_Key__c!='AmpRed' && recipient.Client_Brand_Key__c!='AmpBlack'}">
 
       <!-- BLUEWAVE TEMPLATE STARTS HERE -->
 

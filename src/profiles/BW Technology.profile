@@ -65924,6 +65924,11 @@
         <field>trailheadapp__User_Trailmix__c.trailheadapp__User__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>zqu__CommunicationProfile__c.Client_Brand_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>API_Credential__c-API Credential Layout</layout>
     </layoutAssignments>
