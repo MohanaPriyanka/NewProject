@@ -83,29 +83,21 @@ public without sharing class LeadTriggerHandler {
 
         UtilityLoadZoneService.updateLZUL(communitySolarLeads, communitySolarOldLeadMap);
     }
+    
     public void onAfterUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         List<Lead> convertedCSLeads = new List<Lead>();
         for (Lead lead : updatedLeads) {
-            if (lead.IsConverted && !oldLeadMap.get(lead.Id).IsConverted &&
-                lead.ConvertedAccountId != null &&
-                lead.Product_line__c == 'Community Solar' &&
-                firstRun) {
-                convertedCSLeads.add(lead);
-            }
-            if (lead.IsConverted && !oldLeadMap.get(lead.Id).IsConverted) {
-                convertCasestoAccount(lead);
-            }
+            
             if (!lead.Docs_Requested__c && oldLeadMap.get(lead.Id).Docs_Requested__c) {
                 LoanHandler.completeAdditionalIncomeDocTask(lead.Id);
             }
         }
-        if (!convertedCSLeads.isEmpty()) {
-            deleteDuplicateContact(convertedCSLeads);
-            customerSubscriptionProcess(convertedCSLeads);
-            firstRun = false;
-        }
+        
+        
+    
 
         List<Opportunity> oppsToUpdate = new List<Opportunity>();
+        
         for (Lead lead: updatedLeads) {
             if (lead.IsConverted && lead.ConvertedOpportunityId != null) {
                 Opportunity opp = getUpdatedOpp(lead, oldLeadMap.get(lead.Id));
@@ -139,71 +131,6 @@ public without sharing class LeadTriggerHandler {
         }
     }
 
-
-    private void customerSubscriptionProcess(List<Lead> leads) {
-        CSSubscriptionEnroller repo = new CSSubscriptionEnroller(leads);
-        repo.enroll();
-    }
-
-    private void deleteDuplicateContact (List<Lead> convertedLeads) {
-        Set<Id> parentAccountIds = new Set<Id>();
-        List<Contact> contactsToDelete = new List<Contact>();
-        Set<Account> propertyAccountsToUpdate = new Set<Account>();
-        Map<Id, Id> propertyToParentAccountMap = new Map<Id, Id>();
-        Map<Id, Id> parentAccountToContactMap = new Map<Id, Id>();
-        for (Lead lead : convertedLeads) {
-            parentAccountIds.add(lead.Parent_AccountId__c);
-            propertyToParentAccountMap.put(lead.ConvertedAccountId, lead.Parent_AccountId__c);
-        }
-
-        List<Contact> relatedContacts = [
-            SELECT Id, Name, AccountId
-            FROM Contact
-            WHERE AccountId = :parentAccountIds
-        ];
-        for (Contact contact : relatedContacts) {
-            parentAccountToContactMap.put(contact.AccountId, contact.Id);
-        }
-
-        // Converted CS contacts are always duplicates, because we create the parent account's contact explicitly
-        for (Lead lead : convertedLeads) {
-            contactsToDelete.add(new Contact(Id = lead.ConvertedContactId));
-
-            //Need to transfer all activities on duplicate Contact (originally from Lead) to the Billing Contact
-            moveTaskstoContact(lead, parentAccountToContactMap.get(propertyToParentAccountMap.get(lead.ConvertedAccountId)));
-
-            // We need to set the billing contact on the converted lead's account
-            Id billingContact = parentAccountToContactMap.get(propertyToParentAccountMap.get(lead.ConvertedAccountId));
-            if (billingContact != null) {
-                propertyAccountsToUpdate.add(new Account(
-                    Id = lead.ConvertedAccountId,
-                    Send_Bills_Contact__c = parentAccountToContactMap.get(propertyToParentAccountMap.get(lead.ConvertedAccountId))
-                ));
-            }
-        }
-        delete contactsToDelete;
-        if (!propertyAccountsToUpdate.isEmpty()) {
-            update new List<Account>(propertyAccountsToUpdate);
-        }
-    }
-
-    private void convertCasestoAccount(Lead convertedLead){
-        List<Case> casesList = [SELECT Id, Lead_Lookup__r.ConvertedAccountId, Lead_Lookup__r.ConvertedContactId,
-            Lead_Lookup__r.isConverted, Lead_Lookup__r.Product_Line__c, AccountId, ContactId
-        FROM Case
-        WHERE Lead_Lookup__r.Id = : convertedLead.id
-        AND (AccountId = NULL OR ContactId = NULL)];
-
-        for (Case caseToUpdate : casesList) {
-            if ( caseToUpdate.AccountId == NULL){
-                caseToUpdate.AccountId = convertedLead.ConvertedAccountId;
-            }
-            if ( caseToUpdate.ContactId == NULL && caseToUpdate.Lead_Lookup__r.Product_Line__c != 'Community Solar'){
-                caseToUpdate.ContactId = convertedLead.ConvertedContactId;
-            }
-        }
-        update casesList;
-    }
 
     private void moveTaskstoContact(Lead lead, String contactId) {
         List<Task> taskList = [SELECT Id FROM Task WHERE WhoId = :lead.ConvertedContactId];
