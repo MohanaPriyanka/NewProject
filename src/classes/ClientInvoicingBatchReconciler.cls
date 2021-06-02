@@ -8,9 +8,13 @@ public with sharing class ClientInvoicingBatchReconciler implements Database.Bat
     }
 
     public void execute(Database.BatchableContext context, List<SObject> scope) {
-        ClientInvoicingFeeAssignmentService assignmentService =
-            new ClientInvoicingFeeAssignmentService(CollectionUtil.getIdSet(scope));
-        assignmentService.reconcileSubscriptionOrders();
+        try {
+            ClientInvoicingFeeAssignmentService assignmentService =
+                new ClientInvoicingFeeAssignmentService(CollectionUtil.getIdSet(scope));
+            assignmentService.reconcileSubscriptionOrders();
+        } catch (Exception e) {
+            Logger.logLater('ClientInvoicingBatchReconciler', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
     }
 
     @SuppressWarnings('PMD.EmptyStatementBlock')
