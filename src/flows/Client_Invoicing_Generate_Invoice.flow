@@ -3,8 +3,8 @@
     <actionCalls>
         <name>CSFeeSelector</name>
         <label>CSFeeSelector</label>
-        <locationX>611</locationX>
-        <locationY>805</locationY>
+        <locationX>608</locationX>
+        <locationY>904</locationY>
         <actionName>InvocableCSFeeSelector</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -27,6 +27,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>clientEntityId</name>
+            <value>
+                <elementReference>Selected_Client_EntityId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>forAcquisition</name>
             <value>
                 <elementReference>AcquisitionOrReacquisition</elementReference>
@@ -40,8 +46,8 @@
     <actionCalls>
         <name>InvocableClientInvoiceGenerator</name>
         <label>InvocableClientInvoiceGenerator</label>
-        <locationX>612</locationX>
-        <locationY>1046</locationY>
+        <locationX>609</locationX>
+        <locationY>1145</locationY>
         <actionName>InvocableClientInvoiceGenerator</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -61,6 +67,12 @@
             <name>effectiveDate</name>
             <value>
                 <elementReference>Effective_Date</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>clientEntityId</name>
+            <value>
+                <elementReference>Selected_Client_EntityId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -90,8 +102,8 @@
     <assignments>
         <name>Set_Client_Account</name>
         <label>Set Client Account</label>
-        <locationX>733</locationX>
-        <locationY>590</locationY>
+        <locationX>734</locationX>
+        <locationY>601</locationY>
         <assignmentItems>
             <assignToReference>clientAccount</assignToReference>
             <operator>Assign</operator>
@@ -100,14 +112,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>CSFeeSelector</targetReference>
+            <targetReference>Choose_Entity</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_Client_Account_From_Lookup</name>
         <label>Set Client Account</label>
         <locationX>469</locationX>
-        <locationY>590</locationY>
+        <locationY>599</locationY>
         <assignmentItems>
             <assignToReference>clientAccount</assignToReference>
             <operator>Assign</operator>
@@ -116,14 +128,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>CSFeeSelector</targetReference>
+            <targetReference>Choose_Entity</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_Client_Account_To_RecordId</name>
         <label>Set Client Account</label>
-        <locationX>610</locationX>
-        <locationY>591</locationY>
+        <locationX>608</locationX>
+        <locationY>599</locationY>
         <assignmentItems>
             <assignToReference>clientAccount</assignToReference>
             <operator>Assign</operator>
@@ -132,7 +144,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>CSFeeSelector</targetReference>
+            <targetReference>Choose_Entity</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -215,6 +227,25 @@
         </rules>
     </decisions>
     <description>Generates a Client Invoice from selected Shared Solar Systems</description>
+    <dynamicChoiceSets>
+        <name>Client_Entities</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Client_Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>clientAccount</elementReference>
+            </value>
+        </filters>
+        <object>Entity__c</object>
+        <outputAssignments>
+            <assignToReference>Selected_Client_EntityId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
     <formulas>
         <name>endOfLastMonth</name>
         <dataType>DateTime</dataType>
@@ -305,10 +336,33 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Choose_Entity</name>
+        <label>Choose Entity</label>
+        <locationX>609</locationX>
+        <locationY>771</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>CSFeeSelector</targetReference>
+        </connector>
+        <fields>
+            <name>Client_Entities_Picklist</name>
+            <choiceReferences>Client_Entities</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Contract Assignment Entity to Invoice</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <helpText>&lt;p&gt;Subscription Orders and Client Invoicing Memos for Shared Solar Systems with the selected Contract Assignment Entity will be included in this invoice&lt;/p&gt;</helpText>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Error</name>
         <label>Error</label>
-        <locationX>915</locationX>
-        <locationY>916</locationY>
+        <locationX>912</locationX>
+        <locationY>1015</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -324,8 +378,8 @@
     <screens>
         <name>Invoices_Created</name>
         <label>Invoices Created</label>
-        <locationX>614</locationX>
-        <locationY>1172</locationY>
+        <locationX>611</locationX>
+        <locationY>1271</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -405,8 +459,8 @@
     <screens>
         <name>Select_Systems_To_Invoice</name>
         <label>Select Systems To Invoice</label>
-        <locationX>612</locationX>
-        <locationY>926</locationY>
+        <locationX>609</locationX>
+        <locationY>1025</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -522,6 +576,13 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Selected_Client_EntityId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
