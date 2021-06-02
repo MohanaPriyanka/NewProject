@@ -59,7 +59,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
 
         ContractRepository.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS});
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+            assignmentService.registerCFDUpdate(subscriptionOrder);
         System.assertEquals(defaultSSS.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'Since there are no system specific CFDs, we expect the SO to match the non-system specific one'
         );
@@ -68,14 +68,14 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         System.assertEquals(sssSpecific.Shared_Solar_System__c, subscriptionOrder.sharedSolarSystemId,
             'The test setup should have a SSS-specific CFD and a SO specifying that system');
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+            assignmentService.registerCFDUpdate(subscriptionOrder);
         System.assertEquals(sssSpecific.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'Expected to get an SO to update with the SSS-Specific CFD'
         );
 
         ContractRepository.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, otherSSSSpecific});
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+            assignmentService.registerCFDUpdate(subscriptionOrder);
         System.assertEquals(defaultSSS.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'There is another SSS-specific CFD, but not the SSS that is on the SO, so the match should use the default CFD'
         );
@@ -85,7 +85,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific, otherSSSSpecific, duplicateSSSSpecific}
         );
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+            assignmentService.registerCFDUpdate(subscriptionOrder);
         System.assert(
             sssSpecific.Id == subscriptionOrderWithCFD.Contract_Fee_Detail__c ||
                 duplicateSSSSpecific.Id == subscriptionOrderWithCFD.Contract_Fee_Detail__c,
@@ -100,7 +100,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             'The test setup should have a SSS-specific CFD and a SO specifying that system');
         subscriptionOrder.contractFeeDetailId = sssSpecific.Id;
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+            assignmentService.registerCFDUpdate(subscriptionOrder);
         System.assertEquals(sssSpecific.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'The SO already had the system-specific CFD on it, and should retain it after running fee assignment'
         );
@@ -112,7 +112,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
         System.assertEquals(14,ordersToRun.size());
         ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService(CollectionUtil.getIdSet(ordersToRun));
-        service.setSubscriptionOrderAcquisitionFee();
+        service.setSubscriptionOrderAcquisitionFee(false);
         List<Subscription_Order__c> ordersToUpdate = (List<Subscription_Order__c>)
             FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Subscription_Order__c');
         for (Subscription_Order__c order : ordersToUpdate){

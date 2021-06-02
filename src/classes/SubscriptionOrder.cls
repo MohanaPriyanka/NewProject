@@ -1,11 +1,11 @@
 /**
  * @description Created by PeterYao on 3/12/2021.
- * Tested By: ClientInvoicingFeeAssignmentServiceTest
+ * Tested By: ClientInvoicingFeeAssignmentServiceTest, ClientInvoicingFeeWaiveServiceTest
  */
 
 public without sharing class SubscriptionOrder extends FeeQualification {
     public Id contractFeeDetailId;
-    private Subscription_Order__c order;
+    public Subscription_Order__c order;
     private String milestoneDateType;
     private Date milestoneDate;
     private Map<Id,Decimal> uasToAssignedCapacityMap;
