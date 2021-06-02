@@ -8986,6 +8986,25 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <description>Made for CS Client Portal</description>
         <label>Client Account</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AmpRed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>DSD</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -9136,21 +9155,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AmpRed</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -11891,6 +11895,25 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Parent Account</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AmpRed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>DSD</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Bill_Delivery_Preference__c</picklist>
             <values>
                 <fullName>Email and Paper</fullName>
@@ -12030,21 +12053,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AmpRed</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -13751,6 +13759,25 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Property</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AmpRed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>DSD</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Bill_Delivery_Preference__c</picklist>
             <values>
                 <fullName>Email and Paper</fullName>
@@ -13914,21 +13941,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AmpRed</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
