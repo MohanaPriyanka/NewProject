@@ -193,6 +193,8 @@ public class UserHandlerTest {
 
 		Shared_Solar_System__c testSSS =
 			new Shared_Solar_System__c(Name = 'Shared Solar System');
+		insert testSSS;
+
 
 		Account accountParent = new Account(
 			Name = 'Account Parent23457',
