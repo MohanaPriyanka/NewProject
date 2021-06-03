@@ -549,8 +549,7 @@ CASE(Utility__c,
     <fields>
         <fullName>Utility__c</fullName>
         <externalId>false</externalId>
-        <formula>Shared_Solar_System__r.System_Utility__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <formula>Shared_Solar_System__r.Utility__r.Name</formula>
         <label>Utility</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
