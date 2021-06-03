@@ -72,6 +72,7 @@ private class SharedSolarSystemSharingServiceTest {
             Name = 'Access TestOpp',
             AccountId = propertyAccount.Id,
             Product_Line__c = 'Community Solar',
+            Shared_Solar_System__c = sssList[1].Id,
             CloseDate = System.today(),
             StageName = 'Complete'
         );
