@@ -376,6 +376,7 @@ public without sharing class TransferSheetService {
         Decimal sfTotalAvailableCredits = lineItem.sfUASB.Total_Available_Credits__c;
         Decimal sfNetMemberCredits = lineItem.sfUASB.Net_Member_Credits__c;
         Decimal sfEndingBankedCredits = lineItem.sfUASB.Ending_Banked_Credits__c;
+        Decimal sfUtilityAdminFee = lineItem.sfUASB.Utility_Admin_Fee__c;
         Decimal sfCDGSponsorPayment = lineItem.sfUASB.CDG_Sponsor_Payment__c;
 
         Decimal transferCredits = transferBill.Credits_Allocated__c;
@@ -384,6 +385,7 @@ public without sharing class TransferSheetService {
         Decimal transferTotalAvailableCredits = transferBill.Total_Available_Credits__c;
         Decimal transferNetMemberCredits = transferBill.Net_Member_Credits__c;
         Decimal transferEndingBankedCredits = transferBill.Ending_Banked_Credits__c;
+        Decimal transferUtilityAdminFee = transferBill.Utility_Admin_Fee__c;
         Decimal transferCDGSponsorPayment = transferBill.CDG_Sponsor_Payment__c;
 
         /*  Depending on the utility and program, we may only get 1 of these 3 categories:
@@ -398,6 +400,8 @@ public without sharing class TransferSheetService {
             isNotNullAndDifferent(sfTotalAvailableCredits, transferTotalAvailableCredits) ||
             isNotNullAndDifferent(sfNetMemberCredits, transferNetMemberCredits) ||
             isNotNullAndDifferent(sfEndingBankedCredits, transferEndingBankedCredits) ||
+            isNotNullAndDifferent(sfEndingBankedCredits, transferEndingBankedCredits) ||
+            isNotNullAndDifferent(sfUtilityAdminFee, transferUtilityAdminFee) ||
             isNotNullAndDifferent(sfCDGSponsorPayment, transferCDGSponsorPayment) ||
             transferCredits == null && transferProduction == null && transferNMCRate == null)
         {

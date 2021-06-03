@@ -86,11 +86,13 @@ export default class BasicDatatable extends LightningElement {
             uasbData.sfNetMemberCredits = dataFromApex.sfUASB.Net_Member_Credits__c;
             uasbData.sfEndingBankedCredits = dataFromApex.sfUASB.Ending_Banked_Credits__c;
             uasbData.sfCDGSponsorPayment = dataFromApex.sfUASB.CDG_Sponsor_Payment__c;
+            uasbData.sfUtilityAdminFee = dataFromApex.sfUASB.Utility_Admin_Fee__c;
             uasbData.trNewAvailableCredits = dataFromApex.utilUASB.New_available_credits__c;
             uasbData.trTotalAvailableCredits = dataFromApex.utilUASB.Total_Available_Credits__c;
             uasbData.trNetMemberCredits = dataFromApex.utilUASB.Net_Member_Credits__c;
             uasbData.trEndingBankedCredits = dataFromApex.utilUASB.Ending_Banked_Credits__c;
             uasbData.trCDGSponsorPayment = dataFromApex.utilUASB.CDG_Sponsor_Payment__c;
+            uasbData.trUtilityAdminFee = dataFromApex.utilUASB.Utility_Admin_Fee__c;
         } else {
             uasbData.sfProduction = dataFromApex.sfUASB.Subscription_Production_kWh_Static__c;
             uasbData.sfCredits = dataFromApex.sfUASB.Credits_Allocated__c;

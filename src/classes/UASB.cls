@@ -138,17 +138,15 @@ public virtual class UASB {
     private Decimal getNMCDiscount() {
         if (nmcDiscountOverride != null) {
             return nmcDiscountOverride;
-        } else {
-            return szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c;
         }
+        return szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c;
     }
 
     private Decimal getSolarElectricityRate() {
         if (solarElectricityRateOverride != null) {
             return solarElectricityRateOverride;
-        } else {
-            return szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c;
         }
+        return szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c;
     }
 
     private void setEscalatorOverrides(Map<Id,List<Product_Escalator__c>> productEscalatorMap) {
