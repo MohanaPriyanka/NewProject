@@ -4,14 +4,258 @@
 @SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
 public with sharing class ZuoraAccountServiceTest {
+    private static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
+    
     public static void useMocks() {
         ZuoraAccountService.accountSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
     }
     @TestSetup
     public static void setupTestData() {
-        CSAPControllerTest.setupTestData();
+        Test.startTest();
+        List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='API Only'];
+
+        List<User> apiUsers = [
+            SELECT Id, Name, Username
+            FROM User
+            WHERE Name = 'API'
+            AND IsActive = TRUE
+        ];
+        if (apiUsers.isEmpty()) {
+            User apiUser = new User(
+                FirstName = 'API',
+                LastName = 'API',
+                ProfileId = profileRecord.Id,
+                Alias = '123api',
+                Email = 'api@bluewavesolar.com',
+                EmailEncodingKey = 'UTF-8',
+                PortalRole = 'Manager',
+                LanguageLocaleKey = 'en_US',
+                LocaleSidKey = 'en_US',
+                Country = 'United States',
+                IsActive = true,
+                TimeZoneSidKey = 'America/Los_Angeles',
+                Username = 'api123@bluewavesolar.com');
+            Util.insertSObj(apiUser);
+        }
+
+        RecordType partnerRecordType = [SELECT Id FROM RecordType WHERE Name = 'Partner Contact'];
+
+        Account accountRecord = new Account(
+            Name = 'BlueWave Customer Care',
+            State_Market__c = 'MA',
+            Enable_CS_Application_in_Portal__c = true,
+            Community_Solar_Application_Type__c = 'CSAP',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
+        insert accountRecord;
+
+        Account accountRecord2 = new Account(
+            Name = 'Mass Renewables',
+            State_Market__c = 'MA',
+            Enable_CS_Application_in_Portal__c = true,
+            Community_Solar_Application_Type__c = 'CSAP',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
+        insert accountRecord2;
+
+        Partner__c partner2 = new Partner__c(
+            Name = 'Mass Renewables',
+            Email__c = 'massRenewables@test.com',
+            Account__c = accountRecord2.Id);
+        insert partner2;
+        accountRecord2.Partner__c = partner2.Id;
+        update accountRecord2;
+
+        TestFactory.setDefaultCSPartner(partner2.Id);
+
+        BSST__c salesRep2 = new BSST__c(
+            Name = 'Dianne Martz',
+            Partner__c = partner2.Id,
+            Email__c = 'martz@testemail.com');
+        insert salesRep2;
+
+        partner2.Default_Sales_Rep__c = salesRep2.Id;
+        update partner2;
+
+        Contact contactRecord = new Contact(
+            FirstName = 'User',
+            LastName = 'Swain',
+            AccountId = accountRecord.Id,
+            RecordType = partnerRecordType,
+            Partner_Lookup__c = partnerSetUpIds.get(0),
+            Sales_Representative__c = partnerSetUpIds.get(1));
+        insert contactRecord;
+
+        Account customerAccount = new Account(Name = 'Customer Account', Client_Brand_Key__c = 'BluewaveLogo');
+        insert customerAccount;
+
+        Contact referralContact = new Contact( FirstName = 'Contact A',
+            LastName = 'Customer',
+            Account = customerAccount,
+            Email = 'srenfro@bluewavesolar.com');
+        insert referralContact;
+
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, nationalGrid};
+
+        Load_U__c everLZU = new Load_U__c (
+            Name = '02052',
+            LZ__c = 'SEMA',
+            Town__c= 'Medfield'
+        );
+        Load_U__c canton = new Load_U__c (
+            Name = '02021',
+            LZ__c = 'NEMA/SEMA',
+            Town__c= 'Canton'
+        );
+        insert new List<Load_U__c>{everLZU, canton};
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = everLZU.Id,
+            Utility__c = eversource.Id
+        );
+        ZipCode_Utility_Junction__c junctionTwo = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = canton.Id,
+            Utility__c = nationalGrid.Id
+        );
+        ZipCode_Utility_Junction__c junctionThree = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = canton.Id,
+            Utility__c = eversource.Id
+        );
+        insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo, junctionThree};
+
+
+        Product2 srecProduct = new Product2( Name = 'SREC Community Solar',
+                                                  Family = 'Community Solar',
+                                                  Product_Type__c = 'Community Solar',
+                                                  Program__c = 'SREC - Community Solar',
+                                                  State__c = 'MA',
+                                                  ProductCode = 'CS - BlueWave - 10%',
+                                                  IsActive = true,
+                                                  Lender_of_Record__c = 'BlueWave',
+                                                  NMC_Discount__c = 10,
+                                                  Annual_kWh_Maximum__c = 100000000,
+                                                  NM_Rate_Floor__c = 0,
+                                                  Days_in_Bill_Period__c = 30,
+                                                  Monthly_Late_Fee__c = 1);
+
+        Product2 smartProduct = new Product2(  Name = 'SMART Community Solar',
+                                                  Family = 'Community Solar',
+                                                  Product_Type__c = 'Community Solar',
+                                                  Program__c = 'SMART - Community Solar',
+                                                  State__c = 'MA',
+                                                  ProductCode = 'CS - Bluewave - Public CS - 20%',
+                                                  IsActive = true,
+                                                  Lender_of_Record__c = 'BlueWave',
+                                                  NMC_Discount__c = 20,
+                                                  Annual_kWh_Maximum__c = 63000,
+                                                  NM_Rate_Floor__c = 0.09,
+                                                  Days_in_Bill_Period__c = 30,
+                                                  Monthly_Late_Fee__c = 0.8333);
+        insert new List<Product2>{srecProduct, smartProduct};
+
+
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
+                                                                    Service_Territory__c = 'SEMA',
+                                                                    Service_Territories__c = 'SEMA',
+                                                                    Open__c = true,
+                                                                    Reserved_Capacity_kW_DC__c = '10',
+                                                                    Capacity_Committed_kW_DC__c = 0,
+                                                                    Total_System_Size_kWh_DC__c = 1445.86,
+                                                                    Total_System_Size_kW_AC__c  = 996,
+                                                                    Utility__c = eversource.Id,
+                                                                    Credit_Score_Requirement__c = 300,
+                                                                    Assignment_Order__c = '1',
+                                                                    Expected_Yield_kWh_kW__c = 1300,
+                                                                    Assemblage_Count__c = 1,
+                                                                    Product__c = smartProduct.Id,
+                                                                    Maximum_Subscription_Capacity_kWDC__c = 25,
+                                                                    Available_SMB_Underwriting_Method_FICO__c = true);
+        insert sss1;
+
+        insert SharedSolarSystemsTest.getPartnerEligibilities(
+            new List<Shared_Solar_System__c>{sss1}, [SELECT Id, Name FROM Account WHERE RecordType.Name = 'Partner Account']
+        );
+
+        Test.stopTest();
     }
 
+    public static Lead getLeadForTest() {
+        Partner__c partner = [SELECT Id, Account__c FROM Partner__c WHERE Name = 'Mass Renewables' LIMIT 1];
+
+        Utility__c eversource = [SELECT Id FROM Utility__C where Name = 'Eversource' LIMIT 1 ];
+
+        Lead lead = new Lead(
+            FirstName = 'Tester',
+            LastName = 'Testcase',
+            Company = 'Test',
+            Email = 'testymctesterson@tester.com',
+            Utility_relationship__c = eversource.Id,
+            Application_Type__c = 'Residential',
+            Product_line__c = 'Community Solar',
+            LASERCA__Home_Address__c = '55 Boston St.',
+            LASERCA__Home_City__c = 'Boston',
+            LASERCA__Home_State__c = 'MA',
+            LASERCA__Home_Zip__c = '02052',
+            Parcel_Zip__c = '02052',
+            LoadZone__c = 'SEMA',
+            LeadSource = 'Switch',
+            Partner_Lookup__c = partner.Id,
+            Partner_Account__c = partner.Account__c,
+            System_Assignment__c = 'Automatic - Assignment Order',
+            Status = 'Sales Qualified'
+        );
+        return lead;
+    }
+
+    private static Account getPropAcctForTest(Id leadId) {
+        
+        Account account = new Account(
+            Lead__c = leadId,
+            Name = 'Prop Account',
+            Product_Line__c = 'Community Solar',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId(),
+            BillingStreet = '123 Main St',
+            BillingCity = 'Boston',
+            BillingState = 'New York',
+            BillingPostalCode = '12122',
+            Zuora_Payment_Ref_Id__c = '12345678901234567890123456789012',
+            Zuora_Payment_Ref_Id_Expiration_Date__c = Datetime.now()+1
+        );
+        
+        return account;
+    }
+
+    public static void pullCreditForLead(Id leadId) {
+        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
+            LASERCA__Lead__c = leadId,
+            LASERCA__Credit_Score__c = '700',
+            LASERCA__Credit_Score_TransUnion__c = '700'
+        );
+        insert pcr;
+        LASERCA__Trade_Accounts__c tradeAccounts = new LASERCA__Trade_Accounts__c(
+            LASERCA__Personal_Credit_Report__c = pcr.Id,
+            LASERCA__Monthly_Payment__c = 339
+        );
+        insert tradeAccounts;
+
+        LASERCA__Credit_Report_Log__c crLog = new LASERCA__Credit_Report_Log__c(
+            LASERCA__Lead__c = leadId,
+            LASERCA__Personal_Credit_Report__c = pcr.Id,
+            LASERCA__Status__c = 'Completed'
+        );
+        insert crLog;
+    }
     @IsTest
     static void testZuoraAccountCreationOnConvert() {
         User apiUser = [
@@ -30,7 +274,7 @@ public with sharing class ZuoraAccountServiceTest {
             LIMIT 1
         ];
 
-        Lead residentialLead = CSAPControllerTest.getLeadForTest();
+        Lead residentialLead = getLeadForTest();
 
         residentialLead.Status = 'Qualified';
         residentialLead.OwnerId = apiUser.Id;
@@ -38,7 +282,7 @@ public with sharing class ZuoraAccountServiceTest {
         residentialLead.Zuora_Payment_Ref_Id__c = '12345678901234567890123456789012';
         insert residentialLead;
 
-        CSAPControllerTest.pullCreditForLead(residentialLead.Id);
+        pullCreditForLead(residentialLead.Id);
 
         residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
@@ -53,6 +297,10 @@ public with sharing class ZuoraAccountServiceTest {
             WHERE Email = 'testymctesterson@tester.com'
             LIMIT 1
         ];
+
+        Account propAccount = getPropAcctForTest(residentialLead.Id);
+        insert propAccount;
+
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Lead__c = residentialLead.Id,
             Annual_Cost_of_Electricity__c = 10000,
@@ -65,7 +313,10 @@ public with sharing class ZuoraAccountServiceTest {
         System.assertEquals(0, opps.size());
 
         Test.startTest();
-        CSAPController.convertCSLead(residentialLead.Id, residentialLead.Email);
+        ZuoraAccountService.createAccounts(new Set<Id>{residentialLead.Id});
+        List<Id> leadIdList = new List<Id>();
+        leadIdList.add(residentialLead.Id);
+        InvocableLeadConvert.convertLead(leadIdList);
         Test.stopTest();
 
         residentialLead = [
@@ -74,9 +325,12 @@ public with sharing class ZuoraAccountServiceTest {
             WHERE Email = 'testymctesterson@tester.com'
             AND Application_Type__c = 'Residential'
         ];
-        List<Account> propertyAccounts = AccountsSelector.selectWithSendBillsContact(new Set<Id>{residentialLead.ConvertedAccountId});
-        // The lead in the testSetup is residential, and should be converted
-        System.assertEquals(true, residentialLead.IsConverted);
+
+        
+        
+        List<Account> propertyAccounts = AccountsSelector.selectWithSendBillsContact(new Set<Id>{propAccount.Id});
+        
+        System.assertEquals(true, residentialLead.IsConverted,'The lead in the testSetup is residential, and should be converted');
         opps = [SELECT Id, OwnerId, Name FROM Opportunity];
         System.assertEquals(1, opps.size());
         // The account and contact should now have a zuora Id
@@ -109,7 +363,7 @@ public with sharing class ZuoraAccountServiceTest {
             AND Program__c = 'SMART - Community Solar'
             LIMIT 1
         ];
-        Lead residentialLead = CSAPControllerTest.getLeadForTest();
+        Lead residentialLead = getLeadForTest();
 
         residentialLead.Status = 'Qualified';
         residentialLead.LeadSource = 'Switch';
@@ -117,7 +371,7 @@ public with sharing class ZuoraAccountServiceTest {
         residentialLead.Product__c = smartProduct.Id;
         insert residentialLead;
 
-        CSAPControllerTest.pullCreditForLead(residentialLead.Id);
+        pullCreditForLead(residentialLead.Id);
 
         residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
@@ -191,7 +445,7 @@ public with sharing class ZuoraAccountServiceTest {
             LIMIT 1
         ];
 
-        Lead residentialLead = CSAPControllerTest.getLeadForTest();
+        Lead residentialLead = getLeadForTest();
 
         residentialLead.Status = 'Qualified';
         residentialLead.OwnerId = apiUser.Id;
@@ -199,7 +453,7 @@ public with sharing class ZuoraAccountServiceTest {
         residentialLead.Zuora_Payment_Ref_Id__c = '12345678901234567890123456789012';
         insert residentialLead;
 
-        CSAPControllerTest.pullCreditForLead(residentialLead.Id);
+        pullCreditForLead(residentialLead.Id);
 
         residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
@@ -226,7 +480,9 @@ public with sharing class ZuoraAccountServiceTest {
         System.assertEquals(0, opps.size());
 
         Test.startTest();
-        CSAPController.convertCSLead(residentialLead.Id, residentialLead.Email);
+        List<Id> leadIdList = new List<Id>();
+        leadIdList.add(residentialLead.Id);
+        InvocableLeadConvert.convertLead(leadIdList);
         residentialLead = [
             SELECT Id, Email, IsConverted, ConvertedAccountId
             FROM Lead
@@ -274,7 +530,7 @@ public with sharing class ZuoraAccountServiceTest {
             LIMIT 1
         ];
 
-        Lead residentialLead = CSAPControllerTest.getLeadForTest();
+        Lead residentialLead = getLeadForTest();
 
         residentialLead.Status = 'Qualified';
         residentialLead.OwnerId = apiUser.Id;
@@ -283,7 +539,7 @@ public with sharing class ZuoraAccountServiceTest {
         residentialLead.Zuora_Payment_Ref_Id_Expiration_Date__c = Datetime.now()-1; // Ref Id expired yesterday
         insert residentialLead;
 
-        CSAPControllerTest.pullCreditForLead(residentialLead.Id);
+        pullCreditForLead(residentialLead.Id);
 
         residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
@@ -310,7 +566,9 @@ public with sharing class ZuoraAccountServiceTest {
         System.assertEquals(0, opps.size());
 
         Test.startTest();
-        CSAPController.convertCSLead(residentialLead.Id, residentialLead.Email);
+        List<Id> leadIdList = new List<Id>();
+        leadIdList.add(residentialLead.Id);
+        InvocableLeadConvert.convertLead(leadIdList);
         Test.stopTest();
 
         residentialLead = [
@@ -366,7 +624,7 @@ public with sharing class ZuoraAccountServiceTest {
             LIMIT 1
         ];
 
-        Lead residentialLead = CSAPControllerTest.getLeadForTest();
+        Lead residentialLead = getLeadForTest();
         residentialLead.Company = 'ThrowException';
         residentialLead.Status = 'Qualified';
         residentialLead.OwnerId = apiUser.Id;
@@ -375,7 +633,7 @@ public with sharing class ZuoraAccountServiceTest {
         residentialLead.Zuora_Payment_Ref_Id_Expiration_Date__c = Datetime.now()+1; // Ref Id good until tomorrow
         insert residentialLead;
 
-        CSAPControllerTest.pullCreditForLead(residentialLead.Id);
+        pullCreditForLead(residentialLead.Id);
 
         residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
@@ -397,12 +655,16 @@ public with sharing class ZuoraAccountServiceTest {
         );
         insert ual;
 
-        List<Opportunity> opps = [SELECT Id, Name FROM Opportunity];
-        // There shouldn't be any opportunities yet, because nothing has been converted
-        System.assertEquals(0, opps.size());
+        Account propAccount = getPropAcctForTest(residentialLead.Id);
+        insert propAccount;
 
+        List<Opportunity> opps = [SELECT Id, Name FROM Opportunity];
+        System.assertEquals(0, opps.size(),'There shouldn\'t be any opportunities yet, because nothing has been converted');
         Test.startTest();
-        CSAPController.convertCSLead(residentialLead.Id, residentialLead.Email);
+        List<Id> leadIdList = new List<Id>();
+        leadIdList.add(residentialLead.Id);
+        InvocableLeadConvert.convertLead(leadIdList);
+
         Test.stopTest();
 
         residentialLead = [
@@ -411,9 +673,8 @@ public with sharing class ZuoraAccountServiceTest {
             WHERE Email = 'testymctesterson@tester.com'
             AND Application_Type__c = 'Residential'
         ];
-        List<Account> propertyAccounts = AccountsSelector.selectWithSendBillsContact(new Set<Id>{residentialLead.ConvertedAccountId});
-        // The lead in the testSetup is residential, and should be converted
-        System.assertEquals(true, residentialLead.IsConverted);
+        List<Account> propertyAccounts = AccountsSelector.selectWithSendBillsContact(new Set<Id>{propAccount.Id});
+        System.assertEquals(true, residentialLead.IsConverted,'The lead in the testSetup is residential, and should be converted');
         opps = [SELECT Id, OwnerId, Name FROM Opportunity];
         System.assertEquals(1, opps.size());
         // But since the callout failed, the property account shouldn't have a zuora id:
