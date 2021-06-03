@@ -14,12 +14,12 @@ td {
     text-align: center;
 }
 
-.resolutionColumn {
-    width: 140px;
+.matchStatusColumn {
+    width: 135px;
 }
 
-.matchStatusColumn {
-    width: 180px;
+.resolutionColumn {
+    width: 135px;
 }
 
 .nameColumn {

@@ -85,7 +85,7 @@
                                       class= "slds-p-around_xx-small"
                                       content="Do you want to bill off transfer sheet or salesforce value?">
                                     </lightning-helptext>
-                                    <span>CREDIT MISMATCH</span>
+                                    <span>MISMATCH</span>
                                     <lightning-helptext
                                       icon-name="utility:forward"
                                       class= "slds-p-around_xx-small"
@@ -147,13 +147,13 @@
             <template if:true={UCB}>
                 <table>
                     <tr>
-                        <th class="slds-theme_inverse" colspan="7">
+                        <th class="slds-theme_inverse" colspan="8">
                             <div class="slds-align_absolute-center">Bluewave Calculated</div>
                         </th>
                         <th class="slds-theme_alt-inverse slds-theme_alert-texture" colspan="2">
                             <div class="slds-align_absolute-center">COMPARISON</div>
                         </th>
-                        <th class="slds-theme_inverse" colspan="6">
+                        <th class="slds-theme_inverse" colspan="7">
                             <div class="slds-align_absolute-center">Utility Transfer Sheet</div>
                         </th>
                     </tr>
@@ -164,6 +164,7 @@
                         <th class="slds-p-around_xx-small">Total Available Credits</th>
                         <th class="slds-p-around_xx-small">Net Member Credits</th>
                         <th class="slds-p-around_xx-small">Ending Banked Credits</th>
+                        <th class="slds-p-around_xx-small">Utility Admin Fee</th>
                         <th class="slds-p-around_xx-small">CDG Sponsor Payment</th>
                         <th class="slds-p-around_xx-small matchText matchStatusColumn">Match Status</th>
                         <th class="slds-p-around_xx-small matchText">Resolution</th>
@@ -172,6 +173,7 @@
                         <th class="slds-p-around_xx-small">Total Available Credits</th>
                         <th class="slds-p-around_xx-small">Net Member Credits</th>
                         <th class="slds-p-around_xx-small">Ending Banked Credits</th>
+                        <th class="slds-p-around_xx-small">Utility Admin Fee</th>
                         <th class="slds-p-around_xx-small">CDG Sponsor Payment</th>
                     </tr>
                     <template for:each={uasbData} for:item='item'>
@@ -182,6 +184,7 @@
                             <td class={item.leftPanelStyle}>{item.sfTotalAvailableCredits}</td>
                             <td class={item.leftPanelStyle}>{item.sfNetMemberCredits}</td>
                             <td class={item.leftPanelStyle}>{item.sfEndingBankedCredits}</td>
+                            <td class={item.leftPanelStyle}>{item.sfUtilityAdminFee}</td>
                             <td class={item.leftPanelStyle}>{item.sfCDGSponsorPayment}</td>
                             <!-- MATCHING ROW -->
                             <template if:true={item.isMatch}>
@@ -198,7 +201,7 @@
                                       class= "slds-p-around_xx-small"
                                       content="Do you want to bill off transfer sheet or salesforce value?">
                                     </lightning-helptext>
-                                    <span>CREDIT MISMATCH</span>
+                                    <span>MISMATCH</span>
                                     <lightning-helptext
                                       icon-name="utility:forward"
                                       class= "slds-p-around_xx-small"
@@ -251,6 +254,7 @@
                             <td class={item.rightPanelStyle}>{item.trTotalAvailableCredits}</td>
                             <td class={item.rightPanelStyle}>{item.trNetMemberCredits}</td>
                             <td class={item.rightPanelStyle}>{item.trEndingBankedCredits}</td>
+                            <td class={item.rightPanelStyle}>{item.trUtilityAdminFee}</td>
                             <td class={item.rightPanelStyle}>{item.trCDGSponsorPayment}</td>
                         </tr>
                     </template>
