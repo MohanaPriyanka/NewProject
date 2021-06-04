@@ -62,7 +62,7 @@
             <name>UAS_Net_Metering_Credit_Update</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Utility_Account_Subscription__c.Customer_Subscription_KW_DC__c</field>
             <operation>notEqual</operation>
@@ -89,7 +89,7 @@
             <name>Project_Co_Timestamp</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Utility_Account_Subscription__c.Project_Company__c</field>
             <operation>notEqual</operation>
