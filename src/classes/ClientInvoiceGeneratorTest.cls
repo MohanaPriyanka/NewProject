@@ -106,7 +106,8 @@ public with sharing class ClientInvoiceGeneratorTest {
         List<Subscription_Order__c> subscriptionOrders = [
             SELECT Id, Utility_Account_Subscription__r.Shared_Solar_System__r.Name, Utility_Account_Subscription__r.Opportunity__r.StageName,
                 Invoice_Line_Item__c, Effective_Date__c, Client_Invoicing_Fee__c, Potential_Client_Invoicing_Fee__c, Client_Assignment_Agreement__c,
-                Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__r.Name, Previous_Annual_kwh__c, New_Annual_kWh__c, Comments__c
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__r.Name, Previous_Annual_kwh__c, New_Annual_kWh__c, Comments__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__c
             FROM Subscription_Order__c
             WHERE Client_Invoicing_Fee__c != NULL
         ];
@@ -132,6 +133,7 @@ public with sharing class ClientInvoiceGeneratorTest {
         feeRequest.clientAccountId = subscriptionOrders[0].Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c;
         feeRequest.effectiveDate = System.now();
         feeRequest.forAcquisition = false;
+        feeRequest.clientEntityId = subscriptionOrders[0].Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__c;
         // Tests InvocableCSFeeSelector.getFeesToInvoice
         List<String> serializedSSS = InvocableCSFeeSelector.getFeesToInvoice(new List<InvocableCSFeeSelector.FeeRequest>{feeRequest});
         List<SharedSolarSystem> sharedSolarSystems =
@@ -151,6 +153,7 @@ public with sharing class ClientInvoiceGeneratorTest {
         generationRequest.includeChangeFees = true;
         generationRequest.effectiveDate = System.now();
         generationRequest.forAcquisition = false;
+        generationRequest.clientEntityId = subscriptionOrders[0].Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__c;
 
         List<InvocableClientInvoiceGenerator.InvoiceGenerationRequest> generationRequests =
             new List<InvocableClientInvoiceGenerator.InvoiceGenerationRequest>{generationRequest};
@@ -315,7 +318,8 @@ public with sharing class ClientInvoiceGeneratorTest {
             true, // includeAssignment
             true, // includeChanges
             System.now(),
-            true // forAcquisition
+            true, // forAcquisition
+            Util.getFakeId(Entity__c.SObjectType)
         );
         List<Invoice_Line_Item__c> invoiceLineItems =
             (List<Invoice_Line_Item__c>) FFLibHelperTest.getRegisterNewListFromUnitOfWork(ClientInvoiceGenerator.uow, 'Invoice_Line_Item__c');
@@ -340,7 +344,8 @@ public with sharing class ClientInvoiceGeneratorTest {
             true, // includeAssignment
             false, // includeChanges
             System.now(),
-            true // forAcquisition
+            true, // forAcquisition
+            Util.getFakeId(Entity__c.SObjectType)
         );
         invoiceLineItems =
             (List<Invoice_Line_Item__c>) FFLibHelperTest.getRegisterNewListFromUnitOfWork(ClientInvoiceGenerator.uow, 'Invoice_Line_Item__c');
@@ -363,7 +368,8 @@ public with sharing class ClientInvoiceGeneratorTest {
             false, // includeAssignment
             true, // includeChanges
             System.now(),
-            true // forAcquisition
+            true, // forAcquisition
+            Util.getFakeId(Entity__c.SObjectType)
         );
         invoiceLineItems =
             (List<Invoice_Line_Item__c>) FFLibHelperTest.getRegisterNewListFromUnitOfWork(ClientInvoiceGenerator.uow, 'Invoice_Line_Item__c');

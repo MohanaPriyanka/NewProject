@@ -21,8 +21,8 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Effective_Date__c</field>
+                <behavior>Readonly</behavior>
+                <field>Client_Invoice_Cutoff_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

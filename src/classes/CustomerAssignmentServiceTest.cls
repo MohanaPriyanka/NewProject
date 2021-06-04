@@ -331,20 +331,7 @@ public with sharing class CustomerAssignmentServiceTest {
     public class MockSubscriptionOrderSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
-                when 'selectApprovedByOppIds' {
-                    String json = '[' +
-                        '{"Id":"a9W0v0000000000AAA",' +
-                        '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
-                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3AxAAK","Opportunity__c":"006000000000000AAA"}},' +
-                        '{"Id":"a9W0v0000000002AAA",' +
-                        '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
-                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3AyAAK","Opportunity__c":"006000000000002AAA"}},' +
-                        '{"Id":"a9W0v0000000003AAA",' +
-                        '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
-                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3AyAAK","Opportunity__c":"006000000000003AAA"}}' +
-                        ']';
-                    return (List<Subscription_Order__c>) System.JSON.deserialize(json, List<Subscription_Order__c>.class);
-                } when 'selectApprovedByContractIds' {
+                when 'selectApprovedByContractIds' {
                     String json = '[' +
                         '{"Id":"a9W0v0000000000AAA",' +
                         '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +

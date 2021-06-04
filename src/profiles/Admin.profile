@@ -11166,6 +11166,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Invoice__c.Client_Invoice_Cutoff_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Invoice__c.Date_QC_Complete__c</field>
         <readable>true</readable>
     </fieldPermissions>

@@ -1,6 +1,5 @@
 /**
- * Created by SarahRenfro on 2/11/2020.
- *
+ * @description
  * Tested By: SubscriptionManagementServiceTest, SubscriptionOrderSelectorTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
@@ -66,15 +65,7 @@ public inherited sharing class SubscriptionOrderSelector {
                 Allocation_Schedule_Subscription__c
             FROM Subscription_Order__c
             WHERE Utility_Account_Subscription__c IN : uasIds
-            AND Date_Enacted_By_Utility__c = null
-        ];
-    }
-    public List<Subscription_Order__c> selectApprovedByOppIds(Set<Id> oppIds) {
-        return [
-            SELECT Id, Client_Assignment_Agreement__c, Utility_Account_Subscription__r.Opportunity__c
-            FROM Subscription_Order__c
-            WHERE Utility_Account_Subscription__r.Opportunity__c IN :oppIds
-            AND Approval_Status__c = 'Approved'
+            AND Date_Enacted_By_Utility__c = NULL
         ];
     }
     public List<Subscription_Order__c> selectApprovedByContractIds(Set<Id> contractIds, Date cutoffDate) {
@@ -93,7 +84,7 @@ public inherited sharing class SubscriptionOrderSelector {
             FROM Subscription_Order__c
             WHERE Utility_Account_Subscription__r.Shared_Solar_System__c = : sssId
             AND Effective_Date__c >= : newReacqStartDate
-            AND Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c = false
+            AND Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c = FALSE
         ]);
     }
     public Map<Id,Decimal>  getSubscriptionOrdersAssignedToClient(Set<Id> uasIds){
@@ -103,7 +94,7 @@ public inherited sharing class SubscriptionOrderSelector {
                 Utility_Account_Subscription__c uasId
             FROM Subscription_Order__c
             WHERE Utility_Account_Subscription__c IN : uasIds
-            AND Client_Assignment_Agreement__c != null
+            AND Client_Assignment_Agreement__c != NULL
             AND Client_Assignment_Agreement__r.Status != 'Draft'
             AND Client_Assignment_Agreement__r.Status != 'Rejected'
             GROUP BY Utility_Account_Subscription__c
@@ -121,7 +112,8 @@ public inherited sharing class SubscriptionOrderSelector {
             WHERE Client_Assignment_Agreement__c IN :assignmentAgreementIds
         ];
     }
-    public List<AggregateResult> getUninvoicedByClientAccount(List<Id> clientAccountIds, Datetime effectiveDate, Boolean forAcquisition) {
+    public List<AggregateResult> getUninvoicedByClientAccount(List<Id> clientAccountIds, Datetime effectiveDate,
+        Boolean forAcquisition, Id entityId) {
         String acquisitionType = forAcquisition ? 'Acquisition' : 'Reacquisition';
         return [	
             SELECT Utility_Account_Subscription__r.Shared_Solar_System__c Id,	
@@ -139,6 +131,7 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Client_Invoicing_Fee__c != 0
             AND Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
             AND Acquisition_Type__c = :acquisitionType
+            AND Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId
             GROUP BY Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Name,	
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__r.Name,	
@@ -147,7 +140,7 @@ public inherited sharing class SubscriptionOrderSelector {
     }	
 
     public List<Subscription_Order__c> getUninvoicedBySSS(List<Shared_Solar_System__c> sharedSolarSystems, Datetime effectiveDate,
-        Boolean includeAcquisition) {
+        Boolean includeAcquisition, Id entityId) {
         String acquisitionType = includeAcquisition ? 'Acquisition' : 'Reacquisition';
         return [	
             SELECT Id, Client_Invoicing_Fee__c, Utility_Account_Subscription__r.Shared_Solar_System__c,	
@@ -164,6 +157,7 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Client_Invoicing_Fee__c != 0
             AND Acquisition_Type__c = :acquisitionType
             AND Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
+            AND Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId
         ];
     }
 }
