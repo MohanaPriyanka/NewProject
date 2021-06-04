@@ -97,7 +97,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Credit_Score_Requirement__c = 300,
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 100,
-            Assemblage_Count__c = 1
+            Assemblage_Count__c = 1,
+            Contract_Assignment_Entity__c = entity1.Id
         );
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(Name = 'SSS 2',
             Service_Territory__c = 'NEMA',
@@ -116,7 +117,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Credit_Score_Requirement__c = 300,
             Assignment_Order__c = '2',
             Expected_Yield_kWh_kW__c = 1300,
-            Assemblage_Count__c = 1
+            Assemblage_Count__c = 1,
+            Contract_Assignment_Entity__c = entity1.Id
         );
         Shared_Solar_System__c sss3 = new Shared_Solar_System__c(Name = 'SSS 3',
             Service_Territory__c = 'NEMA',
@@ -135,7 +137,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Assignment_Order__c = '3',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Capacity_kWDC__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Contract_Assignment_Entity__c = entity1.Id);
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3};
         List<Shared_Solar_System__c> noSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(

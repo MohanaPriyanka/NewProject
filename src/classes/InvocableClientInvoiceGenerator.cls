@@ -38,7 +38,8 @@ public without sharing class InvocableClientInvoiceGenerator {
             request.includeAssignmentFees,
             request.includeChangeFees,
             request.effectiveDate,
-            request.forAcquisition
+            request.forAcquisition,
+            request.clientEntityId
         );
         return new List<List<Invoice__c>>{invoices};
     }
@@ -57,5 +58,7 @@ public without sharing class InvocableClientInvoiceGenerator {
         public Datetime effectiveDate;
         @InvocableVariable(Label='Acquisition?')
         public Boolean forAcquisition;
+        @InvocableVariable(Label='Entity Id to Invoice')
+        public Id clientEntityId;
     }
 }

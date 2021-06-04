@@ -35,16 +35,6 @@ public inherited sharing class SubscriptionOrderSelectorTest {
             System.assert(queriedOrders.size() >= 3);
         }
     }
-
-    @IsTest
-    public static void testSelectApprovedByOppIds() {
-        try {
-            new SubscriptionOrderSelector().selectApprovedByOppIds(new Set<Id>());
-        } catch (Exception e) {
-            System.assert(false, 'Selector should not have thrown an exception: ' + e.getMessage() + '\n' + e.getStackTraceString());
-        }
-    }
-
     @IsTest
     public static void testSelectApprovedByContractIds() {
         try {
@@ -169,7 +159,7 @@ public inherited sharing class SubscriptionOrderSelectorTest {
         Map<Id, Account> accountMap = new Map<Id, Account>([SELECT Id FROM Account]);
         SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
         List<AggregateResult> aggregateResults =
-            subscriptionOrderSelector.getUninvoicedByClientAccount(new List<Id>(accountMap.keySet()), System.now(), true);
+            subscriptionOrderSelector.getUninvoicedByClientAccount(new List<Id>(accountMap.keySet()), System.now(), true, Util.getFakeId(Entity__c.SObjectType));
         System.assertNotEquals(null, aggregateResults, 'Expected to get aggregate results back (even if empty)');
     }
 
@@ -178,7 +168,7 @@ public inherited sharing class SubscriptionOrderSelectorTest {
         List<Shared_Solar_System__c> sharedSolarSystems = [SELECT Id FROM Shared_Solar_System__c];
         SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
         List<Subscription_Order__c> subscriptionOrders =
-            subscriptionOrderSelector.getUninvoicedBySSS(sharedSolarSystems, System.now(), true);
+            subscriptionOrderSelector.getUninvoicedBySSS(sharedSolarSystems, System.now(), true, Util.getFakeId(Entity__c.SObjectType));
         System.assertNotEquals(null, subscriptionOrders, 'Expected to get a list of subscription orders (even if empty)');
     }
 }
