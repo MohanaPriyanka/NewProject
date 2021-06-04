@@ -65,6 +65,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <processMetadataValues>
             <name>index</name>
@@ -384,6 +385,7 @@ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_En
         <connector>
             <targetReference>myDecision3</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -458,6 +460,7 @@ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_En
         <label>UAS - Update Maximum Cost</label>
         <locationX>600</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -510,7 +513,7 @@ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_En
         <object>Utility_Account_Subscription__c</object>
     </recordUpdates>
     <startElementReference>myDecision</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>

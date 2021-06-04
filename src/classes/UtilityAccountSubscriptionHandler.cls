@@ -60,4 +60,30 @@ public without sharing class UtilityAccountSubscriptionHandler {
         GenericBatchDMLOperation batchDMLOperation = new GenericBatchDMLOperation(anchorUASes, 'Update');
         Database.executeBatch(batchDMLOperation);
     }
+    
+    public static void checkScheduleZStatus(Map<Id, Utility_Account_Subscription__c> newUASMap, Map<Id, Utility_Account_Subscription__c> oldUASMap){
+        Map<Id,Utility_Account_Subscription__c> uasUpdatedStatusInactiveMap = new Map<Id,Utility_Account_Subscription__c>();
+        List<Id> updatedUasOppIdList = new List<Id>();
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{Opportunity.SObjectType});
+        
+        for (Utility_Account_Subscription__c uas : newUASMap.values()){
+            if ((uas.Next_Schedule_Z_Status__c == 'Inactive Subscription' && oldUASMap.get(uas.Id).Next_Schedule_Z_Status__c != 'Inactive Subscription') && 
+                (uas.Total_Count_of_Schedule_Zs__c == 0 || uas.Total_Count_of_Schedule_Zs__c == null)){
+                uasUpdatedStatusInactiveMap.put(uas.Id,uas);
+                updatedUasOppIdList.add(uas.Opportunity__c);
+            } else if (uas.Next_Schedule_Z_Status__c == 'Inactive Subscription' && 
+                ((uas.Total_Count_of_Schedule_Zs__c == 0 || uas.Total_Count_of_Schedule_Zs__c == null) && (oldUASMap.get(uas.Id).Total_Count_of_Schedule_Zs__c > 0))){
+                uasUpdatedStatusInactiveMap.put(uas.Id,uas);
+                updatedUasOppIdList.add(uas.Opportunity__c);
+            }
+        }
+        List<Opportunity> updatedUasOpportunities = OpportunitiesSelector.selectByIds(updatedUasOppIdList);
+        for(Opportunity opp : updatedUasOpportunities){
+            opp.StageName = 'Cancelled';
+            uow.registerDirty(opp);
+        }
+        uow.commitWork();
+    }
+    
 }
