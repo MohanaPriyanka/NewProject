@@ -742,7 +742,8 @@ IF(
         <fullName>Next_Schedule_Z_Status__c</fullName>
         <defaultValue>&quot;Active Subscription&quot;</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Controls whether this subscription should be added to futureAllocation Schedules. Select &apos;Active Subscription&apos; to include it, or &apos;Inactive Subscription&apos; to exclude it.</inlineHelpText>
+        <inlineHelpText>Controls whether this subscription should be added to futureAllocation Schedules. Select &apos;Active Subscription&apos; to include it, or &apos;Inactive Subscription&apos; to exclude it.  
+When changed to &apos;Inactive,&apos; the related Opportunity&apos;s Stage is changed to &apos;Cancelled.&apos;</inlineHelpText>
         <label>Next Allocation Schedule Status</label>
         <required>false</required>
         <trackHistory>true</trackHistory>
