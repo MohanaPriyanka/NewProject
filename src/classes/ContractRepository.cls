@@ -9,11 +9,43 @@ public without sharing class ContractRepository {
     @TestVisible private static MultiMap contractToFeeDetailMap;
 
     /**
-     * @description Initializes this repository with all Project Contracts (Client_Contract__c) for Shared Solar Systems
-     * @param sssIdsRequiringProjectContracts Shared Solar Systems for which this should get Project Contracts
+     * @description Initializes the repository with Contract Fee Details from a set of Contract Ids
+     * @param subscriptionOrders List of Subscription Orders from which to find contracts
      */
-    public static void initFromSharedSolarSystems(Set<Id> sssIdsRequiringProjectContracts) {
-        clientContracts = clientContractSelector.getClientContracts(sssIdsRequiringProjectContracts);
+    public static void initFromSubscriptionOrders(List<Subscription_Order__c> subscriptionOrders) {
+        Set<Id> contractIds = new Set<Id>();
+        Set<Id> sssIds = new Set<Id>();
+        for (Subscription_Order__c subOrder : subscriptionOrders) {
+            sssIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__c);
+        }
+
+        clientContracts = clientContractSelector.getClientContracts(sssIds);
+        for (Client_Contract__c clientContract : clientContracts) {
+            contractIds.add(clientContract.Contract__c);
+        }
+        List<Contract_Fee_Detail__c> contractFeeDetails = contractFeeDetailSelector.getContractDetailFromContract(contractIds);
+        setContractToCFDMap(contractFeeDetails);
+    }
+
+    /**
+     * @description Used after initializing the repository with Contract Ids to get a MultiMap of Contract to Contract Fee Details
+     * @return MultiMap
+     */
+    public static MultiMap getContractToContractFeeDetails() {
+        if (contractToFeeDetailMap == null) {
+            throw new Util.BWException('ContractRepository needs to be initialized before getting contract fee details');
+        }
+        return contractToFeeDetailMap;
+    }
+
+    @TestVisible
+    private static void setContractToCFDMap(List<Contract_Fee_Detail__c> contractFeeDetail) {
+        contractToFeeDetailMap = MultiMap.newListInstance();
+
+        for (Contract_Fee_Detail__c feeDetail : contractFeeDetail){
+            ContractFeeDetail feeQualifier = new ContractFeeDetail(feeDetail);
+            contractToFeeDetailMap.putValue(feeDetail.Contract__c, feeQualifier);
+        }
     }
 
     /**
@@ -46,53 +78,18 @@ public without sharing class ContractRepository {
         return null;
     }
 
-    /**
-     * @description Initializes the repository with Contract Fee Details from a set of Contract Ids
-     * @param contractIds Set of Acquisition or Management Contract Ids
-     */
-    public static void initFromContractIds(Set<Id> contractIds) {
-        List<Contract_Fee_Detail__c> feeDetailList = contractFeeDetailSelector.getContractDetailFromContract(contractIds);
-        convertContractFeeListToFeeDetailMap(feeDetailList);
-    }
-
-    /**
-     * @description Initializes the repository with Contract Fee Details from a set of Contract Ids
-     * @param subscriptionOrders List of Subscription Orders from which to find contracts
-     */
-    public static void initFromSubscriptionOrders(List<Subscription_Order__c> subscriptionOrders) {
-        Set<Id> contractIds = new Set<Id>();
-        Set<Id> sssIdsRequiringProjectContracts = new Set<Id>();
-        for (Subscription_Order__c subOrder : subscriptionOrders) {
-            contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c);
-            contractIds.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c);
-            if (subOrder.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c == 'Project Contract: Effective Date') {
-                sssIdsRequiringProjectContracts.add(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__c);
+    public static List<Id> getActiveContractsForSystem(Id sssId, Datetime effectiveDate) {
+        if (clientContracts == null) {
+            throw new Util.BWException('ContractRepository needs to be initialized before getting contracts for a system');
+        }
+        List<Id> contractIds = new List<Id>();
+        for (Client_Contract__c clientContract : clientContracts) {
+            if (clientContract.Shared_Solar_System__c == sssId &&
+                clientContract.Effective_Date__c <= effectiveDate &&
+                clientContract.End_Date__c >= effectiveDate) {
+                contractIds.add(clientContract.Contract__c);
             }
         }
-
-        initFromContractIds(contractIds);
-        initFromSharedSolarSystems(sssIdsRequiringProjectContracts);
-    }
-
-
-    /**
-     * @description Used after initializing the repository with Contract Ids to get a MultiMap of Contract to Contract Fee Details
-     * @return MultiMap
-     */
-    public static MultiMap getContractToContractFeeDetails() {
-        if (contractToFeeDetailMap == null) {
-            throw new Util.BWException('ContractRepository needs to be initialized before getting contract fee details');
-        }
-        return contractToFeeDetailMap;
-    }
-
-    @TestVisible
-    private static void convertContractFeeListToFeeDetailMap(List<Contract_Fee_Detail__c> contractFeeDetail) {
-        contractToFeeDetailMap = MultiMap.newListInstance();
-
-        for (Contract_Fee_Detail__c feeDetail : contractFeeDetail){
-            ContractFeeDetail feeQualifier = new ContractFeeDetail(feeDetail);
-            contractToFeeDetailMap.putValue(feeDetail.Contract__c, feeQualifier);
-        }
+        return contractIds;
     }
 }

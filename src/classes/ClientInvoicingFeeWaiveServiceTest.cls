@@ -152,6 +152,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testWaiveForProjectDates() {
+        ContractRepository.initFromSubscriptionOrders(new List<Subscription_Order__c>());
         ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType
@@ -225,6 +226,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testWaiveForInitialPeriod() {
+        ContractRepository.initFromSubscriptionOrders(new List<Subscription_Order__c>());
         ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType
@@ -283,6 +285,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testWaiveWithMaxProjectPercentCap() {
+        ContractRepository.initFromSubscriptionOrders(new List<Subscription_Order__c>());
         ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType
@@ -333,8 +336,9 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testWaiveByCustomerAssignment() {
+        ClientInvoicingFeeAssignmentServiceTest.useMocks();
+        ContractRepository.initFromSubscriptionOrders(new List<Subscription_Order__c>());
         mockCancellationCFD();
-
         ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType
@@ -388,6 +392,8 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testWaiveForEstimatedCODOrCustomerAssignment() {
+        ClientInvoicingFeeAssignmentServiceTest.useMocks();
+        ContractRepository.initFromSubscriptionOrders(new List<Subscription_Order__c>());
         mockCancellationCFD();
 
         ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
@@ -453,6 +459,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
 
     @IsTest
     private static void testCIMEffectiveSameAsSO() {
+        ContractRepository.initFromSubscriptionOrders(new List<Subscription_Order__c>());
         ClientInvoicingFeeWaiveService service = new ClientInvoicingFeeWaiveService();
         service.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
             Client_Invoicing_Memo__c.SObjectType

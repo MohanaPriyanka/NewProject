@@ -62,8 +62,14 @@ public with sharing class ClientInvoiceGeneratorTest {
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 1'
         ];
-        sss.Client_Management_Contract__c = contractA.Id;
-        sss.Client_Acquisition_Contract__c = contractA.Id;
+        Client_Contract__c clientContract = new Client_Contract__c(
+            Contract__c = contractA.Id,
+            Shared_Solar_System__c = sss.Id,
+            Effective_Date__c = Date.today().addYears(-1),
+            End_Date__c = Date.today().addYears(1),
+            CS_Services_Type__c = 'Acquisition & Management'
+        );
+        insert clientContract;
         sss.Reacquisition_Start_Date__c = System.today().addYears(-1);
         update sss;
 

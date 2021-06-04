@@ -3,6 +3,7 @@
 public class ClientInvoicingFeeAssignmentServiceTest {
     @IsTest
     private static void testCFDsSpecificToSSSes() {
+        useMocks();
         ClientInvoicingFeeAssignmentService assignmentService = new ClientInvoicingFeeAssignmentService(null);
 
         Contract_Fee_Detail__c defaultSSS = new Contract_Fee_Detail__c(
@@ -57,35 +58,35 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             new SubscriptionOrder(getSubscriptionOrder());
         Subscription_Order__c subscriptionOrderWithCFD;
 
-        ContractRepository.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS});
+        ContractRepository.setContractToCFDMap(new List<Contract_Fee_Detail__c>{defaultSSS});
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+            assignmentService.registerCFDUpdate(subscriptionOrder);
         System.assertEquals(defaultSSS.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'Since there are no system specific CFDs, we expect the SO to match the non-system specific one'
         );
 
-        ContractRepository.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific});
+        ContractRepository.setContractToCFDMap(new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific});
         System.assertEquals(sssSpecific.Shared_Solar_System__c, subscriptionOrder.sharedSolarSystemId,
             'The test setup should have a SSS-specific CFD and a SO specifying that system');
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+            assignmentService.registerCFDUpdate(subscriptionOrder);
         System.assertEquals(sssSpecific.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'Expected to get an SO to update with the SSS-Specific CFD'
         );
 
-        ContractRepository.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, otherSSSSpecific});
+        ContractRepository.setContractToCFDMap(new List<Contract_Fee_Detail__c>{defaultSSS, otherSSSSpecific});
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+            assignmentService.registerCFDUpdate(subscriptionOrder);
         System.assertEquals(defaultSSS.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'There is another SSS-specific CFD, but not the SSS that is on the SO, so the match should use the default CFD'
         );
 
         System.assertEquals(null, Logger.logs, 'There should be no logs before matching with duplicates');
-        ContractRepository.convertContractFeeListToFeeDetailMap(
+        ContractRepository.setContractToCFDMap(
             new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific, otherSSSSpecific, duplicateSSSSpecific}
         );
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+            assignmentService.registerCFDUpdate(subscriptionOrder);
         System.assert(
             sssSpecific.Id == subscriptionOrderWithCFD.Contract_Fee_Detail__c ||
                 duplicateSSSSpecific.Id == subscriptionOrderWithCFD.Contract_Fee_Detail__c,
@@ -95,12 +96,12 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         System.assertEquals(1, Logger.logs.values()[0].size(), 'There should just be one log later message for duplicate CFDs found');
         System.assert(Logger.logs.values()[0][0].message.contains('Multiple CFDs found for SO'), Logger.logs.values()[0][0].message);
 
-        ContractRepository.convertContractFeeListToFeeDetailMap(new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific});
+        ContractRepository.setContractToCFDMap(new List<Contract_Fee_Detail__c>{defaultSSS, sssSpecific});
         System.assertEquals(sssSpecific.Shared_Solar_System__c, subscriptionOrder.sharedSolarSystemId,
             'The test setup should have a SSS-specific CFD and a SO specifying that system');
         subscriptionOrder.contractFeeDetailId = sssSpecific.Id;
         subscriptionOrderWithCFD =
-            assignmentService.matchSubscriptionOrderToFee(subscriptionOrder);
+            assignmentService.registerCFDUpdate(subscriptionOrder);
         System.assertEquals(sssSpecific.Id, subscriptionOrderWithCFD.Contract_Fee_Detail__c,
             'The SO already had the system-specific CFD on it, and should retain it after running fee assignment'
         );
@@ -112,7 +113,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
         System.assertEquals(14,ordersToRun.size());
         ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService(CollectionUtil.getIdSet(ordersToRun));
-        service.setSubscriptionOrderAcquisitionFee();
+        service.setSubscriptionOrderAcquisitionFee(false);
         List<Subscription_Order__c> ordersToUpdate = (List<Subscription_Order__c>)
             FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(service.uow, 'Subscription_Order__c');
         for (Subscription_Order__c order : ordersToUpdate){
@@ -228,7 +229,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
     @IsTest
     private static void testGetCancellationRate (){
         useMocks();
-        ContractRepository.initFromContractIds(new Set<Id>());
+        ContractRepository.initFromSubscriptionOrders(new List<Subscription_Order__c>());
         List<Subscription_Order__c> ordersToRun = getSubscriptionOrderMocks();
         System.assertEquals(14, ordersToRun.size());
         System.assertEquals(0.14,new SubscriptionOrder(ordersToRun[0]).getCancellationFee(), 'Expected upsizing reacq rate for BCS Acquired Small Offtake');
@@ -239,6 +240,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
     }
     @IsTest
     private static void testMatchingLogic() {
+        ContractRepository.initFromSubscriptionOrders(new List<Subscription_Order__c>());
         SubscriptionOrder so = new SubscriptionOrder(new Subscription_Order__c());
         setDefaultBooleans(so);
         ContractFeeDetail cfd = new ContractFeeDetail();
@@ -299,9 +301,56 @@ public class ClientInvoicingFeeAssignmentServiceTest {
             'An investment grade anchor SO should NOT match a non-investment grade anchor CFD');
 
     }
-    private static void useMocks() {
+    public static void useMocks() {
+        ContractRepository.clientContractSelector = (ClientContractSelector) Test.createStub(ClientContractSelector.class, new MockClientContractSelector());
         ContractRepository.contractFeeDetailSelector = (ContractFeeDetailSelector) Test.createStub(ContractFeeDetailSelector.class, new MockFeeDetailSelector());
         ClientInvoicingFeeAssignmentService.subscriptionOrderSelector = (SubscriptionOrderSelector) Test.createStub(SubscriptionOrderSelector.class, new MockSubscriptionOrderSelector());
+    }
+    private class MockClientContractSelector extends MockProvider {
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'getClientContracts' {
+                    return new List<Client_Contract__c>{
+                        new Client_Contract__c(
+                            CS_Services_Type__c = 'Acquisition Only',
+                            Contract__c = '8003F000000KMD9QAO',
+                            Effective_Date__c = Date.today().addYears(-1),
+                            End_Date__c = Date.today().addYears(1),
+                            Shared_Solar_System__c = 'a1J3F00000122b7UAA'
+                        ),
+                        new Client_Contract__c(
+                            CS_Services_Type__c = 'Management Only',
+                            Contract__c = '8003F000000KNC9QAO',
+                            Effective_Date__c = Date.today().addYears(-1),
+                            End_Date__c = Date.today().addYears(1),
+                            Shared_Solar_System__c = 'a1J3F00000122b7UAA'
+                        ),
+                        new Client_Contract__c(
+                            CS_Services_Type__c = 'Acquisition Only',
+                            Contract__c = '8003F000000KHH9QAO',
+                            Effective_Date__c = Date.today().addYears(-1),
+                            End_Date__c = Date.today().addYears(1),
+                            Shared_Solar_System__c = 'a1J3F00000122b8UAA'
+                        ),
+                        new Client_Contract__c(
+                            CS_Services_Type__c = 'Acquisition & Management',
+                            Contract__c = Util.getFakeId(Contract.SObjectType),
+                            Effective_Date__c = Date.today().addYears(-1),
+                            End_Date__c = Date.today().addYears(1),
+                            Shared_Solar_System__c = Util.getFakeId(Shared_Solar_System__c.SObjectType)
+                        ),
+                        new Client_Contract__c(
+                            CS_Services_Type__c = 'Acquisition & Management',
+                            Contract__c = Util.getFakeId(Contract.SObjectType),
+                            Effective_Date__c = Date.today().addYears(-1),
+                            End_Date__c = Date.today().addYears(1),
+                            Shared_Solar_System__c = Util.incrementFakeId(Util.getFakeId(Shared_Solar_System__c.SObjectType))
+                        )
+                    };
+                }
+            }
+            return null;
+        }
     }
     private class MockFeeDetailSelector extends MockProvider {
         @SuppressWarnings('PMD.ApexDoc')
