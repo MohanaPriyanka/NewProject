@@ -450,7 +450,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Subscribed_Annual_Cost_of_Electricity__c = 32000);
         insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree, uasFour};
     }
-    public static void createContractTestRecords(){
+    private static void createContractTestRecords(){
         Account account = [SELECT Id FROM Account LIMIT 1];
         RecordType clientRT = [SELECT Id FROM RecordType WHERE Name = 'Client Contract' LIMIT 1];
         Contract contractA = new Contract(
@@ -557,10 +557,26 @@ public with sharing class SharedSolarSystemHandlerTest {
             SELECT Id, Client_Acquisition_Contract__c, Client_Management_Contract__c
             FROM Shared_Solar_System__c
         ];
+        List<Client_Contract__c> clientContracts = new List<Client_Contract__c>();
         for (Shared_Solar_System__c sss : sssList){
+            clientContracts.add(new Client_Contract__c(
+                Contract__c = contractA.Id,
+                Effective_Date__c = Date.today().addYears(-1),
+                End_Date__c = Date.today().addYears(1),
+                Shared_Solar_System__c = sss.Id,
+                CS_Services_Type__c = 'Acquisition Only'
+            ));
+            clientContracts.add(new Client_Contract__c(
+                Contract__c = managementContract.Id,
+                Effective_Date__c = Date.today().addYears(-1),
+                End_Date__c = Date.today().addYears(1),
+                Shared_Solar_System__c = sss.Id,
+                CS_Services_Type__c = 'Management Only'
+            ));
             sss.Client_Acquisition_Contract__c = contractA.Id;
             sss.Client_Management_Contract__c = managementContract.Id;
         }
+        insert clientContracts;
         update sssList;
     }
     @IsTest

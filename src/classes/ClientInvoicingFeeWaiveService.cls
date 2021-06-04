@@ -42,7 +42,6 @@ public without sharing class ClientInvoicingFeeWaiveService {
     private void queryData(List<Subscription_Order__c> subOrders) {
         Set<Id> sssIdsBeingWaivedToMaxPercent = new Set<Id>();
         Set<Id> uasIds = new Set<Id>();
-        Set<Id> sssIdsRequiringProjectContracts = new Set<Id>();
 
         for (Subscription_Order__c order : subOrders) {
             if (order.Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c) {
@@ -51,14 +50,10 @@ public without sharing class ClientInvoicingFeeWaiveService {
             if (order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Max_Project__c != null) {
                 sssIdsBeingWaivedToMaxPercent.add(order.Utility_Account_Subscription__r.Shared_Solar_System__c);
             }
-            if (order.Contract_Fee_Detail__r.Waive_Reacquisition_Fee_Project_Date__c == 'Project Contract: Effective Date') {
-                sssIdsRequiringProjectContracts.add(order.Utility_Account_Subscription__r.Shared_Solar_System__c);
-            }
         }
 
         sssIdToTotalWaivedkWMap = clientInvoicingMemoSelector.getWaivedFeesBySSS(sssIdsBeingWaivedToMaxPercent);
         uasToAssignedCapacityMap = subscriptionOrderSelector.getSubscriptionOrdersAssignedToClient(uasIds);
-        ContractRepository.initFromSharedSolarSystems(sssIdsRequiringProjectContracts);
     }
 
     /**

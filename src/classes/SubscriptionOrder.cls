@@ -1,11 +1,11 @@
 /**
  * @description Created by PeterYao on 3/12/2021.
- * Tested By: ClientInvoicingFeeAssignmentServiceTest
+ * Tested By: ClientInvoicingFeeAssignmentServiceTest, ClientInvoicingFeeWaiveServiceTest
  */
 
 public without sharing class SubscriptionOrder extends FeeQualification {
     public Id contractFeeDetailId;
-    private Subscription_Order__c order;
+    public Subscription_Order__c order;
     private String milestoneDateType;
     private Date milestoneDate;
     private Map<Id,Decimal> uasToAssignedCapacityMap;
@@ -15,10 +15,8 @@ public without sharing class SubscriptionOrder extends FeeQualification {
     public SubscriptionOrder(Subscription_Order__c subOrder) {
         String partnerType = subOrder.Utility_Account_Subscription__r.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name;
         Date reacqStartDate = subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c;
-        List<Id> contractIds = new List<Id>(new Set<Id>{
-            subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Acquisition_Contract__c,
-            subOrder.Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Management_Contract__c
-        });
+        List<Id> contractIds =
+            ContractRepository.getActiveContractsForSystem(subOrder.Utility_Account_Subscription__r.Shared_Solar_System__c, subOrder.Effective_Date__c);
         this.recordId = subOrder.Id;
         this.contractIds = contractIds;
         this.closedByBCS = subOrder.Utility_Account_Subscription__r.Opportunity__r.Acquired_By_Client_Closed_By_BlueWave__c;

@@ -49,7 +49,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
      */
     public void setSubOrderContractFeeDetail() {
         try {
-            setSubscriptionOrderAcquisitionFee();
+            setSubscriptionOrderAcquisitionFee(false);
             uow.commitWork();
             Logger.flushLogs();
 
@@ -71,13 +71,42 @@ public without sharing class ClientInvoicingFeeAssignmentService {
     }
 
     /**
+     * @description Runs the logic to register a CFD update, but does not commit the change. Instead, it logs an Error Log
+     * if any Subscription Orders should have a CFD different than the one already assigned (which can happen if related
+     * data changes)
+     */
+    public void reconcileSubscriptionOrders() {
+        setSubscriptionOrderAcquisitionFee(true);
+        Logger.flushLogs();
+    }
+
+    /**
      * @description Finds a matching CFD for each Subscription Order and registers the SO for update
+     * @logReconciliationWarning If true, logs an Error Log if the SO should have a different CFD. This should be false
+     * unless reconciling, since new subscription orders should get a CFD through this method in the expected process.
      */
     @TestVisible
-    private void setSubscriptionOrderAcquisitionFee() {
-        for (SubscriptionOrder subOrder : subOrdersAsFeeQualifications) {
-            matchSubscriptionOrderToFee(subOrder);
+    private void setSubscriptionOrderAcquisitionFee(Boolean logReconciliationWarning) {
+        for (SubscriptionOrder existingSO : subOrdersAsFeeQualifications) {
+            Subscription_Order__c soWithUpdatedCFD = registerCFDUpdate(existingSO);
+            reconcileExistingWithUpdatedSO(logReconciliationWarning, soWithUpdatedCFD, existingSO);
         }
+    }
+
+    private void reconcileExistingWithUpdatedSO(Boolean logReconciliationWarning, Subscription_Order__c soWithUpdatedCFD, SubscriptionOrder existingSO) {
+        if (shouldLogReconciliationWarning(logReconciliationWarning, soWithUpdatedCFD, existingSO)) {
+            Logger.logLater(
+                'ClientInvoicingFeeAssignmentService',
+                'setSubscriptionOrderAcquisitionFee',
+                existingSO.order.Id + ' has CFD: ' + existingSO.contractFeeDetailId + ' but should have: ' + soWithUpdatedCFD?.Contract_Fee_Detail__c,
+                Logger.WARN
+            );
+        }
+    }
+
+    private Boolean shouldLogReconciliationWarning(Boolean logReconciliationWarning, Subscription_Order__c soWithUpdatedCFD, SubscriptionOrder existingSO) {
+        return logReconciliationWarning &&
+            existingSO.contractFeeDetailId != soWithUpdatedCFD?.Contract_Fee_Detail__c;
     }
 
     /**
@@ -86,7 +115,7 @@ public without sharing class ClientInvoicingFeeAssignmentService {
      * @return A Subscription Order with a potentially populated CFD
      */
     @TestVisible
-    private Subscription_Order__c matchSubscriptionOrderToFee(SubscriptionOrder subscriptionOrder) {
+    private Subscription_Order__c registerCFDUpdate(SubscriptionOrder subscriptionOrder) {
         List<ContractFeeDetail> contractFeeDetails = getContractFeeDetailsFromContracts(subscriptionOrder, ContractRepository.getContractToContractFeeDetails());
         Subscription_Order__c orderToUpdate;
         MultiMap multiMapForDuplicateCFDCheck = MultiMap.newListInstance();
