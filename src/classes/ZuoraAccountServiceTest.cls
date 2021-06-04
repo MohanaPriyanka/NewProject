@@ -4,8 +4,6 @@
 @SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
 public with sharing class ZuoraAccountServiceTest {
-    private static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
-    
     public static void useMocks() {
         ZuoraAccountService.accountSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
     }
