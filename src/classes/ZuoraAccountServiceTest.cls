@@ -653,16 +653,21 @@ public with sharing class ZuoraAccountServiceTest {
         );
         insert ual;
 
-        Account propAccount = getPropAcctForTest(residentialLead.Id);
-        insert propAccount;
-
         List<Opportunity> opps = [SELECT Id, Name FROM Opportunity];
         System.assertEquals(0, opps.size(),'There shouldn\'t be any opportunities yet, because nothing has been converted');
-        Test.startTest();
-        List<Id> leadIdList = new List<Id>();
-        leadIdList.add(residentialLead.Id);
-        InvocableLeadConvert.convertLead(leadIdList);
 
+        Test.startTest();
+        List<Id> convertedLeadIds = new List<Id>();
+        convertedLeadIds.add(residentialLead.Id);
+        // Lead conversion queues the ZuoraAccountAsyncService via CSSubscriptionEnroller.enroll()
+        InvocableLeadConvert.convertLead(new List<Id>{residentialLead.Id});
+        // And in this test we want force a callout to fail, which the ZuoraAPIMock does when it sees "ThrowException" in
+        // the body of the request
+        List<Lead> convertedLeads = LeadSelector.selectConvertedByIds(convertedLeadIds);
+        List<Account> propertyAccounts = AccountsSelector.selectWithSendBillsContact(new Set<Id>{convertedLeads[0].ConvertedAccountId});
+        // So we force the account name to have that string, before stopTest(), which executes the ZuoraAccountAsyncService queueable
+        propertyAccounts[0].Name = 'ThrowException';
+        update propertyAccounts[0];
         Test.stopTest();
 
         residentialLead = [
@@ -671,7 +676,6 @@ public with sharing class ZuoraAccountServiceTest {
             WHERE Email = 'testymctesterson@tester.com'
             AND Application_Type__c = 'Residential'
         ];
-        List<Account> propertyAccounts = AccountsSelector.selectWithSendBillsContact(new Set<Id>{propAccount.Id});
         System.assertEquals(true, residentialLead.IsConverted,'The lead in the testSetup is residential, and should be converted');
         opps = [SELECT Id, OwnerId, Name FROM Opportunity];
         System.assertEquals(1, opps.size());
@@ -684,8 +688,11 @@ public with sharing class ZuoraAccountServiceTest {
             FROM Error_Log__c
             WHERE Severity__c = :Logger.ERROR
         ];
-        System.assertEquals(1, errorLogs.size());
-        System.assert(errorLogs[0].Message__c.contains('Zuora account async CREATE operation failed for lead'));
+        System.assertEquals(1, errorLogs.size(),
+            'There should be an one error log when async account creation fails, but got ' + errorLogs);
+        String expectedErrorMessage = 'Zuora account async CREATE operation failed for lead';
+        System.assert(errorLogs[0].Message__c.contains(expectedErrorMessage),
+            'Expected ' + expectedErrorMessage + ' but got: ' + errorLogs[0].Message__c);
     }
 
     @IsTest
