@@ -54,6 +54,12 @@
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
+            <name>assignAnchors</name>
+            <value>
+                <elementReference>Customer_Group</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>clientAcquiredCustomers</name>
             <value>
                 <elementReference>Acquisition_Type</elementReference>
@@ -194,6 +200,13 @@
                 <elementReference>ContractType</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ContractToInsert.Assignment_Cutoff_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Cutoff_Date</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Create_Contract</targetReference>
         </connector>
@@ -262,6 +275,22 @@
             <booleanValue>true</booleanValue>
         </value>
     </choices>
+    <choices>
+        <name>Customer_Group_Anchor</name>
+        <choiceText>Anchor</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Customer_Group_Small_Offtake</name>
+        <choiceText>Small Offtake</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </choices>
     <decisions>
         <name>Set_Acquisition_Type_for_Contract</name>
         <label>Set Acquisition Type for Contract</label>
@@ -287,7 +316,7 @@
             <label>Client Acquired</label>
         </rules>
     </decisions>
-    <description>Contract-feature only, with cutoff date</description>
+    <description>Allows assigning Anchors, and saves the Cutoff Date</description>
     <formulas>
         <name>ContractName</name>
         <dataType>String</dataType>
@@ -487,6 +516,7 @@
             </defaultValue>
             <fieldText>Cutoff Date</fieldText>
             <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Defaulted to the end of the previous month, but could be different, especially if assigning anchors.&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -502,6 +532,17 @@
             <defaultSelectedChoiceReference>BlueWaveAcquired</defaultSelectedChoiceReference>
             <fieldText>Acquisition Type</fieldText>
             <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Customer_Group</name>
+            <choiceReferences>Customer_Group_Small_Offtake</choiceReferences>
+            <choiceReferences>Customer_Group_Anchor</choiceReferences>
+            <dataType>Boolean</dataType>
+            <defaultSelectedChoiceReference>Customer_Group_Small_Offtake</defaultSelectedChoiceReference>
+            <fieldText>Customer Group</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <helpText>&lt;p&gt;If assigning Anchors, the Cutoff Date above is usually today, not the last day of the previous month.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The Cutoff Date is compared to the Contract Close Date on Opportunities, which needs to be populated, even for Anchor opps.&lt;/p&gt;</helpText>
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -595,6 +636,16 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>Anchor</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </variables>
     <variables>
         <name>Contract_Assignment_Entity_Ids</name>
         <dataType>String</dataType>

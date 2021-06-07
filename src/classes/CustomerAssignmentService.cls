@@ -75,7 +75,7 @@ public without sharing class CustomerAssignmentService {
     /**
      * @description Updates Subscription Orders that are effective on or before the cutoff date with the associated
      * Assignment Agreement (from the UAS.Opportunity.Contract).
-     * @param assignmentBundles The list of Contracts to assign, and the cutoff date
+     * @param assignmentBundles A list of one ContractAssignmentBundle, which contains the list of Contracts to assign and the cutoff date
      */
     @InvocableMethod(Label='assignSOsAssignmentAgreement')
     public static void assignSOsAssignmentAgreement(List<ContractAssignmentBundle> assignmentBundles) {
