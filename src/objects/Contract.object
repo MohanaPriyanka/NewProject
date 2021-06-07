@@ -185,6 +185,16 @@ Account.Assignment_Agreement_Template__c
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Assignment_Cutoff_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date specified in the Customer Assignment flow as the date on or before which Opportunities need to be countersigned and SOs need to effective to be included in the AA</inlineHelpText>
+        <label>Assignment Cutoff Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>BW_Company_Entity__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

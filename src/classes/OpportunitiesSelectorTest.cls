@@ -127,11 +127,11 @@ public with sharing class OpportunitiesSelectorTest {
             LIMIT 1
         ];
         List<Opportunity> opportunities =
-            OpportunitiesSelector.selectOpportunitiesForClientAssignment(entity.Id, System.today(), false);
+            OpportunitiesSelector.selectOpportunitiesForClientAssignment(entity.Id, System.today(), false, false);
         System.assert(opportunities.size() > 0,
             'The TestCSOpportunities resource should load all BlueWave Acquired customers, but selectOpportunitiesForClientAssignment found none');
         opportunities =
-            OpportunitiesSelector.selectOpportunitiesForClientAssignment(entity.Id, System.today(), true);
+            OpportunitiesSelector.selectOpportunitiesForClientAssignment(entity.Id, System.today(), true, true);
         System.assertEquals(0, opportunities.size(),
             'The TestCSOpportunities resource should load no Client Acquired customers');
     }

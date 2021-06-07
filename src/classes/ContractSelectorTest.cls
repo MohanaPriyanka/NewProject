@@ -94,6 +94,7 @@ public with sharing class ContractSelectorTest {
         assignmentAgreementRequest.entityId = entities[0].Id;
         assignmentAgreementRequest.cutoffDate = Date.newInstance(2021,1,1);
         assignmentAgreementRequest.clientAcquiredCustomers = false;
+        assignmentAgreementRequest.assignAnchors = false;
         List<Contract> contracts =
             ContractSelector.selectContractsForClientAssignment(new List<ContractSelector.AssignmentAgreementRequest>{assignmentAgreementRequest})[0];
         System.assertNotEquals(null, contracts, 'Expected a non-null contract list');

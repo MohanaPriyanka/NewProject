@@ -8,7 +8,8 @@ public inherited sharing class ContractSelector {
             OpportunitiesSelector.selectOpportunitiesForClientAssignment(
                 assignmentAgreementRequests[0].entityId,
                 assignmentAgreementRequests[0].cutoffDate,
-                assignmentAgreementRequests[0].clientAcquiredCustomers
+                assignmentAgreementRequests[0].clientAcquiredCustomers,
+                assignmentAgreementRequests[0].assignAnchors
             );
 
         Set<Id> oppIdSet = new Set<Id>();
@@ -89,5 +90,8 @@ public inherited sharing class ContractSelector {
 
         @InvocableVariable
         public Boolean clientAcquiredCustomers;
+
+        @InvocableVariable
+        public Boolean assignAnchors;
     }
 }
