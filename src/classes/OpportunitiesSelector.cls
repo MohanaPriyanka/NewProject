@@ -181,7 +181,7 @@ public without sharing class OpportunitiesSelector {
     }
 
     @SuppressWarnings('PMD.ApexSOQLInjection')
-    public static List<Opportunity> selectOpportunitiesForClientAssignment(Id entityId, Date cutoffDate, Boolean clientAcquiredCustomers) {
+    public static List<Opportunity> selectOpportunitiesForClientAssignment(Id entityId, Date cutoffDate, Boolean clientAcquiredCustomers, Boolean anchorsOnly) {
         String soql =
             'SELECT Id, Assignment_Agreement__c\n' +
                 '  FROM Opportunity\n' +
@@ -192,7 +192,9 @@ public without sharing class OpportunitiesSelector {
                 '      AND Opportunity__r.Contract_Close_Date__c <= :cutoffDate\n' +
                 '      AND Next_Schedule_Z_Status__c = \'Active Subscription\'\n' +
                 '      AND Opportunity__r.Assignment_Agreement__c = NULL\n' +
-                '      AND Opportunity__r.Customer_Group__c != \'Anchor\'\n' +
+                (anchorsOnly?
+                    '      AND Opportunity__r.Customer_Group__c = \'Anchor\'\n':
+                    '      AND Opportunity__r.Customer_Group__c != \'Anchor\'\n') +
                 '      AND Opportunity__r.StageName = \'Complete\'\n' +
                 '      AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.DeveloperName ' + (clientAcquiredCustomers?'=':'!=') + '\'Client_Account\'\n' +
                 '  )';
@@ -259,14 +261,14 @@ public without sharing class OpportunitiesSelector {
             AND Date_Removed_from_Project__c != null
         ];
     }
-    
+
     public List<Opportunity> getOpportunitiesByAAsNeedingAddendumSent(Set<Id> assignmentAgreementIds) {
         List<Opportunity> resultList = [
-            SELECT Id, Contract.Id, Contract.Product__r.Addendum_Template_Id__c, Contract.Addendum_Sent_Date__c, 
-            Account.Send_Bills_Contact__r.Id, Shared_Solar_System__c, Shared_Solar_System__r.Name, 
-            Shared_Solar_System__r.Address__c, Shared_Solar_System__r.City__c, Shared_Solar_System__r.State__c, 
-            Shared_Solar_System__r.Zip_Code__c, Shared_Solar_System__r.Total_System_Size_kWh_DC__c, 
-            Shared_Solar_System__r.Home_Electricity_Offset__c, Contract.Assignment_Agreement__c, 
+            SELECT Id, Contract.Id, Contract.Product__r.Addendum_Template_Id__c, Contract.Addendum_Sent_Date__c,
+            Account.Send_Bills_Contact__r.Id, Shared_Solar_System__c, Shared_Solar_System__r.Name,
+            Shared_Solar_System__r.Address__c, Shared_Solar_System__r.City__c, Shared_Solar_System__r.State__c,
+            Shared_Solar_System__r.Zip_Code__c, Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
+            Shared_Solar_System__r.Home_Electricity_Offset__c, Contract.Assignment_Agreement__c,
             Product__c, Product__r.Addendum_Template_Id__c
             FROM Opportunity
             WHERE Contract.Assignment_Agreement__c IN: assignmentAgreementIds
@@ -275,5 +277,5 @@ public without sharing class OpportunitiesSelector {
         ];
         return resultList;
     }
-    
+
 }

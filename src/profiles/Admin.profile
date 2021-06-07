@@ -8776,6 +8776,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Assignment_Cutoff_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.BW_Company_Entity__c</field>
         <readable>true</readable>
     </fieldPermissions>
