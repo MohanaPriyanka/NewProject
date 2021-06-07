@@ -132,8 +132,10 @@ public with sharing class roundRobinTests {
             gm.GroupId = g.id;
             gms.add(gm);
         }
-
-        insert gms;
+        User admin = [SELECT Id FROM User WHERE IsActive = TRUE AND Profile.Name = 'System Administrator' LIMIT 1];
+        System.runAs(admin) {
+            insert gms;
+        }
     }
 
 
