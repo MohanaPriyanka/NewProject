@@ -78,11 +78,6 @@ public with sharing class LeadDispatcher {
     public void onBeforeUpdate(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap) {
         LeadHandlerResult result = separateLeads(updatedLeads, oldLeadMap);
 
-        if (result.updatedCSAPLeads.size() > 0 ) {
-            result.leadTriggerHandler.onBeforeUpdate(null, result.updatedCSAPLeads, result.oldCSAPMap, null);
-            UtilityAccountLogConversionHandler.utilityAccountLogConversion(result.updatedCSAPLeads);
-        }
-
         if (result.updatedLeads.size()> 0 ){
             UtilityLoadZoneService.updateLZUL(result.updatedLeads, result.oldLeadMap);
         }

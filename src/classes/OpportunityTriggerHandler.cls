@@ -9,7 +9,6 @@ public without sharing class OpportunityTriggerHandler {
     private static Id csRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Community Solar').getRecordTypeId();
 
     public void onBeforeInsert(List<Opportunity> newOppList){
-        mapDocuSignRS(newOppList);
         setLeadLookup(newOppList);
         eventHandling(newOppList, null);
         setPartnerForTests(newOppList);
@@ -18,7 +17,6 @@ public without sharing class OpportunityTriggerHandler {
     }
 
     public void onBeforeUpdate(List<Opportunity> updatedOppList, Map<Id, Opportunity> oldOppMap){
-        mapDocuSignRS(updatedOppList);
         eventHandling(updatedOppList, oldOppMap);
         setCSRecordType(updatedOppList);
         setServicingOnBehalfOf(updatedOppList);
@@ -84,25 +82,6 @@ public without sharing class OpportunityTriggerHandler {
         }
         for (Opportunity opp : newOppList){
             opp.Partner_tag_lookup__c = partners[0].Id;
-        }
-    }
-
-    @SuppressWarnings('PMD.ApexCRUDViolation')
-    private void mapDocuSignRS(List<Opportunity> oppList){
-        Set<Object> opportunitiesByEmail = CollectionUtil.multiMapByField(oppList, Opportunity.Email__c).keySet();
-        Set<String> emails = CollectionUtil.toStrings(opportunitiesByEmail);
-        List<dsfs__DocuSign_Recipient_Status__c> docuSignRecipientStatuses = [
-            SELECT Id, Name, dsfs__Parent_Status_Record__c, dsfs__Recipient_Status__c, dsfs__DocuSign_Recipient_Email__c
-            FROM dsfs__DocuSign_Recipient_Status__c
-            WHERE dsfs__DocuSign_Recipient_Email__c IN : emails
-            ORDER BY CreatedDate DESC
-        ];
-        MultiMap mapDocRS =
-            CollectionUtil.multiMapByField(docuSignRecipientStatuses, dsfs__DocuSign_Recipient_Status__c.dsfs__DocuSign_Recipient_Email__c);
-        for (Opportunity opp : oppList) {
-            dsfs__DocuSign_Recipient_Status__c recipientStatus =
-                (dsfs__DocuSign_Recipient_Status__c) CollectionUtil.getFirstItem(mapDocRS.getValues(opp.Email__c));
-            opp.DocuSign_Recipient__c = recipientStatus?.Id;
         }
     }
 
